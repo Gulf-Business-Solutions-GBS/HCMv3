@@ -1,7 +1,7 @@
 {
   "helpId": "pay.employee-sub-group-wage-type.edit",
   "lang": "en",
-  "title": "Employee Sub Group Wage Types — Create / Edit",
+  "title": "Employee Sub Group Wagetypes — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupWageType",
   "overviewHtml": "<p>_TODO_</p>",
   "aliasIndex": {

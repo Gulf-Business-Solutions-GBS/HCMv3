@@ -11,9 +11,9 @@ permissions: [Pages.PersonnelAdministration.EmployeeBasicPayDetails.Create]
 
 ## Overview
 
-One wage type and amount within a basic pay record -- for example basic salary, housing allowance or transport allowance. Payroll calculates each wage type from the detail line of the basic pay in force on the pay date.
+One wagetype and amount within a basic pay record -- for example basic salary, housing allowance or transport allowance. Payroll calculates each wagetype from the detail line of the basic pay in force on the pay date.
 
-A basic pay record can hold each wage type only once.
+A basic pay record can hold each wagetype only once.
 
 ## EmployeeBasicPayId {#EmployeeBasicPayDetail.EmployeeBasicPayId}
 <!-- alias: loc:EmployeeBasicPayId, dom:EmployeeBasicPayDetail_EmployeeBasicPayId -->
@@ -29,22 +29,22 @@ A basic pay record can hold each wage type only once.
 
 **Example.** Basic Salary
 
-**Why it matters.** Each wage type can appear once per basic pay record.
+**Why it matters.** Each wagetype can appear once per basic pay record.
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 :::admin
-Maintained under Payroll Management → Wage Types.
+Maintained under Payroll Management → Wagetypes.
 :::
 
 ## Amount {#EmployeeBasicPayDetail.Amount}
 <!-- alias: loc:Amount, dom:EmployeeBasicPayDetail_Amount -->
 
-**What it is.** The rate for this wage type, per the basic pay's pay interval.
+**What it is.** The rate for this wagetype, per the basic pay's pay interval.
 
 **Example.** 850.000
 
-**Why it matters.** Payroll uses it as the monthly, daily or hourly rate for this wage type, and it is carried into the cost and journal postings.
+**Why it matters.** Payroll uses it as the monthly, daily or hourly rate for this wagetype, and it is carried into the cost and journal postings.
 
 **Rules.** Optional. Number.
 
@@ -62,18 +62,18 @@ Maintained under Payroll Management → Wage Types.
 ## DependantUnit {#EmployeeBasicPayDetail.DependantUnit}
 <!-- alias: loc:DependantUnit, dom:EmployeeBasicPayDetail_DependantUnit -->
 
-**What it is.** Whether this line depends on another wage type, and how.
+**What it is.** Whether this line depends on another wagetype, and how.
 
 **Example.** Percentage
 
-**Why it matters.** Used only when a dependent wage type is chosen.
+**Why it matters.** Used only when a dependent wagetype is chosen.
 
 **Rules.** Required. One of: None, Percentage.
 
 ## DependantNumber {#EmployeeBasicPayDetail.DependantNumber}
 <!-- alias: loc:DependantNumber, dom:EmployeeBasicPayDetail_DependantNumber -->
 
-**What it is.** The percentage of the dependent wage type's amount.
+**What it is.** The percentage of the dependent wagetype's amount.
 
 **Example.** 25
 
@@ -82,12 +82,12 @@ Maintained under Payroll Management → Wage Types.
 ## DependantWageTypeId {#EmployeeBasicPayDetail.DependantWageTypeId}
 <!-- alias: loc:DependantWageTypeId, dom:EmployeeBasicPayDetail_DependantWageTypeId -->
 
-**What it is.** Another wage type this line is calculated from.
+**What it is.** Another wagetype this line is calculated from.
 
 **Example.** Basic Salary
 
-**Rules.** Optional. Chosen from Wage Type master data.
+**Rules.** Optional. Chosen from Wagetype master data.
 
 :::admin
-When this is set, payroll calculates the percentage of that wage type's amount but stores the result in the payroll line's number, not its amount -- behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.
+When this is set, payroll calculates the percentage of that wagetype's amount but stores the result in the payroll line's number, not its amount -- behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.
 :::

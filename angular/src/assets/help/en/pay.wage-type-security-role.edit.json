@@ -1,7 +1,7 @@
 {
   "helpId": "pay.wage-type-security-role.edit",
   "lang": "en",
-  "title": "Wage Type Security Roles — Create / Edit",
+  "title": "Wagetype Security Roles — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageTypeSecurityRole",
   "overviewHtml": "<p>_TODO_</p>",
   "aliasIndex": {
@@ -19,7 +19,7 @@
         "loc:WageTypeId",
         "dom:WageTypeSecurityRole_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
       "adminHtml": "",

@@ -33,6 +33,11 @@ export interface HelpPageContent {
     fields: HelpField[];
 }
 
+/** `angular/src/assets/help/index.json`, written by tools/help/help-tool.mjs build. */
+interface DomIndex {
+    dom: Record<string, string[]>;
+}
+
 interface RegisteredPage {
     helpId: string;
     host: HTMLElement;
@@ -66,9 +71,18 @@ export class HelpService {
     readonly visibleIds = signal<Set<string> | null>(null);
 
     private _page: RegisteredPage | null = null;
+
+    /**
+     * The open dialog the drawer is currently speaking for, when there is one. A modal is not a
+     * registered page -- it is recognised by the fields it is showing (see _helpIdFor) -- so a
+     * create/edit form gets its own help with no per-screen wiring, exactly as the read views do.
+     */
+    private _modalPage: RegisteredPage | null = null;
     private _lastHover: Element | null = null;
     private _pendingToken: string | null = null;
     private _pendingTechnical = false;
+    private _domIndex: Record<string, string[]> | null = null;
+    private _domIndexLoad: Promise<void> | null = null;
 
     // -- technical information (DESIGN.md §9) --------------------------------------------------
 
@@ -109,6 +123,11 @@ export class HelpService {
         return this._page !== null;
     }
 
+    /** What the drawer is about right now: the dialog in front if it is documented, else the screen. */
+    private get _active(): RegisteredPage | null {
+        return this._modalPage ?? this._page;
+    }
+
     // -- opening -------------------------------------------------------------------------------
 
     openPage(): void {
@@ -136,6 +155,8 @@ export class HelpService {
 
     close(): void {
         this.isOpen.set(false);
+        // The dialog it was speaking for may be gone by the next press; recognise it again then.
+        this._modalPage = null;
     }
 
     toggle(): void {
@@ -143,10 +164,12 @@ export class HelpService {
     }
 
     private async _open(): Promise<void> {
-        if (!this._page) return;
+        await this._syncModalScope();
+        const page = this._active;
+        if (!page) return;
         this.isOpen.set(true);
         this._snapshotVisibleFields();
-        await this._load(this._page.helpId);
+        await this._load(page.helpId);
 
         // The index exists now, so a marker captured before the fetch can finally be named.
         if (this._pendingToken) {
@@ -272,7 +295,7 @@ export class HelpService {
      * annotated still gets its full help rather than an empty drawer.
      */
     private _snapshotVisibleFields(): void {
-        const page = this._page;
+        const page = this._active;
         const doc = this.content();
         if (!page) {
             this.visibleIds.set(null);
@@ -309,7 +332,11 @@ export class HelpService {
             return;
         }
         const isHelpKey = e.key === 'F1' || (e.altKey && (e.key === 'h' || e.key === 'H'));
-        if (!isHelpKey || !this._page) return;
+        if (!isHelpKey) return;
+
+        // A dialog in front answers for itself; otherwise the screen behind it does.
+        const scope = this._modalInFront() ?? this._page?.host ?? null;
+        if (!scope) return;
 
         // Ctrl+F1 asks for the technical panel; without the permission it is plain F1, not a refusal.
         this._pendingTechnical = e.key === 'F1' && e.ctrlKey && this.canSeeTechnical();
@@ -317,22 +344,104 @@ export class HelpService {
         // F1 otherwise opens the browser's own help in Chrome and Edge.
         e.preventDefault();
         e.stopPropagation();
-        this.openField(this._resolveTarget());
+        this.openField(this._resolveTarget(scope));
     };
 
-    private _resolveTarget(): string | null {
-        const page = this._page;
-        if (!page) return null;
+    private _resolveTarget(scope: HTMLElement): string | null {
+        const start = this._startElement();
+        return start && scope.contains(start) ? this._tokenFor(start) : null;
+    }
 
+    /** What the user was pointing at: the focused control, or failing that whatever is under the pointer. */
+    private _startElement(): Element | null {
         const active = document.activeElement;
-        const start =
-            active && active !== document.body && page.host.contains(active)
-                ? active
-                : this._lastHover && page.host.contains(this._lastHover)
-                  ? this._lastHover
-                  : null;
+        if (active && active !== document.body) return active;
+        return this._lastHover;
+    }
 
-        return start ? this._tokenFor(start) : null;
+    // -- dialogs -------------------------------------------------------------------------------
+
+    /**
+     * The dialog the user is in, or the topmost one if the focus has wandered. Bootstrap leaves an
+     * open dialog as `.modal.show` and AppBsModalDirective stacks them by z-index, so the one in
+     * front is the one with the highest.
+     */
+    private _modalInFront(): HTMLElement | null {
+        const start = this._startElement();
+        const own = start?.closest?.('.modal.show') as HTMLElement | null | undefined;
+        if (own) return own;
+
+        const open = Array.from(document.querySelectorAll<HTMLElement>('.modal.show'));
+        if (!open.length) return null;
+        return open.reduce((a, b) => (Number(b.style.zIndex || 0) >= Number(a.style.zIndex || 0) ? b : a));
+    }
+
+    /**
+     * Works out which page documents the dialog in front, and makes that the drawer's subject.
+     *
+     * Dialogs are recognised rather than registered: a create/edit form already carries
+     * `id="Entity_Property"` on every input from the ASP.NET Zero conventions, and those same ids
+     * are aliases in the compiled help, so an index built at compile time can name the page with
+     * no markup added to 160-odd modal templates -- and no chance of one being forgotten.
+     */
+    private async _syncModalScope(): Promise<void> {
+        const modal = this._modalInFront();
+        if (!modal) {
+            this._modalPage = null;
+            return;
+        }
+        if (this._modalPage?.host === modal) return;
+
+        await this._ensureDomIndex();
+        const helpId = this._helpIdFor(modal);
+        // Open technical panels belong to the fields of whatever the drawer was showing before.
+        if (this._modalPage?.helpId !== helpId) this.expandedTechnical.set(new Set());
+        // An undocumented dialog falls back to the screen behind it rather than to an empty drawer.
+        this._modalPage = helpId ? { helpId, host: modal } : null;
+    }
+
+    /**
+     * Scores the candidate pages against the ids actually present, rather than taking the first
+     * page that matches one: the shared topic pool means `Code` and `NameEn` belong to dozens of
+     * pages, and only the weight of a dialog's whole field set separates them.
+     */
+    private _helpIdFor(scope: HTMLElement): string | null {
+        const index = this._domIndex;
+        if (!index) return null;
+
+        const score = new Map<string, number>();
+        scope.querySelectorAll('[id]').forEach((el) => {
+            for (const helpId of index[(el as HTMLElement).id] ?? []) {
+                score.set(helpId, (score.get(helpId) ?? 0) + 1);
+            }
+        });
+
+        let best: string | null = null;
+        let bestScore = 0;
+        for (const [helpId, n] of score) {
+            if (n > bestScore) {
+                best = helpId;
+                bestScore = n;
+            }
+        }
+        return best;
+    }
+
+    /** Loaded once, on the first press that happens over a dialog. */
+    private _ensureDomIndex(): Promise<void> {
+        this._domIndexLoad ??= new Promise<void>((resolve) => {
+            this._http.get<DomIndex>('assets/help/index.json').subscribe({
+                next: (index) => {
+                    this._domIndex = index?.dom ?? {};
+                    resolve();
+                },
+                error: () => {
+                    this._domIndex = {};
+                    resolve();
+                },
+            });
+        });
+        return this._domIndexLoad;
     }
 
     /**

@@ -1,7 +1,7 @@
 {
   "helpId": "pay.wage-type-exception.edit",
   "lang": "en",
-  "title": "Wage Type Exceptions — Create / Edit",
+  "title": "Wagetype Exceptions — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageTypeException",
   "overviewHtml": "<p>_TODO_</p>",
   "aliasIndex": {
@@ -19,7 +19,7 @@
         "loc:WageTypes",
         "dom:WageTypeException_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
       "adminHtml": "",
@@ -33,7 +33,7 @@
         "loc:ExceptWageType",
         "dom:WageTypeException_ExceptWageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
       "adminHtml": "",

@@ -1,7 +1,7 @@
 ---
 helpId: pay.wage-type-leave.edit
 lang: en
-title: Wage Type Leaves — Create / Edit
+title: Wagetype Leaves — Create / Edit
 entity: HCMv3.PayrollManagement.WageTypeLeave
 surfaces:
   - angular/src/app/admin/payroll-management/wage-type-leaves/create-or-edit-wage-type-leave-modal.component.html
@@ -20,7 +20,7 @@ _TODO_
 
 **Example.** _TODO_
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 ## AbsenceTypeId {#WageTypeLeave.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:WageTypeLeave_AbsenceTypeId -->

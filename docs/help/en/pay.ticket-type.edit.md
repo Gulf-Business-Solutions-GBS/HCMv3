@@ -92,4 +92,4 @@ _TODO_
 
 **Example.** _TODO_
 
-**Rules.** Optional. Chosen from Wage Type master data.
+**Rules.** Optional. Chosen from Wagetype master data.

@@ -29,7 +29,7 @@ _TODO_
 
 **Example.** _TODO_
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 ## Rate {#SimulationSalaryRegisterDetail.Rate}
 <!-- alias: loc:Rate, dom:SimulationSalaryRegisterDetail_Rate -->

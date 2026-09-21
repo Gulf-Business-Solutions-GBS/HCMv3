@@ -25,9 +25,9 @@
         "loc:WageTypeId",
         "dom:EmployeeRemuneration_WageTypeId"
       ],
-      "rules": "Optional. Chosen from Wage Type master data.",
+      "rules": "Optional. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> A wage type recorded with the entry.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> The daily and hourly calculation counts every entry in the month, whatever its wage type.</p>",
+      "html": "<p><strong>What it is.</strong> A wagetype recorded with the entry.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> The daily and hourly calculation counts every entry in the month, whatever its wagetype.</p>",
       "adminHtml": "",
       "stub": false
     },

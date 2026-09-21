@@ -193,7 +193,7 @@
         "loc:WageTypeId",
         "dom:TicketType_WageTypeId"
       ],
-      "rules": "Optional. Chosen from Wage Type master data.",
+      "rules": "Optional. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
       "adminHtml": "",

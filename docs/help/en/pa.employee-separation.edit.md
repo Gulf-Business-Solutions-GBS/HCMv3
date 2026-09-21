@@ -33,7 +33,7 @@ Payroll stops calculating most pay after the end of the month of the last day in
 
 **Example.** 31 Aug 2026
 
-**Why it matters.** Payroll does not calculate wage types for pay dates after the end of this month, fund deductions stop, and the indemnity calculation is worked out as at this date.
+**Why it matters.** Payroll does not calculate wagetypes for pay dates after the end of this month, fund deductions stop, and the indemnity calculation is worked out as at this date.
 
 **Rules.** Required. Date value.
 

@@ -11,31 +11,31 @@ permissions: [Pages.PayrollManagement.EmployeeWageAccounts.Create]
 
 ## Overview
 
-Which ledger account one of the employee's wage types posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.
+Which ledger account one of the employee's wagetypes posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.
 
-Records for the same employee and wage type form a history: saving a new one closes the previous one on the day before the new start date. A wage type can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.
+Records for the same employee and wagetype form a history: saving a new one closes the previous one on the day before the new start date. A wagetype can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.
 
 ## WageTypeId {#EmployeeWageAccount.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:EmployeeWageAccount_WageTypeId -->
 
-**What it is.** The wage type this mapping is for.
+**What it is.** The wagetype this mapping is for.
 
 **Example.** Housing Allowance
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 :::admin
-Maintained under Payroll Management → Wage Types. Only wage types included in FI posting are posted.
+Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI posting are posted.
 :::
 
 ## CostPercentage {#EmployeeWageAccount.CostPercentage}
 <!-- alias: loc:CostPercentage, dom:EmployeeWageAccount_CostPercentage -->
 
-**What it is.** The share of this wage type's amount posted to this account.
+**What it is.** The share of this wagetype's amount posted to this account.
 
 **Example.** 100
 
-**Why it matters.** The cost engine posts this percentage of the wage type's total. Records for the same employee, wage type and start date cannot add up to more than 100.
+**Why it matters.** The cost engine posts this percentage of the wagetype's total. Records for the same employee, wagetype and start date cannot add up to more than 100.
 
 **Rules.** Optional. Number.
 

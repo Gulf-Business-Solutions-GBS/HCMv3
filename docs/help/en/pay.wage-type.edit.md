@@ -1,7 +1,7 @@
 ---
 helpId: pay.wage-type.edit
 lang: en
-title: Wage Types — Create / Edit
+title: Wagetypes — Create / Edit
 entity: HCMv3.PayrollManagement.WageType
 surfaces:
   - angular/src/app/admin/payroll-management/wage-types/create-or-edit-wage-type-modal.component.html
@@ -101,7 +101,7 @@ _TODO_
 
 **Example.** _TODO_
 
-**Rules.** Optional. Chosen from Wage Type master data.
+**Rules.** Optional. Chosen from Wagetype master data.
 
 ## Status {#WageType.Status}
 <!-- alias: loc:Status, dom:WageType_Status -->

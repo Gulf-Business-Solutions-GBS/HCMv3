@@ -267,7 +267,9 @@ const RULE_TEXT = {
         range: (r) => `Between ${r.a} and ${r.b}.`,
         oneOf: (r) => `One of: ${r.members.join(', ')}.`,
         oneOfKeys: (r) => `One of: ${r.keys.map((k) => locText('en', k) ?? k).join(', ')}.`,
-        lookup: (r) => `Chosen from ${r.target.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`,
+        // The app's own label for the list, as Arabic does: the product renamed Wage Type to Wagetype
+        // and a name split from the class would keep saying the old one.
+        lookup: (r) => `Chosen from ${locText('en', r.target) ?? r.target.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`,
         lookupGeneric: () => 'Chosen from a list.',
         lookupEmployee: () => 'Chosen from the employee list.',
         autoCode: () => 'Left blank, the next number is assigned when the record is saved.',
@@ -402,6 +404,59 @@ function rulesFor(prop, { uiRequired = false, systemMaintained = false, behaviou
 
 const flatten = (html) => html.replace(/\s+/g, ' ');
 
+/** selector -> { html, ts } for every component under angular/src/app, read once. */
+let _components = null;
+function componentsBySelector() {
+    if (_components) return _components;
+    _components = new Map();
+    const walk = (dir) => {
+        for (const e of fs.readdirSync(abs(dir), { withFileTypes: true })) {
+            const rel = `${dir}/${e.name}`;
+            if (e.isDirectory()) walk(rel);
+            else if (e.name.endsWith('.component.ts')) {
+                const ts = read(rel);
+                const selector = ts.match(/selector:\s*'([^']+)'/)?.[1];
+                const url = ts.match(/templateUrl:\s*'([^']+)'/)?.[1];
+                if (!selector || !url) continue;
+                const html = path.posix.join(path.posix.dirname(rel), url);
+                if (exists(html)) _components.set(selector, { html, ts: rel });
+            }
+        }
+    };
+    walk('angular/src/app');
+    return _components;
+}
+
+/**
+ * A form's template with the templates of the child components it uses inlined where they sit.
+ *
+ * Forms get refactored: Wage Type and Employee Basic Pay moved their fields into a
+ * `wageTypeForm` / `employeeBasicPayForm` child, and reading the dialog's own file alone then
+ * found almost nothing -- the help for those pages silently lost most of its fields. Following the
+ * children means the registry can keep naming the dialog, which is what the user opens.
+ */
+function expandTemplate(rel, depth = 0, seen = new Set([rel])) {
+    let html = read(rel);
+    const tsFile = rel.replace(/\.html$/, '.ts');
+    let ts = exists(tsFile) ? read(tsFile) : '';
+    if (depth > 3) return { html, ts };
+    const components = componentsBySelector();
+    // Only tags that ARE components are replaced, so the ordinary elements around them are left
+    // alone and a child nested inside a <div> is still found.
+    const used = [...new Set([...html.matchAll(/<([A-Za-z][\w-]*)/g)].map((m) => m[1]))].filter(
+        (tag) => components.has(tag) && !seen.has(components.get(tag).html)
+    );
+    for (const tag of used) {
+        const child = components.get(tag);
+        seen.add(child.html);
+        const inner = expandTemplate(child.html, depth + 1, seen);
+        ts += '\n' + inner.ts;
+        const re = new RegExp(`<${tag}\\b[^>]*?(?:\\/>|>[\\s\\S]*?<\\/${tag}>)`, 'g');
+        html = html.replace(re, () => inner.html);
+    }
+    return { html, ts };
+}
+
 /**
  * The edit modal is the AUTHORITATIVE localization-key -> entity-property map: its labels carry
  * both (`<label for="Employee_TitleId">{{ 'Title' | localize }}</label>`). The read view has only
@@ -419,7 +474,8 @@ const sectionTitlePattern = (cls) =>
  * the key, so it borrows this mapping rather than guessing.
  */
 function parseEditTemplate(rel, entityName, sectionTitleClass) {
-    const html = flatten(read(rel));
+    const expanded = expandTemplate(rel);
+    const html = flatten(expanded.html);
     const label =
         `<label([^>]*)for="(${entityName}_[A-Za-z0-9_]+)"([^>]*)>\\s*\\{\\{\\s*'([^']+)'\\s*\\|\\s*localize\\s*\\}\\}`;
     const re = new RegExp(
@@ -447,8 +503,7 @@ function parseEditTemplate(rel, entityName, sectionTitleClass) {
         });
     }
 
-    const tsFile = rel.replace(/\.html$/, '.ts');
-    const ts = exists(tsFile) ? read(tsFile) : '';
+    const ts = expanded.ts;
 
     // Fields rendered in a loop: `@for (flag of includeFlags) { ... [id]="'WageType_' + flag.field" }`.
     // Their ids are built at runtime, so the label scan above cannot see them -- Wage Type's 18
@@ -924,6 +979,9 @@ function cmdStubs(argv) {
 
 const ASSET_DIR = 'angular/src/assets/help';
 
+/** The dialog index is language-independent, so it is built once, from the English pass. */
+const INDEX_LANG = 'en';
+
 const escapeHtml = (s) =>
     s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -1009,6 +1067,11 @@ function cmdBuild(argv) {
     const inv = buildInventory();
     let written = 0;
 
+    // Which page documents a given input id. This is how F1 inside a create/edit dialog finds its
+    // page: dialogs are not annotated, they are recognised by the ASP.NET Zero ids they carry.
+    // Only fully written pages go in -- a page still holding stubs would answer F1 with _TODO_.
+    const domIndex = {};
+
     for (const lang of langs) {
         const { pool } = loadTopicPool(lang);
 
@@ -1065,9 +1128,23 @@ function cmdBuild(argv) {
             );
             written++;
             const stubbed = fields.filter((f) => f.stub).length;
+            if (lang === INDEX_LANG && fields.length && !stubbed) {
+                for (const alias of Object.keys(aliasIndex)) {
+                    if (!alias.startsWith('dom:')) continue;
+                    const id = alias.slice(4);
+                    (domIndex[id] ??= []).push(page.helpId);
+                }
+            }
             console.log(`wrote    ${out}  (${fields.length} fields, ${stubbed} still stubs)`);
         }
     }
+    if (langs.includes(INDEX_LANG)) {
+        const out = path.join(ASSET_DIR, 'index.json');
+        fs.writeFileSync(abs(out), JSON.stringify({ dom: domIndex }, null, 2) + '\n');
+        const pages = new Set(Object.values(domIndex).flat());
+        console.log(`wrote    ${out}  (${Object.keys(domIndex).length} ids, ${pages.size} pages)`);
+    }
+
     console.log(`\n${written} file(s) written`);
     return 0;
 }

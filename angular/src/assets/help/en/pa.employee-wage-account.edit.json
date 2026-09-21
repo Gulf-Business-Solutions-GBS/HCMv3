@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Wage Accounts — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeWageAccount",
-  "overviewHtml": "<p>Which ledger account one of the employee's wage types posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.</p><p>Records for the same employee and wage type form a history: saving a new one closes the previous one on the day before the new start date. A wage type can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.</p>",
+  "overviewHtml": "<p>Which ledger account one of the employee's wagetypes posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.</p><p>Records for the same employee and wagetype form a history: saving a new one closes the previous one on the day before the new start date. A wagetype can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
     "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
@@ -41,10 +41,10 @@
         "loc:WageTypeId",
         "dom:EmployeeWageAccount_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The wage type this mapping is for.</p><p><strong>Example.</strong> Housing Allowance</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Wage Types. Only wage types included in FI posting are posted.</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype this mapping is for.</p><p><strong>Example.</strong> Housing Allowance</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI posting are posted.</p>",
       "stub": false
     },
     {
@@ -55,7 +55,7 @@
         "loc:StartDate",
         "dom:EmployeeWageAccount_StartDate"
       ],
-      "rules": "Required. Date value. Saving closes the previous record for the same employee and wage type on the day before this date; the latest record stays open.",
+      "rules": "Required. Date value. Saving closes the previous record for the same employee and wagetype on the day before this date; the latest record stays open.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
       "adminHtml": "",
@@ -71,7 +71,7 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The share of this wage type's amount posted to this account.</p><p><strong>Example.</strong> 100</p><p><strong>Why it matters.</strong> The cost engine posts this percentage of the wage type's total. Records for the same employee, wage type and start date cannot add up to more than 100.</p>",
+      "html": "<p><strong>What it is.</strong> The share of this wagetype's amount posted to this account.</p><p><strong>Example.</strong> 100</p><p><strong>Why it matters.</strong> The cost engine posts this percentage of the wagetype's total. Records for the same employee, wagetype and start date cannot add up to more than 100.</p>",
       "adminHtml": "",
       "stub": false
     },

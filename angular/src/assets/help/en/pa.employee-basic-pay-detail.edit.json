@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Basic Pay Details — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeBasicPayDetail",
-  "overviewHtml": "<p>One wage type and amount within a basic pay record — for example basic salary, housing allowance or transport allowance. Payroll calculates each wage type from the detail line of the basic pay in force on the pay date.</p><p>A basic pay record can hold each wage type only once.</p>",
+  "overviewHtml": "<p>One wagetype and amount within a basic pay record — for example basic salary, housing allowance or transport allowance. Payroll calculates each wagetype from the detail line of the basic pay in force on the pay date.</p><p>A basic pay record can hold each wagetype only once.</p>",
   "aliasIndex": {
     "loc:EmployeeBasicPayId": "EmployeeBasicPayDetail.EmployeeBasicPayId",
     "dom:EmployeeBasicPayDetail_EmployeeBasicPayId": "EmployeeBasicPayDetail.EmployeeBasicPayId",
@@ -43,10 +43,10 @@
         "loc:WageTypeId",
         "dom:EmployeeBasicPayDetail_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The pay element this line pays.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> Each wage type can appear once per basic pay record.</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Wage Types.</p>",
+      "html": "<p><strong>What it is.</strong> The pay element this line pays.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> Each wagetype can appear once per basic pay record.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",
       "stub": false
     },
     {
@@ -59,7 +59,7 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The rate for this wage type, per the basic pay's pay interval.</p><p><strong>Example.</strong> 850.000</p><p><strong>Why it matters.</strong> Payroll uses it as the monthly, daily or hourly rate for this wage type, and it is carried into the cost and journal postings.</p>",
+      "html": "<p><strong>What it is.</strong> The rate for this wagetype, per the basic pay's pay interval.</p><p><strong>Example.</strong> 850.000</p><p><strong>Why it matters.</strong> Payroll uses it as the monthly, daily or hourly rate for this wagetype, and it is carried into the cost and journal postings.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -87,7 +87,7 @@
       ],
       "rules": "Required. One of: None, Percentage.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether this line depends on another wage type, and how.</p><p><strong>Example.</strong> Percentage</p><p><strong>Why it matters.</strong> Used only when a dependent wage type is chosen.</p>",
+      "html": "<p><strong>What it is.</strong> Whether this line depends on another wagetype, and how.</p><p><strong>Example.</strong> Percentage</p><p><strong>Why it matters.</strong> Used only when a dependent wagetype is chosen.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -101,7 +101,7 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The percentage of the dependent wage type's amount.</p><p><strong>Example.</strong> 25</p>",
+      "html": "<p><strong>What it is.</strong> The percentage of the dependent wagetype's amount.</p><p><strong>Example.</strong> 25</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -113,10 +113,10 @@
         "loc:DependantWageTypeId",
         "dom:EmployeeBasicPayDetail_DependantWageTypeId"
       ],
-      "rules": "Optional. Chosen from Wage Type master data.",
+      "rules": "Optional. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Another wage type this line is calculated from.</p><p><strong>Example.</strong> Basic Salary</p>",
-      "adminHtml": "<p>When this is set, payroll calculates the percentage of that wage type's amount but stores the result in the payroll line's number, not its amount — behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.</p>",
+      "html": "<p><strong>What it is.</strong> Another wagetype this line is calculated from.</p><p><strong>Example.</strong> Basic Salary</p>",
+      "adminHtml": "<p>When this is set, payroll calculates the percentage of that wagetype's amount but stores the result in the payroll line's number, not its amount — behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.</p>",
       "stub": false
     }
   ]

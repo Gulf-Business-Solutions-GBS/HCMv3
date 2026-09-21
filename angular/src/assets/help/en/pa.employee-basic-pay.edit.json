@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Basic Pays — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeBasicPay",
-  "overviewHtml": "<p>The header of the employee's pay for a period. Its detail lines hold the wage types and amounts; this record says how often the pay is expressed.</p><p>Payroll uses the basic pay whose period covers the pay date. Saving a new one does not close the previous one, and only a duplicate start date is refused, so set the previous record's end date yourself.</p>",
+  "overviewHtml": "<p>The header of the employee's pay for a period. Its detail lines hold the wagetypes and amounts; this record says how often the pay is expressed.</p><p>Payroll uses the basic pay whose period covers the pay date. Saving a new one does not close the previous one, and only a duplicate start date is refused, so set the previous record's end date yourself.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeBasicPay.StartDate",
     "dom:EmployeeBasicPay_StartDate": "EmployeeBasicPay.StartDate",
@@ -69,7 +69,7 @@
       ],
       "rules": "Required. One of: Monthly, Daily, Hourly, End Of Service, Yearly.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The period the detail amounts are expressed for.</p><p><strong>Example.</strong> Monthly</p><p><strong>Why it matters.</strong> Payroll works out each detail line from it: Monthly amounts are prorated by the wage type's billing method, Daily and Hourly amounts are multiplied by the days or hours recorded for the employee under Employee Remunerations in that month.</p>",
+      "html": "<p><strong>What it is.</strong> The period the detail amounts are expressed for.</p><p><strong>Example.</strong> Monthly</p><p><strong>Why it matters.</strong> Payroll works out each detail line from it: Monthly amounts are prorated by the wagetype's billing method, Daily and Hourly amounts are multiplied by the days or hours recorded for the employee under Employee Remunerations in that month.</p>",
       "adminHtml": "<p>With End Of Service or Yearly, the basic pay calculation produces no amount for the detail lines.</p>",
       "stub": false
     },

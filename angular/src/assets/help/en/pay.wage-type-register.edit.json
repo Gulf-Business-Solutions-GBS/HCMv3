@@ -1,7 +1,7 @@
 {
   "helpId": "pay.wage-type-register.edit",
   "lang": "en",
-  "title": "Wage Type Registers — Create / Edit",
+  "title": "Wagetype Registers — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageTypeRegister",
   "overviewHtml": "<p>_TODO_</p>",
   "aliasIndex": {

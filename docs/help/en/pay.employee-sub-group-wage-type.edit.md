@@ -1,7 +1,7 @@
 ---
 helpId: pay.employee-sub-group-wage-type.edit
 lang: en
-title: Employee Sub Group Wage Types — Create / Edit
+title: Employee Sub Group Wagetypes — Create / Edit
 entity: HCMv3.PayrollManagement.EmployeeSubGroupWageType
 surfaces:
   - angular/src/app/admin/payroll-management/employee-sub-group-detail/wage-types/create-or-edit-employee-sub-group-wage-type-modal.component.html

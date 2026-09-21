@@ -13,7 +13,7 @@ permissions: []
 
 A payment made to the employee outside payroll -- for example a bonus paid by cheque.
 
-Payroll does not pay it. The average bonus calculation does count non-payroll amounts of the bonus wage type within the period it averages, and the bonus and non-payroll reports show them.
+Payroll does not pay it. The average bonus calculation does count non-payroll amounts of the bonus wagetype within the period it averages, and the bonus and non-payroll reports show them.
 
 ## WageTypeId {#EmployeeNonPayrollTrans.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:EmployeeNonPayrollTran_WageTypeId -->
@@ -22,10 +22,10 @@ Payroll does not pay it. The average bonus calculation does count non-payroll am
 
 **Example.** Annual Bonus
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 :::admin
-Maintained under Payroll Management → Wage Types.
+Maintained under Payroll Management → Wagetypes.
 :::
 
 ## PaymentDate {#EmployeeNonPayrollTrans.PaymentDate}

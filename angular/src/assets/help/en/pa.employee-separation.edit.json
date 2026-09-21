@@ -45,7 +45,7 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The employee's final working day.</p><p><strong>Example.</strong> 31 Aug 2026</p><p><strong>Why it matters.</strong> Payroll does not calculate wage types for pay dates after the end of this month, fund deductions stop, and the indemnity calculation is worked out as at this date.</p>",
+      "html": "<p><strong>What it is.</strong> The employee's final working day.</p><p><strong>Example.</strong> 31 Aug 2026</p><p><strong>Why it matters.</strong> Payroll does not calculate wagetypes for pay dates after the end of this month, fund deductions stop, and the indemnity calculation is worked out as at this date.</p>",
       "adminHtml": "",
       "stub": false
     },

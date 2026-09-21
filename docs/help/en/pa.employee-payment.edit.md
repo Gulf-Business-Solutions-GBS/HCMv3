@@ -22,10 +22,10 @@ Payroll also creates payment records itself for advance payments and net-pay car
 
 **Example.** Performance Bonus
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 :::admin
-Maintained under Payroll Management → Wage Types.
+Maintained under Payroll Management → Wagetypes.
 :::
 
 ## PaymentDate {#EmployeePayment.PaymentDate}
@@ -64,7 +64,7 @@ Maintained under Payroll Management → Wage Types.
 
 **Example.** Amount
 
-**Why it matters.** An Amount is paid as entered. Days and hours are converted to days and paid at the employee's rate for wage types included in partial pay; hours use the default working hours per day.
+**Why it matters.** An Amount is paid as entered. Days and hours are converted to days and paid at the employee's rate for wagetypes included in partial pay; hours use the default working hours per day.
 
 **Rules.** Required. One of: Amount, Day, Hour.
 

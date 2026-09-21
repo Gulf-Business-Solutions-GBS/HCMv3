@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Non-Payroll Transactions — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeNonPayrollTrans",
-  "overviewHtml": "<p>A payment made to the employee outside payroll — for example a bonus paid by cheque.</p><p>Payroll does not pay it. The average bonus calculation does count non-payroll amounts of the bonus wage type within the period it averages, and the bonus and non-payroll reports show them.</p>",
+  "overviewHtml": "<p>A payment made to the employee outside payroll — for example a bonus paid by cheque.</p><p>Payroll does not pay it. The average bonus calculation does count non-payroll amounts of the bonus wagetype within the period it averages, and the bonus and non-payroll reports show them.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "EmployeeNonPayrollTrans.WageTypeId",
     "dom:EmployeeNonPayrollTran_WageTypeId": "EmployeeNonPayrollTrans.WageTypeId",
@@ -33,10 +33,10 @@
         "loc:WageTypeId",
         "dom:EmployeeNonPayrollTran_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The pay element the payment is recorded against.</p><p><strong>Example.</strong> Annual Bonus</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Wage Types.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",
       "stub": false
     },
     {

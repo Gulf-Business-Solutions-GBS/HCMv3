@@ -1,7 +1,7 @@
 {
   "helpId": "pay.wage-type.edit",
   "lang": "en",
-  "title": "Wage Types — Create / Edit",
+  "title": "Wagetypes — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageType",
   "overviewHtml": "<p>_TODO_</p>",
   "aliasIndex": {
@@ -247,7 +247,7 @@
         "loc:ArrearSourceWageTypeId",
         "dom:WageType_ArrearSourceWageTypeId"
       ],
-      "rules": "Optional. Chosen from Wage Type master data.",
+      "rules": "Optional. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
       "adminHtml": "",

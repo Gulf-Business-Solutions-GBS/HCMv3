@@ -1,7 +1,7 @@
 ---
 helpId: pay.wage-type-register.edit
 lang: en
-title: Wage Type Registers — Create / Edit
+title: Wagetype Registers — Create / Edit
 entity: HCMv3.PayrollManagement.WageTypeRegister
 surfaces:
   - angular/src/app/admin/payroll-management/wage-type-registers/create-or-edit-wage-type-register-modal.component.html

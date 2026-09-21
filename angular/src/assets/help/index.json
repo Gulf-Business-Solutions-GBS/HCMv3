@@ -1,0 +1,2113 @@
+{
+  "dom": {
+    "Employee_Code": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_TitleId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_Status": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_EmploymentType": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_Gender": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_BirthDate": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_BirthPlaceId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_NationalityId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_ReligionId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_MaritalStatusId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_QualificationId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_BloodGroup": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_CivilID": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_PaciNumber": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_JoiningDate": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_ProbationDays": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_RecruitmentTypeId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_PreviousEmpCode": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_ReferenceCode": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_Email": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_AlternateEmail": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_Mobile": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_Telephone": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_BusinessLandline": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_BusinessExtension": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_CurrentAddress": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_PermanentAddress": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_City": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_GovernorateId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_CountryId": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_ZipCode": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_EmergencyContact": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_EmergencyRelation": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_EmergencyNumber": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_EmergencyContactAddress": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_CriticalIllness": [
+      "pa.employee.personal-info",
+      "pa.employee.edit"
+    ],
+    "Employee_FirstNameEn": [
+      "pa.employee.edit"
+    ],
+    "Employee_SecondNameEn": [
+      "pa.employee.edit"
+    ],
+    "Employee_ThirdNameEn": [
+      "pa.employee.edit"
+    ],
+    "Employee_LastNameEn": [
+      "pa.employee.edit"
+    ],
+    "Employee_FirstNameAr": [
+      "pa.employee.edit"
+    ],
+    "Employee_SecondNameAr": [
+      "pa.employee.edit"
+    ],
+    "Employee_ThirdNameAr": [
+      "pa.employee.edit"
+    ],
+    "Employee_LastNameAr": [
+      "pa.employee.edit"
+    ],
+    "Employee_FatherNameEn": [
+      "pa.employee.edit"
+    ],
+    "Employee_FatherNameAr": [
+      "pa.employee.edit"
+    ],
+    "Employee_MotherNameEn": [
+      "pa.employee.edit"
+    ],
+    "Employee_MotherNameAr": [
+      "pa.employee.edit"
+    ],
+    "Employee_Photo": [
+      "pa.employee.edit"
+    ],
+    "Employee_FlatNumn": [
+      "pa.employee.edit"
+    ],
+    "Employee_FloorNum": [
+      "pa.employee.edit"
+    ],
+    "Employee_BuildingNum": [
+      "pa.employee.edit"
+    ],
+    "Employee_StreetNum": [
+      "pa.employee.edit"
+    ],
+    "Employee_BlockNum": [
+      "pa.employee.edit"
+    ],
+    "Employee_LaneNumber": [
+      "pa.employee.edit"
+    ],
+    "Employee_PermanentTelephone": [
+      "pa.employee.edit"
+    ],
+    "Employee_LoginID": [
+      "pa.employee.edit"
+    ],
+    "Employee_AccessID": [
+      "pa.employee.edit"
+    ],
+    "AccessUnit_Code": [
+      "gmi.access-unit.edit"
+    ],
+    "AccessUnit_NameEn": [
+      "gmi.access-unit.edit"
+    ],
+    "AccessUnit_NameAr": [
+      "gmi.access-unit.edit"
+    ],
+    "AccessUnit_IPAddress": [
+      "gmi.access-unit.edit"
+    ],
+    "Asset_Code": [
+      "gmi.asset.edit"
+    ],
+    "Asset_NameEn": [
+      "gmi.asset.edit"
+    ],
+    "Asset_NameAr": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Brand": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Model": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Color": [
+      "gmi.asset.edit"
+    ],
+    "Asset_VinNumber": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Serial": [
+      "gmi.asset.edit"
+    ],
+    "Asset_PlateNumber": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Barcode": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Year": [
+      "gmi.asset.edit"
+    ],
+    "Asset_ExpiryDate": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Value": [
+      "gmi.asset.edit"
+    ],
+    "Asset_AssetTypeId": [
+      "gmi.asset.edit"
+    ],
+    "Asset_Status": [
+      "gmi.asset.edit"
+    ],
+    "Asset_AssetAllocationStatus": [
+      "gmi.asset.edit"
+    ],
+    "Bank_Code": [
+      "gmi.bank.edit"
+    ],
+    "Bank_NameEn": [
+      "gmi.bank.edit"
+    ],
+    "Bank_NameAr": [
+      "gmi.bank.edit"
+    ],
+    "Bank_ExternalCode": [
+      "gmi.bank.edit"
+    ],
+    "Bank_SWIFTCode": [
+      "gmi.bank.edit"
+    ],
+    "Bank_CompanyCode": [
+      "gmi.bank.edit"
+    ],
+    "Bank_BankFileId": [
+      "gmi.bank.edit"
+    ],
+    "BudgetingGroupRateDetail_BudgetingGroupId": [
+      "gmi.budgeting-group-rate-detail.edit"
+    ],
+    "BudgetingGroupRateDetail_StartDate": [
+      "gmi.budgeting-group-rate-detail.edit"
+    ],
+    "BudgetingGroupRateDetail_EndDate": [
+      "gmi.budgeting-group-rate-detail.edit"
+    ],
+    "BudgetingGroupRateDetail_BonusRate": [
+      "gmi.budgeting-group-rate-detail.edit"
+    ],
+    "City_Code": [
+      "gmi.city.edit"
+    ],
+    "City_NameEn": [
+      "gmi.city.edit"
+    ],
+    "City_NameAr": [
+      "gmi.city.edit"
+    ],
+    "City_StateId": [
+      "gmi.city.edit"
+    ],
+    "ClearanceRequestFieldDetail_ClearanceRequestFieldId": [
+      "gmi.clearance-request-field-detail.edit"
+    ],
+    "ClearanceRequestField_Code": [
+      "gmi.clearance-request-field.edit"
+    ],
+    "ClearanceRequestField_NameEn": [
+      "gmi.clearance-request-field.edit"
+    ],
+    "ClearanceRequestField_NameAr": [
+      "gmi.clearance-request-field.edit"
+    ],
+    "ClearanceRequestField_ClearanceRequestTypeId": [
+      "gmi.clearance-request-field.edit"
+    ],
+    "ClearanceRequestField_IsActive": [
+      "gmi.clearance-request-field.edit"
+    ],
+    "Currency_Code": [
+      "gmi.currency.edit"
+    ],
+    "Currency_NameEn": [
+      "gmi.currency.edit"
+    ],
+    "Currency_NameAr": [
+      "gmi.currency.edit"
+    ],
+    "Currency_DecimalCount": [
+      "gmi.currency.edit"
+    ],
+    "Currency_CurrencyShortFormEn": [
+      "gmi.currency.edit"
+    ],
+    "Currency_CurrencyDenominationFormEn": [
+      "gmi.currency.edit"
+    ],
+    "Currency_CurrencyShortFormAr": [
+      "gmi.currency.edit"
+    ],
+    "Currency_CurrencyDenominationFormAr": [
+      "gmi.currency.edit"
+    ],
+    "CurrencyConvertor_CalendarDate": [
+      "gmi.currency-convertor.edit"
+    ],
+    "CurrencyConvertor_FromCurrId": [
+      "gmi.currency-convertor.edit"
+    ],
+    "CurrencyConvertor_ToCurrId": [
+      "gmi.currency-convertor.edit"
+    ],
+    "CurrencyConvertor_Rate": [
+      "gmi.currency-convertor.edit"
+    ],
+    "DependantType_Code": [
+      "gmi.dependant-type.edit"
+    ],
+    "DependantType_NameEn": [
+      "gmi.dependant-type.edit"
+    ],
+    "DependantType_NameAr": [
+      "gmi.dependant-type.edit"
+    ],
+    "DependantType_Gender": [
+      "gmi.dependant-type.edit"
+    ],
+    "DependantType_IsEmployee": [
+      "gmi.dependant-type.edit"
+    ],
+    "DisciplinaryDeductionType_Code": [
+      "gmi.disciplinary-deduction-type.edit"
+    ],
+    "DisciplinaryDeductionType_NameEn": [
+      "gmi.disciplinary-deduction-type.edit"
+    ],
+    "DisciplinaryDeductionType_NameAr": [
+      "gmi.disciplinary-deduction-type.edit"
+    ],
+    "DisciplinaryDeductionType_DisciplinaryDeductionUnit": [
+      "gmi.disciplinary-deduction-type.edit"
+    ],
+    "DisciplinaryDeductionType_DeductionValue": [
+      "gmi.disciplinary-deduction-type.edit"
+    ],
+    "DisciplinaryTypeDetail_DisciplinaryTypeId": [
+      "gmi.disciplinary-type-detail.edit"
+    ],
+    "DisciplinaryTypeDetail_DisciplinaryCount": [
+      "gmi.disciplinary-type-detail.edit"
+    ],
+    "DisciplinaryTypeDetail_DisciplinaryDeductionTypeId": [
+      "gmi.disciplinary-type-detail.edit"
+    ],
+    "DisciplinaryType_Code": [
+      "gmi.disciplinary-type.edit"
+    ],
+    "DisciplinaryType_NameEn": [
+      "gmi.disciplinary-type.edit"
+    ],
+    "DisciplinaryType_NameAr": [
+      "gmi.disciplinary-type.edit"
+    ],
+    "DisciplinaryType_RepeatDurationInDays": [
+      "gmi.disciplinary-type.edit"
+    ],
+    "DocumentPrintForm_DocumentTypeId": [
+      "gmi.document-print-form.edit"
+    ],
+    "DocumentType_Code": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_NameEn": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_NameAr": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_NotificationPeriod": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_NotificationConfigId": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_NotificationFrequency": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_NotificationCountLimit": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_DocumentBelongsTo": [
+      "gmi.document-type.edit"
+    ],
+    "Institution_Code": [
+      "gmi.institution.edit"
+    ],
+    "Institution_NameEn": [
+      "gmi.institution.edit"
+    ],
+    "Institution_NameAr": [
+      "gmi.institution.edit"
+    ],
+    "Institution_UniversityId": [
+      "gmi.institution.edit"
+    ],
+    "LoanTypeDetail_LoanTypeId": [
+      "gmi.loan-type-detail.edit"
+    ],
+    "LoanTypeDetail_Percent": [
+      "gmi.loan-type-detail.edit"
+    ],
+    "LoanType_Code": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_NameEn": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_NameAr": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_LoanDeductionType": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_RecoveryOption": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_EligiblePeriod": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_EligibleCountPerYear": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_MaxInstallments": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_EligibleAmount": [
+      "gmi.loan-type.edit"
+    ],
+    "LoanType_EligibleAmountNumber": [
+      "gmi.loan-type.edit"
+    ],
+    "Nationality_Code": [
+      "gmi.nationality.edit"
+    ],
+    "Nationality_NameEn": [
+      "gmi.nationality.edit"
+    ],
+    "Nationality_NameAr": [
+      "gmi.nationality.edit"
+    ],
+    "Nationality_NationalityGroupId": [
+      "gmi.nationality.edit"
+    ],
+    "NotificationConfig_Name": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_SendNotification": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_SendEmail": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_ToEmployee": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_ToRequestCreator": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_ToManager": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_SendToAll": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_SendToAllApproved": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationConfig_SendToApprover": [
+      "gmi.notification-config.edit"
+    ],
+    "NotificationGroup_NotificationConfigId": [
+      "gmi.notification-group.edit"
+    ],
+    "NumberSeries_Code": [
+      "gmi.number-series.edit"
+    ],
+    "NumberSeries_Name": [
+      "gmi.number-series.edit"
+    ],
+    "NumberSeries_Start": [
+      "gmi.number-series.edit"
+    ],
+    "NumberSeries_Prefix": [
+      "gmi.number-series.edit"
+    ],
+    "NumberSeries_Formatting": [
+      "gmi.number-series.edit"
+    ],
+    "OvertimeTypeDetail_OvertimeTypeId": [
+      "gmi.overtime-type-detail.edit"
+    ],
+    "OvertimeTypeDetail_StartDate": [
+      "gmi.overtime-type-detail.edit"
+    ],
+    "OvertimeTypeDetail_EndDate": [
+      "gmi.overtime-type-detail.edit"
+    ],
+    "OvertimeTypeDetail_OvertimeRateType": [
+      "gmi.overtime-type-detail.edit"
+    ],
+    "OvertimeTypeDetail_Rate": [
+      "gmi.overtime-type-detail.edit"
+    ],
+    "OvertimeType_Code": [
+      "gmi.overtime-type.edit"
+    ],
+    "OvertimeType_NameEn": [
+      "gmi.overtime-type.edit"
+    ],
+    "OvertimeType_NameAr": [
+      "gmi.overtime-type.edit"
+    ],
+    "OvertimeType_OvertimeRate": [
+      "gmi.overtime-type.edit"
+    ],
+    "OvertimeType_WageTypeId": [
+      "gmi.overtime-type.edit"
+    ],
+    "PayeeBankDetail_BankId": [
+      "gmi.payee-bank-detail.edit"
+    ],
+    "PayeeBankDetail_PayeeBankId": [
+      "gmi.payee-bank-detail.edit"
+    ],
+    "PayeeBankDetail_BankCode": [
+      "gmi.payee-bank-detail.edit"
+    ],
+    "PayeeBankDetail_BankFileId": [
+      "gmi.payee-bank-detail.edit"
+    ],
+    "PersonalActionReason_Code": [
+      "gmi.personal-action-reason.edit"
+    ],
+    "PersonalActionReason_NameEn": [
+      "gmi.personal-action-reason.edit"
+    ],
+    "PersonalActionReason_NameAr": [
+      "gmi.personal-action-reason.edit"
+    ],
+    "PersonalActionReason_PersonalActionId": [
+      "gmi.personal-action-reason.edit"
+    ],
+    "PersonalAction_Code": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_NameEn": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_NameAr": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqOrgAssignment": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqBasicPay": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqContract": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqManager": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqOnHold": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqSeparation": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_ReqFnFPayment": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_IncludeInWorkflow": [
+      "gmi.personal-action.edit"
+    ],
+    "PersonalAction_IsAttachmentRequired": [
+      "gmi.personal-action.edit"
+    ],
+    "SeparationReason_Code": [
+      "gmi.separation-reason.edit"
+    ],
+    "SeparationReason_NameEn": [
+      "gmi.separation-reason.edit"
+    ],
+    "SeparationReason_NameAr": [
+      "gmi.separation-reason.edit"
+    ],
+    "SeparationReason_IsSystemRecord": [
+      "gmi.separation-reason.edit"
+    ],
+    "SeparationReason_AllowAdvanceEoS": [
+      "gmi.separation-reason.edit"
+    ],
+    "SimpleLookup_Code": [
+      "common.simple-lookup.edit"
+    ],
+    "SimpleLookup_NameEn": [
+      "common.simple-lookup.edit"
+    ],
+    "SimpleLookup_NameAr": [
+      "common.simple-lookup.edit"
+    ],
+    "EmployeeBasicPayDetail_EmployeeBasicPayId": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeBasicPayDetail_WageTypeId": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeBasicPayDetail_Amount": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeBasicPayDetail_CurrencyId": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeBasicPayDetail_DependantUnit": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeBasicPayDetail_DependantNumber": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeBasicPayDetail_DependantWageTypeId": [
+      "pa.employee-basic-pay-detail.edit"
+    ],
+    "EmployeeDependantException_EmployeeDependantId": [
+      "pa.employee-dependant-exception.edit"
+    ],
+    "EmployeeDependantException_ExceptionBenefitType": [
+      "pa.employee-dependant-exception.edit"
+    ],
+    "EmployeeDependantException_StartDate": [
+      "pa.employee-dependant-exception.edit"
+    ],
+    "EmployeeDependantException_EndDate": [
+      "pa.employee-dependant-exception.edit"
+    ],
+    "EmployeeDependantException_Amount": [
+      "pa.employee-dependant-exception.edit"
+    ],
+    "EmployeeAbsAdjustment_AbsenceTypeId": [
+      "pa.employee-abs-adjustment.edit"
+    ],
+    "EmployeeAbsAdjustment_EffectiveDate": [
+      "pa.employee-abs-adjustment.edit"
+    ],
+    "EmployeeAbsAdjustment_AdjustmentType": [
+      "pa.employee-abs-adjustment.edit"
+    ],
+    "EmployeeAbsAdjustment_AdjustmentPaymentType": [
+      "pa.employee-abs-adjustment.edit"
+    ],
+    "EmployeeAbsAdjustment_QuotaAdjusted": [
+      "pa.employee-abs-adjustment.edit"
+    ],
+    "EmployeeAbsAdjustment_Comments": [
+      "pa.employee-abs-adjustment.edit"
+    ],
+    "EmployeeAbsQuotaForfeit_AbsenceTypeId": [
+      "pa.employee-abs-quota-forfeit.edit"
+    ],
+    "EmployeeAbsQuotaForfeit_EffectiveDate": [
+      "pa.employee-abs-quota-forfeit.edit"
+    ],
+    "EmployeeAbsQuotaForfeit_QuotaForfeited": [
+      "pa.employee-abs-quota-forfeit.edit"
+    ],
+    "EmployeeAbsQuotaForfeit_Comments": [
+      "pa.employee-abs-quota-forfeit.edit"
+    ],
+    "EmployeeAbsenceQuota_AbsenceTypeId": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_NotificationSent": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_EntitlementFrom": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_EntitlementTo": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_DeductionFrom": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_DeductionTo": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_QuotaAccrued": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_QuotaUsed": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_QuotaAdjusted": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsenceQuota_QuotaForfeited": [
+      "pa.employee-absence-quota.edit"
+    ],
+    "EmployeeAbsence_AbsenceTypeId": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_StartDate": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_EndDate": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_HalfdayType": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_StartTime": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_EndTime": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_LeavePaymentType": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_PaymentDate": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_ReturnDate": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_IsTravelling": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_AdvanceLeavePaid": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_IsReturned": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_ExtAbsenceTypeId": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_ExtStartDate": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_ExtEndDate": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAbsence_Comments": [
+      "pa.employee-absence.edit"
+    ],
+    "EmployeeAccountAssignment_StartDate": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_EndDate": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_CostPercentage": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement1Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement2Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement3Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement4Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement5Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement6Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAccountAssignment_costElement7Id": [
+      "pa.employee-account-assignment.edit"
+    ],
+    "EmployeeAction_PersonalActionId": [
+      "pa.employee-action.edit"
+    ],
+    "EmployeeAction_ActionReasonId": [
+      "pa.employee-action.edit"
+    ],
+    "EmployeeAction_StartDate": [
+      "pa.employee-action.edit"
+    ],
+    "EmployeeAction_RecommendedBy": [
+      "pa.employee-action.edit"
+    ],
+    "EmployeeAction_Comments": [
+      "pa.employee-action.edit"
+    ],
+    "EmployeeAsset_AssetId": [
+      "pa.employee-asset.edit"
+    ],
+    "EmployeeAsset_StartDate": [
+      "pa.employee-asset.edit"
+    ],
+    "EmployeeAsset_EndDate": [
+      "pa.employee-asset.edit"
+    ],
+    "EmployeeAsset_AssetDeductionMode": [
+      "pa.employee-asset.edit"
+    ],
+    "EmployeeAsset_Comments": [
+      "pa.employee-asset.edit"
+    ],
+    "EmployeeAttendanceQuota_EntitlementFrom": [
+      "pa.employee-attendance-quota.edit"
+    ],
+    "EmployeeAttendanceQuota_EntitlementTo": [
+      "pa.employee-attendance-quota.edit"
+    ],
+    "EmployeeAttendanceQuota_DeductionFrom": [
+      "pa.employee-attendance-quota.edit"
+    ],
+    "EmployeeAttendanceQuota_DeductionTo": [
+      "pa.employee-attendance-quota.edit"
+    ],
+    "EmployeeAttendanceQuota_QuotaAccrued": [
+      "pa.employee-attendance-quota.edit"
+    ],
+    "EmployeeAttendanceQuota_QuotaUsed": [
+      "pa.employee-attendance-quota.edit"
+    ],
+    "EmployeeAttendance_AttendanceTypeId": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_AttendanceUnit": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_AttendanceHours": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_StartDate": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_EndDate": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_StartTime": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_EndTime": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeAttendance_Comments": [
+      "pa.employee-attendance.edit"
+    ],
+    "EmployeeBank_BankId": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_PayerBankId": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_BankCountryId": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_StartDate": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_EndDate": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_PaymentType": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_PaymentCurrencyId": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_AccountNum": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_Iban": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBank_BankBranch": [
+      "pa.employee-bank.edit"
+    ],
+    "EmployeeBasicPay_StartDate": [
+      "pa.employee-basic-pay.edit"
+    ],
+    "EmployeeBasicPay_EndDate": [
+      "pa.employee-basic-pay.edit"
+    ],
+    "EmployeeBasicPay_PayType": [
+      "pa.employee-basic-pay.edit"
+    ],
+    "EmployeeBasicPay_PayInterval": [
+      "pa.employee-basic-pay.edit"
+    ],
+    "EmployeeBasicPay_EmployeeActionId": [
+      "pa.employee-basic-pay.edit"
+    ],
+    "EmployeeBenefitException_ExceptionBenefitType": [
+      "pa.employee-benefit-exception.edit"
+    ],
+    "EmployeeBenefitException_Amount": [
+      "pa.employee-benefit-exception.edit"
+    ],
+    "EmployeeBenefitException_StartDate": [
+      "pa.employee-benefit-exception.edit"
+    ],
+    "EmployeeBenefitException_EndDate": [
+      "pa.employee-benefit-exception.edit"
+    ],
+    "EmployeeBenefitException_Comments": [
+      "pa.employee-benefit-exception.edit"
+    ],
+    "EmployeeCertification_Course": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeCertification_InstitutionId": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeCertification_Duration": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeCertification_Certificate": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeCertification_Grade": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeCertification_StartDate": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeCertification_EndDate": [
+      "pa.employee-certification.edit"
+    ],
+    "EmployeeContract_ContractTypeId": [
+      "pa.employee-contract.edit"
+    ],
+    "EmployeeContract_StartDate": [
+      "pa.employee-contract.edit"
+    ],
+    "EmployeeContract_EndDate": [
+      "pa.employee-contract.edit"
+    ],
+    "EmployeeCostDistribution_OrganizationUnitId": [
+      "pa.employee-cost-distribution.edit"
+    ],
+    "EmployeeCostDistribution_StartDate": [
+      "pa.employee-cost-distribution.edit"
+    ],
+    "EmployeeCostDistribution_EndDate": [
+      "pa.employee-cost-distribution.edit"
+    ],
+    "EmployeeCostDistribution_CostCount": [
+      "pa.employee-cost-distribution.edit"
+    ],
+    "EmployeeCostDistribution_UsedDays": [
+      "pa.employee-cost-distribution.edit"
+    ],
+    "EmployeeDate_DateTypeId": [
+      "pa.employee-date.edit"
+    ],
+    "EmployeeDate_DateData": [
+      "pa.employee-date.edit"
+    ],
+    "EmployeeDate_DayData": [
+      "pa.employee-date.edit"
+    ],
+    "EmployeeDelegation_DelegateToId": [
+      "pa.employee-delegation.edit"
+    ],
+    "EmployeeDelegation_StartDate": [
+      "pa.employee-delegation.edit"
+    ],
+    "EmployeeDelegation_EndDate": [
+      "pa.employee-delegation.edit"
+    ],
+    "EmployeeDelegation_Comments": [
+      "pa.employee-delegation.edit"
+    ],
+    "EmployeeDependant_NameEn": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_NameAr": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_DependantTypeId": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_BirthDate": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_TicketTypeId": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_StartDate": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_EndDate": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_SpecialNeed": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_IncludeInSocialSecurity": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDependant_IncludeInHealthInsurance": [
+      "pa.employee-dependant.edit"
+    ],
+    "EmployeeDisciplinary_OrganizationUnitId": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_WorkLocationId": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_DisciplinaryTypeId": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_DisciplinaryDate": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_DisciplinaryTime": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_ReportedById": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_Severity": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_DisciplinaryDeductionTypeId": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_WlSendToEmp": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_WlRecvFromEmp": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDisciplinary_Comments": [
+      "pa.employee-disciplinary.edit"
+    ],
+    "EmployeeDocument_DocumentTypeId": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDocument_DocumentNum": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDocument_IssueDate": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDocument_ExpiryDate": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDocument_Description": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDocument_Comments": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDottedLineManager_ManagerId": [
+      "pa.employee-dotted-line-manager.edit"
+    ],
+    "EmployeeDottedLineManager_StartDate": [
+      "pa.employee-dotted-line-manager.edit"
+    ],
+    "EmployeeDottedLineManager_EndDate": [
+      "pa.employee-dotted-line-manager.edit"
+    ],
+    "EmployeeDutyPeriod_StartDate": [
+      "pa.employee-duty-period.edit"
+    ],
+    "EmployeeDutyPeriod_DutyPeriodId": [
+      "pa.employee-duty-period.edit"
+    ],
+    "EmployeeDutySchedule_StartDate": [
+      "pa.employee-duty-schedule.edit"
+    ],
+    "EmployeeDutySchedule_EndDate": [
+      "pa.employee-duty-schedule.edit"
+    ],
+    "EmployeeDutySchedule_RosterDutyScheduleId": [
+      "pa.employee-duty-schedule.edit"
+    ],
+    "EmployeeEducation_EducationId": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_EducationBranchId": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_UniversityId": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_InstitutionId": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_CountryId": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_Location": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_DurationOfCourse": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_Grade": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_YearOfPassing": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_StartDate": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeEducation_EndDate": [
+      "pa.employee-education.edit"
+    ],
+    "EmployeeExtdWorkLocation_WorkLocationId": [
+      "pa.employee-extd-work-location.edit"
+    ],
+    "EmployeeExtdWorkLocation_StartDate": [
+      "pa.employee-extd-work-location.edit"
+    ],
+    "EmployeeExtdWorkLocation_EndDate": [
+      "pa.employee-extd-work-location.edit"
+    ],
+    "EmployeeFnFPayment_CompensationDate": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_EmployeeActionId": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_EmployeeBasicPayDetailId": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_LeaveCompensateDays": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_GratuityCompensateDays": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_IndemnityCompensateAmount": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_IndemnityPayAdjustment": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_TicketCompensateCount": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_Dependant1TicketCompensateCount": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_Dependant2TicketCompensateCount": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_Dependant3TicketCompensateCount": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_CompensateLoanAmount": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_CompensateBonusPay": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFnFPayment_Comments": [
+      "pa.employee-fn-fpayment.edit"
+    ],
+    "EmployeeFund_StartDate": [
+      "pa.employee-fund.edit"
+    ],
+    "EmployeeFund_EndDate": [
+      "pa.employee-fund.edit"
+    ],
+    "EmployeeFund_Comments": [
+      "pa.employee-fund.edit"
+    ],
+    "EmployeeGratuity_GratuityPaidDate": [
+      "pa.employee-gratuity.edit"
+    ],
+    "EmployeeGratuity_GratuityPaidDays": [
+      "pa.employee-gratuity.edit"
+    ],
+    "EmployeeGratuity_ResetGratuityCalc": [
+      "pa.employee-gratuity.edit"
+    ],
+    "EmployeeGratuity_Comments": [
+      "pa.employee-gratuity.edit"
+    ],
+    "EmployeeGratuityQuota_EntitlementFrom": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGratuityQuota_EntitlementTo": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGratuityQuota_DeductionFrom": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGratuityQuota_DeductionTo": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGratuityQuota_QuotaAccrued": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGratuityQuota_QuotaUsed": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGratuityQuota_QuotaAdjusted": [
+      "pa.employee-gratuity-quota.edit"
+    ],
+    "EmployeeGrievance_GrievanceTypeId": [
+      "pa.employee-grievance.edit"
+    ],
+    "EmployeeGrievance_GrievanceDate": [
+      "pa.employee-grievance.edit"
+    ],
+    "EmployeeGrievance_Comments": [
+      "pa.employee-grievance.edit"
+    ],
+    "EmployeeHealthReimburse_PaymentDate": [
+      "pa.employee-health-reimburse.edit"
+    ],
+    "EmployeeHealthReimburse_Amount": [
+      "pa.employee-health-reimburse.edit"
+    ],
+    "EmployeeHealthReimburse_Comments": [
+      "pa.employee-health-reimburse.edit"
+    ],
+    "EmployeeInsurance_InsurancePlanId": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_InsuranceProviderId": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_DependantId": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_StartDate": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_EndDate": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_InstallmentStartDate": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_InsuranceAmount": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_Comments": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_CompanyInterval": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_CompanyContribution": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_InstallmentCompanyDedAmount": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_EmployeeInterval": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_EmployeeContribution": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeInsurance_InstallmentEmployeeDedAmount": [
+      "pa.employee-insurance.edit"
+    ],
+    "EmployeeLoan_LoanTypeId": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_StartDate": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_RecoveryStartDate": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_EndDate": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_ActualAmount": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_DueAmount": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_FixedAmount": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_RecoverFracInLastTrans": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_IncludeInLoanPay": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeLoan_Comments": [
+      "pa.employee-loan.edit"
+    ],
+    "EmployeeManager_ManagerId": [
+      "pa.employee-manager.edit"
+    ],
+    "EmployeeManager_StartDate": [
+      "pa.employee-manager.edit"
+    ],
+    "EmployeeOnHold_StartDate": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_EndDate": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_BankTransfer": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_EmployeeActionId": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHold": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldBasicPay": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldLeavePay": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldIndemnityPay": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldAirTicketPay": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldLoanDeduction": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldAllEarnings": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_OnHoldAllDeductions": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOnHold_Comments": [
+      "pa.employee-on-hold.edit"
+    ],
+    "EmployeeOrgAssignment_StartDate": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOrgAssignment_JobTitleId": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOrgAssignment_CostCenterId": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOrgAssignment_WorkLocationId": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOrgAssignment_PostingGroupId": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOrgAssignment_BudgetingGroupId": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOrgAssignment_OrganizationUnitId": [
+      "pa.employee-org-assignment.edit"
+    ],
+    "EmployeeOvertime_EffectiveDate": [
+      "pa.employee-overtime.edit"
+    ],
+    "EmployeeOvertime_OvertimeTypeId": [
+      "pa.employee-overtime.edit"
+    ],
+    "EmployeeOvertime_OvertimeHours": [
+      "pa.employee-overtime.edit"
+    ],
+    "EmployeeOvertime_ActualOvertimeHours": [
+      "pa.employee-overtime.edit"
+    ],
+    "EmployeeOvertime_ApprovedOvertimeHours": [
+      "pa.employee-overtime.edit"
+    ],
+    "EmployeeOvertime_Comments": [
+      "pa.employee-overtime.edit"
+    ],
+    "EmployeePayment_WageTypeId": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayment_PaymentDate": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayment_Amount": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayment_CurrencyId": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayment_UnitType": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayment_CostCenterId": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayment_Comments": [
+      "pa.employee-payment.edit"
+    ],
+    "EmployeePayrollStatus_earliestRetroAccountingDate": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_accountedTo": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_runPayrollUpto": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_earliestMasterDataChange": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_doNoAccountAfter": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_earliestRecalculationDate": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_personalCalendarFrom": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_nextTimeEvaluationFrom": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_PersonLocked": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmployeePayrollStatus_PayrollCorrection": [
+      "pa.employee-payroll-status.edit"
+    ],
+    "EmpPerformanceHistory_StartDate": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPerformanceHistory_EndDate": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPerformanceHistory_Description": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPerformanceHistory_Score": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPerformanceHistory_Source": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPerformanceHistory_RatingId": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPerformanceHistory_NineBoxRatingId": [
+      "pa.emp-performance-history.edit"
+    ],
+    "EmpPotentialAssessment_StartDate": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmpPotentialAssessment_EndDate": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmpPotentialAssessment_Description": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmpPotentialAssessment_Score": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmpPotentialAssessment_Source": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmpPotentialAssessment_RatingId": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmpPotentialAssessment_NineBoxRatingId": [
+      "pa.emp-potential-assessment.edit"
+    ],
+    "EmployeeRejoin_RejoinDate": [
+      "pa.employee-rejoin.edit"
+    ],
+    "EmployeeRejoin_Comments": [
+      "pa.employee-rejoin.edit"
+    ],
+    "EmployeeRejoin_CarryForwardLeaveBalance": [
+      "pa.employee-rejoin.edit"
+    ],
+    "EmployeeRejoin_CarryForwardTicketBalance": [
+      "pa.employee-rejoin.edit"
+    ],
+    "EmployeeRejoin_CarryForwardIndemnityBalance": [
+      "pa.employee-rejoin.edit"
+    ],
+    "EmployeeRejoin_CarryForwardLoanBalance": [
+      "pa.employee-rejoin.edit"
+    ],
+    "EmployeeRelationship_RelationshipTypeId": [
+      "pa.employee-relationship.edit"
+    ],
+    "EmployeeRelationship_RelatedEmployeeId": [
+      "pa.employee-relationship.edit"
+    ],
+    "EmployeeRelationship_StartDate": [
+      "pa.employee-relationship.edit"
+    ],
+    "EmployeeRelationship_EndDate": [
+      "pa.employee-relationship.edit"
+    ],
+    "EmployeeRemuneration_WageTypeId": [
+      "pa.employee-remuneration.edit"
+    ],
+    "EmployeeRemuneration_PaymentDate": [
+      "pa.employee-remuneration.edit"
+    ],
+    "EmployeeRemuneration_PaymentNumber": [
+      "pa.employee-remuneration.edit"
+    ],
+    "EmployeeRemuneration_PaymentUnit": [
+      "pa.employee-remuneration.edit"
+    ],
+    "EmployeeRemuneration_Comments": [
+      "pa.employee-remuneration.edit"
+    ],
+    "EmployeeReward_RewardType": [
+      "pa.employee-reward.edit"
+    ],
+    "EmployeeReward_RewardDate": [
+      "pa.employee-reward.edit"
+    ],
+    "EmployeeReward_Certificate": [
+      "pa.employee-reward.edit"
+    ],
+    "EmployeeReward_Comments": [
+      "pa.employee-reward.edit"
+    ],
+    "EmployeeSeparation_SubmissionDate": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_LastDayInService": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_NoticePeriodDays": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_PlannedLastDayInService": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_SeparationType": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_SeparationReasonId": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_RevokeDate": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSignature_Signature": [
+      "pa.employee-signature.edit"
+    ],
+    "EmployeeSocialSecurity_SocialSecurityNum": [
+      "pa.employee-social-security.edit"
+    ],
+    "EmployeeSocialSecurity_SocialSecurityContrib": [
+      "pa.employee-social-security.edit"
+    ],
+    "EmployeeSocialSecurity_StartDate": [
+      "pa.employee-social-security.edit"
+    ],
+    "EmployeeSocialSecurity_EndDate": [
+      "pa.employee-social-security.edit"
+    ],
+    "EmployeeSocialSecurityClaim_ClaimDate": [
+      "pa.employee-social-security-claim.edit"
+    ],
+    "EmployeeSocialSecurityClaim_EmployeeContributionAmount": [
+      "pa.employee-social-security-claim.edit"
+    ],
+    "EmployeeSocialSecurityClaim_EmployerContributionAmount": [
+      "pa.employee-social-security-claim.edit"
+    ],
+    "EmployeeSponsor_SponsorId": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_GovtJobTitleId": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_EmpSponsorRelation": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_StartDate": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_EndDate": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_ContractSalary": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_SalaryCurrencyId": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_ResidencyType": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSponsor_WorkVisaTypeId": [
+      "pa.employee-sponsor.edit"
+    ],
+    "EmployeeSubstituteDuty_SubstituteDate": [
+      "pa.employee-substitute-duty.edit"
+    ],
+    "EmployeeSubstituteDuty_DutyId": [
+      "pa.employee-substitute-duty.edit"
+    ],
+    "EmployeeTalentFlag_RiskOfLossId": [
+      "pa.employee-talent-flag.edit"
+    ],
+    "EmployeeTalentFlag_ImpactOfLossId": [
+      "pa.employee-talent-flag.edit"
+    ],
+    "EmployeeTalentFlag_ReasonForLeavingId": [
+      "pa.employee-talent-flag.edit"
+    ],
+    "EmployeeTalentFlag_TalentPoolId": [
+      "pa.employee-talent-flag.edit"
+    ],
+    "EmpTalentMatrixData_StartDate": [
+      "pa.emp-talent-matrix-data.edit"
+    ],
+    "EmpTalentMatrixData_EndDate": [
+      "pa.emp-talent-matrix-data.edit"
+    ],
+    "EmpTalentMatrixData_PerformanceRatingId": [
+      "pa.emp-talent-matrix-data.edit"
+    ],
+    "EmpTalentMatrixData_PotentialRatingId": [
+      "pa.emp-talent-matrix-data.edit"
+    ],
+    "EmpTalentMatrixData_OverallRatingId": [
+      "pa.emp-talent-matrix-data.edit"
+    ],
+    "EmpTalentMatrixData_CalibratedRatingId": [
+      "pa.emp-talent-matrix-data.edit"
+    ],
+    "EmployeeTask_TaskTypeId": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_TaskDate": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_TaskStatus": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_ReminderDate": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_MonitoringType": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_MonitoringCount": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_MonitoringUnit": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTask_Comments": [
+      "pa.employee-task.edit"
+    ],
+    "EmployeeTicketQuota_TicketTypeId": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_EntitlementFrom": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_EntitlementTo": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_DeductionFrom": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_DeductionTo": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_QuotaAccrued": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_QuotaUsed": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketQuota_QuotaAdjusted": [
+      "pa.employee-ticket-quota.edit"
+    ],
+    "EmployeeTicketRoute_TicketRouteId": [
+      "pa.employee-ticket-route.edit"
+    ],
+    "EmployeeTicketRoute_StartDate": [
+      "pa.employee-ticket-route.edit"
+    ],
+    "EmployeeTicketRoute_EndDate": [
+      "pa.employee-ticket-route.edit"
+    ],
+    "EmployeeTicket_TicketTypeId": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_TicketDate": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_PaymentDate": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_Compensate": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_TicketPaymentType": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_Amount": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_AdvancedTicketPaid": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_OverrideAmount": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTicket_Comments": [
+      "pa.employee-ticket.edit"
+    ],
+    "EmployeeTimePolicy_StartDate": [
+      "pa.employee-time-policy.edit"
+    ],
+    "EmployeeTimePolicy_TimePolicyId": [
+      "pa.employee-time-policy.edit"
+    ],
+    "EmployeeTimesheet_TransDate": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_ActualStartTime": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_ActualEndTime": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_BreakStartTime": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_BreakEndTime": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_TotalHours": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_Approved": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTimesheet_Comments": [
+      "pa.employee-timesheet.edit"
+    ],
+    "EmployeeTktAdjustment_TicketTypeId": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeTktAdjustment_EffectiveDate": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeTktAdjustment_AdjustmentType": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeTktAdjustment_TicketPaymentType": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeTktAdjustment_QuotaAccrued": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeTktAdjustment_QuotaAdjusted": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeTktAdjustment_Comments": [
+      "pa.employee-tkt-adjustment.edit"
+    ],
+    "EmployeeWageAccGroup_WageAccGroupId": [
+      "pa.employee-wage-acc-group.edit"
+    ],
+    "EmployeeWageAccGroup_StartDate": [
+      "pa.employee-wage-acc-group.edit"
+    ],
+    "EmployeeWageAccount_WageTypeId": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_StartDate": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_CostPercentage": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_AccountInfoId": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_OffsetAccountInfoId": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_MergeOffsetAccount": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement1Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement2Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement3Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement4Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement5Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement6Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWageAccount_costElement7Id": [
+      "pa.employee-wage-account.edit"
+    ],
+    "EmployeeWorkExperience_Company": [
+      "pa.employee-work-experience.edit"
+    ],
+    "EmployeeWorkExperience_Position": [
+      "pa.employee-work-experience.edit"
+    ],
+    "EmployeeWorkExperience_Location": [
+      "pa.employee-work-experience.edit"
+    ],
+    "EmployeeWorkExperience_ReasonForLeaving": [
+      "pa.employee-work-experience.edit"
+    ],
+    "EmployeeWorkExperience_StartDate": [
+      "pa.employee-work-experience.edit"
+    ],
+    "EmployeeWorkExperience_EndDate": [
+      "pa.employee-work-experience.edit"
+    ],
+    "EmployeeFundDetail_EmployeeFundId": [
+      "pa.employee-fund-detail.edit"
+    ],
+    "EmployeeFundDetail_TransactionDate": [
+      "pa.employee-fund-detail.edit"
+    ],
+    "EmployeeFundDetail_Amount": [
+      "pa.employee-fund-detail.edit"
+    ],
+    "EmployeeFundDetail_FundPayType": [
+      "pa.employee-fund-detail.edit"
+    ],
+    "EmployeeFundDetail_Comments": [
+      "pa.employee-fund-detail.edit"
+    ],
+    "EmployeeFundExemption_EmployeeFundId": [
+      "pa.employee-fund-exemption.edit"
+    ],
+    "EmployeeFundExemption_StartDate": [
+      "pa.employee-fund-exemption.edit"
+    ],
+    "EmployeeFundExemption_EndDate": [
+      "pa.employee-fund-exemption.edit"
+    ],
+    "EmployeeFundExemption_Comments": [
+      "pa.employee-fund-exemption.edit"
+    ],
+    "EmployeeLoanExemption_EmployeeLoanId": [
+      "pa.employee-loan-exemption.edit"
+    ],
+    "EmployeeLoanExemption_ExemptionDate": [
+      "pa.employee-loan-exemption.edit"
+    ],
+    "EmployeeLoanExemption_Comments": [
+      "pa.employee-loan-exemption.edit"
+    ],
+    "EmployeeLoanRecovery_EmployeeLoanId": [
+      "pa.employee-loan-recovery.edit"
+    ],
+    "EmployeeLoanRecovery_RecoveryDate": [
+      "pa.employee-loan-recovery.edit"
+    ],
+    "EmployeeLoanRecovery_RecoveryAmount": [
+      "pa.employee-loan-recovery.edit"
+    ],
+    "EmployeeLoanRecovery_LoanRecoveryMethod": [
+      "pa.employee-loan-recovery.edit"
+    ],
+    "EmployeeLoanRecovery_Comments": [
+      "pa.employee-loan-recovery.edit"
+    ],
+    "LoanInstallment_EmployeeLoanId": [
+      "pa.loan-installment.edit"
+    ],
+    "LoanInstallment_InstallmentDate": [
+      "pa.loan-installment.edit"
+    ],
+    "LoanInstallment_InstallmentAmount": [
+      "pa.loan-installment.edit"
+    ],
+    "LoanInstallment_InstallmentStatus": [
+      "pa.loan-installment.edit"
+    ],
+    "Announcement_Title": [
+      "pa.news.edit"
+    ],
+    "Announcement_TitleAr": [
+      "pa.news.edit"
+    ],
+    "Announcement_IssueDate": [
+      "pa.news.edit"
+    ],
+    "Announcement_ExpiryDate": [
+      "pa.news.edit"
+    ],
+    "Announcement_Comments": [
+      "pa.news.edit"
+    ],
+    "Announcement_CommentAr": [
+      "pa.news.edit"
+    ],
+    "Announcement_SendNotification": [
+      "pa.news.edit"
+    ],
+    "Announcement_SendEmail": [
+      "pa.news.edit"
+    ],
+    "Mvmt_WithdrawDate": [
+      "pa.employee-document-mvmt.edit"
+    ],
+    "Mvmt_ReturnDate": [
+      "pa.employee-document-mvmt.edit"
+    ],
+    "Mvmt_ActualReturnDate": [
+      "pa.employee-document-mvmt.edit"
+    ],
+    "Mvmt_Comments": [
+      "pa.employee-document-mvmt.edit"
+    ],
+    "EmployeeNonPayrollTran_WageTypeId": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_PaymentDate": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_Amount": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_CurrencyId": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_PayableBy": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_PaymentMethod": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_IsLocked": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_NotificationSent": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "EmployeeNonPayrollTran_Comments": [
+      "pa.employee-non-payroll-trans.edit"
+    ],
+    "VisaInfo_CurrentFileNo": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_CurrentContractNo": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_CurrentLicenseNo": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldFileNo": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldContractNo": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldLicenseNo": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_MoiFileNumber": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_VisaNum": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_ResidencyNum": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_AuthorizedSign": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_PreviousResidencyPeriod": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_CurrentResidencyPeriod": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldContractSalary": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_CurrentContractSalary": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_NewProfesion": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_NewProfessionAr": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldProfession": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldCompany": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_OldSponser": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_PassportTypeId": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_TypeOfPassport": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_IssuePlacePassport": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_PassportIssueDate": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_PassportExpiryDate": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_EntryDate": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_TerminationDate": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_StartDate": [
+      "pa.employee-visa-info.edit"
+    ],
+    "VisaInfo_EndDate": [
+      "pa.employee-visa-info.edit"
+    ]
+  }
+}

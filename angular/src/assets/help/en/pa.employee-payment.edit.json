@@ -29,10 +29,10 @@
         "loc:WageTypeId",
         "dom:EmployeePayment_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wage Type master data.",
+      "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The pay element being paid.</p><p><strong>Example.</strong> Performance Bonus</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Wage Types.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",
       "stub": false
     },
     {
@@ -87,7 +87,7 @@
       ],
       "rules": "Required. One of: Amount, Day, Hour.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the amount is money, days or hours.</p><p><strong>Example.</strong> Amount</p><p><strong>Why it matters.</strong> An Amount is paid as entered. Days and hours are converted to days and paid at the employee's rate for wage types included in partial pay; hours use the default working hours per day.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the amount is money, days or hours.</p><p><strong>Example.</strong> Amount</p><p><strong>Why it matters.</strong> An Amount is paid as entered. Days and hours are converted to days and paid at the employee's rate for wagetypes included in partial pay; hours use the default working hours per day.</p>",
       "adminHtml": "",
       "stub": false
     },

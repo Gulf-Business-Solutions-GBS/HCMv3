@@ -11,7 +11,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeBasicPays.Create]
 
 ## Overview
 
-The header of the employee's pay for a period. Its detail lines hold the wage types and amounts; this record says how often the pay is expressed.
+The header of the employee's pay for a period. Its detail lines hold the wagetypes and amounts; this record says how often the pay is expressed.
 
 Payroll uses the basic pay whose period covers the pay date. Saving a new one does not close the previous one, and only a duplicate start date is refused, so set the previous record's end date yourself.
 
@@ -33,7 +33,7 @@ Payroll uses the basic pay whose period covers the pay date. Saving a new one do
 
 **Example.** Monthly
 
-**Why it matters.** Payroll works out each detail line from it: Monthly amounts are prorated by the wage type's billing method, Daily and Hourly amounts are multiplied by the days or hours recorded for the employee under Employee Remunerations in that month.
+**Why it matters.** Payroll works out each detail line from it: Monthly amounts are prorated by the wagetype's billing method, Daily and Hourly amounts are multiplied by the days or hours recorded for the employee under Employee Remunerations in that month.
 
 **Rules.** Required. One of: Monthly, Daily, Hourly, End Of Service, Yearly.
 

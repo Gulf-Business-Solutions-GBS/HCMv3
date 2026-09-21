@@ -1,7 +1,7 @@
 ---
 helpId: pay.wage-type-security-role.edit
 lang: en
-title: Wage Type Security Roles — Create / Edit
+title: Wagetype Security Roles — Create / Edit
 entity: HCMv3.PayrollManagement.WageTypeSecurityRole
 surfaces:
   - angular/src/app/admin/payroll-management/wage-type-security-roles/create-or-edit-wage-type-security-role-modal.component.html
@@ -20,7 +20,7 @@ _TODO_
 
 **Example.** _TODO_
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 ## RoleId {#WageTypeSecurityRole.RoleId}
 <!-- alias: loc:RoleId, dom:WageTypeSecurityRole_RoleId -->

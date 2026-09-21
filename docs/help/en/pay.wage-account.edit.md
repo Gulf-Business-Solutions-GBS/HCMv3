@@ -20,7 +20,7 @@ _TODO_
 
 **Example.** _TODO_
 
-**Rules.** Required. Chosen from Wage Type master data.
+**Rules.** Required. Chosen from Wagetype master data.
 
 ## AccountInfoId {#WageAccount.AccountInfoId}
 <!-- alias: loc:AccountInfoId, dom:WageAccount_AccountInfoId -->
