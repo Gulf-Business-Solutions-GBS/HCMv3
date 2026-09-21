@@ -1,0 +1,75 @@
+{
+  "helpId": "trv.travel-type.edit",
+  "lang": "en",
+  "title": "Travel Types — Create / Edit",
+  "entity": "HCMv3.TravelManagement.TravelType",
+  "overviewHtml": "<p>A kind of trip, such as a business meeting or training.</p>",
+  "aliasIndex": {
+    "loc:Code": "TravelType.Code",
+    "dom:TravelType_Code": "TravelType.Code",
+    "loc:WageType": "TravelType.WageTypeId",
+    "dom:TravelType_WageTypeId": "TravelType.WageTypeId",
+    "loc:NameEn": "TravelType.NameEn",
+    "dom:TravelType_NameEn": "TravelType.NameEn",
+    "loc:NameAr": "TravelType.NameAr",
+    "dom:TravelType_NameAr": "TravelType.NameAr"
+  },
+  "fields": [
+    {
+      "id": "TravelType.Code",
+      "label": "Code",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:TravelType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelType.WageTypeId",
+      "label": "WageType",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:TravelType_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wagetype master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype travel would be paid through.</p><p><strong>Why it matters.</strong> Not read at present: payroll has no travel calculation, so nothing is paid through it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelType.NameEn",
+      "label": "NameEn",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TravelType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelType.NameAr",
+      "label": "NameAr",
+      "section": "TravelTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TravelType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

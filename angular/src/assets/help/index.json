@@ -7355,6 +7355,111 @@
     ],
     "WorkLocation_IsActive": [
       "org.work-location.edit"
+    ],
+    "TravelDetailCost_TravelDetailId": [
+      "trv.travel-detail-cost.edit"
+    ],
+    "TravelDetailCost_ExpenseTypeId": [
+      "trv.travel-detail-cost.edit"
+    ],
+    "TravelDetailCost_Amount": [
+      "trv.travel-detail-cost.edit"
+    ],
+    "TravelDetailCost_Comments": [
+      "trv.travel-detail-cost.edit"
+    ],
+    "TravelDetail_TravelId": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_DepartureId": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_ArrivalId": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_DepartureDate": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_DepartureTime": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_ArrivalDate": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_ArrivalTime": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_HotelId": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_TravelAirlineId": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_TotalNights": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_NightStay": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_Comments": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelFeedback_EmployeeId": [
+      "trv.travel-feedback.edit"
+    ],
+    "TravelFeedback_TravelId": [
+      "trv.travel-feedback.edit"
+    ],
+    "TravelFeedback_ClaimDate": [
+      "trv.travel-feedback.edit"
+    ],
+    "TravelFeedback_ClaimAmount": [
+      "trv.travel-feedback.edit"
+    ],
+    "TravelFeedback_Comments": [
+      "trv.travel-feedback.edit"
+    ],
+    "TravelPerDiem_FromDestinationId": [
+      "trv.travel-per-diem.edit"
+    ],
+    "TravelPerDiem_ToDestinationId": [
+      "trv.travel-per-diem.edit"
+    ],
+    "TravelPerDiem_EmployeeGroupId": [
+      "trv.travel-per-diem.edit"
+    ],
+    "TravelPerDiem_EmployeeSubGroupId": [
+      "trv.travel-per-diem.edit"
+    ],
+    "TravelPerDiem_Amount": [
+      "trv.travel-per-diem.edit"
+    ],
+    "TravelType_Code": [
+      "trv.travel-type.edit"
+    ],
+    "TravelType_WageTypeId": [
+      "trv.travel-type.edit"
+    ],
+    "TravelType_NameEn": [
+      "trv.travel-type.edit"
+    ],
+    "TravelType_NameAr": [
+      "trv.travel-type.edit"
+    ],
+    "Travel_EmployeeId": [
+      "trv.travel.edit"
+    ],
+    "Travel_TravelTypeId": [
+      "trv.travel.edit"
+    ],
+    "Travel_StartDate": [
+      "trv.travel.edit"
+    ],
+    "Travel_EndDate": [
+      "trv.travel.edit"
+    ],
+    "Travel_Comments": [
+      "trv.travel.edit"
     ]
   }
 }

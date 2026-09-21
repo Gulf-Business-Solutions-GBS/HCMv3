@@ -1,0 +1,203 @@
+{
+  "helpId": "trv.travel-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل السفر — إنشاء / تحرير",
+  "entity": "HCMv3.TravelManagement.TravelDetail",
+  "overviewHtml": "<p>مرحلة واحدة من رحلة: من أين إلى أين، ومتى، وأين يقيم الموظف. لا يمكن حذف المرحلة ما دامت لها تكاليف. ويمكن للنموذج حساب البدل اليومي المتوقع للمرحلة من أسعار البدل اليومي: اختر مجموعة الموظف ومجموعته الفرعية، فيضرب عدد الليالي في السعر المحدد لهذا المسار.</p>",
+  "aliasIndex": {
+    "loc:Travel": "TravelDetail.TravelId",
+    "dom:TravelDetail_TravelId": "TravelDetail.TravelId",
+    "loc:Departure": "TravelDetail.DepartureId",
+    "dom:TravelDetail_DepartureId": "TravelDetail.DepartureId",
+    "loc:Arrival": "TravelDetail.ArrivalId",
+    "dom:TravelDetail_ArrivalId": "TravelDetail.ArrivalId",
+    "loc:DepartureDate": "TravelDetail.DepartureDate",
+    "dom:TravelDetail_DepartureDate": "TravelDetail.DepartureDate",
+    "loc:DepartureTime": "TravelDetail.DepartureTime",
+    "dom:TravelDetail_DepartureTime": "TravelDetail.DepartureTime",
+    "loc:ArrivalDate": "TravelDetail.ArrivalDate",
+    "dom:TravelDetail_ArrivalDate": "TravelDetail.ArrivalDate",
+    "loc:ArrivalTime": "TravelDetail.ArrivalTime",
+    "dom:TravelDetail_ArrivalTime": "TravelDetail.ArrivalTime",
+    "loc:Hotel": "TravelDetail.HotelId",
+    "dom:TravelDetail_HotelId": "TravelDetail.HotelId",
+    "loc:TravelAirlines": "TravelDetail.TravelAirlineId",
+    "dom:TravelDetail_TravelAirlineId": "TravelDetail.TravelAirlineId",
+    "loc:TotalNights": "TravelDetail.TotalNights",
+    "dom:TravelDetail_TotalNights": "TravelDetail.TotalNights",
+    "loc:NightStay": "TravelDetail.NightStay",
+    "dom:TravelDetail_NightStay": "TravelDetail.NightStay",
+    "loc:Comments": "TravelDetail.Comments",
+    "dom:TravelDetail_Comments": "TravelDetail.Comments"
+  },
+  "fields": [
+    {
+      "id": "TravelDetail.TravelId",
+      "label": "Travel",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Travel",
+        "dom:TravelDetail_TravelId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة السفريات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرحلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.DepartureId",
+      "label": "Departure",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Departure",
+        "dom:TravelDetail_DepartureId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة وجهات السفر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان بدء المرحلة.</p><p><strong>مثال.</strong> الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.ArrivalId",
+      "label": "Arrival",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Arrival",
+        "dom:TravelDetail_ArrivalId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة وجهات السفر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان انتهاء المرحلة.</p><p><strong>مثال.</strong> دبي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.DepartureDate",
+      "label": "DepartureDate",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:DepartureDate",
+        "dom:TravelDetail_DepartureDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ المغادرة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.DepartureTime",
+      "label": "DepartureTime",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:DepartureTime",
+        "dom:TravelDetail_DepartureTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت المغادرة.</p><p><strong>مثال.</strong> 09:45</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.ArrivalDate",
+      "label": "ArrivalDate",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:ArrivalDate",
+        "dom:TravelDetail_ArrivalDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الوصول.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.ArrivalTime",
+      "label": "ArrivalTime",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:ArrivalTime",
+        "dom:TravelDetail_ArrivalTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت الوصول.</p><p><strong>مثال.</strong> 09:45</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.HotelId",
+      "label": "Hotel",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Hotel",
+        "dom:TravelDetail_HotelId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الفنادق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفندق، إن وُجد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.TravelAirlineId",
+      "label": "TravelAirlines",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:TravelAirlines",
+        "dom:TravelDetail_TravelAirlineId"
+      ],
+      "rules": "اختياري. يُختار من قائمة شركات الطيران.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شركة الطيران، إن وُجدت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.TotalNights",
+      "label": "TotalNights",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:TotalNights",
+        "dom:TravelDetail_TotalNights"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الليالي في الوجهة. يُستخدم لحساب البدل اليومي المتوقع.</p><p><strong>مثال.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.NightStay",
+      "label": "NightStay",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:NightStay",
+        "dom:TravelDetail_NightStay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المرحلة تتضمن مبيتاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.Comments",
+      "label": "Comments",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:Comments",
+        "dom:TravelDetail_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

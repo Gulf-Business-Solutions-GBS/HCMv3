@@ -1,0 +1,91 @@
+{
+  "helpId": "trv.travel-per-diem.edit",
+  "lang": "ar",
+  "title": "بدلات السفر اليومية — إنشاء / تحرير",
+  "entity": "HCMv3.TravelManagement.TravelPerDiem",
+  "overviewHtml": "<p>البدل اليومي لمسار ومجموعة موظفين ومجموعة فرعية. ولا يوجد إلا سعر واحد لكل تركيبة. ويُستخدم فقط لعرض البدل اليومي المتوقع في مرحلة الرحلة.</p>",
+  "aliasIndex": {
+    "loc:FromDestination": "TravelPerDiem.FromDestinationId",
+    "dom:TravelPerDiem_FromDestinationId": "TravelPerDiem.FromDestinationId",
+    "loc:ToDestination": "TravelPerDiem.ToDestinationId",
+    "dom:TravelPerDiem_ToDestinationId": "TravelPerDiem.ToDestinationId",
+    "loc:EmployeeGroup": "TravelPerDiem.EmployeeGroupId",
+    "dom:TravelPerDiem_EmployeeGroupId": "TravelPerDiem.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "TravelPerDiem.EmployeeSubGroupId",
+    "dom:TravelPerDiem_EmployeeSubGroupId": "TravelPerDiem.EmployeeSubGroupId",
+    "loc:Amount": "TravelPerDiem.Amount",
+    "dom:TravelPerDiem_Amount": "TravelPerDiem.Amount"
+  },
+  "fields": [
+    {
+      "id": "TravelPerDiem.FromDestinationId",
+      "label": "FromDestination",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:FromDestination",
+        "dom:TravelPerDiem_FromDestinationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة وجهات السفر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بداية المسار.</p><p><strong>مثال.</strong> الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.ToDestinationId",
+      "label": "ToDestination",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:ToDestination",
+        "dom:TravelPerDiem_ToDestinationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة وجهات السفر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية المسار.</p><p><strong>مثال.</strong> لندن</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:TravelPerDiem_EmployeeGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:TravelPerDiem_EmployeeSubGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجموعة الفرعية للموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelPerDiem.Amount",
+      "label": "Amount",
+      "section": "TravelPerDiems",
+      "aliases": [
+        "loc:Amount",
+        "dom:TravelPerDiem_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البدل لكل ليلة.</p><p><strong>مثال.</strong> 45.000</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

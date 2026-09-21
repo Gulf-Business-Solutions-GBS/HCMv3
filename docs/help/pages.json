@@ -7451,6 +7451,132 @@
         }
       },
       "defaultSection": "WorkLocations"
+    },
+    {
+      "helpId": "trv.travel-detail-cost.edit",
+      "title": "Travel Detail Costs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TravelManagement.TravelDetailCosts.Create"
+      ],
+      "entity": {
+        "name": "TravelDetailCost",
+        "fullName": "HCMv3.TravelManagement.TravelDetailCost",
+        "file": "aspnet-core/src/HCMv3.Core/TravelManagement/TravelDetailCost.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/travel-management/travel-detail-costs/create-or-edit-travel-detail-cost-modal.component.html"
+        }
+      },
+      "defaultSection": "TravelDetailCosts"
+    },
+    {
+      "helpId": "trv.travel-detail.edit",
+      "title": "Travel Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TravelManagement.TravelDetails.Create"
+      ],
+      "entity": {
+        "name": "TravelDetail",
+        "fullName": "HCMv3.TravelManagement.TravelDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TravelManagement/TravelDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/travel-management/travel-details/create-or-edit-travel-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "TravelDetails"
+    },
+    {
+      "helpId": "trv.travel-feedback.edit",
+      "title": "Travel Feedbacks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TravelManagement.TravelFeedbacks.Create"
+      ],
+      "entity": {
+        "name": "TravelFeedback",
+        "fullName": "HCMv3.TravelManagement.TravelFeedback",
+        "file": "aspnet-core/src/HCMv3.Core/TravelManagement/TravelFeedback.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/travel-management/travel-feedbacks/create-or-edit-travel-feedback-modal.component.html"
+        }
+      },
+      "defaultSection": "TravelFeedbacks"
+    },
+    {
+      "helpId": "trv.travel-per-diem.edit",
+      "title": "Travel Per Diems — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TravelManagement.TravelPerDiems.Create"
+      ],
+      "entity": {
+        "name": "TravelPerDiem",
+        "fullName": "HCMv3.TravelManagement.TravelPerDiem",
+        "file": "aspnet-core/src/HCMv3.Core/TravelManagement/TravelPerDiem.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/travel-management/travel-per-diems/create-or-edit-travel-per-diem-modal.component.html"
+        }
+      },
+      "defaultSection": "TravelPerDiems"
+    },
+    {
+      "helpId": "trv.travel-type.edit",
+      "title": "Travel Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TravelManagement.TravelTypes.Create"
+      ],
+      "entity": {
+        "name": "TravelType",
+        "fullName": "HCMv3.TravelManagement.TravelType",
+        "file": "aspnet-core/src/HCMv3.Core/TravelManagement/TravelType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/travel-management/travel-types/create-or-edit-travel-type-modal.component.html"
+        }
+      },
+      "defaultSection": "TravelTypes"
+    },
+    {
+      "helpId": "trv.travel.edit",
+      "title": "Travels — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TravelManagement.Travels.Create"
+      ],
+      "entity": {
+        "name": "Travel",
+        "fullName": "HCMv3.TravelManagement.Travel",
+        "file": "aspnet-core/src/HCMv3.Core/TravelManagement/Travel.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/travel-management/travels/create-or-edit-travel-modal.component.html"
+        }
+      },
+      "defaultSection": "Travels"
     }
   ]
 }

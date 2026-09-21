@@ -1,0 +1,91 @@
+{
+  "helpId": "trv.travel.edit",
+  "lang": "ar",
+  "title": "السفريات — إنشاء / تحرير",
+  "entity": "HCMv3.TravelManagement.Travel",
+  "overviewHtml": "<p>رحلة عمل لموظف، مع مراحلها وتكاليفها. تذهب الرحلة المُدخلة هنا إلى الموافقة تماماً كالرحلة التي يطلبها الموظف في الخدمة الذاتية، وتخضع للقواعد نفسها: يلزم مرحلة واحدة على الأقل، ولا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء، ولا يجوز أن تتداخل التواريخ مع رحلة أخرى للموظف موافق عليها أو بانتظار الموافقة. ويرى المعتمد الوجهة والتواريخ والتكلفة الإجمالية. اترك الرمز فارغاً ليُعطى الرقم التالي. ولا تُدفع الرحلات عبر الرواتب.</p>",
+  "aliasIndex": {
+    "loc:Employee": "Travel.EmployeeId",
+    "dom:Travel_EmployeeId": "Travel.EmployeeId",
+    "loc:TravelType": "Travel.TravelTypeId",
+    "dom:Travel_TravelTypeId": "Travel.TravelTypeId",
+    "loc:StartDate": "Travel.StartDate",
+    "dom:Travel_StartDate": "Travel.StartDate",
+    "loc:EndDate": "Travel.EndDate",
+    "dom:Travel_EndDate": "Travel.EndDate",
+    "loc:Comments": "Travel.Comments",
+    "dom:Travel_Comments": "Travel.Comments"
+  },
+  "fields": [
+    {
+      "id": "Travel.EmployeeId",
+      "label": "Employee",
+      "section": "Travels",
+      "aliases": [
+        "loc:Employee",
+        "dom:Travel_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المسافر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.TravelTypeId",
+      "label": "TravelType",
+      "section": "Travels",
+      "aliases": [
+        "loc:TravelType",
+        "dom:Travel_TravelTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع السفر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الرحلة.</p><p><strong>مثال.</strong> اجتماع عمل</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.StartDate",
+      "label": "StartDate",
+      "section": "Travels",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Travel_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.EndDate",
+      "label": "EndDate",
+      "section": "Travels",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Travel_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.Comments",
+      "label": "Comments",
+      "section": "Travels",
+      "aliases": [
+        "loc:Comments",
+        "dom:Travel_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

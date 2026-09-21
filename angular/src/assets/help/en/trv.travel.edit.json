@@ -1,0 +1,91 @@
+{
+  "helpId": "trv.travel.edit",
+  "lang": "en",
+  "title": "Travels — Create / Edit",
+  "entity": "HCMv3.TravelManagement.Travel",
+  "overviewHtml": "<p>A business trip for an employee, with its legs and their costs. A trip entered here goes to approval exactly like one an employee requests in self-service, and is judged by the same rules: at least one leg is needed, the end date cannot be before the start date, and the dates cannot overlap another trip of the employee's that is approved or waiting for approval. The approver sees the destination, dates and total cost. Leave the code blank to have the next number given. Trips are not paid through payroll.</p>",
+  "aliasIndex": {
+    "loc:Employee": "Travel.EmployeeId",
+    "dom:Travel_EmployeeId": "Travel.EmployeeId",
+    "loc:TravelType": "Travel.TravelTypeId",
+    "dom:Travel_TravelTypeId": "Travel.TravelTypeId",
+    "loc:StartDate": "Travel.StartDate",
+    "dom:Travel_StartDate": "Travel.StartDate",
+    "loc:EndDate": "Travel.EndDate",
+    "dom:Travel_EndDate": "Travel.EndDate",
+    "loc:Comments": "Travel.Comments",
+    "dom:Travel_Comments": "Travel.Comments"
+  },
+  "fields": [
+    {
+      "id": "Travel.EmployeeId",
+      "label": "Employee",
+      "section": "Travels",
+      "aliases": [
+        "loc:Employee",
+        "dom:Travel_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee travelling.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.TravelTypeId",
+      "label": "TravelType",
+      "section": "Travels",
+      "aliases": [
+        "loc:TravelType",
+        "dom:Travel_TravelTypeId"
+      ],
+      "rules": "Required. Chosen from Travel Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of trip.</p><p><strong>Example.</strong> Business meeting</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.StartDate",
+      "label": "StartDate",
+      "section": "Travels",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Travel_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.EndDate",
+      "label": "EndDate",
+      "section": "Travels",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Travel_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.Comments",
+      "label": "Comments",
+      "section": "Travels",
+      "aliases": [
+        "loc:Comments",
+        "dom:Travel_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

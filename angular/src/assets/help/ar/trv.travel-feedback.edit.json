@@ -1,0 +1,91 @@
+{
+  "helpId": "trv.travel-feedback.edit",
+  "lang": "ar",
+  "title": "تقييمات السفر — إنشاء / تحرير",
+  "entity": "HCMv3.TravelManagement.TravelFeedback",
+  "overviewHtml": "<p>مطالبة بمصروفات سفر. المطالبات التي يقدمها الموظف في الخدمة الذاتية تذهب إلى الموافقة: يجب أن يكون المبلغ أكبر من 0، ولا يجوز أن تكون للموظف مطالبة أخرى للرحلة نفسها، إلا إذا رُفضت أو أُعيدت. أما المطالبة المُدخلة هنا فتُحفظ مباشرة. ولا تُدفع المطالبات عبر الرواتب.</p>",
+  "aliasIndex": {
+    "loc:Employee": "TravelFeedback.EmployeeId",
+    "dom:TravelFeedback_EmployeeId": "TravelFeedback.EmployeeId",
+    "loc:Travel": "TravelFeedback.TravelId",
+    "dom:TravelFeedback_TravelId": "TravelFeedback.TravelId",
+    "loc:ClaimDate": "TravelFeedback.ClaimDate",
+    "dom:TravelFeedback_ClaimDate": "TravelFeedback.ClaimDate",
+    "loc:ClaimAmount": "TravelFeedback.ClaimAmount",
+    "dom:TravelFeedback_ClaimAmount": "TravelFeedback.ClaimAmount",
+    "loc:Comments": "TravelFeedback.Comments",
+    "dom:TravelFeedback_Comments": "TravelFeedback.Comments"
+  },
+  "fields": [
+    {
+      "id": "TravelFeedback.EmployeeId",
+      "label": "Employee",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:Employee",
+        "dom:TravelFeedback_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المطالِب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelFeedback.TravelId",
+      "label": "Travel",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:Travel",
+        "dom:TravelFeedback_TravelId"
+      ],
+      "rules": "اختياري. يُختار من قائمة السفريات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرحلة التي تخصها المطالبة، إن وُجدت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelFeedback.ClaimDate",
+      "label": "ClaimDate",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:ClaimDate",
+        "dom:TravelFeedback_ClaimDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى قُدمت المطالبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelFeedback.ClaimAmount",
+      "label": "ClaimAmount",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:ClaimAmount",
+        "dom:TravelFeedback_ClaimAmount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المبلغ المطالب به.</p><p><strong>مثال.</strong> 75.500</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelFeedback.Comments",
+      "label": "Comments",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:Comments",
+        "dom:TravelFeedback_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
