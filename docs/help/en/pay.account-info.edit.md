@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.AccountInfos.Create]
 
 ## Overview
 
-_TODO_
+A ledger account in the finance system that payroll posts to -- salary expense, accruals, the salary bank account and so on. Wage accounts, payroll areas and the journal voucher refer to accounts from this list.
 
 ## AccountType {#AccountInfo.AccountTypeId}
 <!-- alias: loc:AccountType, dom:AccountInfo_AccountTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The kind of account in the finance system.
 
-**Example.** _TODO_
+**Example.** Ledger
+
+**Why it matters.** Printed as the account type beside the account on each journal voucher line, for the main account and the offset account alike.
 
 **Rules.** Required. Chosen from Account Type master data.

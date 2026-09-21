@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.OrgUnitWageAccGroups.Create]
 
 ## Overview
 
-_TODO_
+مجموعة حسابات الأجور التي تستخدمها وحدة تنظيمية، اعتباراً من تاريخ معيّن.
+
+لا يُقرأ حالياً: يأخذ محرك التكلفة وقيد اليومية الحسابات من حسابات الأجور الخاصة بكل موظف، ولا يقرأ شيءٌ هذا التعيين. وهو محفوظ للرجوع إليه ولاستخدام مستقبلي.
 
 ## OrganizationUnitId {#OrgUnitWageAccGroup.OrganizationUnitId}
 <!-- alias: loc:OrganizationUnitId, dom:OrgUnitWageAccGroup_OrganizationUnitId -->
 
-**ما هو.** _TODO_
+**ما هو.** الوحدة التنظيمية.
 
-**مثال.** _TODO_
+**مثال.** إدارة المالية
 
 **القواعد.** إلزامي. يُختار من قائمة الوحدات التنظيمية.
 
 ## WageAccGroupId {#OrgUnitWageAccGroup.WageAccGroupId}
 <!-- alias: loc:WageAccGroupId, dom:OrgUnitWageAccGroup_WageAccGroupId -->
 
-**ما هو.** _TODO_
+**ما هو.** مجموعة حسابات الأجور التي تستخدمها الوحدة اعتباراً من تاريخ البداية.
 
-**مثال.** _TODO_
+**مثال.** حسابات المكتب الرئيسي
 
 **القواعد.** إلزامي. يُختار من قائمة مجموعات حسابات الأجور.

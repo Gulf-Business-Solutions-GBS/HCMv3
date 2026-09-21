@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.OrgUnitWageAccGroups.Create]
 
 ## Overview
 
-_TODO_
+Which wage account group an organisation unit uses, from a given date.
+
+Not read at present: the cost engine and the journal voucher take their accounts from each employee's own wage accounts, and nothing reads this assignment. It is kept for reference and for future use.
 
 ## OrganizationUnitId {#OrgUnitWageAccGroup.OrganizationUnitId}
 <!-- alias: loc:OrganizationUnitId, dom:OrgUnitWageAccGroup_OrganizationUnitId -->
 
-**What it is.** _TODO_
+**What it is.** The organisation unit.
 
-**Example.** _TODO_
+**Example.** Finance Department
 
 **Rules.** Required. Chosen from Organization Unit master data.
 
 ## WageAccGroupId {#OrgUnitWageAccGroup.WageAccGroupId}
 <!-- alias: loc:WageAccGroupId, dom:OrgUnitWageAccGroup_WageAccGroupId -->
 
-**What it is.** _TODO_
+**What it is.** The wage account group the unit uses from the start date.
 
-**Example.** _TODO_
+**Example.** Head Office Accounts
 
 **Rules.** Required. Chosen from Wage Acc Group master data.

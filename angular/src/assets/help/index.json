@@ -2108,6 +2108,216 @@
     ],
     "VisaInfo_EndDate": [
       "pa.employee-visa-info.edit"
+    ],
+    "AccountInfo_Code": [
+      "pay.account-info.edit"
+    ],
+    "AccountInfo_NameEn": [
+      "pay.account-info.edit"
+    ],
+    "AccountInfo_NameAr": [
+      "pay.account-info.edit"
+    ],
+    "AccountInfo_AccountTypeId": [
+      "pay.account-info.edit"
+    ],
+    "EmployeeGroup_Code": [
+      "pay.employee-group.edit"
+    ],
+    "EmployeeGroup_NameEn": [
+      "pay.employee-group.edit"
+    ],
+    "EmployeeGroup_NameAr": [
+      "pay.employee-group.edit"
+    ],
+    "EmployeeGroup_IndemnityMaxNumber": [
+      "pay.employee-group.edit"
+    ],
+    "EmployeeGroup_IndemnityMaxUnit": [
+      "pay.employee-group.edit"
+    ],
+    "EmployeeGroup_IndemnityMaxAccruePercentage": [
+      "pay.employee-group.edit"
+    ],
+    "EmployeeSubGroup_EmployeeGroupId": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_Code": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_TicketClassId": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_NameEn": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_NameAr": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_PayOvertime": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_AirTicketPayType": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_AutoPayAirTicket": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_MaxDependantAirTicketCount": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_MaxHealthReimburseAmount": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_HealthInsurancePeriod": [
+      "pay.employee-sub-group.edit"
+    ],
+    "EmployeeSubGroup_MaxDependantHealthReimburseCount": [
+      "pay.employee-sub-group.edit"
+    ],
+    "OrgUnitWageAccGroup_OrganizationUnitId": [
+      "pay.org-unit-wage-acc-group.edit"
+    ],
+    "OrgUnitWageAccGroup_WageAccGroupId": [
+      "pay.org-unit-wage-acc-group.edit"
+    ],
+    "OrgUnitWageAccGroup_StartDate": [
+      "pay.org-unit-wage-acc-group.edit"
+    ],
+    "PayrollArea_Code": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_Name": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_PayrollPeriodId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_CurrencyId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_CutOffDay": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_CountryId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_FICompanyId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_FIBankId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollCalendar_PayrollAreaId": [
+      "pay.payroll-calendar.edit"
+    ],
+    "PayrollCalendar_PayrollMonth": [
+      "pay.payroll-calendar.edit"
+    ],
+    "PayrollCalendar_PayrollYear": [
+      "pay.payroll-calendar.edit"
+    ],
+    "PayrollCalendar_StartDate": [
+      "pay.payroll-calendar.edit"
+    ],
+    "PayrollCalendar_EndDate": [
+      "pay.payroll-calendar.edit"
+    ],
+    "PayrollControlRecord_PayrollAreaId": [
+      "pay.payroll-control-record.edit"
+    ],
+    "PayrollControlRecord_PayrollMonth": [
+      "pay.payroll-control-record.edit"
+    ],
+    "PayrollControlRecord_PayrollYear": [
+      "pay.payroll-control-record.edit"
+    ],
+    "PayrollControlRecord_PeriodLocked": [
+      "pay.payroll-control-record.edit"
+    ],
+    "PayrollControlRecord_PeriodClosed": [
+      "pay.payroll-control-record.edit"
+    ],
+    "WageAccGroupDetail_WageAccGroupId": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_WageTypeId": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_AccountInfoId": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_OffsetAccountInfoType": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_OffsetAccountInfoId": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_CostPercentage": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_MergeOffsetAccount": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement1Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement2Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement3Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement4Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement5Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement6Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccGroupDetail_costElement7Id": [
+      "pay.wage-acc-group-detail.edit"
+    ],
+    "WageAccount_WageTypeId": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_StartDate": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_EndDate": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_AccountInfoId": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_OffsetAccountInfoId": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_CostPercentage": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement1Id": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement2Id": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement3Id": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement4Id": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement5Id": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement6Id": [
+      "pay.wage-account.edit"
+    ],
+    "WageAccount_costElement7Id": [
+      "pay.wage-account.edit"
     ]
   }
 }

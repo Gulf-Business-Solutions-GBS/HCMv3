@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Account Infos — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AccountInfo",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A ledger account in the finance system that payroll posts to — salary expense, accruals, the salary bank account and so on. Wage accounts, payroll areas and the journal voucher refer to accounts from this list.</p>",
   "aliasIndex": {
     "loc:Code": "AccountInfo.Code",
     "dom:AccountInfo_Code": "AccountInfo.Code",
@@ -67,9 +67,9 @@
       ],
       "rules": "Required. Chosen from Account Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The kind of account in the finance system.</p><p><strong>Example.</strong> Ledger</p><p><strong>Why it matters.</strong> Printed as the account type beside the account on each journal voucher line, for the main account and the offset account alike.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Wage Account Group Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageAccGroupDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One line of a wage account group: which ledger account a wagetype posts to, its offset account and cost elements.</p><p>Not read at present: the cost engine and the journal voucher take their accounts from each employee's own wage accounts, and nothing reads these lines. They are kept for reference and for future use.</p>",
   "aliasIndex": {
     "loc:WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
     "dom:WageAccGroupDetail_WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
@@ -45,9 +45,9 @@
       ],
       "rules": "Required. Chosen from Wage Acc Group master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wage account group this line belongs to.</p><p><strong>Example.</strong> Head Office Accounts</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.WageTypeId",
@@ -59,9 +59,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype this line maps.</p><p><strong>Example.</strong> Basic Salary</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.AccountInfoId",
@@ -73,9 +73,9 @@
       ],
       "rules": "Required. Chosen from Account Info master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The ledger account the wagetype would post to.</p><p><strong>Example.</strong> 510100 — Salaries and Wages</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.OffsetAccountInfoType",
@@ -87,9 +87,9 @@
       ],
       "rules": "Required. One of: Fixed, Employee Code.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Where the balancing account comes from: a fixed account chosen below, or one worked out from the employee code.</p><p><strong>Example.</strong> Fixed</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.OffsetAccountInfoId",
@@ -101,9 +101,9 @@
       ],
       "rules": "Optional. Chosen from Account Info master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The balancing account, when the offset type is Fixed.</p><p><strong>Example.</strong> 210500 — Salaries Payable</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostPercentage",
@@ -115,9 +115,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The share of the wagetype's amount this line would carry.</p><p><strong>Example.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.MergeOffsetAccount",
@@ -129,9 +129,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether offset lines for this mapping would be merged into one.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement1Id",
@@ -143,9 +143,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 1 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement2Id",
@@ -157,9 +157,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 2 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement3Id",
@@ -171,9 +171,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 3 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement4Id",
@@ -185,9 +185,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 4 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement5Id",
@@ -199,9 +199,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 5 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement6Id",
@@ -213,9 +213,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 6 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement7Id",
@@ -227,9 +227,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 7 — one of up to seven accounting dimensions.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

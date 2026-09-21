@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Payroll Areas — Create / Edit",
   "entity": "HCMv3.PayrollManagement.PayrollArea",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A payroll area is a set of employees paid together: on the same fiscal calendar, in the same currency, run by one payroll control record. Each employee's organisation assignment names the payroll area they belong to.</p><p>The area's control record says which month is being processed and whether that month is open, released for payroll or closed. Its FI settings feed the journal voucher that posts the payroll to finance.</p>",
   "aliasIndex": {
     "loc:Code": "PayrollArea.Code",
     "dom:PayrollArea_Code": "PayrollArea.Code",
@@ -47,9 +47,9 @@
       ],
       "rules": "Required.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The name of the payroll area. It has one name only, with no separate Arabic name.</p><p><strong>Example.</strong> <code>Kuwait Monthly</code></p><p><strong>Why it matters.</strong> A payroll run, the costing file and the journal voucher all pick the area by this name, and it appears in the messages that refuse a change while the area is locked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "PayrollArea.PayrollPeriodId",
@@ -61,9 +61,9 @@
       ],
       "rules": "Required. Chosen from Payroll Period master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The fiscal year the area runs on, such as January–December or April–March.</p><p><strong>Example.</strong> <code>Apr-Mar</code></p><p><strong>Why it matters.</strong> It decides which calendar month a payroll month means on the control record. With April–March, payroll month 1 of 2026 is April 2026 and payroll month 10 is January 2027.</p>",
+      "adminHtml": "<p>The control record recognises twelve period codes only, <code>Jan-Dec</code> through <code>Dec-Nov</code>. Any other code makes the control record refuse to save with \"Incorrect Payroll Period\".</p>",
+      "stub": false
     },
     {
       "id": "PayrollArea.CurrencyId",
@@ -75,9 +75,9 @@
       ],
       "rules": "Required. Chosen from Currency master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The currency the area is paid in.</p><p><strong>Example.</strong> Kuwaiti Dinar</p><p><strong>Why it matters.</strong> Printed as the currency of the net pay line on the journal voucher.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "PayrollArea.CutOffDay",
@@ -89,9 +89,9 @@
       ],
       "rules": "Required. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The day of the month on which the pay month ends for time-based counts, when it is not the calendar month end. 0 means the calendar month.</p><p><strong>Example.</strong> <code>20</code> — the April run counts 21 March to 20 April.</p><p><strong>Why it matters.</strong> For wagetypes marked <em>Include In Cutoff</em>, days such as unpaid absence are counted from the day after the previous month's cut-off day to this month's cut-off day, instead of the calendar month. When the payroll setting <em>Pay Leave As Per Cutoff</em> is on, it also decides whether a leave the employee has not yet returned from is dealt with in this month's regular run: only leave starting on or before the cut-off day is.</p>",
+      "adminHtml": "<p>A cut-off day later than the month has days means the last day of that month — 31 in February is 28 or 29.</p>",
+      "stub": false
     },
     {
       "id": "PayrollArea.CountryId",
@@ -103,9 +103,9 @@
       ],
       "rules": "Optional. Chosen from Country master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The country the payroll area belongs to.</p><p><strong>Example.</strong> Kuwait</p><p><strong>Why it matters.</strong> Payroll does not use it. It is shown as the country on the performance appraisal reviewer summary report.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "PayrollArea.FICompanyId",
@@ -117,9 +117,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The finance company code the area's payroll is posted under, chosen from the cost elements.</p><p><strong>Example.</strong> <code>KW01</code></p><p><strong>Why it matters.</strong> Written as the company on the net pay line of the journal voucher. Posting the journal voucher and producing the costing file are refused for the area while it is blank.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "PayrollArea.FIBankId",
@@ -131,9 +131,9 @@
       ],
       "rules": "Optional. Chosen from Account Info master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The bank account the area's total net pay is credited to on the journal voucher.</p><p><strong>Example.</strong> <code>110200 — NBK Salary Account</code></p><p><strong>Why it matters.</strong> The journal voucher credits the whole net pay of the run to this account, with the account's type beside it. Posting the journal voucher and producing the costing file are refused for the area while it is blank.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

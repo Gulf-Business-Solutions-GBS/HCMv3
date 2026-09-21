@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "حسابات الأجور — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.WageAccount",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>ربط على مستوى الشركة بين نوع أجر وحساب في دفتر الأستاذ، اعتباراً من تاريخ معيّن، مع حسابه المقابل وعناصر التكلفة.</p><p>لا يُقرأ حالياً: يأخذ محرك التكلفة وقيد اليومية الحسابات من <strong>حسابات الأجور</strong> الخاصة بكل موظف (في سجل الموظف)، ولا يقرأ شيءٌ هذه القائمة. ونوع الأجر الذي ليس له حساب أجور للموظف في الفترة يوقف احتساب التكلفة لذلك الموظف، مهما كان المضبوط هنا.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "WageAccount.WageTypeId",
     "dom:WageAccount_WageTypeId": "WageAccount.WageTypeId",
@@ -43,9 +43,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يخصه هذا الربط.</p><p><strong>مثال.</strong> بدل السكن</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.StartDate",
@@ -85,9 +85,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحساب الذي يُرحَّل إليه نوع الأجر.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.OffsetAccountInfoId",
@@ -99,9 +99,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحساب المقابل للقيد.</p><p><strong>مثال.</strong> 210500 — رواتب مستحقة الدفع</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostPercentage",
@@ -113,9 +113,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> حصة مبلغ نوع الأجر التي يحملها هذا الربط.</p><p><strong>مثال.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement1Id",
@@ -127,9 +127,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement2Id",
@@ -141,9 +141,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement3Id",
@@ -155,9 +155,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement4Id",
@@ -169,9 +169,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement5Id",
@@ -183,9 +183,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement6Id",
@@ -197,9 +197,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccount.CostElement7Id",
@@ -211,9 +211,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

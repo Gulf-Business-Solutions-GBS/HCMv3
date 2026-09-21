@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل مجموعات حسابات الأجور — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.WageAccGroupDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>سطر واحد من مجموعة حسابات الأجور: الحساب الذي يُرحَّل إليه نوع الأجر، وحسابه المقابل وعناصر التكلفة.</p><p>لا تُقرأ حالياً: يأخذ محرك التكلفة وقيد اليومية الحسابات من حسابات الأجور الخاصة بكل موظف، ولا يقرأ شيءٌ هذه الأسطر. وهي محفوظة للرجوع إليها ولاستخدام مستقبلي.</p>",
   "aliasIndex": {
     "loc:WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
     "dom:WageAccGroupDetail_WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
@@ -45,9 +45,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة مجموعات حسابات الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> مجموعة حسابات الأجور التي يتبعها هذا السطر.</p><p><strong>مثال.</strong> حسابات المكتب الرئيسي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.WageTypeId",
@@ -59,9 +59,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يربطه هذا السطر.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.AccountInfoId",
@@ -73,9 +73,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحساب الذي يُرحَّل إليه نوع الأجر.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.OffsetAccountInfoType",
@@ -87,9 +87,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: ثابت، رقم الموظف.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> مصدر الحساب المقابل: حساب ثابت يُختار أدناه، أو حساب يُستخرج من رمز الموظف.</p><p><strong>مثال.</strong> ثابت</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.OffsetAccountInfoId",
@@ -101,9 +101,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحساب المقابل، إذا كان نوع الحساب المقابل ثابتاً.</p><p><strong>مثال.</strong> 210500 — رواتب مستحقة الدفع</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostPercentage",
@@ -115,9 +115,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> حصة مبلغ نوع الأجر التي يحملها هذا السطر.</p><p><strong>مثال.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.MergeOffsetAccount",
@@ -129,9 +129,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أسطر الحساب المقابل لهذا الربط تُدمج في سطر واحد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement1Id",
@@ -143,9 +143,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement2Id",
@@ -157,9 +157,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement3Id",
@@ -171,9 +171,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement4Id",
@@ -185,9 +185,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement5Id",
@@ -199,9 +199,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement6Id",
@@ -213,9 +213,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageAccGroupDetail.CostElement7Id",
@@ -227,9 +227,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "المجموعات الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroup",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>تصنيف أدق للموظفين تحت مجموعة موظفين، وهو المكان الذي تتعلق به معظم قواعد المزايا: الإجازات ومكافأة نهاية الخدمة وتذاكر الطيران واسترداد المصاريف الصحية والمكافآت وغيرها من الاستحقاقات، وكلها تُضبط لكل مجموعة فرعية في تبويباتها. ويحدد التعيين التنظيمي لكل موظف مجموعته الفرعية.</p><p>والحقول في هذا النموذج هي الإعدادات العامة للمجموعة الفرعية الخاصة بالعمل الإضافي وتذاكر الطيران واسترداد المصاريف الصحية.</p>",
   "aliasIndex": {
     "loc:EmployeeGroup": "EmployeeSubGroup.EmployeeGroupId",
     "dom:EmployeeSubGroup_EmployeeGroupId": "EmployeeSubGroup.EmployeeGroupId",
@@ -41,9 +41,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> مجموعة الموظفين التي تتبعها هذه المجموعة الفرعية.</p><p><strong>مثال.</strong> الموظفون الإداريون</p><p><strong>لماذا يهم.</strong> تُجمِّع المجموعات الفرعية، ويمكن تصفية قائمة المجموعات الفرعية بها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.Code",
@@ -69,9 +69,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> درجة السفر الجوي التي تستحقها المجموعة الفرعية.</p><p><strong>مثال.</strong> الدرجة السياحية</p><p><strong>لماذا يهم.</strong> إذا كان نوع دفع تذكرة الطيران <em>FareAmount</em>، تُسعَّر التذكرة من أجرة هذه الدرجة على مسار تذكرة الموظف. وإذا تُركت فارغة كانت قيمة التذكرة المسعَّرة بالأجرة صفراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.NameEn",
@@ -111,9 +111,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> ما إذا كان موظفو هذه المجموعة الفرعية يتقاضون أجر العمل الإضافي.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليها يحوّل محرك الوقت العمل الإضافي الذي يجده في يوم ما إلى سجل عمل إضافي للموظف، ثم يُعتمد ويُصرف. وإذا لم يُؤشَّر عليها لا يُنشأ سجل عمل إضافي، فلا يُصرف أي عمل إضافي مهما طالت ساعات العمل.</p>",
+      "adminHtml": "<p>عند التأشير عليها يحتاج اليوم الذي فيه عمل إضافي إلى نوع عمل إضافي — يُحدَّد في الدوام، أو في العطلة إذا كان اليوم عطلة رسمية. وبدونه يُظهر محرك الوقت خطأً لذلك اليوم يطلب تحديده.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.AirTicketPayType",
@@ -125,9 +125,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: FareAmount، مبلغ ثابت، المبلغ الفعلي، ActualAmountWithinMaxlimit.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> طريقة احتساب قيمة تذكرة الطيران الواحدة لهذه المجموعة الفرعية.</p><p><strong>مثال.</strong> مبلغ ثابت</p><p><strong>لماذا يهم.</strong> <em>FareAmount</em> يسعّر التذكرة من جدول الأجور بحسب درجة التذكرة ومسار الموظف. و<em>مبلغ ثابت</em> يستخدم المبلغ الثابت في قاعدة التذاكر للمجموعة الفرعية. و<em>المبلغ الفعلي</em> يقسم ما دُفع فعلاً على عدد التذاكر، ويعود إلى الحد الأقصى في القاعدة إذا لم يُدفع شيء. و<em>ActualAmountWithinMaxlimit</em> يجري القسمة نفسها دون أن يتجاوز الحد الأقصى في القاعدة. وبهذه الطريقة يُسعَّر نوع أجر متوسط التذكرة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.AutoPayAirTicket",
@@ -139,9 +139,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تذاكر الطيران تُصرف تلقائياً عند استحقاقها.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليها يضيف محرك الوقت تذكرة للموظف لكل نوع تذكرة في أول يوم من فترة استحقاقها — تذكرة الموظف نفسه وتذاكر العائلين — دون أن يُدخلها أحد. ويُراعى استثناء المزايا للموظف أو للعائل، والاستثناء بمبلغ صفر يعني عدم الاستحقاق.</p>",
+      "adminHtml": "<p>نوع التذكرة الذي ليس له قاعدة تذاكر في المجموعة الفرعية لا يُصرف تلقائياً إلا إذا كان للموظف استثناء له.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.MaxDependantAirTicketCount",
@@ -153,9 +153,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من تذاكر العائلين يُصرف تلقائياً في المرة الواحدة.</p><p><strong>مثال.</strong> <code>3</code></p><p><strong>لماذا يهم.</strong> عندما يبلغ الصرف التلقائي لتذاكر الطيران هذا العدد من تذاكر العائلين يتوقف عن إضافة المزيد. والقيمة 0 تعني بلا حد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.MaxHealthReimburseAmount",
@@ -167,9 +167,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقصى ما يمكن أن يُسترد لموظف في هذه المجموعة الفرعية من المصاريف الصحية في سنة التأمين الصحي الواحدة.</p><p><strong>مثال.</strong> <code>500</code></p><p><strong>لماذا يهم.</strong> يحدّ رصيد استرداد المصاريف الصحية للموظف، بعد إضافة أي رصيد مُرحَّل من السنة السابقة. والقيمة 0 تعني بلا حد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.HealthInsurancePeriod",
@@ -181,9 +181,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: لا شيء، يناير، فبراير، مارس، أبريل، مايو، يونيو، يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الشهر الذي تبدأ فيه سنة التأمين الصحي.</p><p><strong>مثال.</strong> يناير</p><p><strong>لماذا يهم.</strong> يُعاد رصيد الاسترداد كل سنة من أول يوم في هذا الشهر. واختيار <em>لا شيء</em> يجعل سنة كل موظف تبدأ من تاريخ التحاقه بدلاً من ذلك.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroup.MaxDependantHealthReimburseCount",
@@ -195,9 +195,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من العائلين الذين يُحتسب استحقاقهم في استرداد المصاريف الصحية ضمن مبلغ الموظف.</p><p><strong>مثال.</strong> <code>4</code></p><p><strong>لماذا يهم.</strong> يجمع المبلغ المستحق استحقاقات المجموعة الفرعية لكل عائل من عائلي الموظف، حتى هذا العدد. والقيمة 0 تعني بلا حد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }
