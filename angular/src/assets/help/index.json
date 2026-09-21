@@ -2421,6 +2421,51 @@
     "AttendanceType_IsFullDay": [
       "pay.attendance-type.edit"
     ],
+    "CostRegisterDetail_CostRegisterId": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_WageTypeId": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_AccountInfoId": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_Amount": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_CurrencyId": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement1Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement2Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement3Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement4Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement5Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement6Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegisterDetail_costElement7Id": [
+      "pay.cost-register-detail.edit"
+    ],
+    "CostRegister_EmployeeId": [
+      "pay.cost-register.edit"
+    ],
+    "CostRegister_Period": [
+      "pay.cost-register.edit"
+    ],
+    "CostRegister_PayrollRunType": [
+      "pay.cost-register.edit"
+    ],
     "EmployeeGroup_Code": [
       "pay.employee-group.edit"
     ],
@@ -2640,6 +2685,27 @@
     "EmployeeSubGroup_MaxDependantHealthReimburseCount": [
       "pay.employee-sub-group.edit"
     ],
+    "GratuityAccrualSummary_EmployeeId": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
+    "GratuityAccrualSummary_Year": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
+    "GratuityAccrualSummary_Month": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
+    "GratuityAccrualSummary_GratuityDaysAccrued": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
+    "GratuityAccrualSummary_GratuityDaysBalance": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
+    "GratuityAccrualSummary_GratuityAmount": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
+    "GratuityAccrualSummary_GratuityAmountPaid": [
+      "pay.gratuity-accrual-summary.edit"
+    ],
     "IndemnityPayRuleDetail_IndemnityPayRuleId": [
       "pay.indemnity-pay-rule-detail.edit"
     ],
@@ -2678,6 +2744,27 @@
     ],
     "IndemnityPayRule_MaxPayPercentage": [
       "pay.indemnity-pay-rule.edit"
+    ],
+    "LeaveAccrualSummary_EmployeeId": [
+      "pay.leave-accrual-summary.edit"
+    ],
+    "LeaveAccrualSummary_AbsenceTypeId": [
+      "pay.leave-accrual-summary.edit"
+    ],
+    "LeaveAccrualSummary_Year": [
+      "pay.leave-accrual-summary.edit"
+    ],
+    "LeaveAccrualSummary_Month": [
+      "pay.leave-accrual-summary.edit"
+    ],
+    "LeaveAccrualSummary_AccrualDays": [
+      "pay.leave-accrual-summary.edit"
+    ],
+    "LeaveAccrualSummary_UsedDays": [
+      "pay.leave-accrual-summary.edit"
+    ],
+    "LeaveAccrualSummary_CumulativeAccruedDays": [
+      "pay.leave-accrual-summary.edit"
     ],
     "OrgUnitWageAccGroup_OrganizationUnitId": [
       "pay.org-unit-wage-acc-group.edit"
@@ -2741,6 +2828,129 @@
     ],
     "PayrollControlRecord_PeriodClosed": [
       "pay.payroll-control-record.edit"
+    ],
+    "PayrollLog_Message": [
+      "pay.payroll-log.edit"
+    ],
+    "PayrollLog_RunTimeStamp": [
+      "pay.payroll-log.edit"
+    ],
+    "PayrollLog_EmployeeId": [
+      "pay.payroll-log.edit"
+    ],
+    "PayrollLog_Status": [
+      "pay.payroll-log.edit"
+    ],
+    "PayrollLog_InPeriod": [
+      "pay.payroll-log.edit"
+    ],
+    "PayrollLog_NoOfEmployee": [
+      "pay.payroll-log.edit"
+    ],
+    "PayrollLog_StopFlag": [
+      "pay.payroll-log.edit"
+    ],
+    "SalaryRegisterDaysDetail_SalaryRegisterDetailId": [
+      "pay.salary-register-days-detail.edit"
+    ],
+    "SalaryRegisterDaysDetail_Period": [
+      "pay.salary-register-days-detail.edit"
+    ],
+    "SalaryRegisterDaysDetail_Rate": [
+      "pay.salary-register-days-detail.edit"
+    ],
+    "SalaryRegisterDaysDetail_Number": [
+      "pay.salary-register-days-detail.edit"
+    ],
+    "SalaryRegisterDaysDetail_Amount": [
+      "pay.salary-register-days-detail.edit"
+    ],
+    "SalaryRegisterDetail_SalaryRegisterId": [
+      "pay.salary-register-detail.edit"
+    ],
+    "SalaryRegisterDetail_WageTypeId": [
+      "pay.salary-register-detail.edit"
+    ],
+    "SalaryRegisterDetail_Rate": [
+      "pay.salary-register-detail.edit"
+    ],
+    "SalaryRegisterDetail_Number": [
+      "pay.salary-register-detail.edit"
+    ],
+    "SalaryRegisterDetail_Amount": [
+      "pay.salary-register-detail.edit"
+    ],
+    "SalaryRegister_EmployeeId": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_ForPeriod": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_InPeriod": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_PayrollRunType": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_PayrollResultType": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_PayrollReasonTypeId": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_OffCyclePaymentDate": [
+      "pay.salary-register.edit"
+    ],
+    "SalaryRegister_Locked": [
+      "pay.salary-register.edit"
+    ],
+    "SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId": [
+      "pay.simulation-salary-register-days-detail.edit"
+    ],
+    "SimulationSalaryRegisterDaysDetail_Period": [
+      "pay.simulation-salary-register-days-detail.edit"
+    ],
+    "SimulationSalaryRegisterDaysDetail_Rate": [
+      "pay.simulation-salary-register-days-detail.edit"
+    ],
+    "SimulationSalaryRegisterDaysDetail_Number": [
+      "pay.simulation-salary-register-days-detail.edit"
+    ],
+    "SimulationSalaryRegisterDaysDetail_Amount": [
+      "pay.simulation-salary-register-days-detail.edit"
+    ],
+    "SimulationSalaryRegisterDetail_SimulationSalaryRegisterId": [
+      "pay.simulation-salary-register-detail.edit"
+    ],
+    "SimulationSalaryRegisterDetail_WageTypeId": [
+      "pay.simulation-salary-register-detail.edit"
+    ],
+    "SimulationSalaryRegisterDetail_Rate": [
+      "pay.simulation-salary-register-detail.edit"
+    ],
+    "SimulationSalaryRegisterDetail_Number": [
+      "pay.simulation-salary-register-detail.edit"
+    ],
+    "SimulationSalaryRegisterDetail_Amount": [
+      "pay.simulation-salary-register-detail.edit"
+    ],
+    "SimulationSalaryRegister_EmployeeId": [
+      "pay.simulation-salary-register.edit"
+    ],
+    "SimulationSalaryRegister_ForPeriod": [
+      "pay.simulation-salary-register.edit"
+    ],
+    "SimulationSalaryRegister_InPeriod": [
+      "pay.simulation-salary-register.edit"
+    ],
+    "SimulationSalaryRegister_PayrollRunType": [
+      "pay.simulation-salary-register.edit"
+    ],
+    "SimulationSalaryRegister_PayrollResultType": [
+      "pay.simulation-salary-register.edit"
+    ],
+    "SimulationSalaryRegister_PayrollReasonTypeId": [
+      "pay.simulation-salary-register.edit"
     ],
     "SocialSecurity_NationalityId": [
       "pay.social-security.edit"
@@ -2909,6 +3119,21 @@
     ],
     "TempEmployeeBenefit_TempBenefitTypeId": [
       "pay.temp-employee-benefit.edit"
+    ],
+    "TicketAccrualSummary_EmployeeId": [
+      "pay.ticket-accrual-summary.edit"
+    ],
+    "TicketAccrualSummary_Year": [
+      "pay.ticket-accrual-summary.edit"
+    ],
+    "TicketAccrualSummary_Month": [
+      "pay.ticket-accrual-summary.edit"
+    ],
+    "TicketAccrualSummary_TicketAccrued": [
+      "pay.ticket-accrual-summary.edit"
+    ],
+    "TicketAccrualSummary_TicketUsed": [
+      "pay.ticket-accrual-summary.edit"
     ],
     "TicketFare_TicketRouteId": [
       "pay.ticket-fare.edit"
@@ -3182,6 +3407,24 @@
     ],
     "WageType_isSecured": [
       "pay.wage-type.edit"
+    ],
+    "PayrollEngine_PayrollArea": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_RunType": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_EmployeeCodes": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_PayInDate": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_OffCycleReason": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_OffCyclePaymentDate": [
+      "pay.payroll-engine.run"
     ]
   }
 }

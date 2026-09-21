@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.SalaryRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+One line of a payslip: a wagetype with its rate, number and amount. Lines of a locked payslip cannot be changed.
 
 ## SalaryRegisterId {#SalaryRegisterDetail.SalaryRegisterId}
 <!-- alias: loc:SalaryRegisterId, dom:SalaryRegisterDetail_SalaryRegisterId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The payslip this line belongs to.
 
 **Rules.** Required. Chosen from Salary Register master data.
 
 ## WageTypeId {#SalaryRegisterDetail.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:SalaryRegisterDetail_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The wagetype of this line.
 
-**Example.** _TODO_
+**Example.** Basic Salary
 
 **Rules.** Required. Chosen from Wagetype master data.
 
 ## Rate {#SalaryRegisterDetail.Rate}
 <!-- alias: loc:Rate, dom:SalaryRegisterDetail_Rate -->
 
-**What it is.** _TODO_
+**What it is.** The monthly rate the line was worked out from.
 
-**Example.** _TODO_
+**Example.** `800`
 
 **Rules.** Required. Number.
 
 ## Number {#SalaryRegisterDetail.Number}
 <!-- alias: loc:Number, dom:SalaryRegisterDetail_Number -->
 
-**What it is.** _TODO_
+**What it is.** The quantity -- days, hours or units -- the line was worked out on.
 
-**Example.** _TODO_
+**Example.** `30`
 
 **Rules.** Required. Number.
 
 ## Amount {#SalaryRegisterDetail.Amount}
 <!-- alias: loc:Amount, dom:SalaryRegisterDetail_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount of the line.
 
-**Example.** _TODO_
+**Example.** `800.000`
 
 **Rules.** Required. Number.

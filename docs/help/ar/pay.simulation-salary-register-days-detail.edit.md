@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails.Create
 
 ## Overview
 
-_TODO_
+تفصيل سطر من كشف راتب المحاكاة بحسب التاريخ.
 
 ## SimulationSalaryRegisterDetailId {#SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId}
 <!-- alias: loc:SimulationSalaryRegisterDetailId, dom:SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** سطر كشف راتب المحاكاة الذي يتبعه هذا التفصيل.
 
 **القواعد.** إلزامي. يُختار من قائمة تفاصيل سجلات الرواتب التجريبية.
 
 ## Period {#SimulationSalaryRegisterDaysDetail.Period}
 <!-- alias: loc:Period, dom:SimulationSalaryRegisterDaysDetail_Period -->
 
-**ما هو.** _TODO_
+**ما هو.** التاريخ الذي يخصه هذا الجزء من السطر.
 
-**مثال.** _TODO_
+**مثال.** `2026-03-14`
 
 **القواعد.** إلزامي. تاريخ.
 
 ## Rate {#SimulationSalaryRegisterDaysDetail.Rate}
 <!-- alias: loc:Rate, dom:SimulationSalaryRegisterDaysDetail_Rate -->
 
-**ما هو.** _TODO_
+**ما هو.** الأجر لذلك التاريخ.
 
-**مثال.** _TODO_
+**مثال.** `800`
 
 **القواعد.** إلزامي. رقم.
 
 ## Number {#SimulationSalaryRegisterDaysDetail.Number}
 <!-- alias: loc:Number, dom:SimulationSalaryRegisterDaysDetail_Number -->
 
-**ما هو.** _TODO_
+**ما هو.** الأيام أو الساعات أو الوحدات لذلك التاريخ.
 
-**مثال.** _TODO_
+**مثال.** `2`
 
 **القواعد.** إلزامي. رقم.
 
 ## Amount {#SimulationSalaryRegisterDaysDetail.Amount}
 <!-- alias: loc:Amount, dom:SimulationSalaryRegisterDaysDetail_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ لذلك التاريخ.
 
-**مثال.** _TODO_
+**مثال.** `12.500`
 
 **القواعد.** إلزامي. رقم.

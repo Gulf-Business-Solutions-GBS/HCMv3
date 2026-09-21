@@ -11,31 +11,29 @@ permissions: [Pages.PayrollManagement.CostRegisters.Create]
 
 ## Overview
 
-_TODO_
+تكلفة رواتب الموظف لشهر واحد وتشغيل واحد، موزعة على الحسابات وعناصر التكلفة. يكتبها محرك التكلفة من كشف الراتب وحسابات الأجور للموظف، ويُبنى منها قيد اليومية.
 
 ## EmployeeId {#CostRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:CostRegister_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## Period {#CostRegister.Period}
 <!-- alias: loc:Period, dom:CostRegister_Period -->
 
-**ما هو.** _TODO_
+**ما هو.** الشهر الذي تخصه التكلفة.
 
-**مثال.** _TODO_
+**مثال.** `2026-04-30`
 
 **القواعد.** إلزامي. تاريخ.
 
 ## PayrollRunType {#CostRegister.PayrollRunType}
 <!-- alias: loc:PayrollRunType, dom:CostRegister_PayrollRunType -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت التكلفة ناتجة عن تشغيل عادي أو خارج الدورة.
 
-**مثال.** _TODO_
+**مثال.** عادي
 
 **القواعد.** إلزامي. إحدى القيم: اعتيادي، خارج الدورة.

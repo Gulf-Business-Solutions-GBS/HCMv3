@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Salary Registers — Create / Edit",
   "entity": "HCMv3.PayrollManagement.SalaryRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>An employee's payslip for one month and run, as payroll calculated it. The payroll engine writes these; its lines are the salary register details.</p><p>A <strong>locked</strong> payslip cannot be changed or deleted. With the payroll setting <em>Lock Salary Register On Payroll Exit</em> on, closing a period locks that month's regular payslips, and releasing it for payroll locks its off-cycle ones.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "SalaryRegister.EmployeeId",
     "dom:SalaryRegister_EmployeeId": "SalaryRegister.EmployeeId",
@@ -33,9 +33,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee the payslip is for.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.ForPeriod",
@@ -47,9 +47,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month the pay is for.</p><p><strong>Example.</strong> <code>2026-03-31</code></p><p><strong>Why it matters.</strong> For a retro recalculation this is an earlier month than <strong>In Period</strong>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.InPeriod",
@@ -61,9 +61,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month the pay is paid in — the run's pay date.</p><p><strong>Example.</strong> <code>2026-04-30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.PayrollRunType",
@@ -75,9 +75,9 @@
       ],
       "rules": "Required. One of: Regular, Off Cycle.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the payslip came from a regular or an off-cycle run.</p><p><strong>Example.</strong> Regular</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.PayrollResultType",
@@ -89,9 +89,9 @@
       ],
       "rules": "Required. One of: Current, Last, Archive.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Which result this is for its month.</p><p><strong>Example.</strong> Current</p><p><strong>Why it matters.</strong> A regular run writes <em>Current</em>. When the same month is recalculated in a later run, the older payslips for that month become <em>Last</em> (the most recent before) and <em>Archive</em> (the rest).</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.PayrollReasonTypeId",
@@ -103,9 +103,9 @@
       ],
       "rules": "Required. Chosen from Payroll Reason Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The off-cycle reason, for an off-cycle payslip.</p><p><strong>Example.</strong> End Of Service</p><p><strong>Why it matters.</strong> Blank on regular payslips.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.OffCyclePaymentDate",
@@ -117,9 +117,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The payment date of an off-cycle run.</p><p><strong>Example.</strong> <code>2026-05-05</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegister.Locked",
@@ -131,9 +131,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the payslip is locked.</p><p><strong>Why it matters.</strong> A locked payslip and its lines cannot be changed or deleted.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

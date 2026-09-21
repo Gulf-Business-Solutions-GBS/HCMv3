@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Payroll Engine — Run",
   "entity": "HCMv3.PayrollManagement.Dto.RunPayrollEngineInput",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Runs payroll for a payroll area, or for named employees, and shows the history of runs.</p><p>A run is refused unless the payroll area has a control record and there is a payroll calendar row for the month and year of the pay date. A <strong>regular</strong> run also needs the period released for payroll, with its month end on the pay date. An <strong>off-cycle</strong> run needs the period closed and at least one employee code.</p><p>The run works in the background; its progress and result appear in the run history below.</p>",
   "aliasIndex": {
     "loc:PayrollAreaId": "RunPayrollEngineInput.PayrollAreaName",
     "dom:PayrollEngine_PayrollArea": "RunPayrollEngineInput.PayrollAreaName",
@@ -29,9 +29,9 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The payroll area to run.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> With no payroll area, nobody is processed.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "RunPayrollEngineInput.PayrollRunType",
@@ -43,9 +43,9 @@
       ],
       "rules": "Required. One of: Regular, Off Cycle.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A regular monthly run, or an off-cycle run for particular employees.</p><p><strong>Example.</strong> Regular</p><p><strong>Why it matters.</strong> Regular needs the period released for payroll; off-cycle needs it closed.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "RunPayrollEngineInput.EmployeeCodes",
@@ -57,9 +57,9 @@
       ],
       "rules": "Optional. Maximum 4000 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The codes of the employees to run, separated by commas. Blank runs everyone active in the payroll area.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Required for an off-cycle run.</p>",
+      "adminHtml": "<p>Unless the time setting <em>Enable Time Engine Autorun</em> is on, named employees are run even if they have left or are in another payroll area; each is still checked against their own area's control record.</p>",
+      "stub": false
     },
     {
       "id": "RunPayrollEngineInput.PayInDate",
@@ -71,9 +71,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The date the pay is for — the last day of the payroll month.</p><p><strong>Example.</strong> <code>2026-04-30</code></p><p><strong>Why it matters.</strong> For a regular run it must be the month end of the period on the control record.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "RunPayrollEngineInput.OffCycleReason",
@@ -85,9 +85,9 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Why the off-cycle run is made: end of service, advance leave or leave encashment.</p><p><strong>Example.</strong> Advance Leave</p><p><strong>Why it matters.</strong> <em>Advance Leave</em> picks up paid leave set to <em>Pay In Advance</em> with a payment date in the month.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "RunPayrollEngineInput.OffCyclePaymentDate",
@@ -99,9 +99,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The date the off-cycle payment is made.</p><p><strong>Example.</strong> <code>2026-05-05</code></p><p><strong>Why it matters.</strong> Required for an off-cycle run, and must fall after the closed period. The run is then booked to the month end of this date — 5 May books to 31 May.</p>",
+      "adminHtml": "<p>When the time setting <em>Enable Time Engine Autorun</em> is on, this date is ignored and the run is booked to the month after the closed period.</p>",
+      "stub": false
     }
   ]
 }

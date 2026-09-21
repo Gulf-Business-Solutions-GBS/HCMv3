@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.SalaryRegisterDaysDetails.Create]
 
 ## Overview
 
-_TODO_
+تفصيل سطر من كشف الراتب بحسب التاريخ -- العمل الإضافي يوماً بيوم مثلاً، أو الإجازة المدفوعة عبر أشهر. ولا يمكن تعديل تفاصيل كشف الراتب المقفل.
 
 ## SalaryRegisterDetailId {#SalaryRegisterDaysDetail.SalaryRegisterDetailId}
 <!-- alias: loc:SalaryRegisterDetailId, dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** سطر كشف الراتب الذي يتبعه هذا التفصيل.
 
 **القواعد.** إلزامي. يُختار من قائمة تفاصيل سجلات الرواتب.
 
 ## Period {#SalaryRegisterDaysDetail.Period}
 <!-- alias: loc:Period, dom:SalaryRegisterDaysDetail_Period -->
 
-**ما هو.** _TODO_
+**ما هو.** التاريخ الذي يخصه هذا الجزء من السطر.
 
-**مثال.** _TODO_
+**مثال.** `2026-03-14`
 
 **القواعد.** إلزامي. تاريخ.
 
 ## Rate {#SalaryRegisterDaysDetail.Rate}
 <!-- alias: loc:Rate, dom:SalaryRegisterDaysDetail_Rate -->
 
-**ما هو.** _TODO_
+**ما هو.** الأجر لذلك التاريخ.
 
-**مثال.** _TODO_
+**مثال.** `800`
 
 **القواعد.** إلزامي. رقم.
 
 ## Number {#SalaryRegisterDaysDetail.Number}
 <!-- alias: loc:Number, dom:SalaryRegisterDaysDetail_Number -->
 
-**ما هو.** _TODO_
+**ما هو.** الأيام أو الساعات أو الوحدات لذلك التاريخ.
 
-**مثال.** _TODO_
+**مثال.** `2`
 
 **القواعد.** إلزامي. رقم.
 
 ## Amount {#SalaryRegisterDaysDetail.Amount}
 <!-- alias: loc:Amount, dom:SalaryRegisterDaysDetail_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ لذلك التاريخ.
 
-**مثال.** _TODO_
+**مثال.** `12.500`
 
 **القواعد.** إلزامي. رقم.

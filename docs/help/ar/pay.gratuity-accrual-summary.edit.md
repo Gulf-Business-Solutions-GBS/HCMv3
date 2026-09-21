@@ -11,67 +11,67 @@ permissions: [Pages.PayrollManagement.GratuityAccrualSummaries.Create]
 
 ## Overview
 
-_TODO_
+لقطة شهرية لمكافأة نهاية الخدمة للموظف: الأيام المستحقة والرصيد والمبالغ.
+
+لا تُكتب حالياً: لا توجد عملية تملأ هذه الملخصات، ولا شيء يقرؤها. فالأرصدة تُحتسب عند الحاجة إليها من سجل الوقت وسجلات الموظف.
 
 ## EmployeeId {#GratuityAccrualSummary.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:GratuityAccrualSummary_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## Year {#GratuityAccrualSummary.Year}
 <!-- alias: loc:Year, dom:GratuityAccrualSummary_Year -->
 
-**ما هو.** _TODO_
+**ما هو.** سنة اللقطة.
 
-**مثال.** _TODO_
+**مثال.** `2026`
 
 **القواعد.** إلزامي. رقم صحيح.
 
 ## Month {#GratuityAccrualSummary.Month}
 <!-- alias: loc:Month, dom:GratuityAccrualSummary_Month -->
 
-**ما هو.** _TODO_
+**ما هو.** شهر اللقطة.
 
-**مثال.** _TODO_
+**مثال.** `4`
 
 **القواعد.** إلزامي. رقم صحيح.
 
 ## GratuityDaysAccrued {#GratuityAccrualSummary.GratuityDaysAccrued}
 <!-- alias: loc:GratuityDaysAccrued, dom:GratuityAccrualSummary_GratuityDaysAccrued -->
 
-**ما هو.** _TODO_
+**ما هو.** أيام المكافأة المستحقة في الشهر.
 
-**مثال.** _TODO_
+**مثال.** `1.25`
 
 **القواعد.** إلزامي. رقم.
 
 ## GratuityDaysBalance {#GratuityAccrualSummary.GratuityDaysBalance}
 <!-- alias: loc:GratuityDaysBalance, dom:GratuityAccrualSummary_GratuityDaysBalance -->
 
-**ما هو.** _TODO_
+**ما هو.** أيام المكافأة المستحقة حتى تاريخه.
 
-**مثال.** _TODO_
+**مثال.** `37.5`
 
 **القواعد.** إلزامي. رقم.
 
 ## GratuityAmount {#GratuityAccrualSummary.GratuityAmount}
 <!-- alias: loc:GratuityAmount, dom:GratuityAccrualSummary_GratuityAmount -->
 
-**ما هو.** _TODO_
+**ما هو.** قيمة المكافأة حتى تاريخه.
 
-**مثال.** _TODO_
+**مثال.** `1000.000`
 
 **القواعد.** إلزامي. رقم.
 
 ## GratuityAmountPaid {#GratuityAccrualSummary.GratuityAmountPaid}
 <!-- alias: loc:GratuityAmountPaid, dom:GratuityAccrualSummary_GratuityAmountPaid -->
 
-**ما هو.** _TODO_
+**ما هو.** ما صُرف من المكافأة.
 
-**مثال.** _TODO_
+**مثال.** `0.000`
 
 **القواعد.** إلزامي. رقم.

@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+سطر واحد من كشف راتب المحاكاة: نوع أجر مع أجره وعدده ومبلغه.
 
 ## SimulationSalaryRegisterId {#SimulationSalaryRegisterDetail.SimulationSalaryRegisterId}
 <!-- alias: loc:SimulationSalaryRegisterId, dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** كشف راتب المحاكاة الذي يتبعه هذا السطر.
 
 **القواعد.** إلزامي. يُختار من قائمة سجلات الرواتب التجريبية.
 
 ## WageTypeId {#SimulationSalaryRegisterDetail.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:SimulationSalaryRegisterDetail_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الأجر لهذا السطر.
 
-**مثال.** _TODO_
+**مثال.** الراتب الأساسي
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الأجور.
 
 ## Rate {#SimulationSalaryRegisterDetail.Rate}
 <!-- alias: loc:Rate, dom:SimulationSalaryRegisterDetail_Rate -->
 
-**ما هو.** _TODO_
+**ما هو.** الأجر الشهري الذي احتُسب منه السطر.
 
-**مثال.** _TODO_
+**مثال.** `800`
 
 **القواعد.** إلزامي. رقم.
 
 ## Number {#SimulationSalaryRegisterDetail.Number}
 <!-- alias: loc:Number, dom:SimulationSalaryRegisterDetail_Number -->
 
-**ما هو.** _TODO_
+**ما هو.** الكمية -- أيام أو ساعات أو وحدات -- التي احتُسب عليها السطر.
 
-**مثال.** _TODO_
+**مثال.** `30`
 
 **القواعد.** إلزامي. رقم.
 
 ## Amount {#SimulationSalaryRegisterDetail.Amount}
 <!-- alias: loc:Amount, dom:SimulationSalaryRegisterDetail_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** مبلغ السطر.
 
-**مثال.** _TODO_
+**مثال.** `800.000`
 
 **القواعد.** إلزامي. رقم.

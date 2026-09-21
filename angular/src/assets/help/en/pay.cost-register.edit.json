@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Cost Registers — Create / Edit",
   "entity": "HCMv3.PayrollManagement.CostRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>An employee's payroll cost for one month and run, split across ledger accounts and cost elements. The cost engine writes these from the payslip and the employee's wage accounts; the journal voucher is built from them.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "CostRegister.EmployeeId",
     "dom:CostRegister_EmployeeId": "CostRegister.EmployeeId",
@@ -23,9 +23,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegister.Period",
@@ -37,9 +37,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month the cost is for.</p><p><strong>Example.</strong> <code>2026-04-30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegister.PayrollRunType",
@@ -51,9 +51,9 @@
       ],
       "rules": "Required. One of: Regular, Off Cycle.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the cost came from a regular or an off-cycle run.</p><p><strong>Example.</strong> Regular</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails.Create
 
 ## Overview
 
-_TODO_
+The breakdown of a simulation payslip line by date.
 
 ## SimulationSalaryRegisterDetailId {#SimulationSalaryRegisterDaysDetail.SimulationSalaryRegisterDetailId}
 <!-- alias: loc:SimulationSalaryRegisterDetailId, dom:SimulationSalaryRegisterDaysDetail_SimulationSalaryRegisterDetailId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The simulation payslip line this breakdown belongs to.
 
 **Rules.** Required. Chosen from Simulation Salary Register Detail master data.
 
 ## Period {#SimulationSalaryRegisterDaysDetail.Period}
 <!-- alias: loc:Period, dom:SimulationSalaryRegisterDaysDetail_Period -->
 
-**What it is.** _TODO_
+**What it is.** The date this part of the line is for.
 
-**Example.** _TODO_
+**Example.** `2026-03-14`
 
 **Rules.** Required. Date value.
 
 ## Rate {#SimulationSalaryRegisterDaysDetail.Rate}
 <!-- alias: loc:Rate, dom:SimulationSalaryRegisterDaysDetail_Rate -->
 
-**What it is.** _TODO_
+**What it is.** The rate for that date.
 
-**Example.** _TODO_
+**Example.** `800`
 
 **Rules.** Required. Number.
 
 ## Number {#SimulationSalaryRegisterDaysDetail.Number}
 <!-- alias: loc:Number, dom:SimulationSalaryRegisterDaysDetail_Number -->
 
-**What it is.** _TODO_
+**What it is.** The days, hours or units for that date.
 
-**Example.** _TODO_
+**Example.** `2`
 
 **Rules.** Required. Number.
 
 ## Amount {#SimulationSalaryRegisterDaysDetail.Amount}
 <!-- alias: loc:Amount, dom:SimulationSalaryRegisterDaysDetail_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount for that date.
 
-**Example.** _TODO_
+**Example.** `12.500`
 
 **Rules.** Required. Number.

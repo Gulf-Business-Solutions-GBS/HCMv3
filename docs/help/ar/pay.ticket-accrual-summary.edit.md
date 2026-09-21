@@ -11,49 +11,49 @@ permissions: [Pages.PayrollManagement.TicketAccrualSummaries.Create]
 
 ## Overview
 
-_TODO_
+لقطة شهرية لاستحقاق تذاكر الطيران للموظف.
+
+لا تُكتب حالياً: لا توجد عملية تملأ هذه الملخصات، ولا شيء يقرؤها. فالأرصدة تُحتسب عند الحاجة إليها من سجل الوقت وسجلات الموظف.
 
 ## EmployeeId {#TicketAccrualSummary.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:TicketAccrualSummary_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## Year {#TicketAccrualSummary.Year}
 <!-- alias: loc:Year, dom:TicketAccrualSummary_Year -->
 
-**ما هو.** _TODO_
+**ما هو.** سنة اللقطة.
 
-**مثال.** _TODO_
+**مثال.** `2026`
 
 **القواعد.** اختياري. رقم صحيح.
 
 ## Month {#TicketAccrualSummary.Month}
 <!-- alias: loc:Month, dom:TicketAccrualSummary_Month -->
 
-**ما هو.** _TODO_
+**ما هو.** شهر اللقطة.
 
-**مثال.** _TODO_
+**مثال.** `4`
 
 **القواعد.** اختياري. رقم صحيح.
 
 ## TicketAccrued {#TicketAccrualSummary.TicketAccrued}
 <!-- alias: loc:TicketAccrued, dom:TicketAccrualSummary_TicketAccrued -->
 
-**ما هو.** _TODO_
+**ما هو.** التذاكر المستحقة حتى تاريخه.
 
-**مثال.** _TODO_
+**مثال.** `0.33`
 
 **القواعد.** اختياري. رقم.
 
 ## TicketUsed {#TicketAccrualSummary.TicketUsed}
 <!-- alias: loc:TicketUsed, dom:TicketAccrualSummary_TicketUsed -->
 
-**ما هو.** _TODO_
+**ما هو.** التذاكر المستخدمة حتى تاريخه.
 
-**مثال.** _TODO_
+**مثال.** `0`
 
 **القواعد.** اختياري. رقم.

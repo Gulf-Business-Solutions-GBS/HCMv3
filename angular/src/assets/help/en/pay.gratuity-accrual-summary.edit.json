@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Gratuity Accrual Summaries — Create / Edit",
   "entity": "HCMv3.PayrollManagement.GratuityAccrualSummary",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A monthly snapshot of an employee's end-of-service indemnity: days accrued, balance and amounts.</p><p>Not written at present: no process fills these summaries, and nothing reads them. Balances are worked out when they are needed, from the time register and the employee's records.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "GratuityAccrualSummary.EmployeeId",
     "dom:GratuityAccrualSummary_EmployeeId": "GratuityAccrualSummary.EmployeeId",
@@ -31,9 +31,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "GratuityAccrualSummary.Year",
@@ -45,9 +45,9 @@
       ],
       "rules": "Required. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The year of the snapshot.</p><p><strong>Example.</strong> <code>2026</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "GratuityAccrualSummary.Month",
@@ -59,9 +59,9 @@
       ],
       "rules": "Required. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month of the snapshot.</p><p><strong>Example.</strong> <code>4</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "GratuityAccrualSummary.GratuityDaysAccrued",
@@ -73,9 +73,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Indemnity days accrued in the month.</p><p><strong>Example.</strong> <code>1.25</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "GratuityAccrualSummary.GratuityDaysBalance",
@@ -87,9 +87,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Indemnity days accrued to date.</p><p><strong>Example.</strong> <code>37.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "GratuityAccrualSummary.GratuityAmount",
@@ -101,9 +101,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The value of the indemnity to date.</p><p><strong>Example.</strong> <code>1000.000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "GratuityAccrualSummary.GratuityAmountPaid",
@@ -115,9 +115,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Indemnity already paid.</p><p><strong>Example.</strong> <code>0.000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

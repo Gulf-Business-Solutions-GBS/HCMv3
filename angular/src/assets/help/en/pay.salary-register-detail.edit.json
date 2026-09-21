@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Salary Register Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.SalaryRegisterDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One line of a payslip: a wagetype with its rate, number and amount. Lines of a locked payslip cannot be changed.</p>",
   "aliasIndex": {
     "loc:SalaryRegisterId": "SalaryRegisterDetail.SalaryRegisterId",
     "dom:SalaryRegisterDetail_SalaryRegisterId": "SalaryRegisterDetail.SalaryRegisterId",
@@ -27,9 +27,9 @@
       ],
       "rules": "Required. Chosen from Salary Register master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The payslip this line belongs to.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegisterDetail.WageTypeId",
@@ -41,9 +41,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype of this line.</p><p><strong>Example.</strong> Basic Salary</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegisterDetail.Rate",
@@ -55,9 +55,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The monthly rate the line was worked out from.</p><p><strong>Example.</strong> <code>800</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegisterDetail.Number",
@@ -69,9 +69,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The quantity — days, hours or units — the line was worked out on.</p><p><strong>Example.</strong> <code>30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SalaryRegisterDetail.Amount",
@@ -83,9 +83,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The amount of the line.</p><p><strong>Example.</strong> <code>800.000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

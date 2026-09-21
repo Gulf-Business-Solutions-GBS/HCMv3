@@ -11,58 +11,62 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisters.Create]
 
 ## Overview
 
-_TODO_
+كشف راتب من محاكاة -- تشغيل تجريبي يبيّن ما سيصرفه نظام الرواتب دون صرفه. وتُحفظ كشوف المحاكاة منفصلة عن الكشوف الفعلية ولا تُقفل أبداً.
 
 ## EmployeeId {#SimulationSalaryRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:SimulationSalaryRegister_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف الذي يخصه كشف الراتب.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## ForPeriod {#SimulationSalaryRegister.ForPeriod}
 <!-- alias: loc:ForPeriod, dom:SimulationSalaryRegister_ForPeriod -->
 
-**ما هو.** _TODO_
+**ما هو.** الشهر الذي يخصه الأجر.
 
-**مثال.** _TODO_
+**مثال.** `2026-03-31`
+
+**لماذا يهم.** في إعادة الاحتساب بأثر رجعي يكون هذا شهراً أسبق من **في الفترة**.
 
 **القواعد.** إلزامي. تاريخ.
 
 ## InPeriod {#SimulationSalaryRegister.InPeriod}
 <!-- alias: loc:InPeriod, dom:SimulationSalaryRegister_InPeriod -->
 
-**ما هو.** _TODO_
+**ما هو.** الشهر الذي يُصرف فيه الأجر -- تاريخ الدفع للتشغيل.
 
-**مثال.** _TODO_
+**مثال.** `2026-04-30`
 
 **القواعد.** إلزامي. تاريخ.
 
 ## PayrollRunType {#SimulationSalaryRegister.PayrollRunType}
 <!-- alias: loc:PayrollRunType, dom:SimulationSalaryRegister_PayrollRunType -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان كشف الراتب ناتجاً عن تشغيل عادي أو خارج الدورة.
 
-**مثال.** _TODO_
+**مثال.** عادي
 
 **القواعد.** إلزامي. إحدى القيم: اعتيادي، خارج الدورة.
 
 ## PayrollResultType {#SimulationSalaryRegister.PayrollResultType}
 <!-- alias: loc:PayrollResultType, dom:SimulationSalaryRegister_PayrollResultType -->
 
-**ما هو.** _TODO_
+**ما هو.** أي نتيجة هذه لشهرها.
 
-**مثال.** _TODO_
+**مثال.** الحالي
+
+**لماذا يهم.** يكتب التشغيل العادي *الحالي*. وعندما يُعاد احتساب الشهر نفسه في تشغيل لاحق، تصبح كشوف ذلك الشهر الأقدم *الأخير* (أحدثها قبل ذلك) و*الأرشيف* (البقية).
 
 **القواعد.** إلزامي. إحدى القيم: الحالي، الأخير، الأرشيف.
 
 ## PayrollReasonTypeId {#SimulationSalaryRegister.PayrollReasonTypeId}
 <!-- alias: loc:PayrollReasonTypeId, dom:SimulationSalaryRegister_PayrollReasonTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** سبب التشغيل خارج الدورة، لكشف الراتب خارج الدورة.
 
-**مثال.** _TODO_
+**مثال.** نهاية الخدمة
+
+**لماذا يهم.** فارغ في كشوف الرواتب العادية.
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع أسباب الرواتب.

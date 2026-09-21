@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل سجلات الرواتب التجريبية — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.SimulationSalaryRegisterDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>سطر واحد من كشف راتب المحاكاة: نوع أجر مع أجره وعدده ومبلغه.</p>",
   "aliasIndex": {
     "loc:SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
     "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
@@ -27,9 +27,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة سجلات الرواتب التجريبية.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> كشف راتب المحاكاة الذي يتبعه هذا السطر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegisterDetail.WageTypeId",
@@ -41,9 +41,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر لهذا السطر.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegisterDetail.Rate",
@@ -55,9 +55,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الأجر الشهري الذي احتُسب منه السطر.</p><p><strong>مثال.</strong> <code>800</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegisterDetail.Number",
@@ -69,9 +69,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الكمية — أيام أو ساعات أو وحدات — التي احتُسب عليها السطر.</p><p><strong>مثال.</strong> <code>30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegisterDetail.Amount",
@@ -83,9 +83,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> مبلغ السطر.</p><p><strong>مثال.</strong> <code>800.000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

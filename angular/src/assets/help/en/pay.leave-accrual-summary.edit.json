@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Leave Accrual Summaries — Create / Edit",
   "entity": "HCMv3.PayrollManagement.LeaveAccrualSummary",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A monthly snapshot of an employee's leave balance for one leave type.</p><p>Not written at present: no process fills these summaries, and nothing reads them. Balances are worked out when they are needed, from the time register and the employee's records.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "LeaveAccrualSummary.EmployeeId",
     "dom:LeaveAccrualSummary_EmployeeId": "LeaveAccrualSummary.EmployeeId",
@@ -31,9 +31,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.AbsenceTypeId",
@@ -45,9 +45,9 @@
       ],
       "rules": "Required. Chosen from Absence Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The leave type.</p><p><strong>Example.</strong> Annual Leave</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.Year",
@@ -59,9 +59,9 @@
       ],
       "rules": "Required. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The year of the snapshot.</p><p><strong>Example.</strong> <code>2026</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.Month",
@@ -73,9 +73,9 @@
       ],
       "rules": "Required. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month of the snapshot.</p><p><strong>Example.</strong> <code>4</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.AccrualDays",
@@ -87,9 +87,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Leave days accrued in the month.</p><p><strong>Example.</strong> <code>2.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.UsedDays",
@@ -101,9 +101,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Leave days taken in the month.</p><p><strong>Example.</strong> <code>3</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.CumulativeAccruedDays",
@@ -115,9 +115,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Leave days accrued to date.</p><p><strong>Example.</strong> <code>22.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

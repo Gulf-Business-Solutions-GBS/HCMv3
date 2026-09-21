@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل سجلات التكلفة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.CostRegisterDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>سطر تكلفة واحد: جزء من مبلغ نوع أجر يُرحَّل إلى حساب تحت مجموعة من عناصر التكلفة. ونوع الأجر الموزع على عدة حسابات أجور يعطي عدة أسطر، يحمل كل منها نسبة التكلفة من المبلغ.</p>",
   "aliasIndex": {
     "loc:CostRegisterId": "CostRegisterDetail.CostRegisterId",
     "dom:CostRegisterDetail_CostRegisterId": "CostRegisterDetail.CostRegisterId",
@@ -41,9 +41,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة سجلات التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> سجل التكلفة الذي يتبعه هذا السطر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.WageTypeId",
@@ -55,9 +55,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر المحتسبة تكلفته. وتُحتسب تكلفة المتأخرات تحت نوع الأجر المصدر لها.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.AccountInfoId",
@@ -69,9 +69,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحساب الذي يُرحَّل إليه المبلغ.</p><p><strong>مثال.</strong> 510100 — الرواتب والأجور</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.Amount",
@@ -83,9 +83,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> المبلغ المُرحَّل.</p><p><strong>مثال.</strong> <code>800.000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CurrencyId",
@@ -97,9 +97,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة العملات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عملة الراتب الأساسي للموظف.</p><p><strong>مثال.</strong> دينار كويتي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement1Id",
@@ -111,9 +111,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 1 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement2Id",
@@ -125,9 +125,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 2 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement3Id",
@@ -139,9 +139,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 3 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement4Id",
@@ -153,9 +153,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 4 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement5Id",
@@ -167,9 +167,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 5 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement6Id",
@@ -181,9 +181,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 6 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement7Id",
@@ -195,9 +195,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عنصر التكلفة 7 — أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

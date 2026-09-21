@@ -11,67 +11,67 @@ permissions: [Pages.PayrollManagement.LeaveAccrualSummaries.Create]
 
 ## Overview
 
-_TODO_
+لقطة شهرية لرصيد إجازة الموظف لنوع إجازة واحد.
+
+لا تُكتب حالياً: لا توجد عملية تملأ هذه الملخصات، ولا شيء يقرؤها. فالأرصدة تُحتسب عند الحاجة إليها من سجل الوقت وسجلات الموظف.
 
 ## EmployeeId {#LeaveAccrualSummary.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:LeaveAccrualSummary_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## AbsenceTypeId {#LeaveAccrualSummary.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:LeaveAccrualSummary_AbsenceTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الإجازة.
 
-**مثال.** _TODO_
+**مثال.** الإجازة السنوية
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
 
 ## Year {#LeaveAccrualSummary.Year}
 <!-- alias: loc:Year, dom:LeaveAccrualSummary_Year -->
 
-**ما هو.** _TODO_
+**ما هو.** سنة اللقطة.
 
-**مثال.** _TODO_
+**مثال.** `2026`
 
 **القواعد.** إلزامي. رقم صحيح.
 
 ## Month {#LeaveAccrualSummary.Month}
 <!-- alias: loc:Month, dom:LeaveAccrualSummary_Month -->
 
-**ما هو.** _TODO_
+**ما هو.** شهر اللقطة.
 
-**مثال.** _TODO_
+**مثال.** `4`
 
 **القواعد.** إلزامي. رقم صحيح.
 
 ## AccrualDays {#LeaveAccrualSummary.AccrualDays}
 <!-- alias: loc:AccrualDays, dom:LeaveAccrualSummary_AccrualDays -->
 
-**ما هو.** _TODO_
+**ما هو.** أيام الإجازة المستحقة في الشهر.
 
-**مثال.** _TODO_
+**مثال.** `2.5`
 
 **القواعد.** إلزامي. رقم.
 
 ## UsedDays {#LeaveAccrualSummary.UsedDays}
 <!-- alias: loc:UsedDays, dom:LeaveAccrualSummary_UsedDays -->
 
-**ما هو.** _TODO_
+**ما هو.** أيام الإجازة المأخوذة في الشهر.
 
-**مثال.** _TODO_
+**مثال.** `3`
 
 **القواعد.** إلزامي. رقم.
 
 ## CumulativeAccruedDays {#LeaveAccrualSummary.CumulativeAccruedDays}
 <!-- alias: loc:CumulativeAccruedDays, dom:LeaveAccrualSummary_CumulativeAccruedDays -->
 
-**ما هو.** _TODO_
+**ما هو.** أيام الإجازة المستحقة حتى تاريخه.
 
-**مثال.** _TODO_
+**مثال.** `22.5`
 
 **القواعد.** إلزامي. رقم.

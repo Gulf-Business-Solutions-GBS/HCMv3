@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Ticket Accrual Summaries — Create / Edit",
   "entity": "HCMv3.PayrollManagement.TicketAccrualSummary",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A monthly snapshot of an employee's air ticket entitlement.</p><p>Not written at present: no process fills these summaries, and nothing reads them. Balances are worked out when they are needed, from the time register and the employee's records.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "TicketAccrualSummary.EmployeeId",
     "dom:TicketAccrualSummary_EmployeeId": "TicketAccrualSummary.EmployeeId",
@@ -27,9 +27,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketAccrualSummary.Year",
@@ -41,9 +41,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The year of the snapshot.</p><p><strong>Example.</strong> <code>2026</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketAccrualSummary.Month",
@@ -55,9 +55,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month of the snapshot.</p><p><strong>Example.</strong> <code>4</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketAccrualSummary.TicketAccrued",
@@ -69,9 +69,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Tickets accrued to date.</p><p><strong>Example.</strong> <code>0.33</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketAccrualSummary.TicketUsed",
@@ -83,9 +83,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Tickets used to date.</p><p><strong>Example.</strong> <code>0</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

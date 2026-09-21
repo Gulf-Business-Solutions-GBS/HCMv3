@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+One line of a simulation payslip: a wagetype with its rate, number and amount.
 
 ## SimulationSalaryRegisterId {#SimulationSalaryRegisterDetail.SimulationSalaryRegisterId}
 <!-- alias: loc:SimulationSalaryRegisterId, dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The simulation payslip this line belongs to.
 
 **Rules.** Required. Chosen from Simulation Salary Register master data.
 
 ## WageTypeId {#SimulationSalaryRegisterDetail.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:SimulationSalaryRegisterDetail_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The wagetype of this line.
 
-**Example.** _TODO_
+**Example.** Basic Salary
 
 **Rules.** Required. Chosen from Wagetype master data.
 
 ## Rate {#SimulationSalaryRegisterDetail.Rate}
 <!-- alias: loc:Rate, dom:SimulationSalaryRegisterDetail_Rate -->
 
-**What it is.** _TODO_
+**What it is.** The monthly rate the line was worked out from.
 
-**Example.** _TODO_
+**Example.** `800`
 
 **Rules.** Required. Number.
 
 ## Number {#SimulationSalaryRegisterDetail.Number}
 <!-- alias: loc:Number, dom:SimulationSalaryRegisterDetail_Number -->
 
-**What it is.** _TODO_
+**What it is.** The quantity -- days, hours or units -- the line was worked out on.
 
-**Example.** _TODO_
+**Example.** `30`
 
 **Rules.** Required. Number.
 
 ## Amount {#SimulationSalaryRegisterDetail.Amount}
 <!-- alias: loc:Amount, dom:SimulationSalaryRegisterDetail_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount of the line.
 
-**Example.** _TODO_
+**Example.** `800.000`
 
 **Rules.** Required. Number.

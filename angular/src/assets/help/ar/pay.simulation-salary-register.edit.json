@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات الرواتب التجريبية — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.SimulationSalaryRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>كشف راتب من محاكاة — تشغيل تجريبي يبيّن ما سيصرفه نظام الرواتب دون صرفه. وتُحفظ كشوف المحاكاة منفصلة عن الكشوف الفعلية ولا تُقفل أبداً.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "SimulationSalaryRegister.EmployeeId",
     "dom:SimulationSalaryRegister_EmployeeId": "SimulationSalaryRegister.EmployeeId",
@@ -29,9 +29,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه كشف الراتب.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegister.ForPeriod",
@@ -43,9 +43,9 @@
       ],
       "rules": "إلزامي. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يخصه الأجر.</p><p><strong>مثال.</strong> <code>2026-03-31</code></p><p><strong>لماذا يهم.</strong> في إعادة الاحتساب بأثر رجعي يكون هذا شهراً أسبق من <strong>في الفترة</strong>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegister.InPeriod",
@@ -57,9 +57,9 @@
       ],
       "rules": "إلزامي. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الشهر الذي يُصرف فيه الأجر — تاريخ الدفع للتشغيل.</p><p><strong>مثال.</strong> <code>2026-04-30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegister.PayrollRunType",
@@ -71,9 +71,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: اعتيادي، خارج الدورة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان كشف الراتب ناتجاً عن تشغيل عادي أو خارج الدورة.</p><p><strong>مثال.</strong> عادي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegister.PayrollResultType",
@@ -85,9 +85,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: الحالي، الأخير، الأرشيف.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أي نتيجة هذه لشهرها.</p><p><strong>مثال.</strong> الحالي</p><p><strong>لماذا يهم.</strong> يكتب التشغيل العادي <em>الحالي</em>. وعندما يُعاد احتساب الشهر نفسه في تشغيل لاحق، تصبح كشوف ذلك الشهر الأقدم <em>الأخير</em> (أحدثها قبل ذلك) و<em>الأرشيف</em> (البقية).</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationSalaryRegister.PayrollReasonTypeId",
@@ -99,9 +99,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع أسباب الرواتب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> سبب التشغيل خارج الدورة، لكشف الراتب خارج الدورة.</p><p><strong>مثال.</strong> نهاية الخدمة</p><p><strong>لماذا يهم.</strong> فارغ في كشوف الرواتب العادية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

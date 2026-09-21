@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "ملخصات تراكم الإجازات — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.LeaveAccrualSummary",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>لقطة شهرية لرصيد إجازة الموظف لنوع إجازة واحد.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه الملخصات، ولا شيء يقرؤها. فالأرصدة تُحتسب عند الحاجة إليها من سجل الوقت وسجلات الموظف.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "LeaveAccrualSummary.EmployeeId",
     "dom:LeaveAccrualSummary_EmployeeId": "LeaveAccrualSummary.EmployeeId",
@@ -31,9 +31,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.AbsenceTypeId",
@@ -45,9 +45,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.Year",
@@ -59,9 +59,9 @@
       ],
       "rules": "إلزامي. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> سنة اللقطة.</p><p><strong>مثال.</strong> <code>2026</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.Month",
@@ -73,9 +73,9 @@
       ],
       "rules": "إلزامي. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> شهر اللقطة.</p><p><strong>مثال.</strong> <code>4</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.AccrualDays",
@@ -87,9 +87,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المستحقة في الشهر.</p><p><strong>مثال.</strong> <code>2.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.UsedDays",
@@ -101,9 +101,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المأخوذة في الشهر.</p><p><strong>مثال.</strong> <code>3</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "LeaveAccrualSummary.CumulativeAccruedDays",
@@ -115,9 +115,9 @@
       ],
       "rules": "إلزامي. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المستحقة حتى تاريخه.</p><p><strong>مثال.</strong> <code>22.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

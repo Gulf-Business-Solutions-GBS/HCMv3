@@ -11,31 +11,29 @@ permissions: [Pages.PayrollManagement.CostRegisters.Create]
 
 ## Overview
 
-_TODO_
+An employee's payroll cost for one month and run, split across ledger accounts and cost elements. The cost engine writes these from the payslip and the employee's wage accounts; the journal voucher is built from them.
 
 ## EmployeeId {#CostRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:CostRegister_EmployeeId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The employee.
 
 **Rules.** Required. Chosen from the employee list.
 
 ## Period {#CostRegister.Period}
 <!-- alias: loc:Period, dom:CostRegister_Period -->
 
-**What it is.** _TODO_
+**What it is.** The month the cost is for.
 
-**Example.** _TODO_
+**Example.** `2026-04-30`
 
 **Rules.** Required. Date value.
 
 ## PayrollRunType {#CostRegister.PayrollRunType}
 <!-- alias: loc:PayrollRunType, dom:CostRegister_PayrollRunType -->
 
-**What it is.** _TODO_
+**What it is.** Whether the cost came from a regular or an off-cycle run.
 
-**Example.** _TODO_
+**Example.** Regular
 
 **Rules.** Required. One of: Regular, Off Cycle.

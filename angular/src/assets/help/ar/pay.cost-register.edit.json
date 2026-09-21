@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات التكلفة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.CostRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>تكلفة رواتب الموظف لشهر واحد وتشغيل واحد، موزعة على الحسابات وعناصر التكلفة. يكتبها محرك التكلفة من كشف الراتب وحسابات الأجور للموظف، ويُبنى منها قيد اليومية.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "CostRegister.EmployeeId",
     "dom:CostRegister_EmployeeId": "CostRegister.EmployeeId",
@@ -23,9 +23,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegister.Period",
@@ -37,9 +37,9 @@
       ],
       "rules": "إلزامي. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الشهر الذي تخصه التكلفة.</p><p><strong>مثال.</strong> <code>2026-04-30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegister.PayrollRunType",
@@ -51,9 +51,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: اعتيادي، خارج الدورة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التكلفة ناتجة عن تشغيل عادي أو خارج الدورة.</p><p><strong>مثال.</strong> عادي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

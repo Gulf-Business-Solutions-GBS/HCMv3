@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Cost Register Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.CostRegisterDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One cost line: part of a wagetype's amount posted to a ledger account under a set of cost elements. A wagetype split across several wage accounts gives several lines, each carrying its cost percentage of the amount.</p>",
   "aliasIndex": {
     "loc:CostRegisterId": "CostRegisterDetail.CostRegisterId",
     "dom:CostRegisterDetail_CostRegisterId": "CostRegisterDetail.CostRegisterId",
@@ -41,9 +41,9 @@
       ],
       "rules": "Required. Chosen from Cost Register master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The cost register this line belongs to.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.WageTypeId",
@@ -55,9 +55,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype costed. An arrear is costed under its source wagetype.</p><p><strong>Example.</strong> Basic Salary</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.AccountInfoId",
@@ -69,9 +69,9 @@
       ],
       "rules": "Required. Chosen from Account Info master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The ledger account the amount posts to.</p><p><strong>Example.</strong> 510100 — Salaries and Wages</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.Amount",
@@ -83,9 +83,9 @@
       ],
       "rules": "Required. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The amount posted.</p><p><strong>Example.</strong> <code>800.000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CurrencyId",
@@ -97,9 +97,9 @@
       ],
       "rules": "Optional. Chosen from Currency master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The currency of the employee's basic pay.</p><p><strong>Example.</strong> Kuwaiti Dinar</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement1Id",
@@ -111,9 +111,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 1 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement2Id",
@@ -125,9 +125,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 2 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement3Id",
@@ -139,9 +139,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 3 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement4Id",
@@ -153,9 +153,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 4 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement5Id",
@@ -167,9 +167,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 5 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement6Id",
@@ -181,9 +181,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 6 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "CostRegisterDetail.CostElement7Id",
@@ -195,9 +195,9 @@
       ],
       "rules": "Optional. Chosen from Cost Element master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Cost element 7 — one of up to seven accounting dimensions, copied from the employee's wage account.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

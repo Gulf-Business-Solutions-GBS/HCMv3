@@ -11,112 +11,96 @@ permissions: [Pages.PayrollManagement.CostRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+سطر تكلفة واحد: جزء من مبلغ نوع أجر يُرحَّل إلى حساب تحت مجموعة من عناصر التكلفة. ونوع الأجر الموزع على عدة حسابات أجور يعطي عدة أسطر، يحمل كل منها نسبة التكلفة من المبلغ.
 
 ## CostRegisterId {#CostRegisterDetail.CostRegisterId}
 <!-- alias: loc:CostRegisterId, dom:CostRegisterDetail_CostRegisterId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** سجل التكلفة الذي يتبعه هذا السطر.
 
 **القواعد.** إلزامي. يُختار من قائمة سجلات التكلفة.
 
 ## WageTypeId {#CostRegisterDetail.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:CostRegisterDetail_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الأجر المحتسبة تكلفته. وتُحتسب تكلفة المتأخرات تحت نوع الأجر المصدر لها.
 
-**مثال.** _TODO_
+**مثال.** الراتب الأساسي
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الأجور.
 
 ## AccountInfoId {#CostRegisterDetail.AccountInfoId}
 <!-- alias: loc:AccountInfoId, dom:CostRegisterDetail_AccountInfoId -->
 
-**ما هو.** _TODO_
+**ما هو.** الحساب الذي يُرحَّل إليه المبلغ.
 
-**مثال.** _TODO_
+**مثال.** 510100 -- الرواتب والأجور
 
 **القواعد.** إلزامي. يُختار من قائمة بيانات الحسابات.
 
 ## Amount {#CostRegisterDetail.Amount}
 <!-- alias: loc:Amount, dom:CostRegisterDetail_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ المُرحَّل.
 
-**مثال.** _TODO_
+**مثال.** `800.000`
 
 **القواعد.** إلزامي. رقم.
 
 ## CurrencyId {#CostRegisterDetail.CurrencyId}
 <!-- alias: loc:CurrencyId, dom:CostRegisterDetail_CurrencyId -->
 
-**ما هو.** _TODO_
+**ما هو.** عملة الراتب الأساسي للموظف.
 
-**مثال.** _TODO_
+**مثال.** دينار كويتي
 
 **القواعد.** اختياري. يُختار من قائمة العملات.
 
 ## CostElement1Id {#CostRegisterDetail.CostElement1Id}
 <!-- alias: loc:CostElement1Id, dom:CostRegisterDetail_costElement1Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 1 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
 
 ## CostElement2Id {#CostRegisterDetail.CostElement2Id}
 <!-- alias: loc:CostElement2Id, dom:CostRegisterDetail_costElement2Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 2 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
 
 ## CostElement3Id {#CostRegisterDetail.CostElement3Id}
 <!-- alias: loc:CostElement3Id, dom:CostRegisterDetail_costElement3Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 3 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
 
 ## CostElement4Id {#CostRegisterDetail.CostElement4Id}
 <!-- alias: loc:CostElement4Id, dom:CostRegisterDetail_costElement4Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 4 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
 
 ## CostElement5Id {#CostRegisterDetail.CostElement5Id}
 <!-- alias: loc:CostElement5Id, dom:CostRegisterDetail_costElement5Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 5 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
 
 ## CostElement6Id {#CostRegisterDetail.CostElement6Id}
 <!-- alias: loc:CostElement6Id, dom:CostRegisterDetail_costElement6Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 6 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
 
 ## CostElement7Id {#CostRegisterDetail.CostElement7Id}
 <!-- alias: loc:CostElement7Id, dom:CostRegisterDetail_costElement7Id -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عنصر التكلفة 7 -- أحد أبعاد المحاسبة التي يصل عددها إلى سبعة، منسوخاً من حساب الأجور للموظف.
 
 **القواعد.** اختياري. يُختار من قائمة عناصر التكلفة.
