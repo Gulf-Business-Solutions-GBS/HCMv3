@@ -1,0 +1,91 @@
+{
+  "helpId": "cd.cdform.edit",
+  "lang": "ar",
+  "title": "نماذج تطوير الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CDForm",
+  "overviewHtml": "<p>نموذج تطوير الكفاءات لموظف في فترة واحدة، يضم خطته ومراجعة منتصف السنة والمراجعة السنوية. ولكل موظف نموذج واحد لكل فترة.</p>",
+  "aliasIndex": {
+    "loc:CDPeriod": "CDForm.CDPeriodId",
+    "dom:CDForm_CDPeriodId": "CDForm.CDPeriodId",
+    "loc:Employee": "CDForm.EmployeeId",
+    "dom:CDForm_EmployeeId": "CDForm.EmployeeId",
+    "loc:ModeratedScore": "CDForm.ModeratedScore",
+    "dom:CDForm_ModeratedScore": "CDForm.ModeratedScore",
+    "loc:EmployeeSignedOff": "CDForm.EmployeeSignedOff",
+    "dom:CDForm_EmployeeSignedOff": "CDForm.EmployeeSignedOff",
+    "loc:ManagerSignedOff": "CDForm.ManagerSignedOff",
+    "dom:CDForm_ManagerSignedOff": "CDForm.ManagerSignedOff"
+  },
+  "fields": [
+    {
+      "id": "CDForm.CDPeriodId",
+      "label": "CDPeriod",
+      "section": "CDForms",
+      "aliases": [
+        "loc:CDPeriod",
+        "dom:CDForm_CDPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات تطوير الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة المراجعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.EmployeeId",
+      "label": "Employee",
+      "section": "CDForms",
+      "aliases": [
+        "loc:Employee",
+        "dom:CDForm_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.ModeratedScore",
+      "label": "ModeratedScore",
+      "section": "CDForms",
+      "aliases": [
+        "loc:ModeratedScore",
+        "dom:CDForm_ModeratedScore"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجة النهائية بعد المراجعة، تُدخل يدوياً.</p><p><strong>مثال.</strong> 3.5</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.EmployeeSignedOff",
+      "label": "EmployeeSignedOff",
+      "section": "CDForms",
+      "aliases": [
+        "loc:EmployeeSignedOff",
+        "dom:CDForm_EmployeeSignedOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف قد وافق على النموذج.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: يمكن تعديل النموذج بعده.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDForm.ManagerSignedOff",
+      "label": "ManagerSignedOff",
+      "section": "CDForms",
+      "aliases": [
+        "loc:ManagerSignedOff",
+        "dom:CDForm_ManagerSignedOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المدير قد وافق على النموذج.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: يمكن تعديل النموذج بعده.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

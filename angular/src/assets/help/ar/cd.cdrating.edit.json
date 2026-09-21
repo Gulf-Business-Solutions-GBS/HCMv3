@@ -1,0 +1,59 @@
+{
+  "helpId": "cd.cdrating.edit",
+  "lang": "ar",
+  "title": "تقديرات تطوير الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CDRating",
+  "overviewHtml": "<p>تقدير يُعطى في المراجعة السنوية، مثل يفوق التوقعات.</p>",
+  "aliasIndex": {
+    "loc:Code": "CDRating.Code",
+    "dom:CDRating_Code": "CDRating.Code",
+    "loc:NameEn": "CDRating.NameEn",
+    "dom:CDRating_NameEn": "CDRating.NameEn",
+    "loc:NameAr": "CDRating.NameAr",
+    "dom:CDRating_NameAr": "CDRating.NameAr"
+  },
+  "fields": [
+    {
+      "id": "CDRating.Code",
+      "label": "Code",
+      "section": "CDRatings",
+      "aliases": [
+        "loc:Code",
+        "dom:CDRating_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDRating.NameEn",
+      "label": "NameEn",
+      "section": "CDRatings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CDRating_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDRating.NameAr",
+      "label": "NameAr",
+      "section": "CDRatings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CDRating_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

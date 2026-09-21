@@ -6281,6 +6281,212 @@
         }
       },
       "defaultSection": "ReportTypes"
+    },
+    {
+      "helpId": "cd.cdannual-year-review.edit",
+      "title": "CD Annual Year Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CDAnnualYearReviews.Create"
+      ],
+      "entity": {
+        "name": "CDAnnualYearReview",
+        "fullName": "HCMv3.CompetencyDevelopment.CDAnnualYearReview",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CDAnnualYearReview.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/cd-form-detail/cd-annual-year-reviews/create-or-edit-cd-annual-year-review-modal.component.html"
+        }
+      },
+      "defaultSection": "CDAnnualYearReviews"
+    },
+    {
+      "helpId": "cd.cdmid-year-review.edit",
+      "title": "CD Mid Year Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CDMidYearReviews.Create"
+      ],
+      "entity": {
+        "name": "CDMidYearReview",
+        "fullName": "HCMv3.CompetencyDevelopment.CDMidYearReview",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CDMidYearReview.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/cd-form-detail/cd-mid-year-reviews/create-or-edit-cd-mid-year-review-modal.component.html"
+        }
+      },
+      "defaultSection": "CDMidYearReviews"
+    },
+    {
+      "helpId": "cd.cdplan.edit",
+      "title": "CD Plans — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "CDPlan",
+        "fullName": "HCMv3.CompetencyDevelopment.CDPlan",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CDPlan.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/cd-form-detail/cd-plans/create-or-edit-cd-plan-modal.component.html"
+        }
+      },
+      "defaultSection": "CDPlans"
+    },
+    {
+      "helpId": "cd.cdform.edit",
+      "title": "CD Forms — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CDForms.Create"
+      ],
+      "entity": {
+        "name": "CDForm",
+        "fullName": "HCMv3.CompetencyDevelopment.CDForm",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CDForm.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/cd-forms/create-or-edit-cd-form-modal.component.html"
+        }
+      },
+      "defaultSection": "CDForms"
+    },
+    {
+      "helpId": "cd.cdperiod.edit",
+      "title": "CD Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CDPeriods.Create"
+      ],
+      "entity": {
+        "name": "CDPeriod",
+        "fullName": "HCMv3.CompetencyDevelopment.CDPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CDPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/cd-periods/create-or-edit-cd-period-modal.component.html"
+        }
+      },
+      "defaultSection": "CDPeriods"
+    },
+    {
+      "helpId": "cd.cdrating.edit",
+      "title": "CD Ratings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CDRatings.Create"
+      ],
+      "entity": {
+        "name": "CDRating",
+        "fullName": "HCMv3.CompetencyDevelopment.CDRating",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CDRating.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/cd-ratings/create-or-edit-cd-rating-modal.component.html"
+        }
+      },
+      "defaultSection": "CDRatings"
+    },
+    {
+      "helpId": "cd.competency.edit",
+      "title": "Competencies — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.Competencies.Create"
+      ],
+      "entity": {
+        "name": "Competency",
+        "fullName": "HCMv3.CompetencyDevelopment.Competency",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/Competency.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/competencies/create-or-edit-competency-modal.component.html"
+        }
+      },
+      "defaultSection": "Competencies"
+    },
+    {
+      "helpId": "cd.competency-by-job-title-detail.edit",
+      "title": "Competency By Job Title Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "CompetencyByJobTitleDetail",
+        "fullName": "HCMv3.CompetencyDevelopment.CompetencyByJobTitleDetail",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CompetencyByJobTitleDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/competency-by-job-title-details/create-or-edit-competency-by-job-title-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "CompetencyByJobTitleDetails"
+    },
+    {
+      "helpId": "cd.competency-by-job-title.edit",
+      "title": "Competency By Job Titles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CompetencyByJobTitles.Create"
+      ],
+      "entity": {
+        "name": "CompetencyByJobTitle",
+        "fullName": "HCMv3.CompetencyDevelopment.CompetencyByJobTitle",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CompetencyByJobTitle.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/competency-by-job-titles/create-or-edit-competency-by-job-title-modal.component.html"
+        }
+      },
+      "defaultSection": "CompetencyByJobTitles"
+    },
+    {
+      "helpId": "cd.competency-type.edit",
+      "title": "Competency Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.CompetencyDevelopment.CompetencyTypes.Create"
+      ],
+      "entity": {
+        "name": "CompetencyType",
+        "fullName": "HCMv3.CompetencyDevelopment.CompetencyType",
+        "file": "aspnet-core/src/HCMv3.Core/CompetencyDevelopment/CompetencyType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/competency-development/competency-types/create-or-edit-competency-type-modal.component.html"
+        }
+      },
+      "defaultSection": "CompetencyTypes"
     }
   ]
 }

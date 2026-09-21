@@ -1,0 +1,107 @@
+{
+  "helpId": "cd.cdannual-year-review.edit",
+  "lang": "ar",
+  "title": "المراجعات السنوية لتطوير الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.CDAnnualYearReview",
+  "overviewHtml": "<p>كفاءة واحدة تُراجع وتُقيَّم في نهاية السنة. لا تُدرج الكفاءة إلا مرة واحدة في هذا الجزء من النموذج. وتُسجَّل الأوزان كما أُدخلت، ولا تُجمع أو تُتحقق منها هنا.</p>",
+  "aliasIndex": {
+    "loc:Competency": "CDAnnualYearReview.CompetencyId",
+    "dom:CDAnnualYearReview_CompetencyId": "CDAnnualYearReview.CompetencyId",
+    "loc:Weight": "CDAnnualYearReview.Weight",
+    "dom:CDAnnualYearReview_Weight": "CDAnnualYearReview.Weight",
+    "loc:Target": "CDAnnualYearReview.Target",
+    "dom:CDAnnualYearReview_Target": "CDAnnualYearReview.Target",
+    "loc:Rating": "CDAnnualYearReview.CDRatingId",
+    "dom:CDAnnualYearReview_CDRatingId": "CDAnnualYearReview.CDRatingId",
+    "loc:EmployeeComments": "CDAnnualYearReview.EmployeeComments",
+    "dom:CDAnnualYearReview_EmployeeComments": "CDAnnualYearReview.EmployeeComments",
+    "loc:ManagerComments": "CDAnnualYearReview.ManagerComments",
+    "dom:CDAnnualYearReview_ManagerComments": "CDAnnualYearReview.ManagerComments"
+  },
+  "fields": [
+    {
+      "id": "CDAnnualYearReview.CompetencyId",
+      "label": "Competency",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Competency",
+        "dom:CDAnnualYearReview_CompetencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفاءة.</p><p><strong>مثال.</strong> العمل الجماعي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.Weight",
+      "label": "Weight",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:CDAnnualYearReview_Weight"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مقدار أهمية الكفاءة، كنسبة مئوية.</p><p><strong>مثال.</strong> 20</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.Target",
+      "label": "Target",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Target",
+        "dom:CDAnnualYearReview_Target"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يُتوقع أن يحققه الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.CDRatingId",
+      "label": "Rating",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:CDAnnualYearReview_CDRatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تطوير الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقدير المعطى للسنة.</p><p><strong>مثال.</strong> يلبي التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.EmployeeComments",
+      "label": "EmployeeComments",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:EmployeeComments",
+        "dom:CDAnnualYearReview_EmployeeComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.ManagerComments",
+      "label": "ManagerComments",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:ManagerComments",
+        "dom:CDAnnualYearReview_ManagerComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات المدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

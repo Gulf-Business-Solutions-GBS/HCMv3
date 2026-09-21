@@ -1,0 +1,107 @@
+{
+  "helpId": "cd.competency.edit",
+  "lang": "ar",
+  "title": "الكفاءات — إنشاء / تحرير",
+  "entity": "HCMv3.CompetencyDevelopment.Competency",
+  "overviewHtml": "<p>مهارة أو سلوك يُقيَّم الموظفون على أساسه.</p>",
+  "aliasIndex": {
+    "loc:Code": "Competency.Code",
+    "dom:Competency_Code": "Competency.Code",
+    "loc:NameEn": "Competency.NameEn",
+    "dom:Competency_NameEn": "Competency.NameEn",
+    "loc:NameAr": "Competency.NameAr",
+    "dom:Competency_NameAr": "Competency.NameAr",
+    "loc:CompetencyType": "Competency.CompetencyTypeId",
+    "dom:Competency_CompetencyTypeId": "Competency.CompetencyTypeId",
+    "loc:Active": "Competency.Active",
+    "dom:Competency_Active": "Competency.Active",
+    "loc:Comments": "Competency.Comments",
+    "dom:Competency_Comments": "Competency.Comments"
+  },
+  "fields": [
+    {
+      "id": "Competency.Code",
+      "label": "Code",
+      "section": "Competencies",
+      "aliases": [
+        "loc:Code",
+        "dom:Competency_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.NameEn",
+      "label": "NameEn",
+      "section": "Competencies",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Competency_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.NameAr",
+      "label": "NameAr",
+      "section": "Competencies",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Competency_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.CompetencyTypeId",
+      "label": "CompetencyType",
+      "section": "Competencies",
+      "aliases": [
+        "loc:CompetencyType",
+        "dom:Competency_CompetencyTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجموعة التي تنتمي إليها الكفاءة.</p><p><strong>مثال.</strong> أساسية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.Active",
+      "label": "Active",
+      "section": "Competencies",
+      "aliases": [
+        "loc:Active",
+        "dom:Competency_Active"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الكفاءة مستخدمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: يمكن اختيار الكفاءات غير النشطة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Competency.Comments",
+      "label": "Comments",
+      "section": "Competencies",
+      "aliases": [
+        "loc:Comments",
+        "dom:Competency_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

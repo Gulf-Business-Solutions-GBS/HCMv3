@@ -6470,6 +6470,138 @@
     ],
     "ReportType_NameEn": [
       "rpt.report-type.edit"
+    ],
+    "CDAnnualYearReview_CompetencyId": [
+      "cd.cdannual-year-review.edit"
+    ],
+    "CDAnnualYearReview_Weight": [
+      "cd.cdannual-year-review.edit"
+    ],
+    "CDAnnualYearReview_Target": [
+      "cd.cdannual-year-review.edit"
+    ],
+    "CDAnnualYearReview_CDRatingId": [
+      "cd.cdannual-year-review.edit"
+    ],
+    "CDAnnualYearReview_EmployeeComments": [
+      "cd.cdannual-year-review.edit"
+    ],
+    "CDAnnualYearReview_ManagerComments": [
+      "cd.cdannual-year-review.edit"
+    ],
+    "CDMidYearReview_CompetencyId": [
+      "cd.cdmid-year-review.edit"
+    ],
+    "CDMidYearReview_Weight": [
+      "cd.cdmid-year-review.edit"
+    ],
+    "CDMidYearReview_Target": [
+      "cd.cdmid-year-review.edit"
+    ],
+    "CDMidYearReview_EmployeeComments": [
+      "cd.cdmid-year-review.edit"
+    ],
+    "CDMidYearReview_ManagerComments": [
+      "cd.cdmid-year-review.edit"
+    ],
+    "CDPlan_CompetencyId": [
+      "cd.cdplan.edit"
+    ],
+    "CDPlan_Weight": [
+      "cd.cdplan.edit"
+    ],
+    "CDPlan_Target": [
+      "cd.cdplan.edit"
+    ],
+    "CDPlan_EmployeeComments": [
+      "cd.cdplan.edit"
+    ],
+    "CDPlan_ManagerComments": [
+      "cd.cdplan.edit"
+    ],
+    "CDForm_CDPeriodId": [
+      "cd.cdform.edit"
+    ],
+    "CDForm_EmployeeId": [
+      "cd.cdform.edit"
+    ],
+    "CDForm_ModeratedScore": [
+      "cd.cdform.edit"
+    ],
+    "CDForm_EmployeeSignedOff": [
+      "cd.cdform.edit"
+    ],
+    "CDForm_ManagerSignedOff": [
+      "cd.cdform.edit"
+    ],
+    "CDPeriod_Name": [
+      "cd.cdperiod.edit"
+    ],
+    "CDPeriod_Closed": [
+      "cd.cdperiod.edit"
+    ],
+    "CDRating_Code": [
+      "cd.cdrating.edit"
+    ],
+    "CDRating_NameEn": [
+      "cd.cdrating.edit"
+    ],
+    "CDRating_NameAr": [
+      "cd.cdrating.edit"
+    ],
+    "Competency_Code": [
+      "cd.competency.edit"
+    ],
+    "Competency_NameEn": [
+      "cd.competency.edit"
+    ],
+    "Competency_NameAr": [
+      "cd.competency.edit"
+    ],
+    "Competency_CompetencyTypeId": [
+      "cd.competency.edit"
+    ],
+    "Competency_Active": [
+      "cd.competency.edit"
+    ],
+    "Competency_Comments": [
+      "cd.competency.edit"
+    ],
+    "CompetencyByJobTitleDetail_CompetencyByJobTitleId": [
+      "cd.competency-by-job-title-detail.edit"
+    ],
+    "CompetencyByJobTitleDetail_CompetencyId": [
+      "cd.competency-by-job-title-detail.edit"
+    ],
+    "CompetencyByJobTitleDetail_Weight": [
+      "cd.competency-by-job-title-detail.edit"
+    ],
+    "CompetencyByJobTitleDetail_Target": [
+      "cd.competency-by-job-title-detail.edit"
+    ],
+    "CompetencyByJobTitle_JobTitleId": [
+      "cd.competency-by-job-title.edit"
+    ],
+    "CompetencyByJobTitle_StartDate": [
+      "cd.competency-by-job-title.edit"
+    ],
+    "CompetencyByJobTitle_EndDate": [
+      "cd.competency-by-job-title.edit"
+    ],
+    "CompetencyType_Code": [
+      "cd.competency-type.edit"
+    ],
+    "CompetencyType_NameEn": [
+      "cd.competency-type.edit"
+    ],
+    "CompetencyType_NameAr": [
+      "cd.competency-type.edit"
+    ],
+    "CompetencyType_BackColor": [
+      "cd.competency-type.edit"
+    ],
+    "CompetencyType_ForeColor": [
+      "cd.competency-type.edit"
     ]
   }
 }

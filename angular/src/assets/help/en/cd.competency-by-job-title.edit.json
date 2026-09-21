@@ -1,0 +1,59 @@
+{
+  "helpId": "cd.competency-by-job-title.edit",
+  "lang": "en",
+  "title": "Competency By Job Titles — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CompetencyByJobTitle",
+  "overviewHtml": "<p>The competencies expected of a job title, for a date range. The end date cannot be before the start date. Kept for reference: it is not copied into employees' forms.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "CompetencyByJobTitle.JobTitleId",
+    "dom:CompetencyByJobTitle_JobTitleId": "CompetencyByJobTitle.JobTitleId",
+    "loc:StartDate": "CompetencyByJobTitle.StartDate",
+    "dom:CompetencyByJobTitle_StartDate": "CompetencyByJobTitle.StartDate",
+    "loc:EndDate": "CompetencyByJobTitle.EndDate",
+    "dom:CompetencyByJobTitle_EndDate": "CompetencyByJobTitle.EndDate"
+  },
+  "fields": [
+    {
+      "id": "CompetencyByJobTitle.JobTitleId",
+      "label": "JobTitle",
+      "section": "CompetencyByJobTitles",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:CompetencyByJobTitle_JobTitleId"
+      ],
+      "rules": "Required. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title.</p><p><strong>Example.</strong> Sales Executive</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitle.StartDate",
+      "label": "StartDate",
+      "section": "CompetencyByJobTitles",
+      "aliases": [
+        "loc:StartDate",
+        "dom:CompetencyByJobTitle_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitle.EndDate",
+      "label": "EndDate",
+      "section": "CompetencyByJobTitles",
+      "aliases": [
+        "loc:EndDate",
+        "dom:CompetencyByJobTitle_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

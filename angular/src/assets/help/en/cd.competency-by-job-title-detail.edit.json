@@ -1,0 +1,75 @@
+{
+  "helpId": "cd.competency-by-job-title-detail.edit",
+  "lang": "en",
+  "title": "Competency By Job Title Details — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CompetencyByJobTitleDetail",
+  "overviewHtml": "<p>One competency expected of a job title, and its weight. A competency can be listed once per job title, and the weights together cannot exceed 100.</p>",
+  "aliasIndex": {
+    "loc:CompetencyByJobTitle": "CompetencyByJobTitleDetail.CompetencyByJobTitleId",
+    "dom:CompetencyByJobTitleDetail_CompetencyByJobTitleId": "CompetencyByJobTitleDetail.CompetencyByJobTitleId",
+    "loc:Competency": "CompetencyByJobTitleDetail.CompetencyId",
+    "dom:CompetencyByJobTitleDetail_CompetencyId": "CompetencyByJobTitleDetail.CompetencyId",
+    "loc:Weight": "CompetencyByJobTitleDetail.Weight",
+    "dom:CompetencyByJobTitleDetail_Weight": "CompetencyByJobTitleDetail.Weight",
+    "loc:Target": "CompetencyByJobTitleDetail.Target",
+    "dom:CompetencyByJobTitleDetail_Target": "CompetencyByJobTitleDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "CompetencyByJobTitleDetail.CompetencyByJobTitleId",
+      "label": "CompetencyByJobTitle",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:CompetencyByJobTitle",
+        "dom:CompetencyByJobTitleDetail_CompetencyByJobTitleId"
+      ],
+      "rules": "Required. Chosen from Competency By Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title's competency list.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitleDetail.CompetencyId",
+      "label": "Competency",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:Competency",
+        "dom:CompetencyByJobTitleDetail_CompetencyId"
+      ],
+      "rules": "Required. Chosen from Competency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The competency.</p><p><strong>Example.</strong> Negotiation</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitleDetail.Weight",
+      "label": "Weight",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:CompetencyByJobTitleDetail_Weight"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much the competency counts, as a percentage.</p><p><strong>Example.</strong> 25</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompetencyByJobTitleDetail.Target",
+      "label": "Target",
+      "section": "CompetencyByJobTitleDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:CompetencyByJobTitleDetail_Target"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What is expected.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

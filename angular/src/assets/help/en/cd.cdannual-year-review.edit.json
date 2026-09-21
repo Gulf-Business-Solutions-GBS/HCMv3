@@ -1,0 +1,107 @@
+{
+  "helpId": "cd.cdannual-year-review.edit",
+  "lang": "en",
+  "title": "CD Annual Year Reviews — Create / Edit",
+  "entity": "HCMv3.CompetencyDevelopment.CDAnnualYearReview",
+  "overviewHtml": "<p>One competency reviewed and rated at the end of the year. A competency can be listed once in this part of the form. Weights are recorded as entered; they are not totalled or checked here.</p>",
+  "aliasIndex": {
+    "loc:Competency": "CDAnnualYearReview.CompetencyId",
+    "dom:CDAnnualYearReview_CompetencyId": "CDAnnualYearReview.CompetencyId",
+    "loc:Weight": "CDAnnualYearReview.Weight",
+    "dom:CDAnnualYearReview_Weight": "CDAnnualYearReview.Weight",
+    "loc:Target": "CDAnnualYearReview.Target",
+    "dom:CDAnnualYearReview_Target": "CDAnnualYearReview.Target",
+    "loc:Rating": "CDAnnualYearReview.CDRatingId",
+    "dom:CDAnnualYearReview_CDRatingId": "CDAnnualYearReview.CDRatingId",
+    "loc:EmployeeComments": "CDAnnualYearReview.EmployeeComments",
+    "dom:CDAnnualYearReview_EmployeeComments": "CDAnnualYearReview.EmployeeComments",
+    "loc:ManagerComments": "CDAnnualYearReview.ManagerComments",
+    "dom:CDAnnualYearReview_ManagerComments": "CDAnnualYearReview.ManagerComments"
+  },
+  "fields": [
+    {
+      "id": "CDAnnualYearReview.CompetencyId",
+      "label": "Competency",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Competency",
+        "dom:CDAnnualYearReview_CompetencyId"
+      ],
+      "rules": "Optional. Chosen from Competency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The competency.</p><p><strong>Example.</strong> Teamwork</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.Weight",
+      "label": "Weight",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:CDAnnualYearReview_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much the competency counts, as a percentage.</p><p><strong>Example.</strong> 20</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.Target",
+      "label": "Target",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Target",
+        "dom:CDAnnualYearReview_Target"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the employee is expected to achieve.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.CDRatingId",
+      "label": "Rating",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:CDAnnualYearReview_CDRatingId"
+      ],
+      "rules": "Optional. Chosen from CDRating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rating given for the year.</p><p><strong>Example.</strong> Meets expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.EmployeeComments",
+      "label": "EmployeeComments",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:EmployeeComments",
+        "dom:CDAnnualYearReview_EmployeeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CDAnnualYearReview.ManagerComments",
+      "label": "ManagerComments",
+      "section": "CDAnnualYearReviews",
+      "aliases": [
+        "loc:ManagerComments",
+        "dom:CDAnnualYearReview_ManagerComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The manager's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
