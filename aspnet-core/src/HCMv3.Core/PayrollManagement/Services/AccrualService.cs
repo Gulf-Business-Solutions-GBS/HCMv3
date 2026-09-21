@@ -1400,8 +1400,8 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         }
 
         var totalDaysCount = empContract.EndDate >= payDate
-            ? payDate.Subtract(indemnityCountFromDate).TotalDays + 1
-            : empContract.EndDate.Subtract(indemnityCountFromDate).TotalDays + 1;
+            ? IndemnityServiceDays.Count(indemnityCountFromDate, payDate)
+            : IndemnityServiceDays.Count(indemnityCountFromDate, empContract.EndDate);
 
         if (!enableUnpaidDedSlabWise)
         {

@@ -10,6 +10,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,10 +26,17 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 {
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
+    private readonly IEmployeeValidator _employeeValidator;
 
-    public EmployeesAppService(IRepository<Employee> employeeRepository)
+    public EmployeesAppService(
+        IRepository<Employee> employeeRepository,
+        IEmployeeCodeGenerator employeeCodeGenerator,
+        IEmployeeValidator employeeValidator)
     {
         _employeeRepository = employeeRepository;
+        _employeeCodeGenerator = employeeCodeGenerator;
+        _employeeValidator = employeeValidator;
     }
 
     [HttpPost]
@@ -113,9 +121,9 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         // the DTO's Status field only applies on edit (e.g. later marking an employee Inactive).
         employee.Status = EmployeeStatus.Active;
 
-        await AssignCodeIfEmptyAsync(employee);
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
-        await ValidateAsync(employee);
+        _employeeValidator.Validate(employee);
 
         await _employeeRepository.InsertAsync(employee);
     }
@@ -126,9 +134,9 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         var employee = await _employeeRepository.GetAsync(input.Id.Value);
         MapToEntity(input, employee);
 
-        await AssignCodeIfEmptyAsync(employee);
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
-        await ValidateAsync(employee);
+        _employeeValidator.Validate(employee);
 
         await _employeeRepository.UpdateAsync(employee);
     }
@@ -140,123 +148,16 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     }
 
     /// <summary>
-    /// Legacy <c>GetMaxCode</c> parity (same pattern as <c>CitiesAppService.AssignCodeIfEmptyAsync</c>):
-    /// when Code is blank, assign (max existing numeric code) + 1. Simplified from the legacy
-    /// <c>NumberSeries.GetCode(EmploymentType, ...)</c> per-EmploymentType series.
-    /// </summary>
-    private async Task AssignCodeIfEmptyAsync(Employee employee)
-    {
-        if (!employee.Code.IsNullOrWhiteSpace())
-        {
-            return;
-        }
-
-        var numericCodes = await _employeeRepository.GetAll()
-            .Where(e => e.Code != null && e.Code != "")
-            .Select(e => e.Code)
-            .ToListAsync();
-
-        var maxCode = numericCodes
-            .Select(c => int.TryParse(c, out var n) ? n : 0)
-            .DefaultIfEmpty(0)
-            .Max();
-
-        employee.Code = (maxCode + 1).ToString();
-    }
-
-    /// <summary>
     /// Legacy <c>PerformValidation</c> parity: FullNameEn/Ar concatenation and ProbationEndDate are
     /// computed and stored on every save.
     /// </summary>
     private static void ApplyComputedFields(Employee employee)
     {
-        employee.FullNameEn = string.Join(" ", new[]
-        {
-            employee.FirstNameEn, employee.SecondNameEn, employee.ThirdNameEn, employee.LastNameEn
-        }.Where(n => !n.IsNullOrWhiteSpace()));
-
-        employee.FullNameAr = string.Join(" ", new[]
-        {
-            employee.FirstNameAr, employee.SecondNameAr, employee.ThirdNameAr, employee.LastNameAr
-        }.Where(n => !n.IsNullOrWhiteSpace()));
+        employee.ApplyFullNames();
 
         // Calendar-days probation calculation only (legacy "Working Days" branch depends on
         // DutyPeriod/HolidayCalendar/TimeRegister -- Wave B/TimeManagement, not available yet).
         employee.ProbationEndDate = employee.JoiningDate.AddDays(employee.ProbationDays);
-    }
-
-    /// <summary>
-    /// Legacy <c>PerformValidation</c> parity: BirthDate/JoiningDate/ProbationDays sanity checks and
-    /// duplicate CivilID/AccessID checks (scoped to active employees, matching legacy).
-    /// </summary>
-    private async Task ValidateAsync(Employee employee)
-    {
-        var duplicateCode = await _employeeRepository.GetAll()
-            .AnyAsync(e => e.Id != employee.Id && e.Code == employee.Code);
-        if (duplicateCode)
-        {
-            throw new UserFriendlyException(L("DuplicateCodeFound"));
-        }
-
-        if (employee.BirthDate.Date >= DateTime.Now.Date)
-        {
-            throw new UserFriendlyException(L("BirthDateCannotBeFutureOrCurrent"));
-        }
-
-        if (employee.JoiningDate.Date <= employee.BirthDate.Date)
-        {
-            throw new UserFriendlyException(L("JoiningDateCannotBeEarlierThanBirthDate"));
-        }
-
-        if (employee.ProbationDays < 0)
-        {
-            throw new UserFriendlyException(L("ProbationDaysCannotBeNegative"));
-        }
-
-        var duplicateCivilId = await _employeeRepository.GetAll()
-            .Where(e => e.Id != employee.Id
-                        && e.CivilID == employee.CivilID
-                        && e.Status == EmployeeStatus.Active)
-            .Select(e => e.Code)
-            .FirstOrDefaultAsync();
-        if (duplicateCivilId != null)
-        {
-            throw new UserFriendlyException(L("DuplicateCivilIdFound", duplicateCivilId));
-        }
-
-        if (!employee.AccessID.IsNullOrWhiteSpace())
-        {
-            var duplicateAccessId = await _employeeRepository.GetAll()
-                .Where(e => e.Id != employee.Id
-                            && e.AccessID == employee.AccessID
-                            && e.Status == EmployeeStatus.Active)
-                .Select(e => e.Code)
-                .FirstOrDefaultAsync();
-            if (duplicateAccessId != null)
-            {
-                throw new UserFriendlyException(L("DuplicateAccessIdFound", duplicateAccessId));
-            }
-        }
-
-        // LoginID identifies WHO IS SIGNED IN, so it must name exactly one employee.
-        //
-        // Deliberately NOT scoped to Status == Active, unlike the CivilID/AccessID checks above. Those
-        // answer "is this identifier in use right now"; this one answers "can this login ever resolve to
-        // two people". A resigned employee's row keeps its LoginID, and the fallback lookup in
-        // EmployeeSessionService does not filter by status either -- so allowing a leaver's LoginID to be
-        // reused would reintroduce exactly the ambiguity Employee.UserId exists to remove. To free a login
-        // for reuse, clear it on the employee who left; the error message says so.
-        if (!employee.LoginID.IsNullOrWhiteSpace())
-        {
-            var duplicateLoginId = await _employeeRepository.GetAll()
-                .Where(e => e.Id != employee.Id && e.LoginID == employee.LoginID)
-                .Select(e => e.Code)
-                .FirstOrDefaultAsync();
-            if (duplicateLoginId != null)
-            {
-                throw new UserFriendlyException(L("DuplicateLoginIdFound", employee.LoginID, duplicateLoginId));
-            }
-        }
     }
 
     private static Employee MapToEntity(CreateOrEditEmployeeDto input, Employee employee)

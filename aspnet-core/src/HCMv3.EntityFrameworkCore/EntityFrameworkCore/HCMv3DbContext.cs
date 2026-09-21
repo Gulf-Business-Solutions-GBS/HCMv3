@@ -1100,6 +1100,10 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<SysTenantConfig> SysTenantConfigs { get; set; }
 
+    public virtual DbSet<HCMv3.Integrations.IntegrationSetting> IntegrationSettings { get; set; }
+
+    public virtual DbSet<HCMv3.Integrations.IntegrationConnectionLog> IntegrationConnectionLogs { get; set; }
+
     public virtual DbSet<ManageAppraisalSettings> ManageAppraisalSettingses { get; set; }
 
     public virtual DbSet<ManageDocumentSettings> ManageDocumentSettingses { get; set; }
@@ -1311,6 +1315,22 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<BinaryObject>(b => { b.HasIndex(e => new { e.TenantId }); });
+
+        // Integration Center. One row per field: a duplicate would make "which value is live" depend on
+        // row order, and the setting store does find-then-insert, which two concurrent saves can race.
+        modelBuilder.Entity<HCMv3.Integrations.IntegrationSetting>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.IntegrationKey, e.SettingKey })
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
+        });
+
+        // The card shows the latest attempt per integration, and the history list reads one integration
+        // newest-first. Both are this index.
+        modelBuilder.Entity<HCMv3.Integrations.IntegrationConnectionLog>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.IntegrationKey, e.CreationTime });
+        });
 
         // NOT "SysObjects". SQL Server resolves that name -- dbo-qualified or not, any case -- to its own
         // backward-compatibility view sys.sysobjects, so every query against the table failed with "Invalid column

@@ -14,4 +14,10 @@ public interface IEmployeeFnFPaymentsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditEmployeeFnFPaymentDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>
+    /// The balances and suggested indemnity for the EMPLOYEE whose id is <c>input.Id</c> (not an F&amp;F id) --
+    /// what the screen shows before an entry is saved.
+    /// </summary>
+    Task<FullAndFinalBalancesDto> GetFullAndFinalBalances(EntityDto input);
 }

@@ -583,7 +583,8 @@ public class AccrualServiceTests : AppTestBase
 
         // No WageType 4001/4029 with IncludeInIndemnity is seeded, so the ONLY unpaid contribution is the
         // 3-day transfer -- proving TransferType.Code was actually read rather than throwing.
-        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1; // 182
+        // 182 calendar days, less 29/02/2024: a leap day is not service (IndemnityServiceDays).
+        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1 - 1;
 
         slabs.Count.ShouldBe(1);
         slabs[0].UnpaidDays.ShouldBe(3);
@@ -660,7 +661,7 @@ public class AccrualServiceTests : AppTestBase
 
         var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
 
-        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1;
+        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1 - 1; // less 29/02/2024
 
         slabs.Count.ShouldBe(1);
         slabs[0].UnpaidDays.ShouldBe(0);

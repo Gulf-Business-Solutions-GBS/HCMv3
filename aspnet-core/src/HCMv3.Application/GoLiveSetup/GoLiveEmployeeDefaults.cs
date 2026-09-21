@@ -9,6 +9,7 @@ using HCMv3.OrganizationManagement;
 using HCMv3.OrganizationManagement.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Dto;
+using HCMv3.PersonnelAdministration;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.GoLiveSetup;
@@ -41,6 +42,22 @@ public class GoLiveEmployeeDefaults : AbpServiceBase, ITransientDependency
     {
         (5, 15, 26),
         (99, 26, 26),
+    };
+
+    /// <summary>
+    /// What share of the accrued indemnity is PAID, by how the employee left and their years of service -- the
+    /// legacy Full &amp; Final screen's suggestion reads these. Without a rule for a separation type, that type is
+    /// suggested nothing at all.
+    ///
+    /// <para>Copied from the legacy CCH database, the newest Kuwait client, whose termination scale was corrected
+    /// to 100 % throughout in August 2025. (RCF and ASF still pay 50 % on termination under 5 years.) The bands
+    /// stop at .99 so they never overlap: legacy compares a year count rounded to 2 decimals, inclusive both
+    /// ends.</para>
+    /// </summary>
+    private static readonly (SeparationType Type, (double Min, double Max, double Percentage)[] Bands)[] IndemnityPayRules =
+    {
+        (SeparationType.Resignation, new[] { (0.0, 2.99, 0.0), (3.0, 4.99, 50.0), (5.0, 9.99, 66.67), (10.0, 99.0, 100.0) }),
+        (SeparationType.Termination, new[] { (0.0, 2.99, 100.0), (3.0, 4.99, 100.0), (5.0, 9.99, 100.0), (10.0, 99.0, 100.0) }),
     };
 
     public const string SickLeaveRuleName = "Kuwait Art.69 Sick Leave";
@@ -83,6 +100,8 @@ public class GoLiveEmployeeDefaults : AbpServiceBase, ITransientDependency
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IRepository<AbsenceDeductionRule> _deductionRuleRepository;
     private readonly IRepository<AbsenceDedRuleDetail> _deductionRuleDetailRepository;
+    private readonly IRepository<IndemnityPayRule> _indemnityPayRuleRepository;
+    private readonly IRepository<IndemnityPayRuleDetail> _indemnityPayRuleDetailRepository;
 
     public GoLiveEmployeeDefaults(
         IOrgUnitsAppService orgUnits,
@@ -101,7 +120,9 @@ public class GoLiveEmployeeDefaults : AbpServiceBase, ITransientDependency
         IRepository<EmployeeSubGroupAbsence> absenceRepository,
         IRepository<AbsenceType> absenceTypeRepository,
         IRepository<AbsenceDeductionRule> deductionRuleRepository,
-        IRepository<AbsenceDedRuleDetail> deductionRuleDetailRepository)
+        IRepository<AbsenceDedRuleDetail> deductionRuleDetailRepository,
+        IRepository<IndemnityPayRule> indemnityPayRuleRepository,
+        IRepository<IndemnityPayRuleDetail> indemnityPayRuleDetailRepository)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
 
@@ -122,6 +143,8 @@ public class GoLiveEmployeeDefaults : AbpServiceBase, ITransientDependency
         _absenceTypeRepository = absenceTypeRepository;
         _deductionRuleRepository = deductionRuleRepository;
         _deductionRuleDetailRepository = deductionRuleDetailRepository;
+        _indemnityPayRuleRepository = indemnityPayRuleRepository;
+        _indemnityPayRuleDetailRepository = indemnityPayRuleDetailRepository;
     }
 
     /// <summary>
@@ -197,6 +220,54 @@ public class GoLiveEmployeeDefaults : AbpServiceBase, ITransientDependency
         grade.LeaveEntitlementsCreated = await EnsureLeaveEntitlementsAsync(subGroup.Id, grade);
 
         return grade;
+    }
+
+    /// <summary>
+    /// The Kuwait indemnity pay rules for <paramref name="countryId"/> -- the payroll area's country, which is
+    /// how the Full &amp; Final screen finds them (<c>null</c> matches a payroll area with no country). Per
+    /// separation type, all or nothing: a type that already has a rule for this country is someone's own.
+    /// </summary>
+    /// <returns>How many rules were created.</returns>
+    public async Task<int> EnsureIndemnityPayRulesAsync(int? countryId)
+    {
+        var created = 0;
+
+        foreach (var (type, bands) in IndemnityPayRules)
+        {
+            if (await _indemnityPayRuleRepository.GetAll().AnyAsync(r => r.SeparationType == type && r.CountryId == countryId))
+            {
+                continue;
+            }
+
+            var ruleId = await _indemnityPayRuleRepository.InsertAndGetIdAsync(new IndemnityPayRule
+            {
+                TenantId = CurrentUnitOfWork.GetTenantId() ?? 0,
+                SeparationType = type,
+                StartDate = SlabStart,
+                EndDate = OpenEnded,
+                MaxNumber = IndemnityCapMonths,
+                MaxUnit = Unit.Month,
+                MaxPayPercentage = 100,
+                CountryId = countryId,
+            });
+
+            foreach (var (min, max, percentage) in bands)
+            {
+                await _indemnityPayRuleDetailRepository.InsertAsync(new IndemnityPayRuleDetail
+                {
+                    TenantId = CurrentUnitOfWork.GetTenantId() ?? 0,
+                    IndemnityPayRuleId = ruleId,
+                    MinYearOfService = min,
+                    MaxYearOfService = max,
+                    PayPercentage = percentage,
+                });
+            }
+
+            await CurrentUnitOfWork.SaveChangesAsync();
+            created++;
+        }
+
+        return created;
     }
 
     /// <summary>All or nothing: a sub-group with any slab of its own was set up by someone, and is theirs.</summary>

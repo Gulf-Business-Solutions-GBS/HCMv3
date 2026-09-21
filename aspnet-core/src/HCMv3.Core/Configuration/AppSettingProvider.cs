@@ -193,6 +193,14 @@ public class AppSettingProvider : SettingProvider
                 new SettingDefinition(AppSettings.Email.UseHostDefaultEmailSettings,
                     GetFromAppSettings(AppSettings.Email.UseHostDefaultEmailSettings,
                         HCMv3Consts.MultiTenancyEnabled ? "true" : "false"), scopes: SettingScopes.Tenant),
+
+                // Defaults to "true" so that every existing tenant keeps sending mail: this switch is new,
+                // and an upgrade must not silence anyone's password-reset messages. Scoped to both host and
+                // tenant so the sender can resolve it wherever it runs, including host-level mail and
+                // background jobs outside any tenant.
+                new SettingDefinition(AppSettings.Email.IsOutboundEmailEnabled,
+                    GetFromAppSettings(AppSettings.Email.IsOutboundEmailEnabled, "true"),
+                    scopes: SettingScopes.Application | SettingScopes.Tenant),
                 new SettingDefinition(AppSettings.UserManagement.RestrictedEmailDomain,
                     GetFromAppSettings(AppSettings.UserManagement.RestrictedEmailDomain, ""),
                     scopes: SettingScopes.Tenant, clientVisibilityProvider: _visibleSettingClientVisibilityProvider),

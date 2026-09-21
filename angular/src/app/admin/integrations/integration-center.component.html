@@ -1,0 +1,113 @@
+<div [@routerTransition]>
+    <sub-header [title]="'IntegrationCenter' | localize" [description]="'IntegrationCenter_Description' | localize">
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div [busyIf]="loading()">
+            @for (section of sections(); track section.category) {
+                <h4 class="integration-section-title">{{ section.titleKey | localize }}</h4>
+
+                <div class="row">
+                    @for (tile of section.tiles; track tile.key) {
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-5">
+                            <div class="card card-custom h-100 integration-card">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex align-items-start justify-content-between mb-4">
+                                        <span class="integration-icon"><i [class]="icon(tile)"></i></span>
+                                        <span [class]="statusClass(tile)">{{ statusKey(tile) | localize }}</span>
+                                    </div>
+
+                                    <h5 class="integration-name">{{ tile.nameKey | localize }}</h5>
+
+                                    <p class="integration-description flex-grow-1">
+                                        {{ tile.descriptionKey | localize }}
+                                    </p>
+
+                                    @if (tile.statusDetail) {
+                                        <div class="integration-detail">{{ tile.statusDetail }}</div>
+                                    }
+
+                                    @if (tile.lastTestTime) {
+                                        <div
+                                            class="integration-detail"
+                                            [pTooltip]="tile.lastTestMessage"
+                                            tooltipPosition="top"
+                                        >
+                                            {{ 'IntegrationLastTested' | localize }}:
+                                            {{ tile.lastTestTime | luxonFormat: 'ff' }}
+                                            @if (tile.lastTestSucceeded) {
+                                                <i class="fa fa-check text-success"></i>
+                                            } @else {
+                                                <i class="fa fa-times text-danger"></i>
+                                            }
+                                        </div>
+                                    }
+
+                                    @if (tile.lastSyncTime) {
+                                        <div class="integration-detail">
+                                            {{ 'IntegrationLastSync' | localize }}:
+                                            {{ tile.lastSyncTime | luxonFormat: 'ff' }}
+                                            @if (tile.lastSyncItemCount !== undefined && tile.lastSyncItemCount !== null) {
+                                                ({{ tile.lastSyncItemCount }})
+                                            }
+                                        </div>
+                                    }
+
+                                    <div class="integration-actions">
+                                        <button type="button" class="btn btn-sm btn-primary" (click)="configure(tile)">
+                                            {{
+                                                (tile.isConfigured ? 'IntegrationConfigure' : 'IntegrationConnect')
+                                                    | localize
+                                            }}
+                                        </button>
+
+                                        @if (tile.supportsTest && tile.isConfigured) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-secondary"
+                                                [disabled]="testingKey() === tile.key"
+                                                (click)="test(tile)"
+                                            >
+                                                @if (testingKey() === tile.key) {
+                                                    <i class="fa fa-spinner fa-spin"></i>
+                                                }
+                                                {{ 'IntegrationTestConnection' | localize }}
+                                            </button>
+                                        }
+
+                                        @if (tile.supportsEnableToggle && tile.isConfigured) {
+                                            <div class="form-check form-switch form-check-custom integration-switch">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    [checked]="tile.isEnabled"
+                                                    (change)="toggle(tile)"
+                                                />
+                                            </div>
+                                        }
+                                    </div>
+
+                                    @if (tile.hasFields && tile.externalManageRoute) {
+                                        <a class="integration-more" href="javascript:;" (click)="openExternal(tile)">
+                                            {{ 'IntegrationMoreSettings' | localize }}
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (!loading() && tiles().length === 0) {
+                <div class="card card-custom">
+                    <div class="card-body text-center text-muted">
+                        {{ 'NoData' | localize }}
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <configureIntegrationModal #configureModal (modalSave)="load()"></configureIntegrationModal>
+</div>

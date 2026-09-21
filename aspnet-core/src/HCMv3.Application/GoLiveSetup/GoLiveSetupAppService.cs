@@ -590,6 +590,7 @@ public class GoLiveSetupAppService : HCMv3AppServiceBase, IGoLiveSetupAppService
         output.OrganizationUnitCreated = unitCreated;
 
         var grade = await _employeeDefaults.EnsureGradeAsync();
+        await _employeeDefaults.EnsureIndemnityPayRulesAsync(area.CountryId);
         var placeholders = await _placeholders.EnsureAsync();
         output.PlaceholdersCreated = placeholders.Created;
 

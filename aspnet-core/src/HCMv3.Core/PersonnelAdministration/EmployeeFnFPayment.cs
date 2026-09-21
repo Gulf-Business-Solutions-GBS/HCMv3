@@ -21,9 +21,15 @@ namespace HCMv3.PersonnelAdministration;
 /// (<c>UpdateQuotaBalance</c>/<c>AddIndemnityPayAdjust</c>/<c>AddBonusPay</c>/<c>SettleAllLoans</c>/
 /// <c>UpdatedPositionStatus</c>/the indemnity-days calculation engine) that cascade writes into half a
 /// dozen other modules (Payroll salary registers, position relationships, loan recoveries, user
-/// activation). None of that orchestration is ported -- only the plain persisted ledger/compensation
-/// columns are kept here, consistent with the cross-entity-cascade omission approach used everywhere else
-/// in Waves 1-3:
+/// activation). The entity keeps only the plain persisted ledger/compensation columns.
+///
+/// <para><b>Since the end-of-service port, the indemnity orchestration lives in
+/// <see cref="Services.IFullAndFinalSettlementService"/></b>: the balances and the suggested indemnity days
+/// (the resignation / termination split), auto-fill, the validations, and the save side effects -- the
+/// <c>EmployeeGratuity</c> row the end-of-service off-cycle pays from, leave encashment, tickets, the
+/// indemnity pay adjustment, and the employee going inactive. Loans, bonus pay, position status, login
+/// deactivation and the asset check remain unported; see that service's remarks. The dropped-getter list
+/// below still describes the ENTITY:</para>
 /// <list type="bullet">
 /// <item><description>All computed/<c>[NonPersistent]</c> getters (LeaveAccrualDays, LeaveRemainingDays,
 /// ExpectedLeaveAmount, GratuityAccrualDays, GratuityRemDays, SuggestedCompensateDays/Amount,

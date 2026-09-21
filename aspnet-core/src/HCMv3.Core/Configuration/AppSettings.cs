@@ -190,6 +190,17 @@ public static class AppSettings
     public static class Email
     {
         public const string UseHostDefaultEmailSettings = "App.Email.UseHostDefaultEmailSettings";
+
+        /// <summary>
+        /// The Integration Center SMTP switch. When off, nothing leaves the system by e-mail, while the
+        /// server settings stay exactly as they were.
+        ///
+        /// Implemented as a gate rather than by clearing the SMTP settings, because clearing them does not
+        /// stop mail: ABP resolves a setting tenant-then-host, so a blank tenant value silently inherits
+        /// the host mail server. Where no host value exists either, the sender throws on every send rather
+        /// than going quiet, which would break password resets.
+        /// </summary>
+        public const string IsOutboundEmailEnabled = "App.Email.IsOutboundEmailEnabled";
     }
 
     public static class Recaptcha

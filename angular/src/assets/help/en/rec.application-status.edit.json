@@ -54,7 +54,7 @@
       "rules": "Required. One of: Applied, Shortlisted, Interviewed, JobOffer, Hired, Rejected, Joined.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How far the application has got.</p><p><strong>Example.</strong> Shortlisted</p><p><strong>Why it matters.</strong> <em>Joined</em> creates the employee. The vacancy status report can filter by it.</p>",
-      "adminHtml": "<p>The employee created on <em>Joined</em> has no employee code, and its full names are set to the first names only. Open the new employee and save it once: saving gives it the next code and builds the full names from all the name parts.</p>",
+      "adminHtml": "<p>The employee created on <em>Joined</em> gets the next employee code, and its full names are built from all the name parts, the same as saving on the employee screen. No employee is created if one already has the same English names and birth date. The status change is refused, and no employee is created, if the applicant has no nationality, if the joining date is not after the birth date, or if an active employee already has the same civil ID. Fix the applicant and set <em>Joined</em> again.</p>",
       "stub": false
     },
     {

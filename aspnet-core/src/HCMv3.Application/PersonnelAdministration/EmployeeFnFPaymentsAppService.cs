@@ -7,26 +7,56 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
-/// Application service for <see cref="EmployeeFnFPayment"/> (ported from legacy XAF EmployeeFnFPayment
-/// business object, Wave 3 deferred bucket). Only plain CRUD over the persisted ledger/compensation columns
-/// is ported -- the legacy's extensive cross-module orchestration (leave/indemnity/ticket adjustment
-/// auto-generation, loan settlement, position-status update, salary-register/payroll-lock validation, user
-/// deactivation) is NOT ported -- see <see cref="EmployeeFnFPayment"/> remarks.
+/// Application service for <see cref="EmployeeFnFPayment"/> (ported from legacy XAF EmployeeFnFPayment).
+///
+/// <para>Saving and deleting run legacy's F&amp;F side effects through <see cref="IFullAndFinalSettlementService"/>:
+/// the validations, the indemnity (<c>EmployeeGratuity</c>) row the end-of-service off-cycle pays from, leave
+/// encashment, ticket compensation, the indemnity pay adjustment, and the employee going inactive. Loans, bonus,
+/// position status, login deactivation and the asset check are not ported -- see that service's remarks.</para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments)]
 public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPaymentsAppService
 {
     private readonly IRepository<EmployeeFnFPayment> _repository;
+    private readonly IFullAndFinalSettlementService _settlementService;
 
-    public EmployeeFnFPaymentsAppService(IRepository<EmployeeFnFPayment> repository)
+    public EmployeeFnFPaymentsAppService(
+        IRepository<EmployeeFnFPayment> repository,
+        IFullAndFinalSettlementService settlementService)
     {
         _repository = repository;
+        _settlementService = settlementService;
+    }
+
+    public async Task<FullAndFinalBalancesDto> GetFullAndFinalBalances(EntityDto input)
+    {
+        var balances = await _settlementService.GetBalancesAsync(input.Id);
+
+        return new FullAndFinalBalancesDto
+        {
+            LeaveAccrualDays = balances.LeaveAccrualDays,
+            LeaveRemainingDays = balances.LeaveRemainingDays,
+            GratuityAccrualDays = balances.GratuityAccrualDays,
+            GratuityRemainingDays = balances.GratuityRemainingDays,
+            SuggestedIndemnityDays = balances.SuggestedIndemnityDays,
+            TicketAccrualCount = balances.TicketAccrualCount,
+            TicketRemainingCount = balances.TicketRemainingCount,
+            Dependant1TicketCount = balances.Dependant1TicketCount,
+            Dependant1TicketRemainingCount = balances.Dependant1TicketRemainingCount,
+            Dependant2TicketCount = balances.Dependant2TicketCount,
+            Dependant2TicketRemainingCount = balances.Dependant2TicketRemainingCount,
+            Dependant3TicketCount = balances.Dependant3TicketCount,
+            Dependant3TicketRemainingCount = balances.Dependant3TicketRemainingCount,
+            AutoFillLeaveCompensateDays = balances.AutoFillLeaveCompensateDays,
+            AutoFillGratuityCompensateDays = balances.AutoFillGratuityCompensateDays
+        };
     }
 
     [HttpPost]
@@ -73,7 +103,13 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.GetAsync(input.Id);
+        var previous = ToSettlementValues(entity);
+
+        await _settlementService.ValidateDeleteAsync(previous, entity.Id);
+        await _settlementService.UndoAsync(previous);
+
+        await _repository.DeleteAsync(entity);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments_Create)]
@@ -82,16 +118,44 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
         var entity = MapToEntity(input, new EmployeeFnFPayment());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
+        var current = ToSettlementValues(entity);
+        await _settlementService.ValidateSaveAsync(current, previous: null, currentFnFPaymentId: null);
+
         await _repository.InsertAsync(entity);
+        await _settlementService.ApplyAsync(current, previous: null);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeFnFPaymentDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+
+        // Legacy's prev* fields (captured in OnLoaded): what the last save wrote must be undone first.
+        var previous = ToSettlementValues(entity);
+
         MapToEntity(input, entity);
+        var current = ToSettlementValues(entity);
+
+        await _settlementService.ValidateSaveAsync(current, previous, entity.Id);
 
         await _repository.UpdateAsync(entity);
+        await _settlementService.ApplyAsync(current, previous);
+    }
+
+    private static FullAndFinalValues ToSettlementValues(EmployeeFnFPayment entity)
+    {
+        return new FullAndFinalValues
+        {
+            EmployeeId = entity.EmployeeId,
+            CompensationDate = entity.CompensationDate,
+            LeaveCompensateDays = entity.LeaveCompensateDays,
+            GratuityCompensateDays = entity.GratuityCompensateDays,
+            IndemnityPayAdjustment = entity.IndemnityPayAdjustment,
+            TicketCompensateCount = entity.TicketCompensateCount,
+            Dependant1TicketCompensateCount = entity.Dependant1TicketCompensateCount,
+            Dependant2TicketCompensateCount = entity.Dependant2TicketCompensateCount,
+            Dependant3TicketCompensateCount = entity.Dependant3TicketCompensateCount
+        };
     }
 
     private static EmployeeFnFPayment MapToEntity(CreateOrEditEmployeeFnFPaymentDto input, EmployeeFnFPayment entity)

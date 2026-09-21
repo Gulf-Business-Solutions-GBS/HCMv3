@@ -153,12 +153,14 @@ function serviceBehaviour(entityName, serviceOverride) {
             for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
                 if (e.isDirectory()) {
                     if (!['bin', 'obj'].includes(e.name)) walk(path.join(dir, e.name));
-                } else if (/AppService(Base)?\.cs$/.test(e.name)) {
+                } else if (/(AppService(Base)?|Validator)\.cs$/.test(e.name)) {
                     appServiceIndex.set(e.name.slice(0, -3), path.join(dir, e.name));
                 }
             }
         };
         walk(abs('aspnet-core/src/HCMv3.Application'));
+        // Domain validators an app service injects (e.g. EmployeeValidator) hold save-time checks too.
+        walk(abs('aspnet-core/src/HCMv3.Core'));
     }
     const name = serviceOverride ?? `${pluralKey(entityName)}AppService`;
     const file = appServiceIndex.get(name);
@@ -167,9 +169,13 @@ function serviceBehaviour(entityName, serviceOverride) {
     if (/SimpleLookupAppServiceBase</.test(text) && appServiceIndex.has('SimpleLookupAppServiceBase')) {
         text += fs.readFileSync(appServiceIndex.get('SimpleLookupAppServiceBase'), 'utf8');
     }
+    // A check moved into an injected Core validator still applies to this screen, so read it with the service.
+    for (const [, validator] of text.matchAll(/\bI(\w+Validator)\s+_\w+;/g)) {
+        if (appServiceIndex.has(validator)) text += fs.readFileSync(appServiceIndex.get(validator), 'utf8');
+    }
     return {
         service: name,
-        autoCode: /AssignCodeIfEmptyAsync/.test(text),
+        autoCode: /AssignCodeIfEmpty/.test(text), // private helper or the shared IEmployeeCodeGenerator
         uniqueCode: /L\("DuplicateCodeFound"\)/.test(text),
         // The name check refuses a record whose English OR Arabic name matches another's, so
         // each of the two names must be unique on its own.

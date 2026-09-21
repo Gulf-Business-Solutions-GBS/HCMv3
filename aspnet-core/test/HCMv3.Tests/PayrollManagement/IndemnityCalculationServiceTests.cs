@@ -282,12 +282,19 @@ public class IndemnityCalculationServiceTests : AppTestBase
     }
 
     /// <summary>
-    /// The pay date that makes legacy's inclusive service-day count
-    /// (<c>payDate.Subtract(start).TotalDays + 1</c>) come out at exactly <paramref name="serviceDays"/>.
+    /// The pay date that makes the inclusive service-day count come out at exactly <paramref name="serviceDays"/>.
+    /// 29 February is not service (<see cref="IndemnityServiceDays"/>, a deliberate deviation from legacy), so
+    /// the date is moved on one day for every leap day it crosses.
     /// </summary>
     private static DateTime PayDateForServiceDays(DateTime start, int serviceDays)
     {
-        return start.AddDays(serviceDays - 1);
+        var payDate = start.AddDays(serviceDays - 1);
+        while (IndemnityServiceDays.Count(start, payDate) < serviceDays)
+        {
+            payDate = payDate.AddDays(1);
+        }
+
+        return payDate;
     }
 
     private static IndemnitySlab Slab(int srNo, double indemnityDays, double basisDays, DateTime? start = null, DateTime? end = null)
