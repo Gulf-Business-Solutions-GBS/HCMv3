@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "التأمينات الاجتماعية — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.SocialSecurity",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>إعداد التأمينات الاجتماعية لجنسية واحدة، اعتباراً من تاريخ معيّن: شرائح الاشتراك والعلاوات التي تُضاف إلى الأجر الذي تُحتسب عليه.</p><p>لا تنطبق التأمينات الاجتماعية على الموظف إلا إذا كان له سجل تأمينات اجتماعية مؤشَّر فيه على <em>اشتراك التأمينات الاجتماعية</em> للشهر، وكان هناك إعداد تأمينات اجتماعية لجنسيته سارياً في تاريخ الدفع.</p><p>ويحدد إعداد الرواتب <em>قاعدة نسبة التأمينات الاجتماعية</em> أجر الموظف للتأمينات الاجتماعية: المجموع الشهري لأنواع الأجور المؤشَّر عليها <em>إدراج في التأمينات الاجتماعية</em> (<em>الأجر والراتب</em>)، أو راتب العقد في سجل الكفيل للموظف (<em>راتب العقد</em>). وتُضاف إليه علاوات الحالة الاجتماعية والمؤهل الدراسي والأبناء، وتعطي الشريحة التي يقع فيها النسب، ويُصرف نصيبا الموظف وصاحب العمل على نوعي الأجر <code>1</code> و<code>3</code>.</p>",
   "aliasIndex": {
     "loc:NationalityId": "SocialSecurity.NationalityId",
     "dom:SocialSecurity_NationalityId": "SocialSecurity.NationalityId",
@@ -29,9 +29,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الجنسيات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجنسية التي يخصها هذا الإعداد.</p><p><strong>مثال.</strong> كويتي</p><p><strong>لماذا يهم.</strong> لا يشمل الموظفين من الجنسيات الأخرى.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurity.EarningsCap",
@@ -43,9 +43,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقصى ما يمكن خصمه من التأمينات الاجتماعية في الشهر.</p><p><strong>مثال.</strong> <code>450</code></p><p><strong>لماذا يهم.</strong> رغم اسمه فإنه يحدّ الخصم لا الاستحقاقات: فالخصم المحتسب فوق هذا المبلغ يُخفَّض إليه. والقيمة 0 تعني بلا حد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurity.StartDate",
@@ -85,9 +85,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> المبلغ المضاف إلى الأجر عن كل ابن.</p><p><strong>مثال.</strong> <code>50</code></p><p><strong>لماذا يهم.</strong> يُحتسب للموظفين الذكور فقط، عن كل عائل مؤشَّر عليه <em>إدراج في التأمينات الاجتماعية</em> وليس من ذوي الاحتياجات الخاصة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurity.SpecialNeedChildAllowance",
@@ -99,9 +99,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> المبلغ المضاف إلى الأجر عن كل ابن من ذوي الاحتياجات الخاصة.</p><p><strong>مثال.</strong> <code>75</code></p><p><strong>لماذا يهم.</strong> يُحتسب للموظفين الذكور فقط، عن كل عائل مؤشَّر عليه <em>إدراج في التأمينات الاجتماعية</em> و<em>من ذوي الاحتياجات الخاصة</em>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

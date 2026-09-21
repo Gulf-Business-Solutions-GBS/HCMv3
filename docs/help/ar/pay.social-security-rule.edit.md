@@ -11,67 +11,71 @@ permissions: [Pages.PayrollManagement.SocialSecurityRules.Create]
 
 ## Overview
 
-_TODO_
+علاوة التأمينات الاجتماعية -- نوع الأجر `5` -- بحسب المؤهل والجنس والحالة الاجتماعية وعدد العائلين.
+
+لا تنطبق التأمينات الاجتماعية على الموظف إلا إذا كان له سجل تأمينات اجتماعية مؤشَّر فيه على *اشتراك التأمينات الاجتماعية* للشهر، وكان هناك إعداد تأمينات اجتماعية لجنسيته سارياً في تاريخ الدفع. ثم يأخذ نظام الرواتب القاعدة السارية المطابقة تماماً لمؤهل الموظف وجنسه وحالته الاجتماعية، ذات أعلى **عائل** لا يتجاوز عدد عائلي الموظف، ويصرف مبلغها.
 
 ## SocialSecurityId {#SocialSecurityRule.SocialSecurityId}
 <!-- alias: loc:SocialSecurityId, dom:SocialSecurityRule_SocialSecurityId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** إعداد التأمينات الاجتماعية الذي تتبعه هذه القاعدة.
 
 **القواعد.** إلزامي. يُختار من قائمة التأمينات الاجتماعية.
 
 ## QualificationId {#SocialSecurityRule.QualificationId}
 <!-- alias: loc:QualificationId, dom:SocialSecurityRule_QualificationId -->
 
-**ما هو.** _TODO_
+**ما هو.** المؤهل الذي تخصه القاعدة.
 
-**مثال.** _TODO_
+**مثال.** جامعي
 
 **القواعد.** إلزامي. يُختار من قائمة المؤهلات.
 
 ## Gender {#SocialSecurityRule.Gender}
 <!-- alias: loc:Gender, dom:SocialSecurityRule_Gender -->
 
-**ما هو.** _TODO_
+**ما هو.** الجنس الذي تخصه القاعدة.
 
-**مثال.** _TODO_
+**مثال.** ذكر
 
 **القواعد.** إلزامي. إحدى القيم: ذكر، أنثى.
 
 ## MaritalStatusId {#SocialSecurityRule.MaritalStatusId}
 <!-- alias: loc:MaritalStatusId, dom:SocialSecurityRule_MaritalStatusId -->
 
-**ما هو.** _TODO_
+**ما هو.** الحالة الاجتماعية التي تخصها القاعدة.
 
-**مثال.** _TODO_
+**مثال.** متزوج
+
+**لماذا يهم.** إذا تُركت فارغة لا تطابق القاعدة إلا الموظفين الذين لم تُسجَّل حالتهم الاجتماعية.
 
 **القواعد.** اختياري. يُختار من قائمة الحالات الاجتماعية.
 
 ## Dependant {#SocialSecurityRule.Dependant}
 <!-- alias: loc:Dependant, dom:SocialSecurityRule_Dependant -->
 
-**ما هو.** _TODO_
+**ما هو.** عدد العائلين الذي تبدأ منه القاعدة.
 
-**مثال.** _TODO_
+**مثال.** `2`
+
+**لماذا يهم.** يُعدّ كل عائلي الموظف، أياً كان نوعهم.
 
 **القواعد.** اختياري. رقم صحيح.
 
 ## Amount {#SocialSecurityRule.Amount}
 <!-- alias: loc:Amount, dom:SocialSecurityRule_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** العلاوة المصروفة.
 
-**مثال.** _TODO_
+**مثال.** `120`
 
 **القواعد.** اختياري. رقم.
 
 ## Disability {#SocialSecurityRule.Disability}
 <!-- alias: loc:Disability, dom:SocialSecurityRule_Disability -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت القاعدة للموظفين ذوي الإعاقة.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً.
 
 **القواعد.** نعم أو لا.

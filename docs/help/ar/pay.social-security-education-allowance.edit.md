@@ -11,40 +11,40 @@ permissions: [Pages.PayrollManagement.SocialSecurityEducationAllowances.Create]
 
 ## Overview
 
-_TODO_
+مبلغ يُضاف إلى الأجر للتأمينات الاجتماعية عن مؤهل دراسي يحمله الموظف.
+
+كل مؤهل دراسي للموظف سارٍ في الشهر يضيف مبلغ السطر الذي له المؤهل والتخصص نفسيهما.
 
 ## SocialSecurityId {#SocialSecurityEducationAllowance.SocialSecurityId}
 <!-- alias: loc:SocialSecurityId, dom:SocialSecurityEducationAllowance_SocialSecurityId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** إعداد التأمينات الاجتماعية الذي تتبعه هذه العلاوة.
 
 **القواعد.** إلزامي. يُختار من قائمة التأمينات الاجتماعية.
 
 ## EducationBranchId {#SocialSecurityEducationAllowance.EducationBranchId}
 <!-- alias: loc:EducationBranchId, dom:SocialSecurityEducationAllowance_EducationBranchId -->
 
-**ما هو.** _TODO_
+**ما هو.** التخصص الدراسي.
 
-**مثال.** _TODO_
+**مثال.** الهندسة
 
 **القواعد.** إلزامي. يُختار من قائمة EducationBranch.
 
 ## EducationId {#SocialSecurityEducationAllowance.EducationId}
 <!-- alias: loc:EducationId, dom:SocialSecurityEducationAllowance_EducationId -->
 
-**ما هو.** _TODO_
+**ما هو.** المؤهل الدراسي.
 
-**مثال.** _TODO_
+**مثال.** بكالوريوس
 
 **القواعد.** إلزامي. يُختار من قائمة المؤهلات الدراسية.
 
 ## Amount {#SocialSecurityEducationAllowance.Amount}
 <!-- alias: loc:Amount, dom:SocialSecurityEducationAllowance_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ المضاف.
 
-**مثال.** _TODO_
+**مثال.** `100`
 
 **القواعد.** اختياري. رقم.

@@ -11,49 +11,51 @@ permissions: [Pages.PayrollManagement.IndemnityPayRules.Create]
 
 ## Overview
 
-_TODO_
+A cap on end-of-service indemnity by reason for leaving and country.
+
+Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's **Employee Group**. These rules are saved and kept for reference.
 
 ## SeparationType {#IndemnityPayRule.SeparationType}
 <!-- alias: loc:SeparationType, dom:IndemnityPayRule_SeparationType -->
 
-**What it is.** _TODO_
+**What it is.** The reason for leaving the rule is for.
 
-**Example.** _TODO_
+**Example.** Resignation
 
 **Rules.** Required. One of: Resignation, Termination.
 
 ## CountryId {#IndemnityPayRule.CountryId}
 <!-- alias: loc:CountryId, dom:IndemnityPayRule_CountryId -->
 
-**What it is.** _TODO_
+**What it is.** The country the rule is for.
 
-**Example.** _TODO_
+**Example.** Kuwait
 
 **Rules.** Optional. Chosen from Country master data.
 
 ## MaxNumber {#IndemnityPayRule.MaxNumber}
 <!-- alias: loc:MaxNumber, dom:IndemnityPayRule_MaxNumber -->
 
-**What it is.** _TODO_
+**What it is.** The most pay the indemnity could reach, in the unit below.
 
-**Example.** _TODO_
+**Example.** `18`
 
 **Rules.** Optional. Number.
 
 ## MaxUnit {#IndemnityPayRule.MaxUnit}
 <!-- alias: loc:MaxUnit, dom:IndemnityPayRule_MaxUnit -->
 
-**What it is.** _TODO_
+**What it is.** Whether the maximum is in months or days.
 
-**Example.** _TODO_
+**Example.** Month
 
 **Rules.** Required. One of: Day, Month.
 
 ## MaxPayPercentage {#IndemnityPayRule.MaxPayPercentage}
 <!-- alias: loc:MaxPayPercentage, dom:IndemnityPayRule_MaxPayPercentage -->
 
-**What it is.** _TODO_
+**What it is.** The percentage of that maximum that could be paid.
 
-**Example.** _TODO_
+**Example.** `100`
 
 **Rules.** Optional. Number.

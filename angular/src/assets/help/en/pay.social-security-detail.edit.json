@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Social Security Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.SocialSecurityDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One contribution slab: the range of pay it covers and the percentages paid on it.</p><p>The employee's pay for social security (with allowances) picks the slab whose range holds it. Pay above every slab uses the highest slab, with the pay reduced to that slab's maximum.</p>",
   "aliasIndex": {
     "loc:SocialSecurityId": "SocialSecurityDetail.SocialSecurityId",
     "dom:SocialSecurityDetail_SocialSecurityId": "SocialSecurityDetail.SocialSecurityId",
@@ -29,9 +29,9 @@
       ],
       "rules": "Required. Chosen from Social Security master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The social security setup this slab belongs to.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityDetail.MinEarnings",
@@ -43,9 +43,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The lowest pay in this slab.</p><p><strong>Example.</strong> <code>1501</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityDetail.MaxEarnings",
@@ -57,9 +57,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The highest pay in this slab. It cannot be less than the minimum.</p><p><strong>Example.</strong> <code>2750</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityDetail.EmployeeContribution",
@@ -71,9 +71,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee's share, as a percentage of their pay.</p><p><strong>Example.</strong> <code>2.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityDetail.EmployerContribution",
@@ -85,9 +85,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The employer's share, as a percentage of the employee's pay.</p><p><strong>Example.</strong> <code>11.5</code></p>",
+      "adminHtml": "<p>The employer's share is worked out only when the slab's employee contribution is not 0. On a slab where only the employer pays, give the employee contribution a value or the employer share is 0 — legacy behaviour, kept on purpose.</p>",
+      "stub": false
     },
     {
       "id": "SocialSecurityDetail.MinEarningsEmployeeContribution",
@@ -99,9 +99,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> An extra employee percentage charged on the pay below this slab.</p><p><strong>Example.</strong> <code>2.5</code></p><p><strong>Why it matters.</strong> Added to the employee's share as this percentage of the slab's minimum less 1.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

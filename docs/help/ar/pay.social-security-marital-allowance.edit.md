@@ -11,40 +11,40 @@ permissions: [Pages.PayrollManagement.SocialSecurityMaritalAllowances.Create]
 
 ## Overview
 
-_TODO_
+مبلغ يُضاف إلى الأجر للتأمينات الاجتماعية بحسب الحالة الاجتماعية، للموظفين الذين يقع مؤهلهم في تخصص معيّن.
+
+ولا تُحتسب إلا الأسطر الخاصة بتخصص أحد مؤهلات الموظف. فالموظف الذكر يحصل على السطر المطابق لحالته الاجتماعية، أما الموظفة غير العزباء فتُجمع لها كل الأسطر غير الخاصة بالعزوبية في تخصصاتها -- وهذا سلوك النظام السابق وقد أُبقي عليه عمداً.
 
 ## SocialSecurityId {#SocialSecurityMaritalAllowance.SocialSecurityId}
 <!-- alias: loc:SocialSecurityId, dom:SocialSecurityMaritalAllowance_SocialSecurityId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** إعداد التأمينات الاجتماعية الذي تتبعه هذه العلاوة.
 
 **القواعد.** إلزامي. يُختار من قائمة التأمينات الاجتماعية.
 
 ## EducationBranchId {#SocialSecurityMaritalAllowance.EducationBranchId}
 <!-- alias: loc:EducationBranchId, dom:SocialSecurityMaritalAllowance_EducationBranchId -->
 
-**ما هو.** _TODO_
+**ما هو.** التخصص الدراسي الذي تنطبق عليه العلاوة.
 
-**مثال.** _TODO_
+**مثال.** الهندسة
 
 **القواعد.** إلزامي. يُختار من قائمة EducationBranch.
 
 ## MaritalStatusId {#SocialSecurityMaritalAllowance.MaritalStatusId}
 <!-- alias: loc:MaritalStatusId, dom:SocialSecurityMaritalAllowance_MaritalStatusId -->
 
-**ما هو.** _TODO_
+**ما هو.** الحالة الاجتماعية التي يخصها المبلغ.
 
-**مثال.** _TODO_
+**مثال.** متزوج
 
 **القواعد.** إلزامي. يُختار من قائمة الحالات الاجتماعية.
 
 ## Amount {#SocialSecurityMaritalAllowance.Amount}
 <!-- alias: loc:Amount, dom:SocialSecurityMaritalAllowance_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ المضاف.
 
-**مثال.** _TODO_
+**مثال.** `50`
 
 **القواعد.** اختياري. رقم.

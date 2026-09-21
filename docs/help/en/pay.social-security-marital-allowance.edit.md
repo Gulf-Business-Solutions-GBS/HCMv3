@@ -11,40 +11,40 @@ permissions: [Pages.PayrollManagement.SocialSecurityMaritalAllowances.Create]
 
 ## Overview
 
-_TODO_
+An amount added to the pay for social security by marital status, for employees whose education falls in a given branch.
+
+Only rows for a branch of one of the employee's educations count. A male employee gets the row matching his marital status. A female employee who is not single gets every non-single row for her branches added together -- legacy behaviour, kept on purpose.
 
 ## SocialSecurityId {#SocialSecurityMaritalAllowance.SocialSecurityId}
 <!-- alias: loc:SocialSecurityId, dom:SocialSecurityMaritalAllowance_SocialSecurityId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The social security setup this allowance belongs to.
 
 **Rules.** Required. Chosen from Social Security master data.
 
 ## EducationBranchId {#SocialSecurityMaritalAllowance.EducationBranchId}
 <!-- alias: loc:EducationBranchId, dom:SocialSecurityMaritalAllowance_EducationBranchId -->
 
-**What it is.** _TODO_
+**What it is.** The branch of study the allowance applies to.
 
-**Example.** _TODO_
+**Example.** Engineering
 
 **Rules.** Required. Chosen from Education Branch master data.
 
 ## MaritalStatusId {#SocialSecurityMaritalAllowance.MaritalStatusId}
 <!-- alias: loc:MaritalStatusId, dom:SocialSecurityMaritalAllowance_MaritalStatusId -->
 
-**What it is.** _TODO_
+**What it is.** The marital status the amount is for.
 
-**Example.** _TODO_
+**Example.** Married
 
 **Rules.** Required. Chosen from Marital Status master data.
 
 ## Amount {#SocialSecurityMaritalAllowance.Amount}
 <!-- alias: loc:Amount, dom:SocialSecurityMaritalAllowance_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount added.
 
-**Example.** _TODO_
+**Example.** `50`
 
 **Rules.** Optional. Number.

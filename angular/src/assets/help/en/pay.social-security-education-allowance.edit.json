@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Social Security Education Allowances — Create / Edit",
   "entity": "HCMv3.PayrollManagement.SocialSecurityEducationAllowance",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>An amount added to the pay for social security for an education the employee holds.</p><p>Each of the employee's educations in force for the month adds the amount of the row with the same education and education branch.</p>",
   "aliasIndex": {
     "loc:SocialSecurityId": "SocialSecurityEducationAllowance.SocialSecurityId",
     "dom:SocialSecurityEducationAllowance_SocialSecurityId": "SocialSecurityEducationAllowance.SocialSecurityId",
@@ -25,9 +25,9 @@
       ],
       "rules": "Required. Chosen from Social Security master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The social security setup this allowance belongs to.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityEducationAllowance.EducationBranchId",
@@ -39,9 +39,9 @@
       ],
       "rules": "Required. Chosen from Education Branch master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The branch of study.</p><p><strong>Example.</strong> Engineering</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityEducationAllowance.EducationId",
@@ -53,9 +53,9 @@
       ],
       "rules": "Required. Chosen from Education master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The education level.</p><p><strong>Example.</strong> Bachelor's Degree</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SocialSecurityEducationAllowance.Amount",
@@ -67,9 +67,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The amount added.</p><p><strong>Example.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

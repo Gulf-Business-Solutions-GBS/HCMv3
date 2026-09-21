@@ -11,49 +11,51 @@ permissions: [Pages.PayrollManagement.IndemnityPayRules.Create]
 
 ## Overview
 
-_TODO_
+حد لمكافأة نهاية الخدمة بحسب سبب انتهاء الخدمة والبلد.
+
+لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من **مجموعة الموظفين** التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.
 
 ## SeparationType {#IndemnityPayRule.SeparationType}
 <!-- alias: loc:SeparationType, dom:IndemnityPayRule_SeparationType -->
 
-**ما هو.** _TODO_
+**ما هو.** سبب انتهاء الخدمة الذي تخصه القاعدة.
 
-**مثال.** _TODO_
+**مثال.** استقالة
 
 **القواعد.** إلزامي. إحدى القيم: استقالة، إنهاء خدمة.
 
 ## CountryId {#IndemnityPayRule.CountryId}
 <!-- alias: loc:CountryId, dom:IndemnityPayRule_CountryId -->
 
-**ما هو.** _TODO_
+**ما هو.** البلد الذي تخصه القاعدة.
 
-**مثال.** _TODO_
+**مثال.** الكويت
 
 **القواعد.** اختياري. يُختار من قائمة الدول.
 
 ## MaxNumber {#IndemnityPayRule.MaxNumber}
 <!-- alias: loc:MaxNumber, dom:IndemnityPayRule_MaxNumber -->
 
-**ما هو.** _TODO_
+**ما هو.** أقصى ما يمكن أن تبلغه المكافأة من الراتب، بالوحدة أدناه.
 
-**مثال.** _TODO_
+**مثال.** `18`
 
 **القواعد.** اختياري. رقم.
 
 ## MaxUnit {#IndemnityPayRule.MaxUnit}
 <!-- alias: loc:MaxUnit, dom:IndemnityPayRule_MaxUnit -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان الحد الأقصى بالأشهر أو بالأيام.
 
-**مثال.** _TODO_
+**مثال.** شهر
 
 **القواعد.** إلزامي. إحدى القيم: اليوم، الشهر.
 
 ## MaxPayPercentage {#IndemnityPayRule.MaxPayPercentage}
 <!-- alias: loc:MaxPayPercentage, dom:IndemnityPayRule_MaxPayPercentage -->
 
-**ما هو.** _TODO_
+**ما هو.** النسبة التي يمكن صرفها من ذلك الحد الأقصى.
 
-**مثال.** _TODO_
+**مثال.** `100`
 
 **القواعد.** اختياري. رقم.

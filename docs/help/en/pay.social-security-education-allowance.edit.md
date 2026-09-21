@@ -11,40 +11,40 @@ permissions: [Pages.PayrollManagement.SocialSecurityEducationAllowances.Create]
 
 ## Overview
 
-_TODO_
+An amount added to the pay for social security for an education the employee holds.
+
+Each of the employee's educations in force for the month adds the amount of the row with the same education and education branch.
 
 ## SocialSecurityId {#SocialSecurityEducationAllowance.SocialSecurityId}
 <!-- alias: loc:SocialSecurityId, dom:SocialSecurityEducationAllowance_SocialSecurityId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The social security setup this allowance belongs to.
 
 **Rules.** Required. Chosen from Social Security master data.
 
 ## EducationBranchId {#SocialSecurityEducationAllowance.EducationBranchId}
 <!-- alias: loc:EducationBranchId, dom:SocialSecurityEducationAllowance_EducationBranchId -->
 
-**What it is.** _TODO_
+**What it is.** The branch of study.
 
-**Example.** _TODO_
+**Example.** Engineering
 
 **Rules.** Required. Chosen from Education Branch master data.
 
 ## EducationId {#SocialSecurityEducationAllowance.EducationId}
 <!-- alias: loc:EducationId, dom:SocialSecurityEducationAllowance_EducationId -->
 
-**What it is.** _TODO_
+**What it is.** The education level.
 
-**Example.** _TODO_
+**Example.** Bachelor's Degree
 
 **Rules.** Required. Chosen from Education master data.
 
 ## Amount {#SocialSecurityEducationAllowance.Amount}
 <!-- alias: loc:Amount, dom:SocialSecurityEducationAllowance_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount added.
 
-**Example.** _TODO_
+**Example.** `100`
 
 **Rules.** Optional. Number.

@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "قواعد صرف مكافأة نهاية الخدمة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.IndemnityPayRule",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>حد لمكافأة نهاية الخدمة بحسب سبب انتهاء الخدمة والبلد.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>مجموعة الموظفين</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
   "aliasIndex": {
     "loc:SeparationType": "IndemnityPayRule.SeparationType",
     "dom:IndemnityPayRule_SeparationType": "IndemnityPayRule.SeparationType",
@@ -31,9 +31,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: استقالة، إنهاء خدمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> سبب انتهاء الخدمة الذي تخصه القاعدة.</p><p><strong>مثال.</strong> استقالة</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "IndemnityPayRule.CountryId",
@@ -45,9 +45,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة الدول.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> البلد الذي تخصه القاعدة.</p><p><strong>مثال.</strong> الكويت</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "IndemnityPayRule.StartDate",
@@ -87,9 +87,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقصى ما يمكن أن تبلغه المكافأة من الراتب، بالوحدة أدناه.</p><p><strong>مثال.</strong> <code>18</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "IndemnityPayRule.MaxUnit",
@@ -101,9 +101,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: اليوم، الشهر.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الحد الأقصى بالأشهر أو بالأيام.</p><p><strong>مثال.</strong> شهر</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "IndemnityPayRule.MaxPayPercentage",
@@ -115,9 +115,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> النسبة التي يمكن صرفها من ذلك الحد الأقصى.</p><p><strong>مثال.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

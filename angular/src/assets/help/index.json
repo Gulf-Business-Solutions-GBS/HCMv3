@@ -2640,6 +2640,45 @@
     "EmployeeSubGroup_MaxDependantHealthReimburseCount": [
       "pay.employee-sub-group.edit"
     ],
+    "IndemnityPayRuleDetail_IndemnityPayRuleId": [
+      "pay.indemnity-pay-rule-detail.edit"
+    ],
+    "IndemnityPayRuleDetail_MinYearOfService": [
+      "pay.indemnity-pay-rule-detail.edit"
+    ],
+    "IndemnityPayRuleDetail_MaxYearOfService": [
+      "pay.indemnity-pay-rule-detail.edit"
+    ],
+    "IndemnityPayRuleDetail_Number": [
+      "pay.indemnity-pay-rule-detail.edit"
+    ],
+    "IndemnityPayRuleDetail_Unit": [
+      "pay.indemnity-pay-rule-detail.edit"
+    ],
+    "IndemnityPayRuleDetail_PayPercentage": [
+      "pay.indemnity-pay-rule-detail.edit"
+    ],
+    "IndemnityPayRule_SeparationType": [
+      "pay.indemnity-pay-rule.edit"
+    ],
+    "IndemnityPayRule_CountryId": [
+      "pay.indemnity-pay-rule.edit"
+    ],
+    "IndemnityPayRule_StartDate": [
+      "pay.indemnity-pay-rule.edit"
+    ],
+    "IndemnityPayRule_EndDate": [
+      "pay.indemnity-pay-rule.edit"
+    ],
+    "IndemnityPayRule_MaxNumber": [
+      "pay.indemnity-pay-rule.edit"
+    ],
+    "IndemnityPayRule_MaxUnit": [
+      "pay.indemnity-pay-rule.edit"
+    ],
+    "IndemnityPayRule_MaxPayPercentage": [
+      "pay.indemnity-pay-rule.edit"
+    ],
     "OrgUnitWageAccGroup_OrganizationUnitId": [
       "pay.org-unit-wage-acc-group.edit"
     ],
@@ -2702,6 +2741,93 @@
     ],
     "PayrollControlRecord_PeriodClosed": [
       "pay.payroll-control-record.edit"
+    ],
+    "SocialSecurity_NationalityId": [
+      "pay.social-security.edit"
+    ],
+    "SocialSecurity_EarningsCap": [
+      "pay.social-security.edit"
+    ],
+    "SocialSecurity_StartDate": [
+      "pay.social-security.edit"
+    ],
+    "SocialSecurity_EndDate": [
+      "pay.social-security.edit"
+    ],
+    "SocialSecurity_ChildAllowance": [
+      "pay.social-security.edit"
+    ],
+    "SocialSecurity_SpecialNeedChildAllowance": [
+      "pay.social-security.edit"
+    ],
+    "SocialSecurityDetail_SocialSecurityId": [
+      "pay.social-security-detail.edit"
+    ],
+    "SocialSecurityDetail_MinEarnings": [
+      "pay.social-security-detail.edit"
+    ],
+    "SocialSecurityDetail_MaxEarnings": [
+      "pay.social-security-detail.edit"
+    ],
+    "SocialSecurityDetail_EmployeeContribution": [
+      "pay.social-security-detail.edit"
+    ],
+    "SocialSecurityDetail_EmployerContribution": [
+      "pay.social-security-detail.edit"
+    ],
+    "SocialSecurityDetail_MinEarningsEmployeeContribution": [
+      "pay.social-security-detail.edit"
+    ],
+    "SocialSecurityEducationAllowance_SocialSecurityId": [
+      "pay.social-security-education-allowance.edit"
+    ],
+    "SocialSecurityEducationAllowance_EducationBranchId": [
+      "pay.social-security-education-allowance.edit"
+    ],
+    "SocialSecurityEducationAllowance_EducationId": [
+      "pay.social-security-education-allowance.edit"
+    ],
+    "SocialSecurityEducationAllowance_Amount": [
+      "pay.social-security-education-allowance.edit"
+    ],
+    "SocialSecurityMaritalAllowance_SocialSecurityId": [
+      "pay.social-security-marital-allowance.edit"
+    ],
+    "SocialSecurityMaritalAllowance_EducationBranchId": [
+      "pay.social-security-marital-allowance.edit"
+    ],
+    "SocialSecurityMaritalAllowance_MaritalStatusId": [
+      "pay.social-security-marital-allowance.edit"
+    ],
+    "SocialSecurityMaritalAllowance_Amount": [
+      "pay.social-security-marital-allowance.edit"
+    ],
+    "SocialSecurityRule_SocialSecurityId": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_StartDate": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_EndDate": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_QualificationId": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_Gender": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_MaritalStatusId": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_Dependant": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_Amount": [
+      "pay.social-security-rule.edit"
+    ],
+    "SocialSecurityRule_Disability": [
+      "pay.social-security-rule.edit"
     ],
     "WageAccGroupDetail_WageAccGroupId": [
       "pay.wage-acc-group-detail.edit"
