@@ -1,0 +1,75 @@
+{
+  "helpId": "gr.signatory.edit",
+  "lang": "en",
+  "title": "Signatories — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.Signatory",
+  "overviewHtml": "<p>A person authorised to sign for sponsors. Signatories are attached to sponsors on the sponsor's signatories.</p>",
+  "aliasIndex": {
+    "loc:Code": "Signatory.Code",
+    "dom:Signatory_Code": "Signatory.Code",
+    "loc:CivilId": "Signatory.CivilId",
+    "dom:Signatory_CivilId": "Signatory.CivilId",
+    "loc:NameEn": "Signatory.NameEn",
+    "dom:Signatory_NameEn": "Signatory.NameEn",
+    "loc:NameAr": "Signatory.NameAr",
+    "dom:Signatory_NameAr": "Signatory.NameAr"
+  },
+  "fields": [
+    {
+      "id": "Signatory.Code",
+      "label": "Code",
+      "section": "Signatories",
+      "aliases": [
+        "loc:Code",
+        "dom:Signatory_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Signatory.CivilId",
+      "label": "CivilId",
+      "section": "Signatories",
+      "aliases": [
+        "loc:CivilId",
+        "dom:Signatory_CivilId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The signatory's civil ID.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Signatory.NameEn",
+      "label": "NameEn",
+      "section": "Signatories",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Signatory_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Signatory.NameAr",
+      "label": "NameAr",
+      "section": "Signatories",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Signatory_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

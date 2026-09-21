@@ -1,0 +1,27 @@
+{
+  "helpId": "gr.sponsor-signatory.edit",
+  "lang": "ar",
+  "title": "المفوضون بالتوقيع عن الكفيل — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorSignatory",
+  "overviewHtml": "<p>مخوّل بالتوقيع عن كفيل. ولا يُضاف كل مخوّل إلا مرة واحدة لكل كفيل.</p>",
+  "aliasIndex": {
+    "loc:Signatory": "SponsorSignatory.SignatoryId",
+    "dom:SponsorSignatory_SignatoryId": "SponsorSignatory.SignatoryId"
+  },
+  "fields": [
+    {
+      "id": "SponsorSignatory.SignatoryId",
+      "label": "Signatory",
+      "section": "SponsorSignatories",
+      "aliases": [
+        "loc:Signatory",
+        "dom:SponsorSignatory_SignatoryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المفوضون بالتوقيع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المخوّل بالتوقيع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

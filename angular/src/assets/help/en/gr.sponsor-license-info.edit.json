@@ -1,0 +1,91 @@
+{
+  "helpId": "gr.sponsor-license-info.edit",
+  "lang": "en",
+  "title": "Sponsor License Infos — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorLicenseInfo",
+  "overviewHtml": "<p>A trade licence held by a sponsor. The expiry date cannot be before the issue date, and a licence number can be entered once per sponsor. Kept as a record: nothing warns when it expires.</p>",
+  "aliasIndex": {
+    "loc:TradeLicenseNum": "SponsorLicenseInfo.TradeLicenseNum",
+    "dom:SponsorLicenseInfo_TradeLicenseNum": "SponsorLicenseInfo.TradeLicenseNum",
+    "loc:CivilId": "SponsorLicenseInfo.CivilId",
+    "dom:SponsorLicenseInfo_CivilId": "SponsorLicenseInfo.CivilId",
+    "loc:LicenseIssueDate": "SponsorLicenseInfo.LicenseIssueDate",
+    "dom:SponsorLicenseInfo_LicenseIssueDate": "SponsorLicenseInfo.LicenseIssueDate",
+    "loc:LicenseExpiryDate": "SponsorLicenseInfo.LicenseExpiryDate",
+    "dom:SponsorLicenseInfo_LicenseExpiryDate": "SponsorLicenseInfo.LicenseExpiryDate",
+    "loc:ActivityType": "SponsorLicenseInfo.ActivityType",
+    "dom:SponsorLicenseInfo_ActivityType": "SponsorLicenseInfo.ActivityType"
+  },
+  "fields": [
+    {
+      "id": "SponsorLicenseInfo.TradeLicenseNum",
+      "label": "TradeLicenseNum",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:TradeLicenseNum",
+        "dom:SponsorLicenseInfo_TradeLicenseNum"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The licence number.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.CivilId",
+      "label": "CivilId",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:CivilId",
+        "dom:SponsorLicenseInfo_CivilId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The civil ID of the licence holder.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.LicenseIssueDate",
+      "label": "LicenseIssueDate",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:LicenseIssueDate",
+        "dom:SponsorLicenseInfo_LicenseIssueDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the licence was issued.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.LicenseExpiryDate",
+      "label": "LicenseExpiryDate",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:LicenseExpiryDate",
+        "dom:SponsorLicenseInfo_LicenseExpiryDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the licence expires.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorLicenseInfo.ActivityType",
+      "label": "ActivityType",
+      "section": "SponsorLicenseInfos",
+      "aliases": [
+        "loc:ActivityType",
+        "dom:SponsorLicenseInfo_ActivityType"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The licensed activity.</p><p><strong>Example.</strong> General trading</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

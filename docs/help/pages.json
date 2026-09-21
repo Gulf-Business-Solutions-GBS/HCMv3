@@ -6695,6 +6695,195 @@
         }
       },
       "defaultSection": "SiteAudits"
+    },
+    {
+      "helpId": "gr.govt-job-title.edit",
+      "title": "Govt Job Titles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.GovtJobTitles.Create"
+      ],
+      "entity": {
+        "name": "GovtJobTitle",
+        "fullName": "HCMv3.GovtRelationsManagement.GovtJobTitle",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/GovtJobTitle.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/govt-job-titles/create-or-edit-govt-job-title-modal.component.html"
+        }
+      },
+      "defaultSection": "GovtJobTitles"
+    },
+    {
+      "helpId": "gr.organization-document.edit",
+      "title": "Organization Documents — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.OrganizationDocuments.Create"
+      ],
+      "entity": {
+        "name": "OrganizationDocument",
+        "fullName": "HCMv3.GovtRelationsManagement.OrganizationDocument",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/OrganizationDocument.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/organization-documents/create-or-edit-organization-document-modal.component.html"
+        }
+      },
+      "defaultSection": "OrganizationDocuments"
+    },
+    {
+      "helpId": "gr.signatory.edit",
+      "title": "Signatories — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.Signatories.Create"
+      ],
+      "entity": {
+        "name": "Signatory",
+        "fullName": "HCMv3.GovtRelationsManagement.Signatory",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/Signatory.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/signatories/create-or-edit-signatory-modal.component.html"
+        }
+      },
+      "defaultSection": "Signatories"
+    },
+    {
+      "helpId": "gr.sponsor-bank.edit",
+      "title": "Sponsor Banks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.SponsorBanks.Create"
+      ],
+      "entity": {
+        "name": "SponsorBank",
+        "fullName": "HCMv3.GovtRelationsManagement.SponsorBank",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/SponsorBank.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/sponsor-detail/banks/create-or-edit-sponsor-bank-modal.component.html"
+        }
+      },
+      "defaultSection": "SponsorBanks"
+    },
+    {
+      "helpId": "gr.sponsor-govt-representative.edit",
+      "title": "Sponsor Govt Representatives — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.SponsorGovtRepresentatives.Create"
+      ],
+      "entity": {
+        "name": "SponsorGovtRepresentative",
+        "fullName": "HCMv3.GovtRelationsManagement.SponsorGovtRepresentative",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/SponsorGovtRepresentative.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/sponsor-detail/govt-representatives/create-or-edit-sponsor-govt-representative-modal.component.html"
+        }
+      },
+      "defaultSection": "SponsorGovtRepresentatives"
+    },
+    {
+      "helpId": "gr.sponsor-job-title.edit",
+      "title": "Sponsor Job Titles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.SponsorJobTitles.Create"
+      ],
+      "entity": {
+        "name": "SponsorJobTitle",
+        "fullName": "HCMv3.GovtRelationsManagement.SponsorJobTitle",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/SponsorJobTitle.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/sponsor-detail/job-titles/create-or-edit-sponsor-job-title-modal.component.html"
+        }
+      },
+      "defaultSection": "SponsorJobTitles"
+    },
+    {
+      "helpId": "gr.sponsor-license-info.edit",
+      "title": "Sponsor License Infos — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.SponsorLicenseInfos.Create"
+      ],
+      "entity": {
+        "name": "SponsorLicenseInfo",
+        "fullName": "HCMv3.GovtRelationsManagement.SponsorLicenseInfo",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/SponsorLicenseInfo.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/sponsor-detail/license-infos/create-or-edit-sponsor-license-info-modal.component.html"
+        }
+      },
+      "defaultSection": "SponsorLicenseInfos"
+    },
+    {
+      "helpId": "gr.sponsor-signatory.edit",
+      "title": "Sponsor Signatories — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.SponsorSignatories.Create"
+      ],
+      "entity": {
+        "name": "SponsorSignatory",
+        "fullName": "HCMv3.GovtRelationsManagement.SponsorSignatory",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/SponsorSignatory.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/sponsor-detail/signatories/create-or-edit-sponsor-signatory-modal.component.html"
+        }
+      },
+      "defaultSection": "SponsorSignatories"
+    },
+    {
+      "helpId": "gr.sponsor.edit",
+      "title": "Sponsors — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GovtRelationsManagement.Sponsors.Create"
+      ],
+      "entity": {
+        "name": "Sponsor",
+        "fullName": "HCMv3.GovtRelationsManagement.Sponsor",
+        "file": "aspnet-core/src/HCMv3.Core/GovtRelationsManagement/Sponsor.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/govt-relations-management/sponsors/create-or-edit-sponsor-modal.component.html"
+        }
+      },
+      "defaultSection": "Sponsors"
     }
   ]
 }

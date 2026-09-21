@@ -1,0 +1,59 @@
+{
+  "helpId": "gr.sponsor-govt-representative.edit",
+  "lang": "en",
+  "title": "Sponsor Govt Representatives — Create / Edit",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorGovtRepresentative",
+  "overviewHtml": "<p>The employee who deals with government offices for a sponsor, for a date range. Ranges for the same sponsor cannot overlap.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SponsorGovtRepresentative.EmployeeId",
+    "dom:SponsorGovtRepresentative_EmployeeId": "SponsorGovtRepresentative.EmployeeId",
+    "loc:StartDate": "SponsorGovtRepresentative.StartDate",
+    "dom:SponsorGovtRepresentative_StartDate": "SponsorGovtRepresentative.StartDate",
+    "loc:EndDate": "SponsorGovtRepresentative.EndDate",
+    "dom:SponsorGovtRepresentative_EndDate": "SponsorGovtRepresentative.EndDate"
+  },
+  "fields": [
+    {
+      "id": "SponsorGovtRepresentative.EmployeeId",
+      "label": "Employee",
+      "section": "SponsorGovtRepresentatives",
+      "aliases": [
+        "loc:Employee",
+        "dom:SponsorGovtRepresentative_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The representative.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorGovtRepresentative.StartDate",
+      "label": "StartDate",
+      "section": "SponsorGovtRepresentatives",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SponsorGovtRepresentative_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorGovtRepresentative.EndDate",
+      "label": "EndDate",
+      "section": "SponsorGovtRepresentatives",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SponsorGovtRepresentative_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

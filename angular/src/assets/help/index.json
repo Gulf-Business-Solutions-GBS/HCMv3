@@ -6812,6 +6812,192 @@
     ],
     "SiteAudit_Comments": [
       "hs.site-audit.edit"
+    ],
+    "GovtJobTitle_Code": [
+      "gr.govt-job-title.edit"
+    ],
+    "GovtJobTitle_GovtJobCategoryId": [
+      "gr.govt-job-title.edit"
+    ],
+    "GovtJobTitle_NameEn": [
+      "gr.govt-job-title.edit"
+    ],
+    "GovtJobTitle_NameAr": [
+      "gr.govt-job-title.edit"
+    ],
+    "OrganizationDocument_OrganizationUnitId": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_DocumentTypeId": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_DocumentNum": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_SponsorId": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_IssueDate": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_ExpiryDate": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_DocumentPlace": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_NotificationSent": [
+      "gr.organization-document.edit"
+    ],
+    "OrganizationDocument_Comments": [
+      "gr.organization-document.edit"
+    ],
+    "Signatory_Code": [
+      "gr.signatory.edit"
+    ],
+    "Signatory_CivilId": [
+      "gr.signatory.edit"
+    ],
+    "Signatory_NameEn": [
+      "gr.signatory.edit"
+    ],
+    "Signatory_NameAr": [
+      "gr.signatory.edit"
+    ],
+    "SponsorBank_EmployeeBankId": [
+      "gr.sponsor-bank.edit"
+    ],
+    "SponsorBank_PaymentBankId": [
+      "gr.sponsor-bank.edit"
+    ],
+    "SponsorBank_AccountNumber": [
+      "gr.sponsor-bank.edit"
+    ],
+    "SponsorBank_Iban": [
+      "gr.sponsor-bank.edit"
+    ],
+    "SponsorBank_StartDate": [
+      "gr.sponsor-bank.edit"
+    ],
+    "SponsorBank_EndDate": [
+      "gr.sponsor-bank.edit"
+    ],
+    "SponsorGovtRepresentative_EmployeeId": [
+      "gr.sponsor-govt-representative.edit"
+    ],
+    "SponsorGovtRepresentative_StartDate": [
+      "gr.sponsor-govt-representative.edit"
+    ],
+    "SponsorGovtRepresentative_EndDate": [
+      "gr.sponsor-govt-representative.edit"
+    ],
+    "SponsorJobTitle_GovtJobTitleId": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_StartDate": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_EndDate": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_NoofPosition": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_CitizenPercent": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_CitizenQuotaUsed": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_NonCitizenPercent": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorJobTitle_NonCitizenQuotaUsed": [
+      "gr.sponsor-job-title.edit"
+    ],
+    "SponsorLicenseInfo_TradeLicenseNum": [
+      "gr.sponsor-license-info.edit"
+    ],
+    "SponsorLicenseInfo_CivilId": [
+      "gr.sponsor-license-info.edit"
+    ],
+    "SponsorLicenseInfo_LicenseIssueDate": [
+      "gr.sponsor-license-info.edit"
+    ],
+    "SponsorLicenseInfo_LicenseExpiryDate": [
+      "gr.sponsor-license-info.edit"
+    ],
+    "SponsorLicenseInfo_ActivityType": [
+      "gr.sponsor-license-info.edit"
+    ],
+    "SponsorSignatory_SignatoryId": [
+      "gr.sponsor-signatory.edit"
+    ],
+    "Sponsor_Code": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_NameEn": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_NameAr": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Email": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Gender": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Profession": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Building": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Street": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Area": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Block": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Telephone": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_Fax": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_POBox": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_NationalityId": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_BusinessTypeId": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_OrganizationUnitId": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_GovernorateId": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_UnifiedNum": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_SocialSecurityNum": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_MOSALID": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_BusinessOwnerNameEn": [
+      "gr.sponsor.edit"
+    ],
+    "Sponsor_BusinessOwnerNameAr": [
+      "gr.sponsor.edit"
     ]
   }
 }

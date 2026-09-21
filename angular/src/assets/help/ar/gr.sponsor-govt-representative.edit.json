@@ -1,0 +1,59 @@
+{
+  "helpId": "gr.sponsor-govt-representative.edit",
+  "lang": "ar",
+  "title": "مندوبو الكفيل لدى الجهات الحكومية — إنشاء / تحرير",
+  "entity": "HCMv3.GovtRelationsManagement.SponsorGovtRepresentative",
+  "overviewHtml": "<p>الموظف الذي يتعامل مع الجهات الحكومية نيابة عن كفيل، لفترة من التواريخ. ولا يجوز أن تتداخل الفترات للكفيل نفسه.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SponsorGovtRepresentative.EmployeeId",
+    "dom:SponsorGovtRepresentative_EmployeeId": "SponsorGovtRepresentative.EmployeeId",
+    "loc:StartDate": "SponsorGovtRepresentative.StartDate",
+    "dom:SponsorGovtRepresentative_StartDate": "SponsorGovtRepresentative.StartDate",
+    "loc:EndDate": "SponsorGovtRepresentative.EndDate",
+    "dom:SponsorGovtRepresentative_EndDate": "SponsorGovtRepresentative.EndDate"
+  },
+  "fields": [
+    {
+      "id": "SponsorGovtRepresentative.EmployeeId",
+      "label": "Employee",
+      "section": "SponsorGovtRepresentatives",
+      "aliases": [
+        "loc:Employee",
+        "dom:SponsorGovtRepresentative_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المندوب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorGovtRepresentative.StartDate",
+      "label": "StartDate",
+      "section": "SponsorGovtRepresentatives",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SponsorGovtRepresentative_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SponsorGovtRepresentative.EndDate",
+      "label": "EndDate",
+      "section": "SponsorGovtRepresentatives",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SponsorGovtRepresentative_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
