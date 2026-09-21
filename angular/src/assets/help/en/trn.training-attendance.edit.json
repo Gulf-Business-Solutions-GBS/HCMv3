@@ -1,0 +1,75 @@
+{
+  "helpId": "trn.training-attendance.edit",
+  "lang": "en",
+  "title": "Training Attendances — Create / Edit",
+  "entity": "HCMv3.TrainingManagement.TrainingAttendance",
+  "overviewHtml": "<p>Whether an employee attended a training run on one day. The day must fall within the run's dates, and each employee can have one record per run per day. It does not affect time or payroll.</p>",
+  "aliasIndex": {
+    "loc:TrainingScheduleId": "TrainingAttendance.TrainingScheduleId",
+    "dom:TrainingAttendance_TrainingScheduleId": "TrainingAttendance.TrainingScheduleId",
+    "loc:EmployeeId": "TrainingAttendance.EmployeeId",
+    "dom:TrainingAttendance_EmployeeId": "TrainingAttendance.EmployeeId",
+    "loc:DayDate": "TrainingAttendance.DayDate",
+    "dom:TrainingAttendance_DayDate": "TrainingAttendance.DayDate",
+    "loc:Attendance": "TrainingAttendance.Attendance",
+    "dom:TrainingAttendance_Attendance": "TrainingAttendance.Attendance"
+  },
+  "fields": [
+    {
+      "id": "TrainingAttendance.TrainingScheduleId",
+      "label": "TrainingScheduleId",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:TrainingScheduleId",
+        "dom:TrainingAttendance_TrainingScheduleId"
+      ],
+      "rules": "Required. Chosen from Training Schedule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The run of the course.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingAttendance.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TrainingAttendance_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingAttendance.DayDate",
+      "label": "DayDate",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:DayDate",
+        "dom:TrainingAttendance_DayDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingAttendance.Attendance",
+      "label": "Attendance",
+      "section": "TrainingAttendances",
+      "aliases": [
+        "loc:Attendance",
+        "dom:TrainingAttendance_Attendance"
+      ],
+      "rules": "Required. One of: Present, Absent.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Present or absent.</p><p><strong>Example.</strong> Present</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

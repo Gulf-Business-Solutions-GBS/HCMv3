@@ -1,0 +1,107 @@
+{
+  "helpId": "trn.training-course.edit",
+  "lang": "en",
+  "title": "Training Courses — Create / Edit",
+  "entity": "HCMv3.TrainingManagement.TrainingCourse",
+  "overviewHtml": "<p>A training course. Its runs are set up as schedules. Courses are listed on the Training Course Report.</p>",
+  "aliasIndex": {
+    "loc:Code": "TrainingCourse.Code",
+    "dom:TrainingCourse_Code": "TrainingCourse.Code",
+    "loc:Active": "TrainingCourse.Active",
+    "dom:TrainingCourse_Active": "TrainingCourse.Active",
+    "loc:NameEn": "TrainingCourse.NameEn",
+    "dom:TrainingCourse_NameEn": "TrainingCourse.NameEn",
+    "loc:NameAr": "TrainingCourse.NameAr",
+    "dom:TrainingCourse_NameAr": "TrainingCourse.NameAr",
+    "loc:DeliveryMethod": "TrainingCourse.DeliveryMethod",
+    "dom:TrainingCourse_DeliveryMethod": "TrainingCourse.DeliveryMethod",
+    "loc:Fees": "TrainingCourse.Fees",
+    "dom:TrainingCourse_Fees": "TrainingCourse.Fees"
+  },
+  "fields": [
+    {
+      "id": "TrainingCourse.Code",
+      "label": "Code",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:Code",
+        "dom:TrainingCourse_Code"
+      ],
+      "rules": "Required. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.Active",
+      "label": "Active",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:Active",
+        "dom:TrainingCourse_Active"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the course is offered. Shown on the report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.NameEn",
+      "label": "NameEn",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TrainingCourse_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.NameAr",
+      "label": "NameAr",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TrainingCourse_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.DeliveryMethod",
+      "label": "DeliveryMethod",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:DeliveryMethod",
+        "dom:TrainingCourse_DeliveryMethod"
+      ],
+      "rules": "Required. One of: Online, Classroom.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the course is given.</p><p><strong>Example.</strong> Classroom</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.Fees",
+      "label": "Fees",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:Fees",
+        "dom:TrainingCourse_Fees"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The cost of the course.</p><p><strong>Example.</strong> 250.000</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

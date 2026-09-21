@@ -1,0 +1,91 @@
+{
+  "helpId": "sv.survey-detail.edit",
+  "lang": "ar",
+  "title": "أسئلة الاستبيان — إنشاء / تحرير",
+  "entity": "HCMv3.SurveyManagement.SurveyDetail",
+  "overviewHtml": "<p>سؤال واحد في استبيان.</p>",
+  "aliasIndex": {
+    "loc:Surveys": "SurveyDetail.SurveyId",
+    "dom:SurveyDetail_SurveyId": "SurveyDetail.SurveyId",
+    "loc:Question": "SurveyDetail.Question",
+    "dom:SurveyDetail_Question": "SurveyDetail.Question",
+    "loc:OrderNo": "SurveyDetail.OrderNo",
+    "dom:SurveyDetail_OrderNo": "SurveyDetail.OrderNo",
+    "loc:QuestionType": "SurveyDetail.QuestionType",
+    "dom:SurveyDetail_QuestionType": "SurveyDetail.QuestionType",
+    "loc:Options": "SurveyDetail.Options",
+    "dom:SurveyDetail_Options": "SurveyDetail.Options"
+  },
+  "fields": [
+    {
+      "id": "SurveyDetail.SurveyId",
+      "label": "Surveys",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:Surveys",
+        "dom:SurveyDetail_SurveyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الاستبيانات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاستبيان.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.Question",
+      "label": "Question",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:Question",
+        "dom:SurveyDetail_Question"
+      ],
+      "rules": "إلزامي. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السؤال.</p><p><strong>مثال.</strong> ما مدى رضاك عن مكان عملك؟</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.OrderNo",
+      "label": "OrderNo",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:OrderNo",
+        "dom:SurveyDetail_OrderNo"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موضع السؤال؛ الأرقام الأصغر تأتي أولاً.</p><p><strong>مثال.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.QuestionType",
+      "label": "QuestionType",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:QuestionType",
+        "dom:SurveyDetail_QuestionType"
+      ],
+      "rules": "إلزامي. إحدى القيم: مربع نص، قائمة اختيار واحد، قائمة اختيار متعدد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة الإجابة عن السؤال: نص حر، أو اختيار واحد من قائمة، أو عدة اختيارات.</p><p><strong>مثال.</strong> قائمة اختيار واحد</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SurveyDetail.Options",
+      "label": "Options",
+      "section": "SurveyDetails",
+      "aliases": [
+        "loc:Options",
+        "dom:SurveyDetail_Options"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخيارات، مفصولة بفواصل منقوطة.</p><p><strong>مثال.</strong> راضٍ جداً;راضٍ;غير راضٍ</p><p><strong>لماذا يهم.</strong> مطلوب لأسئلة \"قائمة اختيار واحد\" و\"قائمة اختيار متعدد\".</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

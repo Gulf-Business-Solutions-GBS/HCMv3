@@ -1,0 +1,107 @@
+{
+  "helpId": "trn.training-schedule.edit",
+  "lang": "en",
+  "title": "Training Schedules — Create / Edit",
+  "entity": "HCMv3.TrainingManagement.TrainingSchedule",
+  "overviewHtml": "<p>One run of a course, between a start and end date. The end date cannot be before the start date.</p>",
+  "aliasIndex": {
+    "loc:Code": "TrainingSchedule.Code",
+    "dom:TrainingSchedule_Code": "TrainingSchedule.Code",
+    "loc:TrainingCourseId": "TrainingSchedule.TrainingCourseId",
+    "dom:TrainingSchedule_TrainingCourseId": "TrainingSchedule.TrainingCourseId",
+    "loc:NameEn": "TrainingSchedule.NameEn",
+    "dom:TrainingSchedule_NameEn": "TrainingSchedule.NameEn",
+    "loc:NameAr": "TrainingSchedule.NameAr",
+    "dom:TrainingSchedule_NameAr": "TrainingSchedule.NameAr",
+    "loc:StartDate": "TrainingSchedule.StartDate",
+    "dom:TrainingSchedule_StartDate": "TrainingSchedule.StartDate",
+    "loc:EndDate": "TrainingSchedule.EndDate",
+    "dom:TrainingSchedule_EndDate": "TrainingSchedule.EndDate"
+  },
+  "fields": [
+    {
+      "id": "TrainingSchedule.Code",
+      "label": "Code",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:Code",
+        "dom:TrainingSchedule_Code"
+      ],
+      "rules": "Required. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.TrainingCourseId",
+      "label": "TrainingCourseId",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:TrainingCourseId",
+        "dom:TrainingSchedule_TrainingCourseId"
+      ],
+      "rules": "Required. Chosen from Training Course master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The course.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.NameEn",
+      "label": "NameEn",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TrainingSchedule_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.NameAr",
+      "label": "NameAr",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TrainingSchedule_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.StartDate",
+      "label": "StartDate",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:TrainingSchedule_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingSchedule.EndDate",
+      "label": "EndDate",
+      "section": "TrainingSchedules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:TrainingSchedule_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "sv.employee-survey-detail.edit",
+  "lang": "en",
+  "title": "Employee Survey Answers — Create / Edit",
+  "entity": "HCMv3.SurveyManagement.EmployeeSurveyDetail",
+  "overviewHtml": "<p>An employee's answer to one question. An unanswered question is stored with an empty answer.</p>",
+  "aliasIndex": {
+    "loc:EmployeeSurveys": "EmployeeSurveyDetail.EmployeeSurveyId",
+    "dom:EmployeeSurveyDetail_EmployeeSurveyId": "EmployeeSurveyDetail.EmployeeSurveyId",
+    "loc:Question": "EmployeeSurveyDetail.QuestionId",
+    "dom:EmployeeSurveyDetail_QuestionId": "EmployeeSurveyDetail.QuestionId",
+    "loc:Answer": "EmployeeSurveyDetail.Answer",
+    "dom:EmployeeSurveyDetail_Answer": "EmployeeSurveyDetail.Answer"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSurveyDetail.EmployeeSurveyId",
+      "label": "EmployeeSurveys",
+      "section": "EmployeeSurveyDetails",
+      "aliases": [
+        "loc:EmployeeSurveys",
+        "dom:EmployeeSurveyDetail_EmployeeSurveyId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's response.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSurveyDetail.QuestionId",
+      "label": "Question",
+      "section": "EmployeeSurveyDetails",
+      "aliases": [
+        "loc:Question",
+        "dom:EmployeeSurveyDetail_QuestionId"
+      ],
+      "rules": "Required. Chosen from Survey Detail master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The question.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSurveyDetail.Answer",
+      "label": "Answer",
+      "section": "EmployeeSurveyDetails",
+      "aliases": [
+        "loc:Answer",
+        "dom:EmployeeSurveyDetail_Answer"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The answer given.</p><p><strong>Example.</strong> Satisfied</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

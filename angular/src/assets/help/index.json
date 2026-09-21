@@ -7601,6 +7601,117 @@
     ],
     "Position_IsBudgeted": [
       "mp.position.edit"
+    ],
+    "EmployeeSurveyDetail_EmployeeSurveyId": [
+      "sv.employee-survey-detail.edit"
+    ],
+    "EmployeeSurveyDetail_QuestionId": [
+      "sv.employee-survey-detail.edit"
+    ],
+    "EmployeeSurveyDetail_Answer": [
+      "sv.employee-survey-detail.edit"
+    ],
+    "EmployeeSurvey_EmployeeId": [
+      "sv.employee-survey.edit"
+    ],
+    "EmployeeSurvey_SurveyId": [
+      "sv.employee-survey.edit"
+    ],
+    "SurveyDetail_SurveyId": [
+      "sv.survey-detail.edit"
+    ],
+    "SurveyDetail_Question": [
+      "sv.survey-detail.edit"
+    ],
+    "SurveyDetail_OrderNo": [
+      "sv.survey-detail.edit"
+    ],
+    "SurveyDetail_QuestionType": [
+      "sv.survey-detail.edit"
+    ],
+    "SurveyDetail_Options": [
+      "sv.survey-detail.edit"
+    ],
+    "Survey_Code": [
+      "sv.survey.edit"
+    ],
+    "Survey_NameEn": [
+      "sv.survey.edit"
+    ],
+    "Survey_NameAr": [
+      "sv.survey.edit"
+    ],
+    "Survey_StartDate": [
+      "sv.survey.edit"
+    ],
+    "Survey_EndDate": [
+      "sv.survey.edit"
+    ],
+    "EmployeeTraining_EmployeeId": [
+      "trn.employee-training.edit"
+    ],
+    "EmployeeTraining_TrainingCourseId": [
+      "trn.employee-training.edit"
+    ],
+    "EmployeeTraining_TrainingScheduleId": [
+      "trn.employee-training.edit"
+    ],
+    "EmployeeTraining_CompletionStatus": [
+      "trn.employee-training.edit"
+    ],
+    "EmployeeTraining_Score": [
+      "trn.employee-training.edit"
+    ],
+    "EmployeeTraining_Comments": [
+      "trn.employee-training.edit"
+    ],
+    "TrainingAttendance_TrainingScheduleId": [
+      "trn.training-attendance.edit"
+    ],
+    "TrainingAttendance_EmployeeId": [
+      "trn.training-attendance.edit"
+    ],
+    "TrainingAttendance_DayDate": [
+      "trn.training-attendance.edit"
+    ],
+    "TrainingAttendance_Attendance": [
+      "trn.training-attendance.edit"
+    ],
+    "TrainingCourse_Code": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_Active": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_NameEn": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_NameAr": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_DeliveryMethod": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_Fees": [
+      "trn.training-course.edit"
+    ],
+    "TrainingSchedule_Code": [
+      "trn.training-schedule.edit"
+    ],
+    "TrainingSchedule_TrainingCourseId": [
+      "trn.training-schedule.edit"
+    ],
+    "TrainingSchedule_NameEn": [
+      "trn.training-schedule.edit"
+    ],
+    "TrainingSchedule_NameAr": [
+      "trn.training-schedule.edit"
+    ],
+    "TrainingSchedule_StartDate": [
+      "trn.training-schedule.edit"
+    ],
+    "TrainingSchedule_EndDate": [
+      "trn.training-schedule.edit"
     ]
   }
 }

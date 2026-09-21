@@ -7686,6 +7686,174 @@
         }
       },
       "defaultSection": "Positions"
+    },
+    {
+      "helpId": "sv.employee-survey-detail.edit",
+      "title": "Employee Survey Answers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SurveyManagement.EmployeeSurveyDetails.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSurveyDetail",
+        "fullName": "HCMv3.SurveyManagement.EmployeeSurveyDetail",
+        "file": "aspnet-core/src/HCMv3.Core/SurveyManagement/EmployeeSurveyDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/survey-management/employee-survey-details/create-or-edit-employee-survey-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSurveyDetails"
+    },
+    {
+      "helpId": "sv.employee-survey.edit",
+      "title": "Employee Surveys — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SurveyManagement.EmployeeSurveys.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSurvey",
+        "fullName": "HCMv3.SurveyManagement.EmployeeSurvey",
+        "file": "aspnet-core/src/HCMv3.Core/SurveyManagement/EmployeeSurvey.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/survey-management/employee-surveys/create-or-edit-employee-survey-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSurveys"
+    },
+    {
+      "helpId": "sv.survey-detail.edit",
+      "title": "Survey Questions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SurveyManagement.SurveyDetails.Create"
+      ],
+      "entity": {
+        "name": "SurveyDetail",
+        "fullName": "HCMv3.SurveyManagement.SurveyDetail",
+        "file": "aspnet-core/src/HCMv3.Core/SurveyManagement/SurveyDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/survey-management/survey-details/create-or-edit-survey-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SurveyDetails"
+    },
+    {
+      "helpId": "sv.survey.edit",
+      "title": "Surveys — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SurveyManagement.Surveys.Create"
+      ],
+      "entity": {
+        "name": "Survey",
+        "fullName": "HCMv3.SurveyManagement.Survey",
+        "file": "aspnet-core/src/HCMv3.Core/SurveyManagement/Survey.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/survey-management/surveys/create-or-edit-survey-modal.component.html"
+        }
+      },
+      "defaultSection": "Surveys"
+    },
+    {
+      "helpId": "trn.employee-training.edit",
+      "title": "Employee Trainings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TrainingManagement.EmployeeTrainings.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTraining",
+        "fullName": "HCMv3.TrainingManagement.EmployeeTraining",
+        "file": "aspnet-core/src/HCMv3.Core/TrainingManagement/EmployeeTraining.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/training-management/employee-trainings/create-or-edit-employee-training-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTrainings"
+    },
+    {
+      "helpId": "trn.training-attendance.edit",
+      "title": "Training Attendances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TrainingManagement.TrainingAttendances.Create"
+      ],
+      "entity": {
+        "name": "TrainingAttendance",
+        "fullName": "HCMv3.TrainingManagement.TrainingAttendance",
+        "file": "aspnet-core/src/HCMv3.Core/TrainingManagement/TrainingAttendance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/training-management/training-attendances/create-or-edit-training-attendance-modal.component.html"
+        }
+      },
+      "defaultSection": "TrainingAttendances"
+    },
+    {
+      "helpId": "trn.training-course.edit",
+      "title": "Training Courses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TrainingManagement.TrainingCourses.Create"
+      ],
+      "entity": {
+        "name": "TrainingCourse",
+        "fullName": "HCMv3.TrainingManagement.TrainingCourse",
+        "file": "aspnet-core/src/HCMv3.Core/TrainingManagement/TrainingCourse.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/training-management/training-courses/create-or-edit-training-course-modal.component.html"
+        }
+      },
+      "defaultSection": "TrainingCourses"
+    },
+    {
+      "helpId": "trn.training-schedule.edit",
+      "title": "Training Schedules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TrainingManagement.TrainingSchedules.Create"
+      ],
+      "entity": {
+        "name": "TrainingSchedule",
+        "fullName": "HCMv3.TrainingManagement.TrainingSchedule",
+        "file": "aspnet-core/src/HCMv3.Core/TrainingManagement/TrainingSchedule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/training-management/training-schedules/create-or-edit-training-schedule-modal.component.html"
+        }
+      },
+      "defaultSection": "TrainingSchedules"
     }
   ]
 }

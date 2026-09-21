@@ -1,0 +1,91 @@
+{
+  "helpId": "sv.survey.edit",
+  "lang": "en",
+  "title": "Surveys — Create / Edit",
+  "entity": "HCMv3.SurveyManagement.Survey",
+  "overviewHtml": "<p>A survey for employees. It can be answered on the Take Survey screen only between its start and end dates. The end date cannot be before the start date. Results appear on the Employee Survey Report and the Survey Status Report.</p>",
+  "aliasIndex": {
+    "loc:Code": "Survey.Code",
+    "dom:Survey_Code": "Survey.Code",
+    "loc:NameEn": "Survey.NameEn",
+    "dom:Survey_NameEn": "Survey.NameEn",
+    "loc:NameAr": "Survey.NameAr",
+    "dom:Survey_NameAr": "Survey.NameAr",
+    "loc:StartDate": "Survey.StartDate",
+    "dom:Survey_StartDate": "Survey.StartDate",
+    "loc:EndDate": "Survey.EndDate",
+    "dom:Survey_EndDate": "Survey.EndDate"
+  },
+  "fields": [
+    {
+      "id": "Survey.Code",
+      "label": "Code",
+      "section": "Surveys",
+      "aliases": [
+        "loc:Code",
+        "dom:Survey_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.NameEn",
+      "label": "NameEn",
+      "section": "Surveys",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Survey_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.NameAr",
+      "label": "NameAr",
+      "section": "Surveys",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Survey_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.StartDate",
+      "label": "StartDate",
+      "section": "Surveys",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Survey_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Survey.EndDate",
+      "label": "EndDate",
+      "section": "Surveys",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Survey_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

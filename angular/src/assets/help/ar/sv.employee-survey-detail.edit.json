@@ -1,0 +1,59 @@
+{
+  "helpId": "sv.employee-survey-detail.edit",
+  "lang": "ar",
+  "title": "إجابات استبيانات الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.SurveyManagement.EmployeeSurveyDetail",
+  "overviewHtml": "<p>إجابة موظف عن سؤال واحد. ويُحفظ السؤال الذي لم يُجب عنه بإجابة فارغة.</p>",
+  "aliasIndex": {
+    "loc:EmployeeSurveys": "EmployeeSurveyDetail.EmployeeSurveyId",
+    "dom:EmployeeSurveyDetail_EmployeeSurveyId": "EmployeeSurveyDetail.EmployeeSurveyId",
+    "loc:Question": "EmployeeSurveyDetail.QuestionId",
+    "dom:EmployeeSurveyDetail_QuestionId": "EmployeeSurveyDetail.QuestionId",
+    "loc:Answer": "EmployeeSurveyDetail.Answer",
+    "dom:EmployeeSurveyDetail_Answer": "EmployeeSurveyDetail.Answer"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSurveyDetail.EmployeeSurveyId",
+      "label": "EmployeeSurveys",
+      "section": "EmployeeSurveyDetails",
+      "aliases": [
+        "loc:EmployeeSurveys",
+        "dom:EmployeeSurveyDetail_EmployeeSurveyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> استجابة الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSurveyDetail.QuestionId",
+      "label": "Question",
+      "section": "EmployeeSurveyDetails",
+      "aliases": [
+        "loc:Question",
+        "dom:EmployeeSurveyDetail_QuestionId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أسئلة الاستبيان.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السؤال.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSurveyDetail.Answer",
+      "label": "Answer",
+      "section": "EmployeeSurveyDetails",
+      "aliases": [
+        "loc:Answer",
+        "dom:EmployeeSurveyDetail_Answer"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجابة المقدمة.</p><p><strong>مثال.</strong> راضٍ</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
