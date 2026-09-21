@@ -309,6 +309,41 @@ public class GoLiveLoadEmployees_Tests : AppTestBase
         });
     }
 
+    /// <summary>
+    /// The indemnity pay rules the Full &amp; Final screen suggests from -- legacy CCH's: resignation pays 0 / 50 /
+    /// 66.67 / 100 % by service band, termination 100 % throughout, both capped at 18 months at 100 %. Keyed to
+    /// the payroll area's country, which the default area has none of.
+    /// </summary>
+    [Fact]
+    public async Task Should_Set_Up_The_Kuwait_Indemnity_Pay_Rules_Once()
+    {
+        GivenTheReferenceData();
+
+        await _goLive.LoadEmployees(Input(Row("E001", "Ahmed Ali", Joined, "290011501234")));
+        await _goLive.LoadEmployees(Input(Row("E002", "Sara Khalid", Joined, "290011501235")));
+
+        UsingDbContext(context =>
+        {
+            var rules = context.Set<IndemnityPayRule>().Where(r => r.TenantId == TenantId).ToList();
+            rules.Count.ShouldBe(2);
+            rules.ShouldAllBe(r => r.CountryId == null && r.MaxNumber == 18 && r.MaxUnit == Unit.Month && r.MaxPayPercentage == 100);
+
+            (double, double, double)[] Bands(SeparationType type)
+            {
+                var ruleId = rules.Single(r => r.SeparationType == type).Id;
+                return context.Set<IndemnityPayRuleDetail>()
+                .Where(d => d.IndemnityPayRuleId == ruleId)
+                .OrderBy(d => d.MinYearOfService)
+                .AsEnumerable()
+                .Select(d => (d.MinYearOfService, d.MaxYearOfService, d.PayPercentage))
+                .ToArray();
+            }
+
+            Bands(SeparationType.Resignation).ShouldBe(new[] { (0d, 2.99d, 0d), (3d, 4.99d, 50d), (5d, 9.99d, 66.67d), (10d, 99d, 100d) });
+            Bands(SeparationType.Termination).ShouldBe(new[] { (0d, 2.99d, 100d), (3d, 4.99d, 100d), (5d, 9.99d, 100d), (10d, 99d, 100d) });
+        });
+    }
+
     /// <summary>The company is a "Company" organisation unit, which carries the payroll area as well.</summary>
     [Fact]
     public async Task Should_Make_The_Company_A_Company_Type_Unit_Carrying_The_Payroll_Area()

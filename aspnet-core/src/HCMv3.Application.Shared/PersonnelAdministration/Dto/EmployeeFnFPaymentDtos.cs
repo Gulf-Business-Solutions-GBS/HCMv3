@@ -82,3 +82,42 @@ public class GetAllEmployeeFnFPaymentsInput : PagedAndSortedResultRequestDto, IS
         }
     }
 }
+
+/// <summary>
+/// What a Full &amp; Final entry may compensate for one employee, the suggested indemnity days (reduced for a
+/// resignation by the indemnity pay rule), and the values a NEW entry is pre-filled with.
+/// </summary>
+public class FullAndFinalBalancesDto
+{
+    public double LeaveAccrualDays { get; set; }
+
+    public double LeaveRemainingDays { get; set; }
+
+    /// <summary>The full indemnity accrued (the provision) -- the same for resignation and termination.</summary>
+    public double GratuityAccrualDays { get; set; }
+
+    public double GratuityRemainingDays { get; set; }
+
+    /// <summary>The indemnity days to pay: accrued days x the rule's percentage for the separation type and service band.</summary>
+    public double SuggestedIndemnityDays { get; set; }
+
+    public double TicketAccrualCount { get; set; }
+
+    public double TicketRemainingCount { get; set; }
+
+    public double Dependant1TicketCount { get; set; }
+
+    public double Dependant1TicketRemainingCount { get; set; }
+
+    public double Dependant2TicketCount { get; set; }
+
+    public double Dependant2TicketRemainingCount { get; set; }
+
+    public double Dependant3TicketCount { get; set; }
+
+    public double Dependant3TicketRemainingCount { get; set; }
+
+    public double AutoFillLeaveCompensateDays { get; set; }
+
+    public double AutoFillGratuityCompensateDays { get; set; }
+}

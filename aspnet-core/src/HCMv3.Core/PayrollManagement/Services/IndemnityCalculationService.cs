@@ -863,8 +863,8 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             }
 
             var totalDaysCount = empContract.EndDate >= payDate
-                ? payDate.Subtract(indemnityCountFromDate).TotalDays + 1
-                : empContract.EndDate.Subtract(indemnityCountFromDate).TotalDays + 1;
+                ? IndemnityServiceDays.Count(indemnityCountFromDate, payDate)
+                : IndemnityServiceDays.Count(indemnityCountFromDate, empContract.EndDate);
 
             var absStartDate = indemnityCountFromDate;
             var absEndDate = empContract.EndDate >= payDate ? payDate : empContract.EndDate;
