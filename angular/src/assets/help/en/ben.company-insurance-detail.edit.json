@@ -1,0 +1,75 @@
+{
+  "helpId": "ben.company-insurance-detail.edit",
+  "lang": "en",
+  "title": "Company Insurance Details — Create / Edit",
+  "entity": "HCMv3.BenefitsManagement.CompanyInsuranceDetail",
+  "overviewHtml": "<p>One payment towards the company share of an employee insurance. The balance still to recover is the company contribution less all of these lines, whatever their type. Each month payroll replaces that month's Through Payroll line with a new one for the insurance's installment amount, cut to what net pay and the balance allow; add External or Exemption lines by hand for amounts settled another way. The amount cannot exceed the remaining balance, and the date cannot be before the insurance's installment start date.</p>",
+  "aliasIndex": {
+    "loc:EmployeeInsuranceId": "CompanyInsuranceDetail.EmployeeInsuranceId",
+    "dom:CompanyInsuranceDetail_EmployeeInsuranceId": "CompanyInsuranceDetail.EmployeeInsuranceId",
+    "loc:InstallmentDate": "CompanyInsuranceDetail.InstallmentDate",
+    "dom:CompanyInsuranceDetail_InstallmentDate": "CompanyInsuranceDetail.InstallmentDate",
+    "loc:InstallmentAmount": "CompanyInsuranceDetail.InstallmentAmount",
+    "dom:CompanyInsuranceDetail_InstallmentAmount": "CompanyInsuranceDetail.InstallmentAmount",
+    "loc:InstallmentType": "CompanyInsuranceDetail.InstallmentType",
+    "dom:CompanyInsuranceDetail_InstallmentType": "CompanyInsuranceDetail.InstallmentType"
+  },
+  "fields": [
+    {
+      "id": "CompanyInsuranceDetail.EmployeeInsuranceId",
+      "label": "EmployeeInsuranceId",
+      "section": "CompanyInsuranceDetails",
+      "aliases": [
+        "loc:EmployeeInsuranceId",
+        "dom:CompanyInsuranceDetail_EmployeeInsuranceId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee insurance.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompanyInsuranceDetail.InstallmentDate",
+      "label": "InstallmentDate",
+      "section": "CompanyInsuranceDetails",
+      "aliases": [
+        "loc:InstallmentDate",
+        "dom:CompanyInsuranceDetail_InstallmentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the payment.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompanyInsuranceDetail.InstallmentAmount",
+      "label": "InstallmentAmount",
+      "section": "CompanyInsuranceDetails",
+      "aliases": [
+        "loc:InstallmentAmount",
+        "dom:CompanyInsuranceDetail_InstallmentAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount paid.</p><p><strong>Example.</strong> 15.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CompanyInsuranceDetail.InstallmentType",
+      "label": "InstallmentType",
+      "section": "CompanyInsuranceDetails",
+      "aliases": [
+        "loc:InstallmentType",
+        "dom:CompanyInsuranceDetail_InstallmentType"
+      ],
+      "rules": "Required. One of: Through Payroll, External, End Of Service, Exemption.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the amount was settled.</p><p><strong>Example.</strong> External</p><p><strong>Why it matters.</strong> Through Payroll lines are written by payroll. End Of Service lines dated in the month are deducted in an end-of-service off-cycle run. External and Exemption only reduce the balance.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

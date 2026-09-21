@@ -1,0 +1,43 @@
+{
+  "helpId": "suc.nine-box-mapping.edit",
+  "lang": "ar",
+  "title": "توزيع المصفوفة التساعية — إنشاء / تحرير",
+  "entity": "HCMv3.SuccessionManagement.NineBoxMapping",
+  "overviewHtml": "<p>المربع الذي يقع فيه تقدير التعاقب الوظيفي في شبكة المربعات التسعة. يُحفظ كسجل، ولا يقرؤه شيء حالياً.</p>",
+  "aliasIndex": {
+    "loc:RatingId": "NineBoxMapping.RatingId",
+    "dom:NineBoxMapping_RatingId": "NineBoxMapping.RatingId",
+    "loc:NineBoxRatingId": "NineBoxMapping.NineBoxRatingId",
+    "dom:NineBoxMapping_NineBoxRatingId": "NineBoxMapping.NineBoxRatingId"
+  },
+  "fields": [
+    {
+      "id": "NineBoxMapping.RatingId",
+      "label": "RatingId",
+      "section": "NineBoxMappings",
+      "aliases": [
+        "loc:RatingId",
+        "dom:NineBoxMapping_RatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات التعاقب الوظيفي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير التعاقب الوظيفي.</p><p><strong>مثال.</strong> أداء مرتفع</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NineBoxMapping.NineBoxRatingId",
+      "label": "NineBoxRatingId",
+      "section": "NineBoxMappings",
+      "aliases": [
+        "loc:NineBoxRatingId",
+        "dom:NineBoxMapping_NineBoxRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مربع الشبكة التسعية.</p><p><strong>مثال.</strong> قائد مستقبلي</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

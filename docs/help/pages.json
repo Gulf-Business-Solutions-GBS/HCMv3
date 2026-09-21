@@ -7854,6 +7854,90 @@
         }
       },
       "defaultSection": "TrainingSchedules"
+    },
+    {
+      "helpId": "ben.company-insurance-detail.edit",
+      "title": "Company Insurance Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.BenefitsManagement.CompanyInsuranceDetails.Create"
+      ],
+      "entity": {
+        "name": "CompanyInsuranceDetail",
+        "fullName": "HCMv3.BenefitsManagement.CompanyInsuranceDetail",
+        "file": "aspnet-core/src/HCMv3.Core/BenefitsManagement/CompanyInsuranceDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/benefits-management/company-insurance-details/create-or-edit-company-insurance-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "CompanyInsuranceDetails"
+    },
+    {
+      "helpId": "ben.employee-insurance-detail.edit",
+      "title": "Employee Insurance Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.BenefitsManagement.EmployeeInsuranceDetails.Create"
+      ],
+      "entity": {
+        "name": "EmployeeInsuranceDetail",
+        "fullName": "HCMv3.BenefitsManagement.EmployeeInsuranceDetail",
+        "file": "aspnet-core/src/HCMv3.Core/BenefitsManagement/EmployeeInsuranceDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/benefits-management/employee-insurance-details/create-or-edit-employee-insurance-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeInsuranceDetails"
+    },
+    {
+      "helpId": "suc.nine-box-mapping.edit",
+      "title": "Nine Box Mappings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SuccessionManagement.NineBoxMappings.Create"
+      ],
+      "entity": {
+        "name": "NineBoxMapping",
+        "fullName": "HCMv3.SuccessionManagement.NineBoxMapping",
+        "file": "aspnet-core/src/HCMv3.Core/SuccessionManagement/NineBoxMapping.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/succession-management/nine-box-mappings/create-or-edit-nine-box-mapping-modal.component.html"
+        }
+      },
+      "defaultSection": "NineBoxMappings"
+    },
+    {
+      "helpId": "suc.successor-nominee.edit",
+      "title": "Successor Nominees — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SuccessionManagement.SuccessorNominees.Create"
+      ],
+      "entity": {
+        "name": "SuccessorNominee",
+        "fullName": "HCMv3.SuccessionManagement.SuccessorNominee",
+        "file": "aspnet-core/src/HCMv3.Core/SuccessionManagement/SuccessorNominee.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/succession-management/successor-nominees/create-or-edit-successor-nominee-modal.component.html"
+        }
+      },
+      "defaultSection": "SuccessorNominees"
     }
   ]
 }

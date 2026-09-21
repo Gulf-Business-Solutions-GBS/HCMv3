@@ -7712,6 +7712,51 @@
     ],
     "TrainingSchedule_EndDate": [
       "trn.training-schedule.edit"
+    ],
+    "CompanyInsuranceDetail_EmployeeInsuranceId": [
+      "ben.company-insurance-detail.edit"
+    ],
+    "CompanyInsuranceDetail_InstallmentDate": [
+      "ben.company-insurance-detail.edit"
+    ],
+    "CompanyInsuranceDetail_InstallmentAmount": [
+      "ben.company-insurance-detail.edit"
+    ],
+    "CompanyInsuranceDetail_InstallmentType": [
+      "ben.company-insurance-detail.edit"
+    ],
+    "EmployeeInsuranceDetail_EmployeeInsuranceId": [
+      "ben.employee-insurance-detail.edit"
+    ],
+    "EmployeeInsuranceDetail_InstallmentDate": [
+      "ben.employee-insurance-detail.edit"
+    ],
+    "EmployeeInsuranceDetail_InstallmentAmount": [
+      "ben.employee-insurance-detail.edit"
+    ],
+    "EmployeeInsuranceDetail_InstallmentType": [
+      "ben.employee-insurance-detail.edit"
+    ],
+    "NineBoxMapping_RatingId": [
+      "suc.nine-box-mapping.edit"
+    ],
+    "NineBoxMapping_NineBoxRatingId": [
+      "suc.nine-box-mapping.edit"
+    ],
+    "SuccessorNominee_EmployeeId": [
+      "suc.successor-nominee.edit"
+    ],
+    "SuccessorNominee_NomineeId": [
+      "suc.successor-nominee.edit"
+    ],
+    "SuccessorNominee_ReadinessId": [
+      "suc.successor-nominee.edit"
+    ],
+    "SuccessorNominee_RankingId": [
+      "suc.successor-nominee.edit"
+    ],
+    "SuccessorNominee_Comments": [
+      "suc.successor-nominee.edit"
     ]
   }
 }

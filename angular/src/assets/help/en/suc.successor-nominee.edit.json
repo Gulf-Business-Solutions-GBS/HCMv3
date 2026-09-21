@@ -1,0 +1,91 @@
+{
+  "helpId": "suc.successor-nominee.edit",
+  "lang": "en",
+  "title": "Successor Nominees — Create / Edit",
+  "entity": "HCMv3.SuccessionManagement.SuccessorNominee",
+  "overviewHtml": "<p>An employee nominated to succeed another, with how ready they are. The same nominee can be named once per employee. Kept as a record: nothing reads it at present.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SuccessorNominee.EmployeeId",
+    "dom:SuccessorNominee_EmployeeId": "SuccessorNominee.EmployeeId",
+    "loc:Nominee": "SuccessorNominee.NomineeId",
+    "dom:SuccessorNominee_NomineeId": "SuccessorNominee.NomineeId",
+    "loc:ReadinessId": "SuccessorNominee.ReadinessId",
+    "dom:SuccessorNominee_ReadinessId": "SuccessorNominee.ReadinessId",
+    "loc:RankingId": "SuccessorNominee.RankingId",
+    "dom:SuccessorNominee_RankingId": "SuccessorNominee.RankingId",
+    "loc:Comments": "SuccessorNominee.Comments",
+    "dom:SuccessorNominee_Comments": "SuccessorNominee.Comments"
+  },
+  "fields": [
+    {
+      "id": "SuccessorNominee.EmployeeId",
+      "label": "Employee",
+      "section": "SuccessorNominees",
+      "aliases": [
+        "loc:Employee",
+        "dom:SuccessorNominee_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee being succeeded.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SuccessorNominee.NomineeId",
+      "label": "Nominee",
+      "section": "SuccessorNominees",
+      "aliases": [
+        "loc:Nominee",
+        "dom:SuccessorNominee_NomineeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee nominated as successor.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SuccessorNominee.ReadinessId",
+      "label": "ReadinessId",
+      "section": "SuccessorNominees",
+      "aliases": [
+        "loc:ReadinessId",
+        "dom:SuccessorNominee_ReadinessId"
+      ],
+      "rules": "Required. Chosen from Readiness master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How soon the nominee could step in.</p><p><strong>Example.</strong> Ready in 1-2 years</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SuccessorNominee.RankingId",
+      "label": "RankingId",
+      "section": "SuccessorNominees",
+      "aliases": [
+        "loc:RankingId",
+        "dom:SuccessorNominee_RankingId"
+      ],
+      "rules": "Required. Chosen from Ranking master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nominee's rank among the successors.</p><p><strong>Example.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SuccessorNominee.Comments",
+      "label": "Comments",
+      "section": "SuccessorNominees",
+      "aliases": [
+        "loc:Comments",
+        "dom:SuccessorNominee_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
