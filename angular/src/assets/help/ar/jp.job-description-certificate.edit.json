@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-certificate.edit",
+  "lang": "ar",
+  "title": "شهادات الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionCertificate",
+  "overviewHtml": "<p>بند (الشهادة) يتطلبه الوصف الوظيفي. ولا يُدرج كل بند إلا مرة واحدة لكل وصف وظيفي.</p>",
+  "aliasIndex": {
+    "loc:EducationCertificate": "JobDescriptionCertificate.EducationCertificateId",
+    "dom:JobDescriptionCertificate_EducationCertificateId": "JobDescriptionCertificate.EducationCertificateId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionCertificate.EducationCertificateId",
+      "label": "EducationCertificate",
+      "section": "JobDescriptionCertificates",
+      "aliases": [
+        "loc:EducationCertificate",
+        "dom:JobDescriptionCertificate_EducationCertificateId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الشهادات الدراسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهادة.</p><p><strong>مثال.</strong> CIPD</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

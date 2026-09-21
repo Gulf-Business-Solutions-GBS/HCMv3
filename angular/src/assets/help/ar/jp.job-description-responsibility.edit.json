@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-responsibility.edit",
+  "lang": "ar",
+  "title": "مسؤوليات الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionResponsibility",
+  "overviewHtml": "<p>بند (المسؤولية) يتطلبه الوصف الوظيفي. ولا يُدرج كل بند إلا مرة واحدة لكل وصف وظيفي.</p>",
+  "aliasIndex": {
+    "loc:JobResponsibility": "JobDescriptionResponsibility.JobResponsibilityId",
+    "dom:JobDescriptionResponsibility_JobResponsibilityId": "JobDescriptionResponsibility.JobResponsibilityId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionResponsibility.JobResponsibilityId",
+      "label": "JobResponsibility",
+      "section": "JobDescriptionResponsibilities",
+      "aliases": [
+        "loc:JobResponsibility",
+        "dom:JobDescriptionResponsibility_JobResponsibilityId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسؤوليات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسؤولية.</p><p><strong>مثال.</strong> إعداد الرواتب الشهرية</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

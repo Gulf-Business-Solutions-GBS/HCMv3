@@ -6884,6 +6884,174 @@
         }
       },
       "defaultSection": "Sponsors"
+    },
+    {
+      "helpId": "jp.job-description-acknowledgement.edit",
+      "title": "Job Description Acknowledgements — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionAcknowledgements.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionAcknowledgement",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionAcknowledgement",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionAcknowledgement.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-acknowledgements/create-or-edit-job-description-acknowledgement-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionAcknowledgements"
+    },
+    {
+      "helpId": "jp.job-description-certificate.edit",
+      "title": "Job Description Certificates — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionCertificates.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionCertificate",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionCertificate",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionCertificate.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-detail/certificates/create-or-edit-job-description-certificate-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionCertificates"
+    },
+    {
+      "helpId": "jp.job-description-competency.edit",
+      "title": "Job Description Competencies — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionCompetencies.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionCompetency",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionCompetency",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionCompetency.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-detail/competencies/create-or-edit-job-description-competency-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionCompetencies"
+    },
+    {
+      "helpId": "jp.job-description-degree.edit",
+      "title": "Job Description Degrees — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionDegrees.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionDegree",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionDegree",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionDegree.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-detail/degrees/create-or-edit-job-description-degree-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionDegrees"
+    },
+    {
+      "helpId": "jp.job-description-interview-question.edit",
+      "title": "Job Description Interview Questions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionInterviewQuestions.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionInterviewQuestion",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionInterviewQuestion",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionInterviewQuestion.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-detail/interview-questions/create-or-edit-job-description-interview-question-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionInterviewQuestions"
+    },
+    {
+      "helpId": "jp.job-description-responsibility.edit",
+      "title": "Job Description Responsibilities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionResponsibilities.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionResponsibility",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionResponsibility",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionResponsibility.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-detail/responsibilities/create-or-edit-job-description-responsibility-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionResponsibilities"
+    },
+    {
+      "helpId": "jp.job-description-skill.edit",
+      "title": "Job Description Skills — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptionSkills.Create"
+      ],
+      "entity": {
+        "name": "JobDescriptionSkill",
+        "fullName": "HCMv3.JobProfileManagement.JobDescriptionSkill",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescriptionSkill.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-description-detail/skills/create-or-edit-job-description-skill-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptionSkills"
+    },
+    {
+      "helpId": "jp.job-description.edit",
+      "title": "Job Descriptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.JobProfileManagement.JobDescriptions.Create"
+      ],
+      "entity": {
+        "name": "JobDescription",
+        "fullName": "HCMv3.JobProfileManagement.JobDescription",
+        "file": "aspnet-core/src/HCMv3.Core/JobProfileManagement/JobDescription.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/job-profile-management/job-descriptions/create-or-edit-job-description-modal.component.html"
+        }
+      },
+      "defaultSection": "JobDescriptions"
     }
   ]
 }

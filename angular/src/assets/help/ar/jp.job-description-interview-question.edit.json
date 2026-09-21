@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-interview-question.edit",
+  "lang": "ar",
+  "title": "أسئلة مقابلة الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionInterviewQuestion",
+  "overviewHtml": "<p>بند (سؤال المقابلة) يتطلبه الوصف الوظيفي. ولا يُدرج كل بند إلا مرة واحدة لكل وصف وظيفي.</p>",
+  "aliasIndex": {
+    "loc:InterviewQuestion": "JobDescriptionInterviewQuestion.InterviewQuestionId",
+    "dom:JobDescriptionInterviewQuestion_InterviewQuestionId": "JobDescriptionInterviewQuestion.InterviewQuestionId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionInterviewQuestion.InterviewQuestionId",
+      "label": "InterviewQuestion",
+      "section": "JobDescriptionInterviewQuestions",
+      "aliases": [
+        "loc:InterviewQuestion",
+        "dom:JobDescriptionInterviewQuestion_InterviewQuestionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أسئلة المقابلة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سؤال المقابلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

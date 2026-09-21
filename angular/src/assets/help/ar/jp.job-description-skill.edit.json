@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-skill.edit",
+  "lang": "ar",
+  "title": "مهارات الوصف الوظيفي — إنشاء / تحرير",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionSkill",
+  "overviewHtml": "<p>بند (المهارة) يتطلبه الوصف الوظيفي. ولا يُدرج كل بند إلا مرة واحدة لكل وصف وظيفي.</p>",
+  "aliasIndex": {
+    "loc:Skill": "JobDescriptionSkill.SkillId",
+    "dom:JobDescriptionSkill_SkillId": "JobDescriptionSkill.SkillId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionSkill.SkillId",
+      "label": "Skill",
+      "section": "JobDescriptionSkills",
+      "aliases": [
+        "loc:Skill",
+        "dom:JobDescriptionSkill_SkillId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المهارات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهارة.</p><p><strong>مثال.</strong> Excel</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

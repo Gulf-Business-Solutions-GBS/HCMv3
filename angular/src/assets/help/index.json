@@ -6998,6 +6998,60 @@
     ],
     "Sponsor_BusinessOwnerNameAr": [
       "gr.sponsor.edit"
+    ],
+    "JobDescriptionAcknowledgement_EmployeeId": [
+      "jp.job-description-acknowledgement.edit"
+    ],
+    "JobDescriptionAcknowledgement_JobTitleId": [
+      "jp.job-description-acknowledgement.edit"
+    ],
+    "JobDescriptionAcknowledgement_JobDescriptionId": [
+      "jp.job-description-acknowledgement.edit"
+    ],
+    "JobDescriptionAcknowledgement_Version": [
+      "jp.job-description-acknowledgement.edit"
+    ],
+    "JobDescriptionAcknowledgement_Acknowledged": [
+      "jp.job-description-acknowledgement.edit"
+    ],
+    "JobDescriptionCertificate_EducationCertificateId": [
+      "jp.job-description-certificate.edit"
+    ],
+    "JobDescriptionCompetency_CompetencyId": [
+      "jp.job-description-competency.edit"
+    ],
+    "JobDescriptionDegree_EducationDegreeId": [
+      "jp.job-description-degree.edit"
+    ],
+    "JobDescriptionInterviewQuestion_InterviewQuestionId": [
+      "jp.job-description-interview-question.edit"
+    ],
+    "JobDescriptionResponsibility_JobResponsibilityId": [
+      "jp.job-description-responsibility.edit"
+    ],
+    "JobDescriptionSkill_SkillId": [
+      "jp.job-description-skill.edit"
+    ],
+    "JobDescription_JobTitleId": [
+      "jp.job-description.edit"
+    ],
+    "JobDescription_Version": [
+      "jp.job-description.edit"
+    ],
+    "JobDescription_VersionChangedOn": [
+      "jp.job-description.edit"
+    ],
+    "JobDescription_ShortDescriptionEn": [
+      "jp.job-description.edit"
+    ],
+    "JobDescription_ShortDescriptionAr": [
+      "jp.job-description.edit"
+    ],
+    "JobDescription_LongDescriptionEn": [
+      "jp.job-description.edit"
+    ],
+    "JobDescription_LongDescriptionAr": [
+      "jp.job-description.edit"
     ]
   }
 }

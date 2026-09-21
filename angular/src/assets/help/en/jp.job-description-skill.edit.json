@@ -1,0 +1,27 @@
+{
+  "helpId": "jp.job-description-skill.edit",
+  "lang": "en",
+  "title": "Job Description Skills — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionSkill",
+  "overviewHtml": "<p>A skill the job description asks for. Each can be listed once per job description.</p>",
+  "aliasIndex": {
+    "loc:Skill": "JobDescriptionSkill.SkillId",
+    "dom:JobDescriptionSkill_SkillId": "JobDescriptionSkill.SkillId"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionSkill.SkillId",
+      "label": "Skill",
+      "section": "JobDescriptionSkills",
+      "aliases": [
+        "loc:Skill",
+        "dom:JobDescriptionSkill_SkillId"
+      ],
+      "rules": "Optional. Chosen from Skill master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The skill.</p><p><strong>Example.</strong> Excel</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

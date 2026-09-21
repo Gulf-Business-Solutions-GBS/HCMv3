@@ -1,0 +1,91 @@
+{
+  "helpId": "jp.job-description-acknowledgement.edit",
+  "lang": "en",
+  "title": "Job Description Acknowledgements — Create / Edit",
+  "entity": "HCMv3.JobProfileManagement.JobDescriptionAcknowledgement",
+  "overviewHtml": "<p>A record that an employee has read and accepted a job description. An employee can have one acknowledgement per job title and job description, so a new version is recorded by changing the existing one.</p>",
+  "aliasIndex": {
+    "loc:Employee": "JobDescriptionAcknowledgement.EmployeeId",
+    "dom:JobDescriptionAcknowledgement_EmployeeId": "JobDescriptionAcknowledgement.EmployeeId",
+    "loc:JobTitle": "JobDescriptionAcknowledgement.JobTitleId",
+    "dom:JobDescriptionAcknowledgement_JobTitleId": "JobDescriptionAcknowledgement.JobTitleId",
+    "loc:JobDescription": "JobDescriptionAcknowledgement.JobDescriptionId",
+    "dom:JobDescriptionAcknowledgement_JobDescriptionId": "JobDescriptionAcknowledgement.JobDescriptionId",
+    "loc:Version": "JobDescriptionAcknowledgement.Version",
+    "dom:JobDescriptionAcknowledgement_Version": "JobDescriptionAcknowledgement.Version",
+    "loc:Acknowledged": "JobDescriptionAcknowledgement.Acknowledged",
+    "dom:JobDescriptionAcknowledgement_Acknowledged": "JobDescriptionAcknowledgement.Acknowledged"
+  },
+  "fields": [
+    {
+      "id": "JobDescriptionAcknowledgement.EmployeeId",
+      "label": "Employee",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:Employee",
+        "dom:JobDescriptionAcknowledgement_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.JobTitleId",
+      "label": "JobTitle",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:JobDescriptionAcknowledgement_JobTitleId"
+      ],
+      "rules": "Required. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.JobDescriptionId",
+      "label": "JobDescription",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:JobDescription",
+        "dom:JobDescriptionAcknowledgement_JobDescriptionId"
+      ],
+      "rules": "Required. Chosen from Job Description master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job description acknowledged.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.Version",
+      "label": "Version",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:Version",
+        "dom:JobDescriptionAcknowledgement_Version"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The version acknowledged.</p><p><strong>Example.</strong> 2.0</p><p><strong>Why it matters.</strong> Typed in; it is not copied from the job description.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "JobDescriptionAcknowledgement.Acknowledged",
+      "label": "Acknowledged",
+      "section": "JobDescriptionAcknowledgements",
+      "aliases": [
+        "loc:Acknowledged",
+        "dom:JobDescriptionAcknowledgement_Acknowledged"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee has acknowledged it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
