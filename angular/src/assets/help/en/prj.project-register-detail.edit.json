@@ -1,0 +1,91 @@
+{
+  "helpId": "prj.project-register-detail.edit",
+  "lang": "en",
+  "title": "Project Register Details — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.ProjectRegisterDetail",
+  "overviewHtml": "<p>One wagetype's cost charged to one project. Written by the Project Cost Engine; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:ProjectRegister": "ProjectRegisterDetail.ProjectRegisterId",
+    "dom:ProjectRegisterDetail_ProjectRegisterId": "ProjectRegisterDetail.ProjectRegisterId",
+    "loc:Project": "ProjectRegisterDetail.ProjectId",
+    "dom:ProjectRegisterDetail_ProjectId": "ProjectRegisterDetail.ProjectId",
+    "loc:WageType": "ProjectRegisterDetail.WageTypeId",
+    "dom:ProjectRegisterDetail_WageTypeId": "ProjectRegisterDetail.WageTypeId",
+    "loc:Number": "ProjectRegisterDetail.Number",
+    "dom:ProjectRegisterDetail_Number": "ProjectRegisterDetail.Number",
+    "loc:Amount": "ProjectRegisterDetail.Amount",
+    "dom:ProjectRegisterDetail_Amount": "ProjectRegisterDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "ProjectRegisterDetail.ProjectRegisterId",
+      "label": "ProjectRegister",
+      "section": "ProjectRegisterDetails",
+      "aliases": [
+        "loc:ProjectRegister",
+        "dom:ProjectRegisterDetail_ProjectRegisterId"
+      ],
+      "rules": "Required. Chosen from Project Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's project register for the period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectRegisterDetail.ProjectId",
+      "label": "Project",
+      "section": "ProjectRegisterDetails",
+      "aliases": [
+        "loc:Project",
+        "dom:ProjectRegisterDetail_ProjectId"
+      ],
+      "rules": "Required. Chosen from Project master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The project.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectRegisterDetail.WageTypeId",
+      "label": "WageType",
+      "section": "ProjectRegisterDetails",
+      "aliases": [
+        "loc:WageType",
+        "dom:ProjectRegisterDetail_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wagetype master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectRegisterDetail.Number",
+      "label": "Number",
+      "section": "ProjectRegisterDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:ProjectRegisterDetail_Number"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of the pay line's quantity, such as days.</p><p><strong>Example.</strong> 12</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "ProjectRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:ProjectRegisterDetail_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of the pay line's amount.</p><p><strong>Example.</strong> 450.000</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

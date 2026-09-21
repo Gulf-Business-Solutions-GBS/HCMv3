@@ -1,0 +1,75 @@
+{
+  "helpId": "prj.employee-project.edit",
+  "lang": "en",
+  "title": "Employee Projects — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.EmployeeProject",
+  "overviewHtml": "<p>Which projects an employee works on over a period, and how their pay is split between them. The start date must be the first day of a month and the end date the last day of a month, an employee's periods cannot overlap, and at least one project must be added.</p>",
+  "aliasIndex": {
+    "loc:Employee": "EmployeeProject.EmployeeId",
+    "dom:EmployeeProject_EmployeeId": "EmployeeProject.EmployeeId",
+    "loc:CostingMethod": "EmployeeProject.CostingMethod",
+    "dom:EmployeeProject_CostingMethod": "EmployeeProject.CostingMethod",
+    "loc:StartDate": "EmployeeProject.StartDate",
+    "dom:EmployeeProject_StartDate": "EmployeeProject.StartDate",
+    "loc:EndDate": "EmployeeProject.EndDate",
+    "dom:EmployeeProject_EndDate": "EmployeeProject.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeProject.EmployeeId",
+      "label": "Employee",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:Employee",
+        "dom:EmployeeProject_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProject.CostingMethod",
+      "label": "CostingMethod",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:CostingMethod",
+        "dom:EmployeeProject_CostingMethod"
+      ],
+      "rules": "Required. One of: Actual Hours, Actual Days, Percentage.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How pay is split between the projects.</p><p><strong>Example.</strong> Percentage</p><p><strong>Why it matters.</strong> Percentage: each pay line is split by the percentages given on the projects. Actual Days: each line is split by the working days on each project's date range, taken from the time register, while leave is split equally. Actual Hours produces no project cost at all, as in the old system.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProject.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeProject_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProject.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeProjects",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeProject_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

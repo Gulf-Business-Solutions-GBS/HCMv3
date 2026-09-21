@@ -1,0 +1,91 @@
+{
+  "helpId": "prj.employee-project-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مشاريع الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.ProjectManagement.EmployeeProjectDetail",
+  "overviewHtml": "<p>مشروع واحد ضمن تعيين مشاريع الموظف. ويجب أن تقع تواريخه ضمن تواريخ التعيين.</p>",
+  "aliasIndex": {
+    "loc:EmployeeProject": "EmployeeProjectDetail.EmployeeProjectId",
+    "dom:EmployeeProjectDetail_EmployeeProjectId": "EmployeeProjectDetail.EmployeeProjectId",
+    "loc:Project": "EmployeeProjectDetail.ProjectId",
+    "dom:EmployeeProjectDetail_ProjectId": "EmployeeProjectDetail.ProjectId",
+    "loc:StartDate": "EmployeeProjectDetail.StartDate",
+    "dom:EmployeeProjectDetail_StartDate": "EmployeeProjectDetail.StartDate",
+    "loc:EndDate": "EmployeeProjectDetail.EndDate",
+    "dom:EmployeeProjectDetail_EndDate": "EmployeeProjectDetail.EndDate",
+    "loc:Percentage": "EmployeeProjectDetail.Percentage",
+    "dom:EmployeeProjectDetail_Percentage": "EmployeeProjectDetail.Percentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeProjectDetail.EmployeeProjectId",
+      "label": "EmployeeProject",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:EmployeeProject",
+        "dom:EmployeeProjectDetail_EmployeeProjectId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعيين مشاريع الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.ProjectId",
+      "label": "Project",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:Project",
+        "dom:EmployeeProjectDetail_ProjectId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المشاريع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المشروع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeProjectDetail_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر لمشروع الموظف نفسه والمشروع نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeProjectDetail_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.Percentage",
+      "label": "Percentage",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:Percentage",
+        "dom:EmployeeProjectDetail_Percentage"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة الراتب المحمّلة على هذا المشروع.</p><p><strong>مثال.</strong> 60</p><p><strong>لماذا يهم.</strong> يُستخدم مع طريقة النسبة المئوية: يجب أن يكون أكبر من 0 وحتى 100، ولا يجوز أن يتجاوز مجموع المشاريع 100. ويُضرب فيه العدد والمبلغ لكل بند راتب محمَّل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

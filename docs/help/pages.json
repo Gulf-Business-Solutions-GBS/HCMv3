@@ -7199,6 +7199,153 @@
         }
       },
       "defaultSection": "PoolCars"
+    },
+    {
+      "helpId": "prj.employee-project-detail.edit",
+      "title": "Employee Project Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.EmployeeProjectDetails.Create"
+      ],
+      "entity": {
+        "name": "EmployeeProjectDetail",
+        "fullName": "HCMv3.ProjectManagement.EmployeeProjectDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/EmployeeProjectDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/employee-project-details/create-or-edit-employee-project-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeProjectDetails"
+    },
+    {
+      "helpId": "prj.employee-project.edit",
+      "title": "Employee Projects — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.EmployeeProjects.Create"
+      ],
+      "entity": {
+        "name": "EmployeeProject",
+        "fullName": "HCMv3.ProjectManagement.EmployeeProject",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/EmployeeProject.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/employee-projects/create-or-edit-employee-project-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeProjects"
+    },
+    {
+      "helpId": "prj.project-log.edit",
+      "title": "Project Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.ProjectLogs.Create"
+      ],
+      "entity": {
+        "name": "ProjectLog",
+        "fullName": "HCMv3.ProjectManagement.ProjectLog",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/ProjectLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/project-logs/create-or-edit-project-log-modal.component.html"
+        }
+      },
+      "defaultSection": "ProjectLogs"
+    },
+    {
+      "helpId": "prj.project-register-detail.edit",
+      "title": "Project Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.ProjectRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "ProjectRegisterDetail",
+        "fullName": "HCMv3.ProjectManagement.ProjectRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/ProjectRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/project-register-details/create-or-edit-project-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "ProjectRegisterDetails"
+    },
+    {
+      "helpId": "prj.project-register.edit",
+      "title": "Project Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.ProjectRegisters.Create"
+      ],
+      "entity": {
+        "name": "ProjectRegister",
+        "fullName": "HCMv3.ProjectManagement.ProjectRegister",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/ProjectRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/project-registers/create-or-edit-project-register-modal.component.html"
+        }
+      },
+      "defaultSection": "ProjectRegisters"
+    },
+    {
+      "helpId": "prj.project-wage-type.edit",
+      "title": "Project Wagetypes — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.ProjectWageTypes.Create"
+      ],
+      "entity": {
+        "name": "ProjectWageType",
+        "fullName": "HCMv3.ProjectManagement.ProjectWageType",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/ProjectWageType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/project-wage-types/create-or-edit-project-wage-type-modal.component.html"
+        }
+      },
+      "defaultSection": "ProjectWageTypes"
+    },
+    {
+      "helpId": "prj.project.edit",
+      "title": "Projects — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.Projects.Create"
+      ],
+      "entity": {
+        "name": "Project",
+        "fullName": "HCMv3.ProjectManagement.Project",
+        "file": "aspnet-core/src/HCMv3.Core/ProjectManagement/Project.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/projects/create-or-edit-project-modal.component.html"
+        }
+      },
+      "defaultSection": "Projects"
     }
   ]
 }

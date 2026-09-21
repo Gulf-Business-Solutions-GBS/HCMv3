@@ -1,0 +1,43 @@
+{
+  "helpId": "prj.project-wage-type.edit",
+  "lang": "ar",
+  "title": "أنواع أجور المشروع — إنشاء / تحرير",
+  "entity": "HCMv3.ProjectManagement.ProjectWageType",
+  "overviewHtml": "<p>نوع أجر يُحمَّل على مشروع. لا تُوزَّع على المشروع إلا بنود الراتب التي يكون نوع أجرها مدرجاً هنا، ويُستبعد كل ما سواها في سجل الرواتب. ولا يُدرج نوع الأجر إلا مرة واحدة لكل مشروع.</p>",
+  "aliasIndex": {
+    "loc:Project": "ProjectWageType.ProjectId",
+    "dom:ProjectWageType_ProjectId": "ProjectWageType.ProjectId",
+    "loc:WageType": "ProjectWageType.WageTypeId",
+    "dom:ProjectWageType_WageTypeId": "ProjectWageType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "ProjectWageType.ProjectId",
+      "label": "Project",
+      "section": "ProjectWageTypes",
+      "aliases": [
+        "loc:Project",
+        "dom:ProjectWageType_ProjectId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المشاريع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المشروع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectWageType.WageTypeId",
+      "label": "WageType",
+      "section": "ProjectWageTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:ProjectWageType_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر.</p><p><strong>مثال.</strong> الراتب الأساسي</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

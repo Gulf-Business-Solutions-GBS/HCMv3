@@ -1,0 +1,43 @@
+{
+  "helpId": "prj.project-wage-type.edit",
+  "lang": "en",
+  "title": "Project Wagetypes — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.ProjectWageType",
+  "overviewHtml": "<p>A wagetype costed to a project. Only pay lines whose wagetype is listed here are split onto the project; everything else in the salary register is left out. A wagetype can be listed once per project.</p>",
+  "aliasIndex": {
+    "loc:Project": "ProjectWageType.ProjectId",
+    "dom:ProjectWageType_ProjectId": "ProjectWageType.ProjectId",
+    "loc:WageType": "ProjectWageType.WageTypeId",
+    "dom:ProjectWageType_WageTypeId": "ProjectWageType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "ProjectWageType.ProjectId",
+      "label": "Project",
+      "section": "ProjectWageTypes",
+      "aliases": [
+        "loc:Project",
+        "dom:ProjectWageType_ProjectId"
+      ],
+      "rules": "Required. Chosen from Project master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The project.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectWageType.WageTypeId",
+      "label": "WageType",
+      "section": "ProjectWageTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:ProjectWageType_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wagetype master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype.</p><p><strong>Example.</strong> Basic Salary</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

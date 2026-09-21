@@ -1,0 +1,123 @@
+{
+  "helpId": "prj.project.edit",
+  "lang": "ar",
+  "title": "المشاريع — إنشاء / تحرير",
+  "entity": "HCMv3.ProjectManagement.Project",
+  "overviewHtml": "<p>مشروع تُحمَّل عليه تكاليف الرواتب. وتحدد أنواع الأجر الخاصة به بنود الراتب التي يوزعها محرك تكلفة المشاريع عليه.</p>",
+  "aliasIndex": {
+    "loc:Code": "Project.Code",
+    "dom:Project_Code": "Project.Code",
+    "loc:ProjectType": "Project.ProjectTypeId",
+    "dom:Project_ProjectTypeId": "Project.ProjectTypeId",
+    "loc:NameEn": "Project.NameEn",
+    "dom:Project_NameEn": "Project.NameEn",
+    "loc:NameAr": "Project.NameAr",
+    "dom:Project_NameAr": "Project.NameAr",
+    "loc:StartDate": "Project.StartDate",
+    "dom:Project_StartDate": "Project.StartDate",
+    "loc:EndDate": "Project.EndDate",
+    "dom:Project_EndDate": "Project.EndDate",
+    "loc:Comments": "Project.Comments",
+    "dom:Project_Comments": "Project.Comments"
+  },
+  "fields": [
+    {
+      "id": "Project.Code",
+      "label": "Code",
+      "section": "Projects",
+      "aliases": [
+        "loc:Code",
+        "dom:Project_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.ProjectTypeId",
+      "label": "ProjectType",
+      "section": "Projects",
+      "aliases": [
+        "loc:ProjectType",
+        "dom:Project_ProjectTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المشاريع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المشروع.</p><p><strong>مثال.</strong> إنشاءات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.NameEn",
+      "label": "NameEn",
+      "section": "Projects",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Project_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.NameAr",
+      "label": "NameAr",
+      "section": "Projects",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Project_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.StartDate",
+      "label": "StartDate",
+      "section": "Projects",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Project_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.EndDate",
+      "label": "EndDate",
+      "section": "Projects",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Project_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Project.Comments",
+      "label": "Comments",
+      "section": "Projects",
+      "aliases": [
+        "loc:Comments",
+        "dom:Project_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

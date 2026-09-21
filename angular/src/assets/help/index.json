@@ -7181,6 +7181,102 @@
     ],
     "PoolCar_VehicleDocExpiryDate": [
       "gp.pool-car.edit"
+    ],
+    "EmployeeProjectDetail_EmployeeProjectId": [
+      "prj.employee-project-detail.edit"
+    ],
+    "EmployeeProjectDetail_ProjectId": [
+      "prj.employee-project-detail.edit"
+    ],
+    "EmployeeProjectDetail_StartDate": [
+      "prj.employee-project-detail.edit"
+    ],
+    "EmployeeProjectDetail_EndDate": [
+      "prj.employee-project-detail.edit"
+    ],
+    "EmployeeProjectDetail_Percentage": [
+      "prj.employee-project-detail.edit"
+    ],
+    "EmployeeProject_EmployeeId": [
+      "prj.employee-project.edit"
+    ],
+    "EmployeeProject_CostingMethod": [
+      "prj.employee-project.edit"
+    ],
+    "EmployeeProject_StartDate": [
+      "prj.employee-project.edit"
+    ],
+    "EmployeeProject_EndDate": [
+      "prj.employee-project.edit"
+    ],
+    "ProjectLog_EmployeeId": [
+      "prj.project-log.edit"
+    ],
+    "ProjectLog_RunTimeStamp": [
+      "prj.project-log.edit"
+    ],
+    "ProjectLog_Message": [
+      "prj.project-log.edit"
+    ],
+    "ProjectLog_Status": [
+      "prj.project-log.edit"
+    ],
+    "ProjectLog_InPeriod": [
+      "prj.project-log.edit"
+    ],
+    "ProjectLog_NoOfEmployee": [
+      "prj.project-log.edit"
+    ],
+    "ProjectLog_StopFlag": [
+      "prj.project-log.edit"
+    ],
+    "ProjectRegisterDetail_ProjectRegisterId": [
+      "prj.project-register-detail.edit"
+    ],
+    "ProjectRegisterDetail_ProjectId": [
+      "prj.project-register-detail.edit"
+    ],
+    "ProjectRegisterDetail_WageTypeId": [
+      "prj.project-register-detail.edit"
+    ],
+    "ProjectRegisterDetail_Number": [
+      "prj.project-register-detail.edit"
+    ],
+    "ProjectRegisterDetail_Amount": [
+      "prj.project-register-detail.edit"
+    ],
+    "ProjectRegister_EmployeeId": [
+      "prj.project-register.edit"
+    ],
+    "ProjectRegister_Period": [
+      "prj.project-register.edit"
+    ],
+    "ProjectWageType_ProjectId": [
+      "prj.project-wage-type.edit"
+    ],
+    "ProjectWageType_WageTypeId": [
+      "prj.project-wage-type.edit"
+    ],
+    "Project_Code": [
+      "prj.project.edit"
+    ],
+    "Project_ProjectTypeId": [
+      "prj.project.edit"
+    ],
+    "Project_NameEn": [
+      "prj.project.edit"
+    ],
+    "Project_NameAr": [
+      "prj.project.edit"
+    ],
+    "Project_StartDate": [
+      "prj.project.edit"
+    ],
+    "Project_EndDate": [
+      "prj.project.edit"
+    ],
+    "Project_Comments": [
+      "prj.project.edit"
     ]
   }
 }

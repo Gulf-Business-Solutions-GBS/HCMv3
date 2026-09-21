@@ -1,0 +1,91 @@
+{
+  "helpId": "prj.employee-project-detail.edit",
+  "lang": "en",
+  "title": "Employee Project Details — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.EmployeeProjectDetail",
+  "overviewHtml": "<p>One project within an employee's project assignment. Its dates must fall within the assignment's dates.</p>",
+  "aliasIndex": {
+    "loc:EmployeeProject": "EmployeeProjectDetail.EmployeeProjectId",
+    "dom:EmployeeProjectDetail_EmployeeProjectId": "EmployeeProjectDetail.EmployeeProjectId",
+    "loc:Project": "EmployeeProjectDetail.ProjectId",
+    "dom:EmployeeProjectDetail_ProjectId": "EmployeeProjectDetail.ProjectId",
+    "loc:StartDate": "EmployeeProjectDetail.StartDate",
+    "dom:EmployeeProjectDetail_StartDate": "EmployeeProjectDetail.StartDate",
+    "loc:EndDate": "EmployeeProjectDetail.EndDate",
+    "dom:EmployeeProjectDetail_EndDate": "EmployeeProjectDetail.EndDate",
+    "loc:Percentage": "EmployeeProjectDetail.Percentage",
+    "dom:EmployeeProjectDetail_Percentage": "EmployeeProjectDetail.Percentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeProjectDetail.EmployeeProjectId",
+      "label": "EmployeeProject",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:EmployeeProject",
+        "dom:EmployeeProjectDetail_EmployeeProjectId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's project assignment.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.ProjectId",
+      "label": "Project",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:Project",
+        "dom:EmployeeProjectDetail_ProjectId"
+      ],
+      "rules": "Required. Chosen from Project master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The project.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeProjectDetail_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee project and project.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeProjectDetail_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeProjectDetail.Percentage",
+      "label": "Percentage",
+      "section": "EmployeeProjectDetails",
+      "aliases": [
+        "loc:Percentage",
+        "dom:EmployeeProjectDetail_Percentage"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of pay charged to this project.</p><p><strong>Example.</strong> 60</p><p><strong>Why it matters.</strong> Used with the Percentage method: must be above 0 and up to 100, and the projects together cannot exceed 100. Each costed pay line's number and amount are multiplied by it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

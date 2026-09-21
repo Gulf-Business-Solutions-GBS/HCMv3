@@ -1,0 +1,123 @@
+{
+  "helpId": "prj.project-log.edit",
+  "lang": "en",
+  "title": "Project Logs — Create / Edit",
+  "entity": "HCMv3.ProjectManagement.ProjectLog",
+  "overviewHtml": "<p>A line in the Project Cost Engine's run log: one per employee, plus a line for a run that failed before starting. The engine screen reads it to show progress. Written by the Project Cost Engine; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:Employee": "ProjectLog.EmployeeId",
+    "dom:ProjectLog_EmployeeId": "ProjectLog.EmployeeId",
+    "loc:RunTimeStamp": "ProjectLog.RunTimeStamp",
+    "dom:ProjectLog_RunTimeStamp": "ProjectLog.RunTimeStamp",
+    "loc:Message": "ProjectLog.Message",
+    "dom:ProjectLog_Message": "ProjectLog.Message",
+    "loc:Status": "ProjectLog.Status",
+    "dom:ProjectLog_Status": "ProjectLog.Status",
+    "loc:InPeriod": "ProjectLog.InPeriod",
+    "dom:ProjectLog_InPeriod": "ProjectLog.InPeriod",
+    "loc:NoOfEmployee": "ProjectLog.NoOfEmployee",
+    "dom:ProjectLog_NoOfEmployee": "ProjectLog.NoOfEmployee",
+    "loc:StopFlag": "ProjectLog.StopFlag",
+    "dom:ProjectLog_StopFlag": "ProjectLog.StopFlag"
+  },
+  "fields": [
+    {
+      "id": "ProjectLog.EmployeeId",
+      "label": "Employee",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:Employee",
+        "dom:ProjectLog_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee processed, if any.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.RunTimeStamp",
+      "label": "RunTimeStamp",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:RunTimeStamp",
+        "dom:ProjectLog_RunTimeStamp"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the line was written.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.Message",
+      "label": "Message",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:Message",
+        "dom:ProjectLog_Message"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The outcome, or the error.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.Status",
+      "label": "Status",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:Status",
+        "dom:ProjectLog_Status"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> 0 when the employee was processed successfully; any other value is a failure.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.InPeriod",
+      "label": "InPeriod",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:ProjectLog_InPeriod"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll period run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.NoOfEmployee",
+      "label": "NoOfEmployee",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:NoOfEmployee",
+        "dom:ProjectLog_NoOfEmployee"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many employees the run covers.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ProjectLog.StopFlag",
+      "label": "StopFlag",
+      "section": "ProjectLogs",
+      "aliases": [
+        "loc:StopFlag",
+        "dom:ProjectLog_StopFlag"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A request to stop the run.</p><p><strong>Why it matters.</strong> While any line has it ticked, the engine stops before the next employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
