@@ -11,31 +11,33 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Create]
 
 ## Overview
 
-_TODO_
+The amount of a sub group benefit per kind of dependant, with an age limit.
+
+Not read at present: payroll does not use this list, and it is kept for reference only.
 
 ## DependantType {#EmployeeSubGroupBenefitDetail.DependantTypeId}
 <!-- alias: loc:DependantType, dom:EmployeeSubGroupBenefitDetail_DependantTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The kind of dependant.
 
-**Example.** _TODO_
+**Example.** Child
 
 **Rules.** Optional. Chosen from Dependant Type master data.
 
 ## Amount {#EmployeeSubGroupBenefitDetail.Amount}
 <!-- alias: loc:Amount, dom:EmployeeSubGroupBenefitDetail_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount per dependant of that kind.
 
-**Example.** _TODO_
+**Example.** `500`
 
 **Rules.** Optional. Number.
 
 ## AgeLimit {#EmployeeSubGroupBenefitDetail.AgeLimit}
 <!-- alias: loc:AgeLimit, dom:EmployeeSubGroupBenefitDetail_AgeLimit -->
 
-**What it is.** _TODO_
+**What it is.** The oldest age at which a dependant counts.
 
-**Example.** _TODO_
+**Example.** `21`
 
 **Rules.** Optional. Number.

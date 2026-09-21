@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Bonuses — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBonus",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>The sub group's service bonus: a percentage paid on a work anniversary. In the month of the employee's joining anniversary, payroll looks for the row whose <strong>Change Year</strong> equals the years the employee has completed, and pays that percentage of the monthly total of wagetypes marked <em>Include In Service Bonus</em>.</p><p>Only anniversaries with a row are paid — add one row for each anniversary that earns a bonus.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupBonus.StartDate",
     "dom:EmployeeSubGroupBonus_StartDate": "EmployeeSubGroupBonus.StartDate",
@@ -53,9 +53,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The completed years of service this row pays on.</p><p><strong>Example.</strong> <code>5</code> — paid in the month of the fifth anniversary.</p>",
+      "adminHtml": "<p>The row's start and end dates are not checked when the bonus is paid; only the sub group and the years matter.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupBonus.Percentage",
@@ -67,9 +67,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The percentage of the service-bonus pay paid as the bonus.</p><p><strong>Example.</strong> <code>50</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

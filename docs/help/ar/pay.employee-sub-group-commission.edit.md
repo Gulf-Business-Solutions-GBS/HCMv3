@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupCommissions.Create]
 
 ## Overview
 
-_TODO_
+أنواع أجور العمولة للمجموعة الفرعية. ويصرف نوع أجر متوسط العمولة جزءاً من اثني عشر مما كسبه الموظف على أنواع الأجور هذه خلال الأشهر الاثني عشر حتى تاريخ الدفع.
 
 ## WageType {#EmployeeSubGroupCommission.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupCommission_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع أجر يُعدّ عمولة.
 
-**مثال.** _TODO_
+**مثال.** عمولة المبيعات
+
+**لماذا يهم.** لا يُدرج نوع الأجر إلا مرة واحدة لكل مجموعة فرعية.
 
 **القواعد.** اختياري. يُختار من قائمة.

@@ -11,40 +11,44 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupPayments.Create]
 
 ## Overview
 
-_TODO_
+A standing payment for everyone in the sub group, paid through a wagetype.
+
+Only two pay intervals are used. *Yearly* rows are paid once a year, in their **Pay Month**. *End Of Service* rows are paid in the employee's end-of-service run. Rows with any other interval are not paid.
 
 ## WageType {#EmployeeSubGroupPayment.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupPayment_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The wagetype the payment is made under.
 
-**Example.** _TODO_
+**Example.** Annual Bonus
 
 **Rules.** Optional. Chosen from a list.
 
 ## Amount {#EmployeeSubGroupPayment.Amount}
 <!-- alias: loc:Amount, dom:EmployeeSubGroupPayment_Amount -->
 
-**What it is.** _TODO_
+**What it is.** The amount paid.
 
-**Example.** _TODO_
+**Example.** `300`
 
 **Rules.** Optional. Number.
 
 ## PayInterval {#EmployeeSubGroupPayment.PayInterval}
 <!-- alias: loc:PayInterval, dom:EmployeeSubGroupPayment_PayInterval -->
 
-**What it is.** _TODO_
+**What it is.** When the payment is made.
 
-**Example.** _TODO_
+**Example.** Yearly
+
+**Why it matters.** Only *Yearly* and *End Of Service* are paid.
 
 **Rules.** Required. One of: Monthly, Daily, Hourly, End Of Service, Yearly.
 
 ## PayMonth {#EmployeeSubGroupPayment.PayMonth}
 <!-- alias: loc:PayMonth, dom:EmployeeSubGroupPayment_PayMonth -->
 
-**What it is.** _TODO_
+**What it is.** The month a *Yearly* payment is made.
 
-**Example.** _TODO_
+**Example.** December
 
 **Rules.** Required. One of: None, January, February, March, April, May, June, July, August, September, October, November, December.

@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupCommissions.Create]
 
 ## Overview
 
-_TODO_
+The commission wagetypes of a sub group. The average-commission wagetype pays one twelfth of what the employee earned on these wagetypes over the twelve months up to the pay date.
 
 ## WageType {#EmployeeSubGroupCommission.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupCommission_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** A wagetype that counts as commission.
 
-**Example.** _TODO_
+**Example.** Sales Commission
+
+**Why it matters.** Each wagetype can be listed once per sub group.
 
 **Rules.** Optional. Chosen from a list.

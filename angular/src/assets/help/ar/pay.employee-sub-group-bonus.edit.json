@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "مكافآت المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBonus",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>مكافأة الخدمة للمجموعة الفرعية: نسبة تُصرف في ذكرى الالتحاق بالعمل. ففي شهر ذكرى التحاق الموظف يبحث نظام الرواتب عن السطر الذي يساوي <strong>تغيير السنة</strong> فيه عدد السنوات التي أكملها الموظف، ويصرف تلك النسبة من المجموع الشهري لأنواع الأجور المؤشَّر عليها <em>إدراج في مكافأة الخدمة</em>.</p><p>ولا تُصرف إلا الذكرى التي لها سطر — فأضف سطراً لكل ذكرى تستحق مكافأة.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupBonus.StartDate",
     "dom:EmployeeSubGroupBonus_StartDate": "EmployeeSubGroupBonus.StartDate",
@@ -53,9 +53,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> سنوات الخدمة المكتملة التي يُصرف عليها هذا السطر.</p><p><strong>مثال.</strong> <code>5</code> — تُصرف في شهر الذكرى الخامسة.</p>",
+      "adminHtml": "<p>لا يُتحقق من تاريخي بداية السطر ونهايته عند صرف المكافأة، فالمهم المجموعة الفرعية وعدد السنوات فقط.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupBonus.Percentage",
@@ -67,9 +67,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية من أجر مكافأة الخدمة التي تُصرف مكافأةً.</p><p><strong>مثال.</strong> <code>50</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

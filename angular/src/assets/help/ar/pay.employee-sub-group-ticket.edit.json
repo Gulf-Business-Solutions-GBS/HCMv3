@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تذاكر المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupTicket",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>استحقاق المجموعة الفرعية من تذاكر الطيران لنوع تذكرة واحد — تذكرة الموظف نفسه أو تذكرة عائل: كم تذكرة، وعلى أي فترة، وكيف تُقيَّم كل تذكرة.</p><p>وتُختار طريقة تقييم التذكرة في المجموعة الفرعية نفسها (<strong>نوع دفع تذكرة الطيران</strong>)، ويقدّم هذا السطر المبالغ التي يستخدمها ذلك الاختيار.</p>",
   "aliasIndex": {
     "loc:TicketType": "EmployeeSubGroupTicket.TicketTypeId",
     "dom:EmployeeSubGroupTicket_TicketTypeId": "EmployeeSubGroupTicket.TicketTypeId",
@@ -35,9 +35,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع التذكرة الذي يخصه هذا الاستحقاق.</p><p><strong>مثال.</strong> تذكرة الموظف</p><p><strong>لماذا يهم.</strong> نوع التذكرة <code>1</code> هو تذكرة الموظف نفسه، والبقية للعائلين.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupTicket.TicketCount",
@@ -49,9 +49,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد التذاكر المكتسبة في كل فترة استحقاق.</p><p><strong>مثال.</strong> <code>1</code></p><p><strong>لماذا يهم.</strong> يراكمه محرك الوقت يوماً بيوم — على سنة، أو على سنتين لفترة <em>نصف سنوي</em> — إلا إذا كان نوع التذكرة يُستحق فوراً. ويستخدمه الصرف التلقائي للتذاكر استحقاقاً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupTicket.StartDate",
@@ -91,9 +91,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقصى قيمة للتذكرة الواحدة.</p><p><strong>مثال.</strong> <code>250</code></p><p><strong>لماذا يهم.</strong> <em>ActualAmountWithinMaxlimit</em> لا يتجاوزه أبداً، و<em>المبلغ الفعلي</em> يستخدمه إذا لم يُدفع شيء فعلاً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupTicket.FixAmount",
@@ -105,9 +105,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> قيمة التذكرة الواحدة، لنوع الدفع <em>مبلغ ثابت</em>.</p><p><strong>مثال.</strong> <code>180</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupTicket.FareType",
@@ -119,9 +119,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: OneWay، Return.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تُستخدم أجرة الذهاب فقط أو أجرة الذهاب والعودة، لنوع الدفع <em>FareAmount</em>.</p><p><strong>مثال.</strong> ذهاب وعودة</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupTicket.AgeLimit",
@@ -133,9 +133,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> لتذكرة العائل، أكبر عمر يكون فيه العائل مستحقاً.</p><p><strong>مثال.</strong> <code>21</code></p><p><strong>لماذا يهم.</strong> يتجاوز الصرف التلقائي للتذاكر العائلين الأكبر من هذا العمر، والعائلين الذين لم يُسجَّل تاريخ ميلادهم، ما لم يكن لهم استثناء تذكرة.</p>",
+      "adminHtml": "<p>حد العمر 0 يعني ألا يستحق أي عائل — لا يعني \"بلا حد\". حدّد أكبر عمر يستحق.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupTicket.AccrualPeriod",
@@ -147,9 +147,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: بلا تراكم، السنة الميلادية، السنة المالية، سنة العمل، نصف سنوي، لكل فترة توظيف، مخصص.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الفترة التي يسري عليها استحقاق التذاكر.</p><p><strong>مثال.</strong> سنة العمل</p><p><strong>لماذا يهم.</strong> يضيف الصرف التلقائي للتذاكر التذكرة في أول يوم من كل فترة. و<em>نصف سنوي</em> يوزّع التراكم على سنتين.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

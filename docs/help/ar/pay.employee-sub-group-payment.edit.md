@@ -11,40 +11,44 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupPayments.Create]
 
 ## Overview
 
-_TODO_
+دفعة دائمة لكل من في المجموعة الفرعية، تُصرف عبر نوع أجر.
+
+ولا يُستخدم إلا فاصلان للدفع: فالأسطر *سنوية* تُصرف مرة في السنة في **شهر الدفع** الخاص بها، والأسطر *نهاية الخدمة* تُصرف في تشغيل نهاية خدمة الموظف. أما الأسطر ذات الفواصل الأخرى فلا تُصرف.
 
 ## WageType {#EmployeeSubGroupPayment.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupPayment_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الأجر الذي تُصرف تحته الدفعة.
 
-**مثال.** _TODO_
+**مثال.** المكافأة السنوية
 
 **القواعد.** اختياري. يُختار من قائمة.
 
 ## Amount {#EmployeeSubGroupPayment.Amount}
 <!-- alias: loc:Amount, dom:EmployeeSubGroupPayment_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ المصروف.
 
-**مثال.** _TODO_
+**مثال.** `300`
 
 **القواعد.** اختياري. رقم.
 
 ## PayInterval {#EmployeeSubGroupPayment.PayInterval}
 <!-- alias: loc:PayInterval, dom:EmployeeSubGroupPayment_PayInterval -->
 
-**ما هو.** _TODO_
+**ما هو.** متى تُصرف الدفعة.
 
-**مثال.** _TODO_
+**مثال.** سنوي
+
+**لماذا يهم.** لا يُصرف إلا *سنوي* و*نهاية الخدمة*.
 
 **القواعد.** إلزامي. إحدى القيم: شهري، يومي، بالساعة، نهاية الخدمة، سنوي.
 
 ## PayMonth {#EmployeeSubGroupPayment.PayMonth}
 <!-- alias: loc:PayMonth, dom:EmployeeSubGroupPayment_PayMonth -->
 
-**ما هو.** _TODO_
+**ما هو.** الشهر الذي تُصرف فيه الدفعة *السنوية*.
 
-**مثال.** _TODO_
+**مثال.** ديسمبر
 
 **القواعد.** إلزامي. إحدى القيم: لا شيء، يناير، فبراير، مارس، أبريل، مايو، يونيو، يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر.

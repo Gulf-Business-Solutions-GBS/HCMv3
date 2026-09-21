@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "استردادات المصاريف الصحية للمجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupHealthReimburse",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>استحقاق المجموعة الفرعية من استرداد المصاريف الصحية لكل شخص، بحسب نوع العائل — سطر للموظف وسطر لكل نوع من العائلين.</p><p>ويجمع المبلغ المستحق للموظف سطر الموظف نفسه وأسطر عائليه، حتى الحد الأقصى لعدد العائلين في المجموعة الفرعية. أما الحد السنوي وسنة التأمين فيُحدَّدان في المجموعة الفرعية نفسها.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
     "dom:EmployeeSubGroupHealthReimburse_StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
@@ -55,9 +55,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة أنواع صفات العائل.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> لمن هذا السطر: الموظف، أو نوع من العائلين.</p><p><strong>مثال.</strong> الزوج/الزوجة</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupHealthReimburse.Amount",
@@ -69,9 +69,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> المبلغ الذي يضيفه هذا الشخص إلى المبلغ المستحق.</p><p><strong>مثال.</strong> <code>150</code></p>",
+      "adminHtml": "<p>استثناء المزايا للموظف يحل محل أسطر الموظف. واستثناء العائل يحل محل المجموع المعدود حتى تلك اللحظة كله بدلاً من أن يُضاف إليه — وهذا سلوك النظام السابق وقد أُبقي عليه عمداً.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupHealthReimburse.AgeLimit",
@@ -83,9 +83,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> للعائل، أكبر عمر يُحتسب فيه.</p><p><strong>مثال.</strong> <code>18</code></p>",
+      "adminHtml": "<p>حد العمر 0 يعني ألا يستحق أي عائل — لا يعني \"بلا حد\". حدّد أكبر عمر يستحق.</p>",
+      "stub": false
     }
   ]
 }

@@ -11,31 +11,41 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupHealthReimburses.Create]
 
 ## Overview
 
-_TODO_
+استحقاق المجموعة الفرعية من استرداد المصاريف الصحية لكل شخص، بحسب نوع العائل -- سطر للموظف وسطر لكل نوع من العائلين.
+
+ويجمع المبلغ المستحق للموظف سطر الموظف نفسه وأسطر عائليه، حتى الحد الأقصى لعدد العائلين في المجموعة الفرعية. أما الحد السنوي وسنة التأمين فيُحدَّدان في المجموعة الفرعية نفسها.
 
 ## DependantType {#EmployeeSubGroupHealthReimburse.DependantTypeId}
 <!-- alias: loc:DependantType, dom:EmployeeSubGroupHealthReimburse_DependantTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** لمن هذا السطر: الموظف، أو نوع من العائلين.
 
-**مثال.** _TODO_
+**مثال.** الزوج/الزوجة
 
 **القواعد.** اختياري. يُختار من قائمة أنواع صفات العائل.
 
 ## Amount {#EmployeeSubGroupHealthReimburse.Amount}
 <!-- alias: loc:Amount, dom:EmployeeSubGroupHealthReimburse_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ الذي يضيفه هذا الشخص إلى المبلغ المستحق.
 
-**مثال.** _TODO_
+**مثال.** `150`
 
 **القواعد.** اختياري. رقم.
+
+:::admin
+استثناء المزايا للموظف يحل محل أسطر الموظف. واستثناء العائل يحل محل المجموع المعدود حتى تلك اللحظة كله بدلاً من أن يُضاف إليه -- وهذا سلوك النظام السابق وقد أُبقي عليه عمداً.
+:::
 
 ## AgeLimit {#EmployeeSubGroupHealthReimburse.AgeLimit}
 <!-- alias: loc:AgeLimit, dom:EmployeeSubGroupHealthReimburse_AgeLimit -->
 
-**ما هو.** _TODO_
+**ما هو.** للعائل، أكبر عمر يُحتسب فيه.
 
-**مثال.** _TODO_
+**مثال.** `18`
 
 **القواعد.** اختياري. رقم.
+
+:::admin
+حد العمر 0 يعني ألا يستحق أي عائل -- لا يعني "بلا حد". حدّد أكبر عمر يستحق.
+:::

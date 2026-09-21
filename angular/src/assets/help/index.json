@@ -2466,6 +2466,141 @@
     "EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays": [
       "pay.employee-sub-group-absence.edit"
     ],
+    "EmployeeSubGroupAssetAllowance_WageTypeId": [
+      "pay.employee-sub-group-asset-allowance.edit"
+    ],
+    "EmployeeSubGroupAssetAllowance_Amount": [
+      "pay.employee-sub-group-asset-allowance.edit"
+    ],
+    "EmployeeSubGroupBenefitDetail_StartDate": [
+      "pay.employee-sub-group-benefit-detail.edit"
+    ],
+    "EmployeeSubGroupBenefitDetail_EndDate": [
+      "pay.employee-sub-group-benefit-detail.edit"
+    ],
+    "EmployeeSubGroupBenefitDetail_DependantTypeId": [
+      "pay.employee-sub-group-benefit-detail.edit"
+    ],
+    "EmployeeSubGroupBenefitDetail_Amount": [
+      "pay.employee-sub-group-benefit-detail.edit"
+    ],
+    "EmployeeSubGroupBenefitDetail_AgeLimit": [
+      "pay.employee-sub-group-benefit-detail.edit"
+    ],
+    "EmployeeSubGroupBenefit_BenefitTypeId": [
+      "pay.employee-sub-group-benefit.edit"
+    ],
+    "EmployeeSubGroupBenefit_MaxAmount": [
+      "pay.employee-sub-group-benefit.edit"
+    ],
+    "EmployeeSubGroupBonus_StartDate": [
+      "pay.employee-sub-group-bonus.edit"
+    ],
+    "EmployeeSubGroupBonus_EndDate": [
+      "pay.employee-sub-group-bonus.edit"
+    ],
+    "EmployeeSubGroupBonus_ChangeYear": [
+      "pay.employee-sub-group-bonus.edit"
+    ],
+    "EmployeeSubGroupBonus_Percentage": [
+      "pay.employee-sub-group-bonus.edit"
+    ],
+    "EmployeeSubGroupCommission_WageTypeId": [
+      "pay.employee-sub-group-commission.edit"
+    ],
+    "EmployeeSubGroupFund_FromPay": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupFund_ToPay": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupFund_FundDedType": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupFund_Percentage": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupFund_MinAmount": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupFund_MaxAmount": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupFund_FixAmount": [
+      "pay.employee-sub-group-fund.edit"
+    ],
+    "EmployeeSubGroupGratuity_StartDate": [
+      "pay.employee-sub-group-gratuity.edit"
+    ],
+    "EmployeeSubGroupGratuity_EndDate": [
+      "pay.employee-sub-group-gratuity.edit"
+    ],
+    "EmployeeSubGroupGratuity_ChangeYear": [
+      "pay.employee-sub-group-gratuity.edit"
+    ],
+    "EmployeeSubGroupGratuity_GratuityDays": [
+      "pay.employee-sub-group-gratuity.edit"
+    ],
+    "EmployeeSubGroupGratuity_BasisDays": [
+      "pay.employee-sub-group-gratuity.edit"
+    ],
+    "EmployeeSubGroupGratuity_ImpactFromDateOfJoining": [
+      "pay.employee-sub-group-gratuity.edit"
+    ],
+    "EmployeeSubGroupHealthReimburse_StartDate": [
+      "pay.employee-sub-group-health-reimburse.edit"
+    ],
+    "EmployeeSubGroupHealthReimburse_EndDate": [
+      "pay.employee-sub-group-health-reimburse.edit"
+    ],
+    "EmployeeSubGroupHealthReimburse_DependantTypeId": [
+      "pay.employee-sub-group-health-reimburse.edit"
+    ],
+    "EmployeeSubGroupHealthReimburse_Amount": [
+      "pay.employee-sub-group-health-reimburse.edit"
+    ],
+    "EmployeeSubGroupHealthReimburse_AgeLimit": [
+      "pay.employee-sub-group-health-reimburse.edit"
+    ],
+    "EmployeeSubGroupPayment_WageTypeId": [
+      "pay.employee-sub-group-payment.edit"
+    ],
+    "EmployeeSubGroupPayment_Amount": [
+      "pay.employee-sub-group-payment.edit"
+    ],
+    "EmployeeSubGroupPayment_PayInterval": [
+      "pay.employee-sub-group-payment.edit"
+    ],
+    "EmployeeSubGroupPayment_PayMonth": [
+      "pay.employee-sub-group-payment.edit"
+    ],
+    "EmployeeSubGroupTicket_TicketTypeId": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_TicketCount": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_StartDate": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_EndDate": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_MaxAmount": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_FixAmount": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_FareType": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_AgeLimit": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
+    "EmployeeSubGroupTicket_AccrualPeriod": [
+      "pay.employee-sub-group-ticket.edit"
+    ],
     "EmployeeSubGroupWageType_WageTypeId": [
       "pay.employee-sub-group-wage-type.edit"
     ],

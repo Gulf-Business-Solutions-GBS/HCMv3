@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "صناديق المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupFund",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>شريحة أجر واحدة من خصم الصندوق للمجموعة الفرعية — مثل صندوق ادخار أو صندوق ضمان. وأجر الموظف للصندوق هو المجموع الشهري لأنواع الأجور المؤشَّر عليها <em>إدراج في الصندوق</em>، والشريحة التي يقع هذا المجموع ضمن نطاقها تحدد الخصم.</p><p>ولا يُخصم إلا للموظفين المشتركين في صندوق، ولا يُخصم ما دام لهم إعفاء من الصندوق أو بعد آخر يوم لهم في الخدمة.</p>",
   "aliasIndex": {
     "loc:FromPay": "EmployeeSubGroupFund.FromPay",
     "dom:EmployeeSubGroupFund_FromPay": "EmployeeSubGroupFund.FromPay",
@@ -31,9 +31,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أدنى أجر في هذه الشريحة.</p><p><strong>مثال.</strong> <code>0</code></p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون \"من\" أكبر من \"إلى\".</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.ToPay",
@@ -45,9 +45,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أعلى أجر في هذه الشريحة.</p><p><strong>مثال.</strong> <code>999</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.FundDedType",
@@ -59,9 +59,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: النسبة المئوية، PercentageWithinLimit، مبلغ ثابت.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> طريقة احتساب الخصم لهذه الشريحة.</p><p><strong>مثال.</strong> نسبة مئوية</p><p><strong>لماذا يهم.</strong> <em>مبلغ ثابت</em> يخصم المبلغ الثابت. و<em>نسبة مئوية</em> يخصم النسبة من الأجر. و<em>PercentageWithinLimit</em> يخصم النسبة، على ألا تزيد على الحد الأقصى ولا تقل عن الحد الأدنى. وتُقرَّب النتيجة إلى منزلتين عشريتين.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.Percentage",
@@ -73,9 +73,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية المخصومة من الأجر، لنوعي النسبة المئوية.</p><p><strong>مثال.</strong> <code>5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.MinAmount",
@@ -87,9 +87,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقل ما يُخصم، لـ<em>PercentageWithinLimit</em>.</p><p><strong>مثال.</strong> <code>10</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.MaxAmount",
@@ -101,9 +101,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقصى ما يُخصم، لـ<em>PercentageWithinLimit</em>.</p><p><strong>مثال.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.FixAmount",
@@ -115,9 +115,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> المبلغ المخصوم، لـ<em>مبلغ ثابت</em>.</p><p><strong>مثال.</strong> <code>25</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

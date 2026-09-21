@@ -11,31 +11,33 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Create]
 
 ## Overview
 
-_TODO_
+مبلغ مزايا المجموعة الفرعية لكل نوع من العائلين، مع حد للعمر.
+
+لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.
 
 ## DependantType {#EmployeeSubGroupBenefitDetail.DependantTypeId}
 <!-- alias: loc:DependantType, dom:EmployeeSubGroupBenefitDetail_DependantTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع العائل.
 
-**مثال.** _TODO_
+**مثال.** ابن/ابنة
 
 **القواعد.** اختياري. يُختار من قائمة أنواع صفات العائل.
 
 ## Amount {#EmployeeSubGroupBenefitDetail.Amount}
 <!-- alias: loc:Amount, dom:EmployeeSubGroupBenefitDetail_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** المبلغ لكل عائل من ذلك النوع.
 
-**مثال.** _TODO_
+**مثال.** `500`
 
 **القواعد.** اختياري. رقم.
 
 ## AgeLimit {#EmployeeSubGroupBenefitDetail.AgeLimit}
 <!-- alias: loc:AgeLimit, dom:EmployeeSubGroupBenefitDetail_AgeLimit -->
 
-**ما هو.** _TODO_
+**ما هو.** أكبر عمر يُحتسب فيه العائل.
 
-**مثال.** _TODO_
+**مثال.** `21`
 
 **القواعد.** اختياري. رقم.

@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBenefits.Create]
 
 ## Overview
 
-_TODO_
+نوع مزايا تستحقه المجموعة الفرعية، مع حد أقصى للمبلغ.
+
+لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.
 
 ## BenefitType {#EmployeeSubGroupBenefit.BenefitTypeId}
 <!-- alias: loc:BenefitType, dom:EmployeeSubGroupBenefit_BenefitTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع المزايا.
 
-**مثال.** _TODO_
+**مثال.** بدل تعليم
 
 **القواعد.** اختياري. يُختار من قائمة أنواع المزايا.
 
 ## MaxAmount {#EmployeeSubGroupBenefit.MaxAmount}
 <!-- alias: loc:MaxAmount, dom:EmployeeSubGroupBenefit_MaxAmount -->
 
-**ما هو.** _TODO_
+**ما هو.** أقصى ما يمكن أن تصرفه المزايا.
 
-**مثال.** _TODO_
+**مثال.** `2000`
 
 **القواعد.** اختياري. رقم.

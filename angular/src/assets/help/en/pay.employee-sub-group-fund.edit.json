@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Funds — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupFund",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One pay band of the sub group's fund deduction — for example a savings or provident fund. The employee's pay for the fund is the monthly total of wagetypes marked <em>Include In Fund</em>; the band whose From–To range holds that total sets the deduction.</p><p>The deduction is made only for employees enrolled in a fund, and not while they have a fund exemption or after their last day in service.</p>",
   "aliasIndex": {
     "loc:FromPay": "EmployeeSubGroupFund.FromPay",
     "dom:EmployeeSubGroupFund_FromPay": "EmployeeSubGroupFund.FromPay",
@@ -31,9 +31,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The lowest pay in this band.</p><p><strong>Example.</strong> <code>0</code></p><p><strong>Why it matters.</strong> From cannot be greater than To.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.ToPay",
@@ -45,9 +45,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The highest pay in this band.</p><p><strong>Example.</strong> <code>999</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.FundDedType",
@@ -59,9 +59,9 @@
       ],
       "rules": "Required. One of: Percentage, PercentageWithinLimit, Fix Amount.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How the deduction is worked out for this band.</p><p><strong>Example.</strong> Percentage</p><p><strong>Why it matters.</strong> <em>Fix Amount</em> deducts the fixed amount. <em>Percentage</em> deducts the percentage of the pay. <em>PercentageWithinLimit</em> deducts the percentage, but no more than the maximum and no less than the minimum. The result is rounded to 2 decimals.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.Percentage",
@@ -73,9 +73,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The percentage of pay deducted, for the two percentage types.</p><p><strong>Example.</strong> <code>5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.MinAmount",
@@ -87,9 +87,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The least deducted, for <em>PercentageWithinLimit</em>.</p><p><strong>Example.</strong> <code>10</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.MaxAmount",
@@ -101,9 +101,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The most deducted, for <em>PercentageWithinLimit</em>.</p><p><strong>Example.</strong> <code>100</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupFund.FixAmount",
@@ -115,9 +115,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The amount deducted, for <em>Fix Amount</em>.</p><p><strong>Example.</strong> <code>25</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

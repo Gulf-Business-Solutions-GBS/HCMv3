@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Gratuities — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupGratuity",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>The sub group's end-of-service indemnity scale: how many days' pay each year of service earns, in slabs by years of service.</p><p>Service is split across the slabs in order of <strong>Change Year</strong>. Kuwait's law, for example, is two slabs: 15 days a year up to year 5, and 30 days a year after that.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupGratuity.StartDate",
     "dom:EmployeeSubGroupGratuity_StartDate": "EmployeeSubGroupGratuity.StartDate",
@@ -57,9 +57,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The year of service at which this slab ends.</p><p><strong>Example.</strong> <code>5</code> for the first slab; <code>99</code> for the last.</p>",
+      "adminHtml": "<p>With three or more slabs, check the result on a long-serving employee: a middle slab is counted as its full Change Year in years, and the last slab is reduced to make up, which is only exact when every slab after the first earns the same days. This matches the legacy system and has been kept on purpose.</p>",
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupGratuity.GratuityDays",
@@ -71,9 +71,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The days' pay earned for each year of service in this slab.</p><p><strong>Example.</strong> <code>15</code></p><p><strong>Why it matters.</strong> Indemnity days for the slab are these days divided by 365, times the days served in it.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupGratuity.BasisDays",
@@ -85,9 +85,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The number of days a month's pay is divided by to value one indemnity day in this slab.</p><p><strong>Example.</strong> <code>26</code></p><p><strong>Why it matters.</strong> 0 uses the <strong>Fixed Days</strong> of wagetype <code>1010</code>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining",
@@ -99,9 +99,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether this slab is measured against the whole service from the joining date.</p><p><strong>Why it matters.</strong> Used when choosing which slab's <strong>Basis Days</strong> values the indemnity pay: ticked, the employee's whole service is compared with this slab and the ones after it, not only the service left after the earlier slabs.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

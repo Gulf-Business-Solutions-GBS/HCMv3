@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Benefits — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefit",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A benefit type the sub group is entitled to, with a maximum amount.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
   "aliasIndex": {
     "loc:BenefitType": "EmployeeSubGroupBenefit.BenefitTypeId",
     "dom:EmployeeSubGroupBenefit_BenefitTypeId": "EmployeeSubGroupBenefit.BenefitTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "Optional. Chosen from Benefit Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The benefit type.</p><p><strong>Example.</strong> Education Allowance</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupBenefit.MaxAmount",
@@ -35,9 +35,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The most the benefit can pay.</p><p><strong>Example.</strong> <code>2000</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

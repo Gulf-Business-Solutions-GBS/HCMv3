@@ -11,22 +11,26 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupAssetAllowances.Create]
 
 ## Overview
 
-_TODO_
+بدل عن أصول الشركة، يُصرف عبر نوع أجر.
+
+لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.
 
 ## WageType {#EmployeeSubGroupAssetAllowance.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupAssetAllowance_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع أجر البدل.
 
-**مثال.** _TODO_
+**مثال.** بدل سيارة
+
+**لماذا يهم.** لا يُدرج نوع الأجر إلا مرة واحدة لكل مجموعة فرعية.
 
 **القواعد.** اختياري. يُختار من قائمة.
 
 ## Amount {#EmployeeSubGroupAssetAllowance.Amount}
 <!-- alias: loc:Amount, dom:EmployeeSubGroupAssetAllowance_Amount -->
 
-**ما هو.** _TODO_
+**ما هو.** مبلغ البدل.
 
-**مثال.** _TODO_
+**مثال.** `100`
 
 **القواعد.** اختياري. رقم.

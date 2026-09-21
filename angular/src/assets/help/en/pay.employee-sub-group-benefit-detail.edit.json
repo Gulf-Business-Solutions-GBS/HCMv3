@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Benefit Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>The amount of a sub group benefit per kind of dependant, with an age limit.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
     "dom:EmployeeSubGroupBenefitDetail_StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
@@ -55,9 +55,9 @@
       ],
       "rules": "Optional. Chosen from Dependant Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The kind of dependant.</p><p><strong>Example.</strong> Child</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupBenefitDetail.Amount",
@@ -69,9 +69,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The amount per dependant of that kind.</p><p><strong>Example.</strong> <code>500</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "EmployeeSubGroupBenefitDetail.AgeLimit",
@@ -83,9 +83,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The oldest age at which a dependant counts.</p><p><strong>Example.</strong> <code>21</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

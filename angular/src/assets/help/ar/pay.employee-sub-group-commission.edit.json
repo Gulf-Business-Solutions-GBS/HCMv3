@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "عمولات المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupCommission",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>أنواع أجور العمولة للمجموعة الفرعية. ويصرف نوع أجر متوسط العمولة جزءاً من اثني عشر مما كسبه الموظف على أنواع الأجور هذه خلال الأشهر الاثني عشر حتى تاريخ الدفع.</p>",
   "aliasIndex": {
     "loc:WageType": "EmployeeSubGroupCommission.WageTypeId",
     "dom:EmployeeSubGroupCommission_WageTypeId": "EmployeeSubGroupCommission.WageTypeId"
@@ -19,9 +19,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع أجر يُعدّ عمولة.</p><p><strong>مثال.</strong> عمولة المبيعات</p><p><strong>لماذا يهم.</strong> لا يُدرج نوع الأجر إلا مرة واحدة لكل مجموعة فرعية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

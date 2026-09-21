@@ -11,22 +11,28 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBonuses.Create]
 
 ## Overview
 
-_TODO_
+The sub group's service bonus: a percentage paid on a work anniversary. In the month of the employee's joining anniversary, payroll looks for the row whose **Change Year** equals the years the employee has completed, and pays that percentage of the monthly total of wagetypes marked *Include In Service Bonus*.
+
+Only anniversaries with a row are paid -- add one row for each anniversary that earns a bonus.
 
 ## ChangeYear {#EmployeeSubGroupBonus.ChangeYear}
 <!-- alias: loc:ChangeYear, dom:EmployeeSubGroupBonus_ChangeYear -->
 
-**What it is.** _TODO_
+**What it is.** The completed years of service this row pays on.
 
-**Example.** _TODO_
+**Example.** `5` -- paid in the month of the fifth anniversary.
 
 **Rules.** Optional. Number.
+
+:::admin
+The row's start and end dates are not checked when the bonus is paid; only the sub group and the years matter.
+:::
 
 ## Percentage {#EmployeeSubGroupBonus.Percentage}
 <!-- alias: loc:Percentage, dom:EmployeeSubGroupBonus_Percentage -->
 
-**What it is.** _TODO_
+**What it is.** The percentage of the service-bonus pay paid as the bonus.
 
-**Example.** _TODO_
+**Example.** `50`
 
 **Rules.** Optional. Number.
