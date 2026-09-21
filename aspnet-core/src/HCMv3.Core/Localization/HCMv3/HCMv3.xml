@@ -176,6 +176,8 @@
     <text name="Fixed">Fixed</text>
     <text name="Variable">Variable</text>
     <text name="ThroughPayroll">Through Payroll</text>
+    <text name="External">External</text>
+    <text name="Exemption">Exemption</text>
     <text name="ThroughExternal">Through External</text>
     <text name="BasicSalary">Basic Salary</text>
     <text name="CreatingNewLoanType">Creating new loan type</text>

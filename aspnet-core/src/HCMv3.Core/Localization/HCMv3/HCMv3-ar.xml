@@ -1319,6 +1319,8 @@
     <text name="Fixed">ثابت</text>
     <text name="Variable">متغير</text>
     <text name="ThroughPayroll">عن طريق الرواتب</text>
+    <text name="External">خارجي</text>
+    <text name="Exemption">إعفاء</text>
     <text name="ThroughExternal">عن طريق جهة خارجية</text>
     <text name="BasicSalary">الراتب الأساسي</text>
     <text name="CreatingNewLoanType">إنشاء نوع قرض جديد</text>
