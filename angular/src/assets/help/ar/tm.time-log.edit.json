@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات الوقت — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.TimeLog",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>قيود يكتبها تشغيل محرك الوقت أثناء معالجة الموظفين. ويعدّها سجل التشغيلات ليبيّن النجاح والفشل، ويظهر القيد الفاشل لموظف أيضاً عندما يشغّل نظام الرواتب محرك الوقت تلقائياً.</p>",
   "aliasIndex": {
     "loc:RunTimeStamp": "TimeLog.RunTimeStamp",
     "dom:TimeLog_RunTimeStamp": "TimeLog.RunTimeStamp",
@@ -31,9 +31,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> متى كُتب القيد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.DayDate",
@@ -45,9 +45,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> اليوم الجاري معالجته.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.EmployeeId",
@@ -59,9 +59,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه القيد، إن وُجد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.Status",
@@ -73,9 +73,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> النتيجة: 0 نجاح، و1 فشل.</p><p><strong>مثال.</strong> <code>0</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.NoOfEmployee",
@@ -87,9 +87,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين الذين كان التشغيل يعالجهم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.StopFlag",
@@ -101,9 +101,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا طُلب إيقاف التشغيل.</p><p><strong>لماذا يهم.</strong> يتوقف محرك الوقت عندما يجد قيداً مؤشَّراً عليه، ويُعرض التشغيل على أنه أُوقف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.Message",
@@ -115,9 +115,9 @@
       ],
       "rules": "اختياري.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما سجّله التشغيل.</p><p><strong>مثال.</strong> Employee has VariableTime Policy found on 14/04/2026</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

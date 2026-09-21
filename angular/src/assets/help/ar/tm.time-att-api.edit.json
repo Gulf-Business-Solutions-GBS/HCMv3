@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "واجهات ربط أجهزة البصمة — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.TimeAttAPI",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>الاتصال بنظام الحضور والانصراف (BioTime) الذي تُستورد منه البصمات. وتظهر الإعدادات نفسها في <strong>مركز التكامل ← BioTime</strong>، الذي يمكنه أيضاً اختبار الاتصال.</p>",
   "aliasIndex": {
     "loc:TokenUrl": "TimeAttAPI.TokenUrl",
     "dom:TimeAttAPI_TokenUrl": "TimeAttAPI.TokenUrl",
@@ -41,9 +41,9 @@
       ],
       "rules": "إلزامي. الحد الأقصى 500 حرف.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> العنوان المستخدم لتسجيل الدخول إلى نظام الحضور.</p><p><strong>مثال.</strong> <code>https://biotime.example.com/jwt-api-token-auth/</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.TransactionsUrl",
@@ -55,9 +55,9 @@
       ],
       "rules": "إلزامي. الحد الأقصى 500 حرف.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> العنوان الذي تُقرأ منه البصمات.</p><p><strong>مثال.</strong> <code>https://biotime.example.com/iclock/api/transactions/</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.DevicesUrl",
@@ -69,9 +69,9 @@
       ],
       "rules": "إلزامي. الحد الأقصى 500 حرف.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> العنوان الذي تُقرأ منه قائمة الأجهزة.</p><p><strong>مثال.</strong> <code>https://biotime.example.com/iclock/api/terminals/</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Username",
@@ -83,9 +83,9 @@
       ],
       "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحساب المستخدم لتسجيل الدخول إلى نظام الحضور.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Password",
@@ -97,9 +97,9 @@
       ],
       "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>ما هو.</strong> كلمة المرور لذلك الحساب.</p>",
+      "adminHtml": "<p>إذا حُفظت من هذا النموذج تُخزَّن كما كُتبت، وإذا حُفظت من مركز التكامل تُخزَّن مشفّرة.</p>",
+      "stub": false
     },
     {
       "id": "TimeAttAPI.NoOfRecords",
@@ -111,9 +111,9 @@
       ],
       "rules": "إلزامي. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد البصمات المقروءة في كل طلب.</p><p><strong>مثال.</strong> <code>500</code></p><p><strong>لماذا يهم.</strong> يواصل الاستيراد طلب صفحات بهذا الحجم إلى أن تعود صفحة أقصر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Email",
@@ -125,9 +125,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بريد إلكتروني للتواصل بشأن الاتصال.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Company",
@@ -139,9 +139,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> اسم الشركة في نظام الحضور.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.PunchInCode",
@@ -153,9 +153,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 50 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> حالات البصمة في نظام الحضور التي تعني الدخول، مفصولة بفواصل.</p><p><strong>مثال.</strong> <code>0</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.PunchOutCode",
@@ -167,9 +167,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 50 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> حالات البصمة التي تعني الخروج.</p><p><strong>مثال.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.BreakOutCode",
@@ -181,9 +181,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 50 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> حالات البصمة التي تعني الخروج للاستراحة.</p><p><strong>مثال.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.BreakInCode",
@@ -195,9 +195,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 50 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> حالات البصمة التي تعني العودة من الاستراحة.</p><p><strong>مثال.</strong> <code>3</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

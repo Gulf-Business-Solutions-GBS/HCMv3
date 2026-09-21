@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "عمليات نقل الوقت — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.TimeTransfer",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>تعديل يدوي لأحد أرصدة الوقت للموظف في تاريخ معيّن. وما يعدّله يتوقف على نوع التحويل، الذي يتعرّف عليه نظام الرواتب ومحرك الوقت برمزه:</p><ul><li><code>1</code> يُضاف إلى الإجازة السنوية المستحقة في ذلك التاريخ.</li><li><code>2</code> يُعدّ إجازة مرضية مأخوذة مسبقاً في الدورة.</li><li><code>5</code> يُعدّ أيام غياب تُخصم من مدة الخدمة التي تُحتسب عليها مكافأة نهاية الخدمة.</li><li><code>6</code> يُرحّل مبلغاً افتتاحياً إلى صندوق الموظف في فترة الدفع تلك.</li></ul>",
   "aliasIndex": {
     "loc:Employee": "TimeTransfer.EmployeeId",
     "dom:TimeTransfer_EmployeeId": "TimeTransfer.EmployeeId",
@@ -27,9 +27,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يُعدَّل رصيده.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeTransfer.TransferDate",
@@ -41,9 +41,9 @@
       ],
       "rules": "إلزامي. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تاريخ سريان التعديل.</p><p><strong>مثال.</strong> <code>2026-01-01</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeTransfer.TransferTypeId",
@@ -55,9 +55,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع نقل الوقت.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الرصيد الذي يُعدَّل.</p><p><strong>مثال.</strong> الرصيد الافتتاحي للإجازة السنوية</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeTransfer.TransferCount",
@@ -69,9 +69,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام التعديل — أو مبلغه في تحويل الصندوق.</p><p><strong>مثال.</strong> <code>12.5</code></p><p><strong>لماذا يهم.</strong> يُقرَّب إلى ثلاث منازل عشرية عند الحفظ.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeTransfer.Comments",

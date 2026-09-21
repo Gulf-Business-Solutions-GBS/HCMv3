@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Time Attendance APIs — Create / Edit",
   "entity": "HCMv3.TimeManagement.TimeAttAPI",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>The connection to the time-attendance system (BioTime) that punches are imported from. The same settings appear under <strong>Integration Center → BioTime</strong>, which can also test the connection.</p>",
   "aliasIndex": {
     "loc:TokenUrl": "TimeAttAPI.TokenUrl",
     "dom:TimeAttAPI_TokenUrl": "TimeAttAPI.TokenUrl",
@@ -41,9 +41,9 @@
       ],
       "rules": "Required. Maximum 500 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The address used to sign in to the attendance system.</p><p><strong>Example.</strong> <code>https://biotime.example.com/jwt-api-token-auth/</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.TransactionsUrl",
@@ -55,9 +55,9 @@
       ],
       "rules": "Required. Maximum 500 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The address punches are read from.</p><p><strong>Example.</strong> <code>https://biotime.example.com/iclock/api/transactions/</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.DevicesUrl",
@@ -69,9 +69,9 @@
       ],
       "rules": "Required. Maximum 500 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The address the list of devices is read from.</p><p><strong>Example.</strong> <code>https://biotime.example.com/iclock/api/terminals/</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Username",
@@ -83,9 +83,9 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The account used to sign in to the attendance system.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Password",
@@ -97,9 +97,9 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> The password for that account.</p>",
+      "adminHtml": "<p>Saved from this form the password is stored as typed; saved from Integration Center it is stored encrypted.</p>",
+      "stub": false
     },
     {
       "id": "TimeAttAPI.NoOfRecords",
@@ -111,9 +111,9 @@
       ],
       "rules": "Required. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many punches are read per request.</p><p><strong>Example.</strong> <code>500</code></p><p><strong>Why it matters.</strong> The import keeps requesting pages of this size until a page comes back short.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Email",
@@ -125,9 +125,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A contact email for the connection.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.Company",
@@ -139,9 +139,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The company name in the attendance system.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.PunchInCode",
@@ -153,9 +153,9 @@
       ],
       "rules": "Optional. Maximum 50 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The attendance-system punch states that mean clock in, separated by commas.</p><p><strong>Example.</strong> <code>0</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.PunchOutCode",
@@ -167,9 +167,9 @@
       ],
       "rules": "Optional. Maximum 50 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The punch states that mean clock out.</p><p><strong>Example.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.BreakOutCode",
@@ -181,9 +181,9 @@
       ],
       "rules": "Optional. Maximum 50 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The punch states that mean out for a break.</p><p><strong>Example.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeAttAPI.BreakInCode",
@@ -195,9 +195,9 @@
       ],
       "rules": "Optional. Maximum 50 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The punch states that mean back from a break.</p><p><strong>Example.</strong> <code>3</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

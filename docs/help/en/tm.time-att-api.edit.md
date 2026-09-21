@@ -11,112 +11,114 @@ permissions: [Pages.TimeManagement.TimeAttAPIs.Create]
 
 ## Overview
 
-_TODO_
+The connection to the time-attendance system (BioTime) that punches are imported from. The same settings appear under **Integration Center → BioTime**, which can also test the connection.
 
 ## TokenUrl {#TimeAttAPI.TokenUrl}
 <!-- alias: loc:TokenUrl, dom:TimeAttAPI_TokenUrl -->
 
-**What it is.** _TODO_
+**What it is.** The address used to sign in to the attendance system.
 
-**Example.** _TODO_
+**Example.** `https://biotime.example.com/jwt-api-token-auth/`
 
 **Rules.** Required. Maximum 500 characters.
 
 ## TransactionsUrl {#TimeAttAPI.TransactionsUrl}
 <!-- alias: loc:TransactionsUrl, dom:TimeAttAPI_TransactionsUrl -->
 
-**What it is.** _TODO_
+**What it is.** The address punches are read from.
 
-**Example.** _TODO_
+**Example.** `https://biotime.example.com/iclock/api/transactions/`
 
 **Rules.** Required. Maximum 500 characters.
 
 ## DevicesUrl {#TimeAttAPI.DevicesUrl}
 <!-- alias: loc:DevicesUrl, dom:TimeAttAPI_DevicesUrl -->
 
-**What it is.** _TODO_
+**What it is.** The address the list of devices is read from.
 
-**Example.** _TODO_
+**Example.** `https://biotime.example.com/iclock/api/terminals/`
 
 **Rules.** Required. Maximum 500 characters.
 
 ## Username {#TimeAttAPI.Username}
 <!-- alias: loc:Username, dom:TimeAttAPI_Username -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The account used to sign in to the attendance system.
 
 **Rules.** Required. Maximum 256 characters.
 
 ## Password {#TimeAttAPI.Password}
 <!-- alias: loc:Password, dom:TimeAttAPI_Password -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The password for that account.
 
 **Rules.** Required. Maximum 256 characters.
+
+:::admin
+Saved from this form the password is stored as typed; saved from Integration Center it is stored encrypted.
+:::
 
 ## NoOfRecords {#TimeAttAPI.NoOfRecords}
 <!-- alias: loc:NoOfRecords, dom:TimeAttAPI_NoOfRecords -->
 
-**What it is.** _TODO_
+**What it is.** How many punches are read per request.
 
-**Example.** _TODO_
+**Example.** `500`
+
+**Why it matters.** The import keeps requesting pages of this size until a page comes back short.
 
 **Rules.** Required. Whole number.
 
 ## Email {#TimeAttAPI.Email}
 <!-- alias: loc:Email, dom:TimeAttAPI_Email -->
 
-**What it is.** _TODO_
+**What it is.** A contact email for the connection.
 
-**Example.** _TODO_
+**Why it matters.** Not read at present.
 
 **Rules.** Optional. Maximum 256 characters.
 
 ## Company {#TimeAttAPI.Company}
 <!-- alias: loc:Company, dom:TimeAttAPI_Company -->
 
-**What it is.** _TODO_
+**What it is.** The company name in the attendance system.
 
-**Example.** _TODO_
+**Why it matters.** Not read at present.
 
 **Rules.** Optional. Maximum 256 characters.
 
 ## PunchInCode {#TimeAttAPI.PunchInCode}
 <!-- alias: loc:PunchInCode, dom:TimeAttAPI_PunchInCode -->
 
-**What it is.** _TODO_
+**What it is.** The attendance-system punch states that mean clock in, separated by commas.
 
-**Example.** _TODO_
+**Example.** `0`
 
 **Rules.** Optional. Maximum 50 characters.
 
 ## PunchOutCode {#TimeAttAPI.PunchOutCode}
 <!-- alias: loc:PunchOutCode, dom:TimeAttAPI_PunchOutCode -->
 
-**What it is.** _TODO_
+**What it is.** The punch states that mean clock out.
 
-**Example.** _TODO_
+**Example.** `1`
 
 **Rules.** Optional. Maximum 50 characters.
 
 ## BreakOutCode {#TimeAttAPI.BreakOutCode}
 <!-- alias: loc:BreakOutCode, dom:TimeAttAPI_BreakOutCode -->
 
-**What it is.** _TODO_
+**What it is.** The punch states that mean out for a break.
 
-**Example.** _TODO_
+**Example.** `2`
 
 **Rules.** Optional. Maximum 50 characters.
 
 ## BreakInCode {#TimeAttAPI.BreakInCode}
 <!-- alias: loc:BreakInCode, dom:TimeAttAPI_BreakInCode -->
 
-**What it is.** _TODO_
+**What it is.** The punch states that mean back from a break.
 
-**Example.** _TODO_
+**Example.** `3`
 
 **Rules.** Optional. Maximum 50 characters.

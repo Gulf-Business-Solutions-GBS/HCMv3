@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Time Policies — Create / Edit",
   "entity": "HCMv3.TimeManagement.TimePolicy",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>How attendance is worked out for the employees on the policy: whether it comes from punches, a plan or timesheets, which punches are required, how late arrival and early leaving are tolerated, and the minimum overtime.</p><p>Employees get a time policy on their own time policy records. The <strong>Time Management Status</strong> decides the method: <em>Actual Time</em> reads punches around the shift start and end; <em>Flexi Time</em> reads them inside the duty's flexi window; <em>Planned Time</em> takes the planned shift as worked; anything else, including <em>Time Sheet</em>, is worked out from timesheets. <em>Variable Time</em> is not processed by the time engine — days on it are skipped with a message.</p><p>The punch-location and punch-notification settings at the end of the form are not read at present.</p>",
   "aliasIndex": {
     "loc:Code": "TimePolicy.Code",
     "dom:TimePolicy_Code": "TimePolicy.Code",
@@ -139,9 +139,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch in at the start of the shift.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ShouldSignOut",
@@ -153,9 +153,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch out at the end of the shift.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ShouldBreakSignIn",
@@ -167,9 +167,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch back in after the break.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ShouldBreakSignOut",
@@ -181,9 +181,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees on this policy must punch out for the break.</p><p><strong>Why it matters.</strong> Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MarkWeekoffOnHoliday",
@@ -195,9 +195,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a public holiday that falls on a weekly off counts as a weekly off.</p><p><strong>Why it matters.</strong> Ticked, and only when basic pay (wagetype <code>1000</code>) is on <em>Fixed Days Per Month</em>, such a day is treated as a weekly off rather than a public holiday.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsFaceRequired",
@@ -209,9 +209,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether face recognition is required when punching.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcLateInAfterTolerance",
@@ -223,9 +223,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether lateness beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.LateInTolerance",
@@ -237,9 +237,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes of lateness allowed before anything is deducted.</p><p><strong>Example.</strong> <code>10</code></p><p><strong>Why it matters.</strong> Lateness up to this many minutes is not deducted. Beyond it, the whole lateness is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcEarlyOutAfterTolerance",
@@ -251,9 +251,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether early leaving beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.EarlyOutTolerance",
@@ -265,9 +265,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes of early leaving allowed before anything is deducted.</p><p><strong>Example.</strong> <code>10</code></p><p><strong>Why it matters.</strong> Early leaving up to this many minutes is not deducted. Beyond it, the whole early leaving is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcBreakLateInAfterTolerance",
@@ -279,9 +279,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether lateness back from the break beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakLateInTolerance",
@@ -293,9 +293,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes of lateness back from the break allowed before anything is deducted.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Lateness back from the break up to this many minutes is not deducted. Beyond it, the whole lateness back from the break is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
@@ -307,9 +307,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leaving early for the break beyond the tolerance is deducted only for the minutes above it.</p><p><strong>Why it matters.</strong> Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakEarlyOutTolerance",
@@ -321,9 +321,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes of leaving early for the break allowed before anything is deducted.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Leaving early for the break up to this many minutes is not deducted. Beyond it, the whole leaving early for the break is deducted — or only the part above the tolerance, if the matching <strong>after tolerance</strong> box is ticked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyToleranceType",
@@ -335,9 +335,9 @@
       ],
       "rules": "Required. One of: Not selected, Calculate Monthly Tolerance On Actual, Calculate Monthly Tolerance On Deduction.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether lateness and early leaving are also tolerated across the month, and on what figure.</p><p><strong>Example.</strong> Calculate Monthly Tolerance On Deduction</p><p><strong>Why it matters.</strong> At the end of each month the time engine adds up the employee's lateness and early-leaving minutes — the deducted minutes (<em>On Deduction</em>), or the deducted minutes plus each day's tolerance (<em>On Actual</em>) — and only the total above <strong>Monthly After Tolerance</strong> is carried as the month's deduction. <em>Not selected</em> switches this off.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyAfterTolerance",
@@ -349,9 +349,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes of lateness and early leaving allowed across the month.</p><p><strong>Example.</strong> <code>60</code></p><p><strong>Why it matters.</strong> Used with a monthly tolerance type; only the month's total above it is deducted.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyLateInTolerance",
@@ -363,9 +363,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Monthly minutes of lateness allowed.</p><p><strong>Why it matters.</strong> Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyEarlyOutTolerance",
@@ -377,9 +377,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Monthly minutes of early leaving allowed.</p><p><strong>Why it matters.</strong> Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ClockInLimit",
@@ -391,9 +391,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the shift start the time engine looks for that punch.</p><p><strong>Example.</strong> <code>120</code></p><p><strong>Why it matters.</strong> Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ClockOutLimit",
@@ -405,9 +405,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the shift end the time engine looks for that punch.</p><p><strong>Example.</strong> <code>240</code></p><p><strong>Why it matters.</strong> Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakInLimit",
@@ -419,9 +419,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the break end the time engine looks for the back-from-break punch.</p><p><strong>Example.</strong> <code>30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakOutLimit",
@@ -433,9 +433,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many minutes either side of the break start the time engine looks for the out-for-break punch.</p><p><strong>Example.</strong> <code>30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.OTMinLimit",
@@ -447,9 +447,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The least overtime, in minutes, that counts.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> Overtime shorter than this on a day is ignored.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.TimeEventRule",
@@ -461,9 +461,9 @@
       ],
       "rules": "Required. One of: N/A, First In First Out, First In Last Out, Last In First Out, Last In Last Out.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Which punch counts when there are several in the window.</p><p><strong>Example.</strong> First In Last Out</p><p><strong>Why it matters.</strong> The first or last clock-in, and the first or last clock-out, as named. <em>N/A</em> takes no punch at all, so every day looks unpunched.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.TimeMgmtStatus",
@@ -475,9 +475,9 @@
       ],
       "rules": "Required. One of: N/A, Planned Time, Actual Time, Time Sheet, Flexi Time, Variable Time.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How attendance is worked out for employees on this policy.</p><p><strong>Example.</strong> Actual Time</p><p><strong>Why it matters.</strong> See the overview for what each status does.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchInFromWorkLocationOnly",
@@ -489,9 +489,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether clock-in is allowed only from the work location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
@@ -503,9 +503,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether clock-out is allowed only from the work location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchInFromExtWorklocation",
@@ -517,9 +517,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether clock-in is allowed from an external work location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchOutFromExtWorklocation",
@@ -531,9 +531,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether clock-out is allowed from an external work location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsMissedPunchInNotiEnabled",
@@ -545,9 +545,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a missed clock-in sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MissedPunchInNotiTimeLimit",
@@ -559,9 +559,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes after the shift start before a missed clock-in is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsLatePunchInNotiEnabled",
@@ -573,9 +573,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a late clock-in sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.LatePunchInNotiTimeLimit",
@@ -587,9 +587,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes of lateness before it is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsMissedPunchOutNotiEnabled",
@@ -601,9 +601,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a missed clock-out sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MissedPunchOutNotiTimeLimit",
@@ -615,9 +615,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes after the shift end before a missed clock-out is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsEarlyPunchOutNotiEnabled",
@@ -629,9 +629,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether an early clock-out sends a notification.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.EarlyPunchOutNotiTimeLimit",
@@ -643,9 +643,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes of early leaving before it is notified.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

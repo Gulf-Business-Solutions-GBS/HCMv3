@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سياسات الوقت — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.TimePolicy",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>طريقة احتساب الحضور لموظفي هذه السياسة: هل يأتي من البصمات أو من خطة أو من كشوف الدوام، وأي البصمات مطلوبة، وكيف يُسمح بالتأخير والانصراف المبكر، والحد الأدنى للعمل الإضافي.</p><p>ويحصل الموظفون على سياسة الوقت في سجلات سياسة الوقت الخاصة بهم. وتحدد <strong>حالة إدارة الوقت</strong> الطريقة: <em>الوقت الفعلي</em> يقرأ البصمات حول بداية المناوبة ونهايتها، و<em>الوقت المرن</em> يقرؤها ضمن نافذة المرونة في الدوام، و<em>الوقت المخطط</em> يعدّ المناوبة المخططة وقتاً معمولاً، وأي حالة أخرى، ومنها <em>كشف الدوام</em>، تُحتسب من كشوف الدوام. أما <em>الوقت المتغير</em> فلا يعالجه محرك الوقت — إذ تُتجاوز أيامه برسالة.</p><p>وإعدادات موقع البصمة وإشعارات البصمة في آخر النموذج لا تُقرأ حالياً.</p>",
   "aliasIndex": {
     "loc:Code": "TimePolicy.Code",
     "dom:TimePolicy_Code": "TimePolicy.Code",
@@ -139,9 +139,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الدخول في بداية المناوبة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ShouldSignOut",
@@ -153,9 +153,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج في نهاية المناوبة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ShouldBreakSignIn",
@@ -167,9 +167,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة العودة من الاستراحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ShouldBreakSignOut",
@@ -181,9 +181,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج إلى الاستراحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MarkWeekoffOnHoliday",
@@ -195,9 +195,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت العطلة الرسمية الواقعة في يوم راحة أسبوعية تُعدّ راحة أسبوعية.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، وفقط إذا كان الراتب الأساسي (نوع الأجر <code>1000</code>) على <em>أيام ثابتة شهرياً</em>، يُعامل هذا اليوم راحةً أسبوعية لا عطلة رسمية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsFaceRequired",
@@ -209,9 +209,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التعرف على الوجه مطلوباً عند البصمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcLateInAfterTolerance",
@@ -223,9 +223,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخير الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.LateInTolerance",
@@ -237,9 +237,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُخصم التأخير حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخير كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcEarlyOutAfterTolerance",
@@ -251,9 +251,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الانصراف المبكر الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.EarlyOutTolerance",
@@ -265,9 +265,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُخصم الانصراف المبكر حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الانصراف المبكر كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcBreakLateInAfterTolerance",
@@ -279,9 +279,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخر في العودة من الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakLateInTolerance",
@@ -293,9 +293,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُخصم التأخر في العودة من الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخر في العودة من الاستراحة كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
@@ -307,9 +307,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الخروج المبكر إلى الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakEarlyOutTolerance",
@@ -321,9 +321,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُخصم الخروج المبكر إلى الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الخروج المبكر إلى الاستراحة كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyToleranceType",
@@ -335,9 +335,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: لم يتم اختياره، احتساب فترة السماح الشهرية على الفعلي، احتساب فترة السماح الشهرية على الخصم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخير والانصراف المبكر يُسمح بهما أيضاً على مدى الشهر، وعلى أي رقم.</p><p><strong>مثال.</strong> احتساب فترة السماح الشهرية على الخصم</p><p><strong>لماذا يهم.</strong> في نهاية كل شهر يجمع محرك الوقت دقائق تأخير الموظف وانصرافه المبكر — الدقائق المخصومة (<em>على الخصم</em>)، أو الدقائق المخصومة مع سماح كل يوم (<em>على الفعلي</em>) — ولا يُحمَّل خصماً للشهر إلا ما زاد من المجموع على <strong>فترة السماح الشهرية بعد</strong>. و<em>غير محدد</em> يلغي ذلك.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyAfterTolerance",
@@ -349,9 +349,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير والانصراف المبكر المسموح بها على مدى الشهر.</p><p><strong>مثال.</strong> <code>60</code></p><p><strong>لماذا يهم.</strong> يُستخدم مع نوع فترة السماح الشهرية، ولا يُخصم إلا ما زاد عليه من مجموع الشهر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyLateInTolerance",
@@ -363,9 +363,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير المسموح بها شهرياً.</p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MonthlyEarlyOutTolerance",
@@ -377,9 +377,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المسموح بها شهرياً.</p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ClockInLimit",
@@ -391,9 +391,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل بداية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.</p><p><strong>مثال.</strong> <code>120</code></p><p><strong>لماذا يهم.</strong> البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.ClockOutLimit",
@@ -405,9 +405,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل نهاية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.</p><p><strong>مثال.</strong> <code>240</code></p><p><strong>لماذا يهم.</strong> البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakInLimit",
@@ -419,9 +419,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل نهاية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة العودة من الاستراحة.</p><p><strong>مثال.</strong> <code>30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.BreakOutLimit",
@@ -433,9 +433,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل بداية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة الخروج إلى الاستراحة.</p><p><strong>مثال.</strong> <code>30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.OTMinLimit",
@@ -447,9 +447,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقل عمل إضافي يُحتسب، بالدقائق.</p><p><strong>مثال.</strong> <code>30</code></p><p><strong>لماذا يهم.</strong> يُتجاهل العمل الإضافي الأقصر من هذا في اليوم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.TimeEventRule",
@@ -461,9 +461,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: لا ينطبق، أول دخول وأول خروج، أول دخول وآخر خروج، آخر دخول وأول خروج، آخر دخول وآخر خروج.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أي بصمة تُحتسب عند وجود عدة بصمات في النافذة.</p><p><strong>مثال.</strong> أول دخول وآخر خروج</p><p><strong>لماذا يهم.</strong> أول دخول أو آخره، وأول خروج أو آخره، بحسب الاسم. أما <em>غير منطبق</em> فلا يأخذ أي بصمة، فيبدو كل يوم بلا بصمات.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.TimeMgmtStatus",
@@ -475,9 +475,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: لا ينطبق، الوقت المخطط، الوقت الفعلي، كشف الدوام، الوقت المرن، الوقت المتغير.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> طريقة احتساب الحضور لموظفي هذه السياسة.</p><p><strong>مثال.</strong> الوقت الفعلي</p><p><strong>لماذا يهم.</strong> انظر النظرة العامة لما تفعله كل حالة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchInFromWorkLocationOnly",
@@ -489,9 +489,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الدخول مسموحاً من موقع العمل فقط.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
@@ -503,9 +503,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الخروج مسموحاً من موقع العمل فقط.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchInFromExtWorklocation",
@@ -517,9 +517,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الدخول مسموحاً من موقع عمل خارجي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.AllowPunchOutFromExtWorklocation",
@@ -531,9 +531,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الخروج مسموحاً من موقع عمل خارجي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsMissedPunchInNotiEnabled",
@@ -545,9 +545,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان عدم تسجيل الدخول يرسل إشعاراً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MissedPunchInNotiTimeLimit",
@@ -559,9 +559,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق بعد بداية المناوبة قبل الإشعار بعدم تسجيل الدخول.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsLatePunchInNotiEnabled",
@@ -573,9 +573,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الدخول المتأخر يرسل إشعاراً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.LatePunchInNotiTimeLimit",
@@ -587,9 +587,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير قبل الإشعار به.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsMissedPunchOutNotiEnabled",
@@ -601,9 +601,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان عدم تسجيل الخروج يرسل إشعاراً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.MissedPunchOutNotiTimeLimit",
@@ -615,9 +615,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق بعد نهاية المناوبة قبل الإشعار بعدم تسجيل الخروج.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.IsEarlyPunchOutNotiEnabled",
@@ -629,9 +629,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الخروج المبكر يرسل إشعاراً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimePolicy.EarlyPunchOutNotiTimeLimit",
@@ -643,9 +643,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر قبل الإشعار به.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

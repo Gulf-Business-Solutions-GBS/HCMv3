@@ -3738,6 +3738,246 @@
     "RosterGroup_NameAr": [
       "tm.roster-group.edit"
     ],
+    "TimeAttAPI_TokenUrl": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_TransactionsUrl": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_DevicesUrl": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_Username": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_Password": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_NoOfRecords": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_Email": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_Company": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_PunchInCode": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_PunchOutCode": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_BreakOutCode": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeAttAPI_BreakInCode": [
+      "tm.time-att-api.edit"
+    ],
+    "TimeEvent_EmployeeId": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_Pin": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_TransTypeId": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_ActualTransTypeId": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_TransDate": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_TransTime": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_TransSource": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_AccessUnitId": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_WorkLocationId": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_IpAddress": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_GeoSelfiePath": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_Latitude": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_Longitude": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_RangeDifference": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_Temperature": [
+      "tm.time-event.edit"
+    ],
+    "TimeEvent_PunchInRange": [
+      "tm.time-event.edit"
+    ],
+    "TimeLog_RunTimeStamp": [
+      "tm.time-log.edit"
+    ],
+    "TimeLog_DayDate": [
+      "tm.time-log.edit"
+    ],
+    "TimeLog_EmployeeId": [
+      "tm.time-log.edit"
+    ],
+    "TimeLog_Status": [
+      "tm.time-log.edit"
+    ],
+    "TimeLog_NoOfEmployee": [
+      "tm.time-log.edit"
+    ],
+    "TimeLog_StopFlag": [
+      "tm.time-log.edit"
+    ],
+    "TimeLog_Message": [
+      "tm.time-log.edit"
+    ],
+    "TimePolicy_Code": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_NameEn": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_NameAr": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_ShouldSignIn": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_ShouldSignOut": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_ShouldBreakSignIn": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_ShouldBreakSignOut": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MarkWeekoffOnHoliday": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_IsFaceRequired": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_CalcLateInAfterTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_LateInTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_CalcEarlyOutAfterTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_EarlyOutTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_CalcBreakLateInAfterTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_BreakLateInTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_CalcBreakEarlyOutAfterTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_BreakEarlyOutTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MonthlyToleranceType": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MonthlyAfterTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MonthlyLateInTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MonthlyEarlyOutTolerance": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_ClockInLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_ClockOutLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_BreakInLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_BreakOutLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_OtMinLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_TimeEventRule": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_TimeMgmtStatus": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_AllowPunchInFromWorkLocationOnly": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_AllowPunchOutFromWorkLocationOnly": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_AllowPunchInFromExtWorklocation": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_AllowPunchOutFromExtWorklocation": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_IsMissedPunchInNotiEnabled": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MissedPunchInNotiTimeLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_IsLatePunchInNotiEnabled": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_LatePunchInNotiTimeLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_IsMissedPunchOutNotiEnabled": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_MissedPunchOutNotiTimeLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_IsEarlyPunchOutNotiEnabled": [
+      "tm.time-policy.edit"
+    ],
+    "TimePolicy_EarlyPunchOutNotiTimeLimit": [
+      "tm.time-policy.edit"
+    ],
+    "TimeTransfer_EmployeeId": [
+      "tm.time-transfer.edit"
+    ],
+    "TimeTransfer_TransferDate": [
+      "tm.time-transfer.edit"
+    ],
+    "TimeTransfer_TransferTypeId": [
+      "tm.time-transfer.edit"
+    ],
+    "TimeTransfer_TransferCount": [
+      "tm.time-transfer.edit"
+    ],
+    "TimeTransfer_Comments": [
+      "tm.time-transfer.edit"
+    ],
     "WorkLocationDutyPeriod_WorkLocationId": [
       "tm.work-location-duty-period.edit"
     ],

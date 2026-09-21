@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Time Logs — Create / Edit",
   "entity": "HCMv3.TimeManagement.TimeLog",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Entries written by a time engine run as it processes employees. The run history counts them to report successes and failures, and a failed entry for an employee also shows up when payroll runs the time engine automatically.</p>",
   "aliasIndex": {
     "loc:RunTimeStamp": "TimeLog.RunTimeStamp",
     "dom:TimeLog_RunTimeStamp": "TimeLog.RunTimeStamp",
@@ -31,9 +31,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> When the entry was written.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.DayDate",
@@ -45,9 +45,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The day being processed.</p><p><strong>Example.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.EmployeeId",
@@ -59,9 +59,9 @@
       ],
       "rules": "Optional. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee the entry is about, if any.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.Status",
@@ -73,9 +73,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The outcome: 0 is success, 1 is a failure.</p><p><strong>Example.</strong> <code>0</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.NoOfEmployee",
@@ -87,9 +87,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many employees the run was processing.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.StopFlag",
@@ -101,9 +101,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the run was asked to stop.</p><p><strong>Why it matters.</strong> The time engine stops when it finds an entry flagged, and the run is reported as aborted.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeLog.Message",
@@ -115,9 +115,9 @@
       ],
       "rules": "Optional.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> What the run recorded.</p><p><strong>Example.</strong> Employee has VariableTime Policy found on 14/04/2026</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }
