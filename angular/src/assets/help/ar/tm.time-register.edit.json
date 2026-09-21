@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات تسجيل الوقت — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.TimeRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>يوم موظف واحد كما احتسبه محرك الوقت: الدوام والسياسة المطبقان، والأوقات المخططة والفعلية، والبصمات المستخدمة، وما يُعدّ به اليوم — عمل أو غياب أو إجازة أو عطلة أو راحة أسبوعية — مع دقائق التأخير والانصراف المبكر والعمل الإضافي. ويأخذ نظام الرواتب أعداد الأيام من هذه الأسطر.</p><p>ويكتب محرك الوقت هذه الأسطر ويعيد كتابتها عند تشغيله، فلا تعدّل سطراً يدوياً إلا لتصحيح يوم، وتوقّع أن يعيد تشغيل لاحق احتسابه.</p><p>وإذا كان إعداد الوقت <em>EnableTimeRegisterApproval</em> مفعّلاً يستخدم نظام الرواتب الأرقام <strong>المعتمدة</strong>، ويرفض التشغيل للموظف الذي له أي يوم غير معتمد في الفترة.</p>",
   "aliasIndex": {
     "loc:Employee": "TimeRegister.EmployeeId",
     "dom:TimeRegister_EmployeeId": "TimeRegister.EmployeeId",
@@ -141,9 +141,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DayDate",
@@ -155,9 +155,9 @@
       ],
       "rules": "إلزامي. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> اليوم.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DutyPeriodId",
@@ -169,9 +169,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة فترات الدوام.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> فترة الدوام المطبقة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DutyId",
@@ -183,9 +183,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة الدوامات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدوام المطبق.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.TimePolicyId",
@@ -197,9 +197,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة سياسات الوقت.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> سياسة الوقت المطبقة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ShiftStartTime1",
@@ -211,9 +211,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بداية المناوبة المخططة.</p><p><strong>مثال.</strong> <code>07:30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ShiftEndTime1",
@@ -225,9 +225,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نهاية المناوبة المخططة.</p><p><strong>مثال.</strong> <code>14:30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakStartTime",
@@ -239,9 +239,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بداية الاستراحة المخططة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakEndTime",
@@ -253,9 +253,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نهاية الاستراحة المخططة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualIn",
@@ -267,9 +267,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بصمة الدخول المستخدمة.</p><p><strong>مثال.</strong> <code>07:42</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualOut",
@@ -281,9 +281,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بصمة الخروج المستخدمة.</p><p><strong>مثال.</strong> <code>14:35</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakOut",
@@ -295,9 +295,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بصمة الخروج إلى الاستراحة المستخدمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakIn",
@@ -309,9 +309,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بصمة العودة من الاستراحة المستخدمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualStartTime1",
@@ -323,9 +323,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بداية وقت العمل المحتسب — الأكثر تأخراً من بداية المناوبة وبصمة الدخول.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualEndTime1",
@@ -337,9 +337,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نهاية وقت العمل المحتسب.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualBreakStartTime",
@@ -351,9 +351,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بداية الاستراحة المحتسبة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualBreakEndTime",
@@ -365,9 +365,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نهاية الاستراحة المحتسبة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.PlannedWorkingMins",
@@ -379,9 +379,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق التي كان مخططاً أن يعملها الموظف.</p><p><strong>مثال.</strong> <code>420</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualWorkingMins",
@@ -393,9 +393,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق المعمولة ضمن المناوبة.</p><p><strong>مثال.</strong> <code>408</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.TotalWorkingMins",
@@ -407,9 +407,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> كل الدقائق بين الدخول والخروج، ناقص الاستراحة، مضافاً إليها دقائق المواظبة.</p><p><strong>مثال.</strong> <code>413</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualAbsenceMins",
@@ -421,9 +421,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق المخططة التي غاب عنها الموظف.</p><p><strong>مثال.</strong> <code>12</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.PlannedWorkingDay",
@@ -435,9 +435,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم يوم عمل مخططاً.</p><p><strong>مثال.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualWorkingDay",
@@ -449,9 +449,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجزء المعمول فعلاً من اليوم.</p><p><strong>مثال.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AttendanceDay",
@@ -463,9 +463,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا سُجّل اليوم مواظبة (مهمة عمل، تدريب).</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AttendanceTypeId",
@@ -477,9 +477,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع المواظبة، في يوم المواظبة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AttendanceMinutes",
@@ -491,9 +491,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق المحتسبة للمواظبة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AbsentDay",
@@ -505,9 +505,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان الموظف غائباً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActiveDay",
@@ -519,9 +519,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان الموظف على رأس العمل في ذلك اليوم.</p><p><strong>مثال.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.InactiveDay",
@@ -533,9 +533,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا لم يكن الموظف قد التحق بعد أو كان قد ترك العمل.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveDay",
@@ -547,9 +547,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجزء من اليوم الذي كان في إجازة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveTypeId",
@@ -561,9 +561,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة، في يوم الإجازة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveMinutes",
@@ -575,9 +575,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الإجازة بالساعات.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AnnualLeaveDay",
@@ -589,9 +589,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم إجازة سنوية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.UnpaidLeaveDay",
@@ -603,9 +603,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم إجازة غير مدفوعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.SickLeavePaidDay",
@@ -617,9 +617,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجزء المدفوع من يوم الإجازة المرضية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.SickLeaveUnpaidDay",
@@ -631,9 +631,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجزء غير المدفوع من يوم الإجازة المرضية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.PublicHoliday",
@@ -645,9 +645,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم عطلة رسمية في تقويم الموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.WeeklyOff",
@@ -659,9 +659,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم راحة أسبوعية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.RestDay",
@@ -673,9 +673,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا كان اليوم يوم راحة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AnnualLeaveAccrualPerDay",
@@ -687,9 +687,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الإجازة السنوية المكتسبة في هذا اليوم.</p><p><strong>مثال.</strong> <code>0.0822</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.TicketAccrualPerDay",
@@ -701,9 +701,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> استحقاق تذاكر الطيران المكتسب في هذا اليوم.</p><p><strong>مثال.</strong> <code>0.0027</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AirTicketPaidDay",
@@ -715,9 +715,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> 1 إذا صُرفت تذكرة طيران في هذا اليوم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveAdjDay",
@@ -729,9 +729,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تعديل إجازة محتسب في هذا اليوم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.IncludeInLeavePay",
@@ -743,9 +743,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجزء من اليوم المصروف عبر أجر الإجازة لا الراتب الأساسي.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.OvertimeMinutes",
@@ -757,9 +757,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق العمل الإضافي المحتسبة، بعد الحد الأدنى في السياسة.</p><p><strong>مثال.</strong> <code>45</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.OvertimeTypeId",
@@ -771,9 +771,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة أنواع العمل الإضافي.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي الذي يُسجَّل تحته العمل الإضافي.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LateIn",
@@ -785,9 +785,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير في بداية المناوبة.</p><p><strong>مثال.</strong> <code>12</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DeductionLateIn",
@@ -799,9 +799,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير المطلوب خصمها، بعد السماح.</p><p><strong>مثال.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.EarlyOut",
@@ -813,9 +813,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر في نهاية المناوبة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DeductionEarlyOut",
@@ -827,9 +827,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المطلوب خصمها، بعد السماح.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakEarlyOut",
@@ -841,9 +841,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakLateIn",
@@ -855,9 +855,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakDeductionEarlyOut",
@@ -869,9 +869,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة المطلوب خصمها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakDeductionLateIn",
@@ -883,9 +883,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة المطلوب خصمها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DedLateInEarlyOutMins",
@@ -897,9 +897,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> كل دقائق التأخير والانصراف المبكر المطلوب خصمها لليوم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DedLateInEarlyOutDay",
@@ -911,9 +911,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تلك الدقائق جزءاً من يوم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DedAfterMonthlyTol",
@@ -925,9 +925,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير والانصراف المبكر للشهر التي تتجاوز السماح الشهري، محمولة على يوم واحد من الشهر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.Status",
@@ -939,9 +939,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: Opened، معتمد، Reopened.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان اليوم مفتوحاً أو معتمداً أو معاد فتحه.</p><p><strong>مثال.</strong> مفتوح</p><p><strong>لماذا يهم.</strong> عند تفعيل اعتماد سجل الوقت يحتاج نظام الرواتب إلى أن تكون كل أيام الفترة معتمدة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ApprovedActualWorkingDay",
@@ -953,9 +953,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الرقم المعتمد لليوم المعمول، يستخدمه نظام الرواتب عند تفعيل الاعتماد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ApprovedAbsentDay",
@@ -967,9 +967,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الرقم المعتمد للغياب، يستخدمه نظام الرواتب عند تفعيل الاعتماد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ApprovedDedLateInEarlyOutMins",
@@ -981,9 +981,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير والانصراف المبكر المعتمدة للخصم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.Remarks",
@@ -995,9 +995,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 1000 حرف.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ملاحظة على اليوم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

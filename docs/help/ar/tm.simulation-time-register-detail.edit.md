@@ -11,31 +11,29 @@ permissions: [Pages.TimeManagement.SimulationTimeRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+قيمة نوع وقت واحد ليوم محاكاة.
+
+لا تُكتب حالياً: لا توجد عملية تملأ هذه السجلات ولا شيء يقرؤها. ويعمل نظام الرواتب والتقارير من سجل الوقت اليومي.
 
 ## SimulationTimeRegister {#SimulationTimeRegisterDetail.SimulationTimeRegisterId}
 <!-- alias: loc:SimulationTimeRegister, dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** يوم المحاكاة الذي يتبعه هذا السطر.
 
 **القواعد.** إلزامي. يُختار من قائمة سجلات الوقت التجريبية.
 
 ## TimeType {#SimulationTimeRegisterDetail.TimeTypeId}
 <!-- alias: loc:TimeType, dom:SimulationTimeRegisterDetail_TimeTypeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** نوع الوقت الذي تخصه القيمة.
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الوقت.
 
 ## TimeValue {#SimulationTimeRegisterDetail.TimeValue}
 <!-- alias: loc:TimeValue, dom:SimulationTimeRegisterDetail_TimeValue -->
 
-**ما هو.** _TODO_
+**ما هو.** القيمة.
 
-**مثال.** _TODO_
+**مثال.** `2.5`
 
 **القواعد.** اختياري.

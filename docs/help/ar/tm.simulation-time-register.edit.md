@@ -11,31 +11,29 @@ permissions: [Pages.TimeManagement.SimulationTimeRegisters.Create]
 
 ## Overview
 
-_TODO_
+يوم من تشغيل تجريبي لمحرك الوقت.
+
+لا تُكتب حالياً: لا توجد عملية تملأ هذه السجلات ولا شيء يقرؤها. ويعمل نظام الرواتب والتقارير من سجل الوقت اليومي.
 
 ## Employee {#SimulationTimeRegister.EmployeeId}
 <!-- alias: loc:Employee, dom:SimulationTimeRegister_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## DayDate {#SimulationTimeRegister.DayDate}
 <!-- alias: loc:DayDate, dom:SimulationTimeRegister_DayDate -->
 
-**ما هو.** _TODO_
+**ما هو.** اليوم.
 
-**مثال.** _TODO_
+**مثال.** `2026-04-14`
 
 **القواعد.** إلزامي. تاريخ.
 
 ## DutyPeriod {#SimulationTimeRegister.DutyPeriodId}
 <!-- alias: loc:DutyPeriod, dom:SimulationTimeRegister_DutyPeriodId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** فترة الدوام المطبقة.
 
 **القواعد.** اختياري. يُختار من قائمة فترات الدوام.

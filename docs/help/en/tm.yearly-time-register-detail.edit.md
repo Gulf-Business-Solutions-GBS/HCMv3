@@ -11,31 +11,29 @@ permissions: [Pages.TimeManagement.YearlyTimeRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+One time type's value in a yearly register.
+
+Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.
 
 ## YearlyTimeRegister {#YearlyTimeRegisterDetail.YearlyTimeRegisterId}
 <!-- alias: loc:YearlyTimeRegister, dom:YearlyTimeRegisterDetail_YearlyTimeRegisterId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The yearly register this line belongs to.
 
 **Rules.** Required. Chosen from Yearly Time Register master data.
 
 ## TimeType {#YearlyTimeRegisterDetail.TimeTypeId}
 <!-- alias: loc:TimeType, dom:YearlyTimeRegisterDetail_TimeTypeId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The time type the value is for.
 
 **Rules.** Required. Chosen from Time Type master data.
 
 ## TimeValue {#YearlyTimeRegisterDetail.TimeValue}
 <!-- alias: loc:TimeValue, dom:YearlyTimeRegisterDetail_TimeValue -->
 
-**What it is.** _TODO_
+**What it is.** The value.
 
-**Example.** _TODO_
+**Example.** `2.5`
 
 **Rules.** Optional.

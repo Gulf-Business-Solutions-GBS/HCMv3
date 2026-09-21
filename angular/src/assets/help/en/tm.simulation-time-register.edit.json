@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Simulation Time Registers — Create / Edit",
   "entity": "HCMv3.TimeManagement.SimulationTimeRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A day from a trial time engine run.</p><p>Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.</p>",
   "aliasIndex": {
     "loc:Employee": "SimulationTimeRegister.EmployeeId",
     "dom:SimulationTimeRegister_EmployeeId": "SimulationTimeRegister.EmployeeId",
@@ -23,9 +23,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationTimeRegister.DayDate",
@@ -37,9 +37,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The day.</p><p><strong>Example.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "SimulationTimeRegister.DutyPeriodId",
@@ -51,9 +51,9 @@
       ],
       "rules": "Optional. Chosen from Duty Period master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The duty period that applied.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات الوقت السنوية — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.YearlyTimeRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>مجاميع سنة من سجل وقت الموظف.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه السجلات ولا شيء يقرؤها. ويعمل نظام الرواتب والتقارير من سجل الوقت اليومي.</p>",
   "aliasIndex": {
     "loc:Employee": "YearlyTimeRegister.EmployeeId",
     "dom:YearlyTimeRegister_EmployeeId": "YearlyTimeRegister.EmployeeId",
@@ -83,9 +83,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.Year",
@@ -97,9 +97,9 @@
       ],
       "rules": "إلزامي. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> السنة التي تخصها المجاميع.</p><p><strong>مثال.</strong> <code>2026</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveDays",
@@ -111,9 +111,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة السنوية المأخوذة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.UnpaidLeaveDays",
@@ -125,9 +125,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة غير المدفوعة المأخوذة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.SickLeavePaidDays",
@@ -139,9 +139,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المرضية المدفوعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.SickLeaveUnpaidDays",
@@ -153,9 +153,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المرضية غير المدفوعة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.GratuityDays",
@@ -167,9 +167,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام مكافأة نهاية الخدمة المستحقة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.GratuityPaidDays",
@@ -181,9 +181,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام مكافأة نهاية الخدمة المصروفة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.PublicHolidays",
@@ -195,9 +195,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> العطلات الرسمية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.WeeklyOffs",
@@ -209,9 +209,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الراحة الأسبوعية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.RestDays",
@@ -223,9 +223,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الراحة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveAccrualDays",
@@ -237,9 +237,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة السنوية المستحقة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveOpeningBal",
@@ -251,9 +251,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> رصيد الإجازة السنوية في البداية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveClosingBal",
@@ -265,9 +265,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> رصيد الإجازة السنوية في النهاية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.TicketAccrualDays",
@@ -279,9 +279,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> استحقاق تذاكر الطيران المتراكم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.TicketAccrualOpeningBal",
@@ -293,9 +293,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> رصيد تذاكر الطيران في البداية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.TicketAccrualClosingBal",
@@ -307,9 +307,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> رصيد تذاكر الطيران في النهاية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AirTicketPaidDays",
@@ -321,9 +321,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تذاكر الطيران المصروفة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActiveDays",
@@ -335,9 +335,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الأيام التي كان فيها الموظف على رأس العمل.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.PlannedWorkingMins",
@@ -349,9 +349,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق العمل المخططة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActualWorkingMins",
@@ -363,9 +363,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدقائق المعمولة فعلاً ضمن المناوبات.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActualAbsenceMins",
@@ -377,9 +377,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق الغياب عن وقت العمل المخطط.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.PlannedWorkingDays",
@@ -391,9 +391,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام العمل المخططة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActualWorkingDays",
@@ -405,9 +405,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الأيام المعمولة فعلاً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ExtraWorkingDays",
@@ -419,9 +419,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الأيام المعمولة زيادة على المخطط.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.LieuDays",
@@ -433,9 +433,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الأيام المكتسبة بدلاً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AdvLeaveRecoveryDays",
@@ -447,9 +447,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة المقدمة المستردة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.NormalDayOTMins",
@@ -461,9 +461,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق العمل الإضافي في الأيام العادية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.RestDayOTMins",
@@ -475,9 +475,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق العمل الإضافي في أيام الراحة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.HolidayOTMins",
@@ -489,9 +489,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق العمل الإضافي في العطلات الرسمية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.WeekendOTMins",
@@ -503,9 +503,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> دقائق العمل الإضافي في أيام الراحة الأسبوعية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AdvanceLeavePaids",
@@ -517,9 +517,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الإجازات المصروفة مقدماً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AdvanceTicketPaids",
@@ -531,9 +531,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تذاكر الطيران المصروفة مقدماً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

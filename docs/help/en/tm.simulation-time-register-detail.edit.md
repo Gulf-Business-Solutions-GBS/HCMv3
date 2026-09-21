@@ -11,31 +11,29 @@ permissions: [Pages.TimeManagement.SimulationTimeRegisterDetails.Create]
 
 ## Overview
 
-_TODO_
+One time type's value for a simulated day.
+
+Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.
 
 ## SimulationTimeRegister {#SimulationTimeRegisterDetail.SimulationTimeRegisterId}
 <!-- alias: loc:SimulationTimeRegister, dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The simulated day this line belongs to.
 
 **Rules.** Required. Chosen from Simulation Time Register master data.
 
 ## TimeType {#SimulationTimeRegisterDetail.TimeTypeId}
 <!-- alias: loc:TimeType, dom:SimulationTimeRegisterDetail_TimeTypeId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The time type the value is for.
 
 **Rules.** Required. Chosen from Time Type master data.
 
 ## TimeValue {#SimulationTimeRegisterDetail.TimeValue}
 <!-- alias: loc:TimeValue, dom:SimulationTimeRegisterDetail_TimeValue -->
 
-**What it is.** _TODO_
+**What it is.** The value.
 
-**Example.** _TODO_
+**Example.** `2.5`
 
 **Rules.** Optional.

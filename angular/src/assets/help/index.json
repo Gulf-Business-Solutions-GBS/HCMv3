@@ -3636,6 +3636,114 @@
     "Holiday_OvertimeTypeId": [
       "tm.holiday.edit"
     ],
+    "MonthlyTimeRegisterDetail_MonthlyTimeRegisterId": [
+      "tm.monthly-time-register-detail.edit"
+    ],
+    "MonthlyTimeRegisterDetail_TimeTypeId": [
+      "tm.monthly-time-register-detail.edit"
+    ],
+    "MonthlyTimeRegisterDetail_TimeValue": [
+      "tm.monthly-time-register-detail.edit"
+    ],
+    "MonthlyTimeRegister_EmployeeId": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_Month": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AnnualLeaveDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_UnpaidLeaveDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_SickLeavePaidDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_SickLeaveUnpaidDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_GratuityDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_GratuityPaidDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_PublicHolidays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_WeeklyOffs": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_RestDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AnnualLeaveAccrualDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AnnualLeaveOpeningBal": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AnnualLeaveClosingBal": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_TicketAccrualDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_TicketAccrualOpeningBal": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_TicketAccrualClosingBal": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AirTicketPaidDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_ActiveDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_PlannedWorkingMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_ActualWorkingMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_ActualAbsenceMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_PlannedWorkingDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_ActualWorkingDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_ExtraWorkingDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_LieuDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AdvLeaveRecoveryDays": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_NormalDayOTMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_RestDayOTMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_HolidayOTMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_WeekendOTMins": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AdvanceLeavePaids": [
+      "tm.monthly-time-register.edit"
+    ],
+    "MonthlyTimeRegister_AdvanceTicketPaids": [
+      "tm.monthly-time-register.edit"
+    ],
     "RosterDailyDuty_CalendarDate": [
       "tm.roster-daily-duty.edit"
     ],
@@ -3737,6 +3845,24 @@
     ],
     "RosterGroup_NameAr": [
       "tm.roster-group.edit"
+    ],
+    "SimulationTimeRegisterDetail_SimulationTimeRegisterId": [
+      "tm.simulation-time-register-detail.edit"
+    ],
+    "SimulationTimeRegisterDetail_TimeTypeId": [
+      "tm.simulation-time-register-detail.edit"
+    ],
+    "SimulationTimeRegisterDetail_TimeValue": [
+      "tm.simulation-time-register-detail.edit"
+    ],
+    "SimulationTimeRegister_EmployeeId": [
+      "tm.simulation-time-register.edit"
+    ],
+    "SimulationTimeRegister_DayDate": [
+      "tm.simulation-time-register.edit"
+    ],
+    "SimulationTimeRegister_DutyPeriodId": [
+      "tm.simulation-time-register.edit"
     ],
     "TimeAttAPI_TokenUrl": [
       "tm.time-att-api.edit"
@@ -3963,6 +4089,192 @@
     "TimePolicy_EarlyPunchOutNotiTimeLimit": [
       "tm.time-policy.edit"
     ],
+    "TimeRegister_EmployeeId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DayDate": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DutyPeriodId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DutyId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_TimePolicyId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ShiftStartTime1": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ShiftEndTime1": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakStartTime": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakEndTime": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualIn": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualOut": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakOut": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakIn": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualStartTime1": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualEndTime1": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualBreakStartTime": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualBreakEndTime": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_PlannedWorkingMins": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualWorkingMins": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_TotalWorkingMins": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualAbsenceMins": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_PlannedWorkingDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActualWorkingDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AttendanceDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AttendanceTypeId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AttendanceMinutes": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AbsentDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ActiveDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_InactiveDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_LeaveDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_LeaveTypeId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_LeaveMinutes": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AnnualLeaveDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_UnpaidLeaveDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_SickLeavePaidDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_SickLeaveUnpaidDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_PublicHoliday": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_WeeklyOff": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_RestDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AnnualLeaveAccrualPerDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_TicketAccrualPerDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_AirTicketPaidDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_LeaveAdjDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_IncludeInLeavePay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_OvertimeMinutes": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_OvertimeTypeId": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_LateIn": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DeductionLateIn": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_EarlyOut": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DeductionEarlyOut": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakEarlyOut": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakLateIn": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakDeductionEarlyOut": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_BreakDeductionLateIn": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DedLateInEarlyOutMins": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DedLateInEarlyOutDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_DedAfterMonthlyTol": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_Status": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ApprovedActualWorkingDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ApprovedAbsentDay": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_ApprovedDedLateInEarlyOutMins": [
+      "tm.time-register.edit"
+    ],
+    "TimeRegister_Remarks": [
+      "tm.time-register.edit"
+    ],
     "TimeTransfer_EmployeeId": [
       "tm.time-transfer.edit"
     ],
@@ -3986,6 +4298,114 @@
     ],
     "WorkLocationDutyPeriod_StartDate": [
       "tm.work-location-duty-period.edit"
+    ],
+    "YearlyTimeRegisterDetail_YearlyTimeRegisterId": [
+      "tm.yearly-time-register-detail.edit"
+    ],
+    "YearlyTimeRegisterDetail_TimeTypeId": [
+      "tm.yearly-time-register-detail.edit"
+    ],
+    "YearlyTimeRegisterDetail_TimeValue": [
+      "tm.yearly-time-register-detail.edit"
+    ],
+    "YearlyTimeRegister_EmployeeId": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_Year": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AnnualLeaveDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_UnpaidLeaveDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_SickLeavePaidDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_SickLeaveUnpaidDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_GratuityDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_GratuityPaidDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_PublicHolidays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_WeeklyOffs": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_RestDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AnnualLeaveAccrualDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AnnualLeaveOpeningBal": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AnnualLeaveClosingBal": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_TicketAccrualDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_TicketAccrualOpeningBal": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_TicketAccrualClosingBal": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AirTicketPaidDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_ActiveDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_PlannedWorkingMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_ActualWorkingMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_ActualAbsenceMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_PlannedWorkingDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_ActualWorkingDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_ExtraWorkingDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_LieuDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AdvLeaveRecoveryDays": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_NormalDayOTMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_RestDayOTMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_HolidayOTMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_WeekendOTMins": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AdvanceLeavePaids": [
+      "tm.yearly-time-register.edit"
+    ],
+    "YearlyTimeRegister_AdvanceTicketPaids": [
+      "tm.yearly-time-register.edit"
     ]
   }
 }

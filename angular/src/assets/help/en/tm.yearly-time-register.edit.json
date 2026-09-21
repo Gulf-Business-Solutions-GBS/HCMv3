@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Yearly Time Registers — Create / Edit",
   "entity": "HCMv3.TimeManagement.YearlyTimeRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A year's totals of an employee's time register.</p><p>Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.</p>",
   "aliasIndex": {
     "loc:Employee": "YearlyTimeRegister.EmployeeId",
     "dom:YearlyTimeRegister_EmployeeId": "YearlyTimeRegister.EmployeeId",
@@ -83,9 +83,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.Year",
@@ -97,9 +97,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The year the totals are for.</p><p><strong>Example.</strong> <code>2026</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveDays",
@@ -111,9 +111,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Annual leave days taken.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.UnpaidLeaveDays",
@@ -125,9 +125,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Unpaid leave days taken.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.SickLeavePaidDays",
@@ -139,9 +139,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Paid sick leave days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.SickLeaveUnpaidDays",
@@ -153,9 +153,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Unpaid sick leave days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.GratuityDays",
@@ -167,9 +167,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Indemnity days accrued.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.GratuityPaidDays",
@@ -181,9 +181,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Indemnity days paid.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.PublicHolidays",
@@ -195,9 +195,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Public holidays.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.WeeklyOffs",
@@ -209,9 +209,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Weekly off days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.RestDays",
@@ -223,9 +223,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Rest days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveAccrualDays",
@@ -237,9 +237,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Annual leave days accrued.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveOpeningBal",
@@ -251,9 +251,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Annual leave balance at the start.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AnnualLeaveClosingBal",
@@ -265,9 +265,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Annual leave balance at the end.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.TicketAccrualDays",
@@ -279,9 +279,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Air ticket entitlement accrued.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.TicketAccrualOpeningBal",
@@ -293,9 +293,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Air ticket balance at the start.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.TicketAccrualClosingBal",
@@ -307,9 +307,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Air ticket balance at the end.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AirTicketPaidDays",
@@ -321,9 +321,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Air tickets paid.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActiveDays",
@@ -335,9 +335,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Days the employee was employed.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.PlannedWorkingMins",
@@ -349,9 +349,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Planned working minutes.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActualWorkingMins",
@@ -363,9 +363,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes actually worked within the shifts.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActualAbsenceMins",
@@ -377,9 +377,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes absent from planned working time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.PlannedWorkingDays",
@@ -391,9 +391,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Planned working days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ActualWorkingDays",
@@ -405,9 +405,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Days actually worked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.ExtraWorkingDays",
@@ -419,9 +419,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Days worked beyond the plan.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.LieuDays",
@@ -433,9 +433,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Days earned in lieu.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AdvLeaveRecoveryDays",
@@ -447,9 +447,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Advance leave days recovered.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.NormalDayOTMins",
@@ -461,9 +461,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Overtime minutes on normal days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.RestDayOTMins",
@@ -475,9 +475,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Overtime minutes on rest days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.HolidayOTMins",
@@ -489,9 +489,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Overtime minutes on public holidays.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.WeekendOTMins",
@@ -503,9 +503,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Overtime minutes on weekly offs.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AdvanceLeavePaids",
@@ -517,9 +517,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Leave paid in advance.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegister.AdvanceTicketPaids",
@@ -531,9 +531,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Air tickets paid in advance.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

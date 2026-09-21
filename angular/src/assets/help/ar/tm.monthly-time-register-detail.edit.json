@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل سجلات الوقت الشهرية — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.MonthlyTimeRegisterDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>قيمة نوع وقت واحد في السجل الشهري.</p><p>لا تُكتب حالياً: لا توجد عملية تملأ هذه السجلات ولا شيء يقرؤها. ويعمل نظام الرواتب والتقارير من سجل الوقت اليومي.</p>",
   "aliasIndex": {
     "loc:MonthlyTimeRegister": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
     "dom:MonthlyTimeRegisterDetail_MonthlyTimeRegisterId": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
@@ -23,9 +23,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة سجلات الوقت الشهرية.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> السجل الشهري الذي يتبعه هذا السطر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "MonthlyTimeRegisterDetail.TimeTypeId",
@@ -37,9 +37,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الوقت.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الوقت الذي تخصه القيمة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "MonthlyTimeRegisterDetail.TimeValue",
@@ -51,9 +51,9 @@
       ],
       "rules": "اختياري.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> القيمة.</p><p><strong>مثال.</strong> <code>2.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

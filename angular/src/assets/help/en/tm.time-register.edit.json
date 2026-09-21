@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Time Registers — Create / Edit",
   "entity": "HCMv3.TimeManagement.TimeRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One employee's day as the time engine worked it out: the duty and policy that applied, the planned and actual times, the punches used, and what the day counts as — worked, absent, on leave, holiday, weekly off — with late, early and overtime minutes. Payroll takes its day counts from these rows.</p><p>The time engine writes and rewrites these rows when it runs; edit one by hand only to correct a day, and expect a later run to recalculate it.</p><p>When the time setting <em>EnableTimeRegisterApproval</em> is on, payroll uses the <strong>Approved</strong> figures and refuses to run for an employee who has any day in the period that is not approved.</p>",
   "aliasIndex": {
     "loc:Employee": "TimeRegister.EmployeeId",
     "dom:TimeRegister_EmployeeId": "TimeRegister.EmployeeId",
@@ -141,9 +141,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DayDate",
@@ -155,9 +155,9 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The day.</p><p><strong>Example.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DutyPeriodId",
@@ -169,9 +169,9 @@
       ],
       "rules": "Optional. Chosen from Duty Period master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The duty period that applied.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DutyId",
@@ -183,9 +183,9 @@
       ],
       "rules": "Optional. Chosen from Duty master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The duty that applied.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.TimePolicyId",
@@ -197,9 +197,9 @@
       ],
       "rules": "Optional. Chosen from Time Policy master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The time policy that applied.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ShiftStartTime1",
@@ -211,9 +211,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The planned shift start.</p><p><strong>Example.</strong> <code>07:30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ShiftEndTime1",
@@ -225,9 +225,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The planned shift end.</p><p><strong>Example.</strong> <code>14:30</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakStartTime",
@@ -239,9 +239,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The planned break start.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakEndTime",
@@ -253,9 +253,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The planned break end.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualIn",
@@ -267,9 +267,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The clock-in punch used.</p><p><strong>Example.</strong> <code>07:42</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualOut",
@@ -281,9 +281,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The clock-out punch used.</p><p><strong>Example.</strong> <code>14:35</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakOut",
@@ -295,9 +295,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The out-for-break punch used.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakIn",
@@ -309,9 +309,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The back-from-break punch used.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualStartTime1",
@@ -323,9 +323,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The start of counted working time — the later of the shift start and the clock-in.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualEndTime1",
@@ -337,9 +337,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The end of counted working time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualBreakStartTime",
@@ -351,9 +351,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The counted start of the break.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualBreakEndTime",
@@ -365,9 +365,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The counted end of the break.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.PlannedWorkingMins",
@@ -379,9 +379,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes the employee was planned to work.</p><p><strong>Example.</strong> <code>420</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualWorkingMins",
@@ -393,9 +393,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minutes worked within the shift.</p><p><strong>Example.</strong> <code>408</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.TotalWorkingMins",
@@ -407,9 +407,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> All minutes between clock-in and clock-out, less the break, plus attendance minutes.</p><p><strong>Example.</strong> <code>413</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualAbsenceMins",
@@ -421,9 +421,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The planned minutes the employee was absent for.</p><p><strong>Example.</strong> <code>12</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.PlannedWorkingDay",
@@ -435,9 +435,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was a planned working day.</p><p><strong>Example.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActualWorkingDay",
@@ -449,9 +449,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The part of the day actually worked.</p><p><strong>Example.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AttendanceDay",
@@ -463,9 +463,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was recorded as attendance (business trip, training).</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AttendanceTypeId",
@@ -477,9 +477,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The attendance type, on an attendance day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AttendanceMinutes",
@@ -491,9 +491,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes counted for attendance.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AbsentDay",
@@ -505,9 +505,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the employee was absent.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ActiveDay",
@@ -519,9 +519,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the employee was employed on the day.</p><p><strong>Example.</strong> <code>1</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.InactiveDay",
@@ -533,9 +533,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the employee was not yet employed or had left.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveDay",
@@ -547,9 +547,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The part of the day on leave.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveTypeId",
@@ -561,9 +561,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The leave type, on a leave day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveMinutes",
@@ -575,9 +575,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes of hourly leave.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AnnualLeaveDay",
@@ -589,9 +589,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was annual leave.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.UnpaidLeaveDay",
@@ -603,9 +603,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was unpaid leave.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.SickLeavePaidDay",
@@ -617,9 +617,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The paid part of a sick leave day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.SickLeaveUnpaidDay",
@@ -631,9 +631,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The unpaid part of a sick leave day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.PublicHoliday",
@@ -645,9 +645,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was a public holiday in the employee's calendar.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.WeeklyOff",
@@ -659,9 +659,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was a weekly off.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.RestDay",
@@ -673,9 +673,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if the day was a rest day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AnnualLeaveAccrualPerDay",
@@ -687,9 +687,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Annual leave earned on this day.</p><p><strong>Example.</strong> <code>0.0822</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.TicketAccrualPerDay",
@@ -701,9 +701,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Air ticket entitlement earned on this day.</p><p><strong>Example.</strong> <code>0.0027</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.AirTicketPaidDay",
@@ -715,9 +715,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> 1 if an air ticket was paid on this day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LeaveAdjDay",
@@ -729,9 +729,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A leave adjustment counted on this day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.IncludeInLeavePay",
@@ -743,9 +743,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The part of the day paid through leave pay rather than basic pay.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.OvertimeMinutes",
@@ -757,9 +757,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Overtime minutes counted, after the policy's minimum.</p><p><strong>Example.</strong> <code>45</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.OvertimeTypeId",
@@ -771,9 +771,9 @@
       ],
       "rules": "Optional. Chosen from Overtime Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The overtime type the overtime is recorded under.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.LateIn",
@@ -785,9 +785,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes late at the start of the shift.</p><p><strong>Example.</strong> <code>12</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DeductionLateIn",
@@ -799,9 +799,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Late minutes to deduct, after tolerance.</p><p><strong>Example.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.EarlyOut",
@@ -813,9 +813,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes left early at the end of the shift.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DeductionEarlyOut",
@@ -827,9 +827,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Early-leaving minutes to deduct, after tolerance.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakEarlyOut",
@@ -841,9 +841,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes left early for the break.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakLateIn",
@@ -855,9 +855,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Minutes late back from the break.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakDeductionEarlyOut",
@@ -869,9 +869,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Break early-out minutes to deduct.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.BreakDeductionLateIn",
@@ -883,9 +883,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Break late-in minutes to deduct.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DedLateInEarlyOutMins",
@@ -897,9 +897,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> All late and early minutes to deduct for the day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DedLateInEarlyOutDay",
@@ -911,9 +911,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Those minutes as a part of a day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.DedAfterMonthlyTol",
@@ -925,9 +925,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month's late and early minutes above the monthly tolerance, carried on one day of the month.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.Status",
@@ -939,9 +939,9 @@
       ],
       "rules": "Required. One of: Opened, Approved, Reopened.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the day is open, approved or reopened.</p><p><strong>Example.</strong> Opened</p><p><strong>Why it matters.</strong> With time register approval switched on, payroll needs every day in the period approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ApprovedActualWorkingDay",
@@ -953,9 +953,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The approved figure for the day worked, used by payroll when approval is on.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ApprovedAbsentDay",
@@ -967,9 +967,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The approved figure for absence, used by payroll when approval is on.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.ApprovedDedLateInEarlyOutMins",
@@ -981,9 +981,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The approved late and early minutes to deduct.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TimeRegister.Remarks",
@@ -995,9 +995,9 @@
       ],
       "rules": "Optional. Maximum 1000 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A note on the day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

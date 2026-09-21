@@ -11,301 +11,239 @@ permissions: [Pages.TimeManagement.YearlyTimeRegisters.Create]
 
 ## Overview
 
-_TODO_
+A year's totals of an employee's time register.
+
+Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.
 
 ## Employee {#YearlyTimeRegister.EmployeeId}
 <!-- alias: loc:Employee, dom:YearlyTimeRegister_EmployeeId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The employee.
 
 **Rules.** Required. Chosen from the employee list.
 
 ## Year {#YearlyTimeRegister.Year}
 <!-- alias: loc:Year, dom:YearlyTimeRegister_Year -->
 
-**What it is.** _TODO_
+**What it is.** The year the totals are for.
 
-**Example.** _TODO_
+**Example.** `2026`
 
 **Rules.** Required. Date value.
 
 ## AnnualLeaveDays {#YearlyTimeRegister.AnnualLeaveDays}
 <!-- alias: loc:AnnualLeaveDays, dom:YearlyTimeRegister_AnnualLeaveDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Annual leave days taken.
 
 **Rules.** Optional. Number.
 
 ## UnpaidLeaveDays {#YearlyTimeRegister.UnpaidLeaveDays}
 <!-- alias: loc:UnpaidLeaveDays, dom:YearlyTimeRegister_UnpaidLeaveDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Unpaid leave days taken.
 
 **Rules.** Optional. Number.
 
 ## SickLeavePaidDays {#YearlyTimeRegister.SickLeavePaidDays}
 <!-- alias: loc:SickLeavePaidDays, dom:YearlyTimeRegister_SickLeavePaidDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Paid sick leave days.
 
 **Rules.** Optional. Number.
 
 ## SickLeaveUnpaidDays {#YearlyTimeRegister.SickLeaveUnpaidDays}
 <!-- alias: loc:SickLeaveUnpaidDays, dom:YearlyTimeRegister_SickLeaveUnpaidDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Unpaid sick leave days.
 
 **Rules.** Optional. Number.
 
 ## GratuityDays {#YearlyTimeRegister.GratuityDays}
 <!-- alias: loc:GratuityDays, dom:YearlyTimeRegister_GratuityDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Indemnity days accrued.
 
 **Rules.** Optional. Number.
 
 ## GratuityPaidDays {#YearlyTimeRegister.GratuityPaidDays}
 <!-- alias: loc:GratuityPaidDays, dom:YearlyTimeRegister_GratuityPaidDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Indemnity days paid.
 
 **Rules.** Optional. Number.
 
 ## PublicHolidays {#YearlyTimeRegister.PublicHolidays}
 <!-- alias: loc:PublicHolidays, dom:YearlyTimeRegister_PublicHolidays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Public holidays.
 
 **Rules.** Optional. Number.
 
 ## WeeklyOffs {#YearlyTimeRegister.WeeklyOffs}
 <!-- alias: loc:WeeklyOffs, dom:YearlyTimeRegister_WeeklyOffs -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Weekly off days.
 
 **Rules.** Optional. Number.
 
 ## RestDays {#YearlyTimeRegister.RestDays}
 <!-- alias: loc:RestDays, dom:YearlyTimeRegister_RestDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Rest days.
 
 **Rules.** Optional. Number.
 
 ## AnnualLeaveAccrualDays {#YearlyTimeRegister.AnnualLeaveAccrualDays}
 <!-- alias: loc:AnnualLeaveAccrualDays, dom:YearlyTimeRegister_AnnualLeaveAccrualDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Annual leave days accrued.
 
 **Rules.** Optional. Number.
 
 ## AnnualLeaveOpeningBal {#YearlyTimeRegister.AnnualLeaveOpeningBal}
 <!-- alias: loc:AnnualLeaveOpeningBal, dom:YearlyTimeRegister_AnnualLeaveOpeningBal -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Annual leave balance at the start.
 
 **Rules.** Optional. Number.
 
 ## AnnualLeaveClosingBal {#YearlyTimeRegister.AnnualLeaveClosingBal}
 <!-- alias: loc:AnnualLeaveClosingBal, dom:YearlyTimeRegister_AnnualLeaveClosingBal -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Annual leave balance at the end.
 
 **Rules.** Optional. Number.
 
 ## TicketAccrualDays {#YearlyTimeRegister.TicketAccrualDays}
 <!-- alias: loc:TicketAccrualDays, dom:YearlyTimeRegister_TicketAccrualDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Air ticket entitlement accrued.
 
 **Rules.** Optional. Number.
 
 ## TicketAccrualOpeningBal {#YearlyTimeRegister.TicketAccrualOpeningBal}
 <!-- alias: loc:TicketAccrualOpeningBal, dom:YearlyTimeRegister_TicketAccrualOpeningBal -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Air ticket balance at the start.
 
 **Rules.** Optional. Number.
 
 ## TicketAccrualClosingBal {#YearlyTimeRegister.TicketAccrualClosingBal}
 <!-- alias: loc:TicketAccrualClosingBal, dom:YearlyTimeRegister_TicketAccrualClosingBal -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Air ticket balance at the end.
 
 **Rules.** Optional. Number.
 
 ## AirTicketPaidDays {#YearlyTimeRegister.AirTicketPaidDays}
 <!-- alias: loc:AirTicketPaidDays, dom:YearlyTimeRegister_AirTicketPaidDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Air tickets paid.
 
 **Rules.** Optional. Number.
 
 ## ActiveDays {#YearlyTimeRegister.ActiveDays}
 <!-- alias: loc:ActiveDays, dom:YearlyTimeRegister_ActiveDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Days the employee was employed.
 
 **Rules.** Optional. Number.
 
 ## PlannedWorkingMins {#YearlyTimeRegister.PlannedWorkingMins}
 <!-- alias: loc:PlannedWorkingMins, dom:YearlyTimeRegister_PlannedWorkingMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Planned working minutes.
 
 **Rules.** Optional. Number.
 
 ## ActualWorkingMins {#YearlyTimeRegister.ActualWorkingMins}
 <!-- alias: loc:ActualWorkingMins, dom:YearlyTimeRegister_ActualWorkingMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Minutes actually worked within the shifts.
 
 **Rules.** Optional. Number.
 
 ## ActualAbsenceMins {#YearlyTimeRegister.ActualAbsenceMins}
 <!-- alias: loc:ActualAbsenceMins, dom:YearlyTimeRegister_ActualAbsenceMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Minutes absent from planned working time.
 
 **Rules.** Optional. Number.
 
 ## PlannedWorkingDays {#YearlyTimeRegister.PlannedWorkingDays}
 <!-- alias: loc:PlannedWorkingDays, dom:YearlyTimeRegister_PlannedWorkingDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Planned working days.
 
 **Rules.** Optional. Number.
 
 ## ActualWorkingDays {#YearlyTimeRegister.ActualWorkingDays}
 <!-- alias: loc:ActualWorkingDays, dom:YearlyTimeRegister_ActualWorkingDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Days actually worked.
 
 **Rules.** Optional. Number.
 
 ## ExtraWorkingDays {#YearlyTimeRegister.ExtraWorkingDays}
 <!-- alias: loc:ExtraWorkingDays, dom:YearlyTimeRegister_ExtraWorkingDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Days worked beyond the plan.
 
 **Rules.** Optional. Number.
 
 ## LieuDays {#YearlyTimeRegister.LieuDays}
 <!-- alias: loc:LieuDays, dom:YearlyTimeRegister_LieuDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Days earned in lieu.
 
 **Rules.** Optional. Number.
 
 ## AdvLeaveRecoveryDays {#YearlyTimeRegister.AdvLeaveRecoveryDays}
 <!-- alias: loc:AdvLeaveRecoveryDays, dom:YearlyTimeRegister_AdvLeaveRecoveryDays -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Advance leave days recovered.
 
 **Rules.** Optional. Number.
 
 ## NormalDayOTMins {#YearlyTimeRegister.NormalDayOTMins}
 <!-- alias: loc:NormalDayOTMins, dom:YearlyTimeRegister_NormalDayOTMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Overtime minutes on normal days.
 
 **Rules.** Optional. Number.
 
 ## RestDayOTMins {#YearlyTimeRegister.RestDayOTMins}
 <!-- alias: loc:RestDayOTMins, dom:YearlyTimeRegister_RestDayOTMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Overtime minutes on rest days.
 
 **Rules.** Optional. Number.
 
 ## HolidayOTMins {#YearlyTimeRegister.HolidayOTMins}
 <!-- alias: loc:HolidayOTMins, dom:YearlyTimeRegister_HolidayOTMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Overtime minutes on public holidays.
 
 **Rules.** Optional. Number.
 
 ## WeekendOTMins {#YearlyTimeRegister.WeekendOTMins}
 <!-- alias: loc:WeekendOTMins, dom:YearlyTimeRegister_WeekendOTMins -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Overtime minutes on weekly offs.
 
 **Rules.** Optional. Number.
 
 ## AdvanceLeavePaids {#YearlyTimeRegister.AdvanceLeavePaids}
 <!-- alias: loc:AdvanceLeavePaids, dom:YearlyTimeRegister_AdvanceLeavePaids -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Leave paid in advance.
 
 **Rules.** Optional. Number.
 
 ## AdvanceTicketPaids {#YearlyTimeRegister.AdvanceTicketPaids}
 <!-- alias: loc:AdvanceTicketPaids, dom:YearlyTimeRegister_AdvanceTicketPaids -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** Air tickets paid in advance.
 
 **Rules.** Optional. Number.

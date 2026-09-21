@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Yearly Time Register Details — Create / Edit",
   "entity": "HCMv3.TimeManagement.YearlyTimeRegisterDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One time type's value in a yearly register.</p><p>Not written at present: no process fills these registers and nothing reads them. Payroll and the reports work from the daily time register.</p>",
   "aliasIndex": {
     "loc:YearlyTimeRegister": "YearlyTimeRegisterDetail.YearlyTimeRegisterId",
     "dom:YearlyTimeRegisterDetail_YearlyTimeRegisterId": "YearlyTimeRegisterDetail.YearlyTimeRegisterId",
@@ -23,9 +23,9 @@
       ],
       "rules": "Required. Chosen from Yearly Time Register master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The yearly register this line belongs to.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegisterDetail.TimeTypeId",
@@ -37,9 +37,9 @@
       ],
       "rules": "Required. Chosen from Time Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The time type the value is for.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "YearlyTimeRegisterDetail.TimeValue",
@@ -51,9 +51,9 @@
       ],
       "rules": "Optional.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The value.</p><p><strong>Example.</strong> <code>2.5</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }
