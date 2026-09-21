@@ -7757,6 +7757,33 @@
     ],
     "SuccessorNominee_Comments": [
       "suc.successor-nominee.edit"
+    ],
+    "OrgUnit_Code": [
+      "org.org-unit.edit"
+    ],
+    "OrgUnit_NameAr": [
+      "org.org-unit.edit"
+    ],
+    "OrgUnit_OrganizationUnitTypeId": [
+      "org.org-unit.edit"
+    ],
+    "OrgUnit_Address": [
+      "org.org-unit.edit"
+    ],
+    "OrgUnit_OrgGeoLocation": [
+      "org.org-unit.edit"
+    ],
+    "OrgUnit_PayrollAreaId": [
+      "org.org-unit.edit"
+    ],
+    "BusinessRule_Code": [
+      "br.business-rule.edit"
+    ],
+    "BusinessRule_NameEn": [
+      "br.business-rule.edit"
+    ],
+    "BusinessRule_IsActive": [
+      "br.business-rule.edit"
     ]
   }
 }

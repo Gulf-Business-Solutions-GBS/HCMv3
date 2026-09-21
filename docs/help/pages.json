@@ -7938,6 +7938,54 @@
         }
       },
       "defaultSection": "SuccessorNominees"
+    },
+    {
+      "helpId": "org.org-unit.edit",
+      "title": "Organization Units — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.OrgUnits"
+      ],
+      "entity": {
+        "name": "OrgUnitProfile",
+        "fullName": "HCMv3.OrganizationManagement.OrgUnitProfile",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/OrgUnitProfile.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/org-units/create-or-edit-org-unit-modal.component.html"
+        }
+      },
+      "domPrefix": "OrgUnit",
+      "ignoreInputs": [
+        "OrgUnit_ParentId",
+        "OrgUnit_NameEn"
+      ],
+      "defaultSection": "OrgUnits"
+    },
+    {
+      "helpId": "br.business-rule.edit",
+      "title": "Business Rules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.BusinessRules"
+      ],
+      "entity": {
+        "name": "BusinessRule",
+        "fullName": "HCMv3.BusinessRules.BusinessRule",
+        "file": "aspnet-core/src/HCMv3.Core/BusinessRules/BusinessRule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/business-rules/create-or-edit-business-rule-modal.component.html"
+        }
+      },
+      "domPrefix": "BusinessRule",
+      "defaultSection": "BusinessRule"
     }
   ]
 }

@@ -1,0 +1,107 @@
+{
+  "helpId": "org.org-unit.edit",
+  "lang": "ar",
+  "title": "وحدات الشركة — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.OrgUnitProfile",
+  "overviewHtml": "<p>وحدة في شجرة المنظمة — الشركة أو القطاع أو القسم وما إلى ذلك — مع اسميها بالإنجليزية والعربية والوحدة الأم. ولا يجوز أن تتجاوز الشجرة 10 مستويات. اترك الرمز فارغاً ليُعطى الرقم التالي. ويوضع الموظفون في وحدة في تعيينهم التنظيمي، وتجد التقارير وحدة الموظف في كل مستوى بالصعود من تلك الوحدة.</p>",
+  "aliasIndex": {
+    "loc:Code": "OrgUnitProfile.Code",
+    "dom:OrgUnit_Code": "OrgUnitProfile.Code",
+    "loc:NameAr": "OrgUnitProfile.NameAr",
+    "dom:OrgUnit_NameAr": "OrgUnitProfile.NameAr",
+    "loc:OrganizationUnitType": "OrgUnitProfile.OrganizationUnitTypeId",
+    "dom:OrgUnit_OrganizationUnitTypeId": "OrgUnitProfile.OrganizationUnitTypeId",
+    "loc:Address": "OrgUnitProfile.Address",
+    "dom:OrgUnit_Address": "OrgUnitProfile.Address",
+    "loc:OrgGeoLocation": "OrgUnitProfile.OrgGeoLocation",
+    "dom:OrgUnit_OrgGeoLocation": "OrgUnitProfile.OrgGeoLocation",
+    "loc:PayrollAreaId": "OrgUnitProfile.PayrollAreaId",
+    "dom:OrgUnit_PayrollAreaId": "OrgUnitProfile.PayrollAreaId"
+  },
+  "fields": [
+    {
+      "id": "OrgUnitProfile.Code",
+      "label": "Code",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:Code",
+        "dom:OrgUnit_Code"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.NameAr",
+      "label": "NameAr",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OrgUnit_NameAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.OrganizationUnitTypeId",
+      "label": "OrganizationUnitType",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:OrganizationUnitType",
+        "dom:OrgUnit_OrganizationUnitTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع وحدات الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مستوى الوحدة في الشجرة.</p><p><strong>مثال.</strong> قسم</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.Address",
+      "label": "Address",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:Address",
+        "dom:OrgUnit_Address"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الوحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.OrgGeoLocation",
+      "label": "OrgGeoLocation",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:OrgGeoLocation",
+        "dom:OrgUnit_OrgGeoLocation"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموقع الجغرافي للوحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:OrgUnit_PayrollAreaId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب لموظفي هذه الوحدة.</p><p><strong>مثال.</strong> شهري - الكويت</p><p><strong>لماذا يهم.</strong> يُستخدم فقط عندما لا تكون لتعيين الموظف التنظيمي منطقة رواتب خاصة به، ولا ينتقل إلى الوحدات الأدنى. وبشكل منفصل، تُقرَّب بعض مبالغ الرواتب، مثل استردادات التأمين، إلى عدد المنازل العشرية لعملة منطقة الرواتب هذه لكل موظف في الوحدة، حتى لو حدد تعيينه منطقة رواتب أخرى؛ وإن لم تُحدَّد منطقة رواتب هنا فلا تُقرَّب.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
