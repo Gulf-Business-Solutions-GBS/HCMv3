@@ -90,7 +90,13 @@ public class MyLeaveAppService_Tests : AppTestBase
                 TenantId = TenantId,
                 Code = Guid.NewGuid().ToString("N").Substring(0, 8),
                 NameEn = nameEn,
-                NameAr = nameEn
+                NameAr = nameEn,
+
+                // As the seeded Annual Paid Leave is configured; a bare AbsenceType would be "once only, no
+                // backdating, not during probation", which the leave rules rightly refuse.
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 15
             }).Entity;
         });
 

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -14,20 +15,47 @@ using Microsoft.EntityFrameworkCore;
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
-/// Application service for <see cref="EmployeeAbsence"/> (ported from legacy XAF EmployeeAbsence business
-/// object, Wave 1 deferred bucket). Ports the essential active validations only (required fields via DTO
-/// annotations, EndDate not earlier than StartDate, no-overlapping-absence-period for the same employee).
-/// The legacy leave-quota-balance cascade, workflow integration, sick-leave-deduction-slab calculation, and
-/// notification side effects are NOT ported here -- see class remarks on <see cref="EmployeeAbsence"/>.
+/// HR's own leave screen for <see cref="EmployeeAbsence"/> (ported from the legacy XAF EmployeeAbsence business
+/// object).
+///
+/// <para>
+/// It goes through the SAME rules as an ESS request -- <see cref="Services.ILeaveRuleValidator"/> -- and moves
+/// the quota through the same ledger (<see cref="Services.ILeaveQuotaLedger"/>): charged on create, moved on
+/// edit, refunded on delete, exactly as legacy's <c>UpdateQuotaInformation</c> and <c>OnDeleting</c> did. A row
+/// HR keys in is effective immediately (no workflow status), so it counts at once; a row still going through
+/// approval is charged by the workflow handler when it is approved, not here.
+/// </para>
+///
+/// <para>
+/// Still NOT ported here: the sick-leave deduction slabs, the notification side effects, and the back-office
+/// return-from-leave logic (legacy <c>SaveDiffInformation</c>) -- see class remarks on
+/// <see cref="EmployeeAbsence"/>.
+/// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences)]
 public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsencesAppService
 {
     private readonly IRepository<EmployeeAbsence> _repository;
+    private readonly Services.ILeaveRuleValidator _leaveRuleValidator;
+    private readonly Services.ILeaveQuotaLedger _quotaLedger;
+    private readonly Services.IEmployeeAbsenceCalculationService _calculationService;
+    private readonly Services.ILeaveReturnProcessor _returnProcessor;
+    private readonly Services.IProbationEndDateService _probation;
 
-    public EmployeeAbsencesAppService(IRepository<EmployeeAbsence> repository)
+    public EmployeeAbsencesAppService(
+        IRepository<EmployeeAbsence> repository,
+        Services.ILeaveRuleValidator leaveRuleValidator,
+        Services.ILeaveQuotaLedger quotaLedger,
+        Services.IEmployeeAbsenceCalculationService calculationService,
+        Services.ILeaveReturnProcessor returnProcessor,
+        Services.IProbationEndDateService probation)
     {
         _repository = repository;
+        _leaveRuleValidator = leaveRuleValidator;
+        _quotaLedger = quotaLedger;
+        _calculationService = calculationService;
+        _returnProcessor = returnProcessor;
+        _probation = probation;
     }
 
     /// <summary>
@@ -119,29 +147,172 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         var entity = MapToEntity(input, new EmployeeAbsence());
         entity.TenantId = AbpSession.TenantId ?? 0;
         entity.CalendarDays = CalculateCalendarDays(entity.StartDate, entity.EndDate);
-        entity.TotalLeaveDays = entity.CalendarDays;
+
+        // Calendar days less the week-offs, holidays and rest days the type excludes -- what the quota is
+        // charged, as legacy's UpdateQuotaInformation computed it. CalendarDays keeps the raw span.
+        entity.TotalLeaveDays = await _calculationService.CalculateTotalLeaveDaysAsync(entity);
         entity.InitialEndDate = entity.EndDate;
 
         await ValidateAsync(entity);
         await _repository.InsertAsync(entity);
+
+        await ChargeQuotaAsync(entity);
+        await ApplyReturnAsync(entity, input, previousReturnDate: default);
+
+        // Unpaid leave during probation pushes its end date out (legacy Employee.GetProbationEndDate, working-days mode).
+        await _probation.RecalculateAfterLeaveChangeAsync(entity.EmployeeId, entity.AbsenceTypeId);
+    }
+
+    /// <summary>
+    /// HR recording that the employee came back -- legacy <c>EmployeeAbsence.SaveDiffInformation</c>, which ran
+    /// whenever a return date was typed onto the leave.
+    ///
+    /// <para>
+    /// It goes through the same processor an approved ESS return does: a LATE return books the gap as further
+    /// paid and/or unpaid leave, an EARLY one shortens the leave (and its additional unpaid leave), and either
+    /// way back-to-back leave before it is marked returned. Only a NEWLY entered return date does anything --
+    /// re-saving a leave that was already returned from must not generate the days twice.
+    /// </para>
+    /// </summary>
+    private async Task ApplyReturnAsync(EmployeeAbsence entity, CreateOrEditEmployeeAbsenceDto input, DateTime previousReturnDate)
+    {
+        if (entity.ReturnDate == default || entity.ReturnDate.Date == previousReturnDate.Date)
+        {
+            return;
+        }
+
+        var instruction = new Services.LeaveReturnInstruction
+        {
+            Leave = entity,
+            ReturnDate = entity.ReturnDate.Date,
+            PaidStartDate = input.PaidStartDate,
+            PaidEndDate = input.PaidEndDate,
+            UnpaidStartDate = input.UnpaidStartDate,
+            UnpaidEndDate = input.UnpaidEndDate,
+        };
+
+        var daysDifference = await _returnProcessor.GetDaysDifferenceAsync(entity, entity.ReturnDate.Date);
+
+        // EARLY: the leave now ends the day before they came back, and its days go back to the quota. Legacy
+        // kept the granted end date in InitialEndDate.
+        if (daysDifference < 0)
+        {
+            var previousTotal = entity.TotalLeaveDays;
+
+            entity.InitialEndDate = entity.EndDate;
+            entity.EndDate = entity.ReturnDate.Date.AddDays(-1);
+            entity.CalendarDays = CalculateCalendarDays(entity.StartDate, entity.EndDate);
+            entity.TotalLeaveDays = await _calculationService.CalculateTotalLeaveDaysAsync(entity);
+            entity.IsReturned = true;
+
+            await _repository.UpdateAsync(entity);
+
+            if (IsEffective(entity))
+            {
+                await _quotaLedger.ReleaseAsync(entity.EmployeeId, entity.AbsenceTypeId, previousTotal, entity.StartDate);
+                await _quotaLedger.ConsumeAsync(entity.EmployeeId, entity.AbsenceTypeId, entity.TotalLeaveDays, entity.StartDate);
+            }
+
+            // The additional unpaid leave, when the return lands before or inside it.
+            if (entity.ExtStartDate != null)
+            {
+                instruction.AdditionalLeaveAction = entity.ReturnDate.Date <= entity.ExtStartDate.Value.Date
+                    ? Workflow.AdditionalLeaveAction.Delete
+                    : Workflow.AdditionalLeaveAction.Shorten;
+                instruction.AdditionalLeaveEndDate = entity.ReturnDate.Date.AddDays(-1);
+            }
+        }
+        else if (daysDifference == 0)
+        {
+            entity.IsReturned = true;
+            await _repository.UpdateAsync(entity);
+        }
+
+        await _returnProcessor.ApplyAsync(instruction);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeAbsenceDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+
+        // What the quota currently carries for this leave, captured before the row is overwritten.
+        var previousTypeId = entity.AbsenceTypeId;
+        var previousDays = entity.TotalLeaveDays;
+        var previousStart = entity.StartDate;
+        var wasEffective = IsEffective(entity);
+        var previousReturnDate = entity.ReturnDate;
+
         MapToEntity(input, entity);
         entity.CalendarDays = CalculateCalendarDays(entity.StartDate, entity.EndDate);
-        entity.TotalLeaveDays = entity.CalendarDays;
+        entity.TotalLeaveDays = await _calculationService.CalculateTotalLeaveDaysAsync(entity);
 
         await ValidateAsync(entity);
         await _repository.UpdateAsync(entity);
+
+        await ApplyReturnAsync(entity, input, previousReturnDate);
+
+        if (wasEffective && IsEffective(entity))
+        {
+            await _quotaLedger.MoveAsync(
+                entity.EmployeeId, previousTypeId, previousDays, previousStart,
+                entity.AbsenceTypeId, entity.TotalLeaveDays, entity.StartDate);
+        }
+        else if (IsEffective(entity))
+        {
+            await ChargeQuotaAsync(entity);
+        }
+
+        await _probation.RecalculateAfterLeaveChangeAsync(entity.EmployeeId, previousTypeId);
+        if (entity.AbsenceTypeId != previousTypeId)
+        {
+            await _probation.RecalculateAfterLeaveChangeAsync(entity.EmployeeId, entity.AbsenceTypeId);
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        EmployeeAbsence entity;
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            entity = await _repository.FirstOrDefaultAsync(input.Id);
+        }
+
+        if (entity == null)
+        {
+            return;
+        }
+
+        // Legacy EmployeeAbsence.OnDeleting: the days go back to the quota. Only for a leave that was counted
+        // in the first place -- one still awaiting approval never moved the quota.
+        if (IsEffective(entity))
+        {
+            await _quotaLedger.ReleaseAsync(
+                entity.EmployeeId, entity.AbsenceTypeId, entity.TotalLeaveDays, entity.StartDate);
+        }
+
+        await _repository.DeleteAsync(entity);
+
+        await _probation.RecalculateAfterLeaveChangeAsync(entity.EmployeeId, entity.AbsenceTypeId);
+    }
+
+    private Task ChargeQuotaAsync(EmployeeAbsence entity)
+    {
+        return IsEffective(entity)
+            ? _quotaLedger.ConsumeAsync(entity.EmployeeId, entity.AbsenceTypeId, entity.TotalLeaveDays, entity.StartDate)
+            : Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Whether the leave counts today: entered by HR (no workflow status) or approved. A Draft, Open or Rejected
+    /// row is not in anybody's quota, and the workflow handler charges it when it is approved.
+    /// </summary>
+    private static bool IsEffective(EmployeeAbsence entity)
+    {
+        return entity.WorkflowStatus is null
+               or HCMv3.Workflow.RequestStatus.Approved
+               or HCMv3.Workflow.RequestStatus.Closed;
     }
 
     private async Task ValidateAsync(EmployeeAbsence entity)
@@ -173,6 +344,27 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         {
             throw new UserFriendlyException(L("OverlapConflictFound"));
         }
+
+        // The same leave rules the ESS and the approver go through -- legacy applied them on the row as well as
+        // on the request, so HR keying a leave in directly could not bypass probation, notice period, min and
+        // max length, repeat rules, blocked start days, quota or the separation rules.
+        await _leaveRuleValidator.ValidateAsync(new Services.LeaveRuleContext
+        {
+            EmployeeId = entity.EmployeeId,
+            AbsenceTypeId = entity.AbsenceTypeId,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            TotalLeaveDays = entity.TotalLeaveDays,
+            AbsenceHours = entity.AbsenceHours,
+            StartTime = entity.StartTime,
+            EndTime = entity.EndTime,
+            HalfdayType = entity.HalfdayType,
+            ExcludeEmployeeAbsenceId = entity.Id,
+            IsNew = entity.Id == 0,
+            CreatedOn = entity.CreationTime,
+            LeavePaymentType = entity.LeavePaymentType,
+            PaymentDate = entity.PaymentDate,
+        });
     }
 
     private static double CalculateCalendarDays(System.DateTime startDate, System.DateTime endDate)

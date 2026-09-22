@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Extensions;
 using Abp.Runtime.Validation;
+using HCMv3.PersonnelAdministration;
 using HCMv3.Workflow;
 
 namespace HCMv3.Ess.Dto;
@@ -113,6 +114,53 @@ public class ApplyForLeaveInput
 
     [StringLength(4000)]
     public string Comments { get; set; }
+
+    /// <summary>
+    /// How the leave is to be paid. <c>PayInAdvance</c> asks for the leave salary before the employee travels,
+    /// which an off-cycle run then pays; the default, <c>PayWithPayroll</c>, pays it with the month as usual.
+    /// </summary>
+    public LeavePaymentType LeavePaymentType { get; set; } = LeavePaymentType.PayWithPayroll;
+
+    /// <summary>
+    /// When the advance should be paid. Left empty, the day legacy would choose is filled in: the 1st of the
+    /// month for a leave starting on or before the 15th, the 16th for one starting later, when the payroll
+    /// settings allow it. Recomputed on approval to the first working day from that point
+    /// (<c>AbsenceRequest</c> lines 1305-1328), so it never lands on a week-off or a holiday.
+    /// </summary>
+    public DateTime? PaymentDate { get; set; }
+
+    /// <summary>
+    /// Take what the balance covers as paid leave and the rest as UNPAID leave, rather than being refused for
+    /// insufficient balance (legacy's "additional unpaid leave", <c>AbsenceRequest.ExtAbsenceType</c>). The
+    /// split itself is worked out by the server; <c>PreviewMyLeaveSplit</c> shows it before committing.
+    /// </summary>
+    public bool SplitExcessAsUnpaidLeave { get; set; }
+}
+
+/// <summary>
+/// How a leave longer than the balance would be split: paid up to the balance, the remainder unpaid. Nothing is
+/// saved by asking.
+/// </summary>
+public class LeaveSplitPreviewDto
+{
+    /// <summary>True when the leave fits the balance and no split is needed.</summary>
+    public bool FitsWithinBalance { get; set; }
+
+    public double Bookable { get; set; }
+
+    /// <summary>Where the PAID part of the leave would now end.</summary>
+    public DateTime? PaidEndDate { get; set; }
+
+    public double PaidLeaveDays { get; set; }
+
+    public DateTime? UnpaidStartDate { get; set; }
+
+    public DateTime? UnpaidEndDate { get; set; }
+
+    public double UnpaidLeaveDays { get; set; }
+
+    /// <summary>Set when no unpaid leave type (code "2") is configured, so the split cannot be offered.</summary>
+    public bool UnpaidLeaveTypeMissing { get; set; }
 }
 
 /// <summary>

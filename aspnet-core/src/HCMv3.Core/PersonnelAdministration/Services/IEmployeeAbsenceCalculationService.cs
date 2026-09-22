@@ -145,4 +145,13 @@ public interface IEmployeeAbsenceCalculationService : IDomainService
     /// </para>
     /// </summary>
     Task<double> GetReturnDaysDifferenceAsync(int employeeId, int absenceTypeId, DateTime lastDate, DateTime rejoinDate);
+
+    /// <summary>
+    /// The first day from <paramref name="fromDate"/> (inclusive) up to <paramref name="untilDate"/> that is not
+    /// a week-off, public holiday or rest day for this employee -- legacy <c>TimeDataService.RegularDay</c>,
+    /// which picks the day an advance leave salary is actually paid on. Null when every day in the window is
+    /// excluded, and legacy's own bound is kept: the search stops BEFORE <paramref name="untilDate"/>, so a
+    /// one-day window finds nothing.
+    /// </summary>
+    Task<DateTime?> GetFirstRegularDayAsync(int employeeId, int? absenceTypeId, DateTime fromDate, DateTime untilDate);
 }

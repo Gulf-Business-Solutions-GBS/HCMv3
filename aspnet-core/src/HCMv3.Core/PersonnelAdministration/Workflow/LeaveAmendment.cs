@@ -88,4 +88,28 @@ public class LeaveAmendment
 
     /// <summary>True when this amendment reports a late return with a paid and/or unpaid range to book.</summary>
     public bool IsLateReturn => IsReturned && (PaidStartDate.HasValue || UnpaidStartDate.HasValue);
+
+    /// <summary>
+    /// What a return does to the ADDITIONAL UNPAID leave that was booked alongside this one (legacy
+    /// <c>EarlyJoinType</c>): nothing, remove it (the employee came back before it started), or cut it short
+    /// (they came back during it).
+    /// </summary>
+    public AdditionalLeaveAction AdditionalLeaveAction { get; set; }
+
+    /// <summary>The day the additional unpaid leave should now end, when it is being cut short.</summary>
+    public DateTime? AdditionalLeaveEndDate { get; set; }
+}
+
+/// <summary>Legacy <c>EarlyJoinType</c>, as what happens to the additional unpaid leave row.</summary>
+public enum AdditionalLeaveAction
+{
+    /// <summary>Leave it as it is (no additional leave, or the return does not reach it).</summary>
+    None = 0,
+
+    /// <summary>The employee returned before it began: legacy <c>UpdateMainLeaveDeleteAdditional</c>.</summary>
+    Delete = 1,
+
+    /// <summary>The employee returned during it: legacy <c>UpdateAdditional</c> -- the main leave is untouched
+    /// and the unpaid row ends the day before they came back.</summary>
+    Shorten = 2,
 }

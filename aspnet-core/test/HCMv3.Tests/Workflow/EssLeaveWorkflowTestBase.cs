@@ -72,7 +72,13 @@ public abstract class EssLeaveWorkflowTestBase : AppTestBase
                 NameAr = "Unpaid",
                 IncludeWeekend = true,
                 IncludePublicHoliday = true,
-                IncludeRestDay = true
+                IncludeRestDay = true,
+
+                // As the seeded Unpaid Leave is: repeatable, allowed during probation (that is when it is most
+                // often taken), and enterable for past dates.
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 3650
             }).Entity;
 
             context.SaveChanges();
@@ -208,6 +214,31 @@ public abstract class EssLeaveWorkflowTestBase : AppTestBase
 
     protected int CreateCurrentUserEmployee(string code) => CreateEmployee(code, AbpSession.UserId);
 
+    /// <summary>A leave type configured as the seeded Annual Paid Leave is, then adjusted by the test.</summary>
+    protected int CreateAbsenceType(Action<AbsenceType> configure, string nameEn = "Annual")
+    {
+        AbsenceType absenceType = null;
+        UsingDbContext(context =>
+        {
+            absenceType = new AbsenceType
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = nameEn,
+                NameAr = nameEn,
+                AllowToReturnEarly = true,
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 15
+            };
+
+            configure(absenceType);
+            context.Set<AbsenceType>().Add(absenceType);
+        });
+
+        return absenceType.Id;
+    }
+
     protected int CreateAbsenceType(bool allowToReturnEarly = true, string nameEn = "Annual")
     {
         AbsenceType absenceType = null;
@@ -219,7 +250,13 @@ public abstract class EssLeaveWorkflowTestBase : AppTestBase
                 Code = Guid.NewGuid().ToString("N").Substring(0, 8),
                 NameEn = nameEn,
                 NameAr = nameEn,
-                AllowToReturnEarly = allowToReturnEarly
+                AllowToReturnEarly = allowToReturnEarly,
+
+                // As the seeded Annual Paid Leave is configured. A bare AbsenceType would be "once only, no
+                // backdating, not during probation", which the leave rules rightly refuse.
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 15
             }).Entity;
         });
 

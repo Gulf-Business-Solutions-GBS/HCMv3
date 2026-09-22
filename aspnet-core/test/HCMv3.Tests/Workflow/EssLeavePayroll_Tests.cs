@@ -262,9 +262,13 @@ public class EssLeavePayroll_Tests : EssLeaveWorkflowTestBase
 
         var approverId = EnableLeaveWorkflowWithApprover("E001APP");
 
-        // No quota row is inserted: the payroll run's accrual owns EmployeeAbsenceQuota and refuses to run over a
-        // row it did not create ("AbsenceQuota exists"). The balance rules have their own tests; here the late
-        // split is entered explicitly where it matters.
+        // One run before any leave exists, for two reasons: the accrual owns EmployeeAbsenceQuota and refuses to
+        // run over a row it did not create, and an accrual-based leave type needs a quota row covering the dates
+        // before it can be applied for at all (legacy "Leave Quota not found within the Deduction From - to
+        // Dates"). The run locks the month, so it is released again for the ESS actions that follow.
+        await RunPayrollAsync();
+        ReleaseMonthForCorrection();
+
         return (employeeId, approverId);
     }
 

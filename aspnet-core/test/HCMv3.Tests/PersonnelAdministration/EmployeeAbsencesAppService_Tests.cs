@@ -54,6 +54,11 @@ public class EmployeeAbsencesAppService_Tests : AppTestBase
                 NationalityId = nationality.Id
             }).Entity;
         });
+
+        // Leave days are counted against the employee's working week (legacy ActualLeaveDays), so a test
+        // employee needs one -- see EssLeaveTestDuty.
+        UsingDbContext(context => HCMv3.Tests.Workflow.EssLeaveTestDuty.AssignAllWorkingWeek(context, AbpSession.TenantId ?? 1, employee.Id));
+
         return employee;
     }
 
@@ -67,7 +72,12 @@ public class EmployeeAbsencesAppService_Tests : AppTestBase
                 TenantId = AbpSession.TenantId ?? 1,
                 Code = code,
                 NameEn = code,
-                NameAr = code
+                NameAr = code,
+
+                // As the seeded leave types are: a bare AbsenceType is "once only, no backdating".
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 3650
             }).Entity;
         });
         return absenceType;

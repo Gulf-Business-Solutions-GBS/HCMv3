@@ -116,7 +116,13 @@ public class WorkflowAmendment_Tests : AppTestBase
                 Code = Guid.NewGuid().ToString("N").Substring(0, 8),
                 NameEn = nameEn,
                 NameAr = nameEn,
-                AllowToReturnEarly = allowToReturnEarly
+                AllowToReturnEarly = allowToReturnEarly,
+
+                // As the seeded Annual Paid Leave is configured. A bare AbsenceType would be "once only, no
+                // backdating, not during probation", which the leave rules rightly refuse.
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 15
             }).Entity;
         });
 

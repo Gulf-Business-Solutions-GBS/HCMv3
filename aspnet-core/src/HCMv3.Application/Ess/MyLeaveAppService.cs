@@ -256,7 +256,9 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             PaidStartDate = plan.PaidStartDate,
             PaidEndDate = plan.PaidEndDate,
             UnpaidStartDate = plan.UnpaidStartDate,
-            UnpaidEndDate = plan.UnpaidEndDate
+            UnpaidEndDate = plan.UnpaidEndDate,
+            AdditionalLeaveAction = plan.AdditionalLeaveAction,
+            AdditionalLeaveEndDate = plan.AdditionalLeaveEndDate
         };
 
         // The absence type's AllowToReturnEarly rule and every late-return rule are enforced inside the leave
@@ -319,6 +321,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         public DateTime? PaidEndDate { get; set; }
         public DateTime? UnpaidStartDate { get; set; }
         public DateTime? UnpaidEndDate { get; set; }
+        public AdditionalLeaveAction AdditionalLeaveAction { get; set; }
+        public DateTime? AdditionalLeaveEndDate { get; set; }
     }
 
     /// <summary>
@@ -344,8 +348,12 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             throw new UserFriendlyException(L("RejoiningDateCannotBeInTheFuture"));
         }
 
+        // With additional unpaid leave attached, the leave really ends when THAT ends -- legacy measured the
+        // return against ExtEndDate (AbsenceRequest 380-383).
+        var lastDate = leave.ExtEndDate?.Date ?? leave.EndDate.Date;
+
         var daysDifference = await _absenceCalculationService.GetReturnDaysDifferenceAsync(
-            leave.EmployeeId, leave.AbsenceTypeId, leave.EndDate.Date, rejoiningDate);
+            leave.EmployeeId, leave.AbsenceTypeId, lastDate, rejoiningDate);
 
         var plan = new ReturnPlan
         {
@@ -379,6 +387,23 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
 
             plan.Kind = LeaveReturnKind.Early;
             plan.NewEndDate = regularDate.Value;
+
+            // Legacy EarlyJoinType (AbsenceRequest 1660-1754), when additional unpaid leave is attached:
+            // returning before it starts removes it and shortens the paid leave; returning during it leaves the
+            // paid leave alone and cuts the unpaid row back to the day before they came back.
+            if (leave.ExtStartDate != null)
+            {
+                if (rejoiningDate <= leave.ExtStartDate.Value.Date)
+                {
+                    plan.AdditionalLeaveAction = AdditionalLeaveAction.Delete;
+                }
+                else
+                {
+                    plan.AdditionalLeaveAction = AdditionalLeaveAction.Shorten;
+                    plan.AdditionalLeaveEndDate = regularDate.Value;
+                    plan.NewEndDate = leave.EndDate.Date;
+                }
+            }
 
             // Measured the way legacy's EmployeeAbsence save measured it -- calendar days less the days the
             // type excludes -- so the refund equals what was charged for those days.
@@ -537,12 +562,46 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             throw new UserFriendlyException(L("AbsenceTypeNotFound"));
         }
 
-        var days = (input.EndDate.Date - input.StartDate.Date).TotalDays + 1;
+        var endDate = input.EndDate.Date;
+        DateTime? unpaidStart = null;
+        DateTime? unpaidEnd = null;
+        int? unpaidTypeId = null;
+
+        // Legacy's additional unpaid leave: the paid part is cut to what the balance covers and the rest is
+        // booked as unpaid leave when the leave is approved.
+        if (input.SplitExcessAsUnpaidLeave)
+        {
+            var split = await PlanSplitAsync(employeeId, input);
+
+            if (split.UnpaidLeaveTypeMissing)
+            {
+                throw new UserFriendlyException(L("UnpaidLeaveTypeNotConfigured", LeaveWorkflowTransactionHandler.UnpaidLeaveTypeCode));
+            }
+
+            if (!split.FitsWithinBalance)
+            {
+                if (split.PaidEndDate == null)
+                {
+                    // No balance at all: the whole leave is unpaid, so it is simply a leave of that type.
+                    throw new UserFriendlyException(L("NoPaidLeaveBalanceToSplit"));
+                }
+
+                endDate = split.PaidEndDate.Value;
+                unpaidStart = split.UnpaidStartDate;
+                unpaidEnd = split.UnpaidEndDate;
+                unpaidTypeId = await _absenceTypeRepository.GetAll()
+                    .Where(t => t.Code == LeaveWorkflowTransactionHandler.UnpaidLeaveTypeCode)
+                    .Select(t => (int?)t.Id)
+                    .FirstOrDefaultAsync();
+            }
+        }
+
+        var days = (endDate - input.StartDate.Date).TotalDays + 1;
 
         // What the quota is charged: calendar days less the week-offs, public holidays and rest days the type
         // excludes (its Include* flags), as legacy EmployeeAbsence.UpdateQuotaInformation computed it.
         var totalLeaveDays = await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
-            employeeId, input.AbsenceTypeId, input.StartDate.Date, input.EndDate.Date, 0);
+            employeeId, input.AbsenceTypeId, input.StartDate.Date, endDate, 0);
 
         var leave = new EmployeeAbsence
         {
@@ -550,11 +609,23 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             EmployeeId = employeeId,
             AbsenceTypeId = input.AbsenceTypeId,
             StartDate = input.StartDate.Date,
-            EndDate = input.EndDate.Date,
-            InitialEndDate = input.EndDate.Date,
+            EndDate = endDate,
+            InitialEndDate = endDate,
             CalendarDays = days,
             TotalLeaveDays = totalLeaveDays,
-            Comments = input.Comments
+            Comments = input.Comments,
+            LeavePaymentType = input.LeavePaymentType,
+            PaymentDate = input.PaymentDate?.Date ?? await DefaultPaymentDateAsync(input.StartDate.Date),
+
+            // The unpaid remainder rides on the same row until approval, exactly as legacy carried it on the
+            // request: one application, one approval, two leave rows once it is granted.
+            ExtAbsenceTypeId = unpaidTypeId,
+            ExtStartDate = unpaidStart,
+            ExtEndDate = unpaidEnd,
+            ExtTotalLeaveDays = unpaidStart == null
+                ? null
+                : await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
+                    employeeId, input.AbsenceTypeId, unpaidStart.Value, unpaidEnd!.Value, 0)
         };
 
         var workflowEnabled = await _requestMasterResolver.IsWorkflowEnabledAsync(LeaveWorkflowTransactionHandler.LeaveRequestType);
@@ -605,6 +676,114 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             WorkflowRequestId = requestId,
             SubmittedForApproval = true
         };
+    }
+
+    public async Task<LeaveSplitPreviewDto> PreviewMyLeaveSplit(ApplyForLeaveInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        return await PlanSplitAsync(employeeId, input);
+    }
+
+    /// <summary>
+    /// Legacy's additional-unpaid-leave split (ESS <c>GetLeaveInfo</c>, <c>UnifiedLeaveRequestController</c>
+    /// 2503-2553): the leave is paid for as long as the balance lasts, and the remainder becomes unpaid leave.
+    ///
+    /// <para>
+    /// The paid part ends on the day that makes its COUNTABLE days equal the whole days of balance -- walking
+    /// past week-offs and holidays, which is why it is a date walk rather than "start + balance". The unpaid
+    /// part runs from the next day to the end the employee asked for.
+    /// </para>
+    /// </summary>
+    private async Task<LeaveSplitPreviewDto> PlanSplitAsync(int employeeId, ApplyForLeaveInput input)
+    {
+        var start = input.StartDate.Date;
+        var end = input.EndDate.Date;
+
+        var requestedDays = await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
+            employeeId, input.AbsenceTypeId, start, end, 0);
+
+        var balances = await _leaveBalanceService.GetBalancesAsync(employeeId, start);
+        var bookable = balances.FirstOrDefault(b => b.AbsenceTypeId == input.AbsenceTypeId)?.Bookable ?? 0;
+
+        var preview = new LeaveSplitPreviewDto { Bookable = bookable };
+
+        if (requestedDays <= bookable)
+        {
+            preview.FitsWithinBalance = true;
+            preview.PaidEndDate = end;
+            preview.PaidLeaveDays = requestedDays;
+            return preview;
+        }
+
+        var unpaidTypeId = await _absenceTypeRepository.GetAll()
+            .Where(t => t.Code == LeaveWorkflowTransactionHandler.UnpaidLeaveTypeCode)
+            .Select(t => (int?)t.Id)
+            .FirstOrDefaultAsync();
+
+        if (unpaidTypeId == null)
+        {
+            preview.UnpaidLeaveTypeMissing = true;
+            return preview;
+        }
+
+        // Whole days only: legacy takes floor(balance), so a half day of balance is not split across two rows.
+        var paidDays = Math.Max(0, Math.Floor(bookable));
+
+        DateTime? paidEnd = null;
+        if (paidDays > 0)
+        {
+            paidEnd = await _absenceCalculationService.CalcLeaveEndDateAsync(
+                employeeId, input.AbsenceTypeId, start.AddDays(-1), paidDays);
+        }
+
+        if (paidEnd >= end)
+        {
+            preview.FitsWithinBalance = true;
+            preview.PaidEndDate = end;
+            preview.PaidLeaveDays = requestedDays;
+            return preview;
+        }
+
+        preview.PaidEndDate = paidEnd;
+        preview.PaidLeaveDays = paidEnd == null
+            ? 0
+            : await _absenceCalculationService.CalculateTotalLeaveDaysAsync(employeeId, input.AbsenceTypeId, start, paidEnd.Value, 0);
+
+        preview.UnpaidStartDate = (paidEnd ?? start.AddDays(-1)).AddDays(1);
+        preview.UnpaidEndDate = end;
+
+        // Counted with the MAIN type's week-off and holiday rules, as legacy's SaveAdditionalUnpaidLeave did.
+        preview.UnpaidLeaveDays = await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
+            employeeId, input.AbsenceTypeId, preview.UnpaidStartDate.Value, end, 0);
+
+        return preview;
+    }
+
+    /// <summary>
+    /// Legacy <c>CalculatePaymentDate</c> (<c>AbsenceRequest</c> 231-264): a leave starting on or before the
+    /// 15th is paid on the 1st, one starting later on the 16th -- each only when the payroll settings say so,
+    /// and otherwise left empty. The approval then moves it to the first working day from there.
+    /// </summary>
+    private async Task<DateTime> DefaultPaymentDateAsync(DateTime startDate)
+    {
+        var payrollSettings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+        if (payrollSettings == null)
+        {
+            return default;
+        }
+
+        if (startDate.Day <= 15 && payrollSettings.LeaveAdvPaymentdateBefore15)
+        {
+            return new DateTime(startDate.Year, startDate.Month, 1);
+        }
+
+        if (startDate.Day > 15 && payrollSettings.LeaveAdvPaymentdateAfter15)
+        {
+            return new DateTime(startDate.Year, startDate.Month, 16);
+        }
+
+        return default;
     }
 
     public async Task CancelMyLeave(EntityDto input)

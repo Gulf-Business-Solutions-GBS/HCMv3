@@ -97,6 +97,22 @@ public class CreateOrEditEmployeeAbsenceDto
     public DateTime? ExtStartDate { get; set; }
 
     public DateTime? ExtEndDate { get; set; }
+
+    /// <summary>
+    /// LATE return recorded by HR: the part of the gap between the leave's end and the rejoining date to book as
+    /// further PAID leave of the same type (legacy's <c>Paid_StartDate</c>/<c>Paid_EndDate</c> on the
+    /// back-office form). The rest goes to unpaid leave. Ignored unless <c>ReturnDate</c> is set and late.
+    /// </summary>
+    public DateTime? PaidStartDate { get; set; }
+
+    /// <inheritdoc cref="PaidStartDate"/>
+    public DateTime? PaidEndDate { get; set; }
+
+    /// <summary>LATE return recorded by HR: the part of the gap to book as UNPAID leave.</summary>
+    public DateTime? UnpaidStartDate { get; set; }
+
+    /// <inheritdoc cref="UnpaidStartDate"/>
+    public DateTime? UnpaidEndDate { get; set; }
 }
 
 public class GetEmployeeAbsenceForEditOutput

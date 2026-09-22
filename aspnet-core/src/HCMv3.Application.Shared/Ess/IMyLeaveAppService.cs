@@ -30,6 +30,12 @@ public interface IMyLeaveAppService : IApplicationService
     /// </summary>
     Task<ApplyForLeaveResultDto> ApplyForLeave(ApplyForLeaveInput input);
 
+    /// <summary>
+    /// Shows how a request longer than the balance would be split into paid and unpaid leave, before anything is
+    /// created. The split itself is worked out by the server.
+    /// </summary>
+    Task<LeaveSplitPreviewDto> PreviewMyLeaveSplit(ApplyForLeaveInput input);
+
     /// <summary>Withdraws a request the employee raised, while it is still theirs to withdraw.</summary>
     Task CancelMyLeave(EntityDto input);
 

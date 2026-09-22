@@ -531,6 +531,14 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
         return null;
     }
 
+    public async Task<DateTime?> GetFirstRegularDayAsync(int employeeId, int? absenceTypeId, DateTime fromDate, DateTime untilDate)
+    {
+        var employee = GetEmployeeOrThrow(employeeId);
+        var absenceType = absenceTypeId.HasValue ? GetAbsenceTypeOrThrow(absenceTypeId.Value) : null;
+
+        return await _timeDataService.GetRegularDayAsync(fromDate.Date, untilDate.Date, absenceType, employee);
+    }
+
     public async Task<double> GetReturnDaysDifferenceAsync(int employeeId, int absenceTypeId, DateTime lastDate, DateTime rejoinDate)
     {
         var extraStartDate = lastDate.Date.AddDays(1);
