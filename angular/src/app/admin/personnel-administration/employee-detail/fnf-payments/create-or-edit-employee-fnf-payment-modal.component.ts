@@ -73,6 +73,8 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
             record.dependant3TicketCompensateCount = 0;
             record.compensateLoanAmount = 0;
             record.compensateBonusPay = 0;
+            // Not stored: it only tells the save whether to recover the open loans (legacy's own tick box).
+            record.settleLoanInEndOfService = false;
             this.record.set(record);
             this.modal().show();
 

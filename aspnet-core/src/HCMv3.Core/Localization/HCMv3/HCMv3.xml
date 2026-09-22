@@ -1936,6 +1936,13 @@
     <text name="RejoiningDateCannotBeInTheFuture">The rejoining date cannot be in the future.</text>
     <text name="OnlyAnApprovedLeaveCanBeCancelledThroughApproval">Only an approved leave can be cancelled this way. A leave still awaiting approval can simply be withdrawn.</text>
     <text name="ReportMyReturn">Report my return</text>
+    <text name="PleaseAttachDocument">A document must be attached for {0}. Please add it and try again.</text>
+    <text name="PleaseAddYourComments">This leave is outside the company leave policy, so please add a comment explaining it.</text>
+    <text name="CannotApplyLeaveBeforeCompanyPolicyDate">Company policy requires this leave to be applied for in advance, so it cannot start before {0}.</text>
+    <text name="CannotExceedMaximumLeavePolicy">Company policy allows at most {0} day(s) of this leave.</text>
+    <text name="SickLeaveDeductionBreakdown">How this sick leave will be paid</text>
+    <text name="SickLeaveDeductionSegment">{0} to {1}: {2}% deducted</text>
+    <text name="SickLeaveDeductionSegmentDays">{0} to {1}: {2} day(s) deducted</text>
     <text name="NoPaidLeaveBalanceToSplit">You have no paid leave balance left, so there is nothing to split. Apply for unpaid leave instead.</text>
     <text name="SplitExcessAsUnpaidLeave">Take what my balance covers and the rest as unpaid leave</text>
     <text name="LeaveSplitExplanation">Paid until {0} ({1} day(s)); unpaid {2} to {3} ({4} day(s)).</text>
@@ -6806,5 +6813,9 @@
     <text name="IndemnityRemainingDays">Indemnity remaining (days)</text>
     <text name="SuggestedIndemnityDays">Indemnity to pay (days)</text>
     <text name="TicketRemainingCount">Tickets remaining</text>
+<text name="LoanBalanceDueAmount">Loan still owed</text>
+    <text name="SuggestedBonusPay">Bonus that may be settled</text>
+    <text name="SettleLoanInEndOfService">Settle the open loans in this payment</text>
+    <text name="SettleLoanInEndOfServiceHint">The whole remaining loan balance is recovered on the compensation date. Without this, an employee with an open loan cannot be settled.</text>
   </texts>
 </localizationDictionary>

@@ -1919,6 +1919,13 @@
     <text name="RejoiningDateCannotBeInTheFuture">لا يمكن أن يكون تاريخ المباشرة في المستقبل.</text>
     <text name="OnlyAnApprovedLeaveCanBeCancelledThroughApproval">يمكن إلغاء الإجازة المعتمدة فقط بهذه الطريقة. أما الإجازة التي ما زالت بانتظار الاعتماد فيمكن سحبها مباشرة.</text>
     <text name="ReportMyReturn">تسجيل المباشرة</text>
+    <text name="PleaseAttachDocument">يجب إرفاق مستند لنوع الإجازة {0}. الرجاء إضافته والمحاولة مرة أخرى.</text>
+    <text name="PleaseAddYourComments">هذه الإجازة خارج سياسة الإجازات في الشركة، الرجاء إضافة ملاحظة توضح ذلك.</text>
+    <text name="CannotApplyLeaveBeforeCompanyPolicyDate">تتطلب سياسة الشركة تقديم طلب هذه الإجازة مسبقاً، لذا لا يمكن أن تبدأ قبل {0}.</text>
+    <text name="CannotExceedMaximumLeavePolicy">تسمح سياسة الشركة بحد أقصى {0} يوماً من هذه الإجازة.</text>
+    <text name="SickLeaveDeductionBreakdown">كيف ستُحتسب هذه الإجازة المرضية</text>
+    <text name="SickLeaveDeductionSegment">من {0} إلى {1}: خصم {2}%</text>
+    <text name="SickLeaveDeductionSegmentDays">من {0} إلى {1}: خصم {2} يوماً</text>
     <text name="NoPaidLeaveBalanceToSplit">لا يوجد لديك رصيد إجازات مدفوعة، لذا لا يوجد ما يمكن تقسيمه. الرجاء تقديم طلب إجازة بدون راتب.</text>
     <text name="SplitExcessAsUnpaidLeave">احتساب ما يغطيه رصيدي مدفوعاً والباقي إجازة بدون راتب</text>
     <text name="LeaveSplitExplanation">مدفوعة حتى {0} ({1} يوماً)، وبدون راتب من {2} إلى {3} ({4} يوماً).</text>
@@ -6645,5 +6652,9 @@
     <text name="IndemnityRemainingDays">رصيد مكافأة نهاية الخدمة المتبقي (أيام)</text>
     <text name="SuggestedIndemnityDays">مكافأة نهاية الخدمة المستحقة الصرف (أيام)</text>
     <text name="TicketRemainingCount">التذاكر المتبقية</text>
+<text name="LoanBalanceDueAmount">رصيد القرض المستحق</text>
+    <text name="SuggestedBonusPay">المكافأة القابلة للتسوية</text>
+    <text name="SettleLoanInEndOfService">تسوية القروض القائمة ضمن هذه المدفوعات</text>
+    <text name="SettleLoanInEndOfServiceHint">يتم استرداد كامل رصيد القرض المتبقي في تاريخ التسوية. وبدون ذلك لا يمكن إنهاء تسوية موظف لديه قرض قائم.</text>
   </texts>
 </localizationDictionary>
