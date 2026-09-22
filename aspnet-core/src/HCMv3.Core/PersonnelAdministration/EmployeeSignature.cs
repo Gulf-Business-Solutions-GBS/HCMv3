@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 
@@ -15,5 +17,11 @@ public class EmployeeSignature : FullAuditedEntity, IMustHaveTenant
 
     public virtual Employee Employee { get; set; }
 
-    public virtual byte[] Signature { get; set; }
+    /// <summary>Where the signature image is, relative to the file store; never kept in the database.</summary>
+    [StringLength(512)]
+    public virtual string SignaturePath { get; set; }
+
+    /// <summary>The old <c>Signature</c> column, kept only for <c>LegacyImageMover</c> to empty.</summary>
+    [Column("Signature")]
+    public virtual byte[] LegacySignature { get; set; }
 }

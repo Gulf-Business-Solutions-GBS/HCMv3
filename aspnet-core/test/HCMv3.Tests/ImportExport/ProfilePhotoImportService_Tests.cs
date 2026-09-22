@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HCMv3.ImportExport;
 using HCMv3.SystemSecurity;
 using Microsoft.EntityFrameworkCore;
+using HCMv3.Storage;
 using Shouldly;
 using Xunit;
 
@@ -69,7 +70,10 @@ public class ProfilePhotoImportService_Tests : AppTestBase
         await UsingDbContextAsync(async ctx =>
         {
             var employee = await ctx.Employees.FirstAsync(e => e.Id == employeeId);
-            employee.Photo.ShouldBe(image);
+            // On disk under the tenant's folder; the database holds only the path.
+            employee.LegacyPhoto.ShouldBeNull();
+            employee.PhotoPath.ShouldStartWith("tenant-" + TestTenantId + "/employee-photos/");
+            (await Resolve<IEntityImageStore>().ReadOrNullAsync(TestTenantId, employee.PhotoPath)).ShouldBe(image);
 
             var log = await ctx.BulkUploadLogs.OrderByDescending(l => l.Id).FirstAsync();
             log.LogType.ShouldBe(BulkUploadLogType.ProfilePhoto);
@@ -129,7 +133,8 @@ public class ProfilePhotoImportService_Tests : AppTestBase
         {
             var employee = await ctx.Employees.FirstAsync(e => e.Id == employeeId);
             // The critical assertion: a rejected image must not clobber what was already there.
-            employee.Photo.ShouldBe(existing);
+            employee.LegacyPhoto.ShouldBe(existing);
+            employee.PhotoPath.ShouldBeNull();
 
             var log = await ctx.BulkUploadLogs.OrderByDescending(l => l.Id).FirstAsync();
             log.Status.ShouldBe(1);
@@ -182,7 +187,7 @@ public class ProfilePhotoImportService_Tests : AppTestBase
                 LastNameEn = code,
                 FirstNameAr = code,
                 LastNameAr = code,
-                Photo = photo
+                LegacyPhoto = photo
             };
 
             ctx.Employees.Add(employee);

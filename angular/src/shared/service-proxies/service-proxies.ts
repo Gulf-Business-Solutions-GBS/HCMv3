@@ -7088,6 +7088,289 @@ export class AssetTypesServiceProxy {
 }
 
 @Injectable()
+export class AttachmentServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getAttachmentSettings(): Observable<AttachmentSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/Attachment/GetAttachmentSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttachmentSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttachmentSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AttachmentSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AttachmentSettingsDto>;
+        }));
+    }
+
+    protected processGetAttachmentSettings(response: HttpResponseBase): Observable<AttachmentSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AttachmentSettingsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAttachments(body?: AttachmentOwnerInput | undefined): Observable<GetAttachmentsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Attachment/GetAttachments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttachments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttachments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAttachmentsOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAttachmentsOutput>;
+        }));
+    }
+
+    protected processGetAttachments(response: HttpResponseBase): Observable<GetAttachmentsOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAttachmentsOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addAttachment(body?: AddAttachmentInput | undefined): Observable<AttachmentDto> {
+        let url_ = this.baseUrl + "/api/services/app/Attachment/AddAttachment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddAttachment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddAttachment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AttachmentDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AttachmentDto>;
+        }));
+    }
+
+    protected processAddAttachment(response: HttpResponseBase): Observable<AttachmentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AttachmentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteAttachment(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Attachment/DeleteAttachment?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteAttachment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteAttachment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteAttachment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getAttachmentDownload(id?: number | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Attachment/GetAttachmentDownload?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttachmentDownload(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttachmentDownload(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetAttachmentDownload(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AttendanceLogReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -90910,6 +91193,119 @@ export class MyLeaveServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    previewReturnFromMyLeave(body?: ReturnFromLeaveInput | undefined): Observable<ReturnFromLeavePreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/PreviewReturnFromMyLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreviewReturnFromMyLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreviewReturnFromMyLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReturnFromLeavePreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReturnFromLeavePreviewDto>;
+        }));
+    }
+
+    protected processPreviewReturnFromMyLeave(response: HttpResponseBase): Observable<ReturnFromLeavePreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReturnFromLeavePreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestCancellationOfMyLeave(body?: EntityDto | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/RequestCancellationOfMyLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestCancellationOfMyLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestCancellationOfMyLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processRequestCancellationOfMyLeave(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     applyForLeave(body?: ApplyForLeaveInput | undefined): Observable<ApplyForLeaveResultDto> {
         let url_ = this.baseUrl + "/api/services/app/MyLeave/ApplyForLeave";
         url_ = url_.replace(/[?&]$/, "");
@@ -162704,6 +163100,50 @@ export enum ActivityType {
     Quarter3Review = 4,
 }
 
+export class AddAttachmentInput implements IAddAttachmentInput {
+    entityType!: string;
+    entityId!: string;
+    fileToken!: string;
+
+    constructor(data?: IAddAttachmentInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.entityType = _data["entityType"];
+            this.entityId = _data["entityId"];
+            this.fileToken = _data["fileToken"];
+        }
+    }
+
+    static fromJS(data: any): AddAttachmentInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddAttachmentInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["entityType"] = this.entityType;
+        data["entityId"] = this.entityId;
+        data["fileToken"] = this.fileToken;
+        return data;
+    }
+}
+
+export interface IAddAttachmentInput {
+    entityType: string;
+    entityId: string;
+    fileToken: string;
+}
+
 export class AddNewPageInput implements IAddNewPageInput {
     dashboardName!: string | undefined;
     name!: string | undefined;
@@ -165094,6 +165534,158 @@ export enum AssignedTaskStatus {
     Closed = 1,
     Working = 2,
     OnHold = 3,
+}
+
+export class AttachmentDto implements IAttachmentDto {
+    id!: number;
+    fileName!: string | undefined;
+    contentType!: string | undefined;
+    size!: number;
+    docNo!: number;
+    creationTime!: DateTime;
+    canDelete!: boolean;
+
+    constructor(data?: IAttachmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fileName = _data["fileName"];
+            this.contentType = _data["contentType"];
+            this.size = _data["size"];
+            this.docNo = _data["docNo"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.canDelete = _data["canDelete"];
+        }
+    }
+
+    static fromJS(data: any): AttachmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttachmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fileName"] = this.fileName;
+        data["contentType"] = this.contentType;
+        data["size"] = this.size;
+        data["docNo"] = this.docNo;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["canDelete"] = this.canDelete;
+        return data;
+    }
+}
+
+export interface IAttachmentDto {
+    id: number;
+    fileName: string | undefined;
+    contentType: string | undefined;
+    size: number;
+    docNo: number;
+    creationTime: DateTime;
+    canDelete: boolean;
+}
+
+export class AttachmentOwnerInput implements IAttachmentOwnerInput {
+    entityType!: string;
+    entityId!: string;
+
+    constructor(data?: IAttachmentOwnerInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.entityType = _data["entityType"];
+            this.entityId = _data["entityId"];
+        }
+    }
+
+    static fromJS(data: any): AttachmentOwnerInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttachmentOwnerInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["entityType"] = this.entityType;
+        data["entityId"] = this.entityId;
+        return data;
+    }
+}
+
+export interface IAttachmentOwnerInput {
+    entityType: string;
+    entityId: string;
+}
+
+export class AttachmentSettingsDto implements IAttachmentSettingsDto {
+    allowedExtensions!: string[] | undefined;
+    maxFileSizeMB!: number;
+    maxAttachmentsPerRecord!: number;
+
+    constructor(data?: IAttachmentSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["allowedExtensions"])) {
+                this.allowedExtensions = [] as any;
+                for (let item of _data["allowedExtensions"])
+                    this.allowedExtensions!.push(item);
+            }
+            this.maxFileSizeMB = _data["maxFileSizeMB"];
+            this.maxAttachmentsPerRecord = _data["maxAttachmentsPerRecord"];
+        }
+    }
+
+    static fromJS(data: any): AttachmentSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttachmentSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.allowedExtensions)) {
+            data["allowedExtensions"] = [];
+            for (let item of this.allowedExtensions)
+                data["allowedExtensions"].push(item);
+        }
+        data["maxFileSizeMB"] = this.maxFileSizeMB;
+        data["maxAttachmentsPerRecord"] = this.maxAttachmentsPerRecord;
+        return data;
+    }
+}
+
+export interface IAttachmentSettingsDto {
+    allowedExtensions: string[] | undefined;
+    maxFileSizeMB: number;
+    maxAttachmentsPerRecord: number;
 }
 
 export class AttendanceLogReportRowDto implements IAttendanceLogReportRowDto {
@@ -192973,7 +193565,7 @@ export class CreateOrEditTimeAttAPIDto implements ICreateOrEditTimeAttAPIDto {
     id!: number | undefined;
     tokenUrl!: string;
     username!: string;
-    password!: string;
+    password!: string | undefined;
     transactionsUrl!: string;
     noOfRecords!: number;
     devicesUrl!: string;
@@ -193041,7 +193633,7 @@ export interface ICreateOrEditTimeAttAPIDto {
     id: number | undefined;
     tokenUrl: string;
     username: string;
-    password: string;
+    password: string | undefined;
     transactionsUrl: string;
     noOfRecords: number;
     devicesUrl: string;
@@ -237981,6 +238573,54 @@ export interface IGetAssetReportInput {
     assetStatus: AssetStatus;
 }
 
+export class GetAttachmentsOutput implements IGetAttachmentsOutput {
+    items!: AttachmentDto[] | undefined;
+    canEdit!: boolean;
+
+    constructor(data?: IGetAttachmentsOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AttachmentDto.fromJS(item));
+            }
+            this.canEdit = _data["canEdit"];
+        }
+    }
+
+    static fromJS(data: any): GetAttachmentsOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAttachmentsOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["canEdit"] = this.canEdit;
+        return data;
+    }
+}
+
+export interface IGetAttachmentsOutput {
+    items: AttachmentDto[] | undefined;
+    canEdit: boolean;
+}
+
 export class GetAttendanceLogReportInput implements IGetAttendanceLogReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -261059,6 +261699,7 @@ export interface IGetTimeAnalysisByDeptReportInput {
 
 export class GetTimeAttAPIForEditOutput implements IGetTimeAttAPIForEditOutput {
     timeAttAPI!: CreateOrEditTimeAttAPIDto;
+    isPasswordSet!: boolean;
 
     constructor(data?: IGetTimeAttAPIForEditOutput) {
         if (data) {
@@ -261072,6 +261713,7 @@ export class GetTimeAttAPIForEditOutput implements IGetTimeAttAPIForEditOutput {
     init(_data?: any) {
         if (_data) {
             this.timeAttAPI = _data["timeAttAPI"] ? CreateOrEditTimeAttAPIDto.fromJS(_data["timeAttAPI"]) : undefined as any;
+            this.isPasswordSet = _data["isPasswordSet"];
         }
     }
 
@@ -261085,12 +261727,14 @@ export class GetTimeAttAPIForEditOutput implements IGetTimeAttAPIForEditOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["timeAttAPI"] = this.timeAttAPI ? this.timeAttAPI.toJSON() : undefined as any;
+        data["isPasswordSet"] = this.isPasswordSet;
         return data;
     }
 }
 
 export interface IGetTimeAttAPIForEditOutput {
     timeAttAPI: CreateOrEditTimeAttAPIDto;
+    isPasswordSet: boolean;
 }
 
 export class GetTimeEventForEditOutput implements IGetTimeEventForEditOutput {
@@ -271472,6 +272116,12 @@ export interface ILeaveRequestReportRowDto {
     stalledDays: number;
 }
 
+export enum LeaveReturnKind {
+    OnTime = 0,
+    Early = 1,
+    Late = 2,
+}
+
 export class LinkEmployeeUserInput implements ILinkEmployeeUserInput {
     employeeId!: number;
     userId!: number;
@@ -276166,6 +276816,9 @@ export class MyLeaveDto implements IMyLeaveDto {
     canAmend!: boolean;
     hasPendingAmendment!: boolean;
     pendingAmendmentRequestId!: number | undefined;
+    canRequestCancellation!: boolean;
+    canReturn!: boolean;
+    isReturned!: boolean;
 
     constructor(data?: IMyLeaveDto) {
         if (data) {
@@ -276192,6 +276845,9 @@ export class MyLeaveDto implements IMyLeaveDto {
             this.canAmend = _data["canAmend"];
             this.hasPendingAmendment = _data["hasPendingAmendment"];
             this.pendingAmendmentRequestId = _data["pendingAmendmentRequestId"];
+            this.canRequestCancellation = _data["canRequestCancellation"];
+            this.canReturn = _data["canReturn"];
+            this.isReturned = _data["isReturned"];
         }
     }
 
@@ -276218,6 +276874,9 @@ export class MyLeaveDto implements IMyLeaveDto {
         data["canAmend"] = this.canAmend;
         data["hasPendingAmendment"] = this.hasPendingAmendment;
         data["pendingAmendmentRequestId"] = this.pendingAmendmentRequestId;
+        data["canRequestCancellation"] = this.canRequestCancellation;
+        data["canReturn"] = this.canReturn;
+        data["isReturned"] = this.isReturned;
         return data;
     }
 }
@@ -276237,6 +276896,9 @@ export interface IMyLeaveDto {
     canAmend: boolean;
     hasPendingAmendment: boolean;
     pendingAmendmentRequestId: number | undefined;
+    canRequestCancellation: boolean;
+    canReturn: boolean;
+    isReturned: boolean;
 }
 
 export class MyLetterRequestDto implements IMyLetterRequestDto {
@@ -320733,6 +321395,10 @@ export class ReturnFromLeaveInput implements IReturnFromLeaveInput {
     employeeAbsenceId!: number;
     rejoiningDate!: DateTime;
     reason!: string | undefined;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
 
     constructor(data?: IReturnFromLeaveInput) {
         if (data) {
@@ -320748,6 +321414,10 @@ export class ReturnFromLeaveInput implements IReturnFromLeaveInput {
             this.employeeAbsenceId = _data["employeeAbsenceId"];
             this.rejoiningDate = _data["rejoiningDate"] ? DateTime.fromISO(_data["rejoiningDate"].toString()) : undefined as any;
             this.reason = _data["reason"];
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
         }
     }
 
@@ -320763,6 +321433,10 @@ export class ReturnFromLeaveInput implements IReturnFromLeaveInput {
         data["employeeAbsenceId"] = this.employeeAbsenceId;
         data["rejoiningDate"] = this.rejoiningDate ? this.rejoiningDate.toString() : undefined as any;
         data["reason"] = this.reason;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
         return data;
     }
 }
@@ -320771,6 +321445,74 @@ export interface IReturnFromLeaveInput {
     employeeAbsenceId: number;
     rejoiningDate: DateTime;
     reason: string | undefined;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
+}
+
+export class ReturnFromLeavePreviewDto implements IReturnFromLeavePreviewDto {
+    kind!: LeaveReturnKind;
+    daysDifference!: number;
+    newEndDate!: DateTime;
+    bookable!: number | undefined;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
+
+    constructor(data?: IReturnFromLeavePreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.kind = _data["kind"];
+            this.daysDifference = _data["daysDifference"];
+            this.newEndDate = _data["newEndDate"] ? DateTime.fromISO(_data["newEndDate"].toString()) : undefined as any;
+            this.bookable = _data["bookable"];
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): ReturnFromLeavePreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReturnFromLeavePreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["kind"] = this.kind;
+        data["daysDifference"] = this.daysDifference;
+        data["newEndDate"] = this.newEndDate ? this.newEndDate.toString() : undefined as any;
+        data["bookable"] = this.bookable;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IReturnFromLeavePreviewDto {
+    kind: LeaveReturnKind;
+    daysDifference: number;
+    newEndDate: DateTime;
+    bookable: number | undefined;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
 }
 
 export class ReturnFromLeaveResultDto implements IReturnFromLeaveResultDto {
@@ -320779,6 +321521,9 @@ export class ReturnFromLeaveResultDto implements IReturnFromLeaveResultDto {
     newEndDate!: DateTime;
     isEarlyReturn!: boolean;
     daysReturned!: number;
+    kind!: LeaveReturnKind;
+    paidCalendarDays!: number;
+    unpaidCalendarDays!: number;
 
     constructor(data?: IReturnFromLeaveResultDto) {
         if (data) {
@@ -320796,6 +321541,9 @@ export class ReturnFromLeaveResultDto implements IReturnFromLeaveResultDto {
             this.newEndDate = _data["newEndDate"] ? DateTime.fromISO(_data["newEndDate"].toString()) : undefined as any;
             this.isEarlyReturn = _data["isEarlyReturn"];
             this.daysReturned = _data["daysReturned"];
+            this.kind = _data["kind"];
+            this.paidCalendarDays = _data["paidCalendarDays"];
+            this.unpaidCalendarDays = _data["unpaidCalendarDays"];
         }
     }
 
@@ -320813,6 +321561,9 @@ export class ReturnFromLeaveResultDto implements IReturnFromLeaveResultDto {
         data["newEndDate"] = this.newEndDate ? this.newEndDate.toString() : undefined as any;
         data["isEarlyReturn"] = this.isEarlyReturn;
         data["daysReturned"] = this.daysReturned;
+        data["kind"] = this.kind;
+        data["paidCalendarDays"] = this.paidCalendarDays;
+        data["unpaidCalendarDays"] = this.unpaidCalendarDays;
         return data;
     }
 }
@@ -320823,6 +321574,9 @@ export interface IReturnFromLeaveResultDto {
     newEndDate: DateTime;
     isEarlyReturn: boolean;
     daysReturned: number;
+    kind: LeaveReturnKind;
+    paidCalendarDays: number;
+    unpaidCalendarDays: number;
 }
 
 export class RiskRegisterDto implements IRiskRegisterDto {

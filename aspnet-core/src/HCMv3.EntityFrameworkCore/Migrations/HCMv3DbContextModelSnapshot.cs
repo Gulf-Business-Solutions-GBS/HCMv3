@@ -19150,6 +19150,10 @@ namespace HCMv3.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
+                    b.Property<byte[]>("LegacyPhoto")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("Photo");
+
                     b.Property<string>("LoginID")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
@@ -19182,8 +19186,9 @@ namespace HCMv3.Migrations
                     b.Property<long>("PermanentTelephone")
                         .HasColumnType("bigint");
 
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("PhotoPath")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("PreviousEmpCode")
                         .HasMaxLength(64)
@@ -23443,8 +23448,13 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<byte[]>("Signature")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<byte[]>("LegacySignature")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("Signature");
+
+                    b.Property<string>("SignaturePath")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -24861,6 +24871,10 @@ namespace HCMv3.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<byte[]>("LegacyPhoto")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("Photo");
+
                     b.Property<int?>("MaritalStatusId")
                         .HasColumnType("int");
 
@@ -24883,8 +24897,9 @@ namespace HCMv3.Migrations
                     b.Property<string>("PermanentAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("PhotoPath")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("PlaceOfBirth")
                         .HasMaxLength(256)
@@ -26932,6 +26947,75 @@ namespace HCMv3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ReportTypes");
+                });
+
+            modelBuilder.Entity("HCMv3.Storage.AppAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("DocNo")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StoragePath")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "EntityType", "EntityId");
+
+                    b.ToTable("AppAttachments");
                 });
 
             modelBuilder.Entity("HCMv3.Storage.BinaryObject", b =>

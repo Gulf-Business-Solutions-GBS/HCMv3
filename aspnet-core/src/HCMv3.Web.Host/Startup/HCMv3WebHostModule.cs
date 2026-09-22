@@ -16,6 +16,7 @@ using Abp.Threading.BackgroundWorkers;
 using Abp.Timing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using HCMv3.Storage;
 using HCMv3.Auditing;
 using HCMv3.Authorization.Users.Password;
 using HCMv3.Careers;
@@ -82,6 +83,14 @@ public class HCMv3WebHostModule : AbpModule
 
     public override void PostInitialize()
     {
+        // Reports show employee photos from the file store (images are never kept in the database). The
+        // reports project cannot reach the store itself, so it is handed a loader here.
+        HCMv3.Reports.HcmReportBase.StoredImageLoader = (tenantId, path) =>
+        {
+            using var imageStore = IocManager.ResolveAsDisposable<IEntityImageStore>();
+            return Abp.Threading.AsyncHelper.RunSync(() => imageStore.Object.ReadOrNullAsync(tenantId, path));
+        };
+
         using (var scope = IocManager.CreateScope())
         {
             if (!scope.Resolve<DatabaseCheckHelper>().Exist(_appConfiguration["ConnectionStrings:Default"]))
@@ -110,6 +119,10 @@ public class HCMv3WebHostModule : AbpModule
         // is a no-op per tenant unless that tenant's ManageTimeSettings.EnableTimeEngineAutorun is on, which
         // is a per-tenant runtime setting and therefore cannot be evaluated here at host start-up.
         workManager.Add(IocManager.Resolve<TimeEngineAutorunBackgroundWorker>());
+
+        // Moves photos and signatures still stored in database columns onto disk (per tenant folder).
+        // Registered unconditionally: once the old columns are empty each run is a no-op.
+        workManager.Add(IocManager.Resolve<LegacyImageMoverBackgroundWorker>());
 
         // REPORT DISTRIBUTION: fires report schedules whose next occurrence has arrived. Registered
         // unconditionally -- it is a no-op unless a tenant has active schedules that are due, and there

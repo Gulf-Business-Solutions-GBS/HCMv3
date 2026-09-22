@@ -235,7 +235,20 @@ public class Employee : FullAuditedEntity, IMustHaveTenant
 
     public virtual RecruitmentType RecruitmentType { get; set; }
 
-    public virtual byte[] Photo { get; set; }
+    /// <summary>
+    /// Where the photo is, relative to the file store (<see cref="HCMv3.Storage.IEntityImageStore"/>). Images
+    /// are never kept in the database; null means no photo.
+    /// </summary>
+    [StringLength(512)]
+    public virtual string PhotoPath { get; set; }
+
+    /// <summary>
+    /// The old <c>Photo</c> varbinary column, kept only so photos stored before the move (and any the legacy
+    /// migrator still copies in) can be moved to disk by <c>LegacyImageMover</c>, which then empties it.
+    /// Nothing else may read or write it; it is dropped once every tenant is moved.
+    /// </summary>
+    [System.ComponentModel.DataAnnotations.Schema.Column("Photo")]
+    public virtual byte[] LegacyPhoto { get; set; }
 
     public virtual DateTime JoiningDate { get; set; }
 

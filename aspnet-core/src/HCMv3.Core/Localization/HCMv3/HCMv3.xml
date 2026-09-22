@@ -6014,6 +6014,21 @@
 
     <text name="EssMyMobileDevices">My Mobile Devices</text>
     <text name="EssGeoPunch">Geo Punch</text>
+    <text name="Attachments">Attachments</text>
+    <text name="AttachFile">Attach file</text>
+    <text name="NoAttachments">No files attached.</text>
+    <text name="Uploading">Uploading...</text>
+    <text name="AttachmentLimitsHint">Allowed types: {0}. Up to {1} MB per file.</text>
+    <text name="AttachmentsPendingHint">The files are attached when you save the request.</text>
+    <text name="AttachmentUploadFailed">The file {0} could not be attached: {1}</text>
+    <text name="AttachmentIsEmpty">The file is empty.</text>
+    <text name="AttachmentFileTypeNotAllowed">Files of type {0} are not allowed. Allowed types: {1}.</text>
+    <text name="AttachmentTooLarge">The file is larger than the {0} MB limit.</text>
+    <text name="AttachmentLimitReached">No more than {0} files can be attached to one record. Remove a file first.</text>
+    <text name="AttachmentStorageFull">The storage limit of {0} MB is reached. Please contact your system administrator.</text>
+    <text name="AttachmentAccessDenied">You are not allowed to access these attachments.</text>
+    <text name="AttachmentUploadExpired">The upload has expired. Please attach the file again.</text>
+    <text name="AttachmentFileMissing">The attached file could not be found.</text>
     <text name="GeoPunchNoDutyPeriodToday">You have no duty period for today, so you cannot punch. Please contact HR.</text>
     <text name="GeoPunchOvertimeNotAllowed">Overtime punches are not allowed for your employee sub group.</text>
     <text name="GeoPunchNotAllowedNow">This punch is not available right now. Refresh the page to see which punches you can make.</text>

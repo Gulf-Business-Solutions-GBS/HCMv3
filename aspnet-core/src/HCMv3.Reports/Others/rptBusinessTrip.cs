@@ -35,6 +35,10 @@ namespace HCMv3.Reports.Others
             // global query filter. See HcmReportBase.EnsureHcmParameters.
             EnsureHcmParameters();
 
+            // The photo is on disk, not in the database: the query returns its path, and the picture box
+            // loads it from the tenant's folder as each row prints.
+            BindStoredImage(xrPictureBox1, "PhotoPath", "LegacyPhoto");
+
             xrPictureBox2.Image = OthersAdminImageStore.Load(OthersAdminImageStore.BusinessTripLogo);
         }
 

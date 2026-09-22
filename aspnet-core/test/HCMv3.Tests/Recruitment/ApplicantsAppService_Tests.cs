@@ -4,6 +4,7 @@ using Abp.UI;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.Recruitment;
 using HCMv3.Recruitment.Dto;
+using HCMv3.Storage;
 using Shouldly;
 using Xunit;
 
@@ -14,7 +15,9 @@ public class ApplicantsAppService_Tests : RecruitmentAppServiceTestBase
 {
     private ApplicantsAppService CreateAppService()
     {
-        return CreateService(() => new ApplicantsAppService(FakeRepository.For<Applicant>(Context)));
+        return CreateService(() => new ApplicantsAppService(
+            FakeRepository.For<Applicant>(Context),
+            new EntityImageStore(new LocalFileStore(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "hcmv3-applicant-tests")))));
     }
 
     private CreateOrEditApplicantDto ValidDto(int nationalityId)

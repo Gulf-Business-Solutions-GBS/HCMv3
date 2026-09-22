@@ -77,6 +77,9 @@ public static class ApiDictionarySensitiveFields
         ["CriticalIllness"] = Health,
         ["ReligionId"] = Religion,
         ["Photo"] = Photo,
+        ["PhotoPath"] = Photo,
+        ["Signature"] = Photo,
+        ["SignaturePath"] = Photo,
 
         // Pay and bank details, for the record types that carry them.
         ["Iban"] = Financial,

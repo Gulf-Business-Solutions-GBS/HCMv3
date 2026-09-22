@@ -11,6 +11,7 @@ using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.PersonnelAdministration.Services;
+using HCMv3.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,15 +29,18 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
     private readonly IEmployeeValidator _employeeValidator;
+    private readonly IEntityImageStore _imageStore;
 
     public EmployeesAppService(
         IRepository<Employee> employeeRepository,
         IEmployeeCodeGenerator employeeCodeGenerator,
-        IEmployeeValidator employeeValidator)
+        IEmployeeValidator employeeValidator,
+        IEntityImageStore imageStore)
     {
         _employeeRepository = employeeRepository;
         _employeeCodeGenerator = employeeCodeGenerator;
         _employeeValidator = employeeValidator;
+        _imageStore = imageStore;
     }
 
     [HttpPost]
@@ -69,9 +73,14 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     {
         var employee = await _employeeRepository.GetAsync(input.Id);
 
+        var dto = ToCreateOrEditDto(employee);
+
+        // The photo travels in the DTO as before; only where it is kept changed (disk, not the database).
+        dto.Photo = await _imageStore.ReadWithLegacyAsync(employee.TenantId, employee.PhotoPath, employee.LegacyPhoto);
+
         return new GetEmployeeForEditOutput
         {
-            Employee = ToCreateOrEditDto(employee)
+            Employee = dto
         };
     }
 
@@ -125,7 +134,10 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         ApplyComputedFields(employee);
         _employeeValidator.Validate(employee);
 
-        await _employeeRepository.InsertAsync(employee);
+        // The file name carries the employee id, so the row is inserted first.
+        await _employeeRepository.InsertAndGetIdAsync(employee);
+        employee.PhotoPath = await _imageStore.SaveIfChangedAsync(
+            EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, null, input.Photo);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees_Edit)]
@@ -137,6 +149,13 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
         _employeeValidator.Validate(employee);
+
+        employee.PhotoPath = await _imageStore.SaveIfChangedAsync(
+            EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, employee.PhotoPath, input.Photo);
+
+        // Whatever the screen sent back is now on disk (or was removed), so a not-yet-moved copy in the old
+        // column is obsolete either way.
+        employee.LegacyPhoto = null;
 
         await _employeeRepository.UpdateAsync(employee);
     }
@@ -217,7 +236,6 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         employee.BusinessLandline = input.BusinessLandline;
         employee.BusinessExtension = input.BusinessExtension;
         employee.RecruitmentTypeId = input.RecruitmentTypeId;
-        employee.Photo = input.Photo;
         employee.JoiningDate = input.JoiningDate;
         employee.ProbationDays = input.ProbationDays;
 
@@ -388,7 +406,6 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
             BusinessLandline = employee.BusinessLandline,
             BusinessExtension = employee.BusinessExtension,
             RecruitmentTypeId = employee.RecruitmentTypeId,
-            Photo = employee.Photo,
             JoiningDate = employee.JoiningDate,
             ProbationDays = employee.ProbationDays
         };

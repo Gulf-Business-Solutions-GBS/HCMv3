@@ -10,6 +10,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Recruitment.Dto;
+using HCMv3.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,10 +25,12 @@ namespace HCMv3.Recruitment;
 public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
 {
     private readonly IRepository<Applicant> _applicantRepository;
+    private readonly IEntityImageStore _imageStore;
 
-    public ApplicantsAppService(IRepository<Applicant> applicantRepository)
+    public ApplicantsAppService(IRepository<Applicant> applicantRepository, IEntityImageStore imageStore)
     {
         _applicantRepository = applicantRepository;
+        _imageStore = imageStore;
     }
 
     [HttpPost]
@@ -60,9 +63,12 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
     {
         var entity = await _applicantRepository.GetAsync(input.Id);
 
+        var dto = ToCreateOrEditDto(entity);
+        dto.Photo = await _imageStore.ReadWithLegacyAsync(entity.TenantId, entity.PhotoPath, entity.LegacyPhoto);
+
         return new GetApplicantForEditOutput
         {
-            Applicant = ToCreateOrEditDto(entity)
+            Applicant = dto
         };
     }
 
@@ -93,7 +99,10 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
         await AssignCodeIfEmptyAsync(entity);
         await ValidateAsync(entity);
 
-        await _applicantRepository.InsertAsync(entity);
+        // The file name carries the applicant id, so the row is inserted first.
+        await _applicantRepository.InsertAndGetIdAsync(entity);
+        entity.PhotoPath = await _imageStore.SaveIfChangedAsync(
+            EntityImageKinds.ApplicantPhoto, entity.TenantId, entity.Id, null, input.Photo);
     }
 
     [AbpAuthorize(AppPermissions.Pages_Recruitment_Applicants_Edit)]
@@ -104,6 +113,10 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateAsync(entity);
+
+        entity.PhotoPath = await _imageStore.SaveIfChangedAsync(
+            EntityImageKinds.ApplicantPhoto, entity.TenantId, entity.Id, entity.PhotoPath, input.Photo);
+        entity.LegacyPhoto = null;
 
         await _applicantRepository.UpdateAsync(entity);
     }
@@ -191,7 +204,6 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
         entity.BirthDate = input.BirthDate;
         entity.JoiningDate = input.JoiningDate;
         entity.ProbationEndDate = input.ProbationEndDate;
-        entity.Photo = input.Photo;
         entity.Telephone = input.Telephone;
         entity.Mobile = input.Mobile;
         entity.CurrentAddress = input.CurrentAddress;
@@ -291,7 +303,6 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
             BirthDate = entity.BirthDate,
             JoiningDate = entity.JoiningDate,
             ProbationEndDate = entity.ProbationEndDate,
-            Photo = entity.Photo,
             Telephone = entity.Telephone,
             Mobile = entity.Mobile,
             CurrentAddress = entity.CurrentAddress,

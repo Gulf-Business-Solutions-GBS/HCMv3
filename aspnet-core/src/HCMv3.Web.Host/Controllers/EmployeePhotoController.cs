@@ -4,6 +4,7 @@ using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Domain.Repositories;
 using HCMv3.Graphics;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,13 +39,16 @@ public class EmployeePhotoController : HCMv3ControllerBase
 
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IImageThumbnailService _imageThumbnailService;
+    private readonly IEntityImageStore _imageStore;
 
     public EmployeePhotoController(
         IRepository<Employee> employeeRepository,
-        IImageThumbnailService imageThumbnailService)
+        IImageThumbnailService imageThumbnailService,
+        IEntityImageStore imageStore)
     {
         _employeeRepository = employeeRepository;
         _imageThumbnailService = imageThumbnailService;
+        _imageStore = imageStore;
     }
 
     /// <param name="size">
@@ -56,10 +60,24 @@ public class EmployeePhotoController : HCMv3ControllerBase
     [HttpGet("{employeeId:int}")]
     public async Task<IActionResult> Get(int employeeId, [FromQuery] int? size = null)
     {
-        var photo = await _employeeRepository.GetAll()
+        var employee = await _employeeRepository.GetAll()
             .Where(e => e.Id == employeeId)
-            .Select(e => e.Photo)
+            .Select(e => new { e.TenantId, e.PhotoPath, HasLegacy = e.LegacyPhoto != null })
             .FirstOrDefaultAsync();
+
+        if (employee == null)
+        {
+            return NotFound();
+        }
+
+        // From the tenant's own folder on disk. The old column is read only for a photo not yet moved by
+        // the background mover -- and then only that column, not the whole row.
+        var photo = await _imageStore.ReadWithLegacyAsync(
+            employee.TenantId,
+            employee.PhotoPath,
+            employee.PhotoPath == null && employee.HasLegacy
+                ? await _employeeRepository.GetAll().Where(e => e.Id == employeeId).Select(e => e.LegacyPhoto).FirstOrDefaultAsync()
+                : null);
 
         if (photo == null || photo.Length == 0)
         {

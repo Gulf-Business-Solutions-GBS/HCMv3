@@ -9,6 +9,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Timing;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Storage;
 using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings.Services;
 
@@ -28,19 +29,22 @@ public class ProfilePhotoImportService : HCMv3DomainServiceBase, IProfilePhotoIm
     private readonly IRepository<ExecutionLog> _executionLogRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IEntityImageStore _entityImageStore;
 
     public ProfilePhotoImportService(
         IRepository<Employee> employeeRepository,
         IRepository<BulkUploadLog> bulkUploadLogRepository,
         IRepository<ExecutionLog> executionLogRepository,
         ISysSettingsAccessor sysSettingsAccessor,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IEntityImageStore entityImageStore)
     {
         _employeeRepository = employeeRepository;
         _bulkUploadLogRepository = bulkUploadLogRepository;
         _executionLogRepository = executionLogRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
         _unitOfWorkManager = unitOfWorkManager;
+        _entityImageStore = entityImageStore;
     }
 
     public bool IsSupportedImage(string fileName)
@@ -123,7 +127,10 @@ public class ProfilePhotoImportService : HCMv3DomainServiceBase, IProfilePhotoIm
                             string.Format(CultureInfo.InvariantCulture, "Image Size is bigger than allowed limit for Employee Code : {0}", employeeCode));
                     }
 
-                    employee.Photo = content;
+                    // Kept on disk under the tenant's folder, never in the database.
+                    employee.PhotoPath = await _entityImageStore.ReplaceAsync(
+                        EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, employee.PhotoPath, content);
+                    employee.LegacyPhoto = null;
                     await _employeeRepository.UpdateAsync(employee);
                 });
 

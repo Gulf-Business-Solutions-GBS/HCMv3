@@ -294,7 +294,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
                 e.Id,
                 e.FullNameEn,
                 e.FullNameAr,
-                HasPhoto = e.Photo != null
+                HasPhoto = e.PhotoPath != null || e.LegacyPhoto != null
             })
             .ToListAsync();
 

@@ -96,6 +96,43 @@ namespace HCMv3.Reports
             SetParameterEverywhere(TenantParameterName, value);
         }
 
+        /// <summary>
+        /// Reads a stored image (employee photo and the like) from the file store: tenant id and relative
+        /// path in, bytes out, null when missing. Set once at start-up by the web host, because this project
+        /// references nothing but DevExpress and cannot reach the file store itself.
+        /// </summary>
+        public static Func<int, string, byte[]> StoredImageLoader { get; set; }
+
+        /// <summary>
+        /// Shows, in <paramref name="pictureBox"/>, the image whose relative path is in the current row's
+        /// <paramref name="pathColumn"/>. Images are kept on disk, not in the database, so the report SQL can
+        /// only return where the picture is. <paramref name="legacyColumn"/> is the old varbinary column,
+        /// used only for a picture the background mover has not moved yet.
+        /// </summary>
+        protected void BindStoredImage(XRPictureBox pictureBox, string pathColumn, string legacyColumn)
+        {
+            pictureBox.ExpressionBindings.Clear();
+            pictureBox.BeforePrint += (_, _) =>
+            {
+                byte[] bytes = null;
+
+                if (GetCurrentColumnValue(pathColumn) is string path && path.Length > 0
+                    && StoredImageLoader != null
+                    && int.TryParse(Convert.ToString(Parameters[TenantParameterName]?.Value), out var tenantId))
+                {
+                    bytes = StoredImageLoader(tenantId, path);
+                }
+                else if (GetCurrentColumnValue(legacyColumn) is byte[] legacy && legacy.Length > 0)
+                {
+                    bytes = legacy;
+                }
+
+                pictureBox.Image = bytes == null
+                    ? null
+                    : System.Drawing.Image.FromStream(new System.IO.MemoryStream(bytes), false, false);
+            };
+        }
+
         /// <summary>Sets the logged-in user name shown in the page footer, where the report has one.</summary>
         public void ApplyLoggedUserName(string userName)
         {

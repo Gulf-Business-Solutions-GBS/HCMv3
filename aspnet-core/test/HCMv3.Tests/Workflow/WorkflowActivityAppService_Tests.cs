@@ -465,7 +465,7 @@ public class WorkflowActivityAppService_Tests : AppTestBase
 
         UsingDbContext(context =>
         {
-            context.Set<Employee>().Single(e => e.Id == meId).Photo = new byte[] { 1, 2, 3 };
+            context.Set<Employee>().Single(e => e.Id == meId).LegacyPhoto = new byte[] { 1, 2, 3 };
         });
 
         var feed = await _activityService.GetActivityFeed(new GetWorkflowActivityFeedInput { WorkflowRequestId = requestId });

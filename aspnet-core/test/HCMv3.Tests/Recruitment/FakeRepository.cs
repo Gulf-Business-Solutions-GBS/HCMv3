@@ -44,6 +44,14 @@ public static class FakeRepository
             return entity;
         });
 
+        repository.InsertAndGetIdAsync(Arg.Any<TEntity>()).Returns(async call =>
+        {
+            var entity = call.Arg<TEntity>();
+            set.Add(entity);
+            await context.SaveChangesAsync();
+            return entity.Id;
+        });
+
         repository.UpdateAsync(Arg.Any<TEntity>()).Returns(async call =>
         {
             var entity = call.Arg<TEntity>();

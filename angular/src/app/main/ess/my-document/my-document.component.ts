@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -15,16 +15,24 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
+import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 
-/** Self-service document requests. */
+/** Self-service document requests, with the scan attached (legacy DocumentRequest.DocAttachment). */
 @Component({
     templateUrl: './my-document.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        AttachmentsComponent,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentRequestDto> implements OnInit {
@@ -32,6 +40,12 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
     private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly documentTypes = signal<SimpleLookupDto[]>([]);
+
+    /** Files chosen in the form, attached once the request exists. */
+    private readonly _formAttachments = viewChild<AttachmentsComponent>('formAttachments');
+
+    /** The row whose attachments are expanded in the list, if any. */
+    readonly expandedId = signal<number | null>(null);
 
     form = { documentTypeId: null as number | null, documentNum: '', issueDate: '', expiryDate: '', comments: '' };
 
@@ -77,8 +91,23 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
 
         this._service
             .requestDocument(input)
-            .pipe(finalize(() => this.saving.set(false)))
-            .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
+            .subscribe({
+                next: async (result) => {
+                    // The request exists now, so the files can be attached to it. Done before closing the
+                    // form, which destroys the component holding them.
+                    try {
+                        await this._formAttachments()?.attachPending(result.transactionId);
+                    } finally {
+                        this.saving.set(false);
+                    }
+                    this.notifySubmitted(result.submittedForApproval);
+                },
+                error: () => this.saving.set(false),
+            });
+    }
+
+    toggleAttachments(row: MyDocumentRequestDto): void {
+        this.expandedId.set(this.expandedId() === row.id ? null : row.id);
     }
 
     typeName(row: MyDocumentRequestDto): string {

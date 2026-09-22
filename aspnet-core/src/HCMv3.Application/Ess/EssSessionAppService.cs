@@ -66,7 +66,7 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
                 e.Code,
                 e.FullNameEn,
                 e.FullNameAr,
-                HasPhoto = e.Photo != null
+                HasPhoto = e.PhotoPath != null || e.LegacyPhoto != null
             })
             .FirstOrDefaultAsync();
 

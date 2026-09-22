@@ -314,7 +314,7 @@ public class EssInboxAppService_Tests : AppTestBase
 
         UsingDbContext(context =>
         {
-            context.Set<Employee>().Single(e => e.Id == withPhotoId).Photo = new byte[] { 1, 2, 3 };
+            context.Set<Employee>().Single(e => e.Id == withPhotoId).LegacyPhoto = new byte[] { 1, 2, 3 };
         });
 
         var withPhoto = CreatePendingRequest(withPhotoId, meId);

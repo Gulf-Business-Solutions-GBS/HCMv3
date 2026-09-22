@@ -15,11 +15,12 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditEmployeeDocumentModal',
     templateUrl: './create-or-edit-employee-document-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, AttachmentsComponent],
 })
 export class CreateOrEditEmployeeDocumentModalComponent extends AppComponentBase {
     private _service = inject(EmployeeDocumentsServiceProxy);

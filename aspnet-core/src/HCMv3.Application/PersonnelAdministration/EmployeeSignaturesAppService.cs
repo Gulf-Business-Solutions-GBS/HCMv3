@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,15 +17,22 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Application service for <see cref="EmployeeSignature"/> (ported from legacy XAF
 /// EmployeeSignature business object). Plain CRUD.
+///
+/// <para>
+/// The signature image travels in the DTOs as bytes, exactly as before; it is kept on disk under the
+/// tenant's folder (<see cref="IEntityImageStore"/>), never in the database.
+/// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeSignatures)]
 public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignaturesAppService
 {
     private readonly IRepository<EmployeeSignature> _repository;
+    private readonly IEntityImageStore _imageStore;
 
-    public EmployeeSignaturesAppService(IRepository<EmployeeSignature> repository)
+    public EmployeeSignaturesAppService(IRepository<EmployeeSignature> repository, IEntityImageStore imageStore)
     {
         _repository = repository;
+        _imageStore = imageStore;
     }
 
     [HttpPost]
@@ -42,7 +51,13 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
             .PageBy(input)
             .ToListAsync();
 
-        return new PagedResultDto<EmployeeSignatureDto>(totalCount, items.Select(ToDto).ToList());
+        var dtos = new List<EmployeeSignatureDto>(items.Count);
+        foreach (var item in items)
+        {
+            dtos.Add(ToDto(item, await ReadSignatureAsync(item)));
+        }
+
+        return new PagedResultDto<EmployeeSignatureDto>(totalCount, dtos);
     }
 
     public async Task<GetEmployeeSignatureForEditOutput> GetEmployeeSignatureForEdit(EntityDto input)
@@ -55,7 +70,7 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
             {
                 Id = entity.Id,
                 EmployeeId = entity.EmployeeId,
-                Signature = entity.Signature
+                Signature = await ReadSignatureAsync(entity)
             }
         };
     }
@@ -78,11 +93,13 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
         var entity = new EmployeeSignature
         {
             TenantId = AbpSession.TenantId ?? 0,
-            EmployeeId = input.EmployeeId,
-            Signature = input.Signature
+            EmployeeId = input.EmployeeId
         };
 
-        await _repository.InsertAsync(entity);
+        // The file name carries the row id, so the row is inserted first.
+        await _repository.InsertAndGetIdAsync(entity);
+        entity.SignaturePath = await _imageStore.SaveIfChangedAsync(
+            EntityImageKinds.EmployeeSignature, entity.TenantId, entity.Id, null, input.Signature);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeSignatures_Edit)]
@@ -90,7 +107,9 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
     {
         var entity = await _repository.GetAsync(input.Id.Value);
         entity.EmployeeId = input.EmployeeId;
-        entity.Signature = input.Signature;
+        entity.SignaturePath = await _imageStore.SaveIfChangedAsync(
+            EntityImageKinds.EmployeeSignature, entity.TenantId, entity.Id, entity.SignaturePath, input.Signature);
+        entity.LegacySignature = null;
 
         await _repository.UpdateAsync(entity);
     }
@@ -101,7 +120,10 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
         await _repository.DeleteAsync(input.Id);
     }
 
-    private static EmployeeSignatureDto ToDto(EmployeeSignature entity)
+    private Task<byte[]> ReadSignatureAsync(EmployeeSignature entity) =>
+        _imageStore.ReadWithLegacyAsync(entity.TenantId, entity.SignaturePath, entity.LegacySignature);
+
+    private static EmployeeSignatureDto ToDto(EmployeeSignature entity, byte[] signature)
     {
         return new EmployeeSignatureDto
         {
@@ -109,7 +131,7 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
             EmployeeId = entity.EmployeeId,
             EmployeeCode = entity.Employee?.Code,
             EmployeeFullNameEn = entity.Employee?.FullNameEn,
-            Signature = entity.Signature
+            Signature = signature
         };
     }
 }

@@ -929,8 +929,6 @@ namespace HCMv3.Reports.Others
             // 
             // xrPictureBox1
             // 
-            this.xrPictureBox1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Image", "[EmpProfQuery].[Photo]")});
             this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(38.50008F, 49.66668F);
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(105.2083F, 109.3333F);

@@ -72,6 +72,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<BinaryObject> BinaryObjects { get; set; }
 
+    public virtual DbSet<AppAttachment> AppAttachments { get; set; }
+
     public virtual DbSet<Friendship> Friendships { get; set; }
 
     public virtual DbSet<ChatMessage> ChatMessages { get; set; }
@@ -1315,6 +1317,9 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<BinaryObject>(b => { b.HasIndex(e => new { e.TenantId }); });
+
+        // Every read of attachments is "the files of this one record".
+        modelBuilder.Entity<AppAttachment>(b => { b.HasIndex(e => new { e.TenantId, e.EntityType, e.EntityId }); });
 
         // Integration Center. One row per field: a duplicate would make "which value is live" depend on
         // row order, and the setting store does find-then-insert, which two concurrent saves can race.

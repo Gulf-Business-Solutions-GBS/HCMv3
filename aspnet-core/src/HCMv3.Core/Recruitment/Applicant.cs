@@ -88,7 +88,13 @@ public class Applicant : FullAuditedEntity, IMustHaveTenant
 
     public virtual DateTime ProbationEndDate { get; set; }
 
-    public virtual byte[] Photo { get; set; }
+    /// <summary>Where the photo is, relative to the file store; never kept in the database. Null means none.</summary>
+    [StringLength(512)]
+    public virtual string PhotoPath { get; set; }
+
+    /// <summary>The old <c>Photo</c> column, kept only for <c>LegacyImageMover</c> to empty. See <c>Employee.LegacyPhoto</c>.</summary>
+    [System.ComponentModel.DataAnnotations.Schema.Column("Photo")]
+    public virtual byte[] LegacyPhoto { get; set; }
 
     public virtual long Telephone { get; set; }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -18,6 +18,7 @@ import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
+import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 
 type PersonalDataFieldKind = 'text' | 'date' | 'number' | 'gender';
 
@@ -53,11 +54,17 @@ interface PersonalDataSection {
 @Component({
     templateUrl: './my-personal-data.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, WorkflowHistoryModalComponent],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, WorkflowHistoryModalComponent, AttachmentsComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDataChangeDto> implements OnInit {
     private readonly _service = inject(MyPersonalDataChangeServiceProxy);
+
+    /** Proof chosen in the form, attached once the request exists. */
+    private readonly _formAttachments = viewChild<AttachmentsComponent>('formAttachments');
+
+    /** The row whose attachments are expanded in the list, if any. */
+    readonly expandedId = signal<number | null>(null);
 
     /**
      * The fields the employee may propose changes to.
@@ -315,11 +322,24 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
 
         this._service
             .requestPersonalDataChange(input)
-            .pipe(finalize(() => this.saving.set(false)))
-            .subscribe((result) => {
-                this.notifySubmitted(result.submittedForApproval);
-                this.loadCurrent();
+            .subscribe({
+                next: async (result) => {
+                    // Proof (legacy SampleImage) is attached to the request now that it exists, before the
+                    // form closes and takes the chosen files with it.
+                    try {
+                        await this._formAttachments()?.attachPending(result.transactionId);
+                    } finally {
+                        this.saving.set(false);
+                    }
+                    this.notifySubmitted(result.submittedForApproval);
+                    this.loadCurrent();
+                },
+                error: () => this.saving.set(false),
             });
+    }
+
+    toggleAttachments(row: MyPersonalDataChangeDto): void {
+        this.expandedId.set(this.expandedId() === row.id ? null : row.id);
     }
 
     /**

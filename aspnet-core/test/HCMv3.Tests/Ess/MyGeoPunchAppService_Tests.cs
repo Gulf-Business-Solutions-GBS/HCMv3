@@ -668,7 +668,8 @@ public class MyGeoPunchAppService_Tests : AppTestBase
 
         var timeEvent = LoadTimeEvent(result.Id);
         Guid.TryParse(timeEvent.GeoSelfiePath, out var selfieId).ShouldBeTrue();
-        UsingDbContext(context => context.Set<BinaryObject>().Any(b => b.Id == selfieId).ShouldBeTrue());
+        // On disk, not in the database: the table must stay empty of selfies.
+        UsingDbContext(context => context.Set<BinaryObject>().Any(b => b.Id == selfieId).ShouldBeFalse());
 
         var selfie = await _geoPunch.GetMyGeoPunchSelfie(new EntityDto(result.Id));
         selfie.DataUrl.ShouldBe(TinyPng);

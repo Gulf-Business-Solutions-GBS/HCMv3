@@ -122,6 +122,10 @@
                                 </div>
                             </div>
 
+                            <div class="mb-4">
+                                <app-attachments #formAttachments entityType="EmployeePersonalDataChange" [entityId]="null" />
+                            </div>
+
                             <div class="text-muted mb-3">{{ 'SelectedFieldCount' | localize: selectedCount() }}</div>
 
                             <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submit()">
@@ -168,6 +172,9 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-right">
+                                                <button class="btn btn-sm btn-link" (click)="toggleAttachments(row)">
+                                                    <i class="fa fa-paperclip"></i> {{ 'Attachments' | localize }}
+                                                </button>
                                                 @if (row.workflowRequestId) {
                                                     <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)">
                                                         {{ 'WorkflowHistory' | localize }}
@@ -180,6 +187,13 @@
                                                 }
                                             </td>
                                         </tr>
+                                        @if (expandedId() === row.id) {
+                                            <tr>
+                                                <td colspan="4" class="bg-light">
+                                                    <app-attachments entityType="EmployeePersonalDataChange" [entityId]="row.id" />
+                                                </td>
+                                            </tr>
+                                        }
                                     } @empty {
                                         <tr>
                                             <td colspan="4" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>

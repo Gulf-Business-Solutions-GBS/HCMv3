@@ -882,7 +882,7 @@ WHERE sponsor.TenantId = @TenantId AND sponsor.IsDeleted = 0";
     , emp.ReligionId                        AS Religion
     , emp.Gender
     , emp.MaritalStatusId                   AS MaritalStatus
-    , emp.Photo
+    , CAST(NULL AS VARBINARY(MAX))        AS Photo   -- images are on disk now; this form never printed it
     , emp.FlatNumn
     , emp.FloorNum
     , emp.BuildingNum
