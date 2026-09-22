@@ -292,6 +292,13 @@ public partial class PayrollEngineService
             return null;
         }
 
+        // The "ReturnDate not found for LeaveType : '...'" message names the type, as legacy's did. Filtering on
+        // the navigation does not load it (and Core has no EF Include), so it is fetched explicitly.
+        absence.AbsenceType ??= _employeeAbsenceRepository.GetAll()
+            .Where(r => r.Id == absence.Id)
+            .Select(r => r.AbsenceType)
+            .FirstOrDefault();
+
         if (payrollRunType == PayrollRunType.Regular)
         {
             if (!settings.PayLeaveAsPerCutoff)

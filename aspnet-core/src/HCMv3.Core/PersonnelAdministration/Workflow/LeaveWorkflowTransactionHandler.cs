@@ -48,19 +48,29 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly ILeaveBalanceService _leaveBalanceService;
     private readonly IRepository<EmployeeAbsenceQuota> _quotaRepository;
+    private readonly IEmployeeAbsenceCalculationService _absenceCalculationService;
+
+    /// <summary>Legacy hard-codes these absence type codes: "1" annual (paid late days are measured against
+    /// it), "2" unpaid (late days beyond the balance are booked as it).</summary>
+    public const string AnnualLeaveTypeCode = "1";
+
+    /// <inheritdoc cref="AnnualLeaveTypeCode"/>
+    public const string UnpaidLeaveTypeCode = "2";
 
     public LeaveWorkflowTransactionHandler(
         IRepository<EmployeeAbsence> repository,
         IRepository<AbsenceType> absenceTypeRepository,
         IUnitOfWorkManager unitOfWorkManager,
         ILeaveBalanceService leaveBalanceService,
-        IRepository<EmployeeAbsenceQuota> quotaRepository)
+        IRepository<EmployeeAbsenceQuota> quotaRepository,
+        IEmployeeAbsenceCalculationService absenceCalculationService)
         : base(repository, unitOfWorkManager)
     {
         _absenceTypeRepository = absenceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
         _leaveBalanceService = leaveBalanceService;
         _quotaRepository = quotaRepository;
+        _absenceCalculationService = absenceCalculationService;
     }
 
     public override string RequestType => LeaveRequestType;
@@ -90,6 +100,13 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         // in fact impossible.
         var proposed = context.IsAmendment ? ReadAmendment(context) : null;
 
+        // Removing a leave can neither overlap anything nor overdraw a balance. Legacy re-ran its generic
+        // checks on the leave's CURRENT dates here, all of which the leave already passed when it was approved.
+        if (proposed?.IsCancellation == true)
+        {
+            return;
+        }
+
         var absenceTypeId = proposed?.AbsenceTypeId ?? leave.AbsenceTypeId;
         var startDate = proposed?.StartDate ?? leave.StartDate;
         var endDate = proposed?.EndDate ?? leave.EndDate;
@@ -115,6 +132,202 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             totalDays,
             excludeLeaveId: leave.Id,
             daysAlreadyCounted: daysAlreadyCounted);
+
+        if (proposed?.IsLateReturn == true)
+        {
+            await ValidateLateReturnAsync(leave, proposed);
+        }
+    }
+
+    /// <summary>
+    /// The late-return rules, ported from legacy <c>WorkFlowServices.SaveWorkflowRequest</c> (the
+    /// <c>ActionType.ReturnFromLeave</c> branch, lines 434-503) plus the quota test legacy ran for every action
+    /// (lines 842-895, <c>balance + previous days &gt;= total + DeductFromQuota</c>) and the "leave entry
+    /// exists" check legacy ran at approval (<c>AbsenceRequest</c> lines 1488-1511).
+    ///
+    /// <para>
+    /// The two ranges must cover the late gap exactly and in order: paid first, starting the day after the
+    /// leave ended; unpaid last, ending the day before the employee rejoined.
+    /// </para>
+    /// </summary>
+    private async Task ValidateLateReturnAsync(EmployeeAbsence leave, LeaveAmendment proposed)
+    {
+        var returnDate = proposed.ReturnDate!.Value.Date;
+        var lastDate = leave.EndDate.Date;
+
+        var daysDifference = await _absenceCalculationService.GetReturnDaysDifferenceAsync(
+            leave.EmployeeId, leave.AbsenceTypeId, lastDate, returnDate);
+
+        if (daysDifference <= 0)
+        {
+            throw new UserFriendlyException(L("ThisReturnIsNotLate"));
+        }
+
+        var paidCalendarDays = CalendarDaysOf(proposed.PaidStartDate, proposed.PaidEndDate);
+        var unpaidCalendarDays = CalendarDaysOf(proposed.UnpaidStartDate, proposed.UnpaidEndDate);
+
+        if (paidCalendarDays + unpaidCalendarDays != daysDifference)
+        {
+            throw new UserFriendlyException(L(
+                "LateReturnDaysMustEqualTheGap",
+                $"{daysDifference:0.##}",
+                $"{paidCalendarDays:0.##}",
+                $"{unpaidCalendarDays:0.##}"));
+        }
+
+        var dayAfterLeave = lastDate.AddDays(1).ToString("dd/MM/yyyy");
+        var dayBeforeReturn = returnDate.AddDays(-1).ToString("dd/MM/yyyy");
+
+        if (paidCalendarDays > 0)
+        {
+            var paidStart = proposed.PaidStartDate!.Value.Date;
+            var paidEnd = proposed.PaidEndDate!.Value.Date;
+
+            if (!(lastDate < paidStart && paidStart < returnDate) || !(lastDate < paidEnd && paidEnd < returnDate))
+            {
+                throw new UserFriendlyException(L("LateReturnPaidDatesMustBeBetweenEndAndReturn"));
+            }
+
+            if (paidStart != lastDate.AddDays(1))
+            {
+                throw new UserFriendlyException(L("LateReturnPaidStartDateShouldBe", dayAfterLeave));
+            }
+
+            if (unpaidCalendarDays == 0 && paidEnd != returnDate.AddDays(-1))
+            {
+                throw new UserFriendlyException(L("LateReturnPaidEndDateShouldBe", dayBeforeReturn));
+            }
+        }
+
+        if (unpaidCalendarDays > 0)
+        {
+            var unpaidStart = proposed.UnpaidStartDate!.Value.Date;
+            var unpaidEnd = proposed.UnpaidEndDate!.Value.Date;
+
+            if (!(lastDate <= unpaidStart && unpaidStart <= returnDate) || !(lastDate <= unpaidEnd && unpaidEnd <= returnDate))
+            {
+                throw new UserFriendlyException(L("LateReturnUnpaidDatesMustBeBetweenEndAndReturn"));
+            }
+
+            if (unpaidEnd != returnDate.AddDays(-1))
+            {
+                throw new UserFriendlyException(L("LateReturnUnpaidEndDateShouldBe", dayBeforeReturn));
+            }
+
+            if (paidCalendarDays == 0 && unpaidStart != lastDate.AddDays(1))
+            {
+                throw new UserFriendlyException(L("LateReturnUnpaidStartDateShouldBe", dayAfterLeave));
+            }
+
+            if (paidCalendarDays > 0)
+            {
+                var paidStart = proposed.PaidStartDate!.Value.Date;
+                var paidEnd = proposed.PaidEndDate!.Value.Date;
+
+                if ((paidStart <= unpaidStart && unpaidStart <= paidEnd) || (paidStart <= unpaidEnd && unpaidEnd <= paidEnd)
+                    || (unpaidStart <= paidStart && paidStart <= unpaidEnd) || (unpaidStart <= paidEnd && paidEnd <= unpaidEnd))
+                {
+                    throw new UserFriendlyException(L("LateReturnPaidAndUnpaidDatesOverlap"));
+                }
+            }
+
+            if (FindAbsenceTypeByCode(UnpaidLeaveTypeCode) == null)
+            {
+                throw new UserFriendlyException(L("UnpaidLeaveTypeNotConfigured", UnpaidLeaveTypeCode));
+            }
+        }
+
+        EnsureNoLeaveStartsInLateGap(leave, returnDate);
+
+        // The paid days come out of the quota of the leave's own type, so the employee must still be able to
+        // book them. The original leave stays approved and stays in Used, so nothing is credited back.
+        var deductFromQuota = await PaidLateDaysToDeductAsync(leave, proposed);
+        if (deductFromQuota > 0)
+        {
+            await EnsureWithinBookableBalanceAsync(
+                leave.EmployeeId, leave.AbsenceTypeId, proposed.PaidStartDate!.Value, proposed.PaidEndDate!.Value,
+                deductFromQuota, daysAlreadyCounted: 0);
+        }
+    }
+
+    /// <summary>
+    /// Legacy "Leave entry exists": another leave starting after this one's end and on or before the
+    /// rejoining date means the late gap is not really a gap, and booking it would double-count those days.
+    /// </summary>
+    private void EnsureNoLeaveStartsInLateGap(EmployeeAbsence leave, DateTime returnDate)
+    {
+        var endDate = leave.EndDate.Date;
+        var rejoin = returnDate.Date.AddDays(1);
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var other = Repository.GetAll()
+                .Where(a => a.Id != leave.Id
+                            && a.EmployeeId == leave.EmployeeId
+                            && a.StartDate > endDate
+                            && a.StartDate < rejoin
+                            && (a.WorkflowStatus == null
+                                || a.WorkflowStatus == RequestStatus.Approved
+                                || a.WorkflowStatus == RequestStatus.Closed
+                                || a.WorkflowStatus == RequestStatus.Open))
+                .Select(a => new { a.StartDate, a.EndDate })
+                .FirstOrDefault();
+
+            if (other != null)
+            {
+                throw new UserFriendlyException(L(
+                    "LeaveEntryExistsInLateReturnGap",
+                    other.StartDate.ToString("dd/MM/yyyy"),
+                    other.EndDate.ToString("dd/MM/yyyy")));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Legacy <c>AbsenceRequest.DeductFromQuota</c>: the paid range's calendar days minus the days the ANNUAL
+    /// leave type (code "1") excludes -- legacy measures against annual leave whatever the leave's own type is,
+    /// and that is kept. Falls back to the leave's own type when no code-"1" type exists.
+    /// </summary>
+    private async Task<double> PaidLateDaysToDeductAsync(EmployeeAbsence leave, LeaveAmendment proposed)
+    {
+        if (!proposed.PaidStartDate.HasValue || !proposed.PaidEndDate.HasValue)
+        {
+            return 0;
+        }
+
+        var start = proposed.PaidStartDate.Value.Date;
+        var end = proposed.PaidEndDate.Value.Date;
+        var measuringTypeId = FindAbsenceTypeByCode(AnnualLeaveTypeCode)?.Id ?? leave.AbsenceTypeId;
+
+        var excluded = (double)await _absenceCalculationService.ActualLeaveDaysAsync(leave.EmployeeId, start, end, measuringTypeId);
+
+        return (end - start).TotalDays + 1 - excluded;
+    }
+
+    /// <summary>Legacy <c>AbsenceRequest.UnpaidDays</c>: the unpaid range less what the unpaid type (code "2") excludes.</summary>
+    private async Task<double> UnpaidLateDaysAsync(EmployeeAbsence leave, LeaveAmendment proposed, int unpaidTypeId)
+    {
+        if (!proposed.UnpaidStartDate.HasValue || !proposed.UnpaidEndDate.HasValue)
+        {
+            return 0;
+        }
+
+        var start = proposed.UnpaidStartDate.Value.Date;
+        var end = proposed.UnpaidEndDate.Value.Date;
+
+        var excluded = (double)await _absenceCalculationService.ActualLeaveDaysAsync(leave.EmployeeId, start, end, unpaidTypeId);
+
+        return (end - start).TotalDays + 1 - excluded;
+    }
+
+    private static double CalendarDaysOf(DateTime? start, DateTime? end)
+    {
+        return start.HasValue && end.HasValue ? (end.Value.Date - start.Value.Date).TotalDays + 1 : 0;
+    }
+
+    private AbsenceType FindAbsenceTypeByCode(string code)
+    {
+        return _absenceTypeRepository.GetAll().FirstOrDefault(t => t.Code == code);
     }
 
     /// <summary>
@@ -195,6 +408,18 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         var leave = await GetRequiredTargetAsync(context);
         var proposed = ReadAmendment(context);
 
+        if (proposed.IsCancellation)
+        {
+            await ApplyCancellationAsync(leave);
+            return;
+        }
+
+        if (proposed.IsLateReturn)
+        {
+            await ApplyLateReturnAsync(context, leave, proposed);
+            return;
+        }
+
         var previousDays = DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate);
         var previousAbsenceTypeId = leave.AbsenceTypeId;
 
@@ -251,6 +476,163 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         // absence type moves days between two different quota rows, and a single delta cannot express that.
         await ReleaseQuotaAsync(leave.EmployeeId, previousAbsenceTypeId, previousDays, leave.StartDate);
         await ConsumeQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, proposed.TotalLeaveDays, leave.StartDate);
+    }
+
+    /// <summary>
+    /// Legacy <c>AbsenceRequest</c> approval, <c>ActionType.Cancellation</c> (lines 1822-1884) plus
+    /// <c>EmployeeAbsence.OnDeleting</c> (lines 1321-1419): the leave is deleted and its days go back to the
+    /// quota. Soft delete, so the approved history is still there to audit.
+    ///
+    /// <para>
+    /// Rows a late return generated earlier are NOT removed with it -- legacy left them too, and they are
+    /// separate leave in their own right that HR can remove on their own.
+    /// </para>
+    /// <para>
+    /// Payroll needs no call from here: deleting the row goes through the payroll lock guard and the retro
+    /// trigger like any other change to a payroll-sensitive entity, which is what legacy's
+    /// <c>ValidateRetroCalculation</c> / <c>EarliestMasterDataChange</c> did in <c>OnDeleting</c>.
+    /// </para>
+    /// </summary>
+    private async Task ApplyCancellationAsync(EmployeeAbsence leave)
+    {
+        var days = DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate);
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await Repository.DeleteAsync(leave);
+        }
+
+        await ReleaseQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, days, leave.StartDate);
+    }
+
+    /// <summary>
+    /// Legacy <c>AbsenceRequest</c> approval, <c>ActionType.ReturnFromLeave</c>, late-joining branch (lines
+    /// 1485-1643). The original leave is left exactly as approved and only marked returned; the late gap is
+    /// booked as up to two NEW approved leave rows in the same table:
+    /// <list type="number">
+    /// <item><description><b>Paid</b> -- same absence type as the original, <c>PayWithPayroll</c>, charged to
+    /// its quota. Starts on the first countable day after the leave (<c>CalcLeaveStartDate</c>) and runs for
+    /// <c>DeductFromQuota</c> countable days (<c>CalcLeaveEndDate</c>).</description></item>
+    /// <item><description><b>Unpaid</b> -- absence type code "2", <c>PayWithPayroll</c>. Payroll pays nothing
+    /// for it because the type is unpaid and the time engine marks those days as unpaid leave.</description></item>
+    /// </list>
+    ///
+    /// <para>
+    /// <b>One deliberate difference from legacy.</b> Legacy reset its cursor to the original leave's end before
+    /// placing the unpaid row (line 1572), so when BOTH ranges were present the unpaid leave was placed over
+    /// the paid one and the tail of the gap was left uncovered. Here the unpaid row starts after the paid row.
+    /// With only one of the two ranges -- the usual case -- the result is identical to legacy.
+    /// </para>
+    /// <para>
+    /// The original row's <c>ReturnDate</c> stays empty, as legacy left it: the rejoining date belongs to the
+    /// last generated row, the one the employee actually came back from. <c>IsReturned</c> on the original is
+    /// what tells payroll the employee is not missing.
+    /// </para>
+    /// </summary>
+    private async Task ApplyLateReturnAsync(WorkflowTransactionContext context, EmployeeAbsence leave, LeaveAmendment proposed)
+    {
+        // Re-checked at approval, as every other amendment is: leave booked while the request sat in an inbox
+        // could otherwise be overwritten by the rows generated here.
+        await ValidateLateReturnAsync(leave, proposed);
+
+        var returnDate = proposed.ReturnDate!.Value.Date;
+        var cursor = leave.EndDate.Date;
+
+        var deductFromQuota = await PaidLateDaysToDeductAsync(leave, proposed);
+        var unpaidType = FindAbsenceTypeByCode(UnpaidLeaveTypeCode);
+        var unpaidDays = unpaidType == null ? 0 : await UnpaidLateDaysAsync(leave, proposed, unpaidType.Id);
+        var unpaidCalendarDays = CalendarDaysOf(proposed.UnpaidStartDate, proposed.UnpaidEndDate);
+
+        if (deductFromQuota > 0 && CalendarDaysOf(proposed.PaidStartDate, proposed.PaidEndDate) != 0)
+        {
+            var paid = await InsertLateReturnLeaveAsync(
+                context, leave, leave.AbsenceTypeId, cursor, returnDate, deductFromQuota,
+                stampReturn: unpaidDays <= 0);
+
+            if (paid != null)
+            {
+                cursor = paid.EndDate.Date;
+            }
+        }
+
+        if (unpaidDays > 0)
+        {
+            await InsertLateReturnLeaveAsync(
+                context, leave, unpaidType.Id, cursor, returnDate, unpaidCalendarDays, stampReturn: true);
+        }
+
+        leave.IsReturned = true;
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await Repository.UpdateAsync(leave);
+        }
+    }
+
+    /// <summary>
+    /// Places one generated late-return leave: first countable day after <paramref name="lastDate"/>, ending
+    /// on the <paramref name="dayCount"/>-th countable day. Returns null when legacy would silently skip it
+    /// (no start found and fewer than one day asked for); throws when legacy did ("can't generate Leave").
+    /// </summary>
+    private async Task<EmployeeAbsence> InsertLateReturnLeaveAsync(
+        WorkflowTransactionContext context,
+        EmployeeAbsence original,
+        int absenceTypeId,
+        DateTime lastDate,
+        DateTime returnDate,
+        double dayCount,
+        bool stampReturn)
+    {
+        var startDate = await _absenceCalculationService.CalcLeaveStartDateAsync(original.EmployeeId, absenceTypeId, lastDate, returnDate);
+        var endDate = await _absenceCalculationService.CalcLeaveEndDateAsync(original.EmployeeId, absenceTypeId, lastDate, dayCount);
+
+        if (startDate == null || endDate == null)
+        {
+            if (dayCount >= 1)
+            {
+                throw new UserFriendlyException(L("CannotGenerateLateReturnLeave"));
+            }
+
+            return null;
+        }
+
+        var totalLeaveDays = await _absenceCalculationService.CalculateTotalLeaveDaysAsync(
+            original.EmployeeId, absenceTypeId, startDate.Value, endDate.Value, 0);
+
+        var generated = new EmployeeAbsence
+        {
+            TenantId = original.TenantId,
+            EmployeeId = original.EmployeeId,
+            AbsenceTypeId = absenceTypeId,
+            StartDate = startDate.Value,
+            EndDate = endDate.Value,
+            InitialEndDate = endDate.Value,
+            CalendarDays = (endDate.Value - startDate.Value).TotalDays + 1,
+            TotalLeaveDays = totalLeaveDays,
+            LeavePaymentType = LeavePaymentType.PayWithPayroll,
+            Comments = original.Comments,
+
+            // Born approved -- the approval of the return IS the approval of these days -- and linked to the
+            // request that approved them, so the history screen can say where they came from.
+            WorkflowStatus = RequestStatus.Approved,
+            WorkflowRequestId = context.Request?.Id
+        };
+
+        if (stampReturn)
+        {
+            generated.ReturnDate = returnDate;
+            generated.IsReturned = true;
+        }
+
+        await Repository.InsertAsync(generated);
+
+        // Flushed before the next placement: the date walker skips days on which another leave starts, and it
+        // can only see this one once it is in the database.
+        await _unitOfWorkManager.Current.SaveChangesAsync();
+
+        await ConsumeQuotaAsync(original.EmployeeId, absenceTypeId, totalLeaveDays, generated.StartDate);
+
+        return generated;
     }
 
     /// <summary>
@@ -482,6 +864,22 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             // An amendment reads as a change, not as a request. "5 days becomes 3" is a different decision
             // from "3 days", and an approver shown only the latter is deciding on the wrong question.
             var proposed = ReadAmendment(context);
+
+            if (proposed.IsCancellation)
+            {
+                return new WorkflowSummary(
+                    "Cancel: " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: false),
+                    "إلغاء: " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: true));
+            }
+
+            if (proposed.IsLateReturn)
+            {
+                var rejoin = proposed.ReturnDate!.Value.ToString("dd MMM yyyy");
+
+                return new WorkflowSummary(
+                    "Late return on " + rejoin + ": " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: false),
+                    "عودة متأخرة في " + rejoin + ": " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: true));
+            }
 
             return new WorkflowSummary(
                 "Change: " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: false) +

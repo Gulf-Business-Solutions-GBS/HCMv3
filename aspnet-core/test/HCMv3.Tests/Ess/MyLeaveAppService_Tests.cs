@@ -72,6 +72,9 @@ public class MyLeaveAppService_Tests : AppTestBase
             }).Entity;
         });
 
+        // ESS counts leave days against the employee's week, so every test employee needs one.
+        UsingDbContext(context => HCMv3.Tests.Workflow.EssLeaveTestDuty.AssignAllWorkingWeek(context, AbpSession.TenantId ?? 1, employee.Id));
+
         return employee.Id;
     }
 

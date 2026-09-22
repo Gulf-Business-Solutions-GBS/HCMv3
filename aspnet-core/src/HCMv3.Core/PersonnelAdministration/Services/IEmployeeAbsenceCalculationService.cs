@@ -116,4 +116,33 @@ public interface IEmployeeAbsenceCalculationService : IDomainService
     /// </summary>
     /// <param name="excludeEmployeeAbsenceId">The absence being returned from, which must not count as its own overlap.</param>
     Task<DateTime?> GetRegularDateAsync(int employeeId, DateTime rejoinDate, int excludeEmployeeAbsenceId = 0);
+
+    /// <summary>
+    /// Ported from legacy <c>EmployeeAbsence.CalcLeaveStartDate(DateTime lastDate, DateTime rejoindate, double
+    /// quota, Employee emp, AbsenceType absenceType, Session session)</c>. Walks forward from the day after
+    /// <paramref name="lastDate"/>, strictly before <paramref name="rejoinDate"/>, and returns the FIRST day a
+    /// leave could start on -- skipping public holidays, weekly-offs and rest-days (the latter two only when the
+    /// day's duty does not allow a transaction to START on one, <c>Duty.AllowTransStart</c>), and any day on
+    /// which another of the employee's absences starts.
+    ///
+    /// <para>
+    /// Returns <c>null</c> when every day up to the rejoining date is excluded (legacy returned
+    /// <c>default(DateTime)</c>). Legacy's <c>quota</c> parameter is not ported: it is accepted and never read.
+    /// </para>
+    /// </summary>
+    Task<DateTime?> CalcLeaveStartDateAsync(int employeeId, int? absenceTypeId, DateTime lastDate, DateTime rejoinDate);
+
+    /// <summary>
+    /// Ported from legacy <c>AbsenceRequest.DaysDifference</c>: how late (positive), early (negative) or on
+    /// time (zero) an employee is rejoining after a leave whose last day was <paramref name="lastDate"/>.
+    ///
+    /// <para>
+    /// The gap is the days strictly between <paramref name="lastDate"/> and <paramref name="rejoinDate"/>. A
+    /// gap made up ONLY of days the absence type excludes (weekly-offs, public holidays, rest days) counts as
+    /// on time -- a leave ending on Thursday with the employee back on Sunday is not two days late. A gap with
+    /// at least one countable day is reported as its full CALENDAR length, not the countable length: that is
+    /// what legacy did, and the paid/unpaid split the employee then enters is measured in calendar days too.
+    /// </para>
+    /// </summary>
+    Task<double> GetReturnDaysDifferenceAsync(int employeeId, int absenceTypeId, DateTime lastDate, DateTime rejoinDate);
 }

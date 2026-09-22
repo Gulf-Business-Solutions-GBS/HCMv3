@@ -100,6 +100,74 @@
                 </div>
             }
 
+            @if (returning(); as target) {
+                <div class="card card-custom gutter-b border-success">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ 'ReportMyReturn' | localize }}:
+                            {{ leaveTypeName(target) }}, {{ target.startDate | luxonFormat: 'yyyy-MM-dd' }} –
+                            {{ target.endDate | luxonFormat: 'yyyy-MM-dd' }}
+                        </h5>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label>{{ 'RejoiningDate' | localize }}</label>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    [(ngModel)]="returnForm.rejoiningDate"
+                                    (ngModelChange)="previewReturn()"
+                                />
+                            </div>
+                            <div class="form-group col-md-9">
+                                <label>{{ 'ReturnReason' | localize }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="returnForm.reason" />
+                            </div>
+                        </div>
+
+                        @if (returnPreview(); as preview) {
+                            <div
+                                class="alert"
+                                [ngClass]="preview.kind === ReturnKind.Late ? 'alert-warning' : 'alert-info'"
+                            >
+                                {{ returnKindMessage(preview) }}
+                            </div>
+
+                            <!-- Late only: the proposed split, which the employee may adjust before sending. -->
+                            @if (preview.kind === ReturnKind.Late) {
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label>{{ 'PaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
+                                        <input type="date" class="form-control" [(ngModel)]="returnForm.paidStartDate" />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>{{ 'PaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
+                                        <input type="date" class="form-control" [(ngModel)]="returnForm.paidEndDate" />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>{{ 'UnpaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
+                                        <input type="date" class="form-control" [(ngModel)]="returnForm.unpaidStartDate" />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>{{ 'UnpaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
+                                        <input type="date" class="form-control" [(ngModel)]="returnForm.unpaidEndDate" />
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        <button
+                            class="btn btn-primary mr-2"
+                            [disabled]="saving() || !returnForm.rejoiningDate"
+                            (click)="submitReturn()"
+                        >
+                            {{ 'Save' | localize }}
+                        </button>
+                        <button class="btn btn-light" (click)="closeReturnForm()">{{ 'Cancel' | localize }}</button>
+                    </div>
+                </div>
+            }
+
             @if (showForm()) {
                 <div class="card card-custom gutter-b">
                     <div class="card-body">
@@ -179,6 +247,11 @@
                                                         {{ 'ChangePending' | localize }}
                                                     </span>
                                                 }
+                                                @if (leave.isReturned) {
+                                                    <span class="badge badge-light-success ml-1">
+                                                        {{ 'LeaveReturned' | localize }}
+                                                    </span>
+                                                }
                                             </td>
                                             <td class="text-right">
                                                 @if (leave.hasPendingAmendment && leave.pendingAmendmentRequestId) {
@@ -193,6 +266,16 @@
                                                 @if (leave.canAmend) {
                                                     <button class="btn btn-sm btn-link" (click)="openAmendForm(leave)">
                                                         {{ 'RequestAChange' | localize }}
+                                                    </button>
+                                                }
+                                                @if (leave.canReturn) {
+                                                    <button class="btn btn-sm btn-link" (click)="openReturnForm(leave)">
+                                                        {{ 'ReportMyReturn' | localize }}
+                                                    </button>
+                                                }
+                                                @if (leave.canRequestCancellation) {
+                                                    <button class="btn btn-sm btn-link text-danger" (click)="requestCancellation(leave)">
+                                                        {{ 'RequestCancellation' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canCancel) {

@@ -503,6 +503,52 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
         return Task.FromResult<DateTime?>(lastDate);
     }
 
+    public async Task<DateTime?> CalcLeaveStartDateAsync(int employeeId, int? absenceTypeId, DateTime lastDate, DateTime rejoinDate)
+    {
+        var employee = GetEmployeeOrThrow(employeeId);
+        var absenceType = absenceTypeId.HasValue ? GetAbsenceTypeOrThrow(absenceTypeId.Value) : null;
+
+        var candidate = lastDate.Date.AddDays(1);
+
+        while (candidate < rejoinDate.Date)
+        {
+            var duty = await TryGetEmployeeDutyAsync(employeeId, candidate);
+
+            var excluded =
+                await _timeDataService.IsHolidayAsync(candidate, absenceType, employee)
+                || (await _timeDataService.IsWeekEndAsync(candidate, absenceType, employee) && duty != null && !duty.AllowTransStart)
+                || (await _timeDataService.IsRestDayAsync(candidate, absenceType, employee) && duty != null && !duty.AllowTransStart)
+                || LeaveQuotaOnDay(employeeId, candidate, 0) > 0;
+
+            if (!excluded)
+            {
+                return candidate;
+            }
+
+            candidate = candidate.AddDays(1);
+        }
+
+        return null;
+    }
+
+    public async Task<double> GetReturnDaysDifferenceAsync(int employeeId, int absenceTypeId, DateTime lastDate, DateTime rejoinDate)
+    {
+        var extraStartDate = lastDate.Date.AddDays(1);
+        var extraEndDate = rejoinDate.Date.AddDays(-1);
+
+        var totalDaysGap = (extraEndDate - extraStartDate).Days + 1;
+
+        // Zero or negative: on time or early, returned as-is (legacy line 385).
+        if (totalDaysGap <= 0)
+        {
+            return totalDaysGap;
+        }
+
+        var excludedDays = (double)await ActualLeaveDaysAsync(employeeId, extraStartDate, extraEndDate, absenceTypeId);
+
+        return totalDaysGap - excludedDays == 0 ? 0 : totalDaysGap;
+    }
+
     /// <summary>
     /// Ported from legacy <c>EmployeeAbsence.LeaveQuota(Session, StartDate, EndDate, Employee, _Oid)</c>,
     /// narrowed to the single-day window every live caller passes: the leave days belonging to absences of

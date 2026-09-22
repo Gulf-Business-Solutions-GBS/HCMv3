@@ -7,11 +7,11 @@ namespace HCMv3.Ess.Dto;
 /// An employee reporting the day they actually came back.
 ///
 /// <para>
-/// Deliberately NOT a request type of its own. Legacy carried a whole <c>ReturnFromLeaveRequest</c> business
-/// object, table and approval route for this, but two of its three outcomes are an amendment to the leave --
-/// pull the end date in, stamp the return -- and the third (coming back late) is an ordinary new leave
-/// application for the extra days. So this rides on the existing <c>EmployeeAbsence</c> transaction type and
-/// its existing approval chain; there is nothing here for a second table to hold.
+/// Deliberately NOT a request type of its own. Legacy carried a <c>ReturnFromLeaveRequest</c> business object
+/// (later the <c>ReturnFromLeave</c> action of <c>AbsenceRequest</c>), with its own table. In HCMv3 there is
+/// one leave table, so a return rides on the existing <c>EmployeeAbsence</c> transaction type as an amendment:
+/// on time stamps the return, early pulls the end date in, and late books the gap as further paid and/or
+/// unpaid leave rows once approved.
 /// </para>
 /// </summary>
 public class ReturnFromLeaveInput
@@ -27,11 +27,61 @@ public class ReturnFromLeaveInput
     public DateTime RejoiningDate { get; set; }
 
     /// <summary>
-    /// Why the return is early, when it is. Optional for an on-time return, where there is nothing to explain,
-    /// and passed through to the approver as the amendment's reason.
+    /// Why the return is early or late, when it is. Passed through to the approver as the amendment's reason.
     /// </summary>
     [StringLength(2000)]
     public string Reason { get; set; }
+
+    /// <summary>
+    /// LATE return only: the part of the gap to book as further paid leave of the same type. Leave both paid
+    /// and unpaid ranges empty to accept the split proposed by <c>PreviewReturnFromMyLeave</c>.
+    /// </summary>
+    public DateTime? PaidStartDate { get; set; }
+
+    /// <inheritdoc cref="PaidStartDate"/>
+    public DateTime? PaidEndDate { get; set; }
+
+    /// <summary>LATE return only: the part of the gap to book as unpaid leave.</summary>
+    public DateTime? UnpaidStartDate { get; set; }
+
+    /// <inheritdoc cref="UnpaidStartDate"/>
+    public DateTime? UnpaidEndDate { get; set; }
+}
+
+/// <summary>How a rejoining date relates to the approved leave.</summary>
+public enum LeaveReturnKind
+{
+    OnTime = 0,
+    Early = 1,
+    Late = 2
+}
+
+/// <summary>
+/// What a return on a given date would mean, before the employee commits to it: early, on time or late, and
+/// for a late return the paid/unpaid split legacy's ESS proposed (paid up to the whole-day bookable balance,
+/// the rest unpaid).
+/// </summary>
+public class ReturnFromLeavePreviewDto
+{
+    public LeaveReturnKind Kind { get; set; }
+
+    /// <summary>Legacy <c>DaysDifference</c>: calendar days late (positive) or early (negative). A gap made
+    /// only of week-offs and holidays is zero.</summary>
+    public double DaysDifference { get; set; }
+
+    /// <summary>The leave's end date once the return is approved (moves only on an early return).</summary>
+    public DateTime NewEndDate { get; set; }
+
+    /// <summary>Bookable balance of the leave's type -- what the paid part of a late return can draw on.</summary>
+    public double? Bookable { get; set; }
+
+    public DateTime? PaidStartDate { get; set; }
+
+    public DateTime? PaidEndDate { get; set; }
+
+    public DateTime? UnpaidStartDate { get; set; }
+
+    public DateTime? UnpaidEndDate { get; set; }
 }
 
 /// <summary>What the return produced, so the screen can say what happens next without asking again.</summary>
@@ -51,4 +101,13 @@ public class ReturnFromLeaveResultDto
 
     /// <summary>How many approved days are being given up. Zero for an on-time return.</summary>
     public double DaysReturned { get; set; }
+
+    /// <summary>Early, on time or late.</summary>
+    public LeaveReturnKind Kind { get; set; }
+
+    /// <summary>Late return: calendar days to be booked as paid leave once approved.</summary>
+    public double PaidCalendarDays { get; set; }
+
+    /// <summary>Late return: calendar days to be booked as unpaid leave once approved.</summary>
+    public double UnpaidCalendarDays { get; set; }
 }

@@ -52,4 +52,40 @@ public class LeaveAmendment
     /// stay visible after the fact. Null on an ordinary amendment, which leaves the stored value alone.
     /// </summary>
     public DateTime? InitialEndDate { get; set; }
+
+    /// <summary>
+    /// LATE RETURN only: the calendar range, after the leave's last day, to be booked as further paid leave of
+    /// the SAME absence type (charged to its quota). Legacy <c>AbsenceRequest.PaidStartDate/PaidEndDate</c>.
+    ///
+    /// <para>
+    /// Together with the unpaid range these must cover the late gap exactly; the rules are legacy's
+    /// (<c>WorkFlowServices</c> lines 434-503) and are checked in <c>LeaveWorkflowTransactionHandler</c>.
+    /// On approval each range becomes a NEW approved <c>EmployeeAbsence</c> row -- there is still no request
+    /// table, the rows are written straight into the one leave table, linked to the approving request.
+    /// </para>
+    /// </summary>
+    public DateTime? PaidStartDate { get; set; }
+
+    /// <inheritdoc cref="PaidStartDate"/>
+    public DateTime? PaidEndDate { get; set; }
+
+    /// <summary>
+    /// LATE RETURN only: the calendar range to be booked as UNPAID leave (the absence type with code "2", as
+    /// legacy hard-codes). Legacy <c>AbsenceRequest.UnpaidStartDate/UnpaidEndDate</c>.
+    /// </summary>
+    public DateTime? UnpaidStartDate { get; set; }
+
+    /// <inheritdoc cref="UnpaidStartDate"/>
+    public DateTime? UnpaidEndDate { get; set; }
+
+    /// <summary>
+    /// True when this change CANCELS an approved leave (legacy <c>ActionType.Cancellation</c>). On approval the
+    /// leave row is deleted and its days go back to the quota; until then the leave stays exactly as approved,
+    /// visible to payroll. The date fields carry the leave's current values so the inbox summary can show
+    /// what is being cancelled.
+    /// </summary>
+    public bool IsCancellation { get; set; }
+
+    /// <summary>True when this amendment reports a late return with a paid and/or unpaid range to book.</summary>
+    public bool IsLateReturn => IsReturned && (PaidStartDate.HasValue || UnpaidStartDate.HasValue);
 }

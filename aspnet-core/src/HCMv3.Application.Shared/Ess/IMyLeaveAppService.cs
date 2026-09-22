@@ -51,14 +51,26 @@ public interface IMyLeaveAppService : IApplicationService
     ///
     /// <para>
     /// Coming back ON TIME stamps the return; coming back EARLY additionally pulls the end date in and keeps
-    /// the original as <c>InitialEndDate</c>. Both go out as an amendment on the leave, through the same
-    /// approval chain the leave itself went through, and neither touches the leave until it is granted.
-    /// </para>
-    /// <para>
-    /// Coming back LATE is REFUSED, deliberately. Returning after the approved end date means more absence
-    /// than anyone agreed to, and booking it here would take days out of a quota on nobody's authority. The
-    /// employee is told to apply for the extra days as leave, which is the path that asks an approver.
+    /// the original as <c>InitialEndDate</c>. Coming back LATE (legacy parity) books the gap on approval as
+    /// further paid leave of the same type and/or unpaid leave, split as the employee enters it or as
+    /// <see cref="PreviewReturnFromMyLeave"/> proposes. All three go out as an amendment on the leave, through
+    /// the same approval chain, and nothing changes until it is granted.
     /// </para>
     /// </summary>
     Task<ReturnFromLeaveResultDto> ReturnFromMyLeave(ReturnFromLeaveInput input);
+
+    /// <summary>
+    /// What returning on the given date would mean -- early, on time or late, and for late the proposed
+    /// paid/unpaid split -- without raising anything.
+    /// </summary>
+    Task<ReturnFromLeavePreviewDto> PreviewReturnFromMyLeave(ReturnFromLeaveInput input);
+
+    /// <summary>
+    /// Asks for an APPROVED leave to be cancelled (legacy <c>ActionType.Cancellation</c>). The leave stays
+    /// approved and visible to payroll until the cancellation is granted; then it is deleted and its days go
+    /// back to the quota. For a leave still awaiting approval use <see cref="CancelMyLeave"/>, which withdraws
+    /// it immediately.
+    /// </summary>
+    /// <returns>Id of the cancellation's <c>WorkflowRequest</c>.</returns>
+    Task<int> RequestCancellationOfMyLeave(EntityDto input);
 }

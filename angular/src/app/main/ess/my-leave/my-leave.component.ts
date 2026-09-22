@@ -11,10 +11,13 @@ import {
     EntityDto,
     EssLookupServiceProxy,
     GetMyLeavesInput,
+    LeaveReturnKind,
     MyLeaveBalanceDto,
     MyLeaveDto,
     MyLeaveServiceProxy,
     RequestStatus,
+    ReturnFromLeaveInput,
+    ReturnFromLeavePreviewDto,
     SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
@@ -57,7 +60,23 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     amendForm = { absenceTypeId: null as number | null, startDate: '', endDate: '', reason: '' };
 
+    /** The approved leave a return is being reported for, or undefined when not reporting one. */
+    readonly returning = signal<MyLeaveDto | undefined>(undefined);
+
+    /** What the chosen rejoining date means -- early, on time or late -- as the server works it out. */
+    readonly returnPreview = signal<ReturnFromLeavePreviewDto | undefined>(undefined);
+
+    returnForm = {
+        rejoiningDate: '',
+        reason: '',
+        paidStartDate: '',
+        paidEndDate: '',
+        unpaidStartDate: '',
+        unpaidEndDate: '',
+    };
+
     readonly Status = RequestStatus;
+    readonly ReturnKind = LeaveReturnKind;
 
     ngOnInit(): void {
         this.loadAbsenceTypes();
@@ -90,6 +109,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     openForm(): void {
         this.form = { absenceTypeId: null, startDate: '', endDate: '', comments: '' };
         this.amending.set(undefined);
+        this.closeReturnForm();
         this.showForm.set(true);
     }
 
@@ -138,6 +158,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         };
 
         this.showForm.set(false);
+        this.closeReturnForm();
         this.amending.set(leave);
     }
 
@@ -179,6 +200,118 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
                 this.closeAmendForm();
                 this.reload();
             });
+    }
+
+    /**
+     * Pre-filled with the day after the leave -- the on-time answer -- so the common case is one click.
+     */
+    openReturnForm(leave: MyLeaveDto): void {
+        this.returnForm = {
+            rejoiningDate: leave.endDate?.plus({ days: 1 }).toISODate() ?? '',
+            reason: '',
+            paidStartDate: '',
+            paidEndDate: '',
+            unpaidStartDate: '',
+            unpaidEndDate: '',
+        };
+
+        this.showForm.set(false);
+        this.amending.set(undefined);
+        this.returning.set(leave);
+        this.previewReturn();
+    }
+
+    closeReturnForm(): void {
+        this.returning.set(undefined);
+        this.returnPreview.set(undefined);
+    }
+
+    /**
+     * Asks the server what the date means rather than working it out here: a gap that is only a weekend counts
+     * as on time, and only the server knows the employee's week and holidays. For a late return it also brings
+     * the proposed paid/unpaid split, which the employee may then adjust.
+     */
+    previewReturn(): void {
+        const target = this.returning();
+        if (!target || !this.returnForm.rejoiningDate) {
+            this.returnPreview.set(undefined);
+            return;
+        }
+
+        const input = new ReturnFromLeaveInput();
+        input.employeeAbsenceId = target.id;
+        input.rejoiningDate = DateTime.fromISO(this.returnForm.rejoiningDate);
+
+        this._myLeaveService.previewReturnFromMyLeave(input).subscribe({
+            next: (preview) => {
+                this.returnPreview.set(preview);
+                this.returnForm.paidStartDate = preview.paidStartDate?.toISODate() ?? '';
+                this.returnForm.paidEndDate = preview.paidEndDate?.toISODate() ?? '';
+                this.returnForm.unpaidStartDate = preview.unpaidStartDate?.toISODate() ?? '';
+                this.returnForm.unpaidEndDate = preview.unpaidEndDate?.toISODate() ?? '';
+            },
+            error: () => this.returnPreview.set(undefined),
+        });
+    }
+
+    submitReturn(): void {
+        const target = this.returning();
+        if (!target || !this.returnForm.rejoiningDate || this.saving()) {
+            return;
+        }
+
+        const input = new ReturnFromLeaveInput();
+        input.employeeAbsenceId = target.id;
+        input.rejoiningDate = DateTime.fromISO(this.returnForm.rejoiningDate);
+        input.reason = this.returnForm.reason?.trim();
+
+        // Only a late return carries a split; sent as the employee left it, and checked by the server.
+        if (this.returnPreview()?.kind === LeaveReturnKind.Late) {
+            input.paidStartDate = this.toDate(this.returnForm.paidStartDate);
+            input.paidEndDate = this.toDate(this.returnForm.paidEndDate);
+            input.unpaidStartDate = this.toDate(this.returnForm.unpaidStartDate);
+            input.unpaidEndDate = this.toDate(this.returnForm.unpaidEndDate);
+        }
+
+        this.saving.set(true);
+
+        this._myLeaveService
+            .returnFromMyLeave(input)
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => {
+                this.notify.success(this.l('ReturnSubmittedForApproval'));
+                this.closeReturnForm();
+                this.reload();
+            });
+    }
+
+    /** Cancelling an APPROVED leave goes for approval; the leave stays in place until it is granted. */
+    requestCancellation(leave: MyLeaveDto): void {
+        this.message.confirm(this.l('CancelApprovedLeaveWarning'), this.l('AreYouSure'), (isConfirmed) => {
+            if (!isConfirmed) {
+                return;
+            }
+
+            this._myLeaveService.requestCancellationOfMyLeave(new EntityDto({ id: leave.id })).subscribe(() => {
+                this.notify.success(this.l('CancellationSubmittedForApproval'));
+                this.reload();
+            });
+        });
+    }
+
+    returnKindMessage(preview: ReturnFromLeavePreviewDto): string {
+        switch (preview.kind) {
+            case LeaveReturnKind.Early:
+                return this.l('LeaveReturnKind_Early', preview.newEndDate?.toFormat('yyyy-MM-dd'));
+            case LeaveReturnKind.Late:
+                return this.l('LeaveReturnKind_Late', preview.daysDifference);
+            default:
+                return this.l('LeaveReturnKind_OnTime');
+        }
+    }
+
+    private toDate(value: string): DateTime | undefined {
+        return value ? DateTime.fromISO(value) : undefined;
     }
 
     cancel(leave: MyLeaveDto): void {

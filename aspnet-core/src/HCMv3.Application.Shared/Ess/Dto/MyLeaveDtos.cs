@@ -72,6 +72,17 @@ public class MyLeaveDto : EntityDto<int>
 
     /// <summary>The in-flight amendment request, so the screen can open its activity thread.</summary>
     public int? PendingAmendmentRequestId { get; set; }
+
+    /// <summary>Whether the employee can ask for this APPROVED leave to be cancelled (legacy
+    /// <c>ActionType.Cancellation</c>). Same conditions as <see cref="CanAmend"/>.</summary>
+    public bool CanRequestCancellation { get; set; }
+
+    /// <summary>Whether the employee can report their return from this leave: approved, not yet returned,
+    /// and no other change in flight.</summary>
+    public bool CanReturn { get; set; }
+
+    /// <summary>True once the return from this leave has been approved.</summary>
+    public bool IsReturned { get; set; }
 }
 
 public class GetMyLeavesInput : PagedAndSortedResultRequestDto, IShouldNormalize
