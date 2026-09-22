@@ -61,6 +61,16 @@ public class PayrollRetroTrigger : HCMv3DomainServiceBase, IPayrollRetroTrigger
         _payrollDataService = payrollDataService;
     }
 
+    /// <summary>Open <see cref="SuppressEarliestMasterDataChange"/> scopes on this async flow. Static because the
+    /// trigger is resolved per use; AsyncLocal so a scope on one request never leaks into another.</summary>
+    private static readonly System.Threading.AsyncLocal<int> SuppressMasterDataChangeDepth = new();
+
+    public IDisposable SuppressEarliestMasterDataChange()
+    {
+        SuppressMasterDataChangeDepth.Value++;
+        return new Abp.DisposeAction(() => SuppressMasterDataChangeDepth.Value--);
+    }
+
     public void MarkEndDateAutoChange(object entity)
     {
         if (entity != null)
@@ -181,7 +191,8 @@ public class PayrollRetroTrigger : HCMv3DomainServiceBase, IPayrollRetroTrigger
             }
 
             // Down only. A change dated later than a pending one must not shorten the window the run will redo.
-            if (status.EarliestMasterDataChange == NeverSet || status.EarliestMasterDataChange > transDate)
+            if (SuppressMasterDataChangeDepth.Value == 0
+                && (status.EarliestMasterDataChange == NeverSet || status.EarliestMasterDataChange > transDate))
             {
                 status.EarliestMasterDataChange = transDate;
                 _retroReasonLogRepository.Insert(new RetroReasonLog

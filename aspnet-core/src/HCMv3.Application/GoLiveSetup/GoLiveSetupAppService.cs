@@ -801,7 +801,17 @@ public class GoLiveSetupAppService : HCMv3AppServiceBase, IGoLiveSetupAppService
     private async Task<GoLiveNextStep> NextStepAsync(string areaName, DateTime payInDate)
     {
         var area = await _payrollAreaRepository.FirstOrDefaultAsync(a => a.Name == areaName);
-        if (area == null || await _controlRecordRepository.FirstOrDefaultAsync(r => r.PayrollAreaId == area.Id) == null)
+        var record = area == null ? null : await _controlRecordRepository.FirstOrDefaultAsync(r => r.PayrollAreaId == area.Id);
+        if (record == null)
+        {
+            return GoLiveNextStep.SetUpPayrollMonth;
+        }
+
+        // Released for correction -- by Go-Live's own data loads, or by HR to approve a change such as a leave
+        // return -- means "lock again and run once more" (PayrollPeriodState). SetUpPayrollMonth is what locks it;
+        // without this the run was refused as "set to September, so September cannot be run". Only this state and
+        // only this month: a Closed month is never reopened by a run.
+        if (record.PeriodState == PayrollPeriodState.ReleasedForCorrection && record.CalendarMonthEnd.Date == payInDate.Date)
         {
             return GoLiveNextStep.SetUpPayrollMonth;
         }

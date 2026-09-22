@@ -13,6 +13,7 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.GoLiveSetup.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Dto;
+using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.TimeManagement;
@@ -83,6 +84,7 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
     private readonly GoLiveWorkingTime _workingTime;
     private readonly ITimeTransfersAppService _timeTransfers;
     private readonly GoLiveOpeningBalances _openingBalances;
+    private readonly IPayrollRetroTrigger _retroTrigger;
 
     public GoLiveEmployeeLoader(
         IEmployeesAppService employees,
@@ -105,7 +107,8 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
         IRepository<EmployeeGratuityQuota> gratuityQuotaRepository,
         GoLiveWorkingTime workingTime,
         ITimeTransfersAppService timeTransfers,
-        GoLiveOpeningBalances openingBalances)
+        GoLiveOpeningBalances openingBalances,
+        IPayrollRetroTrigger retroTrigger)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
 
@@ -130,9 +133,26 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
         _workingTime = workingTime;
         _timeTransfers = timeTransfers;
         _openingBalances = openingBalances;
+        _retroTrigger = retroTrigger;
     }
 
+    /// <summary>
+    /// Loads the sheet WITHOUT setting any employee's <c>EarliestMasterDataChange</c> (user decision 2026-09-22):
+    /// a Go-Live bulk load is payroll's starting point, not a correction to payroll already run. Legacy's generic
+    /// bulk importer did set it to the joining date; Go-Live deliberately does not. The retro guard and
+    /// <c>NextTimeEvaluationFrom</c> are unaffected. The final save sits inside the scope because the retro
+    /// trigger runs as rows are saved.
+    /// </summary>
     public async Task LoadAsync(IReadOnlyList<GoLiveEmployeeRowDto> rows, GoLiveEmployeeTargets targets, GoLiveLoadEmployeesOutput output)
+    {
+        using (_retroTrigger.SuppressEarliestMasterDataChange())
+        {
+            await LoadRowsAsync(rows, targets, output);
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+    }
+
+    private async Task LoadRowsAsync(IReadOnlyList<GoLiveEmployeeRowDto> rows, GoLiveEmployeeTargets targets, GoLiveLoadEmployeesOutput output)
     {
         // Repeats are caught here rather than by the services: the second row would otherwise be reported as
         // clashing with the employee this same load had just created, which reads as a database problem.

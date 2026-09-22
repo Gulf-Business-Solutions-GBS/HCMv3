@@ -48,4 +48,19 @@ public interface IPayrollRetroTrigger : IDomainService
     /// to hang the change on. Creates the employee's payroll status row when there is none.
     /// </summary>
     void SetRetroDate(Type entityType, int employeeId, DateTime retroFromDate, int entityObjectId = 0);
+
+    /// <summary>
+    /// While the returned scope is open, changes on this async flow do NOT move
+    /// <c>EmployeePayrollStatus.EarliestMasterDataChange</c> (nor write a retro-reason line for it). Every other
+    /// effect -- the retro-calculation guard, the earliest-retro-accounting check, <c>NextTimeEvaluationFrom</c> --
+    /// still applies.
+    ///
+    /// <para>
+    /// For bulk loading employees in Go-Live Setup (user decision 2026-09-22): those rows ARE the starting point of
+    /// payroll, not a correction to payroll already run, so there is nothing to recalculate. Legacy's generic bulk
+    /// importer did set it to the joining date via <c>Employee.AddEmployeeActionStatusContract</c>; Go-Live
+    /// deliberately does not. Dispose after the last SaveChanges -- the trigger runs while rows are saved.
+    /// </para>
+    /// </summary>
+    IDisposable SuppressEarliestMasterDataChange();
 }

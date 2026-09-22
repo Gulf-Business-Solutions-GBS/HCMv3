@@ -120,6 +120,49 @@ public class PayrollRetroTrigger_Tests : AppTestBase
         LogReasons().Count.ShouldBe(1);
     }
 
+    // ------------------------------------------------------------------ Go-Live bulk load (user decision 2026-09-22)
+
+    [Fact]
+    public async Task Should_Not_Set_The_Date_Inside_A_Suppression_Scope()
+    {
+        using (Resolve<IPayrollRetroTrigger>().SuppressEarliestMasterDataChange())
+        {
+            await InsertBasicPayAsync(new DateTime(2026, 3, 1));
+        }
+
+        EarliestMasterDataChange().ShouldBe(default);
+        LogReasons().ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task Should_Still_Move_The_Time_Evaluation_Date_Inside_A_Suppression_Scope()
+    {
+        // Only EarliestMasterDataChange is held back; the time engine must still evaluate the loaded days.
+        using (Resolve<IPayrollRetroTrigger>().SuppressEarliestMasterDataChange())
+        {
+            await InTransactionAsync(() => Resolve<IRepository<EmployeeOrgAssignment>>().InsertAsync(new EmployeeOrgAssignment
+            {
+                TenantId = TenantId, EmployeeId = _employeeId, StartDate = new DateTime(2026, 5, 1), EndDate = OpenEnded
+            }));
+        }
+
+        Status().NextTimeEvaluationFrom.ShouldBe(new DateTime(2026, 5, 1));
+        Status().EarliestMasterDataChange.ShouldBe(default);
+    }
+
+    [Fact]
+    public async Task Should_Set_The_Date_Again_Once_The_Suppression_Scope_Is_Closed()
+    {
+        using (Resolve<IPayrollRetroTrigger>().SuppressEarliestMasterDataChange())
+        {
+            await InsertBasicPayAsync(new DateTime(2026, 3, 1));
+        }
+
+        await InsertBasicPayAsync(new DateTime(2026, 4, 1));
+
+        EarliestMasterDataChange().ShouldBe(new DateTime(2026, 4, 1));
+    }
+
     [Fact]
     public async Task Should_Also_Move_The_Time_Evaluation_Date_For_A_Time_Sensitive_Type()
     {
