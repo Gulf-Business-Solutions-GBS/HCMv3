@@ -6573,5 +6573,13 @@
     <text name="IntegrationConfirmDisable">هل تريد إيقاف {0}؟ سيتوقف عن العمل حتى يتم تفعيله مرة أخرى، مع الإبقاء على الإعدادات المحفوظة.</text>
     <text name="IntegrationConfirmDisableSmtp">هل تريد إيقاف البريد الإلكتروني؟ سيتوقف النظام عن إرسال جميع الرسائل، بما في ذلك رسائل إعادة تعيين كلمة المرور، مع الإبقاء على إعدادات خادم البريد.</text>
     <text name="IntegrationConfirmSwitchProvider">لا يمكن تفعيل أكثر من خيار واحد في الوقت نفسه. تفعيل {1} سيؤدي إلى إيقاف {0}، مع الإبقاء على إعداداته.</text>
+<text name="FullAndFinalBalances">الأرصدة المتاحة للتسوية</text>
+    <text name="FullAndFinalBalancesHint">يتم تعبئة القيد الجديد مسبقاً برصيد الإجازات وأيام مكافأة نهاية الخدمة المقترحة. في حالة الاستقالة تُصرف نسبة من المكافأة المستحقة حسب سنوات الخدمة، وفي حالة إنهاء الخدمة تُصرف كاملة، وبما لا يتجاوز في الحالتين الحد الأقصى البالغ أجر 18 شهراً.</text>
+    <text name="LeaveAccrualDays">الإجازات المستحقة (أيام)</text>
+    <text name="LeaveRemainingDays">رصيد الإجازات المتبقي (أيام)</text>
+    <text name="IndemnityAccrualDays">مكافأة نهاية الخدمة المستحقة (أيام)</text>
+    <text name="IndemnityRemainingDays">رصيد مكافأة نهاية الخدمة المتبقي (أيام)</text>
+    <text name="SuggestedIndemnityDays">مكافأة نهاية الخدمة المستحقة الصرف (أيام)</text>
+    <text name="TicketRemainingCount">التذاكر المتبقية</text>
   </texts>
 </localizationDictionary>

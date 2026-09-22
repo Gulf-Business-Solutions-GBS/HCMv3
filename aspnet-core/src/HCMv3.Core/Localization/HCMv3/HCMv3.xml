@@ -6734,5 +6734,13 @@
     <text name="IntegrationConfirmDisable">Switch {0} off? It will stop working until you switch it back on. Your settings are kept.</text>
     <text name="IntegrationConfirmDisableSmtp">Switch email off? The system will stop sending all email, including password reset messages. Your mail server settings are kept.</text>
     <text name="IntegrationConfirmSwitchProvider">Only one can be active at a time. Switching {1} on will switch {0} off. Its settings are kept.</text>
+<text name="FullAndFinalBalances">Balances available to settle</text>
+    <text name="FullAndFinalBalancesHint">A new entry is pre-filled with the leave balance and the suggested indemnity days. Resignation is paid a share of the indemnity earned, by years of service; termination is paid in full; neither is paid more than the 18-month cap.</text>
+    <text name="LeaveAccrualDays">Leave earned (days)</text>
+    <text name="LeaveRemainingDays">Leave remaining (days)</text>
+    <text name="IndemnityAccrualDays">Indemnity earned (days)</text>
+    <text name="IndemnityRemainingDays">Indemnity remaining (days)</text>
+    <text name="SuggestedIndemnityDays">Indemnity to pay (days)</text>
+    <text name="TicketRemainingCount">Tickets remaining</text>
   </texts>
 </localizationDictionary>

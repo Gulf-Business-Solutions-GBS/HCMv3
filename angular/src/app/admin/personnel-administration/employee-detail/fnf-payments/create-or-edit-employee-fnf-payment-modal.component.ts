@@ -7,6 +7,7 @@ import {
     EmployeeBasicPayDetailDto,
     EmployeeBasicPayDetailsServiceProxy,
     EmployeeFnFPaymentsServiceProxy,
+    FullAndFinalBalancesDto,
     GetAllEmployeeActionsInput,
     GetAllEmployeeBasicPayDetailsInput,
 } from '@shared/service-proxies/service-proxies';
@@ -18,12 +19,13 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { DecimalPipe } from '@angular/common';
 import { DateTime } from 'luxon';
 
 @Component({
     selector: 'createOrEditEmployeeFnFPaymentModal',
     templateUrl: './create-or-edit-employee-fnf-payment-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe, DecimalPipe],
 })
 export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBase {
     private _service = inject(EmployeeFnFPaymentsServiceProxy);
@@ -40,8 +42,12 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
     readonly employeeActions = signal<EmployeeActionDto[]>([]);
     readonly employeeBasicPayDetails = signal<EmployeeBasicPayDetailDto[]>([]);
 
+    /** What this employee can be settled for, and the suggested indemnity days (resignation is paid less). */
+    readonly balances = signal<FullAndFinalBalancesDto | undefined>(undefined);
+
     show(employeeId: number, id?: number): void {
         this.active.set(true);
+        this.balances.set(undefined);
 
         this._employeeActionsService
             .getAll(new GetAllEmployeeActionsInput({ employeeId, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
@@ -69,11 +75,21 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
             record.compensateBonusPay = 0;
             this.record.set(record);
             this.modal().show();
+
+            // As legacy: a NEW entry is pre-filled with the leave balance and the suggested indemnity days (the
+            // backend returns 0 for both when the tenant has auto-fill switched off). Tickets are never pre-filled.
+            this._service.getFullAndFinalBalances(employeeId).subscribe((balances) => {
+                this.balances.set(balances);
+                this.updateField('leaveCompensateDays', balances.autoFillLeaveCompensateDays);
+                this.updateField('gratuityCompensateDays', balances.autoFillGratuityCompensateDays);
+            });
         } else {
             this._service.getEmployeeFnFPaymentForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeFnFPayment);
                 this.modal().show();
             });
+            // An existing entry keeps its saved figures; the balances are shown for reference only.
+            this._service.getFullAndFinalBalances(employeeId).subscribe((balances) => this.balances.set(balances));
         }
     }
 
