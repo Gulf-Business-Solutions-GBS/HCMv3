@@ -38,6 +38,15 @@ public class FullAndFinalValues
     public double Dependant2TicketCompensateCount { get; set; }
 
     public double Dependant3TicketCompensateCount { get; set; }
+
+    /// <summary>Bonus pay settled -- legacy writes it as a wage code 1053 <c>EmployeePayment</c>.</summary>
+    public double CompensateBonusPay { get; set; }
+
+    /// <summary>
+    /// Legacy's non-persisted <c>SettleLoanInEndOfService</c> tick box: recover every open loan in full on the
+    /// compensation date. Without it, an employee with an open loan cannot be settled at all.
+    /// </summary>
+    public bool SettleLoanInEndOfService { get; set; }
 }
 
 /// <summary>
@@ -97,4 +106,19 @@ public class FullAndFinalBalances
     /// auto-filled -- that is legacy's, not an omission.
     /// </summary>
     public double AutoFillGratuityCompensateDays { get; set; }
+
+    /// <summary>Legacy <c>LoanDueAmount</c>: the total <c>DueAmount</c> of every loan the employee has had.</summary>
+    public double LoanDueAmount { get; set; }
+
+    /// <summary>
+    /// What is still owed on open loans -- legacy's live <c>BalanceDueAmount</c> (due less recovered), summed.
+    /// Greater than zero means the entry needs <c>SettleLoanInEndOfService</c>.
+    /// </summary>
+    public double LoanBalanceDueAmount { get; set; }
+
+    /// <summary>
+    /// Legacy <c>SuggestedBonusPay</c>: the average of the employee's wage code 1053 non-payroll payments made
+    /// between joining and the last day in service. The most that may be settled as bonus.
+    /// </summary>
+    public double SuggestedBonusPay { get; set; }
 }

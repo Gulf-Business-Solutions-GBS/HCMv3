@@ -23,22 +23,13 @@ namespace HCMv3.PersonnelAdministration.Services;
 /// <c>PerformValidations</c> (687), <c>ValidatePreviousEntry</c> (1060), <c>UpdateQuotaBalance</c> (804),
 /// <c>UpdatePreviousValues</c> (942), <c>AddIndemnityPayAdjust</c> (1873), and <c>OnDeleting</c> (622).</para>
 ///
-/// <para><b>What is ported is the INDEMNITY path, complete</b> -- every calculation and every guard that
-/// protects indemnity money -- plus the leave and ticket compensation that legacy writes in the same save, and
-/// the employee going inactive (which stops the next regular payroll paying someone who has left).</para>
+/// <para>This class owns the leave, indemnity and ticket side of a settlement; the asset check, bonus pay,
+/// loans, the position, the login and the sponsor visa quota live in <see cref="IFullAndFinalExitService"/>
+/// and are called from here at the points legacy calls them.</para>
 ///
-/// <para><b>NOT ported in this wave -- none of them affects the indemnity figure:</b></para>
-/// <list type="bullet">
-/// <item><description>the assigned-asset check (<c>PerformValidations</c>, legacy 692-701);</description></item>
-/// <item><description>bonus pay: its balance check and <c>AddBonusPay</c> (1941);</description></item>
-/// <item><description>loans: the pending-loan check, <c>SettleAllLoans</c>, and undoing loan recovery;</description></item>
-/// <item><description><c>UpdatedPositionStatus</c> (1033);</description></item>
-/// <item><description>deactivating the employee's LOGIN -- an identity-user change, a different subsystem;</description></item>
-/// <item><description>the sponsor / government job-title visa quota, the static <c>UpdateQuotaBalance</c> (2021),
-/// gated by <c>EnableSponsorGovtJobTitleQuota</c>;</description></item>
-/// <item><description>the display-only amounts <c>SuggestedCompensateAmount</c> and <c>ExpectedLeaveAmount</c>.
-/// The amount actually PAID is computed by the payroll engine's wage code 1010, not here.</description></item>
-/// </list>
+/// <para><b>NOT ported:</b> the display-only amounts <c>SuggestedCompensateAmount</c> and
+/// <c>ExpectedLeaveAmount</c>. The amount actually PAID is computed by the payroll engine's wage code 1010,
+/// not here.</para>
 ///
 /// <para><b>Deviations, each deliberate:</b></para>
 /// <list type="bullet">
@@ -119,6 +110,7 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
     private readonly IAccrualService _accrualService;
     private readonly ICurrencyService _currencyService;
     private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
+    private readonly IFullAndFinalExitService _exitService;
 
     public FullAndFinalSettlementService(
         IRepository<Employee> employeeRepository,
@@ -147,7 +139,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
         ISysSettingsAccessor settings,
         IAccrualService accrualService,
         ICurrencyService currencyService,
-        IEmployeePayrollAreaResolver payrollAreaResolver)
+        IEmployeePayrollAreaResolver payrollAreaResolver,
+        IFullAndFinalExitService exitService)
     {
         _employeeRepository = employeeRepository;
         _separationRepository = separationRepository;
@@ -176,6 +169,7 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
         _accrualService = accrualService;
         _currencyService = currencyService;
         _payrollAreaResolver = payrollAreaResolver;
+        _exitService = exitService;
     }
 
     #region << Balances and the indemnity suggestion >>
@@ -207,6 +201,11 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
             Dependant3TicketRemainingCount = Math.Round(
                 TicketQuotas(employeeId, Dependant3TicketCode).Sum(q => q.QuotaAccrued - (q.QuotaUsed + q.QuotaAdjusted)), 3)
         };
+
+        // Legacy 314-380: the loan figures and the suggested bonus the screen shows.
+        balances.LoanDueAmount = _exitService.GetLoanDueAmount(employeeId);
+        balances.LoanBalanceDueAmount = await _exitService.GetLoanBalanceDueAmountAsync(employeeId);
+        balances.SuggestedBonusPay = await _exitService.GetSuggestedBonusPayAsync(employeeId);
 
         // Legacy line 139: the suggestion is only computed once an un-revoked exit exists.
         if (GetActiveSeparation(employeeId) != null)
@@ -525,7 +524,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
             throw new UserFriendlyException("Please select compensation date.");
         }
 
-        // NOT PORTED: the assigned-asset check (legacy 692-701) -- see class remarks.
+        // Legacy 692-701.
+        await _exitService.ValidateNoAssetsAsync(current.EmployeeId, current.CompensationDate);
 
         await ValidatePreviousEntryAsync(previous, currentFnFPaymentId);
 
@@ -625,7 +625,8 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
             throw new UserFriendlyException("You cannot compensate dependant 3 ticket more than available balance.");
         }
 
-        // NOT PORTED: the bonus-pay balance check and the pending-loan check (legacy 791-797).
+        // Legacy 793-799.
+        await _exitService.ValidateBonusAndLoansAsync(current);
     }
 
     /// <summary>
@@ -793,10 +794,19 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
         await WriteTicketAsync(current, previous, Dependant2TicketCode, current.Dependant2TicketCompensateCount);
         await WriteTicketAsync(current, previous, Dependant3TicketCode, current.Dependant3TicketCompensateCount);
 
-        // Legacy 926-936: the employee is inactive from here on. The LOGIN is not deactivated -- see class remarks.
+        // Legacy 926-936: the login is switched off and the employee is inactive from here on.
+        await _exitService.SetLoginActiveAsync(current.EmployeeId, false);
         await SetEmployeeStatusAsync(current.EmployeeId, EmployeeStatus.Inactive);
 
+        // Legacy OnSaving (610-615) runs these in this order, after UpdateQuotaBalance.
         await ApplyIndemnityPayAdjustAsync(current, previous);
+        await _exitService.ApplyBonusPayAsync(current, previous, current.IndemnityPayAdjustment);
+        await _exitService.UpdatePositionStatusAsync(current.EmployeeId, LastDayInService(current.EmployeeId));
+        await _exitService.SettleAllLoansAsync(current);
+
+        // The employee is inactive by now, so this FREES one visa place (legacy 2021).
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await _exitService.UpdateSponsorQuotaAsync(current.EmployeeId);
     }
 
     /// <inheritdoc/>
@@ -830,6 +840,12 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
                 await _employeePaymentRepository.DeleteAsync(payment);
             }
         }
+
+        // Legacy 676: the employee is active again by now, so this TAKES one visa place back -- and refuses the
+        // delete when the sponsor has none left. Bonus pay is deliberately NOT undone; legacy's OnDeleting
+        // never touches wage 1053.
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await _exitService.UpdateSponsorQuotaAsync(previous.EmployeeId);
     }
 
     /// <summary>
@@ -878,9 +894,11 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
             }
         }
 
-        // NOT PORTED: deleting end-of-service loan recovery (legacy 1002-1014) -- loans are out of scope.
+        // Legacy 1002-1014.
+        await _exitService.UndoLoanSettlementAsync(previous);
 
-        // Legacy 1016-1027. The login is not re-activated either -- see class remarks.
+        // Legacy 1016-1027: the login comes back with the employee.
+        await _exitService.SetLoginActiveAsync(previous.EmployeeId, true);
         await SetEmployeeStatusAsync(previous.EmployeeId, EmployeeStatus.Active);
     }
 
@@ -1207,6 +1225,13 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
 
     private int TenantOf(int employeeId)
         => _employeeRepository.GetAll().Where(e => e.Id == employeeId).Select(e => e.TenantId).FirstOrDefault();
+
+    /// <summary>Legacy <c>LastDayInService</c> (line 396): the latest last day over the un-revoked exits.</summary>
+    private DateTime LastDayInService(int employeeId)
+        => _separationRepository.GetAll()
+            .Where(r => r.EmployeeId == employeeId && r.RevokeDate == null)
+            .Select(r => (DateTime?)r.LastDayInService)
+            .Max() ?? default(DateTime);
 
     private static DateTime MonthEnd(DateTime date)
         => new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));

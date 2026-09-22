@@ -61,6 +61,12 @@ public class CreateOrEditEmployeeFnFPaymentDto
 
     public double CompensateBonusPay { get; set; }
 
+    /// <summary>
+    /// Recover every open loan in full on the compensation date. Not stored -- as in legacy, it only decides
+    /// what the save does. Without it, an employee with an open loan cannot be settled.
+    /// </summary>
+    public bool SettleLoanInEndOfService { get; set; }
+
     [StringLength(4000)]
     public string Comments { get; set; }
 }
@@ -120,4 +126,13 @@ public class FullAndFinalBalancesDto
     public double AutoFillLeaveCompensateDays { get; set; }
 
     public double AutoFillGratuityCompensateDays { get; set; }
+
+    /// <summary>Total amount due across all of the employee's loans.</summary>
+    public double LoanDueAmount { get; set; }
+
+    /// <summary>What is still owed on open loans. Above zero, the entry must settle them.</summary>
+    public double LoanBalanceDueAmount { get; set; }
+
+    /// <summary>The most that may be settled as bonus: the average of the employee's past bonus payments.</summary>
+    public double SuggestedBonusPay { get; set; }
 }

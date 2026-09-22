@@ -18,8 +18,9 @@ namespace HCMv3.PersonnelAdministration;
 ///
 /// <para>Saving and deleting run legacy's F&amp;F side effects through <see cref="IFullAndFinalSettlementService"/>:
 /// the validations, the indemnity (<c>EmployeeGratuity</c>) row the end-of-service off-cycle pays from, leave
-/// encashment, ticket compensation, the indemnity pay adjustment, and the employee going inactive. Loans, bonus,
-/// position status, login deactivation and the asset check are not ported -- see that service's remarks.</para>
+/// encashment, ticket compensation, the indemnity pay adjustment, and the employee going inactive.
+/// The asset check, bonus pay, loans, the position and the login go through
+/// <see cref="IFullAndFinalExitService"/>, called from the settlement service at legacy's own points.</para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments)]
 public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPaymentsAppService
@@ -55,7 +56,10 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
             Dependant3TicketCount = balances.Dependant3TicketCount,
             Dependant3TicketRemainingCount = balances.Dependant3TicketRemainingCount,
             AutoFillLeaveCompensateDays = balances.AutoFillLeaveCompensateDays,
-            AutoFillGratuityCompensateDays = balances.AutoFillGratuityCompensateDays
+            AutoFillGratuityCompensateDays = balances.AutoFillGratuityCompensateDays,
+            LoanDueAmount = balances.LoanDueAmount,
+            LoanBalanceDueAmount = balances.LoanBalanceDueAmount,
+            SuggestedBonusPay = balances.SuggestedBonusPay
         };
     }
 
@@ -118,7 +122,7 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
         var entity = MapToEntity(input, new EmployeeFnFPayment());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
-        var current = ToSettlementValues(entity);
+        var current = ToSettlementValues(entity, input.SettleLoanInEndOfService);
         await _settlementService.ValidateSaveAsync(current, previous: null, currentFnFPaymentId: null);
 
         await _repository.InsertAsync(entity);
@@ -134,7 +138,7 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
         var previous = ToSettlementValues(entity);
 
         MapToEntity(input, entity);
-        var current = ToSettlementValues(entity);
+        var current = ToSettlementValues(entity, input.SettleLoanInEndOfService);
 
         await _settlementService.ValidateSaveAsync(current, previous, entity.Id);
 
@@ -142,10 +146,15 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
         await _settlementService.ApplyAsync(current, previous);
     }
 
-    private static FullAndFinalValues ToSettlementValues(EmployeeFnFPayment entity)
+    /// <summary>
+    /// The values one save works with. <paramref name="settleLoanInEndOfService"/> is legacy's non-persisted tick
+    /// box, so it comes from the input and is never true for the PREVIOUS values.
+    /// </summary>
+    private static FullAndFinalValues ToSettlementValues(EmployeeFnFPayment entity, bool settleLoanInEndOfService = false)
     {
         return new FullAndFinalValues
         {
+            SettleLoanInEndOfService = settleLoanInEndOfService,
             EmployeeId = entity.EmployeeId,
             CompensationDate = entity.CompensationDate,
             LeaveCompensateDays = entity.LeaveCompensateDays,
@@ -154,7 +163,8 @@ public class EmployeeFnFPaymentsAppService : HCMv3AppServiceBase, IEmployeeFnFPa
             TicketCompensateCount = entity.TicketCompensateCount,
             Dependant1TicketCompensateCount = entity.Dependant1TicketCompensateCount,
             Dependant2TicketCompensateCount = entity.Dependant2TicketCompensateCount,
-            Dependant3TicketCompensateCount = entity.Dependant3TicketCompensateCount
+            Dependant3TicketCompensateCount = entity.Dependant3TicketCompensateCount,
+            CompensateBonusPay = entity.CompensateBonusPay
         };
     }
 

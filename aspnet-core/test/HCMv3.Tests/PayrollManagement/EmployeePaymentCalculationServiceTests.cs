@@ -245,6 +245,33 @@ public class EmployeePaymentCalculationServiceTests
     }
 
     /// <summary>
+    /// THE OTHER HALF OF THE NEGATIVE-NET CARRY FORWARD. When a month's deductions exceed its pay,
+    /// <see cref="NetPayWageTypeCalculator"/> zeroes the net and writes the shortfall as a wage code 2011
+    /// "Last Month Recovery Deduction" <see cref="EmployeePayment"/> dated the 1st of the FOLLOWING month
+    /// (covered by <c>StatutoryWageTypeCalculators_Tests</c>). This is what happens NEXT month: that payment is
+    /// an ordinary deduction payment in the new period, so it is picked up here and taken off the new month's
+    /// pay -- which is how the employee actually repays it.
+    ///
+    /// <para>260 earned, 300 deducted last month leaves 40 carried forward, and this month carries a 2011 line of
+    /// 40. It is POSITIVE on the line: the sign flip at legacy lines 112-116 applies only to the advance posting,
+    /// while the register line holds the raw amount and net pay subtracts it as a Deduction wage type.</para>
+    /// </summary>
+    [Fact]
+    public async Task Should_Deduct_Last_Months_Negative_Net_Carry_Forward_In_The_New_Month()
+    {
+        var harness = new Harness();
+        var lastMonthRecovery = PaymentWageType(BillingType.Deduction);
+        lastMonthRecovery.Code = "2011";
+        lastMonthRecovery.NameEn = "Last Month Recovery Deduction";
+        harness.WageTypes.Add(lastMonthRecovery);
+
+        // Dated the 1st of this month, exactly as the net-pay rule writes it.
+        await harness.Build().CalculateAsync(Context(lastMonthRecovery, Payment(1, 40, new DateTime(2025, 4, 1))));
+
+        harness.Store.Lines.Single(l => l.WageTypeId == WageTypeId).Amount.ShouldBe(40);
+    }
+
+    /// <summary>
     /// Legacy lines 322-332 + 366-368: a <see cref="UnitType.Day"/> payment is converted with
     /// <c>perDaySalary = payRate / FixedDays</c>.
     /// </summary>
