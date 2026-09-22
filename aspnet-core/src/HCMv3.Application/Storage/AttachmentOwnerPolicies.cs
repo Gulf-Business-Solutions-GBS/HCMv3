@@ -169,6 +169,32 @@ public class EmployeeDocumentAttachmentOwnerPolicy : EmployeeRequestAttachmentOw
     protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeDocuments_Edit;
 }
 
+/// <summary>
+/// The document a leave requires (legacy <c>EmployeeAbsence.DocAttachment</c>): a sick note, a bereavement
+/// certificate, whatever the absence type's <c>IsAttachmentRequired</c> asks for.
+/// </summary>
+public class EmployeeAbsenceAttachmentOwnerPolicy : EmployeeRequestAttachmentOwnerPolicy<EmployeeAbsence>
+{
+    public const string Type = "EmployeeAbsence";
+
+    public EmployeeAbsenceAttachmentOwnerPolicy(
+        IRepository<EmployeeAbsence> repository,
+        IRepository<WorkFlowApprover> approverRepository,
+        IEmployeeScopeProvider employeeScopeProvider,
+        IPermissionChecker permissionChecker,
+        IUnitOfWorkManager unitOfWorkManager,
+        IAbpSession session)
+        : base(repository, approverRepository, employeeScopeProvider, permissionChecker, unitOfWorkManager, session)
+    {
+    }
+
+    public override string EntityType => Type;
+
+    protected override string ViewPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences;
+
+    protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences_Edit;
+}
+
 /// <summary>Proof on a personal data change (legacy <c>PersonalDataUpdateRequest.SampleImage</c>).</summary>
 public class EmployeePersonalDataChangeAttachmentOwnerPolicy : EmployeeRequestAttachmentOwnerPolicy<EmployeePersonalDataChange>
 {

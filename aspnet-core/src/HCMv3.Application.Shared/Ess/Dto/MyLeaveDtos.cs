@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Extensions;
 using Abp.Runtime.Validation;
+using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Workflow;
 
@@ -135,6 +137,28 @@ public class ApplyForLeaveInput
     /// split itself is worked out by the server; <c>PreviewMyLeaveSplit</c> shows it before committing.
     /// </summary>
     public bool SplitExcessAsUnpaidLeave { get; set; }
+
+    /// <summary>
+    /// Files the employee uploaded with the request -- the tokens the upload endpoint returned. They are
+    /// attached to the leave before it goes for approval, which is what lets an absence type that REQUIRES a
+    /// document (a sick note, say) be submitted at all.
+    /// </summary>
+    public List<string> AttachmentFileTokens { get; set; } = new();
+}
+
+/// <summary>One stretch of a sick leave paid at the same rate, for the breakdown shown before applying.</summary>
+public class SickLeaveDeductionSegmentDto
+{
+    public DateTime FromDate { get; set; }
+
+    public DateTime ToDate { get; set; }
+
+    public double DeductionNumber { get; set; }
+
+    public DeductionUnit DeductionUnit { get; set; }
+
+    /// <summary>True for days past the last slab, which are fully deducted.</summary>
+    public bool IsBeyondTheLastSlab { get; set; }
 }
 
 /// <summary>

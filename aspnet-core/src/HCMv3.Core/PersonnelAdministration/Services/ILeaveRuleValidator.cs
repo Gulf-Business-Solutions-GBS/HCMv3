@@ -36,6 +36,13 @@ public class LeaveRuleContext
     /// <summary>The leave being edited, so it does not count as its own conflict. 0 for a new one.</summary>
     public int ExcludeEmployeeAbsenceId { get; set; }
 
+    /// <summary>
+    /// The leave row the rules are being applied to, when it exists. Only the attachment rule needs it: a
+    /// required document is looked up against this record, and a leave that has not been saved yet cannot have
+    /// one, so the rule is skipped for a row with no id.
+    /// </summary>
+    public int EmployeeAbsenceId { get; set; }
+
     /// <summary>True for a leave that does not exist yet. Legacy applies back-dating only to new rows.</summary>
     public bool IsNew { get; set; } = true;
 
@@ -62,6 +69,12 @@ public class LeaveRuleContext
 
     /// <summary>When an advance is to be paid. Must fall within the month the leave starts in.</summary>
     public DateTime PaymentDate { get; set; }
+
+    /// <summary>
+    /// What the employee wrote with the request. The company leave policy makes this mandatory when the leave
+    /// breaks the advance-notice or maximum-days rule (legacy " Please Add your Comments.").
+    /// </summary>
+    public string Comments { get; set; }
 }
 
 /// <summary>

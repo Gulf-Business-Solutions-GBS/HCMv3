@@ -143,7 +143,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             daysAlreadyCounted: daysAlreadyCounted,
             isNewRequest: !context.IsAmendment,
             leavePaymentType: leave.LeavePaymentType,
-            paymentDate: leave.PaymentDate);
+            paymentDate: leave.PaymentDate,
+            comments: proposed?.Comments ?? leave.Comments);
 
         if (proposed?.IsLateReturn == true)
         {
@@ -491,7 +492,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         double daysAlreadyCounted,
         bool isNewRequest,
         LeavePaymentType leavePaymentType = LeavePaymentType.None,
-        DateTime paymentDate = default)
+        DateTime paymentDate = default,
+        string comments = null)
     {
         if (endDate.Date < startDate.Date)
         {
@@ -529,10 +531,12 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             EndDate = endDate,
             TotalLeaveDays = totalDays,
             ExcludeEmployeeAbsenceId = excludeLeaveId,
+            EmployeeAbsenceId = excludeLeaveId,
             IsNew = isNewRequest,
             DaysAlreadyCounted = daysAlreadyCounted,
             LeavePaymentType = leavePaymentType,
             PaymentDate = paymentDate,
+            Comments = comments,
         });
     }
 

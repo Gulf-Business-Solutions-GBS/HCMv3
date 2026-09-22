@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
@@ -8,6 +9,7 @@ using Abp.UI;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Services;
 using HCMv3.TimeManagement.Services;
+using HCMv3.Storage;
 using HCMv3.SystemSettings.Services;
 using HCMv3.TravelManagement;
 using HCMv3.Workflow;
@@ -25,15 +27,17 @@ namespace HCMv3.PersonnelAdministration.Services;
 /// <para><b>Order matters.</b> Legacy reports the first rule that fails, and testers know the messages by the
 /// order they appear in; the order here is legacy's.</para>
 ///
-/// <para><b>Not ported:</b> the attachment rule (<c>IsAttachmentRequired</c>) -- legacy checked
-/// <c>DocAttachment</c>, which this port deliberately dropped in favour of the generic <c>AppAttachment</c>
-/// store, and nothing wires leave to it yet. <c>ValidateLeavePolicy</c> is a no-op for leave in legacy too
-/// (it only ever branched on the retired <c>LeaveRequest</c> types), so its "company policy" messages are not
-/// ported either.</para>
+/// <para>The attachment rule (<c>IsAttachmentRequired</c>) reads the generic <c>AppAttachment</c> store that
+/// replaced legacy's per-entity <c>DocAttachment</c>. <c>ValidateLeavePolicy</c> is ported as a live rule even
+/// though legacy's copy did nothing for the leave its own ESS created -- it only ever branched on the retired
+/// <c>LeaveRequest</c> types -- because the flags it reads are on every absence type.</para>
 /// </remarks>
 [UnitOfWork]
 public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
 {
+    /// <summary>How leave records are keyed in the attachment store; matches the owner policy.</summary>
+    public const string LeaveAttachmentEntityType = "EmployeeAbsence";
+
     private readonly IRepository<EmployeeAbsence> _absenceRepository;
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IRepository<Employee> _employeeRepository;
@@ -49,6 +53,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
     private readonly IEmployeeAbsenceCalculationService _calculationService;
     private readonly IAccrualService _accrualService;
     private readonly ILeaveBalanceService _leaveBalanceService;
+    private readonly IAttachmentManager _attachmentManager;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public LeaveRuleValidator(
@@ -67,6 +72,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
         IEmployeeAbsenceCalculationService calculationService,
         IAccrualService accrualService,
         ILeaveBalanceService leaveBalanceService,
+        IAttachmentManager attachmentManager,
         IUnitOfWorkManager unitOfWorkManager)
     {
         _absenceRepository = absenceRepository;
@@ -84,6 +90,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
         _calculationService = calculationService;
         _accrualService = accrualService;
         _leaveBalanceService = leaveBalanceService;
+        _attachmentManager = attachmentManager;
         _unitOfWorkManager = unitOfWorkManager;
     }
 
@@ -148,6 +155,96 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
         await EnsureUnpaidIsAllowedAsync(context, absenceType, start);
         EnsureNoTravelInTheSameDays(context, start, end);
         EnsureSeparationRulesAllowIt(employee, absenceType, start, end);
+        await EnsureCompanyLeavePolicyAllowsItAsync(context, absenceType, start, days);
+        await EnsureRequiredDocumentIsAttachedAsync(context, absenceType);
+    }
+
+    /// <summary>
+    /// Legacy "Please Attach Document." (<c>WorkFlowServices</c> 592-602): an absence type flagged
+    /// <c>IsAttachmentRequired</c> -- a sick note, a bereavement certificate -- cannot be submitted without one.
+    ///
+    /// <para>
+    /// Checked against the leave row, through the generic attachment store that replaced legacy's per-entity
+    /// <c>DocAttachment</c>. A row with no id yet has nowhere to attach to, so the rule waits until there is one:
+    /// the ESS attaches the employee's file to the new leave before submitting it for approval.
+    /// </para>
+    /// </summary>
+    private async Task EnsureRequiredDocumentIsAttachedAsync(LeaveRuleContext context, AbsenceType absenceType)
+    {
+        if (!absenceType.IsAttachmentRequired || context.EmployeeAbsenceId <= 0)
+        {
+            return;
+        }
+
+        var attachments = await _attachmentManager.GetListAsync(
+            LeaveAttachmentEntityType, context.EmployeeAbsenceId.ToString(CultureInfo.InvariantCulture));
+
+        if (attachments.Count == 0)
+        {
+            throw new UserFriendlyException(L("PleaseAttachDocument", absenceType.NameEn));
+        }
+    }
+
+    /// <summary>
+    /// The company leave policy, ported from legacy <c>ValidationService.ValidateLeavePolicy</c> (132-309): a
+    /// type may require leave to be asked for a number of days in advance (<c>ApplyLeaveInAdvance</c> /
+    /// <c>ApplyLeaveInAdvanceDays</c>), and may cap the days taken in the quota period
+    /// (<c>ApplyMaxLeave</c> / <c>MaxLimitInDays</c>).
+    ///
+    /// <para>
+    /// <c>PolicyRestrictType</c> decides what a breach costs. <b>Error</b> refuses the leave. <b>Warning</b>
+    /// lets it through but makes the reason mandatory -- legacy's " Please Add your Comments.", which is the
+    /// only consequence a warning ever had.
+    /// </para>
+    /// <para>
+    /// Legacy called this for its <c>AbsenceRequest</c> too, but the routine only ever branched on the retired
+    /// <c>LeaveRequest</c> types, so it did nothing for the leave the ESS actually creates. Ported here as a
+    /// live rule for every leave (user decision 2026-09-22), which is what the flags on the absence type have
+    /// always implied.
+    /// </para>
+    /// </summary>
+    private async Task EnsureCompanyLeavePolicyAllowsItAsync(
+        LeaveRuleContext context, AbsenceType absenceType, DateTime start, double days)
+    {
+        var breaksAdvanceNotice = absenceType.ApplyLeaveInAdvance
+                                  && absenceType.ApplyLeaveInAdvanceDays > 0
+                                  && (start - (context.CreatedOn?.Date ?? Clock.Now.Date)).TotalDays + 1 < absenceType.ApplyLeaveInAdvanceDays;
+
+        var breaksMaximum = false;
+        if (absenceType.ApplyMaxLeave && absenceType.MaxLimitInDays > 0)
+        {
+            var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start);
+            var used = balances.FirstOrDefault(b => b.AbsenceTypeId == context.AbsenceTypeId)?.Used ?? 0;
+
+            // Legacy compares the quota's USED days (what has been taken this period) plus what is being asked
+            // for now against the policy cap.
+            breaksMaximum = used > 0 && used + days > absenceType.MaxLimitInDays;
+        }
+
+        if (!breaksAdvanceNotice && !breaksMaximum)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(context.Comments))
+        {
+            throw new UserFriendlyException(L("PleaseAddYourComments"));
+        }
+
+        if (absenceType.PolicyRestrictType != RestrictType.Error)
+        {
+            return;
+        }
+
+        // Advance notice wins when both are broken, as legacy ordered them.
+        if (breaksAdvanceNotice)
+        {
+            var earliest = Clock.Now.Date.AddDays(absenceType.ApplyLeaveInAdvanceDays);
+
+            throw new UserFriendlyException(L("CannotApplyLeaveBeforeCompanyPolicyDate", earliest.ToString("dd/MM/yyyy")));
+        }
+
+        throw new UserFriendlyException(L("CannotExceedMaximumLeavePolicy", $"{absenceType.MaxLimitInDays}"));
     }
 
     /// <summary>

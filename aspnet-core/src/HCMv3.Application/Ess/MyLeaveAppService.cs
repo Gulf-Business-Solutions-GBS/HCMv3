@@ -13,6 +13,7 @@ using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Ess.Dto;
+using HCMv3.Storage.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
@@ -40,6 +41,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private readonly IWorkflowAmendmentService _workflowAmendmentService;
     private readonly IEmployeeAbsenceCalculationService _absenceCalculationService;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly ISickLeaveDeductionPreview _sickLeaveDeductionPreview;
+    private readonly HCMv3.Storage.IAttachmentAppService _attachmentAppService;
 
     public MyLeaveAppService(
         IRepository<EmployeeAbsence> absenceRepository,
@@ -52,7 +55,9 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         IUnitOfWorkManager unitOfWorkManager,
         IWorkflowAmendmentService workflowAmendmentService,
         IEmployeeAbsenceCalculationService absenceCalculationService,
-        ISysSettingsAccessor sysSettingsAccessor)
+        ISysSettingsAccessor sysSettingsAccessor,
+        ISickLeaveDeductionPreview sickLeaveDeductionPreview,
+        HCMv3.Storage.IAttachmentAppService attachmentAppService)
     {
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
@@ -65,6 +70,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         _workflowAmendmentService = workflowAmendmentService;
         _absenceCalculationService = absenceCalculationService;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _sickLeaveDeductionPreview = sickLeaveDeductionPreview;
+        _attachmentAppService = attachmentAppService;
     }
 
     public async Task<List<MyLeaveBalanceDto>> GetMyBalances()
@@ -665,6 +672,10 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         // that actually exist.
         await CurrentUnitOfWork.SaveChangesAsync();
 
+        // Files first: an absence type that REQUIRES a document is refused at submit without one, so the
+        // employee's upload has to be on the leave before it goes for approval.
+        await AttachUploadedFilesAsync(leaveId, input.AttachmentFileTokens);
+
         // Created and submitted in one step: an employee should never be left holding a draft they have to
         // remember to send. Validation inside the handler (overlap, bookable balance) throws from here, and
         // because it is one unit of work the half-created leave rolls back with it.
@@ -676,6 +687,26 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             WorkflowRequestId = requestId,
             SubmittedForApproval = true
         };
+    }
+
+    /// <summary>
+    /// How a sick leave will be paid, slab by slab (legacy GetSickLeaveUnpaidInfo). Empty for any other type.
+    /// </summary>
+    public async Task<List<SickLeaveDeductionSegmentDto>> PreviewMySickLeaveDeduction(ApplyForLeaveInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        var segments = await _sickLeaveDeductionPreview.GetSegmentsAsync(
+            employeeId, input.AbsenceTypeId, input.StartDate.Date, input.EndDate.Date);
+
+        return segments.Select(s => new SickLeaveDeductionSegmentDto
+        {
+            FromDate = s.FromDate,
+            ToDate = s.ToDate,
+            DeductionNumber = s.DeductionNumber,
+            DeductionUnit = s.DeductionUnit,
+            IsBeyondTheLastSlab = s.IsBeyondTheLastSlab,
+        }).ToList();
     }
 
     public async Task<LeaveSplitPreviewDto> PreviewMyLeaveSplit(ApplyForLeaveInput input)
@@ -784,6 +815,27 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         }
 
         return default;
+    }
+
+    /// <summary>Moves the employee's uploads onto the new leave, through the shared attachment store.</summary>
+    private async Task AttachUploadedFilesAsync(int leaveId, List<string> fileTokens)
+    {
+        if (fileTokens == null || fileTokens.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var token in fileTokens.Where(t => !string.IsNullOrWhiteSpace(t)))
+        {
+            await _attachmentAppService.AddAttachment(new AddAttachmentInput
+            {
+                EntityType = LeaveRuleValidator.LeaveAttachmentEntityType,
+                EntityId = leaveId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                FileToken = token,
+            });
+        }
+
+        await CurrentUnitOfWork.SaveChangesAsync();
     }
 
     public async Task CancelMyLeave(EntityDto input)

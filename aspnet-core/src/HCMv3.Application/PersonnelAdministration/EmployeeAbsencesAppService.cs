@@ -360,8 +360,10 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
             EndTime = entity.EndTime,
             HalfdayType = entity.HalfdayType,
             ExcludeEmployeeAbsenceId = entity.Id,
+            EmployeeAbsenceId = entity.Id,
             IsNew = entity.Id == 0,
             CreatedOn = entity.CreationTime,
+            Comments = entity.Comments,
             LeavePaymentType = entity.LeavePaymentType,
             PaymentDate = entity.PaymentDate,
         });

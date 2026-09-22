@@ -36,6 +36,9 @@ public interface IMyLeaveAppService : IApplicationService
     /// </summary>
     Task<LeaveSplitPreviewDto> PreviewMyLeaveSplit(ApplyForLeaveInput input);
 
+    /// <summary>How a sick leave will be paid, slab by slab. Empty for any other absence type.</summary>
+    Task<List<SickLeaveDeductionSegmentDto>> PreviewMySickLeaveDeduction(ApplyForLeaveInput input);
+
     /// <summary>Withdraws a request the employee raised, while it is still theirs to withdraw.</summary>
     Task CancelMyLeave(EntityDto input);
 
