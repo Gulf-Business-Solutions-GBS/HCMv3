@@ -130,7 +130,6 @@ public class ProfilePhotoImportService : HCMv3DomainServiceBase, IProfilePhotoIm
                     // Kept on disk under the tenant's folder, never in the database.
                     employee.PhotoPath = await _entityImageStore.ReplaceAsync(
                         EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, employee.PhotoPath, content);
-                    employee.LegacyPhoto = null;
                     await _employeeRepository.UpdateAsync(employee);
                 });
 

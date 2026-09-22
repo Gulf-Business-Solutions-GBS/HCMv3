@@ -64,7 +64,7 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
         var entity = await _applicantRepository.GetAsync(input.Id);
 
         var dto = ToCreateOrEditDto(entity);
-        dto.Photo = await _imageStore.ReadWithLegacyAsync(entity.TenantId, entity.PhotoPath, entity.LegacyPhoto);
+        dto.Photo = await _imageStore.ReadOrNullAsync(entity.TenantId, entity.PhotoPath);
 
         return new GetApplicantForEditOutput
         {
@@ -116,7 +116,6 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
 
         entity.PhotoPath = await _imageStore.SaveIfChangedAsync(
             EntityImageKinds.ApplicantPhoto, entity.TenantId, entity.Id, entity.PhotoPath, input.Photo);
-        entity.LegacyPhoto = null;
 
         await _applicantRepository.UpdateAsync(entity);
     }

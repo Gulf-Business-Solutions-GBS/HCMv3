@@ -120,10 +120,6 @@ public class HCMv3WebHostModule : AbpModule
         // is a per-tenant runtime setting and therefore cannot be evaluated here at host start-up.
         workManager.Add(IocManager.Resolve<TimeEngineAutorunBackgroundWorker>());
 
-        // Moves photos and signatures still stored in database columns onto disk (per tenant folder).
-        // Registered unconditionally: once the old columns are empty each run is a no-op.
-        workManager.Add(IocManager.Resolve<LegacyImageMoverBackgroundWorker>());
-
         // REPORT DISTRIBUTION: fires report schedules whose next occurrence has arrived. Registered
         // unconditionally -- it is a no-op unless a tenant has active schedules that are due, and there
         // is no host-level setting that could be evaluated here instead.

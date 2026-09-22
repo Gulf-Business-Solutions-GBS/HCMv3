@@ -19150,10 +19150,6 @@ namespace HCMv3.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<byte[]>("LegacyPhoto")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("Photo");
-
                     b.Property<string>("LoginID")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
@@ -23448,10 +23444,6 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<byte[]>("LegacySignature")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("Signature");
-
                     b.Property<string>("SignaturePath")
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
@@ -24870,10 +24862,6 @@ namespace HCMv3.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<byte[]>("LegacyPhoto")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("Photo");
 
                     b.Property<int?>("MaritalStatusId")
                         .HasColumnType("int");

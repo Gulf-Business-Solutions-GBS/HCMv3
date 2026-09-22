@@ -625,7 +625,7 @@ public class CareersCandidateAppService : HCMv3AppServiceBase, ICareersCandidate
             Telephone = applicant.Telephone,
             CurrentAddress = applicant.CurrentAddress,
             PermanentAddress = applicant.PermanentAddress,
-            HasPhoto = applicant.PhotoPath != null || applicant.LegacyPhoto != null,
+            HasPhoto = applicant.PhotoPath != null,
             ProfileCompletionPercent = ToPercent(await GetCompletionPointsAsync(applicant))
         };
     }
@@ -714,7 +714,7 @@ public class CareersCandidateAppService : HCMv3AppServiceBase, ICareersCandidate
     {
         var points = 0;
 
-        if (applicant.PhotoPath != null || applicant.LegacyPhoto != null) points += 5;
+        if (applicant.PhotoPath != null) points += 5;
         if (applicant.CivilID != 0) points += 5;
         if (applicant.NationalityId.HasValue) points += 5;
         if (!string.IsNullOrEmpty(applicant.PermanentAddress)) points += 5;

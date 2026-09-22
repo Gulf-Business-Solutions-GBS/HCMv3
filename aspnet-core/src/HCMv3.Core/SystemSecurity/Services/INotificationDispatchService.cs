@@ -103,6 +103,14 @@ public interface INotificationDispatchService
     Task SendLeaveResumptionNotificationsAsync();
 
     /// <summary>
+    /// Tells the guarantor that an employee has named them on a passport withdrawal request (legacy
+    /// <c>SendEmailToGuarantor</c>, notification <c>PassportGuarantor_Notification</c>). A no-op when the
+    /// tenant has not configured that notification, has e-mail switched off for it, or either person is no
+    /// longer active -- the request itself is never held up by it.
+    /// </summary>
+    Task SendPassportGuarantorNotificationAsync(int guarantorId, int employeeId, string requestNumber);
+
+    /// <summary>
     /// Sends punch-during-leave notifications, ported from legacy
     /// <c>SendNotification_PunchDuringLeave</c>, per the <c>"PUNCHDURINGLEAVE_NOTIFICATION"</c>
     /// <see cref="HCMv3.SystemSecurity.SystemNotification"/> row's linked <c>NotificationConfig</c>. Matches

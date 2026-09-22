@@ -452,7 +452,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
                 BirthDate = new DateTime(1990, 1, 1),
                 Gender = gender,
                 NationalityId = nationality.Id,
-                LegacyPhoto = photo
+                PhotoPath = photo == null ? null : "tenant-1/employee-photos/seed.img"
             }).Entity;
         });
 

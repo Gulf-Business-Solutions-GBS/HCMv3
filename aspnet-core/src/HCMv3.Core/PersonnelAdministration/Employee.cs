@@ -242,14 +242,6 @@ public class Employee : FullAuditedEntity, IMustHaveTenant
     [StringLength(512)]
     public virtual string PhotoPath { get; set; }
 
-    /// <summary>
-    /// The old <c>Photo</c> varbinary column, kept only so photos stored before the move (and any the legacy
-    /// migrator still copies in) can be moved to disk by <c>LegacyImageMover</c>, which then empties it.
-    /// Nothing else may read or write it; it is dropped once every tenant is moved.
-    /// </summary>
-    [System.ComponentModel.DataAnnotations.Schema.Column("Photo")]
-    public virtual byte[] LegacyPhoto { get; set; }
-
     public virtual DateTime JoiningDate { get; set; }
 
     public virtual int ProbationDays { get; set; }

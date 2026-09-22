@@ -136,7 +136,7 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 
         var employees = (await _employeeRepository.GetAll()
             .Where(e => employeeIds.Contains(e.Id))
-            .Select(e => new { e.Id, e.FullNameEn, e.FullNameAr, HasPhoto = e.PhotoPath != null || e.LegacyPhoto != null })
+            .Select(e => new { e.Id, e.FullNameEn, e.FullNameAr, HasPhoto = e.PhotoPath != null })
             .ToListAsync()).ToDictionary(e => e.Id);
 
         var types = (await _transactionTypeRepository.GetAll()

@@ -6,6 +6,8 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
+    EssColleagueLookupDto,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyDocumentRequestDto,
     MyDocumentServiceProxy,
@@ -37,9 +39,13 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPassportWithdrawalDto> implements OnInit {
     private readonly _service = inject(MyPassportWithdrawalServiceProxy);
     private readonly _documentService = inject(MyDocumentServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
     /** The employee's own documents -- the only things they are allowed to ask for. */
     readonly myDocuments = signal<MyDocumentRequestDto[]>([]);
+
+    /** Colleagues who may be named as guarantor -- the same active-colleague list delegations use. */
+    readonly guarantorCandidates = signal<EssColleagueLookupDto[]>([]);
 
     /** The row whose return is being recorded, if any. Null means the return form is closed. */
     readonly returningRow = signal<MyPassportWithdrawalDto | null>(null);
@@ -51,6 +57,7 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
         returnDate: '',
         withdrawalReason: '',
         comments: '',
+        guarantorId: null as number | null,
     };
 
     returnForm = { actualReturnDate: '' };
@@ -59,6 +66,12 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
         // Reads the same list the My Documents screen shows. An account without that permission simply gets
         // an empty picker and the explanation below it, rather than an error toast on a screen that
         // otherwise works.
+        // The same active-colleague list the delegation screen uses; the server excludes the caller.
+        this._lookups.getDelegationCandidates().subscribe({
+            next: (result) => this.guarantorCandidates.set(result ?? []),
+            error: () => this.guarantorCandidates.set([]),
+        });
+
         this._documentService
             .getMyDocuments(new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined }))
             .subscribe({
@@ -84,6 +97,7 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
             returnDate: '',
             withdrawalReason: '',
             comments: '',
+            guarantorId: null,
         };
 
         this.returningRow.set(null);
@@ -120,9 +134,9 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
         input.withdrawDate = DateTime.fromISO(this.form.withdrawDate);
         input.returnDate = DateTime.fromISO(this.form.returnDate);
 
-        // Deliberately not sent as a picker: whether a guarantor is required is a tenant setting and the
-        // id is an internal employee key, so HR sets it rather than the employee guessing at it.
-        input.guarantorId = undefined;
+        // Legacy asked the employee to name a guarantor on this form and mailed them when the request was
+        // raised. Optional here too, so a tenant that does not use guarantors simply leaves it blank.
+        input.guarantorId = this.form.guarantorId ?? undefined;
 
         // Whether this may be left blank is a tenant setting, so the server decides rather than the screen.
         input.withdrawalReason = this.form.withdrawalReason?.trim();
@@ -191,6 +205,10 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
 
     typeName(row: MyPassportWithdrawalDto): string {
         return this.pick(row.documentTypeNameEn, row.documentTypeNameAr);
+    }
+
+    colleagueName(colleague: EssColleagueLookupDto): string {
+        return `${colleague.code} - ${this.pick(colleague.fullNameEn, colleague.fullNameAr)}`;
     }
 
     guarantorName(row: MyPassportWithdrawalDto): string {

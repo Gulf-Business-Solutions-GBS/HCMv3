@@ -211,7 +211,7 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
                 x.FullNameEn,
                 x.FullNameAr,
                 x.Gender,
-                HasPhoto = x.PhotoPath != null || x.LegacyPhoto != null
+                HasPhoto = x.PhotoPath != null
             })
             .ToListAsync();
 

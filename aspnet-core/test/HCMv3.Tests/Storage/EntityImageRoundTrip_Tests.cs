@@ -14,7 +14,7 @@ namespace HCMv3.Tests.Storage;
 /// <summary>
 /// The screens still send and receive photos and signatures as bytes in their DTOs; only where they are kept
 /// changed. These tests go through the real services to prove that round trip: saved to disk, never to the
-/// database, read back unchanged -- and a photo not yet moved out of the old column still shows.
+/// database, read back unchanged.
 /// </summary>
 // ReSharper disable once InconsistentNaming
 public class EntityImageRoundTrip_Tests : AppTestBase
@@ -29,7 +29,7 @@ public class EntityImageRoundTrip_Tests : AppTestBase
 
     private int TenantId => AbpSession.TenantId ?? 1;
 
-    private int CreateEmployee(byte[] legacyPhoto = null)
+    private int CreateEmployee()
     {
         Employee employee = null;
         UsingDbContext(context =>
@@ -57,8 +57,7 @@ public class EntityImageRoundTrip_Tests : AppTestBase
                 BirthDate = new DateTime(1990, 1, 1),
                 JoiningDate = new DateTime(2020, 1, 1),
                 ProbationEndDate = new DateTime(2020, 4, 1),
-                NationalityId = nationality.Id,
-                LegacyPhoto = legacyPhoto
+                NationalityId = nationality.Id
             }).Entity;
         });
 
@@ -76,36 +75,32 @@ public class EntityImageRoundTrip_Tests : AppTestBase
     // ---------------------------------------------------------------- employee photo
 
     [Fact]
-    public async Task A_Photo_Not_Yet_Moved_Should_Still_Show_On_The_Edit_Screen()
-    {
-        var id = CreateEmployee(new byte[] { 1, 2 });
-
-        var dto = (await Resolve<IEmployeesAppService>().GetEmployeeForEdit(new EntityDto(id))).Employee;
-
-        dto.Photo.ShouldBe(new byte[] { 1, 2 });
-    }
-
-    [Fact]
-    public async Task Saving_The_Employee_Should_Move_The_Photo_To_Disk()
+    public async Task Saving_A_Photo_Should_Put_It_On_Disk_And_Read_It_Back()
     {
         var service = Resolve<IEmployeesAppService>();
-        var id = CreateEmployee(new byte[] { 1, 2 });
-        var dto = (await service.GetEmployeeForEdit(new EntityDto(id))).Employee;
+        var id = CreateEmployee();
 
+        var dto = (await service.GetEmployeeForEdit(new EntityDto(id))).Employee;
+        dto.Photo = new byte[] { 1, 2 };
         await service.CreateOrEdit(dto);
 
         var employee = LoadEmployee(id);
-        employee.LegacyPhoto.ShouldBeNull();
         employee.PhotoPath.ShouldStartWith($"tenant-{TenantId}/employee-photos/{id}-");
         (await _images.ReadOrNullAsync(TenantId, employee.PhotoPath)).ShouldBe(new byte[] { 1, 2 });
+
+        // And the screen gets it back as bytes, exactly as before the move.
+        var reloaded = (await service.GetEmployeeForEdit(new EntityDto(id))).Employee;
+        reloaded.Photo.ShouldBe(new byte[] { 1, 2 });
     }
 
     [Fact]
     public async Task Saving_Again_Unchanged_Should_Keep_The_Same_File()
     {
         var service = Resolve<IEmployeesAppService>();
-        var id = CreateEmployee(new byte[] { 3 });
-        await service.CreateOrEdit((await service.GetEmployeeForEdit(new EntityDto(id))).Employee);
+        var id = CreateEmployee();
+        var seeded = (await service.GetEmployeeForEdit(new EntityDto(id))).Employee;
+        seeded.Photo = new byte[] { 3 };
+        await service.CreateOrEdit(seeded);
         var firstPath = LoadEmployee(id).PhotoPath;
 
         await service.CreateOrEdit((await service.GetEmployeeForEdit(new EntityDto(id))).Employee);
@@ -117,8 +112,10 @@ public class EntityImageRoundTrip_Tests : AppTestBase
     public async Task Clearing_The_Photo_Should_Delete_The_File()
     {
         var service = Resolve<IEmployeesAppService>();
-        var id = CreateEmployee(new byte[] { 4 });
-        await service.CreateOrEdit((await service.GetEmployeeForEdit(new EntityDto(id))).Employee);
+        var id = CreateEmployee();
+        var seeded = (await service.GetEmployeeForEdit(new EntityDto(id))).Employee;
+        seeded.Photo = new byte[] { 4 };
+        await service.CreateOrEdit(seeded);
         var path = LoadEmployee(id).PhotoPath;
 
         var dto = (await service.GetEmployeeForEdit(new EntityDto(id))).Employee;
@@ -141,7 +138,6 @@ public class EntityImageRoundTrip_Tests : AppTestBase
 
         EmployeeSignature row = null;
         UsingDbContext(context => row = context.Set<EmployeeSignature>().First(s => s.EmployeeId == employeeId));
-        row.LegacySignature.ShouldBeNull();
         row.SignaturePath.ShouldStartWith($"tenant-{TenantId}/employee-signatures/");
 
         var list = await service.GetAll(new GetAllEmployeeSignaturesInput { EmployeeId = employeeId, MaxResultCount = 10 });

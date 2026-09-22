@@ -71,7 +71,6 @@ public class ProfilePhotoImportService_Tests : AppTestBase
         {
             var employee = await ctx.Employees.FirstAsync(e => e.Id == employeeId);
             // On disk under the tenant's folder; the database holds only the path.
-            employee.LegacyPhoto.ShouldBeNull();
             employee.PhotoPath.ShouldStartWith("tenant-" + TestTenantId + "/employee-photos/");
             (await Resolve<IEntityImageStore>().ReadOrNullAsync(TestTenantId, employee.PhotoPath)).ShouldBe(image);
 
@@ -111,7 +110,17 @@ public class ProfilePhotoImportService_Tests : AppTestBase
     public async Task ImportAsync_Should_Reject_An_Oversized_Image_Without_Touching_The_Existing_Photo()
     {
         var existing = new byte[] { 9, 9, 9 };
-        var employeeId = await CreateEmployeeAsync("PH-BIG", existing);
+        var employeeId = await CreateEmployeeAsync("PH-BIG");
+
+        // A photo already on disk, as the importer itself would have left it.
+        var existingPath = await Resolve<IEntityImageStore>().ReplaceAsync(
+            EntityImageKinds.EmployeePhoto, TestTenantId, employeeId, null, existing);
+        await UsingDbContextAsync(async ctx =>
+        {
+            var employee = await ctx.Employees.FirstAsync(e => e.Id == employeeId);
+            employee.PhotoPath = existingPath;
+            await ctx.SaveChangesAsync();
+        });
 
         // No ManagePersonnelSettings row exists in the test database, so the legacy default applies:
         // maxSize = 100 KB (uscBulkImport.ascx.cs line 186).
@@ -133,8 +142,8 @@ public class ProfilePhotoImportService_Tests : AppTestBase
         {
             var employee = await ctx.Employees.FirstAsync(e => e.Id == employeeId);
             // The critical assertion: a rejected image must not clobber what was already there.
-            employee.LegacyPhoto.ShouldBe(existing);
-            employee.PhotoPath.ShouldBeNull();
+            employee.PhotoPath.ShouldBe(existingPath);
+            (await Resolve<IEntityImageStore>().ReadOrNullAsync(TestTenantId, employee.PhotoPath)).ShouldBe(existing);
 
             var log = await ctx.BulkUploadLogs.OrderByDescending(l => l.Id).FirstAsync();
             log.Status.ShouldBe(1);
@@ -162,7 +171,7 @@ public class ProfilePhotoImportService_Tests : AppTestBase
         result.Failed.ShouldBe(0);
     }
 
-    private async Task<int> CreateEmployeeAsync(string code, byte[] photo = null)
+    private async Task<int> CreateEmployeeAsync(string code)
     {
         return await UsingDbContextAsync(async ctx =>
         {
@@ -187,7 +196,6 @@ public class ProfilePhotoImportService_Tests : AppTestBase
                 LastNameEn = code,
                 FirstNameAr = code,
                 LastNameAr = code,
-                LegacyPhoto = photo
             };
 
             ctx.Employees.Add(employee);

@@ -46,12 +46,6 @@ public interface IEntityImageStore
     Task DeleteAsync(string path);
 
     /// <summary>
-    /// The record's image: from disk when it has a path, otherwise the bytes still in its old column (not yet
-    /// moved by <c>LegacyImageMover</c>). Lets screens show every photo during the move.
-    /// </summary>
-    Task<byte[]> ReadWithLegacyAsync(int tenantId, string path, byte[] legacyContent);
-
-    /// <summary>
     /// <see cref="ReplaceAsync"/>, but only when <paramref name="content"/> differs from what is stored.
     /// Edit screens send the photo back on every save; rewriting it each time would churn files and change
     /// the path (and so the browser cache key) for nothing.
@@ -106,11 +100,6 @@ public class EntityImageStore : IEntityImageStore, ITransientDependency
 
     public Task DeleteAsync(string path) =>
         string.IsNullOrEmpty(path) ? Task.CompletedTask : _fileStore.DeleteAsync(path);
-
-    public Task<byte[]> ReadWithLegacyAsync(int tenantId, string path, byte[] legacyContent) =>
-        string.IsNullOrEmpty(path)
-            ? Task.FromResult(legacyContent is { Length: > 0 } ? legacyContent : null)
-            : ReadOrNullAsync(tenantId, path);
 
     public async Task<string> SaveIfChangedAsync(string kind, int tenantId, int recordId, string currentPath, byte[] content)
     {

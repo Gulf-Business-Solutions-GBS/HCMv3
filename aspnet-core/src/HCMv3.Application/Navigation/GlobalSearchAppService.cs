@@ -89,7 +89,7 @@ public class GlobalSearchAppService : HCMv3AppServiceBase, IGlobalSearchAppServi
                 x.FullNameEn,
                 x.FullNameAr,
                 x.Email,
-                HasPhoto = x.PhotoPath != null || x.LegacyPhoto != null
+                HasPhoto = x.PhotoPath != null
             })
             .ToListAsync();
 
@@ -150,7 +150,7 @@ public class GlobalSearchAppService : HCMv3AppServiceBase, IGlobalSearchAppServi
                     FullNameEn = x.FullNameEn,
                     FullNameAr = x.FullNameAr,
                     Email = x.Email,
-                    HasPhoto = x.PhotoPath != null || x.LegacyPhoto != null
+                    HasPhoto = x.PhotoPath != null
                 })
                 .ToListAsync();
 

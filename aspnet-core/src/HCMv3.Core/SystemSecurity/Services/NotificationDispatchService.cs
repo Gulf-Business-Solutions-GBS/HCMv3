@@ -27,6 +27,9 @@ public class NotificationDispatchService : HCMv3DomainServiceBase, INotification
     public const string LeaveResumptionNotificationName = "LEAVERESUMPTION_NOTIFICATION";
     public const string PunchDuringLeaveNotificationName = "PUNCHDURINGLEAVE_NOTIFICATION";
 
+    /// <summary>Legacy's notification name, kept verbatim so an existing configuration still matches.</summary>
+    public const string PassportGuarantorNotificationName = "PassportGuarantor_Notification";
+
     private readonly IRepository<SystemNotification> _systemNotificationRepository;
     private readonly IRepository<NotificationConfig> _notificationConfigRepository;
     private readonly IRepository<EmailTemplate> _emailTemplateRepository;
@@ -306,6 +309,39 @@ public class NotificationDispatchService : HCMv3DomainServiceBase, INotification
             var mergeValues = new Dictionary<string, object> { ["TransDate"] = timeEvent.TransDate.ToString("dd/MM/yyyy") };
             await _emailService.SendEmailForNotificationConfigAsync(notificationConfig, emailTemplate, employee, mergeValues);
         }
+    }
+
+    public async Task SendPassportGuarantorNotificationAsync(int guarantorId, int employeeId, string requestNumber)
+    {
+        var notificationConfig = ResolveActiveNotificationConfig(PassportGuarantorNotificationName);
+        if (notificationConfig == null || !notificationConfig.SendEmail)
+        {
+            return;
+        }
+
+        var emailTemplate = ResolveEmailTemplate(PassportGuarantorNotificationName);
+        if (emailTemplate == null)
+        {
+            return;
+        }
+
+        var people = ResolveActiveEmployeesById(new[] { guarantorId, employeeId });
+        if (!people.TryGetValue(guarantorId, out var guarantor) || !people.TryGetValue(employeeId, out var employee))
+        {
+            return;
+        }
+
+        // Addressed to the GUARANTOR, who is being asked to stand behind somebody else's request, so the
+        // config's routing resolves against them; the requester's name travels as a merge value, exactly as
+        // legacy's two-value list did.
+        var mergeValues = new Dictionary<string, object>
+        {
+            ["EmpCodeWithFullNameEn"] = $"{employee.Code} - {employee.FullNameEn}",
+            ["GuarantorNameEn"] = guarantor.FirstNameEn,
+            ["RequestNumber"] = requestNumber ?? string.Empty
+        };
+
+        await _emailService.SendEmailForNotificationConfigAsync(notificationConfig, emailTemplate, guarantor, mergeValues);
     }
 
     private Dictionary<int, Employee> ResolveActiveEmployeesById(IEnumerable<int> employeeIds)

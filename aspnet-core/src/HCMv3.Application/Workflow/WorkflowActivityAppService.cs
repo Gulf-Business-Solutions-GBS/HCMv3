@@ -28,6 +28,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IWorkflowApprovalService _workflowApprovalService;
+    private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
 
     public WorkflowActivityAppService(
         IRepository<WorkflowRequest> requestRepository,
@@ -37,8 +38,10 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         IRepository<WorkFlowApprover> approverRepository,
         IRepository<Employee> employeeRepository,
         IEmployeeSessionService employeeSessionService,
-        IWorkflowApprovalService workflowApprovalService)
+        IWorkflowApprovalService workflowApprovalService,
+        IWorkflowNotificationDispatcher notificationDispatcher)
     {
+        _notificationDispatcher = notificationDispatcher;
         _requestRepository = requestRepository;
         _requestLogRepository = requestLogRepository;
         _commentRepository = commentRepository;
@@ -154,6 +157,19 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         };
 
         await _commentRepository.InsertAndGetIdAsync(comment);
+
+        // An INTERNAL comment is deliberately not announced: the step's notification configuration routes to
+        // the requester as readily as to approvers, and the whole point of an internal note is that they do
+        // not see it.
+        if (!input.IsInternal)
+        {
+            await _notificationDispatcher.DispatchAsync(
+                request,
+                request.WorkflowStep,
+                WorkflowNotificationAction.Remark,
+                access.EmployeeId.Value,
+                input.Body);
+        }
 
         var dto = ToDto(comment, canEdit: true);
         await FillActorsAsync(new List<WorkflowActivityDto> { dto });
@@ -294,7 +310,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
                 e.Id,
                 e.FullNameEn,
                 e.FullNameAr,
-                HasPhoto = e.PhotoPath != null || e.LegacyPhoto != null
+                HasPhoto = e.PhotoPath != null
             })
             .ToListAsync();
 

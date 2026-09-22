@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text.Json;
@@ -15,6 +16,7 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
 using HCMv3.PersonnelAdministration.Workflow;
+using HCMv3.SystemSecurity.Services;
 using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
@@ -52,6 +54,7 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<WorkflowRequest> _requestRepository;
+    private readonly INotificationDispatchService _notificationDispatchService;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IWorkflowAmendmentService _workflowAmendmentService;
 
@@ -64,6 +67,7 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         IRepository<EmployeeDocument> documentRepository,
         IRepository<DocumentType> documentTypeRepository,
         IRepository<Employee> employeeRepository,
+        INotificationDispatchService notificationDispatchService,
         ISysSettingsAccessor sysSettingsAccessor,
         IWorkflowAmendmentService workflowAmendmentService)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
@@ -72,6 +76,7 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         _documentTypeRepository = documentTypeRepository;
         _employeeRepository = employeeRepository;
         _requestRepository = requestRepository;
+        _notificationDispatchService = notificationDispatchService;
         _sysSettingsAccessor = sysSettingsAccessor;
         _workflowAmendmentService = workflowAmendmentService;
     }
@@ -108,7 +113,22 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
 
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
 
-            return new PagedResultDto<MyPassportWithdrawalDto>(totalCount, items.Select(ToDto).ToList());
+            // A superseded withdrawal keeps its row Open by design while its REQUEST was closed when the
+            // extension was approved. Without the request's own status the screen would keep offering
+            // "Withdraw request" on something nobody can act on any more.
+            var requestIds = items.Where(m => m.WorkflowRequestId.HasValue)
+                .Select(m => m.WorkflowRequestId.Value)
+                .Distinct()
+                .ToList();
+
+            var requestStatuses = await _requestRepository.GetAll()
+                .Where(r => requestIds.Contains(r.Id))
+                .Select(r => new { r.Id, r.RequestStatus })
+                .ToDictionaryAsync(r => r.Id, r => r.RequestStatus);
+
+            return new PagedResultDto<MyPassportWithdrawalDto>(
+                totalCount,
+                items.Select(m => ToDto(m, requestStatuses)).ToList());
         }
     }
 
@@ -199,7 +219,7 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             }
         }
 
-        return await CreateAndSubmitAsync(
+        var submission = await CreateAndSubmitAsync(
             meId => new EmployeeDocumentMvmt
             {
                 TenantId = AbpSession.TenantId ?? 0,
@@ -219,6 +239,31 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             },
             // Routing by document type, so a passport can need a longer chain than a certificate.
             document.DocumentTypeId);
+
+        if (input.GuarantorId.HasValue)
+        {
+            // Legacy mailed the guarantor as the request was raised. Deliberately after the request exists
+            // and never allowed to fail it: a mail server that is down must not cost the employee their
+            // request, and the guarantor is told again by the approval chain regardless.
+            try
+            {
+                var requestNumber = submission.WorkflowRequestId.HasValue
+                    ? await _requestRepository.GetAll()
+                        .Where(r => r.Id == submission.WorkflowRequestId.Value)
+                        .Select(r => r.RequestNumber)
+                        .FirstOrDefaultAsync()
+                    : null;
+
+                await _notificationDispatchService.SendPassportGuarantorNotificationAsync(
+                    input.GuarantorId.Value, employeeId, requestNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn($"Could not notify the guarantor of passport withdrawal {submission.TransactionId}.", ex);
+            }
+        }
+
+        return submission;
     }
 
     public Task CancelMyPassportWithdrawal(EntityDto input) => CancelAsync(input.Id);
@@ -324,8 +369,18 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         };
     }
 
-    private static MyPassportWithdrawalDto ToDto(EmployeeDocumentMvmt entity)
+    private static MyPassportWithdrawalDto ToDto(
+        EmployeeDocumentMvmt entity,
+        IReadOnlyDictionary<int, RequestStatus> requestStatuses = null)
     {
+        // Withdrawable only while the row is undecided AND its request is still open. The second half is
+        // what a superseded extension fails.
+        var requestStillOpen = !entity.WorkflowRequestId.HasValue
+                               || requestStatuses == null
+                               || !requestStatuses.TryGetValue(entity.WorkflowRequestId.Value, out var requestStatus)
+                               || requestStatus == RequestStatus.Draft
+                               || requestStatus == RequestStatus.Open;
+
         return new MyPassportWithdrawalDto
         {
             Id = entity.Id,
@@ -344,7 +399,7 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             Comments = entity.Comments,
             WorkflowStatus = entity.WorkflowStatus,
             WorkflowRequestId = entity.WorkflowRequestId,
-            CanCancel = CanCancel(entity),
+            CanCancel = CanCancel(entity) && requestStillOpen,
 
             // Only an approved withdrawal that has not already been handed back. Anything else and the
             // button would either be offering to return a document that was never released, or inviting a

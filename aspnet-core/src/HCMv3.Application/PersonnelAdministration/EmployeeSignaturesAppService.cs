@@ -109,7 +109,6 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
         entity.EmployeeId = input.EmployeeId;
         entity.SignaturePath = await _imageStore.SaveIfChangedAsync(
             EntityImageKinds.EmployeeSignature, entity.TenantId, entity.Id, entity.SignaturePath, input.Signature);
-        entity.LegacySignature = null;
 
         await _repository.UpdateAsync(entity);
     }
@@ -121,7 +120,7 @@ public class EmployeeSignaturesAppService : HCMv3AppServiceBase, IEmployeeSignat
     }
 
     private Task<byte[]> ReadSignatureAsync(EmployeeSignature entity) =>
-        _imageStore.ReadWithLegacyAsync(entity.TenantId, entity.SignaturePath, entity.LegacySignature);
+        _imageStore.ReadOrNullAsync(entity.TenantId, entity.SignaturePath);
 
     private static EmployeeSignatureDto ToDto(EmployeeSignature entity, byte[] signature)
     {

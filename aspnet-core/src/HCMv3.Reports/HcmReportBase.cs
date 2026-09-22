@@ -106,10 +106,9 @@ namespace HCMv3.Reports
         /// <summary>
         /// Shows, in <paramref name="pictureBox"/>, the image whose relative path is in the current row's
         /// <paramref name="pathColumn"/>. Images are kept on disk, not in the database, so the report SQL can
-        /// only return where the picture is. <paramref name="legacyColumn"/> is the old varbinary column,
-        /// used only for a picture the background mover has not moved yet.
+        /// only return where the picture is.
         /// </summary>
-        protected void BindStoredImage(XRPictureBox pictureBox, string pathColumn, string legacyColumn)
+        protected void BindStoredImage(XRPictureBox pictureBox, string pathColumn)
         {
             pictureBox.ExpressionBindings.Clear();
             pictureBox.BeforePrint += (_, _) =>
@@ -121,10 +120,6 @@ namespace HCMv3.Reports
                     && int.TryParse(Convert.ToString(Parameters[TenantParameterName]?.Value), out var tenantId))
                 {
                     bytes = StoredImageLoader(tenantId, path);
-                }
-                else if (GetCurrentColumnValue(legacyColumn) is byte[] legacy && legacy.Length > 0)
-                {
-                    bytes = legacy;
                 }
 
                 pictureBox.Image = bytes == null

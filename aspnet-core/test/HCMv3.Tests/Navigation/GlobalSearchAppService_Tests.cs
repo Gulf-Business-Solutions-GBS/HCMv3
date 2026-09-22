@@ -289,7 +289,7 @@ public class GlobalSearchAppService_Tests : AppTestBase
                 BirthDate = new DateTime(1990, 1, 1),
                 Gender = Gender.Male,
                 NationalityId = nationality.Id,
-                LegacyPhoto = photo,
+                PhotoPath = photo == null ? null : "tenant-1/employee-photos/seed.img",
                 Email = email
             }).Entity;
         });

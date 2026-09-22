@@ -62,7 +62,7 @@ public class EmployeePhotoController : HCMv3ControllerBase
     {
         var employee = await _employeeRepository.GetAll()
             .Where(e => e.Id == employeeId)
-            .Select(e => new { e.TenantId, e.PhotoPath, HasLegacy = e.LegacyPhoto != null })
+            .Select(e => new { e.TenantId, e.PhotoPath })
             .FirstOrDefaultAsync();
 
         if (employee == null)
@@ -70,14 +70,8 @@ public class EmployeePhotoController : HCMv3ControllerBase
             return NotFound();
         }
 
-        // From the tenant's own folder on disk. The old column is read only for a photo not yet moved by
-        // the background mover -- and then only that column, not the whole row.
-        var photo = await _imageStore.ReadWithLegacyAsync(
-            employee.TenantId,
-            employee.PhotoPath,
-            employee.PhotoPath == null && employee.HasLegacy
-                ? await _employeeRepository.GetAll().Where(e => e.Id == employeeId).Select(e => e.LegacyPhoto).FirstOrDefaultAsync()
-                : null);
+        // From the tenant's own folder on disk. Only the path is read from the row, never an image column.
+        var photo = await _imageStore.ReadOrNullAsync(employee.TenantId, employee.PhotoPath);
 
         if (photo == null || photo.Length == 0)
         {

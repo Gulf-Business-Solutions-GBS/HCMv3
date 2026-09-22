@@ -99,12 +99,9 @@ public class EntityImageStore_Tests : IDisposable
     }
 
     [Fact]
-    public async Task Should_Fall_Back_To_The_Old_Column_Until_The_Image_Is_Moved()
+    public async Task Should_Report_Nothing_For_A_Record_With_No_Image()
     {
-        (await _images.ReadWithLegacyAsync(1, null, new byte[] { 8 })).ShouldBe(new byte[] { 8 });
-        (await _images.ReadWithLegacyAsync(1, null, null)).ShouldBeNull();
-
-        var path = await _images.ReplaceAsync(EntityImageKinds.EmployeePhoto, 1, 7, null, new byte[] { 9 });
-        (await _images.ReadWithLegacyAsync(1, path, new byte[] { 8 })).ShouldBe(new byte[] { 9 });
+        (await _images.ReadOrNullAsync(1, null)).ShouldBeNull();
+        (await _images.ReadOrNullAsync(1, string.Empty)).ShouldBeNull();
     }
 }

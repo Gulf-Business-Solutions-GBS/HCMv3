@@ -21,7 +21,4 @@ public class EmployeeSignature : FullAuditedEntity, IMustHaveTenant
     [StringLength(512)]
     public virtual string SignaturePath { get; set; }
 
-    /// <summary>The old <c>Signature</c> column, kept only for <c>LegacyImageMover</c> to empty.</summary>
-    [Column("Signature")]
-    public virtual byte[] LegacySignature { get; set; }
 }

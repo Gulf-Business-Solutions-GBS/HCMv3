@@ -219,7 +219,7 @@ public class PositionOrgChartAppService : HCMv3AppServiceBase, IPositionOrgChart
                                        employee.FullNameEn,
                                        employee.FullNameAr,
                                        employee.Gender,
-                                       HasPhoto = employee.PhotoPath != null || employee.LegacyPhoto != null
+                                       HasPhoto = employee.PhotoPath != null
                                    })
                                   .ToListAsync();
 

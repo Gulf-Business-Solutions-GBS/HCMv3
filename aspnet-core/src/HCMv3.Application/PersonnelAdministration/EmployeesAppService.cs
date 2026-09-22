@@ -76,7 +76,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         var dto = ToCreateOrEditDto(employee);
 
         // The photo travels in the DTO as before; only where it is kept changed (disk, not the database).
-        dto.Photo = await _imageStore.ReadWithLegacyAsync(employee.TenantId, employee.PhotoPath, employee.LegacyPhoto);
+        dto.Photo = await _imageStore.ReadOrNullAsync(employee.TenantId, employee.PhotoPath);
 
         return new GetEmployeeForEditOutput
         {
@@ -153,9 +153,6 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         employee.PhotoPath = await _imageStore.SaveIfChangedAsync(
             EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, employee.PhotoPath, input.Photo);
 
-        // Whatever the screen sent back is now on disk (or was removed), so a not-yet-moved copy in the old
-        // column is obsolete either way.
-        employee.LegacyPhoto = null;
 
         await _employeeRepository.UpdateAsync(employee);
     }

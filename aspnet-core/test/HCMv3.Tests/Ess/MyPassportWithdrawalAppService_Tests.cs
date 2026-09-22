@@ -536,6 +536,45 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task A_Superseded_Request_Should_No_Longer_Offer_Withdraw()
+    {
+        // Its row stays Open by design, but its request was closed when the extension was approved, so the
+        // button would do nothing.
+        var meId = CreateCurrentUserEmployee("PPW850");
+        var approverId = EnableWorkflow("PPW850APP");
+        var documentId = CreatePassportFor(meId);
+
+        var first = await _withdrawals.RequestPassportWithdrawal(Input(documentId, 1, 10));
+        var second = await _withdrawals.RequestPassportWithdrawal(Input(documentId, 1, 24));
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(second.WorkflowRequestId.Value, approverId, "extended");
+
+        var listed = await _withdrawals.GetMyPassportWithdrawals(
+            new GetMyRequestsInput { IncludeHistory = true, MaxResultCount = 50, SkipCount = 0 });
+
+        listed.Items.Single(i => i.Id == first.TransactionId).CanCancel.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Naming_A_Guarantor_Should_Record_Them_On_The_Request()
+    {
+        // Legacy let the employee name a guarantor on this form and mailed them. The mail itself is a no-op
+        // unless the tenant has configured PassportGuarantor_Notification, which the test database has not.
+        var meId = CreateCurrentUserEmployee("PPW860");
+        var guarantorId = CreateEmployee("PPW860GUAR");
+        var documentId = CreatePassportFor(meId);
+
+        var input = Input(documentId);
+        input.GuarantorId = guarantorId;
+
+        var result = await _withdrawals.RequestPassportWithdrawal(input);
+
+        var row = UsingDbContext(c => c.Set<EmployeeDocumentMvmt>().IgnoreQueryFilters()
+            .Single(m => m.Id == result.TransactionId));
+
+        row.GuarantorId.ShouldBe(guarantorId);
+    }
+
+    [Fact]
     public async Task Approving_A_Withdrawal_Should_Not_Cancel_A_Pending_Return()
     {
         // A return rides the same request type. Closing every open request of that type on approval also

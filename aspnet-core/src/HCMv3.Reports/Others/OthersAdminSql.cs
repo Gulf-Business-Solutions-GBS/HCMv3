@@ -326,7 +326,6 @@ OUTER APPLY (
 SELECT
       emp.Code
     , emp.PhotoPath                     -- image on disk, see HcmReportBase.BindStoredImage
-    , emp.Photo                         AS LegacyPhoto   -- only until the background mover empties it
     , emp.FullNameEn
     , department.NameEn         AS DepartmentEn   -- see REWRITE 1; NULL when no Department ancestor
     , department.NameAr         AS DepartmentAr   -- see REWRITE 1; NULL when no Department ancestor
@@ -473,7 +472,6 @@ WHERE emp.TenantId  = @TenantId
 SELECT
       emp.Code
     , emp.PhotoPath                     -- image on disk, see HcmReportBase.BindStoredImage
-    , emp.Photo                         AS LegacyPhoto   -- only until the background mover empties it
     , emp.FullNameEn
     , department.NameEn         AS DepartmentEn   -- see REWRITE 1; NULL when no Department ancestor
     , department.NameAr         AS DepartmentAr   -- see REWRITE 1; NULL when no Department ancestor

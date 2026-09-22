@@ -37,7 +37,7 @@ namespace HCMv3.Reports.Others
 
             // The photo is on disk, not in the database: the query returns its path, and the picture box
             // loads it from the tenant's folder as each row prints.
-            BindStoredImage(xrPictureBox1, "PhotoPath", "LegacyPhoto");
+            BindStoredImage(xrPictureBox1, "PhotoPath");
 
             xrPictureBox2.Image = OthersAdminImageStore.Load(OthersAdminImageStore.BusinessTripLogo);
         }
