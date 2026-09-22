@@ -2,8 +2,10 @@ using System;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Storage;
 using HCMv3.TimeManagement;
 using HCMv3.TimeManagement.Dto;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -12,9 +14,11 @@ namespace HCMv3.Tests.TimeManagement;
 // ReSharper disable once InconsistentNaming
 public class TimeEventsAppService_Tests : TimeManagementAppServiceTestBase
 {
+    private readonly IBinaryObjectManager _binaryObjects = Substitute.For<IBinaryObjectManager>();
+
     private TimeEventsAppService CreateAppService()
     {
-        return CreateService(() => new TimeEventsAppService(FakeRepository.For<TimeEvent>(Context)));
+        return CreateService(() => new TimeEventsAppService(FakeRepository.For<TimeEvent>(Context), _binaryObjects));
     }
 
     private int CreateNationality()
@@ -160,5 +164,56 @@ public class TimeEventsAppService_Tests : TimeManagementAppServiceTestBase
                 TransSource = TransSource.Machine,
                 RecordSource = 12345
             }));
+    }
+
+    private int CreateGeoPunch(string geoSelfiePath)
+    {
+        var entity = new TimeEvent
+        {
+            TenantId = 1,
+            EmployeeId = CreateEmployee("Geo"),
+            TransTypeId = CreateTransType("GEO" + Guid.NewGuid().ToString("N")[..4]),
+            TransDate = new DateTime(2026, 1, 4),
+            TransTime = new DateTime(2026, 1, 4, 8, 0, 0),
+            TransSource = TransSource.ESS,
+            GeoSelfiePath = geoSelfiePath
+        };
+        Context.TimeEvents.Add(entity);
+        Context.SaveChanges();
+
+        return entity.Id;
+    }
+
+    [Fact]
+    public async Task Should_Return_The_Geo_Punch_Selfie_As_A_Data_Url()
+    {
+        var selfieId = Guid.NewGuid();
+        var eventId = CreateGeoPunch(selfieId.ToString());
+        _binaryObjects.GetOrNullAsync(selfieId)
+            .Returns(new BinaryObject(1, new byte[] { 1, 2, 3 }, "GeoPunchSelfie|image/png") { Id = selfieId });
+
+        var selfie = await CreateAppService().GetTimeEventSelfie(new Abp.Application.Services.Dto.EntityDto(eventId));
+
+        selfie.DataUrl.ShouldBe("data:image/png;base64,AQID");
+    }
+
+    [Fact]
+    public async Task Should_Return_No_Selfie_For_A_Punch_Without_One()
+    {
+        var eventId = CreateGeoPunch(null);
+
+        var selfie = await CreateAppService().GetTimeEventSelfie(new Abp.Application.Services.Dto.EntityDto(eventId));
+
+        selfie.DataUrl.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Return_No_Selfie_When_The_File_Is_Gone()
+    {
+        var eventId = CreateGeoPunch(Guid.NewGuid().ToString());
+
+        var selfie = await CreateAppService().GetTimeEventSelfie(new Abp.Application.Services.Dto.EntityDto(eventId));
+
+        selfie.DataUrl.ShouldBeNull();
     }
 }

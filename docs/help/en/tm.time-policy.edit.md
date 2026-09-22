@@ -67,7 +67,7 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **What it is.** Whether face recognition is required when punching.
 
-**Why it matters.** Not read at present.
+**Why it matters.** Read by the self-service Geo Punch screen, together with the self-service setting Allow Geolocation Selfie: a selfie is required with each geo punch only when both are on.
 
 **Rules.** Yes or no.
 
@@ -269,7 +269,7 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **What it is.** Whether clock-in is allowed only from the work location.
 
-**Why it matters.** Not read at present.
+**Why it matters.** Read by the self-service Geo Punch screen. When it is on, the employee's own work location (from their current organisation assignment) is offered and pre-selected for clock-in, and the punch is checked against that location's range. If no setting offers any work location, the employee may punch from anywhere.
 
 **Rules.** Yes or no.
 
@@ -278,7 +278,7 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **What it is.** Whether clock-out is allowed only from the work location.
 
-**Why it matters.** Not read at present.
+**Why it matters.** Read by the self-service Geo Punch screen. When it is on, the employee's own work location (from their current organisation assignment) is offered and pre-selected for clock-out, and the punch is checked against that location's range.
 
 **Rules.** Yes or no.
 
@@ -287,7 +287,7 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **What it is.** Whether clock-in is allowed from an external work location.
 
-**Why it matters.** Not read at present.
+**Why it matters.** Read by the self-service Geo Punch screen. When it is on, the employee's extended work locations that are valid today (including their last day) are offered for clock-in, and the punch is checked against the chosen location's range.
 
 **Rules.** Yes or no.
 
@@ -296,7 +296,7 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **What it is.** Whether clock-out is allowed from an external work location.
 
-**Why it matters.** Not read at present.
+**Why it matters.** Read by the self-service Geo Punch screen. When it is on, the employee's extended work locations that are valid today (including their last day) are offered for clock-out, and the punch is checked against the chosen location's range.
 
 **Rules.** Yes or no.
 

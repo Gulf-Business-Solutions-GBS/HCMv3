@@ -51,8 +51,8 @@
     "dom:Applicant_PlaceOfBirth": "Applicant.PlaceOfBirth",
     "loc:DrivingLicense": "Applicant.DrivingLicense",
     "dom:Applicant_DrivingLicense": "Applicant.DrivingLicense",
-    "loc:Photo": "Applicant.Photo",
-    "dom:Applicant_Photo": "Applicant.Photo",
+    "loc:Photo": "Applicant.PhotoPath",
+    "dom:Applicant_Photo": "Applicant.PhotoPath",
     "loc:CurrentAddress": "Applicant.CurrentAddress",
     "dom:Applicant_CurrentAddress": "Applicant.CurrentAddress",
     "loc:PermanentAddress": "Applicant.PermanentAddress",
@@ -400,14 +400,14 @@
       "stub": false
     },
     {
-      "id": "Applicant.Photo",
+      "id": "Applicant.PhotoPath",
       "label": "Photo",
       "section": "Applicants",
       "aliases": [
         "loc:Photo",
         "dom:Applicant_Photo"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> صورة المتقدم.</p><p><strong>لماذا يهم.</strong> يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.</p>",
       "adminHtml": "",

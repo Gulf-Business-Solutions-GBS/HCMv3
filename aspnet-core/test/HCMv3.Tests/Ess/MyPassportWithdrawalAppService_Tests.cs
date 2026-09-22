@@ -472,4 +472,95 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
         // Still out: default(DateTime) on the row is reported as null rather than as year one.
         row.ActualReturnDate.ShouldBeNull();
     }
+
+    // ---------------------------------------------------------------- legacy parity fixes
+
+    [Fact]
+    public async Task A_Withdrawal_Without_Dates_Should_Be_Refused()
+    {
+        // Legacy refused a blank withdraw or return date outright; only the screen was stopping it here.
+        var meId = CreateCurrentUserEmployee("PPW810");
+        var documentId = CreatePassportFor(meId);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _withdrawals.RequestPassportWithdrawal(
+            new RequestPassportWithdrawalInput { EmployeeDocumentId = documentId, WithdrawalReason = "Visa" }));
+    }
+
+    [Fact]
+    public async Task A_Document_That_Is_Already_Out_Should_Not_Be_Withdrawn_Again()
+    {
+        // Legacy: "The passport is already out" -- refused unless an extension is in flight.
+        var meId = CreateCurrentUserEmployee("PPW820");
+        var approverId = EnableWorkflow("PPW820APP");
+        var documentId = CreatePassportFor(meId);
+
+        var first = await _withdrawals.RequestPassportWithdrawal(Input(documentId));
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(first.WorkflowRequestId.Value, approverId, "ok");
+
+        await Should.ThrowAsync<UserFriendlyException>(() =>
+            _withdrawals.RequestPassportWithdrawal(Input(documentId, 2, 20)));
+    }
+
+    [Fact]
+    public async Task Approving_A_Withdrawal_Should_Leave_One_Open_Movement()
+    {
+        // Legacy's approval overwrote the document's open movement instead of adding a second one. Two open
+        // movements for one document read as out even after it is handed back, and would then block every
+        // future withdrawal. The case that reaches it: HR records a withdrawal by hand while the employee's
+        // request is already in flight.
+        var meId = CreateCurrentUserEmployee("PPW830");
+        var approverId = EnableWorkflow("PPW830APP");
+        var documentId = CreatePassportFor(meId);
+
+        var request = await _withdrawals.RequestPassportWithdrawal(Input(documentId, 1, 10));
+
+        UsingDbContext(context => context.Set<EmployeeDocumentMvmt>().Add(new EmployeeDocumentMvmt
+        {
+            TenantId = TenantId,
+            EmployeeId = meId,
+            EmployeeDocumentId = documentId,
+            WithdrawDate = DateTime.Today,
+            ReturnDate = DateTime.Today.AddDays(5),
+            ActualReturnDate = default,
+            WorkflowStatus = RequestStatus.Approved
+        }));
+
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(request.WorkflowRequestId.Value, approverId, "ok");
+
+        // !IsDeleted spelled out: this query runs outside a unit of work, where the soft-delete filter is
+        // not applied, so a removed row would otherwise still be counted.
+        var openMovements = UsingDbContext(c => c.Set<EmployeeDocumentMvmt>()
+            .Count(m => m.EmployeeDocumentId == documentId && m.ActualReturnDate == default && !m.IsDeleted));
+
+        openMovements.ShouldBe(1, "the approved withdrawal replaces the period rather than stacking a second one");
+    }
+
+    [Fact]
+    public async Task Approving_A_Withdrawal_Should_Not_Cancel_A_Pending_Return()
+    {
+        // A return rides the same request type. Closing every open request of that type on approval also
+        // cancelled the employee's pending hand-back, which is data loss: the document stays recorded as
+        // out and the employee has to ask again.
+        var meId = CreateCurrentUserEmployee("PPW840");
+        var approverId = EnableWorkflow("PPW840APP");
+        var firstDocumentId = CreatePassportFor(meId);
+        var secondDocumentId = CreatePassportFor(meId);
+
+        var withdrawal = await _withdrawals.RequestPassportWithdrawal(Input(firstDocumentId));
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(withdrawal.WorkflowRequestId.Value, approverId, "ok");
+
+        var returnRequest = await _withdrawals.ReturnMyDocument(new ReturnDocumentInput
+        {
+            EmployeeDocumentMvmtId = withdrawal.TransactionId,
+            ActualReturnDate = DateTime.Today.AddDays(2)
+        });
+
+        var other = await _withdrawals.RequestPassportWithdrawal(Input(secondDocumentId));
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(other.WorkflowRequestId.Value, approverId, "ok");
+
+        var pendingReturn = UsingDbContext(c => c.Set<WorkflowRequest>()
+            .Single(r => r.Id == returnRequest.WorkflowRequestId));
+
+        pendingReturn.RequestStatus.ShouldBe(RequestStatus.Open, "a pending return is not a superseded withdrawal");
+    }
 }

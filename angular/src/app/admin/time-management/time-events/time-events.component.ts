@@ -115,7 +115,29 @@ export class TimeEventsComponent extends AppComponentBase implements OnInit {
             });
         }
 
+        // Geo punches taken with a selfie: lets HR check who actually punched.
+        if (record.geoSelfiePath) {
+            items.push({
+                label: this.l('GeoPunchViewSelfie'),
+                icon: 'pi pi-image',
+                command: () => this.viewSelfie(record),
+            });
+        }
+
         return items;
+    }
+
+    /** The selfie being previewed, as a data URL; null when the preview is closed. */
+    readonly selfiePreview = signal<string | null>(null);
+
+    viewSelfie(record: TimeEventDto): void {
+        this._timeEventsService.getTimeEventSelfie(record.id).subscribe((result) => {
+            if (result.dataUrl) {
+                this.selfiePreview.set(result.dataUrl);
+            } else {
+                this.notify.warn(this.l('AttachmentFileMissing'));
+            }
+        });
     }
 
     deleteTimeEvent(record: TimeEventDto): void {

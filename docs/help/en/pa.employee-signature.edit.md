@@ -15,7 +15,7 @@ A scanned image of the employee's signature.
 
 It is stored for reference; no printed form or report reads it at present.
 
-## Signature {#EmployeeSignature.Signature}
+## Signature {#EmployeeSignature.SignaturePath}
 <!-- alias: loc:Signature, dom:EmployeeSignature_Signature -->
 
 **What it is.** The signature image file.

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.Storage;
 using HCMv3.TimeManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,10 +29,12 @@ namespace HCMv3.TimeManagement;
 public class TimeEventsAppService : HCMv3AppServiceBase, ITimeEventsAppService
 {
     private readonly IRepository<TimeEvent> _repository;
+    private readonly IBinaryObjectManager _binaryObjectManager;
 
-    public TimeEventsAppService(IRepository<TimeEvent> repository)
+    public TimeEventsAppService(IRepository<TimeEvent> repository, IBinaryObjectManager binaryObjectManager)
     {
         _repository = repository;
+        _binaryObjectManager = binaryObjectManager;
     }
 
     [HttpPost]
@@ -106,6 +110,38 @@ public class TimeEventsAppService : HCMv3AppServiceBase, ITimeEventsAppService
     public async Task Delete(EntityDto input)
     {
         await _repository.DeleteAsync(input.Id);
+    }
+
+    /// <summary>
+    /// The selfie taken with a geo punch, for HR checking who actually punched. Stored on disk under the
+    /// tenant's folder (<c>TimeEvent.GeoSelfiePath</c> holds its id) and returned as a data URL for an
+    /// <c>img</c> tag, or with no URL when the punch has none.
+    /// </summary>
+    public async Task<TimeEventSelfieDto> GetTimeEventSelfie(EntityDto input)
+    {
+        var path = await _repository.GetAll()
+            .Where(e => e.Id == input.Id)
+            .Select(e => e.GeoSelfiePath)
+            .FirstOrDefaultAsync();
+
+        if (string.IsNullOrWhiteSpace(path) || !Guid.TryParse(path, out var selfieId))
+        {
+            return new TimeEventSelfieDto();
+        }
+
+        var file = await _binaryObjectManager.GetOrNullAsync(selfieId);
+        if (file?.Bytes == null || file.Bytes.Length == 0)
+        {
+            // The punch names a selfie that is no longer in the file store. Reporting "none" is the honest
+            // answer; an empty data URL would render as a broken image.
+            return new TimeEventSelfieDto();
+        }
+
+        // The geo punch stores "GeoPunchSelfie|<content type>" as the description.
+        var separator = file.Description?.IndexOf('|') ?? -1;
+        var contentType = separator >= 0 ? file.Description.Substring(separator + 1) : "image/jpeg";
+
+        return new TimeEventSelfieDto { DataUrl = $"data:{contentType};base64,{Convert.ToBase64String(file.Bytes)}" };
     }
 
     private static TimeEvent MapToEntity(CreateOrEditTimeEventDto input, TimeEvent entity)

@@ -10,6 +10,7 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.PersonnelAdministration.Workflow;
 
@@ -89,6 +90,17 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
         {
             ValidateReturn(movement, ReadAmendment(context));
             return;
+        }
+
+        // Legacy refused a blank withdraw or return date outright ("WithdrawDate cannot be blank").
+        if (movement.WithdrawDate == default)
+        {
+            throw new UserFriendlyException(L("WithdrawDateIsRequired"));
+        }
+
+        if (movement.ReturnDate == default)
+        {
+            throw new UserFriendlyException(L("ReturnDateIsRequired"));
         }
 
         if (movement.ReturnDate.Date < movement.WithdrawDate.Date)
@@ -332,6 +344,10 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
             .Where(r => r.RequestType == PassportWithdrawalRequestType
                         && r.EmployeeId == employeeId.Value
                         && r.RequestStatus == RequestStatus.Open
+                        // A return rides the same request type. Closing one here would cancel a pending
+                        // hand-back because somebody withdrew a different document -- legacy closed only
+                        // withdrawal requests.
+                        && !r.IsAmendment
                         && r.Id != thisRequestId)
             .ToList();
 
@@ -339,6 +355,39 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
         {
             request.RequestStatus = RequestStatus.Closed;
             await _requestRepository.UpdateAsync(request);
+        }
+
+        await CloseSupersededMovementsAsync(movement);
+    }
+
+    /// <summary>
+    /// Leaves one open movement per document, as legacy did.
+    ///
+    /// <para>
+    /// Legacy's approval step looked for the document's still-open movement and overwrote its dates rather
+    /// than inserting a second one (<c>EmployeeDocMvmtRequest.OnSaving</c>), so an extension moved the
+    /// existing period instead of stacking another on top of it. Here the newly approved row already carries
+    /// the later dates, so the same end state is reached by removing the movement it replaces. Without this,
+    /// one document has two movements with no return date: it reads as out even after it is handed back, and
+    /// the "already out" check would refuse every future withdrawal.
+    /// </para>
+    /// </summary>
+    private async Task CloseSupersededMovementsAsync(EmployeeDocumentMvmt movement)
+    {
+        if (movement == null)
+        {
+            return;
+        }
+
+        var replaced = Repository.GetAll()
+            .Where(m => m.EmployeeDocumentId == movement.EmployeeDocumentId
+                        && m.Id != movement.Id
+                        && m.ActualReturnDate == default)
+            .ToList();
+
+        foreach (var old in replaced)
+        {
+            await Repository.DeleteAsync(old);
         }
     }
 }

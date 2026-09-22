@@ -23,14 +23,18 @@ namespace HCMv3.Ess;
 [AbpAuthorize(AppPermissions.Ess_MyDocuments)]
 public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument>, IMyDocumentAppService
 {
+    private readonly IEmployeeDocumentDuplicateCheck _duplicateCheck;
+
     public MyDocumentAppService(
         IRepository<EmployeeDocument> repository,
         IRepository<WorkflowRequest> requestRepository,
         IEmployeeScopeProvider employeeScopeProvider,
         IRequestMasterResolver requestMasterResolver,
-        IWorkflowApprovalService workflowApprovalService)
+        IWorkflowApprovalService workflowApprovalService,
+        IEmployeeDocumentDuplicateCheck duplicateCheck)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
+        _duplicateCheck = duplicateCheck;
     }
 
     protected override string RequestType => DocumentWorkflowTransactionHandler.DocumentRequestType;
@@ -61,7 +65,7 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
         }
     }
 
-    public Task<MyRequestSubmissionDto> RequestDocument(RequestDocumentInput input)
+    public async Task<MyRequestSubmissionDto> RequestDocument(RequestDocumentInput input)
     {
         // The handler enforces this too. Checked here as well so the employee is told before the row is
         // created rather than by a rollback, which reads like a system fault rather than a missing field.
@@ -70,7 +74,11 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
             throw new UserFriendlyException(L("DocumentNumberIsRequired"));
         }
 
-        return CreateAndSubmitAsync(
+        // Checked here too because with workflow off for documents no handler runs.
+        await _duplicateCheck.EnsureNotDuplicateAsync(
+            await GetMyEmployeeIdAsync(), input.DocumentTypeId, input.DocumentNum, null);
+
+        return await CreateAndSubmitAsync(
             employeeId => new EmployeeDocument
             {
                 TenantId = AbpSession.TenantId ?? 0,

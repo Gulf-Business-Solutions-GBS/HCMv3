@@ -11,6 +11,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Ess.Dto;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
 using HCMv3.PersonnelAdministration.Workflow;
@@ -41,8 +42,16 @@ namespace HCMv3.Ess;
 [AbpAuthorize(AppPermissions.Ess_MyPassportWithdrawals)]
 public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<EmployeeDocumentMvmt>, IMyPassportWithdrawalAppService
 {
+    /// <summary>Tenant config key for the document type employees may withdraw (legacy's JSON setting).</summary>
+    public const string WithdrawableDocumentTypeCodeKey = "PassportWithdrawalDocumentTypeCode";
+
+    /// <summary>Legacy's default: document type code "2", the passport.</summary>
+    public const string DefaultWithdrawableDocumentTypeCode = "2";
+
     private readonly IRepository<EmployeeDocument> _documentRepository;
+    private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<WorkflowRequest> _requestRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IWorkflowAmendmentService _workflowAmendmentService;
 
@@ -53,13 +62,16 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApprovalService workflowApprovalService,
         IRepository<EmployeeDocument> documentRepository,
+        IRepository<DocumentType> documentTypeRepository,
         IRepository<Employee> employeeRepository,
         ISysSettingsAccessor sysSettingsAccessor,
         IWorkflowAmendmentService workflowAmendmentService)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
         _documentRepository = documentRepository;
+        _documentTypeRepository = documentTypeRepository;
         _employeeRepository = employeeRepository;
+        _requestRepository = requestRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
         _workflowAmendmentService = workflowAmendmentService;
     }
@@ -104,6 +116,16 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     {
         // Checked here as well as in the handler. The handler is the rule -- it applies to HR-raised rows
         // too -- but failing here means the employee is told before a row is created and rolled back.
+        if (input.WithdrawDate == default)
+        {
+            throw new UserFriendlyException(L("WithdrawDateIsRequired"));
+        }
+
+        if (input.ReturnDate == default)
+        {
+            throw new UserFriendlyException(L("ReturnDateIsRequired"));
+        }
+
         if (input.ReturnDate.Date < input.WithdrawDate.Date)
         {
             throw new UserFriendlyException(L("ReturnDateCannotBeEarlierThanWithdrawDate"));
@@ -121,6 +143,16 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         if (document == null)
         {
             throw new UserFriendlyException(L("EmployeeDocumentNotFound"));
+        }
+
+        // Legacy only ever offered the passport: it resolved one document type by code (its setting
+        // defaulted to "2") and took the employee's active document of that type. The code is a tenant
+        // config value here; with none configured the default stands, and if no such type exists the
+        // restriction is not applied rather than blocking every request.
+        var withdrawableTypeId = await ResolveWithdrawableDocumentTypeIdAsync();
+        if (withdrawableTypeId.HasValue && document.DocumentTypeId != withdrawableTypeId.Value)
+        {
+            throw new UserFriendlyException(L("OnlyTheWithdrawableDocumentTypeCanBeWithdrawn"));
         }
 
         if (input.WithdrawalReason.IsNullOrWhiteSpace())
@@ -141,6 +173,29 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             if (!guarantorExists)
             {
                 throw new UserFriendlyException(L("EmployeeNotFound"));
+            }
+        }
+
+        // Legacy's "The passport is already out" check, with its extension exception
+        // (PassportWithdrawalRequestController, and IsExtensionAvailable in its repository): a document that
+        // is out cannot be withdrawn again UNLESS the employee has exactly one withdrawal request still
+        // open. That one is the extension in flight -- the employee who needs the document a week longer --
+        // and approving it supersedes the earlier period instead of adding a second one.
+        var alreadyOut = await Repository.GetAll()
+            .AnyAsync(m => m.EmployeeDocumentId == document.Id && m.ActualReturnDate == default);
+
+        if (alreadyOut)
+        {
+            var openRequests = await _requestRepository.GetAll()
+                .CountAsync(r => r.RequestType == RequestType
+                                 && r.EmployeeId == employeeId
+                                 && r.RequestStatus == RequestStatus.Open
+                                 // A return rides the same request type and is not a withdrawal.
+                                 && !r.IsAmendment);
+
+            if (openRequests != 1)
+            {
+                throw new UserFriendlyException(L("DocumentIsAlreadyOut"));
             }
         }
 
@@ -167,6 +222,25 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     }
 
     public Task CancelMyPassportWithdrawal(EntityDto input) => CancelAsync(input.Id);
+
+    /// <summary>
+    /// The document type employees may ask to withdraw: the type whose code matches the tenant config
+    /// <c>PassportWithdrawalDocumentTypeCode</c>, defaulting to legacy's "2". Null when no type carries that
+    /// code, which leaves any document withdrawable rather than none.
+    /// </summary>
+    private async Task<int?> ResolveWithdrawableDocumentTypeIdAsync()
+    {
+        var code = await _sysSettingsAccessor.GetSysTenantConfigAsync(WithdrawableDocumentTypeCodeKey);
+        if (code.IsNullOrWhiteSpace())
+        {
+            code = DefaultWithdrawableDocumentTypeCode;
+        }
+
+        return await _documentTypeRepository.GetAll()
+            .Where(t => t.Code == code)
+            .Select(t => (int?)t.Id)
+            .FirstOrDefaultAsync();
+    }
 
     /// <summary>
     /// The RETURN leg. Raises an amendment against the approved movement rather than creating anything:

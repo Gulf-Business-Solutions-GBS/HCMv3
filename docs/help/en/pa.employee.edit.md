@@ -155,7 +155,7 @@ It refuses to save when the code is already in use, the birth date is today or l
 
 **Rules.** Optional. Maximum 128 characters.
 
-## Photo {#Employee.Photo}
+## Photo {#Employee.PhotoPath}
 <!-- alias: loc:Photo, dom:Employee_Photo -->
 
 **What it is.** A photograph of the employee. Choose an image file; it is stored with the record when you save the form.

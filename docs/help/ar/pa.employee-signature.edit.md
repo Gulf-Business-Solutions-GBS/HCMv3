@@ -15,7 +15,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeSignatures.Create, Pages.Per
 
 تُحفظ للرجوع إليها، ولا يقرؤها أي نموذج مطبوع أو تقرير حالياً.
 
-## Signature {#EmployeeSignature.Signature}
+## Signature {#EmployeeSignature.SignaturePath}
 <!-- alias: loc:Signature, dom:EmployeeSignature_Signature -->
 
 **ما هو.** ملف صورة التوقيع.

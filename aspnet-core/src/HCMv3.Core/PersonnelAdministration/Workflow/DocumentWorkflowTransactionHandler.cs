@@ -5,6 +5,7 @@ using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -27,14 +28,17 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
     public const string DocumentRequestType = "EmployeeDocument";
 
     private readonly IRepository<DocumentType> _documentTypeRepository;
+    private readonly IEmployeeDocumentDuplicateCheck _duplicateCheck;
 
     public DocumentWorkflowTransactionHandler(
         IRepository<EmployeeDocument> repository,
         IRepository<DocumentType> documentTypeRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IEmployeeDocumentDuplicateCheck duplicateCheck)
         : base(repository, unitOfWorkManager)
     {
         _documentTypeRepository = documentTypeRepository;
+        _duplicateCheck = duplicateCheck;
     }
 
     public override string RequestType => DocumentRequestType;
@@ -56,6 +60,10 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
         {
             throw new UserFriendlyException(L("DocumentNumberIsRequired"));
         }
+
+        // Legacy skipped a duplicate silently on approval; here it is refused at submit, with a reason.
+        await _duplicateCheck.EnsureNotDuplicateAsync(
+            document.EmployeeId, document.DocumentTypeId, document.DocumentNum, document.Id);
     }
 
     public override async Task<WorkflowSummary> BuildSummaryAsync(WorkflowTransactionContext context)

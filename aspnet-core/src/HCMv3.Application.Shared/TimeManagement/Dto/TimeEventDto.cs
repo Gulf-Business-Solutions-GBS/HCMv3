@@ -56,3 +56,9 @@ public class TimeEventDto : EntityDto<int>
 
     public string GeoSelfiePath { get; set; }
 }
+
+/// <summary>A geo punch selfie as a data URL, ready for an <c>img</c> tag; null when the punch has none.</summary>
+public class TimeEventSelfieDto
+{
+    public string DataUrl { get; set; }
+}

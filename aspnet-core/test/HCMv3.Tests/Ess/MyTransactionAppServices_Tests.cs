@@ -511,6 +511,112 @@ public class MyTransactionAppServices_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task The_Same_Document_Should_Not_Be_Recorded_Twice()
+    {
+        // Legacy skipped the duplicate silently when the request was approved, leaving the employee with an
+        // approved request that changed nothing. Here the second one is refused, with a reason.
+        CreateCurrentUserEmployee("MTX231");
+        var typeId = CreateDocumentType();
+        var input = new RequestDocumentInput
+        {
+            DocumentTypeId = typeId,
+            DocumentNum = "P-1234567",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5)
+        };
+
+        await _documents.RequestDocument(input);
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() => _documents.RequestDocument(new RequestDocumentInput
+        {
+            DocumentTypeId = typeId,
+            // Spacing differs; it is the same passport.
+            DocumentNum = " P-1234567 ",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5)
+        }));
+    }
+
+    [Fact]
+    public async Task A_Renewed_Document_With_A_New_Number_Should_Be_Allowed()
+    {
+        CreateCurrentUserEmployee("MTX232");
+        var typeId = CreateDocumentType();
+
+        await _documents.RequestDocument(new RequestDocumentInput
+        {
+            DocumentTypeId = typeId,
+            DocumentNum = "P-1111111",
+            IssueDate = DateTime.Today.AddYears(-5),
+            ExpiryDate = DateTime.Today
+        });
+
+        var renewal = await _documents.RequestDocument(new RequestDocumentInput
+        {
+            DocumentTypeId = typeId,
+            DocumentNum = "P-2222222",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5)
+        });
+
+        renewal.TransactionId.ShouldBeGreaterThan(0);
+    }
+
+    [Fact]
+    public async Task Another_Employees_Document_Number_Should_Not_Block_Mine()
+    {
+        var colleagueId = CreateEmployee("MTX233", null);
+        var typeId = CreateDocumentType();
+        UsingDbContext(context => context.Set<EmployeeDocument>().Add(new EmployeeDocument
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            EmployeeId = colleagueId,
+            DocumentTypeId = typeId,
+            DocumentNum = "P-3333333",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5)
+        }));
+        CreateCurrentUserEmployee("MTX234");
+
+        var mine = await _documents.RequestDocument(new RequestDocumentInput
+        {
+            DocumentTypeId = typeId,
+            DocumentNum = "P-3333333",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5)
+        });
+
+        mine.TransactionId.ShouldBeGreaterThan(0);
+    }
+
+    [Fact]
+    public async Task A_Rejected_Document_Should_Not_Block_Asking_Again()
+    {
+        var meId = CreateCurrentUserEmployee("MTX235");
+        var typeId = CreateDocumentType();
+        UsingDbContext(context => context.Set<EmployeeDocument>().Add(new EmployeeDocument
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            EmployeeId = meId,
+            DocumentTypeId = typeId,
+            DocumentNum = "P-4444444",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5),
+            WorkflowStatus = RequestStatus.Rejected
+        }));
+
+        var again = await _documents.RequestDocument(new RequestDocumentInput
+        {
+            DocumentTypeId = typeId,
+            DocumentNum = "P-4444444",
+            IssueDate = DateTime.Today,
+            ExpiryDate = DateTime.Today.AddYears(5)
+        });
+
+        again.TransactionId.ShouldBeGreaterThan(0);
+    }
+
+    [Fact]
     public async Task An_Overtime_Claim_Should_Not_Pre_Approve_Its_Own_Hours()
     {
         // Defaulting approved hours to the claim would make an untouched record look like somebody's

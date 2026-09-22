@@ -51,8 +51,8 @@
     "dom:Employee_MotherNameEn": "Employee.MotherNameEn",
     "loc:MotherNameAr": "Employee.MotherNameAr",
     "dom:Employee_MotherNameAr": "Employee.MotherNameAr",
-    "loc:Photo": "Employee.Photo",
-    "dom:Employee_Photo": "Employee.Photo",
+    "loc:Photo": "Employee.PhotoPath",
+    "dom:Employee_Photo": "Employee.PhotoPath",
     "loc:FlatNumber": "Employee.FlatNumn",
     "dom:Employee_FlatNumn": "Employee.FlatNumn",
     "loc:FloorNumber": "Employee.FloorNum",
@@ -446,14 +446,14 @@
       "stub": false
     },
     {
-      "id": "Employee.Photo",
+      "id": "Employee.PhotoPath",
       "label": "Photo",
       "section": "PersonalInfo",
       "aliases": [
         "loc:Photo",
         "dom:Employee_Photo"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> صورة الموظف. اختر ملف صورة، فيُحفظ مع السجل عند حفظ النموذج.</p><p><strong>مثال.</strong> صورة حديثة للرأس والكتفين على خلفية سادة، كصورة جواز السفر.</p><p><strong>لماذا يهم.</strong> تظهر في الخدمة الذاتية، وفي المخططات التنظيمية، وفي نتائج البحث، وفي تقرير التأخير والانصراف المبكر المصحوب بالصور، وتُطبع على نموذج طلب تأشيرة العمل.</p>",
       "adminHtml": "<p>لا يستطيع الموظفون تغيير صورهم من خلال الخدمة الذاتية — فالصورة بحكم التصميم يديرها قسم الموارد البشرية من هذا النموذج وحده. ولا يقيّد النموذج حجم الملف، والصورة تُحفظ في قاعدة البيانات مع سجل الموظف، لذا صغّر صور الكاميرا الكبيرة قبل رفعها.</p>",

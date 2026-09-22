@@ -141,7 +141,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether mobile punches are allowed outside the work location range.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether mobile punches are allowed outside the work location range.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen. When it is on, an employee who is further from the work location than its allowed range can still punch; the punch is recorded as out of range, with how many metres beyond the range it was. When it is off, such a punch is refused. The server measures the distance itself.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -155,7 +155,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the user is signed out after punching.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the user is signed out after punching.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen: when it is on, the employee is signed out straight after a successful punch.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -169,7 +169,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether a selfie is taken with a mobile punch.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether a selfie is taken with a mobile punch.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen. When it is on, and the employee's time policy has Is Face Required on (an employee with no time policy counts as on), a selfie must be taken with every geo punch. The selfie is kept with the punch and HR can view it from Time Events.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -183,7 +183,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether location details are hidden.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether location details are hidden.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen: when it is on, the panel showing the employee's coordinates, the work location, the allowed range and the distance is hidden. The range check still applies.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -197,7 +197,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether location details of punches are hidden.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether location details of punches are hidden.</p><p><strong>Why it matters.</strong> Read by the self-service Geo Punch screen: when it is on, the list of today's punches is hidden on that screen.</p>",
       "adminHtml": "",
       "stub": false
     },

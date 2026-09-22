@@ -51,8 +51,8 @@
     "dom:Employee_MotherNameEn": "Employee.MotherNameEn",
     "loc:MotherNameAr": "Employee.MotherNameAr",
     "dom:Employee_MotherNameAr": "Employee.MotherNameAr",
-    "loc:Photo": "Employee.Photo",
-    "dom:Employee_Photo": "Employee.Photo",
+    "loc:Photo": "Employee.PhotoPath",
+    "dom:Employee_Photo": "Employee.PhotoPath",
     "loc:FlatNumber": "Employee.FlatNumn",
     "dom:Employee_FlatNumn": "Employee.FlatNumn",
     "loc:FloorNumber": "Employee.FloorNum",
@@ -446,14 +446,14 @@
       "stub": false
     },
     {
-      "id": "Employee.Photo",
+      "id": "Employee.PhotoPath",
       "label": "Photo",
       "section": "PersonalInfo",
       "aliases": [
         "loc:Photo",
         "dom:Employee_Photo"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 512 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> A photograph of the employee. Choose an image file; it is stored with the record when you save the form.</p><p><strong>Example.</strong> A recent head-and-shoulders photo on a plain background, as for a passport.</p><p><strong>Why it matters.</strong> Shown in self-service, on organisation charts, in search results and on the late/early attendance report with photos, and printed on the work-visa request form.</p>",
       "adminHtml": "<p>Employees cannot change their photo through self-service — by design it is managed by HR on this form only. The form does not limit the file size, and the photo is stored in the database with the employee, so resize large camera images before uploading.</p>",

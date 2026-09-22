@@ -14,4 +14,7 @@ public interface ITimeEventsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditTimeEventDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>The selfie taken with a geo punch, if any.</summary>
+    Task<TimeEventSelfieDto> GetTimeEventSelfie(EntityDto input);
 }

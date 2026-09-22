@@ -219,7 +219,7 @@ permissions: [Pages.Recruitment.Applicants.Create]
 
 **القواعد.** اختياري. رقم صحيح.
 
-## Photo {#Applicant.Photo}
+## Photo {#Applicant.PhotoPath}
 <!-- alias: loc:Photo, dom:Applicant_Photo -->
 
 **ما هو.** صورة المتقدم.

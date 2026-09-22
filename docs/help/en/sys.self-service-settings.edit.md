@@ -76,7 +76,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether mobile punches are allowed outside the work location range.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** Read by the self-service Geo Punch screen. When it is on, an employee who is further from the work location than its allowed range can still punch; the punch is recorded as out of range, with how many metres beyond the range it was. When it is off, such a punch is refused. The server measures the distance itself.
 
 **Rules.** Yes or no.
 
@@ -85,7 +85,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether the user is signed out after punching.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** Read by the self-service Geo Punch screen: when it is on, the employee is signed out straight after a successful punch.
 
 **Rules.** Yes or no.
 
@@ -94,7 +94,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether a selfie is taken with a mobile punch.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** Read by the self-service Geo Punch screen. When it is on, and the employee's time policy has Is Face Required on (an employee with no time policy counts as on), a selfie must be taken with every geo punch. The selfie is kept with the punch and HR can view it from Time Events.
 
 **Rules.** Yes or no.
 
@@ -103,7 +103,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether location details are hidden.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** Read by the self-service Geo Punch screen: when it is on, the panel showing the employee's coordinates, the work location, the allowed range and the distance is hidden. The range check still applies.
 
 **Rules.** Yes or no.
 
@@ -112,7 +112,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether location details of punches are hidden.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** Read by the self-service Geo Punch screen: when it is on, the list of today's punches is hidden on that screen.
 
 **Rules.** Yes or no.
 

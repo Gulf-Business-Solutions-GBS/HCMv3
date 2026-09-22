@@ -219,7 +219,7 @@ The birth date must be in the past, the joining date after the birth date and pr
 
 **Rules.** Optional. Whole number.
 
-## Photo {#Applicant.Photo}
+## Photo {#Applicant.PhotoPath}
 <!-- alias: loc:Photo, dom:Applicant_Photo -->
 
 **What it is.** A photo of the applicant.

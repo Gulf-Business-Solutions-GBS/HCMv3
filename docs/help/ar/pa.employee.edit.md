@@ -155,7 +155,7 @@ permissions: [Pages.PersonnelAdministration.Employees.Create, Pages.PersonnelAdm
 
 **القواعد.** اختياري. الحد الأقصى 128 حرفاً.
 
-## Photo {#Employee.Photo}
+## Photo {#Employee.PhotoPath}
 <!-- alias: loc:Photo, dom:Employee_Photo -->
 
 **ما هو.** صورة الموظف. اختر ملف صورة، فيُحفظ مع السجل عند حفظ النموذج.

@@ -616,8 +616,12 @@ function parseReadTemplate(rel, sectionTitleClass) {
  * `Employee_PaciNumber` while the property is `PACINumber`. Matching exactly split one field into
  * two topics and left F1 on that input resolving to nothing.
  */
-function findProp(props, name) {
+function findProp(props, name, aliases) {
     if (!name) return null;
+    // pages.json `propertyAliases` maps what a form calls a field onto what the entity now calls it,
+    // for fields whose storage changed without the form changing: the employee photo input still posts
+    // the image (Employee_Photo) while the entity keeps only Employee.PhotoPath.
+    if (aliases && Object.prototype.hasOwnProperty.call(aliases, name)) name = aliases[name];
     if (props.has(name)) return name;
     // Underscores too: Asset's input is `Asset_VinNumber` for the property `VIN_Number`.
     const fold = (s) => s.toLowerCase().replace(/_/g, '');
@@ -625,17 +629,17 @@ function findProp(props, name) {
     return hits.length === 1 ? hits[0] : null;
 }
 
-function resolveField(locKey, editMap, props) {
+function resolveField(locKey, editMap, props, aliases) {
     const fromEdit = editMap.get(locKey);
-    const editProp = fromEdit && findProp(props, fromEdit.property);
+    const editProp = fromEdit && findProp(props, fromEdit.property, aliases);
     if (editProp) {
         return { property: editProp, domId: fromEdit.domId, via: 'edit-template' };
     }
-    const exact = findProp(props, locKey);
+    const exact = findProp(props, locKey, aliases);
     if (exact && !props.get(exact).isNavigation) {
         return { property: exact, domId: null, via: 'entity-exact' };
     }
-    const lookup = findProp(props, `${locKey}Id`);
+    const lookup = findProp(props, `${locKey}Id`, aliases);
     if (lookup) {
         return { property: lookup, domId: null, via: 'entity-lookup-id' };
     }
@@ -679,11 +683,13 @@ function buildInventory() {
             ? parseReadTemplate(page.surfaces.read.template, page.surfaces.read.sectionTitleClass || 'card-title')
             : editFields.map((ef) => ({ locKey: ef.locKey, section: ef.section }));
 
+        const propertyAliases = page.propertyAliases ?? {};
+
         // Every way the same property appears on this page's surfaces, so F1 lands on one topic
         // whichever of them the reader is looking at.
         const editByProp = new Map();
         for (const ef of editFields) {
-            const p = findProp(props, ef.property);
+            const p = findProp(props, ef.property, propertyAliases);
             if (p && !editByProp.has(p)) editByProp.set(p, ef);
         }
 
@@ -693,7 +699,7 @@ function buildInventory() {
         let order = 0;
 
         for (const rf of primary) {
-            const hit = resolveField(rf.locKey, editMap, props);
+            const hit = resolveField(rf.locKey, editMap, props, propertyAliases);
             if (!hit) {
                 unresolved.push({ locKey: rf.locKey, section: rf.section });
                 continue;
@@ -744,7 +750,7 @@ function buildInventory() {
         // inputs of an on-form calculator); they are neither documented nor reported.
         const ignoreInputs = new Set(page.ignoreInputs ?? []);
         for (const ef of editFields) {
-            if (findProp(props, ef.property) || ignoreInputs.has(ef.domId)) continue;
+            if (findProp(props, ef.property, propertyAliases) || ignoreInputs.has(ef.domId)) continue;
             const already = unresolved.find((u) => u.locKey === ef.locKey);
             if (already) already.domId = ef.domId;
             else unresolved.push({ locKey: ef.locKey, section: ef.section, domId: ef.domId });

@@ -24,6 +24,9 @@
         "edit": {
           "template": "angular/src/app/admin/personnel-administration/employees/create-or-edit-employee-modal.component.html"
         }
+      },
+      "propertyAliases": {
+        "Photo": "PhotoPath"
       }
     },
     {
@@ -47,6 +50,9 @@
           "template": "angular/src/app/admin/personnel-administration/employees/create-or-edit-employee-modal.component.html",
           "sectionTitleClass": "emp-acc-title"
         }
+      },
+      "propertyAliases": {
+        "Photo": "PhotoPath"
       }
     },
     {
@@ -1684,7 +1690,10 @@
           "template": "angular/src/app/admin/personnel-administration/employee-detail/signature/employee-signature.component.html"
         }
       },
-      "defaultSection": "EmployeeSignatures"
+      "defaultSection": "EmployeeSignatures",
+      "propertyAliases": {
+        "Signature": "SignaturePath"
+      }
     },
     {
       "helpId": "pa.employee-social-security.edit",
@@ -5062,7 +5071,10 @@
           "template": "angular/src/app/admin/recruitment/applicants/create-or-edit-applicant-modal.component.html"
         }
       },
-      "defaultSection": "Applicants"
+      "defaultSection": "Applicants",
+      "propertyAliases": {
+        "Photo": "PhotoPath"
+      }
     },
     {
       "helpId": "rec.application-status.edit",
