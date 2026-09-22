@@ -91362,6 +91362,62 @@ export class MyLeaveServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    previewMyLeaveSplit(body?: ApplyForLeaveInput | undefined): Observable<LeaveSplitPreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/PreviewMyLeaveSplit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreviewMyLeaveSplit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreviewMyLeaveSplit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveSplitPreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveSplitPreviewDto>;
+        }));
+    }
+
+    protected processPreviewMyLeaveSplit(response: HttpResponseBase): Observable<LeaveSplitPreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveSplitPreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     cancelMyLeave(body?: EntityDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/MyLeave/CancelMyLeave";
         url_ = url_.replace(/[?&]$/, "");
@@ -145154,6 +145210,62 @@ export class TimeEventsServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getTimeEventSelfie(id?: number | undefined): Observable<TimeEventSelfieDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEvents/GetTimeEventSelfie?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeEventSelfie(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeEventSelfie(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TimeEventSelfieDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TimeEventSelfieDto>;
+        }));
+    }
+
+    protected processGetTimeEventSelfie(response: HttpResponseBase): Observable<TimeEventSelfieDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TimeEventSelfieDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -165010,6 +165122,9 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
     startDate!: DateTime;
     endDate!: DateTime;
     comments!: string | undefined;
+    leavePaymentType!: LeavePaymentType;
+    paymentDate!: DateTime | undefined;
+    splitExcessAsUnpaidLeave!: boolean;
 
     constructor(data?: IApplyForLeaveInput) {
         if (data) {
@@ -165026,6 +165141,9 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
             this.comments = _data["comments"];
+            this.leavePaymentType = _data["leavePaymentType"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.splitExcessAsUnpaidLeave = _data["splitExcessAsUnpaidLeave"];
         }
     }
 
@@ -165042,6 +165160,9 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
         data["comments"] = this.comments;
+        data["leavePaymentType"] = this.leavePaymentType;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["splitExcessAsUnpaidLeave"] = this.splitExcessAsUnpaidLeave;
         return data;
     }
 }
@@ -165051,6 +165172,9 @@ export interface IApplyForLeaveInput {
     startDate: DateTime;
     endDate: DateTime;
     comments: string | undefined;
+    leavePaymentType: LeavePaymentType;
+    paymentDate: DateTime | undefined;
+    splitExcessAsUnpaidLeave: boolean;
 }
 
 export class ApplyForLeaveResultDto implements IApplyForLeaveResultDto {
@@ -176672,6 +176796,10 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
     extAbsenceTypeId!: number | undefined;
     extStartDate!: DateTime | undefined;
     extEndDate!: DateTime | undefined;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
 
     constructor(data?: ICreateOrEditEmployeeAbsenceDto) {
         if (data) {
@@ -176702,6 +176830,10 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
             this.extAbsenceTypeId = _data["extAbsenceTypeId"];
             this.extStartDate = _data["extStartDate"] ? DateTime.fromISO(_data["extStartDate"].toString()) : undefined as any;
             this.extEndDate = _data["extEndDate"] ? DateTime.fromISO(_data["extEndDate"].toString()) : undefined as any;
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
         }
     }
 
@@ -176732,6 +176864,10 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
         data["extAbsenceTypeId"] = this.extAbsenceTypeId;
         data["extStartDate"] = this.extStartDate ? this.extStartDate.toString() : undefined as any;
         data["extEndDate"] = this.extEndDate ? this.extEndDate.toString() : undefined as any;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
         return data;
     }
 }
@@ -176755,6 +176891,10 @@ export interface ICreateOrEditEmployeeAbsenceDto {
     extAbsenceTypeId: number | undefined;
     extStartDate: DateTime | undefined;
     extEndDate: DateTime | undefined;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
 }
 
 export class CreateOrEditEmployeeAbsenceQuotaDto implements ICreateOrEditEmployeeAbsenceQuotaDto {
@@ -178921,6 +179061,7 @@ export class CreateOrEditEmployeeFnFPaymentDto implements ICreateOrEditEmployeeF
     dependant3TicketCompensateCount!: number;
     compensateLoanAmount!: number;
     compensateBonusPay!: number;
+    settleLoanInEndOfService!: boolean;
     comments!: string | undefined;
 
     constructor(data?: ICreateOrEditEmployeeFnFPaymentDto) {
@@ -178949,6 +179090,7 @@ export class CreateOrEditEmployeeFnFPaymentDto implements ICreateOrEditEmployeeF
             this.dependant3TicketCompensateCount = _data["dependant3TicketCompensateCount"];
             this.compensateLoanAmount = _data["compensateLoanAmount"];
             this.compensateBonusPay = _data["compensateBonusPay"];
+            this.settleLoanInEndOfService = _data["settleLoanInEndOfService"];
             this.comments = _data["comments"];
         }
     }
@@ -178977,6 +179119,7 @@ export class CreateOrEditEmployeeFnFPaymentDto implements ICreateOrEditEmployeeF
         data["dependant3TicketCompensateCount"] = this.dependant3TicketCompensateCount;
         data["compensateLoanAmount"] = this.compensateLoanAmount;
         data["compensateBonusPay"] = this.compensateBonusPay;
+        data["settleLoanInEndOfService"] = this.settleLoanInEndOfService;
         data["comments"] = this.comments;
         return data;
     }
@@ -178998,6 +179141,7 @@ export interface ICreateOrEditEmployeeFnFPaymentDto {
     dependant3TicketCompensateCount: number;
     compensateLoanAmount: number;
     compensateBonusPay: number;
+    settleLoanInEndOfService: boolean;
     comments: string | undefined;
 }
 
@@ -218068,6 +218212,9 @@ export class FullAndFinalBalancesDto implements IFullAndFinalBalancesDto {
     dependant3TicketRemainingCount!: number;
     autoFillLeaveCompensateDays!: number;
     autoFillGratuityCompensateDays!: number;
+    loanDueAmount!: number;
+    loanBalanceDueAmount!: number;
+    suggestedBonusPay!: number;
 
     constructor(data?: IFullAndFinalBalancesDto) {
         if (data) {
@@ -218095,6 +218242,9 @@ export class FullAndFinalBalancesDto implements IFullAndFinalBalancesDto {
             this.dependant3TicketRemainingCount = _data["dependant3TicketRemainingCount"];
             this.autoFillLeaveCompensateDays = _data["autoFillLeaveCompensateDays"];
             this.autoFillGratuityCompensateDays = _data["autoFillGratuityCompensateDays"];
+            this.loanDueAmount = _data["loanDueAmount"];
+            this.loanBalanceDueAmount = _data["loanBalanceDueAmount"];
+            this.suggestedBonusPay = _data["suggestedBonusPay"];
         }
     }
 
@@ -218122,6 +218272,9 @@ export class FullAndFinalBalancesDto implements IFullAndFinalBalancesDto {
         data["dependant3TicketRemainingCount"] = this.dependant3TicketRemainingCount;
         data["autoFillLeaveCompensateDays"] = this.autoFillLeaveCompensateDays;
         data["autoFillGratuityCompensateDays"] = this.autoFillGratuityCompensateDays;
+        data["loanDueAmount"] = this.loanDueAmount;
+        data["loanBalanceDueAmount"] = this.loanBalanceDueAmount;
+        data["suggestedBonusPay"] = this.suggestedBonusPay;
         return data;
     }
 }
@@ -218142,6 +218295,9 @@ export interface IFullAndFinalBalancesDto {
     dependant3TicketRemainingCount: number;
     autoFillLeaveCompensateDays: number;
     autoFillGratuityCompensateDays: number;
+    loanDueAmount: number;
+    loanBalanceDueAmount: number;
+    suggestedBonusPay: number;
 }
 
 export enum FundDedType {
@@ -272120,6 +272276,70 @@ export enum LeaveReturnKind {
     OnTime = 0,
     Early = 1,
     Late = 2,
+}
+
+export class LeaveSplitPreviewDto implements ILeaveSplitPreviewDto {
+    fitsWithinBalance!: boolean;
+    bookable!: number;
+    paidEndDate!: DateTime | undefined;
+    paidLeaveDays!: number;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
+    unpaidLeaveDays!: number;
+    unpaidLeaveTypeMissing!: boolean;
+
+    constructor(data?: ILeaveSplitPreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fitsWithinBalance = _data["fitsWithinBalance"];
+            this.bookable = _data["bookable"];
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.paidLeaveDays = _data["paidLeaveDays"];
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+            this.unpaidLeaveDays = _data["unpaidLeaveDays"];
+            this.unpaidLeaveTypeMissing = _data["unpaidLeaveTypeMissing"];
+        }
+    }
+
+    static fromJS(data: any): LeaveSplitPreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveSplitPreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fitsWithinBalance"] = this.fitsWithinBalance;
+        data["bookable"] = this.bookable;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["paidLeaveDays"] = this.paidLeaveDays;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        data["unpaidLeaveDays"] = this.unpaidLeaveDays;
+        data["unpaidLeaveTypeMissing"] = this.unpaidLeaveTypeMissing;
+        return data;
+    }
+}
+
+export interface ILeaveSplitPreviewDto {
+    fitsWithinBalance: boolean;
+    bookable: number;
+    paidEndDate: DateTime | undefined;
+    paidLeaveDays: number;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
+    unpaidLeaveDays: number;
+    unpaidLeaveTypeMissing: boolean;
 }
 
 export class LinkEmployeeUserInput implements ILinkEmployeeUserInput {
@@ -332523,6 +332743,42 @@ export enum TimeEventRule {
     FirstInLastOut = 2,
     LastInFirstOut = 3,
     LastInLastOut = 4,
+}
+
+export class TimeEventSelfieDto implements ITimeEventSelfieDto {
+    dataUrl!: string | undefined;
+
+    constructor(data?: ITimeEventSelfieDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dataUrl = _data["dataUrl"];
+        }
+    }
+
+    static fromJS(data: any): TimeEventSelfieDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeEventSelfieDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dataUrl"] = this.dataUrl;
+        return data;
+    }
+}
+
+export interface ITimeEventSelfieDto {
+    dataUrl: string | undefined;
 }
 
 export class TimeLogApprovalGridRowDto implements ITimeLogApprovalGridRowDto {

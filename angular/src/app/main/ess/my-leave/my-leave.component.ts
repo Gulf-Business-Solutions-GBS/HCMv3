@@ -11,6 +11,7 @@ import {
     EntityDto,
     EssLookupServiceProxy,
     GetMyLeavesInput,
+    LeavePaymentType,
     LeaveReturnKind,
     MyLeaveBalanceDto,
     MyLeaveDto,
@@ -56,7 +57,16 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     /** The approved leave a change is being requested for, or undefined when not amending. */
     readonly amending = signal<MyLeaveDto | undefined>(undefined);
 
-    form = { absenceTypeId: null as number | null, startDate: '', endDate: '', comments: '' };
+    form = {
+        absenceTypeId: null as number | null,
+        startDate: '',
+        endDate: '',
+        comments: '',
+        leavePaymentType: LeavePaymentType.PayWithPayroll,
+        paymentDate: '',
+    };
+
+    readonly PaymentType = LeavePaymentType;
 
     amendForm = { absenceTypeId: null as number | null, startDate: '', endDate: '', reason: '' };
 
@@ -107,7 +117,14 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     }
 
     openForm(): void {
-        this.form = { absenceTypeId: null, startDate: '', endDate: '', comments: '' };
+        this.form = {
+            absenceTypeId: null,
+            startDate: '',
+            endDate: '',
+            comments: '',
+            leavePaymentType: LeavePaymentType.PayWithPayroll,
+            paymentDate: '',
+        };
         this.amending.set(undefined);
         this.closeReturnForm();
         this.showForm.set(true);
@@ -127,6 +144,11 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         input.startDate = DateTime.fromISO(this.form.startDate);
         input.endDate = DateTime.fromISO(this.form.endDate);
         input.comments = this.form.comments;
+        input.leavePaymentType = this.form.leavePaymentType;
+
+        // Sent only for an advance: the server fills in the day legacy would choose when it is left empty,
+        // and moves it to the first working day when the leave is approved.
+        input.paymentDate = this.form.paymentDate ? DateTime.fromISO(this.form.paymentDate) : undefined;
 
         this.saving.set(true);
 

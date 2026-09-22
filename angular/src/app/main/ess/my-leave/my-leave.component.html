@@ -197,6 +197,28 @@
                             </div>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>{{ 'LeavePaymentTypeLabel' | localize }}</label>
+                                <select class="form-control" [(ngModel)]="form.leavePaymentType">
+                                    <option [ngValue]="PaymentType.PayWithPayroll">
+                                        {{ 'LeavePaymentType_PayWithPayroll' | localize }}
+                                    </option>
+                                    <option [ngValue]="PaymentType.PayInAdvance">
+                                        {{ 'LeavePaymentType_PayInAdvance' | localize }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Only an advance needs a date; left empty the server fills in the usual one. -->
+                            @if (form.leavePaymentType === PaymentType.PayInAdvance) {
+                                <div class="form-group col-md-4">
+                                    <label>{{ 'PaymentDateLabel' | localize }}</label>
+                                    <input type="date" class="form-control" [(ngModel)]="form.paymentDate" />
+                                </div>
+                            }
+                        </div>
+
                         <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="apply()">
                             {{ 'Save' | localize }}
                         </button>
