@@ -6731,5 +6731,9 @@
     <text name="WorkflowRequest">طلب سير العمل</text>
     <text name="RequestLog">سجل الإجراءات</text>
     <text name="ReadLog">سجل الاطلاع</text>
-    <text name="ReadDate">تاريخ الاطلاع</text>  </texts>
+    <text name="ReadDate">تاريخ الاطلاع</text>  
+    <text name="Conversation">المحادثة</text>
+    <text name="WriteAComment">اكتب تعليقاً...</text>
+    <text name="NoCommentsYet">لا توجد تعليقات بعد</text>
+  </texts>
 </localizationDictionary>

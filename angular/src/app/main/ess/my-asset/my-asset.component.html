@@ -83,12 +83,12 @@
                                             </td>
                                             <td class="text-right">
                                                 @if (row.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
+                                                    <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)" data-help-loc="Withdraw">
+                                                    <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
                                                         {{ 'Withdraw' | localize }}
                                                     </button>
                                                 }

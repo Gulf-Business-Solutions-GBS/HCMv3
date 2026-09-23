@@ -1,21 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
-import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
-import {
-    GetWorkflowActivityFeedInput,
-    RequestActionType,
-    RequestStatus,
-    WorkflowActivityDto,
-    WorkflowActivityFeedDto,
-    WorkflowActivityKind,
-    WorkflowActivityServiceProxy,
-} from '@shared/service-proxies/service-proxies';
+import { WorkflowActivityRailComponent } from '@app/shared/common/workflow-activity/workflow-activity-rail.component';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { finalize } from 'rxjs/operators';
 
 /** One read-only field on the Request Detail card. */
 export interface EssRequestDetailField {
@@ -31,124 +20,60 @@ export interface EssRequestDetailField {
 export interface EssRequestDetailConfig {
     title: string;
     fields: EssRequestDetailField[];
+
+    /**
+     * The note the employee typed when submitting. Shown as the first post in the conversation rather than
+     * in a box of its own -- it is still a field on the request and still edited on the create form, only
+     * its display moved.
+     */
     comments?: string;
+
+    /** Who to attribute that first post to. Falls back to whoever created the request. */
+    requesterName?: string;
+    requesterPhotoUrl?: string;
+
     workflowRequestId?: number;
     statusLabel: string;
     statusClass: string;
 }
 
 /**
- * A submitted self-service request, opened read-only.
+ * A submitted self-service request, opened read-only, with its conversation.
  *
  * <p>Fills the gap the user found: the list showed a status badge and a withdraw link, so an employee could
- * see THAT their request was waiting but never WHAT they had submitted. Mirrors the legacy request form's
- * four cards -- Request Detail, Request Comment, Workflow Comment (readonly), Workflow Actions &
- * Information -- with the last one a tabbed panel over the activity feed.</p>
+ * see THAT their request was waiting but never WHAT they had submitted.</p>
  *
- * <p>Read-only on purpose. Once a request is in the chain the workflow owns the row; the only thing the
- * requester can still do is withdraw it, and that stays on the list where it was.</p>
+ * <p>Two cards, not legacy's four. The legacy form paired a "Request Comment" textarea with a read-only
+ * "Workflow Comment" one and put the action trail in a tabbed grid below; the user rejected that layout
+ * twice, asking for SuccessFactors' single threaded stream. So the comments, the approvals and the reads all
+ * render as one conversation, and the tabs -- which only ever restated the same rows as columns -- are
+ * gone.</p>
+ *
+ * <p>The request fields stay read-only: once a request is in the chain the workflow owns the row, and the
+ * only thing the requester can still do is withdraw it, which stays on the list where it was. Commenting is
+ * the exception, and the server decides whether this viewer may.</p>
  */
 @Component({
     selector: 'essRequestDetailModal',
     templateUrl: './ess-request-detail-modal.component.html',
-    imports: [CommonModule, AppBsModalDirective, LocalizePipe, LuxonFormatPipe, EmployeeAvatarComponent],
+    imports: [CommonModule, AppBsModalDirective, LocalizePipe, WorkflowActivityRailComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssRequestDetailModalComponent extends AppComponentBase {
-    private readonly _activityService = inject(WorkflowActivityServiceProxy);
-
     readonly modal = viewChild<ModalDirective>('essRequestDetailModal');
 
     readonly active = signal(false);
-    readonly loading = signal(false);
     readonly config = signal<EssRequestDetailConfig | undefined>(undefined);
-    readonly feed = signal<WorkflowActivityFeedDto | undefined>(undefined);
-
-    /** 'request' | 'log' | 'readLog' -- the legacy panel's tabs, minus the two with no data behind them. */
-    readonly activeTab = signal<'request' | 'log' | 'readLog'>('request');
-
-    private readonly activities = computed(() => this.feed()?.activities ?? []);
-
-    /**
-     * What approvers wrote, as its own card. Legacy keeps these in a read-only "Workflow Comment" box
-     * separate from the requester's own comment, and the distinction is worth keeping: one is what you
-     * said, the other is what was said back.
-     */
-    readonly workflowComments = computed(() =>
-        this.activities().filter((a) => a.kind === WorkflowActivityKind.Comment && !a.isInternal)
-    );
-
-    /** The audit trail, minus reads -- those are their own tab, as in legacy. */
-    readonly requestLog = computed(() =>
-        this.activities().filter((a) => a.kind === WorkflowActivityKind.Action && a.actionType !== RequestActionType.Read)
-    );
-
-    readonly readLog = computed(() =>
-        this.activities().filter((a) => a.kind === WorkflowActivityKind.Action && a.actionType === RequestActionType.Read)
-    );
-
-    /** The step the request has reached: the latest one any action was logged against. */
-    readonly currentStep = computed(() => {
-        const steps = this.activities()
-            .map((a) => a.workflowStep)
-            .filter((s): s is number => s !== undefined && s !== null);
-
-        return steps.length ? Math.max(...steps) : undefined;
-    });
 
     show(config: EssRequestDetailConfig): void {
         this.config.set(config);
-        this.feed.set(undefined);
-        this.activeTab.set('request');
         this.active.set(true);
         this.modal()?.show();
-
-        // A request that never entered a chain (recorded directly by HR) has no workflow side to show.
-        if (config.workflowRequestId) {
-            this.loadFeed(config.workflowRequestId);
-        }
     }
 
     close(): void {
         this.active.set(false);
         this.config.set(undefined);
-        this.feed.set(undefined);
         this.modal()?.hide();
-    }
-
-    private loadFeed(workflowRequestId: number): void {
-        this.loading.set(true);
-
-        const input = new GetWorkflowActivityFeedInput();
-        input.workflowRequestId = workflowRequestId;
-
-        this._activityService
-            .getActivityFeed(input)
-            .pipe(finalize(() => this.loading.set(false)))
-            .subscribe((result) => this.feed.set(result));
-    }
-
-    actorName(activity: WorkflowActivityDto): string {
-        return (this.isRtl ? activity.actorNameAr || activity.actorNameEn : activity.actorNameEn) ?? '';
-    }
-
-    /** Keyed on the enum NAME so the keys stay readable and survive anyone reordering the enum. */
-    actionLabel(activity: WorkflowActivityDto): string {
-        const name = RequestActionType[activity.actionType];
-
-        return name ? this.l('WorkflowAction_' + name) : '';
-    }
-
-    requestStatusLabel(): string {
-        const status = this.feed()?.requestStatus;
-        if (status === undefined || status === null) {
-            return this.config()?.statusLabel ?? '';
-        }
-
-        return this.l('WorkflowRequestStatus_' + RequestStatus[status]);
-    }
-
-    private get isRtl(): boolean {
-        return document?.documentElement?.getAttribute('dir') === 'rtl';
     }
 }

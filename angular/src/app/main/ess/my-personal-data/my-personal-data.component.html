@@ -172,16 +172,16 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-right">
-                                                <button class="btn btn-sm btn-link" (click)="toggleAttachments(row)">
+                                                <button class="btn btn-light-primary" (click)="toggleAttachments(row)">
                                                     <i class="fa fa-paperclip" data-help-loc="Attachments"></i> {{ 'Attachments' | localize }}
                                                 </button>
                                                 @if (row.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
+                                                    <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)" data-help-loc="Withdraw">
+                                                    <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
                                                         {{ 'Withdraw' | localize }}
                                                     </button>
                                                 }

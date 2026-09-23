@@ -1,6 +1,8 @@
-// The activity rail. Sits on the END side of the request detail -- right in English, and it flips to the
-// left automatically in Arabic, which a hard "right" would not.
-.wf-activity-rail {
+// The request conversation: one column of posts, social-feed style.
+//
+// Everything that positions a post uses logical properties (inline-start, margin-inline) rather than left
+// and right, so the whole thread mirrors itself in Arabic without a second stylesheet.
+.wf-feed {
     display: flex;
     flex-direction: column;
     border: 1px solid #ebedf3;
@@ -8,16 +10,43 @@
     background: #fff;
     max-height: 70vh;
 
+    // Inside a host that already draws a card, a second border and a second scroll region just box the
+    // conversation in twice.
+    &--flush {
+        border: 0;
+        border-radius: 0;
+        max-height: none;
+        background: transparent;
+    }
+
     &__header {
         padding: 0.75rem 1rem;
         border-bottom: 1px solid #ebedf3;
         font-weight: 600;
     }
 
-    &__feed {
+    &__stream {
         flex: 1 1 auto;
         overflow-y: auto;
         padding: 0.5rem 0;
+
+        // The thread line: one hairline running behind the avatars, which is what makes separate posts read
+        // as a single conversation rather than as a stack of cards.
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            bottom: 1.25rem;
+            inset-inline-start: calc(1rem + 19px);
+            width: 1px;
+            background: #eef0f4;
+        }
+    }
+
+    .wf-feed--flush &__stream {
+        overflow-y: visible;
     }
 
     &__empty {
@@ -34,7 +63,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 0.75rem;
         margin-top: 0.5rem;
+    }
+
+    // With no internal-comment toggle to sit opposite, space-between would strand the button on the start
+    // edge, where it reads as a cancel.
+    &__composer-actions > .btn {
+        margin-inline-start: auto;
     }
 
     &__internal-toggle {
@@ -47,39 +83,27 @@
     }
 }
 
-.wf-activity {
+.wf-post {
     display: flex;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
-
-    // Internal comments are tinted and edged so an approver can tell at a glance that the requester cannot
-    // see what they are reading -- the distinction is easy to forget mid-thread.
-    &--internal {
-        background: #fff8e1;
-        border-inline-start: 3px solid #ffb822;
-    }
+    padding: 0.5rem 1rem;
+    position: relative;
 
     &__avatar {
         flex: 0 0 auto;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        overflow: hidden;
-        background: #f3f6f9;
-        display: flex;
-        align-items: center;
-        justify-content: center;
 
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        // Above the thread line, so the hairline appears to run behind each face rather than across it.
+        position: relative;
+        z-index: 1;
+
+        // A ring of page background, so the thread line does not touch the photo. Applied to the avatar's
+        // HOST element, not the span inside it: view encapsulation puts this stylesheet's attribute on the
+        // host only, so a rule aimed at the child's internals would never match.
+        employee-avatar {
+            display: inline-flex;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #fff;
         }
-    }
-
-    &__initials {
-        font-weight: 600;
-        color: #7e8299;
     }
 
     &__body {
@@ -87,7 +111,7 @@
         min-width: 0;
     }
 
-    &__meta {
+    &__line {
         display: flex;
         flex-wrap: wrap;
         align-items: baseline;
@@ -95,14 +119,19 @@
         font-size: 0.9rem;
     }
 
-    &__actor {
+    &__author {
         font-weight: 600;
+        color: #181c32;
     }
 
     &__action,
     &__time,
     &__edited {
-        color: #7e8299;
+        color: #a1a5b7;
+    }
+
+    &__time {
+        font-size: 0.8rem;
     }
 
     &__edited {
@@ -112,22 +141,84 @@
 
     &__badge {
         font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.15rem 0.5rem;
+        border-radius: 0.35rem;
+        background: #fff4de;
+        color: #c68c00;
+    }
+
+    // What a person said: a bubble, so it carries more weight than what the system recorded.
+    &__bubble {
+        background: #f5f8fa;
+        border-radius: 0.6rem;
+        padding: 0.5rem 0.85rem;
+        display: inline-block;
+        max-width: 100%;
     }
 
     &__text {
-        margin-top: 0.25rem;
+        margin-top: 0.15rem;
 
         // Comments are plain text, so newlines the author typed must survive, and a long unbroken string
-        // must not stretch the rail.
+        // must not stretch the column.
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        color: #3f4254;
+    }
+
+    &__note {
+        margin-top: 0.1rem;
+        font-size: 0.85rem;
+        color: #7e8299;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
     }
 
-    &__actions {
+    &__links {
         margin-top: 0.25rem;
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+    }
+
+    &__actions {
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 0.5rem;
     }
 
     &__editor {
         margin-top: 0.25rem;
+    }
+
+    // System events -- submitted, approved, read -- sit lighter and tighter than comments, and are indented
+    // to the same thread line by a margin that makes up the difference in avatar size.
+    &--system {
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+
+        .wf-post__avatar {
+            margin-inline-start: 6px;
+            margin-inline-end: 6px;
+        }
+
+        .wf-post__body {
+            padding-top: 0.15rem;
+        }
+
+        .wf-post__author {
+            font-weight: 500;
+            color: #7e8299;
+        }
+    }
+
+    // Internal comments are tinted and edged so an approver can tell at a glance that the requester cannot
+    // see what they are reading -- the distinction is easy to forget mid-thread.
+    &--internal {
+        .wf-post__bubble {
+            background: #fff8e1;
+            border-inline-start: 3px solid #ffb822;
+        }
     }
 }

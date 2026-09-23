@@ -122,6 +122,9 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
                 { label: this.l('ExitPermitNumber'), value: row.externalRequestNumber ?? '' },
             ],
             comments: row.comments,
+            // These are the signed-in employee's own requests, so the first post in the conversation is
+            // theirs; naming them here saves the modal guessing from the Created activity.
+            requesterName: this.employeeDisplay(),
             workflowRequestId: row.workflowRequestId,
             statusLabel: this.statusLabel(row),
             statusClass: this.statusClass(row),

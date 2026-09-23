@@ -311,31 +311,31 @@
                                             </td>
                                             <td class="text-right">
                                                 @if (leave.hasPendingAmendment && leave.pendingAmendmentRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(leave.pendingAmendmentRequestId)">
+                                                    <button class="btn btn-light-primary" (click)="history.show(leave.pendingAmendmentRequestId)">
                                                         {{ 'ChangePending' | localize }}
                                                     </button>
                                                 } @else if (leave.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(leave.workflowRequestId)" data-help-loc="WorkflowHistory">
+                                                    <button class="btn btn-light-primary" (click)="history.show(leave.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canAmend) {
-                                                    <button class="btn btn-sm btn-link" data-help-loc="RequestAChange" (click)="openAmendForm(leave)">
+                                                    <button class="btn btn-light-primary" data-help-loc="RequestAChange" (click)="openAmendForm(leave)">
                                                         {{ 'RequestAChange' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canReturn) {
-                                                    <button class="btn btn-sm btn-link" data-help-loc="ReportMyReturn" (click)="openReturnForm(leave)">
+                                                    <button class="btn btn-light-primary" data-help-loc="ReportMyReturn" (click)="openReturnForm(leave)">
                                                         {{ 'ReportMyReturn' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canRequestCancellation) {
-                                                    <button class="btn btn-sm btn-link text-danger" data-help-loc="RequestCancellation" (click)="requestCancellation(leave)">
+                                                    <button class="btn btn-light-danger ms-2" data-help-loc="RequestCancellation" (click)="requestCancellation(leave)">
                                                         {{ 'RequestCancellation' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canCancel) {
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(leave)">
+                                                    <button class="btn btn-light-danger ms-2" (click)="cancel(leave)">
                                                         {{ 'Cancel' | localize }}
                                                     </button>
                                                 }

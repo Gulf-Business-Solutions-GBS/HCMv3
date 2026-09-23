@@ -136,19 +136,19 @@
                                             </td>
                                             <td class="text-right">
                                                 @if (row.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
+                                                    <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canReturn) {
-                                                    <button class="btn btn-sm btn-link" data-help-loc="ReturnMyDocument" (click)="openReturnForm(row)">
+                                                    <button class="btn btn-light-primary" data-help-loc="ReturnMyDocument" (click)="openReturnForm(row)">
                                                         {{ 'ReturnMyDocument' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
                                                     <!-- "Withdraw" alone would read as withdrawing the passport, which is what
                                                          this screen is FOR. Named for the request on this one screen. -->
-                                                    <button class="btn btn-sm btn-link text-danger" data-help-loc="WithdrawRequest" (click)="cancel(row)">
+                                                    <button class="btn btn-light-danger ms-2" data-help-loc="WithdrawRequest" (click)="cancel(row)">
                                                         {{ 'WithdrawRequest' | localize }}
                                                     </button>
                                                 }

@@ -6894,5 +6894,8 @@
     <text name="ReadLog">Read Log</text>
     <text name="ReadDate">Read Date</text>
 
+    <text name="Conversation">Conversation</text>
+    <text name="WriteAComment">Write a comment...</text>
+    <text name="NoCommentsYet">No comments yet</text>
   </texts>
 </localizationDictionary>
