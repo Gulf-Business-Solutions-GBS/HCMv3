@@ -3,7 +3,7 @@
 }
 
 .ess-inbox__row--selected {
-    background-color: rgba(54, 153, 255, 0.08);
+    background-color: rgba(var(--bs-primary-rgb), 0.08);
 }
 
 // Leaves room for the docked decision bar, so the paginator is never hidden behind it.
@@ -15,12 +15,17 @@
     position: fixed;
     inset-inline: 0;
     bottom: 0;
-    // Above the request-detail dialog (Bootstrap 5 puts .modal at 1055), so the approver can still decide
-    // while reading the request rather than having to close it first.
+    // Above the request-detail dialog, so the approver can still decide while reading the request
+    // rather than having to close it first. Checked against every bundle we ship: all thirteen themes
+    // set --bs-modal-zindex to 1055 and none overrides it, so this is a fixed number rather than a
+    // guess. It cannot be derived from the variable -- Bootstrap scopes --bs-modal-zindex to .modal
+    // itself, so it does not reach an element outside the dialog.
     z-index: 1080;
     padding: 0.75rem 1.5rem;
-    background-color: #ffffff;
-    border-top: 1px solid #ebedf3;
+    background-color: var(--bs-body-bg);
+    border-top: 1px solid var(--bs-border-color);
+    // Left black deliberately: Metronic ships the same rgba(0, 0, 0, ...) shadows under
+    // [data-bs-theme="dark"], and on a dark page it is the border above that separates the bar.
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
 }
 
