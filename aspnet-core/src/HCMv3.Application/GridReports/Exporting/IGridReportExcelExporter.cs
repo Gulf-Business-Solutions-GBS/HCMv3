@@ -13,9 +13,13 @@ public interface IGridReportExcelExporter
     /// Decimals shown on every numeric column; legacy applied <c>ManageReportSettings.DecimalInReports</c>
     /// as an <c>N{decimals}</c> display format, zero meaning three.
     /// </param>
+    /// <param name="openPassword">
+    /// When set, the file asks for this password before it opens (legacy <c>EnableReportExportPwd</c>).
+    /// </param>
     Task<FileDto> ExportAsync<TRow>(
         string fileName,
         IReadOnlyList<TRow> rows,
         IReadOnlyList<GridReportColumn<TRow>> columns,
-        int decimalPlaces = DefaultDecimalPlaces);
+        int decimalPlaces = DefaultDecimalPlaces,
+        string openPassword = null);
 }

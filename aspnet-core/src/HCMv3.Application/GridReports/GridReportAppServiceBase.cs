@@ -189,6 +189,28 @@ public abstract class GridReportAppServiceBase : HCMv3AppServiceBase
         var reportSettings = await SysSettingsAccessor.GetReportSettingsAsync();
         var decimalPlaces = reportSettings?.DecimalInReports ?? 0;
 
-        return await GridReportExcelExporter.ExportAsync(fileName, rows, columns, decimalPlaces);
+        return await GridReportExcelExporter.ExportAsync(
+            fileName, rows, columns, decimalPlaces, await GetExportPasswordAsync());
+    }
+
+    /// <summary>
+    /// Legacy <c>GridReportHelper.Export</c>: with <c>EnableReportExportPwd</c> on, the file's password is the
+    /// signed-in user's user name. A scheduled distribution has no one to type it, and legacy had no
+    /// scheduling, so a scheduled run (and any run with no signed-in user) exports without a password.
+    /// </summary>
+    protected virtual async Task<string> GetExportPasswordAsync()
+    {
+        if (!AbpSession.UserId.HasValue || ReportScopeOverride?.IsActive == true)
+        {
+            return null;
+        }
+
+        var securitySettings = await SysSettingsAccessor.GetSecuritySettingsAsync();
+        if (securitySettings == null || !securitySettings.EnableReportExportPwd)
+        {
+            return null;
+        }
+
+        return (await GetCurrentUserAsync()).UserName;
     }
 }

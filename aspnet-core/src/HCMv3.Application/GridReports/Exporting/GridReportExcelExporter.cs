@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.AspNetZeroCore.Net;
 using Abp.Dependency;
+using Abp.UI;
 using HCMv3.Dto;
 using HCMv3.Storage;
 using MiniExcelLibs;
@@ -24,6 +25,12 @@ public class GridReportExcelExporter : HCMv3ServiceBase, IGridReportExcelExporte
 {
     private readonly ITempFileCacheManager _tempFileCacheManager;
 
+    /// <summary>
+    /// Null when no host has registered one (the unit-test host, for instance). A protected export then
+    /// refuses rather than quietly handing out an unprotected file.
+    /// </summary>
+    public IEncryptedWorkbookWriter EncryptedWorkbookWriter { get; set; }
+
     public GridReportExcelExporter(ITempFileCacheManager tempFileCacheManager)
     {
         _tempFileCacheManager = tempFileCacheManager;
@@ -33,10 +40,28 @@ public class GridReportExcelExporter : HCMv3ServiceBase, IGridReportExcelExporte
         string fileName,
         IReadOnlyList<TRow> rows,
         IReadOnlyList<GridReportColumn<TRow>> columns,
-        int decimalPlaces = IGridReportExcelExporter.DefaultDecimalPlaces)
+        int decimalPlaces = IGridReportExcelExporter.DefaultDecimalPlaces,
+        string openPassword = null)
     {
         var file = new FileDto(fileName, MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet);
         var table = BuildDataTable(rows, columns);
+
+        if (!string.IsNullOrEmpty(openPassword))
+        {
+            if (EncryptedWorkbookWriter == null)
+            {
+                throw new UserFriendlyException(L("ProtectedReportExportUnavailable"));
+            }
+
+            var bytes = EncryptedWorkbookWriter.WriteXlsx(
+                table,
+                FindFractionalColumns(table),
+                BuildNumberFormat(decimalPlaces),
+                openPassword);
+            _tempFileCacheManager.SetFile(file.FileToken, bytes);
+            return file;
+        }
+
         var configuration = BuildNumberFormats(table, decimalPlaces);
 
         using (var stream = new MemoryStream())
@@ -54,12 +79,29 @@ public class GridReportExcelExporter : HCMv3ServiceBase, IGridReportExcelExporte
     /// </summary>
     private static OpenXmlConfiguration BuildNumberFormats(DataTable table, int decimalPlaces)
     {
-        var decimals = decimalPlaces <= 0 ? IGridReportExcelExporter.DefaultDecimalPlaces : decimalPlaces;
-        var format = "#,##0." + new string('0', decimals);
+        var format = BuildNumberFormat(decimalPlaces);
 
-        var numericColumns = new List<DynamicExcelColumn>();
-        foreach (DataColumn column in table.Columns)
+        var numericColumns = FindFractionalColumns(table)
+            .Select(i => new DynamicExcelColumn(table.Columns[i].ColumnName) { Format = format })
+            .ToList();
+
+        return numericColumns.Count == 0
+            ? null
+            : new OpenXmlConfiguration { DynamicColumns = numericColumns.ToArray() };
+    }
+
+    private static string BuildNumberFormat(int decimalPlaces)
+    {
+        var decimals = decimalPlaces <= 0 ? IGridReportExcelExporter.DefaultDecimalPlaces : decimalPlaces;
+        return "#,##0." + new string('0', decimals);
+    }
+
+    private static List<int> FindFractionalColumns(DataTable table)
+    {
+        var indexes = new List<int>();
+        for (var i = 0; i < table.Columns.Count; i++)
         {
+            var column = table.Columns[i];
             var values = table.Rows.Cast<DataRow>()
                 .Select(r => r[column])
                 .Where(v => v != null && v != DBNull.Value)
@@ -67,13 +109,11 @@ public class GridReportExcelExporter : HCMv3ServiceBase, IGridReportExcelExporte
 
             if (values.Count > 0 && values.All(v => v is double || v is decimal || v is float))
             {
-                numericColumns.Add(new DynamicExcelColumn(column.ColumnName) { Format = format });
+                indexes.Add(i);
             }
         }
 
-        return numericColumns.Count == 0
-            ? null
-            : new OpenXmlConfiguration { DynamicColumns = numericColumns.ToArray() };
+        return indexes;
     }
 
     private DataTable BuildDataTable<TRow>(

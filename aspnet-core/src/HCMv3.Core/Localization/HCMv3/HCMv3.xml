@@ -6870,5 +6870,6 @@
     <text name="SettleLoanInEndOfService">Settle the open loans in this payment</text>
     <text name="SettleLoanInEndOfServiceHint">The whole remaining loan balance is recovered on the compensation date. Without this, an employee with an open loan cannot be settled.</text>
     <text name="YouAreNotAllowedToRaiseThisRequestForThisEmployee">You are not allowed to raise this request for this employee. The first step of this workflow limits who may create it.</text>
+    <text name="ProtectedReportExportUnavailable">This report must be exported with a password, but password-protected export is not available on this server. Please contact your administrator.</text>
   </texts>
 </localizationDictionary>
