@@ -6731,5 +6731,13 @@
     <text name="WorkflowRequest">طلب سير العمل</text>
     <text name="RequestLog">سجل الإجراءات</text>
     <text name="ReadLog">سجل الاطلاع</text>
-    <text name="ReadDate">تاريخ الاطلاع</text>  </texts>
+    <text name="ReadDate">تاريخ الاطلاع</text>
+    <text name="CurrentAssignment">التعيين الحالي</text>
+    <text name="CurrentAssignmentHint">بيانات التوظيف السارية اليوم</text>
+    <text name="LeaveBalanceSubtitle">ملخص أرصدة الإجازات المتاحة</text>
+    <text name="UpdatedToday">مُحدَّث اليوم</text>
+    <text name="TodaysAttendanceHint">تسجيلات الحضور والانصراف لليوم</text>
+    <text name="AlertsSummaryHint">أخبار الموظفين على مستوى المؤسسة</text>
+    <text name="PendingApprovals">موافقات قيد الانتظار</text>
+  </texts>
 </localizationDictionary>
