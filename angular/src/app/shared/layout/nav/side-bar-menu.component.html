@@ -134,7 +134,10 @@
 <ng-template #msubMenuItemText let-item="item" let-parentItem="parentItem">
     <!-- if menu item has submenu child  -->
     @if (item.items.length) {
-        <a href="javascript:;" class="menu-link menu-toggle" [class]="{ active: isMenuItemIsActive(item) }">
+        <!-- No `active` here. A group is never the thing you are ON, it is the branch you are IN, and it is
+             marked as such with `here` on the wrapping .menu-item (see getItemCssClasses). Binding `active`
+             on the toggle put the selected leaf's filled pill on every ancestor at once. -->
+        <a href="javascript:;" class="menu-link menu-toggle">
             <span class="menu-item-here"></span>
             <!-- if menu item has icon -->
             @if (item.icon) {

@@ -109,3 +109,22 @@
     margin-left: 0;
     margin-right: auto;
 }
+
+/* ---------- open branch vs. selected item ---------- */
+/*
+ * Opening a leaf three levels down used to light up all four rows in the same solid fill: the group toggles
+ * bound Metronic's `active` class from isMenuItemIsActive(), which is true for every ancestor of the current
+ * route. Ancestors now carry `here` instead (see getItemCssClasses). Metronic recolours the label, icon and
+ * arrow for `here` but leaves the background alone, so only the leaf keeps the filled pill.
+ *
+ * This adds a left rule on top of that, so an open branch reads as a trail back to the selection rather than
+ * as a slightly different shade of selected. Scoped to .menu-accordion, which only the sidebar's expandable
+ * groups carry -- the top bar's static `here` items must not pick it up.
+ */
+.menu-item.here.menu-accordion > .menu-link {
+    box-shadow: inset 2px 0 0 0 var(--bs-primary);
+}
+
+[dir='rtl'] .menu-item.here.menu-accordion > .menu-link {
+    box-shadow: inset -2px 0 0 0 var(--bs-primary);
+}

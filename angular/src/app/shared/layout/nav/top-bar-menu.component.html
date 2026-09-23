@@ -27,9 +27,9 @@
             [attr.data-kt-menu-placement]="item.items.length ? (!parentItem ? 'bottom-start' : 'right-start') : null">
             <!-- if item has submenu -->
             @if (item.items.length) {
-                <span
-                    class="{{ getAnchorItemCssClasses(item, parentItem) }}"
-                    [ngClass]="{ active: isMenuItemIsActive(item) }">
+                <!-- No `active` on a group, same reasoning as the sidebar: the branch you are in is marked
+                     with `here` on the wrapping .menu-item, so only the leaf reads as selected. -->
+                <span class="{{ getAnchorItemCssClasses(item, parentItem) }}">
                     <ng-container
                         [ngTemplateOutlet]="kt_menu_item_inner"
                         [ngTemplateOutletContext]="{

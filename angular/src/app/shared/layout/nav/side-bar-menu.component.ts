@@ -219,6 +219,14 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
             classes += ' show';
         }
 
+        // A group that CONTAINS the current route gets Metronic's `here`, never `active`. `here` recolours
+        // the label, icon and arrow without the filled background, so an open branch reads as the trail
+        // leading to the selection while the leaf keeps the one filled pill. Leaves are excluded on purpose:
+        // their `active` comes from routerLinkActive, and carrying both would paint the same item twice.
+        if (item.items.length && this.isMenuItemIsActive(item)) {
+            classes += ' here';
+        }
+
         return classes;
     }
 

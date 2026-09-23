@@ -79,6 +79,12 @@ export class TopBarMenuComponent extends AppComponentBase implements OnInit {
             classes += ' show';
         }
 
+        // See side-bar-menu: a group that contains the current route is `here` (colour only), not `active`
+        // (filled), so the horizontal menu does not light up every ancestor either.
+        if (item.items.length && this.isMenuItemIsActive(item)) {
+            classes += ' here';
+        }
+
         return classes;
     }
 
