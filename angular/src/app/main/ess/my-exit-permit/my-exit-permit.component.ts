@@ -220,8 +220,13 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
 
     /** Reopens a saved draft in the same form it was filled in on. */
     continueDraft(row: MyExitPermitDto): void {
-        this._service.getMyExitPermitDraftForEdit(new EntityDto({ id: row.id })).subscribe((draft) => {
+        // Raw id, not an EntityDto: NSwag flattens EntityDto on GET/DELETE, so the generated signature is
+        // getMyExitPermitDraftForEdit(id?: number).
+        this._service.getMyExitPermitDraftForEdit(row.id).subscribe((draft) => {
             this.form = {
+                // The form shows who the permit is for. A draft is always the signed-in employee's own, so
+                // this is the same value the create form displays rather than anything stored on the draft.
+                employeeDisplay: this.employeeDisplay(),
                 externalRequestNumber: draft.externalRequestNumber ?? '',
                 travelReason: draft.travelReason ?? TravelReason.PlannedLeave,
                 // A draft is allowed to hold no date at all, and the server sends back the unset date it

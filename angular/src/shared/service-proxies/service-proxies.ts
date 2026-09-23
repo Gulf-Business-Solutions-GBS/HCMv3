@@ -90443,6 +90443,174 @@ export class MyExitPermitServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    saveMyExitPermitDraft(body?: SaveExitPermitDraftInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyExitPermit/SaveMyExitPermitDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyExitPermitDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyExitPermitDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSaveMyExitPermitDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyExitPermitDraftForEdit(id?: number | undefined): Observable<MyExitPermitDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyExitPermit/GetMyExitPermitDraftForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyExitPermitDraftForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyExitPermitDraftForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyExitPermitDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyExitPermitDto>;
+        }));
+    }
+
+    protected processGetMyExitPermitDraftForEdit(response: HttpResponseBase): Observable<MyExitPermitDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyExitPermitDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyExitPermitDraft(body?: EntityDto | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyExitPermit/SubmitMyExitPermitDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyExitPermitDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyExitPermitDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSubmitMyExitPermitDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     cancelMyExitPermit(body?: EntityDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/MyExitPermit/CancelMyExitPermit";
         url_ = url_.replace(/[?&]$/, "");
@@ -158484,6 +158652,62 @@ export class WorkflowActivityServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = WorkflowActivityFeedDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getRequestDetail(body?: GetWorkflowRequestDetailInput | undefined): Observable<WorkflowRequestDetailDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/GetRequestDetail";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRequestDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRequestDetail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowRequestDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowRequestDetailDto>;
+        }));
+    }
+
+    protected processGetRequestDetail(response: HttpResponseBase): Observable<WorkflowRequestDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowRequestDetailDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -264593,6 +264817,42 @@ export interface IGetWorkflowRemarkForEditOutput {
     workflowRemark: CreateOrEditWorkflowRemarkDto;
 }
 
+export class GetWorkflowRequestDetailInput implements IGetWorkflowRequestDetailInput {
+    workflowRequestId!: number;
+
+    constructor(data?: IGetWorkflowRequestDetailInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkflowRequestDetailInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkflowRequestDetailInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        return data;
+    }
+}
+
+export interface IGetWorkflowRequestDetailInput {
+    workflowRequestId: number;
+}
+
 export class GetWorkflowRequestForEditOutput implements IGetWorkflowRequestForEditOutput {
     workflowRequest!: CreateOrEditWorkflowRequestDto;
 
@@ -276602,6 +276862,8 @@ export class MyAssetRequestDto implements IMyAssetRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     assetId!: number;
     assetNameEn!: string | undefined;
     assetNameAr!: string | undefined;
@@ -276624,6 +276886,8 @@ export class MyAssetRequestDto implements IMyAssetRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.assetId = _data["assetId"];
             this.assetNameEn = _data["assetNameEn"];
             this.assetNameAr = _data["assetNameAr"];
@@ -276646,6 +276910,8 @@ export class MyAssetRequestDto implements IMyAssetRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["assetId"] = this.assetId;
         data["assetNameEn"] = this.assetNameEn;
         data["assetNameAr"] = this.assetNameAr;
@@ -276661,6 +276927,8 @@ export interface IMyAssetRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     assetId: number;
     assetNameEn: string | undefined;
     assetNameAr: string | undefined;
@@ -276674,6 +276942,8 @@ export class MyAttendanceRequestDto implements IMyAttendanceRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     attendanceTypeId!: number;
     attendanceTypeNameEn!: string | undefined;
     attendanceTypeNameAr!: string | undefined;
@@ -276699,6 +276969,8 @@ export class MyAttendanceRequestDto implements IMyAttendanceRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.attendanceTypeId = _data["attendanceTypeId"];
             this.attendanceTypeNameEn = _data["attendanceTypeNameEn"];
             this.attendanceTypeNameAr = _data["attendanceTypeNameAr"];
@@ -276724,6 +276996,8 @@ export class MyAttendanceRequestDto implements IMyAttendanceRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["attendanceTypeId"] = this.attendanceTypeId;
         data["attendanceTypeNameEn"] = this.attendanceTypeNameEn;
         data["attendanceTypeNameAr"] = this.attendanceTypeNameAr;
@@ -276742,6 +277016,8 @@ export interface IMyAttendanceRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     attendanceTypeId: number;
     attendanceTypeNameEn: string | undefined;
     attendanceTypeNameAr: string | undefined;
@@ -276758,6 +277034,8 @@ export class MyBankRequestDto implements IMyBankRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     bankId!: number | undefined;
     bankNameEn!: string | undefined;
     bankNameAr!: string | undefined;
@@ -276781,6 +277059,8 @@ export class MyBankRequestDto implements IMyBankRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.bankId = _data["bankId"];
             this.bankNameEn = _data["bankNameEn"];
             this.bankNameAr = _data["bankNameAr"];
@@ -276804,6 +277084,8 @@ export class MyBankRequestDto implements IMyBankRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["bankId"] = this.bankId;
         data["bankNameEn"] = this.bankNameEn;
         data["bankNameAr"] = this.bankNameAr;
@@ -276820,6 +277102,8 @@ export interface IMyBankRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     bankId: number | undefined;
     bankNameEn: string | undefined;
     bankNameAr: string | undefined;
@@ -276834,6 +277118,8 @@ export class MyClearanceDto implements IMyClearanceDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     clearanceRequestTypeId!: number;
     clearanceRequestTypeNameEn!: string | undefined;
     clearanceRequestTypeNameAr!: string | undefined;
@@ -276856,6 +277142,8 @@ export class MyClearanceDto implements IMyClearanceDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.clearanceRequestTypeId = _data["clearanceRequestTypeId"];
             this.clearanceRequestTypeNameEn = _data["clearanceRequestTypeNameEn"];
             this.clearanceRequestTypeNameAr = _data["clearanceRequestTypeNameAr"];
@@ -276878,6 +277166,8 @@ export class MyClearanceDto implements IMyClearanceDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["clearanceRequestTypeId"] = this.clearanceRequestTypeId;
         data["clearanceRequestTypeNameEn"] = this.clearanceRequestTypeNameEn;
         data["clearanceRequestTypeNameAr"] = this.clearanceRequestTypeNameAr;
@@ -276893,6 +277183,8 @@ export interface IMyClearanceDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     clearanceRequestTypeId: number;
     clearanceRequestTypeNameEn: string | undefined;
     clearanceRequestTypeNameAr: string | undefined;
@@ -277230,6 +277522,8 @@ export class MyDelegationDto implements IMyDelegationDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     delegateToId!: number;
     delegateToCode!: string | undefined;
     delegateToFullNameEn!: string | undefined;
@@ -277254,6 +277548,8 @@ export class MyDelegationDto implements IMyDelegationDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.delegateToId = _data["delegateToId"];
             this.delegateToCode = _data["delegateToCode"];
             this.delegateToFullNameEn = _data["delegateToFullNameEn"];
@@ -277278,6 +277574,8 @@ export class MyDelegationDto implements IMyDelegationDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["delegateToId"] = this.delegateToId;
         data["delegateToCode"] = this.delegateToCode;
         data["delegateToFullNameEn"] = this.delegateToFullNameEn;
@@ -277295,6 +277593,8 @@ export interface IMyDelegationDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     delegateToId: number;
     delegateToCode: string | undefined;
     delegateToFullNameEn: string | undefined;
@@ -277310,6 +277610,8 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     documentTypeId!: number;
     documentTypeNameEn!: string | undefined;
     documentTypeNameAr!: string | undefined;
@@ -277333,6 +277635,8 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.documentTypeId = _data["documentTypeId"];
             this.documentTypeNameEn = _data["documentTypeNameEn"];
             this.documentTypeNameAr = _data["documentTypeNameAr"];
@@ -277356,6 +277660,8 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["documentTypeId"] = this.documentTypeId;
         data["documentTypeNameEn"] = this.documentTypeNameEn;
         data["documentTypeNameAr"] = this.documentTypeNameAr;
@@ -277372,6 +277678,8 @@ export interface IMyDocumentRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     documentTypeId: number;
     documentTypeNameEn: string | undefined;
     documentTypeNameAr: string | undefined;
@@ -277386,6 +277694,8 @@ export class MyExitPermitDto implements IMyExitPermitDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     externalRequestNumber!: string | undefined;
     travelReason!: TravelReason;
     exitDate!: DateTime;
@@ -277407,6 +277717,8 @@ export class MyExitPermitDto implements IMyExitPermitDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.externalRequestNumber = _data["externalRequestNumber"];
             this.travelReason = _data["travelReason"];
             this.exitDate = _data["exitDate"] ? DateTime.fromISO(_data["exitDate"].toString()) : undefined as any;
@@ -277428,6 +277740,8 @@ export class MyExitPermitDto implements IMyExitPermitDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["externalRequestNumber"] = this.externalRequestNumber;
         data["travelReason"] = this.travelReason;
         data["exitDate"] = this.exitDate ? this.exitDate.toString() : undefined as any;
@@ -277442,6 +277756,8 @@ export interface IMyExitPermitDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     externalRequestNumber: string | undefined;
     travelReason: TravelReason;
     exitDate: DateTime;
@@ -277846,6 +278162,8 @@ export class MyHRServiceRequestDto implements IMyHRServiceRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     hrServiceTypeId!: number;
     hrServiceTypeNameEn!: string | undefined;
     hrServiceTypeNameAr!: string | undefined;
@@ -277868,6 +278186,8 @@ export class MyHRServiceRequestDto implements IMyHRServiceRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.hrServiceTypeId = _data["hrServiceTypeId"];
             this.hrServiceTypeNameEn = _data["hrServiceTypeNameEn"];
             this.hrServiceTypeNameAr = _data["hrServiceTypeNameAr"];
@@ -277890,6 +278210,8 @@ export class MyHRServiceRequestDto implements IMyHRServiceRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["hrServiceTypeId"] = this.hrServiceTypeId;
         data["hrServiceTypeNameEn"] = this.hrServiceTypeNameEn;
         data["hrServiceTypeNameAr"] = this.hrServiceTypeNameAr;
@@ -277905,6 +278227,8 @@ export interface IMyHRServiceRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     hrServiceTypeId: number;
     hrServiceTypeNameEn: string | undefined;
     hrServiceTypeNameAr: string | undefined;
@@ -277998,6 +278322,8 @@ export class MyHealthReimburseDto implements IMyHealthReimburseDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     paymentDate!: DateTime;
     amount!: number;
     comments!: string | undefined;
@@ -278017,6 +278343,8 @@ export class MyHealthReimburseDto implements IMyHealthReimburseDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
             this.amount = _data["amount"];
             this.comments = _data["comments"];
@@ -278036,6 +278364,8 @@ export class MyHealthReimburseDto implements IMyHealthReimburseDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
         data["amount"] = this.amount;
         data["comments"] = this.comments;
@@ -278048,6 +278378,8 @@ export interface IMyHealthReimburseDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     paymentDate: DateTime;
     amount: number;
     comments: string | undefined;
@@ -278222,6 +278554,8 @@ export class MyLetterRequestDto implements IMyLetterRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     documentTypeId!: number;
     documentTypeNameEn!: string | undefined;
     documentTypeNameAr!: string | undefined;
@@ -278246,6 +278580,8 @@ export class MyLetterRequestDto implements IMyLetterRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.documentTypeId = _data["documentTypeId"];
             this.documentTypeNameEn = _data["documentTypeNameEn"];
             this.documentTypeNameAr = _data["documentTypeNameAr"];
@@ -278270,6 +278606,8 @@ export class MyLetterRequestDto implements IMyLetterRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["documentTypeId"] = this.documentTypeId;
         data["documentTypeNameEn"] = this.documentTypeNameEn;
         data["documentTypeNameAr"] = this.documentTypeNameAr;
@@ -278287,6 +278625,8 @@ export interface IMyLetterRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     documentTypeId: number;
     documentTypeNameEn: string | undefined;
     documentTypeNameAr: string | undefined;
@@ -278302,6 +278642,8 @@ export class MyLoanExemptionDto implements IMyLoanExemptionDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     employeeLoanId!: number;
     loanTypeId!: number | undefined;
     loanTypeNameEn!: string | undefined;
@@ -278326,6 +278668,8 @@ export class MyLoanExemptionDto implements IMyLoanExemptionDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.employeeLoanId = _data["employeeLoanId"];
             this.loanTypeId = _data["loanTypeId"];
             this.loanTypeNameEn = _data["loanTypeNameEn"];
@@ -278350,6 +278694,8 @@ export class MyLoanExemptionDto implements IMyLoanExemptionDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["employeeLoanId"] = this.employeeLoanId;
         data["loanTypeId"] = this.loanTypeId;
         data["loanTypeNameEn"] = this.loanTypeNameEn;
@@ -278367,6 +278713,8 @@ export interface IMyLoanExemptionDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     employeeLoanId: number;
     loanTypeId: number | undefined;
     loanTypeNameEn: string | undefined;
@@ -278446,6 +278794,8 @@ export class MyLoanRequestDto implements IMyLoanRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     loanTypeId!: number;
     loanTypeNameEn!: string | undefined;
     loanTypeNameAr!: string | undefined;
@@ -278471,6 +278821,8 @@ export class MyLoanRequestDto implements IMyLoanRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.loanTypeId = _data["loanTypeId"];
             this.loanTypeNameEn = _data["loanTypeNameEn"];
             this.loanTypeNameAr = _data["loanTypeNameAr"];
@@ -278496,6 +278848,8 @@ export class MyLoanRequestDto implements IMyLoanRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["loanTypeId"] = this.loanTypeId;
         data["loanTypeNameEn"] = this.loanTypeNameEn;
         data["loanTypeNameAr"] = this.loanTypeNameAr;
@@ -278514,6 +278868,8 @@ export interface IMyLoanRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     loanTypeId: number;
     loanTypeNameEn: string | undefined;
     loanTypeNameAr: string | undefined;
@@ -278530,6 +278886,8 @@ export class MyMobileDeviceDto implements IMyMobileDeviceDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     deviceId!: string | undefined;
     deviceType!: string | undefined;
     effectiveDate!: DateTime;
@@ -278552,6 +278910,8 @@ export class MyMobileDeviceDto implements IMyMobileDeviceDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.deviceId = _data["deviceId"];
             this.deviceType = _data["deviceType"];
             this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
@@ -278574,6 +278934,8 @@ export class MyMobileDeviceDto implements IMyMobileDeviceDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["deviceId"] = this.deviceId;
         data["deviceType"] = this.deviceType;
         data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
@@ -278589,6 +278951,8 @@ export interface IMyMobileDeviceDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     deviceId: string | undefined;
     deviceType: string | undefined;
     effectiveDate: DateTime;
@@ -278602,6 +278966,8 @@ export class MyOvertimeRequestDto implements IMyOvertimeRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     overtimeTypeId!: number;
     overtimeTypeNameEn!: string | undefined;
     overtimeTypeNameAr!: string | undefined;
@@ -278625,6 +278991,8 @@ export class MyOvertimeRequestDto implements IMyOvertimeRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.overtimeTypeId = _data["overtimeTypeId"];
             this.overtimeTypeNameEn = _data["overtimeTypeNameEn"];
             this.overtimeTypeNameAr = _data["overtimeTypeNameAr"];
@@ -278648,6 +279016,8 @@ export class MyOvertimeRequestDto implements IMyOvertimeRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["overtimeTypeId"] = this.overtimeTypeId;
         data["overtimeTypeNameEn"] = this.overtimeTypeNameEn;
         data["overtimeTypeNameAr"] = this.overtimeTypeNameAr;
@@ -278664,6 +279034,8 @@ export interface IMyOvertimeRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     overtimeTypeId: number;
     overtimeTypeNameEn: string | undefined;
     overtimeTypeNameAr: string | undefined;
@@ -278678,6 +279050,8 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     employeeDocumentId!: number;
     documentNum!: string | undefined;
     documentTypeId!: number | undefined;
@@ -278708,6 +279082,8 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.employeeDocumentId = _data["employeeDocumentId"];
             this.documentNum = _data["documentNum"];
             this.documentTypeId = _data["documentTypeId"];
@@ -278738,6 +279114,8 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["employeeDocumentId"] = this.employeeDocumentId;
         data["documentNum"] = this.documentNum;
         data["documentTypeId"] = this.documentTypeId;
@@ -278761,6 +279139,8 @@ export interface IMyPassportWithdrawalDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     employeeDocumentId: number;
     documentNum: string | undefined;
     documentTypeId: number | undefined;
@@ -278782,6 +279162,8 @@ export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     proposed!: PersonalDataChangeValuesDto;
     comments!: string | undefined;
 
@@ -278800,6 +279182,8 @@ export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.proposed = _data["proposed"] ? PersonalDataChangeValuesDto.fromJS(_data["proposed"]) : undefined as any;
             this.comments = _data["comments"];
         }
@@ -278818,6 +279202,8 @@ export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["proposed"] = this.proposed ? this.proposed.toJSON() : undefined as any;
         data["comments"] = this.comments;
         return data;
@@ -278829,6 +279215,8 @@ export interface IMyPersonalDataChangeDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     proposed: PersonalDataChangeValuesDto;
     comments: string | undefined;
 }
@@ -278882,6 +279270,8 @@ export class MyPunchRequestDto implements IMyPunchRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     transTypeId!: number;
     transTypeNameEn!: string | undefined;
     transTypeNameAr!: string | undefined;
@@ -278905,6 +279295,8 @@ export class MyPunchRequestDto implements IMyPunchRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.transTypeId = _data["transTypeId"];
             this.transTypeNameEn = _data["transTypeNameEn"];
             this.transTypeNameAr = _data["transTypeNameAr"];
@@ -278928,6 +279320,8 @@ export class MyPunchRequestDto implements IMyPunchRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["transTypeId"] = this.transTypeId;
         data["transTypeNameEn"] = this.transTypeNameEn;
         data["transTypeNameAr"] = this.transTypeNameAr;
@@ -278944,6 +279338,8 @@ export interface IMyPunchRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     transTypeId: number;
     transTypeNameEn: string | undefined;
     transTypeNameAr: string | undefined;
@@ -279085,6 +279481,7 @@ export class MyRequestSubmissionDto implements IMyRequestSubmissionDto {
     transactionId!: number;
     workflowRequestId!: number | undefined;
     submittedForApproval!: boolean;
+    savedAsDraft!: boolean;
 
     constructor(data?: IMyRequestSubmissionDto) {
         if (data) {
@@ -279100,6 +279497,7 @@ export class MyRequestSubmissionDto implements IMyRequestSubmissionDto {
             this.transactionId = _data["transactionId"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.submittedForApproval = _data["submittedForApproval"];
+            this.savedAsDraft = _data["savedAsDraft"];
         }
     }
 
@@ -279115,6 +279513,7 @@ export class MyRequestSubmissionDto implements IMyRequestSubmissionDto {
         data["transactionId"] = this.transactionId;
         data["workflowRequestId"] = this.workflowRequestId;
         data["submittedForApproval"] = this.submittedForApproval;
+        data["savedAsDraft"] = this.savedAsDraft;
         return data;
     }
 }
@@ -279123,6 +279522,7 @@ export interface IMyRequestSubmissionDto {
     transactionId: number;
     workflowRequestId: number | undefined;
     submittedForApproval: boolean;
+    savedAsDraft: boolean;
 }
 
 export class MyRequestTypeFilterDto implements IMyRequestTypeFilterDto {
@@ -279234,6 +279634,8 @@ export class MyTicketRequestDto implements IMyTicketRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     ticketTypeId!: number;
     ticketTypeNameEn!: string | undefined;
     ticketTypeNameAr!: string | undefined;
@@ -279256,6 +279658,8 @@ export class MyTicketRequestDto implements IMyTicketRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.ticketTypeId = _data["ticketTypeId"];
             this.ticketTypeNameEn = _data["ticketTypeNameEn"];
             this.ticketTypeNameAr = _data["ticketTypeNameAr"];
@@ -279278,6 +279682,8 @@ export class MyTicketRequestDto implements IMyTicketRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["ticketTypeId"] = this.ticketTypeId;
         data["ticketTypeNameEn"] = this.ticketTypeNameEn;
         data["ticketTypeNameAr"] = this.ticketTypeNameAr;
@@ -279293,6 +279699,8 @@ export interface IMyTicketRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     ticketTypeId: number;
     ticketTypeNameEn: string | undefined;
     ticketTypeNameAr: string | undefined;
@@ -279306,6 +279714,8 @@ export class MyTravelClaimDto implements IMyTravelClaimDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     travelId!: number | undefined;
     claimDate!: DateTime;
     claimAmount!: number;
@@ -279326,6 +279736,8 @@ export class MyTravelClaimDto implements IMyTravelClaimDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.travelId = _data["travelId"];
             this.claimDate = _data["claimDate"] ? DateTime.fromISO(_data["claimDate"].toString()) : undefined as any;
             this.claimAmount = _data["claimAmount"];
@@ -279346,6 +279758,8 @@ export class MyTravelClaimDto implements IMyTravelClaimDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["travelId"] = this.travelId;
         data["claimDate"] = this.claimDate ? this.claimDate.toString() : undefined as any;
         data["claimAmount"] = this.claimAmount;
@@ -279359,6 +279773,8 @@ export interface IMyTravelClaimDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     travelId: number | undefined;
     claimDate: DateTime;
     claimAmount: number;
@@ -279426,6 +279842,8 @@ export class MyTravelDto implements IMyTravelDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
     code!: string | undefined;
     travelTypeId!: number;
     travelTypeNameEn!: string | undefined;
@@ -279452,6 +279870,8 @@ export class MyTravelDto implements IMyTravelDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
             this.code = _data["code"];
             this.travelTypeId = _data["travelTypeId"];
             this.travelTypeNameEn = _data["travelTypeNameEn"];
@@ -279482,6 +279902,8 @@ export class MyTravelDto implements IMyTravelDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
         data["code"] = this.code;
         data["travelTypeId"] = this.travelTypeId;
         data["travelTypeNameEn"] = this.travelTypeNameEn;
@@ -279505,6 +279927,8 @@ export interface IMyTravelDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
     code: string | undefined;
     travelTypeId: number;
     travelTypeNameEn: string | undefined;
@@ -326748,6 +327172,62 @@ export interface ISaveClearanceChecklistInput {
     answers: ClearanceChecklistAnswerInput[] | undefined;
 }
 
+export class SaveExitPermitDraftInput implements ISaveExitPermitDraftInput {
+    id!: number | undefined;
+    externalRequestNumber!: string | undefined;
+    travelReason!: TravelReason;
+    exitDate!: DateTime | undefined;
+    startDate!: DateTime | undefined;
+    comments!: string | undefined;
+
+    constructor(data?: ISaveExitPermitDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.externalRequestNumber = _data["externalRequestNumber"];
+            this.travelReason = _data["travelReason"];
+            this.exitDate = _data["exitDate"] ? DateTime.fromISO(_data["exitDate"].toString()) : undefined as any;
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): SaveExitPermitDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveExitPermitDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["externalRequestNumber"] = this.externalRequestNumber;
+        data["travelReason"] = this.travelReason;
+        data["exitDate"] = this.exitDate ? this.exitDate.toString() : undefined as any;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ISaveExitPermitDraftInput {
+    id: number | undefined;
+    externalRequestNumber: string | undefined;
+    travelReason: TravelReason;
+    exitDate: DateTime | undefined;
+    startDate: DateTime | undefined;
+    comments: string | undefined;
+}
+
 export class SaveIntegrationSettingsInput implements ISaveIntegrationSettingsInput {
     key!: string;
     values!: { [key: string]: string; } | undefined;
@@ -340290,6 +340770,64 @@ export enum WorkflowApproverPersonType {
     ManagerLevel7 = 8,
 }
 
+export class WorkflowDetailFieldDto implements IWorkflowDetailFieldDto {
+    name!: string | undefined;
+    label!: string | undefined;
+    value!: string | undefined;
+    kind!: WorkflowDetailFieldKind;
+
+    constructor(data?: IWorkflowDetailFieldDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.label = _data["label"];
+            this.value = _data["value"];
+            this.kind = _data["kind"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowDetailFieldDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowDetailFieldDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["label"] = this.label;
+        data["value"] = this.value;
+        data["kind"] = this.kind;
+        return data;
+    }
+}
+
+export interface IWorkflowDetailFieldDto {
+    name: string | undefined;
+    label: string | undefined;
+    value: string | undefined;
+    kind: WorkflowDetailFieldKind;
+}
+
+export enum WorkflowDetailFieldKind {
+    Text = 0,
+    Date = 1,
+    DateTime = 2,
+    Number = 3,
+    Money = 4,
+    Boolean = 5,
+    LongText = 6,
+}
+
 export class WorkflowGroupDetailDto implements IWorkflowGroupDetailDto {
     id!: number;
     workflowGroupId!: number;
@@ -340522,6 +341060,146 @@ export interface IWorkflowRemarkDto {
     workflowRequestId: number;
     ccReceiverId: number | undefined;
     ccReceiverNameEn: string | undefined;
+}
+
+export class WorkflowRequestDetailDto implements IWorkflowRequestDetailDto {
+    workflowRequestId!: number;
+    requestNumber!: string | undefined;
+    requestType!: string | undefined;
+    requestTypeNameEn!: string | undefined;
+    requestTypeNameAr!: string | undefined;
+    targetEntityId!: number | undefined;
+    requestStatus!: RequestStatus;
+    summaryEn!: string | undefined;
+    summaryAr!: string | undefined;
+    submittedOn!: DateTime | undefined;
+    workflowStep!: number;
+    requesterEmployeeId!: number | undefined;
+    requesterNameEn!: string | undefined;
+    requesterNameAr!: string | undefined;
+    requesterCode!: string | undefined;
+    requesterJobTitleEn!: string | undefined;
+    requesterJobTitleAr!: string | undefined;
+    requesterPhotoUrl!: string | undefined;
+    fields!: WorkflowDetailFieldDto[] | undefined;
+    submissionComment!: string | undefined;
+    isDefaultProjection!: boolean;
+    isCurrentApprover!: boolean;
+    canApprove!: boolean;
+    canReject!: boolean;
+    canSendBack!: boolean;
+
+    constructor(data?: IWorkflowRequestDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.requestNumber = _data["requestNumber"];
+            this.requestType = _data["requestType"];
+            this.requestTypeNameEn = _data["requestTypeNameEn"];
+            this.requestTypeNameAr = _data["requestTypeNameAr"];
+            this.targetEntityId = _data["targetEntityId"];
+            this.requestStatus = _data["requestStatus"];
+            this.summaryEn = _data["summaryEn"];
+            this.summaryAr = _data["summaryAr"];
+            this.submittedOn = _data["submittedOn"] ? DateTime.fromISO(_data["submittedOn"].toString()) : undefined as any;
+            this.workflowStep = _data["workflowStep"];
+            this.requesterEmployeeId = _data["requesterEmployeeId"];
+            this.requesterNameEn = _data["requesterNameEn"];
+            this.requesterNameAr = _data["requesterNameAr"];
+            this.requesterCode = _data["requesterCode"];
+            this.requesterJobTitleEn = _data["requesterJobTitleEn"];
+            this.requesterJobTitleAr = _data["requesterJobTitleAr"];
+            this.requesterPhotoUrl = _data["requesterPhotoUrl"];
+            if (Array.isArray(_data["fields"])) {
+                this.fields = [] as any;
+                for (let item of _data["fields"])
+                    this.fields!.push(WorkflowDetailFieldDto.fromJS(item));
+            }
+            this.submissionComment = _data["submissionComment"];
+            this.isDefaultProjection = _data["isDefaultProjection"];
+            this.isCurrentApprover = _data["isCurrentApprover"];
+            this.canApprove = _data["canApprove"];
+            this.canReject = _data["canReject"];
+            this.canSendBack = _data["canSendBack"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowRequestDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowRequestDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["requestNumber"] = this.requestNumber;
+        data["requestType"] = this.requestType;
+        data["requestTypeNameEn"] = this.requestTypeNameEn;
+        data["requestTypeNameAr"] = this.requestTypeNameAr;
+        data["targetEntityId"] = this.targetEntityId;
+        data["requestStatus"] = this.requestStatus;
+        data["summaryEn"] = this.summaryEn;
+        data["summaryAr"] = this.summaryAr;
+        data["submittedOn"] = this.submittedOn ? this.submittedOn.toString() : undefined as any;
+        data["workflowStep"] = this.workflowStep;
+        data["requesterEmployeeId"] = this.requesterEmployeeId;
+        data["requesterNameEn"] = this.requesterNameEn;
+        data["requesterNameAr"] = this.requesterNameAr;
+        data["requesterCode"] = this.requesterCode;
+        data["requesterJobTitleEn"] = this.requesterJobTitleEn;
+        data["requesterJobTitleAr"] = this.requesterJobTitleAr;
+        data["requesterPhotoUrl"] = this.requesterPhotoUrl;
+        if (Array.isArray(this.fields)) {
+            data["fields"] = [];
+            for (let item of this.fields)
+                data["fields"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["submissionComment"] = this.submissionComment;
+        data["isDefaultProjection"] = this.isDefaultProjection;
+        data["isCurrentApprover"] = this.isCurrentApprover;
+        data["canApprove"] = this.canApprove;
+        data["canReject"] = this.canReject;
+        data["canSendBack"] = this.canSendBack;
+        return data;
+    }
+}
+
+export interface IWorkflowRequestDetailDto {
+    workflowRequestId: number;
+    requestNumber: string | undefined;
+    requestType: string | undefined;
+    requestTypeNameEn: string | undefined;
+    requestTypeNameAr: string | undefined;
+    targetEntityId: number | undefined;
+    requestStatus: RequestStatus;
+    summaryEn: string | undefined;
+    summaryAr: string | undefined;
+    submittedOn: DateTime | undefined;
+    workflowStep: number;
+    requesterEmployeeId: number | undefined;
+    requesterNameEn: string | undefined;
+    requesterNameAr: string | undefined;
+    requesterCode: string | undefined;
+    requesterJobTitleEn: string | undefined;
+    requesterJobTitleAr: string | undefined;
+    requesterPhotoUrl: string | undefined;
+    fields: WorkflowDetailFieldDto[] | undefined;
+    submissionComment: string | undefined;
+    isDefaultProjection: boolean;
+    isCurrentApprover: boolean;
+    canApprove: boolean;
+    canReject: boolean;
+    canSendBack: boolean;
 }
 
 export class WorkflowRequestDto implements IWorkflowRequestDto {

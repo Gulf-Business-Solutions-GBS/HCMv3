@@ -83,8 +83,14 @@
 
         @if (!readOnly()) {
             <div class="mt-4">
-                <!-- Submit, not Save: this sends the permit into an approval chain rather than filing it. -->
-                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()">
+                <!-- Three actions, and the order is deliberate: Save first because it is the safe one, Submit
+                     second because it is the one that needs an approver to undo, Cancel last and quietest.
+                     Save files the permit as a draft only the requester can see; Submit sends it into the
+                     approval chain; Cancel drops what is on screen and returns to the list. -->
+                <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saved.emit()" data-help-loc="Save">
+                    {{ 'Save' | localize }}
+                </button>
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()" data-help-loc="Submit">
                     {{ 'Submit' | localize }}
                 </button>
                 <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>

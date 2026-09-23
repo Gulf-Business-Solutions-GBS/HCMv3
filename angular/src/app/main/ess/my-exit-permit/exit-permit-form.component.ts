@@ -68,6 +68,9 @@ export class ExitPermitFormComponent extends AppComponentBase {
     /** Disabled while the host is saving, so a double Submit cannot raise two permits. */
     readonly saving = input(false);
 
+    /** Save as draft: files the permit without sending it to an approver. */
+    readonly saved = output<void>();
+
     readonly submitted = output<void>();
     readonly cancelled = output<void>();
 
