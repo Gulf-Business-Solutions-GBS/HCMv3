@@ -43,6 +43,7 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowApproverResolver _approverResolver;
+    private readonly IWorkflowStepSequence _stepSequence;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public WorkflowEscalationService(
@@ -52,8 +53,10 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
         IRepository<RequestDetail> requestDetailRepository,
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApproverResolver approverResolver,
+        IWorkflowStepSequence stepSequence,
         IUnitOfWorkManager unitOfWorkManager)
     {
+        _stepSequence = stepSequence;
         _workflowRequestRepository = workflowRequestRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
         _requestLogRepository = requestLogRepository;
@@ -136,13 +139,18 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
     {
         var requestMaster = await _requestMasterResolver.ResolveAsync(request);
 
-        if (currentStep >= requestMaster.WorkflowSteps)
+        // Same rule the approval engine uses (IWorkflowStepSequence), and it has to be: a chain whose step 1
+        // is a creator row would otherwise escalate by a different reckoning than it approves by, and the
+        // two would disagree about which step is last.
+        var nextApproverStep = _stepSequence.GetNextApproverStep(requestMaster, currentStep);
+
+        if (!nextApproverStep.HasValue)
         {
             // Nothing above this step to escalate to. Approving here would be approval by timeout.
             return null;
         }
 
-        var nextStep = currentStep + 1;
+        var nextStep = nextApproverStep.Value;
         var nextDetail = GetStepDetail(requestMaster.Id, nextStep);
 
         var newApprovers = _approverResolver.ResolveForStep(request, requestMaster, nextDetail);

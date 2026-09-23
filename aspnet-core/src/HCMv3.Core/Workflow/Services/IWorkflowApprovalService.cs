@@ -40,8 +40,17 @@ public interface IWorkflowApprovalService
 {
     /// <summary>
     /// Moves a <see cref="WorkflowRequest"/> from <see cref="RequestStatus.Draft"/> into the approval chain:
-    /// sets <c>WorkflowStep = 1</c>, resolves and assigns the step-1 approver(s), and sets
+    /// sets <c>WorkflowStep</c> to the FIRST STEP THAT NAMES AN APPROVER (see
+    /// <see cref="IWorkflowStepSequence"/> -- a step 1 whose <c>ApproverPerson</c> is <c>None</c> is a
+    /// creator row and is stepped over), resolves and assigns that step's approver(s), and sets
     /// <see cref="RequestStatus.Open"/>. Ported from legacy <c>Submit_Execute</c> (generic portion only).
+    ///
+    /// <para>
+    /// Also enforces the creator row's <see cref="RequestDetail.Person"/> scope -- who may raise this
+    /// request and for whom -- refusing with a <c>UserFriendlyException</c> when the acting employee is out
+    /// of scope. An acting user with no linked employee (the normal state of an admin account here) is not
+    /// restricted by it.
+    /// </para>
     /// </summary>
     Task SubmitAsync(int requestId, int actingEmployeeId);
 
@@ -63,7 +72,9 @@ public interface IWorkflowApprovalService
     Task RejectAsync(int requestId, int actingEmployeeId, string remark);
 
     /// <summary>
-    /// Returns the request to the submitter for correction: resets <c>WorkflowStep = 1</c> and
+    /// Returns the request to the submitter for correction: resets <c>WorkflowStep</c> to the first
+    /// approver step (the same one <see cref="SubmitAsync"/> would choose, so a resubmission lands
+    /// consistently) and
     /// <see cref="RequestStatus.Draft"/>, clearing any in-flight <see cref="WorkFlowApprover"/> rows.
     /// ADAPTED from legacy <c>SendBack_Execute</c>: the legacy handler delegates entirely to
     /// <c>WorkFlowServices.SaveWorkflowRequest(..., "SendBack", ...)</c>, whose generic (non-per-type)
