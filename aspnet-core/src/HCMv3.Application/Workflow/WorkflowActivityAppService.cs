@@ -178,9 +178,9 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             result.IsDefaultProjection = true;
             result.Fields = new List<WorkflowDetailFieldDto>
             {
-                new WorkflowDetailFieldDto { Label = L("RequestNumber"), Value = request.RequestNumber, Kind = WorkflowDetailFieldKind.Text },
-                new WorkflowDetailFieldDto { Label = L("SubmittedOn"), Value = request.CreationTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture), Kind = WorkflowDetailFieldKind.DateTime },
-                new WorkflowDetailFieldDto { Label = L("Summary"), Value = CurrentSummary(request), Kind = WorkflowDetailFieldKind.LongText }
+                new WorkflowDetailFieldDto { Name = WorkflowDetailFieldNames.RequestNumber, Label = L("RequestNumber"), Value = request.RequestNumber, Kind = WorkflowDetailFieldKind.Text },
+                new WorkflowDetailFieldDto { Name = WorkflowDetailFieldNames.SubmittedOn, Label = L("SubmittedOn"), Value = request.CreationTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture), Kind = WorkflowDetailFieldKind.DateTime },
+                new WorkflowDetailFieldDto { Name = WorkflowDetailFieldNames.Summary, Label = L("Summary"), Value = CurrentSummary(request), Kind = WorkflowDetailFieldKind.LongText }
             };
 
             return;
@@ -196,14 +196,14 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         }
 
         // A projection that is only the three engine fields is the base class's fallback rather than the
-        // type's own work. Saying so lets the screen be honest about it instead of implying a leave request
-        // really does have three fields.
+        // type's own work. Detected on the stable NAMES rather than on the labels, which are localized and
+        // would stop matching in Arabic.
         result.IsDefaultProjection = detail.Fields.Count <= 3
-                                     && detail.Fields.Any(f => f.Label == L("Summary"));
+                                     && detail.Fields.Any(f => f.Name == WorkflowDetailFieldNames.Summary);
 
         result.SubmissionComment = detail.SubmissionComment;
         result.Fields = detail.Fields
-            .Select(f => new WorkflowDetailFieldDto { Label = f.Label, Value = f.Value, Kind = f.Kind })
+            .Select(f => new WorkflowDetailFieldDto { Name = f.Name, Label = f.Label, Value = f.Value, Kind = f.Kind })
             .ToList();
     }
 

@@ -133,6 +133,17 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             activities.find((a) => a.kind === WorkflowActivityKind.Action && a.actionType === RequestActionType.Created) ??
             activities[0];
 
+        // The engine now writes the submission comment onto the Created log entry, so for anything submitted
+        // since that change the feed already opens with the requester's words. Adding the lead bubble too
+        // would print them twice, one line apart.
+        //
+        // The lead is kept rather than deleted because requests submitted BEFORE that change have
+        // remark: null on their Created row, and this is the only place their comment can come from. So the
+        // rule is "show it unless the feed already has it", which is right for both.
+        if (created?.body?.trim()) {
+            return undefined;
+        }
+
         return {
             key: 'lead',
             id: 0,

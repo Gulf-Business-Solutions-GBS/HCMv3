@@ -85,9 +85,9 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
         var request = context.Request;
 
         var detail = new WorkflowRequestDetail()
-            .Add(WorkflowDetailField.Text(L("RequestNumber"), request?.RequestNumber))
-            .Add(WorkflowDetailField.DateTimeField(L("SubmittedOn"), request?.CreationTime))
-            .Add(WorkflowDetailField.LongText(L("Summary"), CurrentSummary(request)));
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), request?.RequestNumber))
+            .Add(WorkflowDetailField.DateTimeField(WorkflowDetailFieldNames.SubmittedOn, L("SubmittedOn"), request?.CreationTime))
+            .Add(WorkflowDetailField.LongText(WorkflowDetailFieldNames.Summary, L("Summary"), CurrentSummary(request)));
 
         return Task.FromResult(detail);
     }

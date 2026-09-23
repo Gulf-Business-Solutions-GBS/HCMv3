@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output, signal, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgComponentOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
@@ -16,6 +16,7 @@ import {
 import { DateTime } from 'luxon';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
+import { findRequestForm } from './ess-request-forms';
 
 /** One read-only field on the Request Information card. */
 export interface EssRequestDetailField {
@@ -92,6 +93,7 @@ export interface EssRequestDetailConfig {
     styleUrls: ['./ess-request-detail-modal.component.less'],
     imports: [
         CommonModule,
+        NgComponentOutlet,
         FormsModule,
         AppBsModalDirective,
         LocalizePipe,
@@ -149,6 +151,66 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
     readonly showingFallbackOnly = computed(
         () => !!this.detail()?.isDefaultProjection && !(this.config()?.fields?.length ?? 0)
     );
+
+    /**
+     * Every projected field keyed by its stable name, which is what a typed form binds on.
+     *
+     * <p>Keyed on <c>name</c> and never on <c>label</c>: the label is localized, so a lookup by label would
+     * quietly return nothing the moment the viewer switched to Arabic, and the form would render empty with
+     * no error to explain it.</p>
+     */
+    private readonly fieldValues = computed<Record<string, string>>(() => {
+        const map: Record<string, string> = {};
+
+        for (const field of this.detail()?.fields ?? []) {
+            if (field.name) {
+                map[field.name] = field.value ?? '';
+            }
+        }
+
+        return map;
+    });
+
+    /**
+     * The request type's OWN form, when it has one -- the real create form, read-only.
+     *
+     * <p>This is what the user asked for in place of a generic list: "same layout same screen at the time of
+     * request create". A type without a registered form is not left worse off; it falls back to the
+     * projected label/value rows, which is still every field its handler publishes.</p>
+     *
+     * <p>Waits for the detail to arrive. Rendering the form against an empty projection would show a
+     * complete, correctly laid out, entirely blank permit, which reads as data loss rather than as
+     * loading.</p>
+     */
+    readonly requestForm = computed(() => {
+        const served = this.detail();
+        if (!served || served.isDefaultProjection) {
+            return undefined;
+        }
+
+        const registration = findRequestForm(served.requestType);
+        if (!registration) {
+            return undefined;
+        }
+
+        return {
+            component: registration.component,
+            inputs: {
+                mode: this.isApproverMode() ? 'approve' : 'view',
+                value: registration.toValue({
+                    values: this.fieldValues(),
+                    employeeDisplay: this.employeeDisplay(),
+                }),
+            } as Record<string, unknown>,
+        };
+    });
+
+    /** "1042 - Ahmad Al Sayed", or just the name when the employee has no code. */
+    readonly employeeDisplay = computed(() => {
+        const served = this.detail();
+
+        return [served?.requesterCode, this.requesterName()].filter((part) => !!part).join(' - ');
+    });
 
     readonly requesterName = computed(() => {
         const served = this.detail();

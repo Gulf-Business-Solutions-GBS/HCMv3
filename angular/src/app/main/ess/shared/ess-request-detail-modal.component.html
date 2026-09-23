@@ -38,38 +38,47 @@
 
                     <div class="row g-5">
                         <div [class]="isApproverMode() ? 'col-12 col-lg-8' : 'col-12'">
-                            <!-- Card 1: the transaction itself, every field its own handler projects. For a
-                                 requester this is the form they filled in; for an approver it is the same
-                                 form, which is the entire point of the rebuild. -->
-                            <div class="card card-custom gutter-b mb-5">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ 'RequestInformation' | localize }}</h5>
+                            @if (requestForm(); as form) {
+                                <!-- THE request's own form, read-only: the same component, the same cards
+                                     and the same column widths the requester filled in, with its inputs
+                                     disabled. Not a rendering OF the form -- the form. -->
+                                <ng-container
+                                    *ngComponentOutlet="form.component; inputs: form.inputs"></ng-container>
+                            } @else {
+                                <!-- The fallback, for the transaction types whose form has not been adapted
+                                     yet: every field the type's handler publishes, as label/value rows. Less
+                                     than the real form, far more than the one-line summary an approver used
+                                     to decide on. -->
+                                <div class="card card-custom gutter-b mb-5">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ 'RequestInformation' | localize }}</h5>
 
-                                    @if (loadingDetail() && !fields().length) {
-                                        <div class="text-muted"><i class="fa fa-spinner fa-spin"></i></div>
-                                    } @else {
-                                        <div class="ess-detail__fields">
-                                            @for (field of fields(); track field.label) {
-                                                <div class="ess-detail__field">
-                                                    <div class="ess-detail__field-label">{{ field.label }}</div>
-                                                    <div class="ess-detail__field-value">{{ field.value || '-' }}</div>
-                                                </div>
-                                            } @empty {
-                                                <div class="text-muted">-</div>
-                                            }
-                                        </div>
-
-                                        @if (showingFallbackOnly()) {
-                                            <!-- Honest rather than silently thin: this type has not projected
-                                                 its own fields yet, and saying so is better than implying it
-                                                 only has three. -->
-                                            <div class="text-muted small mt-4">
-                                                {{ 'ThisRequestTypeHasNoDetailedView' | localize }}
+                                        @if (loadingDetail() && !fields().length) {
+                                            <div class="text-muted"><i class="fa fa-spinner fa-spin"></i></div>
+                                        } @else {
+                                            <div class="ess-detail__fields">
+                                                @for (field of fields(); track field.label) {
+                                                    <div class="ess-detail__field">
+                                                        <div class="ess-detail__field-label">{{ field.label }}</div>
+                                                        <div class="ess-detail__field-value">{{ field.value || '-' }}</div>
+                                                    </div>
+                                                } @empty {
+                                                    <div class="text-muted">-</div>
+                                                }
                                             </div>
+
+                                            @if (showingFallbackOnly()) {
+                                                <!-- Honest rather than silently thin: this type has not
+                                                     projected its own fields yet, and saying so is better
+                                                     than implying it only has three. -->
+                                                <div class="text-muted small mt-4">
+                                                    {{ 'ThisRequestTypeHasNoDetailedView' | localize }}
+                                                </div>
+                                            }
                                         }
-                                    }
+                                    </div>
                                 </div>
-                            </div>
+                            }
 
                             @if (availableActions().length) {
                                 <!-- Card 2: the decision, INSIDE the dialog. It used to be a bar docked to

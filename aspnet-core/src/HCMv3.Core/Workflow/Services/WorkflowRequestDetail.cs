@@ -15,12 +15,26 @@ namespace HCMv3.Workflow.Services;
 /// </summary>
 public class WorkflowDetailField
 {
-    public WorkflowDetailField(string label, string value, WorkflowDetailFieldKind kind = WorkflowDetailFieldKind.Text)
+    public WorkflowDetailField(string name, string label, string value, WorkflowDetailFieldKind kind = WorkflowDetailFieldKind.Text)
     {
+        Name = name;
         Label = label;
         Value = value;
         Kind = kind;
     }
+
+    /// <summary>
+    /// A stable key for this field -- the entity's own property name, e.g. <c>ExternalRequestNumber</c>.
+    ///
+    /// <para>
+    /// The label is for reading and the name is for binding, and they have to be separate things. A client
+    /// that wants to render this transaction on its OWN form -- the real create form, read-only, which is
+    /// what the user asked for -- has to put each value in the right input, and it cannot do that by
+    /// matching a label: the label is localized, so the match would break the moment the viewer switched to
+    /// Arabic, and it is prose, so it would break the moment somebody improved the wording.
+    /// </para>
+    /// </summary>
+    public string Name { get; }
 
     public string Label { get; }
 
@@ -29,52 +43,69 @@ public class WorkflowDetailField
     public WorkflowDetailFieldKind Kind { get; }
 
     /// <summary>A date field, or null when the date is unset -- an empty row is more honest than 01/01/0001.</summary>
-    public static WorkflowDetailField Date(string label, DateTime? value)
+    public static WorkflowDetailField Date(string name, string label, DateTime? value)
     {
         return new WorkflowDetailField(
+            name,
             label,
             value.HasValue && value.Value != default ? value.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) : null,
             WorkflowDetailFieldKind.Date);
     }
 
-    public static WorkflowDetailField DateTimeField(string label, DateTime? value)
+    public static WorkflowDetailField DateTimeField(string name, string label, DateTime? value)
     {
         return new WorkflowDetailField(
+            name,
             label,
             value.HasValue && value.Value != default ? value.Value.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture) : null,
             WorkflowDetailFieldKind.DateTime);
     }
 
-    public static WorkflowDetailField Number(string label, decimal? value)
+    public static WorkflowDetailField Number(string name, string label, decimal? value)
     {
         return new WorkflowDetailField(
+            name,
             label,
             value?.ToString(CultureInfo.InvariantCulture),
             WorkflowDetailFieldKind.Number);
     }
 
-    public static WorkflowDetailField Money(string label, decimal? value)
+    public static WorkflowDetailField Money(string name, string label, decimal? value)
     {
         return new WorkflowDetailField(
+            name,
             label,
             value?.ToString(CultureInfo.InvariantCulture),
             WorkflowDetailFieldKind.Money);
     }
 
-    public static WorkflowDetailField Boolean(string label, bool value)
+    public static WorkflowDetailField Boolean(string name, string label, bool value)
     {
-        return new WorkflowDetailField(label, value ? "true" : "false", WorkflowDetailFieldKind.Boolean);
+        return new WorkflowDetailField(name, label, value ? "true" : "false", WorkflowDetailFieldKind.Boolean);
     }
 
-    public static WorkflowDetailField Text(string label, string value)
+    public static WorkflowDetailField Text(string name, string label, string value)
     {
-        return new WorkflowDetailField(label, value);
+        return new WorkflowDetailField(name, label, value);
     }
 
-    public static WorkflowDetailField LongText(string label, string value)
+    public static WorkflowDetailField LongText(string name, string label, string value)
     {
-        return new WorkflowDetailField(label, value, WorkflowDetailFieldKind.LongText);
+        return new WorkflowDetailField(name, label, value, WorkflowDetailFieldKind.LongText);
     }
+}
+
+/// <summary>
+/// The field names the engine itself contributes, so a client can recognise them without string literals
+/// scattered through it.
+/// </summary>
+public static class WorkflowDetailFieldNames
+{
+    public const string RequestNumber = "RequestNumber";
+
+    public const string SubmittedOn = "SubmittedOn";
+
+    public const string Summary = "Summary";
 }
 
 /// <summary>

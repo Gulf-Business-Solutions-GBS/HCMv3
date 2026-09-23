@@ -13,6 +13,12 @@ public class GetWorkflowRequestDetailInput
 /// <summary>One read-only row of the transaction, as its handler projected it.</summary>
 public class WorkflowDetailFieldDto
 {
+    /// <summary>
+    /// A stable key -- the entity's own property name. What a typed client binds on, because the label is
+    /// localized prose and would match nothing the moment the viewer switched language.
+    /// </summary>
+    public string Name { get; set; }
+
     /// <summary>Already localized by the handler, which is the only code that knows what its columns mean.</summary>
     public string Label { get; set; }
 

@@ -84,6 +84,33 @@ public class AppNotifier : HCMv3DomainServiceBase, IAppNotifier
         );
     }
 
+    /// <inheritdoc/>
+    public async Task SendMessageAsync(UserIdentifier user, string message, IDictionary<string, object> data,
+        NotificationSeverity severity = NotificationSeverity.Info)
+    {
+        var notificationData = new MessageNotificationData(message);
+
+        if (data != null)
+        {
+            foreach (var pair in data)
+            {
+                // Null values are dropped rather than published. A client that tests "does this notification
+                // carry a request id?" must get a clean no, not a property that exists and is null.
+                if (pair.Value != null)
+                {
+                    notificationData[pair.Key] = pair.Value;
+                }
+            }
+        }
+
+        await _notificationPublisher.PublishAsync(
+            AppNotificationNames.SimpleMessage,
+            notificationData,
+            severity: severity,
+            userIds: new[] { user }
+        );
+    }
+
     public async Task SendMessageAsync(string notificationName, string message, UserIdentifier[] userIds = null,
         NotificationSeverity severity = NotificationSeverity.Info)
     {

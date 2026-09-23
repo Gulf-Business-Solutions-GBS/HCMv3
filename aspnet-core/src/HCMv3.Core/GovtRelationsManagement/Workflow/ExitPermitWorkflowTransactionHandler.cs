@@ -133,13 +133,20 @@ public class ExitPermitWorkflowTransactionHandler : WorkflowTransactionHandlerBa
             SubmissionComment = permit.Comments
         };
 
+        // The names are EmployeeExitPermit's own property names, which is what lets the Angular exit-permit
+        // form put each value back in the input the requester typed it into.
+        //
+        // TravelReason's VALUE stays the localized label rather than the enum name. The form renders it
+        // read-only, so it needs the words, not the code -- and sending the code would also have made the
+        // generic viewer, which has no idea what an EmployeeExitPermit is, print "PlannedLeave" at an
+        // approver.
         return detail
-            .Add(WorkflowDetailField.Text(L("RequestNumber"), context.Request?.RequestNumber))
-            .Add(WorkflowDetailField.Text(L("ExitPermitNumber"), permit.ExternalRequestNumber))
-            .Add(WorkflowDetailField.Text(L("TravelReason"), L("TravelReason_" + permit.TravelReason)))
-            .Add(WorkflowDetailField.Date(L("StartDate"), permit.StartDate))
-            .Add(WorkflowDetailField.Date(L("ExitDate"), permit.ExitDate))
-            .Add(WorkflowDetailField.LongText(L("Comments"), permit.Comments));
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text(nameof(EmployeeExitPermit.ExternalRequestNumber), L("ExitPermitNumber"), permit.ExternalRequestNumber))
+            .Add(WorkflowDetailField.Text(nameof(EmployeeExitPermit.TravelReason), L("TravelReason"), L("TravelReason_" + permit.TravelReason)))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeExitPermit.StartDate), L("StartDate"), permit.StartDate))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeExitPermit.ExitDate), L("ExitDate"), permit.ExitDate))
+            .Add(WorkflowDetailField.LongText(nameof(EmployeeExitPermit.Comments), L("Comments"), permit.Comments));
     }
 
     private static string ReasonEn(TravelReason reason)
