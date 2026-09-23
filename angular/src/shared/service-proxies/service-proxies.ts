@@ -33650,6 +33650,74 @@ export class EmployeeBasicPayDetailsServiceProxy {
 }
 
 @Injectable()
+export class EmployeeBasicPayImportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    importEmployeeBasicPays(body?: ImportEmployeeBasicPaysInput | undefined): Observable<ImportEmployeeBasicPaysOutput> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeBasicPayImport/ImportEmployeeBasicPays";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportEmployeeBasicPays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportEmployeeBasicPays(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ImportEmployeeBasicPaysOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ImportEmployeeBasicPaysOutput>;
+        }));
+    }
+
+    protected processImportEmployeeBasicPays(response: HttpResponseBase): Observable<ImportEmployeeBasicPaysOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ImportEmployeeBasicPaysOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeBasicPayReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -45359,6 +45427,60 @@ export class EmployeeOrgAssignmentsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param currentPositionId (optional) 
+     * @return OK
+     */
+    getPositionsForOrgAssignment(currentPositionId?: number | null | undefined): Observable<ListResultDtoOfPositionForOrgAssignmentDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeOrgAssignments/GetPositionsForOrgAssignment?";
+        if (currentPositionId !== undefined && currentPositionId !== null)
+            url_ += "CurrentPositionId=" + encodeURIComponent("" + currentPositionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPositionsForOrgAssignment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPositionsForOrgAssignment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfPositionForOrgAssignmentDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfPositionForOrgAssignmentDto>;
+        }));
+    }
+
+    protected processGetPositionsForOrgAssignment(response: HttpResponseBase): Observable<ListResultDtoOfPositionForOrgAssignmentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfPositionForOrgAssignmentDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -93202,6 +93324,190 @@ export class MyPunchServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyRequestsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyRequests(body?: GetMyRequestListInput | undefined): Observable<PagedResultDtoOfMyRequestListItemDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyRequests/GetMyRequests";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyRequests(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyRequests(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyRequestListItemDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyRequestListItemDto>;
+        }));
+    }
+
+    protected processGetMyRequests(response: HttpResponseBase): Observable<PagedResultDtoOfMyRequestListItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyRequestListItemDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getMyRequestStatusCounts(): Observable<MyRequestStatusCountDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyRequests/GetMyRequestStatusCounts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyRequestStatusCounts(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyRequestStatusCounts(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestStatusCountDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestStatusCountDto[]>;
+        }));
+    }
+
+    protected processGetMyRequestStatusCounts(response: HttpResponseBase): Observable<MyRequestStatusCountDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MyRequestStatusCountDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getMyRequestTypes(): Observable<MyRequestTypeFilterDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyRequests/GetMyRequestTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyRequestTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyRequestTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestTypeFilterDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestTypeFilterDto[]>;
+        }));
+    }
+
+    protected processGetMyRequestTypes(response: HttpResponseBase): Observable<MyRequestTypeFilterDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MyRequestTypeFilterDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -162671,6 +162977,9 @@ export class AbsenceViolationRuleDetailDto implements IAbsenceViolationRuleDetai
     dayInterval!: number;
     action!: AbsenceViolationAction;
     actionTypeId!: number | undefined;
+    holdTillPunchFound!: boolean;
+    notificationConfigId!: number | undefined;
+    notificationConfigName!: string | undefined;
 
     constructor(data?: IAbsenceViolationRuleDetailDto) {
         if (data) {
@@ -162690,6 +162999,9 @@ export class AbsenceViolationRuleDetailDto implements IAbsenceViolationRuleDetai
             this.dayInterval = _data["dayInterval"];
             this.action = _data["action"];
             this.actionTypeId = _data["actionTypeId"];
+            this.holdTillPunchFound = _data["holdTillPunchFound"];
+            this.notificationConfigId = _data["notificationConfigId"];
+            this.notificationConfigName = _data["notificationConfigName"];
         }
     }
 
@@ -162709,6 +163021,9 @@ export class AbsenceViolationRuleDetailDto implements IAbsenceViolationRuleDetai
         data["dayInterval"] = this.dayInterval;
         data["action"] = this.action;
         data["actionTypeId"] = this.actionTypeId;
+        data["holdTillPunchFound"] = this.holdTillPunchFound;
+        data["notificationConfigId"] = this.notificationConfigId;
+        data["notificationConfigName"] = this.notificationConfigName;
         return data;
     }
 }
@@ -162721,6 +163036,9 @@ export interface IAbsenceViolationRuleDetailDto {
     dayInterval: number;
     action: AbsenceViolationAction;
     actionTypeId: number | undefined;
+    holdTillPunchFound: boolean;
+    notificationConfigId: number | undefined;
+    notificationConfigName: string | undefined;
 }
 
 export class AbsenceViolationRuleExceptionDto implements IAbsenceViolationRuleExceptionDto {
@@ -173122,6 +173440,8 @@ export class CreateOrEditAbsenceViolationRuleDetailDto implements ICreateOrEditA
     dayInterval!: number;
     action!: AbsenceViolationAction;
     actionTypeId!: number | undefined;
+    holdTillPunchFound!: boolean;
+    notificationConfigId!: number | undefined;
 
     constructor(data?: ICreateOrEditAbsenceViolationRuleDetailDto) {
         if (data) {
@@ -173140,6 +173460,8 @@ export class CreateOrEditAbsenceViolationRuleDetailDto implements ICreateOrEditA
             this.dayInterval = _data["dayInterval"];
             this.action = _data["action"];
             this.actionTypeId = _data["actionTypeId"];
+            this.holdTillPunchFound = _data["holdTillPunchFound"];
+            this.notificationConfigId = _data["notificationConfigId"];
         }
     }
 
@@ -173158,6 +173480,8 @@ export class CreateOrEditAbsenceViolationRuleDetailDto implements ICreateOrEditA
         data["dayInterval"] = this.dayInterval;
         data["action"] = this.action;
         data["actionTypeId"] = this.actionTypeId;
+        data["holdTillPunchFound"] = this.holdTillPunchFound;
+        data["notificationConfigId"] = this.notificationConfigId;
         return data;
     }
 }
@@ -173169,6 +173493,8 @@ export interface ICreateOrEditAbsenceViolationRuleDetailDto {
     dayInterval: number;
     action: AbsenceViolationAction;
     actionTypeId: number | undefined;
+    holdTillPunchFound: boolean;
+    notificationConfigId: number | undefined;
 }
 
 export class CreateOrEditAbsenceViolationRuleExceptionDto implements ICreateOrEditAbsenceViolationRuleExceptionDto {
@@ -180693,6 +181019,7 @@ export class CreateOrEditEmployeeOrgAssignmentDto implements ICreateOrEditEmploy
     postingGroupId!: number | undefined;
     budgetingGroupId!: number | undefined;
     organizationUnitId!: number | undefined;
+    positionId!: number | undefined;
 
     constructor(data?: ICreateOrEditEmployeeOrgAssignmentDto) {
         if (data) {
@@ -180714,6 +181041,7 @@ export class CreateOrEditEmployeeOrgAssignmentDto implements ICreateOrEditEmploy
             this.postingGroupId = _data["postingGroupId"];
             this.budgetingGroupId = _data["budgetingGroupId"];
             this.organizationUnitId = _data["organizationUnitId"];
+            this.positionId = _data["positionId"];
         }
     }
 
@@ -180735,6 +181063,7 @@ export class CreateOrEditEmployeeOrgAssignmentDto implements ICreateOrEditEmploy
         data["postingGroupId"] = this.postingGroupId;
         data["budgetingGroupId"] = this.budgetingGroupId;
         data["organizationUnitId"] = this.organizationUnitId;
+        data["positionId"] = this.positionId;
         return data;
     }
 }
@@ -180749,6 +181078,7 @@ export interface ICreateOrEditEmployeeOrgAssignmentDto {
     postingGroupId: number | undefined;
     budgetingGroupId: number | undefined;
     organizationUnitId: number | undefined;
+    positionId: number | undefined;
 }
 
 export class CreateOrEditEmployeeOvertimeDto implements ICreateOrEditEmployeeOvertimeDto {
@@ -209361,6 +209691,8 @@ export class EmployeeOrgAssignmentDto implements IEmployeeOrgAssignmentDto {
     budgetingGroupName!: string | undefined;
     organizationUnitId!: number | undefined;
     organizationUnitName!: string | undefined;
+    positionId!: number | undefined;
+    positionName!: string | undefined;
 
     constructor(data?: IEmployeeOrgAssignmentDto) {
         if (data) {
@@ -209391,6 +209723,8 @@ export class EmployeeOrgAssignmentDto implements IEmployeeOrgAssignmentDto {
             this.budgetingGroupName = _data["budgetingGroupName"];
             this.organizationUnitId = _data["organizationUnitId"];
             this.organizationUnitName = _data["organizationUnitName"];
+            this.positionId = _data["positionId"];
+            this.positionName = _data["positionName"];
         }
     }
 
@@ -209421,6 +209755,8 @@ export class EmployeeOrgAssignmentDto implements IEmployeeOrgAssignmentDto {
         data["budgetingGroupName"] = this.budgetingGroupName;
         data["organizationUnitId"] = this.organizationUnitId;
         data["organizationUnitName"] = this.organizationUnitName;
+        data["positionId"] = this.positionId;
+        data["positionName"] = this.positionName;
         return data;
     }
 }
@@ -209444,6 +209780,8 @@ export interface IEmployeeOrgAssignmentDto {
     budgetingGroupName: string | undefined;
     organizationUnitId: number | undefined;
     organizationUnitName: string | undefined;
+    positionId: number | undefined;
+    positionName: string | undefined;
 }
 
 export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
@@ -252755,6 +253093,70 @@ export interface IGetMyLeavesInput {
     includeHistory: boolean;
 }
 
+export class GetMyRequestListInput implements IGetMyRequestListInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    status!: RequestStatus;
+    requestType!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    filter!: string | undefined;
+
+    constructor(data?: IGetMyRequestListInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.status = _data["status"];
+            this.requestType = _data["requestType"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetMyRequestListInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyRequestListInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["status"] = this.status;
+        data["requestType"] = this.requestType;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetMyRequestListInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    status: RequestStatus;
+    requestType: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    filter: string | undefined;
+}
+
 export class GetMyRequestsInput implements IGetMyRequestsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -268041,6 +268443,106 @@ export interface IImpersonatedAuthenticateResultModel {
     expireInSeconds: number;
 }
 
+export class ImportEmployeeBasicPaysInput implements IImportEmployeeBasicPaysInput {
+    fileName!: string | undefined;
+    fileBase64!: string;
+
+    constructor(data?: IImportEmployeeBasicPaysInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileName = _data["fileName"];
+            this.fileBase64 = _data["fileBase64"];
+        }
+    }
+
+    static fromJS(data: any): ImportEmployeeBasicPaysInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImportEmployeeBasicPaysInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fileName"] = this.fileName;
+        data["fileBase64"] = this.fileBase64;
+        return data;
+    }
+}
+
+export interface IImportEmployeeBasicPaysInput {
+    fileName: string | undefined;
+    fileBase64: string;
+}
+
+export class ImportEmployeeBasicPaysOutput implements IImportEmployeeBasicPaysOutput {
+    totalRecords!: number;
+    successfulRecords!: number;
+    errorRecords!: number;
+    status!: string | undefined;
+    errors!: string[] | undefined;
+
+    constructor(data?: IImportEmployeeBasicPaysOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalRecords = _data["totalRecords"];
+            this.successfulRecords = _data["successfulRecords"];
+            this.errorRecords = _data["errorRecords"];
+            this.status = _data["status"];
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ImportEmployeeBasicPaysOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImportEmployeeBasicPaysOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalRecords"] = this.totalRecords;
+        data["successfulRecords"] = this.successfulRecords;
+        data["errorRecords"] = this.errorRecords;
+        data["status"] = this.status;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IImportEmployeeBasicPaysOutput {
+    totalRecords: number;
+    successfulRecords: number;
+    errorRecords: number;
+    status: string | undefined;
+    errors: string[] | undefined;
+}
+
 export class ImportTimesheetInput implements IImportTimesheetInput {
     fileName!: string | undefined;
     fileBase64!: string;
@@ -274048,6 +274550,50 @@ export interface IListResultDtoOfOrganizationUnitDto {
     items: OrganizationUnitDto[] | undefined;
 }
 
+export class ListResultDtoOfPositionForOrgAssignmentDto implements IListResultDtoOfPositionForOrgAssignmentDto {
+    items!: PositionForOrgAssignmentDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfPositionForOrgAssignmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PositionForOrgAssignmentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfPositionForOrgAssignmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfPositionForOrgAssignmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfPositionForOrgAssignmentDto {
+    items: PositionForOrgAssignmentDto[] | undefined;
+}
+
 export class ListResultDtoOfReportScheduleRunSliceDto implements IListResultDtoOfReportScheduleRunSliceDto {
     items!: ReportScheduleRunSliceDto[] | undefined;
 
@@ -278407,6 +278953,134 @@ export interface IMyPunchRequestDto {
     transSource: TransSource;
 }
 
+export class MyRequestListItemDto implements IMyRequestListItemDto {
+    id!: number;
+    requestType!: string | undefined;
+    requestTypeNameEn!: string | undefined;
+    requestTypeNameAr!: string | undefined;
+    iconClass!: string | undefined;
+    essRoute!: string | undefined;
+    requestNumber!: string | undefined;
+    summaryEn!: string | undefined;
+    summaryAr!: string | undefined;
+    requestStatus!: RequestStatus;
+    workflowStep!: number;
+    creationTime!: DateTime;
+    targetEntityId!: number | undefined;
+    isAmendment!: boolean;
+
+    constructor(data?: IMyRequestListItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestType = _data["requestType"];
+            this.requestTypeNameEn = _data["requestTypeNameEn"];
+            this.requestTypeNameAr = _data["requestTypeNameAr"];
+            this.iconClass = _data["iconClass"];
+            this.essRoute = _data["essRoute"];
+            this.requestNumber = _data["requestNumber"];
+            this.summaryEn = _data["summaryEn"];
+            this.summaryAr = _data["summaryAr"];
+            this.requestStatus = _data["requestStatus"];
+            this.workflowStep = _data["workflowStep"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.targetEntityId = _data["targetEntityId"];
+            this.isAmendment = _data["isAmendment"];
+        }
+    }
+
+    static fromJS(data: any): MyRequestListItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyRequestListItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestType"] = this.requestType;
+        data["requestTypeNameEn"] = this.requestTypeNameEn;
+        data["requestTypeNameAr"] = this.requestTypeNameAr;
+        data["iconClass"] = this.iconClass;
+        data["essRoute"] = this.essRoute;
+        data["requestNumber"] = this.requestNumber;
+        data["summaryEn"] = this.summaryEn;
+        data["summaryAr"] = this.summaryAr;
+        data["requestStatus"] = this.requestStatus;
+        data["workflowStep"] = this.workflowStep;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["targetEntityId"] = this.targetEntityId;
+        data["isAmendment"] = this.isAmendment;
+        return data;
+    }
+}
+
+export interface IMyRequestListItemDto {
+    id: number;
+    requestType: string | undefined;
+    requestTypeNameEn: string | undefined;
+    requestTypeNameAr: string | undefined;
+    iconClass: string | undefined;
+    essRoute: string | undefined;
+    requestNumber: string | undefined;
+    summaryEn: string | undefined;
+    summaryAr: string | undefined;
+    requestStatus: RequestStatus;
+    workflowStep: number;
+    creationTime: DateTime;
+    targetEntityId: number | undefined;
+    isAmendment: boolean;
+}
+
+export class MyRequestStatusCountDto implements IMyRequestStatusCountDto {
+    status!: RequestStatus;
+    count!: number;
+
+    constructor(data?: IMyRequestStatusCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): MyRequestStatusCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyRequestStatusCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IMyRequestStatusCountDto {
+    status: RequestStatus;
+    count: number;
+}
+
 export class MyRequestSubmissionDto implements IMyRequestSubmissionDto {
     transactionId!: number;
     workflowRequestId!: number | undefined;
@@ -278449,6 +279123,54 @@ export interface IMyRequestSubmissionDto {
     transactionId: number;
     workflowRequestId: number | undefined;
     submittedForApproval: boolean;
+}
+
+export class MyRequestTypeFilterDto implements IMyRequestTypeFilterDto {
+    requestType!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    count!: number;
+
+    constructor(data?: IMyRequestTypeFilterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.requestType = _data["requestType"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): MyRequestTypeFilterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyRequestTypeFilterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["requestType"] = this.requestType;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IMyRequestTypeFilterDto {
+    requestType: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    count: number;
 }
 
 export class MyScreenShortcutsDto implements IMyScreenShortcutsDto {
@@ -299398,6 +300120,54 @@ export interface IPagedResultDtoOfMyPunchRequestDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfMyRequestListItemDto implements IPagedResultDtoOfMyRequestListItemDto {
+    items!: MyRequestListItemDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyRequestListItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyRequestListItemDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyRequestListItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyRequestListItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyRequestListItemDto {
+    items: MyRequestListItemDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfMyTicketRequestDto implements IPagedResultDtoOfMyTicketRequestDto {
     items!: MyTicketRequestDto[] | undefined;
     totalCount!: number;
@@ -316043,6 +316813,82 @@ export interface IPositionDto {
     fteLimit: number;
     parentPositionId: number | undefined;
     parentPositionName: string | undefined;
+}
+
+export class PositionForOrgAssignmentDto implements IPositionForOrgAssignmentDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    jobTitleId!: number | undefined;
+    employeeGroupId!: number | undefined;
+    employeeSubGroupId!: number | undefined;
+    payrollAreaId!: number | undefined;
+    workLocationId!: number | undefined;
+    costCenterId!: number | undefined;
+    organizationUnitId!: number | undefined;
+
+    constructor(data?: IPositionForOrgAssignmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.employeeGroupId = _data["employeeGroupId"];
+            this.employeeSubGroupId = _data["employeeSubGroupId"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.workLocationId = _data["workLocationId"];
+            this.costCenterId = _data["costCenterId"];
+            this.organizationUnitId = _data["organizationUnitId"];
+        }
+    }
+
+    static fromJS(data: any): PositionForOrgAssignmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PositionForOrgAssignmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["jobTitleId"] = this.jobTitleId;
+        data["employeeGroupId"] = this.employeeGroupId;
+        data["employeeSubGroupId"] = this.employeeSubGroupId;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["workLocationId"] = this.workLocationId;
+        data["costCenterId"] = this.costCenterId;
+        data["organizationUnitId"] = this.organizationUnitId;
+        return data;
+    }
+}
+
+export interface IPositionForOrgAssignmentDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    jobTitleId: number | undefined;
+    employeeGroupId: number | undefined;
+    employeeSubGroupId: number | undefined;
+    payrollAreaId: number | undefined;
+    workLocationId: number | undefined;
+    costCenterId: number | undefined;
+    organizationUnitId: number | undefined;
 }
 
 export class PositionOrgChartDto implements IPositionOrgChartDto {
