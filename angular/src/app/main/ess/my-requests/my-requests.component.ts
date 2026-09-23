@@ -155,8 +155,13 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
         this.applyFilters();
     }
 
+    /**
+     * Re-runs the query from page one. Goes through getMyRequests() with no event so that
+     * shouldResetPaging() does the page reset, which is the same path the house pattern uses -- page 4 of
+     * the old filter is not page 4 of the new one.
+     */
     applyFilters(): void {
-        this.paginator().changePage(0);
+        this.getMyRequests();
     }
 
     clearFilters(): void {
