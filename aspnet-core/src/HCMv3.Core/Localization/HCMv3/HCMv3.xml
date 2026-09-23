@@ -504,14 +504,12 @@
     <text name="Service">Service</text>
     <text name="Action">Action</text>
     <text name="Duration">Duration</text>
-    <text name="IpAddress">IP address</text>
     <text name="Client">Client</text>
     <text name="Browser">Browser</text>
     <text name="Xms">{0} ms</text>
     <text name="Close">Close</text>
     <text name="Refresh">Refresh</text>
     <text name="ErrorState">Error state</text>
-    <text name="All">All</text>
     <text name="HasError">Has error</text>
     <text name="ShowAdvancedFilters">Show advanced filters</text>
     <text name="HideAdvancedFilters">Hide advanced filters</text>
@@ -2504,7 +2502,6 @@
     <text name="Tolerances">Tolerances</text>
     <text name="ClockLimits">Clock Limits</text>
     <text name="PunchLocationRules">Punch Location Rules</text>
-    <text name="NA">N/A</text>
     <text name="PlannedTime">Planned Time</text>
     <text name="ActualTime">Actual Time</text>
     <text name="TimeSheet">Time Sheet</text>
@@ -2645,7 +2642,6 @@
     <text name="Temperature">Temperature</text>
     <text name="PunchInRange">Punch In Range</text>
     <text name="TokenUrl">Token URL</text>
-    <text name="Username">Username</text>
     <text name="TransactionsUrl">Transactions URL</text>
     <text name="NoOfRecords">No. of Records</text>
     <text name="DevicesUrl">Devices URL</text>
@@ -3202,7 +3198,6 @@
     <text name="POBox">P.O. Box</text>
     <text name="GovtJobCategory">Govt Job Category</text>
     <text name="GovtJobTitle">Govt Job Title</text>
-    <text name="CivilId">Civil ID</text>
     <text name="NoofPosition">No. of Positions</text>
     <text name="CitizenPercent">Citizen Percent</text>
     <text name="CitizenQuotaAccrued">Citizen Quota Accrued</text>
@@ -4240,7 +4235,6 @@
     <text name="GENERATE">Generate</text>
     <text name="VIEW">View</text>
     <text name="EXPORT">Export</text>
-    <text name="PRINT">Print</text>
     <text name="TimeEngine">Time Engine</text>
     <text name="RunTimeEngine">Run Time Engine</text>
     <text name="TimeEngineEndDateRequired">No End Date defined for Time Calculation. Please select an End Date.</text>
@@ -4384,8 +4378,6 @@
     <text name="CostEngine">Cost Engine</text>
     <text name="ProjectEngine">Project Engine</text>
     <text name="INPRECESS">In Process</text>
-    <text name="SUCCESS">Success</text>
-    <text name="FAILED">Failed</text>
     <text name="PARTIAL">Partial</text>
     <text name="ABORTED">Aborted</text>
     <text name="TimeAttendance">Time Attendance</text>
@@ -4508,7 +4500,6 @@
     <text name="ScheduleDuplicatedAsInactive">Copy created as INACTIVE so it does not start sending before you review it.</text>
     <text name="ScheduleDeleteWarning">Delete the schedule "{0}"? Its run history is deleted with it.</text>
     <text name="PrintReportsLauncherDescription">Browse and run the printable reports available to you</text>
-    <text name="View">View</text>
     <text name="PrintReportAvailable">Available</text>
     <text name="PrintReportUnavailable">Not Available</text>
     <text name="PrintReportNotYetAvailable">This report is listed in the catalog but its layout has not been ported yet.</text>
@@ -4975,7 +4966,6 @@
     <text name="VINNumber">VIN Number</text>
     <text name="BankCountry">Bank Country</text>
     <text name="PaymentCurrency">Payment Currency</text>
-    <text name="IBAN">IBAN</text>
     <text name="TotalAllowance">Total Allowance</text>
     <text name="IncrementAmount">Increment Amount</text>
     <text name="Component">Component</text>
@@ -5079,7 +5069,6 @@
     <text name="FromYear">From Year</text>
     <text name="ToYear">To Year</text>
     <text name="SrNo">Sr. No.</text>
-    <text name="Inperiod">In Period</text>
     <text name="MonthYear">Month / Year</text>
     <text name="ReasonType">Reason Type</text>
     <text name="SalaryVia">Salary Via</text>
@@ -5249,7 +5238,6 @@
     <text name="ReportVariantSummaryLateInOverThreeHours">Summary (Late In &gt; 3 Hours)</text>
     <text name="TimeScheduleReport">Time Schedule Report</text>
     <text name="AllDutyPeriods">All duty periods</text>
-    <text name="AccessId">Access Id</text>
     <text name="BreakHours">Break Hours</text>
     <text name="PlannedHours">Planned Hours</text>
     <text name="AbsenceHours">Absence Hours</text>
@@ -5584,7 +5572,6 @@
     <text name="ActionTime">Action Time</text>
     <text name="EntityObject">Entity Object</text>
     <text name="OldValue">Old Value</text>
-    <text name="NoOfPosition">No Of Position</text>
     <text name="SponsorCode">Sponsor Code</text>
     <!-- PayrollReport grouping: final 12 reports (legacy HCM10.Web/UserControls/Reports/Analysis/PayrollReport). -->
     <text name="PayrollCTCReport">Payroll CTC Report</text>
@@ -5948,7 +5935,6 @@
     <text name="EmpCard_Contact">Contact</text>
     <text name="EmpCard_Address">Address</text>
     <text name="EmpCard_Emergency">Emergency Contact</text>
-    <text name="PACINumber">PACI Number</text>
     <text name="TimeLogApprovals">Time Log Approvals</text>
     <text name="TimeLogApprovalHasNoDays">Select at least one day to send for approval.</text>
     <text name="TimeRegisterAlreadyInAnotherTimeLogApproval">One or more of the selected days are already awaiting approval in another request.</text>
@@ -6911,5 +6897,7 @@
     <text name="PendingApprovals">Pending approvals</text>
     <text name="DeleteAllNotifications">Delete all</text>
     <text name="DeleteAllNotificationsWarningMessage">All of your notifications will be deleted, read and unread alike. This cannot be undone.</text>
+    <text name="EssInboxHeaderInfo">Every request waiting on your approval, of every type.</text>
+    <text name="OnlyFirstRecordsAreShown">More requests are waiting on you than this page can show. Use the filters to narrow the list.</text>
   </texts>
 </localizationDictionary>

@@ -2473,7 +2473,6 @@
     <text name="Tolerances">فترات السماح</text>
     <text name="ClockLimits">الحدود الزمنية للبصمة</text>
     <text name="PunchLocationRules">قواعد موقع البصمة</text>
-    <text name="NA">لا ينطبق</text>
     <text name="PlannedTime">الوقت المخطط</text>
     <text name="ActualTime">الوقت الفعلي</text>
     <text name="TimeSheet">كشف الدوام</text>
@@ -3156,7 +3155,6 @@
     <text name="POBox">صندوق البريد</text>
     <text name="GovtJobCategory">فئة الوظيفة الحكومية</text>
     <text name="GovtJobTitle">المسمى الوظيفي الحكومي</text>
-    <text name="CivilId">البطاقة المدنية</text>
     <text name="NoofPosition">عدد الوظائف</text>
     <text name="CitizenPercent">نسبة المواطنين</text>
     <text name="CitizenQuotaAccrued">حصة المواطنين المتراكمة</text>
@@ -3232,19 +3230,7 @@
     <text name="TravelFeedbacks">تقييمات السفر</text>
     <text name="TravelPerDiemAlreadyExists">يوجد بدل يومي مسجل مسبقاً لهذه الوجهة (من/إلى) ولمجموعة الموظفين أو المجموعة الفرعية نفسها.</text>
     <text name="DeleteTravelDetailCostsFirst">الرجاء حذف تكاليف تفاصيل السفر أولاً، ثم حذف هذا السجل.</text>
-    <text name="IPAddress">عنوان IP</text>
-    <text name="ALL">الكل</text>
-    <text name="Username">اسم المستخدم</text>
-    <text name="PRINT">طباعة</text>
-    <text name="SUCCESS">نجاح</text>
-    <text name="FAILED">فشل</text>
     <text name="VIEW">عرض</text>
-    <text name="View">عرض</text>
-    <text name="IBAN">رقم الآيبان</text>
-    <text name="Inperiod">في الفترة</text>
-    <text name="AccessId">معرّف الوصول</text>
-    <text name="NoOfPosition">عدد الوظائف</text>
-    <text name="PACINumber">رقم الهيئة العامة للمعلومات المدنية</text>
     <text name="Travel">السفر</text>
     <text name="TravelDetail">تفاصيل السفر</text>
     <text name="TravelType">نوع السفر</text>
@@ -6749,5 +6735,7 @@
     <text name="PendingApprovals">موافقات قيد الانتظار</text>
     <text name="DeleteAllNotifications">حذف الكل</text>
     <text name="DeleteAllNotificationsWarningMessage">سيتم حذف جميع الإشعارات الخاصة بك، المقروءة وغير المقروءة على حد سواء. لا يمكن التراجع عن هذا الإجراء.</text>
+    <text name="EssInboxHeaderInfo">جميع الطلبات بانتظار اعتمادك، من كل الأنواع.</text>
+    <text name="OnlyFirstRecordsAreShown">عدد الطلبات بانتظار اعتمادك أكبر مما تعرضه هذه الصفحة. استخدم عوامل التصفية لتضييق القائمة.</text>
   </texts>
 </localizationDictionary>
