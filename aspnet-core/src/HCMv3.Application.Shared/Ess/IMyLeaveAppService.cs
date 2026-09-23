@@ -22,6 +22,9 @@ public interface IMyLeaveAppService : IApplicationService
     /// <summary>Balances for every type the employee holds quota for, including what is bookable.</summary>
     Task<List<MyLeaveBalanceDto>> GetMyBalances();
 
+    /// <summary>The tenant settings that shape the leave form; see <see cref="LeaveFormSettingsDto"/>.</summary>
+    Task<LeaveFormSettingsDto> GetLeaveFormSettings();
+
     Task<PagedResultDto<MyLeaveDto>> GetMyLeaves(GetMyLeavesInput input);
 
     /// <summary>

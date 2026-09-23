@@ -105,7 +105,11 @@ public class PayrollJVCustom042PublicHolidayLeaveProvisionReportAppService
             return rows;
         }
 
-        var lookup = await _postingLineLoader.LoadWageAccountLookupAsync(endDate, input.ResolveEmployeeCodes());
+        var lookup = await _postingLineLoader.LoadWageAccountLookupAsync(
+            endDate,
+            input.ResolveEmployeeCodes(),
+            input.PayrollAreaId.HasValue ? new[] { input.PayrollAreaId.Value } : Array.Empty<int>(),
+            await ResolveWageAccountSourceAsync());
 
         // Legacy lines 2131-2145 -- join each employee's provision amount to their wage account for the
         // provision wage type, then group by account/offset-account/cost elements.

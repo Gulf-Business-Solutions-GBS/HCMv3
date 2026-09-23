@@ -39,6 +39,10 @@ public static class SeedHelper
 
             //Default payroll-sensitive list, which the payroll lock reads. Companies that already had one keep it.
             new PayrollSensitiveObjectBuilder(context, tenantId).Create();
+
+            //Default tenant configuration keys (legacy DefaultDataService.CreateDefaultSysTenantConfig). A tenant's
+            //first Manage*Settings rows are built from these, so they must exist before settings are first read.
+            new SysTenantConfigDefaultsBuilder(context, tenantId).Create();
         }
 
         //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a

@@ -18,9 +18,14 @@ public class PAPeerNomineesAppService : HCMv3AppServiceBase, IPAPeerNomineesAppS
 {
     private readonly IRepository<PAPeerNominee> _repository;
 
-    public PAPeerNomineesAppService(IRepository<PAPeerNominee> repository)
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+
+    public PAPeerNomineesAppService(
+        IRepository<PAPeerNominee> repository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -110,6 +115,21 @@ public class PAPeerNomineesAppService : HCMv3AppServiceBase, IPAPeerNomineesAppS
         if (duplicate)
         {
             throw new UserFriendlyException(L("PAPeerNomineeAlreadyExists"));
+        }
+
+        // Legacy ESS AppraisalRepository.HasReachedPeerReviewerLimit: with peer review on, an employee may
+        // not be given more peers for a period than ManageAppraisalSettings.SetPeerMaxLimit (0 = no limit).
+        var appraisalSettings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
+        if (appraisalSettings != null && appraisalSettings.EnablePAPeerReview && appraisalSettings.SetPeerMaxLimit > 0)
+        {
+            var nominated = await _repository.GetAll()
+                .CountAsync(e => e.Id != entity.Id
+                                 && e.PAPeriodId == entity.PAPeriodId
+                                 && e.EmployeeId == entity.EmployeeId);
+            if (nominated >= appraisalSettings.SetPeerMaxLimit)
+            {
+                throw new UserFriendlyException(L("PeerReviewerLimitReached", appraisalSettings.SetPeerMaxLimit));
+            }
         }
     }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
+using Abp.UI;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
@@ -113,6 +114,23 @@ public class IndemnityProvisionReportAppService : GridReportAppServiceBase, IInd
         var employeeCodes = input.ResolveEmployeeCodes();
         var rlsEmployeeIds = await GetRlsEmployeeIdsAsync();
         var useArabicNames = UseArabicNames;
+
+        // Legacy uscRptIndemnityProvision lines 75-78 and 428-450: the TO month counts only when
+        // ManageReportSettings.ShowPeriodInIndemnityProvision is on, and the span may not exceed
+        // PeriodMonthLimitInIndemnityProvision months (0 = no limit).
+        var reportSettings = await SysSettingsAccessor.GetReportSettingsAsync();
+        if (reportSettings == null || !reportSettings.ShowPeriodInIndemnityProvision)
+        {
+            toDate = fromDate;
+        }
+        else if (reportSettings.PeriodMonthLimitInIndemnityProvision != 0)
+        {
+            var totalMonths = ((toDate.Year - fromDate.Year) * 12) + (toDate.Month - fromDate.Month) + 1;
+            if (reportSettings.PeriodMonthLimitInIndemnityProvision < totalMonths)
+            {
+                throw new UserFriendlyException(L("IndemnityProvisionAllowedMonths", reportSettings.PeriodMonthLimitInIndemnityProvision));
+            }
+        }
 
         var periods = GetMonthEndPeriods(fromDate, toDate);
 

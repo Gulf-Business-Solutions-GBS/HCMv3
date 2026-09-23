@@ -116,7 +116,8 @@ public class PayrollJVCustom042OvertimeReportAppService
             input.PayrollAreaId.HasValue ? new[] { input.PayrollAreaId.Value } : Array.Empty<int>(),
             input.ResolveEmployeeCodes(),
             await GetRlsEmployeeIdsAsync(),
-            PayrollJVWageTypeScope.EarningDeductionAndAllProvision);
+            PayrollJVWageTypeScope.EarningDeductionAndAllProvision,
+            await ResolveWageAccountSourceAsync());
 
         var otLines = lines
             .Where(l => l.BillingType == BillingType.Earning && OvertimeCodes.Contains(l.WageTypeCode))

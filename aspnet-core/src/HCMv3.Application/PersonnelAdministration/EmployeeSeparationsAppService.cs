@@ -25,9 +25,35 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
 {
     private readonly IRepository<EmployeeSeparation> _repository;
 
-    public EmployeeSeparationsAppService(IRepository<EmployeeSeparation> repository)
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+
+    public EmployeeSeparationsAppService(
+        IRepository<EmployeeSeparation> repository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
+        _sysSettingsAccessor = sysSettingsAccessor;
+    }
+
+    /// <summary>
+    /// Legacy <c>EmployeeSeparation.RecomputeNoticePeriod</c>: the notice period is the days from the
+    /// submission date to the last day in service, counting the submission day unless
+    /// <c>ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate</c> is on; a separation ending the day
+    /// it was submitted has a notice period of one day.
+    /// </summary>
+    private async Task ApplyNoticePeriodAsync(EmployeeSeparation entity)
+    {
+        if (entity.LastDayInService == default || entity.LastDayInService.Date == entity.SubmissionDate.Date)
+        {
+            entity.NoticePeriodDays = 1;
+            return;
+        }
+
+        var generalSettings = await _sysSettingsAccessor.GetGeneralSettingsAsync();
+        var excludeSubmissionDate = generalSettings != null && generalSettings.NoticePeriodDaysExcludingSubmissionDate;
+        var days = (int)entity.LastDayInService.Date.Subtract(entity.SubmissionDate.Date).TotalDays;
+
+        entity.NoticePeriodDays = excludeSubmissionDate ? days : days + 1;
     }
 
     [HttpPost]
@@ -89,6 +115,7 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
         var entity = MapToEntity(input, new EmployeeSeparation());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
+        await ApplyNoticePeriodAsync(entity);
         Validate(entity);
         await _repository.InsertAsync(entity);
     }
@@ -99,6 +126,7 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
         var entity = await _repository.GetAsync(input.Id.Value);
         MapToEntity(input, entity);
 
+        await ApplyNoticePeriodAsync(entity);
         Validate(entity);
         await _repository.UpdateAsync(entity);
     }

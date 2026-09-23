@@ -116,7 +116,7 @@ public class EssInboxAppService_Tests : AppTestBase
     }
 
     /// <summary>A one-step chain wired to the leave catalog row, so step capabilities resolve.</summary>
-    private void ConfigureLeaveChain(bool canReject = true, bool canSendBack = true, int steps = 1)
+    private void ConfigureLeaveChain(bool canReject = true, bool canSendBack = true, int steps = 1, string typeCode = "EmployeeAbsence")
     {
         UsingDbContext(context =>
         {
@@ -131,7 +131,7 @@ public class EssInboxAppService_Tests : AppTestBase
             var master = context.Set<RequestMaster>().Add(new RequestMaster
             {
                 TenantId = TenantId,
-                Code = "LEAVE-STD",
+                Code = typeCode == "EmployeeAbsence" ? "LEAVE-STD" : typeCode.ToUpperInvariant() + "-STD",
                 NameEn = "Standard Leave",
                 NameAr = "Standard Leave",
                 WorkflowSteps = steps
@@ -151,7 +151,7 @@ public class EssInboxAppService_Tests : AppTestBase
                 CanSendBack = canSendBack
             });
 
-            var type = context.Set<WorkflowTransactionType>().First(t => t.Code == "EmployeeAbsence");
+            var type = context.Set<WorkflowTransactionType>().First(t => t.Code == typeCode);
             type.IsWorkflowEnabled = true;
             type.IsActive = true;
             type.DefaultRequestMasterId = master.Id;
@@ -279,6 +279,7 @@ public class EssInboxAppService_Tests : AppTestBase
         var meId = CreateCurrentUserEmployee("INB700ME");
         var requesterId = CreateEmployee("INB700REQ");
         ConfigureLeaveChain(canReject: false, canSendBack: true, steps: 2);
+        SetWorkflowSettings(sendBackToCreator: true);
         var requestId = CreatePendingRequest(requesterId, meId);
 
         var item = (await _inbox.GetMyInbox(Query())).Items.Single(i => i.Id == requestId);
@@ -286,6 +287,58 @@ public class EssInboxAppService_Tests : AppTestBase
         item.CanReject.ShouldBeFalse();
         item.CanSendBack.ShouldBeTrue();
         item.TotalSteps.ShouldBe(2);
+    }
+
+    private void SetWorkflowSettings(bool sendBackToCreator = false, int travelCostStep = 0)
+    {
+        UsingDbContext(context =>
+        {
+            var settings = context.Set<HCMv3.SystemSettings.ManageWorkflowSettings>().FirstOrDefault(s => s.TenantId == TenantId)
+                           ?? context.Set<HCMv3.SystemSettings.ManageWorkflowSettings>()
+                               .Add(new HCMv3.SystemSettings.ManageWorkflowSettings { TenantId = TenantId }).Entity;
+            settings.SendBackToCreator = sendBackToCreator;
+            settings.EnableTravelCostOnWorkflowstep = travelCostStep;
+        });
+    }
+
+    /// <summary>
+    /// Legacy TravelController: at the step named by ManageWorkflowSettings.EnableTravelCostOnWorkflowstep, a travel
+    /// request's approver is offered the travel cost entry; other request types never are.
+    /// </summary>
+    [Fact]
+    public async Task Travel_Cost_Should_Be_Offered_Only_On_A_Travel_Request_At_The_Configured_Step()
+    {
+        var meId = CreateCurrentUserEmployee("INB720ME");
+        var requesterId = CreateEmployee("INB720REQ");
+        ConfigureLeaveChain(typeCode: "Travel");
+        ConfigureLeaveChain();
+        SetWorkflowSettings(travelCostStep: 1);
+        var travelId = CreatePendingRequest(requesterId, meId, requestType: "Travel", summary: "Trip");
+        var leaveId = CreatePendingRequest(requesterId, meId);
+
+        var items = (await _inbox.GetMyInbox(Query())).Items;
+
+        items.Single(i => i.Id == travelId).EnableTravelCost.ShouldBeTrue();
+        items.Single(i => i.Id == leaveId).EnableTravelCost.ShouldBeFalse();
+
+        SetWorkflowSettings(travelCostStep: 2);
+        (await _inbox.GetMyInbox(Query())).Items.Single(i => i.Id == travelId).EnableTravelCost.ShouldBeFalse();
+    }
+
+    /// <summary>Legacy ESS: the send-back button needs ManageWorkflowSettings.SendBackToCreator as well as the step's own flag.</summary>
+    [Fact]
+    public async Task Send_Back_Should_Not_Be_Offered_When_The_Tenant_Setting_Is_Off()
+    {
+        var meId = CreateCurrentUserEmployee("INB710ME");
+        var requesterId = CreateEmployee("INB710REQ");
+        ConfigureLeaveChain(canReject: true, canSendBack: true);
+        SetWorkflowSettings(sendBackToCreator: false);
+        var requestId = CreatePendingRequest(requesterId, meId);
+
+        var item = (await _inbox.GetMyInbox(Query())).Items.Single(i => i.Id == requestId);
+
+        item.CanSendBack.ShouldBeFalse();
+        item.CanReject.ShouldBeTrue();
     }
 
     [Fact]

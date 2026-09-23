@@ -51,6 +51,24 @@ public enum PayrollJVWageTypeScope
     EarningDeductionAndAllProvision = 2
 }
 
+/// <summary>
+/// Where a JV variant takes its wage accounts from. Legacy Custom 042 (<c>uscRptPayrollJV_Custom042</c>
+/// lines 681-830 and 3331-3480) switched on the <c>ENABLE_WAGEACCOUNT_BY_ORGUNIT</c> tenant config key;
+/// every other JV variant always used the employee's own rows.
+/// </summary>
+public enum PayrollJVWageAccountSource
+{
+    /// <summary>The employee's own <c>EmployeeWageAccount</c> rows (legacy default branch).</summary>
+    EmployeeWageAccount = 0,
+
+    /// <summary>
+    /// The <c>WageAccGroupDetail</c> rows of the wage-account group mapped (<c>OrgUnitWageAccGroup</c>) to
+    /// the employee's organization unit as of the month end; the offset account is the group's fixed one
+    /// or, for <see cref="OffsetAccountInfoType.EmployeeCode"/>, the account whose code is the employee's.
+    /// </summary>
+    OrgUnitWageAccGroup = 1
+}
+
 public class PayrollJVPostingLineLoader : ITransientDependency
 {
     /// <summary>The Net Pay wage type, singled out by every JV variant.</summary>
@@ -59,15 +77,24 @@ public class PayrollJVPostingLineLoader : ITransientDependency
     private readonly IRepository<SalaryRegisterDetail> _salaryRegisterDetailRepository;
     private readonly IRepository<EmployeeWageAccount> _employeeWageAccountRepository;
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
+    private readonly IRepository<OrgUnitWageAccGroup> _orgUnitWageAccGroupRepository;
+    private readonly IRepository<WageAccGroupDetail> _wageAccGroupDetailRepository;
+    private readonly IRepository<AccountInfo> _accountInfoRepository;
 
     public PayrollJVPostingLineLoader(
         IRepository<SalaryRegisterDetail> salaryRegisterDetailRepository,
         IRepository<EmployeeWageAccount> employeeWageAccountRepository,
-        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository)
+        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
+        IRepository<OrgUnitWageAccGroup> orgUnitWageAccGroupRepository,
+        IRepository<WageAccGroupDetail> wageAccGroupDetailRepository,
+        IRepository<AccountInfo> accountInfoRepository)
     {
         _salaryRegisterDetailRepository = salaryRegisterDetailRepository;
         _employeeWageAccountRepository = employeeWageAccountRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
+        _orgUnitWageAccGroupRepository = orgUnitWageAccGroupRepository;
+        _wageAccGroupDetailRepository = wageAccGroupDetailRepository;
+        _accountInfoRepository = accountInfoRepository;
     }
 
     /// <summary>
@@ -85,6 +112,11 @@ public class PayrollJVPostingLineLoader : ITransientDependency
     /// </param>
     /// <param name="employeeCodes">Legacy comma-split <c>txtEmpCode</c>; empty means "do not filter".</param>
     /// <param name="rlsEmployeeIds">Row-level-security allow-list; empty means "no restriction".</param>
+    /// <param name="wageTypeScope">Which billing types the variant admits.</param>
+    /// <param name="wageAccountSource">
+    /// Where the wage accounts come from. Only Custom 042 reads the tenant config key that can switch this
+    /// to <see cref="PayrollJVWageAccountSource.OrgUnitWageAccGroup"/>.
+    /// </param>
     public async Task<List<PayrollJVPostingLine>> LoadAsync(
         DateTime endDate,
         IReadOnlyCollection<string> extraProvisionWageTypeCodes,
@@ -92,13 +124,14 @@ public class PayrollJVPostingLineLoader : ITransientDependency
         IReadOnlyCollection<int> payrollAreaIds,
         IReadOnlyCollection<string> employeeCodes,
         IReadOnlyCollection<int> rlsEmployeeIds,
-        PayrollJVWageTypeScope wageTypeScope = PayrollJVWageTypeScope.EarningDeductionAndExtraCodes)
+        PayrollJVWageTypeScope wageTypeScope = PayrollJVWageTypeScope.EarningDeductionAndExtraCodes,
+        PayrollJVWageAccountSource wageAccountSource = PayrollJVWageAccountSource.EmployeeWageAccount)
     {
         var details = await LoadSalaryLinesAsync(
             endDate, extraProvisionWageTypeCodes, payrollRunType, payrollAreaIds, employeeCodes, rlsEmployeeIds,
             wageTypeScope);
 
-        var lookup = await LoadWageAccountLookupAsync(endDate, employeeCodes);
+        var lookup = await LoadWageAccountLookupAsync(endDate, employeeCodes, payrollAreaIds, wageAccountSource);
 
         return Join(details, lookup);
     }
@@ -173,11 +206,22 @@ public class PayrollJVPostingLineLoader : ITransientDependency
     /// Legacy 023 lines 630-650 / 019 lines 712-728: the wage accounts current as of the month end,
     /// narrowed by the SAME employee-code box as the salary register.
     /// </summary>
+    /// <param name="payrollAreaIds">
+    /// Read only for <see cref="PayrollJVWageAccountSource.OrgUnitWageAccGroup"/>: legacy 042 line 685
+    /// narrowed the org assignments by payroll area, while its employee-wage-account branch did not.
+    /// </param>
     public async Task<PayrollJVWageAccountLookup> LoadWageAccountLookupAsync(
         DateTime endDate,
-        IReadOnlyCollection<string> employeeCodes)
+        IReadOnlyCollection<string> employeeCodes,
+        IReadOnlyCollection<int> payrollAreaIds = null,
+        PayrollJVWageAccountSource wageAccountSource = PayrollJVWageAccountSource.EmployeeWageAccount)
     {
         var codes = (employeeCodes ?? Array.Empty<string>()).ToArray();
+
+        if (wageAccountSource == PayrollJVWageAccountSource.OrgUnitWageAccGroup)
+        {
+            return await LoadOrgUnitWageAccountLookupAsync(endDate, codes, (payrollAreaIds ?? Array.Empty<int>()).ToArray());
+        }
 
         var accounts = await _employeeWageAccountRepository.GetAll()
             .Where(a => a.StartDate <= endDate && a.EndDate >= endDate)
@@ -214,6 +258,123 @@ public class PayrollJVPostingLineLoader : ITransientDependency
                 CostPercentage = a.CostPercentage
             })
             .ToListAsync();
+
+        return new PayrollJVWageAccountLookup(accounts);
+    }
+
+    /// <summary>
+    /// Legacy 042 lines 681-760: the employee's org assignment current at the month end (its organization
+    /// unit is what legacy resolved as the deepest of OrgLevel7..1), joined to the wage-account group
+    /// mapped to that unit for the month end, then to the group's wage-type rows. The offset account is
+    /// the group row's fixed account, or for <see cref="OffsetAccountInfoType.EmployeeCode"/> the
+    /// <c>AccountInfo</c> whose code equals the employee's code (legacy's <c>accountInfoList2</c> lookup).
+    /// </summary>
+    private async Task<PayrollJVWageAccountLookup> LoadOrgUnitWageAccountLookupAsync(
+        DateTime endDate,
+        string[] codes,
+        int[] areaIds)
+    {
+        var assignments = _employeeOrgAssignmentRepository.GetAll()
+            .Where(o => o.StartDate <= endDate && o.EndDate >= endDate && o.OrganizationUnitId != null)
+            .WhereIf(areaIds.Length > 0, o => o.PayrollAreaId != null && areaIds.Contains(o.PayrollAreaId.Value))
+            .WhereIf(codes.Length > 0, o => codes.Contains(o.Employee.Code));
+
+        var groupMappings = _orgUnitWageAccGroupRepository.GetAll()
+            .Where(m => m.StartDate <= endDate && m.EndDate >= endDate);
+
+        var rows = await (
+                from o in assignments
+                join m in groupMappings on o.OrganizationUnitId.Value equals m.OrganizationUnitId
+                join d in _wageAccGroupDetailRepository.GetAll() on m.WageAccGroupId equals d.WageAccGroupId
+                select new
+                {
+                    o.EmployeeId,
+                    EmployeeCode = o.Employee.Code,
+                    d.WageTypeId,
+                    d.OffsetAccountInfoType,
+                    Info = new PayrollJVWageAccountInfo
+                    {
+                        EmployeeId = o.EmployeeId,
+                        WageTypeId = d.WageTypeId,
+                        AccountInfoId = d.AccountInfoId,
+                        AccountInfoCode = d.AccountInfo.Code,
+                        AccountInfoName = d.AccountInfo.NameEn,
+                        OffsetAccountInfoId = d.OffsetAccountInfoId,
+                        OffsetAccountInfoCode = d.OffsetAccountInfo == null ? null : d.OffsetAccountInfo.Code,
+                        OffsetAccountInfoName = d.OffsetAccountInfo == null ? null : d.OffsetAccountInfo.NameEn,
+                        CostElement1Id = d.CostElement1Id,
+                        CostElement1Code = d.CostElement1 == null ? null : d.CostElement1.Code,
+                        CostElement2Id = d.CostElement2Id,
+                        CostElement2Code = d.CostElement2 == null ? null : d.CostElement2.Code,
+                        CostElement3Id = d.CostElement3Id,
+                        CostElement3Code = d.CostElement3 == null ? null : d.CostElement3.Code,
+                        CostElement4Id = d.CostElement4Id,
+                        CostElement4Code = d.CostElement4 == null ? null : d.CostElement4.Code,
+                        CostElement5Id = d.CostElement5Id,
+                        CostElement5Code = d.CostElement5 == null ? null : d.CostElement5.Code,
+                        CostElement6Id = d.CostElement6Id,
+                        CostElement6Code = d.CostElement6 == null ? null : d.CostElement6.Code,
+                        CostElement7Id = d.CostElement7Id,
+                        CostElement7Code = d.CostElement7 == null ? null : d.CostElement7.Code,
+                        AccountTypeName = d.AccountInfo.AccountType == null ? null : d.AccountInfo.AccountType.NameEn,
+                        OffsetAccountTypeName = d.OffsetAccountInfo == null || d.OffsetAccountInfo.AccountType == null
+                            ? null
+                            : d.OffsetAccountInfo.AccountType.NameEn,
+                        MergeOffsetAccount = d.MergeOffsetAccount,
+                        CostPercentage = d.CostPercentage
+                    }
+                })
+            .ToListAsync();
+
+        // Legacy: accountInfoList2.FirstOrDefault(a => a.Code == employeeCode) -- the employee's own
+        // sub-ledger account, resolved once per employee code rather than once per row.
+        var employeeCodes = rows
+            .Where(r => r.OffsetAccountInfoType == OffsetAccountInfoType.EmployeeCode && r.EmployeeCode != null)
+            .Select(r => r.EmployeeCode)
+            .Distinct()
+            .ToArray();
+
+        var employeeAccounts = employeeCodes.Length == 0
+            ? new Dictionary<string, (int Id, string Code, string Name, string TypeName)>()
+            : (await _accountInfoRepository.GetAll()
+                    .Where(a => employeeCodes.Contains(a.Code))
+                    .OrderBy(a => a.Id)
+                    .Select(a => new
+                    {
+                        a.Id,
+                        a.Code,
+                        a.NameEn,
+                        TypeName = a.AccountType == null ? null : a.AccountType.NameEn
+                    })
+                    .ToListAsync())
+                .GroupBy(a => a.Code)
+                .ToDictionary(g => g.Key,
+                    g => (Id: g.First().Id, Code: g.First().Code, Name: g.First().NameEn, TypeName: g.First().TypeName));
+
+        var accounts = new List<PayrollJVWageAccountInfo>(rows.Count);
+        foreach (var row in rows)
+        {
+            var info = row.Info;
+            if (row.OffsetAccountInfoType == OffsetAccountInfoType.EmployeeCode)
+            {
+                if (row.EmployeeCode != null && employeeAccounts.TryGetValue(row.EmployeeCode, out var account))
+                {
+                    info.OffsetAccountInfoId = account.Id;
+                    info.OffsetAccountInfoCode = account.Code;
+                    info.OffsetAccountInfoName = account.Name;
+                    info.OffsetAccountTypeName = account.TypeName;
+                }
+                else
+                {
+                    info.OffsetAccountInfoId = null;
+                    info.OffsetAccountInfoCode = null;
+                    info.OffsetAccountInfoName = null;
+                    info.OffsetAccountTypeName = null;
+                }
+            }
+
+            accounts.Add(info);
+        }
 
         return new PayrollJVWageAccountLookup(accounts);
     }

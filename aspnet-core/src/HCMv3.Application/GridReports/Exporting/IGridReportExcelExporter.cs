@@ -4,16 +4,18 @@ using HCMv3.Dto;
 
 namespace HCMv3.GridReports.Exporting;
 
-/// <summary>
-/// Generic Excel exporter shared by every grid report -- the replacement for the legacy
-/// per-report <c>ASPxGridViewExporter</c> control. Callers pass ALL rows matching the current filters
-/// (never just the visible page) plus a column list; a <see cref="FileDto"/> token is returned and the
-/// Angular side downloads it through <c>/File/DownloadTempFile</c>.
-/// </summary>
 public interface IGridReportExcelExporter
 {
+    /// <summary>Legacy grid export default: three decimals (<c>GridReportHelper.GetDecimalRounding</c>).</summary>
+    const int DefaultDecimalPlaces = 3;
+
+    /// <param name="decimalPlaces">
+    /// Decimals shown on every numeric column; legacy applied <c>ManageReportSettings.DecimalInReports</c>
+    /// as an <c>N{decimals}</c> display format, zero meaning three.
+    /// </param>
     Task<FileDto> ExportAsync<TRow>(
         string fileName,
         IReadOnlyList<TRow> rows,
-        IReadOnlyList<GridReportColumn<TRow>> columns);
+        IReadOnlyList<GridReportColumn<TRow>> columns,
+        int decimalPlaces = DefaultDecimalPlaces);
 }

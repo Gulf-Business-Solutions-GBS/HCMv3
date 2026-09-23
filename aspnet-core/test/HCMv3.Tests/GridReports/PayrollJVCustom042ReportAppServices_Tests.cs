@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HCMv3.GridReports.PayrollReport;
 using HCMv3.GridReports.PayrollReport.Dto;
 using HCMv3.PayrollManagement;
+using HCMv3.SystemSecurity;
 using Shouldly;
 using Xunit;
 
@@ -223,6 +224,106 @@ public class PayrollJVCustom042ReportAppServices_Tests : AppTestBase
         row.EmployeeCode.ShouldBe(employee.Code);
         row.DrCr.ShouldBe("C");
         row.FcAmount.ShouldBe(0);
+    }
+
+    // ----------------------------------------------------------------------------------------
+    // ENABLE_WAGEACCOUNT_BY_ORGUNIT (legacy lines 681-830)
+    // ----------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// Legacy lines 681-760: with the tenant config key on, the wage accounts come from the group mapped to
+    /// the employee's organization unit, and an <see cref="OffsetAccountInfoType.EmployeeCode"/> row's
+    /// offset is the account whose code is the employee's own code. No <c>EmployeeWageAccount</c> row is
+    /// needed at all.
+    /// </summary>
+    [Fact]
+    public async Task SalaryJv_Should_Take_Wage_Accounts_From_The_Org_Unit_Group_When_The_Tenant_Config_Key_Is_On()
+    {
+        var appService = Resolve<IPayrollJVCustom042SalaryReportAppService>();
+        _data.CreateTenantConfig(SysTenantConfigKeys.EnableWageAccountByOrgUnit, "1");
+
+        var earning = _data.CreateWageType("1002", BillingType.Earning);
+        var groupAccount = _data.CreateAccount("80003", "Group Salary Expense");
+        var division = _data.CreateCostElement("DIV-ORG");
+        var employee = _data.CreateEmployee("JV42ORG-1");
+        _data.CreateAccount("JV42ORG-1", "Employee sub-ledger");
+
+        var unit = _data.CreateOrganizationUnit("Org-unit wage accounts");
+        var group = _data.CreateWageAccGroup("WAG-1");
+        _data.CreateWageAccGroupDetail(group, earning, groupAccount, OffsetAccountInfoType.EmployeeCode, costElement1: division);
+        _data.MapOrganizationUnitToWageAccGroup(unit, group);
+        _data.CreateOrgAssignment(employee, null, new DateTime(2000, 1, 1), new DateTime(2099, 12, 31), organizationUnit: unit);
+
+        _data.CreateDetail(_data.CreateRegister(employee, JuneEnd), earning, 400);
+
+        var result = await appService.GetPayrollJVCustom042SalaryReport(SalaryInput());
+
+        var row = result.Items.Single();
+        row.MainAccountCode.ShouldBe("80003");
+        row.SubAccountCode.ShouldBe("JV42ORG-1");
+        row.Division.ShouldBe("DIV-ORG");
+        row.FcAmount.ShouldBe(400);
+    }
+
+    /// <summary>
+    /// Legacy line 732-736: a <see cref="OffsetAccountInfoType.Fixed"/> group row keeps its own offset
+    /// account, and a mapping that has expired by the month end is ignored (line 750).
+    /// </summary>
+    [Fact]
+    public async Task SalaryJv_Should_Use_The_Fixed_Offset_And_Only_Mappings_Current_At_Month_End()
+    {
+        var appService = Resolve<IPayrollJVCustom042SalaryReportAppService>();
+        _data.CreateTenantConfig(SysTenantConfigKeys.EnableWageAccountByOrgUnit, "1");
+
+        var earning = _data.CreateWageType("1003", BillingType.Earning);
+        var currentAccount = _data.CreateAccount("80004", "Current group account");
+        var expiredAccount = _data.CreateAccount("80005", "Expired group account");
+        var fixedOffset = _data.CreateAccount("21000", "Salaries payable");
+        var employee = _data.CreateEmployee("JV42ORG-2");
+
+        var unit = _data.CreateOrganizationUnit("Org-unit with two mappings");
+        var currentGroup = _data.CreateWageAccGroup("WAG-2");
+        _data.CreateWageAccGroupDetail(currentGroup, earning, currentAccount, OffsetAccountInfoType.Fixed, fixedOffset);
+        _data.MapOrganizationUnitToWageAccGroup(unit, currentGroup);
+
+        var expiredGroup = _data.CreateWageAccGroup("WAG-3");
+        _data.CreateWageAccGroupDetail(expiredGroup, earning, expiredAccount);
+        _data.MapOrganizationUnitToWageAccGroup(unit, expiredGroup, new DateTime(2000, 1, 1), new DateTime(2024, 5, 31));
+
+        _data.CreateOrgAssignment(employee, null, new DateTime(2000, 1, 1), new DateTime(2099, 12, 31), organizationUnit: unit);
+        _data.CreateDetail(_data.CreateRegister(employee, JuneEnd), earning, 250);
+
+        var result = await appService.GetPayrollJVCustom042SalaryReport(SalaryInput());
+
+        var row = result.Items.Single();
+        row.MainAccountCode.ShouldBe("80004");
+        row.SubAccountCode.ShouldBe("21000");
+    }
+
+    /// <summary>Legacy lines 768-771: with the key off (or absent) the org-unit group is never consulted.</summary>
+    [Fact]
+    public async Task SalaryJv_Should_Ignore_The_Org_Unit_Group_When_The_Tenant_Config_Key_Is_Off()
+    {
+        var appService = Resolve<IPayrollJVCustom042SalaryReportAppService>();
+        _data.CreateTenantConfig(SysTenantConfigKeys.EnableWageAccountByOrgUnit, "0");
+
+        var earning = _data.CreateWageType("1004", BillingType.Earning);
+        var groupAccount = _data.CreateAccount("80006", "Group account");
+        var ownAccount = _data.CreateAccount("80007", "Employee's own account");
+        var employee = _data.CreateEmployee("JV42ORG-3");
+
+        var unit = _data.CreateOrganizationUnit("Org-unit ignored");
+        var group = _data.CreateWageAccGroup("WAG-4");
+        _data.CreateWageAccGroupDetail(group, earning, groupAccount);
+        _data.MapOrganizationUnitToWageAccGroup(unit, group);
+        _data.CreateOrgAssignment(employee, null, new DateTime(2000, 1, 1), new DateTime(2099, 12, 31), organizationUnit: unit);
+        _data.CreateWageAccount(employee, earning, ownAccount);
+
+        _data.CreateDetail(_data.CreateRegister(employee, JuneEnd), earning, 100);
+
+        var result = await appService.GetPayrollJVCustom042SalaryReport(SalaryInput());
+
+        result.Items.Single().MainAccountCode.ShouldBe("80007");
     }
 
     private static GetPayrollJVCustom042SalaryReportInput SalaryInput(int maxResultCount = 100)

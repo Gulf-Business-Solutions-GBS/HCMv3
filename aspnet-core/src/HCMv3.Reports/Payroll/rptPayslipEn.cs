@@ -15,14 +15,14 @@ namespace HCMv3.Reports.Payroll
     /// | <c>new XPObjectSpaceProvider(ConfigurationManager.ConnectionStrings["HCM10ConnectionString"])</c> + <c>CreateObjectSpace()</c> | removed. The connection is pushed in by the caller through <see cref="HcmReportBase.ApplyConnectionString"/>, which sources it from HCMv3's <c>ConnectionStrings:Default</c>. |
     /// | <c>object_Space.GetObjectsQuery&lt;PermissionPolicyUser&gt;()</c> / <c>GetObjectsQuery&lt;Employee&gt;()</c> lookups | removed from the report. A report constructed by DevExpress has no DI container; the caller (the ReportStorageWebExtension in Web.Host) resolves ABP's <c>IAbpSession</c> / user + employee repositories and passes the results in as parameters. |
     /// | <c>SysService.IsAdminRole(...)</c> + <c>RLSService.GetRLSEmployeeCodeList(...)</c> driving <c>PrmEmpCode.Visible</c> | NOT ported into the report. Whether a user may pick an arbitrary employee code is an authorization decision and belongs behind ABP permissions in the calling layer -- baking it into report layout means a designer edit can revoke row-level security. |
-    /// | <c>SysService.GetPayrollSettings(...).PayslipSignature</c> driving <c>PanelSignature.Visible</c> | STUBBED. See <see cref="ApplyPayslipSignature"/>: the panel stays visible until the caller says otherwise, because HCMv3 has no ported <c>ManagePayrollSettings.PayslipSignature</c> setting yet. |
+    /// | <c>SysService.GetPayrollSettings(...).PayslipSignature</c> driving <c>PanelSignature.Visible</c> | <see cref="ApplyPayslipSignature"/>, called by the report storage / go-live PDF with <c>ManagePayrollSettings.PayslipSignature</c>. |
     /// | <c>AfterPrint</c>: export to PDF + <c>SmtpClient.Send</c> + <c>BodyTemplateHtml</c> | removed. Already ported to <c>HCMv3.Application</c> (<c>ReportsAppService.SendPayslipEmails</c> / <c>BuildPayslipEmailBodyHtml</c>). Mailing from AfterPrint would fire on every Document Viewer page request. |
     /// | <c>HCM10.Module.BusinessObjects.*</c> imports | gone; the report touches no entities at all, only SQL and parameters. |
     ///
     /// MULTI-TENANCY: every query carries <c>@TenantId</c>. Call <see cref="HcmReportBase.ApplyTenant"/>
     /// before <c>CreateDocument()</c> or the report returns nothing.
     /// </summary>
-    public partial class rptPayslipEn : HcmReportBase
+    public partial class rptPayslipEn : HcmReportBase, IPayslipSignatureReport
     {
         /// <summary>Report name used by the Web Report Designer / Document Viewer storage.</summary>
         public const string ReportName = "PayslipEn";
@@ -67,12 +67,10 @@ namespace HCMv3.Reports.Payroll
         }
 
         /// <summary>
-        /// STUB for the legacy <c>PanelSignature.Visible = GetPayrollSettings(...).PayslipSignature</c>.
-        ///
-        /// HCMv3 has no ported equivalent of the legacy <c>ManagePayrollSettings.PayslipSignature</c>
-        /// flag, so the panel is left visible (the legacy default for tenants that had the setting
-        /// on) and the decision is exposed to the caller. Wire this to the real setting when it is
-        /// ported; until then the Approved-By / Reviewed-By block always prints.
+        /// Legacy <c>PanelSignature.Visible = GetPayrollSettings(...).PayslipSignature</c>, applied by the
+        /// caller that built the report from <c>ManagePayrollSettings.PayslipSignature</c> (see
+        /// <see cref="IPayslipSignatureReport"/>). Until the caller applies it the block prints, which is
+        /// the legacy default for tenants that had the setting on.
         /// </summary>
         public void ApplyPayslipSignature(bool visible)
         {

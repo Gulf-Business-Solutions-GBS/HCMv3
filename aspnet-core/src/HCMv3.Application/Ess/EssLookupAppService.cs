@@ -62,6 +62,9 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
     private readonly IRepository<TravelDestination> _travelDestinationRepository;
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IEmployeeSessionService _employeeSessionService;
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<HCMv3.OrganizationManagement.OrganizationUnitType> _organizationUnitTypeRepository;
+    private readonly HCMv3.OrganizationManagement.Services.IOrgHierarchyService _orgHierarchyService;
 
     public EssLookupAppService(
         IRepository<AbsenceType> absenceTypeRepository,
@@ -80,8 +83,14 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
         IRepository<TravelAirline> travelAirlineRepository,
         IRepository<TravelDestination> travelDestinationRepository,
         IRepository<Employee> employeeRepository,
-        IEmployeeSessionService employeeSessionService)
+        IEmployeeSessionService employeeSessionService,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<HCMv3.OrganizationManagement.OrganizationUnitType> organizationUnitTypeRepository,
+        HCMv3.OrganizationManagement.Services.IOrgHierarchyService orgHierarchyService)
     {
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _organizationUnitTypeRepository = organizationUnitTypeRepository;
+        _orgHierarchyService = orgHierarchyService;
         _absenceTypeRepository = absenceTypeRepository;
         _assetRepository = assetRepository;
         _attendanceTypeRepository = attendanceTypeRepository;
@@ -310,6 +319,14 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
         if (myEmployeeId.HasValue)
         {
             query = query.Where(e => e.Id != myEmployeeId.Value);
+
+            // Legacy ESS BaseRepository.GetDelegateEmployeeFilterOid: with ManageWorkflowSettings.DelegateEmployeeListBy
+            // set to an organisation unit type, only colleagues under the same unit at that level are offered.
+            var sameUnitIds = await SameOrgUnitColleagueIdsAsync(myEmployeeId.Value);
+            if (sameUnitIds != null)
+            {
+                query = query.Where(e => sameUnitIds.Contains(e.Id));
+            }
         }
 
         return await query
@@ -322,6 +339,53 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
             })
             .OrderBy(e => e.FullNameEn)
             .ToListAsync();
+    }
+
+    /// <summary>
+    /// The ids of the colleagues whose organisation unit at the configured level is the current
+    /// employee's, or null when no level is configured or the employee has no unit at that level (then
+    /// nobody is filtered out, as legacy's null filter did).
+    /// </summary>
+    private async Task<List<int>> SameOrgUnitColleagueIdsAsync(int myEmployeeId)
+    {
+        var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
+        var levelTypeId = workflowSettings?.DelegateEmployeeListByOrganizationUnitTypeId;
+        if (!levelTypeId.HasValue)
+        {
+            return null;
+        }
+
+        var levelCode = await _organizationUnitTypeRepository.GetAll()
+            .Where(t => t.Id == levelTypeId.Value)
+            .Select(t => t.Code)
+            .FirstOrDefaultAsync();
+        if (string.IsNullOrEmpty(levelCode))
+        {
+            return null;
+        }
+
+        var myUnit = await _orgHierarchyService.GetOrgUnitAtLevelForEmployeeAsync(myEmployeeId, levelCode);
+        if (!myUnit.HasValue)
+        {
+            return null;
+        }
+
+        var candidateIds = await _employeeRepository.GetAll()
+            .Where(e => e.Status == EmployeeStatus.Active && e.Id != myEmployeeId)
+            .Select(e => e.Id)
+            .ToListAsync();
+
+        var sameUnit = new List<int>();
+        foreach (var candidateId in candidateIds)
+        {
+            var unit = await _orgHierarchyService.GetOrgUnitAtLevelForEmployeeAsync(candidateId, levelCode);
+            if (unit == myUnit)
+            {
+                sameUnit.Add(candidateId);
+            }
+        }
+
+        return sameUnit;
     }
 
     // ------------------------------------------------------------------ plumbing

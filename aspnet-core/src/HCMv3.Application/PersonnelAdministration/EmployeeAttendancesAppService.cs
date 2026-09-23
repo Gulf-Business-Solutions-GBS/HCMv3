@@ -8,6 +8,9 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
+using HCMv3.SystemSettings.Services;
+using HCMv3.TimeManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,10 +29,17 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAttendancesAppService
 {
     private readonly IRepository<EmployeeAttendance> _repository;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IEmployeeAbsenceCalculationService _absenceCalculationService;
 
-    public EmployeeAttendancesAppService(IRepository<EmployeeAttendance> repository)
+    public EmployeeAttendancesAppService(
+        IRepository<EmployeeAttendance> repository,
+        ISysSettingsAccessor sysSettingsAccessor,
+        IEmployeeAbsenceCalculationService absenceCalculationService)
     {
         _repository = repository;
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _absenceCalculationService = absenceCalculationService;
     }
 
     [HttpPost]
@@ -126,6 +136,8 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
+        await EnsureStartDayAllowsAttendanceAsync(entity);
+
         if (entity.AttendanceUnit == AttendanceUnit.Period)
         {
             var overlaps = await _repository.GetAll()
@@ -138,6 +150,48 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
             {
                 throw new UserFriendlyException(L("OverlapConflictFound"));
             }
+        }
+    }
+
+    /// <summary>
+    /// Legacy <c>EmployeeAttendance.GetPlannedminutes</c> (AMK ticket #2267): attendance may not start on a
+    /// day whose duty is a weekly off unless <c>ManageTimeSettings.EnableAttendanceOnWeekOff</c> is on, nor on
+    /// a rest day unless <c>EnableAttendanceOnRestDay</c> is on. A day with no resolvable duty is left to the
+    /// rest of the validation, as legacy's throw-on-missing-duty belonged to the minutes calculation.
+    /// </summary>
+    private async Task EnsureStartDayAllowsAttendanceAsync(EmployeeAttendance entity)
+    {
+        var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
+        if (timeSettings == null || (timeSettings.EnableAttendanceOnWeekOff && timeSettings.EnableAttendanceOnRestDay))
+        {
+            return;
+        }
+
+        Duty duty;
+        try
+        {
+            duty = await _absenceCalculationService.GetEmployeeDutyAsync(entity.EmployeeId, entity.StartDate.Date);
+        }
+        catch (System.InvalidOperationException)
+        {
+            return;
+        }
+
+        if (duty == null)
+        {
+            return;
+        }
+
+        if (duty.IsWeeklyOff && !timeSettings.EnableAttendanceOnWeekOff)
+        {
+            throw new UserFriendlyException(L("AttendanceCannotStartOnWeekOff",
+                entity.StartDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture), duty.NameEn));
+        }
+
+        if (duty.IsRestDay && !timeSettings.EnableAttendanceOnRestDay)
+        {
+            throw new UserFriendlyException(L("AttendanceCannotStartOnRestDay",
+                entity.StartDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture), duty.NameEn));
         }
     }
 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HCMv3.GridReports.PayrollReport.Dto;
+using HCMv3.SystemSecurity;
 
 namespace HCMv3.GridReports.PayrollReport;
 
@@ -15,6 +17,19 @@ public abstract class PayrollJVCustom042ReportAppServiceBase : GridReportAppServ
 {
     /// <summary>Legacy "Oid"/1st column, and the parameter-string date literal used across the family.</summary>
     protected static string VoucherDate(DateTime endDate) => endDate.ToString("MMM, yyyy");
+
+    /// <summary>
+    /// Legacy <c>uscRptPayrollJV_Custom042</c> lines 681-683: the <c>ENABLE_WAGEACCOUNT_BY_ORGUNIT</c>
+    /// tenant config key set to "1" makes this format take its wage accounts from the group mapped to the
+    /// employee's organization unit instead of the employee's own rows. Only Custom 042 reads it.
+    /// </summary>
+    protected async Task<PayrollJVWageAccountSource> ResolveWageAccountSourceAsync()
+    {
+        var value = await SysSettingsAccessor.GetSysTenantConfigAsync(SysTenantConfigKeys.EnableWageAccountByOrgUnit);
+        return value == "1"
+            ? PayrollJVWageAccountSource.OrgUnitWageAccGroup
+            : PayrollJVWageAccountSource.EmployeeWageAccount;
+    }
 
     /// <summary>Legacy <c>GetTable()</c>: blank month/year mean "now"; an invalid pair fell back to 1900.</summary>
     protected DateTime ResolveEndDate(int? month, int? year)

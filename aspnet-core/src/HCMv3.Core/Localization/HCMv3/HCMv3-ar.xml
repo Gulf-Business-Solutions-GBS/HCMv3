@@ -2562,6 +2562,12 @@
     <text name="TimeTransfers">عمليات نقل الوقت</text>
     <text name="TransTypeCannotBeBlank">لا يمكن ترك نوع الإجراء فارغاً.</text>
     <text name="TimeEventAlreadyExists">يوجد حدث وقت لهذا الموظف بنوع الإجراء نفسه وبتاريخ '{0}' ووقت '{1}' مسبقاً.</text>
+    <text name="TimeEventAlreadyExistsForSource">يوجد حدث وقت لهذا الموظف بنوع الإجراء نفسه وبتاريخ '{0}' ووقت '{1}' مسبقاً من المصدر {2}.</text>
+    <text name="AttendanceCannotStartOnWeekOff">لا يمكن أن يبدأ الحضور في {0}: الدوام {1} هو عطلة أسبوعية والحضور في العطلة الأسبوعية غير مفعّل في إعدادات الوقت.</text>
+    <text name="AttendanceCannotStartOnRestDay">لا يمكن أن يبدأ الحضور في {0}: الدوام {1} هو يوم راحة والحضور في يوم الراحة غير مفعّل في إعدادات الوقت.</text>
+    <text name="PendingLeaveRequestOfSameTypeExists">يوجد طلب إجازة من النوع نفسه ما زال بانتظار الموافقة لهذا الموظف.</text>
+    <text name="HalfDayLeaveNotEnabled">إجازة نصف اليوم غير مفعّلة في إعدادات الوقت.</text>
+    <text name="PayFullWithPayrollNotEnabled">خيار الدفع الكامل مع الرواتب غير مفعّل في إعدادات الوقت.</text>
     <text name="RecordSourceCannotBeBlank">لا يمكن ترك مصدر السجل فارغاً.</text>
     <text name="RecordSourceAlreadyExists">مصدر السجل '{0}' موجود مسبقاً.</text>
     <text name="TokenUrlCannotBeBlank">لا يمكن ترك رابط الرمز المميز فارغاً.</text>
@@ -3368,6 +3374,9 @@
     <text name="MaxReviewerLimitReached">تم بلوغ الحد الأقصى لعدد المراجعين وهو {0}.</text>
     <text name="PAFormAlreadyExistsForPeriodAndEmployee">يوجد نموذج تقييم أداء لهذه الفترة ولهذا الموظف مسبقاً.</text>
     <text name="PAPeerNomineeAlreadyExists">تم ترشيح هذا الزميل لهذه الفترة ولهذا الموظف مسبقاً.</text>
+    <text name="PeerNomineeCountOutOfRange">يجب أن يكون عدد الزملاء المرشحين بين {0} و {1}. الرجاء تعيين الزملاء المرشحين بشكل صحيح.</text>
+    <text name="PeerReviewerLimitReached">تم بلوغ الحد الأقصى لعدد مراجعي الأقران ({0}) لهذا الموظف وهذه الفترة.</text>
+    <text name="PARatingRangeOverlaps">نطاق التقييم (من - إلى) يتداخل مع نطاق تقييم موجود. الرجاء التأكد من عدم تقاطع النطاق الجديد مع أي إدخال موجود.</text>
     <text name="PATimelineExceptionAlreadyExists">يوجد استثناء جدول زمني لهذه الفترة والموظف ونوع النشاط مسبقاً.</text>
     <text name="PATimelineAlreadyExistsForPeriodAndActivityType">يوجد جدول زمني لهذه الفترة ونوع النشاط مسبقاً.</text>
     <text name="PlanSubmitByAppraiser">تم تقديم الخطة من المُقيِّم</text>
@@ -3431,6 +3440,7 @@
     <text name="WFReadLogs">سجلات قراءة سير العمل</text>
     <text name="ReminderDaysMustBeLessThanEscalateAfterDays">يجب أن تقل أيام التذكير عن أيام التصعيد.</text>
     <text name="DuplicateStepFound">تم العثور على خطوة مكررة.</text>
+    <text name="RequestDetailStepOutOfRange">يجب أن يكون رقم الخطوة بين 1 و {0}.</text>
     <text name="WorkflowRoleGroupCannotBeBlank">لا يمكن ترك مجموعة أدوار سير العمل فارغة.</text>
     <text name="WorkflowRoleCannotBeBlank">لا يمكن ترك دور سير العمل فارغاً.</text>
     <text name="RequestMasterAlreadySetAsDefault">توجد مجموعة سير عمل افتراضية مسبقاً.</text>
@@ -4182,6 +4192,8 @@
     <text name="RunTimeEngine">تشغيل محرك الوقت</text>
     <text name="TimeEngineEndDateRequired">لم يتم تحديد تاريخ نهاية لاحتساب الوقت. الرجاء اختيار تاريخ النهاية.</text>
     <text name="TimeEngineStartDateAfterEndDate">لا يمكن أن يكون تاريخ البداية بعد تاريخ النهاية.</text>
+    <text name="TimeEngineEndDateBeyondFutureLimit">لا يمكن أن يكون تاريخ النهاية بعد {0}: نهاية الشهر التقويمي لسجل مراقبة الرواتب زائد {1} يوم/أيام (TE_MAX_LIMIT_DAYS).</text>
+    <text name="TimeEngineStartDateBeforeEarliestDate">لا يمكن أن يكون تاريخ البداية قبل أقدم تاريخ لاحتساب الوقت {0} (TIME_EVAL_EARLIEST_DATE).</text>
     <text name="TimeEngineRunQueued">تم إدراج تشغيل محرك الوقت في قائمة الانتظار. يظهر التقدم في سجل التشغيل أدناه.</text>
     <text name="TimeEngineRunHistory">سجل تشغيل محرك الوقت</text>
     <text name="PayrollEngine">محرك الرواتب</text>
@@ -4946,6 +4958,12 @@
     <text name="PayrollJVCustom051Report">قيد يومية الرواتب (نموذج 051)</text>
     <text name="PayrollSheetFromPeriodMustNotBeAfterToPeriod">يجب ألا تكون الفترة "من" بعد الفترة "إلى".</text>
     <text name="PayrollSheetAllowedMonths">لا يمكن أن يغطي هذا التقرير أكثر من {0} شهر.</text>
+    <text name="LeaveProvisionAllowedMonths">لا يمكن أن يغطي هذا التقرير أكثر من {0} شهر/أشهر.</text>
+    <text name="IndemnityProvisionAllowedMonths">لا يمكن أن يغطي هذا التقرير أكثر من {0} شهر/أشهر.</text>
+    <text name="EmployeeCodeRequiredWhenAutoCodeDisabled">رمز الموظف مطلوب: الترقيم التلقائي لرموز الموظفين معطّل في الإعدادات العامة.</text>
+    <text name="RecurringPaymentMoreThanOneOverlap">يوجد أكثر من دفعة متكررة متداخلة مع هذا الإدخال. يجب أن يكون هناك إدخال واحد فقط لتطبيق تاريخ النهاية التلقائي.</text>
+    <text name="RecurringPaymentLastEntryMustBeOpenEnded">تم العثور على تداخل في الدفعات المتكررة ({0} - {1}). يجب أن يكون تاريخ نهاية الإدخال الأخير 31/12/9999.</text>
+    <text name="RecurringPaymentLastEntryStartDateMustBeEarlier">تم العثور على تداخل في الدفعات المتكررة. يجب أن يكون تاريخ بداية الإدخال الأخير قبل تاريخ البداية الحالي {0}.</text>
     <text name="Difference">الفرق</text>
     <text name="FromMonth">من شهر</text>
     <text name="ToMonth">إلى شهر</text>

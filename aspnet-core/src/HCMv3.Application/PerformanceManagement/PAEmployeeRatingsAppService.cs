@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -15,10 +16,9 @@ namespace HCMv3.PerformanceManagement;
 
 /// <summary>
 /// Application service for <see cref="PAEmployeeRating"/>. Ports the legacy <c>UpdateAverageRating</c>
-/// (reviewer AverageScore/AverageRating, and the parent <see cref="PAEmployee"/>'s Overall/Peer/Employee
-/// average score+rating) on every Create/Update/Delete -- simplified to the rating-code-based average
-/// branch only, see <see cref="PAEmployeeRating"/> remarks for why the Marks-based branch is not
-/// reproduced.
+/// (reviewer AverageScore/AverageRating/TotalMarks, and the parent <see cref="PAEmployee"/>'s Overall/Peer/Employee
+/// average score+rating) on every Create/Update/Delete, in all three ManageAppraisalSettings modes: ratings,
+/// marks against ratings, and marks against KPI weight.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PerformanceManagement_PAEmployees)]
 public class PAEmployeeRatingsAppService : HCMv3AppServiceBase, IPAEmployeeRatingsAppService
@@ -28,12 +28,16 @@ public class PAEmployeeRatingsAppService : HCMv3AppServiceBase, IPAEmployeeRatin
     private readonly IRepository<PAEmployee> _paEmployeeRepository;
     private readonly IRepository<PARating> _paRatingRepository;
 
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+
     public PAEmployeeRatingsAppService(
         IRepository<PAEmployeeRating> repository,
         IRepository<PAEmployeeReviewer> reviewerRepository,
         IRepository<PAEmployee> paEmployeeRepository,
-        IRepository<PARating> paRatingRepository)
+        IRepository<PARating> paRatingRepository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
+        _sysSettingsAccessor = sysSettingsAccessor;
         _repository = repository;
         _reviewerRepository = reviewerRepository;
         _paEmployeeRepository = paEmployeeRepository;
@@ -127,7 +131,11 @@ public class PAEmployeeRatingsAppService : HCMv3AppServiceBase, IPAEmployeeRatin
         return entity;
     }
 
-    /// <summary>Legacy <c>UpdateAverageRating</c> parity (rating-code-based branch only).</summary>
+    /// <summary>
+    /// Legacy <c>PAEmployee.UpdateAverageRating</c>, all three branches of <c>ManageAppraisalSettings</c>:
+    /// marks off (rating codes averaged), marks on scored against ratings (weighted marks against the highest
+    /// rating code), and marks on scored against KPI weight (marks summed).
+    /// </summary>
     private async Task UpdateAverageRatingAsync(int reviewerId)
     {
         var reviewer = await _reviewerRepository.FirstOrDefaultAsync(reviewerId);
@@ -137,8 +145,19 @@ public class PAEmployeeRatingsAppService : HCMv3AppServiceBase, IPAEmployeeRatin
         }
 
         var ratings = await _repository.GetAll()
+            .Include(r => r.PAEmployeeDetail)
             .Where(r => r.PAEmployeeReviewerId == reviewerId)
             .ToListAsync();
+
+        var appraisalSettings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
+        if (appraisalSettings != null && appraisalSettings.EnableMarksInPAReview)
+        {
+            await UpdateMarksBasedAveragesAsync(reviewer, ratings, appraisalSettings.MarksOn);
+            await _reviewerRepository.UpdateAsync(reviewer);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            await UpdatePAEmployeeAveragesAsync(reviewer.PAEmployeeId);
+            return;
+        }
 
         var ratedLines = ratings.Where(r => r.RatingId != null).ToList();
         if (ratedLines.Count > 0)
@@ -174,6 +193,46 @@ public class PAEmployeeRatingsAppService : HCMv3AppServiceBase, IPAEmployeeRatin
         await CurrentUnitOfWork.SaveChangesAsync();
 
         await UpdatePAEmployeeAveragesAsync(reviewer.PAEmployeeId);
+    }
+
+    /// <summary>
+    /// Legacy "Marks enabled" branches. Against ratings: each line's marks are weighted by its KPI weight over
+    /// the highest rating code, and the reviewer's score is that total scaled back to the rating range;
+    /// against weight: the reviewer's total marks are simply summed. Legacy set no average rating in either
+    /// branch (that assignment was commented out), so it is left untouched here too.
+    /// </summary>
+    private async Task UpdateMarksBasedAveragesAsync(
+        PAEmployeeReviewer reviewer,
+        List<PAEmployeeRating> ratings,
+        HCMv3.SystemSettings.MarksOn marksOn)
+    {
+        var totalMarks = ratings.Sum(r => r.Marks);
+        reviewer.TotalMarks = totalMarks;
+
+        if (marksOn != HCMv3.SystemSettings.MarksOn.Ratings)
+        {
+            return;
+        }
+
+        if (ratings.Count == 0)
+        {
+            reviewer.AverageScore = 0;
+            reviewer.AverageRatingId = null;
+            return;
+        }
+
+        var maxRating = (await _paRatingRepository.GetAll().Select(r => r.Code).ToListAsync())
+            .Select(code => int.TryParse(code, out var c) ? c : 0)
+            .DefaultIfEmpty(0)
+            .Max();
+
+        double calculatedScore = 0;
+        if (maxRating != 0)
+        {
+            calculatedScore = ratings.Sum(r => ((r.PAEmployeeDetail?.Weight ?? 0) / maxRating) * r.Marks);
+        }
+
+        reviewer.AverageScore = Math.Round((calculatedScore / 100) * maxRating, 2);
     }
 
     private async Task UpdatePAEmployeeAveragesAsync(int paEmployeeId)

@@ -134,4 +134,11 @@ public class CreateOrEditEmployeeDto
 
     [Range(0, int.MaxValue)]
     public int ProbationDays { get; set; }
+
+    /// <summary>
+    /// New employees only, and only with <c>ManagePersonnelSettings.AutoWageAssignOnHire</c> on: the employee
+    /// whose open-ended wage accounts are copied to the new hire (legacy "Copy Wage Account" prompt,
+    /// <c>Employee.AddAutoWageAccount</c>). Not stored.
+    /// </summary>
+    public int? CopyWageAccountsFromEmployeeId { get; set; }
 }

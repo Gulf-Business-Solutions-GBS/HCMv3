@@ -1,5 +1,7 @@
 using System;
+using Abp.Organizations;
 using HCMv3.OrganizationManagement;
+using HCMv3.SystemSecurity;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.PayrollManagement;
 using HCMv3.EntityFrameworkCore;
@@ -274,7 +276,8 @@ public class PayrollJVReportTestDataBuilder
         PayrollArea payrollArea,
         DateTime start,
         DateTime end,
-        CostCenter costCenter = null)
+        CostCenter costCenter = null,
+        OrganizationUnit organizationUnit = null)
     {
         _usingDbContext(context =>
         {
@@ -285,7 +288,105 @@ public class PayrollJVReportTestDataBuilder
                 StartDate = start,
                 EndDate = end,
                 PayrollAreaId = payrollArea?.Id,
-                CostCenterId = costCenter?.Id
+                CostCenterId = costCenter?.Id,
+                OrganizationUnitId = organizationUnit?.Id
+            });
+        });
+    }
+
+    private static int _nextOrgUnitCodeNumber = 7000;
+
+    public OrganizationUnit CreateOrganizationUnit(string displayName)
+    {
+        OrganizationUnit unit = null;
+        _usingDbContext(context =>
+        {
+            // OrganizationUnit.Code is normally assigned by OrganizationUnitManager; created directly here,
+            // so a unique tree code is stamped explicitly.
+            unit = context.Set<OrganizationUnit>().Add(new OrganizationUnit(_tenantId, displayName)
+            {
+                Code = OrganizationUnit.CreateCode(++_nextOrgUnitCodeNumber)
+            }).Entity;
+        });
+
+        return unit;
+    }
+
+    /// <summary>A wage-account group plus one <c>WageAccGroupDetail</c> row per call of <see cref="CreateWageAccGroupDetail"/>.</summary>
+    public WageAccGroup CreateWageAccGroup(string code)
+    {
+        WageAccGroup group = null;
+        _usingDbContext(context =>
+        {
+            group = context.Set<WageAccGroup>().Add(new WageAccGroup
+            {
+                TenantId = _tenantId,
+                Code = code,
+                NameEn = "Group " + code,
+                NameAr = "Group " + code
+            }).Entity;
+        });
+
+        return group;
+    }
+
+    public void CreateWageAccGroupDetail(
+        WageAccGroup group,
+        WageType wageType,
+        AccountInfo account,
+        OffsetAccountInfoType offsetAccountInfoType = OffsetAccountInfoType.Fixed,
+        AccountInfo offsetAccount = null,
+        CostElement costElement1 = null,
+        double costPercentage = 100)
+    {
+        _usingDbContext(context =>
+        {
+            context.Set<WageAccGroupDetail>().Add(new WageAccGroupDetail
+            {
+                TenantId = _tenantId,
+                WageAccGroupId = group.Id,
+                WageTypeId = wageType.Id,
+                AccountInfoId = account.Id,
+                OffsetAccountInfoType = offsetAccountInfoType,
+                OffsetAccountInfoId = offsetAccount?.Id,
+                CostElement1Id = costElement1?.Id,
+                CostPercentage = costPercentage
+            });
+        });
+    }
+
+    /// <summary>The <c>OrgUnitWageAccGroup</c> mapping the Custom 042 org-unit branch joins through.</summary>
+    public void MapOrganizationUnitToWageAccGroup(
+        OrganizationUnit organizationUnit,
+        WageAccGroup group,
+        DateTime? startDate = null,
+        DateTime? endDate = null)
+    {
+        _usingDbContext(context =>
+        {
+            context.Set<OrgUnitWageAccGroup>().Add(new OrgUnitWageAccGroup
+            {
+                TenantId = _tenantId,
+                OrganizationUnitId = organizationUnit.Id,
+                WageAccGroupId = group.Id,
+                StartDate = startDate ?? new DateTime(2000, 1, 1),
+                EndDate = endDate ?? new DateTime(2099, 12, 31)
+            });
+        });
+    }
+
+    /// <summary>One <c>SysTenantConfig</c> key/value row, open-ended like the legacy seed rows.</summary>
+    public void CreateTenantConfig(string key, string value)
+    {
+        _usingDbContext(context =>
+        {
+            context.Set<SysTenantConfig>().Add(new SysTenantConfig
+            {
+                TenantId = _tenantId,
+                Key = key,
+                KeyValue = value,
+                StartDate = new DateTime(1800, 1, 1),
+                EndDate = new DateTime(9999, 12, 31)
             });
         });
     }

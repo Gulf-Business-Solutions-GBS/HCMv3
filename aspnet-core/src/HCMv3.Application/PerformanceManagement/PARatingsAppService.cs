@@ -15,18 +15,22 @@ using Microsoft.EntityFrameworkCore;
 namespace HCMv3.PerformanceManagement;
 
 /// <summary>
-/// Application service for <see cref="PARating"/>. The legacy range-overlap validation
-/// (only enforced when the unported AppraisalSettings.<c>EnableMarksInPAReview</c> flag was on) is not
-/// reproduced -- see <see cref="PARating"/> remarks / task directive on dropped AppraisalSettings coupling.
+/// Application service for <see cref="PARating"/>. The legacy range-overlap validation runs, as legacy's
+/// did, only when <c>ManageAppraisalSettings.EnableMarksInPAReview</c> is on: that is the mode in which a
+/// score is mapped onto a rating by its From/To range, so two ranges must not overlap.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PerformanceManagement_PARatings)]
 public class PARatingsAppService : HCMv3AppServiceBase, IPARatingsAppService
 {
     private readonly IRepository<PARating> _repository;
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
 
-    public PARatingsAppService(IRepository<PARating> repository)
+    public PARatingsAppService(
+        IRepository<PARating> repository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -147,6 +151,19 @@ public class PARatingsAppService : HCMv3AppServiceBase, IPARatingsAppService
         if (duplicateName)
         {
             throw new UserFriendlyException(L("NameAlreadyInUse"));
+        }
+
+        // Legacy PARating.PerformValidation: with marks scoring on, rating ranges may not intersect.
+        var appraisalSettings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
+        if (appraisalSettings != null && appraisalSettings.EnableMarksInPAReview)
+        {
+            var overlaps = await _repository.GetAll()
+                .AnyAsync(e => e.Id != entity.Id
+                               && !(e.FromRange > entity.ToRange || e.ToRange < entity.FromRange));
+            if (overlaps)
+            {
+                throw new UserFriendlyException(L("PARatingRangeOverlaps"));
+            }
         }
     }
 

@@ -42,7 +42,7 @@ namespace HCMv3.Reports.Payroll
     /// Call <see cref="HcmReportBase.ApplyTenant"/> before <c>CreateDocument()</c> or the report
     /// returns nothing.
     /// </summary>
-    public partial class rptPayslipAr : HcmReportBase
+    public partial class rptPayslipAr : HcmReportBase, IPayslipSignatureReport
     {
         /// <summary>Report name used by the Web Report Designer / Document Viewer storage.</summary>
         public const string ReportName = "PayslipAr";
@@ -86,6 +86,15 @@ namespace HCMv3.Reports.Payroll
             PrmPeriodMonth.Value = month;
             PrmPeriodYear.Value = year;
             PrmempStatus.Value = employeeStatus;
+        }
+
+        /// <summary>
+        /// Legacy <c>PanelSignature.Visible = GetPayrollSettings(...).PayslipSignature</c>, applied by the
+        /// caller that built the report (see <see cref="IPayslipSignatureReport"/>).
+        /// </summary>
+        public void ApplyPayslipSignature(bool visible)
+        {
+            PanelSignature.Visible = visible;
         }
 
         /// <summary>

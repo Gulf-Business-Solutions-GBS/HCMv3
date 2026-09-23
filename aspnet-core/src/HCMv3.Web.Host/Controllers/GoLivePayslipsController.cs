@@ -10,6 +10,7 @@ using HCMv3.GoLiveSetup.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.Reports.Dto;
 using HCMv3.Reports.Payroll;
+using HCMv3.SystemSettings.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -36,15 +37,17 @@ public class GoLivePayslipsController : HCMv3ControllerBase
     private const int AnyEmployeeStatus = -1;
 
     private readonly IAppConfigurationAccessor _configurationAccessor;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
-    public GoLivePayslipsController(IAppConfigurationAccessor configurationAccessor)
+    public GoLivePayslipsController(IAppConfigurationAccessor configurationAccessor, ISysSettingsAccessor sysSettingsAccessor)
     {
         _configurationAccessor = configurationAccessor;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
     [AbpMvcAuthorize(AppPermissions.Pages_GoLiveSetup, AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
-    public Task<ReportPdfOutput> GetPayslipsPdf([FromBody] GoLivePayslipsInput input)
+    public async Task<ReportPdfOutput> GetPayslipsPdf([FromBody] GoLivePayslipsInput input)
     {
         if (input?.PayDate == null || string.IsNullOrWhiteSpace(input.PayrollAreaName))
         {
@@ -69,12 +72,19 @@ public class GoLivePayslipsController : HCMv3ControllerBase
         report.ApplyTenant(AbpSession.TenantId);
         report.ApplyLoggedUserName(AbpSession.UserId?.ToString() ?? string.Empty);
 
+        // Legacy rptPayslipEn constructor: the signature block follows ManagePayrollSettings.PayslipSignature,
+        // and the amount format follows ManageReportSettings.DecimalInReports.
+        var payrollSettings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+        report.ApplyPayslipSignature(payrollSettings?.PayslipSignature ?? true);
+        var reportSettings = await _sysSettingsAccessor.GetReportSettingsAsync();
+        report.ApplyDecimalInReports(reportSettings?.DecimalInReports ?? 0);
+
         report.CreateDocument();
 
         using var stream = new MemoryStream();
         report.ExportToPdf(stream);
 
         var fileName = "Payslips_" + monthEnd.ToString("MMyyyy") + ".pdf";
-        return Task.FromResult(new ReportPdfOutput(fileName, Convert.ToBase64String(stream.ToArray())));
+        return new ReportPdfOutput(fileName, Convert.ToBase64String(stream.ToArray()));
     }
 }

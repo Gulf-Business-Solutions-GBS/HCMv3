@@ -7,7 +7,12 @@ using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Runtime.Session;
+using Abp.Threading;
 using DevExpress.XtraReports.UI;
+using Abp.Timing;
+using HCMv3.Authorization.Users;
+using HCMv3.SystemSecurity;
+using HCMv3.SystemSettings.Services;
 using DevExpress.XtraReports.Web.Extensions;
 using HCMv3.ReportManagement;
 using HCMv3.Reports;
@@ -174,6 +179,7 @@ public class HcmReportStorageWebExtension : ReportStorageWebExtension
         // out-of-process callers (tests, jobs) that have no IConnectionProviderService.
         hcmReport.ApplyTenant(ResolveTenantId());
         hcmReport.ApplyLoggedUserName(_abpSession.UserId.HasValue ? _abpSession.UserId.Value.ToString() : string.Empty);
+        ApplyTenantSettings(hcmReport);
 
         // Anything else in the URL query string is a plain report parameter. TenantId deliberately
         // is NOT settable this way -- it comes from the session only.
@@ -202,6 +208,82 @@ public class HcmReportStorageWebExtension : ReportStorageWebExtension
                     pair.Key, pair.Value, parameter.Type);
             }
         }
+    }
+
+    /// <summary>
+    /// The two tenant settings legacy read inside the report itself: <c>ManageReportSettings.DecimalInReports</c>
+    /// (<c>MyXtraReport.SetBeforePrint</c>) and, for payslips, <c>ManagePayrollSettings.PayslipSignature</c>.
+    /// A settings read that fails leaves the layout as designed rather than failing the whole report.
+    /// </summary>
+    private void ApplyTenantSettings(HcmReportBase report)
+    {
+        try
+        {
+            using var uowManager = _iocResolver.ResolveAsDisposable<IUnitOfWorkManager>();
+            using var settingsAccessor = _iocResolver.ResolveAsDisposable<ISysSettingsAccessor>();
+            using var uow = uowManager.Object.Begin(TransactionScopeOption.Suppress);
+
+            var reportSettings = AsyncHelper.RunSync(() => settingsAccessor.Object.GetReportSettingsAsync());
+            if (reportSettings != null)
+            {
+                report.ApplyDecimalInReports(reportSettings.DecimalInReports);
+            }
+
+            if (report is IPayslipSignatureReport payslip)
+            {
+                var payrollSettings = AsyncHelper.RunSync(() => settingsAccessor.Object.GetPayrollSettingsAsync());
+                if (payrollSettings != null)
+                {
+                    payslip.ApplyPayslipSignature(payrollSettings.PayslipSignature);
+                }
+            }
+
+            // Legacy MyXtraReport.SetBeforePrint "ExecutionLog": with ManageSecuritySettings.EnableAuditLogInPrintReport
+            // on, every print report opened writes an execution-log row (the master report only, never a subreport).
+            var securitySettings = AsyncHelper.RunSync(() => settingsAccessor.Object.GetSecuritySettingsAsync());
+            if (securitySettings != null && securitySettings.EnableAuditLogInPrintReport && report.MasterReport == null)
+            {
+                WritePrintExecutionLog(report);
+            }
+
+            uow.Complete();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Tenant report settings could not be applied to {Report}; using the designed layout.",
+                report.GetType().Name);
+        }
+    }
+
+    private void WritePrintExecutionLog(HcmReportBase report)
+    {
+        using var executionLogs = _iocResolver.ResolveAsDisposable<IRepository<ExecutionLog>>();
+        using var users = _iocResolver.ResolveAsDisposable<IRepository<User, long>>();
+
+        var userName = _abpSession.UserId.HasValue
+            ? users.Object.GetAll().Where(u => u.Id == _abpSession.UserId.Value).Select(u => u.UserName).FirstOrDefault()
+            : null;
+
+        var parameters = string.Join(", ", report.Parameters
+            .Cast<DevExpress.XtraReports.Parameters.Parameter>()
+            .Where(p => !string.Equals(p.Name, HcmReportBase.TenantParameterName, StringComparison.OrdinalIgnoreCase))
+            .Select(p => p.Name + " : " + p.Value));
+
+        executionLogs.Object.Insert(new ExecutionLog
+        {
+            TenantId = _abpSession.TenantId ?? 0,
+            UserName = userName,
+            ActionDateTime = Clock.Now,
+            Action = ExecutionLogAction.VIEW,
+            Module = ExecutionLogModule.PrintReport,
+            ScreenName = report.GetType().FullName,
+            ScreenCaption = report.GetType().Name,
+            Parameters = parameters,
+            ExecutionStatus = ExecutionLogStatus.SUCCESS,
+            TotalRecords = 0,
+            Successfull = 0,
+            Failed = 0
+        });
     }
 
     private bool IsInTenantCatalog(string reportName)

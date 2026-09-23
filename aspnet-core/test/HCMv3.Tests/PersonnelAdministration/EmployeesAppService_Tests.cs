@@ -56,6 +56,89 @@ public class EmployeesAppService_Tests : AppTestBase
         };
     }
 
+    private void SetDisableAutoEmpCode(bool disabled)
+    {
+        UsingDbContext(context =>
+        {
+            var tenantId = AbpSession.TenantId ?? 1;
+            var settings = context.Set<HCMv3.SystemSettings.ManageGeneralSettings>().FirstOrDefault(s => s.TenantId == tenantId)
+                           ?? context.Set<HCMv3.SystemSettings.ManageGeneralSettings>()
+                               .Add(new HCMv3.SystemSettings.ManageGeneralSettings { TenantId = tenantId }).Entity;
+            settings.DisableAutoEmpcode = disabled;
+        });
+    }
+
+    /// <summary>Legacy EmployeeProfileController: with DisableAutoEmpcode on the code is typed in, so it must be given.</summary>
+    [Fact]
+    public async Task With_Auto_Code_Disabled_A_Blank_Code_Is_Refused_And_A_Typed_Code_Is_Kept()
+    {
+        var nationality = CreateTestNationality();
+        SetDisableAutoEmpCode(true);
+
+        var exception = await Assert.ThrowsAsync<Abp.UI.UserFriendlyException>(() =>
+            _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, code: null)));
+        exception.Message.ShouldContain("Employee Code");
+
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, code: "MAN-7001"));
+        UsingDbContext(context => context.Set<Employee>().Any(e => e.Code == "MAN-7001")).ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task With_Auto_Code_Enabled_A_Blank_Code_Is_Generated()
+    {
+        var nationality = CreateTestNationality();
+        SetDisableAutoEmpCode(false);
+
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, code: null));
+
+        var generated = UsingDbContext(context => context.Set<Employee>()
+            .OrderByDescending(e => e.Id).Select(e => e.Code).First());
+        generated.ShouldNotBeNullOrWhiteSpace();
+        int.TryParse(generated, out _).ShouldBeTrue();
+    }
+
+    /// <summary>
+    /// Legacy Employee.AddAutoWageAccount: with AutoWageAssignOnHire on, the chosen employee's open-ended wage
+    /// accounts are copied to the new hire from the first of the joining month; closed ones are not.
+    /// </summary>
+    [Fact]
+    public async Task A_New_Hire_Should_Get_The_Chosen_Employees_Open_Ended_Wage_Accounts_When_The_Setting_Is_On()
+    {
+        var nationality = CreateTestNationality();
+        var data = new HCMv3.Tests.GridReports.PayrollJVReportTestDataBuilder(UsingDbContext, AbpSession.TenantId ?? 1);
+        var source = data.CreateEmployee("AWH-SRC");
+        var basic = data.CreateWageType("1000", HCMv3.PayrollManagement.BillingType.Earning);
+        var allowance = data.CreateWageType("1001", HCMv3.PayrollManagement.BillingType.Earning);
+        var account = data.CreateAccount("51000", "Salaries");
+        data.CreateWageAccount(source, basic, account, endDate: new DateTime(9999, 12, 31));
+        data.CreateWageAccount(source, allowance, account, endDate: new DateTime(2023, 12, 31));
+
+        UsingDbContext(context =>
+        {
+            var tenantId = AbpSession.TenantId ?? 1;
+            var settings = context.Set<HCMv3.SystemSettings.ManagePersonnelSettings>().FirstOrDefault(s => s.TenantId == tenantId)
+                           ?? context.Set<HCMv3.SystemSettings.ManagePersonnelSettings>()
+                               .Add(new HCMv3.SystemSettings.ManagePersonnelSettings { TenantId = tenantId }).Entity;
+            settings.AutoWageAssignOnHire = true;
+        });
+
+        var dto = ValidCreateDto(nationality.Id, "AWH-NEW");
+        dto.JoiningDate = new DateTime(2024, 3, 18);
+        dto.CopyWageAccountsFromEmployeeId = source.Id;
+        await _employeesAppService.CreateOrEdit(dto);
+
+        var copied = UsingDbContext(context =>
+        {
+            var newId = context.Set<Employee>().Single(e => e.Code == "AWH-NEW").Id;
+            return context.Set<HCMv3.PayrollManagement.EmployeeWageAccount>().Where(w => w.EmployeeId == newId).ToList();
+        });
+
+        copied.Count.ShouldBe(1);
+        copied[0].WageTypeId.ShouldBe(basic.Id);
+        copied[0].StartDate.ShouldBe(new DateTime(2024, 3, 1));
+        copied[0].EndDate.ShouldBe(new DateTime(9999, 12, 31));
+    }
+
     // ---- GetEmployeeProfile ---------------------------------------------------------------------
 
     [Fact]

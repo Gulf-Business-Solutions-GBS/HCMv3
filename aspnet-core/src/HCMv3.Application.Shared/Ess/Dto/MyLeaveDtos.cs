@@ -146,6 +146,33 @@ public class ApplyForLeaveInput
     public List<string> AttachmentFileTokens { get; set; } = new();
 }
 
+/// <summary>
+/// The tenant settings that shape the leave form, for the ESS and HR screens alike. Legacy read these one by
+/// one from <c>ManageTimeSettings</c>, <c>ManagePayrollSettings</c> and <c>ManageWorkflowSettings</c> while
+/// building the leave request page; the screen shows or hides fields and options from them, and the server
+/// refuses what they switch off.
+/// </summary>
+public class LeaveFormSettingsDto
+{
+    /// <summary>Legacy <c>ManageTimeSettings.EnableAutoHalfDayLeave</c>: the half-day choice is offered.</summary>
+    public bool EnableAutoHalfDayLeave { get; set; }
+
+    /// <summary>Legacy <c>ManageTimeSettings.EnablePayFullWithPayroll</c>: "Pay Full With Payroll" is offered.</summary>
+    public bool EnablePayFullWithPayroll { get; set; }
+
+    /// <summary>Legacy <c>ManagePayrollSettings.DefaultLeavePaymentType</c>: the payment type the form starts on.</summary>
+    public LeavePaymentType DefaultLeavePaymentType { get; set; }
+
+    /// <summary>Legacy <c>ManageTimeSettings.EnableIsTravelling</c> (key SHOW_HIDE_IsTravelling): the travelling tick box is shown.</summary>
+    public bool EnableIsTravelling { get; set; }
+
+    /// <summary>Legacy <c>ManageTimeSettings.EnableBookingQuotaInLeaveRequest</c>: pending requests reduce the bookable balance.</summary>
+    public bool EnableBookingQuotaInLeaveRequest { get; set; }
+
+    /// <summary>Legacy <c>ManageWorkflowSettings.HideLeavePayDetailsInWorkflow</c>: approvers do not see leave pay amounts.</summary>
+    public bool HideLeavePayDetailsInWorkflow { get; set; }
+}
+
 /// <summary>One stretch of a sick leave paid at the same rate, for the breakdown shown before applying.</summary>
 public class SickLeaveDeductionSegmentDto
 {

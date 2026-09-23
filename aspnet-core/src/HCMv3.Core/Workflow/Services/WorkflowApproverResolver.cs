@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Abp.Domain.Repositories;
+using Abp.Threading;
+using HCMv3.OrganizationManagement;
+using HCMv3.OrganizationManagement.Services;
 using HCMv3.PersonnelAdministration;
+using HCMv3.SystemSettings.Services;
 
 namespace HCMv3.Workflow.Services;
 
@@ -40,9 +44,15 @@ namespace HCMv3.Workflow.Services;
 /// <c>EmployeeOrgAssignment</c> as a dated row. So the enum is mapped onto the fields that actually exist --
 /// Department to the organisation unit, Branch to the work location, CostCenter to the cost centre -- and
 /// Company narrows nothing, because in HCMv3 a company IS a tenant and every query is already tenant-scoped.
-/// The <c>WorkflowRoleOrgId</c> column (an OrganizationUnitType) stays unread: it names a LEVEL in a
-/// hierarchy that HCMv3 models as an ABP OrganizationUnit tree, and guessing at a mapping would be worse than
-/// leaving one obviously absent.
+/// </para>
+///
+/// <para>
+/// ORG UNIT TYPE SCOPE (legacy <c>ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow</c>). When the setting is
+/// on, legacy ignored the <c>WorkflowRoleGroup</c> enum entirely and instead matched the requester and each
+/// role holder on the organisation unit they sit under at the LEVEL the step names in <c>WorkflowRoleOrgId</c>
+/// (an <see cref="OrganizationUnitType"/>): <c>Level0</c> or no level means everyone qualifies. Legacy read the
+/// level off the seven denormalised <c>OrgLevelN</c> columns; here <see cref="IOrgHierarchyService"/> walks the
+/// ABP OrganizationUnit tree to the ancestor classified at that level, which is the same fact.
 /// </para>
 /// </remarks>
 public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApproverResolver
@@ -52,7 +62,10 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
+    private readonly IRepository<OrganizationUnitType> _organizationUnitTypeRepository;
     private readonly IWorkflowDelegationResolver _delegationResolver;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IOrgHierarchyService _orgHierarchyService;
 
     public WorkflowApproverResolver(
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
@@ -60,14 +73,20 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
         IRepository<RequestDetail> requestDetailRepository,
         IRepository<RequestLog> requestLogRepository,
-        IWorkflowDelegationResolver delegationResolver)
+        IRepository<OrganizationUnitType> organizationUnitTypeRepository,
+        IWorkflowDelegationResolver delegationResolver,
+        ISysSettingsAccessor sysSettingsAccessor,
+        IOrgHierarchyService orgHierarchyService)
     {
         _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
         _employeeManagerRepository = employeeManagerRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _requestDetailRepository = requestDetailRepository;
         _requestLogRepository = requestLogRepository;
+        _organizationUnitTypeRepository = organizationUnitTypeRepository;
         _delegationResolver = delegationResolver;
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _orgHierarchyService = orgHierarchyService;
     }
 
     public List<int> ResolveForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
@@ -170,7 +189,8 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         candidates = NarrowToRequesterScope(
             request.EmployeeId,
             candidates,
-            requestDetail.EscalateWorkflowRoleGroup);
+            requestDetail.EscalateWorkflowRoleGroup,
+            requestDetail.EscalateWorkflowRoleOrgId);
 
         // Substituted the same way an ordinary step is. An escalation that ignored cover would hand the
         // stalled request to the one category of person guaranteed not to act on it -- somebody who is away
@@ -199,7 +219,8 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
             var holders = RoleHolders(requestDetail.WorkflowRoleId.Value);
 
-            return NarrowToRequesterScope(request.EmployeeId, holders, requestDetail.WorkflowRoleGroup);
+            return NarrowToRequesterScope(
+                request.EmployeeId, holders, requestDetail.WorkflowRoleGroup, requestDetail.WorkflowRoleOrgId);
         }
 
         var level = ManagerLevelOf(requestDetail.ApproverPerson);
@@ -280,7 +301,9 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
     public List<int> ResolveRoleHolders(int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId)
     {
-        return NarrowToRequesterScope(requesterEmployeeId, RoleHolders(workflowRoleId), roleGroup);
+        // No step here, so no org-unit level to narrow by: with the org-unit-type setting on, legacy let a
+        // null level through unnarrowed, which is what a null id does below.
+        return NarrowToRequesterScope(requesterEmployeeId, RoleHolders(workflowRoleId), roleGroup, null);
     }
 
     private List<int> RoleHolders(int workflowRoleId)
@@ -309,12 +332,21 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     private List<int> NarrowToRequesterScope(
         int? requesterEmployeeId,
         List<int> candidateEmployeeIds,
-        WorkflowRoleGroup roleGroup)
+        WorkflowRoleGroup roleGroup,
+        int? workflowRoleOrgId)
     {
-        if (roleGroup == WorkflowRoleGroup.None
-            || roleGroup == WorkflowRoleGroup.Company
-            || candidateEmployeeIds.Count == 0
-            || !requesterEmployeeId.HasValue)
+        if (candidateEmployeeIds.Count == 0 || !requesterEmployeeId.HasValue)
+        {
+            return candidateEmployeeIds;
+        }
+
+        // Legacy: the org-unit-type setting REPLACES the role-group scope; it does not add to it.
+        if (IsOrgUnitTypeScopingOn())
+        {
+            return NarrowToRequesterOrgLevel(requesterEmployeeId.Value, candidateEmployeeIds, workflowRoleOrgId);
+        }
+
+        if (roleGroup == WorkflowRoleGroup.None || roleGroup == WorkflowRoleGroup.Company)
         {
             return candidateEmployeeIds;
         }
@@ -331,6 +363,49 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
         return narrowed.Count > 0 ? narrowed : candidateEmployeeIds;
     }
+
+    /// <summary>Legacy <c>ManageWorkflowSettings.EnableOrgUnitTypeInWorkflow</c>; off when no settings row exists.</summary>
+    private bool IsOrgUnitTypeScopingOn()
+    {
+        var settings = AsyncHelper.RunSync(() => _sysSettingsAccessor.GetWorkflowSettingsAsync());
+
+        return settings != null && settings.EnableOrgUnitTypeInWorkflow;
+    }
+
+    /// <summary>
+    /// Legacy <c>GetWorkflowRollGroupApprover</c>, org-unit-type branch: keeps the role holders whose
+    /// organisation unit at the step's level is the requester's. No level, or <c>Level0</c>, keeps everyone,
+    /// exactly as legacy did. Two people with NO unit at that level match each other, as legacy's pairwise
+    /// column comparison did; narrowing to nothing falls back to the full list, as every other scope here does.
+    /// </summary>
+    private List<int> NarrowToRequesterOrgLevel(int requesterEmployeeId, List<int> candidateEmployeeIds, int? workflowRoleOrgId)
+    {
+        if (!workflowRoleOrgId.HasValue)
+        {
+            return candidateEmployeeIds;
+        }
+
+        var levelCode = _organizationUnitTypeRepository.GetAll()
+            .Where(t => t.Id == workflowRoleOrgId.Value)
+            .Select(t => t.Code)
+            .FirstOrDefault();
+
+        if (string.IsNullOrEmpty(levelCode) || levelCode == OrganizationUnitType.Level0Code)
+        {
+            return candidateEmployeeIds;
+        }
+
+        var requesterUnit = OrgUnitAtLevel(requesterEmployeeId, levelCode);
+
+        var narrowed = candidateEmployeeIds
+            .Where(id => OrgUnitAtLevel(id, levelCode) == requesterUnit)
+            .ToList();
+
+        return narrowed.Count > 0 ? narrowed : candidateEmployeeIds;
+    }
+
+    private long? OrgUnitAtLevel(int employeeId, string levelCode) =>
+        AsyncHelper.RunSync(() => _orgHierarchyService.GetOrgUnitAtLevelForEmployeeAsync(employeeId, levelCode));
 
     /// <summary>
     /// The employee's current value for whichever organisational dimension the scope names, or null when

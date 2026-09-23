@@ -8,6 +8,7 @@ using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,24 +19,34 @@ namespace HCMv3.Workflow;
 /// Application service for <see cref="RequestDetail"/> (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.Workflow.WorkflowSetup.RequestDetail</c>).
 ///
-/// DELIBERATE SIMPLIFICATION: the legacy entity's elaborate dynamic step-renumbering/shifting logic
-/// (<c>PerformValidation</c>/<c>AddStep</c>/<c>OnDeleted</c>, driven by a <c>DynamicWorkflowSteps</c>
-/// system setting) is not reproduced verbatim; this service enforces the simpler invariant that
-/// <see cref="RequestMaster.WorkflowSteps"/> is always kept in sync with the actual child row count
-/// after Create/Update/Delete, plus the legacy Reminder/Escalate day-ordering check.
+/// STEP NUMBERING (legacy <c>PerformValidation</c>/<c>AddStep</c>/<c>OnDeleted</c>):
+/// <list type="bullet">
+/// <item>A new step always goes to the end of the chain, whatever step number the screen sent
+/// (legacy <c>AddStep(count)</c>).</item>
+/// <item>Changing an existing step's number is governed by <c>ManageWorkflowSettings.DynamicWorkflowSteps</c>:
+/// off, and the number is put back to what it was (legacy <c>this.Step = this.prevStep</c>); on, and the
+/// step moves to the requested position with the steps in between shifting to make room, after a 1..count
+/// range check.</item>
+/// <item>After every create, move or delete the chain is renumbered 1..n and
+/// <see cref="RequestMaster.WorkflowSteps"/> is set to n.</item>
+/// </list>
+/// Plus the legacy Reminder/Escalate day-ordering check.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_Workflow_RequestDetails)]
 public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppService
 {
     private readonly IRepository<RequestDetail> _repository;
     private readonly IRepository<RequestMaster> _requestMasterRepository;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
     public RequestDetailsAppService(
         IRepository<RequestDetail> repository,
-        IRepository<RequestMaster> requestMasterRepository)
+        IRepository<RequestMaster> requestMasterRepository,
+        ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
         _requestMasterRepository = requestMasterRepository;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -92,8 +103,10 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
 
         ValidateReminderVsEscalate(entity);
 
-        await _repository.InsertAsync(entity);
+        // Legacy AddStep(count): a new step is appended, whatever number the screen sent.
+        entity.Step = await _repository.GetAll().CountAsync(d => d.RequestMasterId == entity.RequestMasterId) + 1;
 
+        await _repository.InsertAsync(entity);
 
         await RecalculateWorkflowStepsAsync(entity.RequestMasterId);
     }
@@ -102,13 +115,57 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
     protected virtual async Task UpdateAsync(CreateOrEditRequestDetailDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previousStep = entity.Step;
         entity = MapToEntity(input, entity);
 
         ValidateReminderVsEscalate(entity);
 
+        if (entity.Step != previousStep)
+        {
+            var settings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
+            if (settings == null || !settings.DynamicWorkflowSteps)
+            {
+                // Legacy: this.Step = this.prevStep -- the number is not editable.
+                entity.Step = previousStep;
+            }
+            else
+            {
+                await MoveStepAsync(entity, previousStep);
+            }
+        }
+
         await _repository.UpdateAsync(entity);
 
         await RecalculateWorkflowStepsAsync(entity.RequestMasterId);
+    }
+
+    /// <summary>
+    /// Legacy <c>PerformValidation</c>, <c>DynamicWorkflowSteps == true</c> branch: the step takes the
+    /// requested position and every step between the old and the new position shifts one place to make room.
+    /// </summary>
+    private async Task MoveStepAsync(RequestDetail entity, int previousStep)
+    {
+        var count = await _repository.GetAll().CountAsync(d => d.RequestMasterId == entity.RequestMasterId);
+        if (entity.Step < 1 || entity.Step > count)
+        {
+            throw new UserFriendlyException(L("RequestDetailStepOutOfRange", count));
+        }
+
+        var siblings = await _repository.GetAll()
+            .Where(d => d.RequestMasterId == entity.RequestMasterId && d.Id != entity.Id)
+            .ToListAsync();
+
+        foreach (var sibling in siblings)
+        {
+            if (previousStep > entity.Step && sibling.Step >= entity.Step && sibling.Step < previousStep)
+            {
+                sibling.Step += 1;
+            }
+            else if (previousStep < entity.Step && sibling.Step > previousStep && sibling.Step <= entity.Step)
+            {
+                sibling.Step -= 1;
+            }
+        }
     }
 
     private void ValidateReminderVsEscalate(RequestDetail entity)
@@ -130,8 +187,23 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         // fully approved the moment the FIRST approver acted, and the second approver would never be asked.
         await CurrentUnitOfWork.SaveChangesAsync();
 
+        // Legacy AddStep / OnDeleted: the chain is always numbered 1..n with no gaps.
+        var details = await _repository.GetAll()
+            .Where(d => d.RequestMasterId == requestMasterId)
+            .OrderBy(d => d.Step)
+            .ThenBy(d => d.Id)
+            .ToListAsync();
+
+        for (var i = 0; i < details.Count; i++)
+        {
+            if (details[i].Step != i + 1)
+            {
+                details[i].Step = i + 1;
+            }
+        }
+
         var requestMaster = await _requestMasterRepository.GetAsync(requestMasterId);
-        requestMaster.WorkflowSteps = await _repository.GetAll().CountAsync(d => d.RequestMasterId == requestMasterId);
+        requestMaster.WorkflowSteps = details.Count;
         await _requestMasterRepository.UpdateAsync(requestMaster);
     }
 

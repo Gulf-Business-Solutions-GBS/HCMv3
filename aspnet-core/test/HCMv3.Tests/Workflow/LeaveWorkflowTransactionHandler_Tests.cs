@@ -35,6 +35,17 @@ public class LeaveWorkflowTransactionHandler_Tests : AppTestBase
         LoginAsDefaultTenantAdmin();
         _handler = Resolve<LeaveWorkflowTransactionHandler>();
         _unitOfWorkManager = Resolve<IUnitOfWorkManager>();
+
+        // These tests describe the booking-quota mode (pending leave blocks only overlapping dates), which
+        // legacy switched on with EnableBookingQuotaInLeaveRequest; see LeaveSettingsToggles_Tests for the
+        // other mode.
+        UsingDbContext(context =>
+        {
+            var settings = context.Set<HCMv3.SystemSettings.ManageTimeSettings>().FirstOrDefault()
+                           ?? context.Set<HCMv3.SystemSettings.ManageTimeSettings>()
+                               .Add(new HCMv3.SystemSettings.ManageTimeSettings { TenantId = AbpSession.TenantId ?? 1 }).Entity;
+            settings.EnableBookingQuotaInLeaveRequest = true;
+        });
     }
 
     private int TenantId => AbpSession.TenantId ?? 1;
@@ -73,6 +84,9 @@ public class LeaveWorkflowTransactionHandler_Tests : AppTestBase
             }).Entity;
         });
 
+        // Leave days are counted against the employee's working week (legacy ActualLeaveDays).
+        UsingDbContext(context => EssLeaveTestDuty.AssignAllWorkingWeek(context, TenantId, employee.Id));
+
         return employee.Id;
     }
 
@@ -86,7 +100,13 @@ public class LeaveWorkflowTransactionHandler_Tests : AppTestBase
                 TenantId = TenantId,
                 Code = Guid.NewGuid().ToString("N").Substring(0, 8),
                 NameEn = nameEn,
-                NameAr = nameAr
+                NameAr = nameAr,
+
+                // As the seeded leave types are: a bare AbsenceType is "once only, no backdating", and these
+                // tests use fixed 2026 dates that are now in the past.
+                CanApplyAgain = true,
+                AllowDuringProbation = true,
+                AllowBackDatedDays = 3650
             }).Entity;
         });
 

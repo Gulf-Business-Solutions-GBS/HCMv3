@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
@@ -20,21 +21,27 @@ public class AttachmentAppService : HCMv3AppServiceBase, IAttachmentAppService
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IIocResolver _iocResolver;
 
+    private readonly HCMv3.SystemSecurity.Services.IStorageService _storageService;
+
     public AttachmentAppService(
         IAttachmentManager attachmentManager,
         ITempFileCacheManager tempFileCacheManager,
         ISysSettingsAccessor sysSettingsAccessor,
-        IIocResolver iocResolver)
+        IIocResolver iocResolver,
+        HCMv3.SystemSecurity.Services.IStorageService storageService)
     {
         _attachmentManager = attachmentManager;
         _tempFileCacheManager = tempFileCacheManager;
         _sysSettingsAccessor = sysSettingsAccessor;
         _iocResolver = iocResolver;
+        _storageService = storageService;
     }
 
     public async Task<AttachmentSettingsDto> GetAttachmentSettings()
     {
         var settings = await _sysSettingsAccessor.GetDocumentSettingsAsync();
+        var usedBytes = await _storageService.GetUsedStorageAsync();
+        var usedMB = (int)Math.Ceiling(usedBytes / (1024d * 1024d));
         var configured = string.IsNullOrWhiteSpace(settings?.AllowedFileExtensions)
             ? AppAttachmentConsts.DefaultAllowedExtensions
             : settings.AllowedFileExtensions;
@@ -50,7 +57,12 @@ public class AttachmentAppService : HCMv3AppServiceBase, IAttachmentAppService
             MaxFileSizeMB = settings?.MaxFileSizePerAttachmentMB > 0
                 ? settings.MaxFileSizePerAttachmentMB
                 : AppAttachmentConsts.DefaultMaxFileSizeMB,
-            MaxAttachmentsPerRecord = settings?.MaxAttachmentsPerTransaction ?? 0
+            MaxAttachmentsPerRecord = settings?.MaxAttachmentsPerTransaction ?? 0,
+            MaxStorageMB = settings?.MaxStorageSizeMB ?? 0,
+            StorageWarningThresholdMB = settings?.StorageWarningThresholdMB ?? 0,
+            UsedStorageMB = usedMB,
+            // Legacy StorageWarningController: warn once the tenant's used storage reaches the threshold.
+            StorageWarning = settings?.StorageWarningThresholdMB > 0 && usedMB >= settings.StorageWarningThresholdMB
         };
     }
 

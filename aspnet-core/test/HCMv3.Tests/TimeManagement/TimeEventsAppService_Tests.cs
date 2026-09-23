@@ -15,10 +15,65 @@ namespace HCMv3.Tests.TimeManagement;
 public class TimeEventsAppService_Tests : TimeManagementAppServiceTestBase
 {
     private readonly IBinaryObjectManager _binaryObjects = Substitute.For<IBinaryObjectManager>();
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor =
+        Substitute.For<HCMv3.SystemSettings.Services.ISysSettingsAccessor>();
 
-    private TimeEventsAppService CreateAppService()
+    private TimeEventsAppService CreateAppService(bool allowDuplicateAcrossSources = false)
     {
-        return CreateService(() => new TimeEventsAppService(FakeRepository.For<TimeEvent>(Context), _binaryObjects));
+        _sysSettingsAccessor.GetTimeSettingsAsync().Returns(Task.FromResult(new HCMv3.SystemSettings.ManageTimeSettings
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            AllowDuplicateInTimeEvent = allowDuplicateAcrossSources
+        }));
+
+        return CreateService(() => new TimeEventsAppService(
+            FakeRepository.For<TimeEvent>(Context), _binaryObjects, _sysSettingsAccessor));
+    }
+
+    /// <summary>
+    /// Legacy #4164: with <c>ManageTimeSettings.AllowDuplicateInTimeEvent</c> on, the same punch from a
+    /// DIFFERENT source is not a duplicate; from the same source it still is.
+    /// </summary>
+    [Fact]
+    public async Task With_AllowDuplicateInTimeEvent_On_Should_Accept_The_Same_Punch_From_Another_Source_Only()
+    {
+        var employeeId = CreateEmployee("Dup");
+        var transTypeId = CreateTransType("DUP");
+        var service = CreateAppService(allowDuplicateAcrossSources: true);
+
+        var transDate = new DateTime(2026, 2, 1);
+        var transTime = new DateTime(2026, 2, 1, 8, 0, 0);
+
+        await service.CreateOrEdit(new CreateOrEditTimeEventDto
+        {
+            EmployeeId = employeeId,
+            TransTypeId = transTypeId,
+            TransDate = transDate,
+            TransTime = transTime,
+            TransSource = TransSource.Manual
+        });
+
+        // Same punch, other source: allowed.
+        await service.CreateOrEdit(new CreateOrEditTimeEventDto
+        {
+            EmployeeId = employeeId,
+            TransTypeId = transTypeId,
+            TransDate = transDate,
+            TransTime = transTime,
+            TransSource = TransSource.Machine,
+            RecordSource = 777
+        });
+
+        // Same punch, same source: still a duplicate.
+        await Should.ThrowAsync<UserFriendlyException>(async () =>
+            await service.CreateOrEdit(new CreateOrEditTimeEventDto
+            {
+                EmployeeId = employeeId,
+                TransTypeId = transTypeId,
+                TransDate = transDate,
+                TransTime = transTime,
+                TransSource = TransSource.Manual
+            }));
     }
 
     private int CreateNationality()

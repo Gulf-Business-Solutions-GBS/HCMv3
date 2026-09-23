@@ -44,12 +44,15 @@ public abstract class EssLeaveWorkflowTestBase : AppTestBase
             var settings = context.Set<ManageTimeSettings>().FirstOrDefault();
             if (settings == null)
             {
-                context.Set<ManageTimeSettings>().Add(new ManageTimeSettings { TenantId = TenantId, AllowFutureDatedReturnFromLeave = allow });
+                settings = context.Set<ManageTimeSettings>().Add(new ManageTimeSettings { TenantId = TenantId }).Entity;
             }
-            else
-            {
-                settings.AllowFutureDatedReturnFromLeave = allow;
-            }
+
+            settings.AllowFutureDatedReturnFromLeave = allow;
+
+            // These tests describe the booking-quota mode (pending leave reserves the bookable balance and
+            // blocks only overlapping dates), which legacy switched on with EnableBookingQuotaInLeaveRequest.
+            // The other mode has its own tests in LeaveSettingsToggles_Tests.
+            settings.EnableBookingQuotaInLeaveRequest = true;
         });
     }
 

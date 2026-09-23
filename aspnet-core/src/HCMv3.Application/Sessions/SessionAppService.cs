@@ -11,6 +11,7 @@ using HCMv3.Authentication.TwoFactor;
 using HCMv3.Editions;
 using HCMv3.MultiTenancy.Payments;
 using HCMv3.Sessions.Dto;
+using HCMv3.SystemSettings.Services;
 using HCMv3.UiCustomization;
 using HCMv3.Authorization.Delegation;
 using HCMv3.Authorization.Users;
@@ -35,6 +36,7 @@ public class SessionAppService : HCMv3AppServiceBase, ISessionAppService
     private readonly ISettingManager _settingManager;
     private readonly ILocalizationContext _localizationContext;
     private readonly IRepository<UserLogin, long> _userLoginRepository;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
     public SessionAppService(
         IUiThemeCustomizerFactory uiThemeCustomizerFactory,
@@ -44,8 +46,10 @@ public class SessionAppService : HCMv3AppServiceBase, ISessionAppService
         EditionManager editionManager,
         ISettingManager settingManager,
         ILocalizationContext localizationContext,
-        IRepository<UserLogin, long> userLoginRepository)
+        IRepository<UserLogin, long> userLoginRepository,
+        ISysSettingsAccessor sysSettingsAccessor)
     {
+        _sysSettingsAccessor = sysSettingsAccessor;
         _uiThemeCustomizerFactory = uiThemeCustomizerFactory;
         _subscriptionPaymentRepository = subscriptionPaymentRepository;
         _userDelegationConfiguration = userDelegationConfiguration;
@@ -141,6 +145,10 @@ public class SessionAppService : HCMv3AppServiceBase, ISessionAppService
 
         var tenantLoginInfo = ObjectMapper
             .Map<TenantLoginInfoDto>(tenant);
+
+        // Legacy WebApplication.SetupStartupDashboard read ManageGeneralSettings.StartupDashboard at login.
+        var generalSettings = await _sysSettingsAccessor.GetGeneralSettingsAsync();
+        tenantLoginInfo.StartupDashboard = generalSettings?.StartupDashboard?.Trim();
 
         if (!tenant.EditionId.HasValue)
         {

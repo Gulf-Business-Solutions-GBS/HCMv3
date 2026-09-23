@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Threading;
 using HCMv3.PayrollManagement;
+using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
 
 namespace HCMv3.PersonnelAdministration.Services;
@@ -22,17 +24,20 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
     private readonly IRepository<EmployeeAbsence> _absenceRepository;
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
     public LeaveBalanceService(
         IRepository<EmployeeAbsenceQuota> quotaRepository,
         IRepository<EmployeeAbsence> absenceRepository,
         IRepository<AbsenceType> absenceTypeRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        ISysSettingsAccessor sysSettingsAccessor)
     {
         _quotaRepository = quotaRepository;
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     public async Task<LeaveBalance> GetBalanceAsync(int employeeId, int absenceTypeId, DateTime? asOf = null)
@@ -119,6 +124,15 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
     /// </summary>
     private Dictionary<int, double> GetPendingDaysByAbsenceType(int employeeId)
     {
+        // Legacy EmployeeAbsenceController "Get Booked Quota": pending requests reduce the balance only when
+        // ManageTimeSettings.EnableBookingQuotaInLeaveRequest is on. Off, a pending request of the same type
+        // blocks a new one outright instead (see LeaveWorkflowTransactionHandler), so nothing is subtracted.
+        var timeSettings = AsyncHelper.RunSync(() => _sysSettingsAccessor.GetTimeSettingsAsync());
+        if (timeSettings == null || !timeSettings.EnableBookingQuotaInLeaveRequest)
+        {
+            return new Dictionary<int, double>();
+        }
+
         using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
             return _absenceRepository.GetAll()

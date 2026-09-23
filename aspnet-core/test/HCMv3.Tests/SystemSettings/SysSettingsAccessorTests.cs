@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings;
@@ -18,12 +19,107 @@ public class SysSettingsAccessorTests : AppTestBase
         _sysSettingsAccessor = Resolve<ISysSettingsAccessor>();
     }
 
+    /// <summary>
+    /// Legacy <c>SysService.GetGeneralSettings</c> created the row on first read; a tenant never sees a
+    /// missing settings row, and the settings screen then edits the same row the engines read.
+    /// </summary>
     [Fact]
-    public async Task Should_Return_Null_GeneralSettings_When_Not_Configured()
+    public async Task Should_Create_GeneralSettings_On_First_Read_And_Reuse_It_After()
     {
-        var settings = await _sysSettingsAccessor.GetGeneralSettingsAsync();
+        var first = await _sysSettingsAccessor.GetGeneralSettingsAsync();
 
-        settings.ShouldBeNull();
+        first.ShouldNotBeNull();
+        first.Id.ShouldBeGreaterThan(0);
+        first.TenantId.ShouldBe(AbpSession.TenantId ?? 1);
+
+        var second = await _sysSettingsAccessor.GetGeneralSettingsAsync();
+        second.Id.ShouldBe(first.Id);
+
+        UsingDbContext(context =>
+        {
+            context.Set<ManageGeneralSettings>().Count(s => s.TenantId == (AbpSession.TenantId ?? 1)).ShouldBe(1);
+        });
+    }
+
+    [Fact]
+    public async Task Should_Build_The_First_PayrollSettings_From_The_Tenant_Config_Keys()
+    {
+        AddTenantConfig(SysTenantConfigKeys.ReportGroup, "IMILL");
+        AddTenantConfig(SysTenantConfigKeys.DefaultWorkingHours, "8");
+        AddTenantConfig(SysTenantConfigKeys.PayslipSignature, "1");
+        AddTenantConfig(SysTenantConfigKeys.EnableUnpaidDedSlabWise, "1");
+
+        var settings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+
+        settings.ClientId.ShouldBe("004");
+        settings.DefaultWorkingHours.ShouldBe(8);
+        settings.PayslipSignature.ShouldBeTrue();
+        settings.EnableUnpaidDedSlabWise.ShouldBeTrue();
+        settings.RoundNetPay.ShouldBeFalse();
+        // Legacy: on unless the key is explicitly "0".
+        settings.EnableBasicpayMoreThenFixedDays.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task Should_Build_The_First_TimeSettings_From_The_Tenant_Config_Keys()
+    {
+        AddTenantConfig(SysTenantConfigKeys.TimeEvalEarliestDate, "01/04/2021");
+        AddTenantConfig(SysTenantConfigKeys.TeMaxLimitDays, "300");
+        AddTenantConfig(SysTenantConfigKeys.EnableTimeAttendanceIntegration, "1");
+        AddTenantConfig(SysTenantConfigKeys.EnableOvertimeInTimeEngine, "0");
+
+        var settings = await _sysSettingsAccessor.GetTimeSettingsAsync();
+
+        settings.EarliestEvaluationDate.ShouldBe(new DateTime(2021, 4, 1));
+        settings.FutureEvaluationInDays.ShouldBe(300);
+        settings.EnableTimeAttendanceIntegration.ShouldBeTrue();
+        settings.EnableOvertimeInTimeEngine.ShouldBeFalse();
+
+        // The row the accessor built is now what IsDateAfterTimeEvalEarliestDate reads.
+        (await _sysSettingsAccessor.IsDateAfterTimeEvalEarliestDateAsync(new DateTime(2021, 3, 31))).ShouldBeFalse();
+        (await _sysSettingsAccessor.IsDateAfterTimeEvalEarliestDateAsync(new DateTime(2021, 4, 1))).ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task Should_Not_Replace_A_Settings_Row_The_Tenant_Already_Has()
+    {
+        AddTenantConfig(SysTenantConfigKeys.EnableRowLevelSecurity, "1");
+        UsingDbContext(context =>
+        {
+            context.Set<ManageSecuritySettings>().Add(new ManageSecuritySettings
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EnableRowLevelSecurity = false
+            });
+        });
+
+        var settings = await _sysSettingsAccessor.GetSecuritySettingsAsync();
+
+        settings.EnableRowLevelSecurity.ShouldBeFalse();
+    }
+
+    /// <summary>Sets a key's value, replacing the row the test database may already seed for it.</summary>
+    private void AddTenantConfig(string key, string value)
+    {
+        UsingDbContext(context =>
+        {
+            var tenantId = AbpSession.TenantId ?? 1;
+            var existing = context.Set<SysTenantConfig>().FirstOrDefault(r => r.TenantId == tenantId && r.Key == key);
+            if (existing != null)
+            {
+                existing.KeyValue = value;
+                return;
+            }
+
+            context.Set<SysTenantConfig>().Add(new SysTenantConfig
+            {
+                TenantId = tenantId,
+                Key = key,
+                KeyValue = value,
+                StartDate = new DateTime(1800, 1, 1),
+                EndDate = new DateTime(9999, 12, 31)
+            });
+        });
     }
 
     [Fact]

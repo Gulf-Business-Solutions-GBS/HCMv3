@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Uow;
+using Abp.Organizations;
 using Abp.Threading;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.OrganizationManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.SystemSettings;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 using Shouldly;
@@ -194,7 +196,8 @@ public class WorkflowRoutingAndEscalation_Tests : AppTestBase
         bool escalateNextLevel = false,
         int? escalateRoleId = null,
         int reminderDays = 0,
-        bool enableReadLog = false)
+        bool enableReadLog = false,
+        int? roleOrgId = null)
     {
         RequestDetail detail = null;
         UsingDbContext(context =>
@@ -207,6 +210,7 @@ public class WorkflowRoutingAndEscalation_Tests : AppTestBase
                 ApproverPerson = approverPerson,
                 WorkflowRoleId = roleId,
                 WorkflowRoleGroup = roleGroup,
+                WorkflowRoleOrgId = roleOrgId,
                 ApprovalRequire = ApprovalRequire.Single,
                 CanReject = true,
                 CanSendBack = true,
@@ -1093,5 +1097,202 @@ public class WorkflowRoutingAndEscalation_Tests : AppTestBase
 
         (RunEscalation()).ShouldBeEmpty();
         (RunReminders()).Any(d => d.WorkflowRequestId == requestId).ShouldBeFalse();
+    }
+
+    // ---------------------------------------------------------------- org-unit-type scope (legacy EnableOrgUnitTypeInWorkflow)
+
+    private static int _nextOrgUnitCodeNumber = 8000;
+
+    private int CreateOrgUnitType(string code)
+    {
+        OrganizationUnitType type = null;
+        UsingDbContext(context =>
+        {
+            type = context.Set<OrganizationUnitType>().FirstOrDefault(t => t.Code == code)
+                   ?? context.Set<OrganizationUnitType>().Add(new OrganizationUnitType
+                   {
+                       TenantId = TenantId,
+                       Code = code,
+                       NameEn = code,
+                       NameAr = code
+                   }).Entity;
+        });
+
+        return type.Id;
+    }
+
+    /// <summary>An organisation unit classified at the given level, optionally under a parent unit.</summary>
+    private long CreateOrgUnit(string name, int orgUnitTypeId, long? parentId = null)
+    {
+        long unitId = 0;
+        UsingDbContext(context =>
+        {
+            var parentCode = parentId.HasValue
+                ? context.Set<OrganizationUnit>().Single(u => u.Id == parentId.Value).Code
+                : null;
+
+            var unit = context.Set<OrganizationUnit>().Add(new OrganizationUnit(TenantId, name, parentId)
+            {
+                Code = OrganizationUnit.AppendCode(parentCode, OrganizationUnit.CreateCode(++_nextOrgUnitCodeNumber))
+            }).Entity;
+            context.SaveChanges();
+
+            context.Set<OrgUnitProfile>().Add(new OrgUnitProfile
+            {
+                TenantId = TenantId,
+                OrganizationUnitId = unit.Id,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameAr = name,
+                OrganizationUnitTypeId = orgUnitTypeId
+            });
+            context.SaveChanges();
+
+            unitId = unit.Id;
+        });
+
+        return unitId;
+    }
+
+    private void AssignOrgUnit(int employeeId, long organizationUnitId)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
+            {
+                TenantId = TenantId,
+                EmployeeId = employeeId,
+                StartDate = DateTime.Today.AddYears(-1),
+                EndDate = DateTime.Today.AddYears(2),
+                OrganizationUnitId = organizationUnitId
+            });
+        });
+    }
+
+    private void SetOrgUnitTypeScoping(bool on)
+    {
+        UsingDbContext(context =>
+        {
+            var settings = context.Set<ManageWorkflowSettings>().FirstOrDefault(s => s.TenantId == TenantId);
+            if (settings == null)
+            {
+                context.Set<ManageWorkflowSettings>().Add(new ManageWorkflowSettings
+                {
+                    TenantId = TenantId,
+                    EnableOrgUnitTypeInWorkflow = on
+                });
+            }
+            else
+            {
+                settings.EnableOrgUnitTypeInWorkflow = on;
+            }
+        });
+    }
+
+    /// <summary>
+    /// Legacy <c>GetWorkflowRollGroupApprover</c> with <c>EnableOrgUnitTypeInWorkflow</c> on: the step names a
+    /// level (Level2), and only the role holder sitting under the requester's Level2 unit is chosen, even though
+    /// the two role holders are in different Level3 units of their own.
+    /// </summary>
+    [Fact]
+    public void With_Org_Unit_Type_Scoping_On_Should_Keep_Only_Holders_Under_The_Requesters_Unit_At_That_Level()
+    {
+        SetOrgUnitTypeScoping(true);
+        var level2 = CreateOrgUnitType(OrganizationUnitType.Level2Code);
+        var level3 = CreateOrgUnitType(OrganizationUnitType.Level3Code);
+
+        var divisionA = CreateOrgUnit("Division A", level2);
+        var divisionB = CreateOrgUnit("Division B", level2);
+        var sectionA1 = CreateOrgUnit("Section A1", level3, divisionA);
+        var sectionA2 = CreateOrgUnit("Section A2", level3, divisionA);
+        var sectionB1 = CreateOrgUnit("Section B1", level3, divisionB);
+
+        var requesterId = CreateEmployee("OU100");
+        var holderInA = CreateEmployee("OU100A");
+        var holderInB = CreateEmployee("OU100B");
+        AssignOrgUnit(requesterId, sectionA1);
+        AssignOrgUnit(holderInA, sectionA2);
+        AssignOrgUnit(holderInB, sectionB1);
+
+        var roleId = CreateWorkflowRole("Division Head");
+        GiveRole(holderInA, roleId);
+        GiveRole(holderInB, roleId);
+
+        var masterId = CreateMaster();
+        // The role group is deliberately set too: with the org-unit-type setting on, legacy ignored it.
+        var detailId = AddStep(masterId, 1, WorkflowApproverPersonType.Person, roleId,
+            WorkflowRoleGroup.Department, roleOrgId: level2);
+        var requestId = CreateOpenRequest(requesterId);
+
+        using (_unitOfWorkManager.Begin())
+        {
+            var approvers = _resolver.ResolveForStep(RequestRow(requestId), MasterRow(masterId), DetailRow(detailId));
+            approvers.ShouldBe(new[] { holderInA });
+        }
+    }
+
+    [Fact]
+    public void With_Org_Unit_Type_Scoping_On_Level0_Or_No_Level_Should_Keep_Every_Holder()
+    {
+        SetOrgUnitTypeScoping(true);
+        var level0 = CreateOrgUnitType(OrganizationUnitType.Level0Code);
+        var level2 = CreateOrgUnitType(OrganizationUnitType.Level2Code);
+
+        var divisionA = CreateOrgUnit("Division A0", level2);
+        var divisionB = CreateOrgUnit("Division B0", level2);
+
+        var requesterId = CreateEmployee("OU110");
+        var holderInA = CreateEmployee("OU110A");
+        var holderInB = CreateEmployee("OU110B");
+        AssignOrgUnit(requesterId, divisionA);
+        AssignOrgUnit(holderInA, divisionA);
+        AssignOrgUnit(holderInB, divisionB);
+
+        var roleId = CreateWorkflowRole("Any Head");
+        GiveRole(holderInA, roleId);
+        GiveRole(holderInB, roleId);
+
+        var masterId = CreateMaster();
+        var level0Step = AddStep(masterId, 1, WorkflowApproverPersonType.Person, roleId, roleOrgId: level0);
+        var noLevelStep = AddStep(masterId, 2, WorkflowApproverPersonType.Person, roleId);
+        var requestId = CreateOpenRequest(requesterId);
+
+        using (_unitOfWorkManager.Begin())
+        {
+            _resolver.ResolveForStep(RequestRow(requestId), MasterRow(masterId), DetailRow(level0Step))
+                .OrderBy(id => id).ShouldBe(new[] { holderInA, holderInB }.OrderBy(id => id));
+            _resolver.ResolveForStep(RequestRow(requestId), MasterRow(masterId), DetailRow(noLevelStep))
+                .OrderBy(id => id).ShouldBe(new[] { holderInA, holderInB }.OrderBy(id => id));
+        }
+    }
+
+    [Fact]
+    public void With_Org_Unit_Type_Scoping_Off_The_Level_On_The_Step_Should_Be_Ignored()
+    {
+        SetOrgUnitTypeScoping(false);
+        var level2 = CreateOrgUnitType(OrganizationUnitType.Level2Code);
+
+        var divisionA = CreateOrgUnit("Division A-off", level2);
+        var divisionB = CreateOrgUnit("Division B-off", level2);
+
+        var requesterId = CreateEmployee("OU120");
+        var holderInA = CreateEmployee("OU120A");
+        var holderInB = CreateEmployee("OU120B");
+        AssignOrgUnit(requesterId, divisionA);
+        AssignOrgUnit(holderInA, divisionA);
+        AssignOrgUnit(holderInB, divisionB);
+
+        var roleId = CreateWorkflowRole("Head Off");
+        GiveRole(holderInA, roleId);
+        GiveRole(holderInB, roleId);
+
+        var masterId = CreateMaster();
+        var detailId = AddStep(masterId, 1, WorkflowApproverPersonType.Person, roleId, roleOrgId: level2);
+        var requestId = CreateOpenRequest(requesterId);
+
+        using (_unitOfWorkManager.Begin())
+        {
+            _resolver.ResolveForStep(RequestRow(requestId), MasterRow(masterId), DetailRow(detailId))
+                .OrderBy(id => id).ShouldBe(new[] { holderInA, holderInB }.OrderBy(id => id));
+        }
     }
 }

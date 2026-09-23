@@ -19,10 +19,8 @@ namespace HCMv3.TimeManagement;
 ///    no direct translation in ASP.NET Core. Only the raw <see cref="GeoSelfiePath"/> string is ported;
 ///    resolving/serving the actual image is left for a follow-up (needs a redesigned file-storage approach,
 ///    e.g. an <c>IBinaryObjectManager</c>/blob-storage-backed endpoint).
-///  - The <c>AllowDuplicateInTimeEvent</c>-setting-driven branch of the legacy duplicate check (which relaxes
-///    the duplicate check to include TransSource when the setting is on) is NOT ported -- no global-settings
-///    infrastructure exists in this port. Only the "no duplicate (Employee, TransType, TransDate, TransTime)"
-///    check is ported (see <c>TimeEventsAppService</c>).
+///  - The <c>AllowDuplicateInTimeEvent</c>-setting-driven branch of the legacy duplicate check is ported in
+///    <c>TimeEventsAppService</c>: on, the duplicate key includes TransSource; off, it does not.
 ///  - The legacy <c>OnDeleting</c> cascade that deletes derived single-day <c>EmployeeAttendance</c> rows and
 ///    triggers <c>SetRetroDate</c> retro-calculation is NOT ported -- <c>EmployeeAttendance</c> and the
 ///    retro-calc infrastructure do not exist anywhere in this port. This is a deliberate, significant

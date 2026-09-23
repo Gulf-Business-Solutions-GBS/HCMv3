@@ -94,6 +94,23 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     }
 
     [HttpPost]
+    public async Task<LeaveFormSettingsDto> GetLeaveFormSettings()
+    {
+        var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
+        var payrollSettings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+        var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
+
+        return new LeaveFormSettingsDto
+        {
+            EnableAutoHalfDayLeave = timeSettings?.EnableAutoHalfDayLeave ?? false,
+            EnablePayFullWithPayroll = timeSettings?.EnablePayFullWithPayroll ?? false,
+            EnableIsTravelling = timeSettings?.EnableIsTravelling ?? false,
+            EnableBookingQuotaInLeaveRequest = timeSettings?.EnableBookingQuotaInLeaveRequest ?? false,
+            DefaultLeavePaymentType = payrollSettings?.DefaultLeavePaymentType ?? LeavePaymentType.None,
+            HideLeavePayDetailsInWorkflow = workflowSettings?.HideLeavePayDetailsInWorkflow ?? false
+        };
+    }
+
     public async Task<PagedResultDto<MyLeaveDto>> GetMyLeaves(GetMyLeavesInput input)
     {
         input.Normalize();

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -17,18 +18,22 @@ namespace HCMv3.PersonnelAdministration;
 /// Application service for <see cref="EmployeeRecurringPayment"/> (ported from legacy XAF
 /// EmployeeRecurringPayment business object, Wave 4 deferred bucket). Ports the essential active
 /// validation only: required fields, Amount &gt; 0, EndDate &gt;= StartDate, and no overlapping
-/// StartDate/EndDate window for the same Employee+WageType. The legacy auto-EndDate-chaining/
-/// retro-calculation cascade is NOT ported -- see class remarks on
+/// StartDate/EndDate window for the same Employee+WageType, and the legacy auto-EndDate chaining when
+/// ManagePayrollSettings.EnableEffectiveDateInRecPayment is on. The retro-calculation cascade is NOT ported -- see
 /// <see cref="EmployeeRecurringPayment"/>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments)]
 public class EmployeeRecurringPaymentsAppService : HCMv3AppServiceBase, IEmployeeRecurringPaymentsAppService
 {
     private readonly IRepository<EmployeeRecurringPayment> _repository;
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
 
-    public EmployeeRecurringPaymentsAppService(IRepository<EmployeeRecurringPayment> repository)
+    public EmployeeRecurringPaymentsAppService(
+        IRepository<EmployeeRecurringPayment> repository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -121,12 +126,63 @@ public class EmployeeRecurringPaymentsAppService : HCMv3AppServiceBase, IEmploye
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
+        var payrollSettings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+        var chainOpenEnded = payrollSettings != null && payrollSettings.EnableEffectiveDateInRecPayment
+                             && entity.EndDate.Date == InfiniteEndDate;
+
+        if (chainOpenEnded)
+        {
+            await ChainOpenEndedEntryAsync(entity);
+            return;
+        }
+
         var hasOverlap = await _repository.GetAll()
             .AnyAsync(e => e.Id != entity.Id && e.EmployeeId == entity.EmployeeId && e.WageTypeId == entity.WageTypeId
                 && e.StartDate.Date <= entity.EndDate.Date && e.EndDate.Date >= entity.StartDate.Date);
         if (hasOverlap)
         {
             throw new UserFriendlyException(L("DuplicateRecordFound"));
+        }
+    }
+
+    private static readonly DateTime InfiniteEndDate = new(9999, 12, 31);
+
+    /// <summary>
+    /// Legacy <c>EmployeeRecurringPayment.OnSaving</c> "Auto EndDate" (Zoho #2783, RHH): with
+    /// <c>ManagePayrollSettings.EnableEffectiveDateInRecPayment</c> on, a new open-ended entry may overlap
+    /// exactly one existing entry, which must itself be open-ended and start earlier; that entry is then
+    /// closed the day before the new one starts. Anything else is refused with legacy's reasons.
+    /// </summary>
+    private async Task ChainOpenEndedEntryAsync(EmployeeRecurringPayment entity)
+    {
+        var overlapping = await _repository.GetAll()
+            .Where(e => e.Id != entity.Id && e.EmployeeId == entity.EmployeeId && e.WageTypeId == entity.WageTypeId
+                        && e.StartDate.Date <= entity.EndDate.Date && e.EndDate.Date >= entity.StartDate.Date)
+            .ToListAsync();
+
+        if (overlapping.Count > 1)
+        {
+            throw new UserFriendlyException(L("RecurringPaymentMoreThanOneOverlap"));
+        }
+
+        if (overlapping.Count == 1)
+        {
+            var previous = overlapping[0];
+            if (previous.EndDate.Date != InfiniteEndDate)
+            {
+                throw new UserFriendlyException(L("RecurringPaymentLastEntryMustBeOpenEnded",
+                    previous.StartDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture),
+                    previous.EndDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)));
+            }
+
+            if (previous.StartDate.Date >= entity.StartDate.Date)
+            {
+                throw new UserFriendlyException(L("RecurringPaymentLastEntryStartDateMustBeEarlier",
+                    entity.StartDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)));
+            }
+
+            previous.EndDate = entity.StartDate.Date.AddDays(-1);
+            await _repository.UpdateAsync(previous);
         }
     }
 

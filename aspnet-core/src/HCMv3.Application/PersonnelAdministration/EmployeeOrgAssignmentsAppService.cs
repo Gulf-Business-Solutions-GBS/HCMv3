@@ -31,9 +31,26 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
 
     private readonly IRepository<EmployeeOrgAssignment> _repository;
 
-    public EmployeeOrgAssignmentsAppService(IRepository<EmployeeOrgAssignment> repository)
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> _employeeWageAccountRepository;
+    private readonly IRepository<HCMv3.OrganizationManagement.CostElementType> _costElementTypeRepository;
+    private readonly IRepository<HCMv3.OrganizationManagement.CostElement> _costElementRepository;
+    private readonly IRepository<HCMv3.OrganizationManagement.CostCenter> _costCenterRepository;
+
+    public EmployeeOrgAssignmentsAppService(
+        IRepository<EmployeeOrgAssignment> repository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> employeeWageAccountRepository,
+        IRepository<HCMv3.OrganizationManagement.CostElementType> costElementTypeRepository,
+        IRepository<HCMv3.OrganizationManagement.CostElement> costElementRepository,
+        IRepository<HCMv3.OrganizationManagement.CostCenter> costCenterRepository)
     {
         _repository = repository;
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _employeeWageAccountRepository = employeeWageAccountRepository;
+        _costElementTypeRepository = costElementTypeRepository;
+        _costElementRepository = costElementRepository;
+        _costCenterRepository = costCenterRepository;
     }
 
     [HttpPost]
@@ -115,10 +132,97 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         await PrefillFromPreviousAsync(entity);
         await MarkStopRetroEffectIfNothingPayRelevantChangedAsync(entity);
 
+        var previousCostCenterId = await _repository.GetAll()
+            .Where(a => a.EmployeeId == entity.EmployeeId && a.StartDate < entity.StartDate)
+            .OrderByDescending(a => a.StartDate)
+            .Select(a => new { HasPrevious = true, a.CostCenterId })
+            .FirstOrDefaultAsync();
+
         await _repository.InsertAsync(entity);
         await CurrentUnitOfWork.SaveChangesAsync();
 
         await SetEndDatesAsync(entity.EmployeeId);
+
+        if (previousCostCenterId != null)
+        {
+            await AddAutoWageAccountEntriesAsync(entity, previousCostCenterId.CostCenterId);
+        }
+    }
+
+    /// <summary>
+    /// Legacy <c>EmployeeOrgAssignment.AddAutoWageAccount</c>: with <c>ManageFIPostingSettings.EnableAutoWageAccountEntry</c>
+    /// on, a new assignment that moves the employee to another cost centre copies the employee's wage accounts
+    /// current over the assignment's dates (every wage type but Net Pay "9000") into new rows dated like the
+    /// assignment, with the "Location" cost element replaced by the cost element whose code is the new cost
+    /// centre's code. The cost element type named "Location" says, through its own code (CostElement1..7),
+    /// which of the seven cost element slots it occupies.
+    /// </summary>
+    private async Task AddAutoWageAccountEntriesAsync(EmployeeOrgAssignment entity, int? previousCostCenterId)
+    {
+        if (!entity.CostCenterId.HasValue || previousCostCenterId == entity.CostCenterId)
+        {
+            return;
+        }
+
+        var fiSettings = await _sysSettingsAccessor.GetFIPostingSettingsAsync();
+        if (fiSettings == null || !fiSettings.EnableAutoWageAccountEntry)
+        {
+            return;
+        }
+
+        var locationTypeCode = await _costElementTypeRepository.GetAll()
+            .Where(t => t.NameEn == "Location")
+            .Select(t => t.Code)
+            .FirstOrDefaultAsync();
+        if (string.IsNullOrEmpty(locationTypeCode))
+        {
+            return;
+        }
+
+        var costCenterCode = await _costCenterRepository.GetAll()
+            .Where(c => c.Id == entity.CostCenterId.Value)
+            .Select(c => c.Code)
+            .FirstOrDefaultAsync();
+
+        var locationElementId = string.IsNullOrEmpty(costCenterCode)
+            ? null
+            : await _costElementRepository.GetAll()
+                .Where(c => c.Code == costCenterCode)
+                .Select(c => (int?)c.Id)
+                .FirstOrDefaultAsync();
+
+        var currentAccounts = await _employeeWageAccountRepository.GetAll()
+            .Where(w => w.EmployeeId == entity.EmployeeId
+                        && w.StartDate <= entity.StartDate
+                        && w.EndDate >= entity.EndDate
+                        && w.WageType.Code != HCMv3.GridReports.PayrollReport.PayrollJVPostingLineLoader.NetPayWageTypeCode)
+            .OrderBy(w => w.StartDate)
+            .ToListAsync();
+
+        foreach (var old in currentAccounts)
+        {
+            int? Slot(string slotName, int? oldValue) => locationTypeCode == slotName ? locationElementId : oldValue;
+
+            await _employeeWageAccountRepository.InsertAsync(new HCMv3.PayrollManagement.EmployeeWageAccount
+            {
+                TenantId = entity.TenantId,
+                EmployeeId = old.EmployeeId,
+                WageTypeId = old.WageTypeId,
+                AccountInfoId = old.AccountInfoId,
+                OffsetAccountInfoId = old.OffsetAccountInfoId,
+                StartDate = entity.StartDate,
+                EndDate = entity.EndDate,
+                CostElement1Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement1, old.CostElement1Id),
+                CostElement2Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement2, old.CostElement2Id),
+                CostElement3Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement3, old.CostElement3Id),
+                CostElement4Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement4, old.CostElement4Id),
+                CostElement5Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement5, old.CostElement5Id),
+                CostElement6Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement6, old.CostElement6Id),
+                CostElement7Id = Slot(HCMv3.PayrollManagement.CostElementNames.CostElement7, old.CostElement7Id),
+                CostPercentage = old.CostPercentage,
+                MergeOffsetAccount = old.MergeOffsetAccount
+            });
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgAssignments_Edit)]

@@ -1,15 +1,22 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.BackgroundJobs;
+using Abp.Domain.Repositories;
 using Abp.Runtime.Session;
+using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.EngineRuns;
 using HCMv3.EngineRuns.Dto;
+using HCMv3.PayrollManagement;
+using HCMv3.PersonnelAdministration;
+using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.TimeManagement;
 
@@ -25,13 +32,22 @@ public class TimeEngineAppService : HCMv3AppServiceBase, ITimeEngineAppService
 {
     private readonly IBackgroundJobManager _backgroundJobManager;
     private readonly EngineRunProgressReader _progressReader;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<PayrollControlRecord> _payrollControlRecordRepository;
+    private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
 
     public TimeEngineAppService(
         IBackgroundJobManager backgroundJobManager,
-        EngineRunProgressReader progressReader)
+        EngineRunProgressReader progressReader,
+        ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<PayrollControlRecord> payrollControlRecordRepository,
+        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository)
     {
         _backgroundJobManager = backgroundJobManager;
         _progressReader = progressReader;
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _payrollControlRecordRepository = payrollControlRecordRepository;
+        _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
     }
 
     /// <summary>
@@ -59,6 +75,8 @@ public class TimeEngineAppService : HCMv3AppServiceBase, ITimeEngineAppService
             throw new UserFriendlyException(L("TimeEngineStartDateAfterEndDate"));
         }
 
+        await ValidateAgainstTimeSettingsAsync(input);
+
         await _backgroundJobManager.EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(
             new TimeEngineJobArgs
             {
@@ -77,6 +95,84 @@ public class TimeEngineAppService : HCMv3AppServiceBase, ITimeEngineAppService
             });
 
         return new RunTimeEngineOutput { Queued = true };
+    }
+
+    /// <summary>
+    /// Legacy <c>uscTimeEngine.ascx.cs</c> lines 275-335, the two checks the screen made before queueing:
+    /// <list type="bullet">
+    /// <item>The End Date may not be more than <c>ManageTimeSettings.FutureEvaluationInDays</c>
+    /// (legacy key <c>TE_MAX_LIMIT_DAYS</c>) beyond the payroll control record's calendar month end. The
+    /// record is the selected payroll area's, or, when only employee codes were given, the area of the
+    /// first code's current org assignment -- exactly the two lookups legacy made. No record, no check.</item>
+    /// <item>The Start Date may not be before <c>ManageTimeSettings.EarliestEvaluationDate</c> (legacy key
+    /// <c>TIME_EVAL_EARLIEST_DATE</c>) when one is set.</item>
+    /// </list>
+    /// Legacy silently did nothing at all when no earliest date was configured; here the run proceeds, since
+    /// a silent non-run was a defect, not a rule.
+    /// </summary>
+    private async Task ValidateAgainstTimeSettingsAsync(RunTimeEngineInput input)
+    {
+        var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
+        if (timeSettings == null)
+        {
+            return;
+        }
+
+        var controlRecord = await FindControlRecordAsync(input);
+        if (controlRecord != null)
+        {
+            var latestAllowed = controlRecord.CalendarMonthEnd.AddDays(timeSettings.FutureEvaluationInDays);
+            if (input.EndDate.Date > latestAllowed.Date)
+            {
+                throw new UserFriendlyException(L("TimeEngineEndDateBeyondFutureLimit",
+                    latestAllowed.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture), timeSettings.FutureEvaluationInDays));
+            }
+        }
+
+        if (input.StartDate.HasValue
+            && timeSettings.EarliestEvaluationDate != default
+            && input.StartDate.Value.Date < timeSettings.EarliestEvaluationDate.Date)
+        {
+            throw new UserFriendlyException(L("TimeEngineStartDateBeforeEarliestDate",
+                timeSettings.EarliestEvaluationDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)));
+        }
+    }
+
+    private async Task<PayrollControlRecord> FindControlRecordAsync(RunTimeEngineInput input)
+    {
+        if (!string.IsNullOrWhiteSpace(input.PayrollAreaName))
+        {
+            var areaName = input.PayrollAreaName.Trim();
+            return await _payrollControlRecordRepository.GetAll()
+                .Where(r => r.PayrollArea.Name == areaName)
+                .OrderByDescending(r => r.CalendarMonthEnd)
+                .FirstOrDefaultAsync();
+        }
+
+        var firstCode = (input.EmployeeCodes ?? string.Empty)
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(c => c.Trim())
+            .FirstOrDefault(c => c.Length > 0);
+        if (firstCode == null)
+        {
+            return null;
+        }
+
+        var today = Clock.Now.Date;
+        var payrollAreaId = await _employeeOrgAssignmentRepository.GetAll()
+            .Where(o => o.Employee.Code == firstCode && o.StartDate <= today && o.EndDate >= today)
+            .OrderByDescending(o => o.StartDate)
+            .Select(o => o.PayrollAreaId)
+            .FirstOrDefaultAsync();
+        if (!payrollAreaId.HasValue)
+        {
+            return null;
+        }
+
+        return await _payrollControlRecordRepository.GetAll()
+            .Where(r => r.PayrollAreaId == payrollAreaId.Value)
+            .OrderByDescending(r => r.CalendarMonthEnd)
+            .FirstOrDefaultAsync();
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
@@ -104,6 +105,49 @@ public class EmployeeAbsencesAppService_Tests : AppTestBase
         result.TotalCount.ShouldBe(1);
         result.Items[0].CalendarDays.ShouldBe(5);
         result.Items[0].TotalLeaveDays.ShouldBe(5);
+    }
+
+    private void SetAutoHalfDayLeave(bool enabled)
+    {
+        UsingDbContext(context =>
+        {
+            var tenantId = AbpSession.TenantId ?? 1;
+            var settings = context.Set<HCMv3.SystemSettings.ManageTimeSettings>().FirstOrDefault(s => s.TenantId == tenantId)
+                           ?? context.Set<HCMv3.SystemSettings.ManageTimeSettings>()
+                               .Add(new HCMv3.SystemSettings.ManageTimeSettings { TenantId = tenantId }).Entity;
+            settings.EnableAutoHalfDayLeave = enabled;
+        });
+    }
+
+    /// <summary>Legacy EmployeeAbsenceController: the half-day choice exists only with EnableAutoHalfDayLeave on.</summary>
+    [Fact]
+    public async Task Should_Refuse_A_Half_Day_Leave_Unless_Time_Settings_Enable_It()
+    {
+        var employee = CreateTestEmployee("EA700");
+        var absenceType = CreateTestAbsenceType("AT700");
+        UsingDbContext(context =>
+        {
+            context.Set<AbsenceType>().Single(t => t.Id == absenceType.Id).AllowPartialLeave = true;
+        });
+
+        CreateOrEditEmployeeAbsenceDto HalfDay() => new()
+        {
+            EmployeeId = employee.Id,
+            AbsenceTypeId = absenceType.Id,
+            StartDate = new DateTime(2024, 3, 4),
+            EndDate = new DateTime(2024, 3, 4),
+            HalfdayType = HalfdayType.StartOfDuty
+        };
+
+        SetAutoHalfDayLeave(false);
+        var exception = await Assert.ThrowsAsync<UserFriendlyException>(() => _appService.CreateOrEdit(HalfDay()));
+        exception.Message.ShouldContain("Half-day");
+
+        SetAutoHalfDayLeave(true);
+        await _appService.CreateOrEdit(HalfDay());
+
+        var result = await _appService.GetAll(new GetAllEmployeeAbsencesInput { EmployeeId = employee.Id });
+        result.TotalCount.ShouldBe(1);
     }
 
     [Fact]

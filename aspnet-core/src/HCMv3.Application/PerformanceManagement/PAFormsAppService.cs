@@ -22,10 +22,36 @@ namespace HCMv3.PerformanceManagement;
 public class PAFormsAppService : HCMv3AppServiceBase, IPAFormsAppService
 {
     private readonly IRepository<PAForm> _repository;
+    private readonly IRepository<PAPeerNominee> _peerNomineeRepository;
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
 
-    public PAFormsAppService(IRepository<PAForm> repository)
+    public PAFormsAppService(
+        IRepository<PAForm> repository,
+        IRepository<PAPeerNominee> peerNomineeRepository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
+        _peerNomineeRepository = peerNomineeRepository;
+        _sysSettingsAccessor = sysSettingsAccessor;
+    }
+
+    /// <summary>
+    /// Legacy <c>SysService.GetAppraisalSettings</c> as the PA form screens read it: the review stages the
+    /// cycle shows, the peer-review switch and limits, and the marks mode.
+    /// </summary>
+    public async Task<AppraisalFormSettingsDto> GetAppraisalFormSettings()
+    {
+        var settings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
+
+        return new AppraisalFormSettingsDto
+        {
+            AppraisalCycle = settings?.AppraisalCycle ?? HCMv3.SystemSettings.AppraisalCycle.Quarterly,
+            EnablePAPeerReview = settings?.EnablePAPeerReview ?? false,
+            SetPeerMinLimit = settings?.SetPeerMinLimit ?? 0,
+            SetPeerMaxLimit = settings?.SetPeerMaxLimit ?? 0,
+            EnableMarksInPAReview = settings?.EnableMarksInPAReview ?? false,
+            MarksOn = settings?.MarksOn ?? default
+        };
     }
 
     [HttpPost]
@@ -130,6 +156,20 @@ public class PAFormsAppService : HCMv3AppServiceBase, IPAFormsAppService
         if (duplicate)
         {
             throw new UserFriendlyException(L("PAFormAlreadyExistsForPeriodAndEmployee"));
+        }
+
+        // Legacy PAForm.PerformValidation: with peer review on, the employee must have between
+        // ManageAppraisalSettings.SetPeerMinLimit and SetPeerMaxLimit peer nominees for the period.
+        var appraisalSettings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
+        if (appraisalSettings != null && appraisalSettings.EnablePAPeerReview)
+        {
+            var nominees = await _peerNomineeRepository.GetAll()
+                .CountAsync(n => n.PAPeriodId == entity.PAPeriodId && n.EmployeeId == entity.EmployeeId);
+            if (nominees < appraisalSettings.SetPeerMinLimit || nominees > appraisalSettings.SetPeerMaxLimit)
+            {
+                throw new UserFriendlyException(L("PeerNomineeCountOutOfRange",
+                    appraisalSettings.SetPeerMinLimit, appraisalSettings.SetPeerMaxLimit));
+            }
         }
     }
 

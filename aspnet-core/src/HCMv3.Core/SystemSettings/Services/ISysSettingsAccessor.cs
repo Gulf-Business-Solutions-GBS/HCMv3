@@ -7,13 +7,11 @@ namespace HCMv3.SystemSettings.Services;
 /// Repository-accessor companion to the 14 <c>Manage*Settings</c> singleton entities (ported from legacy
 /// XAF <c>HCM10.Module.BusinessObjects.Services.SysService</c>'s ~15 <c>GetXSettings(Session)</c> methods).
 ///
-/// SIMPLIFICATION: legacy <c>GetXSettings</c> lazily created a first row seeded from legacy
-/// <c>SysTenantConfig</c> key/value migration data if none existed yet. <c>SysTenantConfig</c> was not
-/// ported (no equivalent generic tenant-config table exists in this app), and every
-/// <c>Manage*SettingsAppService.CreateOrEdit*</c> already provides a first-class UI path to create the
-/// singleton row. These accessors therefore simply return the first (and only expected) row, or
-/// <c>null</c> if the tenant hasn't configured that settings screen yet -- callers must handle the null
-/// case (matching how a fresh tenant would see it before visiting the settings screen).
+/// Like legacy <c>GetXSettings</c>, a tenant's first read of a settings group creates its row from the
+/// tenant's <c>SysTenantConfig</c> keys (see <see cref="SysSettingsTenantConfigFactory"/> for the key by
+/// key mapping) and saves it. Each accessor therefore returns the tenant's one row; it returns
+/// <c>null</c> only outside a tenant context (host session with no tenant filter), so callers still
+/// guard against null.
 /// </summary>
 public interface ISysSettingsAccessor
 {

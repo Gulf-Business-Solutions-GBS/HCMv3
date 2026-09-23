@@ -160,6 +160,111 @@ public class EssLookupAppService_Tests : AppTestBase
     /// A user granted <c>Ess</c> and nothing else -- no roles, so no administrator permission can leak in
     /// through one. This is the account the whole change is for.
     /// </summary>
+    // ---------------------------------------------------------------- DelegateEmployeeListBy (legacy GetDelegateEmployeeFilterOid)
+
+    private static int _nextOrgUnitCodeNumber = 9000;
+
+    private int CreateOrgUnitType(string code)
+    {
+        HCMv3.OrganizationManagement.OrganizationUnitType type = null;
+        UsingDbContext(context =>
+        {
+            type = context.Set<HCMv3.OrganizationManagement.OrganizationUnitType>().FirstOrDefault(t => t.Code == code)
+                   ?? context.Set<HCMv3.OrganizationManagement.OrganizationUnitType>().Add(new HCMv3.OrganizationManagement.OrganizationUnitType
+                   {
+                       TenantId = TenantId,
+                       Code = code,
+                       NameEn = code,
+                       NameAr = code
+                   }).Entity;
+        });
+
+        return type.Id;
+    }
+
+    private long CreateOrgUnitAtLevel(string name, int orgUnitTypeId)
+    {
+        long unitId = 0;
+        UsingDbContext(context =>
+        {
+            var unit = context.Set<Abp.Organizations.OrganizationUnit>().Add(new Abp.Organizations.OrganizationUnit(TenantId, name)
+            {
+                Code = Abp.Organizations.OrganizationUnit.CreateCode(++_nextOrgUnitCodeNumber)
+            }).Entity;
+            context.SaveChanges();
+
+            context.Set<HCMv3.OrganizationManagement.OrgUnitProfile>().Add(new HCMv3.OrganizationManagement.OrgUnitProfile
+            {
+                TenantId = TenantId,
+                OrganizationUnitId = unit.Id,
+                Code = Unique(),
+                NameAr = name,
+                OrganizationUnitTypeId = orgUnitTypeId
+            });
+            context.SaveChanges();
+            unitId = unit.Id;
+        });
+
+        return unitId;
+    }
+
+    private void AssignOrgUnit(int employeeId, long organizationUnitId)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
+            {
+                TenantId = TenantId,
+                EmployeeId = employeeId,
+                StartDate = DateTime.Today.AddYears(-1),
+                EndDate = DateTime.Today.AddYears(2),
+                OrganizationUnitId = organizationUnitId
+            });
+        });
+    }
+
+    private void SetDelegateEmployeeListBy(int? orgUnitTypeId)
+    {
+        UsingDbContext(context =>
+        {
+            var settings = context.Set<HCMv3.SystemSettings.ManageWorkflowSettings>().FirstOrDefault(s => s.TenantId == TenantId)
+                           ?? context.Set<HCMv3.SystemSettings.ManageWorkflowSettings>()
+                               .Add(new HCMv3.SystemSettings.ManageWorkflowSettings { TenantId = TenantId }).Entity;
+            settings.DelegateEmployeeListByOrganizationUnitTypeId = orgUnitTypeId;
+        });
+    }
+
+    /// <summary>
+    /// Legacy ESS: with DelegateEmployeeListBy set to a level, only colleagues under the same unit at that
+    /// level are offered as delegates; with it unset, every active colleague is.
+    /// </summary>
+    [Fact]
+    public async Task Delegation_Candidates_Should_Be_Limited_To_The_Same_Org_Unit_At_The_Configured_Level()
+    {
+        var level2 = CreateOrgUnitType(HCMv3.OrganizationManagement.OrganizationUnitType.Level2Code);
+        var divisionA = CreateOrgUnitAtLevel("Delegation A", level2);
+        var divisionB = CreateOrgUnitAtLevel("Delegation B", level2);
+
+        var meId = CreateEmployee("DLG100", userId: AbpSession.UserId);
+        var colleagueInA = CreateEmployee("DLG100A");
+        var colleagueInB = CreateEmployee("DLG100B");
+        AssignOrgUnit(meId, divisionA);
+        AssignOrgUnit(colleagueInA, divisionA);
+        AssignOrgUnit(colleagueInB, divisionB);
+
+        var lookups = Resolve<IEssLookupAppService>();
+
+        SetDelegateEmployeeListBy(level2);
+        var filtered = await lookups.GetDelegationCandidates();
+        filtered.Select(c => c.Id).ShouldContain(colleagueInA);
+        filtered.Select(c => c.Id).ShouldNotContain(colleagueInB);
+
+        SetDelegateEmployeeListBy(null);
+        var unfiltered = await lookups.GetDelegationCandidates();
+        unfiltered.Select(c => c.Id).ShouldContain(colleagueInA);
+        unfiltered.Select(c => c.Id).ShouldContain(colleagueInB);
+    }
+
     private long CreateEssOnlyUser()
     {
         var userId = 0L;

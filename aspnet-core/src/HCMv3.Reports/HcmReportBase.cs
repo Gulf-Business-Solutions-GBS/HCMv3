@@ -299,6 +299,37 @@ namespace HCMv3.Reports
             }
         }
 
+        /// <summary>
+        /// Legacy <c>MyXtraReport.SetBeforePrint</c>, "Set Decimal Rounding": every cell and label whose
+        /// format string ends in three decimals (<c>.000}</c>) is re-formatted to
+        /// <c>ManageReportSettings.DecimalInReports</c> decimals. Zero means the legacy default of three, and
+        /// three leaves the layout untouched, exactly as legacy did. Only the report's own controls are
+        /// touched, not its subreports, which is also what legacy's <c>AllControls&lt;T&gt;()</c> covered.
+        /// </summary>
+        public void ApplyDecimalInReports(int decimalInReports)
+        {
+            var decimals = decimalInReports <= 0 ? 3 : decimalInReports;
+            if (decimals == 3)
+            {
+                return;
+            }
+
+            var replacement = "." + new string('0', decimals) + "}";
+
+            foreach (var control in AllControls(this))
+            {
+                switch (control)
+                {
+                    case XRTableCell cell when cell.TextFormatString != null && cell.TextFormatString.Contains(".000}"):
+                        cell.TextFormatString = cell.TextFormatString.Replace(".000}", replacement);
+                        break;
+                    case XRLabel label when label.TextFormatString != null && label.TextFormatString.Contains(".000}"):
+                        label.TextFormatString = label.TextFormatString.Replace(".000}", replacement);
+                        break;
+                }
+            }
+        }
+
         private static IEnumerable<XRControl> Descend(XRControl root)
         {
             foreach (XRControl child in root.Controls)

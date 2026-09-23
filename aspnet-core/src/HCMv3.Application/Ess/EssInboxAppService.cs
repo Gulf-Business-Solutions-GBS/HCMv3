@@ -31,6 +31,7 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
     private readonly IEmployeeScopeProvider _employeeScopeProvider;
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowApprovalService _workflowApprovalService;
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
 
     public EssInboxAppService(
         IRepository<WorkFlowApprover> approverRepository,
@@ -40,7 +41,8 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         IRepository<Employee> employeeRepository,
         IEmployeeScopeProvider employeeScopeProvider,
         IRequestMasterResolver requestMasterResolver,
-        IWorkflowApprovalService workflowApprovalService)
+        IWorkflowApprovalService workflowApprovalService,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _approverRepository = approverRepository;
         _requestRepository = requestRepository;
@@ -50,6 +52,7 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         _employeeScopeProvider = employeeScopeProvider;
         _requestMasterResolver = requestMasterResolver;
         _workflowApprovalService = workflowApprovalService;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -196,8 +199,22 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
             var detail = await _requestDetailRepository.FirstOrDefaultAsync(
                 d => d.RequestMasterId == master.Id && d.Step == request.WorkflowStep);
 
+            // Legacy ESS (UnifiedLeaveRequest / RosterPlanner controllers): the send-back button is offered
+            // only when ManageWorkflowSettings.SendBackToCreator is on, over and above the step's own flag.
+            var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
+            var sendBackToCreator = workflowSettings != null && workflowSettings.SendBackToCreator;
+
             item.CanReject = detail?.CanReject ?? false;
-            item.CanSendBack = detail?.CanSendBack ?? false;
+            item.CanSendBack = (detail?.CanSendBack ?? false) && sendBackToCreator;
+
+            // Legacy TravelController: at the step named by ManageWorkflowSettings.EnableTravelCostOnWorkflowstep
+            // the approver of a travel request is offered the travel cost entry.
+            item.EnableTravelCost = workflowSettings != null
+                                    && workflowSettings.EnableTravelCostOnWorkflowstep > 0
+                                    && workflowSettings.EnableTravelCostOnWorkflowstep == request.WorkflowStep
+                                    && string.Equals(request.RequestType,
+                                        HCMv3.TravelManagement.Workflow.TravelWorkflowTransactionHandler.TravelRequestType,
+                                        StringComparison.OrdinalIgnoreCase);
         }
         catch (Abp.UI.UserFriendlyException)
         {

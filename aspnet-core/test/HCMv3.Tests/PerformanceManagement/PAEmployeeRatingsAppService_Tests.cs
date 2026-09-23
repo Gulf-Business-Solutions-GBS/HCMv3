@@ -9,13 +9,74 @@ namespace HCMv3.Tests.PerformanceManagement;
 // ReSharper disable once InconsistentNaming
 public class PAEmployeeRatingsAppService_Tests : PerformanceManagementAppServiceTestBase
 {
-    private PAEmployeeRatingsAppService CreateAppService()
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _settings =
+        NSubstitute.Substitute.For<HCMv3.SystemSettings.Services.ISysSettingsAccessor>();
+
+    private PAEmployeeRatingsAppService CreateAppService(
+        bool marksInReview = false,
+        HCMv3.SystemSettings.MarksOn marksOn = HCMv3.SystemSettings.MarksOn.Ratings)
     {
+        NSubstitute.SubstituteExtensions.Returns(_settings.GetAppraisalSettingsAsync(),
+            Task.FromResult(new HCMv3.SystemSettings.ManageAppraisalSettings
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EnableMarksInPAReview = marksInReview,
+                MarksOn = marksOn
+            }));
+
         return CreateService(() => new PAEmployeeRatingsAppService(
             FakeRepository.For<PAEmployeeRating>(Context),
             FakeRepository.For<PAEmployeeReviewer>(Context),
             FakeRepository.For<PAEmployee>(Context),
-            FakeRepository.For<PARating>(Context)));
+            FakeRepository.For<PARating>(Context),
+            _settings));
+    }
+
+    /// <summary>
+    /// Legacy "Marks enabled, MarksOn = Ratings": score = sum((weight / maxRatingCode) * marks) scaled back by
+    /// maxRatingCode / 100. One KPI weighted 100 with 80 marks against ratings coded 1..4 scores 80.
+    /// </summary>
+    [Fact]
+    public async Task With_Marks_On_Ratings_Should_Score_Weighted_Marks_Against_The_Highest_Rating_Code()
+    {
+        var (paEmployeeId, reviewerId, detailId) = CreateAppraisalSetup();
+        CreatePARating("1");
+        CreatePARating("2");
+        CreatePARating("3");
+        CreatePARating("4");
+        var service = CreateAppService(marksInReview: true, marksOn: HCMv3.SystemSettings.MarksOn.Ratings);
+
+        await service.CreateOrEdit(new CreateOrEditPAEmployeeRatingDto
+        {
+            PAEmployeeId = paEmployeeId,
+            PAEmployeeReviewerId = reviewerId,
+            PAEmployeeDetailId = detailId,
+            Marks = 80
+        });
+
+        var reviewer = await Context.PAEmployeeReviewers.FindAsync(reviewerId);
+        reviewer.TotalMarks.ShouldBe(80);
+        reviewer.AverageScore.ShouldBe(80);
+    }
+
+    /// <summary>Legacy "Marks enabled, MarksOn = Weight": only the total marks are kept.</summary>
+    [Fact]
+    public async Task With_Marks_On_Weight_Should_Sum_The_Marks_Only()
+    {
+        var (paEmployeeId, reviewerId, detailId) = CreateAppraisalSetup();
+        var service = CreateAppService(marksInReview: true, marksOn: HCMv3.SystemSettings.MarksOn.Weight);
+
+        await service.CreateOrEdit(new CreateOrEditPAEmployeeRatingDto
+        {
+            PAEmployeeId = paEmployeeId,
+            PAEmployeeReviewerId = reviewerId,
+            PAEmployeeDetailId = detailId,
+            Marks = 65
+        });
+
+        var reviewer = await Context.PAEmployeeReviewers.FindAsync(reviewerId);
+        reviewer.TotalMarks.ShouldBe(65);
+        reviewer.AverageScore.ShouldBe(0);
     }
 
     private (int paEmployeeId, int reviewerRecordId, int detailId) CreateAppraisalSetup()

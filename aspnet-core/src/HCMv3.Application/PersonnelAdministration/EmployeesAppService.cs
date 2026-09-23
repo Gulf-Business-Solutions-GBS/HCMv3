@@ -31,16 +31,23 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     private readonly IEmployeeValidator _employeeValidator;
     private readonly IEntityImageStore _imageStore;
 
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> _employeeWageAccountRepository;
+
     public EmployeesAppService(
         IRepository<Employee> employeeRepository,
         IEmployeeCodeGenerator employeeCodeGenerator,
         IEmployeeValidator employeeValidator,
-        IEntityImageStore imageStore)
+        IEntityImageStore imageStore,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> employeeWageAccountRepository)
     {
+        _employeeWageAccountRepository = employeeWageAccountRepository;
         _employeeRepository = employeeRepository;
         _employeeCodeGenerator = employeeCodeGenerator;
         _employeeValidator = employeeValidator;
         _imageStore = imageStore;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -130,7 +137,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         // the DTO's Status field only applies on edit (e.g. later marking an employee Inactive).
         employee.Status = EmployeeStatus.Active;
 
-        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
+        await AssignEmployeeCodeAsync(employee);
         ApplyComputedFields(employee);
         _employeeValidator.Validate(employee);
 
@@ -138,6 +145,58 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         await _employeeRepository.InsertAndGetIdAsync(employee);
         employee.PhotoPath = await _imageStore.SaveIfChangedAsync(
             EntityImageKinds.EmployeePhoto, employee.TenantId, employee.Id, null, input.Photo);
+
+        await CopyWageAccountsOnHireAsync(employee, input.CopyWageAccountsFromEmployeeId);
+    }
+
+    /// <summary>
+    /// Legacy <c>Employee.AddAutoWageAccount</c>: with <c>ManagePersonnelSettings.AutoWageAssignOnHire</c> on and a
+    /// source employee chosen, the source's open-ended wage accounts (End Date 31/12/9999), in payroll order,
+    /// are copied to the new hire from the first day of the joining month.
+    /// </summary>
+    private async Task CopyWageAccountsOnHireAsync(Employee employee, int? sourceEmployeeId)
+    {
+        if (!sourceEmployeeId.HasValue)
+        {
+            return;
+        }
+
+        var personnelSettings = await _sysSettingsAccessor.GetPersonnelSettingsAsync();
+        if (personnelSettings == null || !personnelSettings.AutoWageAssignOnHire)
+        {
+            return;
+        }
+
+        var openEnded = new DateTime(9999, 12, 31);
+        var sourceAccounts = await _employeeWageAccountRepository.GetAll()
+            .Where(w => w.EmployeeId == sourceEmployeeId.Value && w.EndDate == openEnded)
+            .OrderBy(w => w.WageType.PayrollOrder)
+            .ToListAsync();
+
+        var start = new DateTime(employee.JoiningDate.Year, employee.JoiningDate.Month, 1);
+
+        foreach (var source in sourceAccounts)
+        {
+            await _employeeWageAccountRepository.InsertAsync(new HCMv3.PayrollManagement.EmployeeWageAccount
+            {
+                TenantId = employee.TenantId,
+                EmployeeId = employee.Id,
+                WageTypeId = source.WageTypeId,
+                AccountInfoId = source.AccountInfoId,
+                OffsetAccountInfoId = source.OffsetAccountInfoId,
+                StartDate = start,
+                EndDate = source.EndDate,
+                CostElement1Id = source.CostElement1Id,
+                CostElement2Id = source.CostElement2Id,
+                CostElement3Id = source.CostElement3Id,
+                CostElement4Id = source.CostElement4Id,
+                CostElement5Id = source.CostElement5Id,
+                CostElement6Id = source.CostElement6Id,
+                CostElement7Id = source.CostElement7Id,
+                MergeOffsetAccount = source.MergeOffsetAccount,
+                CostPercentage = source.CostPercentage
+            });
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees_Edit)]
@@ -146,7 +205,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         var employee = await _employeeRepository.GetAsync(input.Id.Value);
         MapToEntity(input, employee);
 
-        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
+        await AssignEmployeeCodeAsync(employee);
         ApplyComputedFields(employee);
         _employeeValidator.Validate(employee);
 
@@ -161,6 +220,27 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     public async Task Delete(EntityDto input)
     {
         await _employeeRepository.DeleteAsync(input.Id);
+    }
+
+    /// <summary>
+    /// Legacy <c>EmployeeProfileController</c>: the Code editor is enabled only when
+    /// <c>ManageGeneralSettings.DisableAutoEmpcode</c> is on, so with the setting on the code is the user's
+    /// to enter and must be given; with it off the code is generated whenever it is blank.
+    /// </summary>
+    private async Task AssignEmployeeCodeAsync(Employee employee)
+    {
+        var generalSettings = await _sysSettingsAccessor.GetGeneralSettingsAsync();
+        if (generalSettings != null && generalSettings.DisableAutoEmpcode)
+        {
+            if (employee.Code.IsNullOrWhiteSpace())
+            {
+                throw new UserFriendlyException(L("EmployeeCodeRequiredWhenAutoCodeDisabled"));
+            }
+
+            return;
+        }
+
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
     }
 
     /// <summary>

@@ -13,5 +13,8 @@ public interface IPAFormsAppService : IApplicationService
 
     Task CreateOrEdit(CreateOrEditPAFormDto input);
 
+    /// <summary>The appraisal settings the PA form screens read; see <see cref="AppraisalFormSettingsDto"/>.</summary>
+    Task<AppraisalFormSettingsDto> GetAppraisalFormSettings();
+
     Task Delete(EntityDto input);
 }

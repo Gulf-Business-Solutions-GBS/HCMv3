@@ -1,6 +1,7 @@
 import { Routes, Route } from '@angular/router';
 import { Type } from '@angular/core';
 import { AppRouteGuard } from './shared/common/auth/auth-route-guard';
+import { startupDashboardGuard } from './shared/common/auth/startup-dashboard.guard';
 import { ISimpleLookupServiceProxy } from './admin/general-master-info/shared/simple-lookup.types';
 import {
     AssetTypesServiceProxy,
@@ -137,7 +138,9 @@ export const appRoutes: Routes = [
                                 (m) => m.NotificationsComponent
                             ),
                     },
-                    { path: '', redirectTo: '/app/main/home', pathMatch: 'full' },
+                    // The landing page: the tenant's configured startup dashboard (General Settings),
+                    // otherwise the best route for the user's permissions -- see the guard.
+                    { path: '', pathMatch: 'full', canActivate: [startupDashboardGuard], children: [] },
                 ],
             },
             {

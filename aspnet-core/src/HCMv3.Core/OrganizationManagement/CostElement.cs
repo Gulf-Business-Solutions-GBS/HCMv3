@@ -10,9 +10,8 @@ namespace HCMv3.OrganizationManagement;
 /// <c>HCM10.Module.BusinessObjects.OrganizationManagement.CostElement</c>).
 /// Extends the Code/NameEn/NameAr shape with a required <see cref="CostElementType"/> FK, so it can't
 /// derive from <see cref="SimpleLookupEntity"/> (see <see cref="City"/> for the same bespoke pattern).
-/// The legacy duplicate-Code check was conditionally scoped per-tenant-setting
-/// (<c>AllowDuplicateCodeInCostElement</c>, dependent on the unported SysSettings module) — simplified
-/// here to a single global unique-Code check, same as every other entity.
+/// The legacy duplicate-Code check is scoped per tenant setting (<c>ManageFIPostingSettings.AllowDuplicateCodeInCostElement</c>:
+/// unique within the cost element type when on, unique overall when off) by <c>CostElementsAppService</c>.
 /// </summary>
 public class CostElement : FullAuditedEntity, IMustHaveTenant
 {

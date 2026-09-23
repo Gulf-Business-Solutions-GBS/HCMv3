@@ -58,4 +58,15 @@ public class AttachmentSettingsDto
 
     /// <summary>Zero means no limit.</summary>
     public int MaxAttachmentsPerRecord { get; set; }
+
+    /// <summary>Legacy <c>ManageDocumentSettings.MaxStorageSize</c>, in MB; 0 means no limit.</summary>
+    public int MaxStorageMB { get; set; }
+
+    /// <summary>Legacy <c>ManageDocumentSettings.WarningThresholdSize</c>, in MB; 0 means no warning.</summary>
+    public int StorageWarningThresholdMB { get; set; }
+
+    public int UsedStorageMB { get; set; }
+
+    /// <summary>Legacy <c>StorageWarningController</c>: true once used storage has reached the warning threshold.</summary>
+    public bool StorageWarning { get; set; }
 }

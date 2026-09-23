@@ -142,7 +142,8 @@ public class PayrollJVCustom042AdvanceSalaryReportAppService
             input.PayrollAreaId.HasValue ? new[] { input.PayrollAreaId.Value } : Array.Empty<int>(),
             input.ResolveEmployeeCodes(),
             await GetRlsEmployeeIdsAsync(),
-            PayrollJVWageTypeScope.EarningDeductionAndAllProvision);
+            PayrollJVWageTypeScope.EarningDeductionAndAllProvision,
+            await ResolveWageAccountSourceAsync());
 
         // Legacy line 1500: DontImpactNetPay == false.
         var advLines = lines.Where(l => !l.DontImpactNetPay).ToList();

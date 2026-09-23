@@ -25,9 +25,14 @@ public class CostElementsAppService : HCMv3AppServiceBase, ICostElementsAppServi
 {
     private readonly IRepository<CostElement> _costElementRepository;
 
-    public CostElementsAppService(IRepository<CostElement> costElementRepository)
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+
+    public CostElementsAppService(
+        IRepository<CostElement> costElementRepository,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _costElementRepository = costElementRepository;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -158,8 +163,14 @@ public class CostElementsAppService : HCMv3AppServiceBase, ICostElementsAppServi
     /// </summary>
     private async Task ValidateUniquenessAsync(CostElement costElement)
     {
+        // Legacy CostElement.PerformValidation: with ManageFIPostingSettings.AllowDuplicateCodeInCostElement on,
+        // a code only has to be unique within its cost element type; off, it is unique across all types.
+        var fiSettings = await _sysSettingsAccessor.GetFIPostingSettingsAsync();
+        var perType = fiSettings != null && fiSettings.AllowDuplicateCodeInCostElement;
+
         var duplicateCode = await _costElementRepository.GetAll()
-            .AnyAsync(c => c.Id != costElement.Id && c.Code == costElement.Code);
+            .AnyAsync(c => c.Id != costElement.Id && c.Code == costElement.Code
+                           && (!perType || c.CostElementTypeId == costElement.CostElementTypeId));
         if (duplicateCode)
         {
             throw new UserFriendlyException(L("DuplicateCodeFound"));

@@ -9,6 +9,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Storage;
+using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,11 +31,16 @@ public class TimeEventsAppService : HCMv3AppServiceBase, ITimeEventsAppService
 {
     private readonly IRepository<TimeEvent> _repository;
     private readonly IBinaryObjectManager _binaryObjectManager;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
-    public TimeEventsAppService(IRepository<TimeEvent> repository, IBinaryObjectManager binaryObjectManager)
+    public TimeEventsAppService(
+        IRepository<TimeEvent> repository,
+        IBinaryObjectManager binaryObjectManager,
+        ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
         _binaryObjectManager = binaryObjectManager;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     [HttpPost]
@@ -192,17 +198,27 @@ public class TimeEventsAppService : HCMv3AppServiceBase, ITimeEventsAppService
         // approving the request then leaves the day with two identical events. Closing it here needs a
         // filter opt-out, which needs a unit of work, which this service's tests do not give it; the
         // employee-facing half of the race IS closed, in TimeEventWorkflowTransactionHandler.
+        // Legacy TimeEvent.PerformValidation (#4164): with ManageTimeSettings.AllowDuplicateInTimeEvent on, the
+        // same punch may arrive from two sources (a machine and a manual entry, say) and only an exact repeat
+        // from the SAME source is a duplicate; off, the source is not part of the key.
+        var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
+        var allowDuplicateAcrossSources = timeSettings != null && timeSettings.AllowDuplicateInTimeEvent;
+
         var duplicateEvent = await _repository.GetAll()
             .AnyAsync(e => e.Id != entity.Id
                            && e.EmployeeId == entity.EmployeeId
                            && e.TransTypeId == entity.TransTypeId
                            && e.TransDate == entity.TransDate
-                           && e.TransTime == entity.TransTime);
+                           && e.TransTime == entity.TransTime
+                           && (!allowDuplicateAcrossSources || e.TransSource == entity.TransSource));
 
         if (duplicateEvent)
         {
-            throw new UserFriendlyException(L("TimeEventAlreadyExists",
-                entity.TransDate.ToString("dd/MM/yyyy"), entity.TransTime.ToString("HH:mm:ss")));
+            throw new UserFriendlyException(allowDuplicateAcrossSources
+                ? L("TimeEventAlreadyExistsForSource",
+                    entity.TransDate.ToString("dd/MM/yyyy"), entity.TransTime.ToString("HH:mm:ss"), entity.TransSource)
+                : L("TimeEventAlreadyExists",
+                    entity.TransDate.ToString("dd/MM/yyyy"), entity.TransTime.ToString("HH:mm:ss")));
         }
 
         if (entity.TransSource == TransSource.Machine)

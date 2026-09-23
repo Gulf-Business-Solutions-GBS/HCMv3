@@ -10,6 +10,7 @@ using Abp.MultiTenancy;
 using HCMv3.Authorization.Roles;
 using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.ReportManagement;
+using HCMv3.SystemSecurity;
 using HCMv3.Authorization.Users;
 using HCMv3.Editions;
 using HCMv3.MultiTenancy.Demo;
@@ -66,6 +67,7 @@ public class TenantManager :
     private readonly IReferenceDataSeeder _referenceDataSeeder;
     private readonly PrintReportCatalogSeeder _printReportCatalogSeeder;
     private readonly PayrollSensitiveObjectSeeder _payrollSensitiveObjectSeeder;
+    private readonly SysTenantConfigDefaultsSeeder _sysTenantConfigDefaultsSeeder;
 
 
     public TenantManager(
@@ -87,7 +89,8 @@ public class TenantManager :
         IPaymentManager paymentManager,
         IReferenceDataSeeder referenceDataSeeder,
         PrintReportCatalogSeeder printReportCatalogSeeder,
-        PayrollSensitiveObjectSeeder payrollSensitiveObjectSeeder) : base(
+        PayrollSensitiveObjectSeeder payrollSensitiveObjectSeeder,
+        SysTenantConfigDefaultsSeeder sysTenantConfigDefaultsSeeder) : base(
         tenantRepository,
         tenantFeatureRepository,
         editionManager,
@@ -114,6 +117,7 @@ public class TenantManager :
         _referenceDataSeeder = referenceDataSeeder;
         _printReportCatalogSeeder = printReportCatalogSeeder;
         _payrollSensitiveObjectSeeder = payrollSensitiveObjectSeeder;
+        _sysTenantConfigDefaultsSeeder = sysTenantConfigDefaultsSeeder;
     }
 
     public async Task<int> CreateWithAdminUserAsync(
@@ -230,6 +234,9 @@ public class TenantManager :
 
                 // The default payroll-sensitive list, so the payroll lock protects the new company from day one.
                 await _payrollSensitiveObjectSeeder.SeedAsync(tenant.Id);
+
+                // The default tenant configuration keys, from which the first Manage*Settings rows are built.
+                await _sysTenantConfigDefaultsSeeder.SeedAsync(tenant.Id);
 
                 await _backgroundJobManager.EnqueueAsync<TenantDemoDataBuilderJob, int>(tenant.Id);
 

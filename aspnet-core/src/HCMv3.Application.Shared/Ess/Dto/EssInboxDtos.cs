@@ -51,6 +51,12 @@ public class EssInboxItemDto : EntityDto<int>
     public bool CanReject { get; set; }
 
     public bool CanSendBack { get; set; }
+
+    /// <summary>
+    /// Legacy <c>ViewBag.EnableTravelcost</c>: true when this is a travel request sitting at the workflow step named by
+    /// <c>ManageWorkflowSettings.EnableTravelCostOnWorkflowstep</c>, so the approver may enter the travel cost.
+    /// </summary>
+    public bool EnableTravelCost { get; set; }
 }
 
 public class GetMyInboxInput : PagedAndSortedResultRequestDto, IShouldNormalize

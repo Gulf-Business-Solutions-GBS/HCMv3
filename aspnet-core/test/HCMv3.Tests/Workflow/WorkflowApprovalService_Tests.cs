@@ -79,13 +79,22 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
     /// </summary>
     private IWorkflowApproverResolver CreateApproverResolver()
     {
+        // Org-unit-type scoping off, as it is for a tenant that never switched it on: these tests are about
+        // the engine, and the scoping rule has its own tests in WorkflowRoutingAndEscalation_Tests.
+        var settingsAccessor = Substitute.For<HCMv3.SystemSettings.Services.ISysSettingsAccessor>();
+        settingsAccessor.GetWorkflowSettingsAsync()
+            .Returns(Task.FromResult(new HCMv3.SystemSettings.ManageWorkflowSettings()));
+
         return new WorkflowApproverResolver(
             FakeRepository.For<EmployeeWorkflowRole>(Context),
             FakeRepository.For<EmployeeManager>(Context),
             FakeRepository.For<EmployeeOrgAssignment>(Context),
             FakeRepository.For<RequestDetail>(Context),
             FakeRepository.For<RequestLog>(Context),
-            CreateDelegationResolver());
+            Substitute.For<Abp.Domain.Repositories.IRepository<HCMv3.OrganizationManagement.OrganizationUnitType>>(),
+            CreateDelegationResolver(),
+            settingsAccessor,
+            Substitute.For<HCMv3.OrganizationManagement.Services.IOrgHierarchyService>());
     }
 
     /// <summary>

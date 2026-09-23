@@ -115,6 +115,23 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
+        var timeSettings = await _settings.GetTimeSettingsAsync();
+
+        // Legacy EmployeeAbsenceController: the half-day editor is only enabled when
+        // ManageTimeSettings.EnableAutoHalfDayLeave is on, so a half-day leave cannot be entered without it.
+        if (context.HalfdayType != HalfdayType.None && (timeSettings == null || !timeSettings.EnableAutoHalfDayLeave))
+        {
+            throw new UserFriendlyException(L("HalfDayLeaveNotEnabled"));
+        }
+
+        // Legacy WorkFlowServices.LeavePaymentTypeList: "Pay Full With Payroll" is only offered when
+        // ManageTimeSettings.EnablePayFullWithPayroll is on.
+        if (context.LeavePaymentType == LeavePaymentType.PayFullWithPayroll
+            && (timeSettings == null || !timeSettings.EnablePayFullWithPayroll))
+        {
+            throw new UserFriendlyException(L("PayFullWithPayrollNotEnabled"));
+        }
+
         if (context.AbsenceHours != 0 || context.HalfdayType != HalfdayType.None)
         {
             if (!absenceType.AllowPartialLeave)

@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Runtime.Session;
 using HCMv3.SystemSecurity;
 
 namespace HCMv3.SystemSettings.Services;
@@ -12,6 +15,12 @@ namespace HCMv3.SystemSettings.Services;
 /// <see cref="UnitOfWorkAttribute"/> at the class level so this domain service is independently
 /// callable (opens its own unit of work/DbContext when not already invoked from within one, e.g. an
 /// <c>IApplicationService</c> caller) -- matching how <c>IRepository&lt;T&gt;</c> itself behaves standalone.
+///
+/// FIRST READ CREATES THE ROW. Like legacy <c>SysService.Get*Settings(Session)</c>, when a tenant has no
+/// row for a settings group yet, the first read builds one from the tenant's <see cref="SysTenantConfig"/>
+/// keys (<see cref="SysSettingsTenantConfigFactory"/>) and saves it, so every later read and the settings
+/// screen see the same row. Outside a tenant (host session, no tenant filter) nothing is created and
+/// <c>null</c> is returned, as no legacy screen ever ran without a tenant.
 /// </remarks>
 [UnitOfWork]
 public class SysSettingsAccessor : HCMv3DomainServiceBase, ISysSettingsAccessor
@@ -31,6 +40,7 @@ public class SysSettingsAccessor : HCMv3DomainServiceBase, ISysSettingsAccessor
     private readonly IRepository<ManageTimeSettings> _timeSettingsRepository;
     private readonly IRepository<ManageWorkflowSettings> _workflowSettingsRepository;
     private readonly IRepository<SysTenantConfig> _sysTenantConfigRepository;
+    private readonly IAbpSession _abpSession;
 
     public SysSettingsAccessor(
         IRepository<ManageAppraisalSettings> appraisalSettingsRepository,
@@ -47,7 +57,8 @@ public class SysSettingsAccessor : HCMv3DomainServiceBase, ISysSettingsAccessor
         IRepository<ManageSelfServiceSettings> selfServiceSettingsRepository,
         IRepository<ManageTimeSettings> timeSettingsRepository,
         IRepository<ManageWorkflowSettings> workflowSettingsRepository,
-        IRepository<SysTenantConfig> sysTenantConfigRepository)
+        IRepository<SysTenantConfig> sysTenantConfigRepository,
+        IAbpSession abpSession)
     {
         _appraisalSettingsRepository = appraisalSettingsRepository;
         _documentSettingsRepository = documentSettingsRepository;
@@ -64,56 +75,56 @@ public class SysSettingsAccessor : HCMv3DomainServiceBase, ISysSettingsAccessor
         _timeSettingsRepository = timeSettingsRepository;
         _workflowSettingsRepository = workflowSettingsRepository;
         _sysTenantConfigRepository = sysTenantConfigRepository;
+        _abpSession = abpSession;
     }
 
     // NOTE: HCMv3.Core has no reference to EntityFrameworkCore (per architecture rules), so the usual
     // Microsoft.EntityFrameworkCore async IQueryable extensions (.FirstOrDefaultAsync() etc.) are not
     // available here. These singleton lookups use the plain synchronous IQueryable returned by
     // IRepository<T>.GetAll() instead (same pattern as the already-shipped
-    // HCMv3.Authorization.Users.Password.PasswordExpirationService domain service), wrapped in
-    // Task.FromResult for interface consistency with the rest of this port's domain services.
+    // HCMv3.Authorization.Users.Password.PasswordExpirationService domain service).
 
     public Task<ManageAppraisalSettings> GetAppraisalSettingsAsync() =>
-        Task.FromResult(_appraisalSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_appraisalSettingsRepository, SysSettingsTenantConfigFactory.CreateAppraisalSettings);
 
     public Task<ManageDocumentSettings> GetDocumentSettingsAsync() =>
-        Task.FromResult(_documentSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_documentSettingsRepository, SysSettingsTenantConfigFactory.CreateDocumentSettings);
 
     public Task<ManageFIPostingSettings> GetFIPostingSettingsAsync() =>
-        Task.FromResult(_fiPostingSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_fiPostingSettingsRepository, SysSettingsTenantConfigFactory.CreateFIPostingSettings);
 
     public Task<ManageGeneralSettings> GetGeneralSettingsAsync() =>
-        Task.FromResult(_generalSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_generalSettingsRepository, SysSettingsTenantConfigFactory.CreateGeneralSettings);
 
     public Task<ManageNotificationSettings> GetNotificationSettingsAsync() =>
-        Task.FromResult(_notificationSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_notificationSettingsRepository, SysSettingsTenantConfigFactory.CreateNotificationSettings);
 
     public Task<ManageOrgSettings> GetOrgSettingsAsync() =>
-        Task.FromResult(_orgSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_orgSettingsRepository, SysSettingsTenantConfigFactory.CreateOrgSettings);
 
     public Task<ManagePayrollSettings> GetPayrollSettingsAsync() =>
-        Task.FromResult(_payrollSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_payrollSettingsRepository, SysSettingsTenantConfigFactory.CreatePayrollSettings);
 
     public Task<ManagePersonnelSettings> GetPersonnelSettingsAsync() =>
-        Task.FromResult(_personnelSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_personnelSettingsRepository, SysSettingsTenantConfigFactory.CreatePersonnelSettings);
 
     public Task<ManageProjectCostingSettings> GetProjectCostingSettingsAsync() =>
-        Task.FromResult(_projectCostingSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_projectCostingSettingsRepository, SysSettingsTenantConfigFactory.CreateProjectCostingSettings);
 
     public Task<ManageReportSettings> GetReportSettingsAsync() =>
-        Task.FromResult(_reportSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_reportSettingsRepository, SysSettingsTenantConfigFactory.CreateReportSettings);
 
     public Task<ManageSecuritySettings> GetSecuritySettingsAsync() =>
-        Task.FromResult(_securitySettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_securitySettingsRepository, SysSettingsTenantConfigFactory.CreateSecuritySettings);
 
     public Task<ManageSelfServiceSettings> GetSelfServiceSettingsAsync() =>
-        Task.FromResult(_selfServiceSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_selfServiceSettingsRepository, SysSettingsTenantConfigFactory.CreateSelfServiceSettings);
 
     public Task<ManageTimeSettings> GetTimeSettingsAsync() =>
-        Task.FromResult(_timeSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_timeSettingsRepository, SysSettingsTenantConfigFactory.CreateTimeSettings);
 
     public Task<ManageWorkflowSettings> GetWorkflowSettingsAsync() =>
-        Task.FromResult(_workflowSettingsRepository.GetAll().FirstOrDefault());
+        GetOrCreateAsync(_workflowSettingsRepository, SysSettingsTenantConfigFactory.CreateWorkflowSettings);
 
     public async Task<string> GetSysDateTimeFormatAsync()
     {
@@ -164,5 +175,59 @@ public class SysSettingsAccessor : HCMv3DomainServiceBase, ISysSettingsAccessor
             .FirstOrDefault();
 
         return Task.FromResult(keyValue ?? string.Empty);
+    }
+
+    /// <summary>
+    /// The tenant's row, or -- when it has none -- a new one built from its <see cref="SysTenantConfig"/>
+    /// keys and saved. The tenant is the unit of work's current tenant (set by tenant-switching background
+    /// workers) and otherwise the session's.
+    /// </summary>
+    private async Task<TSettings> GetOrCreateAsync<TSettings>(
+        IRepository<TSettings> repository,
+        Func<SysTenantConfigLookup, TSettings> create)
+        where TSettings : class, IEntity<int>, IMustHaveTenant
+    {
+        var existing = repository.GetAll().FirstOrDefault();
+        if (existing != null)
+        {
+            return existing;
+        }
+
+        var tenantId = CurrentUnitOfWork?.GetTenantId() ?? _abpSession.TenantId;
+        if (tenantId == null)
+        {
+            return null;
+        }
+
+        var settings = create(LoadTenantConfig());
+        settings.TenantId = tenantId.Value;
+
+        await repository.InsertAsync(settings);
+        if (CurrentUnitOfWork != null)
+        {
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        return settings;
+    }
+
+    /// <summary>
+    /// Legacy read each key with <c>FirstOrDefault()</c>; with duplicate keys the lowest id wins here so
+    /// the choice is at least stable.
+    /// </summary>
+    private SysTenantConfigLookup LoadTenantConfig()
+    {
+        var rows = _sysTenantConfigRepository.GetAll()
+            .OrderBy(r => r.Id)
+            .Select(r => new { r.Key, r.KeyValue })
+            .ToList();
+
+        var values = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var row in rows.Where(r => r.Key != null))
+        {
+            values.TryAdd(row.Key, row.KeyValue);
+        }
+
+        return new SysTenantConfigLookup(values);
     }
 }

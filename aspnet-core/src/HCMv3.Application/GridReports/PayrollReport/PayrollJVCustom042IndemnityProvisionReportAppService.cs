@@ -94,7 +94,8 @@ public class PayrollJVCustom042IndemnityProvisionReportAppService
             input.PayrollAreaId.HasValue ? new[] { input.PayrollAreaId.Value } : Array.Empty<int>(),
             input.ResolveEmployeeCodes(),
             await GetRlsEmployeeIdsAsync(),
-            PayrollJVWageTypeScope.EarningDeductionAndAllProvision);
+            PayrollJVWageTypeScope.EarningDeductionAndAllProvision,
+            await ResolveWageAccountSourceAsync());
 
         var rows = new List<PayrollJVCustom042ReportRowDto>();
 

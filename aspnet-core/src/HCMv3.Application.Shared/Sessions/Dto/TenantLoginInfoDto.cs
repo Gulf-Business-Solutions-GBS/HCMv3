@@ -48,6 +48,13 @@ public class TenantLoginInfoDto : EntityDto
 
     public string CreationTimeString { get; set; }
 
+    /// <summary>
+    /// Legacy <c>ManageGeneralSettings.StartupDashboard</c> (<c>WebApplication.SetupStartupDashboard</c>):
+    /// the page the application opens on after login. In HCMv3 it is an application route such as
+    /// <c>/app/main/home</c>; blank means the default landing page.
+    /// </summary>
+    public string StartupDashboard { get; set; }
+
     public TenantLoginInfoDto()
     {
         FeatureValues = new List<NameValueDto>();

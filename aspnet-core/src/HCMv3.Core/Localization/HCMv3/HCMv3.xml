@@ -2599,6 +2599,12 @@
     <text name="TimeTransfers">Time Transfers</text>
     <text name="TransTypeCannotBeBlank">Trans type cannot be blank.</text>
     <text name="TimeEventAlreadyExists">A time event for this employee with trans type, date '{0}' and time '{1}' already exists.</text>
+    <text name="TimeEventAlreadyExistsForSource">A time event for this employee with trans type, date '{0}' and time '{1}' already exists for source {2}.</text>
+    <text name="AttendanceCannotStartOnWeekOff">Attendance cannot start on {0}: the duty {1} is a weekly off and attendance on week-off is not enabled in Time Settings.</text>
+    <text name="AttendanceCannotStartOnRestDay">Attendance cannot start on {0}: the duty {1} is a rest day and attendance on rest day is not enabled in Time Settings.</text>
+    <text name="PendingLeaveRequestOfSameTypeExists">A leave request of the same type is still pending approval for this employee.</text>
+    <text name="HalfDayLeaveNotEnabled">Half-day leave is not enabled in Time Settings.</text>
+    <text name="PayFullWithPayrollNotEnabled">Pay Full With Payroll is not enabled in Time Settings.</text>
     <text name="RecordSourceCannotBeBlank">Record source cannot be blank.</text>
     <text name="RecordSourceAlreadyExists">Record source '{0}' already exists.</text>
     <text name="TokenUrlCannotBeBlank">Token URL cannot be blank.</text>
@@ -3402,6 +3408,9 @@
     <text name="MaxReviewerLimitReached">Maximum reviewer limit of {0} has been reached.</text>
     <text name="PAFormAlreadyExistsForPeriodAndEmployee">A PA Form already exists for this Period and Employee.</text>
     <text name="PAPeerNomineeAlreadyExists">This peer has already been nominated for this Period and Employee.</text>
+    <text name="PeerNomineeCountOutOfRange">Peer Nominee Count should be between {0} and {1}. Please assign proper Peer Nominees.</text>
+    <text name="PeerReviewerLimitReached">The maximum number of peer reviewers ({0}) has already been nominated for this employee and period.</text>
+    <text name="PARatingRangeOverlaps">The rating range (From Range - To Range) overlaps with an existing rating range. Please ensure that the new range does not intersect with any existing entries.</text>
     <text name="PATimelineExceptionAlreadyExists">A timeline exception already exists for this Period, Employee and Activity Type.</text>
     <text name="PATimelineAlreadyExistsForPeriodAndActivityType">A timeline already exists for this Period and Activity Type.</text>
     <text name="PlanSubmitByAppraiser">Plan Submitted By Appraiser</text>
@@ -3469,6 +3478,7 @@
     <text name="WFReadLogs">Workflow Read Logs</text>
     <text name="ReminderDaysMustBeLessThanEscalateAfterDays">Reminder days should be less than escalate after days.</text>
     <text name="DuplicateStepFound">Duplicate step found.</text>
+    <text name="RequestDetailStepOutOfRange">Step number should be between 1 and {0}.</text>
     <text name="WorkflowRoleGroupCannotBeBlank">WorkflowRoleGroup cannot be blank.</text>
     <text name="WorkflowRoleCannotBeBlank">WorkflowRole cannot be blank.</text>
     <text name="RequestMasterAlreadySetAsDefault">A default workflow group already exists.</text>
@@ -4234,6 +4244,8 @@
     <text name="RunTimeEngine">Run Time Engine</text>
     <text name="TimeEngineEndDateRequired">No End Date defined for Time Calculation. Please select an End Date.</text>
     <text name="TimeEngineStartDateAfterEndDate">Start Date cannot be later than End Date.</text>
+    <text name="TimeEngineEndDateBeyondFutureLimit">End Date cannot be later than {0}: the payroll control record month end plus {1} day(s) (TE_MAX_LIMIT_DAYS).</text>
+    <text name="TimeEngineStartDateBeforeEarliestDate">Start Date cannot be earlier than the earliest time evaluation date {0} (TIME_EVAL_EARLIEST_DATE).</text>
     <text name="TimeEngineRunQueued">Time Engine run has been queued. Progress appears in the run history below.</text>
     <text name="TimeEngineRunHistory">Time Engine Run History</text>
     <text name="PayrollEngine">Payroll Engine</text>
@@ -5049,6 +5061,12 @@
     <text name="PayrollJVCustom051Report">Payroll JV (Custom 051)</text>
     <text name="PayrollSheetFromPeriodMustNotBeAfterToPeriod">The From period must not be after the To period.</text>
     <text name="PayrollSheetAllowedMonths">This report may span at most {0} month(s).</text>
+    <text name="LeaveProvisionAllowedMonths">This report may span at most {0} month(s).</text>
+    <text name="IndemnityProvisionAllowedMonths">This report may span at most {0} month(s).</text>
+    <text name="EmployeeCodeRequiredWhenAutoCodeDisabled">Employee Code is required: automatic employee codes are disabled in General Settings.</text>
+    <text name="RecurringPaymentMoreThanOneOverlap">More than one recurring payment overlaps this entry. There should be only one entry to apply the automatic end date.</text>
+    <text name="RecurringPaymentLastEntryMustBeOpenEnded">Recurring payment overlap found ({0} - {1}). The last entry should have End Date 31/12/9999.</text>
+    <text name="RecurringPaymentLastEntryStartDateMustBeEarlier">Recurring payment overlap found. The last entry's Start Date should be earlier than the current Start Date {0}.</text>
     <text name="Difference">Difference</text>
     <text name="FromMonth">From Month</text>
     <text name="ToMonth">To Month</text>

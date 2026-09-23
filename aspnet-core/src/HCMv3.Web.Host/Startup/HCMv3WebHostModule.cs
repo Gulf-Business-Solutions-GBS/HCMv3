@@ -120,6 +120,14 @@ public class HCMv3WebHostModule : AbpModule
         // is a per-tenant runtime setting and therefore cannot be evaluated here at host start-up.
         workManager.Add(IocManager.Resolve<TimeEngineAutorunBackgroundWorker>());
 
+        // The nightly unattended payroll run (legacy PayrollService.RunPayrollEngine); a no-op per tenant
+        // unless ManagePayrollSettings.EnablePayrollEngineAutorun is on.
+        workManager.Add(IocManager.Resolve<HCMv3.PayrollManagement.PayrollEngineAutorunBackgroundWorker>());
+
+        // The 15-minute time-attendance API sync (legacy Hangfire job TransferTransactionFromAPI); a no-op per
+        // tenant unless ManageTimeSettings.EnableTimeAttIntegrationAPI is on.
+        workManager.Add(IocManager.Resolve<TimeAttendanceApiSyncBackgroundWorker>());
+
         // REPORT DISTRIBUTION: fires report schedules whose next occurrence has arrived. Registered
         // unconditionally -- it is a no-op unless a tenant has active schedules that are due, and there
         // is no host-level setting that could be evaluated here instead.

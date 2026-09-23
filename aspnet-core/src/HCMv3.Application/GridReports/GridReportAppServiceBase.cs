@@ -185,6 +185,10 @@ public abstract class GridReportAppServiceBase : HCMv3AppServiceBase
     {
         await WriteExecutionLogAsync(ExecutionLogAction.EXPORT, parameters, rows.Count);
 
-        return await GridReportExcelExporter.ExportAsync(fileName, rows, columns);
+        // Legacy GridReportHelper.GetDecimalRounding: ManageReportSettings.DecimalInReports, zero meaning three.
+        var reportSettings = await SysSettingsAccessor.GetReportSettingsAsync();
+        var decimalPlaces = reportSettings?.DecimalInReports ?? 0;
+
+        return await GridReportExcelExporter.ExportAsync(fileName, rows, columns, decimalPlaces);
     }
 }

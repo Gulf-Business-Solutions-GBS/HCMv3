@@ -7,6 +7,7 @@ using Abp.Domain.Uow;
 using Abp.UI;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration.Services;
+using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -52,6 +53,7 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     private readonly ILeaveQuotaLedger _quotaLedger;
     private readonly ILeaveReturnProcessor _returnProcessor;
     private readonly IProbationEndDateService _probation;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
     /// <summary>Legacy hard-codes these absence type codes: "1" annual (paid late days are measured against
     /// it), "2" unpaid (late days beyond the balance are booked as it).</summary>
@@ -69,7 +71,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         ILeaveRuleValidator leaveRuleValidator,
         ILeaveQuotaLedger quotaLedger,
         ILeaveReturnProcessor returnProcessor,
-        IProbationEndDateService probation)
+        IProbationEndDateService probation,
+        ISysSettingsAccessor sysSettingsAccessor)
         : base(repository, unitOfWorkManager)
     {
         _absenceTypeRepository = absenceTypeRepository;
@@ -80,6 +83,7 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         _quotaLedger = quotaLedger;
         _returnProcessor = returnProcessor;
         _probation = probation;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     public override string RequestType => LeaveRequestType;
@@ -500,6 +504,16 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
+        // Legacy LeaveRequest.PerformValidation "Check If Leave Request is Pending", governed by
+        // ManageTimeSettings.EnableBookingQuotaInLeaveRequest:
+        //   on  -- a pending request of ANY type overlapping the dates blocks the new one (and pending days come
+        //          off the bookable balance, see LeaveBalanceService);
+        //   off -- a pending request of the SAME type blocks the new one whatever its dates, and pending
+        //          requests of other types do not block by dates at all.
+        // Approved leave overlapping the dates blocks in both cases.
+        var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
+        var bookingQuotaOn = timeSettings != null && timeSettings.EnableBookingQuotaInLeaveRequest;
+
         using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
             var overlapping = Repository.GetAll()
@@ -510,13 +524,29 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
                             && (a.WorkflowStatus == null
                                 || a.WorkflowStatus == RequestStatus.Approved
                                 || a.WorkflowStatus == RequestStatus.Closed
-                                || a.WorkflowStatus == RequestStatus.Open))
+                                || (bookingQuotaOn && a.WorkflowStatus == RequestStatus.Open)))
                 .Select(a => (int?)a.Id)
                 .FirstOrDefault();
 
             if (overlapping.HasValue)
             {
                 throw new UserFriendlyException(L("OverlappingLeaveRequestExists"));
+            }
+
+            if (!bookingQuotaOn)
+            {
+                var pendingSameType = Repository.GetAll()
+                    .Where(a => a.Id != excludeLeaveId
+                                && a.EmployeeId == employeeId
+                                && a.AbsenceTypeId == absenceTypeId
+                                && a.WorkflowStatus == RequestStatus.Open)
+                    .Select(a => (int?)a.Id)
+                    .FirstOrDefault();
+
+                if (pendingSameType.HasValue)
+                {
+                    throw new UserFriendlyException(L("PendingLeaveRequestOfSameTypeExists"));
+                }
             }
         }
 

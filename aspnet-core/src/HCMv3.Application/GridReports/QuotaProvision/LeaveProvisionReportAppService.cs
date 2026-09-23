@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
+using Abp.UI;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
@@ -108,6 +109,23 @@ public class LeaveProvisionReportAppService : GridReportAppServiceBase, ILeavePr
         var forfeitMonthly = timeSettings != null && timeSettings.ForfeitRule == ForfeitRule.Monthly;
         var enableTimeRegisterApproval = timeSettings != null && timeSettings.EnableTimeRegisterApproval;
         var earliestEvaluationDate = timeSettings?.EarliestEvaluationDate ?? DateTime.MinValue;
+
+        // Legacy uscRptLeaveProvision lines 76-79 and 434-456: the TO month counts only when
+        // ManageReportSettings.ShowPeriodInLeaveProvision is on, and the span may not exceed
+        // PeriodMonthLimitInLeaveProvision months (0 = no limit).
+        var reportSettings = await SysSettingsAccessor.GetReportSettingsAsync();
+        if (reportSettings == null || !reportSettings.ShowPeriodInLeaveProvision)
+        {
+            toDate = fromDate;
+        }
+        else if (reportSettings.PeriodMonthLimitInLeaveProvision != 0)
+        {
+            var totalMonths = ((toDate.Year - fromDate.Year) * 12) + (toDate.Month - fromDate.Month) + 1;
+            if (reportSettings.PeriodMonthLimitInLeaveProvision < totalMonths)
+            {
+                throw new UserFriendlyException(L("LeaveProvisionAllowedMonths", reportSettings.PeriodMonthLimitInLeaveProvision));
+            }
+        }
 
         var periods = GetMonthEndPeriods(fromDate, toDate);
 
