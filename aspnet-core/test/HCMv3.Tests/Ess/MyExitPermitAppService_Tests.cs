@@ -425,6 +425,49 @@ public class MyExitPermitAppService_Tests : AppTestBase
         mine.Items.ShouldBeEmpty();
     }
 
+    // ---------------------------------------------------------------- the submission comment
+
+    [Fact]
+    public async Task Submitting_Should_Carry_The_Requesters_Comment_Onto_The_Created_Log_Entry()
+    {
+        // The requester's own note used to be written to EmployeeExitPermit.Comments and nowhere else, while
+        // the Created log row was stamped with remark: null. So the activity feed -- the thing an approver
+        // actually reads -- opened with a bare "Created" line and the one sentence explaining WHY the
+        // request exists was not in it. The engine now asks the type's handler for that note at submit.
+        CreateCurrentUserEmployee("EXP400");
+        EnableExitPermitWorkflow("EXP400APP");
+
+        var submission = await _exitPermits.RequestExitPermit(PermitInput("KW-77712", DateTime.Today.AddDays(12)));
+        submission.SubmittedForApproval.ShouldBeTrue();
+
+        var created = UsingDbContext(c => c.Set<RequestLog>()
+            .Single(l => l.WorkflowRequestId == submission.WorkflowRequestId
+                         && l.ActionType == RequestActionType.Created));
+
+        created.RequestActionComment.ShouldBe("Visiting family");
+    }
+
+    [Fact]
+    public async Task Submitting_Should_Still_Succeed_When_There_Is_No_Comment_To_Carry()
+    {
+        // The note is optional, and reading it must not become a new way for a submission to fail.
+        CreateCurrentUserEmployee("EXP410");
+        EnableExitPermitWorkflow("EXP410APP");
+
+        var input = PermitInput("KW-77713", DateTime.Today.AddDays(13));
+        input.Comments = null;
+
+        var submission = await _exitPermits.RequestExitPermit(input);
+
+        submission.SubmittedForApproval.ShouldBeTrue();
+
+        var created = UsingDbContext(c => c.Set<RequestLog>()
+            .Single(l => l.WorkflowRequestId == submission.WorkflowRequestId
+                         && l.ActionType == RequestActionType.Created));
+
+        created.RequestActionComment.ShouldBeNull();
+    }
+
     [Fact]
     public async Task Should_Refuse_A_User_With_No_Employee_Record()
     {
