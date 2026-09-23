@@ -445,7 +445,7 @@ public class MyHealthReimburseAppService_Tests : AppTestBase
         row.EmployeeId.ShouldBe(meId);
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("HRB-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("HRB-");
     }
 
     [Fact]

@@ -12,11 +12,12 @@ import {
     MyExitPermitDto,
     MyExitPermitServiceProxy,
     RequestExitPermitInput,
+    SaveExitPermitDraftInput,
     TravelReason,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
@@ -143,6 +144,29 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
         });
     }
 
+    /**
+     * Save: files what is on the form as a draft and goes back to the list. Nothing is validated, because
+     * the reason to save rather than submit is usually that something is still missing -- a permit applied
+     * for but not yet issued, most often. The rules are enforced at Submit instead.
+     */
+    save(): void {
+        if (this.saving()) {
+            return;
+        }
+
+        this.saving.set(true);
+
+        this._service
+            .saveMyExitPermitDraft(this.draftInput())
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => this.notifyDraftSaved());
+    }
+
+    /**
+     * Submit: sends it into the approval chain. Two paths, because a draft already exists as a row and a
+     * new request does not -- so a draft is saved and then submitted, while a new one is created and
+     * submitted in the single call that has always done both.
+     */
     submit(): void {
         if (this.saving()) {
             return;
@@ -164,6 +188,23 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
             return;
         }
 
+        this.saving.set(true);
+
+        const draftId = this.editingId();
+
+        if (draftId !== undefined) {
+            // Saved first, so what the approver sees is what is on the screen. Submitting without saving
+            // would send whatever the draft held when it was last written, which is the one thing the
+            // employee did not just read.
+            this._service
+                .saveMyExitPermitDraft(this.draftInput())
+                .pipe(switchMap(() => this._service.submitMyExitPermitDraft(new EntityDto({ id: draftId }))))
+                .pipe(finalize(() => this.saving.set(false)))
+                .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
+
+            return;
+        }
+
         const input = new RequestExitPermitInput();
         input.externalRequestNumber = this.form.externalRequestNumber.trim();
         input.travelReason = this.form.travelReason;
@@ -171,12 +212,45 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
         input.startDate = DateTime.fromISO(this.form.startDate);
         input.comments = this.form.comments;
 
-        this.saving.set(true);
-
         this._service
             .requestExitPermit(input)
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
+    }
+
+    /** Reopens a saved draft in the same form it was filled in on. */
+    continueDraft(row: MyExitPermitDto): void {
+        this._service.getMyExitPermitDraftForEdit(new EntityDto({ id: row.id })).subscribe((draft) => {
+            this.form = {
+                externalRequestNumber: draft.externalRequestNumber ?? '',
+                travelReason: draft.travelReason ?? TravelReason.PlannedLeave,
+                // A draft is allowed to hold no date at all, and the server sends back the unset date it
+                // stored. Rendering that as the year 1 would look like a real value the employee had
+                // chosen, so it goes back to the empty field they left.
+                exitDate: this.toInputDate(draft.exitDate),
+                startDate: this.toInputDate(draft.startDate),
+                comments: draft.comments ?? '',
+            };
+
+            this.editingId.set(row.id);
+            this.showForm.set(true);
+        });
+    }
+
+    private draftInput(): SaveExitPermitDraftInput {
+        const input = new SaveExitPermitDraftInput();
+        input.id = this.editingId();
+        input.externalRequestNumber = this.form.externalRequestNumber?.trim();
+        input.travelReason = this.form.travelReason;
+        input.exitDate = this.form.exitDate ? DateTime.fromISO(this.form.exitDate) : undefined;
+        input.startDate = this.form.startDate ? DateTime.fromISO(this.form.startDate) : undefined;
+        input.comments = this.form.comments;
+
+        return input;
+    }
+
+    private toInputDate(value: DateTime | undefined): string {
+        return value && value.year > 1 ? value.toFormat('yyyy-MM-dd') : '';
     }
 
     travelReasonLabel(reason: TravelReason | undefined): string {

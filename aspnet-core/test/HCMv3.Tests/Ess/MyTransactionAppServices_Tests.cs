@@ -455,7 +455,7 @@ public class MyTransactionAppServices_Tests : AppTestBase
         });
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("LOAN-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("LOAN-");
     }
 
     [Fact]

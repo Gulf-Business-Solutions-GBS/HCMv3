@@ -453,7 +453,7 @@ public class MyMobileDeviceAppService_Tests : AppTestBase
         row.IsActive.ShouldBeTrue();
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("MDV-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("MDV-");
     }
 
     [Fact]

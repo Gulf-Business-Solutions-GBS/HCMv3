@@ -23,6 +23,13 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
 
     readonly rows = signal<TDto[]>([]);
 
+    /**
+     * The draft the form is currently open on, or undefined when the form is being used to raise something
+     * new. It is what tells Submit whether it is sending a draft that already exists or creating and
+     * sending in one step -- two different calls, and the form itself looks identical either way.
+     */
+    readonly editingId = signal<number | undefined>(undefined);
+
     /** The list call for this transaction type. */
     protected abstract fetch(input: GetMyRequestsInput): Observable<{ items: TDto[] }>;
 
@@ -47,12 +54,19 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     }
 
     openForm(): void {
+        this.editingId.set(undefined);
         this.resetForm();
         this.showForm.set(true);
     }
 
+    /**
+     * Cancel on the create form. Discards what is on screen and puts the list back -- it does not delete
+     * anything, because nothing has been saved. Discarding a draft that HAS been saved is Withdraw, on the
+     * row, which is a different action with a confirmation in front of it.
+     */
     closeForm(): void {
         this.showForm.set(false);
+        this.editingId.set(undefined);
     }
 
     cancel(row: TDto): void {
@@ -89,6 +103,11 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
                 return 'badge-success';
             case RequestStatus.Rejected:
                 return 'badge-danger';
+            // Deliberately not the same neutral grey as "Recorded". A draft and a finished record are
+            // opposites -- one is waiting on the employee, the other is done -- and giving them the same
+            // badge is how a draft goes unnoticed in a list until the trip is over.
+            case RequestStatus.Draft:
+                return 'badge-light-warning';
             default:
                 return 'badge-secondary';
         }
@@ -97,6 +116,17 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     /** Reports which of the two outcomes happened, rather than a generic "saved". */
     protected notifySubmitted(submittedForApproval: boolean): void {
         this.notify.success(this.l(submittedForApproval ? 'RequestSubmittedForApproval' : 'RequestRecorded'));
+        this.closeForm();
+        this.reload();
+    }
+
+    /**
+     * The third outcome, and it has to say so plainly. "Saved" on its own reads as "done", and an employee
+     * who believes a draft has gone to their manager will not chase it -- which is the failure a draft
+     * feature invites if the message is vague.
+     */
+    protected notifyDraftSaved(): void {
+        this.notify.info(this.l('RequestSavedAsDraft'));
         this.closeForm();
         this.reload();
     }

@@ -438,7 +438,7 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
 
-        request.RequestNumber.ShouldStartWith("PPW-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("PPW-");
 
         // Routing by document type, or a chain configured for passports specifically could never match.
         request.RequestSubTypeId.ShouldBe(documentTypeId);

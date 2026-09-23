@@ -25,6 +25,7 @@
                     mode="create"
                     [value]="form"
                     [saving]="saving()"
+                    (saved)="save()"
                     (submitted)="submit()"
                     (cancelled)="closeForm()" />
             }
@@ -59,16 +60,29 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-end">
-                                                <!-- Opening the request is the primary action: until this
-                                                     existed the requester could see a status badge but never
-                                                     what they had submitted. Replaces the old Workflow
-                                                     History button, which the detail view now contains. -->
-                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
-                                                    {{ 'Details' | localize }}
-                                                </button>
+                                                <!-- A draft has nothing to show in the detail view -- no
+                                                     number, no approver, no history -- so it offers the one
+                                                     thing it does have: picking up where it was left. -->
+                                                @if (row.canEdit) {
+                                                    <button class="btn btn-primary" (click)="continueDraft(row)" data-help-loc="ContinueDraft">
+                                                        {{ 'ContinueDraft' | localize }}
+                                                    </button>
+                                                } @else {
+                                                    <!-- Opening the request is the primary action: until this
+                                                         existed the requester could see a status badge but never
+                                                         what they had submitted. Replaces the old Workflow
+                                                         History button, which the detail view now contains. -->
+                                                    <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
+                                                    </button>
+                                                }
                                                 @if (row.canCancel) {
+                                                    <!-- The same action either way -- the row goes -- but a
+                                                         draft was never sent to anybody, so calling it
+                                                         "Withdraw" would imply taking back something that
+                                                         had been given. -->
                                                     <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
-                                                        {{ 'Withdraw' | localize }}
+                                                        {{ (row.isDraft ? 'DiscardDraft' : 'Withdraw') | localize }}
                                                     </button>
                                                 }
                                             </td>

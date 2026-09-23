@@ -381,7 +381,7 @@ public class MyExitPermitAppService_Tests : AppTestBase
         row.ExternalRequestNumber.ShouldBe("KW-12345");
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("EXP-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("EXP-");
     }
 
     [Fact]

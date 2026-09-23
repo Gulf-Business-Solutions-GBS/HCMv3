@@ -29,6 +29,29 @@ public interface IMyExitPermitAppService : IApplicationService
     /// employee is never left holding a draft they have to remember to send.</summary>
     Task<MyRequestSubmissionDto> RequestExitPermit(RequestExitPermitInput input);
 
-    /// <summary>Withdraws a request while it is still theirs to withdraw.</summary>
+    /// <summary>
+    /// Files the permit as a draft, or updates one already filed. Nothing is sent, nothing is effective,
+    /// and nobody but the requester can see it.
+    ///
+    /// <para>
+    /// The one call covers both because that is how the screen uses it: the form does not change when it is
+    /// reopened on a draft, so neither does the call it makes. Which one it is, is the presence of an id.
+    /// </para>
+    /// </summary>
+    Task<MyRequestSubmissionDto> SaveMyExitPermitDraft(SaveExitPermitDraftInput input);
+
+    /// <summary>
+    /// Reopens one of the requester's own drafts in the form. Refuses anything that is not theirs and not
+    /// still a draft -- once it is with an approver the form is no longer the way to change it.
+    /// </summary>
+    Task<MyExitPermitDto> GetMyExitPermitDraftForEdit(EntityDto input);
+
+    /// <summary>
+    /// Sends a saved draft into the approval chain. This is the point at which it is validated, gets its
+    /// request number, and lands on an approver -- none of which a draft has.
+    /// </summary>
+    Task<MyRequestSubmissionDto> SubmitMyExitPermitDraft(EntityDto input);
+
+    /// <summary>Withdraws a request while it is still theirs to withdraw. Discards a draft, too.</summary>
     Task CancelMyExitPermit(EntityDto input);
 }

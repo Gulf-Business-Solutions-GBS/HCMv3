@@ -6744,5 +6744,11 @@
     <text name="ApprovalDecision">قرارك</text>
     <text name="ApproverComment">أضف ملاحظة على هذا القرار</text>
     <text name="ThisRequestTypeHasNoDetailedView">لا يعرض هذا النوع من الطلبات حقوله الخاصة بعد، لذلك يظهر الملخص فقط.</text>
+    <text name="YouCanOnlyEditYourOwnRequests">لا يمكنك تعديل سوى طلباتك الخاصة.</text>
+    <text name="ThisRequestIsNoLongerADraft">تم إرسال هذا الطلب بالفعل، لذا لم يعد بالإمكان تعديله هنا.</text>
+    <text name="RequestSavedAsDraft">تم الحفظ كمسودة. لم يُرسل بعد.</text>
+    <text name="DiscardDraft">إلغاء المسودة</text>
+    <text name="ContinueDraft">متابعة</text>
+    <text name="NotSubmittedYet">لم يُرسل بعد</text>
   </texts>
 </localizationDictionary>

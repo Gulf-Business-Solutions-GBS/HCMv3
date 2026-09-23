@@ -31,7 +31,13 @@ public interface IAdminTransactionSubmitter
     /// resolved here, so this stays a plain collaborator instead of reaching into the container.</param>
     /// <param name="entity">Fully populated, including its employee. Not yet inserted.</param>
     /// <param name="requestType">The type's <c>WorkflowTransactionType.Code</c>.</param>
-    /// <param name="requestNumberPrefix">Short prefix for the generated request number, e.g. "PA".</param>
+    /// <param name="requestNumberPrefix">
+    /// A short type tag placed in front of the generated number, e.g. "PA" giving PA-000042. A display hint
+    /// and nothing more: the digits come from one counter shared by every request type in the tenant, so
+    /// they are unique on their own and two types cannot collide even if handed the same tag. Kept as a
+    /// parameter rather than deleted because a bare number tells a reader nothing about what it refers to,
+    /// and because thirty call sites already know what kind of request they are raising.
+    /// </param>
     /// <param name="subTypeId">What the routing rules match against -- the personal action, the loan type.</param>
     /// <returns>The id of the inserted transaction row.</returns>
     Task<int> CreateAndSubmitAsync<TEntity>(

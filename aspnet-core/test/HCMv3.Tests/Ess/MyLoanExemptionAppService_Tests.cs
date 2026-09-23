@@ -449,7 +449,7 @@ public class MyLoanExemptionAppService_Tests : AppTestBase
         row.EmployeeId.ShouldBe(meId);
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("LEX-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("LEX-");
     }
 
     [Fact]

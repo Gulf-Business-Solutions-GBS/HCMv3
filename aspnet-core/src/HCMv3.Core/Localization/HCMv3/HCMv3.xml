@@ -6906,5 +6906,11 @@
     <text name="ApprovalDecision">Your Decision</text>
     <text name="ApproverComment">Add a comment for this decision</text>
     <text name="ThisRequestTypeHasNoDetailedView">This request type does not yet publish its own fields, so only the summary is shown.</text>
+    <text name="YouCanOnlyEditYourOwnRequests">You can only edit your own requests.</text>
+    <text name="ThisRequestIsNoLongerADraft">This request has already been submitted, so it can no longer be edited here.</text>
+    <text name="RequestSavedAsDraft">Saved as a draft. It has not been submitted yet.</text>
+    <text name="DiscardDraft">Discard draft</text>
+    <text name="ContinueDraft">Continue</text>
+    <text name="NotSubmittedYet">Not submitted yet</text>
   </texts>
 </localizationDictionary>

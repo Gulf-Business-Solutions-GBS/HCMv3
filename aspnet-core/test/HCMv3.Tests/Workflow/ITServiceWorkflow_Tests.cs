@@ -185,7 +185,7 @@ public class ITServiceWorkflow_Tests : AppTestBase
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.RequestType == "EmployeeITService"));
 
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("ITS-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("ITS-");
 
         // The request is about the SUBJECT employee, not whoever raised it on their behalf.
         request.EmployeeId.ShouldBe(employeeId);

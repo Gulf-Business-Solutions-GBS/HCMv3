@@ -34331,6 +34331,28 @@ namespace HCMv3.Migrations
                     b.ToTable("RequestMasters");
                 });
 
+            modelBuilder.Entity("HCMv3.Workflow.RequestNumberSequence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("LastValue")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId")
+                        .IsUnique();
+
+                    b.ToTable("RequestNumberSequences");
+                });
+
             modelBuilder.Entity("HCMv3.Workflow.WFReadLog", b =>
                 {
                     b.Property<int>("Id")

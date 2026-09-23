@@ -788,6 +788,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<WorkflowRequest> WorkflowRequests { get; set; }
 
+    public virtual DbSet<RequestNumberSequence> RequestNumberSequences { get; set; }
+
     public virtual DbSet<WorkflowTransactionType> WorkflowTransactionTypes { get; set; }
 
     public virtual DbSet<WorkflowComment> WorkflowComments { get; set; }
@@ -1605,6 +1607,16 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         modelBuilder.Entity<WorkflowRequest>(b =>
         {
             b.HasIndex(e => new { e.TenantId, e.RequestType, e.TargetEntityId });
+        });
+
+        // The tenant's request-number counter. Unique, and that is the point rather than tidiness: a second
+        // counter row for one tenant would let two callers each increment their own and hand out the same
+        // number to different requests. It is also what makes the generator's seed-once path safe -- the
+        // index is what turns "two callers created the counter at the same moment" into a caught exception
+        // and a retry, instead of into a duplicate that nothing would ever notice.
+        modelBuilder.Entity<RequestNumberSequence>(b =>
+        {
+            b.HasIndex(e => e.TenantId).IsUnique();
         });
 
         // The approver inbox: "everything waiting on me, across every request type". This index is what

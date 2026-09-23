@@ -308,7 +308,7 @@ public class DisciplinaryWorkflow_Tests : AppTestBase
             .Single(r => r.RequestType == "EmployeeDisciplinary"));
 
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("DSC-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("DSC-");
 
         // About the SUBJECT of the record, not the person in HR who typed it -- the same rule as every
         // other admin-raised type.
