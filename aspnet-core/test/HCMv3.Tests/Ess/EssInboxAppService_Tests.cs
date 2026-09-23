@@ -81,7 +81,8 @@ public class EssInboxAppService_Tests : AppTestBase
         string requestType = "EmployeeAbsence",
         string summary = "Annual Leave, 3 day(s)",
         bool approverAlreadyActed = false,
-        RequestStatus status = RequestStatus.Open)
+        RequestStatus status = RequestStatus.Open,
+        int workflowStep = 1)
     {
         WorkflowRequest request = null;
         UsingDbContext(context =>
@@ -93,7 +94,7 @@ public class EssInboxAppService_Tests : AppTestBase
                 RequestType = requestType,
                 RequestNumber = "REQ-" + Guid.NewGuid().ToString("N").Substring(0, 6),
                 RequestStatus = status,
-                WorkflowStep = 1,
+                WorkflowStep = workflowStep,
                 SummaryEn = summary,
                 SummaryAr = summary
             }).Entity;
@@ -139,17 +140,20 @@ public class EssInboxAppService_Tests : AppTestBase
 
             context.SaveChanges();
 
-            context.Set<RequestDetail>().Add(new RequestDetail
+            for (var step = 1; step <= steps; step++)
             {
-                TenantId = TenantId,
-                RequestMasterId = master.Id,
-                Step = 1,
-                WorkflowRoleId = role.Id,
-                ApproverPerson = WorkflowApproverPersonType.Person,
-                ApprovalRequire = ApprovalRequire.Single,
-                CanReject = canReject,
-                CanSendBack = canSendBack
-            });
+                context.Set<RequestDetail>().Add(new RequestDetail
+                {
+                    TenantId = TenantId,
+                    RequestMasterId = master.Id,
+                    Step = step,
+                    WorkflowRoleId = role.Id,
+                    ApproverPerson = WorkflowApproverPersonType.Person,
+                    ApprovalRequire = ApprovalRequire.Single,
+                    CanReject = canReject,
+                    CanSendBack = canSendBack
+                });
+            }
 
             var type = context.Set<WorkflowTransactionType>().First(t => t.Code == typeCode);
             type.IsWorkflowEnabled = true;
@@ -286,7 +290,96 @@ public class EssInboxAppService_Tests : AppTestBase
 
         item.CanReject.ShouldBeFalse();
         item.CanSendBack.ShouldBeTrue();
+
+        // Two approval rows, numbered 1 and 2: the last step that names an approver is 2.
         item.TotalSteps.ShouldBe(2);
+    }
+
+    [Fact]
+    public async Task Should_Not_Count_The_Creator_Row_As_An_Approval_Step()
+    {
+        // EXIT-STD in the live Default tenant, exactly: three rows, the first of which nominates nobody
+        // because it is the rule for who may RAISE the request, and a stored WorkflowSteps of 2 that was
+        // never recalculated. A request at step 2 was shown as "Step 2 / 2" -- reading as the final
+        // approval when the step-3 approver had not seen it yet.
+        var meId = CreateCurrentUserEmployee("INB750ME");
+        var requesterId = CreateEmployee("INB750REQ");
+        ConfigureChainWithCreatorRow(storedWorkflowSteps: 2);
+        var requestId = CreatePendingRequest(requesterId, meId, workflowStep: 2);
+
+        var item = (await _inbox.GetMyInbox(Query())).Items.Single(i => i.Id == requestId);
+
+        // Not 2 (the stale stored count, and also the number of approval rows) -- the numerator is the
+        // engine's own step number, so the denominator has to be the last step number that has an approver.
+        item.TotalSteps.ShouldBe(3);
+        item.WorkflowStep.ShouldBe(2);
+    }
+
+    /// <summary>
+    /// A chain shaped like the ported production ones: step 1 is the creator rule (no approver), the
+    /// approvals are steps 2 and 3, and <c>RequestMaster.WorkflowSteps</c> is whatever was stored last.
+    /// </summary>
+    private void ConfigureChainWithCreatorRow(int storedWorkflowSteps)
+    {
+        UsingDbContext(context =>
+        {
+            var role = context.Set<WorkflowRole>().Add(new WorkflowRole
+            {
+                TenantId = TenantId,
+                Code = "R" + Guid.NewGuid().ToString("N").Substring(0, 5),
+                NameEn = "Approver",
+                NameAr = "Approver"
+            }).Entity;
+
+            var master = context.Set<RequestMaster>().Add(new RequestMaster
+            {
+                TenantId = TenantId,
+                Code = "CREATOR-STD",
+                NameEn = "With creator row",
+                NameAr = "With creator row",
+                WorkflowSteps = storedWorkflowSteps
+            }).Entity;
+
+            context.SaveChanges();
+
+            context.Set<RequestDetail>().Add(new RequestDetail
+            {
+                TenantId = TenantId,
+                RequestMasterId = master.Id,
+                Step = 1,
+                ApproverPerson = WorkflowApproverPersonType.None,
+                Person = WorkflowPersonScope.Themselves,
+                ApprovalRequire = ApprovalRequire.Single
+            });
+
+            context.Set<RequestDetail>().Add(new RequestDetail
+            {
+                TenantId = TenantId,
+                RequestMasterId = master.Id,
+                Step = 2,
+                ApproverPerson = WorkflowApproverPersonType.PersonManager,
+                ApprovalRequire = ApprovalRequire.Single,
+                CanReject = true,
+                CanSendBack = true
+            });
+
+            context.Set<RequestDetail>().Add(new RequestDetail
+            {
+                TenantId = TenantId,
+                RequestMasterId = master.Id,
+                Step = 3,
+                WorkflowRoleId = role.Id,
+                ApproverPerson = WorkflowApproverPersonType.Person,
+                ApprovalRequire = ApprovalRequire.Single,
+                CanReject = true,
+                CanSendBack = true
+            });
+
+            var type = context.Set<WorkflowTransactionType>().First(t => t.Code == "EmployeeAbsence");
+            type.IsWorkflowEnabled = true;
+            type.IsActive = true;
+            type.DefaultRequestMasterId = master.Id;
+        });
     }
 
     private void SetWorkflowSettings(bool sendBackToCreator = false, int travelCostStep = 0)

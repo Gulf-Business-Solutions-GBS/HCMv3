@@ -1,0 +1,48 @@
+.ess-inbox__row {
+    cursor: pointer;
+}
+
+.ess-inbox__row--selected {
+    background-color: rgba(54, 153, 255, 0.08);
+}
+
+// Leaves room for the docked decision bar, so the paginator is never hidden behind it.
+.ess-inbox--docked {
+    margin-bottom: 150px;
+}
+
+.ess-inbox-decision {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    // Above the request-detail dialog (Bootstrap 5 puts .modal at 1055), so the approver can still decide
+    // while reading the request rather than having to close it first.
+    z-index: 1080;
+    padding: 0.75rem 1.5rem;
+    background-color: #ffffff;
+    border-top: 1px solid #ebedf3;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ess-inbox-decision__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.ess-inbox-decision__request {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+.ess-inbox-decision__comment {
+    flex: 2 1 320px;
+    min-width: 0;
+}
+
+.ess-inbox-decision__buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}

@@ -6731,5 +6731,8 @@
     <text name="WorkflowRequest">طلب سير العمل</text>
     <text name="RequestLog">سجل الإجراءات</text>
     <text name="ReadLog">سجل الاطلاع</text>
-    <text name="ReadDate">تاريخ الاطلاع</text>  </texts>
+    <text name="ReadDate">تاريخ الاطلاع</text>      <text name="SubmittedOn">تاريخ التقديم</text>
+    <text name="EssInboxHeaderInfo">جميع الطلبات بانتظار اعتمادك، من كل الأنواع.</text>
+    <text name="OnlyFirstRecordsAreShown">عدد الطلبات بانتظار اعتمادك أكبر مما تعرضه هذه الصفحة. استخدم عوامل التصفية لتضييق القائمة.</text>
+  </texts>
 </localizationDictionary>

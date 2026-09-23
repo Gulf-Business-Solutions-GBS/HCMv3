@@ -194,10 +194,34 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         try
         {
             var master = await _requestMasterResolver.ResolveAsync(request);
-            item.TotalSteps = master.WorkflowSteps;
 
-            var detail = await _requestDetailRepository.FirstOrDefaultAsync(
-                d => d.RequestMasterId == master.Id && d.Step == request.WorkflowStep);
+            var details = await _requestDetailRepository.GetAll()
+                .Where(d => d.RequestMasterId == master.Id)
+                .Select(d => new { d.Step, d.ApproverPerson, d.CanReject, d.CanSendBack })
+                .ToListAsync();
+
+            // The denominator of "Step 2 / 3", so it has to be counted in the same numbering as the
+            // numerator -- WorkflowStep, which is RequestDetail.Step, the engine's own step number.
+            //
+            // It used to be RequestMaster.WorkflowSteps, and that was wrong twice over. WorkflowSteps is a
+            // stored count refreshed only when steps are edited through RequestDetailsAppService, so a chain
+            // configured any other way leaves it stale -- EXIT-STD has three rows and says 2. And even when
+            // it is current it counts the creator row: the step whose ApproverPerson is None, which says who
+            // may RAISE the request and nominates nobody to approve it (see IWorkflowStepSequence). A
+            // request sitting at step 2 of that chain was therefore shown as "Step 2 / 2", reading as final
+            // when a whole approval still followed it.
+            //
+            // The last step that actually names an approver answers both: it ignores the creator row, it
+            // ignores the stored count, and it is the step the engine will in fact stop at, because
+            // GetNextApproverStep only ever moves to a row with an approver on it.
+            var lastApprovalStep = details
+                .Where(d => d.ApproverPerson != WorkflowApproverPersonType.None)
+                .Select(d => (int?)d.Step)
+                .Max();
+
+            item.TotalSteps = lastApprovalStep ?? 0;
+
+            var detail = details.FirstOrDefault(d => d.Step == request.WorkflowStep);
 
             // Legacy ESS (UnifiedLeaveRequest / RosterPlanner controllers): the send-back button is offered
             // only when ManageWorkflowSettings.SendBackToCreator is on, over and above the step's own flag.

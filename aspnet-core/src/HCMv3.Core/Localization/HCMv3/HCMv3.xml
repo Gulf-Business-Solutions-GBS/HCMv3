@@ -6894,5 +6894,8 @@
     <text name="ReadLog">Read Log</text>
     <text name="ReadDate">Read Date</text>
 
+    <text name="SubmittedOn">Submitted On</text>
+    <text name="EssInboxHeaderInfo">Every request waiting on your approval, of every type.</text>
+    <text name="OnlyFirstRecordsAreShown">More requests are waiting on you than this page can show. Use the filters to narrow the list.</text>
   </texts>
 </localizationDictionary>
