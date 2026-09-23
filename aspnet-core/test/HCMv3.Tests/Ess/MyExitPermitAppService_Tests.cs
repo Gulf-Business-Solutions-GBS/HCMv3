@@ -381,7 +381,7 @@ public class MyExitPermitAppService_Tests : AppTestBase
         row.ExternalRequestNumber.ShouldBe("KW-12345");
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("EXP-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
+        request.RequestNumber.ShouldStartWith("EXP-");
     }
 
     [Fact]

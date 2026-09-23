@@ -453,7 +453,7 @@ public class MyMobileDeviceAppService_Tests : AppTestBase
         row.IsActive.ShouldBeTrue();
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("MDV-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
+        request.RequestNumber.ShouldStartWith("MDV-");
     }
 
     [Fact]

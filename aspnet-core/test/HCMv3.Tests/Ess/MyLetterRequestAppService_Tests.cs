@@ -478,7 +478,7 @@ public class MyLetterRequestAppService_Tests : AppTestBase
         row.AddressToEn.ShouldBe("The Manager, National Bank of Kuwait");
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("LTR-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
+        request.RequestNumber.ShouldStartWith("LTR-");
     }
 
     [Fact]

@@ -514,7 +514,7 @@ public class MyDelegationAppService_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>()
             .Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("DEL-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
+        request.RequestNumber.ShouldStartWith("DEL-");
         request.SummaryEn.ShouldNotBeNullOrWhiteSpace();
         request.SummaryEn.Contains("DEL410D T").ShouldBeTrue(
             "The summary does not name the delegate, so the approver is being asked to hand over authority " +

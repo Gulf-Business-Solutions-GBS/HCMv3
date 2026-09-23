@@ -240,7 +240,7 @@ public class AssignedTaskWorkflow_Tests : AppTestBase
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.RequestType == "EmployeeAssignedTask"));
 
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("TSK-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
+        request.RequestNumber.ShouldStartWith("TSK-");
 
         // The request is about the ASSIGNEE, not whoever handed the work out.
         request.EmployeeId.ShouldBe(employeeId);

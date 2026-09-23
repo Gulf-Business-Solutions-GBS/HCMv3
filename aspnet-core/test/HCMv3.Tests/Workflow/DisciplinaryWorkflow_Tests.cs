@@ -308,7 +308,7 @@ public class DisciplinaryWorkflow_Tests : AppTestBase
             .Single(r => r.RequestType == "EmployeeDisciplinary"));
 
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("DSC-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
+        request.RequestNumber.ShouldStartWith("DSC-");
 
         // About the SUBJECT of the record, not the person in HR who typed it -- the same rule as every
         // other admin-raised type.
