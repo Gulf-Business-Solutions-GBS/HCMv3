@@ -51,7 +51,11 @@ export class HeaderNotificationsComponent extends AppComponentBase implements On
         // ONCE, not on every reload. This raises a "a new version is available, reload?" confirm, and it
         // used to hang off loadNotifications -- which now runs on a timer and on every arriving
         // notification, so leaving it there would put that dialog in front of people once a minute.
-        this.shouldUserUpdateApp();
+        // Still skipped during installation, which is where it used to be skipped by sitting behind
+        // loadNotifications' own guard.
+        if (!UrlHelper.isInstallUrl(location.href)) {
+            this.shouldUserUpdateApp();
+        }
     }
 
     private startPeriodicRefresh(): void {
