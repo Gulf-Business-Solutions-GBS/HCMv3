@@ -6739,5 +6739,7 @@
     <text name="TodaysAttendanceHint">تسجيلات الحضور والانصراف لليوم</text>
     <text name="AlertsSummaryHint">أخبار الموظفين على مستوى المؤسسة</text>
     <text name="PendingApprovals">موافقات قيد الانتظار</text>
+    <text name="DeleteAllNotifications">حذف الكل</text>
+    <text name="DeleteAllNotificationsWarningMessage">سيتم حذف جميع الإشعارات الخاصة بك، المقروءة وغير المقروءة على حد سواء. لا يمكن التراجع عن هذا الإجراء.</text>
   </texts>
 </localizationDictionary>

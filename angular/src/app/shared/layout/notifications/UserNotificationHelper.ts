@@ -176,6 +176,39 @@ export class UserNotificationHelper extends AppComponentBase {
         });
     }
 
+    /**
+     * Delete one notification, then tell every bell on the page to re-read itself.
+     *
+     * The refresh event is the point of routing this through the helper rather than calling the proxy
+     * from each screen: the header dropdown and the full notifications page can both be mounted at once,
+     * and a delete performed in one of them left the other showing the row and counting it.
+     */
+    deleteNotification(userNotificationId: string, callback?: () => void): void {
+        this._notificationService.deleteNotification(userNotificationId).subscribe(() => {
+            abp.event.trigger('app.notifications.refresh');
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    /**
+     * Delete EVERY notification this user has, read or unread, whatever its date.
+     *
+     * Deliberately unfiltered, and that is the difference from the full page's "delete listed": that one
+     * deletes what the date filter currently shows, which is the right verb there and the wrong one in a
+     * dropdown, where nothing tells you what the hidden filter is. All three arguments are omitted so
+     * the server applies no state or date restriction.
+     */
+    deleteAll(callback?: () => void): void {
+        this._notificationService.deleteAllUserNotifications(undefined, undefined, undefined).subscribe(() => {
+            abp.event.trigger('app.notifications.refresh');
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
     openSettingsModal(): void {
         this.settingsModal.show();
     }

@@ -6901,5 +6901,7 @@
     <text name="TodaysAttendanceHint">Your clockings for today</text>
     <text name="AlertsSummaryHint">People news across the organisation</text>
     <text name="PendingApprovals">Pending approvals</text>
+    <text name="DeleteAllNotifications">Delete all</text>
+    <text name="DeleteAllNotificationsWarningMessage">All of your notifications will be deleted, read and unread alike. This cannot be undone.</text>
   </texts>
 </localizationDictionary>
