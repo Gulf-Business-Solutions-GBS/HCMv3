@@ -6902,5 +6902,14 @@
     <text name="Amendment">Amendment</text>
     <text name="ClearFilters">Clear filters</text>
     <text name="OpenRequestScreen">Open on its own screen</text>
+    <text name="CurrentAssignment">Current Assignment</text>
+    <text name="CurrentAssignmentHint">Employment details in force today</text>
+    <text name="LeaveBalanceSubtitle">Available leave quota summary</text>
+    <text name="UpdatedToday">Updated today</text>
+    <text name="TodaysAttendanceHint">Your clockings for today</text>
+    <text name="AlertsSummaryHint">People news across the organisation</text>
+    <text name="PendingApprovals">Pending approvals</text>
+    <text name="DeleteAllNotifications">Delete all</text>
+    <text name="DeleteAllNotificationsWarningMessage">All of your notifications will be deleted, read and unread alike. This cannot be undone.</text>
   </texts>
 </localizationDictionary>

@@ -41,35 +41,43 @@
             }
         } @else if (context()) {
             <div class="row">
-                <div class="col-xl-4 col-lg-5 col-md-12">
-                    <div class="card card-custom gutter-b h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="ess-avatar mr-3">
-                                @if (photoUrl()) {
-                                    <img [src]="photoUrl()" [alt]="employeeName()" />
-                                } @else {
-                                    <span>{{ initials() }}</span>
-                                }
-                            </div>
+                <!--
+                    SUPPRESSED WHEN EMBEDDED. The dashboard draws a fuller identity card of its own -- photo,
+                    code, name, job title, and the assignment beside it -- directly above this section, and
+                    two name plates on one screen read as a rendering fault rather than as emphasis.
+                    Still drawn on the standalone page, which has no other identity.
+                -->
+                @if (!embedded()) {
+                    <div class="col-xl-4 col-lg-5 col-md-12">
+                        <div class="card card-custom gutter-b h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="ess-avatar mr-3">
+                                    @if (photoUrl()) {
+                                        <img [src]="photoUrl()" [alt]="employeeName()" />
+                                    } @else {
+                                        <span>{{ initials() }}</span>
+                                    }
+                                </div>
 
-                            <div class="min-width-0">
-                                <h5 class="mb-1 text-truncate">{{ employeeName() }}</h5>
-                                <div class="text-muted">{{ context().employeeCode }}</div>
+                                <div class="min-width-0">
+                                    <h5 class="mb-1 text-truncate">{{ employeeName() }}</h5>
+                                    <div class="text-muted">{{ context().employeeCode }}</div>
 
-                                @if (context().isManager) {
-                                    <span class="badge badge-light-primary mt-2" data-help-loc="EssMyTeam">{{ 'EssMyTeam' | localize }}</span>
-                                }
+                                    @if (context().isManager) {
+                                        <span class="badge badge-light-primary mt-2" data-help-loc="EssMyTeam">{{ 'EssMyTeam' | localize }}</span>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
 
                 <!--
                     Two counts, two cards. They are easy to confuse and mean opposite things: one is what
                     somebody else is waiting on this person for, the other is what they are waiting on
                     somebody else for. Most people are on both sides of a workflow.
                 -->
-                <div class="col-xl-4 col-lg-3 col-md-6">
+                <div [class]="embedded() ? 'col-md-6' : 'col-xl-4 col-lg-3 col-md-6'">
                     <a routerLink="/app/main/ess/inbox" class="card card-custom gutter-b h-100 ess-stat">
                         <div class="card-body">
                             <div class="ess-stat-value">{{ context().pendingApprovalCount }}</div>
@@ -79,7 +87,7 @@
                     </a>
                 </div>
 
-                <div class="col-xl-4 col-lg-4 col-md-6">
+                <div [class]="embedded() ? 'col-md-6' : 'col-xl-4 col-lg-4 col-md-6'">
                     <!-- Now a link: this tile showed a count of the employee's own pending requests but led
                          nowhere, because until the central Requests screen existed there was nowhere for it
                          to lead. -->
@@ -104,7 +112,13 @@
                             @for (type of tiles(); track type.code) {
                                 <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
                                     <a [routerLink]="type.essRoute" class="ess-tile">
-                                        <i [class]="type.iconClass || 'flaticon-file-2'"></i>
+                                        <!-- Glyph in a tinted disc, the same treatment the dashboard's
+                                             Quick Actions use. A bare icon at label size reads as a
+                                             bullet point; at disc size it reads as the thing you aim
+                                             at, which is what made the legacy tiles legible. -->
+                                        <span class="ess-tile-icon">
+                                            <i [class]="type.iconClass || 'flaticon-file-2'"></i>
+                                        </span>
                                         <span class="ess-tile-name">{{ typeName(type) }}</span>
 
                                         <!--

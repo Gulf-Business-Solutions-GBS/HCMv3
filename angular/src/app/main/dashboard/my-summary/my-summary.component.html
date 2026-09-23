@@ -1,33 +1,64 @@
 @if (!isLoading()) {
-    <!-- Identity. Shown only when the signed-in user has an employee record: an administrator has none,
-         and an identity card with every field blank is worse than no card at all. -->
-    @if (profile(); as p) {
-        <div class="ms-identity">
-            <div class="ms-avatar" aria-hidden="true">{{ p.fullName ? p.fullName.charAt(0) : '?' }}</div>
-            <div class="ms-identity-text">
-                <div class="ms-identity-code">{{ p.code }}</div>
-                <h2 class="ms-identity-name">{{ p.fullName }}</h2>
-                @if (p.jobTitle) {
-                    <div class="ms-identity-job">{{ p.jobTitle }}</div>
-                }
+    <!-- Identity and employment details side by side, as on the legacy ESS home. Two cards rather than
+         one strip: who you are is stable and personal, where you work changes with every transfer, and
+         running them together made the transfer-sensitive half look like part of the name plate. -->
+    <div class="row">
+        @if (profile(); as p) {
+            <div class="col-xl-4 col-lg-5">
+                <div class="card card-custom ms-card ms-card-fill">
+                    <div class="card-body ms-identity">
+                        <div class="ms-avatar" aria-hidden="true">
+                            {{ p.fullName ? p.fullName.charAt(0) : '?' }}
+                        </div>
+                        <div class="ms-identity-text">
+                            <div class="ms-identity-code">{{ p.code }}</div>
+                            <h2 class="ms-identity-name">{{ p.fullName }}</h2>
+                            @if (p.jobTitle) {
+                                <div class="ms-identity-job">{{ p.jobTitle }}</div>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="ms-org">
-                <div class="ms-org-item">
-                    <span class="ms-org-label">{{ 'Department' | localize }}</span>
-                    <span class="ms-org-value">{{ orgValue(p.department) }}</span>
-                </div>
-                <div class="ms-org-item">
-                    <span class="ms-org-label">{{ 'WorkLocation' | localize }}</span>
-                    <span class="ms-org-value">{{ orgValue(p.workLocation) }}</span>
-                </div>
-                <div class="ms-org-item">
-                    <span class="ms-org-label">{{ 'CostCenter' | localize }}</span>
-                    <span class="ms-org-value">{{ orgValue(p.costCenter) }}</span>
+            <div class="col-xl-8 col-lg-7">
+                <div class="card card-custom ms-card ms-card-fill">
+                    <div class="card-body">
+                        <div class="ms-head-row">
+                            <i class="flaticon2-architecture-and-city ms-head-icon" aria-hidden="true"></i>
+                            <div>
+                                <div class="ms-head-title">{{ 'CurrentAssignment' | localize }}</div>
+                                <div class="ms-head-sub">{{ 'CurrentAssignmentHint' | localize }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Two by two, matching legacy. The pairing is not arbitrary: department and
+                             company answer "who do I report into", location and cost centre answer
+                             "where does my cost land" -- the two questions HR is asked about an
+                             assignment. -->
+                        <div class="ms-org-grid">
+                            <div class="ms-org-item">
+                                <span class="ms-org-label">{{ 'Department' | localize }}</span>
+                                <span class="ms-org-value">{{ orgValue(p.department) }}</span>
+                            </div>
+                            <div class="ms-org-item">
+                                <span class="ms-org-label">{{ 'Company' | localize }}</span>
+                                <span class="ms-org-value">{{ companyName() }}</span>
+                            </div>
+                            <div class="ms-org-item">
+                                <span class="ms-org-label">{{ 'WorkLocation' | localize }}</span>
+                                <span class="ms-org-value">{{ orgValue(p.workLocation) }}</span>
+                            </div>
+                            <div class="ms-org-item">
+                                <span class="ms-org-label">{{ 'CostCenter' | localize }}</span>
+                                <span class="ms-org-value">{{ orgValue(p.costCenter) }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 
     @if (showNoEmployeeNotice()) {
         <!-- Where the identity card would be. An administrator account is usually not linked to an
@@ -53,11 +84,28 @@
         <div class="card card-custom ms-card">
             <div class="card-body">
                 <div class="ms-section-head">{{ 'QuickActions' | localize }}</div>
+
+                <!-- Square tiles, not text links. The earlier row of 12px labels with small glyphs was
+                     the specific thing that lost the comparison against legacy: at that size an icon is
+                     decoration, and the tile stops being something you aim at. -->
                 <div class="ms-actions">
                     @for (action of visibleQuickActions(); track action.route) {
                         <a class="ms-action" [routerLink]="[action.route]">
-                            <i [class]="action.icon" aria-hidden="true"></i>
-                            <span>{{ action.labelKey | localize }}</span>
+                            <span class="ms-action-icon">
+                                <i [class]="action.icon" aria-hidden="true"></i>
+
+                                <!-- Rendered only when there is something to act on. A permanent zero is
+                                     noise, and noise is what stops a badge being read the day it
+                                     matters. -->
+                                @if (action.showsPendingApprovals && pendingApprovalCount()) {
+                                    <span
+                                        class="ms-action-badge"
+                                        [attr.aria-label]="'PendingApprovals' | localize">
+                                        {{ pendingApprovalCount() }}
+                                    </span>
+                                }
+                            </span>
+                            <span class="ms-action-label">{{ action.labelKey | localize }}</span>
                         </a>
                     }
                 </div>
@@ -74,42 +122,65 @@
         </div>
     }
 
-    <div class="row">
-        @if (leaveBalances().length || hasEmployeeRecord()) {
-            <div class="col-md-4">
-                <div class="card card-custom ms-card">
-                    <div class="card-body">
-                        <div class="ms-section-head">{{ 'LeaveBalance' | localize }}</div>
-                        <div class="ms-balances">
-                            @for (balance of leaveBalances(); track balance.leaveType) {
-                                <div class="ms-balance">
-                                    <div class="ms-balance-type">{{ balance.leaveType }}</div>
-                                    <div class="ms-balance-value">
-                                        {{ balance.balance }}
-                                        <span class="ms-balance-unit">{{ 'Days' | localize }}</span>
-                                    </div>
-                                </div>
-                            }
+    @if (leaveBalances().length || hasEmployeeRecord()) {
+        <!-- Full width and EVERY leave type, not just the largest. Showing one was the bug people read
+             as "I only have annual leave"; a balance card that omits sick and casual is worse than no
+             card, because it answers the question wrongly rather than not at all. -->
+        <div class="card card-custom ms-card">
+            <div class="card-body">
+                <div class="ms-head-row ms-head-row-split">
+                    <div class="ms-head-row">
+                        <i class="flaticon2-calendar-4 ms-head-icon" aria-hidden="true"></i>
+                        <div>
+                            <div class="ms-head-title">{{ 'LeaveBalance' | localize }}</div>
+                            <div class="ms-head-sub">{{ 'LeaveBalanceSubtitle' | localize }}</div>
                         </div>
-                        @if (leaveBalances().length) {
-                            <!-- Bookable, not remaining: days already awaiting approval are not yours to
-                                 apply for a second time. -->
-                            <p class="ms-balance-note">{{ 'LeaveBalanceBookableHint' | localize }}</p>
-                        } @else {
-                            <!-- An employee with no quota rows. Distinct from "zero days left", which is
-                                 a balance; this is no entitlement recorded at all. -->
-                            <p class="ms-empty">{{ 'NoLeaveQuotasAssigned' | localize }}</p>
-                        }
                     </div>
+                    @if (leaveBalances().length) {
+                        <span class="ms-pill">{{ 'UpdatedToday' | localize }}</span>
+                    }
                 </div>
-            </div>
-        }
 
+                <div class="ms-balances">
+                    @for (balance of leaveBalances(); track balanceKey(balance); let i = $index) {
+                        <div [class]="'ms-balance ' + balanceTint(i)">
+                            <div class="ms-balance-type">{{ balance.leaveType }}</div>
+                            <div class="ms-balance-value">
+                                <!-- Two decimals, display only. The stored accrual keeps its full
+                                     precision; six places on a screen reads as a machine thinking out
+                                     loud rather than as an answer. -->
+                                {{ formatBalance(balance.balance) }}
+                                <span class="ms-balance-unit">{{ 'Days' | localize }}</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (leaveBalances().length) {
+                    <!-- Bookable, not remaining: days already awaiting approval are not yours to
+                         apply for a second time. -->
+                    <p class="ms-balance-note">{{ 'LeaveBalanceBookableHint' | localize }}</p>
+                } @else {
+                    <!-- An employee with no quota rows. Distinct from "zero days left", which is
+                         a balance; this is no entitlement recorded at all. -->
+                    <p class="ms-empty">{{ 'NoLeaveQuotasAssigned' | localize }}</p>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="row">
         @if (attendance(); as att) {
-            <div class="col-md-4">
-                <div class="card card-custom ms-card">
+            <div class="col-md-6">
+                <div class="card card-custom ms-card ms-card-fill">
                     <div class="card-body">
-                        <div class="ms-section-head">{{ 'TodaysAttendance' | localize }}</div>
+                        <div class="ms-head-row">
+                            <i class="flaticon-stopwatch ms-head-icon" aria-hidden="true"></i>
+                            <div>
+                                <div class="ms-head-title">{{ 'TodaysAttendance' | localize }}</div>
+                                <div class="ms-head-sub">{{ 'TodaysAttendanceHint' | localize }}</div>
+                            </div>
+                        </div>
 
                         @if (att.punchCount) {
                             <div class="ms-alert">
@@ -141,10 +212,16 @@
         }
 
         @if (alerts(); as a) {
-            <div class="col-md-4">
-                <div class="card card-custom ms-card">
+            <div class="col-md-6">
+                <div class="card card-custom ms-card ms-card-fill">
                     <div class="card-body">
-                        <div class="ms-section-head">{{ 'AlertsSummary' | localize }}</div>
+                        <div class="ms-head-row">
+                            <i class="flaticon2-bell-2 ms-head-icon" aria-hidden="true"></i>
+                            <div>
+                                <div class="ms-head-title">{{ 'AlertsSummary' | localize }}</div>
+                                <div class="ms-head-sub">{{ 'AlertsSummaryHint' | localize }}</div>
+                            </div>
+                        </div>
                         <div class="ms-alert">
                             <span>{{ 'BirthdaysThisMonth' | localize }}</span>
                             <span class="ms-alert-count">{{ a.birthdaysThisMonth }}</span>

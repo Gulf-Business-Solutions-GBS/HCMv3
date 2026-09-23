@@ -1,29 +1,34 @@
 /* Personal dashboard tiles, modelled on the legacy ESS dashboard. Palette follows the employee record
    and the sidebar shortcuts, so the screens a person moves between read as one product. */
 
+.ms-card {
+    margin-bottom: 16px;
+}
+
+/* Cards that sit beside each other must end level. Without this the identity card -- which has less in
+   it than the assignment card -- stops short and leaves a step across the top of the page. */
+.ms-card-fill {
+    height: calc(100% - 16px);
+}
+
+/* ---------- identity ---------- */
 .ms-identity {
     display: flex;
     align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    background: #fff;
-    border: 1px solid #d3dee2;
-    border-radius: 3px;
-    padding: 16px 18px;
-    margin-bottom: 16px;
+    gap: 18px;
 }
 
 .ms-avatar {
     flex: 0 0 auto;
-    width: 52px;
-    height: 52px;
+    width: 78px;
+    height: 78px;
     border-radius: 50%;
     background: #0b6e80;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 32px;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -32,38 +37,96 @@
     min-width: 0;
 }
 
+/* Code above the name, in the accent colour, exactly as legacy has it. It is how HR and payroll refer
+   to a person, and it is the thing you read out on the phone. */
 .ms-identity-code {
     font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
+    letter-spacing: 0.04em;
     color: #0b6e80;
 }
 
 .ms-identity-name {
-    margin: 0;
-    font-size: 19px;
-    font-weight: 600;
+    margin: 2px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
     color: #23313a;
 }
 
 .ms-identity-job {
-    font-size: 12.5px;
+    margin-top: 3px;
+    font-size: 13px;
     color: #6b7c85;
 }
 
-.ms-org {
+/* ---------- card headings with an icon ---------- */
+.ms-head-row {
     display: flex;
-    gap: 28px;
-    flex-wrap: wrap;
-    margin-left: auto;
-    padding-left: 20px;
-    border-left: 1px solid #edf1f3;
+    align-items: center;
+    gap: 12px;
 }
 
+.ms-head-row-split {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.ms-head-icon {
+    font-size: 20px;
+    color: #0b6e80;
+}
+
+.ms-head-icon:before {
+    font-size: 20px;
+}
+
+.ms-head-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #23313a;
+}
+
+.ms-head-sub {
+    font-size: 12px;
+    color: #8b9aa3;
+}
+
+/* "Updated today" and similar: a statement about the data, not a control, so it is quiet and not
+   clickable-looking. */
+.ms-pill {
+    padding: 3px 12px;
+    border-radius: 12px;
+    background: #eef6f8;
+    color: #0b6e80;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ---------- employment details ---------- */
+.ms-org-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin-top: 16px;
+}
+
+/* Thin rules between the pairs, as legacy draws them: the grid is read as two rows of two, and without
+   a separator the four values run together into a list. */
 .ms-org-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    padding: 12px 18px;
+    border-top: 1px solid #edf1f3;
+}
+
+.ms-org-item:nth-child(odd) {
+    border-inline-end: 1px solid #edf1f3;
+    padding-inline-start: 0;
 }
 
 .ms-org-label {
@@ -75,17 +138,26 @@
 }
 
 .ms-org-value {
-    font-size: 13.5px;
+    font-size: 16px;
     font-weight: 600;
     color: #23313a;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.ms-card {
-    margin-bottom: 16px;
+@media (max-width: 575.98px) {
+    .ms-org-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ms-org-item:nth-child(odd) {
+        border-inline-end: 0;
+        padding-inline-start: 0;
+    }
 }
 
 .ms-section-head {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.07em;
@@ -94,55 +166,105 @@
 }
 
 /* ---------- quick actions ---------- */
+/* Square tiles at the size legacy uses. The previous 130px-wide text links with 22px glyphs were the
+   specific complaint -- at that scale the icon is decoration and the tile stops being a target. */
 .ms-actions {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
 }
 
 .ms-action {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 16px 10px;
-    background: #f7f9fa;
+    justify-content: center;
+    gap: 14px;
+    min-height: 140px;
+    padding: 18px 12px;
+    background: #fff;
     border: 1px solid #dfe6ea;
-    border-radius: 4px;
-    font-size: 12.5px;
-    font-weight: 600;
+    border-radius: 6px;
     color: #23313a;
     text-align: center;
     text-decoration: none;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
 }
 
-.ms-action i {
-    font-size: 22px;
+/* The glyph sits in its own tinted disc so it reads as an illustration rather than as a bullet, which
+   is what makes the legacy tiles legible from across the desk. */
+.ms-action-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #eef6f8;
+}
+
+.ms-action-icon i,
+.ms-action-icon i:before {
+    font-size: 26px;
+    line-height: 1;
     color: #0b6e80;
+}
+
+.ms-action-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.25;
 }
 
 .ms-action:hover {
-    background: #eef6f8;
+    background: #f7fbfc;
     border-color: #0b6e80;
+    box-shadow: 0 2px 8px rgba(11, 110, 128, 0.12);
     color: #0b6e80;
+}
+
+/* The approvals count. Warm rather than the page accent on purpose: it is the one number here that
+   means somebody else is blocked, and it should not blend into the tile it sits on. */
+.ms-action-badge {
+    position: absolute;
+    top: -6px;
+    inset-inline-end: -6px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: #d3541f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 22px;
+    text-align: center;
 }
 
 /* ---------- leave balance ---------- */
 .ms-balances {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
 }
 
+/* One tinted card per leave type. The tint carries no meaning beyond "this is a different type" -- it
+   is there so three balances are told apart without reading three labels. */
 .ms-balance {
-    padding: 12px 14px;
-    background: #f7f9fa;
+    padding: 14px 16px;
     border: 1px solid #dfe6ea;
-    border-radius: 4px;
+    border-radius: 6px;
+    background: #f7f9fa;
 }
 
 .ms-balance-type {
-    font-size: 12px;
+    font-size: 12.5px;
+    font-weight: 600;
     color: #6b7c85;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -150,34 +272,76 @@
 }
 
 .ms-balance-value {
-    margin-top: 4px;
-    font-size: 22px;
-    font-weight: 600;
+    margin-top: 6px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
     color: #0b6e80;
 }
 
 .ms-balance-unit {
+    margin-inline-start: 4px;
     font-size: 11px;
     font-weight: 600;
     color: #8b9aa3;
     text-transform: uppercase;
 }
 
+.ms-balance-blue {
+    background: #eef5fb;
+    border-color: #cfe0f0;
+}
+
+.ms-balance-blue .ms-balance-value {
+    color: #1c6bb0;
+}
+
+.ms-balance-green {
+    background: #edf7f0;
+    border-color: #cde6d6;
+}
+
+.ms-balance-green .ms-balance-value {
+    color: #1f8a4c;
+}
+
+.ms-balance-purple {
+    background: #f3f0fa;
+    border-color: #ddd5ef;
+}
+
+.ms-balance-purple .ms-balance-value {
+    color: #6244a8;
+}
+
+.ms-balance-amber {
+    background: #fdf4e8;
+    border-color: #f2e0c2;
+}
+
+.ms-balance-amber .ms-balance-value {
+    color: #a86b14;
+}
+
 .ms-balance-note {
-    margin: 10px 0 0;
+    margin: 12px 0 0;
     font-size: 11.5px;
     color: #8b9aa3;
 }
 
-/* ---------- alerts ---------- */
+/* ---------- alerts / attendance rows ---------- */
 .ms-alert {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 11px 0;
     font-size: 13px;
     color: #23313a;
     border-bottom: 1px solid #edf1f3;
+}
+
+.ms-alert:first-of-type {
+    margin-top: 6px;
 }
 
 .ms-alert:last-child {
@@ -188,15 +352,6 @@
     font-size: 17px;
     font-weight: 600;
     color: #0b6e80;
-}
-
-[dir='rtl'] .ms-org {
-    margin-left: 0;
-    margin-right: auto;
-    padding-left: 0;
-    padding-right: 20px;
-    border-left: 0;
-    border-right: 1px solid #edf1f3;
 }
 
 .ms-punch {
@@ -215,7 +370,7 @@
 }
 
 .ms-empty {
-    margin: 0;
+    margin: 10px 0 0;
     font-size: 12.5px;
     color: #8b9aa3;
 }
