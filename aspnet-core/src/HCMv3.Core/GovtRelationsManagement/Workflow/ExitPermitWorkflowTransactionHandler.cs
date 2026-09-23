@@ -107,6 +107,48 @@ public class ExitPermitWorkflowTransactionHandler : WorkflowTransactionHandlerBa
             $"إذن خروج {ReasonAr(permit.TravelReason)} {number}، {date}");
     }
 
+    /// <summary>
+    /// Every field the exit permit form captures, in the order it captures them.
+    ///
+    /// <para>
+    /// This is the type that exposed the gap. The summary line happens to carry the permit number and the
+    /// exit date, so an approver could half-decide from it -- but <see cref="EmployeeExitPermit.StartDate"/>
+    /// appears nowhere in that sentence and was simply unreachable, and the reason and the requester's own
+    /// note were only there by accident of wording. All six are here, which is the whole point: the approver
+    /// reads what the requester filled in, not a paraphrase of it.
+    /// </para>
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var permit = await GetTargetAsync(context);
+        if (permit == null)
+        {
+            // The row is gone or not written yet. The engine's own facts still describe the request, and a
+            // card showing those beats a card showing nothing.
+            return await base.BuildDetailAsync(context);
+        }
+
+        var detail = new WorkflowRequestDetail
+        {
+            SubmissionComment = permit.Comments
+        };
+
+        // The names are EmployeeExitPermit's own property names, which is what lets the Angular exit-permit
+        // form put each value back in the input the requester typed it into.
+        //
+        // TravelReason's VALUE stays the localized label rather than the enum name. The form renders it
+        // read-only, so it needs the words, not the code -- and sending the code would also have made the
+        // generic viewer, which has no idea what an EmployeeExitPermit is, print "PlannedLeave" at an
+        // approver.
+        return detail
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text(nameof(EmployeeExitPermit.ExternalRequestNumber), L("ExitPermitNumber"), permit.ExternalRequestNumber))
+            .Add(WorkflowDetailField.Text(nameof(EmployeeExitPermit.TravelReason), L("TravelReason"), L("TravelReason_" + permit.TravelReason)))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeExitPermit.StartDate), L("StartDate"), permit.StartDate))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeExitPermit.ExitDate), L("ExitDate"), permit.ExitDate))
+            .Add(WorkflowDetailField.LongText(nameof(EmployeeExitPermit.Comments), L("Comments"), permit.Comments));
+    }
+
     private static string ReasonEn(TravelReason reason)
     {
         switch (reason)

@@ -55,6 +55,20 @@ public interface IWorkflowTransactionHandler : IDomainService
     Task<WorkflowSummary> BuildSummaryAsync(WorkflowTransactionContext context);
 
     /// <summary>
+    /// Projects the transaction row as localized label/value pairs, so an approver reads the same fields the
+    /// requester filled in. See <see cref="WorkflowRequestDetail"/> for why this exists alongside the
+    /// summary.
+    ///
+    /// <para>
+    /// <see cref="WorkflowTransactionHandlerBase{TEntity}"/> supplies a default that is never empty -- the
+    /// summary, the request number and the submitted date -- so a type whose handler has not projected its
+    /// own fields yet degrades to what the inbox already showed rather than to a blank card. Overriding it
+    /// is how a type stops degrading.
+    /// </para>
+    /// </summary>
+    Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context);
+
+    /// <summary>
     /// The request completed its final approval. This is where the transaction becomes real: the handler
     /// marks the row approved and applies whatever must happen exactly once -- deducting leave quota,
     /// posting a payroll entry.

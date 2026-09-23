@@ -6899,5 +6899,12 @@
     <text name="DeleteAllNotificationsWarningMessage">All of your notifications will be deleted, read and unread alike. This cannot be undone.</text>
     <text name="EssInboxHeaderInfo">Every request waiting on your approval, of every type.</text>
     <text name="OnlyFirstRecordsAreShown">More requests are waiting on you than this page can show. Use the filters to narrow the list.</text>
+    <text name="DoYouApproveThisRequest">Do you approve this request?</text>
+    <text name="RequestInformation">Request Information</text>
+    <text name="ApprovalStatus">Approval Status</text>
+    <text name="InitiatedBy">Initiated by {0} on {1}</text>
+    <text name="ApprovalDecision">Your Decision</text>
+    <text name="ApproverComment">Add a comment for this decision</text>
+    <text name="ThisRequestTypeHasNoDetailedView">This request type does not yet publish its own fields, so only the summary is shown.</text>
   </texts>
 </localizationDictionary>

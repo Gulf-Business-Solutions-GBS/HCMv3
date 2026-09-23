@@ -1,7 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp;
+using Abp.Localization;
+using Abp.Notifications;
+using HCMv3.Authorization.Users;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.MultiTenancy;
+using HCMv3.Notifications;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSecurity.Services;
 using HCMv3.Workflow;
@@ -27,9 +34,21 @@ public class WorkflowNotifications_Tests : EssLeaveWorkflowTestBase
 {
     private readonly INotificationRecipientResolver _recipients;
     private readonly IWorkflowNotificationDispatcher _dispatcher;
+    private readonly CapturingAppNotifier _notifier;
 
     public WorkflowNotifications_Tests()
     {
+        // Substituted so the tests can read what the dispatcher HANDS to the notifier.
+        //
+        // The alternative -- dispatch and then read AbpNotifications back -- does not work here and its
+        // failure is instructive: ABP inserts the notification inside its own unit of work and hands the
+        // fan-out to a background job, so a fresh DbContext opened straight afterwards sees nothing. That
+        // would have been a test of ABP's plumbing anyway. What this port can get wrong is the DATA, so
+        // that is what is asserted.
+        _notifier = new CapturingAppNotifier();
+        LocalIocManager.IocContainer.Register(
+            Castle.MicroKernel.Registration.Component.For<IAppNotifier>().Instance(_notifier).IsDefault());
+
         _recipients = Resolve<INotificationRecipientResolver>();
         _dispatcher = Resolve<IWorkflowNotificationDispatcher>();
     }
@@ -190,7 +209,105 @@ public class WorkflowNotifications_Tests : EssLeaveWorkflowTestBase
         (await _dispatcher.DispatchAsync(request, 1, WorkflowNotificationAction.Reminder)).ShouldBeTrue();
     }
 
+    // ------------------------------------------------------------------------------- what the bell carries
+
+    [Fact]
+    public async Task A_Notification_Should_Carry_The_Request_Id_So_A_Click_Can_Open_It()
+    {
+        // The user's report: "when I click notification, it is not taking me to that particular request?".
+        // It could not: the message was a localized sentence and the request number existed only inside it,
+        // so there was nothing structured for the client to route on. These three properties are what the
+        // Angular notification helper matches -- it deliberately keys on DATA rather than on the
+        // notification name, which is App.SimpleMessage and shared with every other one-line message.
+        var employeeUserId = CreateUserForNotifications();
+        var employeeId = Activate(CreateEmployee("NTF300", employeeUserId));
+        EnableLeaveWorkflowWithApprover("NTF300APP");
+
+        // SendNotification ON, unlike every other test in this file: those assert who a configuration
+        // ADDRESSES and stop before delivery, whereas this one is about what delivery carries.
+        var config = GivenAConfig(c =>
+        {
+            c.ToEmployee = true;
+            c.SendNotification = true;
+        });
+
+        SetStepConfig(step: 1, d => d.NotificationConfigId = config.Id);
+
+        var request = GivenARequestFor(employeeId);
+
+        (await _dispatcher.DispatchAsync(request, 1, WorkflowNotificationAction.Approve)).ShouldBeTrue();
+
+        var data = _notifier.LastData.ShouldNotBeNull();
+
+        data["workflowRequestId"].ShouldBe(request.Id);
+        data["requestNumber"].ShouldBe(request.RequestNumber);
+
+        // ToEmployee addresses the person the request is ABOUT, so this copy must send them to their own
+        // requests screen rather than to an approver inbox they may have no business in.
+        data["isApprover"].ShouldBe(false);
+    }
+
+    [Fact]
+    public async Task An_Approvers_Copy_Should_Be_Marked_As_Such()
+    {
+        // The same notification, addressed to the other side of the request, has to open the other screen.
+        var employeeId = Activate(CreateCurrentUserEmployee("NTF310"));
+        EnableLeaveWorkflowWithApprover("NTF310CHAIN");
+
+        var approverUserId = CreateUserForNotifications();
+        var approverId = Activate(CreateEmployee("NTF310APP", approverUserId));
+
+        var request = GivenARequestFor(employeeId);
+        GivenAnApprover(request.Id, approverId, approved: false);
+
+        var config = GivenAConfig(c =>
+        {
+            c.SendToApprover = true;
+            c.SendNotification = true;
+        });
+
+        SetStepConfig(step: 1, d => d.SubmitNotificationConfigId = config.Id);
+
+        (await _dispatcher.DispatchAsync(request, 1, WorkflowNotificationAction.Submit)).ShouldBeTrue();
+
+        var data = _notifier.LastData.ShouldNotBeNull();
+
+        data["isApprover"].ShouldBe(true);
+        data["workflowRequestId"].ShouldBe(request.Id);
+    }
+
     // ------------------------------------------------------------------------------- arrange helpers
+
+    /// <summary>
+    /// A login for an employee, because a notification goes to a USER. An employee with no user is silently
+    /// skipped by the dispatcher, which would make the tests above pass by sending nothing at all.
+    /// </summary>
+    private long CreateUserForNotifications()
+    {
+        var userId = 0L;
+
+        UsingDbContext(context =>
+        {
+            var unique = Guid.NewGuid().ToString("N").Substring(0, 8);
+            var user = new User
+            {
+                TenantId = TenantId,
+                UserName = "ntf" + unique,
+                Name = "NTF",
+                Surname = "Tester",
+                EmailAddress = "ntf" + unique + "@testdomain.com",
+                IsEmailConfirmed = true,
+                Password = "AM4OLBpptxBYmM79lGOX9egzZk3vIQU3d/gFCJzaBjAPXzYIK3tQ2N7X4fcrHtElTw=="
+            };
+            user.SetNormalizedNames();
+
+            context.Users.Add(user);
+            context.SaveChanges();
+            userId = user.Id;
+        });
+
+        return userId;
+    }
 
     private int[] Resolve(NotificationConfig config, WorkflowRequest request) =>
         _recipients.Resolve(config, request).Select(e => e.Id).OrderBy(id => id).ToArray();
@@ -324,6 +441,69 @@ public class WorkflowNotifications_Tests : EssLeaveWorkflowTestBase
 
     private void SetStepConfig(int step, Action<RequestDetail> configure) =>
         UsingDbContext(context => configure(context.Set<RequestDetail>().Single(d => d.Step == step)));
+
+    /// <summary>
+    /// Records the last message the dispatcher sent and the data it attached, and does nothing else.
+    ///
+    /// <para>
+    /// Only <see cref="SendMessageAsync(UserIdentifier, string, IDictionary{string, object}, NotificationSeverity)"/>
+    /// is interesting; the rest of <see cref="IAppNotifier"/> is here because the interface requires it, and
+    /// each member no-ops rather than throwing so an unrelated code path that happens to notify does not
+    /// fail a test about something else.
+    /// </para>
+    /// </summary>
+    private sealed class CapturingAppNotifier : IAppNotifier
+    {
+        public IDictionary<string, object> LastData { get; private set; }
+
+        public string LastMessage { get; private set; }
+
+        public Task SendMessageAsync(UserIdentifier user, string message, IDictionary<string, object> data,
+            NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            LastMessage = message;
+            LastData = data;
+
+            return Task.CompletedTask;
+        }
+
+        public Task SendMessageAsync(UserIdentifier user, string message,
+            NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            LastMessage = message;
+
+            // Explicitly cleared: a test asserting on LastData must not read data left by an earlier send
+            // through the overload that carries none.
+            LastData = null;
+
+            return Task.CompletedTask;
+        }
+
+        public Task WelcomeToTheApplicationAsync(User user) => Task.CompletedTask;
+
+        public Task NewUserRegisteredAsync(User user) => Task.CompletedTask;
+
+        public Task NewTenantRegisteredAsync(Tenant tenant) => Task.CompletedTask;
+
+        public Task GdprDataPrepared(UserIdentifier user, Guid binaryObjectId) => Task.CompletedTask;
+
+        public Task SendMessageAsync(string notificationName, string message, UserIdentifier[] userIds = null,
+            NotificationSeverity severity = NotificationSeverity.Info) => Task.CompletedTask;
+
+        public Task SendMessageAsync(UserIdentifier user, LocalizableString localizableMessage,
+            IDictionary<string, object> localizableMessageData = null,
+            NotificationSeverity severity = NotificationSeverity.Info) => Task.CompletedTask;
+
+        public Task TenantsMovedToEdition(UserIdentifier user, string sourceEditionName, string targetEditionName)
+            => Task.CompletedTask;
+
+        public Task SomeUsersCouldntBeImported(UserIdentifier user, string fileToken, string fileType, string fileName)
+            => Task.CompletedTask;
+
+        public Task SendMassNotificationAsync(string message, UserIdentifier[] userIds = null,
+            NotificationSeverity severity = NotificationSeverity.Info, Type[] targetNotifiers = null)
+            => Task.CompletedTask;
+    }
 
     private void MarkInactive(int employeeId) =>
         UsingDbContext(context =>

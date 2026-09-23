@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Dependency;
@@ -62,6 +63,51 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
     public virtual Task ValidateBeforeSubmitAsync(WorkflowTransactionContext context)
     {
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// The fallback projection: what the engine itself knows about any request, whatever its type.
+    ///
+    /// <para>
+    /// Deliberately not empty, and deliberately not abstract. Making it abstract would have forced thirty
+    /// handlers to be edited before any of them could be built, and an empty default would have given the
+    /// approver a blank card -- worse than the one-line summary they had. This floor means adding the
+    /// endpoint improved every type at once and each handler can then override at its own pace.
+    /// </para>
+    ///
+    /// <para>
+    /// The submission comment is left null here because it lives on the transaction row, whose shape only
+    /// the concrete handler knows.
+    /// </para>
+    /// </summary>
+    public virtual Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var request = context.Request;
+
+        var detail = new WorkflowRequestDetail()
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), request?.RequestNumber))
+            .Add(WorkflowDetailField.DateTimeField(WorkflowDetailFieldNames.SubmittedOn, L("SubmittedOn"), request?.CreationTime))
+            .Add(WorkflowDetailField.LongText(WorkflowDetailFieldNames.Summary, L("Summary"), CurrentSummary(request)));
+
+        return Task.FromResult(detail);
+    }
+
+    /// <summary>
+    /// The stored summary in the viewer's language. Arabic falls back to English rather than showing
+    /// nothing: a handler written before the Arabic line was filled in should still describe the request.
+    /// </summary>
+    protected string CurrentSummary(WorkflowRequest request)
+    {
+        if (request == null)
+        {
+            return null;
+        }
+
+        var isArabic = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+
+        return isArabic
+            ? (string.IsNullOrWhiteSpace(request.SummaryAr) ? request.SummaryEn : request.SummaryAr)
+            : request.SummaryEn;
     }
 
     /// <inheritdoc/>

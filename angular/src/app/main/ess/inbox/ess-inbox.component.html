@@ -18,7 +18,7 @@
                 </div>
             </div>
         } @else {
-            <div class="card card-custom gutter-b" [class.ess-inbox--docked]="!!selected()">
+            <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <form class="form" autocomplete="off">
                         <div class="row mb-4">
@@ -242,74 +242,10 @@
         }
     </div>
 
-    <!-- The decision bar. It lives outside the detail dialog on purpose: that dialog is the requester's own
-         read-only view, shared with 21 self-service screens, and has no approver mode to switch into. Docked
-         to the bottom of the window so it stays reachable while the dialog is open, and kept inside the
-         [helpPage] element because F1 reads the fields by querying within it. -->
-    @if (selected(); as row) {
-        <div class="ess-inbox-decision">
-            <div class="ess-inbox-decision__inner">
-                <div class="ess-inbox-decision__request">
-                    <div class="fw-bold text-truncate">{{ row.summary }}</div>
-                    <div class="small text-muted text-truncate">
-                        {{ row.requestNumber }} · {{ row.employeeName }} · {{ 'Step' | localize }} {{ row.stepLabel }}
-                    </div>
-                </div>
-
-                <textarea
-                    class="form-control ess-inbox-decision__comment"
-                    data-help-loc="Comment"
-                    rows="2"
-                    [placeholder]="'Comment' | localize"
-                    [(ngModel)]="comment"></textarea>
-
-                <div class="ess-inbox-decision__buttons">
-                    <button
-                        type="button"
-                        class="btn btn-light-primary me-2"
-                        data-help-loc="Details"
-                        (click)="openDetail(row)">
-                        {{ 'Details' | localize }}
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn btn-success me-2"
-                        data-help-loc="Approve"
-                        [disabled]="acting()"
-                        (click)="approve()">
-                        {{ 'Approve' | localize }}
-                    </button>
-
-                    @if (row.canReject) {
-                        <button
-                            type="button"
-                            class="btn btn-danger me-2"
-                            data-help-loc="Reject"
-                            [disabled]="acting()"
-                            (click)="reject()">
-                            {{ 'Reject' | localize }}
-                        </button>
-                    }
-
-                    @if (row.canSendBack) {
-                        <button
-                            type="button"
-                            class="btn btn-warning me-2"
-                            data-help-loc="SendBack"
-                            [disabled]="acting()"
-                            (click)="sendBack()">
-                            {{ 'SendBack' | localize }}
-                        </button>
-                    }
-
-                    <button type="button" class="btn btn-icon btn-light" (click)="clearSelection()">
-                        <i class="ki ki-close" [attr.aria-label]="'Close' | localize"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    }
+    <!-- The decision bar that used to be docked here is gone. It existed only because the detail dialog had
+         no approver mode, so the buttons had nowhere else to live and ended up floating at the bottom of the
+         window underneath a dialog they belonged to. The dialog now carries the decision itself, next to the
+         fields being decided on, which is what the user asked for. -->
 </div>
 
-<essRequestDetailModal #detail />
+<essRequestDetailModal #detail (decided)="onDecided($event)" />

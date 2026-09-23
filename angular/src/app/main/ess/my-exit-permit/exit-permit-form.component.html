@@ -1,0 +1,94 @@
+<!-- Request Detail: the transaction fields, one row across at xl, as the legacy form has them. Bootstrap 5
+     here, so the columns need a .row parent to lay out at all -- without one every col-* is a narrow stacked
+     block, which is what made the select collapse and the date inputs clip their value and picker icon.
+
+     The column widths below (3 / 2 / 2 / 2 / 3) are the layout the requester sees, and an approver sees the
+     identical markup with the inputs disabled. That is the point of the component: not a read-only view OF
+     the form, but the form itself, read-only. -->
+<div class="card card-custom gutter-b mb-5">
+    <div class="card-body">
+        <h5 class="card-title" data-help-loc="RequestDetail">{{ 'RequestDetail' | localize }}</h5>
+
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                <!-- Shown, not chosen: in self-service the requester is always the signed-in employee and
+                     the server takes it from the session. Legacy has a picker here only because the same
+                     form also serves HR. For an approver it is the one field whose meaning changes -- it is
+                     whose permit this is. -->
+                <input type="text" class="form-control" [value]="value().employeeDisplay" readonly disabled />
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="TravelReason">{{ 'TravelReason' | localize }}</label>
+                @if (readOnly()) {
+                    <!-- Still a .form-select with a single option rather than a text input: the box keeps
+                         the same height, border and caret it had on the create form, so the two screens
+                         line up pixel for pixel. .form-control would have flattened it, because this theme
+                         sets appearance:none on it and the caret would vanish. -->
+                    <select class="form-select" disabled>
+                        <option>{{ readOnlyReasonLabel() }}</option>
+                    </select>
+                } @else {
+                    <select class="form-select" [(ngModel)]="value().travelReason">
+                        @for (reason of travelReasons; track reason) {
+                            <option [ngValue]="reason">{{ travelReasonLabel(reason) }}</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="StartDate">{{ 'StartDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <input type="date" class="form-control" [value]="value().startDate" readonly disabled />
+                } @else {
+                    <input type="date" class="form-control" [(ngModel)]="value().startDate" />
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="ExitDate">{{ 'ExitDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <input type="date" class="form-control" [value]="value().exitDate" readonly disabled />
+                } @else {
+                    <input type="date" class="form-control" [(ngModel)]="value().exitDate" />
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" data-help-loc="ExitPermitNumber">{{ 'ExitPermitNumber' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <input type="text" class="form-control" [value]="value().externalRequestNumber" readonly disabled />
+                } @else {
+                    <input type="text" maxlength="100" class="form-control" [(ngModel)]="value().externalRequestNumber" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Request Comment is its own card, as in legacy: it is what the requester says to the approver, not
+     another field of the transaction. Kept in read-only mode too, in the same place -- an approver reading
+     the form should find the requester's note where the requester left it. -->
+<div class="card card-custom gutter-b mb-5">
+    <div class="card-body">
+        <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
+
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                @if (readOnly()) {
+                    <textarea class="form-control" rows="3" [value]="value().comments" readonly disabled></textarea>
+                } @else {
+                    <textarea class="form-control" rows="3" maxlength="500" [(ngModel)]="value().comments"></textarea>
+                }
+            </div>
+        </div>
+
+        @if (!readOnly()) {
+            <div class="mt-4">
+                <!-- Submit, not Save: this sends the permit into an approval chain rather than filing it. -->
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()">
+                    {{ 'Submit' | localize }}
+                </button>
+                <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
+            </div>
+        }
+    </div>
+</div>

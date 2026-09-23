@@ -20,6 +20,7 @@ import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { ExitPermitFormComponent, ExitPermitFormValue } from './exit-permit-form.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
@@ -38,6 +39,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        ExitPermitFormComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,16 +56,19 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
      */
     readonly context = signal<EssContextDto | undefined>(undefined);
 
-    /** Listed rather than derived, so the order on screen is a decision rather than an accident. */
-    readonly travelReasons: TravelReason[] = [TravelReason.PlannedLeave, TravelReason.EmergencyLeave, TravelReason.PersonalTravel];
+    /** The create form's data, owned here and written into by the form component through ngModel. */
+    form: ExitPermitFormValue = MyExitPermitComponent.emptyForm();
 
-    form = {
-        externalRequestNumber: '',
-        travelReason: TravelReason.PlannedLeave,
-        exitDate: '',
-        startDate: '',
-        comments: '',
-    };
+    private static emptyForm(employeeDisplay = ''): ExitPermitFormValue {
+        return {
+            employeeDisplay: employeeDisplay,
+            externalRequestNumber: '',
+            travelReason: TravelReason.PlannedLeave,
+            exitDate: '',
+            startDate: '',
+            comments: '',
+        };
+    }
 
     ngOnInit(): void {
         this.reload();
@@ -71,7 +76,15 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
         // Failure is silent on purpose: the name is decoration, and an unlinked account is already
         // explained by the panel reload() puts up.
         this._essSessionService.getEssContext().subscribe({
-            next: (result) => this.context.set(result),
+            next: (result) => {
+                this.context.set(result);
+
+                // A NEW object rather than a mutated one. The form component is OnPush and takes this as an
+                // input, so writing into the existing object would change what the name IS without changing
+                // the input reference -- and the field would keep showing blank until something else
+                // happened to trigger a check.
+                this.form = { ...this.form, employeeDisplay: this.employeeDisplay() };
+            },
             error: () => undefined,
         });
     }
@@ -97,19 +110,18 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
     }
 
     protected resetForm(): void {
-        this.form = {
-            externalRequestNumber: '',
-            travelReason: TravelReason.PlannedLeave,
-            exitDate: '',
-            startDate: '',
-            comments: '',
-        };
+        // The employee is not a field the requester filled in, so clearing the form must not clear it.
+        this.form = MyExitPermitComponent.emptyForm(this.employeeDisplay());
     }
 
     /**
-     * Opens the submitted request read-only: every field, the requester's comment, the approvers' remarks
+     * Opens the submitted request read-only: the same form, the requester's comment, the approvers' remarks
      * and the action trail. Read-only because once it is in the chain the workflow owns the row -- the only
      * thing the requester can still do to it is withdraw it, and that is on the list.
+     *
+     * <p>The fields below are still passed, and are still worth passing: a permit raised while workflow is
+     * switched off for this type has no workflow request, so the dialog has nothing to fetch and these are
+     * all it can show.</p>
      */
     openDetail(row: MyExitPermitDto): void {
         this.detail()?.show({

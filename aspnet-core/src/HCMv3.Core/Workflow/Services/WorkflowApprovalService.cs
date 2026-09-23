@@ -77,6 +77,10 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         var context = new WorkflowTransactionContext(request, actingEmployeeId);
         var handler = _handlerResolver.Resolve(request.RequestType);
 
+        // The note the requester typed on the form. It lives on the transaction row, in a column only the
+        // type's own handler can name, so the engine has to ask for it.
+        string submissionComment = null;
+
         if (handler != null)
         {
             // Type-specific refusals -- quota, overlap, eligibility -- happen before an approver is
@@ -89,6 +93,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
                 request.SummaryEn = summary.SummaryEn;
                 request.SummaryAr = summary.SummaryAr;
             }
+
+            submissionComment = await GetSubmissionCommentAsync(handler, context);
         }
 
         // NOT a constant 1. A step whose ApproverPerson is None is a creator row -- it says who may raise the
@@ -101,7 +107,9 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
         await AssignApproversForStepAsync(request, requestMaster, firstApproverStep);
 
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: null, workflowStep: firstApproverStep);
+        // The requester's own words, carried onto the Created entry so the activity feed opens with what
+        // they said rather than with a bare "Created" line and their comment nowhere at all.
+        await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: submissionComment, workflowStep: firstApproverStep);
 
         await _workflowRequestRepository.UpdateAsync(request);
 
@@ -631,6 +639,34 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     /// remarks) from legacy <c>WorkFlowServices.AssignWF</c> + <c>GetApprover</c> +
     /// <c>OperateApproverInfo(operationType: 1)</c>.
     /// </summary>
+    /// <summary>
+    /// Asks the handler for the requester's submission note.
+    ///
+    /// <para>
+    /// Swallows a failure on purpose, and this is the one place in submit where that is right. A defect in a
+    /// type's detail projection must not stop an employee submitting a leave request: the note is decoration
+    /// on an audit row, while the submission is the transaction. Everything else in this method fails loudly
+    /// because everything else changes what the request IS.
+    /// </para>
+    /// </summary>
+    private async Task<string> GetSubmissionCommentAsync(IWorkflowTransactionHandler handler, WorkflowTransactionContext context)
+    {
+        try
+        {
+            var detail = await handler.BuildDetailAsync(context);
+
+            return string.IsNullOrWhiteSpace(detail?.SubmissionComment) ? null : detail.SubmissionComment.Trim();
+        }
+        catch (Exception exception)
+        {
+            Logger.Warn(
+                $"Could not read the submission comment for workflow request {context.Request?.Id} of type {context.RequestType}; the request was submitted without it.",
+                exception);
+
+            return null;
+        }
+    }
+
     private async Task AssignApproversForStepAsync(WorkflowRequest request, RequestMaster requestMaster, int step)
     {
         var requestDetail = GetRequestDetail(requestMaster.Id, step);

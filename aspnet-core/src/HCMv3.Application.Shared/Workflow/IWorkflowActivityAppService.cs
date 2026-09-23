@@ -19,6 +19,17 @@ public interface IWorkflowActivityAppService : IApplicationService
 {
     Task<WorkflowActivityFeedDto> GetActivityFeed(GetWorkflowActivityFeedInput input);
 
+    /// <summary>
+    /// One request's transaction fields, projected by the type's own handler, plus who raised it.
+    ///
+    /// <para>
+    /// Lives on this service rather than on a new one because it answers the same authorization question the
+    /// feed already answers -- "is this viewer part of this request?" -- and duplicating that check in a
+    /// second place is how the two drift apart. The screen needs both together anyway.
+    /// </para>
+    /// </summary>
+    Task<WorkflowRequestDetailDto> GetRequestDetail(GetWorkflowRequestDetailInput input);
+
     Task<WorkflowActivityDto> AddComment(AddWorkflowCommentInput input);
 
     Task<WorkflowActivityDto> EditComment(EditWorkflowCommentInput input);

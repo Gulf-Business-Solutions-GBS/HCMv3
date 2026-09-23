@@ -101,16 +101,17 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
     readonly saving = signal(false);
     readonly feed = signal<WorkflowActivityFeedDto | undefined>(undefined);
 
-    /** Bound to the composer. Internal defaults to false so a comment is never private by accident. */
+    /**
+     * Bound to the composer. There is no internal option any more -- see the note in the template. Every
+     * comment written here is a comment on the request, readable by everyone the request involves.
+     */
     newComment = '';
-    newCommentIsInternal = false;
 
     editingId = signal<number | undefined>(undefined);
     editingBody = '';
 
     readonly activities = computed(() => this.feed()?.activities ?? []);
     readonly canComment = computed(() => !this.readOnly() && (this.feed()?.canComment ?? false));
-    readonly canCommentInternally = computed(() => this.feed()?.canCommentInternally ?? false);
 
     readonly Kind = WorkflowActivityKind;
 
@@ -131,6 +132,17 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
         const created =
             activities.find((a) => a.kind === WorkflowActivityKind.Action && a.actionType === RequestActionType.Created) ??
             activities[0];
+
+        // The engine now writes the submission comment onto the Created log entry, so for anything submitted
+        // since that change the feed already opens with the requester's words. Adding the lead bubble too
+        // would print them twice, one line apart.
+        //
+        // The lead is kept rather than deleted because requests submitted BEFORE that change have
+        // remark: null on their Created row, and this is the only place their comment can come from. So the
+        // rule is "show it unless the feed already has it", which is right for both.
+        if (created?.body?.trim()) {
+            return undefined;
+        }
 
         return {
             key: 'lead',
@@ -191,7 +203,10 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
         const input = new AddWorkflowCommentInput();
         input.workflowRequestId = this.workflowRequestId();
         input.body = body;
-        input.isInternal = this.newCommentIsInternal;
+
+        // Always public. The composer no longer offers the choice, and defaulting the other way would make
+        // a comment invisible to the very person it is usually addressed to.
+        input.isInternal = false;
 
         this.saving.set(true);
 
@@ -200,7 +215,6 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe(() => {
                 this.newComment = '';
-                this.newCommentIsInternal = false;
 
                 // Reloaded rather than appended locally: the server decides ordering and what this viewer is
                 // allowed to see, and duplicating that here is how the two drift apart.

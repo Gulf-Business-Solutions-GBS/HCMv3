@@ -167,13 +167,17 @@ public class WorkflowNotificationDispatcher : HCMv3DomainServiceBase, IWorkflowN
     {
         // Recipients are employees; notifications go to users. Somebody with no login simply cannot be
         // reached this way, which is a reason to give them one rather than to fail the send.
-        var userIds = recipients
+        //
+        // Kept as EMPLOYEES through the dedupe, where it used to collapse to a list of user ids. The copy
+        // sent to the requester has to be distinguishable from the copy sent to the approvers -- they open
+        // different screens -- and once the employee is gone there is nothing left to tell them apart.
+        var targets = recipients
             .Where(e => e.UserId.HasValue)
-            .Select(e => e.UserId.Value)
-            .Distinct()
+            .GroupBy(e => e.UserId.Value)
+            .Select(g => g.First())
             .ToList();
 
-        if (userIds.Count == 0)
+        if (targets.Count == 0)
         {
             return;
         }
@@ -183,11 +187,27 @@ public class WorkflowNotificationDispatcher : HCMv3DomainServiceBase, IWorkflowN
             ? NotificationSeverity.Warn
             : NotificationSeverity.Info;
 
-        foreach (var userId in userIds)
+        foreach (var target in targets)
         {
+            // The routing data the bell needs to be clickable. Before this the request number lived only
+            // inside the localized sentence, so a click had nothing to navigate on and the user's report was
+            // simply "when I click notification, it is not taking me to that particular request?".
+            //
+            // The employee this request is ABOUT opens their own requests screen; everyone else on the
+            // recipient list is on the approving side and opens the inbox. That is the honest test: an
+            // approver is anyone who is not the subject, and it does not need the approver table, which the
+            // engine has already rewritten for the next step by the time some of these are sent.
+            var data = new Dictionary<string, object>
+            {
+                ["workflowRequestId"] = request.Id,
+                ["requestNumber"] = request.RequestNumber,
+                ["isApprover"] = request.EmployeeId != target.Id
+            };
+
             await _appNotifier.SendMessageAsync(
-                new Abp.UserIdentifier(request.TenantId, userId),
+                new Abp.UserIdentifier(request.TenantId, target.UserId.Value),
                 message,
+                data,
                 severity);
         }
     }

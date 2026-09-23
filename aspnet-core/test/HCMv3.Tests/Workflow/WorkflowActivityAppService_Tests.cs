@@ -475,4 +475,79 @@ public class WorkflowActivityAppService_Tests : AppTestBase
             .Single(a => a.Kind == WorkflowActivityKind.Comment)
             .ActorPhotoUrl.ShouldBe("/api/employee-photo/" + meId);
     }
+
+    // ---------------------------------------------------------------- approvers reading each other
+
+    [Fact]
+    public async Task Should_Show_The_Thread_To_An_Approver_Who_Has_Already_Acted()
+    {
+        // The user's complaint: "why approver cannot see other approvers comments?". The rule always said
+        // approvers could -- but only while they held the step. AssignApproversForStep deletes every
+        // WorkFlowApprover row for a request before inserting the next step's, so the step-1 manager stopped
+        // being an approver the instant the request moved on, and the whole conversation they had taken part
+        // in vanished behind AbpAuthorizationException.
+        //
+        // RequestLog is never deleted, so having acted is the durable fact to read.
+        var requesterId = CreateEmployee("ACT1700REQUESTER");
+        var meId = CreateCurrentUserEmployee("ACT1700STEP1");
+        var nextApproverId = CreateEmployee("ACT1700STEP2");
+
+        var requestId = CreateRequest(requesterId);
+
+        // Exactly what the engine leaves behind after a step change: only the CURRENT approver holds a row.
+        AddApprover(requestId, nextApproverId);
+        AddLog(requestId, meId, RequestActionType.Approved, "passing this up", new DateTime(2026, 3, 1, 9, 0, 0));
+
+        AddCommentDirect(requestId, nextApproverId, "asked HR to confirm the dates", isInternal: true);
+        AddCommentDirect(requestId, nextApproverId, "looks fine to me", isInternal: false);
+
+        var feed = await _activityService.GetActivityFeed(new GetWorkflowActivityFeedInput { WorkflowRequestId = requestId });
+
+        feed.Activities.ShouldContain(a => a.Body == "looks fine to me");
+        feed.Activities.ShouldContain(a => a.Body == "asked HR to confirm the dates");
+    }
+
+    [Fact]
+    public async Task Should_Still_Hide_Internal_Comments_From_The_Requester_Who_Has_Acted_On_Their_Own_Request()
+    {
+        // The rule that must not have been loosened by the one above. Widening "approver" to include anyone
+        // with a log row would have swept up the requester, whose Created row is a log row too -- and handed
+        // them the approvers' private thread on their own request, which is the exact failure the internal
+        // flag exists to prevent. Created is excluded for that reason, and this pins it.
+        var meId = CreateCurrentUserEmployee("ACT1800ME");
+        var approverId = CreateEmployee("ACT1800APPROVER");
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, approverId);
+
+        AddLog(requestId, meId, RequestActionType.Created, "please approve", new DateTime(2026, 3, 1, 9, 0, 0));
+        AddCommentDirect(requestId, approverId, "checking their entitlement first", isInternal: true);
+        AddCommentDirect(requestId, approverId, "approved shortly", isInternal: false);
+
+        var feed = await _activityService.GetActivityFeed(new GetWorkflowActivityFeedInput { WorkflowRequestId = requestId });
+
+        feed.Activities.ShouldContain(a => a.Body == "approved shortly");
+        feed.Activities.ShouldNotContain(a => a.Body == "checking their entitlement first");
+        feed.Activities.ShouldNotContain(a => a.IsInternal);
+        feed.CanCommentInternally.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task A_Comment_Added_Through_The_Service_Should_Be_Visible_To_Everyone_On_The_Request()
+    {
+        // The composer no longer offers an Internal checkbox, so what it posts is a comment on the request,
+        // readable by the requester and the approvers alike. Asserted at the service, because "the UI does
+        // not show the box" is not the same guarantee as "the comment is not internal".
+        var requesterId = CreateEmployee("ACT1900REQUESTER");
+        var meId = CreateCurrentUserEmployee("ACT1900APPROVER");
+        var requestId = CreateRequest(requesterId);
+        AddApprover(requestId, meId);
+
+        var created = await _activityService.AddComment(new AddWorkflowCommentInput
+        {
+            WorkflowRequestId = requestId,
+            Body = "can you confirm the return date?"
+        });
+
+        created.IsInternal.ShouldBeFalse();
+    }
 }
