@@ -268,7 +268,7 @@
                                                     <td>
                                                         <input
                                                             type="number"
-                                                            class="form-control form-control-sm text-right"
+                                                            class="form-control form-control-sm text-end"
                                                             min="0"
                                                             max="9999999"
                                                             step="0.001"
@@ -283,7 +283,7 @@
                                                             [(ngModel)]="cost.comments"
                                                         />
                                                     </td>
-                                                    <td class="text-right">
+                                                    <td class="text-end">
                                                         <button class="btn btn-light-danger ms-2" (click)="removeCost(legIndex, costIndex)">
                                                             {{ 'Remove' | localize }}
                                                         </button>
@@ -297,8 +297,8 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="2" class="text-right">{{ 'TotalAmount' | localize }}</th>
-                                                <th class="text-right">{{ legTotal(leg) | number: '1.3-3' }}</th>
+                                                <th colspan="2" class="text-end">{{ 'TotalAmount' | localize }}</th>
+                                                <th class="text-end">{{ legTotal(leg) | number: '1.3-3' }}</th>
                                                 <th colspan="2"></th>
                                             </tr>
                                         </tfoot>
@@ -311,7 +311,7 @@
                             <strong>{{ 'TotalTravelCost' | localize }}: {{ formTotal() | number: '1.3-3' }}</strong>
                         </div>
 
-                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submit()">
+                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
                             {{ 'Save' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
@@ -335,7 +335,7 @@
                                         <th>{{ 'StartDate' | localize }}</th>
                                         <th>{{ 'EndDate' | localize }}</th>
                                         <th>{{ 'TravelPurpose' | localize }}</th>
-                                        <th class="text-right">{{ 'TotalTravelCost' | localize }}</th>
+                                        <th class="text-end">{{ 'TotalTravelCost' | localize }}</th>
                                         <th data-help-loc="Status">{{ 'Status' | localize }}</th>
                                         <th></th>
                                     </tr>
@@ -352,11 +352,11 @@
                                             <td>{{ row.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                                             <td>{{ row.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                                             <td>{{ row.travelPurpose }}</td>
-                                            <td class="text-right">{{ row.totalTravelCost | number: '1.3-3' }}</td>
+                                            <td class="text-end">{{ row.totalTravelCost | number: '1.3-3' }}</td>
                                             <td>
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 @if (row.workflowRequestId) {
                                                     <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
@@ -383,7 +383,7 @@
                                                                     <th>{{ 'ArrivalDate' | localize }}</th>
                                                                     <th>{{ 'TotalNights' | localize }}</th>
                                                                     <th>{{ 'TravelCosts' | localize }}</th>
-                                                                    <th class="text-right">{{ 'TotalAmount' | localize }}</th>
+                                                                    <th class="text-end">{{ 'TotalAmount' | localize }}</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -409,7 +409,7 @@
                                                                                 <span class="text-muted small">-</span>
                                                                             }
                                                                         </td>
-                                                                        <td class="text-right">{{ leg.totalAmount | number: '1.3-3' }}</td>
+                                                                        <td class="text-end">{{ leg.totalAmount | number: '1.3-3' }}</td>
                                                                     </tr>
                                                                 } @empty {
                                                                     <tr>

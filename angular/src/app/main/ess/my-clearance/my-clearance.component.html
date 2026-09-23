@@ -46,7 +46,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submit()">
+                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
                             {{ 'Save' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
@@ -83,7 +83,7 @@
                                             <td>
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 <button class="btn btn-light-primary" (click)="toggleChecklist(row)">
                                                     {{ 'ClearanceChecklist' | localize }}
                                                 </button>
@@ -147,7 +147,7 @@
 
                                                         @if (canRecordAnswers()) {
                                                             <button
-                                                                class="btn btn-sm btn-primary mr-2"
+                                                                class="btn btn-sm btn-primary me-2"
                                                                 [disabled]="checklistSaving()"
                                                                 (click)="saveChecklist()">
                                                                 {{ 'Save' | localize }}

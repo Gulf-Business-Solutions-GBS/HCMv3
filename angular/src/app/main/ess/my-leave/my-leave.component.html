@@ -29,7 +29,7 @@
                                 <!-- Bookable is the headline: it is the number an application is checked
                                      against. Remaining is shown beneath so the difference is visible. -->
                                 <div class="d-flex align-items-baseline">
-                                    <span class="h2 mb-0 mr-2">{{ balance.bookable }}</span>
+                                    <span class="h2 mb-0 me-2">{{ balance.bookable }}</span>
                                     <span class="text-muted" data-help-loc="BookableBalance">{{ 'BookableBalance' | localize }}</span>
                                 </div>
 
@@ -92,7 +92,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submitAmendment()">
+                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitAmendment()">
                             {{ 'Save' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeAmendForm()">{{ 'Cancel' | localize }}</button>
@@ -157,7 +157,7 @@
                         }
 
                         <button
-                            class="btn btn-primary mr-2"
+                            class="btn btn-primary me-2"
                             [disabled]="saving() || !returnForm.rejoiningDate"
                             (click)="submitReturn()"
                         >
@@ -227,7 +227,7 @@
                         @if (sickLeaveSegments().length) {
                             <div class="alert alert-light-warning mb-4">
                                 <h6 class="mb-2" data-help-loc="SickLeaveDeductionBreakdown">{{ 'SickLeaveDeductionBreakdown' | localize }}</h6>
-                                <ul class="mb-0 pl-4">
+                                <ul class="mb-0 ps-4">
                                     @for (segment of sickLeaveSegments(); track segment.fromDate) {
                                         <li>
                                             @if (segment.deductionUnit === DeductionUnitPercentage) {
@@ -253,7 +253,7 @@
                             </div>
                         }
 
-                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="apply()">
+                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="apply()">
                             {{ 'Save' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
@@ -299,17 +299,17 @@
                                                     employee would think their request went nowhere.
                                                 -->
                                                 @if (leave.hasPendingAmendment) {
-                                                    <span class="badge badge-light-info ml-1">
+                                                    <span class="badge badge-light-info ms-1">
                                                         {{ 'ChangePending' | localize }}
                                                     </span>
                                                 }
                                                 @if (leave.isReturned) {
-                                                    <span class="badge badge-light-success ml-1">
+                                                    <span class="badge badge-light-success ms-1">
                                                         {{ 'LeaveReturned' | localize }}
                                                     </span>
                                                 }
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 @if (leave.hasPendingAmendment && leave.pendingAmendmentRequestId) {
                                                     <button class="btn btn-light-primary" (click)="history.show(leave.pendingAmendmentRequestId)">
                                                         {{ 'ChangePending' | localize }}

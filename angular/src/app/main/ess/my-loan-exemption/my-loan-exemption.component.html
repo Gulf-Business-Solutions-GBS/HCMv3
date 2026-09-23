@@ -70,7 +70,7 @@
                                 </div>
                             }
 
-                            <button class="btn btn-primary mr-2 mt-4" [disabled]="saving()" (click)="submit()">
+                            <button class="btn btn-primary me-2 mt-4" [disabled]="saving()" (click)="submit()">
                                 {{ 'Save' | localize }}
                             </button>
                             <button class="btn btn-light mt-4" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
@@ -92,7 +92,7 @@
                                     <tr>
                                         <th>{{ 'LoanType' | localize }}</th>
                                         <th>{{ 'ExemptionMonth' | localize }}</th>
-                                        <th class="text-right">{{ 'InstallmentAmount' | localize }}</th>
+                                        <th class="text-end">{{ 'InstallmentAmount' | localize }}</th>
                                         <th>{{ 'LoanEndDate' | localize }}</th>
                                         <th>{{ 'Comments' | localize }}</th>
                                         <th data-help-loc="Status">{{ 'Status' | localize }}</th>
@@ -104,13 +104,13 @@
                                         <tr>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.exemptionDate | luxonFormat: 'yyyy-MM' }}</td>
-                                            <td class="text-right">{{ row.instalmentAmount | number: '1.3-3' }}</td>
+                                            <td class="text-end">{{ row.instalmentAmount | number: '1.3-3' }}</td>
                                             <td>{{ row.loanEndDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                                             <td>{{ row.comments }}</td>
                                             <td>
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 @if (row.workflowRequestId) {
                                                     <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}

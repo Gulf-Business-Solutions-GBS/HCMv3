@@ -50,7 +50,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submit()">
+                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
                             {{ 'Save' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
@@ -86,10 +86,10 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                                 <!-- Approved and not yet collected: the one thing the employee is waiting to be told. -->
                                                 @if (row.canPrint) {
-                                                    <span class="badge badge-info ml-1" data-help-loc="ReadyToCollect">{{ 'ReadyToCollect' | localize }}</span>
+                                                    <span class="badge badge-info ms-1" data-help-loc="ReadyToCollect">{{ 'ReadyToCollect' | localize }}</span>
                                                 }
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 @if (row.workflowRequestId) {
                                                     <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
