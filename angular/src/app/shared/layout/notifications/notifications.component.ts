@@ -168,6 +168,14 @@ export class NotificationsComponent extends AppComponentBase implements AfterVie
         this._userNotificationHelper.openViewNotificationModal(userNotification.id);
     }
 
+    /**
+     * Follow the notification's link through the Router rather than as a plain href, which reloaded the
+     * whole application to reach another screen of it. Same helper the bell and the toast use.
+     */
+    gotoUrl(url: string): void {
+        this._userNotificationHelper.navigateToUrl(url);
+    }
+
     deleteNotification(userNotification: UserNotification): void {
         this.message.confirm(this.l('NotificationDeleteWarningMessage'), this.l('AreYouSure'), (isConfirmed) => {
             if (isConfirmed) {

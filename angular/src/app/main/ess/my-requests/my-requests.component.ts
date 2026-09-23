@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
@@ -59,6 +59,14 @@ import {
 export class MyRequestsComponent extends AppComponentBase implements OnInit {
     private readonly _service = inject(MyRequestsServiceProxy);
     private readonly _router = inject(Router);
+    private readonly _activatedRoute = inject(ActivatedRoute);
+
+    /**
+     * A request this screen was asked to open, from ?requestId= -- how a notification lands you on the
+     * thing it is about rather than merely on the list containing it. Cleared once opened, so paging or
+     * filtering afterwards does not keep re-opening the dialog over whatever you moved on to.
+     */
+    private pendingRequestId: number | null = null;
 
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
@@ -95,6 +103,9 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
         // Deliberately does NOT call getMyRequests(): the table's (onLazyLoad) fires the first load, and
         // calling it here as well would run the query twice on every visit.
         this.loadFilterLookups();
+
+        const requestId = Number(this._activatedRoute.snapshot.queryParamMap.get('requestId'));
+        this.pendingRequestId = Number.isFinite(requestId) && requestId > 0 ? requestId : null;
     }
 
     getMyRequests(event?: LazyLoadEvent): void {
@@ -123,7 +134,30 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
                 this.primengTableHelper.totalRecordsCount.set(result.totalCount);
                 this.primengTableHelper.records.set(result.items);
                 this.primengTableHelper.hideLoadingIndicator();
+                this.openPendingRequest(result.items);
             });
+    }
+
+    /**
+     * Opens the request named in ?requestId=, if this page happens to be holding it.
+     *
+     * <p>Only the page just fetched is searched, and silence is the right answer when it is not there: the
+     * request could be on page four or excluded by a filter, and re-querying to hunt it down would fight
+     * whatever filters the user has since set. Landing on the list is already most of the way there, and
+     * the alternative -- an error for a request that exists and is simply not on screen -- is worse.</p>
+     */
+    private openPendingRequest(items: MyRequestListItemDto[]): void {
+        if (this.pendingRequestId == null) {
+            return;
+        }
+
+        const match = items.find((item) => item.id === this.pendingRequestId);
+        if (!match) {
+            return;
+        }
+
+        this.pendingRequestId = null;
+        this.openDetail(match);
     }
 
     reloadPage(): void {

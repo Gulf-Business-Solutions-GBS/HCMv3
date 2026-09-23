@@ -185,9 +185,14 @@ export class HeaderNotificationsComponent extends AppComponentBase implements On
         );
     }
 
+    /**
+     * Open what a notification is about.
+     *
+     * <p>Delegated to the helper so the bell, the live toast and the full notifications page all follow a
+     * url the same way -- in-app addresses through the Router, backend downloads through the browser.
+     * Assigning location.href here rebooted the application to move one screen.</p>
+     */
     gotoUrl(url): void {
-        if (url) {
-            location.href = url;
-        }
+        this._userNotificationHelper.navigateToUrl(url);
     }
 }

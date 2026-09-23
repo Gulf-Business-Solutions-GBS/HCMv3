@@ -138,7 +138,8 @@
                                     <td>
                                         @if (record.formattedNotification.url) {
                                             <a
-                                                href="{{ record.formattedNotification.url }}"
+                                                href="javascript:;"
+                                                (click)="gotoUrl(record.formattedNotification.url)"
                                                 class="{{ getRowClass(record) }}">
                                                 {{ truncateString(record.formattedNotification.text, 120) }}
                                             </a>

@@ -13,6 +13,7 @@ import { ViewNotificationModalComponent } from './view-notification-modal.compon
 import { AppConsts } from '@shared/AppConsts';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 export interface IFormattedUserNotification {
     userNotificationId: string;
@@ -33,6 +34,7 @@ export class UserNotificationHelper extends AppComponentBase {
     private _notificationService = inject(NotificationServiceProxy);
     private _dateTimeService = inject(DateTimeService);
     private http = inject(HttpClient);
+    private _router = inject(Router);
 
     settingsModal: NotificationSettingsModalComponent;
     viewModal: ViewNotificationModalComponent;
@@ -63,8 +65,77 @@ export class UserNotificationHelper extends AppComponentBase {
             //Add your custom notification names to navigate to a URL when user clicks to a notification.
         }
 
+        // Workflow notifications are matched on their DATA, not on their name. Today the dispatcher sends
+        // them through IAppNotifier.SendMessageAsync, which publishes everything under the single name
+        // 'App.SimpleMessage' -- so the name cannot tell a workflow notification apart from any other
+        // one-line message, and switching on it would either catch nothing or catch everything.
+        const workflowUrl = this.getWorkflowRequestUrl(userNotification);
+        if (workflowUrl) {
+            return workflowUrl;
+        }
+
         //No url for this notification
         return '';
+    }
+
+    /**
+     * Where a workflow notification should open, or '' when it carries nothing to open.
+     *
+     * <p><b>This is the client half of a two-part fix and currently returns '' for every real
+     * notification.</b> WorkflowNotificationDispatcher publishes a MessageNotificationData, whose only
+     * property is the rendered message string -- the request number is in the prose and nowhere in the
+     * data. There is nothing to route on, so rather than parse "EXP-2026-00003" back out of a sentence
+     * that is localised and reworded per action, this reads the ids the dispatcher ought to be sending
+     * and stays quiet until they arrive. Publish <c>workflowRequestId</c> (the WorkflowRequest key, which
+     * is what both list screens key their detail dialog on) and <c>isApprover</c>, and every clause below
+     * starts working with no further client change.</p>
+     *
+     * <p>Approvers go to the inbox and requesters to their own request list, because those are the two
+     * screens that can actually OPEN a request: both hold EssRequestDetailModalComponent and both key it
+     * by workflow request id. The per-type ESS route is deliberately not used even when supplied -- those
+     * screens list one transaction type and have no way to single a request out, so routing there would
+     * land you on a list and call it done.</p>
+     */
+    private getWorkflowRequestUrl(userNotification: abp.notifications.IUserNotification): string {
+        const properties = userNotification?.notification?.data?.properties;
+        if (!properties) {
+            return '';
+        }
+
+        // Both casings accepted: ABP serialises notification data as given, and whether a C# property
+        // arrives as `workflowRequestId` or `WorkflowRequestId` depends on the serializer settings in
+        // force, which is not something a click handler should be sensitive to.
+        const requestId = properties.workflowRequestId ?? properties.WorkflowRequestId;
+        if (!requestId) {
+            return '';
+        }
+
+        const isApprover = properties.isApprover ?? properties.IsApprover;
+        const screen = isApprover === false ? '/app/main/ess/requests' : '/app/main/ess/inbox';
+
+        return screen + '?requestId=' + encodeURIComponent(String(requestId));
+    }
+
+    /**
+     * Follow a notification's url.
+     *
+     * <p>Routes in-app addresses through the Router instead of assigning location.href. The old assignment
+     * worked, in the sense that you ended up on the page, but it tore down and rebooted the whole Angular
+     * application to move between two screens of it -- a blank second, a refetched menu, and any unsaved
+     * state gone. Anything not starting with a slash is an absolute backend address (the GDPR and import
+     * downloads below), and those still go through the browser.</p>
+     */
+    navigateToUrl(url: string): void {
+        if (!url) {
+            return;
+        }
+
+        if (url.startsWith('/')) {
+            this._router.navigateByUrl(url);
+            return;
+        }
+
+        location.href = url;
     }
 
     /* PUBLIC functions ******************************************/
@@ -98,9 +169,7 @@ export class UserNotificationHelper extends AppComponentBase {
             didOpen: (toast) => {
                 toast.addEventListener('click', () => {
                     //Take action when user clicks to live toastr notification
-                    if (url) {
-                        location.href = url;
-                    }
+                    this.navigateToUrl(url);
                 });
             },
         });

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -94,6 +95,15 @@ export class EssInboxComponent extends AppComponentBase {
     static readonly MaxInboxRows = 500;
 
     private readonly _inboxService = inject(EssInboxServiceProxy);
+    private readonly _activatedRoute = inject(ActivatedRoute);
+
+    /**
+     * A request this screen was asked to open, from ?requestId= -- how a notification lands the approver on
+     * the request it is about rather than merely on the inbox containing it. Read once at construction
+     * because the fetch is driven by the table, not by ngOnInit, and cleared the moment it is honoured so a
+     * later refresh does not re-open the dialog over whatever the approver has moved on to.
+     */
+    private pendingRequestId: number | null = this.readPendingRequestId();
 
     /** Whether the fetched set is still in hand, so a page or sort event need not go back to the server. */
     private loaded = false;
@@ -197,6 +207,7 @@ export class EssInboxComponent extends AppComponentBase {
                     this.truncated.set((result.totalCount ?? 0) > (result.items?.length ?? 0));
                     this.allRows.set((result.items ?? []).map((item) => this.toRow(item)));
                     this.render(event);
+                    this.openPendingRequest();
                 },
                 // An unlinked account is a setup gap for HR to close, not a fault of theirs, so the page
                 // explains it rather than showing an error toast. Admin accounts always land here: they are
@@ -262,6 +273,33 @@ export class EssInboxComponent extends AppComponentBase {
             statusLabel: row.statusLabel,
             statusClass: row.statusClass,
         });
+    }
+
+    /** The ?requestId= this screen was opened with, or null when it was opened normally. */
+    private readPendingRequestId(): number | null {
+        const id = Number(this._activatedRoute.snapshot.queryParamMap.get('requestId'));
+        return Number.isFinite(id) && id > 0 ? id : null;
+    }
+
+    /**
+     * Opens the request named in ?requestId=, if it is one of the ones waiting on this approver.
+     *
+     * <p>Silent when it is not, and that is the honest answer rather than a gap: a notification can outlive
+     * what it is about -- somebody else approved it, it was withdrawn, or the step moved on -- and the
+     * inbox showing that it is no longer waiting on you says more than an error would.</p>
+     */
+    private openPendingRequest(): void {
+        if (this.pendingRequestId == null) {
+            return;
+        }
+
+        const match = this.allRows().find((row) => row.id === this.pendingRequestId);
+        if (!match) {
+            return;
+        }
+
+        this.pendingRequestId = null;
+        this.openDetail(match);
     }
 
     select(row: EssInboxRow): void {
