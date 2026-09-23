@@ -1824,13 +1824,13 @@
     <text name="AnAppraisalNeedsACycle">Choose the appraisal cycle before sending this for approval.</text>
     <text name="AnAppraisalNeedsAFormType">Choose the appraisal form type before sending this for approval.</text>
     <text name="EssEnabledTypeNeedsARoute">{0} has no self-service screen, so it cannot be shown in Employee Self Service. It can still be routed for approval.</text>
-    <text name="EssMyAttendance">My Attendance</text>
-    <text name="EssMyBank">My Bank Details</text>
-    <text name="EssMyTravel">My Travel</text>
-    <text name="EssMyTravelClaims">My Travel Claims</text>
+    <text name="EssMyAttendance">Attendance</text>
+    <text name="EssMyBank">Bank Details</text>
+    <text name="EssMyTravel">Travel</text>
+    <text name="EssMyTravelClaims">Travel Claims</text>
     <text name="ATravelRequestMustHaveAtLeastOneLeg">Add at least one leg -- a travel request with nowhere to go cannot be approved.</text>
     <text name="YouAlreadyHaveATripThatOverlapsTheseDates">You already have a trip that overlaps these dates.</text>
-    <text name="EssMyPassportWithdrawals">My Passport Withdrawals</text>
+    <text name="EssMyPassportWithdrawals">Passport Withdrawals</text>
     <text name="RequestPassportWithdrawal">Request my passport</text>
     <text name="ReturnDateCannotBeEarlierThanWithdrawDate">The return date cannot be before the withdrawal date.</text>
     <text name="WithdrawalReasonIsRequired">Say why you need the document, so the approver knows what it is for.</text>
@@ -1840,10 +1840,10 @@
     <text name="ActualReturnDateCannotBeEarlierThanWithdrawDate">The document cannot come back before the day it went out.</text>
     <text name="ThisDocumentHasAlreadyBeenReturned">This document is already recorded as returned.</text>
     <text name="OnlyAnApprovedWithdrawalCanBeReturned">Only an approved withdrawal can be returned. Withdraw the request instead.</text>
-    <text name="EssMyHRServices">My HR Services</text>
+    <text name="EssMyHRServices">HR Services</text>
     <text name="RequestHRService">Request an HR service</text>
-    <text name="EssMyPunches">My Missing Punches</text>
-    <text name="EssMyClearances">My Exit Clearance</text>
+    <text name="EssMyPunches">Missing Punches</text>
+    <text name="EssMyClearances">Exit Clearance</text>
     <text name="RequestClearance">Request exit clearance</text>
     <text name="EndDateIsRequired">Enter the end date.</text>
     <text name="ThisClearanceTypeIsNotAvailableForSelfService">That clearance type cannot be requested here.</text>
@@ -1878,10 +1878,10 @@
     <text name="DelegateToIsRequired">Select the colleague who will cover for you.</text>
     <text name="CannotDelegateToYourself">You cannot delegate your duties to yourself.</text>
     <text name="StartDateAndEndDateAreRequired">Enter a start date and an end date.</text>
-    <text name="EssMyDelegations">My Delegations</text>
+    <text name="EssMyDelegations">Delegations</text>
     <text name="ATravelClaimAlreadyExistsForThisTrip">You have already claimed for this trip.</text>
     <text name="EmployeeExitPermits">Exit Permits</text>
-    <text name="EssMyExitPermits">My Exit Permits</text>
+    <text name="EssMyExitPermits">Exit Permits</text>
     <text name="RequestExitPermit">Record an exit permit</text>
     <text name="ExitPermitNumberIsRequired">Enter the exit permit number issued by the government.</text>
     <text name="ExitDateIsRequired">Enter the exit date.</text>
@@ -4310,21 +4310,21 @@
     <text name="WorkflowRequestStatus_Closed">Closed</text>
     <text name="WorkflowRequestStatus_Transferred">Transferred</text>
     <text name="EmployeeSelfService">Employee Self Service</text>
-    <text name="EssInbox">Pending My Approval</text>
-    <text name="EssMyRequests">My Requests</text>
-    <text name="EssMyProfile">My Profile</text>
-    <text name="EssMyTeam">My Team</text>
-    <text name="EssMyLeave">My Leave</text>
-    <text name="EssMyAssets">My Assets</text>
-    <text name="EssMyDocuments">My Documents</text>
-    <text name="EssMyLoans">My Loans</text>
-    <text name="EssMyLoanExemptions">My Loan Exemptions</text>
+    <text name="EssInbox">Approvals</text>
+    <text name="EssMyRequests">Requests</text>
+    <text name="EssMyProfile">Profile</text>
+    <text name="EssMyTeam">Team</text>
+    <text name="EssMyLeave">Leave Requests</text>
+    <text name="EssMyAssets">Assets</text>
+    <text name="EssMyDocuments">Documents</text>
+    <text name="EssMyLoans">Loans</text>
+    <text name="EssMyLoanExemptions">Loan Exemptions</text>
     <text name="ALoanExemptionAlreadyExistsForThatMonth">An exemption has already been requested or granted on this loan for {0}.</text>
     <text name="ExemptionDateIsRequired">The month to be exempted must be specified.</text>
     <text name="TheLoanForThisExemptionWasNotFound">The loan this exemption is for could not be found.</text>
     <text name="TheExemptionDateMustFallWithinTheLoanRecoveryPeriod">The exemption must fall within the loan's recovery period, {0} to {1}.</text>
-    <text name="EssMyOvertime">My Overtime</text>
-    <text name="EssMyTickets">My Air Tickets</text>
+    <text name="EssMyOvertime">Overtime</text>
+    <text name="EssMyTickets">Air Tickets</text>
     <text name="CurrentUserHasNoEmployeeRecord">Your user account is not linked to an employee record. Ask HR to link it before using self service.</text>
     <text name="InternalCommentsAreForApproversOnly">Only approvers can post internal comments.</text>
     <text name="WorkflowCommentNotFound">Comment not found.</text>
@@ -5846,7 +5846,7 @@
     <text name="GoLiveRegisterGroupDeduction">Deductions</text>
     <text name="GoLiveRegisterGroupTimeType">Day counters</text>
     <text name="GoLiveRegisterGroupProvision">Provisions</text>
-    <text name="EssMyLetterRequests">My Letters</text>
+    <text name="EssMyLetterRequests">Letters</text>
     <text name="EmployeeLetterRequests">Employee Letter Requests</text>
     <text name="RequestLetter">Request a letter</text>
     <text name="EffectiveDateIsRequired">Enter the effective date.</text>
@@ -5857,7 +5857,7 @@
     <text name="ThatDocumentTypeIsNotIssuedAsALetter">That document type is not one the company issues as a letter.</text>
     <text name="ReferenceDataPackNotFound">Reference data pack "{0}" was not found.</text>
     <text name="ReferenceDataUnknownLookup">Reference data pack refers to an unknown lookup "{0}".</text>
-    <text name="EssMyHealthReimburses">My Health Reimbursement</text>
+    <text name="EssMyHealthReimburses">Health Reimbursement</text>
     <text name="PaymentDateIsRequired">Say which date the expense was paid on.</text>
     <text name="DuplicateHealthReimburseClaimForDate">A health reimbursement claim already exists for {0}. Withdraw or amend that one instead of filing a second.</text>
     <text name="NoHealthReimburseEntitlementAssigned">No health reimbursement entitlement is assigned for this date. Please check the organization assignment and the salary profile.</text>
@@ -6131,7 +6131,7 @@
     <text name="Scheduled">Scheduled</text>
     <text name="Everyone">Everyone</text>
 
-    <text name="EssMyMobileDevices">My Mobile Devices</text>
+    <text name="EssMyMobileDevices">Mobile Devices</text>
     <text name="EssGeoPunch">Geo Punch</text>
     <text name="Attachments">Attachments</text>
     <text name="DocumentAlreadyRecorded">A document with number {0} of this type is already recorded or awaiting approval.</text>
@@ -6893,6 +6893,10 @@
     <text name="RequestLog">Request Log</text>
     <text name="ReadLog">Read Log</text>
     <text name="ReadDate">Read Date</text>
-
+    <text name="EssMyRequestsDescription">Everything you have raised, of every type, and where it has got to</text>
+    <text name="SubmittedOn">Submitted on</text>
+    <text name="Amendment">Amendment</text>
+    <text name="ClearFilters">Clear filters</text>
+    <text name="OpenRequestScreen">Open on its own screen</text>
   </texts>
 </localizationDictionary>

@@ -51,37 +51,73 @@ export class AppNavigationService {
                 // No EssHome entry: self-service now opens on the main dashboard. A menu item pointing at
                 // a route that only redirects would look like a second landing page and land people back
                 // where they started, which reads as a broken link rather than a deliberate move.
+                // The two an employee opens most, kept flat above the groups: the central list of what they
+                // have raised, and the list of what is waiting on them. Everything else is a place you go
+                // to START something, which is what the grouping below organises.
+                new AppMenuItem('EssMyRequests', 'Ess.MyRequests', 'flaticon-list-3', '/app/main/ess/requests'),
                 new AppMenuItem('EssInbox', 'Ess.Inbox', 'flaticon-multimedia', '/app/main/ess/inbox'),
-                new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave'),
-                new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset'),
-                new AppMenuItem('EssMyDocuments', 'Ess.MyDocuments', 'flaticon-file-2', '/app/main/ess/document'),
-                new AppMenuItem(
-                    'EssMyPassportWithdrawals',
-                    'Ess.MyPassportWithdrawals',
-                    'flaticon-suitcase',
-                    '/app/main/ess/passport-withdrawal'
-                ),
-                new AppMenuItem('EssMyExitPermits', 'Ess.MyExitPermits', 'flaticon-paper-plane', '/app/main/ess/exit-permit'),
-                new AppMenuItem('EssMyHRServices', 'Ess.MyHRServices', 'flaticon-notepad', '/app/main/ess/hr-service'),
-                new AppMenuItem('EssMyLetterRequests', 'Ess.MyLetterRequests', 'flaticon-mail-1', '/app/main/ess/letter'),
-                new AppMenuItem('EssMyLoans', 'Ess.MyLoans', 'flaticon-piggy-bank', '/app/main/ess/loan'),
-                new AppMenuItem('EssMyOvertime', 'Ess.MyOvertime', 'flaticon-time-3', '/app/main/ess/overtime'),
-                new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket'),
-                new AppMenuItem('EssMyAttendance', 'Ess.MyAttendance', 'flaticon-time-3', '/app/main/ess/attendance'),
-                new AppMenuItem('EssMyBank', 'Ess.MyBank', 'flaticon-coins', '/app/main/ess/bank'),
-                new AppMenuItem('EssMyTravelClaims', 'Ess.MyTravelClaims', 'flaticon-map', '/app/main/ess/travel-claim'),
-                new AppMenuItem('EssMyTravel', 'Ess.MyTravel', 'flaticon-airplane', '/app/main/ess/travel'),
-                new AppMenuItem('EssMyDelegations', 'Ess.MyDelegations', 'flaticon-user-ok', '/app/main/ess/delegation'),
-                new AppMenuItem('EssMyLoanExemptions', 'Ess.MyLoanExemptions', 'flaticon-coins', '/app/main/ess/loan-exemption'),
-                new AppMenuItem('EssGeoPunch', 'Ess.GeoPunch', 'flaticon-placeholder-3', '/app/main/ess/geo-punch'),
-                new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch'),
-                new AppMenuItem('EssMyClearances', 'Ess.MyClearances', 'flaticon-list-3', '/app/main/ess/clearance'),
-                new AppMenuItem(
-                    'EssMyHealthReimburses',
-                    'Ess.MyHealthReimburses',
-                    'flaticon-medical',
-                    '/app/main/ess/health-reimburse'
-                ),
+                // The notification inbox, moved here out of Administration. It is where the bell's "see all"
+                // goes, so an employee needs it -- but as the only permission-less item with a route in the
+                // Administration branch it was making that whole branch render for ESS-only accounts (see
+                // checkChildMenuItemPermission: an empty permission plus a route short-circuits to visible).
+                new AppMenuItem('Notifications', '', 'flaticon-alarm', '/app/notifications'),
+
+                // Grouped by FUNCTION, two levels deep, following legacy ESS rather than the flat list of
+                // twenty "My ..." items this replaces. The labels lose the "My " prefix throughout: the
+                // section is already called Employee Self Service, so repeating it on every child was the
+                // redundancy the user kept pointing at.
+                new AppMenuItem('Workflow', '', 'flaticon-interface-8', '', [], [
+                    new AppMenuItem('General', '', 'flaticon-folder-1', '', [], [
+                        new AppMenuItem('EssMyDocuments', 'Ess.MyDocuments', 'flaticon-file-2', '/app/main/ess/document'),
+                        new AppMenuItem(
+                            'EssMyPassportWithdrawals',
+                            'Ess.MyPassportWithdrawals',
+                            'flaticon-suitcase',
+                            '/app/main/ess/passport-withdrawal'
+                        ),
+                        new AppMenuItem('EssMyHRServices', 'Ess.MyHRServices', 'flaticon-notepad', '/app/main/ess/hr-service'),
+                        new AppMenuItem('EssMyExitPermits', 'Ess.MyExitPermits', 'flaticon-paper-plane', '/app/main/ess/exit-permit'),
+                        new AppMenuItem('EssMyClearances', 'Ess.MyClearances', 'flaticon-list-3', '/app/main/ess/clearance'),
+                        new AppMenuItem('EssMyLoans', 'Ess.MyLoans', 'flaticon-piggy-bank', '/app/main/ess/loan'),
+                        new AppMenuItem(
+                            'EssMyLoanExemptions',
+                            'Ess.MyLoanExemptions',
+                            'flaticon-coins',
+                            '/app/main/ess/loan-exemption'
+                        ),
+                        new AppMenuItem('EssMyLetterRequests', 'Ess.MyLetterRequests', 'flaticon-mail-1', '/app/main/ess/letter'),
+                        new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket'),
+                        new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset'),
+                        new AppMenuItem('EssMyDelegations', 'Ess.MyDelegations', 'flaticon-user-ok', '/app/main/ess/delegation'),
+                    ]),
+                    new AppMenuItem('Leave', '', 'flaticon-calendar', '', [], [
+                        new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave'),
+                    ]),
+                    // Directly under Workflow, not inside a group -- as legacy has Skip Punch Request.
+                    new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch'),
+                    new AppMenuItem('Travel', '', 'flaticon-airplane', '', [], [
+                        new AppMenuItem('EssMyTravel', 'Ess.MyTravel', 'flaticon-airplane', '/app/main/ess/travel'),
+                        new AppMenuItem('EssMyTravelClaims', 'Ess.MyTravelClaims', 'flaticon-map', '/app/main/ess/travel-claim'),
+                    ]),
+                    new AppMenuItem('Payroll', '', 'flaticon-coins', '', [], [
+                        new AppMenuItem('EssMyBank', 'Ess.MyBank', 'flaticon-coins', '/app/main/ess/bank'),
+                        new AppMenuItem(
+                            'EssMyHealthReimburses',
+                            'Ess.MyHealthReimburses',
+                            'flaticon-medical',
+                            '/app/main/ess/health-reimburse'
+                        ),
+                        new AppMenuItem('EssMyAttendance', 'Ess.MyAttendance', 'flaticon-time-3', '/app/main/ess/attendance'),
+                    ]),
+                ]),
+
+                new AppMenuItem('TimeManagement', '', 'flaticon-time-3', '', [], [
+                    new AppMenuItem('EssGeoPunch', 'Ess.GeoPunch', 'flaticon-placeholder-3', '/app/main/ess/geo-punch'),
+                    new AppMenuItem('EssMyOvertime', 'Ess.MyOvertime', 'flaticon-time-3', '/app/main/ess/overtime'),
+                ]),
+
+                // No Performance Management group: legacy has Appraisal there, and HCMv3 has no self-service
+                // appraisal screen yet. A group whose only child does not exist renders as an empty arrow.
                 new AppMenuItem('EssMyProfile', 'Ess.MyProfile', 'flaticon-user', '/app/main/ess/my-details'),
             ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
@@ -3548,7 +3584,13 @@ export class AppNavigationService {
                         '',
                         [],
                         [
-                            new AppMenuItem('Inbox', '', 'flaticon-mail-1', '/app/notifications'),
+                            // The notification Inbox used to sit here with an empty permission. Because
+                            // checkChildMenuItemPermission treats a permission-less child THAT HAS A ROUTE as
+                            // "visible to everyone", it was the single reason the whole Administration branch
+                            // rendered for an employee holding only ESS permissions. It now lives at the top
+                            // of the Employee Self Service section, where an employee can actually reach it,
+                            // and every remaining Administration descendant carries a real permission -- so
+                            // Administration hides itself for ESS-only accounts with no new permission gate.
                             new AppMenuItem(
                                 'MassNotifications',
                                 'Pages.Administration.MassNotification',
