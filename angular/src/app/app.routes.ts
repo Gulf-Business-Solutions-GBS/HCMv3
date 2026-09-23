@@ -187,6 +187,15 @@ export const appRoutes: Routes = [
                             import('./main/ess/inbox/ess-inbox.component').then((m) => m.EssInboxComponent),
                         data: { permission: 'Ess.Inbox' },
                     },
+                    // The central request list: every type at once, which is why it sits with the inbox
+                    // above rather than among the per-type screens below. It is not a catalog tile and has
+                    // no WorkflowTransactionType row of its own.
+                    {
+                        path: 'ess/requests',
+                        loadComponent: () =>
+                            import('./main/ess/my-requests/my-requests.component').then((m) => m.MyRequestsComponent),
+                        data: { permission: 'Ess.MyRequests' },
+                    },
                     // The paths here must match WorkflowTransactionType.EssRoute in the catalog seed, since
                     // the landing tiles route from that column rather than from anything declared here.
                     {

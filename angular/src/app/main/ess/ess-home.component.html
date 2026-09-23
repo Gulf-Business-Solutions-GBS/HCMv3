@@ -80,12 +80,15 @@
                 </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="card card-custom gutter-b h-100 ess-stat">
+                    <!-- Now a link: this tile showed a count of the employee's own pending requests but led
+                         nowhere, because until the central Requests screen existed there was nowhere for it
+                         to lead. -->
+                    <a routerLink="/app/main/ess/requests" class="card card-custom gutter-b h-100 ess-stat">
                         <div class="card-body">
                             <div class="ess-stat-value">{{ context().myPendingRequestCount }}</div>
                             <div class="ess-stat-label" data-help-loc="MyRequestsAwaitingApproval">{{ 'MyRequestsAwaitingApproval' | localize }}</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
