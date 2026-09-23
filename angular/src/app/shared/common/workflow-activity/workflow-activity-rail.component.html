@@ -12,13 +12,14 @@
             @for (activity of activities(); track activity.kind + '-' + activity.id) {
                 <div class="wf-activity" [class.wf-activity--internal]="activity.isInternal">
                     <div class="wf-activity__avatar">
-                        @if (activity.actorPhotoUrl) {
-                            <img [src]="activity.actorPhotoUrl" [alt]="actorName(activity)" />
-                        } @else {
-                            <!-- Initials rather than a generic silhouette, so entries stay distinguishable
-                                 when most employees have no photo. -->
-                            <span class="wf-activity__initials">{{ initials(activity) }}</span>
-                        }
+                        <!-- employee-avatar, not a bare <img>: the photo endpoint requires a bearer token,
+                             which an <img src> cannot send, so it answered 401 and showed a broken icon.
+                             The component fetches through HttpClient (the interceptor attaches the token)
+                             and falls back to initials, which stay distinguishable when nobody has a photo. -->
+                        <employee-avatar
+                            [photoUrl]="activity.actorPhotoUrl"
+                            [name]="actorName(activity)"
+                            [size]="36" />
                     </div>
 
                     <div class="wf-activity__body">

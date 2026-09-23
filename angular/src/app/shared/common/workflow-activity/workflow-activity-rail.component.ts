@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
     AddWorkflowCommentInput,
     EditWorkflowCommentInput,
@@ -33,7 +34,7 @@ import { finalize } from 'rxjs/operators';
     selector: 'workflow-activity-rail',
     templateUrl: './workflow-activity-rail.component.html',
     styleUrls: ['./workflow-activity-rail.component.less'],
-    imports: [CommonModule, FormsModule, LocalizePipe, LuxonFormatPipe],
+    imports: [CommonModule, FormsModule, LocalizePipe, LuxonFormatPipe, EmployeeAvatarComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkflowActivityRailComponent extends AppComponentBase implements OnInit {

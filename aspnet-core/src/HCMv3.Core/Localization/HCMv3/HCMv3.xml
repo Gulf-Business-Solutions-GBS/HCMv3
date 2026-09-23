@@ -3446,6 +3446,7 @@
     <text name="ManpowerPlanningAlreadyExistsForPeriod">A manpower planning entry already exists for this organization unit and period.</text>
     <text name="FTELimitMustBeGreaterThanZero">FTE limit must be greater than 0.</text>
     <text name="PositionFTELimitExceeded">This position's FTE limit ({0}) would be exceeded for the given date range.</text>
+    <text name="PositionCannotBeBlank">Position cannot be blank.</text>
     <text name="SalaryOutOfPositionRange">The amount for {0} must be between the position's minimum ({1}) and maximum ({2}) salary.</text>
     <text name="ManpowerPlanningRequestAlreadyProcessed">This manpower planning request has already been approved or rejected.</text>
     <text name="ManpowerPlanningMustHaveAtLeastOneLine">A manpower plan must have at least one planned line before it can be submitted for approval.</text>
@@ -4599,7 +4600,7 @@
     <text name="ForfeitRuleIsNotMonthlyNothingToDo">The forfeit rule is not set to Monthly, so there is nothing to recalculate.</text>
     <text name="AnnualLeaveAbsenceTypeNotFound">The annual leave absence type (code 1) was not found.</text>
     <text name="ProbationRecalculationSupportsCalendarDaysOnly">Probation end dates can only be recalculated when the probation days calculation is set to Calendar Days. The Working Days calculation is not available.</text>
-    <text name="AccessControlConnectionStringIsRequired">The access control database connection string is required.</text>
+    <text name="AccessControlConnectionStringIsRequired">The access control database connection string is required. Enter it here or save it in the Integration Center.</text>
 
     <text name="TransferFromAndToManagerMustDiffer">The manager transferring from and the manager transferring to must be different.</text>
     <text name="TransferFromManagerNotFound">The manager to transfer approvals from was not found.</text>
@@ -4640,7 +4641,7 @@
     <text name="EmployeeCodesHint">Comma separated. Leave blank to include every active employee.</text>
     <text name="FromDate">From Date</text>
     <text name="AccessControlConnectionString">Access Control Database Connection String</text>
-    <text name="AccessControlConnectionStringHint">Not stored by this application. It is used only for this single run.</text>
+    <text name="AccessControlConnectionStringHint">Leave blank to use the connection saved in the Integration Center. A value typed here is used for this run only and is not saved.</text>
     <text name="TransferFromManager">Transfer approvals FROM</text>
     <text name="TransferToManager">Transfer approvals TO</text>
     <text name="RequestingEmployee">Requesting Employee</text>
@@ -4697,6 +4698,11 @@
     <text name="BulkImportStopRequested">Stop requested by the operator.</text>
     <text name="BulkImportQueued">{0} import has been queued.</text>
     <text name="BulkImportUnsupportedImage">'{0}' is not a supported image file (.jpg, .jpeg, .png, .gif).</text>
+    <text name="BasicPayImportValueBlank">{0} is blank.</text>
+    <text name="BasicPayImportAmountBlankOrZero">Amount cannot be blank Or Zero.</text>
+    <text name="BasicPayImportColumnMissing">Column '{0}' does not belong to table.</text>
+    <text name="BasicPayImportAllRowsImported">Data has been imported successfully.</text>
+    <text name="BasicPayImportCompleted">Employee Basic Pay has been imported successfully.</text>
     <text name="TimesheetImported">{0} punches imported, {1} skipped, {2} failed.</text>
     <text name="CareersTenantNotResolved">This careers portal address is not recognized.</text>
     <text name="CareersVacancyNotFound">This job opening is no longer available.</text>
@@ -6818,6 +6824,14 @@
     <text name="Integration_D365_TokenAcquired">Signed in to Dynamics 365 successfully.</text>
     <text name="Integration_D365_NoAccessToken">Dynamics 365 answered, but did not return a sign-in token.</text>
     <text name="Integration_BioTime">BioTime Time Attendance</text>
+    <text name="Integration_AccessControlDb">Access-control database</text>
+    <text name="Integration_AccessControlDb_Description">The punch machines’ database. Punches are copied from it every few minutes when time-attendance integration is switched on in the time settings.</text>
+    <text name="Integration_AccessControlDb_ConnectionString_Help">OLE DB connection string, for example: Provider=SQLOLEDB;Data Source=server;Initial Catalog=att2000;User ID=user;Password=password</text>
+    <text name="Integration_MySqlAttendance">MySQL attendance database</text>
+    <text name="Integration_MySqlAttendance_Description">Attendance records are imported from it every hour when MySQL integration is switched on in the time settings.</text>
+    <text name="Integration_MySqlAttendance_ConnectionString_Help">MySQL connection string, for example: Server=host;Database=ingress;User ID=user;Password=password</text>
+    <text name="Integration_DbConnectionString">Connection string</text>
+    <text name="Integration_DbConnectionOpened">Connected to the database.</text>
     <text name="Integration_BioTime_Description">Pull clock-in and clock-out punches from your BioTime attendance devices into HCMv3 automatically.</text>
     <text name="Integration_BioTime_TokenUrl">Token address</text>
     <text name="Integration_BioTime_TokenUrl_Help">The BioTime sign-in address, usually ending in /jwt-api-token-auth/</text>
@@ -6871,5 +6885,14 @@
     <text name="SettleLoanInEndOfServiceHint">The whole remaining loan balance is recovered on the compensation date. Without this, an employee with an open loan cannot be settled.</text>
     <text name="YouAreNotAllowedToRaiseThisRequestForThisEmployee">You are not allowed to raise this request for this employee. The first step of this workflow limits who may create it.</text>
     <text name="ProtectedReportExportUnavailable">This report must be exported with a password, but password-protected export is not available on this server. Please contact your administrator.</text>
+    <text name="RequestDetail">Request Detail</text>
+    <text name="RequestComment">Request Comment</text>
+    <text name="WorkflowComment">Workflow Comment</text>
+    <text name="WorkflowActionsAndInformation">Workflow Actions &amp; Information</text>
+    <text name="WorkflowRequest">Workflow Request</text>
+    <text name="RequestLog">Request Log</text>
+    <text name="ReadLog">Read Log</text>
+    <text name="ReadDate">Read Date</text>
+
   </texts>
 </localizationDictionary>

@@ -1,0 +1,204 @@
+<div
+    appBsModal
+    #essRequestDetailModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="essRequestDetailModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ config()?.title }}</span>
+                        <span class="badge ms-2" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="'Close' | localize">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Card 1: the transaction itself, exactly the fields the form captured. -->
+                    <div class="card card-custom gutter-b mb-5">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ 'RequestDetail' | localize }}</h5>
+
+                            <div class="row g-4">
+                                @for (field of config()?.fields; track field.label) {
+                                    <div class="col-12 col-md-6 col-xl-3">
+                                        <label class="form-label text-muted mb-1">{{ field.label }}</label>
+                                        <div class="fw-bold">{{ field.value || '-' }}</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Cards 2 and 3 side by side, as legacy has them: what you said, and what was
+                             said back. -->
+                        <div class="col-12 col-lg-6">
+                            <div class="card card-custom gutter-b mb-5 h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ 'RequestComment' | localize }}</h5>
+                                    <div class="text-muted">{{ config()?.comments || ('NoData' | localize) }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="card card-custom gutter-b mb-5 h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ 'WorkflowComment' | localize }}</h5>
+
+                                    @for (comment of workflowComments(); track comment.id) {
+                                        <div class="d-flex mb-3">
+                                            <employee-avatar
+                                                class="me-3"
+                                                [photoUrl]="comment.actorPhotoUrl"
+                                                [name]="actorName(comment)"></employee-avatar>
+                                            <div>
+                                                <div class="fw-bold">
+                                                    {{ actorName(comment) }}
+                                                    <span class="text-muted ms-2">{{ comment.occurredAt | luxonFormat: 'dd MMM yyyy HH:mm' }}</span>
+                                                </div>
+                                                <div>{{ comment.body }}</div>
+                                            </div>
+                                        </div>
+                                    } @empty {
+                                        <div class="text-muted">{{ 'NoData' | localize }}</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: the legacy "Workflow Actions & Information" panel. Approver and Delegated
+                         Employee tabs are absent because no endpoint exposes a request's approver list
+                         yet; they belong here when one does. -->
+                    <div class="card card-custom">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ 'WorkflowActionsAndInformation' | localize }}</h5>
+
+                            @if (loading()) {
+                                <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                            } @else if (!config()?.workflowRequestId) {
+                                <div class="text-muted">{{ 'NoData' | localize }}</div>
+                            } @else {
+                                <ul class="nav nav-tabs mb-4">
+                                    <li class="nav-item">
+                                        <a class="nav-link" [class.active]="activeTab() === 'request'" href="javascript:;" (click)="activeTab.set('request')">
+                                            {{ 'WorkflowRequest' | localize }}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" [class.active]="activeTab() === 'log'" href="javascript:;" (click)="activeTab.set('log')">
+                                            {{ 'RequestLog' | localize }}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" [class.active]="activeTab() === 'readLog'" href="javascript:;" (click)="activeTab.set('readLog')">
+                                            {{ 'ReadLog' | localize }}
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                @if (activeTab() === 'request') {
+                                    <div class="row g-4">
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label text-muted mb-1">{{ 'RequestNumber' | localize }}</label>
+                                            <div class="fw-bold">{{ feed()?.requestNumber || '-' }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label text-muted mb-1">{{ 'RequestStatus' | localize }}</label>
+                                            <div class="fw-bold">{{ requestStatusLabel() }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label text-muted mb-1">{{ 'WorkflowStep' | localize }}</label>
+                                            <div class="fw-bold">{{ currentStep() ?? '-' }}</div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (activeTab() === 'log') {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>{{ 'ActionBy' | localize }}</th>
+                                                    <th>{{ 'JobTitle' | localize }}</th>
+                                                    <th>{{ 'ActionDate' | localize }}</th>
+                                                    <th>{{ 'ActionType' | localize }}</th>
+                                                    <th>{{ 'WorkflowStep' | localize }}</th>
+                                                    <th>{{ 'Comment' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (entry of requestLog(); track entry.id) {
+                                                    <tr>
+                                                        <td>
+                                                            <employee-avatar
+                                                                [photoUrl]="entry.actorPhotoUrl"
+                                                                [name]="actorName(entry)"></employee-avatar>
+                                                        </td>
+                                                        <td>{{ actorName(entry) }}</td>
+                                                        <td>{{ entry.actorJobTitleEn }}</td>
+                                                        <td>{{ entry.occurredAt | luxonFormat: 'dd MMM yyyy HH:mm' }}</td>
+                                                        <td>{{ actionLabel(entry) }}</td>
+                                                        <td>{{ entry.workflowStep ?? '-' }}</td>
+                                                        <td>{{ entry.body }}</td>
+                                                    </tr>
+                                                } @empty {
+                                                    <tr>
+                                                        <td colspan="7" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+
+                                @if (activeTab() === 'readLog') {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ 'ReadDate' | localize }}</th>
+                                                    <th>{{ 'ActionBy' | localize }}</th>
+                                                    <th>{{ 'JobTitle' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (entry of readLog(); track entry.id) {
+                                                    <tr>
+                                                        <td>{{ entry.occurredAt | luxonFormat: 'dd MMM yyyy HH:mm' }}</td>
+                                                        <td>{{ actorName(entry) }}</td>
+                                                        <td>{{ entry.actorJobTitleEn }}</td>
+                                                    </tr>
+                                                } @empty {
+                                                    <tr>
+                                                        <td colspan="3" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

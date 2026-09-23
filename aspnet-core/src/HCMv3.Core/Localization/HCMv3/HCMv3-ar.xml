@@ -3410,6 +3410,7 @@
     <text name="ManpowerPlanningAlreadyExistsForPeriod">توجد خطة قوى عاملة لهذه الوحدة وهذه الفترة مسبقاً.</text>
     <text name="FTELimitMustBeGreaterThanZero">يجب أن يكون حد الوظائف بدوام كامل أكبر من 0.</text>
     <text name="PositionFTELimitExceeded">سيتم تجاوز حد الوظائف بدوام كامل لهذه الوظيفة ({0}) خلال الفترة المحددة.</text>
+    <text name="PositionCannotBeBlank">يجب تحديد الوظيفة.</text>
     <text name="SalaryOutOfPositionRange">يجب أن يكون مبلغ {0} بين الحد الأدنى ({1}) والحد الأقصى ({2}) لراتب الوظيفة.</text>
     <text name="ManpowerPlanningRequestAlreadyProcessed">تم اعتماد أو رفض طلب خطة القوى العاملة هذا مسبقاً.</text>
     <text name="ManpowerPlanningMustHaveAtLeastOneLine">يجب أن تحتوي خطة القوى العاملة على بند مخطط واحد على الأقل قبل إرسالها للاعتماد.</text>
@@ -4530,7 +4531,7 @@
     <text name="ForfeitRuleIsNotMonthlyNothingToDo">قاعدة الإسقاط ليست شهرية، لذا لا يوجد ما يُعاد احتسابه.</text>
     <text name="AnnualLeaveAbsenceTypeNotFound">لم يتم العثور على نوع الإجازة السنوية (الرمز 1).</text>
     <text name="ProbationRecalculationSupportsCalendarDaysOnly">لا يمكن إعادة احتساب تواريخ انتهاء فترة الاختبار إلا عندما يكون احتساب أيام الاختبار بأيام التقويم. الاحتساب بأيام العمل غير متاح.</text>
-    <text name="AccessControlConnectionStringIsRequired">سلسلة الاتصال بقاعدة بيانات نظام التحكم بالدخول مطلوبة.</text>
+    <text name="AccessControlConnectionStringIsRequired">سلسلة الاتصال بقاعدة بيانات نظام التحكم بالدخول مطلوبة. أدخلها هنا أو احفظها في مركز التكامل.</text>
     <text name="TransferFromAndToManagerMustDiffer">يجب أن يختلف المدير المحوَّل منه عن المدير المحوَّل إليه.</text>
     <text name="TransferFromManagerNotFound">لم يتم العثور على المدير المراد تحويل الاعتمادات منه.</text>
     <text name="TransferToManagerNotFound">لم يتم العثور على المدير المراد تحويل الاعتمادات إليه.</text>
@@ -4561,7 +4562,7 @@
     <text name="EmployeeCodesHint">مفصولة بفاصلة. اتركها فارغة لتشمل جميع الموظفين النشطين.</text>
     <text name="FromDate">من تاريخ</text>
     <text name="AccessControlConnectionString">سلسلة الاتصال بقاعدة بيانات نظام التحكم بالدخول</text>
-    <text name="AccessControlConnectionStringHint">لا يخزّنها هذا التطبيق، وتُستخدم لهذا التشغيل فقط.</text>
+    <text name="AccessControlConnectionStringHint">اتركه فارغاً لاستخدام الاتصال المحفوظ في مركز التكامل. القيمة المُدخلة هنا تُستخدم لهذا التشغيل فقط ولا تُحفظ.</text>
     <text name="TransferFromManager">تحويل الاعتمادات من</text>
     <text name="TransferToManager">تحويل الاعتمادات إلى</text>
     <text name="RequestingEmployee">الموظف مقدم الطلب</text>
@@ -4615,6 +4616,11 @@
     <text name="BulkImportStopRequested">تم طلب الإيقاف من قبل المشغّل.</text>
     <text name="BulkImportQueued">تم إدراج استيراد {0} في قائمة الانتظار.</text>
     <text name="BulkImportUnsupportedImage">'{0}' ليس ملف صورة مدعوماً (.jpg أو .jpeg أو .png أو .gif).</text>
+    <text name="BasicPayImportValueBlank">{0} فارغ.</text>
+    <text name="BasicPayImportAmountBlankOrZero">لا يجوز أن يكون المبلغ فارغاً أو صفراً.</text>
+    <text name="BasicPayImportColumnMissing">العمود '{0}' غير موجود في الملف.</text>
+    <text name="BasicPayImportAllRowsImported">تم استيراد البيانات بنجاح.</text>
+    <text name="BasicPayImportCompleted">تم استيراد الرواتب الأساسية للموظفين بنجاح.</text>
     <text name="TimesheetImported">تم استيراد {0} بصمة، وتخطي {1}، وفشل {2}.</text>
     <text name="CareersTenantNotResolved">عنوان بوابة التوظيف هذا غير معروف.</text>
     <text name="CareersVacancyNotFound">هذه الوظيفة لم تعد متاحة.</text>
@@ -6657,6 +6663,14 @@
     <text name="Integration_D365_TokenAcquired">تم تسجيل الدخول إلى Dynamics 365 بنجاح.</text>
     <text name="Integration_D365_NoAccessToken">استجاب Dynamics 365 ولكنه لم يُرجع رمز تسجيل دخول.</text>
     <text name="Integration_BioTime">نظام الحضور والانصراف BioTime</text>
+    <text name="Integration_AccessControlDb">قاعدة بيانات نظام التحكم بالدخول</text>
+    <text name="Integration_AccessControlDb_Description">قاعدة بيانات أجهزة البصمة. تُنسخ منها الحركات كل بضع دقائق عند تفعيل تكامل الحضور والانصراف في إعدادات الوقت.</text>
+    <text name="Integration_AccessControlDb_ConnectionString_Help">سلسلة اتصال OLE DB، مثال: Provider=SQLOLEDB;Data Source=server;Initial Catalog=att2000;User ID=user;Password=password</text>
+    <text name="Integration_MySqlAttendance">قاعدة بيانات الحضور MySQL</text>
+    <text name="Integration_MySqlAttendance_Description">تُستورد منها سجلات الحضور كل ساعة عند تفعيل تكامل MySQL في إعدادات الوقت.</text>
+    <text name="Integration_MySqlAttendance_ConnectionString_Help">سلسلة اتصال MySQL، مثال: Server=host;Database=ingress;User ID=user;Password=password</text>
+    <text name="Integration_DbConnectionString">سلسلة الاتصال</text>
+    <text name="Integration_DbConnectionOpened">تم الاتصال بقاعدة البيانات بنجاح.</text>
     <text name="Integration_BioTime_Description">سحب حركات البصمة (الدخول والخروج) من أجهزة الحضور BioTime إلى النظام تلقائياً.</text>
     <text name="Integration_BioTime_TokenUrl">عنوان الحصول على الرمز</text>
     <text name="Integration_BioTime_TokenUrl_Help">عنوان تسجيل الدخول في BioTime، وينتهي عادةً بـ ‎/jwt-api-token-auth/‎</text>
@@ -6710,5 +6724,12 @@
     <text name="SettleLoanInEndOfServiceHint">يتم استرداد كامل رصيد القرض المتبقي في تاريخ التسوية. وبدون ذلك لا يمكن إنهاء تسوية موظف لديه قرض قائم.</text>
     <text name="YouAreNotAllowedToRaiseThisRequestForThisEmployee">لا يُسمح لك بتقديم هذا الطلب نيابةً عن هذا الموظف. فالخطوة الأولى من سير العمل تحدّد من يحق له إنشاؤه.</text>
     <text name="ProtectedReportExportUnavailable">يجب تصدير هذا التقرير بكلمة مرور، لكن التصدير المحمي بكلمة مرور غير متاح على هذا الخادم. يرجى التواصل مع مسؤول النظام.</text>
-  </texts>
+      <text name="RequestDetail">تفاصيل الطلب</text>
+    <text name="RequestComment">ملاحظات مقدم الطلب</text>
+    <text name="WorkflowComment">ملاحظات المعتمدين</text>
+    <text name="WorkflowActionsAndInformation">إجراءات ومعلومات سير العمل</text>
+    <text name="WorkflowRequest">طلب سير العمل</text>
+    <text name="RequestLog">سجل الإجراءات</text>
+    <text name="ReadLog">سجل الاطلاع</text>
+    <text name="ReadDate">تاريخ الاطلاع</text>  </texts>
 </localizationDictionary>

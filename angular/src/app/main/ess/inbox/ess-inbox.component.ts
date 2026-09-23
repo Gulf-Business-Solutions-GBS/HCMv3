@@ -5,6 +5,7 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
     ApproveRequestInput,
     EssInboxItemDto,
@@ -31,7 +32,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 @Component({
     templateUrl: './ess-inbox.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowActivityRailComponent, HelpPageDirective],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowActivityRailComponent, HelpPageDirective, EmployeeAvatarComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssInboxComponent extends AppComponentBase implements OnInit {

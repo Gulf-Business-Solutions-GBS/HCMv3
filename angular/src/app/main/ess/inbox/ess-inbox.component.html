@@ -25,12 +25,13 @@
                                             class="list-group-item list-group-item-action d-flex align-items-start"
                                             [class.active]="selected()?.id === item.id"
                                             (click)="select(item)">
-                                            <span class="ess-inbox__avatar mr-3">
-                                                @if (item.requesterPhotoUrl) {
-                                                    <img [src]="item.requesterPhotoUrl" [alt]="requesterName(item)" />
-                                                } @else {
-                                                    <span>{{ initials(item) }}</span>
-                                                }
+                                            <span class="ess-inbox__avatar me-3">
+                                                <!-- See workflow-activity-rail: the photo endpoint needs a
+                                                     bearer token an <img src> cannot send. -->
+                                                <employee-avatar
+                                                    [photoUrl]="item.requesterPhotoUrl"
+                                                    [name]="requesterName(item)"
+                                                    [size]="40" />
                                             </span>
 
                                             <span class="flex-grow-1 text-left">
