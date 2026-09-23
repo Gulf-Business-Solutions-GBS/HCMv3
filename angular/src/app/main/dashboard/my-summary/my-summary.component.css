@@ -6,10 +6,23 @@
    theme bundle sets, which is what makes these tiles follow a theme change and invert under dark mode:
    Metronic redefines the whole --bs-* palette under [data-bs-theme="dark"], and theme14 redefines
    --bs-primary outright. The accent gets a name of its own only because it is a product decision
-   rather than a mechanical mapping -- point it somewhere else and the page re-tints from one line. */
+   rather than a mechanical mapping -- point it somewhere else and the page re-tints from one line.
+
+   THREE tokens rather than one, because the accent is asked to do two different jobs. The house teal
+   these tiles used to hardcode was DARK, so the same value served as both a fill and as small text.
+   Metronic's --bs-primary is a bright blue: fine as a fill behind white, but only 3.6:1 as 12px text
+   on a card. So small accent text uses --ms-accent-text, the brand colour pulled halfway toward the
+   body ink. Pulled toward --bs-gray-900 specifically, because that token INVERTS: in light mode it is
+   near-black and darkens the accent, in dark mode it is near-white and lightens it. One expression,
+   legible both ways, and still derived from --bs-primary so a rebrand carries it.
+
+   Everything here is built from --bs-primary / --bs-primary-rgb, which are the two tokens theme14
+   actually overrides. The -light and -bg-subtle families would have been easier to read but theme14
+   leaves them alone, so a tile using them would stay Metronic blue on a rebranded page. */
 :host {
     --ms-accent: var(--bs-primary);
-    --ms-accent-soft: var(--bs-primary-light);
+    --ms-accent-text: color-mix(in srgb, var(--bs-primary) 50%, var(--bs-gray-900));
+    --ms-accent-soft: rgba(var(--bs-primary-rgb), 0.12);
 }
 
 .ms-card {
@@ -55,7 +68,7 @@
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: var(--ms-accent);
+    color: var(--ms-accent-text);
 }
 
 .ms-identity-name {
@@ -112,7 +125,7 @@
     padding: 3px 12px;
     border-radius: 12px;
     background: var(--ms-accent-soft);
-    color: var(--ms-accent);
+    color: var(--ms-accent-text);
     font-size: 11px;
     font-weight: 600;
 }
@@ -236,7 +249,7 @@
     background: var(--ms-accent-soft);
     border-color: var(--ms-accent);
     box-shadow: 0 2px 8px rgba(var(--bs-primary-rgb), 0.12);
-    color: var(--ms-accent);
+    color: var(--ms-accent-text);
 }
 
 /* The approvals count. Warm rather than the page accent on purpose: it is the one number here that
@@ -265,7 +278,15 @@
 }
 
 /* One tinted card per leave type. The tint carries no meaning beyond "this is a different type" -- it
-   is there so three balances are told apart without reading three labels. */
+   is there so three balances are told apart without reading three labels.
+
+   Each card is its brand colour at 12% over whatever is behind it, edged at 30%, with the figure
+   using the same halfway-to-the-ink trick as --ms-accent-text. All four therefore follow a rebrand.
+
+   The obvious shortcut here is Metronic's ready-made --bs-*-light backgrounds with the plain brand
+   colour on top -- that is what its own .badge-light-success does. Measured, it is unreadable:
+   success on success-light is 2.1:1 and warning on warning-light 2.0:1, and these are 28px figures
+   that are the entire point of the card. The mix lands at 5:1 or better in both colour modes. */
 .ms-balance {
     padding: 14px 16px;
     border: 1px solid var(--bs-border-color);
@@ -287,7 +308,7 @@
     font-size: 28px;
     font-weight: 700;
     line-height: 1.1;
-    color: var(--ms-accent);
+    color: var(--ms-accent-text);
 }
 
 .ms-balance-unit {
@@ -299,40 +320,39 @@
 }
 
 .ms-balance-blue {
-    background: var(--bs-primary-light);
-    border-color: var(--bs-primary-clarity);
+    background: rgba(var(--bs-primary-rgb), 0.12);
+    border-color: rgba(var(--bs-primary-rgb), 0.3);
 }
 
 .ms-balance-blue .ms-balance-value {
-    color: var(--bs-primary);
+    color: color-mix(in srgb, var(--bs-primary) 50%, var(--bs-gray-900));
 }
 
 .ms-balance-green {
-    background: var(--bs-success-light);
-    border-color: var(--bs-success-clarity);
+    background: rgba(var(--bs-success-rgb), 0.12);
+    border-color: rgba(var(--bs-success-rgb), 0.3);
 }
 
 .ms-balance-green .ms-balance-value {
-    color: var(--bs-success);
+    color: color-mix(in srgb, var(--bs-success) 50%, var(--bs-gray-900));
 }
 
 .ms-balance-purple {
-    background: var(--bs-info-light);
-    border-color: var(--bs-info-clarity);
+    background: rgba(var(--bs-info-rgb), 0.12);
+    border-color: rgba(var(--bs-info-rgb), 0.3);
 }
 
 .ms-balance-purple .ms-balance-value {
-    color: var(--bs-info);
+    color: color-mix(in srgb, var(--bs-info) 50%, var(--bs-gray-900));
 }
 
 .ms-balance-amber {
-    background: var(--bs-warning-light);
-    border-color: var(--bs-warning-clarity);
+    background: rgba(var(--bs-warning-rgb), 0.12);
+    border-color: rgba(var(--bs-warning-rgb), 0.3);
 }
 
 .ms-balance-amber .ms-balance-value {
-    /* -active rather than plain -warning: warning yellow on the pale warning tint is not legible. */
-    color: var(--bs-warning-active);
+    color: color-mix(in srgb, var(--bs-warning) 50%, var(--bs-gray-900));
 }
 
 .ms-balance-note {
@@ -363,7 +383,7 @@
 .ms-alert-count {
     font-size: 17px;
     font-weight: 600;
-    color: var(--ms-accent);
+    color: var(--ms-accent-text);
 }
 
 .ms-punch {
@@ -377,7 +397,7 @@
     border-radius: 9px;
     font-size: 11px;
     font-weight: 600;
-    color: var(--ms-accent);
+    color: var(--ms-accent-text);
     background: var(--ms-accent-soft);
 }
 

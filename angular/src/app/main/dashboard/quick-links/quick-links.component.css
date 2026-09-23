@@ -57,10 +57,13 @@
     text-decoration: none;
 }
 
+/* Same accent treatment as the my-summary tiles next door: brand colour for the edge, brand pulled
+   halfway toward --bs-gray-900 for the label. gray-900 inverts between colour modes, so the one
+   expression darkens the accent on a light page and lightens it on a dark one. */
 .ql-link:hover {
-    background: var(--bs-primary-light);
+    background: rgba(var(--bs-primary-rgb), 0.12);
     border-color: var(--bs-primary);
-    color: var(--bs-primary);
+    color: color-mix(in srgb, var(--bs-primary) 50%, var(--bs-gray-900));
 }
 
 .ql-code {
