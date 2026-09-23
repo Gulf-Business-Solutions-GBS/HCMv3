@@ -1,0 +1,53 @@
+// The approval dialog. Everything here is layout; colour comes from the theme palette so the dialog follows
+// light and dark like the rest of the shell.
+
+.ess-detail__question {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.ess-detail__subtitle {
+    margin-bottom: 1.5rem;
+}
+
+// A two-column label/value grid rather than four narrow columns. The old card used col-xl-3, which gave a
+// date eight characters of width and wrapped every reason mid-word; these are read, not scanned.
+.ess-detail__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 2rem;
+}
+
+@media (max-width: 767.98px) {
+    .ess-detail__fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.ess-detail__field-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+}
+
+.ess-detail__field-value {
+    font-weight: 600;
+
+    // A reason or an address can be long; wrapping beats a horizontal scrollbar inside a dialog.
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.ess-detail__decision-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ess-detail__person-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.35rem 0;
+    text-align: start;
+}

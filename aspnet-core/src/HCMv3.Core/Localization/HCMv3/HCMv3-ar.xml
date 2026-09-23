@@ -6737,5 +6737,12 @@
     <text name="DeleteAllNotificationsWarningMessage">سيتم حذف جميع الإشعارات الخاصة بك، المقروءة وغير المقروءة على حد سواء. لا يمكن التراجع عن هذا الإجراء.</text>
     <text name="EssInboxHeaderInfo">جميع الطلبات بانتظار اعتمادك، من كل الأنواع.</text>
     <text name="OnlyFirstRecordsAreShown">عدد الطلبات بانتظار اعتمادك أكبر مما تعرضه هذه الصفحة. استخدم عوامل التصفية لتضييق القائمة.</text>
+    <text name="DoYouApproveThisRequest">هل توافق على هذا الطلب؟</text>
+    <text name="RequestInformation">معلومات الطلب</text>
+    <text name="ApprovalStatus">حالة الاعتماد</text>
+    <text name="InitiatedBy">بدأه {0} بتاريخ {1}</text>
+    <text name="ApprovalDecision">قرارك</text>
+    <text name="ApproverComment">أضف ملاحظة على هذا القرار</text>
+    <text name="ThisRequestTypeHasNoDetailedView">لا يعرض هذا النوع من الطلبات حقوله الخاصة بعد، لذلك يظهر الملخص فقط.</text>
   </texts>
 </localizationDictionary>

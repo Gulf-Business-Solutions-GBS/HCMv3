@@ -99,17 +99,14 @@
                     [(ngModel)]="newComment"
                 ></textarea>
 
+                <!-- No Internal checkbox. The user asked for it gone: it made every approver decide, on
+                     each remark, who would be allowed to read it, and the usual answer -- "the other
+                     approvers" -- was the one it did not express, because ticking it also hid the remark
+                     from the requester. A comment posted here is simply a comment on the request, which is
+                     what people expected it to be. The backend still knows what an internal comment is and
+                     still keeps the ones already stored away from the requester; nothing new is written
+                     internal. -->
                 <div class="wf-feed__composer-actions">
-                    @if (canCommentInternally()) {
-                        <!-- Only offered to approvers. The server refuses an internal comment from the
-                             requester outright rather than quietly publishing it, so this checkbox never
-                             appears for them. -->
-                        <label class="wf-feed__internal-toggle">
-                            <input type="checkbox" [(ngModel)]="newCommentIsInternal" />
-                            <span>{{ 'InternalComment' | localize }}</span>
-                        </label>
-                    }
-
                     <button
                         type="button"
                         class="btn btn-primary"

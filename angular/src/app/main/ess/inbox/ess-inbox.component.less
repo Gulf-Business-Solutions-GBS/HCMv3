@@ -6,48 +6,7 @@
     background-color: rgba(var(--bs-primary-rgb), 0.08);
 }
 
-// Leaves room for the docked decision bar, so the paginator is never hidden behind it.
-.ess-inbox--docked {
-    margin-bottom: 150px;
-}
-
-.ess-inbox-decision {
-    position: fixed;
-    inset-inline: 0;
-    bottom: 0;
-    // Above the request-detail dialog, so the approver can still decide while reading the request
-    // rather than having to close it first. Checked against every bundle we ship: all thirteen themes
-    // set --bs-modal-zindex to 1055 and none overrides it, so this is a fixed number rather than a
-    // guess. It cannot be derived from the variable -- Bootstrap scopes --bs-modal-zindex to .modal
-    // itself, so it does not reach an element outside the dialog.
-    z-index: 1080;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--bs-body-bg);
-    border-top: 1px solid var(--bs-border-color);
-    // Left black deliberately: Metronic ships the same rgba(0, 0, 0, ...) shadows under
-    // [data-bs-theme="dark"], and on a dark page it is the border above that separates the bar.
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.ess-inbox-decision__inner {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.ess-inbox-decision__request {
-    flex: 1 1 220px;
-    min-width: 0;
-}
-
-.ess-inbox-decision__comment {
-    flex: 2 1 320px;
-    min-width: 0;
-}
-
-.ess-inbox-decision__buttons {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-}
+// The docked decision bar and the margin that reserved room for it are gone: the decision moved inside the
+// detail dialog, where the fields being decided on are. Nothing is left to dock, so nothing is left to
+// reserve space for -- and the z-index note that used to live here, about sitting above the modal, went with
+// the problem it solved.

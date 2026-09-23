@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
 using HCMv3.Authorization;
@@ -26,9 +28,16 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     private readonly IRepository<WorkflowRemark> _remarkRepository;
     private readonly IRepository<WorkFlowApprover> _approverRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
+    private readonly IRepository<RequestDetail> _requestDetailRepository;
+    private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
+    private readonly IRepository<HCMv3.OrganizationManagement.JobTitle> _jobTitleRepository;
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IWorkflowApprovalService _workflowApprovalService;
     private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
+    private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
+    private readonly IRequestMasterResolver _requestMasterResolver;
+    private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
 
     public WorkflowActivityAppService(
         IRepository<WorkflowRequest> requestRepository,
@@ -37,9 +46,16 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         IRepository<WorkflowRemark> remarkRepository,
         IRepository<WorkFlowApprover> approverRepository,
         IRepository<Employee> employeeRepository,
+        IRepository<WorkflowTransactionType> transactionTypeRepository,
+        IRepository<RequestDetail> requestDetailRepository,
+        IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
+        IRepository<HCMv3.OrganizationManagement.JobTitle> jobTitleRepository,
         IEmployeeSessionService employeeSessionService,
         IWorkflowApprovalService workflowApprovalService,
-        IWorkflowNotificationDispatcher notificationDispatcher)
+        IWorkflowNotificationDispatcher notificationDispatcher,
+        IWorkflowTransactionHandlerResolver handlerResolver,
+        IRequestMasterResolver requestMasterResolver,
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _notificationDispatcher = notificationDispatcher;
         _requestRepository = requestRepository;
@@ -48,8 +64,15 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         _remarkRepository = remarkRepository;
         _approverRepository = approverRepository;
         _employeeRepository = employeeRepository;
+        _transactionTypeRepository = transactionTypeRepository;
+        _requestDetailRepository = requestDetailRepository;
+        _orgAssignmentRepository = orgAssignmentRepository;
+        _jobTitleRepository = jobTitleRepository;
         _employeeSessionService = employeeSessionService;
         _workflowApprovalService = workflowApprovalService;
+        _handlerResolver = handlerResolver;
+        _requestMasterResolver = requestMasterResolver;
+        _sysSettingsAccessor = sysSettingsAccessor;
     }
 
     /// <summary>
@@ -102,6 +125,209 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             .ToList();
 
         return result;
+    }
+
+    /// <summary>
+    /// <c>[HttpPost]</c> for the same reason <see cref="GetActivityFeed"/> is: a <c>Get*</c> method taking a
+    /// custom input DTO becomes loose query-string parameters under NSwag and the DTO class is never
+    /// generated.
+    /// </summary>
+    [HttpPost]
+    public async Task<WorkflowRequestDetailDto> GetRequestDetail(GetWorkflowRequestDetailInput input)
+    {
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+        var access = await GetAccessAsync(request);
+
+        // The check that matters. A workflow request id is a small integer, so without this anyone
+        // authenticated could walk the range and read every salary advance, medical claim and resignation in
+        // the tenant. Only the people this request is actually about may read it.
+        EnsureCanView(access);
+
+        var result = new WorkflowRequestDetailDto
+        {
+            WorkflowRequestId = request.Id,
+            RequestNumber = request.RequestNumber,
+            RequestType = request.RequestType,
+            TargetEntityId = request.TargetEntityId,
+            RequestStatus = request.RequestStatus,
+            SummaryEn = request.SummaryEn,
+            SummaryAr = request.SummaryAr,
+            SubmittedOn = request.CreationTime,
+            WorkflowStep = request.WorkflowStep,
+            RequesterEmployeeId = request.EmployeeId
+        };
+
+        await FillTypeNameAsync(result, request);
+        await FillRequesterAsync(result, request);
+        await FillFieldsAsync(result, request, access);
+        await FillActionCapabilitiesAsync(result, request, access);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Asks the type's own handler to project its row. A type with no handler at all still gets the engine's
+    /// facts, because an approver staring at an empty card is the bug this endpoint was written to fix.
+    /// </summary>
+    private async Task FillFieldsAsync(WorkflowRequestDetailDto result, WorkflowRequest request, RequestAccess access)
+    {
+        var handler = _handlerResolver.Resolve(request.RequestType);
+
+        if (handler == null)
+        {
+            result.IsDefaultProjection = true;
+            result.Fields = new List<WorkflowDetailFieldDto>
+            {
+                new WorkflowDetailFieldDto { Label = L("RequestNumber"), Value = request.RequestNumber, Kind = WorkflowDetailFieldKind.Text },
+                new WorkflowDetailFieldDto { Label = L("SubmittedOn"), Value = request.CreationTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture), Kind = WorkflowDetailFieldKind.DateTime },
+                new WorkflowDetailFieldDto { Label = L("Summary"), Value = CurrentSummary(request), Kind = WorkflowDetailFieldKind.LongText }
+            };
+
+            return;
+        }
+
+        var context = new WorkflowTransactionContext(request, access.EmployeeId ?? 0);
+        var detail = await handler.BuildDetailAsync(context);
+
+        if (detail == null)
+        {
+            result.IsDefaultProjection = true;
+            return;
+        }
+
+        // A projection that is only the three engine fields is the base class's fallback rather than the
+        // type's own work. Saying so lets the screen be honest about it instead of implying a leave request
+        // really does have three fields.
+        result.IsDefaultProjection = detail.Fields.Count <= 3
+                                     && detail.Fields.Any(f => f.Label == L("Summary"));
+
+        result.SubmissionComment = detail.SubmissionComment;
+        result.Fields = detail.Fields
+            .Select(f => new WorkflowDetailFieldDto { Label = f.Label, Value = f.Value, Kind = f.Kind })
+            .ToList();
+    }
+
+    private async Task FillTypeNameAsync(WorkflowRequestDetailDto result, WorkflowRequest request)
+    {
+        if (request.RequestType.IsNullOrWhiteSpace())
+        {
+            return;
+        }
+
+        var type = await _transactionTypeRepository.GetAll()
+            .Where(t => t.Code == request.RequestType)
+            .Select(t => new { t.NameEn, t.NameAr })
+            .FirstOrDefaultAsync();
+
+        if (type == null)
+        {
+            return;
+        }
+
+        result.RequestTypeNameEn = type.NameEn;
+        result.RequestTypeNameAr = type.NameAr;
+    }
+
+    /// <summary>
+    /// The subject of the request, as a person: name, employee number, job title, photo. This is the
+    /// right-hand column of the reference screen, and it is what turns "request EXP-2026-00003" into
+    /// "Ahmed, Driver, staff 2362".
+    /// </summary>
+    private async Task FillRequesterAsync(WorkflowRequestDetailDto result, WorkflowRequest request)
+    {
+        if (!request.EmployeeId.HasValue)
+        {
+            return;
+        }
+
+        var employeeId = request.EmployeeId.Value;
+
+        var employee = await _employeeRepository.GetAll()
+            .Where(e => e.Id == employeeId)
+            .Select(e => new { e.Id, e.Code, e.FullNameEn, e.FullNameAr, HasPhoto = e.PhotoPath != null })
+            .FirstOrDefaultAsync();
+
+        if (employee == null)
+        {
+            return;
+        }
+
+        result.RequesterCode = employee.Code;
+        result.RequesterNameEn = employee.FullNameEn;
+        result.RequesterNameAr = employee.FullNameAr;
+        result.RequesterPhotoUrl = employee.HasPhoto ? "/api/employee-photo/" + employee.Id : null;
+
+        // The most recent org assignment carries the title they hold today, which is the one an approver
+        // needs -- an old assignment would describe a job they have already left.
+        var jobTitle = await (from assignment in _orgAssignmentRepository.GetAll()
+                              join title in _jobTitleRepository.GetAll()
+                                  on assignment.JobTitleId equals (int?)title.Id
+                              where assignment.EmployeeId == employeeId
+                              orderby assignment.StartDate descending
+                              select new { title.NameEn, title.NameAr })
+            .FirstOrDefaultAsync();
+
+        if (jobTitle == null)
+        {
+            return;
+        }
+
+        result.RequesterJobTitleEn = jobTitle.NameEn;
+        result.RequesterJobTitleAr = jobTitle.NameAr;
+    }
+
+    /// <summary>
+    /// What this viewer may actually do, so the dialog offers a Reject button only where the engine would
+    /// accept one. A chain that cannot be resolved leaves approve-only rather than failing the read: being
+    /// unable to configure send-back should not stop an approver seeing the request.
+    /// </summary>
+    private async Task FillActionCapabilitiesAsync(WorkflowRequestDetailDto result, WorkflowRequest request, RequestAccess access)
+    {
+        // "Current approver" is narrower than "approver": someone who approved at step 1 keeps their view of
+        // the request forever, but must not be offered the buttons again at step 2.
+        result.IsCurrentApprover = access.EmployeeId.HasValue
+                                   && request.RequestStatus == RequestStatus.Open
+                                   && await _approverRepository.GetAll()
+                                       .AnyAsync(a => a.WorkflowRequestId == request.Id
+                                                      && a.ApproverId == access.EmployeeId.Value
+                                                      && !a.IsApproved);
+
+        if (!result.IsCurrentApprover)
+        {
+            return;
+        }
+
+        result.CanApprove = true;
+
+        try
+        {
+            var master = await _requestMasterResolver.ResolveAsync(request);
+
+            var detail = await _requestDetailRepository.GetAll()
+                .Where(d => d.RequestMasterId == master.Id && d.Step == request.WorkflowStep)
+                .Select(d => new { d.CanReject, d.CanSendBack })
+                .FirstOrDefaultAsync();
+
+            var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
+            var sendBackToCreator = workflowSettings != null && workflowSettings.SendBackToCreator;
+
+            result.CanReject = detail?.CanReject ?? false;
+            result.CanSendBack = (detail?.CanSendBack ?? false) && sendBackToCreator;
+        }
+        catch (UserFriendlyException)
+        {
+            result.CanReject = false;
+            result.CanSendBack = false;
+        }
+    }
+
+    private string CurrentSummary(WorkflowRequest request)
+    {
+        var isArabic = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+
+        return isArabic
+            ? (request.SummaryAr.IsNullOrWhiteSpace() ? request.SummaryEn : request.SummaryAr)
+            : request.SummaryEn;
     }
 
     public async Task<WorkflowActivityDto> AddComment(AddWorkflowCommentInput input)
@@ -366,21 +592,40 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
                          await _approverRepository.GetAll()
                              .AnyAsync(a => a.WorkflowRequestId == request.Id && a.ApproverId == employeeId.Value);
 
+        // THE fix for "why can an approver not see the other approvers' comments?".
+        //
+        // WorkFlowApprover holds only the step the request is sitting on right now: AssignApproversForStep
+        // deletes every row for the request before inserting the next step's. So the manager who approved at
+        // step 1 has no row the moment it reaches step 2 -- and with it lost not just the internal thread but
+        // the request itself, which answered AbpAuthorizationException if they opened it again. Someone who
+        // has acted on a request is permanently part of it, so the durable record of who acted is the one to
+        // ask: RequestLog, which is never deleted.
+        //
+        // Created is excluded deliberately. It is the submission, and its actor is the requester -- counting
+        // it would make every requester an approver of their own request and hand them the internal thread,
+        // which is precisely the rule the requester exclusion below exists to hold.
+        var isPastApprover = employeeId.HasValue && !isApprover &&
+                             await _requestLogRepository.GetAll()
+                                 .AnyAsync(l => l.WorkflowRequestId == request.Id
+                                                && l.ActionById == employeeId.Value
+                                                && l.ActionType != RequestActionType.Created);
+
         var isFeedbackRecipient = employeeId.HasValue &&
                                   await _remarkRepository.GetAll()
                                       .AnyAsync(r => r.WorkflowRequestId == request.Id && r.CCReceiverId == employeeId.Value);
 
-        return new RequestAccess(employeeId, isRequester, isApprover, isFeedbackRecipient, isAdmin);
+        return new RequestAccess(employeeId, isRequester, isApprover, isPastApprover, isFeedbackRecipient, isAdmin);
     }
 
     /// <summary>Who the current user is relative to one request, and what that lets them see.</summary>
     private sealed class RequestAccess
     {
-        public RequestAccess(int? employeeId, bool isRequester, bool isApprover, bool isFeedbackRecipient, bool isAdmin)
+        public RequestAccess(int? employeeId, bool isRequester, bool isApprover, bool isPastApprover, bool isFeedbackRecipient, bool isAdmin)
         {
             EmployeeId = employeeId;
             IsRequester = isRequester;
             IsApprover = isApprover;
+            IsPastApprover = isPastApprover;
             IsFeedbackRecipient = isFeedbackRecipient;
             IsAdmin = isAdmin;
         }
@@ -389,19 +634,40 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
         public bool IsRequester { get; }
 
+        /// <summary>Named on the request's current step.</summary>
         public bool IsApprover { get; }
+
+        /// <summary>
+        /// Acted on this request at an earlier step. They no longer hold a <c>WorkFlowApprover</c> row -- the
+        /// engine deletes those on every step change -- but they are still one of the people the request is
+        /// about, and the conversation they took part in must not vanish from under them.
+        /// </summary>
+        public bool IsPastApprover { get; }
 
         public bool IsFeedbackRecipient { get; }
 
         public bool IsAdmin { get; }
 
-        public bool CanView => IsRequester || IsApprover || IsFeedbackRecipient || IsAdmin;
+        public bool CanView => IsRequester || IsApprover || IsPastApprover || IsFeedbackRecipient || IsAdmin;
 
         /// <summary>
-        /// The requester NEVER sees internal comments -- even when they are also an approver on their own
-        /// request, which some configurations allow. "Approvers only" has to mean the same thing on every
-        /// request or the feature is not trustworthy enough to use.
+        /// Everyone on the approving side of a request sees the whole thread, including each other's
+        /// internal notes; the requester sees only what was said publicly.
+        ///
+        /// <para>
+        /// The requester exclusion comes FIRST and is absolute -- even when they are also an approver on
+        /// their own request, which some configurations allow. "Approvers only" has to mean the same thing
+        /// on every request or the feature is not trustworthy enough to use.
+        /// </para>
+        ///
+        /// <para>
+        /// Past approvers were added here for the user's complaint that approvers could not read one
+        /// another's remarks. They could, in fact, while they held the step -- and then the request moved on,
+        /// their approver row was deleted with the step, and the thread disappeared. The new composer no
+        /// longer writes internal comments at all (the checkbox is gone), so going forward the thread is
+        /// simply shared by everyone involved; this governs what is already stored.
+        /// </para>
         /// </summary>
-        public bool CanSeeInternal => !IsRequester && (IsApprover || IsFeedbackRecipient || IsAdmin);
+        public bool CanSeeInternal => !IsRequester && (IsApprover || IsPastApprover || IsFeedbackRecipient || IsAdmin);
     }
 }

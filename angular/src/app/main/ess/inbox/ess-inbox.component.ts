@@ -24,7 +24,11 @@ import { Tooltip } from 'primeng/tooltip';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
-import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import {
+    EssRequestAction,
+    EssRequestDecision,
+    EssRequestDetailModalComponent,
+} from '../shared/ess-request-detail-modal.component';
 
 /** One inbox row, flattened for the grid: sortable scalars rather than nested bilingual pairs. */
 export interface EssInboxRow {
@@ -240,28 +244,63 @@ export class EssInboxComponent extends AppComponentBase {
     // ---------------------------------------------------------------- the row and what it opens
 
     /**
-     * Opens the request the way its requester sees it: every field the inbox knows, read-only, over the
-     * same Workflow Actions & Information panel. The decision itself stays on the action bar outside the
-     * dialog -- that component is shared with 21 self-service screens and has no approver mode to switch
-     * into.
+     * Opens the request the way its requester wrote it, with the decision in the same dialog.
+     *
+     * <p><b>No fields are passed any more, and that is the fix.</b> The six this method used to build --
+     * employee, type, number, date, step, summary -- were everything the INBOX knows, which is not the same
+     * thing as everything the REQUEST contains. For an exit permit the summary sentence happens to carry the
+     * permit number and the exit date, so it looked almost right, while the start date the requester had
+     * entered was unreachable; for most types it looked much worse. The dialog now asks
+     * <c>GetRequestDetail</c>, which puts the question to the request's own workflow handler, and the
+     * approver reads the transaction rather than a paraphrase of it.</p>
+     *
+     * <p>The actions are offered only where the step permits them -- the same flags the inbox already
+     * carries -- and the server re-checks each one regardless.</p>
      */
     openDetail(row: EssInboxRow): void {
         this.select(row);
 
+        const actions: EssRequestAction[] = ['approve'];
+
+        if (row.canReject) {
+            actions.push('reject');
+        }
+
+        if (row.canSendBack) {
+            actions.push('sendBack');
+        }
+
         this.detail()?.show({
             title: row.typeName || this.l('EssInbox'),
-            fields: [
-                { label: this.l('Employee'), value: row.employeeName },
-                { label: this.l('RequestType'), value: row.typeName },
-                { label: this.l('RequestNumber'), value: row.requestNumber },
-                { label: this.l('SubmittedOn'), value: row.submittedOn?.toFormat('dd MMM yyyy') ?? '' },
-                { label: this.l('WorkflowStep'), value: row.stepLabel },
-                { label: this.l('Summary'), value: row.summary },
-            ],
             workflowRequestId: row.id,
+            requesterName: row.employeeName,
+            requesterPhotoUrl: row.photoUrl,
             statusLabel: row.statusLabel,
             statusClass: row.statusClass,
+            actions: actions,
         });
+    }
+
+    /** The approver decided inside the dialog. The list is this component's to refresh, so the call is too. */
+    onDecided(decision: EssRequestDecision): void {
+        const row = this.selected();
+        if (!row || row.id !== decision.workflowRequestId || this.acting()) {
+            return;
+        }
+
+        this.comment = decision.comment;
+
+        switch (decision.action) {
+            case 'approve':
+                this.approve();
+                break;
+            case 'reject':
+                this.reject();
+                break;
+            case 'sendBack':
+                this.sendBack();
+                break;
+        }
     }
 
     select(row: EssInboxRow): void {
@@ -353,14 +392,16 @@ export class EssInboxComponent extends AppComponentBase {
 
         // Offered only when the step's configuration actually permits it, so the screen never shows a
         // button the engine would refuse.
+        //
+        // Both open the dialog rather than acting from the menu, because both REQUIRE a reason -- acting
+        // straight from here could only ever pop a warning saying so, since the menu has nowhere to type
+        // one. Approve stays immediate: its comment is optional, so a one-click approval from the list is a
+        // real shortcut rather than a dead end.
         if (row.canReject) {
             items.push({
                 label: this.l('Reject'),
                 icon: 'pi pi-times',
-                command: () => {
-                    this.select(row);
-                    this.reject();
-                },
+                command: () => this.openDetail(row),
             });
         }
 
@@ -368,10 +409,7 @@ export class EssInboxComponent extends AppComponentBase {
             items.push({
                 label: this.l('SendBack'),
                 icon: 'pi pi-replay',
-                command: () => {
-                    this.select(row);
-                    this.sendBack();
-                },
+                command: () => this.openDetail(row),
             });
         }
 
@@ -381,8 +419,16 @@ export class EssInboxComponent extends AppComponentBase {
     private act(call: () => any, successKey: string): void {
         this.acting.set(true);
 
+        // The dialog is where the decision was taken, so it is the thing that must look busy.
+        this.detail()?.setActing(true);
+
         call()
-            .pipe(finalize(() => this.acting.set(false)))
+            .pipe(
+                finalize(() => {
+                    this.acting.set(false);
+                    this.detail()?.setActing(false);
+                })
+            )
             .subscribe(() => {
                 this.notify.success(this.l(successKey));
                 this.detail()?.close();

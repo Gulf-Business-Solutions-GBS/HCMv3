@@ -107,6 +107,41 @@ public class ExitPermitWorkflowTransactionHandler : WorkflowTransactionHandlerBa
             $"إذن خروج {ReasonAr(permit.TravelReason)} {number}، {date}");
     }
 
+    /// <summary>
+    /// Every field the exit permit form captures, in the order it captures them.
+    ///
+    /// <para>
+    /// This is the type that exposed the gap. The summary line happens to carry the permit number and the
+    /// exit date, so an approver could half-decide from it -- but <see cref="EmployeeExitPermit.StartDate"/>
+    /// appears nowhere in that sentence and was simply unreachable, and the reason and the requester's own
+    /// note were only there by accident of wording. All six are here, which is the whole point: the approver
+    /// reads what the requester filled in, not a paraphrase of it.
+    /// </para>
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var permit = await GetTargetAsync(context);
+        if (permit == null)
+        {
+            // The row is gone or not written yet. The engine's own facts still describe the request, and a
+            // card showing those beats a card showing nothing.
+            return await base.BuildDetailAsync(context);
+        }
+
+        var detail = new WorkflowRequestDetail
+        {
+            SubmissionComment = permit.Comments
+        };
+
+        return detail
+            .Add(WorkflowDetailField.Text(L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text(L("ExitPermitNumber"), permit.ExternalRequestNumber))
+            .Add(WorkflowDetailField.Text(L("TravelReason"), L("TravelReason_" + permit.TravelReason)))
+            .Add(WorkflowDetailField.Date(L("StartDate"), permit.StartDate))
+            .Add(WorkflowDetailField.Date(L("ExitDate"), permit.ExitDate))
+            .Add(WorkflowDetailField.LongText(L("Comments"), permit.Comments));
+    }
+
     private static string ReasonEn(TravelReason reason)
     {
         switch (reason)
