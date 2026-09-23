@@ -1,0 +1,347 @@
+{
+  "helpId": "ess.travel",
+  "lang": "ar",
+  "title": "سفري",
+  "entity": null,
+  "overviewHtml": "<p>اطلب رحلة عمل: إلى أين، ومتى، وكيف تصل، وكم تكلّف.</p><p>وتُبنى الرحلة من <strong>مراحل</strong>، مرحلةٍ لكل رحلة طيران أو انتقال، ولكل مرحلة تواريخها وأوقاتها وشركة طيرانها وفندقها وتكاليفها. فالرحلة إلى مدينة واحدة مرحلتان: ذهاب وعودة، والجولة على ثلاث مدن أكثر. وما تدوّنه هنا هو ما يُعتمد، وهو ما تُراجَع عليه مطالباتك لاحقاً؛ فالتقدير الصادق أنفع من التقدير المرتَّب.</p>",
+  "aliasIndex": {
+    "loc:TravelType": "ess.travel.travel-type",
+    "loc:StartDate": "ess.travel.start-date",
+    "loc:EndDate": "ess.travel.end-date",
+    "loc:TravelPurpose": "ess.travel.travel-purpose",
+    "loc:Comments": "ess.common.comments",
+    "loc:Departure": "ess.travel.departure",
+    "loc:DepartureDate": "ess.travel.departure-date",
+    "loc:DepartureTime": "ess.travel.departure-time",
+    "loc:Arrival": "ess.travel.arrival",
+    "loc:ArrivalDate": "ess.travel.arrival-date",
+    "loc:ArrivalTime": "ess.travel.arrival-time",
+    "loc:TravelAirlines": "ess.travel.travel-airlines",
+    "loc:Hotels": "ess.travel.hotels",
+    "loc:TotalNights": "ess.travel.total-nights",
+    "loc:NightStay": "ess.travel.night-stay",
+    "loc:VisaRequired": "ess.travel.visa-required",
+    "loc:HotelRequired": "ess.travel.hotel-required",
+    "loc:AnyOtherExpense": "ess.travel.any-other-expense",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestTravel": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.travel.travel-type",
+      "label": "TravelType",
+      "section": null,
+      "aliases": [
+        "loc:TravelType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الرحلة: رحلة عمل، أو دورة تدريبية، أو مؤتمر، أو انتقال — من الأنواع التي أعدّتها شركتك.</p><p><strong>مثال.</strong> رحلة عمل.</p><p><strong>لماذا يهمّ.</strong> يحدّد النوع البدل اليومي الذي يُصرف لك، وغالباً من يعتمد الرحلة. فالدورة التدريبية وزيارة العميل لا تُموَّلان بالطريقة نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول أيام الرحلة.</p><p><strong>مثال.</strong> 12 مايو 2026.</p><p><strong>لماذا يهمّ.</strong> مع تاريخ الانتهاء يحدّد مدة غيابك، وعليها يُحتسب البدل اليومي، وبها يعرف مديرك كم يحتاج عملك إلى تغطية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم عودتك.</p><p><strong>مثال.</strong> 16 مايو 2026.</p><p><strong>لماذا يهمّ.</strong> يجب ألّا يسبق تاريخ البدء، وينبغي أن يكون يوم عودتك فعلاً لا يوم هبوطك منتصف الليل إن لم يكن صباح اليوم التالي يوم عمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.travel-purpose",
+      "label": "TravelPurpose",
+      "section": null,
+      "aliases": [
+        "loc:TravelPurpose"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب سفرك بكلماتك أنت.</p><p><strong>مثال.</strong> اجتماع انطلاق التنفيذ مع العميل في دبي، وثلاثة أيام في الموقع.</p><p><strong>لماذا يهمّ.</strong> هو مبرّر الرحلة، وأول ما يقرأه من يتحمّل تكلفتها. ويبقى في السجلّ إن سأل أحد لاحقاً عن سبب إيفادك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.departure",
+      "label": "Departure",
+      "section": null,
+      "aliases": [
+        "loc:Departure"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نقطة انطلاق كل جزء من الرحلة. والمرحلة رحلة طيران أو انتقال واحد، فأضِف واحدة لكل منها.</p><p><strong>مثال.</strong> الكويت.</p><p><strong>لماذا يهمّ.</strong> المراحل هي خط سير الرحلة. وضبطها هو ما يجعل الحجز ممكناً والتكلفة مقنعة؛ فرحلة الكويت–دبي–الدوحة–الكويت ثلاث مراحل، وإسقاط واحدة يُنقص الوقت والأجرة معاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.departure-date",
+      "label": "DepartureDate",
+      "section": null,
+      "aliases": [
+        "loc:DepartureDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم مغادرة تلك المرحلة.</p><p><strong>مثال.</strong> 12 مايو 2026.</p><p><strong>لماذا يهمّ.</strong> يجب أن يقع بين تاريخَي بدء الرحلة وانتهائها. وبه تُرتَّب المراحل، فالتاريخ الخطأ قد يجعل عودتك قبل ذهابك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.departure-time",
+      "label": "DepartureTime",
+      "section": null,
+      "aliases": [
+        "loc:DepartureTime"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت مغادرة تلك المرحلة.</p><p><strong>مثال.</strong> 08:45</p><p><strong>لماذا يهمّ.</strong> به يعرف من يحجز الرحلة أيّ رحلة تقصد، والمغادرة المبكرة هي غالباً ما يبرّر فندقاً في الليلة السابقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.arrival",
+      "label": "Arrival",
+      "section": null,
+      "aliases": [
+        "loc:Arrival"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وجهة هبوط تلك المرحلة.</p><p><strong>مثال.</strong> دبي.</p><p><strong>لماذا يهمّ.</strong> ينبغي أن يكون وصول كل مرحلة هو مغادرة التالية؛ وحيث لا يكون كذلك فثمّة مرحلة ناقصة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.arrival-date",
+      "label": "ArrivalDate",
+      "section": null,
+      "aliases": [
+        "loc:ArrivalDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم هبوط تلك المرحلة، وقد يكون اليوم التالي للمغادرة في الرحلات الطويلة أو الليلية.</p><p><strong>مثال.</strong> 12 مايو 2026.</p><p><strong>لماذا يهمّ.</strong> به تُسجَّل الرحلة الليلية، وهو ما يحدّد اليوم الذي تُحتسب منه الليالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.arrival-time",
+      "label": "ArrivalTime",
+      "section": null,
+      "aliases": [
+        "loc:ArrivalTime"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت هبوط تلك المرحلة.</p><p><strong>مثال.</strong> 11:20</p><p><strong>لماذا يهمّ.</strong> الوصول المتأخر يعني عادةً ليلة فندقية عند الوصول، والوصول المبكر يعني أن اليوم يبقى يوم عمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.travel-airlines",
+      "label": "TravelAirlines",
+      "section": null,
+      "aliases": [
+        "loc:TravelAirlines"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الناقل الذي تسافر عليه في تلك المرحلة، إن كنت تعرفه أو تفضّله.</p><p><strong>مثال.</strong> الخطوط الجوية الكويتية.</p><p><strong>لماذا يهمّ.</strong> اختياري. والشركات التي لديها سعر متفق عليه أو ناقل مفضَّل تتوقّع استخدامه، والمرحلة المتروكة فارغة تُحجز بتقدير من يتولّى الحجز.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.hotels",
+      "label": "Hotels",
+      "section": null,
+      "aliases": [
+        "loc:Hotels"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان إقامتك في تلك المرحلة.</p><p><strong>مثال.</strong> فندق قريب من مكتب العميل في ديرة.</p><p><strong>لماذا يهمّ.</strong> عليه تُبنى تكلفة الإقامة، وهو ما تقارنه شركتك بسعرها المعتمد لتلك المدينة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.total-nights",
+      "label": "TotalNights",
+      "section": null,
+      "aliases": [
+        "loc:TotalNights"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الليالي التي تبيتها في تلك الوجهة.</p><p><strong>مثال.</strong> 3</p><p><strong>لماذا يهمّ.</strong> الليالي لا الأيام هي ما يحاسب عليه الفندق وما يُصرف عليه بدل المبيت، وهي أقلّ من الأيام بواحدة في الرحلة المعتادة. وهنا تخطئ تكلفة الرحلة أكثر ما تخطئ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.night-stay",
+      "label": "NightStay",
+      "section": null,
+      "aliases": [
+        "loc:NightStay"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة تفيد أنك تبيت في هذه الوجهة بدل أن تواصل السفر.</p><p><strong>مثال.</strong> غير مؤشَّرة في ترانزيت عبر الدوحة، ومؤشَّرة للّيالي الثلاث في دبي.</p><p><strong>لماذا يهمّ.</strong> بها تُميَّز الإقامة من الترانزيت. فأزِل التأشير عن مرحلة تمرّ بها مروراً، وإلا طالبت الرحلة بليالٍ لم تقضِها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.visa-required",
+      "label": "VisaRequired",
+      "section": null,
+      "aliases": [
+        "loc:VisaRequired"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة تفيد أنك تحتاج تأشيرة لهذه الوجهة، مع خانة للتفاصيل.</p><p><strong>مثال.</strong> مؤشَّرة، مع «التقديم عبر السفارة — يحتاج عشرة أيام عمل».</p><p><strong>لماذا يهمّ.</strong> هي أطول أجزاء الرحلة مهلةً وأكثرها احتمالاً لتعطيلها. والتأشير عليها مبكراً هو ما يجعل أحداً يبدأ فيها، والانتباه إليها قبل السفر بأسبوع هو ما يُلغي الرحلات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.hotel-required",
+      "label": "HotelRequired",
+      "section": null,
+      "aliases": [
+        "loc:HotelRequired"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة تفيد أن على الشركة حجز الفندق ودفع تكلفته، مع خانة للتفاصيل.</p><p><strong>مثال.</strong> غير مؤشَّرة حين تقيم عند أهلك، ومؤشَّرة مع «قريب من مكتب العميل، شامل الإفطار».</p><p><strong>لماذا يهمّ.</strong> بها يدخل الحجز في قائمة أحدهم. وتركها بلا تأشير لا يعني أنك لن تقيم في مكان، وإنما يعني أن أحداً لا يرتّبه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.travel.any-other-expense",
+      "label": "AnyOtherExpense",
+      "section": null,
+      "aliases": [
+        "loc:AnyOtherExpense"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة لأي تكلفة أخرى لهذه المرحلة لا تغطّيها الحقول السابقة، مع خانة لبيانها.</p><p><strong>مثال.</strong> المواصلات من المطار وإليه، أو رسوم مؤتمر، أو وزن زائد لمعدّات.</p><p><strong>لماذا يهمّ.</strong> المصروف المعتمَد الآن مصروفٌ تطالب به لاحقاً دون جدال. وهذا موضع التنبيه إلى تكلفة غير معتادة، قبل الرحلة لا بعدها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestTravel",
+      "section": null,
+      "aliases": [
+        "loc:RequestTravel"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

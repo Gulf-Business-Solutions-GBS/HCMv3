@@ -7,8 +7,8 @@
   "aliasIndex": {
     "loc:EnableDocSaveInFileSystem": "ManageDocumentSettings.EnableDocSaveInFileSystem",
     "dom:DocumentSettings_EnableDocSaveInFileSystem": "ManageDocumentSettings.EnableDocSaveInFileSystem",
-    "loc:FileSystemAttachmentPath": "ManageDocumentSettings.FileSystemAttachmentPath",
-    "dom:DocumentSettings_FileSystemAttachmentPath": "ManageDocumentSettings.FileSystemAttachmentPath",
+    "loc:FileStorageRootName": "ManageDocumentSettings.FileStorageRootName",
+    "dom:DocumentSettings_FileStorageRootName": "ManageDocumentSettings.FileStorageRootName",
     "loc:AllowedFileExtensions": "ManageDocumentSettings.AllowedFileExtensions",
     "dom:DocumentSettings_AllowedFileExtensions": "ManageDocumentSettings.AllowedFileExtensions",
     "loc:MaxAttachmentsPerTransaction": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
@@ -36,17 +36,17 @@
       "stub": false
     },
     {
-      "id": "ManageDocumentSettings.FileSystemAttachmentPath",
-      "label": "FileSystemAttachmentPath",
+      "id": "ManageDocumentSettings.FileStorageRootName",
+      "label": "FileStorageRootName",
       "section": null,
       "aliases": [
-        "loc:FileSystemAttachmentPath",
-        "dom:DocumentSettings_FileSystemAttachmentPath"
+        "loc:FileStorageRootName",
+        "dom:DocumentSettings_FileStorageRootName"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 64 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The folder documents are kept in.</p><p><strong>Example.</strong> <code>D:\\HCMv3\\Attachments</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
-      "adminHtml": "",
+      "html": "<p><strong>What it is.</strong> Which of the storage locations approved on this server your company's files are written to — attachments, scans, employee photos and geo punch selfies. You choose a location by name; you do not type a folder.</p><p><strong>Example.</strong> Default; or Archive, when the server offers a second disk for older records.</p><p><strong>Why it matters.</strong> Files already saved stay where they are and go on working after a change — each one remembers the location it was written to. Only new files go to the new one, so moving a company to another disk does not lose what came before.</p>",
+      "adminHtml": "<p>The list comes from <code>FileStorage:Roots</code> in the server's <code>appsettings.json</code>; a host user also sees the folder each name points at. Nothing typed on this screen can decide where the server writes, which is deliberate: a folder entered here would be a folder the service account writes uploaded files into, so pointing it at the website or at another tenant's folder would be a way in. The old free-text <strong>File System Attachment Path</strong> box was never read and has been removed; its stored value is left in the database untouched.</p>",
       "stub": false
     },
     {

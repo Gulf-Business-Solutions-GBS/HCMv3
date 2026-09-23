@@ -654,11 +654,62 @@ function loadRegistry() {
     return JSON.parse(read(REGISTRY));
 }
 
+/**
+ * A page whose topics are DECLARED in pages.json rather than derived from an entity's columns.
+ *
+ * Every page until now documented one record's fields, which is what an admin master-data dialog
+ * is. A self-service screen is not that: "Clock In", "Take selfie" and "Your location" are things
+ * an employee does, and the underlying columns (`TimeEvent.TransTypeId`, `GeoSelfiePath`) are
+ * names no employee will ever see, so keying help on them would document the database instead of
+ * the screen. Such a page lists its own topics and the tool generates no Rules line for them --
+ * there is no column to read a rule off.
+ *
+ * Everything downstream is unchanged: the topics are written as ordinary `##` sections, pooled with
+ * every other topic, built into the same page JSON and held to the same coverage gate.
+ */
+function buildTopicPage(page) {
+    return {
+        helpId: page.helpId,
+        title: page.title,
+        audience: page.audience || ['end-user'],
+        permissions: page.permissions || [],
+        defaultSection: page.defaultSection ?? null,
+        entity: page.entity ?? null,
+        surfaces: page.surfaces ?? {},
+        fields: page.topics.map((topic, order) => ({
+            canonicalId: topic.id,
+            property: null,
+            // The drawer runs this through the localize pipe, so a topic label must be a
+            // localization key -- usually the same key its marker names.
+            locKey: topic.label ?? topic.loc ?? topic.id,
+            section: topic.section ?? page.defaultSection ?? null,
+            order,
+            // Optional, and only worth setting where F1 on a particular control should land on this
+            // topic: `dom` is an input's id, `loc` a `data-help-loc` marker on the template.
+            aliases: [
+                ...(topic.dom ? [`dom:${topic.dom}`] : []),
+                ...(topic.loc ? [`loc:${topic.loc}`] : []),
+            ],
+            resolvedVia: 'declared',
+            type: 'topic',
+            rules: null,
+            rulesByLang: null,
+        })),
+        unresolved: [],
+        editOnly: [],
+    };
+}
+
 function buildInventory() {
     const registry = loadRegistry();
     const pages = [];
 
     for (const page of registry.pages) {
+        if (page.topics?.length) {
+            pages.push(buildTopicPage(page));
+            continue;
+        }
+
         const props = parseEntity(page.entity.file);
         const behaviour = serviceBehaviour(page.entity.name, page.service);
         // What the form posts: its length limits can be tighter than the column's.
@@ -783,7 +834,7 @@ function cmdExtract() {
     fs.writeFileSync(abs(out), JSON.stringify(inv, null, 2) + '\n');
 
     for (const p of inv.pages) {
-        console.log(`\n${p.helpId}  (${p.entity.name})`);
+        console.log(`\n${p.helpId}  (${p.entity?.name ?? "topics"})`);
         console.log(`  documented fields : ${p.fields.length}`);
         console.log(`  unresolved labels : ${p.unresolved.length}`);
         console.log(`  edit-only fields  : ${p.editOnly.length}`);
@@ -833,14 +884,15 @@ function titleIn(page, lang) {
 }
 
 function frontmatter(page, lang) {
-    const surfaces = Object.values(page.surfaces).map((s) => `  - ${s.template}`);
+    // A topic page need name no entity and no template: its subject is the screen, not a record.
+    const surfaces = Object.values(page.surfaces ?? {}).map((s) => `  - ${s.template}`);
     return [
         '---',
         `helpId: ${page.helpId}`,
         `lang: ${lang}`,
         `title: ${titleIn(page, lang)}`,
-        `entity: ${page.entity.fullName}`,
-        'surfaces:',
+        page.entity ? `entity: ${page.entity.fullName}` : null,
+        surfaces.length ? 'surfaces:' : null,
         ...surfaces,
         `audience: [${page.audience.join(', ')}]`,
         `permissions: [${page.permissions.join(', ')}]`,
@@ -851,7 +903,7 @@ function frontmatter(page, lang) {
         `${TODO}`,
         '',
         '',
-    ].join('\n');
+    ].filter((line) => line !== null).join('\n');
 }
 
 /** The Markdown under a head's `## Overview` heading, or null when the head has none. */
@@ -1159,7 +1211,7 @@ function cmdBuild(argv) {
                         helpId: page.helpId,
                         lang,
                         title: head.match(/^title:\s*(.+)$/m)?.[1].trim() ?? page.title,
-                        entity: page.entity.fullName,
+                        entity: page.entity?.fullName ?? null,
                         overviewHtml: blocksToHtml(overviewMd.split(/\r?\n/)),
                         aliasIndex,
                         fields,

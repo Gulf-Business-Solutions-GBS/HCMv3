@@ -4434,7 +4434,7 @@
     "DocumentSettings_EnableDocSaveInFileSystem": [
       "sys.document-settings.edit"
     ],
-    "DocumentSettings_FileSystemAttachmentPath": [
+    "DocumentSettings_FileStorageRootName": [
       "sys.document-settings.edit"
     ],
     "DocumentSettings_AllowedFileExtensions": [

@@ -4081,6 +4081,11 @@
     <text name="Ratings">Ratings</text>
     <text name="EnableDocSaveInFileSystem">Enable Document Save In File System</text>
     <text name="FileSystemAttachmentPath">File System Attachment Path</text>
+    <text name="FileStorageRootName">Storage location</text>
+    <text name="FileStorageRootDefault">Default</text>
+    <text name="FileStorageRootHint">Which of the folders approved on the server this company’s files go to. The folders themselves are set by whoever runs the server; only the choice is made here.</text>
+    <text name="FileStorageRootNotConfigured">The storage location "{0}" is not set up on this server.</text>
+    <text name="FileSystemAttachmentPathRetired">No longer used. Files go to the storage location chosen above.</text>
     <text name="MaxAttachmentsPerTransaction">Max Attachments Per Transaction</text>
     <text name="AllowedFileExtensions">Allowed File Extensions</text>
     <text name="MaxFileSizePerAttachmentMB">Max File Size Per Attachment (MB)</text>
@@ -6138,6 +6143,9 @@
     <text name="GeoPunchSelfieInvalid">The selfie could not be read. Please take it again.</text>
     <text name="GeoPunchSelfieTooLarge">The selfie is too large. Please take it again.</text>
     <text name="GeoPunchClockIn">Clock In</text>
+    <text name="GeoPunchClockInOut">Clock In and Clock Out</text>
+    <text name="GeoPunchOvertimeInOut">Overtime In and Overtime Out</text>
+    <text name="GeoPunchNoDutyToday">No duty today</text>
     <text name="GeoPunchClockOut">Clock Out</text>
     <text name="GeoPunchOvertimeIn">Overtime In</text>
     <text name="GeoPunchOvertimeOut">Overtime Out</text>

@@ -26,16 +26,18 @@ There is one settings record per company; it cannot be deleted.
 
 **Rules.** Yes or no.
 
-## FileSystemAttachmentPath {#ManageDocumentSettings.FileSystemAttachmentPath}
-<!-- alias: loc:FileSystemAttachmentPath, dom:DocumentSettings_FileSystemAttachmentPath -->
+## FileStorageRootName {#ManageDocumentSettings.FileStorageRootName}
+<!-- alias: loc:FileStorageRootName, dom:DocumentSettings_FileStorageRootName -->
 
-**What it is.** The folder documents are kept in.
+**What it is.** Which of the storage locations approved on this server your company's files are written to — attachments, scans, employee photos and geo punch selfies. You choose a location by name; you do not type a folder.
 
-**Example.** `D:\HCMv3\Attachments`
+**Example.** Default; or Archive, when the server offers a second disk for older records.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** Files already saved stay where they are and go on working after a change — each one remembers the location it was written to. Only new files go to the new one, so moving a company to another disk does not lose what came before.
 
-**Rules.** Optional.
+:::admin
+The list comes from `FileStorage:Roots` in the server's `appsettings.json`; a host user also sees the folder each name points at. Nothing typed on this screen can decide where the server writes, which is deliberate: a folder entered here would be a folder the service account writes uploaded files into, so pointing it at the website or at another tenant's folder would be a way in. The old free-text **File System Attachment Path** box was never read and has been removed; its stored value is left in the database untouched.
+:::
 
 ## AllowedFileExtensions {#ManageDocumentSettings.AllowedFileExtensions}
 <!-- alias: loc:AllowedFileExtensions, dom:DocumentSettings_AllowedFileExtensions -->

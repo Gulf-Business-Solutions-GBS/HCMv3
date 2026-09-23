@@ -72,6 +72,13 @@ public class MyGeoPunchWorkLocationDto
     /// <summary>Allowed radius in metres.</summary>
     public double GeoRange { get; set; }
 
+    /// <summary>
+    /// A site boundary is drawn for this location and the tenant has geo fencing on, so whether the punch
+    /// counts as "at work" is decided by the shape and not by <see cref="GeoRange"/>. The screen says
+    /// "site boundary" rather than showing a radius the punch is not judged against.
+    /// </summary>
+    public bool HasGeoFence { get; set; }
+
     /// <summary>The employee's own work location, as opposed to an extended one.</summary>
     public bool IsDefault { get; set; }
 }
@@ -118,11 +125,21 @@ public class CheckMyGeoPunchLocationInput
 
 public class MyGeoPunchLocationCheckDto
 {
-    /// <summary>Metres from the work location; zero for an open-location punch.</summary>
+    /// <summary>
+    /// Metres from the work location; zero for an open-location punch. When <see cref="UsesGeoFence"/> is
+    /// true this is instead the distance to the nearest point of the site boundary, and zero means inside
+    /// it -- a shape has no centre to measure from.
+    /// </summary>
     public double DistanceMeters { get; set; }
 
-    /// <summary>The work location's allowed radius in metres; null for an open-location punch.</summary>
+    /// <summary>
+    /// The work location's allowed radius in metres; null for an open-location punch and null when
+    /// <see cref="UsesGeoFence"/> is true, because no radius is being applied.
+    /// </summary>
     public double? RangeMeters { get; set; }
+
+    /// <summary>A site boundary decided this verdict, rather than the radius.</summary>
+    public bool UsesGeoFence { get; set; }
 
     public GeoPunchRangeVerdict Verdict { get; set; }
 }

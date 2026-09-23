@@ -15,6 +15,7 @@ import {
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../shared/common/workflow-activity/workflow-history-modal.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
  * The Employee Self Service landing page.
@@ -33,7 +34,7 @@ import { WorkflowHistoryModalComponent } from '../../shared/common/workflow-acti
     templateUrl: './ess-home.component.html',
     styleUrls: ['./ess-home.component.less'],
     animations: [appModuleAnimation()],
-    imports: [CommonModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, RouterModule, WorkflowHistoryModalComponent],
+    imports: [CommonModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, RouterModule, WorkflowHistoryModalComponent, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssHomeComponent extends AppComponentBase implements OnInit {

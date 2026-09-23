@@ -19,6 +19,7 @@ import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 type PersonalDataFieldKind = 'text' | 'date' | 'number' | 'gender';
 
@@ -54,7 +55,7 @@ interface PersonalDataSection {
 @Component({
     templateUrl: './my-personal-data.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, WorkflowHistoryModalComponent, AttachmentsComponent],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, WorkflowHistoryModalComponent, AttachmentsComponent, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDataChangeDto> implements OnInit {

@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.UI;
+using HCMv3.Storage;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Dto;
 using Shouldly;
@@ -12,10 +16,15 @@ public class ManageDocumentSettingsAppService_Tests : SystemSettingsAppServiceTe
 {
     private readonly ManageDocumentSettingsAppService _appService;
 
+    /// <summary>A server offering one extra approved location, as appsettings.json would.</summary>
+    private static readonly LocalFileStore FileStore = new(
+        Path.Combine(Path.GetTempPath(), "hcmv3-settings-tests"),
+        new Dictionary<string, string> { ["Archive"] = Path.Combine(Path.GetTempPath(), "hcmv3-settings-tests-archive") });
+
     public ManageDocumentSettingsAppService_Tests()
     {
         _appService = CreateService(() => new ManageDocumentSettingsAppService(
-            FakeRepository.For<ManageDocumentSettings>(Context)));
+            FakeRepository.For<ManageDocumentSettings>(Context), FileStore));
     }
 
     [Fact]
@@ -72,5 +81,67 @@ public class ManageDocumentSettingsAppService_Tests : SystemSettingsAppServiceTe
 
         await Should.ThrowAsync<UserFriendlyException>(() =>
             _appService.DeleteDocumentSettings(new EntityDto(id)));
+    }
+
+    // ---------------------------------------------------------------- the storage location
+
+    [Fact]
+    public async Task Should_Offer_The_Locations_The_Server_Approves()
+    {
+        var roots = await _appService.GetFileStorageRoots();
+
+        roots.Select(r => r.Name).ShouldBe(new[] { LocalFileStore.DefaultRootName, "Archive" });
+        roots[0].IsDefault.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task Should_Not_Tell_A_Tenant_Where_The_Folders_Are_On_The_Server()
+    {
+        // A tenant administrator picks a location by name; the server's folder layout is not theirs to
+        // know, and handing it over is reconnaissance for free. A host user does see it.
+        LoginAsDefaultTenantAdmin();
+        (await _appService.GetFileStorageRoots()).ShouldAllBe(r => r.Path == null);
+
+        LoginAsHostAdmin();
+        (await _appService.GetFileStorageRoots()).ShouldAllBe(r => r.Path != null);
+    }
+
+    [Fact]
+    public async Task Should_Save_A_Location_The_Server_Approves()
+    {
+        await _appService.CreateOrEditDocumentSettings(new DocumentSettingsEditDto
+        {
+            Id = 0,
+            FileStorageRootName = "Archive"
+        });
+
+        var list = await _appService.GetDocumentSettingsList(new PagedAndSortedResultRequestDto());
+        list.Items[0].FileStorageRootName.ShouldBe("Archive");
+
+        var edit = await _appService.GetDocumentSettingsForEdit(new EntityDto(list.Items[0].Id));
+        edit.FileStorageRootName.ShouldBe("Archive");
+        edit.AvailableRoots.Count.ShouldBe(2);
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Location_The_Server_Does_Not_Have()
+    {
+        // This is the check that keeps the field from being a free-text server path by another name. A
+        // folder accepted here would be a folder this process then writes uploaded files into.
+        await Should.ThrowAsync<UserFriendlyException>(() =>
+            _appService.CreateOrEditDocumentSettings(new DocumentSettingsEditDto
+            {
+                Id = 0,
+                FileStorageRootName = @"C:inetpubwwwroot"
+            }));
+    }
+
+    [Fact]
+    public async Task Should_Treat_No_Choice_As_The_Default_Location()
+    {
+        await _appService.CreateOrEditDocumentSettings(new DocumentSettingsEditDto { Id = 0, FileStorageRootName = "  " });
+
+        var list = await _appService.GetDocumentSettingsList(new PagedAndSortedResultRequestDto());
+        list.Items[0].FileStorageRootName.ShouldBeNull();
     }
 }

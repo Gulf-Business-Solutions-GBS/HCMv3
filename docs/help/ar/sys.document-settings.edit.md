@@ -26,16 +26,18 @@ permissions: [Pages.SystemSettings.ManageDocumentSettings]
 
 **القواعد.** نعم أو لا.
 
-## FileSystemAttachmentPath {#ManageDocumentSettings.FileSystemAttachmentPath}
-<!-- alias: loc:FileSystemAttachmentPath, dom:DocumentSettings_FileSystemAttachmentPath -->
+## FileStorageRootName {#ManageDocumentSettings.FileStorageRootName}
+<!-- alias: loc:FileStorageRootName, dom:DocumentSettings_FileStorageRootName -->
 
-**ما هو.** المجلد الذي تُحفظ فيه المستندات.
+**ما هو.** أيّ مواقع التخزين المعتمدة على هذا الخادم تُكتب فيه ملفات شركتك: المرفقات والمستندات الممسوحة وصور الموظفين وصور البصمة بالموقع. وتختار الموقع بالاسم، ولا تكتب مجلداً.
 
-**مثال.** `D:\HCMv3\Attachments`
+**مثال.** الافتراضي، أو «الأرشيف» عندما يوفّر الخادم قرصاً ثانياً للسجلات القديمة.
 
-**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
+**لماذا يهمّ.** تبقى الملفات المحفوظة سابقاً في مكانها وتظل تعمل بعد التغيير، لأن كل ملف يحتفظ باسم الموقع الذي كُتب فيه. ولا ينتقل إلى الموقع الجديد إلا الملفات الجديدة، فلا يفقد من ينقل شركة إلى قرص آخر ما سبق.
 
-**القواعد.** اختياري.
+:::admin
+تأتي القائمة من `FileStorage:Roots` في ملف `appsettings.json` على الخادم، ويرى مستخدم المضيف أيضاً المجلد الذي يشير إليه كل اسم. ولا شيء يُكتب في هذه الشاشة يمكنه تحديد موضع الكتابة على الخادم، وهذا مقصود: فالمجلد الذي يُكتب هنا يصبح مجلداً يكتب فيه حساب الخدمة الملفات المرفوعة، وتوجيهه إلى موقع الويب أو إلى مجلد مستأجر آخر يفتح ثغرة. أما الحقل النصي القديم **مسار مرفقات نظام الملفات** فلم يكن يُقرأ وقد أُزيل، وبقيت قيمته المخزَّنة في قاعدة البيانات دون تغيير.
+:::
 
 ## AllowedFileExtensions {#ManageDocumentSettings.AllowedFileExtensions}
 <!-- alias: loc:AllowedFileExtensions, dom:DocumentSettings_AllowedFileExtensions -->

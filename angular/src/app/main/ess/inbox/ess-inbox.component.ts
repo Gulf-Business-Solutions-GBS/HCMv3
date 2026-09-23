@@ -16,6 +16,7 @@ import {
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowActivityRailComponent } from '../../../shared/common/workflow-activity/workflow-activity-rail.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
  * The approver's inbox: everything waiting on this person, of every transaction type, in one list.
@@ -30,7 +31,7 @@ import { WorkflowActivityRailComponent } from '../../../shared/common/workflow-a
 @Component({
     templateUrl: './ess-inbox.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowActivityRailComponent],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowActivityRailComponent, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssInboxComponent extends AppComponentBase implements OnInit {

@@ -20,7 +20,20 @@ public class ManageDocumentSettings : FullAuditedEntity, IMustHaveTenant
 
     public virtual bool EnableDocSaveInFileSystem { get; set; }
 
+    /// <summary>
+    /// Legacy free text, kept with its old value and NOT read. A path typed on a settings screen is a path
+    /// the service account then writes to, so where files go is named in configuration instead; see
+    /// <see cref="FileStorageRootName"/> and <c>IFileStore</c>.
+    /// </summary>
     public virtual string FileSystemAttachmentPath { get; set; }
+
+    /// <summary>
+    /// Which of the roots configuration approves this tenant's new files go to, by name -- never a path.
+    /// Blank means the default root. A name no longer configured falls back to the default, with a warning
+    /// in the log (<c>IFileStorageRootResolver</c>).
+    /// </summary>
+    [StringLength(64)]
+    public virtual string FileStorageRootName { get; set; }
 
     public virtual int MaxAttachmentsPerTransaction { get; set; }
 

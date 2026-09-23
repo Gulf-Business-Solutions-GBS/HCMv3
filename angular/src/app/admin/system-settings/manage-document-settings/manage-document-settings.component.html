@@ -39,7 +39,7 @@
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 200px">{{ 'EnableDocSaveInFileSystem' | localize }}</th>
-                                    <th style="min-width: 250px">{{ 'FileSystemAttachmentPath' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'FileStorageRootName' | localize }}</th>
                                     <th style="min-width: 180px">{{ 'MaxAttachmentsPerTransaction' | localize }}</th>
                                     <th style="min-width: 200px">{{ 'AllowedFileExtensions' | localize }}</th>
                                     <th style="min-width: 180px">{{ 'MaxFileSizePerAttachmentMB' | localize }}</th>
@@ -64,7 +64,7 @@
                                         <i class="fa" [ngClass]="record.enableDocSaveInFileSystem ? 'fa-check text-success' : 'fa-times text-muted'"></i>
                                     </td>
                                     <td style="min-width: 250px">
-                                        <span pTooltip="{{ record.fileSystemAttachmentPath }}" class="hide-overflown">{{ record.fileSystemAttachmentPath }}</span>
+                                        <span>{{ record.fileStorageRootName || ('FileStorageRootDefault' | localize) }}</span>
                                     </td>
                                     <td style="min-width: 180px">{{ record.maxAttachmentsPerTransaction }}</td>
                                     <td style="min-width: 200px">{{ record.allowedFileExtensions }}</td>

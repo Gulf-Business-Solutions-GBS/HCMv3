@@ -89,7 +89,9 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
             CanOvertimeOut = state.IsOvertimeAllowed && state.Buttons.CanOvertimeOut,
             IsOvertimeAllowed = state.IsOvertimeAllowed,
             HasDutyPeriodToday = state.HasDutyPeriodToday,
-            WorkLocations = state.WorkLocations.Select(w => ToDto(w, w.Id == state.DefaultWorkLocationId)).ToList(),
+            WorkLocations = state.WorkLocations
+                .Select(w => ToDto(w, w.Id == state.DefaultWorkLocationId, ResolveGeoFence(state, w) != null))
+                .ToList(),
             DefaultWorkLocationId = state.DefaultWorkLocationId,
             IsOpenLocation = state.IsOpenLocation,
             RequiresSelfie = state.RequiresSelfie,
@@ -107,15 +109,14 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
         var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
         var state = await LoadStateAsync(employeeId, Clock.Now);
 
-        var (_, distance, verdict) = JudgeLocation(state, input.WorkLocationId, input.Latitude, input.Longitude);
+        var judgement = JudgeLocation(state, input.WorkLocationId, input.Latitude, input.Longitude);
 
         return new MyGeoPunchLocationCheckDto
         {
-            DistanceMeters = distance,
-            RangeMeters = state.IsOpenLocation
-                ? null
-                : state.WorkLocations.First(w => w.Id == input.WorkLocationId).GeoRange,
-            Verdict = verdict
+            DistanceMeters = judgement.DistanceMeters,
+            RangeMeters = judgement.RangeMeters,
+            UsesGeoFence = judgement.UsesGeoFence,
+            Verdict = judgement.Verdict
         };
     }
 
@@ -153,11 +154,15 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
             throw new UserFriendlyException(L("GeoPunchTypeNotConfigured", code));
         }
 
-        var (workLocation, distance, verdict) = JudgeLocation(state, input.WorkLocationId, input.Latitude, input.Longitude);
-        if (verdict == GeoPunchRangeVerdict.OutOfRangeRefused)
+        var judgement = JudgeLocation(state, input.WorkLocationId, input.Latitude, input.Longitude);
+        if (judgement.Verdict == GeoPunchRangeVerdict.OutOfRangeRefused)
         {
             throw new UserFriendlyException(L("PunchingOutOfLocation"),
-                L("GeoPunchDistanceDetail", Math.Round(distance), Math.Round(workLocation.GeoRange)));
+                judgement.UsesGeoFence
+                    ? L("GeoPunchBoundaryDetail", Math.Round(judgement.DistanceMeters))
+                    : L("GeoPunchDistanceDetail",
+                        Math.Round(judgement.DistanceMeters),
+                        Math.Round(judgement.RangeMeters ?? 0)));
         }
 
         var selfieId = state.RequiresSelfie ? await SaveSelfieAsync(input.Selfie) : (Guid?)null;
@@ -176,8 +181,7 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
                 now.Date.ToString("dd/MM/yyyy"), transTime.ToString("HH:mm:ss")));
         }
 
-        var inRange = verdict == GeoPunchRangeVerdict.InRange;
-        var rangeDifference = inRange ? 0 : distance - workLocation.GeoRange;
+        var inRange = judgement.Verdict == GeoPunchRangeVerdict.InRange;
 
         var accessId = await _employeeRepository.GetAll()
             .Where(e => e.Id == employeeId)
@@ -201,8 +205,8 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
             // Legacy only ever wrote PunchInRange = false (for an out-of-range punch) and never set it true,
             // so every legacy geo punch reads as out of range. It is set honestly here.
             PunchInRange = inRange,
-            RangeDifference = rangeDifference,
-            WorkLocationId = workLocation?.Id,
+            RangeDifference = judgement.RangeDifference,
+            WorkLocationId = judgement.WorkLocation?.Id,
             GeoSelfiePath = selfieId?.ToString(),
 
             // An ordinary punch, not a request: no workflow status, so the Time Engine counts it at once.
@@ -216,8 +220,8 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
         {
             Id = id,
             PunchInRange = inRange,
-            DistanceMeters = distance,
-            RangeDifference = rangeDifference,
+            DistanceMeters = judgement.DistanceMeters,
+            RangeDifference = judgement.RangeDifference,
             AutoLogout = state.Settings?.AutoLogoutAfterPunch ?? false
         };
     }
@@ -262,6 +266,9 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
         public bool IsOpenLocation => WorkLocations.Count == 0;
         public bool RequiresSelfie { get; init; }
         public bool AllowPunchOutsideRange { get; init; }
+
+        /// <summary>The tenant has geo fencing on (ManageTimeSettings.EnableGeoFence).</summary>
+        public bool GeoFenceEnabled { get; init; }
         public ManageSelfServiceSettings Settings { get; init; }
         public List<TimeEvent> TodaysPunches { get; init; }
     }
@@ -307,6 +314,7 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
             await ResolveWorkLocationsAsync(employeeId, today, buttons, timePolicy, orgAssignment?.WorkLocation);
 
         var settings = await _sysSettingsAccessor.GetSelfServiceSettingsAsync();
+        var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
 
         return new GeoPunchState
         {
@@ -319,6 +327,7 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
             // Legacy defaulted IsFaceRequired to TRUE when the employee had no time policy.
             RequiresSelfie = (settings?.AllowGeolocationSelfie ?? false) && (timePolicy?.IsFaceRequired ?? true),
             AllowPunchOutsideRange = settings?.AllowPunchOutsideRange ?? false,
+            GeoFenceEnabled = timeSettings?.EnableGeoFence ?? false,
             Settings = settings,
             TodaysPunches = todaysPunches
         };
@@ -409,17 +418,42 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
         return (locations.GroupBy(w => w.Id).Select(g => g.First()).ToList(), defaultId);
     }
 
+    /// <summary>What judging a punch's position produced, so every caller reports the same numbers.</summary>
+    private sealed class GeoJudgement
+    {
+        public WorkLocation WorkLocation { get; init; }
+
+        /// <summary>Metres from the work location, or from the site boundary when <see cref="UsesGeoFence"/>.</summary>
+        public double DistanceMeters { get; init; }
+
+        /// <summary>The radius applied; null when a boundary decided it or the punch is open-location.</summary>
+        public double? RangeMeters { get; init; }
+
+        /// <summary>Metres beyond what was allowed; zero when in range.</summary>
+        public double RangeDifference { get; init; }
+
+        public bool UsesGeoFence { get; init; }
+
+        public GeoPunchRangeVerdict Verdict { get; init; }
+    }
+
     /// <summary>
     /// Distance and verdict for a punch at (<paramref name="latitude"/>, <paramref name="longitude"/>). An
     /// open-location punch has no work location to be measured against and is always in range (legacy set
     /// the "work place" to the employee's own position with a 100 m radius, which comes to the same thing).
+    ///
+    /// <para>
+    /// A work location with a site boundary drawn on it is judged by that shape instead of by its radius,
+    /// when the tenant has geo fencing on. Legacy stored the boundary and never read it, so every site fell
+    /// back to a circle however oddly it was actually shaped -- an L-shaped compound needed a radius wide
+    /// enough to cover the far wing, which let a punch through from the street outside.
+    /// </para>
     /// </summary>
-    private (WorkLocation workLocation, double distance, GeoPunchRangeVerdict verdict) JudgeLocation(
-        GeoPunchState state, int? workLocationId, double latitude, double longitude)
+    private GeoJudgement JudgeLocation(GeoPunchState state, int? workLocationId, double latitude, double longitude)
     {
         if (state.IsOpenLocation)
         {
-            return (null, 0, GeoPunchRangeVerdict.InRange);
+            return new GeoJudgement { Verdict = GeoPunchRangeVerdict.InRange };
         }
 
         if (!workLocationId.HasValue)
@@ -433,10 +467,84 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
             throw new UserFriendlyException(L("GeoPunchWorkLocationNotAllowed"));
         }
 
+        var fence = ResolveGeoFence(state, workLocation);
+        if (fence != null)
+        {
+            var inside = GeoFence.Contains(fence, latitude, longitude);
+            var toBoundary = inside ? 0 : GeoFence.DistanceToBoundaryMeters(fence, latitude, longitude);
+
+            return new GeoJudgement
+            {
+                WorkLocation = workLocation,
+                DistanceMeters = toBoundary,
+                RangeMeters = null,
+                RangeDifference = toBoundary,
+                UsesGeoFence = true,
+                Verdict = inside
+                    ? GeoPunchRangeVerdict.InRange
+                    : state.AllowPunchOutsideRange
+                        ? GeoPunchRangeVerdict.OutOfRangeAllowed
+                        : GeoPunchRangeVerdict.OutOfRangeRefused
+            };
+        }
+
         var distance = GeoPunchRules.DistanceMeters(latitude, longitude, workLocation.Latitude, workLocation.Longitude);
         var verdict = GeoPunchRules.JudgeRange(distance, workLocation.GeoRange, state.AllowPunchOutsideRange);
 
-        return (workLocation, distance, verdict);
+        return new GeoJudgement
+        {
+            WorkLocation = workLocation,
+            DistanceMeters = distance,
+            RangeMeters = workLocation.GeoRange,
+            RangeDifference = verdict == GeoPunchRangeVerdict.InRange ? 0 : distance - workLocation.GeoRange,
+            UsesGeoFence = false,
+            Verdict = verdict
+        };
+    }
+
+    /// <summary>
+    /// The site boundary that governs <paramref name="workLocation"/>, or <c>null</c> when the radius still
+    /// does: geo fencing off for the tenant, no boundary drawn, or one that cannot be read.
+    ///
+    /// <para>
+    /// A boundary that does not enclose its own work location pin is treated as not drawn. The usual cause
+    /// is latitude and longitude the wrong way round, which puts the shape thousands of kilometres away and
+    /// would refuse every punch at the site -- a master-data slip must not be able to stop everyone clocking
+    /// in, so it falls back to the radius and says so in the log.
+    /// </para>
+    /// </summary>
+    private IReadOnlyList<GeoPoint> ResolveGeoFence(GeoPunchState state, WorkLocation workLocation)
+    {
+        if (!state.GeoFenceEnabled || !GeoFence.TryParse(workLocation.GeoFenceCoordinates, out var polygon))
+        {
+            return null;
+        }
+
+        // A location with no pin has nothing to check the boundary against -- and no usable radius either,
+        // so the boundary is the only thing that can let anyone punch there.
+        if (workLocation.Latitude == 0 && workLocation.Longitude == 0)
+        {
+            return polygon;
+        }
+
+        if (GeoFence.Contains(polygon, workLocation.Latitude, workLocation.Longitude))
+        {
+            return polygon;
+        }
+
+        // The pin may sit just off the shape -- a gate marked outside the wall. Its own radius is the
+        // tolerance for that, and at least a metre when no radius is set.
+        var pinToBoundary = GeoFence.DistanceToBoundaryMeters(polygon, workLocation.Latitude, workLocation.Longitude);
+        if (pinToBoundary <= Math.Max(workLocation.GeoRange, 1))
+        {
+            return polygon;
+        }
+
+        Logger.Warn(
+            $"Geo punch: work location {workLocation.Id} has a geo fence {Math.Round(pinToBoundary)} m away from " +
+            "its own coordinates, so it is ignored and the radius is used. Check the coordinate order.");
+
+        return null;
     }
 
     // ---------------------------------------------------------------- selfie
@@ -511,7 +619,7 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
 
     // ---------------------------------------------------------------- mapping
 
-    private static MyGeoPunchWorkLocationDto ToDto(WorkLocation workLocation, bool isDefault) => new()
+    private static MyGeoPunchWorkLocationDto ToDto(WorkLocation workLocation, bool isDefault, bool hasGeoFence) => new()
     {
         Id = workLocation.Id,
         Code = workLocation.Code,
@@ -520,6 +628,7 @@ public class MyGeoPunchAppService : HCMv3AppServiceBase, IMyGeoPunchAppService
         Latitude = workLocation.Latitude,
         Longitude = workLocation.Longitude,
         GeoRange = workLocation.GeoRange,
+        HasGeoFence = hasGeoFence,
         IsDefault = isDefault
     };
 

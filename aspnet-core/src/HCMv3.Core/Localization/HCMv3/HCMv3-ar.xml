@@ -4031,6 +4031,11 @@
     <text name="Ratings">التقديرات</text>
     <text name="EnableDocSaveInFileSystem">تفعيل حفظ الوثائق في نظام الملفات</text>
     <text name="FileSystemAttachmentPath">مسار المرفقات في نظام الملفات</text>
+    <text name="FileStorageRootName">موقع التخزين</text>
+    <text name="FileStorageRootDefault">الافتراضي</text>
+    <text name="FileStorageRootHint">أيّ المجلّدات المعتمدة على الخادم تُحفظ فيه ملفات هذه الشركة. وتُضبط المجلّدات نفسها من قِبَل من يُدير الخادم، ولا يُختار هنا إلا أحدها.</text>
+    <text name="FileStorageRootNotConfigured">موقع التخزين «{0}» غير مُعدّ على هذا الخادم.</text>
+    <text name="FileSystemAttachmentPathRetired">لم يعد مستخدماً. تُحفظ الملفات في موقع التخزين المختار أعلاه.</text>
     <text name="MaxAttachmentsPerTransaction">الحد الأقصى للمرفقات لكل معاملة</text>
     <text name="AllowedFileExtensions">امتدادات الملفات المسموح بها</text>
     <text name="MaxFileSizePerAttachmentMB">الحد الأقصى لحجم المرفق (ميجابايت)</text>
@@ -5980,6 +5985,9 @@
     <text name="GeoPunchSelfieInvalid">تعذّرت قراءة الصورة الشخصية. يرجى التقاطها مرة أخرى.</text>
     <text name="GeoPunchSelfieTooLarge">حجم الصورة الشخصية كبير جداً. يرجى التقاطها مرة أخرى.</text>
     <text name="GeoPunchClockIn">بصمة الحضور</text>
+    <text name="GeoPunchClockInOut">تسجيل الحضور والانصراف</text>
+    <text name="GeoPunchOvertimeInOut">تسجيل بداية العمل الإضافي ونهايته</text>
+    <text name="GeoPunchNoDutyToday">لا يوجد دوام اليوم</text>
     <text name="GeoPunchClockOut">بصمة الانصراف</text>
     <text name="GeoPunchOvertimeIn">حضور العمل الإضافي</text>
     <text name="GeoPunchOvertimeOut">انصراف العمل الإضافي</text>

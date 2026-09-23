@@ -1,0 +1,193 @@
+{
+  "helpId": "ess.personal-data",
+  "lang": "en",
+  "title": "My Personal Data",
+  "entity": null,
+  "overviewHtml": "<p>Ask for your own details to be corrected — a marital status, a phone number, an address, a name spelling.</p><p>You cannot edit your record directly; you propose changes and HR approves them. That is deliberate: what is on your record drives your pay, your allowances and what your company files with the government, so a change is something somebody agrees to rather than something you can simply do.</p>",
+  "aliasIndex": {
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestPersonalDataChange": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw",
+    "loc:PickTheFieldsYouWantToChangeHint": "ess.personal-data.pick-fields",
+    "loc:Current": "ess.personal-data.current",
+    "loc:NewValue": "ess.personal-data.new-value",
+    "loc:Changes": "ess.personal-data.changes",
+    "loc:Attachments": "ess.personal-data.attachments",
+    "loc:YouAlreadyHaveAPendingPersonalDataChange": "ess.personal-data.pending-change"
+  },
+  "fields": [
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anything you want the people approving this to read. Free text, and optional.</p><p><strong>Example.</strong> \"Flying on the 14th, back on the 28th — cover agreed with Ahmed.\"</p><p><strong>Why it matters.</strong> It is the only place you can explain a request that needs explaining, and it stays with the request for good: approvers see it, and so does anyone who looks the request up afterwards. A request that surprises somebody is a request that comes back to you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestPersonalDataChange",
+      "section": null,
+      "aliases": [
+        "loc:RequestPersonalDataChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Takes a request back. Offered only while it can still be taken back — once it is approved and acted on, the button is gone.</p><p><strong>Example.</strong> You asked for leave next week, your plans changed, you withdraw it before your manager gets to it.</p><p><strong>Why it matters.</strong> A withdrawn request is not deleted: it stays in the list marked <strong>Withdrawn</strong>, so the record shows what happened. Withdrawing frees anything the request was holding, such as a leave balance reserved against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.pick-fields",
+      "label": "PickTheFieldsYouWantToChangeHint",
+      "section": null,
+      "aliases": [
+        "loc:PickTheFieldsYouWantToChangeHint"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One request can carry several changes. Tick the fields you want to change, and only those appear for you to fill in.</p><p><strong>Example.</strong> Ticking Marital Status and Mobile Number, leaving the other twenty fields alone.</p><p><strong>Why it matters.</strong> Untouched fields are not part of the request at all, so nothing you did not tick can be changed by accident. It also keeps the request readable for whoever approves it — three changes they can see are easier to agree to than a whole record to compare.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.current",
+      "label": "Current",
+      "section": null,
+      "aliases": [
+        "loc:Current"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What your record says today, shown beside each field you have ticked.</p><p><strong>Example.</strong> Marital Status: Single.</p><p><strong>Why it matters.</strong> It is what the change is measured against, and it catches the common case where the record is already right and the request is not needed. Read it before you type the new value.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.new-value",
+      "label": "NewValue",
+      "section": null,
+      "aliases": [
+        "loc:NewValue"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What it should say instead.</p><p><strong>Example.</strong> Marital Status: Married.</p><p><strong>Why it matters.</strong> This is what is written to your record once the request is approved — so write it as it should appear, not as a note about it. For a name or a document detail, copy it from the official document rather than typing it from memory.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.changes",
+      "label": "Changes",
+      "section": null,
+      "aliases": [
+        "loc:Changes"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> On a submitted request, the list of what it is asking to change: each field, from what, to what.</p><p><strong>Example.</strong> Marital Status: Single → Married; Mobile: 9XXXXXXX → 6XXXXXXX.</p><p><strong>Why it matters.</strong> It is the whole request in one line, and it is what your approver sees. It is also how you check that what you submitted is what you meant, without opening the form again.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.attachments",
+      "label": "Attachments",
+      "section": null,
+      "aliases": [
+        "loc:Attachments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Documents backing the change, attached to the request.</p><p><strong>Example.</strong> A marriage certificate for a change of marital status; a tenancy contract for a new address.</p><p><strong>Why it matters.</strong> Most changes to an official detail need evidence, and a request without it waits while somebody asks you for it. Attaching the document when you raise the request is usually the difference between approval the same day and approval next week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.personal-data.pending-change",
+      "label": "YouAlreadyHaveAPendingPersonalDataChange",
+      "section": null,
+      "aliases": [
+        "loc:YouAlreadyHaveAPendingPersonalDataChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A notice that a request of yours is still waiting, so you cannot raise another.</p><p><strong>Example.</strong> You asked to change your address on Sunday and it has not been approved yet.</p><p><strong>Why it matters.</strong> Two requests changing the same record would race each other, and whichever was approved second would quietly undo the first. Wait for the one you have, or withdraw it and raise one request with everything in it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

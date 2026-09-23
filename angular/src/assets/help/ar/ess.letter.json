@@ -1,0 +1,179 @@
+{
+  "helpId": "ess.letter",
+  "lang": "ar",
+  "title": "طلبات الخطابات",
+  "entity": null,
+  "overviewHtml": "<p>اطلب من الموارد البشرية خطاباً — شهادة راتب، أو شهادة عمل، أو عدم ممانعة لتأشيرة أو لرخصة قيادة — وتابعه حتى يصبح جاهزاً للاستلام.</p><p>ويُصدَر الخطاب من سجلّك أنت، فلا يُكتب شيء يدوياً، والأرقام فيه هي التي يحفظها النظام. وما تقدّمه أنت هو الجهة الموجَّه إليها.</p>",
+  "aliasIndex": {
+    "loc:DocumentType": "ess.letter.document-type",
+    "loc:EffectiveDate": "ess.letter.effective-date",
+    "loc:AddressToEn": "ess.letter.address-to-en",
+    "loc:AddressToAr": "ess.letter.address-to-ar",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:ReadyToCollect": "ess.letter.ready-to-collect",
+    "loc:RequestLetter": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.letter.document-type",
+      "label": "DocumentType",
+      "section": null,
+      "aliases": [
+        "loc:DocumentType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطاب الذي تحتاجه، من النماذج المتوفرة لدى شركتك.</p><p><strong>مثال.</strong> شهادة راتب، أو شهادة عمل، أو شهادة عدم ممانعة.</p><p><strong>لماذا يهمّ.</strong> يحدّد النوع ما يذكره الخطاب وقدر ما يذكره: فشهادة الراتب تبيّن راتبك، وشهادة العمل لا تبيّنه عادةً. ومن طلب منك الخطاب هو من يحدّد النوع الذي يريده.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.letter.effective-date",
+      "label": "EffectiveDate",
+      "section": null,
+      "aliases": [
+        "loc:EffectiveDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يحمله الخطاب.</p><p><strong>مثال.</strong> تاريخ اليوم لخطاب يطلبه البنك الآن.</p><p><strong>لماذا يهمّ.</strong> أكثر الجهات لا تقبل خطاباً مضى على تاريخه أكثر من شهر تقريباً، والبيانات فيه تُؤخذ كما هي في هذا التاريخ؛ فاترك تاريخ اليوم للخطاب الحالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.letter.address-to-en",
+      "label": "AddressToEn",
+      "section": null,
+      "aliases": [
+        "loc:AddressToEn"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجهة التي يُوجَّه إليها الخطاب بالإنجليزية، وهو مطلوب.</p><p><strong>مثال.</strong> Gulf Bank — Salmiya Branch</p><p><strong>لماذا يهمّ.</strong> يُطبع في الخطاب كما تكتبه تماماً، والخطاب الموجَّه إلى جهة خاطئة تردّه عادةً الجهة التي قُصد بها. فاكتب اسم الجهة نفسه، لا «إلى من يهمّه الأمر»، إلا إن كان هذا هو المطلوب فعلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.letter.address-to-ar",
+      "label": "AddressToAr",
+      "section": null,
+      "aliases": [
+        "loc:AddressToAr"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشيء نفسه بالعربية، للخطاب الذي يصدر بالعربية.</p><p><strong>مثال.</strong> بنك الخليج — فرع السالمية</p><p><strong>لماذا يهمّ.</strong> تطلب الجهات الحكومية وأكثر البنوك المحلية الخطاب العربي، وتطلب اسمها كما تكتبه هي. فانقله من مستند صادر عنها بدلاً من ترجمته بنفسك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.letter.ready-to-collect",
+      "label": "ReadyToCollect",
+      "section": null,
+      "aliases": [
+        "loc:ReadyToCollect"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة على الطلب المعتمد تفيد أن الموارد البشرية أصدرت الخطاب وأنه بانتظارك.</p><p><strong>مثال.</strong> اعتُمد الأحد وصار جاهزاً للاستلام الاثنين.</p><p><strong>لماذا يهمّ.</strong> الاعتماد غير الجاهزية. فالاعتماد يعني موافقة الموارد البشرية على كتابته، وهذه العلامة تعني أنه صار موجوداً، وعندها يستحقّ الذهاب لاستلامه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestLetter",
+      "section": null,
+      "aliases": [
+        "loc:RequestLetter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "helpId": "ess.punch",
+  "lang": "en",
+  "title": "My Punches",
+  "entity": null,
+  "overviewHtml": "<p>Ask for a punch to be added when one is missing — the device did not read your finger, you were out at a client, the reader was down.</p><p>This is a request, not a punch. It goes for approval, and only once it is approved does the Time Engine count it and your day stop looking short. Punches made on the Geo Punch screen do not appear here; they are real punches and need no approval.</p>",
+  "aliasIndex": {
+    "loc:PunchType": "ess.punch.punch-type",
+    "loc:PunchDate": "ess.punch.punch-date",
+    "loc:PunchTime": "ess.punch.punch-time",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestMissingPunch": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.punch.punch-type",
+      "label": "PunchType",
+      "section": null,
+      "aliases": [
+        "loc:PunchType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which punch was missed: Clock In, Clock Out, or an overtime one.</p><p><strong>Example.</strong> Clock Out — you left straight from a meeting.</p><p><strong>Why it matters.</strong> A day needs its In and its Out to be counted as worked. Asking for the wrong one leaves the day still unbalanced, and you will be asked to raise a second request.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.punch.punch-date",
+      "label": "PunchDate",
+      "section": null,
+      "aliases": [
+        "loc:PunchDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day the punch was missed.</p><p><strong>Example.</strong> 8 June 2026.</p><p><strong>Why it matters.</strong> It has to be a day you were on duty. It also decides which payroll period the correction lands in — a request for a period that has already been paid is corrected in the next one, not the one you missed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.punch.punch-time",
+      "label": "PunchTime",
+      "section": null,
+      "aliases": [
+        "loc:PunchTime"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time of the missing punch. Optional: leave it blank and your duty's own start or end time is used.</p><p><strong>Example.</strong> 17:42 — or blank, which fills in your shift's finishing time.</p><p><strong>Why it matters.</strong> Blank is the honest answer when you genuinely worked your shift and the reader simply failed. Put a time in when the real one matters — a late start you want recorded, or an early finish that was agreed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestMissingPunch",
+      "section": null,
+      "aliases": [
+        "loc:RequestMissingPunch"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Takes a request back. Offered only while it can still be taken back — once it is approved and acted on, the button is gone.</p><p><strong>Example.</strong> You asked for leave next week, your plans changed, you withdraw it before your manager gets to it.</p><p><strong>Why it matters.</strong> A withdrawn request is not deleted: it stays in the list marked <strong>Withdrawn</strong>, so the record shows what happened. Withdrawing frees anything the request was holding, such as a leave balance reserved against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

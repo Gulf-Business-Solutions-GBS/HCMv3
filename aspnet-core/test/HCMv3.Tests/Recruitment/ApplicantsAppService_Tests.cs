@@ -5,6 +5,7 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.Recruitment;
 using HCMv3.Recruitment.Dto;
 using HCMv3.Storage;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -15,9 +16,14 @@ public class ApplicantsAppService_Tests : RecruitmentAppServiceTestBase
 {
     private ApplicantsAppService CreateAppService()
     {
+        var rootResolver = NSubstitute.Substitute.For<HCMv3.Storage.IFileStorageRootResolver>();
+        rootResolver.GetCurrentRootNameAsync().Returns(LocalFileStore.DefaultRootName);
+
         return CreateService(() => new ApplicantsAppService(
             FakeRepository.For<Applicant>(Context),
-            new EntityImageStore(new LocalFileStore(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "hcmv3-applicant-tests")))));
+            new EntityImageStore(
+                new LocalFileStore(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "hcmv3-applicant-tests")),
+                rootResolver)));
     }
 
     private CreateOrEditApplicantDto ValidDto(int nationalityId)

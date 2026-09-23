@@ -84051,6 +84051,64 @@ export class ManageDocumentSettingsServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getFileStorageRoots(): Observable<FileStorageRootDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ManageDocumentSettings/GetFileStorageRoots";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFileStorageRoots(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFileStorageRoots(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileStorageRootDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileStorageRootDto[]>;
+        }));
+    }
+
+    protected processGetFileStorageRoots(response: HttpResponseBase): Observable<FileStorageRootDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(FileStorageRootDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -198560,6 +198618,8 @@ export class DocumentSettingsEditDto implements IDocumentSettingsEditDto {
     id!: number;
     enableDocSaveInFileSystem!: boolean;
     fileSystemAttachmentPath!: string | undefined;
+    fileStorageRootName!: string | undefined;
+    availableRoots!: FileStorageRootDto[] | undefined;
     maxAttachmentsPerTransaction!: number;
     allowedFileExtensions!: string | undefined;
     maxFileSizePerAttachmentMB!: number;
@@ -198580,6 +198640,12 @@ export class DocumentSettingsEditDto implements IDocumentSettingsEditDto {
             this.id = _data["id"];
             this.enableDocSaveInFileSystem = _data["enableDocSaveInFileSystem"];
             this.fileSystemAttachmentPath = _data["fileSystemAttachmentPath"];
+            this.fileStorageRootName = _data["fileStorageRootName"];
+            if (Array.isArray(_data["availableRoots"])) {
+                this.availableRoots = [] as any;
+                for (let item of _data["availableRoots"])
+                    this.availableRoots!.push(FileStorageRootDto.fromJS(item));
+            }
             this.maxAttachmentsPerTransaction = _data["maxAttachmentsPerTransaction"];
             this.allowedFileExtensions = _data["allowedFileExtensions"];
             this.maxFileSizePerAttachmentMB = _data["maxFileSizePerAttachmentMB"];
@@ -198600,6 +198666,12 @@ export class DocumentSettingsEditDto implements IDocumentSettingsEditDto {
         data["id"] = this.id;
         data["enableDocSaveInFileSystem"] = this.enableDocSaveInFileSystem;
         data["fileSystemAttachmentPath"] = this.fileSystemAttachmentPath;
+        data["fileStorageRootName"] = this.fileStorageRootName;
+        if (Array.isArray(this.availableRoots)) {
+            data["availableRoots"] = [];
+            for (let item of this.availableRoots)
+                data["availableRoots"].push(item ? item.toJSON() : undefined as any);
+        }
         data["maxAttachmentsPerTransaction"] = this.maxAttachmentsPerTransaction;
         data["allowedFileExtensions"] = this.allowedFileExtensions;
         data["maxFileSizePerAttachmentMB"] = this.maxFileSizePerAttachmentMB;
@@ -198613,6 +198685,8 @@ export interface IDocumentSettingsEditDto {
     id: number;
     enableDocSaveInFileSystem: boolean;
     fileSystemAttachmentPath: string | undefined;
+    fileStorageRootName: string | undefined;
+    availableRoots: FileStorageRootDto[] | undefined;
     maxAttachmentsPerTransaction: number;
     allowedFileExtensions: string | undefined;
     maxFileSizePerAttachmentMB: number;
@@ -198624,6 +198698,7 @@ export class DocumentSettingsListDto implements IDocumentSettingsListDto {
     id!: number;
     enableDocSaveInFileSystem!: boolean;
     fileSystemAttachmentPath!: string | undefined;
+    fileStorageRootName!: string | undefined;
     maxAttachmentsPerTransaction!: number;
     allowedFileExtensions!: string | undefined;
     maxFileSizePerAttachmentMB!: number;
@@ -198644,6 +198719,7 @@ export class DocumentSettingsListDto implements IDocumentSettingsListDto {
             this.id = _data["id"];
             this.enableDocSaveInFileSystem = _data["enableDocSaveInFileSystem"];
             this.fileSystemAttachmentPath = _data["fileSystemAttachmentPath"];
+            this.fileStorageRootName = _data["fileStorageRootName"];
             this.maxAttachmentsPerTransaction = _data["maxAttachmentsPerTransaction"];
             this.allowedFileExtensions = _data["allowedFileExtensions"];
             this.maxFileSizePerAttachmentMB = _data["maxFileSizePerAttachmentMB"];
@@ -198664,6 +198740,7 @@ export class DocumentSettingsListDto implements IDocumentSettingsListDto {
         data["id"] = this.id;
         data["enableDocSaveInFileSystem"] = this.enableDocSaveInFileSystem;
         data["fileSystemAttachmentPath"] = this.fileSystemAttachmentPath;
+        data["fileStorageRootName"] = this.fileStorageRootName;
         data["maxAttachmentsPerTransaction"] = this.maxAttachmentsPerTransaction;
         data["allowedFileExtensions"] = this.allowedFileExtensions;
         data["maxFileSizePerAttachmentMB"] = this.maxFileSizePerAttachmentMB;
@@ -198677,6 +198754,7 @@ export interface IDocumentSettingsListDto {
     id: number;
     enableDocSaveInFileSystem: boolean;
     fileSystemAttachmentPath: string | undefined;
+    fileStorageRootName: string | undefined;
     maxAttachmentsPerTransaction: number;
     allowedFileExtensions: string | undefined;
     maxFileSizePerAttachmentMB: number;
@@ -217406,6 +217484,50 @@ export interface IFileDto {
     fileName: string;
     fileType: string | undefined;
     fileToken: string;
+}
+
+export class FileStorageRootDto implements IFileStorageRootDto {
+    name!: string | undefined;
+    path!: string | undefined;
+    isDefault!: boolean;
+
+    constructor(data?: IFileStorageRootDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.path = _data["path"];
+            this.isDefault = _data["isDefault"];
+        }
+    }
+
+    static fromJS(data: any): FileStorageRootDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileStorageRootDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["path"] = this.path;
+        data["isDefault"] = this.isDefault;
+        return data;
+    }
+}
+
+export interface IFileStorageRootDto {
+    name: string | undefined;
+    path: string | undefined;
+    isDefault: boolean;
 }
 
 export class FindOrganizationUnitRolesInput implements IFindOrganizationUnitRolesInput {

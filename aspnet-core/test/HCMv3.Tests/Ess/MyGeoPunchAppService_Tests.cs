@@ -176,7 +176,7 @@ public class MyGeoPunchAppService_Tests : AppTestBase
         return employeeId;
     }
 
-    private int CreateWorkLocation(string name, double range = 100)
+    private int CreateWorkLocation(string name, double range = 100, string fence = null)
     {
         WorkLocation workLocation = null;
         UsingDbContext(context =>
@@ -190,11 +190,22 @@ public class MyGeoPunchAppService_Tests : AppTestBase
                 Latitude = SiteLat,
                 Longitude = SiteLng,
                 GeoRange = range,
+                GeoFenceCoordinates = fence,
                 IsActive = true
             }).Entity;
         });
 
         return workLocation.Id;
+    }
+
+    private void SetTimeSettings(Action<ManageTimeSettings> configure)
+    {
+        UsingDbContext(context =>
+        {
+            var settings = new ManageTimeSettings { TenantId = TenantId };
+            configure(settings);
+            context.Set<ManageTimeSettings>().Add(settings);
+        });
     }
 
     /// <summary>Current org assignment: own work location and a sub group that does or does not pay overtime.</summary>
@@ -735,5 +746,168 @@ public class MyGeoPunchAppService_Tests : AppTestBase
         });
 
         requests.Items.ShouldBeEmpty();
+    }
+
+    // ---------------------------------------------------------------- the site boundary
+
+    /// <summary>
+    /// A block around the test site, roughly 245 m by 250 m: corners clockwise from the north-west. The
+    /// site pin sits in the middle of it, which is what makes the boundary trusted.
+    /// </summary>
+    private const string SiteBoundary = "29.3770,47.9761; 29.3770,47.9787; 29.3748,47.9787; 29.3748,47.9761";
+
+    /// <summary>About 220 m north of the top edge -- outside the shape, whatever the radius is.</summary>
+    private const double BeyondBoundaryLat = 29.3790;
+
+    [Fact]
+    public async Task A_Punch_Inside_The_Boundary_Should_Be_Accepted_Though_It_Is_Outside_The_Radius()
+    {
+        // The boundary replaces the radius; a five-metre radius is the loudest way to prove the radius is
+        // not what decided this.
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation("Head office", range: 5, fence: SiteBoundary);
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+
+        var result = await _geoPunch.RecordMyGeoPunch(Punch(TransTypeCodes.ClockIn, siteId, NearbyLat));
+
+        result.PunchInRange.ShouldBeTrue();
+        result.RangeDifference.ShouldBe(0);
+        LoadTimeEvent(result.Id).PunchInRange.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task A_Punch_Outside_The_Boundary_Should_Be_Refused_Though_It_Is_Inside_The_Radius()
+    {
+        // The reason a shape is worth having: a radius wide enough to reach the far corner of a site also
+        // reaches the street outside it.
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation("Head office", range: 5000, fence: SiteBoundary);
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+
+        await Should.ThrowAsync<UserFriendlyException>(() =>
+            _geoPunch.RecordMyGeoPunch(Punch(TransTypeCodes.ClockIn, siteId, BeyondBoundaryLat)));
+    }
+
+    [Fact]
+    public async Task A_Boundary_Should_Be_Ignored_While_The_Tenant_Has_Geo_Fencing_Off()
+    {
+        // Same punch as the test above, with the setting off: the radius decides and lets it through.
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation("Head office", range: 5000, fence: SiteBoundary);
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = false);
+
+        var result = await _geoPunch.RecordMyGeoPunch(Punch(TransTypeCodes.ClockIn, siteId, BeyondBoundaryLat));
+
+        result.PunchInRange.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task An_Out_Of_Boundary_Punch_Should_Be_Recorded_With_Its_Distance_When_The_Tenant_Allows_It()
+    {
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation("Head office", range: 50, fence: SiteBoundary);
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+        SetSelfServiceSettings(s => s.AllowPunchOutsideRange = true);
+
+        var result = await _geoPunch.RecordMyGeoPunch(Punch(TransTypeCodes.ClockIn, siteId, BeyondBoundaryLat));
+
+        var timeEvent = LoadTimeEvent(result.Id);
+        timeEvent.PunchInRange.ShouldBeFalse();
+
+        // Metres outside the fence, not metres from the pin: 29.3790 is 0.0020 degrees north of the top edge.
+        timeEvent.RangeDifference.ShouldBe(222, 5);
+    }
+
+    [Fact]
+    public async Task A_Boundary_That_Does_Not_Enclose_Its_Own_Site_Should_Fall_Back_To_The_Radius()
+    {
+        // Latitude and longitude the wrong way round is the mistake this guards against. Enforcing such a
+        // boundary would refuse every punch at the site; the radius takes over instead.
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation(
+            "Head office",
+            range: 5000,
+            fence: "47.9761,29.3770; 47.9787,29.3770; 47.9787,29.3748; 47.9761,29.3748");
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+
+        var result = await _geoPunch.RecordMyGeoPunch(Punch(TransTypeCodes.ClockIn, siteId, BeyondBoundaryLat));
+
+        result.PunchInRange.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task An_Unreadable_Boundary_Should_Fall_Back_To_The_Radius()
+    {
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation("Head office", range: 5000, fence: "somewhere near the gate");
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+
+        var result = await _geoPunch.RecordMyGeoPunch(Punch(TransTypeCodes.ClockIn, siteId, BeyondBoundaryLat));
+
+        result.PunchInRange.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task The_Screen_Should_Be_Told_Which_Locations_Are_Judged_By_A_Boundary()
+    {
+        var meId = CreateMe();
+        var fencedId = CreateWorkLocation("Fenced site", fence: SiteBoundary);
+        var plainId = CreateWorkLocation("Plain site");
+        GiveExtendedWorkLocation(meId, fencedId, DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1));
+        GiveExtendedWorkLocation(meId, plainId, DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1));
+        AssignEmployee(meId, null, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromExtWorklocation = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+
+        var context = await _geoPunch.GetMyGeoPunchContext();
+
+        context.WorkLocations.Single(w => w.Id == fencedId).HasGeoFence.ShouldBeTrue();
+        context.WorkLocations.Single(w => w.Id == plainId).HasGeoFence.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Checking_A_Position_Against_A_Boundary_Should_Report_No_Radius()
+    {
+        // A shape has no radius to show, and the distance reported is to the fence, not to the pin.
+        var meId = CreateMe();
+        var siteId = CreateWorkLocation("Head office", range: 50, fence: SiteBoundary);
+        AssignEmployee(meId, siteId, payOvertime: false);
+        GiveTimePolicy(meId, p => p.AllowPunchInFromWorkLocationOnly = true);
+        SetTimeSettings(s => s.EnableGeoFence = true);
+
+        var inside = await _geoPunch.CheckMyGeoPunchLocation(new CheckMyGeoPunchLocationInput
+        {
+            Latitude = NearbyLat,
+            Longitude = SiteLng,
+            WorkLocationId = siteId
+        });
+
+        inside.UsesGeoFence.ShouldBeTrue();
+        inside.RangeMeters.ShouldBeNull();
+        inside.DistanceMeters.ShouldBe(0);
+        inside.Verdict.ShouldBe(GeoPunchRangeVerdict.InRange);
+
+        var outside = await _geoPunch.CheckMyGeoPunchLocation(new CheckMyGeoPunchLocationInput
+        {
+            Latitude = BeyondBoundaryLat,
+            Longitude = SiteLng,
+            WorkLocationId = siteId
+        });
+
+        outside.UsesGeoFence.ShouldBeTrue();
+        outside.DistanceMeters.ShouldBe(222, 5);
+        outside.Verdict.ShouldBe(GeoPunchRangeVerdict.OutOfRangeRefused);
     }
 }

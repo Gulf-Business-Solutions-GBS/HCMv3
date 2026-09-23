@@ -1,8 +1,8 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.health-reimburse'">
     <sub-header [title]="'EssMyHealthReimburses' | localize">
         <div role="actions">
             @if (!notLinked()) {
-                <button class="btn btn-primary" (click)="openForm()">
+                <button class="btn btn-primary" data-help-loc="RequestHealthReimburse" (click)="openForm()">
                     <i class="fa fa-plus"></i> {{ 'RequestHealthReimburse' | localize }}
                 </button>
             }
@@ -13,13 +13,13 @@
         @if (notLinked()) {
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <div class="alert alert-warning mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
                 </div>
             </div>
         } @else {
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <h5 class="card-title">{{ 'HealthReimburseBalance' | localize }}</h5>
+                    <h5 class="card-title" data-help-loc="HealthReimburseBalance">{{ 'HealthReimburseBalance' | localize }}</h5>
 
                     @if (balanceLoading()) {
                         <div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i></div>
@@ -82,7 +82,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>{{ 'PaymentDate' | localize }} *</label>
+                                <label data-help-loc="PaymentDate">{{ 'PaymentDate' | localize }} *</label>
                                 <input
                                     type="date"
                                     class="form-control"
@@ -90,11 +90,11 @@
                                     (ngModelChange)="onPaymentDateChanged()" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'Amount' | localize }} *</label>
+                                <label data-help-loc="Amount">{{ 'Amount' | localize }} *</label>
                                 <input type="number" class="form-control" min="0" step="0.001" [(ngModel)]="form.amount" />
                             </div>
                             <div class="form-group col-md-6">
-                                <label>{{ 'Comments' | localize }}</label>
+                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
                                 <input type="text" class="form-control" maxlength="500" [(ngModel)]="form.comments" />
                             </div>
                         </div>
@@ -109,7 +109,7 @@
 
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <h5 class="card-title">{{ 'EssMyRequests' | localize }}</h5>
+                    <h5 class="card-title" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
 
                     @if (loading()) {
                         <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
@@ -121,7 +121,7 @@
                                         <th>{{ 'PaymentDate' | localize }}</th>
                                         <th>{{ 'Amount' | localize }}</th>
                                         <th>{{ 'Comments' | localize }}</th>
-                                        <th>{{ 'Status' | localize }}</th>
+                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -136,12 +136,12 @@
                                             </td>
                                             <td class="text-right">
                                                 @if (row.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)">
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)">
+                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)" data-help-loc="Withdraw">
                                                         {{ 'Withdraw' | localize }}
                                                     </button>
                                                 }

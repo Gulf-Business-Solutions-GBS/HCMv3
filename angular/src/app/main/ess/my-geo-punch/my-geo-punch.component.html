@@ -1,8 +1,8 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.geo-punch'">
     <sub-header [title]="'EssGeoPunch' | localize">
         <div role="actions">
             @if (context()) {
-                <button class="btn btn-light" [disabled]="locating()" (click)="locate()">
+                <button class="btn btn-light" data-help-loc="GeoPunchRefreshLocation" [disabled]="locating()" (click)="locate()">
                     <i class="fa fa-location-arrow" [class.fa-spin]="locating()"></i>
                     {{ 'GeoPunchRefreshLocation' | localize }}
                 </button>
@@ -22,13 +22,13 @@
         } @else {
           @if (context(); as ctx) {
             @if (!ctx.hasDutyPeriodToday) {
-                <div class="alert alert-warning">{{ 'GeoPunchNoDutyWarning' | localize }}</div>
+                <div class="alert alert-warning" data-help-loc="GeoPunchNoDutyWarning">{{ 'GeoPunchNoDutyWarning' | localize }}</div>
             }
             @if (locationError()) {
                 <div class="alert alert-warning">{{ locationError() }}</div>
             }
             @if (check()?.verdict === Verdict.OutOfRangeRefused) {
-                <div class="alert alert-danger">{{ 'PunchingOutOfLocation' | localize }}</div>
+                <div class="alert alert-danger" data-help-loc="PunchingOutOfLocation">{{ 'PunchingOutOfLocation' | localize }}</div>
             }
 
             <div class="card card-custom gutter-b">
@@ -40,7 +40,7 @@
                         </div>
 
                         @if (ctx.requiresSelfie) {
-                            <div class="col-12 col-md-6 col-lg-4 mx-auto mb-6 text-center">
+                            <div class="col-12 col-md-6 col-lg-4 mx-auto mb-6 text-center" data-help-loc="GeoPunchSelfie">
                                 <label class="form-label">{{ 'GeoPunchSelfie' | localize }} *</label>
                                 <video
                                     #video
@@ -70,7 +70,7 @@
                             </div>
                         }
 
-                        <div class="col-12 col-md-6 col-lg-4 mx-auto mb-6">
+                        <div class="col-12 col-md-6 col-lg-4 mx-auto mb-6" data-help-loc="WorkLocation">
                             @if (ctx.isOpenLocation) {
                                 <div class="alert alert-secondary mb-0">{{ 'GeoPunchOpenLocation' | localize }}</div>
                             } @else {
@@ -88,7 +88,7 @@
                             }
                         </div>
 
-                        <div class="col-12 d-flex flex-wrap justify-content-center gap-3">
+                        <div class="col-12 d-flex flex-wrap justify-content-center gap-3" data-help-loc="GeoPunchClockIn">
                             <button
                                 class="btn btn-lg"
                                 [ngClass]="ctx.canClockIn ? 'btn-primary' : 'btn-secondary'"
@@ -108,7 +108,7 @@
                         </div>
 
                         @if (ctx.isOvertimeAllowed) {
-                            <div class="col-12 d-flex flex-wrap justify-content-center gap-3 mt-4">
+                            <div class="col-12 d-flex flex-wrap justify-content-center gap-3 mt-4" data-help-loc="GeoPunchOvertimeIn">
                                 <button
                                     class="btn btn-lg"
                                     [ngClass]="ctx.canOvertimeIn ? 'btn-info' : 'btn-secondary'"
@@ -142,7 +142,7 @@
                     <div class="card-body">
                         <div class="row g-4">
                             <div class="col-6 col-lg-3">
-                                <div class="text-muted">{{ 'GeoPunchYourLocation' | localize }}</div>
+                                <div class="text-muted" data-help-loc="GeoPunchYourLocation">{{ 'GeoPunchYourLocation' | localize }}</div>
                                 @if (position(); as pos) {
                                     <div>{{ pos.latitude | number: '1.6-6' }}, {{ pos.longitude | number: '1.6-6' }}</div>
                                     <small class="text-muted">&plusmn; {{ pos.accuracy | number: '1.0-0' }} m</small>
@@ -162,8 +162,19 @@
                                 }
                             </div>
                             <div class="col-6 col-lg-2">
-                                <div class="text-muted">{{ 'GeoPunchAllowedRange' | localize }}</div>
-                                <div>{{ check()?.rangeMeters != null ? (check()!.rangeMeters | number: '1.0-0') : '-' }}</div>
+                                <div class="text-muted" data-help-loc="GeoPunchAllowedRange">
+                                    {{ (check()?.usesGeoFence ? 'GeoPunchSiteBoundary' : 'GeoPunchAllowedRange') | localize }}
+                                </div>
+                                @if (check(); as c) {
+                                    @if (c.usesGeoFence) {
+                                        <!-- A shape has no radius to show; what matters is which side of it you are on. -->
+                                        <div>{{ (c.distanceMeters > 0 ? 'GeoPunchOutsideBoundary' : 'GeoPunchInsideBoundary') | localize }}</div>
+                                    } @else {
+                                        <div>{{ c.rangeMeters != null ? (c.rangeMeters | number: '1.0-0') : '-' }}</div>
+                                    }
+                                } @else {
+                                    <div>-</div>
+                                }
                             </div>
                             <div class="col-6 col-lg-2">
                                 <div class="text-muted">{{ 'GeoPunchDistance' | localize }}</div>
@@ -182,7 +193,7 @@
             @if (!ctx.hidePunchList) {
                 <div class="card card-custom gutter-b">
                     <div class="card-body">
-                        <h5 class="card-title">{{ 'GeoPunchTodaysPunches' | localize }}</h5>
+                        <h5 class="card-title" data-help-loc="GeoPunchTodaysPunches">{{ 'GeoPunchTodaysPunches' | localize }}</h5>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>

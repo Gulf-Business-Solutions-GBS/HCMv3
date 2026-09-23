@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using HCMv3.Storage;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -21,7 +22,9 @@ public class EntityImageStore_Tests : IDisposable
     public EntityImageStore_Tests()
     {
         _files = new LocalFileStore(_root);
-        _images = new EntityImageStore(_files);
+        var rootResolver = Substitute.For<IFileStorageRootResolver>();
+        rootResolver.GetCurrentRootNameAsync().Returns(LocalFileStore.DefaultRootName);
+        _images = new EntityImageStore(_files, rootResolver);
     }
 
     public void Dispose()

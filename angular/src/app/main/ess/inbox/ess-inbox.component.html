@@ -1,11 +1,11 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.inbox'">
     <sub-header [title]="'EssInbox' | localize"></sub-header>
 
     <div [class]="containerClass">
         @if (notLinked()) {
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <div class="alert alert-warning mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
                 </div>
             </div>
         } @else {
@@ -35,7 +35,7 @@
 
                                             <span class="flex-grow-1 text-left">
                                                 <span class="d-block font-weight-bold">{{ summary(item) }}</span>
-                                                <span class="d-block small text-muted">
+                                                <span class="d-block small text-muted" data-help-loc="Step">
                                                     {{ typeName(item) }} ·
                                                     {{ requesterName(item) }} ·
                                                     {{ item.submittedOn | luxonFormat: 'dd MMM yyyy' }}
@@ -67,23 +67,24 @@
 
                                 <textarea
                                     class="form-control mb-2"
+                                    data-help-loc="Comment"
                                     rows="3"
                                     [placeholder]="'Comment' | localize"
                                     [(ngModel)]="comment"></textarea>
 
-                                <button class="btn btn-success mr-2" [disabled]="acting()" (click)="approve()">
+                                <button class="btn btn-success mr-2" data-help-loc="Approve" [disabled]="acting()" (click)="approve()">
                                     {{ 'Approve' | localize }}
                                 </button>
 
                                 <!-- Offered only when the step's configuration actually permits it, so the
                                      screen never shows a button the engine would refuse. -->
                                 @if (item.canReject) {
-                                    <button class="btn btn-danger mr-2" [disabled]="acting()" (click)="reject()">
+                                    <button class="btn btn-danger mr-2" data-help-loc="Reject" [disabled]="acting()" (click)="reject()">
                                         {{ 'Reject' | localize }}
                                     </button>
                                 }
                                 @if (item.canSendBack) {
-                                    <button class="btn btn-warning" [disabled]="acting()" (click)="sendBack()">
+                                    <button class="btn btn-warning" data-help-loc="SendBack" [disabled]="acting()" (click)="sendBack()">
                                         {{ 'SendBack' | localize }}
                                     </button>
                                 }

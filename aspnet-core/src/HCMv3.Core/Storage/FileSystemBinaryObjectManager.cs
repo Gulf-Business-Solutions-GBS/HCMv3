@@ -38,17 +38,20 @@ public class FileSystemBinaryObjectManager : IBinaryObjectManager, ITransientDep
     private const string Folder = "binary-objects";
 
     private readonly IFileStore _fileStore;
+    private readonly IFileStorageRootResolver _rootResolver;
     private readonly IRepository<BinaryObject, Guid> _legacyRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly IAbpSession _session;
 
     public FileSystemBinaryObjectManager(
         IFileStore fileStore,
+        IFileStorageRootResolver rootResolver,
         IRepository<BinaryObject, Guid> legacyRepository,
         IUnitOfWorkManager unitOfWorkManager,
         IAbpSession session)
     {
         _fileStore = fileStore;
+        _rootResolver = rootResolver;
         _legacyRepository = legacyRepository;
         _unitOfWorkManager = unitOfWorkManager;
         _session = session;
@@ -58,7 +61,11 @@ public class FileSystemBinaryObjectManager : IBinaryObjectManager, ITransientDep
     {
         var tenantId = CurrentTenantId();
 
-        var metadataJson = await _fileStore.ReadOrNullAsync(MetadataPath(tenantId, id));
+        // Unlike an attachment, a binary object has no stored path to carry its root name: it is addressed
+        // by id alone, so the path is recomputed on every read. That is why a read looks under the default
+        // root as well -- a tenant moved to another disk must not lose the pictures written before the move.
+        var root = await RootFor(tenantId, id);
+        var metadataJson = await _fileStore.ReadOrNullAsync(MetadataPath(tenantId, id, root));
         if (metadataJson == null)
         {
             return await _legacyRepository.FirstOrDefaultAsync(id);
@@ -71,7 +78,7 @@ public class FileSystemBinaryObjectManager : IBinaryObjectManager, ITransientDep
             return null;
         }
 
-        var bytes = await _fileStore.ReadOrNullAsync(ContentPath(tenantId, id));
+        var bytes = await _fileStore.ReadOrNullAsync(ContentPath(tenantId, id, root));
         if (bytes == null)
         {
             return null;
@@ -89,19 +96,21 @@ public class FileSystemBinaryObjectManager : IBinaryObjectManager, ITransientDep
 
         // Filed under the object's own tenant. Bytes first, sidecar last: a reader only trusts an id whose
         // sidecar exists, so an interrupted save leaves an orphan file rather than a half-written object.
-        await _fileStore.WriteAsync(ContentPath(file.TenantId, file.Id), file.Bytes);
-        await _fileStore.WriteAsync(MetadataPath(file.TenantId, file.Id),
+        var root = await _rootResolver.GetCurrentRootNameAsync();
+        await _fileStore.WriteAsync(ContentPath(file.TenantId, file.Id, root), file.Bytes);
+        await _fileStore.WriteAsync(MetadataPath(file.TenantId, file.Id, root),
             JsonSerializer.SerializeToUtf8Bytes(new Metadata { TenantId = file.TenantId, Description = file.Description }));
     }
 
     public async Task DeleteAsync(Guid id)
     {
         var tenantId = CurrentTenantId();
+        var root = await RootFor(tenantId, id);
 
-        if (await _fileStore.ReadOrNullAsync(MetadataPath(tenantId, id)) != null)
+        if (await _fileStore.ReadOrNullAsync(MetadataPath(tenantId, id, root)) != null)
         {
-            await _fileStore.DeleteAsync(MetadataPath(tenantId, id));
-            await _fileStore.DeleteAsync(ContentPath(tenantId, id));
+            await _fileStore.DeleteAsync(MetadataPath(tenantId, id, root));
+            await _fileStore.DeleteAsync(ContentPath(tenantId, id, root));
             return;
         }
 
@@ -120,12 +129,29 @@ public class FileSystemBinaryObjectManager : IBinaryObjectManager, ITransientDep
         return unitOfWork != null ? unitOfWork.GetTenantId() : _session.TenantId;
     }
 
-    private string ContentPath(int? tenantId, Guid id) => $"{Directory(tenantId, id)}/{id:N}.bin";
+    private string ContentPath(int? tenantId, Guid id, string root) => $"{Directory(tenantId, id, root)}/{id:N}.bin";
 
-    private string MetadataPath(int? tenantId, Guid id) => $"{Directory(tenantId, id)}/{id:N}.json";
+    private string MetadataPath(int? tenantId, Guid id, string root) => $"{Directory(tenantId, id, root)}/{id:N}.json";
 
-    private string Directory(int? tenantId, Guid id) =>
-        $"{_fileStore.TenantSegment(tenantId)}/{Folder}/{id.ToString("N").Substring(0, 2)}";
+    private string Directory(int? tenantId, Guid id, string root) =>
+        $"{_fileStore.TenantSegment(tenantId, root)}/{Folder}/{id.ToString("N").Substring(0, 2)}";
+
+    /// <summary>
+    /// The root a stored object is actually under: the tenant's current one when its sidecar is there, and
+    /// otherwise the default, where everything written before the tenant was moved still sits.
+    /// </summary>
+    private async Task<string> RootFor(int? tenantId, Guid id)
+    {
+        var current = await _rootResolver.GetCurrentRootNameAsync();
+        if (string.Equals(current, LocalFileStore.DefaultRootName, StringComparison.OrdinalIgnoreCase))
+        {
+            return current;
+        }
+
+        return await _fileStore.ReadOrNullAsync(MetadataPath(tenantId, id, current)) != null
+            ? current
+            : LocalFileStore.DefaultRootName;
+    }
 
     private sealed class Metadata
     {

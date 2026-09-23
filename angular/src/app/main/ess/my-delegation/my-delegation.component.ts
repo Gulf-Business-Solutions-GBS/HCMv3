@@ -20,6 +20,7 @@ import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
  * Self-service delegation of approval duties: the employee names a colleague to cover for them over a date
@@ -33,7 +34,7 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 @Component({
     templateUrl: './my-delegation.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDto> implements OnInit {

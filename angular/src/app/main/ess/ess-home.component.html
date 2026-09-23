@@ -1,4 +1,4 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.home'">
     <!-- Chrome only when this is its own page. Embedded on the dashboard, the page already has a header
          and a container, and a second set of both would indent the section and repeat the title. -->
     @if (!embedded()) {
@@ -34,7 +34,7 @@
                             <h5 class="alert-heading">
                                 <i class="fa fa-exclamation-triangle mr-2"></i>{{ 'EmployeeSelfService' | localize }}
                             </h5>
-                            <p class="mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</p>
+                            <p class="mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</p>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                                 <div class="text-muted">{{ context().employeeCode }}</div>
 
                                 @if (context().isManager) {
-                                    <span class="badge badge-light-primary mt-2">{{ 'EssMyTeam' | localize }}</span>
+                                    <span class="badge badge-light-primary mt-2" data-help-loc="EssMyTeam">{{ 'EssMyTeam' | localize }}</span>
                                 }
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                     <a routerLink="/app/main/ess/inbox" class="card card-custom gutter-b h-100 ess-stat">
                         <div class="card-body">
                             <div class="ess-stat-value">{{ context().pendingApprovalCount }}</div>
-                            <div class="ess-stat-label">{{ 'WaitingOnMe' | localize }}</div>
+                            <div class="ess-stat-label" data-help-loc="WaitingOnMe">{{ 'WaitingOnMe' | localize }}</div>
                             <div class="text-muted small mt-1">{{ 'EssInbox' | localize }}</div>
                         </div>
                     </a>
@@ -83,7 +83,7 @@
                     <div class="card card-custom gutter-b h-100 ess-stat">
                         <div class="card-body">
                             <div class="ess-stat-value">{{ context().myPendingRequestCount }}</div>
-                            <div class="ess-stat-label">{{ 'MyRequestsAwaitingApproval' | localize }}</div>
+                            <div class="ess-stat-label" data-help-loc="MyRequestsAwaitingApproval">{{ 'MyRequestsAwaitingApproval' | localize }}</div>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">{{ 'WhatWouldYouLikeToDo' | localize }}</h3>
+                        <h3 class="card-label" data-help-loc="WhatWouldYouLikeToDo">{{ 'WhatWouldYouLikeToDo' | localize }}</h3>
                     </div>
                 </div>
                 <div class="card-body">
@@ -109,7 +109,7 @@
                                             the difference matters before the employee fills the form in.
                                         -->
                                         @if (!type.isWorkflowEnabled) {
-                                            <span class="ess-tile-note">{{ 'NoApprovalNeeded' | localize }}</span>
+                                            <span class="ess-tile-note" data-help-loc="NoApprovalNeeded">{{ 'NoApprovalNeeded' | localize }}</span>
                                         }
                                     </a>
                                 </div>
@@ -129,7 +129,7 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">{{ 'MyRecentRequests' | localize }}</h3>
+                        <h3 class="card-label" data-help-loc="MyRecentRequests">{{ 'MyRecentRequests' | localize }}</h3>
                     </div>
                 </div>
                 <div class="card-body">

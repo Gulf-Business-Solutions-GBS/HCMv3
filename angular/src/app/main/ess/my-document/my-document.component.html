@@ -1,8 +1,8 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.document'">
     <sub-header [title]="'EssMyDocuments' | localize">
         <div role="actions">
             @if (!notLinked()) {
-                <button class="btn btn-primary" (click)="openForm()">
+                <button class="btn btn-primary" data-help-loc="RequestDocument" (click)="openForm()">
                     <i class="fa fa-plus"></i> {{ 'RequestDocument' | localize }}
                 </button>
             }
@@ -13,7 +13,7 @@
         @if (notLinked()) {
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <div class="alert alert-warning mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
                 </div>
             </div>
         } @else {
@@ -24,7 +24,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>{{ 'DocumentType' | localize }}</label>
+                                <label data-help-loc="DocumentType">{{ 'DocumentType' | localize }}</label>
                                 <select class="form-control" [(ngModel)]="form.documentTypeId">
                                     <option [ngValue]="null">--</option>
                                     @for (type of documentTypes(); track type.id) {
@@ -33,19 +33,19 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'DocumentNumber' | localize }} *</label>
+                                <label data-help-loc="DocumentNumber">{{ 'DocumentNumber' | localize }} *</label>
                                 <input type="text" class="form-control" [(ngModel)]="form.documentNum" />
                             </div>
                             <div class="form-group col-md-2">
-                                <label>{{ 'IssueDate' | localize }}</label>
+                                <label data-help-loc="IssueDate">{{ 'IssueDate' | localize }}</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.issueDate" />
                             </div>
                             <div class="form-group col-md-2">
-                                <label>{{ 'ExpiryDate' | localize }}</label>
+                                <label data-help-loc="ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.expiryDate" />
                             </div>
                             <div class="form-group col-md-2">
-                                <label>{{ 'Comments' | localize }}</label>
+                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
                                 <input type="text" class="form-control" [(ngModel)]="form.comments" />
                             </div>
                         </div>
@@ -64,7 +64,7 @@
 
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <h5 class="card-title">{{ 'EssMyRequests' | localize }}</h5>
+                    <h5 class="card-title" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
 
                     @if (loading()) {
                         <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
@@ -77,7 +77,7 @@
                                         <th>{{ 'DocumentNumber' | localize }}</th>
                                         <th>{{ 'IssueDate' | localize }}</th>
                                         <th>{{ 'ExpiryDate' | localize }}</th>
-                                        <th>{{ 'Status' | localize }}</th>
+                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -92,16 +92,16 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-right">
-                                                <button class="btn btn-sm btn-link" (click)="toggleAttachments(row)">
+                                                <button class="btn btn-sm btn-link" data-help-loc="Attachments" (click)="toggleAttachments(row)">
                                                     <i class="fa fa-paperclip"></i> {{ 'Attachments' | localize }}
                                                 </button>
                                                 @if (row.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)">
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)">
+                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)" data-help-loc="Withdraw">
                                                         {{ 'Withdraw' | localize }}
                                                     </button>
                                                 }

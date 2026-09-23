@@ -1,0 +1,165 @@
+{
+  "helpId": "ess.clearance",
+  "lang": "ar",
+  "title": "إخلاء الطرف",
+  "entity": null,
+  "overviewHtml": "<p>ابدأ إخلاء الطرف اللازم قبل مغادرتك — عند انتهاء الخدمة، أو قبل إجازة طويلة، أو عند انتقالك بين الإدارات — وأجب عن بنود القائمة التي تخصّك.</p><p>ويجري في هذه الشاشة أمران: أن تقدّم إخلاء طرفك وتتابع سيره؛ وأن تظهر لك — إن كنت الشخص الذي تعتمد عليه إدارة ما، كتقنية المعلومات أو المالية أو المخازن — البنود التي توجّهها إليك إخلاءات طرف الآخرين لتجيب عنها.</p>",
+  "aliasIndex": {
+    "loc:ClearanceType": "ess.clearance.clearance-type",
+    "loc:StartDate": "ess.clearance.start-date",
+    "loc:EndDate": "ess.clearance.end-date",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:ClearanceChecklist": "ess.clearance.checklist",
+    "loc:RequestClearance": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.clearance.clearance-type",
+      "label": "ClearanceType",
+      "section": null,
+      "aliases": [
+        "loc:ClearanceType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب إخلاء الطرف: نهاية الخدمة، أو إجازة طويلة، أو انتقال بين الإدارات.</p><p><strong>مثال.</strong> إخلاء طرف نهاية الخدمة.</p><p><strong>لماذا يهمّ.</strong> يحدّد النوع القائمة كلّها: من يوقّع وما الذي يتحقّق منه. فإخلاء طرف نهاية الخدمة يطلب منك أكثر بكثير من إخلاء طرف الانتقال، واختيار النوع الخطأ يرسل إخلاء طرفك إلى أشخاص غير المعنيين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.clearance.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موعد بدء إخلاء الطرف.</p><p><strong>مثال.</strong> قبل آخر يوم لك بأسبوعين، ليتّسع الوقت لإنجازه.</p><p><strong>لماذا يهمّ.</strong> يستغرق إخلاء الطرف بقدر أبطأ إدارة فيه. وبدؤه في آخر يوم هو ما يجعل الناس ينتظرون مستحقاتهم النهائية بعد مغادرتهم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.clearance.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموعد الذي يجب إنجازه قبله، وهو عادةً آخر يوم عمل لك.</p><p><strong>مثال.</strong> 31 أكتوبر 2026.</p><p><strong>لماذا يهمّ.</strong> هو التاريخ الذي تعمل عليه الإدارات، وفي إخلاء طرف نهاية الخدمة هو ما تنتظره التسوية النهائية. وإخلاء الطرف الذي يبقى مفتوحاً في هذا التاريخ يؤخّر الصرف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.clearance.checklist",
+      "label": "ClearanceChecklist",
+      "section": null,
+      "aliases": [
+        "loc:ClearanceChecklist"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنود التي يتكوّن منها إخلاء الطرف، بندٌ لكل أمر يُؤكَّد، ولكل بند إدارته. وبعضها من مسؤوليتك أنت.</p><p><strong>مثال.</strong> «إعادة الحاسوب المحمول» — تقنية المعلومات؛ «لا توجد سلفة قائمة» — المالية؛ «إخلاء الخزانة» — الشؤون الإدارية.</p><p><strong>لماذا يهمّ.</strong> ينتهي إخلاء الطرف حين يُجاب عن كل بند، فبندٌ واحد دون إجابة يوقف الأمر كلّه. وإن كان البند لديك ولا تستطيع الإجابة عنه بعد، فذكر ذلك في الملاحظات أفضل من تركه، إذ لا يستطيع أحد معرفة سبب التوقّف بغير ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestClearance",
+      "section": null,
+      "aliases": [
+        "loc:RequestClearance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

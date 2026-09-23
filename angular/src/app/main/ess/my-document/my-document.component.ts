@@ -19,6 +19,7 @@ import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /** Self-service document requests, with the scan attached (legacy DocumentRequest.DocAttachment). */
 @Component({
@@ -32,6 +33,7 @@ import { AttachmentsComponent } from '../../../shared/common/attachments/attachm
         LuxonFormatPipe,
         WorkflowHistoryModalComponent,
         AttachmentsComponent,
+        HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

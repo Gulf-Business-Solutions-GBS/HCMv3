@@ -1,8 +1,8 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.leave'">
     <sub-header [title]="'EssMyLeave' | localize">
         <div role="actions">
             @if (!notLinked()) {
-                <button class="btn btn-primary" (click)="openForm()">
+                <button class="btn btn-primary" data-help-loc="ApplyForLeave" (click)="openForm()">
                     <i class="fa fa-plus"></i> {{ 'ApplyForLeave' | localize }}
                 </button>
             }
@@ -30,7 +30,7 @@
                                      against. Remaining is shown beneath so the difference is visible. -->
                                 <div class="d-flex align-items-baseline">
                                     <span class="h2 mb-0 mr-2">{{ balance.bookable }}</span>
-                                    <span class="text-muted">{{ 'BookableBalance' | localize }}</span>
+                                    <span class="text-muted" data-help-loc="BookableBalance">{{ 'BookableBalance' | localize }}</span>
                                 </div>
 
                                 <div class="mt-2 small text-muted">
@@ -71,7 +71,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>{{ 'AbsenceType' | localize }}</label>
+                                <label data-help-loc="AbsenceType">{{ 'AbsenceType' | localize }}</label>
                                 <select class="form-control" [(ngModel)]="amendForm.absenceTypeId">
                                     @for (type of absenceTypes(); track type.id) {
                                         <option [ngValue]="type.id">{{ type.nameEn }}</option>
@@ -79,15 +79,15 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'StartDate' | localize }}</label>
+                                <label data-help-loc="StartDate">{{ 'StartDate' | localize }}</label>
                                 <input type="date" class="form-control" [(ngModel)]="amendForm.startDate" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'EndDate' | localize }}</label>
+                                <label data-help-loc="EndDate">{{ 'EndDate' | localize }}</label>
                                 <input type="date" class="form-control" [(ngModel)]="amendForm.endDate" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'ReasonForTheChange' | localize }} *</label>
+                                <label data-help-loc="ReasonForTheChange">{{ 'ReasonForTheChange' | localize }} *</label>
                                 <input type="text" class="form-control" [(ngModel)]="amendForm.reason" />
                             </div>
                         </div>
@@ -111,7 +111,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>{{ 'RejoiningDate' | localize }}</label>
+                                <label data-help-loc="RejoiningDate">{{ 'RejoiningDate' | localize }}</label>
                                 <input
                                     type="date"
                                     class="form-control"
@@ -120,7 +120,7 @@
                                 />
                             </div>
                             <div class="form-group col-md-9">
-                                <label>{{ 'ReturnReason' | localize }}</label>
+                                <label data-help-loc="ReturnReason">{{ 'ReturnReason' | localize }}</label>
                                 <input type="text" class="form-control" [(ngModel)]="returnForm.reason" />
                             </div>
                         </div>
@@ -137,19 +137,19 @@
                             @if (preview.kind === ReturnKind.Late) {
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
-                                        <label>{{ 'PaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
+                                        <label data-help-loc="PaidLeaveDates">{{ 'PaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
                                         <input type="date" class="form-control" [(ngModel)]="returnForm.paidStartDate" />
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>{{ 'PaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
+                                        <label data-help-loc="PaidLeaveDates">{{ 'PaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
                                         <input type="date" class="form-control" [(ngModel)]="returnForm.paidEndDate" />
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>{{ 'UnpaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
+                                        <label data-help-loc="UnpaidLeaveDates">{{ 'UnpaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
                                         <input type="date" class="form-control" [(ngModel)]="returnForm.unpaidStartDate" />
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>{{ 'UnpaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
+                                        <label data-help-loc="UnpaidLeaveDates">{{ 'UnpaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
                                         <input type="date" class="form-control" [(ngModel)]="returnForm.unpaidEndDate" />
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>{{ 'AbsenceType' | localize }}</label>
+                                <label data-help-loc="AbsenceType">{{ 'AbsenceType' | localize }}</label>
                                 <select class="form-control" [(ngModel)]="form.absenceTypeId" (ngModelChange)="onLeaveDetailsChanged()">
                                     <option [ngValue]="null">--</option>
                                     @for (type of absenceTypes(); track type.id) {
@@ -184,22 +184,22 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'StartDate' | localize }}</label>
+                                <label data-help-loc="StartDate">{{ 'StartDate' | localize }}</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.startDate" (ngModelChange)="onLeaveDetailsChanged()" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'EndDate' | localize }}</label>
+                                <label data-help-loc="EndDate">{{ 'EndDate' | localize }}</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.endDate" (ngModelChange)="onLeaveDetailsChanged()" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'Comments' | localize }}</label>
+                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
                                 <input type="text" class="form-control" [(ngModel)]="form.comments" />
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label>{{ 'LeavePaymentTypeLabel' | localize }}</label>
+                                <label data-help-loc="LeavePaymentTypeLabel">{{ 'LeavePaymentTypeLabel' | localize }}</label>
                                 <select class="form-control" [(ngModel)]="form.leavePaymentType">
                                     <option [ngValue]="PaymentType.PayWithPayroll">
                                         {{ 'LeavePaymentType_PayWithPayroll' | localize }}
@@ -213,7 +213,7 @@
                             <!-- Only an advance needs a date; left empty the server fills in the usual one. -->
                             @if (form.leavePaymentType === PaymentType.PayInAdvance) {
                                 <div class="form-group col-md-4">
-                                    <label>{{ 'PaymentDateLabel' | localize }}</label>
+                                    <label data-help-loc="PaymentDateLabel">{{ 'PaymentDateLabel' | localize }}</label>
                                     <input type="date" class="form-control" [(ngModel)]="form.paymentDate" />
                                 </div>
                             }
@@ -226,7 +226,7 @@
                         -->
                         @if (sickLeaveSegments().length) {
                             <div class="alert alert-light-warning mb-4">
-                                <h6 class="mb-2">{{ 'SickLeaveDeductionBreakdown' | localize }}</h6>
+                                <h6 class="mb-2" data-help-loc="SickLeaveDeductionBreakdown">{{ 'SickLeaveDeductionBreakdown' | localize }}</h6>
                                 <ul class="mb-0 pl-4">
                                     @for (segment of sickLeaveSegments(); track segment.fromDate) {
                                         <li>
@@ -263,7 +263,7 @@
 
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <h5 class="card-title">{{ 'EssMyRequests' | localize }}</h5>
+                    <h5 class="card-title" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
 
                     @if (loading()) {
                         <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
@@ -275,8 +275,8 @@
                                         <th>{{ 'AbsenceType' | localize }}</th>
                                         <th>{{ 'StartDate' | localize }}</th>
                                         <th>{{ 'EndDate' | localize }}</th>
-                                        <th>{{ 'Days' | localize }}</th>
-                                        <th>{{ 'Status' | localize }}</th>
+                                        <th data-help-loc="Days">{{ 'Days' | localize }}</th>
+                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -315,22 +315,22 @@
                                                         {{ 'ChangePending' | localize }}
                                                     </button>
                                                 } @else if (leave.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(leave.workflowRequestId)">
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(leave.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canAmend) {
-                                                    <button class="btn btn-sm btn-link" (click)="openAmendForm(leave)">
+                                                    <button class="btn btn-sm btn-link" data-help-loc="RequestAChange" (click)="openAmendForm(leave)">
                                                         {{ 'RequestAChange' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canReturn) {
-                                                    <button class="btn btn-sm btn-link" (click)="openReturnForm(leave)">
+                                                    <button class="btn btn-sm btn-link" data-help-loc="ReportMyReturn" (click)="openReturnForm(leave)">
                                                         {{ 'ReportMyReturn' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canRequestCancellation) {
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="requestCancellation(leave)">
+                                                    <button class="btn btn-sm btn-link text-danger" data-help-loc="RequestCancellation" (click)="requestCancellation(leave)">
                                                         {{ 'RequestCancellation' | localize }}
                                                     </button>
                                                 }

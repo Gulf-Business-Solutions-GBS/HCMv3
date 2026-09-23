@@ -1,0 +1,305 @@
+{
+  "helpId": "ess.leave",
+  "lang": "ar",
+  "title": "إجازاتي",
+  "entity": null,
+  "overviewHtml": "<p>احجز إجازتك، واطّلع على ما تبقّى لك، وغيّر إجازة معتمدة، وأبلِغ الموارد البشرية بعودتك.</p><p>أرصدتك في الأعلى، بطاقةٌ لكل نوع إجازة. وتحتها النماذج: التقديم، وتغيير إجازة معتمدة، والإبلاغ عن العودة، ثم كل ما حجزته.</p><p>والإجازة التي طلبتها ولم تُعتمد بعد محجوزة أصلاً من رصيدك. وهذا مقصود: فهو يمنعك من حجز الأيام نفسها مرتين ما دام الطلب الأول لدى مديرك.</p>",
+  "aliasIndex": {
+    "loc:AbsenceType": "ess.leave.absence-type",
+    "loc:StartDate": "ess.leave.start-date",
+    "loc:EndDate": "ess.leave.end-date",
+    "loc:ReasonForTheChange": "ess.leave.reason-for-the-change",
+    "loc:RejoiningDate": "ess.leave.rejoining-date",
+    "loc:ReturnReason": "ess.leave.return-reason",
+    "loc:PaidLeaveDates": "ess.leave.paid-leave-dates",
+    "loc:UnpaidLeaveDates": "ess.leave.unpaid-leave-dates",
+    "loc:Comments": "ess.common.comments",
+    "loc:LeavePaymentTypeLabel": "ess.leave.leave-payment-type-label",
+    "loc:PaymentDateLabel": "ess.leave.payment-date-label",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:Status": "ess.common.status",
+    "loc:ApplyForLeave": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:BookableBalance": "ess.leave.bookable-balance",
+    "loc:SickLeaveDeductionBreakdown": "ess.leave.sick-breakdown",
+    "loc:Days": "ess.leave.days",
+    "loc:RequestAChange": "ess.common.amend",
+    "loc:ReportMyReturn": "ess.leave.report-return",
+    "loc:RequestCancellation": "ess.leave.request-cancellation"
+  },
+  "fields": [
+    {
+      "id": "ess.leave.absence-type",
+      "label": "AbsenceType",
+      "section": null,
+      "aliases": [
+        "loc:AbsenceType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة التي تأخذها: سنوية، أو مرضية، أو بدون راتب، أو اضطرارية، أو وضع — من الأنواع التي تمنحك إيّاها شركتك.</p><p><strong>مثال.</strong> إجازة سنوية.</p><p><strong>لماذا يهمّ.</strong> لكل نوع رصيده وقواعده في الإشعار والمستندات وأثره في الراتب. والإجازة المرضية خاصةً تُصرف بنسب متدرّجة لا كاملةً، وهو ما يوضّحه بيان الاستقطاع أدناه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول أيام إجازتك.</p><p><strong>مثال.</strong> 3 أغسطس 2026.</p><p><strong>لماذا يهمّ.</strong> هو أول يوم يُحتسب، فتاريخ بدء في عطلة أسبوعية أو رسمية يعني غالباً أنك قصدت يوم العمل التالي. ولبعض أنواع الإجازات قاعدة إشعار مسبق، فالطلب القريب من التاريخ أكثر من اللازم يُرفض.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر أيام إجازتك، وتعود في اليوم التالي له.</p><p><strong>مثال.</strong> 14 أغسطس 2026، والعودة يوم 15.</p><p><strong>لماذا يهمّ.</strong> يجب ألّا يسبق تاريخ البدء، والأيام بينهما هي ما يُخصم من رصيدك؛ وطريقة احتساب العطل الأسبوعية والرسمية قاعدةٌ لشركتك، ورقم <strong>الأيام</strong> يبيّن النتيجة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.reason-for-the-change",
+      "label": "ReasonForTheChange",
+      "section": null,
+      "aliases": [
+        "loc:ReasonForTheChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب حاجة الإجازة المعتمدة إلى التغيير، وهو مطلوب.</p><p><strong>مثال.</strong> «قُدِّمت زيارة العميل — سأعود قبل أسبوع».</p><p><strong>لماذا يهمّ.</strong> أنت تطلب من أحدهم أن يعيد النظر في قرار اتخذه، وسيريد أن يعرف السبب. ولهذا فهو مطلوب، ويبقى في السجلّ مع التعديل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.rejoining-date",
+      "label": "RejoiningDate",
+      "section": null,
+      "aliases": [
+        "loc:RejoiningDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم الذي عدت فيه إلى العمل فعلاً.</p><p><strong>مثال.</strong> 15 أغسطس 2026 كما هو مقرّر، أو يوم 11 أي قبله بأربعة أيام.</p><p><strong>لماذا يهمّ.</strong> منه يُحتسب حضورك، وبه يُعرف إن كانت أيام تعود إلى رصيدك أو أيام إضافية تُخصم منه. والتاريخ المتأخر عن المقرّر عودةٌ متأخرة، وتُعالَج الأيام بينهما بقاعدة شركتك لذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.return-reason",
+      "label": "ReturnReason",
+      "section": null,
+      "aliases": [
+        "loc:ReturnReason"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب عودتك في يوم غير اليوم المعتمد، ولا يلزم إلا إذا كانت العودة مبكرة أو متأخرة.</p><p><strong>مثال.</strong> «أُلغيت الرحلة، وأول مقعد متاح كان يوم الثلاثاء».</p><p><strong>لماذا يهمّ.</strong> العودة في غير اليوم المعتمد تحتاج إلى بيان لمن يعتمدها، والمتأخرة قد تُعامَل غياباً بدونه. وبيان ما جرى هو ما يُبقي السجلّ مستقيماً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.paid-leave-dates",
+      "label": "PaidLeaveDates",
+      "section": null,
+      "aliases": [
+        "loc:PaidLeaveDates"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> في العودة المتأخرة، أيّ الأيام الزائدة تُؤخذ إجازةً مدفوعة من رصيد ما زال لك.</p><p><strong>مثال.</strong> عودة متأخرة بأربعة أيام، اثنان منها من الإجازة السنوية.</p><p><strong>لماذا يهمّ.</strong> به تُسوّى الزيادة تسوية صادقة: فالأيام التي يغطّيها رصيد تُخصم منه، والباقي يُعالَج بلا أجر. ولا يوضع هنا إلا ما لك رصيد يغطّيه فعلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.unpaid-leave-dates",
+      "label": "UnpaidLeaveDates",
+      "section": null,
+      "aliases": [
+        "loc:UnpaidLeaveDates"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> في العودة المتأخرة، أيّ الأيام الزائدة تكون بلا أجر.</p><p><strong>مثال.</strong> اليومان الآخران من الأربعة.</p><p><strong>لماذا يهمّ.</strong> تُخصم هذه الأيام من راتبك. وتقسيم الزيادة تقسيماً صادقاً بين المدفوع وغير المدفوع هنا هو ما يمنع معاملتها كلّها غياباً بغير إذن، وهي النتيجة الأسوأ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.leave-payment-type-label",
+      "label": "LeavePaymentTypeLabel",
+      "section": null,
+      "aliases": [
+        "loc:LeavePaymentTypeLabel"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل تريد صرف الإجازة كالمعتاد، أم صرف راتب الإجازة مقدَّماً قبل سفرك.</p><p><strong>مثال.</strong> مقدَّماً، لغياب شهر.</p><p><strong>لماذا يهمّ.</strong> الصرف المقدَّم يقدّم المال ولا يزيده: فالمقدَّم يُسوّى من الراتب الذي كنت ستقبضه أثناء غيابك. وهو يحتاج مهلة أطول، لأنه يجب أن يلحق بدورة رواتب قبل مغادرتك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.payment-date-label",
+      "label": "PaymentDateLabel",
+      "section": null,
+      "aliases": [
+        "loc:PaymentDateLabel"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموعد الذي تريد صرف المقدَّم فيه، إن طلبته.</p><p><strong>مثال.</strong> 28 يوليو 2026، أي رواتب ما قبل سفرك.</p><p><strong>لماذا يهمّ.</strong> يجب أن يكون تاريخاً تستطيع دورة رواتب بلوغه. فطلب المقدَّم قبل سفرك بيومين، بعد تنفيذ رواتب الشهر، يعني وصوله بعد مغادرتك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "ApplyForLeave",
+      "section": null,
+      "aliases": [
+        "loc:ApplyForLeave"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.bookable-balance",
+      "label": "BookableBalance",
+      "section": null,
+      "aliases": [
+        "loc:BookableBalance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام التي ما زال يمكنك حجزها، لكل نوع إجازة. ويظهر <strong>المتبقي</strong> تحته، وبينهما فرق: فالمتبقي يحسب المعتمد فقط، أما القابل للحجز فيحجز أيضاً ما طلبته ولم يُعتمد بعد.</p><p><strong>مثال.</strong> المتبقي 18 والقابل للحجز 13، لأن لديك طلباً بخمسة أيام قيد الانتظار.</p><p><strong>لماذا يهمّ.</strong> <strong>احجز على أساس القابل للحجز لا المتبقي.</strong> فالفرق بينهما إجازة طلبتها أصلاً، ومعاملته على أنه متاح هي ما يجعل طلباً ثانياً يُرفض لرصيد ظننته لك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.sick-breakdown",
+      "label": "SickLeaveDeductionBreakdown",
+      "section": null,
+      "aliases": [
+        "loc:SickLeaveDeductionBreakdown"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> في الإجازة المرضية، كيف تُصرف الأيام المطلوبة: أيّها بأجر كامل، وأيّها بأجر جزئي، وأيّها بلا أجر، محسوبةً من قاعدة شركتك ومن الإجازات المرضية التي أخذتها هذا العام.</p><p><strong>مثال.</strong> الأيام 1–15 بأجر كامل، و16–25 بثلاثة أرباع، و26–35 بالنصف.</p><p><strong>لماذا يهمّ.</strong> قلّما تُصرف الإجازة المرضية كاملةً طوال مدّتها، وتعتمد الدرجات على ما أخذته قبلها. ويُعرض هذا قبل التقديم تحديداً حتى لا يكون الاستقطاع مفاجأة في مسيّر الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.days",
+      "label": "Days",
+      "section": null,
+      "aliases": [
+        "loc:Days"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام التي تكلّفك الإجازة فعلاً، محسوبةً من تاريخيك ومن تقويم شركتك.</p><p><strong>مثال.</strong> من 3 إلى 14 أغسطس تظهر 10 أيام لا 12، حيث لا تُحتسب العطل الأسبوعية.</p><p><strong>لماذا يهمّ.</strong> هذا لا امتداد التواريخ هو ما يُخصم من رصيدك. وإن لم يكن الرقم كما توقّعت فالفرق عطل أسبوعية أو رسمية داخل تواريخك، وهو ما يُستحسن معرفته قبل حجز التذاكر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.amend",
+      "label": "RequestAChange",
+      "section": null,
+      "aliases": [
+        "loc:RequestAChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يغيّر طلباً سبق اعتماده، عبر طلب ثانٍ مرتبط بالأول. ولا يظهر إلا في الشاشات التي يكون فيها التغيير أمراً واقعياً يُطلب.</p><p><strong>مثال.</strong> كانت إجازتك المعتمدة عشرة أيام وصرت تحتاج ثمانية.</p><p><strong>لماذا يهمّ.</strong> يمرّ التعديل بالاعتماد كأي طلب آخر، فلا يتغير شيء قبل اعتماده هو أيضاً. ويبقى الطلب الأصلي في القائمة، فالاثنان معاً سجلّ ما طُلب وما صار إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.report-return",
+      "label": "ReportMyReturn",
+      "section": null,
+      "aliases": [
+        "loc:ReportMyReturn"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفتح نموذج إبلاغ الموارد البشرية بعودتك، بعد بدء إجازتك.</p><p><strong>مثال.</strong> العودة يوم الأحد كما هو مقرّر، أو العودة قبله بأربعة أيام.</p><p><strong>لماذا يهمّ.</strong> ما لم تُسجَّل عودتك يبقى النظام يعدّك غائباً، وهو ما يؤثّر في الحضور والرواتب وفي كل من يبحث عنك. والإبلاغ عن عودة مبكرة يعيد الأيام غير المستخدمة إلى رصيدك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave.request-cancellation",
+      "label": "RequestCancellation",
+      "section": null,
+      "aliases": [
+        "loc:RequestCancellation"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يطلب إلغاء إجازة معتمدة بالكامل قبل بدئها.</p><p><strong>مثال.</strong> إجازة معتمدة الشهر القادم لم تعد تريدها.</p><p><strong>لماذا يهمّ.</strong> هو طلب لا إلغاء: فالإجازة قائمة حتى يعتمده أحد، وعندها تعود الأيام إلى رصيدك لا الآن. فلا تحجز شيئاً في تلك الأيام قبل أن تراه معتمداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

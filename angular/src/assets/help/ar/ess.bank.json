@@ -1,0 +1,151 @@
+{
+  "helpId": "ess.bank",
+  "lang": "ar",
+  "title": "بياناتي البنكية",
+  "entity": null,
+  "overviewHtml": "<p>اطلب تغيير الحساب الذي يُصرف فيه راتبك، واطّلع على الحسابات المسجّلة في ملفك.</p><p>ولا يتغيّر شيء قبل اعتماد الطلب، ويسري التغيير من التاريخ الذي تحدّده؛ فالطلب المقدَّم بعد تنفيذ رواتب الشهر يُصرف ذلك الشهر في الحساب القديم. فقدّمه مبكراً.</p>",
+  "aliasIndex": {
+    "loc:Bank": "ess.bank.bank",
+    "loc:AccountNumber": "ess.bank.account-number",
+    "loc:BankBranch": "ess.bank.bank-branch",
+    "loc:StartDate": "ess.bank.start-date",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestBankChange": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.bank.bank",
+      "label": "Bank",
+      "section": null,
+      "aliases": [
+        "loc:Bank"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البنك الذي يوجد فيه الحساب الجديد، من البنوك التي تستطيع شركتك التحويل إليها.</p><p><strong>مثال.</strong> بنك الكويت الوطني.</p><p><strong>لماذا يهمّ.</strong> تُرسل الرواتب ملفاً واحداً إلى كل بنك، فالحساب لدى بنك لا تحوّل إليه شركتك لا يمكن استخدامه مهما كان الحساب صحيحاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.bank.account-number",
+      "label": "AccountNumber",
+      "section": null,
+      "aliases": [
+        "loc:AccountNumber"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحساب كما يكتبه البنك، وهو الآيبان عادةً.</p><p><strong>مثال.</strong> KW81CBKU0000000000001234560101</p><p><strong>لماذا يهمّ.</strong> <strong>راجعه خانةً خانة على كشف حسابك.</strong> فالرقم الخطأ لا يُرَدّ بلطف، بل إمّا أن يُفشِل ملف الرواتب كلّه أو يُحوِّل المبلغ إلى شخص آخر، واسترجاعه بعد ذلك بطيء وغير مضمون.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.bank.bank-branch",
+      "label": "BankBranch",
+      "section": null,
+      "aliases": [
+        "loc:BankBranch"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الفرع الذي يتبعه الحساب، في الشركات التي تسجّل الفروع.</p><p><strong>مثال.</strong> فرع السالمية.</p><p><strong>لماذا يهمّ.</strong> لا تحتاجه أكثر التحويلات، لأن رقم الحساب يحمل التوجيه. وإنما يُسجَّل لأن بعض البنوك وبعض الإقرارات الرسمية ما زالت تطلبه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.bank.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ بدء العمل بالحساب الجديد.</p><p><strong>مثال.</strong> 1 أغسطس 2026.</p><p><strong>لماذا يهمّ.</strong> تستخدم الرواتب الحساب الساري يوم تنفيذها، فهذا التاريخ يحدّد أول شهر يُصرف في الحساب الجديد. والتاريخ الواقع في شهر نُفِّذ فعلاً لا يغيّر شيئاً في ذلك الشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestBankChange",
+      "section": null,
+      "aliases": [
+        "loc:RequestBankChange"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

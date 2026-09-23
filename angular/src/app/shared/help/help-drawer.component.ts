@@ -27,6 +27,13 @@ export class HelpDrawerComponent extends AppComponentBase {
     /** Permissions do not change without a reload, so this is read once rather than per render. */
     readonly canSeeTechnical = this.help.canSeeTechnical();
 
+    /**
+     * The technical panel reads the EF model for the page entity, so a page that has no entity -- a
+     * self-service screen documented as topics (DESIGN.md 5.4) -- has nothing to show. The button is
+     * hidden rather than left to expand onto nothing.
+     */
+    readonly showTechnical = computed(() => this.canSeeTechnical && !!this.help.content()?.entity);
+
     /** Which topic's "Copy" button last succeeded, so it can briefly say "Copied". */
     readonly copiedId = signal<string | null>(null);
 

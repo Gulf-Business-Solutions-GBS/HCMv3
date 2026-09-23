@@ -20,12 +20,13 @@ import { signal } from '@angular/core';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /** Self-service asset requests. Shares its list, status and withdraw behaviour with the other ESS screens. */
 @Component({
     templateUrl: './my-asset.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyAssetComponent extends MyRequestComponentBase<MyAssetRequestDto> implements OnInit {

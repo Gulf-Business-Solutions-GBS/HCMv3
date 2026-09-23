@@ -32,7 +32,7 @@
                             [class.help-topic-active]="isActive(field.id)">
                             <div class="help-topic-head">
                                 <h5 class="help-topic-title">{{ field.label | localize }}</h5>
-                                @if (canSeeTechnical) {
+                                @if (showTechnical()) {
                                     <button
                                         type="button"
                                         class="help-tech-toggle"
@@ -54,7 +54,7 @@
                                 </p>
                             }
 
-                            @if (canSeeTechnical && help.isTechnicalOpen(field.id)) {
+                            @if (showTechnical() && help.isTechnicalOpen(field.id)) {
                                 <div class="help-tech">
                                     <div class="help-tech-label">{{ 'TechnicalInformation' | localize }}</div>
                                     @if (help.propertySchema(field.id); as col) {

@@ -57,10 +57,12 @@ public interface IEntityImageStore
 public class EntityImageStore : IEntityImageStore, ITransientDependency
 {
     private readonly IFileStore _fileStore;
+    private readonly IFileStorageRootResolver _rootResolver;
 
-    public EntityImageStore(IFileStore fileStore)
+    public EntityImageStore(IFileStore fileStore, IFileStorageRootResolver rootResolver)
     {
         _fileStore = fileStore;
+        _rootResolver = rootResolver;
     }
 
     public async Task<string> ReplaceAsync(string kind, int tenantId, int recordId, string currentPath, byte[] content)
@@ -70,7 +72,7 @@ public class EntityImageStore : IEntityImageStore, ITransientDependency
         if (content != null && content.Length > 0)
         {
             newPath = string.Join("/",
-                _fileStore.TenantSegment(tenantId),
+                _fileStore.TenantSegment(tenantId, await _rootResolver.GetCurrentRootNameAsync()),
                 kind,
                 recordId.ToString(CultureInfo.InvariantCulture) + "-" + Guid.NewGuid().ToString("N") + ".img");
 
@@ -89,8 +91,7 @@ public class EntityImageStore : IEntityImageStore, ITransientDependency
 
     public Task<byte[]> ReadOrNullAsync(int? tenantId, string path)
     {
-        if (string.IsNullOrEmpty(path)
-            || !path.StartsWith(_fileStore.TenantSegment(tenantId) + "/", StringComparison.Ordinal))
+        if (!_fileStore.BelongsToTenant(path, tenantId))
         {
             return Task.FromResult<byte[]>(null);
         }

@@ -1,0 +1,221 @@
+{
+  "helpId": "ess.passport-withdrawal",
+  "lang": "ar",
+  "title": "سحب المستندات",
+  "entity": null,
+  "overviewHtml": "<p>اطلب إخراج مستند تحتفظ به شركتك لك — وهو جواز السفر عادةً — لمدة، ثم سجّل إعادته عند إرجاعه.</p><p>وللشاشة شقّان: أن تطلب السحب محدّداً موعد حاجتك إليه وموعد إعادتك له؛ وأن تسجّل الإعادة هنا عند إرجاعه، وهو ما يعيد المستند إلى عهدة شركتك ويُغلق الطلب. والمستند الذي لا تسجّل إعادته يبقى خارجاً باسمك.</p>",
+  "aliasIndex": {
+    "loc:Document": "ess.passport-withdrawal.document",
+    "loc:WithdrawDate": "ess.passport-withdrawal.withdraw-date",
+    "loc:ReturnDate": "ess.passport-withdrawal.return-date",
+    "loc:WithdrawalReason": "ess.passport-withdrawal.withdrawal-reason",
+    "loc:Guarantor": "ess.passport-withdrawal.guarantor",
+    "loc:Comments": "ess.common.comments",
+    "loc:ActualReturnDate": "ess.passport-withdrawal.actual-return-date",
+    "loc:ReturnMyDocument": "ess.passport-withdrawal.return",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:StillOut": "ess.passport-withdrawal.still-out",
+    "loc:RequestPassportWithdrawal": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:WithdrawRequest": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.passport-withdrawal.document",
+      "label": "Document",
+      "section": null,
+      "aliases": [
+        "loc:Document"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستند المحفوظ الذي تريد إخراجه. ولا تضمّ القائمة إلا المستندات التي تحتفظ بها شركتك لك ويجوز سحبها.</p><p><strong>مثال.</strong> جواز سفر A12345678.</p><p><strong>لماذا يهمّ.</strong> القائمة الفارغة تعني إمّا أنه لا يُحتفظ لك بشيء، وإمّا أن ما تريده خارج أصلاً — وهذا هو الشقّ الآخر من الشاشة، لا سبباً لتقديم طلب ثانٍ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.withdraw-date",
+      "label": "WithdrawDate",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي تحتاج المستند منه.</p><p><strong>مثال.</strong> 18 سبتمبر 2026، أي قبل سفرك بيوم.</p><p><strong>لماذا يهمّ.</strong> عليه يعمل من يحفظ المستندات، وهو يحتاج إلى مهلة. وطلب جواز السفر صباح يوم السفر هو ما يجعل الناس يفوتهم الطيران.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.return-date",
+      "label": "ReturnDate",
+      "section": null,
+      "aliases": [
+        "loc:ReturnDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموعد الذي تتوقّع إرجاعه فيه.</p><p><strong>مثال.</strong> 28 سبتمبر 2026.</p><p><strong>لماذا يهمّ.</strong> هو وعد لا حدّ، فلا يقع شيء تلقائياً في ذلك التاريخ. وإنما يُعلِم شركتك بموعد توقّع المستند، وعليه تُبنى المتابعة إن لم يصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.withdrawal-reason",
+      "label": "WithdrawalReason",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawalReason"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب حاجتك إليه بكلماتك أنت.</p><p><strong>مثال.</strong> السفر إلى مصر في إجازة عائلية؛ أو تقديم طلب تأشيرة في السفارة.</p><p><strong>لماذا يهمّ.</strong> هو ما يقرأه المعتمد. وجواز السفر أكثر ما تحرص عليه الشركة، فالسبب الواضح هو ما يجعل الطلب سهلاً بدل أن يصير نقاشاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.guarantor",
+      "label": "Guarantor",
+      "section": null,
+      "aliases": [
+        "loc:Guarantor"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> زميل يضمن إعادة المستند. تشترطه بعض الشركات وتعرضه أخرى.</p><p><strong>مثال.</strong> مديرك المباشر، أو زميل أقدم في إدارتك.</p><p><strong>لماذا يهمّ.</strong> يُبلَّغ كفيلك عند اعتماد الطلب، فاختر من يعلم أنك تطلب ذلك. فهي التزام حقيقي منه لا إجراء شكلياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.actual-return-date",
+      "label": "ActualReturnDate",
+      "section": null,
+      "aliases": [
+        "loc:ActualReturnDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم الذي أعدت فيه المستند فعلاً. ويُسجَّل عند الإرجاع لا عند الطلب.</p><p><strong>مثال.</strong> 27 سبتمبر 2026 — قبل الموعد بيوم.</p><p><strong>لماذا يهمّ.</strong> به يُغلق الطلب ويعود المستند إلى العهدة. وقبل تسجيله يبقى المستند خارجاً باسمك مهما كان التاريخ المتوقَّع، ويظهر في إخلاء طرفك عند انتهاء خدمتك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.return",
+      "label": "ReturnMyDocument",
+      "section": null,
+      "aliases": [
+        "loc:ReturnMyDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفتح النموذج المختصر لتسجيل إعادة المستند، ويظهر على الطلب الذي ما زال مستنده خارجاً.</p><p><strong>مثال.</strong> عدت من إجازتك وتسلّم جواز سفرك في مكتب الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> تسليم الجواز باليد ليس ما يُغلق الطلب، بل تسجيله. فافعل الأمرين في اليوم نفسه، وإلا اختلف السجلّ عن الخزنة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.passport-withdrawal.still-out",
+      "label": "StillOut",
+      "section": null,
+      "aliases": [
+        "loc:StillOut"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة على الطلب الذي لم تُسجَّل إعادة مستنده.</p><p><strong>مثال.</strong> سُحب قبل ثلاثة أسابيع، وكان متوقَّعاً قبل أسبوعين، وما زال خارجاً.</p><p><strong>لماذا يهمّ.</strong> هو السطر الذي يهمّ مدقّقي شركتك، والذي يظهر في إخلاء طرفك. فإن ذكر أن المستند «ما زال خارجاً» وهو في درج مكتبك فالسجلّ خاطئ، ولا يصحّحه إلا تسجيل الإعادة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestPassportWithdrawal",
+      "section": null,
+      "aliases": [
+        "loc:RequestPassportWithdrawal"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "WithdrawRequest",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawRequest"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

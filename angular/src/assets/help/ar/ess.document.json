@@ -1,0 +1,179 @@
+{
+  "helpId": "ess.document",
+  "lang": "ar",
+  "title": "مستنداتي",
+  "entity": null,
+  "overviewHtml": "<p>أضِف مستنداً شخصياً إلى ملفك لدى الموارد البشرية — جواز سفر، أو بطاقة مدنية، أو رخصة قيادة، أو مؤهلاً — برقمه وتواريخه وصورة منه.</p><p>وتسجيل المستند هو ما يتيح للنظام تنبيهك قبل انتهائه، وما يتيح للموارد البشرية الرجوع إليه دون أن تطلب منك نسخة. ولا يُسجَّل المستند الواحد مرتين: فإن كان في ملفك أصلاً فلا تضف الجديد إلا إذا تغيّر الرقم فعلاً، كما يحدث بعد التجديد.</p>",
+  "aliasIndex": {
+    "loc:DocumentType": "ess.document.document-type",
+    "loc:DocumentNumber": "ess.document.document-number",
+    "loc:IssueDate": "ess.document.issue-date",
+    "loc:ExpiryDate": "ess.document.expiry-date",
+    "loc:Attachments": "ess.document.attachments",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestDocument": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw"
+  },
+  "fields": [
+    {
+      "id": "ess.document.document-type",
+      "label": "DocumentType",
+      "section": null,
+      "aliases": [
+        "loc:DocumentType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع هذا المستند، من الأنواع التي تسجّلها شركتك.</p><p><strong>مثال.</strong> جواز سفر، أو بطاقة مدنية، أو رخصة قيادة.</p><p><strong>لماذا يهمّ.</strong> يحدّد النوع ما يُتوقَّع من السجلّ وما يُفعل به؛ فجواز السفر والبطاقة المدنية أكثر ما تتصرّف الشركات بناءً عليه، لأن انتهاءهما يحكم الإقامة وإذن العمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.document-number",
+      "label": "DocumentNumber",
+      "section": null,
+      "aliases": [
+        "loc:DocumentNumber"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المطبوع على المستند.</p><p><strong>مثال.</strong> A12345678</p><p><strong>لماذا يهمّ.</strong> <strong>انقله كما هو تماماً.</strong> به يُطابَق السجلّ بالمستند، وهو ما يُدرَج في المعاملات الحكومية؛ والرقم الخطأ هناك يعود رفضاً للمعاملة بعد أسابيع. ولا يجوز تسجيل النوع والرقم نفسيهما لك مرتين، وهو التحقّق الذي يميّز الإدخال المكرر من التجديد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.issue-date",
+      "label": "IssueDate",
+      "section": null,
+      "aliases": [
+        "loc:IssueDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ إصدار المستند.</p><p><strong>مثال.</strong> 3 مارس 2024.</p><p><strong>لماذا يهمّ.</strong> به يُميَّز التجديد عن المستند الذي حلّ محلّه حين يكون كلاهما في الملف، وبعض الجهات تطلبه مع الرقم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.expiry-date",
+      "label": "ExpiryDate",
+      "section": null,
+      "aliases": [
+        "loc:ExpiryDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ انتهاء صلاحية المستند.</p><p><strong>مثال.</strong> 2 مارس 2034.</p><p><strong>لماذا يهمّ.</strong> هذا هو التاريخ الذي يراقبه النظام. فالتنبيهات تُرسل قبله، وانتهاء جواز السفر أو البطاقة المدنية يوقف تجديد الإقامة والسفر — فهو الحقل الجدير بمراجعة مرتين هنا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.attachments",
+      "label": "Attachments",
+      "section": null,
+      "aliases": [
+        "loc:Attachments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صورة المستند نفسه، مرفقةً بالسجلّ.</p><p><strong>مثال.</strong> صورة واضحة لصفحة الصورة في جواز السفر.</p><p><strong>لماذا يهمّ.</strong> بدونها ليس لدى الموارد البشرية إلا قولك في الرقم ولا شيء يقابلونه به، وسيطلبون منك نسخة أول مرة يحتاجها أحد. وصورة واضحة الآن تغني عن ذلك. وتُحفظ المرفقات في مخزن ملفات شركتك لا في قاعدة البيانات، ولا يفتحها إلا من يحقّ له الاطلاع على سجلّك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestDocument",
+      "section": null,
+      "aliases": [
+        "loc:RequestDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من وصل إليه الطلب، وما فعله كل شخص به ومتى، مع أي ملاحظة تركها.</p><p><strong>مثال.</strong> قُدّم 09:12 ← اعتمده المدير المباشر 11:40 («تم ترتيب البديل») ← لدى الموارد البشرية.</p><p><strong>لماذا يهمّ.</strong> يجيب عن سؤال «لدى من الطلب الآن؟» دون سؤال أحد. وإذا بقي الطلب عند شخص أياماً فهو يخبرك بمن هو، وهو من تراجعه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يسترجع الطلب. ولا يظهر إلا ما دام الاسترجاع ممكناً، فإذا اعتُمد الطلب ونُفّذ اختفى الزرّ.</p><p><strong>مثال.</strong> طلبت إجازة الأسبوع القادم ثم تغيّرت خططك، فتسحب الطلب قبل أن يصل إليه مديرك.</p><p><strong>لماذا يهمّ.</strong> لا يُحذف الطلب المسحوب، بل يبقى في القائمة بحالة <strong>مسحوب</strong> ليبيّن السجلّ ما جرى. ويحرّر السحب ما كان الطلب يحجزه، كرصيد إجازة محجوز مقابله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

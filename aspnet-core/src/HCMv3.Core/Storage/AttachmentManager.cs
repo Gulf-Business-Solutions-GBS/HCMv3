@@ -66,15 +66,18 @@ public class AttachmentManager : HCMv3DomainServiceBase, IAttachmentManager
 
     private readonly IRepository<AppAttachment> _attachmentRepository;
     private readonly IFileStore _fileStore;
+    private readonly IFileStorageRootResolver _rootResolver;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
     public AttachmentManager(
         IRepository<AppAttachment> attachmentRepository,
         IFileStore fileStore,
+        IFileStorageRootResolver rootResolver,
         ISysSettingsAccessor sysSettingsAccessor)
     {
         _attachmentRepository = attachmentRepository;
         _fileStore = fileStore;
+        _rootResolver = rootResolver;
         _sysSettingsAccessor = sysSettingsAccessor;
     }
 
@@ -140,7 +143,7 @@ public class AttachmentManager : HCMv3DomainServiceBase, IAttachmentManager
         // The name on disk is generated, never the uploaded one: a user-chosen name is not a safe path
         // segment, and two uploads of "scan.pdf" must not overwrite each other.
         var storagePath = string.Join("/",
-            _fileStore.TenantSegment(tenantId),
+            _fileStore.TenantSegment(tenantId, await _rootResolver.GetCurrentRootNameAsync()),
             "attachments",
             SafeSegment(entityType),
             Clock.Now.ToString("yyyy-MM"),

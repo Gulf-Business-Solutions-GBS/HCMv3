@@ -1,0 +1,151 @@
+{
+  "helpId": "ess.health-reimburse",
+  "lang": "en",
+  "title": "My Health Reimbursements",
+  "entity": null,
+  "overviewHtml": "<p>Claim back medical costs your company covers — a consultation, medicine, a dental visit — against the health allowance your employee sub group gives you.</p><p>The panel at the top shows what you have to spend and what is left of it. If it says you have no entitlement, your sub group has not been given one, and that is a question for HR rather than something to fix here.</p>",
+  "aliasIndex": {
+    "loc:PaymentDate": "ess.health-reimburse.payment-date",
+    "loc:Amount": "ess.health-reimburse.amount",
+    "loc:Comments": "ess.common.comments",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
+    "loc:Status": "ess.common.status",
+    "loc:RequestHealthReimburse": "ess.common.new-request",
+    "loc:WorkflowHistory": "ess.common.workflow-history",
+    "loc:Withdraw": "ess.common.withdraw",
+    "loc:HealthReimburseBalance": "ess.health-reimburse.balance"
+  },
+  "fields": [
+    {
+      "id": "ess.health-reimburse.payment-date",
+      "label": "PaymentDate",
+      "section": null,
+      "aliases": [
+        "loc:PaymentDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day you paid for the treatment.</p><p><strong>Example.</strong> 6 April 2026.</p><p><strong>Why it matters.</strong> It decides which entitlement period the claim comes out of — a bill paid in December and claimed in January still belongs to the year you paid it, which matters when a period is nearly used up.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.health-reimburse.amount",
+      "label": "Amount",
+      "section": null,
+      "aliases": [
+        "loc:Amount"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What you paid, in your payroll currency.</p><p><strong>Example.</strong> 45.000</p><p><strong>Why it matters.</strong> Claim the amount on the receipt. Keep the receipt — a claim without one is the first thing an approver asks about, and where the claim is for more than your claimable balance it will be cut to what is left rather than refused outright.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anything you want the people approving this to read. Free text, and optional.</p><p><strong>Example.</strong> \"Flying on the 14th, back on the 28th — cover agreed with Ahmed.\"</p><p><strong>Why it matters.</strong> It is the only place you can explain a request that needs explaining, and it stays with the request for good: approvers see it, and so does anyone who looks the request up afterwards. A request that surprises somebody is a request that comes back to you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everything you have asked for on this screen, newest first, with where each one has got to.</p><p><strong>Example.</strong> Three ticket requests: one approved last month, one waiting, one you withdrew.</p><p><strong>Why it matters.</strong> This is the record. A request that is not in this list was never submitted — if you filled the form in and did not press <strong>Save</strong>, nothing was sent.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "RequestHealthReimburse",
+      "section": null,
+      "aliases": [
+        "loc:RequestHealthReimburse"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button at the top right of the screen that opens the form. Filling it in and pressing <strong>Save</strong> submits the request; nothing is sent until you do.</p><p><strong>Example.</strong> <strong>Request Leave</strong>, <strong>Request Ticket</strong>, <strong>Request Loan</strong> — the wording follows the screen.</p><p><strong>Why it matters.</strong> Once submitted the request goes to whoever approves that kind of request in your company, and you cannot edit it in place. To change something, withdraw it and make a new one, or use <strong>Amend</strong> where the screen offers it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.workflow-history",
+      "label": "WorkflowHistory",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowHistory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who a request has reached, what each person did with it and when, including any comment they left.</p><p><strong>Example.</strong> Submitted 09:12 → Line manager approved 11:40 (\"cover arranged\") → with HR.</p><p><strong>Why it matters.</strong> It answers \"who is it with?\" without asking anybody. If a request has sat with one person for days, this tells you which person, which is who to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.withdraw",
+      "label": "Withdraw",
+      "section": null,
+      "aliases": [
+        "loc:Withdraw"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Takes a request back. Offered only while it can still be taken back — once it is approved and acted on, the button is gone.</p><p><strong>Example.</strong> You asked for leave next week, your plans changed, you withdraw it before your manager gets to it.</p><p><strong>Why it matters.</strong> A withdrawn request is not deleted: it stays in the list marked <strong>Withdrawn</strong>, so the record shows what happened. Withdrawing frees anything the request was holding, such as a leave balance reserved against it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.health-reimburse.balance",
+      "label": "HealthReimburseBalance",
+      "section": null,
+      "aliases": [
+        "loc:HealthReimburseBalance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Your health allowance for the current period, broken down: the <strong>allowance</strong> itself, anything <strong>carried forward</strong> from last period, the <strong>total</strong> of the two, what you have <strong>used</strong>, what is <strong>pending</strong> approval, what is <strong>remaining</strong>, and what is <strong>claimable</strong> right now.</p><p><strong>Example.</strong> Allowance 500.000 + carried forward 120.000 = 620.000 total; used 200.000, pending 45.000, remaining 375.000.</p><p><strong>Why it matters.</strong> <strong>Claimable is the figure to go by, not remaining.</strong> Remaining ignores claims still waiting for approval; claimable has already set them aside. Claiming against \"remaining\" is how people end up over their entitlement and have a claim cut back.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

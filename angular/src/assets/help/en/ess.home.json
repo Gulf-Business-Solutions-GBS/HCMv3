@@ -1,0 +1,109 @@
+{
+  "helpId": "ess.home",
+  "lang": "en",
+  "title": "Employee Self Service",
+  "entity": null,
+  "overviewHtml": "<p>The front page of self service: what is waiting on you, what you are waiting on, everything you can ask for, and what you asked for recently.</p><p>What appears here follows your company and your role. A tile you cannot see is a transaction your company has not switched on, or one your permissions do not include — not something missing.</p>",
+  "aliasIndex": {
+    "loc:WaitingOnMe": "ess.home.waiting-on-me",
+    "loc:MyRequestsAwaitingApproval": "ess.home.awaiting-approval",
+    "loc:WhatWouldYouLikeToDo": "ess.home.tiles",
+    "loc:NoApprovalNeeded": "ess.home.no-approval-needed",
+    "loc:MyRecentRequests": "ess.home.recent-requests",
+    "loc:EssMyTeam": "ess.home.my-team",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked"
+  },
+  "fields": [
+    {
+      "id": "ess.home.waiting-on-me",
+      "label": "WaitingOnMe",
+      "section": null,
+      "aliases": [
+        "loc:WaitingOnMe"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many requests are sitting in your inbox for a decision — your team's, and anything delegated to you.</p><p><strong>Example.</strong> 4 waiting.</p><p><strong>Why it matters.</strong> Every one of these is somebody held up until you look at it. It is the one number on this page that costs other people time while you leave it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.home.awaiting-approval",
+      "label": "MyRequestsAwaitingApproval",
+      "section": null,
+      "aliases": [
+        "loc:MyRequestsAwaitingApproval"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many of your own requests are still waiting on somebody else.</p><p><strong>Example.</strong> 2 of yours out with approvers.</p><p><strong>Why it matters.</strong> These are yours, not decisions for you to make. Where one has been out too long, the request's workflow history says who has it, which is who to ask.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.home.tiles",
+      "label": "WhatWouldYouLikeToDo",
+      "section": null,
+      "aliases": [
+        "loc:WhatWouldYouLikeToDo"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A tile for each thing you can ask for — leave, a loan, a ticket, a letter — showing only what your company has switched on and your permissions allow.</p><p><strong>Example.</strong> Tiles for leave, tickets and letters, but none for travel at a company that does not use it.</p><p><strong>Why it matters.</strong> It is the whole of what self service can do for you, in one place. If something you expect is not here, it is a permission or a configuration question for HR, not something to look for elsewhere in the menu.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.home.no-approval-needed",
+      "label": "NoApprovalNeeded",
+      "section": null,
+      "aliases": [
+        "loc:NoApprovalNeeded"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A note on a tile whose requests take effect as soon as you submit them, because your company has set no approval for that transaction.</p><p><strong>Example.</strong> Recording a document, where HR has decided it needs no sign-off.</p><p><strong>Why it matters.</strong> There is no approver to catch a mistake, and nothing to withdraw before somebody sees it. Check what you have typed before you save on those.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.home.recent-requests",
+      "label": "MyRecentRequests",
+      "section": null,
+      "aliases": [
+        "loc:MyRecentRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last few things you asked for, of any kind, with where each has got to.</p><p><strong>Example.</strong> Leave approved on Sunday; a ticket claim still pending.</p><p><strong>Why it matters.</strong> It is the quick answer to \"did that go through?\" across every screen at once, without opening each one. For the full list of one kind, go to its own screen.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.home.my-team",
+      "label": "EssMyTeam",
+      "section": null,
+      "aliases": [
+        "loc:EssMyTeam"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A mark shown to people who have others reporting to them, alongside what their team needs from them.</p><p><strong>Example.</strong> Shown to a line manager; not shown to somebody with no reports.</p><p><strong>Why it matters.</strong> It is how you tell approvals that are yours as a manager from requests that are yours as an employee. If you manage people and do not see it, your reporting line is not recorded — which also means your team's requests are not reaching you.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

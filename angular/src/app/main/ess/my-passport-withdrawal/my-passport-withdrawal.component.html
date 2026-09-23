@@ -1,8 +1,8 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'ess.passport-withdrawal'">
     <sub-header [title]="'EssMyPassportWithdrawals' | localize">
         <div role="actions">
             @if (!notLinked()) {
-                <button class="btn btn-primary" (click)="openForm()">
+                <button class="btn btn-primary" data-help-loc="RequestPassportWithdrawal" (click)="openForm()">
                     <i class="fa fa-plus"></i> {{ 'RequestPassportWithdrawal' | localize }}
                 </button>
             }
@@ -13,7 +13,7 @@
         @if (notLinked()) {
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <div class="alert alert-warning mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
                 </div>
             </div>
         } @else {
@@ -28,7 +28,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label>{{ 'Document' | localize }} *</label>
+                                <label data-help-loc="Document">{{ 'Document' | localize }} *</label>
                                 <select class="form-control" [(ngModel)]="form.employeeDocumentId">
                                     <option [ngValue]="null">--</option>
                                     @for (document of myDocuments(); track document.id) {
@@ -37,19 +37,19 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-2">
-                                <label>{{ 'WithdrawDate' | localize }} *</label>
+                                <label data-help-loc="WithdrawDate">{{ 'WithdrawDate' | localize }} *</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.withdrawDate" />
                             </div>
                             <div class="form-group col-md-2">
-                                <label>{{ 'ReturnDate' | localize }} *</label>
+                                <label data-help-loc="ReturnDate">{{ 'ReturnDate' | localize }} *</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.returnDate" />
                             </div>
                             <div class="form-group col-md-4">
-                                <label>{{ 'WithdrawalReason' | localize }}</label>
+                                <label data-help-loc="WithdrawalReason">{{ 'WithdrawalReason' | localize }}</label>
                                 <input type="text" maxlength="500" class="form-control" [(ngModel)]="form.withdrawalReason" />
                             </div>
                             <div class="form-group col-md-4">
-                                <label>{{ 'Guarantor' | localize }}</label>
+                                <label data-help-loc="Guarantor">{{ 'Guarantor' | localize }}</label>
                                 <select class="form-control" [(ngModel)]="form.guarantorId">
                                     <option [ngValue]="null">--</option>
                                     @for (colleague of guarantorCandidates(); track colleague.id) {
@@ -58,7 +58,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-8">
-                                <label>{{ 'Comments' | localize }}</label>
+                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
                                 <input type="text" maxlength="500" class="form-control" [(ngModel)]="form.comments" />
                             </div>
                         </div>
@@ -78,11 +78,11 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label>{{ 'Document' | localize }}</label>
+                                <label data-help-loc="Document">{{ 'Document' | localize }}</label>
                                 <input type="text" class="form-control" readonly [value]="typeName(row) + ' ' + (row.documentNum || '')" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label>{{ 'ActualReturnDate' | localize }} *</label>
+                                <label data-help-loc="ActualReturnDate">{{ 'ActualReturnDate' | localize }} *</label>
                                 <input type="date" class="form-control" [(ngModel)]="returnForm.actualReturnDate" />
                             </div>
                         </div>
@@ -97,7 +97,7 @@
 
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <h5 class="card-title">{{ 'EssMyRequests' | localize }}</h5>
+                    <h5 class="card-title" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
 
                     @if (loading()) {
                         <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
@@ -112,7 +112,7 @@
                                         <th>{{ 'ReturnDate' | localize }}</th>
                                         <th>{{ 'ActualReturnDate' | localize }}</th>
                                         <th>{{ 'Guarantor' | localize }}</th>
-                                        <th>{{ 'Status' | localize }}</th>
+                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -127,7 +127,7 @@
                                                 @if (row.actualReturnDate) {
                                                     {{ row.actualReturnDate | luxonFormat: 'yyyy-MM-dd' }}
                                                 } @else {
-                                                    <span class="text-muted">{{ 'StillOut' | localize }}</span>
+                                                    <span class="text-muted" data-help-loc="StillOut">{{ 'StillOut' | localize }}</span>
                                                 }
                                             </td>
                                             <td>{{ guarantorName(row) }}</td>
@@ -136,19 +136,19 @@
                                             </td>
                                             <td class="text-right">
                                                 @if (row.workflowRequestId) {
-                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)">
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
                                                         {{ 'WorkflowHistory' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canReturn) {
-                                                    <button class="btn btn-sm btn-link" (click)="openReturnForm(row)">
+                                                    <button class="btn btn-sm btn-link" data-help-loc="ReturnMyDocument" (click)="openReturnForm(row)">
                                                         {{ 'ReturnMyDocument' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
                                                     <!-- "Withdraw" alone would read as withdrawing the passport, which is what
                                                          this screen is FOR. Named for the request on this one screen. -->
-                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)">
+                                                    <button class="btn btn-sm btn-link text-danger" data-help-loc="WithdrawRequest" (click)="cancel(row)">
                                                         {{ 'WithdrawRequest' | localize }}
                                                     </button>
                                                 }

@@ -7998,6 +7998,1484 @@
       },
       "domPrefix": "BusinessRule",
       "defaultSection": "BusinessRule"
+    },
+    {
+      "helpId": "ess.geo-punch",
+      "title": "Geo Punch",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.GeoPunch"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-geo-punch/my-geo-punch.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.geo-punch.clock",
+          "label": "GeoPunchClockInOut",
+          "loc": "GeoPunchClockIn"
+        },
+        {
+          "id": "ess.geo-punch.overtime",
+          "label": "GeoPunchOvertimeInOut",
+          "loc": "GeoPunchOvertimeIn"
+        },
+        {
+          "id": "ess.geo-punch.selfie",
+          "loc": "GeoPunchSelfie"
+        },
+        {
+          "id": "ess.geo-punch.work-location",
+          "loc": "WorkLocation"
+        },
+        {
+          "id": "ess.geo-punch.your-location",
+          "loc": "GeoPunchYourLocation"
+        },
+        {
+          "id": "ess.geo-punch.range",
+          "loc": "GeoPunchAllowedRange"
+        },
+        {
+          "id": "ess.geo-punch.out-of-range",
+          "label": "GeoPunchOutOfRange",
+          "loc": "PunchingOutOfLocation"
+        },
+        {
+          "id": "ess.geo-punch.no-duty",
+          "label": "GeoPunchNoDutyToday",
+          "loc": "GeoPunchNoDutyWarning"
+        },
+        {
+          "id": "ess.geo-punch.refresh",
+          "loc": "GeoPunchRefreshLocation"
+        },
+        {
+          "id": "ess.geo-punch.todays-punches",
+          "loc": "GeoPunchTodaysPunches"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.ticket",
+      "title": "My Tickets",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyTickets"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-ticket/my-ticket.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.ticket.ticket-type",
+          "loc": "TicketType"
+        },
+        {
+          "id": "ess.ticket.ticket-date",
+          "loc": "TicketDate"
+        },
+        {
+          "id": "ess.ticket.amount",
+          "loc": "Amount"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestTicket",
+          "loc": "RequestTicket"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.loan",
+      "title": "My Loans",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyLoans"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-loan/my-loan.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.loan.loan-type",
+          "loc": "LoanType"
+        },
+        {
+          "id": "ess.loan.loan-amount",
+          "loc": "LoanAmount"
+        },
+        {
+          "id": "ess.loan.instalment",
+          "loc": "Instalment"
+        },
+        {
+          "id": "ess.loan.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.loan.recovery-start-date",
+          "loc": "RecoveryStartDate"
+        },
+        {
+          "id": "ess.loan.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestLoan",
+          "loc": "RequestLoan"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.overtime",
+      "title": "My Overtime",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyOvertime"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-overtime/my-overtime.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.overtime.overtime-type",
+          "loc": "OvertimeType"
+        },
+        {
+          "id": "ess.overtime.effective-date",
+          "loc": "EffectiveDate"
+        },
+        {
+          "id": "ess.overtime.hours",
+          "loc": "Hours"
+        },
+        {
+          "id": "ess.overtime.approved-hours",
+          "loc": "ApprovedHours"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestOvertime",
+          "loc": "RequestOvertime"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.exit-permit",
+      "title": "My Exit Permits",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyExitPermits"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-exit-permit/my-exit-permit.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.exit-permit.exit-permit-number",
+          "loc": "ExitPermitNumber"
+        },
+        {
+          "id": "ess.exit-permit.travel-reason",
+          "loc": "TravelReason"
+        },
+        {
+          "id": "ess.exit-permit.exit-date",
+          "loc": "ExitDate"
+        },
+        {
+          "id": "ess.exit-permit.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestExitPermit",
+          "loc": "RequestExitPermit"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.punch",
+      "title": "My Punches",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyPunches"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-punch/my-punch.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.punch.punch-type",
+          "loc": "PunchType"
+        },
+        {
+          "id": "ess.punch.punch-date",
+          "loc": "PunchDate"
+        },
+        {
+          "id": "ess.punch.punch-time",
+          "loc": "PunchTime"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestMissingPunch",
+          "loc": "RequestMissingPunch"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.attendance",
+      "title": "My Attendance",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyAttendance"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-attendance/my-attendance.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.attendance.attendance-type",
+          "loc": "AttendanceType"
+        },
+        {
+          "id": "ess.attendance.date",
+          "loc": "Date"
+        },
+        {
+          "id": "ess.attendance.start-time",
+          "loc": "StartTime"
+        },
+        {
+          "id": "ess.attendance.end-time",
+          "loc": "EndTime"
+        },
+        {
+          "id": "ess.attendance.hours",
+          "loc": "Hours"
+        },
+        {
+          "id": "ess.attendance.reason-for-the-change",
+          "loc": "ReasonForTheChange"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestAttendanceCorrection",
+          "loc": "RequestAttendanceCorrection"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.bank",
+      "title": "My Bank Details",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyBank"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-bank/my-bank.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.bank.bank",
+          "loc": "Bank"
+        },
+        {
+          "id": "ess.bank.account-number",
+          "loc": "AccountNumber"
+        },
+        {
+          "id": "ess.bank.bank-branch",
+          "loc": "BankBranch"
+        },
+        {
+          "id": "ess.bank.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestBankChange",
+          "loc": "RequestBankChange"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.asset",
+      "title": "My Assets",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyAssets"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-asset/my-asset.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.asset.asset",
+          "loc": "Asset"
+        },
+        {
+          "id": "ess.asset.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.asset.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestAsset",
+          "loc": "RequestAsset"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.letter",
+      "title": "My Letter Requests",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyLetterRequests"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-letter/my-letter.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.letter.document-type",
+          "loc": "DocumentType"
+        },
+        {
+          "id": "ess.letter.effective-date",
+          "loc": "EffectiveDate"
+        },
+        {
+          "id": "ess.letter.address-to-en",
+          "loc": "AddressToEn"
+        },
+        {
+          "id": "ess.letter.address-to-ar",
+          "loc": "AddressToAr"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.letter.ready-to-collect",
+          "loc": "ReadyToCollect"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestLetter",
+          "loc": "RequestLetter"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.hr-service",
+      "title": "My HR Services",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyHRServices"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-hr-service/my-hr-service.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.hr-service.hr-service-type",
+          "loc": "HRServiceType"
+        },
+        {
+          "id": "ess.hr-service.service-date",
+          "loc": "ServiceDate"
+        },
+        {
+          "id": "ess.hr-service.amount",
+          "loc": "Amount"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestHRService",
+          "loc": "RequestHRService"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.delegation",
+      "title": "My Delegations",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyDelegations"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-delegation/my-delegation.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.delegation.delegate-to",
+          "loc": "DelegateTo"
+        },
+        {
+          "id": "ess.delegation.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.delegation.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.delegation.currently-active",
+          "loc": "CurrentlyActive"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestDelegation",
+          "loc": "RequestDelegation"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.loan-exemption",
+      "title": "My Loan Exemptions",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyLoanExemptions"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-loan-exemption/my-loan-exemption.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.loan-exemption.loan",
+          "loc": "Loan"
+        },
+        {
+          "id": "ess.loan-exemption.exemption-month",
+          "loc": "ExemptionMonth"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestLoanExemption",
+          "loc": "RequestLoanExemption"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.travel-claim",
+      "title": "My Travel Claims",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyTravelClaims"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-travel-claim/my-travel-claim.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.travel-claim.claim-date",
+          "loc": "ClaimDate"
+        },
+        {
+          "id": "ess.travel-claim.claim-amount",
+          "loc": "ClaimAmount"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestTravelClaim",
+          "loc": "RequestTravelClaim"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.clearance",
+      "title": "My Clearances",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyClearances"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-clearance/my-clearance.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.clearance.clearance-type",
+          "loc": "ClearanceType"
+        },
+        {
+          "id": "ess.clearance.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.clearance.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.clearance.checklist",
+          "loc": "ClearanceChecklist"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestClearance",
+          "loc": "RequestClearance"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.document",
+      "title": "My Documents",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyDocuments"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-document/my-document.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.document.document-type",
+          "loc": "DocumentType"
+        },
+        {
+          "id": "ess.document.document-number",
+          "loc": "DocumentNumber"
+        },
+        {
+          "id": "ess.document.issue-date",
+          "loc": "IssueDate"
+        },
+        {
+          "id": "ess.document.expiry-date",
+          "loc": "ExpiryDate"
+        },
+        {
+          "id": "ess.document.attachments",
+          "loc": "Attachments"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestDocument",
+          "loc": "RequestDocument"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.health-reimburse",
+      "title": "My Health Reimbursements",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyHealthReimburses"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-health-reimburse/my-health-reimburse.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.health-reimburse.payment-date",
+          "loc": "PaymentDate"
+        },
+        {
+          "id": "ess.health-reimburse.amount",
+          "loc": "Amount"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestHealthReimburse",
+          "loc": "RequestHealthReimburse"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        },
+        {
+          "id": "ess.health-reimburse.balance",
+          "loc": "HealthReimburseBalance"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.passport-withdrawal",
+      "title": "My Passport Withdrawals",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyPassportWithdrawals"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-passport-withdrawal/my-passport-withdrawal.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.passport-withdrawal.document",
+          "loc": "Document"
+        },
+        {
+          "id": "ess.passport-withdrawal.withdraw-date",
+          "loc": "WithdrawDate"
+        },
+        {
+          "id": "ess.passport-withdrawal.return-date",
+          "loc": "ReturnDate"
+        },
+        {
+          "id": "ess.passport-withdrawal.withdrawal-reason",
+          "loc": "WithdrawalReason"
+        },
+        {
+          "id": "ess.passport-withdrawal.guarantor",
+          "loc": "Guarantor"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.passport-withdrawal.actual-return-date",
+          "loc": "ActualReturnDate"
+        },
+        {
+          "id": "ess.passport-withdrawal.return",
+          "loc": "ReturnMyDocument"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.passport-withdrawal.still-out",
+          "loc": "StillOut"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestPassportWithdrawal",
+          "loc": "RequestPassportWithdrawal"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "WithdrawRequest"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.personal-data",
+      "title": "My Personal Data",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyProfile"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-personal-data/my-personal-data.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestPersonalDataChange",
+          "loc": "RequestPersonalDataChange"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        },
+        {
+          "id": "ess.personal-data.pick-fields",
+          "loc": "PickTheFieldsYouWantToChangeHint"
+        },
+        {
+          "id": "ess.personal-data.current",
+          "loc": "Current"
+        },
+        {
+          "id": "ess.personal-data.new-value",
+          "loc": "NewValue"
+        },
+        {
+          "id": "ess.personal-data.changes",
+          "loc": "Changes"
+        },
+        {
+          "id": "ess.personal-data.attachments",
+          "loc": "Attachments"
+        },
+        {
+          "id": "ess.personal-data.pending-change",
+          "loc": "YouAlreadyHaveAPendingPersonalDataChange"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.travel",
+      "title": "My Travel",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyTravel"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-travel/my-travel.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.travel.travel-type",
+          "loc": "TravelType"
+        },
+        {
+          "id": "ess.travel.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.travel.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.travel.travel-purpose",
+          "loc": "TravelPurpose"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.travel.departure",
+          "loc": "Departure"
+        },
+        {
+          "id": "ess.travel.departure-date",
+          "loc": "DepartureDate"
+        },
+        {
+          "id": "ess.travel.departure-time",
+          "loc": "DepartureTime"
+        },
+        {
+          "id": "ess.travel.arrival",
+          "loc": "Arrival"
+        },
+        {
+          "id": "ess.travel.arrival-date",
+          "loc": "ArrivalDate"
+        },
+        {
+          "id": "ess.travel.arrival-time",
+          "loc": "ArrivalTime"
+        },
+        {
+          "id": "ess.travel.travel-airlines",
+          "loc": "TravelAirlines"
+        },
+        {
+          "id": "ess.travel.hotels",
+          "loc": "Hotels"
+        },
+        {
+          "id": "ess.travel.total-nights",
+          "loc": "TotalNights"
+        },
+        {
+          "id": "ess.travel.night-stay",
+          "loc": "NightStay"
+        },
+        {
+          "id": "ess.travel.visa-required",
+          "loc": "VisaRequired"
+        },
+        {
+          "id": "ess.travel.hotel-required",
+          "loc": "HotelRequired"
+        },
+        {
+          "id": "ess.travel.any-other-expense",
+          "loc": "AnyOtherExpense"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "RequestTravel",
+          "loc": "RequestTravel"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.common.withdraw",
+          "loc": "Withdraw"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.leave",
+      "title": "My Leave",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyLeave"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-leave/my-leave.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.leave.absence-type",
+          "loc": "AbsenceType"
+        },
+        {
+          "id": "ess.leave.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.leave.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.leave.reason-for-the-change",
+          "loc": "ReasonForTheChange"
+        },
+        {
+          "id": "ess.leave.rejoining-date",
+          "loc": "RejoiningDate"
+        },
+        {
+          "id": "ess.leave.return-reason",
+          "loc": "ReturnReason"
+        },
+        {
+          "id": "ess.leave.paid-leave-dates",
+          "loc": "PaidLeaveDates"
+        },
+        {
+          "id": "ess.leave.unpaid-leave-dates",
+          "loc": "UnpaidLeaveDates"
+        },
+        {
+          "id": "ess.common.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.leave.leave-payment-type-label",
+          "loc": "LeavePaymentTypeLabel"
+        },
+        {
+          "id": "ess.leave.payment-date-label",
+          "loc": "PaymentDateLabel"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "ApplyForLeave",
+          "loc": "ApplyForLeave"
+        },
+        {
+          "id": "ess.common.workflow-history",
+          "loc": "WorkflowHistory"
+        },
+        {
+          "id": "ess.leave.bookable-balance",
+          "loc": "BookableBalance"
+        },
+        {
+          "id": "ess.leave.sick-breakdown",
+          "loc": "SickLeaveDeductionBreakdown"
+        },
+        {
+          "id": "ess.leave.days",
+          "loc": "Days"
+        },
+        {
+          "id": "ess.common.amend",
+          "label": "RequestAChange",
+          "loc": "RequestAChange"
+        },
+        {
+          "id": "ess.leave.report-return",
+          "loc": "ReportMyReturn"
+        },
+        {
+          "id": "ess.leave.request-cancellation",
+          "loc": "RequestCancellation"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.inbox",
+      "title": "My Inbox",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.Inbox"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/inbox/ess-inbox.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.inbox.step",
+          "loc": "Step"
+        },
+        {
+          "id": "ess.inbox.comment",
+          "loc": "Comment"
+        },
+        {
+          "id": "ess.inbox.approve",
+          "loc": "Approve"
+        },
+        {
+          "id": "ess.inbox.reject",
+          "loc": "Reject"
+        },
+        {
+          "id": "ess.inbox.send-back",
+          "loc": "SendBack"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.home",
+      "title": "Employee Self Service",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/ess-home.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.home.waiting-on-me",
+          "loc": "WaitingOnMe"
+        },
+        {
+          "id": "ess.home.awaiting-approval",
+          "loc": "MyRequestsAwaitingApproval"
+        },
+        {
+          "id": "ess.home.tiles",
+          "loc": "WhatWouldYouLikeToDo"
+        },
+        {
+          "id": "ess.home.no-approval-needed",
+          "loc": "NoApprovalNeeded"
+        },
+        {
+          "id": "ess.home.recent-requests",
+          "loc": "MyRecentRequests"
+        },
+        {
+          "id": "ess.home.my-team",
+          "loc": "EssMyTeam"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        }
+      ]
     }
   ]
 }

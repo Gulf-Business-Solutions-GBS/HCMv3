@@ -28,6 +28,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 
 /** The punch-type codes behind the four buttons; fixed, and the same ones the Time Engine reads. */
@@ -50,7 +51,7 @@ interface Position {
 @Component({
     templateUrl: './my-geo-punch.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyGeoPunchComponent extends AppComponentBase implements OnInit, OnDestroy {

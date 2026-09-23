@@ -36,8 +36,15 @@ export class CreateOrEditManageDocumentSettingsModalComponent extends AppCompone
             record.maxFileSizePerAttachmentMB = 0;
             record.maxStorageSizeMB = 0;
             record.storageWarningThresholdMB = 0;
-            this.record.set(record);
-            this.modal().show();
+
+            // A row being edited carries the approved locations on its own DTO; a new one has to ask,
+            // or the picker would open empty and there would be nothing to choose.
+            this._service.getFileStorageRoots().subscribe((roots) => {
+                record.availableRoots = roots;
+                record.fileStorageRootName = roots.find((r) => r.isDefault)?.name ?? roots[0]?.name;
+                this.record.set(record);
+                this.modal().show();
+            });
         } else {
             this._service.getDocumentSettingsForEdit(id).subscribe((result) => {
                 this.record.set(result);
@@ -47,7 +54,7 @@ export class CreateOrEditManageDocumentSettingsModalComponent extends AppCompone
     }
 
     onShown(): void {
-        document.getElementById('DocumentSettings_FileSystemAttachmentPath')?.focus();
+        document.getElementById('DocumentSettings_FileStorageRootName')?.focus();
     }
 
     save(): void {

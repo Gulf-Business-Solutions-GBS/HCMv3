@@ -127,8 +127,11 @@
                                 class="form-control"
                                 type="text"
                                 name="GeoFenceCoordinates"
+                                placeholder="29.3399,48.0820; 29.3399,48.0856; 29.3377,48.0856; 29.3377,48.0820"
                                 [ngModel]="workLocation().geoFenceCoordinates"
-                                (ngModelChange)="updateField('geoFenceCoordinates', $event)" />
+                                (ngModelChange)="updateField('geoFenceCoordinates', $event)"
+                                maxlength="2000" />
+                            <small class="form-text text-muted">{{ 'GeoFenceCoordinatesHint' | localize }}</small>
                         </div>
 
                         <div class="mb-5 form-check">

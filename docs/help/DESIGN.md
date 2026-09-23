@@ -2,7 +2,7 @@
 
 Status: **approved; Phases 0–2 implemented for the pilot screen**
 Owner: Documentation / Platform
-Last updated: 2026-09-10
+Last updated: 2026-09-23
 
 ---
 
@@ -152,6 +152,51 @@ hides it from new records but leaves existing employees untouched.
 | `<!-- when: … -->` | Conditional field. See §8.2. |
 
 The `:::admin` fence is what makes one file produce two manuals.
+
+### 5.4 Topic pages — self-service screens
+
+Every page up to here documents one record's fields, which is exactly what an admin master-data
+dialog is. A self-service screen is not that. "Clock In", "Take selfie" and "Your location" are
+things an employee *does*; the columns underneath them (`TimeEvent.TransTypeId`,
+`TimeEvent.GeoSelfiePath`) are names no employee will ever see. Keying help on those would document
+the database rather than the screen — and half the screen, the parts that are buttons and warnings
+rather than inputs, has no column at all.
+
+So a page may **declare its own topics** instead:
+
+```json
+{
+  "helpId": "ess.geo-punch",
+  "title": "Geo Punch",
+  "audience": ["end-user"],
+  "permissions": ["Ess.GeoPunch"],
+  "surfaces": { "edit": { "template": "angular/src/app/main/ess/my-geo-punch/my-geo-punch.component.html" } },
+  "topics": [
+    { "id": "ess.geo-punch.clock", "label": "GeoPunchClockInOut", "loc": "GeoPunchClockIn" },
+    { "id": "ess.geo-punch.selfie", "loc": "GeoPunchSelfie" }
+  ]
+}
+```
+
+| Key | Meaning |
+|---|---|
+| `id` | The canonical id, and the Markdown anchor: `## Clock In and Clock Out {#ess.geo-punch.clock}` |
+| `label` | The drawer heading. **A localization key** — the drawer runs it through the localize pipe, so a literal English phrase here would show in English to an Arabic reader. Defaults to `loc`. |
+| `loc` | The `data-help-loc` marker on the template that F1 resolves from. Optional. |
+| `dom` | An input id, for the rare self-service form that has one. Optional. |
+
+`entity` is optional on such a page, and **no Rules line is generated** — there is no column to read
+a rule off, so anything a topic claims about a limit is prose a human wrote and a human must keep
+true. Everything downstream is unchanged: topics are ordinary `##` sections, pooled with every other
+topic, built into the same page JSON, and held to the same coverage gate (§12).
+
+**Annotate every topic or none.** The drawer's DOM filter (§8.1) is all-or-nothing: it renders
+everything when it finds no marker at all, and only what it finds as soon as it finds one. Marking
+half a screen would silently hide the other half's help.
+
+Conditional topics are the reason to annotate rather than not: the "no duty today" and "out of range"
+warnings carry their markers on the alert elements themselves, so their help appears exactly when the
+warning does.
 
 ## 6. Channels
 
@@ -337,6 +382,7 @@ this choice does not foreclose it.
 | Simple lists | The one shared form behind 91 code/name lists is a single page, `common.simple-lookup.edit` | 2026-09-10 |
 | Arabic register | Formal Arabic with Kuwaiti terminology, not dialect — confirmed by the owner after weighing a dialect rewrite | 2026-09-10 |
 | "Not used" fields | Said plainly ("Not read at present", "Not enforced at present") when no code reads a field; an admin must not configure a setting that does nothing without knowing it | 2026-09-10 |
+| Self-service screens | A page may **declare its own topics** in `pages.json` instead of deriving them from an entity. See §5.4 | 2026-09-23 |
 
 **On that last one.** Both the entry animation and the F1 scroll were first written the obvious way
 — `translateX(100%)` and `scrollIntoView({behavior: 'smooth'})` — and both failed the same way when

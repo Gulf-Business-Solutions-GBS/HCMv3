@@ -29079,6 +29079,10 @@ namespace HCMv3.Migrations
                     b.Property<bool>("EnableDocSaveInFileSystem")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FileStorageRootName")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<string>("FileSystemAttachmentPath")
                         .HasColumnType("nvarchar(max)");
 
