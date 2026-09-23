@@ -176,7 +176,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label>{{ 'AbsenceType' | localize }}</label>
-                                <select class="form-control" [(ngModel)]="form.absenceTypeId">
+                                <select class="form-control" [(ngModel)]="form.absenceTypeId" (ngModelChange)="onLeaveDetailsChanged()">
                                     <option [ngValue]="null">--</option>
                                     @for (type of absenceTypes(); track type.id) {
                                         <option [ngValue]="type.id">{{ type.nameEn }}</option>
@@ -185,11 +185,11 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label>{{ 'StartDate' | localize }}</label>
-                                <input type="date" class="form-control" [(ngModel)]="form.startDate" />
+                                <input type="date" class="form-control" [(ngModel)]="form.startDate" (ngModelChange)="onLeaveDetailsChanged()" />
                             </div>
                             <div class="form-group col-md-3">
                                 <label>{{ 'EndDate' | localize }}</label>
-                                <input type="date" class="form-control" [(ngModel)]="form.endDate" />
+                                <input type="date" class="form-control" [(ngModel)]="form.endDate" (ngModelChange)="onLeaveDetailsChanged()" />
                             </div>
                             <div class="form-group col-md-3">
                                 <label>{{ 'Comments' | localize }}</label>
@@ -218,6 +218,40 @@
                                 </div>
                             }
                         </div>
+
+                        <!--
+                            Sick leave only, and only once a rule is configured. Shown before applying because
+                            the rate depends on how much sick leave has already been taken this year, so the
+                            same fortnight costs two employees different amounts.
+                        -->
+                        @if (sickLeaveSegments().length) {
+                            <div class="alert alert-light-warning mb-4">
+                                <h6 class="mb-2">{{ 'SickLeaveDeductionBreakdown' | localize }}</h6>
+                                <ul class="mb-0 pl-4">
+                                    @for (segment of sickLeaveSegments(); track segment.fromDate) {
+                                        <li>
+                                            @if (segment.deductionUnit === DeductionUnitPercentage) {
+                                                {{
+                                                    'SickLeaveDeductionSegment'
+                                                        | localize
+                                                            : (segment.fromDate | luxonFormat: 'dd/MM/yyyy')
+                                                            : (segment.toDate | luxonFormat: 'dd/MM/yyyy')
+                                                            : segment.deductionNumber
+                                                }}
+                                            } @else {
+                                                {{
+                                                    'SickLeaveDeductionSegmentDays'
+                                                        | localize
+                                                            : (segment.fromDate | luxonFormat: 'dd/MM/yyyy')
+                                                            : (segment.toDate | luxonFormat: 'dd/MM/yyyy')
+                                                            : segment.deductionNumber
+                                                }}
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
 
                         <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="apply()">
                             {{ 'Save' | localize }}

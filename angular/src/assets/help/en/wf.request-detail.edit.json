@@ -46,7 +46,21 @@
     "loc:IsCommentRequire": "RequestDetail.IsCommentRequire",
     "dom:RequestDetail_IsCommentRequire": "RequestDetail.IsCommentRequire",
     "loc:SignatoryStep": "RequestDetail.SignatoryStep",
-    "dom:RequestDetail_SignatoryStep": "RequestDetail.SignatoryStep"
+    "dom:RequestDetail_SignatoryStep": "RequestDetail.SignatoryStep",
+    "loc:OnSubmit": "RequestDetail.SubmitNotificationConfigId",
+    "dom:RequestDetail_SubmitNotificationConfigId": "RequestDetail.SubmitNotificationConfigId",
+    "loc:OnApprove": "RequestDetail.NotificationConfigId",
+    "dom:RequestDetail_NotificationConfigId": "RequestDetail.NotificationConfigId",
+    "loc:OnReject": "RequestDetail.RejectNotificationConfigId",
+    "dom:RequestDetail_RejectNotificationConfigId": "RequestDetail.RejectNotificationConfigId",
+    "loc:OnSendBack": "RequestDetail.SendBackNotificationConfigId",
+    "dom:RequestDetail_SendBackNotificationConfigId": "RequestDetail.SendBackNotificationConfigId",
+    "loc:OnRemark": "RequestDetail.RemarksNotificationConfigId",
+    "dom:RequestDetail_RemarksNotificationConfigId": "RequestDetail.RemarksNotificationConfigId",
+    "loc:OnReassign": "RequestDetail.AssignNotificationConfigId",
+    "dom:RequestDetail_AssignNotificationConfigId": "RequestDetail.AssignNotificationConfigId",
+    "loc:OnReminder": "RequestDetail.ReminderNotificationConfigId",
+    "dom:RequestDetail_ReminderNotificationConfigId": "RequestDetail.ReminderNotificationConfigId"
   },
   "fields": [
     {
@@ -340,6 +354,104 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether this is a signatory step, needing someone who has not signed before.</p><p><strong>Why it matters.</strong> Anyone who approved an earlier signatory step of the same request is left out here, so one person cannot sign twice. If that leaves nobody, the chain's default approver is used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SubmitNotificationConfigId",
+      "label": "OnSubmit",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnSubmit",
+        "dom:RequestDetail_SubmitNotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told when the request arrives at this step.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.NotificationConfigId",
+      "label": "OnApprove",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnApprove",
+        "dom:RequestDetail_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told when this step approves.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.RejectNotificationConfigId",
+      "label": "OnReject",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReject",
+        "dom:RequestDetail_RejectNotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told when this step rejects.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SendBackNotificationConfigId",
+      "label": "OnSendBack",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnSendBack",
+        "dom:RequestDetail_SendBackNotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told when this step sends the request back.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.RemarksNotificationConfigId",
+      "label": "OnRemark",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnRemark",
+        "dom:RequestDetail_RemarksNotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told when somebody comments on the request.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.AssignNotificationConfigId",
+      "label": "OnReassign",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReassign",
+        "dom:RequestDetail_AssignNotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told when the request is handed to somebody else.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ReminderNotificationConfigId",
+      "label": "OnReminder",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReminder",
+        "dom:RequestDetail_ReminderNotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Configuration master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is told while the request is still waiting here.</p><p><strong>Why it matters.</strong> Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.</p><p><strong>What it sends.</strong> The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -69,6 +69,9 @@
                                     <th style="min-width: 220px">
                                         {{ 'NotificationConfig' | localize }}
                                     </th>
+                                    <th style="min-width: 220px">
+                                        {{ 'WorkflowRole' | localize }}
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -93,6 +96,9 @@
                                     </td>
                                     <td style="min-width: 220px">
                                         <span pTooltip="{{ record.notificationConfigName }}" class="hide-overflown">{{ record.notificationConfigName }}</span>
+                                    </td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.workflowRoleNameEn }}" class="hide-overflown">{{ record.workflowRoleNameEn }}</span>
                                     </td>
                                 </tr>
                             </ng-template>

@@ -91362,6 +91362,69 @@ export class MyLeaveServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    previewMySickLeaveDeduction(body?: ApplyForLeaveInput | undefined): Observable<SickLeaveDeductionSegmentDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/PreviewMySickLeaveDeduction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreviewMySickLeaveDeduction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreviewMySickLeaveDeduction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SickLeaveDeductionSegmentDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SickLeaveDeductionSegmentDto[]>;
+        }));
+    }
+
+    protected processPreviewMySickLeaveDeduction(response: HttpResponseBase): Observable<SickLeaveDeductionSegmentDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SickLeaveDeductionSegmentDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     previewMyLeaveSplit(body?: ApplyForLeaveInput | undefined): Observable<LeaveSplitPreviewDto> {
         let url_ = this.baseUrl + "/api/services/app/MyLeave/PreviewMyLeaveSplit";
         url_ = url_.replace(/[?&]$/, "");
@@ -165125,6 +165188,7 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
     leavePaymentType!: LeavePaymentType;
     paymentDate!: DateTime | undefined;
     splitExcessAsUnpaidLeave!: boolean;
+    attachmentFileTokens!: string[] | undefined;
 
     constructor(data?: IApplyForLeaveInput) {
         if (data) {
@@ -165144,6 +165208,11 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
             this.leavePaymentType = _data["leavePaymentType"];
             this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
             this.splitExcessAsUnpaidLeave = _data["splitExcessAsUnpaidLeave"];
+            if (Array.isArray(_data["attachmentFileTokens"])) {
+                this.attachmentFileTokens = [] as any;
+                for (let item of _data["attachmentFileTokens"])
+                    this.attachmentFileTokens!.push(item);
+            }
         }
     }
 
@@ -165163,6 +165232,11 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
         data["leavePaymentType"] = this.leavePaymentType;
         data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
         data["splitExcessAsUnpaidLeave"] = this.splitExcessAsUnpaidLeave;
+        if (Array.isArray(this.attachmentFileTokens)) {
+            data["attachmentFileTokens"] = [];
+            for (let item of this.attachmentFileTokens)
+                data["attachmentFileTokens"].push(item);
+        }
         return data;
     }
 }
@@ -165175,6 +165249,7 @@ export interface IApplyForLeaveInput {
     leavePaymentType: LeavePaymentType;
     paymentDate: DateTime | undefined;
     splitExcessAsUnpaidLeave: boolean;
+    attachmentFileTokens: string[] | undefined;
 }
 
 export class ApplyForLeaveResultDto implements IApplyForLeaveResultDto {
@@ -186552,6 +186627,7 @@ export class CreateOrEditNotificationConfigDto implements ICreateOrEditNotificat
     sendToAll!: boolean;
     sendToAllApproved!: boolean;
     sendToApprover!: boolean;
+    emailTemplateId!: number | undefined;
 
     constructor(data?: ICreateOrEditNotificationConfigDto) {
         if (data) {
@@ -186574,6 +186650,7 @@ export class CreateOrEditNotificationConfigDto implements ICreateOrEditNotificat
             this.sendToAll = _data["sendToAll"];
             this.sendToAllApproved = _data["sendToAllApproved"];
             this.sendToApprover = _data["sendToApprover"];
+            this.emailTemplateId = _data["emailTemplateId"];
         }
     }
 
@@ -186596,6 +186673,7 @@ export class CreateOrEditNotificationConfigDto implements ICreateOrEditNotificat
         data["sendToAll"] = this.sendToAll;
         data["sendToAllApproved"] = this.sendToAllApproved;
         data["sendToApprover"] = this.sendToApprover;
+        data["emailTemplateId"] = this.emailTemplateId;
         return data;
     }
 }
@@ -186611,11 +186689,15 @@ export interface ICreateOrEditNotificationConfigDto {
     sendToAll: boolean;
     sendToAllApproved: boolean;
     sendToApprover: boolean;
+    emailTemplateId: number | undefined;
 }
 
 export class CreateOrEditNotificationGroupDto implements ICreateOrEditNotificationGroupDto {
     id!: number | undefined;
     notificationConfigId!: number | undefined;
+    workflowRoleId!: number | undefined;
+    workflowRoleGroup!: WorkflowRoleGroup;
+    workflowRoleOrgId!: number | undefined;
 
     constructor(data?: ICreateOrEditNotificationGroupDto) {
         if (data) {
@@ -186630,6 +186712,9 @@ export class CreateOrEditNotificationGroupDto implements ICreateOrEditNotificati
         if (_data) {
             this.id = _data["id"];
             this.notificationConfigId = _data["notificationConfigId"];
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.workflowRoleGroup = _data["workflowRoleGroup"];
+            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
         }
     }
 
@@ -186644,6 +186729,9 @@ export class CreateOrEditNotificationGroupDto implements ICreateOrEditNotificati
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["notificationConfigId"] = this.notificationConfigId;
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["workflowRoleGroup"] = this.workflowRoleGroup;
+        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
         return data;
     }
 }
@@ -186651,6 +186739,9 @@ export class CreateOrEditNotificationGroupDto implements ICreateOrEditNotificati
 export interface ICreateOrEditNotificationGroupDto {
     id: number | undefined;
     notificationConfigId: number | undefined;
+    workflowRoleId: number | undefined;
+    workflowRoleGroup: WorkflowRoleGroup;
+    workflowRoleOrgId: number | undefined;
 }
 
 export class CreateOrEditNotificationMasterDto implements ICreateOrEditNotificationMasterDto {
@@ -190456,6 +190547,13 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
     isCommentRequire!: boolean;
     signatoryStep!: boolean;
     reminderDays!: number;
+    notificationConfigId!: number | undefined;
+    submitNotificationConfigId!: number | undefined;
+    rejectNotificationConfigId!: number | undefined;
+    sendBackNotificationConfigId!: number | undefined;
+    remarksNotificationConfigId!: number | undefined;
+    assignNotificationConfigId!: number | undefined;
+    reminderNotificationConfigId!: number | undefined;
 
     constructor(data?: ICreateOrEditRequestDetailDto) {
         if (data) {
@@ -190490,6 +190588,13 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
             this.isCommentRequire = _data["isCommentRequire"];
             this.signatoryStep = _data["signatoryStep"];
             this.reminderDays = _data["reminderDays"];
+            this.notificationConfigId = _data["notificationConfigId"];
+            this.submitNotificationConfigId = _data["submitNotificationConfigId"];
+            this.rejectNotificationConfigId = _data["rejectNotificationConfigId"];
+            this.sendBackNotificationConfigId = _data["sendBackNotificationConfigId"];
+            this.remarksNotificationConfigId = _data["remarksNotificationConfigId"];
+            this.assignNotificationConfigId = _data["assignNotificationConfigId"];
+            this.reminderNotificationConfigId = _data["reminderNotificationConfigId"];
         }
     }
 
@@ -190524,6 +190629,13 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
         data["isCommentRequire"] = this.isCommentRequire;
         data["signatoryStep"] = this.signatoryStep;
         data["reminderDays"] = this.reminderDays;
+        data["notificationConfigId"] = this.notificationConfigId;
+        data["submitNotificationConfigId"] = this.submitNotificationConfigId;
+        data["rejectNotificationConfigId"] = this.rejectNotificationConfigId;
+        data["sendBackNotificationConfigId"] = this.sendBackNotificationConfigId;
+        data["remarksNotificationConfigId"] = this.remarksNotificationConfigId;
+        data["assignNotificationConfigId"] = this.assignNotificationConfigId;
+        data["reminderNotificationConfigId"] = this.reminderNotificationConfigId;
         return data;
     }
 }
@@ -190551,6 +190663,13 @@ export interface ICreateOrEditRequestDetailDto {
     isCommentRequire: boolean;
     signatoryStep: boolean;
     reminderDays: number;
+    notificationConfigId: number | undefined;
+    submitNotificationConfigId: number | undefined;
+    rejectNotificationConfigId: number | undefined;
+    sendBackNotificationConfigId: number | undefined;
+    remarksNotificationConfigId: number | undefined;
+    assignNotificationConfigId: number | undefined;
+    reminderNotificationConfigId: number | undefined;
 }
 
 export class CreateOrEditRequestDetailParallelDto implements ICreateOrEditRequestDetailParallelDto {
@@ -276552,6 +276671,7 @@ export interface IMyGeoPunchDto {
 export class MyGeoPunchLocationCheckDto implements IMyGeoPunchLocationCheckDto {
     distanceMeters!: number;
     rangeMeters!: number | undefined;
+    usesGeoFence!: boolean;
     verdict!: GeoPunchRangeVerdict;
 
     constructor(data?: IMyGeoPunchLocationCheckDto) {
@@ -276567,6 +276687,7 @@ export class MyGeoPunchLocationCheckDto implements IMyGeoPunchLocationCheckDto {
         if (_data) {
             this.distanceMeters = _data["distanceMeters"];
             this.rangeMeters = _data["rangeMeters"];
+            this.usesGeoFence = _data["usesGeoFence"];
             this.verdict = _data["verdict"];
         }
     }
@@ -276582,6 +276703,7 @@ export class MyGeoPunchLocationCheckDto implements IMyGeoPunchLocationCheckDto {
         data = typeof data === 'object' ? data : {};
         data["distanceMeters"] = this.distanceMeters;
         data["rangeMeters"] = this.rangeMeters;
+        data["usesGeoFence"] = this.usesGeoFence;
         data["verdict"] = this.verdict;
         return data;
     }
@@ -276590,6 +276712,7 @@ export class MyGeoPunchLocationCheckDto implements IMyGeoPunchLocationCheckDto {
 export interface IMyGeoPunchLocationCheckDto {
     distanceMeters: number;
     rangeMeters: number | undefined;
+    usesGeoFence: boolean;
     verdict: GeoPunchRangeVerdict;
 }
 
@@ -276689,6 +276812,7 @@ export class MyGeoPunchWorkLocationDto implements IMyGeoPunchWorkLocationDto {
     latitude!: number;
     longitude!: number;
     geoRange!: number;
+    hasGeoFence!: boolean;
     isDefault!: boolean;
 
     constructor(data?: IMyGeoPunchWorkLocationDto) {
@@ -276709,6 +276833,7 @@ export class MyGeoPunchWorkLocationDto implements IMyGeoPunchWorkLocationDto {
             this.latitude = _data["latitude"];
             this.longitude = _data["longitude"];
             this.geoRange = _data["geoRange"];
+            this.hasGeoFence = _data["hasGeoFence"];
             this.isDefault = _data["isDefault"];
         }
     }
@@ -276729,6 +276854,7 @@ export class MyGeoPunchWorkLocationDto implements IMyGeoPunchWorkLocationDto {
         data["latitude"] = this.latitude;
         data["longitude"] = this.longitude;
         data["geoRange"] = this.geoRange;
+        data["hasGeoFence"] = this.hasGeoFence;
         data["isDefault"] = this.isDefault;
         return data;
     }
@@ -276742,6 +276868,7 @@ export interface IMyGeoPunchWorkLocationDto {
     latitude: number;
     longitude: number;
     geoRange: number;
+    hasGeoFence: boolean;
     isDefault: boolean;
 }
 
@@ -278812,6 +278939,7 @@ export class NotificationConfigDto implements INotificationConfigDto {
     sendToAll!: boolean;
     sendToAllApproved!: boolean;
     sendToApprover!: boolean;
+    emailTemplateId!: number | undefined;
 
     constructor(data?: INotificationConfigDto) {
         if (data) {
@@ -278834,6 +278962,7 @@ export class NotificationConfigDto implements INotificationConfigDto {
             this.sendToAll = _data["sendToAll"];
             this.sendToAllApproved = _data["sendToAllApproved"];
             this.sendToApprover = _data["sendToApprover"];
+            this.emailTemplateId = _data["emailTemplateId"];
         }
     }
 
@@ -278856,6 +278985,7 @@ export class NotificationConfigDto implements INotificationConfigDto {
         data["sendToAll"] = this.sendToAll;
         data["sendToAllApproved"] = this.sendToAllApproved;
         data["sendToApprover"] = this.sendToApprover;
+        data["emailTemplateId"] = this.emailTemplateId;
         return data;
     }
 }
@@ -278871,6 +279001,7 @@ export interface INotificationConfigDto {
     sendToAll: boolean;
     sendToAllApproved: boolean;
     sendToApprover: boolean;
+    emailTemplateId: number | undefined;
 }
 
 export class NotificationData implements INotificationData {
@@ -278984,6 +279115,10 @@ export class NotificationGroupDto implements INotificationGroupDto {
     id!: number;
     notificationConfigId!: number | undefined;
     notificationConfigName!: string | undefined;
+    workflowRoleId!: number | undefined;
+    workflowRoleNameEn!: string | undefined;
+    workflowRoleGroup!: WorkflowRoleGroup;
+    workflowRoleOrgId!: number | undefined;
 
     constructor(data?: INotificationGroupDto) {
         if (data) {
@@ -278999,6 +279134,10 @@ export class NotificationGroupDto implements INotificationGroupDto {
             this.id = _data["id"];
             this.notificationConfigId = _data["notificationConfigId"];
             this.notificationConfigName = _data["notificationConfigName"];
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.workflowRoleNameEn = _data["workflowRoleNameEn"];
+            this.workflowRoleGroup = _data["workflowRoleGroup"];
+            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
         }
     }
 
@@ -279014,6 +279153,10 @@ export class NotificationGroupDto implements INotificationGroupDto {
         data["id"] = this.id;
         data["notificationConfigId"] = this.notificationConfigId;
         data["notificationConfigName"] = this.notificationConfigName;
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["workflowRoleNameEn"] = this.workflowRoleNameEn;
+        data["workflowRoleGroup"] = this.workflowRoleGroup;
+        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
         return data;
     }
 }
@@ -279022,6 +279165,10 @@ export interface INotificationGroupDto {
     id: number;
     notificationConfigId: number | undefined;
     notificationConfigName: string | undefined;
+    workflowRoleId: number | undefined;
+    workflowRoleNameEn: string | undefined;
+    workflowRoleGroup: WorkflowRoleGroup;
+    workflowRoleOrgId: number | undefined;
 }
 
 export class NotificationMasterDto implements INotificationMasterDto {
@@ -319973,6 +320120,13 @@ export class RequestDetailDto implements IRequestDetailDto {
     isCommentRequire!: boolean;
     signatoryStep!: boolean;
     reminderDays!: number;
+    notificationConfigId!: number | undefined;
+    submitNotificationConfigId!: number | undefined;
+    rejectNotificationConfigId!: number | undefined;
+    sendBackNotificationConfigId!: number | undefined;
+    remarksNotificationConfigId!: number | undefined;
+    assignNotificationConfigId!: number | undefined;
+    reminderNotificationConfigId!: number | undefined;
 
     constructor(data?: IRequestDetailDto) {
         if (data) {
@@ -320008,6 +320162,13 @@ export class RequestDetailDto implements IRequestDetailDto {
             this.isCommentRequire = _data["isCommentRequire"];
             this.signatoryStep = _data["signatoryStep"];
             this.reminderDays = _data["reminderDays"];
+            this.notificationConfigId = _data["notificationConfigId"];
+            this.submitNotificationConfigId = _data["submitNotificationConfigId"];
+            this.rejectNotificationConfigId = _data["rejectNotificationConfigId"];
+            this.sendBackNotificationConfigId = _data["sendBackNotificationConfigId"];
+            this.remarksNotificationConfigId = _data["remarksNotificationConfigId"];
+            this.assignNotificationConfigId = _data["assignNotificationConfigId"];
+            this.reminderNotificationConfigId = _data["reminderNotificationConfigId"];
         }
     }
 
@@ -320043,6 +320204,13 @@ export class RequestDetailDto implements IRequestDetailDto {
         data["isCommentRequire"] = this.isCommentRequire;
         data["signatoryStep"] = this.signatoryStep;
         data["reminderDays"] = this.reminderDays;
+        data["notificationConfigId"] = this.notificationConfigId;
+        data["submitNotificationConfigId"] = this.submitNotificationConfigId;
+        data["rejectNotificationConfigId"] = this.rejectNotificationConfigId;
+        data["sendBackNotificationConfigId"] = this.sendBackNotificationConfigId;
+        data["remarksNotificationConfigId"] = this.remarksNotificationConfigId;
+        data["assignNotificationConfigId"] = this.assignNotificationConfigId;
+        data["reminderNotificationConfigId"] = this.reminderNotificationConfigId;
         return data;
     }
 }
@@ -320071,6 +320239,13 @@ export interface IRequestDetailDto {
     isCommentRequire: boolean;
     signatoryStep: boolean;
     reminderDays: number;
+    notificationConfigId: number | undefined;
+    submitNotificationConfigId: number | undefined;
+    rejectNotificationConfigId: number | undefined;
+    sendBackNotificationConfigId: number | undefined;
+    remarksNotificationConfigId: number | undefined;
+    assignNotificationConfigId: number | undefined;
+    reminderNotificationConfigId: number | undefined;
 }
 
 export class RequestDetailParallelDto implements IRequestDetailParallelDto {
@@ -327191,6 +327366,58 @@ export interface ISharedQuickLinkDto {
     screenKey: string | undefined;
     displayOrder: number;
     screen: ScreenDto;
+}
+
+export class SickLeaveDeductionSegmentDto implements ISickLeaveDeductionSegmentDto {
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    deductionNumber!: number;
+    deductionUnit!: DeductionUnit;
+    isBeyondTheLastSlab!: boolean;
+
+    constructor(data?: ISickLeaveDeductionSegmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.deductionNumber = _data["deductionNumber"];
+            this.deductionUnit = _data["deductionUnit"];
+            this.isBeyondTheLastSlab = _data["isBeyondTheLastSlab"];
+        }
+    }
+
+    static fromJS(data: any): SickLeaveDeductionSegmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SickLeaveDeductionSegmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["deductionNumber"] = this.deductionNumber;
+        data["deductionUnit"] = this.deductionUnit;
+        data["isBeyondTheLastSlab"] = this.isBeyondTheLastSlab;
+        return data;
+    }
+}
+
+export interface ISickLeaveDeductionSegmentDto {
+    fromDate: DateTime;
+    toDate: DateTime;
+    deductionNumber: number;
+    deductionUnit: DeductionUnit;
+    isBeyondTheLastSlab: boolean;
 }
 
 export class SignatoryDto implements ISignatoryDto {

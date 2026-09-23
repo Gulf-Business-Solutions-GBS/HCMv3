@@ -43,6 +43,21 @@
                             <validation-messages [formCtrl]="nameInput" />
                         </div>
 
+                        <div class="mb-5">
+                            <label class="form-label" for="NotificationConfig_EmailTemplateId">{{ 'EmailTemplate' | localize }}</label>
+                            <select
+                                id="NotificationConfig_EmailTemplateId"
+                                class="form-select"
+                                name="EmailTemplateId"
+                                [ngModel]="notificationConfig().emailTemplateId"
+                                (ngModelChange)="updateField('emailTemplateId', $event)">
+                                <option [ngValue]="undefined">{{ 'NoEmailTemplate' | localize }}</option>
+                                @for (template of emailTemplates(); track template.id) {
+                                    <option [ngValue]="template.id">{{ template.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
                         <div class="mb-5 form-check">
                             <input
                                 id="NotificationConfig_SendNotification"

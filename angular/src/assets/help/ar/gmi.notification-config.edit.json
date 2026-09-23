@@ -22,7 +22,9 @@
     "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
     "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
     "loc:SendToApprover": "NotificationConfig.SendToApprover",
-    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover",
+    "loc:EmailTemplate": "NotificationConfig.EmailTemplateId",
+    "dom:NotificationConfig_EmailTemplateId": "NotificationConfig.EmailTemplateId"
   },
   "fields": [
     {
@@ -148,6 +150,20 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> كان المقصود منه مراسلة المعتمِد الحالي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.EmailTemplateId",
+      "label": "EmailTemplate",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:EmailTemplate",
+        "dom:NotificationConfig_EmailTemplateId"
+      ],
+      "rules": "اختياري. يُختار من قوالب البريد الإلكتروني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رسالة البريد التي يرسلها هذا الإعداد.</p><p><strong>لماذا يهم.</strong> بدون قالب لا يمكن إرسال بريد، فيكتفي الإعداد بالإشعار داخل النظام. وهذه هي طريقة إيقاف البريد لإجراء واحد دون المساس بالبقية.</p>",
       "adminHtml": "",
       "stub": false
     }

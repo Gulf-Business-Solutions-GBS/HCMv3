@@ -8,6 +8,7 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     AmendMyLeaveInput,
     ApplyForLeaveInput,
+    DeductionUnit,
     EntityDto,
     EssLookupServiceProxy,
     GetMyLeavesInput,
@@ -19,6 +20,7 @@ import {
     RequestStatus,
     ReturnFromLeaveInput,
     ReturnFromLeavePreviewDto,
+    SickLeaveDeductionSegmentDto,
     SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
@@ -67,6 +69,18 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     };
 
     readonly PaymentType = LeavePaymentType;
+
+    /**
+     * How a sick leave would be paid, slab by slab. Empty for every other absence type, and for a sick leave
+     * whose employee group has no deduction rule configured.
+     *
+     * <p>Shown before applying because the slabs depend on how much sick leave has already been taken this
+     * year, so the same fortnight costs two employees different amounts. Payroll has always applied these
+     * rules; until now the first anybody saw of them was the payslip.</p>
+     */
+    readonly sickLeaveSegments = signal<SickLeaveDeductionSegmentDto[]>([]);
+
+    readonly DeductionUnitPercentage = DeductionUnit.Percentage;
 
     amendForm = { absenceTypeId: null as number | null, startDate: '', endDate: '', reason: '' };
 
@@ -132,6 +146,34 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     closeForm(): void {
         this.showForm.set(false);
+        this.sickLeaveSegments.set([]);
+    }
+
+    /**
+     * Re-asks the server how this leave would be paid, whenever the type or either date changes.
+     *
+     * <p>The server decides, not the screen: the slabs, what counts as a day off, and how much sick leave the
+     * employee has already taken are all rules payroll owns. A copy of them here would be a second answer to
+     * the same question, and the payslip would win.</p>
+     */
+    onLeaveDetailsChanged(): void {
+        if (!this.form.absenceTypeId || !this.form.startDate || !this.form.endDate) {
+            this.sickLeaveSegments.set([]);
+            return;
+        }
+
+        const input = new ApplyForLeaveInput();
+        input.absenceTypeId = this.form.absenceTypeId;
+        input.startDate = DateTime.fromISO(this.form.startDate);
+        input.endDate = DateTime.fromISO(this.form.endDate);
+
+        this._myLeaveService.previewMySickLeaveDeduction(input).subscribe({
+            next: (segments) => this.sickLeaveSegments.set(segments ?? []),
+
+            // A preview that cannot be fetched must not stop somebody applying -- it is an explanation of the
+            // request, not part of it.
+            error: () => this.sickLeaveSegments.set([]),
+        });
     }
 
     apply(): void {

@@ -6,6 +6,10 @@ import {
     NotificationConfigDto,
     GetAllNotificationConfigsInput,
     NotificationConfigsServiceProxy,
+    WorkflowRoleDto,
+    WorkflowRolesServiceProxy,
+    GetAllWorkflowRolesInput,
+    WorkflowRoleGroup,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -29,6 +33,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditNotificationGroupModalComponent extends AppComponentBase {
     private _notificationGroupService = inject(NotificationGroupsServiceProxy);
     private _notificationConfigsService = inject(NotificationConfigsServiceProxy);
+    private _workflowRolesService = inject(WorkflowRolesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -37,6 +42,15 @@ export class CreateOrEditNotificationGroupModalComponent extends AppComponentBas
     readonly saving = signal<boolean>(false);
     readonly notificationGroup = signal<CreateOrEditNotificationGroupDto>(new CreateOrEditNotificationGroupDto());
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
+    readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
+
+    readonly workflowRoleGroups = [
+        { value: WorkflowRoleGroup.None, key: "WorkflowRoleGroupNone" },
+        { value: WorkflowRoleGroup.Company, key: "WorkflowRoleGroupCompany" },
+        { value: WorkflowRoleGroup.Department, key: "WorkflowRoleGroupDepartment" },
+        { value: WorkflowRoleGroup.Branch, key: "WorkflowRoleGroupBranch" },
+        { value: WorkflowRoleGroup.CostCenter, key: "WorkflowRoleGroupCostCenter" },
+    ];
 
     show(notificationGroupId?: number): void {
         this.active.set(true);
@@ -47,8 +61,12 @@ export class CreateOrEditNotificationGroupModalComponent extends AppComponentBas
                 this.notificationConfigs.set(result.items);
             });
 
+        this._workflowRolesService
+            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.workflowRoles.set(result.items));
+
         if (!notificationGroupId) {
-            this.notificationGroup.set(new CreateOrEditNotificationGroupDto());
+            this.notificationGroup.set(new CreateOrEditNotificationGroupDto({ workflowRoleGroup: WorkflowRoleGroup.None } as any));
             this.modal().show();
         } else {
             this._notificationGroupService.getNotificationGroupForEdit(notificationGroupId).subscribe((result) => {

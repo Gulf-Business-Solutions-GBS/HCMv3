@@ -42,6 +42,35 @@
                                 }
                             </select>
                         </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NotificationGroup_WorkflowRoleId">{{ 'NotifyRoleHolders' | localize }}</label>
+                            <select
+                                id="NotificationGroup_WorkflowRoleId"
+                                class="form-select"
+                                name="WorkflowRoleId"
+                                [ngModel]="notificationGroup().workflowRoleId"
+                                (ngModelChange)="updateField('workflowRoleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (role of workflowRoles(); track role.id) {
+                                    <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="NotificationGroup_WorkflowRoleGroup">{{ 'NarrowToRequesterOrgScope' | localize }}</label>
+                            <select
+                                id="NotificationGroup_WorkflowRoleGroup"
+                                class="form-select"
+                                name="WorkflowRoleGroup"
+                                [ngModel]="notificationGroup().workflowRoleGroup"
+                                (ngModelChange)="updateField('workflowRoleGroup', $event)">
+                                @for (group of workflowRoleGroups; track group.value) {
+                                    <option [ngValue]="group.value">{{ group.key | localize }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

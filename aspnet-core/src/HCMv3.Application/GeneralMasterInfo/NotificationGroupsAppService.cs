@@ -34,7 +34,8 @@ public class NotificationGroupsAppService : HCMv3AppServiceBase, INotificationGr
         input.Normalize();
 
         var query = _repository.GetAll()
-            .Include(g => g.NotificationConfig);
+            .Include(g => g.NotificationConfig)
+            .Include(g => g.WorkflowRole);
 
         var totalCount = await query.CountAsync();
 

@@ -6,7 +6,11 @@
   "overviewHtml": "<p>Groups linked to a notification configuration. Not used at present: sending notifications to groups was not carried over into HCMv3.</p>",
   "aliasIndex": {
     "loc:NotificationConfig": "NotificationGroup.NotificationConfigId",
-    "dom:NotificationGroup_NotificationConfigId": "NotificationGroup.NotificationConfigId"
+    "dom:NotificationGroup_NotificationConfigId": "NotificationGroup.NotificationConfigId",
+    "loc:NotifyRoleHolders": "NotificationGroup.WorkflowRoleId",
+    "dom:NotificationGroup_WorkflowRoleId": "NotificationGroup.WorkflowRoleId",
+    "loc:NarrowToRequesterOrgScope": "NotificationGroup.WorkflowRoleGroup",
+    "dom:NotificationGroup_WorkflowRoleGroup": "NotificationGroup.WorkflowRoleGroup"
   },
   "fields": [
     {
@@ -20,6 +24,34 @@
       "rules": "Optional. Chosen from Notification Config master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The notification configuration the group belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationGroup.WorkflowRoleId",
+      "label": "NotifyRoleHolders",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NotifyRoleHolders",
+        "dom:NotificationGroup_WorkflowRoleId"
+      ],
+      "rules": "Optional. Chosen from Workflow Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A role whose current holders are notified, on top of whoever the configuration already addresses.</p><p><strong>Why it matters.</strong> It follows the role, not a list of names: somebody who takes the role over starts receiving these notifications, and somebody whose assignment has ended stops. Holders are resolved the same way approvers are, so the people told about a step are the people who can act on it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationGroup.WorkflowRoleGroup",
+      "label": "NarrowToRequesterOrgScope",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NarrowToRequesterOrgScope",
+        "dom:NotificationGroup_WorkflowRoleGroup"
+      ],
+      "rules": "One of: none, company, department, branch, cost centre.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Limits the role holders to those in the requester's own part of the organisation.</p><p><strong>Why it matters.</strong> Without it, a request from one department notifies that role everywhere in the company. Company narrows nothing, because a company is already a separate tenant here. If the narrowing leaves nobody, the wider group is notified rather than nobody at all.</p>",
       "adminHtml": "",
       "stub": false
     }

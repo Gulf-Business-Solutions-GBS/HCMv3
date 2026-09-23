@@ -22,7 +22,9 @@
     "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
     "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
     "loc:SendToApprover": "NotificationConfig.SendToApprover",
-    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover",
+    "loc:EmailTemplate": "NotificationConfig.EmailTemplateId",
+    "dom:NotificationConfig_EmailTemplateId": "NotificationConfig.EmailTemplateId"
   },
   "fields": [
     {
@@ -148,6 +150,20 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Meant to email the current approver.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.EmailTemplateId",
+      "label": "EmailTemplate",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:EmailTemplate",
+        "dom:NotificationConfig_EmailTemplateId"
+      ],
+      "rules": "Optional. Chosen from E-mail Template master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The e-mail this configuration sends.</p><p><strong>Why it matters.</strong> Without a template nothing can be e-mailed, so the configuration notifies inside the system only. That is how you switch e-mail off for one action without touching the others.</p>",
       "adminHtml": "",
       "stub": false
     }
