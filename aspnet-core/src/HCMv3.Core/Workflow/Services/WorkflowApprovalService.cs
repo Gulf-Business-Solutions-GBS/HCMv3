@@ -7,6 +7,7 @@ using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 
 namespace HCMv3.Workflow.Services;
 
@@ -24,6 +25,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
     private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
+    private readonly IWorkflowStepSequence _stepSequence;
+    private readonly IEmployeeScopeProvider _employeeScopeProvider;
 
     public WorkflowApprovalService(
         IRepository<WorkflowRequest> workflowRequestRepository,
@@ -35,8 +38,12 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         IWorkflowApproverResolver approverResolver,
         IRequestMasterResolver requestMasterResolver,
         IWorkflowTransactionHandlerResolver handlerResolver,
-        IWorkflowNotificationDispatcher notificationDispatcher)
+        IWorkflowNotificationDispatcher notificationDispatcher,
+        IWorkflowStepSequence stepSequence,
+        IEmployeeScopeProvider employeeScopeProvider)
     {
+        _stepSequence = stepSequence;
+        _employeeScopeProvider = employeeScopeProvider;
         _notificationDispatcher = notificationDispatcher;
         _workflowRequestRepository = workflowRequestRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
@@ -62,6 +69,11 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         // that cannot be routed has no valid next state, so it fails here rather than sitting in limbo.
         var requestMaster = await _requestMasterResolver.ResolveAsync(request);
 
+        // "Step 1 says who may CREATE this" -- checked before anything is validated or routed, because a
+        // person who is not allowed to raise the request at all should not have its type-specific rules run
+        // against them, let alone reach an approver's inbox.
+        await EnsureActingEmployeeMayRaiseAsync(request, requestMaster);
+
         var context = new WorkflowTransactionContext(request, actingEmployeeId);
         var handler = _handlerResolver.Resolve(request.RequestType);
 
@@ -79,12 +91,17 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             }
         }
 
-        request.WorkflowStep = 1;
+        // NOT a constant 1. A step whose ApproverPerson is None is a creator row -- it says who may raise the
+        // request, not who approves it -- so approvals begin at the first step that actually names an
+        // approver. See IWorkflowStepSequence for why "start at 2" would be just as wrong as "start at 1".
+        var firstApproverStep = _stepSequence.GetFirstApproverStep(requestMaster);
+
+        request.WorkflowStep = firstApproverStep;
         request.RequestStatus = RequestStatus.Open;
 
-        await AssignApproversForStepAsync(request, requestMaster, step: 1);
+        await AssignApproversForStepAsync(request, requestMaster, firstApproverStep);
 
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: null, workflowStep: 1);
+        await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: null, workflowStep: firstApproverStep);
 
         await _workflowRequestRepository.UpdateAsync(request);
 
@@ -99,7 +116,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         // to look at.
         await _notificationDispatcher.DispatchAsync(
             request,
-            step: 1,
+            firstApproverStep,
             WorkflowNotificationAction.Submit,
             actingEmployeeId);
     }
@@ -153,8 +170,12 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             return;
         }
 
-        var totalSteps = requestMaster.WorkflowSteps;
-        var isFinalApproval = currentStep >= totalSteps;
+        // The next step that NAMES AN APPROVER, not simply currentStep + 1: a later row with
+        // ApproverPerson = None is a creator row and must be stepped over, and "nothing above this" is the
+        // definition of complete. Walking off the end instead would strand the request on a step that
+        // resolves nobody.
+        var nextStep = _stepSequence.GetNextApproverStep(requestMaster, currentStep);
+        var isFinalApproval = !nextStep.HasValue;
 
         if (isFinalApproval)
         {
@@ -163,10 +184,9 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         }
         else
         {
-            var nextStep = currentStep + 1;
-            request.WorkflowStep = nextStep;
+            request.WorkflowStep = nextStep.Value;
 
-            await AssignApproversForStepAsync(request, requestMaster, nextStep);
+            await AssignApproversForStepAsync(request, requestMaster, nextStep.Value);
         }
 
         await _workflowRequestRepository.UpdateAsync(request);
@@ -267,7 +287,9 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             await _workFlowApproverRepository.DeleteAsync(approverRow);
         }
 
-        request.WorkflowStep = 1;
+        // Back to the first APPROVER step, not to step 1. Where step 1 is a creator row, parking the request
+        // there would leave a resubmitted request looking for an approver on a row that nominates none.
+        request.WorkflowStep = _stepSequence.GetFirstApproverStep(requestMaster);
         request.RequestStatus = RequestStatus.Draft;
 
         await AddLogAsync(
@@ -442,6 +464,98 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         if (!isCurrentApprover && request.ApproverId != actingEmployeeId)
         {
             throw new UserFriendlyException(L("YouAreNotTheCurrentApproverForThisWorkflowRequest"));
+        }
+    }
+
+    /// <summary>
+    /// Enforces the creator rule the chain's first step carries: WHO may raise this request, and FOR WHOM.
+    ///
+    /// <para>
+    /// The rule lives on the step that nominates no approver (<c>ApproverPerson = None</c>) -- legacy's step
+    /// 1 -- in its <see cref="RequestDetail.Person"/> column. It has been stored and editable in HCMv3 since
+    /// the port and read by nothing, so until now an administrator could set "employees may only raise this
+    /// for themselves" and the engine would accept a request raised for anybody.
+    /// </para>
+    /// <para>
+    /// Checked at SUBMIT, which is the single funnel both submission paths go through --
+    /// <c>MyTransactionAppServiceBase</c> for self-service and <c>AdminTransactionSubmitter</c> for
+    /// HR-raised. Putting it in either caller would leave the other unguarded.
+    /// </para>
+    /// <para>
+    /// <b>An actor with no employee record is unrestricted, deliberately.</b> Admin accounts in this product
+    /// are never linked to an <c>Employee</c> -- that is a standing rule, not an oversight -- so on the
+    /// HR-raised path there is frequently no employee to scope FROM. <see cref="IEmployeeScopeProvider"/>
+    /// resolves an unlinked user to "sees nobody", which is the right default for an ESS list query and
+    /// exactly the wrong one here: applied literally it would refuse every HR-raised request in the system
+    /// the day this shipped. So the guard returns early instead, and the request is governed by the
+    /// permission on the admin screen that raised it.
+    /// </para>
+    /// </summary>
+    private async Task EnsureActingEmployeeMayRaiseAsync(WorkflowRequest request, RequestMaster requestMaster)
+    {
+        var creatorStep = _stepSequence.GetCreatorStep(requestMaster);
+
+        // No creator row, or one that names no scope. Every configuration that predates this convention --
+        // including LEAVE-STD and MANPOWER-STD, whose step 1 is an approver -- lands here, so their
+        // behaviour is unchanged.
+        if (creatorStep == null || creatorStep.Person == WorkflowPersonScope.None)
+        {
+            return;
+        }
+
+        if (creatorStep.Person == WorkflowPersonScope.All)
+        {
+            return;
+        }
+
+        if (!request.EmployeeId.HasValue)
+        {
+            // Nobody to check against: a header over many employees (a payment batch) is not "for" one
+            // person, so there is no subject the scope could be applied to.
+            return;
+        }
+
+        // From the SESSION, not from the actingEmployeeId argument. The admin path passes the subject's own
+        // id as a stand-in when the signed-in user has no employee link, which would make a Themselves check
+        // pass trivially and mean nothing. See the remarks above for why an unlinked actor is unrestricted.
+        var currentEmployeeId = await _employeeScopeProvider.GetCurrentEmployeeIdAsync();
+        if (!currentEmployeeId.HasValue)
+        {
+            return;
+        }
+
+        var scope = MapToEmployeeScope(creatorStep.Person);
+
+        if (await _employeeScopeProvider.IsInScopeAsync(request.EmployeeId.Value, scope))
+        {
+            return;
+        }
+
+        throw new UserFriendlyException(L("YouAreNotAllowedToRaiseThisRequestForThisEmployee"));
+    }
+
+    /// <summary>
+    /// The workflow setup screen's scope onto the one the rest of the product already uses. Mapped rather
+    /// than reimplemented: <see cref="IEmployeeScopeProvider"/> is where "whose records may I touch" is
+    /// answered for ESS, and a second evaluator here would be a second thing to keep correct.
+    /// </summary>
+    private static EmployeeScope MapToEmployeeScope(WorkflowPersonScope person)
+    {
+        switch (person)
+        {
+            case WorkflowPersonScope.Themselves:
+                return EmployeeScope.Self;
+
+            case WorkflowPersonScope.Department:
+                return EmployeeScope.Department;
+
+            // Self plus everyone below them in the reporting line, at any depth -- EmployeeScope.Subordinates
+            // includes the root employee, which is what makes it "self AND subordinates".
+            case WorkflowPersonScope.SelfSubordinates:
+                return EmployeeScope.Subordinates;
+
+            default:
+                return EmployeeScope.All;
         }
     }
 

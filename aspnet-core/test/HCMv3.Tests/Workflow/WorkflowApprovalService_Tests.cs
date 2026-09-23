@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 using NSubstitute;
@@ -34,7 +35,37 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             CreateApproverResolver(),
             CreateResolver(),
             CreateHandlerResolver(),
-            CreateNotificationDispatcher());
+            CreateNotificationDispatcher(),
+            CreateStepSequence(),
+            CreateEmployeeScopeProvider());
+    }
+
+    /// <summary>
+    /// The REAL step sequencer, over the same fake <c>RequestDetail</c> repository. It is what decides which
+    /// step a submission lands on and which step an approval moves to, which is precisely what the tests
+    /// below assert -- a stub would make them pass whatever the engine did.
+    /// </summary>
+    private IWorkflowStepSequence CreateStepSequence()
+    {
+        return new WorkflowStepSequence(FakeRepository.For<RequestDetail>(Context));
+    }
+
+    /// <summary>
+    /// An actor with no linked employee, which is how these tests have always run: they drive the engine by
+    /// passing an employee id in, without a session behind it.
+    ///
+    /// <para>
+    /// That is also the state in which the creator-scope rule deliberately does nothing -- there is no
+    /// employee to scope from -- so these tests keep exercising the engine's routing alone. The scope rule
+    /// itself is covered by <c>WorkflowCreatorScope_Tests</c>, which runs against a real session.
+    /// </para>
+    /// </summary>
+    private static IEmployeeScopeProvider CreateEmployeeScopeProvider()
+    {
+        var provider = Substitute.For<IEmployeeScopeProvider>();
+        provider.GetCurrentEmployeeIdAsync().Returns(Task.FromResult((int?)null));
+
+        return provider;
     }
 
     /// <summary>
@@ -197,6 +228,56 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             ApprovalRequire = approvalRequire,
             CanReject = canReject,
             CanSendBack = canSendBack
+        });
+        Context.SaveChanges();
+    }
+
+    /// <summary>
+    /// A legacy-style CREATOR row: step 1 with no approver at all, carrying only the rule for who may raise
+    /// the request. Legacy hid <c>Person</c> from step 2 onward and showed <c>ApproverPerson</c> only from
+    /// step 2, so this is what a step 1 was meant to look like.
+    /// </summary>
+    private void CreateCreatorStep(int requestMasterId, int step = 1, WorkflowPersonScope person = WorkflowPersonScope.None)
+    {
+        Context.RequestDetails.Add(new RequestDetail
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            RequestMasterId = requestMasterId,
+            Step = step,
+            ApproverPerson = WorkflowApproverPersonType.None,
+            Person = person,
+            ApprovalRequire = ApprovalRequire.Single,
+            CanReject = true,
+            CanSendBack = true
+        });
+        Context.SaveChanges();
+    }
+
+    /// <summary>A step routed to the requester's own line manager rather than to a role.</summary>
+    private void CreateManagerStep(int requestMasterId, int step)
+    {
+        Context.RequestDetails.Add(new RequestDetail
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            RequestMasterId = requestMasterId,
+            Step = step,
+            ApproverPerson = WorkflowApproverPersonType.PersonManager,
+            ApprovalRequire = ApprovalRequire.Single,
+            CanReject = true,
+            CanSendBack = true
+        });
+        Context.SaveChanges();
+    }
+
+    private void SetManager(int employeeId, int managerId)
+    {
+        Context.EmployeeManagers.Add(new EmployeeManager
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            EmployeeId = employeeId,
+            ManagerId = managerId,
+            StartDate = DateTime.Today.AddYears(-1),
+            EndDate = DateTime.Today.AddYears(2)
         });
         Context.SaveChanges();
     }
@@ -401,5 +482,130 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
         await service.SubmitAsync(requestId, submitterId);
 
         await Should.ThrowAsync<UserFriendlyException>(() => service.SubmitAsync(requestId, submitterId));
+    }
+
+    // ------------------------------------------------- step 1 as the CREATOR row (legacy convention)
+
+    [Fact]
+    public async Task Submitting_Should_Skip_A_Step_1_That_Names_No_Approver()
+    {
+        // The legacy convention: step 1 carries WHO MAY RAISE the request and nobody approves it, so the
+        // approval chain starts at step 2. Before this, the engine sent every request to step 1 and the
+        // creator row resolved no approver at all -- falling through to the default approver, or to the
+        // "no approver could be resolved" refusal when the master had none.
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+
+        var masterId = CreateRequestMaster("CreatorRowLeave", steps: 2);
+        CreateCreatorStep(masterId, step: 1);
+        CreateRequestDetail(masterId, step: 2, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "CreatorRowLeave");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+
+        var request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.WorkflowStep.ShouldBe(2);
+        request.ApproverId.ShouldBe(approverId);
+    }
+
+    [Fact]
+    public async Task Submitting_Should_Still_Land_On_Step_1_When_Step_1_Is_The_Approver()
+    {
+        // The backward-compatibility case, and the one that matters most: LEAVE-STD and MANPOWER-STD are
+        // configured in production with a real approver ON step 1 and no step 2 at all. A rule of "start at
+        // step 2" would send both hunting for a step that does not exist and strand every request.
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+
+        var masterId = CreateRequestMaster("LegacyShapeLeave", steps: 1);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "LegacyShapeLeave");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+
+        var request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.WorkflowStep.ShouldBe(1);
+        request.ApproverId.ShouldBe(approverId);
+        request.RequestStatus.ShouldBe(RequestStatus.Open);
+    }
+
+    [Fact]
+    public async Task A_Creator_Row_Should_Not_Add_An_Approval_To_The_Chain()
+    {
+        // 1 = creator, 2 = the requester's manager, 3 = a role. Two approvals, not three: approving at 2
+        // advances to 3, and approving at 3 completes -- the creator row is never waited on.
+        var submitterId = CreateEmployee();
+        var managerId = CreateEmployee();
+        var roleApproverId = CreateEmployee();
+        SetManager(submitterId, managerId);
+
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(roleApproverId, roleId);
+
+        var masterId = CreateRequestMaster("ThreeRowChain", steps: 3);
+        CreateCreatorStep(masterId, step: 1);
+        CreateManagerStep(masterId, step: 2);
+        CreateRequestDetail(masterId, step: 3, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "ThreeRowChain");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+
+        var request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.WorkflowStep.ShouldBe(2);
+        request.ApproverId.ShouldBe(managerId);
+
+        await service.ApproveAsync(requestId, managerId, "manager ok");
+
+        request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.RequestStatus.ShouldBe(RequestStatus.Open);
+        request.WorkflowStep.ShouldBe(3);
+        request.ApproverId.ShouldBe(roleApproverId);
+
+        await service.ApproveAsync(requestId, roleApproverId, "role ok");
+
+        request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.RequestStatus.ShouldBe(RequestStatus.Approved);
+    }
+
+    [Fact]
+    public async Task A_SentBack_Request_Should_Resubmit_Onto_The_First_Approver_Step()
+    {
+        // Send-back used to reset WorkflowStep to 1. With a creator row at 1 that is a step nobody
+        // approves, so the resubmitted request would sit on a row that resolves no approver.
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+
+        var masterId = CreateRequestMaster("CreatorRowSendBack", steps: 2);
+        CreateCreatorStep(masterId, step: 1);
+        CreateRequestDetail(masterId, step: 2, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "CreatorRowSendBack");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+        await service.SendBackAsync(requestId, approverId, "Please correct the dates");
+
+        var request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.RequestStatus.ShouldBe(RequestStatus.Draft);
+        request.WorkflowStep.ShouldBe(2);
+
+        await service.SubmitAsync(requestId, submitterId);
+
+        request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.RequestStatus.ShouldBe(RequestStatus.Open);
+        request.WorkflowStep.ShouldBe(2);
+        request.ApproverId.ShouldBe(approverId);
     }
 }

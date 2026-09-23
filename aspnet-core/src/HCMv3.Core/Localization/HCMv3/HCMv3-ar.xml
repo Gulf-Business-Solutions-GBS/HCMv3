@@ -6708,5 +6708,6 @@
     <text name="SuggestedBonusPay">المكافأة القابلة للتسوية</text>
     <text name="SettleLoanInEndOfService">تسوية القروض القائمة ضمن هذه المدفوعات</text>
     <text name="SettleLoanInEndOfServiceHint">يتم استرداد كامل رصيد القرض المتبقي في تاريخ التسوية. وبدون ذلك لا يمكن إنهاء تسوية موظف لديه قرض قائم.</text>
+    <text name="YouAreNotAllowedToRaiseThisRequestForThisEmployee">لا يُسمح لك بتقديم هذا الطلب نيابةً عن هذا الموظف. فالخطوة الأولى من سير العمل تحدّد من يحق له إنشاؤه.</text>
   </texts>
 </localizationDictionary>

@@ -43,5 +43,23 @@ public enum EmployeeScope
     /// No employee restriction at all. For admin screens that do their own authorization; an ESS endpoint
     /// should never pass this.
     /// </summary>
-    All = 4
+    All = 4,
+
+    /// <summary>
+    /// Everybody currently assigned to the SAME organisation unit as the current user, read from the dated
+    /// <c>EmployeeOrgAssignment</c> row rather than from the manager hierarchy -- so a colleague in the same
+    /// department is in scope even though neither reports to the other.
+    ///
+    /// <para>
+    /// Added for the workflow "who may raise this request" rule (<c>WorkflowPersonScope.Department</c>),
+    /// which had no counterpart here. It lives in <c>EmployeeScopeProvider</c> rather than in the workflow
+    /// engine so there stays exactly ONE evaluator of "whose records may I touch"; a second one in Workflow
+    /// would be the first place two definitions of "department" drifted apart.
+    /// </para>
+    /// <para>
+    /// Always includes the current user, including when they hold no current assignment at all -- nobody is
+    /// outside their own department, and resolving to "nobody" would refuse them their own record.
+    /// </para>
+    /// </summary>
+    Department = 5
 }

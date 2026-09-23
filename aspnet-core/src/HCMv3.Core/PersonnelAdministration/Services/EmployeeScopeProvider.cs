@@ -30,15 +30,18 @@ public class EmployeeScopeProvider : HCMv3DomainServiceBase, IEmployeeScopeProvi
 {
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
+    private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly IRlsService _rlsService;
 
     public EmployeeScopeProvider(
         IEmployeeSessionService employeeSessionService,
         IRepository<EmployeeManager> employeeManagerRepository,
+        IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
         IRlsService rlsService)
     {
         _employeeSessionService = employeeSessionService;
         _employeeManagerRepository = employeeManagerRepository;
+        _orgAssignmentRepository = orgAssignmentRepository;
         _rlsService = rlsService;
     }
 
@@ -91,6 +94,9 @@ public class EmployeeScopeProvider : HCMv3DomainServiceBase, IEmployeeScopeProvi
                 // Includes the root employee itself -- see IRlsService.GetEmployeeIdsUnderManagerAsync.
                 return EmployeeScopeFilter.For(await _rlsService.GetEmployeeIdsUnderManagerAsync(currentEmployeeId.Value));
 
+            case EmployeeScope.Department:
+                return EmployeeScopeFilter.For(GetSameOrganizationUnitIds(currentEmployeeId.Value, effectiveDate));
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(scope), scope, "Unsupported employee scope.");
         }
@@ -116,6 +122,39 @@ public class EmployeeScopeProvider : HCMv3DomainServiceBase, IEmployeeScopeProvi
         var filter = await GetScopeAsync(scope, asOf);
 
         filter.EnsureIncludes(employeeId);
+    }
+
+    /// <summary>
+    /// Everybody holding a current assignment to the same organisation unit as this employee.
+    ///
+    /// <para>
+    /// The employee is always added, even when they have no current assignment and the unit could not be
+    /// resolved at all. "Department" is a widening scope -- it exists to let somebody raise a request for a
+    /// colleague -- so falling back to just themselves keeps them able to do the narrower thing, whereas
+    /// falling back to an empty set would stop them doing anything and look like a permissions bug.
+    /// </para>
+    /// </summary>
+    private List<int> GetSameOrganizationUnitIds(int employeeId, DateTime asOf)
+    {
+        var organizationUnitId = _orgAssignmentRepository.GetAll()
+            .Where(a => a.EmployeeId == employeeId && a.StartDate <= asOf && a.EndDate >= asOf)
+            .OrderByDescending(a => a.StartDate)
+            .Select(a => a.OrganizationUnitId)
+            .FirstOrDefault();
+
+        var ids = new List<int> { employeeId };
+
+        if (organizationUnitId.HasValue)
+        {
+            ids.AddRange(_orgAssignmentRepository.GetAll()
+                .Where(a => a.OrganizationUnitId == organizationUnitId.Value
+                            && a.StartDate <= asOf
+                            && a.EndDate >= asOf)
+                .Select(a => a.EmployeeId)
+                .ToList());
+        }
+
+        return ids;
     }
 
     /// <summary>
