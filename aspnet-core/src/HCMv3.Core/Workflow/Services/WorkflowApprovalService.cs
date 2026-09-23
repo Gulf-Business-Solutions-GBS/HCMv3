@@ -112,6 +112,16 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             await handler.OnSubmittedAsync(context);
         }
 
+        // Flush before dispatching, and this is load-bearing rather than tidiness.
+        //
+        // AssignApproversForStepAsync inserts the WorkFlowApprover rows through the repository, but until
+        // the unit of work is saved they exist only as tracked entities. The dispatcher resolves "who is
+        // pending on this request?" with a database query, so without this it reads a table that does not
+        // have them yet, finds nobody, and silently notifies only the requester -- who then receives
+        // "this has been sent to you for approval" about their own request, while the approver's bell
+        // stays empty. That is exactly what happened on EXP-2026-00002.
+        await CurrentUnitOfWork.SaveChangesAsync();
+
         // Last, once the request is real and routed: the people it has landed on are told they have something
         // to look at.
         await _notificationDispatcher.DispatchAsync(

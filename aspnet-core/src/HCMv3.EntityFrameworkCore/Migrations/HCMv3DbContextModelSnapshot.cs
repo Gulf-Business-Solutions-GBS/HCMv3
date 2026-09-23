@@ -22533,6 +22533,9 @@ namespace HCMv3.Migrations
                     b.Property<int?>("PayrollAreaId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PositionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PostingGroupId")
                         .HasColumnType("int");
 
@@ -22567,6 +22570,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("OrganizationUnitId");
 
                     b.HasIndex("PayrollAreaId");
+
+                    b.HasIndex("PositionId");
 
                     b.HasIndex("PostingGroupId");
 
@@ -39485,6 +39490,11 @@ namespace HCMv3.Migrations
                         .HasForeignKey("PayrollAreaId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("HCMv3.ManpowerPlanningManagement.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.GeneralMasterInfo.PostingGroup", "PostingGroup")
                         .WithMany()
                         .HasForeignKey("PostingGroupId");
@@ -39515,6 +39525,8 @@ namespace HCMv3.Migrations
                     b.Navigation("OrganizationUnit");
 
                     b.Navigation("PayrollArea");
+
+                    b.Navigation("Position");
 
                     b.Navigation("PostingGroup");
 
