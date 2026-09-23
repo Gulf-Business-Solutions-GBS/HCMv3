@@ -11,9 +11,15 @@
         <div class="modal-content">
             @if (active()) {
                 <div class="modal-header">
-                    <h4 class="modal-title">
+                    <!-- d-flex align-items-end, not two inline spans. The theme redefines .badge as
+                         inline-flex with its own line-height:1, and an inline-flex box's baseline does not
+                         line up with the surrounding text's -- which is why the pill floated off the title
+                         instead of sitting on it. Laying the header out as a flex row and aligning to the
+                         end puts the two on a common bottom edge whatever either one's line-height is.
+                         gap-2 rather than ms-2 so the spacing follows the writing direction in Arabic. -->
+                    <h4 class="modal-title d-flex align-items-end gap-2">
                         <span>{{ config()?.title }}</span>
-                        <span class="badge ms-2" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
+                        <span class="badge" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
                     </h4>
                     <!-- btn-close, not close: the theme bundle is Bootstrap 5 and defines only the former.
                          The old markup used BS4's .close with a Metronic ki icon inside, neither of which
