@@ -95,6 +95,11 @@ export class EssInboxComponent extends AppComponentBase {
 
     private readonly _inboxService = inject(EssInboxServiceProxy);
 
+    /** Whether the fetched set is still in hand, so a page or sort event need not go back to the server. */
+    private loaded = false;
+    private fetching = false;
+    private lastEvent: TableLazyLoadEvent | undefined;
+
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
     readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
@@ -146,10 +151,6 @@ export class EssInboxComponent extends AppComponentBase {
             !!this.dateTo()
     );
 
-    /** Whether the fetched set is still in hand, so a page or sort event need not go back to the server. */
-    private loaded = false;
-    private lastEvent: TableLazyLoadEvent | undefined;
-
     /**
      * Bound to the table's <c>(onLazyLoad)</c>, which is also what loads the page initially -- hence
      * nothing in <c>ngOnInit</c>. Fetches on the first call and after an approval; every later call
@@ -159,10 +160,20 @@ export class EssInboxComponent extends AppComponentBase {
         this.lastEvent = event;
 
         if (this.loaded) {
-            this.render(event);
+            // Deferred by a turn: onLazyLoad fires from inside the table's own change detection, and
+            // writing the records it is bound to synchronously is what NG0100 is about. The fetching path
+            // below is already asynchronous for the same reason.
+            setTimeout(() => this.render(event));
             return;
         }
 
+        // A reload resets the paginator, and the paginator answers that by raising its own page event --
+        // which would otherwise start a second identical fetch.
+        if (this.fetching) {
+            return;
+        }
+
+        this.fetching = true;
         this.primengTableHelper.showLoadingIndicator();
 
         this._inboxService
@@ -174,7 +185,12 @@ export class EssInboxComponent extends AppComponentBase {
                     sorting: undefined,
                 })
             )
-            .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
+            .pipe(
+                finalize(() => {
+                    this.fetching = false;
+                    this.primengTableHelper.hideLoadingIndicator();
+                })
+            )
             .subscribe({
                 next: (result) => {
                     this.loaded = true;
@@ -198,7 +214,11 @@ export class EssInboxComponent extends AppComponentBase {
         this.loaded = false;
         this.selected.set(undefined);
         this.allRows.set([]);
-        this.getRequests(this.lastEvent);
+
+        // Back to the first page: an approval removes a row, and page four of a list that is now three
+        // pages long shows nothing at all.
+        this.paginator()?.changePage(0);
+        this.getRequests(undefined);
     }
 
     /** Any filter change: back to the first page, then re-render. */
@@ -262,50 +282,6 @@ export class EssInboxComponent extends AppComponentBase {
         menu.toggle(event);
     }
 
-    private getMenuItems(row: EssInboxRow): MenuItem[] {
-        const items: MenuItem[] = [
-            {
-                label: this.l('Details'),
-                icon: 'pi pi-eye',
-                command: () => this.openDetail(row),
-            },
-            {
-                label: this.l('Approve'),
-                icon: 'pi pi-check',
-                command: () => {
-                    this.select(row);
-                    this.approve();
-                },
-            },
-        ];
-
-        // Offered only when the step's configuration actually permits it, so the screen never shows a
-        // button the engine would refuse.
-        if (row.canReject) {
-            items.push({
-                label: this.l('Reject'),
-                icon: 'pi pi-times',
-                command: () => {
-                    this.select(row);
-                    this.reject();
-                },
-            });
-        }
-
-        if (row.canSendBack) {
-            items.push({
-                label: this.l('SendBack'),
-                icon: 'pi pi-replay',
-                command: () => {
-                    this.select(row);
-                    this.sendBack();
-                },
-            });
-        }
-
-        return items;
-    }
-
     // ---------------------------------------------------------------- decisions
 
     approve(): void {
@@ -356,6 +332,50 @@ export class EssInboxComponent extends AppComponentBase {
         input.comment = this.comment;
 
         this.act(() => this._inboxService.sendBack(input), 'RequestSentBack');
+    }
+
+    private getMenuItems(row: EssInboxRow): MenuItem[] {
+        const items: MenuItem[] = [
+            {
+                label: this.l('Details'),
+                icon: 'pi pi-eye',
+                command: () => this.openDetail(row),
+            },
+            {
+                label: this.l('Approve'),
+                icon: 'pi pi-check',
+                command: () => {
+                    this.select(row);
+                    this.approve();
+                },
+            },
+        ];
+
+        // Offered only when the step's configuration actually permits it, so the screen never shows a
+        // button the engine would refuse.
+        if (row.canReject) {
+            items.push({
+                label: this.l('Reject'),
+                icon: 'pi pi-times',
+                command: () => {
+                    this.select(row);
+                    this.reject();
+                },
+            });
+        }
+
+        if (row.canSendBack) {
+            items.push({
+                label: this.l('SendBack'),
+                icon: 'pi pi-replay',
+                command: () => {
+                    this.select(row);
+                    this.sendBack();
+                },
+            });
+        }
+
+        return items;
     }
 
     private act(call: () => any, successKey: string): void {
