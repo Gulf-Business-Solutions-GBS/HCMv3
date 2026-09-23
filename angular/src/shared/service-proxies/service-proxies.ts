@@ -91079,6 +91079,57 @@ export class MyLeaveServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getLeaveFormSettings(): Observable<LeaveFormSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetLeaveFormSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaveFormSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaveFormSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveFormSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveFormSettingsDto>;
+        }));
+    }
+
+    protected processGetLeaveFormSettings(response: HttpResponseBase): Observable<LeaveFormSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveFormSettingsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -103273,6 +103324,57 @@ export class PAFormsServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getAppraisalFormSettings(): Observable<AppraisalFormSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/PAForms/GetAppraisalFormSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAppraisalFormSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAppraisalFormSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AppraisalFormSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AppraisalFormSettingsDto>;
+        }));
+    }
+
+    protected processGetAppraisalFormSettings(response: HttpResponseBase): Observable<AppraisalFormSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AppraisalFormSettingsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -143065,6 +143167,69 @@ export class TenantSettingsServiceProxy {
 }
 
 @Injectable()
+export class TenantUiSettingsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getTenantUiSettings(): Observable<TenantUiSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantUiSettings/GetTenantUiSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTenantUiSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTenantUiSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TenantUiSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TenantUiSettingsDto>;
+        }));
+    }
+
+    protected processGetTenantUiSettings(response: HttpResponseBase): Observable<TenantUiSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TenantUiSettingsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class TicketAccrualSummariesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -165360,6 +165525,62 @@ export enum AppraisalCycle {
     Annually = 2,
 }
 
+export class AppraisalFormSettingsDto implements IAppraisalFormSettingsDto {
+    appraisalCycle!: AppraisalCycle;
+    enablePAPeerReview!: boolean;
+    setPeerMinLimit!: number;
+    setPeerMaxLimit!: number;
+    enableMarksInPAReview!: boolean;
+    marksOn!: MarksOn;
+
+    constructor(data?: IAppraisalFormSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appraisalCycle = _data["appraisalCycle"];
+            this.enablePAPeerReview = _data["enablePAPeerReview"];
+            this.setPeerMinLimit = _data["setPeerMinLimit"];
+            this.setPeerMaxLimit = _data["setPeerMaxLimit"];
+            this.enableMarksInPAReview = _data["enableMarksInPAReview"];
+            this.marksOn = _data["marksOn"];
+        }
+    }
+
+    static fromJS(data: any): AppraisalFormSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppraisalFormSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appraisalCycle"] = this.appraisalCycle;
+        data["enablePAPeerReview"] = this.enablePAPeerReview;
+        data["setPeerMinLimit"] = this.setPeerMinLimit;
+        data["setPeerMaxLimit"] = this.setPeerMaxLimit;
+        data["enableMarksInPAReview"] = this.enableMarksInPAReview;
+        data["marksOn"] = this.marksOn;
+        return data;
+    }
+}
+
+export interface IAppraisalFormSettingsDto {
+    appraisalCycle: AppraisalCycle;
+    enablePAPeerReview: boolean;
+    setPeerMinLimit: number;
+    setPeerMaxLimit: number;
+    enableMarksInPAReview: boolean;
+    marksOn: MarksOn;
+}
+
 export class AppraisalSettingsEditDto implements IAppraisalSettingsEditDto {
     id!: number;
     appraisalCycle!: AppraisalCycle;
@@ -165897,6 +166118,10 @@ export class AttachmentSettingsDto implements IAttachmentSettingsDto {
     allowedExtensions!: string[] | undefined;
     maxFileSizeMB!: number;
     maxAttachmentsPerRecord!: number;
+    maxStorageMB!: number;
+    storageWarningThresholdMB!: number;
+    usedStorageMB!: number;
+    storageWarning!: boolean;
 
     constructor(data?: IAttachmentSettingsDto) {
         if (data) {
@@ -165916,6 +166141,10 @@ export class AttachmentSettingsDto implements IAttachmentSettingsDto {
             }
             this.maxFileSizeMB = _data["maxFileSizeMB"];
             this.maxAttachmentsPerRecord = _data["maxAttachmentsPerRecord"];
+            this.maxStorageMB = _data["maxStorageMB"];
+            this.storageWarningThresholdMB = _data["storageWarningThresholdMB"];
+            this.usedStorageMB = _data["usedStorageMB"];
+            this.storageWarning = _data["storageWarning"];
         }
     }
 
@@ -165935,6 +166164,10 @@ export class AttachmentSettingsDto implements IAttachmentSettingsDto {
         }
         data["maxFileSizeMB"] = this.maxFileSizeMB;
         data["maxAttachmentsPerRecord"] = this.maxAttachmentsPerRecord;
+        data["maxStorageMB"] = this.maxStorageMB;
+        data["storageWarningThresholdMB"] = this.storageWarningThresholdMB;
+        data["usedStorageMB"] = this.usedStorageMB;
+        data["storageWarning"] = this.storageWarning;
         return data;
     }
 }
@@ -165943,6 +166176,10 @@ export interface IAttachmentSettingsDto {
     allowedExtensions: string[] | undefined;
     maxFileSizeMB: number;
     maxAttachmentsPerRecord: number;
+    maxStorageMB: number;
+    storageWarningThresholdMB: number;
+    usedStorageMB: number;
+    storageWarning: boolean;
 }
 
 export class AttendanceLogReportRowDto implements IAttendanceLogReportRowDto {
@@ -178674,6 +178911,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
     photo!: string | undefined;
     joiningDate!: DateTime;
     probationDays!: number;
+    copyWageAccountsFromEmployeeId!: number | undefined;
 
     constructor(data?: ICreateOrEditEmployeeDto) {
         if (data) {
@@ -178745,6 +178983,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
             this.photo = _data["photo"];
             this.joiningDate = _data["joiningDate"] ? DateTime.fromISO(_data["joiningDate"].toString()) : undefined as any;
             this.probationDays = _data["probationDays"];
+            this.copyWageAccountsFromEmployeeId = _data["copyWageAccountsFromEmployeeId"];
         }
     }
 
@@ -178816,6 +179055,7 @@ export class CreateOrEditEmployeeDto implements ICreateOrEditEmployeeDto {
         data["photo"] = this.photo;
         data["joiningDate"] = this.joiningDate ? this.joiningDate.toString() : undefined as any;
         data["probationDays"] = this.probationDays;
+        data["copyWageAccountsFromEmployeeId"] = this.copyWageAccountsFromEmployeeId;
         return data;
     }
 }
@@ -178880,6 +179120,7 @@ export interface ICreateOrEditEmployeeDto {
     photo: string | undefined;
     joiningDate: DateTime;
     probationDays: number;
+    copyWageAccountsFromEmployeeId: number | undefined;
 }
 
 export class CreateOrEditEmployeeDutyPeriodDto implements ICreateOrEditEmployeeDutyPeriodDto {
@@ -216418,6 +216659,7 @@ export class EssInboxItemDto implements IEssInboxItemDto {
     totalSteps!: number;
     canReject!: boolean;
     canSendBack!: boolean;
+    enableTravelCost!: boolean;
 
     constructor(data?: IEssInboxItemDto) {
         if (data) {
@@ -216446,6 +216688,7 @@ export class EssInboxItemDto implements IEssInboxItemDto {
             this.totalSteps = _data["totalSteps"];
             this.canReject = _data["canReject"];
             this.canSendBack = _data["canSendBack"];
+            this.enableTravelCost = _data["enableTravelCost"];
         }
     }
 
@@ -216474,6 +216717,7 @@ export class EssInboxItemDto implements IEssInboxItemDto {
         data["totalSteps"] = this.totalSteps;
         data["canReject"] = this.canReject;
         data["canSendBack"] = this.canSendBack;
+        data["enableTravelCost"] = this.enableTravelCost;
         return data;
     }
 }
@@ -216495,6 +216739,7 @@ export interface IEssInboxItemDto {
     totalSteps: number;
     canReject: boolean;
     canSendBack: boolean;
+    enableTravelCost: boolean;
 }
 
 export class EssRecentRequestDto implements IEssRecentRequestDto {
@@ -272112,6 +272357,62 @@ export enum LeaveBasisPeriod {
 export enum LeaveEntitlement {
     Full = 0,
     Prorated = 1,
+}
+
+export class LeaveFormSettingsDto implements ILeaveFormSettingsDto {
+    enableAutoHalfDayLeave!: boolean;
+    enablePayFullWithPayroll!: boolean;
+    defaultLeavePaymentType!: LeavePaymentType;
+    enableIsTravelling!: boolean;
+    enableBookingQuotaInLeaveRequest!: boolean;
+    hideLeavePayDetailsInWorkflow!: boolean;
+
+    constructor(data?: ILeaveFormSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.enableAutoHalfDayLeave = _data["enableAutoHalfDayLeave"];
+            this.enablePayFullWithPayroll = _data["enablePayFullWithPayroll"];
+            this.defaultLeavePaymentType = _data["defaultLeavePaymentType"];
+            this.enableIsTravelling = _data["enableIsTravelling"];
+            this.enableBookingQuotaInLeaveRequest = _data["enableBookingQuotaInLeaveRequest"];
+            this.hideLeavePayDetailsInWorkflow = _data["hideLeavePayDetailsInWorkflow"];
+        }
+    }
+
+    static fromJS(data: any): LeaveFormSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveFormSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enableAutoHalfDayLeave"] = this.enableAutoHalfDayLeave;
+        data["enablePayFullWithPayroll"] = this.enablePayFullWithPayroll;
+        data["defaultLeavePaymentType"] = this.defaultLeavePaymentType;
+        data["enableIsTravelling"] = this.enableIsTravelling;
+        data["enableBookingQuotaInLeaveRequest"] = this.enableBookingQuotaInLeaveRequest;
+        data["hideLeavePayDetailsInWorkflow"] = this.hideLeavePayDetailsInWorkflow;
+        return data;
+    }
+}
+
+export interface ILeaveFormSettingsDto {
+    enableAutoHalfDayLeave: boolean;
+    enablePayFullWithPayroll: boolean;
+    defaultLeavePaymentType: LeavePaymentType;
+    enableIsTravelling: boolean;
+    enableBookingQuotaInLeaveRequest: boolean;
+    hideLeavePayDetailsInWorkflow: boolean;
 }
 
 export enum LeaveGender {
@@ -331639,6 +331940,7 @@ export class TenantLoginInfoDto implements ITenantLoginInfoDto {
     paymentPeriodType!: PaymentPeriodType;
     subscriptionDateString!: string | undefined;
     creationTimeString!: string | undefined;
+    startupDashboard!: string | undefined;
 
     constructor(data?: ITenantLoginInfoDto) {
         if (data) {
@@ -331676,6 +331978,7 @@ export class TenantLoginInfoDto implements ITenantLoginInfoDto {
             this.paymentPeriodType = _data["paymentPeriodType"];
             this.subscriptionDateString = _data["subscriptionDateString"];
             this.creationTimeString = _data["creationTimeString"];
+            this.startupDashboard = _data["startupDashboard"];
         }
     }
 
@@ -331713,6 +332016,7 @@ export class TenantLoginInfoDto implements ITenantLoginInfoDto {
         data["paymentPeriodType"] = this.paymentPeriodType;
         data["subscriptionDateString"] = this.subscriptionDateString;
         data["creationTimeString"] = this.creationTimeString;
+        data["startupDashboard"] = this.startupDashboard;
         return data;
     }
 }
@@ -331739,6 +332043,7 @@ export interface ITenantLoginInfoDto {
     paymentPeriodType: PaymentPeriodType;
     subscriptionDateString: string | undefined;
     creationTimeString: string | undefined;
+    startupDashboard: string | undefined;
 }
 
 export class TenantManagementSettingsEditDto implements ITenantManagementSettingsEditDto {
@@ -331959,6 +332264,90 @@ export interface ITenantSettingsEditDto {
     billing: TenantBillingSettingsEditDto;
     otherSettings: TenantOtherSettingsEditDto;
     externalLoginProviderSettings: ExternalLoginProviderSettingsEditDto;
+}
+
+export class TenantUiSettingsDto implements ITenantUiSettingsDto {
+    enablePostingGroup!: boolean;
+    enableBudgetingGroup!: boolean;
+    enablePosition!: boolean;
+    enableOrgChart3Levels!: boolean;
+    showBillingTypeInPaymentScreen!: boolean;
+    autoFillFnFCompensation!: boolean;
+    editableAutoFillFnFCompensation!: boolean;
+    allowSimulationRun!: boolean;
+    decimalInReports!: number;
+    disableAutoEmpcode!: boolean;
+    enableIsTravelling!: boolean;
+    enableAutoHalfDayLeave!: boolean;
+    autoWageAssignOnHire!: boolean;
+
+    constructor(data?: ITenantUiSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.enablePostingGroup = _data["enablePostingGroup"];
+            this.enableBudgetingGroup = _data["enableBudgetingGroup"];
+            this.enablePosition = _data["enablePosition"];
+            this.enableOrgChart3Levels = _data["enableOrgChart3Levels"];
+            this.showBillingTypeInPaymentScreen = _data["showBillingTypeInPaymentScreen"];
+            this.autoFillFnFCompensation = _data["autoFillFnFCompensation"];
+            this.editableAutoFillFnFCompensation = _data["editableAutoFillFnFCompensation"];
+            this.allowSimulationRun = _data["allowSimulationRun"];
+            this.decimalInReports = _data["decimalInReports"];
+            this.disableAutoEmpcode = _data["disableAutoEmpcode"];
+            this.enableIsTravelling = _data["enableIsTravelling"];
+            this.enableAutoHalfDayLeave = _data["enableAutoHalfDayLeave"];
+            this.autoWageAssignOnHire = _data["autoWageAssignOnHire"];
+        }
+    }
+
+    static fromJS(data: any): TenantUiSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantUiSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enablePostingGroup"] = this.enablePostingGroup;
+        data["enableBudgetingGroup"] = this.enableBudgetingGroup;
+        data["enablePosition"] = this.enablePosition;
+        data["enableOrgChart3Levels"] = this.enableOrgChart3Levels;
+        data["showBillingTypeInPaymentScreen"] = this.showBillingTypeInPaymentScreen;
+        data["autoFillFnFCompensation"] = this.autoFillFnFCompensation;
+        data["editableAutoFillFnFCompensation"] = this.editableAutoFillFnFCompensation;
+        data["allowSimulationRun"] = this.allowSimulationRun;
+        data["decimalInReports"] = this.decimalInReports;
+        data["disableAutoEmpcode"] = this.disableAutoEmpcode;
+        data["enableIsTravelling"] = this.enableIsTravelling;
+        data["enableAutoHalfDayLeave"] = this.enableAutoHalfDayLeave;
+        data["autoWageAssignOnHire"] = this.autoWageAssignOnHire;
+        return data;
+    }
+}
+
+export interface ITenantUiSettingsDto {
+    enablePostingGroup: boolean;
+    enableBudgetingGroup: boolean;
+    enablePosition: boolean;
+    enableOrgChart3Levels: boolean;
+    showBillingTypeInPaymentScreen: boolean;
+    autoFillFnFCompensation: boolean;
+    editableAutoFillFnFCompensation: boolean;
+    allowSimulationRun: boolean;
+    decimalInReports: number;
+    disableAutoEmpcode: boolean;
+    enableIsTravelling: boolean;
+    enableAutoHalfDayLeave: boolean;
+    autoWageAssignOnHire: boolean;
 }
 
 export class TenantUserManagementSettingsEditDto implements ITenantUserManagementSettingsEditDto {

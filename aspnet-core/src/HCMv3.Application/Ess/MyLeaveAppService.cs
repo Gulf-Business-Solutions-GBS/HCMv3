@@ -93,7 +93,6 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         }).ToList();
     }
 
-    [HttpPost]
     public async Task<LeaveFormSettingsDto> GetLeaveFormSettings()
     {
         var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
@@ -111,6 +110,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         };
     }
 
+    [HttpPost]
     public async Task<PagedResultDto<MyLeaveDto>> GetMyLeaves(GetMyLeavesInput input)
     {
         input.Normalize();
