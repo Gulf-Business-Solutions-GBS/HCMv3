@@ -7307,6 +7307,9 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("EmailTemplateId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -7350,6 +7353,8 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmailTemplateId");
+
                     b.ToTable("NotificationConfigs");
                 });
 
@@ -7388,9 +7393,22 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkflowRoleGroup")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRoleOrgId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NotificationConfigId");
+
+                    b.HasIndex("WorkflowRoleId");
+
+                    b.HasIndex("WorkflowRoleOrgId");
 
                     b.ToTable("NotificationGroups");
                 });
@@ -33981,6 +33999,9 @@ namespace HCMv3.Migrations
                     b.Property<int>("ApproverPerson")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AssignNotificationConfigId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("CanReject")
                         .HasColumnType("bit");
 
@@ -34029,13 +34050,28 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("NotificationConfigId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Person")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RejectNotificationConfigId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RemarksNotificationConfigId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReminderDays")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ReminderNotificationConfigId")
+                        .HasColumnType("int");
+
                     b.Property<int>("RequestMasterId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SendBackNotificationConfigId")
                         .HasColumnType("int");
 
                     b.Property<bool>("ShouldEscalate")
@@ -34048,6 +34084,9 @@ namespace HCMv3.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("Step")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubmitNotificationConfigId")
                         .HasColumnType("int");
 
                     b.Property<int>("TenantId")
@@ -34064,11 +34103,25 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignNotificationConfigId");
+
                     b.HasIndex("EscalateWorkflowRoleId");
 
                     b.HasIndex("EscalateWorkflowRoleOrgId");
 
+                    b.HasIndex("NotificationConfigId");
+
+                    b.HasIndex("RejectNotificationConfigId");
+
+                    b.HasIndex("RemarksNotificationConfigId");
+
+                    b.HasIndex("ReminderNotificationConfigId");
+
                     b.HasIndex("RequestMasterId");
+
+                    b.HasIndex("SendBackNotificationConfigId");
+
+                    b.HasIndex("SubmitNotificationConfigId");
 
                     b.HasIndex("WorkflowRoleId");
 
@@ -35839,13 +35892,38 @@ namespace HCMv3.Migrations
                     b.Navigation("NationalityGroup");
                 });
 
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.NotificationConfig", b =>
+                {
+                    b.HasOne("HCMv3.SystemSecurity.EmailTemplate", "EmailTemplate")
+                        .WithMany()
+                        .HasForeignKey("EmailTemplateId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("EmailTemplate");
+                });
+
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.NotificationGroup", b =>
                 {
                     b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "NotificationConfig")
+                        .WithMany("NotificationGroups")
+                        .HasForeignKey("NotificationConfigId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HCMv3.Workflow.WorkflowRole", "WorkflowRole")
                         .WithMany()
-                        .HasForeignKey("NotificationConfigId");
+                        .HasForeignKey("WorkflowRoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.OrganizationManagement.OrganizationUnitType", "WorkflowRoleOrg")
+                        .WithMany()
+                        .HasForeignKey("WorkflowRoleOrgId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("NotificationConfig");
+
+                    b.Navigation("WorkflowRole");
+
+                    b.Navigation("WorkflowRoleOrg");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.OvertimeType", b =>
@@ -41733,6 +41811,11 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.Workflow.RequestDetail", b =>
                 {
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "AssignNotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("AssignNotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.Workflow.WorkflowRole", "EscalateWorkflowRole")
                         .WithMany()
                         .HasForeignKey("EscalateWorkflowRoleId");
@@ -41741,11 +41824,41 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("EscalateWorkflowRoleOrgId");
 
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "NotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("NotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "RejectNotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("RejectNotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "RemarksNotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("RemarksNotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "ReminderNotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("ReminderNotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.Workflow.RequestMaster", "RequestMaster")
                         .WithMany("RequestDetails")
                         .HasForeignKey("RequestMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "SendBackNotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("SendBackNotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "SubmitNotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("SubmitNotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HCMv3.Workflow.WorkflowRole", "WorkflowRole")
                         .WithMany()
@@ -41755,11 +41868,25 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("WorkflowRoleOrgId");
 
+                    b.Navigation("AssignNotificationConfig");
+
                     b.Navigation("EscalateWorkflowRole");
 
                     b.Navigation("EscalateWorkflowRoleOrg");
 
+                    b.Navigation("NotificationConfig");
+
+                    b.Navigation("RejectNotificationConfig");
+
+                    b.Navigation("RemarksNotificationConfig");
+
+                    b.Navigation("ReminderNotificationConfig");
+
                     b.Navigation("RequestMaster");
+
+                    b.Navigation("SendBackNotificationConfig");
+
+                    b.Navigation("SubmitNotificationConfig");
 
                     b.Navigation("WorkflowRole");
 
@@ -42031,6 +42158,11 @@ namespace HCMv3.Migrations
             modelBuilder.Entity("HCMv3.BusinessRules.BusinessRule", b =>
                 {
                     b.Navigation("Assignments");
+                });
+
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.NotificationConfig", b =>
+                {
+                    b.Navigation("NotificationGroups");
                 });
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.ManpowerPlanning", b =>

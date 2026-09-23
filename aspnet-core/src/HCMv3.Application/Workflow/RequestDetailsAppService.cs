@@ -158,6 +158,13 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         entity.IsCommentRequire = input.IsCommentRequire;
         entity.SignatoryStep = input.SignatoryStep;
         entity.ReminderDays = input.ReminderDays;
+        entity.NotificationConfigId = input.NotificationConfigId;
+        entity.SubmitNotificationConfigId = input.SubmitNotificationConfigId;
+        entity.RejectNotificationConfigId = input.RejectNotificationConfigId;
+        entity.SendBackNotificationConfigId = input.SendBackNotificationConfigId;
+        entity.RemarksNotificationConfigId = input.RemarksNotificationConfigId;
+        entity.AssignNotificationConfigId = input.AssignNotificationConfigId;
+        entity.ReminderNotificationConfigId = input.ReminderNotificationConfigId;
         return entity;
     }
 
@@ -187,7 +194,14 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
             ApprovalRequire = entity.ApprovalRequire,
             IsCommentRequire = entity.IsCommentRequire,
             SignatoryStep = entity.SignatoryStep,
-            ReminderDays = entity.ReminderDays
+            ReminderDays = entity.ReminderDays,
+            NotificationConfigId = entity.NotificationConfigId,
+            SubmitNotificationConfigId = entity.SubmitNotificationConfigId,
+            RejectNotificationConfigId = entity.RejectNotificationConfigId,
+            SendBackNotificationConfigId = entity.SendBackNotificationConfigId,
+            RemarksNotificationConfigId = entity.RemarksNotificationConfigId,
+            AssignNotificationConfigId = entity.AssignNotificationConfigId,
+            ReminderNotificationConfigId = entity.ReminderNotificationConfigId
         };
     }
 
@@ -216,7 +230,14 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
             ApprovalRequire = entity.ApprovalRequire,
             IsCommentRequire = entity.IsCommentRequire,
             SignatoryStep = entity.SignatoryStep,
-            ReminderDays = entity.ReminderDays
+            ReminderDays = entity.ReminderDays,
+            NotificationConfigId = entity.NotificationConfigId,
+            SubmitNotificationConfigId = entity.SubmitNotificationConfigId,
+            RejectNotificationConfigId = entity.RejectNotificationConfigId,
+            SendBackNotificationConfigId = entity.SendBackNotificationConfigId,
+            RemarksNotificationConfigId = entity.RemarksNotificationConfigId,
+            AssignNotificationConfigId = entity.AssignNotificationConfigId,
+            ReminderNotificationConfigId = entity.ReminderNotificationConfigId
         };
     }
 }

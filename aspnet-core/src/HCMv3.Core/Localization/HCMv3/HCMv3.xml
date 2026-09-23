@@ -1894,6 +1894,13 @@
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">This step needs a comment before you can approve.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">Escalated automatically after no action.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) has been waiting for your approval for {2} day(s).</text>
+    <text name="WorkflowRequestHasBeenSubmitted">{0} ({1}) has been sent to you for approval by {2}.</text>
+    <text name="WorkflowRequestHasBeenApproved">{0} ({1}) has been approved by {2}.</text>
+    <text name="WorkflowRequestHasBeenRejected">{0} ({1}) has been rejected by {2}.</text>
+    <text name="WorkflowRequestHasBeenSentBack">{0} ({1}) has been sent back by {2}.</text>
+    <text name="WorkflowRequestHasANewRemark">{2} has commented on {0} ({1}).</text>
+    <text name="WorkflowRequestHasBeenReassigned">{0} ({1}) has been reassigned by {2}.</text>
+    <text name="WorkflowRequestIsStillWaiting">{0} ({1}) is still waiting for a decision.</text>
     <text name="RequestNotFound">That request could not be found.</text>
     <text name="ThisRequestCanNoLongerBeCancelled">This can no longer be withdrawn. Once approved it is a real record others may have acted on -- ask for a change instead.</text>
     <text name="RequestAsset">Request an asset</text>
@@ -6003,6 +6010,7 @@
     <text name="BackgroundTask_ReportScheduleDispatcherWorker">Scheduled report distribution</text>
     <text name="BackgroundTask_TimeEngineAutorunBackgroundWorker">Time engine nightly run</text>
     <text name="BackgroundTask_WorkflowEscalationWorker">Workflow escalation and reminders</text>
+    <text name="BackgroundTask_DailyNotificationWorker">Daily notifications</text>
     <text name="BackgroundJob_UserDataCleaningJob">User data cleanup</text>
     <text name="BackgroundJob_TenantDemoDataBuilderJob">Demo data build</text>
     <text name="BackgroundJob_MoveTenantsToAnotherEditionJob">Move companies to another edition</text>

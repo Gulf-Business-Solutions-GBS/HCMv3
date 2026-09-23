@@ -84,6 +84,7 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
             SendToAll = input.SendToAll,
             SendToAllApproved = input.SendToAllApproved,
             SendToApprover = input.SendToApprover,
+            EmailTemplateId = input.EmailTemplateId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -104,6 +105,7 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
         entity.SendToAll = input.SendToAll;
         entity.SendToAllApproved = input.SendToAllApproved;
         entity.SendToApprover = input.SendToApprover;
+        entity.EmailTemplateId = input.EmailTemplateId;
 
         await _repository.UpdateAsync(entity);
     }
@@ -127,7 +129,8 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
             ToManager = entity.ToManager,
             SendToAll = entity.SendToAll,
             SendToAllApproved = entity.SendToAllApproved,
-            SendToApprover = entity.SendToApprover
+            SendToApprover = entity.SendToApprover,
+            EmailTemplateId = entity.EmailTemplateId
         };
     }
 
@@ -144,7 +147,8 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
             ToManager = entity.ToManager,
             SendToAll = entity.SendToAll,
             SendToAllApproved = entity.SendToAllApproved,
-            SendToApprover = entity.SendToApprover
+            SendToApprover = entity.SendToApprover,
+            EmailTemplateId = entity.EmailTemplateId
         };
     }
 }

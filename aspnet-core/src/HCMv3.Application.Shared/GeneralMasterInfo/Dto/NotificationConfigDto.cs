@@ -24,4 +24,9 @@ public class NotificationConfigDto : EntityDto<int>
     public bool SendToAllApproved { get; set; }
 
     public bool SendToApprover { get; set; }
+
+    /// <summary>
+    /// The template this configuration sends. Optional -- without one it notifies in the app only.
+    /// </summary>
+    public int? EmailTemplateId { get; set; }
 }

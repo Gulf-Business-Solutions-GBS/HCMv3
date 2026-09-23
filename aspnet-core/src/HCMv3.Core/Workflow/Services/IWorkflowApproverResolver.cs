@@ -48,6 +48,18 @@ public interface IWorkflowApproverResolver
     /// have unrelated approvals logged as being on anyone's behalf.
     /// </para>
     /// </summary>
+    /// <summary>
+    /// Everyone currently holding <paramref name="workflowRoleId"/>, narrowed to the requester's own slice of
+    /// the organisation when <paramref name="roleGroup"/> asks for it.
+    ///
+    /// <para>
+    /// Exposed for the notification side, which sends to role holders exactly as the routing side picks them.
+    /// A notification that reached a different set of people from the ones who can act on the request is a
+    /// support call waiting to happen, so both read this one method.
+    /// </para>
+    /// </summary>
+    List<int> ResolveRoleHolders(int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId);
+
     int? ResolveDelegatedFrom(
         WorkflowRequest request,
         RequestMaster requestMaster,

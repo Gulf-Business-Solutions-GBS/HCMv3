@@ -1318,6 +1318,74 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
         modelBuilder.Entity<BinaryObject>(b => { b.HasIndex(e => new { e.TenantId }); });
 
+        // Per-step workflow notifications. Seven optional FKs from one table to NotificationConfig, so every
+        // one is spelled out: EF's default cascade would give SQL Server seven cascade paths into the same
+        // table and it refuses to create the constraints at all. Restrict is also the behaviour that belongs
+        // here -- deleting a notification configuration must not take approval steps with it.
+        modelBuilder.Entity<HCMv3.Workflow.RequestDetail>(b =>
+        {
+            b.HasOne(e => e.NotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.NotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.SubmitNotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.SubmitNotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.RejectNotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.RejectNotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.SendBackNotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.SendBackNotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.RemarksNotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.RemarksNotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.AssignNotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.AssignNotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ReminderNotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.ReminderNotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<HCMv3.GeneralMasterInfo.NotificationConfig>(b =>
+        {
+            b.HasOne(e => e.EmailTemplate)
+                .WithMany()
+                .HasForeignKey(e => e.EmailTemplateId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasMany(e => e.NotificationGroups)
+                .WithOne(e => e.NotificationConfig)
+                .HasForeignKey(e => e.NotificationConfigId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<HCMv3.GeneralMasterInfo.NotificationGroup>(b =>
+        {
+            b.HasOne(e => e.WorkflowRole)
+                .WithMany()
+                .HasForeignKey(e => e.WorkflowRoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.WorkflowRoleOrg)
+                .WithMany()
+                .HasForeignKey(e => e.WorkflowRoleOrgId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         // Every read of attachments is "the files of this one record".
         modelBuilder.Entity<AppAttachment>(b => { b.HasIndex(e => new { e.TenantId, e.EntityType, e.EntityId }); });
 

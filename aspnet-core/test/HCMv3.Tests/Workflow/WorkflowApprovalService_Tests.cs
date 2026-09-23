@@ -33,7 +33,23 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             FakeRepository.For<Employee>(Context),
             CreateApproverResolver(),
             CreateResolver(),
-            CreateHandlerResolver());
+            CreateHandlerResolver(),
+            CreateNotificationDispatcher());
+    }
+
+    /// <summary>
+    /// A substitute, unlike the approver and delegation resolvers above.
+    ///
+    /// <para>
+    /// Notifications are deliberately outside what these tests assert: the engine's contract is that they
+    /// cannot affect an approval either way, so a real dispatcher here would add a dependency on email
+    /// configuration and the notification framework to every test of the routing itself. Who gets told what
+    /// is covered by <c>WorkflowNotifications_Tests</c>.
+    /// </para>
+    /// </summary>
+    private static IWorkflowNotificationDispatcher CreateNotificationDispatcher()
+    {
+        return Substitute.For<IWorkflowNotificationDispatcher>();
     }
 
     /// <summary>

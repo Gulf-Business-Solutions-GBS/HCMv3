@@ -47,4 +47,28 @@ public class RequestDetailDto : EntityDto<int>
     public bool SignatoryStep { get; set; }
 
     public int ReminderDays { get; set; }
+
+    /// <summary>
+    /// Who is told when this step acts, one setting per action. All optional: an action with nothing chosen
+    /// notifies nobody, which is how every chain behaved before these were restored.
+    /// </summary>
+    public int? NotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public int? SubmitNotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public int? RejectNotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public int? SendBackNotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public int? RemarksNotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public int? AssignNotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public int? ReminderNotificationConfigId { get; set; }
 }

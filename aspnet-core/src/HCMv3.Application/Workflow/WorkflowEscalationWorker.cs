@@ -47,6 +47,8 @@ public class WorkflowEscalationWorker : RecordedPeriodicBackgroundWorkerBase, IS
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IWorkflowEscalationService _escalationService;
     private readonly IAppNotifier _appNotifier;
+    private readonly IRepository<WorkflowRequest> _workflowRequestRepository;
+    private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
 
     public WorkflowEscalationWorker(
         AbpTimer timer,
@@ -54,9 +56,13 @@ public class WorkflowEscalationWorker : RecordedPeriodicBackgroundWorkerBase, IS
         IRepository<Tenant> tenantRepository,
         IRepository<Employee> employeeRepository,
         IWorkflowEscalationService escalationService,
-        IAppNotifier appNotifier)
+        IAppNotifier appNotifier,
+        IRepository<WorkflowRequest> workflowRequestRepository,
+        IWorkflowNotificationDispatcher notificationDispatcher)
         : base(timer)
     {
+        _workflowRequestRepository = workflowRequestRepository;
+        _notificationDispatcher = notificationDispatcher;
         _unitOfWorkManager = unitOfWorkManager;
         _tenantRepository = tenantRepository;
         _employeeRepository = employeeRepository;
@@ -135,7 +141,22 @@ public class WorkflowEscalationWorker : RecordedPeriodicBackgroundWorkerBase, IS
                 {
                     try
                     {
-                        NotifyApprovers(tenantId, reminder);
+                        // The step's own reminder configuration wins when there is one -- it may address
+                        // people beyond the approvers, and by email as well. Only when nothing is configured
+                        // does the plain in-app nudge to the approvers stand in for it, so a chain that was
+                        // never set up still chases itself.
+                        var request = AsyncHelper.RunSync(
+                            () => _workflowRequestRepository.FirstOrDefaultAsync(r => r.Id == reminder.WorkflowRequestId));
+
+                        var dispatched = request != null && AsyncHelper.RunSync(() => _notificationDispatcher.DispatchAsync(
+                            request,
+                            reminder.WorkflowStep,
+                            WorkflowNotificationAction.Reminder));
+
+                        if (!dispatched)
+                        {
+                            NotifyApprovers(tenantId, reminder);
+                        }
                     }
                     catch (Exception ex)
                     {

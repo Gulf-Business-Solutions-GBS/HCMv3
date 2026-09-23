@@ -168,7 +168,7 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         var candidates = RoleHolders(requestDetail.EscalateWorkflowRoleId.Value);
 
         candidates = NarrowToRequesterScope(
-            request,
+            request.EmployeeId,
             candidates,
             requestDetail.EscalateWorkflowRoleGroup);
 
@@ -199,7 +199,7 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
             var holders = RoleHolders(requestDetail.WorkflowRoleId.Value);
 
-            return NarrowToRequesterScope(request, holders, requestDetail.WorkflowRoleGroup);
+            return NarrowToRequesterScope(request.EmployeeId, holders, requestDetail.WorkflowRoleGroup);
         }
 
         var level = ManagerLevelOf(requestDetail.ApproverPerson);
@@ -278,6 +278,11 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         return currentId;
     }
 
+    public List<int> ResolveRoleHolders(int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId)
+    {
+        return NarrowToRequesterScope(requesterEmployeeId, RoleHolders(workflowRoleId), roleGroup);
+    }
+
     private List<int> RoleHolders(int workflowRoleId)
     {
         var today = DateTime.Today;
@@ -302,19 +307,19 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     /// </para>
     /// </summary>
     private List<int> NarrowToRequesterScope(
-        WorkflowRequest request,
+        int? requesterEmployeeId,
         List<int> candidateEmployeeIds,
         WorkflowRoleGroup roleGroup)
     {
         if (roleGroup == WorkflowRoleGroup.None
             || roleGroup == WorkflowRoleGroup.Company
             || candidateEmployeeIds.Count == 0
-            || !request.EmployeeId.HasValue)
+            || !requesterEmployeeId.HasValue)
         {
             return candidateEmployeeIds;
         }
 
-        var requesterScope = CurrentScopeOf(request.EmployeeId.Value, roleGroup);
+        var requesterScope = CurrentScopeOf(requesterEmployeeId.Value, roleGroup);
         if (requesterScope == null)
         {
             return candidateEmployeeIds;

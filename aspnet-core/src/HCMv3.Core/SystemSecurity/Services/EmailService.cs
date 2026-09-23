@@ -29,6 +29,7 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
     private readonly IWorkflowDelegationResolver _delegationResolver;
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
+    private readonly INotificationRecipientResolver _recipientResolver;
     private readonly IEmailSender _emailSender;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IAbpSession _abpSession;
@@ -40,10 +41,12 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
         IWorkflowDelegationResolver delegationResolver,
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<RequestLog> requestLogRepository,
+        INotificationRecipientResolver recipientResolver,
         IEmailSender emailSender,
         ISysSettingsAccessor sysSettingsAccessor,
         IAbpSession abpSession)
     {
+        _recipientResolver = recipientResolver;
         _emailTokenRepository = emailTokenRepository;
         _emailNotificationLogRepository = emailNotificationLogRepository;
         _employeeRepository = employeeRepository;
@@ -304,65 +307,7 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
             return;
         }
 
-        var sentEmails = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var employee = ResolveEmployee(obj);
-
-        if (notificationConfig.ToEmployee && employee != null && employee.Status != EmployeeStatus.Inactive)
-        {
-            await SendWithDelegateAsync(employee, emailTemplate, obj, mergeValues, sentEmails);
-        }
-
-        if (notificationConfig.ToRequestCreator)
-        {
-            var creator = ResolveRequestCreator(obj);
-            if (creator != null && creator.Status != EmployeeStatus.Inactive && sentEmails.Add(creator.Email ?? string.Empty))
-            {
-                await SendEmailAsync(emailTemplate, creator, obj, mergeValues);
-            }
-        }
-
-        if (notificationConfig.ToManager && employee != null && employee.Status != EmployeeStatus.Inactive)
-        {
-            var manager = ResolveCurrentManager(employee.Id);
-            if (manager != null && manager.Status == EmployeeStatus.Active)
-            {
-                await SendWithDelegateAsync(manager, emailTemplate, obj, mergeValues, sentEmails);
-            }
-        }
-
-        if (notificationConfig.SendToAllApproved && obj is WorkflowRequest workflowRequest)
-        {
-            var approverIds = _requestLogRepository.GetAll()
-                .Where(r => r.WorkflowRequestId == workflowRequest.Id && r.ActionType == RequestActionType.Approved
-                            && r.ActionById != null)
-                .Select(r => r.ActionById.Value)
-                .Distinct()
-                .ToList();
-
-            var approvers = _employeeRepository.GetAll().Where(e => approverIds.Contains(e.Id)).ToList();
-
-            foreach (var approver in approvers.Where(a => a != null && a.Status != EmployeeStatus.Inactive))
-            {
-                await SendWithDelegateAsync(approver, emailTemplate, obj, mergeValues, sentEmails);
-            }
-        }
-
-        // SKIPPED: legacy NotificationGroup -> EmployeeWorkflowRole fan-out -- see IEmailService remarks.
-
-        if (notificationConfig.SendToAll)
-        {
-            var activeEmployees = _employeeRepository.GetAll()
-                .Where(e => e.Status == EmployeeStatus.Active)
-                .ToList();
-
-            foreach (var activeEmployee in activeEmployees)
-            {
-                if (sentEmails.Add(activeEmployee.Email ?? string.Empty))
-                {
-                    await SendEmailAsync(emailTemplate, activeEmployee, obj, mergeValues);
-                }
-            }
-        }
+        await SendToResolvedRecipientsAsync(notificationConfig, emailTemplate, obj, null, mergeValues);
     }
 
     public async Task SendEmailForNotificationConfigAsync(
@@ -377,16 +322,35 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
             return;
         }
 
+        // Legacy's userList overload sent ONLY to the named codes, ignoring the configuration's own flags and
+        // groups, so a blank configuration carries just the list through to the resolver.
+        await SendToResolvedRecipientsAsync(
+            new NotificationConfig(),
+            emailTemplate,
+            obj,
+            employeeCodeList,
+            mergeValues);
+    }
+
+    /// <summary>
+    /// Sends one template to everybody <see cref="INotificationRecipientResolver"/> says the configuration
+    /// addresses, skipping anyone whose address has already been written to in this send.
+    /// </summary>
+    private async Task SendToResolvedRecipientsAsync(
+        NotificationConfig notificationConfig,
+        EmailTemplate emailTemplate,
+        object obj,
+        string employeeCodeList,
+        IDictionary<string, object> mergeValues)
+    {
         var sentEmails = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var codes = employeeCodeList.Split(',').Select(c => c.Trim()).Where(c => c.Length > 0).ToList();
 
-        var employees = _employeeRepository.GetAll()
-            .Where(e => codes.Contains(e.Code) && e.Status == EmployeeStatus.Active)
-            .ToList();
-
-        foreach (var employee in employees)
+        foreach (var recipient in _recipientResolver.Resolve(notificationConfig, obj, employeeCodeList))
         {
-            await SendWithDelegateAsync(employee, emailTemplate, obj, mergeValues, sentEmails);
+            if (sentEmails.Add(recipient.Email ?? string.Empty))
+            {
+                await SendEmailAsync(emailTemplate, recipient, obj, mergeValues);
+            }
         }
     }
 
@@ -590,25 +554,6 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
         return logs;
     }
 
-    private async Task SendWithDelegateAsync(
-        Employee employee,
-        EmailTemplate emailTemplate,
-        object obj,
-        IDictionary<string, object> mergeValues,
-        HashSet<string> sentEmails)
-    {
-        var delegateTo = ResolveActiveDelegate(employee.Id);
-        if (delegateTo != null && sentEmails.Add(delegateTo.Email ?? string.Empty))
-        {
-            await SendEmailAsync(emailTemplate, delegateTo, obj, mergeValues);
-        }
-
-        if (sentEmails.Add(employee.Email ?? string.Empty))
-        {
-            await SendEmailAsync(emailTemplate, employee, obj, mergeValues);
-        }
-    }
-
     // NOTE: navigation properties (EmployeeManager.Manager, and the delegate behind the id returned by
     // IWorkflowDelegationResolver) are resolved via
     // a second flat-FK repository lookup rather than the navigation property itself: this Core-layer domain
@@ -633,11 +578,18 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
         return delegateToId == null ? null : _employeeRepository.GetAll().FirstOrDefault(e => e.Id == delegateToId);
     }
 
+    /// <summary>
+    /// Compares the date columns directly rather than through <c>DateTime.Date</c>: they hold no time, and
+    /// the <c>.Date</c> call becomes a SQL function whose result does not compare as a date on every
+    /// provider — which finds no manager at all rather than failing. Same fix as
+    /// <see cref="NotificationRecipientResolver"/>'s.
+    /// </summary>
     private Employee ResolveCurrentManager(int employeeId)
     {
-        var today = DateTime.Now.Date;
+        var today = DateTime.Today;
         var managerId = _employeeManagerRepository.GetAll()
-            .Where(m => m.EmployeeId == employeeId && m.StartDate.Date <= today && m.EndDate.Date >= today)
+            .Where(m => m.EmployeeId == employeeId && m.StartDate <= today && m.EndDate >= today)
+            .OrderByDescending(m => m.StartDate)
             .Select(m => (int?)m.ManagerId)
             .FirstOrDefault();
 

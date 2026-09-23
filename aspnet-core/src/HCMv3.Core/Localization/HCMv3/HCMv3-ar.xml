@@ -1877,6 +1877,13 @@
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">تتطلب هذه الخطوة إضافة ملاحظة قبل الاعتماد.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">تم التصعيد تلقائياً لعدم اتخاذ إجراء.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) بانتظار اعتمادك منذ {2} يوم.</text>
+    <text name="WorkflowRequestHasBeenSubmitted">تم إرسال {0} ({1}) إليك للاعتماد من {2}.</text>
+    <text name="WorkflowRequestHasBeenApproved">تم اعتماد {0} ({1}) من {2}.</text>
+    <text name="WorkflowRequestHasBeenRejected">تم رفض {0} ({1}) من {2}.</text>
+    <text name="WorkflowRequestHasBeenSentBack">تمت إعادة {0} ({1}) من {2}.</text>
+    <text name="WorkflowRequestHasANewRemark">أضاف {2} تعليقاً على {0} ({1}).</text>
+    <text name="WorkflowRequestHasBeenReassigned">تمت إعادة إسناد {0} ({1}) من {2}.</text>
+    <text name="WorkflowRequestIsStillWaiting">لا يزال {0} ({1}) بانتظار القرار.</text>
     <text name="RequestNotFound">تعذّر العثور على هذا الطلب.</text>
     <text name="ThisRequestCanNoLongerBeCancelled">لا يمكن سحب هذا الطلب بعد الآن. فبعد اعتماده يصبح سجلاً فعلياً قد يكون آخرون قد تصرفوا بناءً عليه — الرجاء طلب تعديل بدلاً من ذلك.</text>
     <text name="RequestAsset">طلب عهدة</text>
@@ -5849,6 +5856,7 @@
     <text name="BackgroundTask_ReportScheduleDispatcherWorker">توزيع التقارير المجدولة</text>
     <text name="BackgroundTask_TimeEngineAutorunBackgroundWorker">التشغيل الليلي لمحرك الوقت</text>
     <text name="BackgroundTask_WorkflowEscalationWorker">تصعيد سير العمل والتذكيرات</text>
+    <text name="BackgroundTask_DailyNotificationWorker">الإشعارات اليومية</text>
     <text name="BackgroundJob_UserDataCleaningJob">تنظيف بيانات المستخدم</text>
     <text name="BackgroundJob_TenantDemoDataBuilderJob">إنشاء بيانات تجريبية</text>
     <text name="BackgroundJob_MoveTenantsToAnotherEditionJob">نقل الشركات إلى إصدار آخر</text>

@@ -137,6 +137,11 @@ public class HCMv3WebHostModule : AbpModule
         // on and nothing ever escalates, which is harder to notice than the feature being absent.
         workManager.Add(IocManager.Resolve<WorkflowEscalationWorker>());
 
+        // DATE-DRIVEN NOTIFICATIONS: birthdays, anniversaries, leave pay owed before travel, a return from
+        // leave that never came, a punch during leave. Same reasoning as above -- these were ported and
+        // tested but had no caller at all, so every one of them was configurable and silent.
+        workManager.Add(IocManager.Resolve<HCMv3.Notifications.DailyNotificationWorker>());
+
         ConfigureExternalAuthProviders();
     }
 

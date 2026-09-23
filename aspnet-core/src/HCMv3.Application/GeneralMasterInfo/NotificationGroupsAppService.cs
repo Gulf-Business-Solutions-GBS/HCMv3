@@ -15,7 +15,8 @@ namespace HCMv3.GeneralMasterInfo;
 /// <summary>
 /// Application service for the NotificationGroup detail record (ported from legacy XAF NotificationGroup).
 /// Pure detail record (no Code/NameEn/NameAr): plain CRUD without auto-code or duplicate validation.
-/// The legacy <c>WorkflowRole</c>, <c>WorkflowRoleGroup</c> and <c>OrganizationUnitType</c> FKs are not ported.
+/// A group names a workflow role whose current holders are notified, optionally narrowed to the requester's own
+/// company, department, branch or cost centre.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_NotificationGroups)]
 public class NotificationGroupsAppService : HCMv3AppServiceBase, INotificationGroupsAppService
@@ -75,6 +76,9 @@ public class NotificationGroupsAppService : HCMv3AppServiceBase, INotificationGr
         var entity = new NotificationGroup
         {
             NotificationConfigId = input.NotificationConfigId,
+            WorkflowRoleId = input.WorkflowRoleId,
+            WorkflowRoleGroup = input.WorkflowRoleGroup,
+            WorkflowRoleOrgId = input.WorkflowRoleOrgId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -87,6 +91,9 @@ public class NotificationGroupsAppService : HCMv3AppServiceBase, INotificationGr
         var entity = await _repository.GetAsync(input.Id.Value);
 
         entity.NotificationConfigId = input.NotificationConfigId;
+        entity.WorkflowRoleId = input.WorkflowRoleId;
+        entity.WorkflowRoleGroup = input.WorkflowRoleGroup;
+        entity.WorkflowRoleOrgId = input.WorkflowRoleOrgId;
 
         await _repository.UpdateAsync(entity);
     }
@@ -103,7 +110,11 @@ public class NotificationGroupsAppService : HCMv3AppServiceBase, INotificationGr
         {
             Id = entity.Id,
             NotificationConfigId = entity.NotificationConfigId,
-            NotificationConfigName = entity.NotificationConfig?.Name
+            NotificationConfigName = entity.NotificationConfig?.Name,
+            WorkflowRoleId = entity.WorkflowRoleId,
+            WorkflowRoleNameEn = entity.WorkflowRole?.NameEn,
+            WorkflowRoleGroup = entity.WorkflowRoleGroup,
+            WorkflowRoleOrgId = entity.WorkflowRoleOrgId
         };
     }
 
@@ -112,7 +123,10 @@ public class NotificationGroupsAppService : HCMv3AppServiceBase, INotificationGr
         return new CreateOrEditNotificationGroupDto
         {
             Id = entity.Id,
-            NotificationConfigId = entity.NotificationConfigId
+            NotificationConfigId = entity.NotificationConfigId,
+            WorkflowRoleId = entity.WorkflowRoleId,
+            WorkflowRoleGroup = entity.WorkflowRoleGroup,
+            WorkflowRoleOrgId = entity.WorkflowRoleOrgId
         };
     }
 }

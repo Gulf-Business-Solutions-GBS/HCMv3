@@ -23,6 +23,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IWorkflowApproverResolver _approverResolver;
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
+    private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
 
     public WorkflowApprovalService(
         IRepository<WorkflowRequest> workflowRequestRepository,
@@ -33,8 +34,10 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         IRepository<Employee> employeeRepository,
         IWorkflowApproverResolver approverResolver,
         IRequestMasterResolver requestMasterResolver,
-        IWorkflowTransactionHandlerResolver handlerResolver)
+        IWorkflowTransactionHandlerResolver handlerResolver,
+        IWorkflowNotificationDispatcher notificationDispatcher)
     {
+        _notificationDispatcher = notificationDispatcher;
         _workflowRequestRepository = workflowRequestRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
         _requestLogRepository = requestLogRepository;
@@ -91,6 +94,14 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         {
             await handler.OnSubmittedAsync(context);
         }
+
+        // Last, once the request is real and routed: the people it has landed on are told they have something
+        // to look at.
+        await _notificationDispatcher.DispatchAsync(
+            request,
+            step: 1,
+            WorkflowNotificationAction.Submit,
+            actingEmployeeId);
     }
 
     public async Task ApproveAsync(int requestId, int actingEmployeeId, string remark)
@@ -174,6 +185,24 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
                 await handler.OnApprovedAsync(new WorkflowTransactionContext(request, actingEmployeeId, remark));
             }
         }
+
+        await _notificationDispatcher.DispatchAsync(
+            request,
+            currentStep,
+            WorkflowNotificationAction.Approve,
+            actingEmployeeId,
+            remark);
+
+        if (!isFinalApproval)
+        {
+            // The step it has just moved TO announces its own arrival, exactly as if the request had been
+            // submitted to it -- otherwise the one person who now has to act is the one person not told.
+            await _notificationDispatcher.DispatchAsync(
+                request,
+                request.WorkflowStep,
+                WorkflowNotificationAction.Submit,
+                actingEmployeeId);
+        }
     }
 
     public async Task RejectAsync(int requestId, int actingEmployeeId, string remark)
@@ -209,6 +238,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         {
             await rejectHandler.OnRejectedAsync(new WorkflowTransactionContext(request, actingEmployeeId, remark));
         }
+
+        await _notificationDispatcher.DispatchAsync(
+            request,
+            request.WorkflowStep,
+            WorkflowNotificationAction.Reject,
+            actingEmployeeId,
+            remark);
     }
 
     public async Task SendBackAsync(int requestId, int actingEmployeeId, string remark)
@@ -250,6 +286,15 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         {
             await sendBackHandler.OnSentBackAsync(new WorkflowTransactionContext(request, actingEmployeeId, remark));
         }
+
+        // Announced from the step it was sent back FROM, since that is the step whose configuration decided
+        // to send it back and therefore the one that says who should hear about it.
+        await _notificationDispatcher.DispatchAsync(
+            request,
+            stepBeingSentBackFrom,
+            WorkflowNotificationAction.SendBack,
+            actingEmployeeId,
+            remark);
     }
 
     public async Task ReassignAsync(int requestId, int actingEmployeeId, int newApproverEmployeeId, string remark)
@@ -279,6 +324,15 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         await AddLogAsync(request, actingEmployeeId, RequestActionType.Transferred, remark, request.WorkflowStep);
 
         await _workflowRequestRepository.UpdateAsync(request);
+
+        // Resolved AFTER the approver rows were repointed, so the person now holding the step is among the
+        // people told about it.
+        await _notificationDispatcher.DispatchAsync(
+            request,
+            request.WorkflowStep,
+            WorkflowNotificationAction.Reassign,
+            actingEmployeeId,
+            remark);
     }
 
     /// <summary>

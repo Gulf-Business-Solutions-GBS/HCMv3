@@ -86,23 +86,22 @@ public interface IEmailService
     object GetPropertyValue(object src, string propName);
 
     /// <summary>
-    /// Resolves recipients from <paramref name="notificationConfig"/>'s routing flags
-    /// (<c>ToEmployee</c>/<c>ToRequestCreator</c>/<c>ToManager</c>/<c>SendToAllApproved</c>/
-    /// <c>SendToAll</c>) and sends <paramref name="emailTemplate"/> to each (de-duplicated by email address),
-    /// including each recipient's active <see cref="HCMv3.PersonnelAdministration.EmployeeDelegation"/>
-    /// delegate (both the delegate and the original recipient are emailed, matching legacy behavior).
-    /// Ported from legacy <c>SendEmail(NotificationConfig, obj, session, objList)</c>.
+    /// Sends <paramref name="emailTemplate"/> to everybody <paramref name="notificationConfig"/> addresses,
+    /// de-duplicated by email address. Ported from legacy
+    /// <c>SendEmail(NotificationConfig, obj, session, objList)</c>.
     ///
-    /// ADAPTATION: legacy resolved <c>notificationConfig.EmailTemplate</c> directly; this port's
-    /// <see cref="NotificationConfig"/> does not carry that FK (dropped in the entity's own porting wave --
-    /// see its doc remarks), so the template must be supplied explicitly by the caller.
+    /// <para>
+    /// WHO those people are is <see cref="INotificationRecipientResolver"/>'s answer, not this method's: the
+    /// in-app channel asks the same question and the two must not diverge. That includes the per-
+    /// <c>NotificationGroup</c> fan-out to workflow role holders, which this port skipped in its first pass
+    /// and now honours.
+    /// </para>
     ///
-    /// SKIPPED: legacy's per-<c>NotificationGroup</c> fan-out to <c>EmployeeWorkflowRole</c> members
-    /// (optionally filtered by <c>WorkflowRoleOrg</c>/<c>WorkflowRoleGroup</c>) is not ported -- this port's
-    /// <see cref="NotificationGroup"/> entity dropped the <c>WorkflowRole</c>/<c>WorkflowRoleGroup</c>/
-    /// <c>OrganizationUnitType</c> FKs it would need (Workflow/Organization modules out of scope for that
-    /// entity's own wave -- see its doc remarks), and no <c>EmployeeWorkflowRole</c> entity exists in this
-    /// port to query membership from regardless.
+    /// <para>
+    /// The template is still passed explicitly rather than read from the configuration. Several callers --
+    /// the birthday, anniversary and leave-resumption runs -- pick their template by name, and a
+    /// configuration reused across them would have to carry only one.
+    /// </para>
     /// </summary>
     Task SendEmailForNotificationConfigAsync(
         NotificationConfig notificationConfig,
