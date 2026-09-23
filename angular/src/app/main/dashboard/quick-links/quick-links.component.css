@@ -1,5 +1,5 @@
-/* Dashboard quick links. Palette follows the sidebar shortcuts, since they are the same idea in a
-   different place and should not look like two unrelated features. */
+/* Dashboard quick links. Palette comes from the theme, so these follow a theme change and
+   invert under dark mode rather than staying a pale tile on a dark card. */
 
 .ql-card {
     margin-bottom: 20px;
@@ -13,7 +13,7 @@
 .ql-title {
     font-size: 15px;
     font-weight: 600;
-    color: #23313a;
+    color: var(--bs-gray-900);
 }
 
 .ql-body {
@@ -23,7 +23,7 @@
 .ql-band + .ql-band {
     margin-top: 14px;
     padding-top: 12px;
-    border-top: 1px solid #edf1f3;
+    border-top: 1px solid var(--bs-border-color);
 }
 
 .ql-band-head {
@@ -32,7 +32,7 @@
     font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: #6b7c85;
+    color: var(--bs-gray-700);
 }
 
 .ql-grid {
@@ -49,18 +49,18 @@
     gap: 8px;
     min-width: 0;
     padding: 9px 12px;
-    background: #f7f9fa;
-    border: 1px solid #dfe6ea;
+    background: var(--bs-gray-100);
+    border: 1px solid var(--bs-border-color);
     border-radius: 4px;
     font-size: 13px;
-    color: #23313a;
+    color: var(--bs-gray-900);
     text-decoration: none;
 }
 
 .ql-link:hover {
-    background: #eef6f8;
-    border-color: #0b6e80;
-    color: #0b6e80;
+    background: var(--bs-primary-light);
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
 }
 
 .ql-code {
@@ -68,7 +68,7 @@
     font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
     font-size: 10px;
     font-weight: 600;
-    color: #8b9aa3;
+    color: var(--bs-gray-600);
 }
 
 .ql-name {
@@ -81,7 +81,7 @@
 .ql-manage {
     margin: 0;
     font-size: 12px;
-    color: #6b7c85;
+    color: var(--bs-gray-700);
 }
 
 .ql-manage {
@@ -91,6 +91,6 @@
 /* Recents are where you happened to be, not where you chose to go -- lighter than the two sections
    above so the eye lands on the deliberate lists first. */
 .ql-link-quiet {
-    background: #fff;
+    background: var(--bs-body-bg);
     border-style: dashed;
 }
