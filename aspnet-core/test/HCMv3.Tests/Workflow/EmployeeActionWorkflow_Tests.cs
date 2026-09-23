@@ -201,7 +201,7 @@ public class EmployeeActionWorkflow_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.RequestType == "EmployeeAction"));
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("PA-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("PA-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
 
         // The request is about the SUBJECT employee, not whoever in HR raised it. The approver inbox and
         // the employee's own request list both have to show it against them.

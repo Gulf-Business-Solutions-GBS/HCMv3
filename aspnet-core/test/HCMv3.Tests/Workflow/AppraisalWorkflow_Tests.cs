@@ -227,7 +227,7 @@ public class AppraisalWorkflow_Tests : AppTestBase
 
         var request = AppraisalRequest();
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("APR-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("APR-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
 
         // About the appraisee, not about whoever in HR opened the appraisal -- the approver inbox and the
         // employee's own request list both have to show it against them.

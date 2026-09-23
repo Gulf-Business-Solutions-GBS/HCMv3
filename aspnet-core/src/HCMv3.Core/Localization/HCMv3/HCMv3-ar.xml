@@ -6737,5 +6737,11 @@
     <text name="DeleteAllNotificationsWarningMessage">سيتم حذف جميع الإشعارات الخاصة بك، المقروءة وغير المقروءة على حد سواء. لا يمكن التراجع عن هذا الإجراء.</text>
     <text name="EssInboxHeaderInfo">جميع الطلبات بانتظار اعتمادك، من كل الأنواع.</text>
     <text name="OnlyFirstRecordsAreShown">عدد الطلبات بانتظار اعتمادك أكبر مما تعرضه هذه الصفحة. استخدم عوامل التصفية لتضييق القائمة.</text>
+    <text name="YouCanOnlyEditYourOwnRequests">لا يمكنك تعديل سوى طلباتك الخاصة.</text>
+    <text name="ThisRequestIsNoLongerADraft">تم إرسال هذا الطلب بالفعل، لذا لم يعد بالإمكان تعديله هنا.</text>
+    <text name="RequestSavedAsDraft">تم الحفظ كمسودة. لم يُرسل بعد.</text>
+    <text name="DiscardDraft">إلغاء المسودة</text>
+    <text name="ContinueDraft">متابعة</text>
+    <text name="NotSubmittedYet">لم يُرسل بعد</text>
   </texts>
 </localizationDictionary>

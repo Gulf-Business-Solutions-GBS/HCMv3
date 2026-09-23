@@ -6899,5 +6899,11 @@
     <text name="DeleteAllNotificationsWarningMessage">All of your notifications will be deleted, read and unread alike. This cannot be undone.</text>
     <text name="EssInboxHeaderInfo">Every request waiting on your approval, of every type.</text>
     <text name="OnlyFirstRecordsAreShown">More requests are waiting on you than this page can show. Use the filters to narrow the list.</text>
+    <text name="YouCanOnlyEditYourOwnRequests">You can only edit your own requests.</text>
+    <text name="ThisRequestIsNoLongerADraft">This request has already been submitted, so it can no longer be edited here.</text>
+    <text name="RequestSavedAsDraft">Saved as a draft. It has not been submitted yet.</text>
+    <text name="DiscardDraft">Discard draft</text>
+    <text name="ContinueDraft">Continue</text>
+    <text name="NotSubmittedYet">Not submitted yet</text>
   </texts>
 </localizationDictionary>

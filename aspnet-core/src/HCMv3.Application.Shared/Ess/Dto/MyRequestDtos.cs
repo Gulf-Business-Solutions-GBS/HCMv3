@@ -22,10 +22,18 @@ public class MyRequestSubmissionDto
     /// <summary>Id of the transaction row itself -- the leave, asset, loan and so on.</summary>
     public int TransactionId { get; set; }
 
-    /// <summary>Null when the type has workflow switched off, because no request was raised.</summary>
+    /// <summary>Null when the type has workflow switched off, because no request was raised. Also null for
+    /// a draft, which deliberately has no workflow request until it is submitted.</summary>
     public int? WorkflowRequestId { get; set; }
 
     public bool SubmittedForApproval { get; set; }
+
+    /// <summary>
+    /// True when the employee pressed Save rather than Submit. A third outcome, distinct from both of the
+    /// others: nothing has been sent, nothing is effective, and the screen has to say so -- "saved" alone
+    /// would read as "done", which is the one thing a draft is not.
+    /// </summary>
+    public bool SavedAsDraft { get; set; }
 }
 
 /// <summary>
@@ -47,6 +55,17 @@ public abstract class MyRequestDtoBase : EntityDto<int>
 
     /// <summary>Whether the employee may still withdraw it -- false once approved or otherwise decided.</summary>
     public bool CanCancel { get; set; }
+
+    /// <summary>
+    /// Saved but not sent: the employee's own unfinished work, which only they can see. Computed on the
+    /// server rather than left to the client to infer from the status, because "Draft" is briefly true of a
+    /// row mid-submission too, and the pair of conditions that tells the two apart is a server-side rule.
+    /// </summary>
+    public bool IsDraft { get; set; }
+
+    /// <summary>Whether the row can be reopened in the form and changed. Drafts only -- once it is with an
+    /// approver, changing it is an amendment rather than an edit.</summary>
+    public bool CanEdit { get; set; }
 }
 
 public class GetMyRequestsInput : PagedAndSortedResultRequestDto, IShouldNormalize
@@ -358,6 +377,41 @@ public class RequestExitPermitInput
     /// <summary>When the permit takes effect for the company's own records.</summary>
     public DateTime StartDate { get; set; }
 
+    public string Comments { get; set; }
+}
+
+/// <summary>
+/// An exit permit being filed as a draft rather than submitted.
+///
+/// <para>
+/// Separate from <see cref="RequestExitPermitInput"/>, and every field is optional, which is the entire
+/// reason it exists. A draft is by definition the thing you save because you cannot finish it yet -- an
+/// employee who has applied for the permit but has not been handed the number is exactly who this is for.
+/// Reusing the submit input would make the permit number <c>[Required]</c> and refuse to save the one state
+/// a draft is meant to hold. The rules are not being relaxed, only deferred: the handler still refuses a
+/// permit with no number, no exit date or no start date at submit, which is where an approver first has to
+/// rely on them.
+/// </para>
+/// </summary>
+public class SaveExitPermitDraftInput
+{
+    /// <summary>Null to file a new draft; the draft's own id to change one already filed. One method for
+    /// both, because a form that has been open for five minutes should not care which it started as.</summary>
+    public int? Id { get; set; }
+
+    [StringLength(100)]
+    public string ExternalRequestNumber { get; set; }
+
+    public TravelReason TravelReason { get; set; }
+
+    /// <summary>Null while the employee has not settled on a date. Stored as an unset date, which is the
+    /// same state the submit-time check already refuses.</summary>
+    public DateTime? ExitDate { get; set; }
+
+    /// <inheritdoc cref="ExitDate"/>
+    public DateTime? StartDate { get; set; }
+
+    [StringLength(500)]
     public string Comments { get; set; }
 }
 

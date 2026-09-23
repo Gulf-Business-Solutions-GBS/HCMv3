@@ -257,7 +257,7 @@ public class MyHRServiceAppService_Tests : AppTestBase
         var request = UsingDbContext(c => c.Set<WorkflowRequest>()
             .Single(r => r.Id == result.WorkflowRequestId.Value));
 
-        request.RequestNumber.ShouldStartWith("HRS-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("HRS-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
 
         // Routing needs the sub-type, or a chain configured per service type could never match.
         request.RequestSubTypeId.ShouldBe(typeId);

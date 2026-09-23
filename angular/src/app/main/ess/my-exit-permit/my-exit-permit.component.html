@@ -71,12 +71,19 @@
                         </div>
 
                         <div class="mt-4">
-                            <!-- Submit, not Save: this sends the permit into an approval chain rather than
-                                 filing it. -->
-                            <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
+                            <!-- Three actions, and the order is the point: Save first because it is the
+                                 safe one, Submit second because it is the one that cannot be undone
+                                 without an approver, Cancel last and visually quietest. Save files the
+                                 permit as a draft that only the requester can see; Submit sends it into
+                                 the approval chain; Cancel drops what is on screen and goes back to the
+                                 list without writing anything. -->
+                            <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="save()" data-help-loc="Save">
+                                {{ 'Save' | localize }}
+                            </button>
+                            <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()" data-help-loc="Submit">
                                 {{ 'Submit' | localize }}
                             </button>
-                            <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
+                            <button class="btn btn-light" [disabled]="saving()" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
                         </div>
                     </div>
                 </div>
@@ -112,16 +119,29 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-end">
-                                                <!-- Opening the request is the primary action: until this
-                                                     existed the requester could see a status badge but never
-                                                     what they had submitted. Replaces the old Workflow
-                                                     History button, which the detail view now contains. -->
-                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
-                                                    {{ 'Details' | localize }}
-                                                </button>
+                                                <!-- A draft has nothing to show in the detail view -- no
+                                                     number, no approver, no history -- so it offers the one
+                                                     thing it does have: picking up where it was left. -->
+                                                @if (row.canEdit) {
+                                                    <button class="btn btn-primary" (click)="continueDraft(row)" data-help-loc="ContinueDraft">
+                                                        {{ 'ContinueDraft' | localize }}
+                                                    </button>
+                                                } @else {
+                                                    <!-- Opening the request is the primary action: until this
+                                                         existed the requester could see a status badge but never
+                                                         what they had submitted. Replaces the old Workflow
+                                                         History button, which the detail view now contains. -->
+                                                    <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
+                                                    </button>
+                                                }
                                                 @if (row.canCancel) {
+                                                    <!-- The same action either way -- the row goes -- but a
+                                                         draft was never sent to anybody, so calling it
+                                                         "Withdraw" would imply taking back something that
+                                                         had been given. -->
                                                     <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
-                                                        {{ 'Withdraw' | localize }}
+                                                        {{ (row.isDraft ? 'DiscardDraft' : 'Withdraw') | localize }}
                                                     </button>
                                                 }
                                             </td>

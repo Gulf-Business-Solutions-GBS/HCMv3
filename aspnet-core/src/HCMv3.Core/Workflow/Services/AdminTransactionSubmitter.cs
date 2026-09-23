@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Runtime.Session;
@@ -19,6 +17,7 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly IAbpSession _abpSession;
+    private readonly IRequestNumberGenerator _requestNumberGenerator;
 
     public AdminTransactionSubmitter(
         IRepository<WorkflowRequest> requestRepository,
@@ -26,7 +25,8 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
         IWorkflowApprovalService workflowApprovalService,
         IEmployeeSessionService employeeSessionService,
         IUnitOfWorkManager unitOfWorkManager,
-        IAbpSession abpSession)
+        IAbpSession abpSession,
+        IRequestNumberGenerator requestNumberGenerator)
     {
         _requestRepository = requestRepository;
         _requestMasterResolver = requestMasterResolver;
@@ -34,6 +34,7 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
         _employeeSessionService = employeeSessionService;
         _unitOfWorkManager = unitOfWorkManager;
         _abpSession = abpSession;
+        _requestNumberGenerator = requestNumberGenerator;
     }
 
     public Task<int> CreateAndSubmitAsync<TEntity>(
@@ -92,7 +93,7 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
             RequestType = requestType,
             TargetEntityId = transactionId,
             RequestSubTypeId = subTypeId,
-            RequestNumber = await GenerateRequestNumberAsync(requestNumberPrefix),
+            RequestNumber = await _requestNumberGenerator.NextAsync(requestNumberPrefix),
             RequestStatus = RequestStatus.Draft,
             WorkflowStep = 0
         };
@@ -113,22 +114,4 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
         return transactionId;
     }
 
-    private async Task<string> GenerateRequestNumberAsync(string prefix)
-    {
-        var fullPrefix = prefix + "-" + DateTime.Today.Year + "-";
-
-        var lastNumber = await Task.FromResult(_requestRepository.GetAll()
-            .Where(r => r.RequestNumber.StartsWith(fullPrefix))
-            .OrderByDescending(r => r.RequestNumber)
-            .Select(r => r.RequestNumber)
-            .FirstOrDefault());
-
-        var next = 1;
-        if (!string.IsNullOrEmpty(lastNumber) && int.TryParse(lastNumber.Substring(fullPrefix.Length), out var parsed))
-        {
-            next = parsed + 1;
-        }
-
-        return fullPrefix + next.ToString("D5");
-    }
 }

@@ -236,7 +236,7 @@ public class ManpowerPlanningWorkflow_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.RequestType == "ManpowerPlanning"));
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("MP-" + DateTime.Today.Year);
+        request.RequestNumber.ShouldStartWith("MP-", "The type tag stays on the front of the number; the digits behind it now come from one tenant-wide sequence, so there is no year segment and no per-type restart.");
         request.EmployeeId.ShouldBe(employeeId);
 
         // The derived status tracks the engine with nothing else writing it.
