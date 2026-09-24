@@ -18,11 +18,23 @@ public class RequestNumberGenerator : IRequestNumberGenerator, ITransientDepende
     private const string DefaultPrefix = "REQ";
 
     /// <summary>
-    /// Six digits, so the numbers line up in a column until the tenant passes a million requests -- and
-    /// they keep sorting correctly past that, because the padding only ever stops being needed. Five was
-    /// what the old per-type format used, but a counter shared by twenty types fills up twenty times faster.
+    /// The number, and nothing else: "1", "2", "17".
+    ///
+    /// <para>
+    /// It carried a type prefix and six digits of padding -- "EXP-000001" -- which the user asked to be
+    /// removed on both counts. The prefix was already meaningless once the counter became global: every
+    /// type draws from one sequence, so "EXP" labelled the type of the FIRST request to take that number
+    /// rather than anything about the number. And padding is only worth its width when numbers are read in
+    /// a column against each other; here a request number is read on its own, in a sentence, where
+    /// "000001" says nothing that "1" does not.
+    /// </para>
+    ///
+    /// <para>
+    /// Existing rows keep the numbers they were given. Nothing renumbers, and nothing collides, because the
+    /// counter continues from where it is rather than being re-derived from the numbers already stored.
+    /// </para>
     /// </summary>
-    private const string NumberFormat = "D6";
+    private const string NumberFormat = "0";
 
     private readonly IDbContextProvider<HCMv3DbContext> _dbContextProvider;
     private readonly IAbpSession _abpSession;
@@ -42,9 +54,11 @@ public class RequestNumberGenerator : IRequestNumberGenerator, ITransientDepende
 
         var value = await ClaimAsync(context, tenantId);
 
-        var tag = prefix.IsNullOrWhiteSpace() ? DefaultPrefix : prefix.Trim();
-
-        return tag + "-" + value.ToString(NumberFormat);
+        // The prefix argument is ignored, deliberately, rather than removed from the interface: every call
+        // site still passes the one that used to label its type, and threading a now-meaningless parameter
+        // out of thirty of them would be a large diff for no behaviour. It stays as documentation of what
+        // kind of request asked, and stops meaning anything here.
+        return value.ToString(NumberFormat);
     }
 
     /// <summary>

@@ -16,13 +16,10 @@
         <div class="modal-content">
             @if (active()) {
                 <div class="modal-header">
-                    <!-- The pill is inline text, not a flex item, so it sits on the title's baseline by
-                         construction. See the stylesheet for why three attempts at flex alignment all
-                         landed a pixel or two out. -->
-                    <h4 class="modal-title">
-                        <span>{{ config()?.title }}</span>
-                        <span class="badge" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
-                    </h4>
+                    <!-- "Exit Permit (17)". One run of text, no pill: the status that used to sit beside it
+                         never did agree with the title's baseline, and it was saying something the newest
+                         entry in the conversation already says. -->
+                    <h4 class="modal-title">{{ headerTitle() }}</h4>
                     <!-- btn-close, not close: the theme bundle is Bootstrap 5 and defines only the former.
                          The old markup used BS4's .close with a Metronic ki icon inside, neither of which
                          this build styles, so the cross rendered as bare glyph that did not match. -->
@@ -36,11 +33,26 @@
                         <h3 class="ess-detail__question">{{ 'DoYouApproveThisRequest' | localize }}</h3>
                     }
 
-                    @if (initiatedBy()) {
+                    @if (initiatedByParts(); as initiated) {
                         <div class="ess-detail__subtitle text-muted">
                             <span class="fw-bold">{{ typeName() }}</span>
                             <span class="mx-2">&middot;</span>
-                            <span>{{ initiatedBy() }}</span>
+                            <!-- The name is a link into the same profile card the conversation and the
+                                 approvers list open, so a person is named the same way and reached the same
+                                 way wherever they appear. Only a link when we know WHICH person: before the
+                                 server's detail arrives there is a name but no id to look up. -->
+                            <span>{{ initiated.before }}</span>
+                            @if (requesterEmployeeId(); as employeeId) {
+                                <button
+                                    type="button"
+                                    class="ess-detail__person-link"
+                                    (click)="openRequesterProfile(employeeId)">
+                                    {{ initiated.name }}
+                                </button>
+                            } @else {
+                                <span>{{ initiated.name }}</span>
+                            }
+                            <span>{{ initiated.after }}</span>
                         </div>
                     }
 

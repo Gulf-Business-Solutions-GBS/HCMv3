@@ -251,8 +251,9 @@ public class MyExitPermitDraft_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == submitted.WorkflowRequestId.Value));
 
-        // The first number in the tenant, not the third: the two drafts took none.
-        request.RequestNumber.ShouldBe("EXP-000001");
+        // The first number in the tenant, not the third: the two drafts took none. "1", with no prefix and
+        // no padding, is the whole of a request number now.
+        request.RequestNumber.ShouldBe("1");
     }
 
     // ---------------------------------------------------------------- what a draft is
@@ -436,7 +437,7 @@ public class MyExitPermitDraft_Tests : AppTestBase
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == submitted.WorkflowRequestId.Value));
 
         // The number appears here and nowhere earlier -- the first in the tenant, because the draft took none.
-        request.RequestNumber.ShouldBe("EXP-000001");
+        request.RequestNumber.ShouldBe("1");
         request.RequestStatus.ShouldBe(RequestStatus.Open);
 
         var row = UsingDbContext(c => c.Set<EmployeeExitPermit>().IgnoreQueryFilters()

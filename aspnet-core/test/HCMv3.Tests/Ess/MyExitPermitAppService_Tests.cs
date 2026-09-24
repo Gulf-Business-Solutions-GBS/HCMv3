@@ -381,7 +381,11 @@ public class MyExitPermitAppService_Tests : AppTestBase
         row.ExternalRequestNumber.ShouldBe("KW-12345");
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("EXP-");
+
+        // A number and nothing else. It used to be "EXP-" and six padded digits; the prefix named the type of
+        // whichever request happened to take that number rather than anything about the number itself, since
+        // one counter serves every type.
+        request.RequestNumber.ShouldBe("1");
     }
 
     [Fact]

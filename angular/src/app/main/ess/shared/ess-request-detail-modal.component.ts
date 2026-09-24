@@ -20,6 +20,18 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { findRequestForm } from './ess-request-forms';
 
+/**
+ * Stands in for the requester's name while "Initiated by {0} on {1}" is being translated, so the name can be
+ * cut back out of the finished sentence and rendered as a link.
+ *
+ * <p>Any token nobody would write will do; this one is chosen to be visible if it ever leaks to the screen,
+ * because a marker that renders as nothing fails silently and one that renders as "@@name@@" does not. What
+ * it must not be is the name itself: cutting on the name breaks when the name appears twice, when it holds a
+ * character a regular expression reads as syntax, or -- the case that actually arises here -- when Arabic
+ * puts it in a different place in the sentence than English does.</p>
+ */
+const InitiatedByMarker = '@@name@@';
+
 /** One read-only field on the Request Information card. */
 export interface EssRequestDetailField {
     label: string;
@@ -110,6 +122,9 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
     private readonly _activityService = inject(WorkflowActivityServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('essRequestDetailModal');
+
+    /** The one profile card for this dialog, shared by the "Initiated by" link and the conversation. */
+    readonly profileCard = viewChild<WorkflowParticipantProfileModalComponent>('profileCard');
 
     /** Raised when the approver decides. The host owns the call, because it also owns the list to refresh. */
     readonly decided = output<EssRequestDecision>();
@@ -239,6 +254,9 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         return name && code ? `${name} (${code})` : name;
     });
 
+    /** Who the "Initiated by" link opens the card for. Absent until the server's detail arrives. */
+    readonly requesterEmployeeId = computed(() => this.detail()?.requesterEmployeeId);
+
     readonly requesterJobTitle = computed(() =>
         this.pick(this.detail()?.requesterJobTitleEn, this.detail()?.requesterJobTitleAr)
     );
@@ -252,16 +270,51 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         return this.pick(served?.requestTypeNameEn, served?.requestTypeNameAr) || this.config()?.title || '';
     });
 
-    /** "Initiated by Ahmed Al-Sayed on 21 Sep 2026", the one line that identifies the request. */
-    readonly initiatedBy = computed(() => {
+    /**
+     * "Exit Permit (17)" -- what the request IS, then which one it is.
+     *
+     * <p>The status used to sit here as a coloured pill beside the title, and getting its baseline to meet
+     * the title's proved not to be worth the attempts it took: the two never quite agreed. The status is
+     * already said plainly by the conversation's newest entry and by which buttons the approver is offered,
+     * and the number is the more useful thing to carry in a heading anyway, because it is what one person
+     * quotes to another.</p>
+     */
+    readonly headerTitle = computed(() => {
+        const name = this.typeName();
+        const number = this.detail()?.requestNumber;
+
+        return number ? `${name} (${number})` : name;
+    });
+
+    /**
+     * "Initiated by Ahmed Al-Sayed (1042) on 21 Sep 2026", split so the NAME can be a link while the rest
+     * stays ordinary prose.
+     *
+     * <p>Split by substituting a marker for the name, letting the localiser place it, and cutting there --
+     * rather than by looking for the name inside the finished sentence. See InitiatedByMarker for why
+     * cutting on the name itself is the version that breaks.</p>
+     */
+    readonly initiatedByParts = computed(() => {
         const name = this.requesterName();
         const on = this.detail()?.submittedOn;
 
         if (!name) {
-            return '';
+            return undefined;
         }
 
-        return this.l('InitiatedBy', name, on ? on.toFormat('dd MMM yyyy') : '');
+        const sentence = this.l('InitiatedBy', InitiatedByMarker, on ? on.toFormat('dd MMM yyyy') : '');
+        const at = sentence.indexOf(InitiatedByMarker);
+
+        if (at < 0) {
+            // A translation that dropped {0}. Say the name rather than lose it.
+            return { before: '', name, after: sentence ? ` ${sentence}` : '' };
+        }
+
+        return {
+            before: sentence.slice(0, at),
+            name,
+            after: sentence.slice(at + InitiatedByMarker.length),
+        };
     });
 
     /**
@@ -293,6 +346,21 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
             return served.canSendBack;
         });
     });
+
+    /**
+     * Opens the requester's card from the "Initiated by" line -- the same card, for the same person, that a
+     * name in the conversation or in the approvers list opens. Silently does nothing without a workflow id,
+     * because the card reads the person's role ON THIS REQUEST and has nothing to read without one.
+     */
+    openRequesterProfile(employeeId: number): void {
+        const workflowRequestId = this.config()?.workflowRequestId;
+
+        if (!workflowRequestId) {
+            return;
+        }
+
+        this.profileCard()?.show(workflowRequestId, employeeId, this.requesterPlainName());
+    }
 
     show(config: EssRequestDetailConfig): void {
         this.config.set(config);
