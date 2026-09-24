@@ -49,10 +49,10 @@
         } @else {
             @switch (tab()) {
                 @case ('approvers') {
-                    @for (entry of approvers(); track entry.person.employeeId + '-' + entry.workflowStep) {
+                    @for (entry of approvers(); track entry.person?.employeeId + '-' + entry.workflowStep) {
                         <div class="wf-parts__row">
                             <employee-avatar
-                                [photoUrl]="entry.person.photoUrl"
+                                [photoUrl]="entry.person?.photoUrl"
                                 [name]="plainName(entry.person)"
                                 [size]="28"></employee-avatar>
 
@@ -128,7 +128,7 @@
                     @for (entry of delegates(); track $index) {
                         <div class="wf-parts__row">
                             <employee-avatar
-                                [photoUrl]="entry.person.photoUrl"
+                                [photoUrl]="entry.person?.photoUrl"
                                 [name]="plainName(entry.person)"
                                 [size]="28"></employee-avatar>
 

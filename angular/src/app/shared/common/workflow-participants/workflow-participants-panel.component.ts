@@ -145,11 +145,15 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
     }
 
     openProfile(person: WorkflowPersonDto | undefined): void {
-        if (!this.canOpenProfile(person)) {
+        // Read the id out first rather than leaning on canOpenProfile to narrow the type for us -- narrowing
+        // does not cross a function boundary, and this stays correct if strictNullChecks is ever turned on.
+        const employeeId = person?.employeeId;
+
+        if (!employeeId) {
             return;
         }
 
-        this.profileModal()?.show(this.workflowRequestId(), person.employeeId, this.plainName(person));
+        this.profileModal()?.show(this.workflowRequestId(), employeeId, this.plainName(person));
     }
 
     jobTitle(person: WorkflowPersonDto | undefined): string {
