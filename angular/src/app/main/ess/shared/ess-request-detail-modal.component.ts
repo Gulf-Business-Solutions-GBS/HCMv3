@@ -207,22 +207,34 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         };
     });
 
-    /** "1042 - Ahmad Al Sayed", or just the name when the employee has no code. */
-    readonly employeeDisplay = computed(() => {
-        const served = this.detail();
-
-        return [served?.requesterCode, this.requesterName()].filter((part) => !!part).join(' - ');
-    });
-
-    readonly requesterName = computed(() => {
+    /** The name on its own, with no code attached either side of it. */
+    readonly requesterPlainName = computed(() => {
         const served = this.detail();
         const fromServer = this.pick(served?.requesterNameEn, served?.requesterNameAr);
-        const name = fromServer || this.config()?.requesterName || '';
 
-        // "Name (code)", the same way the approvers list and the conversation name everybody else. The code
-        // is what separates two colleagues who share a name, and showing it in one list but not another
-        // made them read as different people.
-        return name && served?.requesterCode ? `${name} (${served.requesterCode})` : name;
+        return fromServer || this.config()?.requesterName || '';
+    });
+
+    /**
+     * "1042 - Ahmad Al Sayed" for the form's Employee field, which puts the code in FRONT.
+     *
+     * Built from the plain name on purpose: requesterName() puts the code at the end, and feeding that in
+     * here produced "2362 - Shehata Kamal Seliman Awad (2362)" -- the same code at both ends of one field.
+     */
+    readonly employeeDisplay = computed(() =>
+        [this.detail()?.requesterCode, this.requesterPlainName()].filter((part) => !!part).join(' - ')
+    );
+
+    /**
+     * "Ahmad Al Sayed (1042)" -- the form used everywhere a PERSON is named rather than a field filled:
+     * the conversation, the approvers list, the "Initiated by" line. Two colleagues can share a name and
+     * the code is what separates them, so all three say it the same way.
+     */
+    readonly requesterName = computed(() => {
+        const name = this.requesterPlainName();
+        const code = this.detail()?.requesterCode;
+
+        return name && code ? `${name} (${code})` : name;
     });
 
     readonly requesterJobTitle = computed(() =>

@@ -103,19 +103,22 @@
         text-align: start;
     }
 
-    // A button that reads as a link. It opens the colleague's directory card, so it must look clickable --
-    // but only on hover, because underlining every name in the list would turn a quiet reference panel
-    // into a wall of blue and out-shout the decision buttons it sits beside.
+    // A button that reads as a link, and reads as one WITHOUT being hovered. It was styled to look like
+    // plain text until the pointer found it, on the argument that underlining every name would turn a
+    // quiet panel into a wall of blue -- but a link nobody can see is not a quiet link, it is an invisible
+    // one, and the names simply looked like labels. Whether a name can be clicked has to be visible before
+    // you click it.
     &__name--link {
         padding: 0;
         border: 0;
         background: none;
-        color: inherit;
+        color: var(--bs-primary);
+        text-decoration: underline;
         cursor: pointer;
 
         &:hover,
         &:focus-visible {
-            color: var(--bs-primary);
+            color: var(--bs-primary-active, var(--bs-primary));
             text-decoration: underline;
         }
     }
