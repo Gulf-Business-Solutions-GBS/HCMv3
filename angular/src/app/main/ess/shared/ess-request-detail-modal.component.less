@@ -51,3 +51,19 @@
     padding: 0.35rem 0;
     text-align: start;
 }
+
+// Near the full viewport, because the approver is shown the requester's REAL form and that form only
+// lays out correctly at the width the create screen gives it. Bootstrap's own modal-xl caps at 1140px;
+// once the conversation column takes its share the form was left around 900px and every field clipped
+// its own value. Capped so it does not sprawl on an ultra-wide monitor.
+.ess-detail__dialog {
+    max-width: min(1800px, 96vw);
+    margin-inline: auto;
+}
+
+// The thread sits beside the request rather than beneath it, so it has to be able to scroll on its own:
+// a long conversation must not push the decision buttons off the bottom of the dialog.
+.ess-detail__conversation .card-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}

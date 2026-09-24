@@ -7,7 +7,12 @@
     aria-labelledby="essRequestDetailModal"
     aria-hidden="true"
     [config]="{ backdrop: 'static' }">
-    <div class="modal-dialog modal-xl">
+    <!-- Near full width, deliberately. The approver is shown the requester's real form, and that
+         form lays its five fields across one row at the xl breakpoint -- which it can only do with the
+         page width the create screen gives it. Inside a modal-xl the form column came out around 900px
+         and every field truncated: "2362 - Shehata Kam", "25-Sep-2". Matching the create screen's width
+         is the point of showing the same form at all. -->
+    <div class="modal-dialog ess-detail__dialog">
         <div class="modal-content">
             @if (active()) {
                 <div class="modal-header">
@@ -17,7 +22,7 @@
                          instead of sitting on it. Laying the header out as a flex row and aligning to the
                          end puts the two on a common bottom edge whatever either one's line-height is.
                          gap-2 rather than ms-2 so the spacing follows the writing direction in Arabic. -->
-                    <h4 class="modal-title d-flex align-items-end gap-2">
+                    <h4 class="modal-title d-flex align-items-baseline gap-2">
                         <span>{{ config()?.title }}</span>
                         <span class="badge" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
                     </h4>

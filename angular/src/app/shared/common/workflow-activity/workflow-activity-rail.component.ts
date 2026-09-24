@@ -321,7 +321,15 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
     }
 
     private toEntry(activity: WorkflowActivityDto): WorkflowFeedEntry {
-        const isSystem = activity.kind === WorkflowActivityKind.Action;
+        const isAction = activity.kind === WorkflowActivityKind.Action;
+
+        // An action is a system line ONLY when it has nothing to say. The moment an approver types
+        // something as they approve, those are their words and they belong in a bubble like anyone else's,
+        // with "approved" alongside as a badge. Treating every action as a system event buried the second
+        // approver's remark in small grey text under "approved" while the requester's identical-in-kind
+        // comment sat in a bubble above it -- they read as different kinds of thing, which is exactly what
+        // they are not.
+        const isSystem = isAction && !activity.body?.trim();
 
         return {
             key: activity.kind + '-' + activity.id,
@@ -331,7 +339,9 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             authorPhotoUrl: activity.actorPhotoUrl,
             occurredAt: activity.occurredAt,
             body: activity.body,
-            actionLabel: isSystem
+            // The label follows the action, not the presentation: an approval that carries a comment still
+            // says "approved" beside the author's name, it just says it on a bubble rather than a bare line.
+            actionLabel: isAction
                 ? this.actionLabel(activity)
                 : activity.kind === WorkflowActivityKind.FeedbackRequested
                   ? this.l('FeedbackRequestedFrom', this.actorName(activity))
