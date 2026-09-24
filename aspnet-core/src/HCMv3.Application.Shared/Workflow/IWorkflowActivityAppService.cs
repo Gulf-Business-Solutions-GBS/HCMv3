@@ -30,6 +30,20 @@ public interface IWorkflowActivityAppService : IApplicationService
     /// </summary>
     Task<WorkflowRequestDetailDto> GetRequestDetail(GetWorkflowRequestDetailInput input);
 
+    /// <summary>
+    /// Who is entitled to act on one request, who has already acted, who stands in for whom, and who has
+    /// opened it.
+    ///
+    /// <para>
+    /// Sits beside <see cref="GetRequestDetail"/> rather than on a service of its own because it asks the
+    /// identical authorization question -- "is this viewer part of this request?" -- and a second copy of
+    /// that check is how the two drift apart. It is emphatically NOT
+    /// <c>IWorkFlowApproversAppService</c>, which is the admin configuration screen and is gated on an
+    /// admin permission no ordinary approver holds.
+    /// </para>
+    /// </summary>
+    Task<WorkflowParticipantsDto> GetParticipants(GetWorkflowParticipantsInput input);
+
     Task<WorkflowActivityDto> AddComment(AddWorkflowCommentInput input);
 
     Task<WorkflowActivityDto> EditComment(EditWorkflowCommentInput input);
