@@ -32,6 +32,12 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly IRepository<HCMv3.OrganizationManagement.JobTitle> _jobTitleRepository;
+    private readonly IRepository<Abp.Organizations.OrganizationUnit, long> _organizationUnitRepository;
+    private readonly IRepository<HCMv3.OrganizationManagement.WorkLocation> _workLocationRepository;
+    private readonly IRepository<WFReadLog> _readLogRepository;
+    private readonly IRepository<EmployeeDelegation> _delegationRepository;
+    private readonly IRepository<WorkflowRole> _workflowRoleRepository;
+    private readonly IWorkflowDelegationResolver _delegationResolver;
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IWorkflowApprovalService _workflowApprovalService;
     private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
@@ -50,6 +56,12 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         IRepository<RequestDetail> requestDetailRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
         IRepository<HCMv3.OrganizationManagement.JobTitle> jobTitleRepository,
+        IRepository<Abp.Organizations.OrganizationUnit, long> organizationUnitRepository,
+        IRepository<HCMv3.OrganizationManagement.WorkLocation> workLocationRepository,
+        IRepository<WFReadLog> readLogRepository,
+        IRepository<EmployeeDelegation> delegationRepository,
+        IRepository<WorkflowRole> workflowRoleRepository,
+        IWorkflowDelegationResolver delegationResolver,
         IEmployeeSessionService employeeSessionService,
         IWorkflowApprovalService workflowApprovalService,
         IWorkflowNotificationDispatcher notificationDispatcher,
@@ -68,6 +80,12 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         _requestDetailRepository = requestDetailRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _jobTitleRepository = jobTitleRepository;
+        _organizationUnitRepository = organizationUnitRepository;
+        _workLocationRepository = workLocationRepository;
+        _readLogRepository = readLogRepository;
+        _delegationRepository = delegationRepository;
+        _workflowRoleRepository = workflowRoleRepository;
+        _delegationResolver = delegationResolver;
         _employeeSessionService = employeeSessionService;
         _workflowApprovalService = workflowApprovalService;
         _handlerResolver = handlerResolver;
@@ -163,6 +181,523 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         await FillActionCapabilitiesAsync(result, request, access);
 
         return result;
+    }
+
+    /// <summary>
+    /// The decision-rights side of the request: who may act, who has acted, who stands in for whom, and who
+    /// has opened it.
+    ///
+    /// <para>
+    /// <c>[HttpPost]</c> for the same NSwag reason as the two reads above.
+    /// </para>
+    /// </summary>
+    [HttpPost]
+    public async Task<WorkflowParticipantsDto> GetParticipants(GetWorkflowParticipantsInput input)
+    {
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+        var access = await GetAccessAsync(request);
+
+        // Identical rule to GetRequestDetail, and deliberately the SAME code path. This endpoint names
+        // people -- their photo, their job title, who covers for them -- so walking the id range here would
+        // leak more about the organisation than the request itself does.
+        EnsureCanView(access);
+
+        var result = new WorkflowParticipantsDto
+        {
+            WorkflowRequestId = request.Id,
+            RequestNumber = request.RequestNumber,
+            WorkflowStep = request.WorkflowStep,
+            RequestStatus = request.RequestStatus
+        };
+
+        await FillCurrentWorkflowRoleAsync(result, request);
+
+        result.Approvers = await BuildApproversAsync(request);
+        result.Delegates = await BuildDelegatesAsync(result.Approvers);
+        result.ReadLog = await BuildReadLogAsync(request.Id);
+
+        await FillPeopleAsync(result);
+
+        return result;
+    }
+
+    /// <summary>
+    /// One participant's directory card.
+    ///
+    /// <para>
+    /// <b>Two gates, not one.</b> The caller must be able to view the request -- the same
+    /// <see cref="EnsureCanView"/> rule as everywhere else on this service -- AND the employee they are
+    /// asking about must already be ON that request. Without the second gate this would be an employee
+    /// lookup by id wearing a workflow id as a hat: anyone with one request of their own could walk the
+    /// employee table and print the staff directory. With it, the endpoint can only ever describe somebody
+    /// the request has already named to this caller.
+    /// </para>
+    ///
+    /// <para>
+    /// The card itself is work contact information only. See <see cref="WorkflowParticipantProfileDto"/>
+    /// for what is excluded and why.
+    /// </para>
+    /// </summary>
+    [HttpPost]
+    public async Task<WorkflowParticipantProfileDto> GetParticipantProfile(GetWorkflowParticipantProfileInput input)
+    {
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+        var access = await GetAccessAsync(request);
+
+        EnsureCanView(access);
+
+        if (!await IsParticipantAsync(request, input.EmployeeId))
+        {
+            throw new AbpAuthorizationException(L("YouCannotViewThisWorkflowRequest"));
+        }
+
+        var employee = await _employeeRepository.GetAll()
+            .Where(e => e.Id == input.EmployeeId)
+            .Select(e => new
+            {
+                e.Id,
+                e.Code,
+                e.FullNameEn,
+                e.FullNameAr,
+                e.Email,
+                e.BusinessLandline,
+                e.BusinessExtension,
+                HasPhoto = e.PhotoPath != null
+            })
+            .FirstOrDefaultAsync();
+
+        if (employee == null)
+        {
+            throw new UserFriendlyException(L("EmployeeNotFound"));
+        }
+
+        var result = new WorkflowParticipantProfileDto
+        {
+            EmployeeId = employee.Id,
+            Code = employee.Code,
+            NameEn = employee.FullNameEn,
+            NameAr = employee.FullNameAr,
+            WorkEmail = employee.Email,
+            BusinessLandline = employee.BusinessLandline,
+            BusinessExtension = employee.BusinessExtension,
+            PhotoUrl = employee.HasPhoto ? "/api/employee-photo/" + employee.Id : null
+        };
+
+        // The assignment they hold TODAY -- same "most recent wins" rule the rest of this service uses,
+        // because an older assignment describes a job they have already left.
+        var assignment = await _orgAssignmentRepository.GetAll()
+            .Where(a => a.EmployeeId == employee.Id)
+            .OrderByDescending(a => a.StartDate)
+            .Select(a => new { a.JobTitleId, a.OrganizationUnitId, a.WorkLocationId })
+            .FirstOrDefaultAsync();
+
+        if (assignment == null)
+        {
+            return result;
+        }
+
+        if (assignment.JobTitleId.HasValue)
+        {
+            var jobTitle = await _jobTitleRepository.GetAll()
+                .Where(t => t.Id == assignment.JobTitleId.Value)
+                .Select(t => new { t.NameEn, t.NameAr })
+                .FirstOrDefaultAsync();
+
+            result.JobTitleEn = jobTitle?.NameEn;
+            result.JobTitleAr = jobTitle?.NameAr;
+        }
+
+        if (assignment.OrganizationUnitId.HasValue)
+        {
+            result.Department = await _organizationUnitRepository.GetAll()
+                .Where(o => o.Id == assignment.OrganizationUnitId.Value)
+                .Select(o => o.DisplayName)
+                .FirstOrDefaultAsync();
+        }
+
+        if (assignment.WorkLocationId.HasValue)
+        {
+            var location = await _workLocationRepository.GetAll()
+                .Where(w => w.Id == assignment.WorkLocationId.Value)
+                .Select(w => new { w.NameEn, w.NameAr })
+                .FirstOrDefaultAsync();
+
+            result.WorkLocationEn = location?.NameEn;
+            result.WorkLocationAr = location?.NameAr;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Whether this employee appears anywhere on the request -- as its requester, an approver at any step,
+    /// either side of a delegation touching an approver, or somebody who has opened it.
+    ///
+    /// <para>
+    /// Built from the same three methods the panel itself uses, so the set of people whose card can be
+    /// opened is exactly the set of names the panel can display. A person who is not on the panel has no
+    /// card here, which is what keeps this from being a general employee lookup.
+    /// </para>
+    /// </summary>
+    private async Task<bool> IsParticipantAsync(WorkflowRequest request, int employeeId)
+    {
+        if (request.EmployeeId == employeeId)
+        {
+            return true;
+        }
+
+        var approvers = await BuildApproversAsync(request);
+        if (approvers.Any(a => a.Person.EmployeeId == employeeId))
+        {
+            return true;
+        }
+
+        var delegates = await BuildDelegatesAsync(approvers);
+        if (delegates.Any(d => d.Person.EmployeeId == employeeId || d.DelegatedBy.EmployeeId == employeeId))
+        {
+            return true;
+        }
+
+        var readLog = await BuildReadLogAsync(request.Id);
+
+        return readLog.Any(r => r.Person != null && r.Person.EmployeeId == employeeId);
+    }
+
+    /// <summary>
+    /// The role the current step names, when the request can be routed at all. A request whose
+    /// <c>RequestMaster</c> cannot be resolved still returns everything else: that request is precisely the
+    /// one somebody opens this panel to diagnose, and failing the read would hide the evidence.
+    /// </summary>
+    private async Task FillCurrentWorkflowRoleAsync(WorkflowParticipantsDto result, WorkflowRequest request)
+    {
+        try
+        {
+            var master = await _requestMasterResolver.ResolveAsync(request);
+
+            var roleId = await _requestDetailRepository.GetAll()
+                .Where(d => d.RequestMasterId == master.Id && d.Step == request.WorkflowStep)
+                .Select(d => d.WorkflowRoleId)
+                .FirstOrDefaultAsync();
+
+            if (!roleId.HasValue)
+            {
+                return;
+            }
+
+            var role = await _workflowRoleRepository.GetAll()
+                .Where(r => r.Id == roleId.Value)
+                .Select(r => new { r.NameEn, r.NameAr })
+                .FirstOrDefaultAsync();
+
+            if (role == null)
+            {
+                return;
+            }
+
+            result.CurrentWorkflowRoleNameEn = role.NameEn;
+            result.CurrentWorkflowRoleNameAr = role.NameAr;
+        }
+        catch (UserFriendlyException)
+        {
+            // Unroutable. Leave the role blank rather than refusing the whole panel.
+        }
+    }
+
+    /// <summary>
+    /// The action types that mean somebody <em>exercised approval authority</em>, and therefore that they
+    /// were an approver of the step they did it at.
+    ///
+    /// <para>
+    /// <c>Created</c> is excluded because its actor is the requester. <c>Read</c> and <c>Remarked</c> are
+    /// excluded because looking at a request, or saying something about it, is not acting on it -- counting
+    /// them would list every commenter as an approver.
+    /// </para>
+    /// </summary>
+    private static readonly RequestActionType[] DecisionActionTypes =
+    {
+        RequestActionType.Approved,
+        RequestActionType.Rejected,
+        RequestActionType.SentBack,
+        RequestActionType.SentBackToCreator
+    };
+
+    /// <summary>
+    /// Everyone entitled to act, across every step the request has passed through.
+    ///
+    /// <para>
+    /// <b>Why this is two queries and not one.</b> <c>AssignApproversForStepAsync</c> deletes every
+    /// <c>WorkFlowApprover</c> row for a request before inserting the next step's, so that table can only
+    /// ever answer for the step the request is sitting on now. At step 3 it holds no trace that anybody
+    /// approved at step 2, and a step-1 approver has no row at all. So the live table supplies the current
+    /// step and <c>RequestLog</c> -- which is never deleted, and does record who acted at which step --
+    /// supplies the history.
+    /// </para>
+    ///
+    /// <para>
+    /// The reconstruction is not free of the underlying defect, and the DTO says so on every row it
+    /// produces: a past step lists whoever ACTED, not whoever was ENTITLED to. Where three people could
+    /// have approved step 1 and one of them did, the other two are gone for good. Only making the engine
+    /// mark rows approved instead of deleting them can restore that, which is a change to the approval
+    /// path rather than to this read.
+    /// </para>
+    /// </summary>
+    private async Task<List<WorkflowApproverEntryDto>> BuildApproversAsync(WorkflowRequest request)
+    {
+        var entries = new List<WorkflowApproverEntryDto>();
+
+        var live = await _approverRepository.GetAll()
+            .Where(a => a.WorkflowRequestId == request.Id && a.ApproverId.HasValue)
+            .Select(a => new { a.ApproverId, a.IsApproved })
+            .ToListAsync();
+
+        foreach (var row in live)
+        {
+            entries.Add(new WorkflowApproverEntryDto
+            {
+                Person = new WorkflowPersonDto { EmployeeId = row.ApproverId.Value },
+                WorkflowStep = request.WorkflowStep,
+                IsApproved = row.IsApproved,
+                Origin = WorkflowApproverOrigin.CurrentStep
+            });
+        }
+
+        var decisions = await _requestLogRepository.GetAll()
+            .Where(l => l.WorkflowRequestId == request.Id
+                        && l.ActionById.HasValue
+                        && DecisionActionTypes.Contains(l.ActionType))
+            .Select(l => new { l.ActionById, l.ActionType, l.ActionDateTime, l.WorkflowStep })
+            .ToListAsync();
+
+        foreach (var group in decisions.GroupBy(d => new { d.ActionById, d.WorkflowStep }))
+        {
+            var employeeId = group.Key.ActionById.Value;
+            var step = group.Key.WorkflowStep;
+
+            // A live row for the same person at the same step already says whether they have approved, and
+            // says it from the engine's own state rather than from an inference. Skip rather than duplicate.
+            var alreadyLive = entries.Any(e => e.Origin == WorkflowApproverOrigin.CurrentStep
+                                               && e.WorkflowStep == step
+                                               && e.Person.EmployeeId == employeeId);
+
+            if (alreadyLive)
+            {
+                continue;
+            }
+
+            var last = group.OrderByDescending(d => d.ActionDateTime).First();
+
+            entries.Add(new WorkflowApproverEntryDto
+            {
+                Person = new WorkflowPersonDto { EmployeeId = employeeId },
+                WorkflowStep = step,
+
+                // Only an approval counts as approved. A step that was rejected or sent back must not read
+                // as "has not got round to it yet" -- that is a different thing entirely.
+                IsApproved = last.ActionType == RequestActionType.Approved,
+                Origin = WorkflowApproverOrigin.ReconstructedFromLog,
+                ActionType = last.ActionType,
+                ActedAt = last.ActionDateTime
+            });
+        }
+
+        return entries
+            .OrderBy(e => e.WorkflowStep)
+            .ThenBy(e => e.Person.EmployeeId)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Active delegations touching any of this request's approvers, in both directions.
+    ///
+    /// <para>
+    /// <b>Both directions, because HCMv3 SUBSTITUTES where legacy ADDED.</b>
+    /// <c>WorkflowDelegationResolver.ApplySubstitution</c> replaces a delegator with their stand-in when the
+    /// step is routed, so by the time a <c>WorkFlowApprover</c> row exists the delegator is already gone
+    /// from it. Listing only "delegations FROM the approvers", as legacy's tab did, would therefore be
+    /// empty on exactly the requests where a delegation is doing something -- and would leave the reader
+    /// with an approver list containing a name the org chart does not explain. The reverse direction is
+    /// what answers "why is Sara on this?".
+    /// </para>
+    /// </summary>
+    private async Task<List<WorkflowDelegateEntryDto>> BuildDelegatesAsync(List<WorkflowApproverEntryDto> approvers)
+    {
+        var result = new List<WorkflowDelegateEntryDto>();
+
+        var approverIds = approvers.Select(a => a.Person.EmployeeId).Distinct().ToList();
+        if (approverIds.Count == 0)
+        {
+            return result;
+        }
+
+        // Same day boundary as WorkflowDelegationResolver, which is the authority on "active today".
+        var today = DateTime.Now.Date;
+
+        var rows = await _delegationRepository.GetAll()
+            .Where(d => d.DelegateToId != d.EmployeeId
+                        && d.StartDate.Date <= today
+                        && d.EndDate.Date >= today
+                        && (approverIds.Contains(d.EmployeeId) || approverIds.Contains(d.DelegateToId)))
+            .Select(d => new { d.EmployeeId, d.DelegateToId, d.StartDate, d.EndDate })
+            .ToListAsync();
+
+        foreach (var row in rows)
+        {
+            var relation = approverIds.Contains(row.EmployeeId)
+                ? WorkflowDelegationRelation.ApproverDelegatedOut
+                : WorkflowDelegationRelation.ApproverIsStandingIn;
+
+            // For a delegation OUT, show only the cover the router would actually honour. Overlapping rows
+            // are possible, and ResolveDelegateFor is the single place that decides which one wins (and
+            // that drops a stand-in who has since left the company). Naming a colleague here whom the
+            // engine would ignore is worse than naming nobody -- it tells the approver they are covered
+            // when they are not.
+            if (relation == WorkflowDelegationRelation.ApproverDelegatedOut
+                && _delegationResolver.ResolveDelegateFor(row.EmployeeId) != row.DelegateToId)
+            {
+                continue;
+            }
+
+            result.Add(new WorkflowDelegateEntryDto
+            {
+                Person = new WorkflowPersonDto { EmployeeId = row.DelegateToId },
+                DelegatedBy = new WorkflowPersonDto { EmployeeId = row.EmployeeId },
+                Relation = relation,
+                StartDate = row.StartDate,
+                EndDate = row.EndDate
+            });
+        }
+
+        return result
+            .OrderBy(d => d.Relation)
+            .ThenBy(d => d.Person.EmployeeId)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Who has opened this request, newest first.
+    ///
+    /// <para>
+    /// <b><c>WFReadLog</c> is the source, not the <c>RequestLog</c> Read rows.</b>
+    /// <c>WorkflowApprovalService.MarkAsReadAsync</c> writes both in one transaction, so they carry the
+    /// same events -- but <c>WFReadLog</c> is the table the feature is named for, the one
+    /// <c>RequestDetail.EnableReadLog</c> switches on, and the one legacy's Read Log tab read. Its
+    /// <c>User</c> column holds the acting employee's id as a string, which is what the resolution below
+    /// turns back into a person; an id we can no longer match leaves the raw value to be shown instead of
+    /// a blank row.
+    /// </para>
+    /// </summary>
+    private async Task<List<WorkflowReadLogEntryDto>> BuildReadLogAsync(int requestId)
+    {
+        var rows = await _readLogRepository.GetAll()
+            .Where(r => r.WorkflowRequestId == requestId)
+            .Select(r => new { r.ReadDateTime, r.User })
+            .ToListAsync();
+
+        return rows
+            .OrderByDescending(r => r.ReadDateTime)
+            .Select(r => new WorkflowReadLogEntryDto
+            {
+                ReadAt = r.ReadDateTime,
+                User = r.User,
+                Person = int.TryParse(r.User, NumberStyles.Integer, CultureInfo.InvariantCulture, out var employeeId)
+                    ? new WorkflowPersonDto { EmployeeId = employeeId }
+                    : null
+            })
+            .ToList();
+    }
+
+    /// <summary>
+    /// Fills every person stub on the panel in one pass, so a request with six approvers and a dozen reads
+    /// costs two queries rather than forty.
+    /// </summary>
+    private async Task FillPeopleAsync(WorkflowParticipantsDto result)
+    {
+        var stubs = result.Approvers.Select(a => a.Person)
+            .Concat(result.Delegates.Select(d => d.Person))
+            .Concat(result.Delegates.Select(d => d.DelegatedBy))
+            .Concat(result.ReadLog.Select(r => r.Person))
+            .Where(p => p != null)
+            .ToList();
+
+        var employeeIds = stubs.Select(p => p.EmployeeId).Distinct().ToList();
+        var people = await LoadPeopleAsync(employeeIds);
+
+        foreach (var stub in stubs)
+        {
+            if (!people.TryGetValue(stub.EmployeeId, out var loaded))
+            {
+                continue;
+            }
+
+            stub.Code = loaded.Code;
+            stub.NameEn = loaded.NameEn;
+            stub.NameAr = loaded.NameAr;
+            stub.JobTitleEn = loaded.JobTitleEn;
+            stub.JobTitleAr = loaded.JobTitleAr;
+            stub.PhotoUrl = loaded.PhotoUrl;
+        }
+
+        // A read-log id that matched no employee is not a person, and leaving a nameless stub would render
+        // as an empty row. Dropping it lets the client fall back to the raw stored value.
+        foreach (var entry in result.ReadLog)
+        {
+            if (entry.Person != null && !people.ContainsKey(entry.Person.EmployeeId))
+            {
+                entry.Person = null;
+            }
+        }
+    }
+
+    private async Task<Dictionary<int, WorkflowPersonDto>> LoadPeopleAsync(List<int> employeeIds)
+    {
+        var map = new Dictionary<int, WorkflowPersonDto>();
+
+        if (employeeIds.Count == 0)
+        {
+            return map;
+        }
+
+        var employees = await _employeeRepository.GetAll()
+            .Where(e => employeeIds.Contains(e.Id))
+            .Select(e => new { e.Id, e.Code, e.FullNameEn, e.FullNameAr, HasPhoto = e.PhotoPath != null })
+            .ToListAsync();
+
+        foreach (var employee in employees)
+        {
+            map[employee.Id] = new WorkflowPersonDto
+            {
+                EmployeeId = employee.Id,
+                Code = employee.Code,
+                NameEn = employee.FullNameEn,
+                NameAr = employee.FullNameAr,
+                PhotoUrl = employee.HasPhoto ? "/api/employee-photo/" + employee.Id : null
+            };
+        }
+
+        // The title each of them holds TODAY, same rule FillRequesterAsync uses -- most recent assignment
+        // wins, because an older one describes a job they have already left. Grouped in memory after one
+        // query rather than a top-1 query per person.
+        var assignments = await (from assignment in _orgAssignmentRepository.GetAll()
+                                 join title in _jobTitleRepository.GetAll()
+                                     on assignment.JobTitleId equals (int?)title.Id
+                                 where employeeIds.Contains(assignment.EmployeeId)
+                                 select new { assignment.EmployeeId, assignment.StartDate, title.NameEn, title.NameAr })
+            .ToListAsync();
+
+        foreach (var group in assignments.GroupBy(a => a.EmployeeId))
+        {
+            if (!map.TryGetValue(group.Key, out var person))
+            {
+                continue;
+            }
+
+            var current = group.OrderByDescending(a => a.StartDate).First();
+
+            person.JobTitleEn = current.NameEn;
+            person.JobTitleAr = current.NameAr;
+        }
+
+        return map;
     }
 
     /// <summary>

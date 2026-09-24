@@ -6750,5 +6750,16 @@
     <text name="DiscardDraft">إلغاء المسودة</text>
     <text name="ContinueDraft">متابعة</text>
     <text name="NotSubmittedYet">لم يُرسل بعد</text>
+    <text name="Approvers">المعتمدون</text>
+    <text name="Delegates">المفوّضون</text>
+    <text name="CurrentWorkflowRole">دور سير العمل الحالي</text>
+    <text name="NoApproversRecorded">لا يوجد معتمدون مسجّلون</text>
+    <text name="NobodyHasOpenedThisRequestYet">لم يفتح أحد هذا الطلب بعد</text>
+    <text name="NoDelegatesForThisRequest">لا يوجد مفوّضون لهذا الطلب</text>
+    <text name="CoverFor">ينوب عن {0}</text>
+    <text name="OnThisRequestInPlaceOf">على هذا الطلب بدلاً من {0}</text>
+    <text name="ApproverListMayBeIncompleteForPastSteps">تعرض الخطوات السابقة من قام بالإجراء، أمّا من كان مخوّلاً بالإجراء ولم يقم به فلم يعد مسجّلاً.</text>
+    <text name="Extension">التحويلة</text>
+    <text name="NoContactDetailsRecorded">لا توجد بيانات اتصال مسجّلة</text>
   </texts>
 </localizationDictionary>

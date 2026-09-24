@@ -1,0 +1,164 @@
+<div class="wf-parts">
+    <!-- Legacy's "Workflow Request" tab, which was four header fields presented as a one-row grid. They are
+         cheap enough to show outright, and a click to read a request's own number was never worth it. -->
+    <div class="wf-parts__facts">
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'RequestNumber' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ participants()?.requestNumber || '-' }}</span>
+        </span>
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'WorkflowStep' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ participants()?.workflowStep ?? '-' }}</span>
+        </span>
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'RequestStatus' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ statusLabel() || '-' }}</span>
+        </span>
+        <span class="wf-parts__fact">
+            <span class="wf-parts__fact-label">{{ 'CurrentWorkflowRole' | localize }}</span>
+            <span class="wf-parts__fact-value">{{ currentWorkflowRole() || '-' }}</span>
+        </span>
+    </div>
+
+    <!-- Buttons inside the nav, not anchors: an <a> with no href is not reachable by keyboard, and these
+         switch a view rather than navigate anywhere. -->
+    <ul class="nav nav-tabs wf-parts__tabs">
+        <li class="nav-item">
+            <button type="button" class="nav-link" [class.active]="tab() === 'approvers'" (click)="tab.set('approvers')">
+                {{ 'Approvers' | localize }}
+                <span class="wf-parts__count">{{ approvers().length }}</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="nav-link" [class.active]="tab() === 'readLog'" (click)="tab.set('readLog')">
+                {{ 'ReadLog' | localize }}
+                <span class="wf-parts__count">{{ readLog().length }}</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="nav-link" [class.active]="tab() === 'delegates'" (click)="tab.set('delegates')">
+                {{ 'Delegates' | localize }}
+                <span class="wf-parts__count">{{ delegates().length }}</span>
+            </button>
+        </li>
+    </ul>
+
+    <div class="wf-parts__body">
+        @if (loading() && !participants()) {
+            <div class="wf-parts__empty"><i class="fa fa-spinner fa-spin"></i></div>
+        } @else {
+            @switch (tab()) {
+                @case ('approvers') {
+                    @for (entry of approvers(); track entry.person?.employeeId + '-' + entry.workflowStep) {
+                        <div class="wf-parts__row">
+                            <employee-avatar
+                                [photoUrl]="entry.person?.photoUrl"
+                                [name]="plainName(entry.person)"
+                                [size]="28"></employee-avatar>
+
+                            <span class="wf-parts__who">
+                                <!-- A real <button>, styled as a link: it opens a dialog rather than
+                                     navigating, so an anchor would be lying about what it does and an
+                                     anchor without href is not keyboard-reachable anyway. -->
+                                <button
+                                    type="button"
+                                    class="wf-parts__name wf-parts__name--link"
+                                    (click)="openProfile(entry.person)">
+                                    {{ displayName(entry.person) || '-' }}
+                                </button>
+                                <span class="wf-parts__meta">
+                                    <span>{{ 'Step' | localize }} {{ entry.workflowStep }}</span>
+                                    @if (jobTitle(entry.person)) {
+                                        <span class="wf-parts__dot">&middot;</span>
+                                        <span>{{ jobTitle(entry.person) }}</span>
+                                    }
+                                </span>
+                            </span>
+
+                            <span class="wf-parts__pill" [ngClass]="approverStatusClass(entry)">
+                                {{ approverStatusLabel(entry) }}
+                            </span>
+                        </div>
+                    } @empty {
+                        <div class="wf-parts__empty">{{ 'NoApproversRecorded' | localize }}</div>
+                    }
+
+                    @if (hasReconstructedApprovers()) {
+                        <!-- Honest about a real limitation rather than quietly presenting a partial list as
+                             a complete one. The engine deletes a step's approver rows when the request moves
+                             on, so past steps can only name whoever acted. -->
+                        <div class="wf-parts__note">{{ 'ApproverListMayBeIncompleteForPastSteps' | localize }}</div>
+                    }
+                }
+
+                @case ('readLog') {
+                    @for (entry of readLog(); track $index) {
+                        <div class="wf-parts__row">
+                            <employee-avatar
+                                [photoUrl]="entry.person?.photoUrl"
+                                [name]="plainName(entry.person)"
+                                [size]="28"></employee-avatar>
+
+                            <span class="wf-parts__who">
+                                @if (canOpenProfile(entry.person)) {
+                                    <button
+                                        type="button"
+                                        class="wf-parts__name wf-parts__name--link"
+                                        (click)="openProfile(entry.person)">
+                                        {{ readLogWho(entry) }}
+                                    </button>
+                                } @else {
+                                    <!-- An unresolved reader has no card to open, so the raw stored value
+                                         stays plain text rather than becoming a link that goes nowhere. -->
+                                    <span class="wf-parts__name">{{ readLogWho(entry) }}</span>
+                                }
+                                @if (jobTitle(entry.person)) {
+                                    <span class="wf-parts__meta">{{ jobTitle(entry.person) }}</span>
+                                }
+                            </span>
+
+                            <span class="wf-parts__when">{{ dateTime(entry.readAt) }}</span>
+                        </div>
+                    } @empty {
+                        <div class="wf-parts__empty">{{ 'NobodyHasOpenedThisRequestYet' | localize }}</div>
+                    }
+                }
+
+                @case ('delegates') {
+                    @for (entry of delegates(); track $index) {
+                        <div class="wf-parts__row">
+                            <employee-avatar
+                                [photoUrl]="entry.person?.photoUrl"
+                                [name]="plainName(entry.person)"
+                                [size]="28"></employee-avatar>
+
+                            <span class="wf-parts__who">
+                                <button
+                                    type="button"
+                                    class="wf-parts__name wf-parts__name--link"
+                                    (click)="openProfile(entry.person)">
+                                    {{ displayName(entry.person) || '-' }}
+                                </button>
+                                <span class="wf-parts__meta">
+                                    <span>{{ delegationLabel(entry) }}</span>
+                                    @if (jobTitle(entry.person)) {
+                                        <span class="wf-parts__dot">&middot;</span>
+                                        <span>{{ jobTitle(entry.person) }}</span>
+                                    }
+                                </span>
+                            </span>
+
+                            <span class="wf-parts__when">
+                                {{ dateOnly(entry.startDate) }} &ndash; {{ dateOnly(entry.endDate) }}
+                            </span>
+                        </div>
+                    } @empty {
+                        <div class="wf-parts__empty">{{ 'NoDelegatesForThisRequest' | localize }}</div>
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+
+<workflowParticipantProfileModal #profileModal></workflowParticipantProfileModal>

@@ -6912,5 +6912,16 @@
     <text name="DiscardDraft">Discard draft</text>
     <text name="ContinueDraft">Continue</text>
     <text name="NotSubmittedYet">Not submitted yet</text>
+    <text name="Approvers">Approvers</text>
+    <text name="Delegates">Delegates</text>
+    <text name="CurrentWorkflowRole">Current Workflow Role</text>
+    <text name="NoApproversRecorded">No approvers recorded</text>
+    <text name="NobodyHasOpenedThisRequestYet">Nobody has opened this request yet</text>
+    <text name="NoDelegatesForThisRequest">No delegates for this request</text>
+    <text name="CoverFor">Cover for {0}</text>
+    <text name="OnThisRequestInPlaceOf">On this request in place of {0}</text>
+    <text name="ApproverListMayBeIncompleteForPastSteps">Earlier steps list who acted. Anyone who was entitled to act but did not is no longer recorded.</text>
+    <text name="Extension">Extension</text>
+    <text name="NoContactDetailsRecorded">No contact details recorded</text>
   </texts>
 </localizationDictionary>
