@@ -100,6 +100,24 @@
     &__name {
         font-weight: 600;
         overflow-wrap: anywhere;
+        text-align: start;
+    }
+
+    // A button that reads as a link. It opens the colleague's directory card, so it must look clickable --
+    // but only on hover, because underlining every name in the list would turn a quiet reference panel
+    // into a wall of blue and out-shout the decision buttons it sits beside.
+    &__name--link {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+
+        &:hover,
+        &:focus-visible {
+            color: var(--bs-primary);
+            text-decoration: underline;
+        }
     }
 
     &__meta {

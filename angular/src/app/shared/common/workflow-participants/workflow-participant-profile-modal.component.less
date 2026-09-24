@@ -1,0 +1,62 @@
+// The colleague directory card. Colours are --bs-* tokens so it follows the theme and dark mode; spacing
+// uses logical properties so it mirrors in Arabic.
+.wf-profile__dialog {
+    max-width: 26rem;
+}
+
+.wf-profile__head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.wf-profile__identity {
+    min-width: 0;
+}
+
+.wf-profile__name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.wf-profile__title {
+    margin-top: 0.15rem;
+    font-size: 0.85rem;
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+    overflow-wrap: anywhere;
+}
+
+// Label/value pairs as a two-column grid, so the values line up however long the labels get in Arabic.
+.wf-profile__facts {
+    display: grid;
+    grid-template-columns: minmax(6rem, auto) minmax(0, 1fr);
+    gap: 0.5rem 1rem;
+    margin: 0;
+
+    dt {
+        font-weight: 400;
+        font-size: 0.85rem;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+    }
+
+    dd {
+        margin: 0;
+        font-weight: 600;
+        font-size: 0.88rem;
+        min-width: 0;
+    }
+}
+
+.wf-profile__wrap {
+    overflow-wrap: anywhere;
+}
+
+.wf-profile__empty {
+    padding: 1rem 0;
+    text-align: center;
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+}

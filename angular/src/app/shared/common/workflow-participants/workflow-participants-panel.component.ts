@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    inject,
+    input,
+    signal,
+    viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -18,6 +27,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
+import { WorkflowParticipantProfileModalComponent } from './workflow-participant-profile-modal.component';
 
 /** Which of the three lists is on show. */
 export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'delegates';
@@ -45,13 +55,15 @@ export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'delegates';
     selector: 'workflow-participants-panel',
     templateUrl: './workflow-participants-panel.component.html',
     styleUrls: ['./workflow-participants-panel.component.less'],
-    imports: [CommonModule, LocalizePipe, EmployeeAvatarComponent],
+    imports: [CommonModule, LocalizePipe, EmployeeAvatarComponent, WorkflowParticipantProfileModalComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkflowParticipantsPanelComponent extends AppComponentBase {
     private readonly _activityService = inject(WorkflowActivityServiceProxy);
 
     readonly workflowRequestId = input.required<number>();
+
+    readonly profileModal = viewChild<WorkflowParticipantProfileModalComponent>('profileModal');
 
     readonly loading = signal(false);
     readonly participants = signal<WorkflowParticipantsDto | undefined>(undefined);
@@ -91,13 +103,53 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
         effect(() => this.load(this.workflowRequestId()));
     }
 
-    /** "1042 - Ahmad Al Sayed", or just the name when there is no code. */
+    /**
+     * "Karam Ismaeil (3804)" -- name first, code in brackets after it.
+     *
+     * <p>Legacy showed Code and Approver as two separate grid columns. The user asked for this shape
+     * instead, and it is the better one for a narrow right-hand column: the name is what identifies the
+     * person, and leading with a number pushed it out of sight on every row.</p>
+     */
     displayName(person: WorkflowPersonDto | undefined): string {
         if (!person) {
             return '';
         }
 
-        return [person.code, this.pick(person.nameEn, person.nameAr)].filter((part) => !!part).join(' - ');
+        const name = this.plainName(person);
+
+        if (!name) {
+            return person.code ?? '';
+        }
+
+        return person.code ? `${name} (${person.code})` : name;
+    }
+
+    /**
+     * The name alone, for the avatar.
+     *
+     * <p>Separate from <see cref="displayName"/> on purpose: the avatar derives initials from whatever it
+     * is given, and "Karam Ismaeil (3804)" would have it drawing "K(" for anyone without a photo.</p>
+     */
+    plainName(person: WorkflowPersonDto | undefined): string {
+        return person ? this.pick(person.nameEn, person.nameAr) : '';
+    }
+
+    /**
+     * Whether this name should be offered as a link.
+     *
+     * <p>A row with no resolved employee -- a read-log entry whose stored user no longer matches anybody --
+     * has no card to open, and a link that goes nowhere is worse than plain text.</p>
+     */
+    canOpenProfile(person: WorkflowPersonDto | undefined): boolean {
+        return !!person?.employeeId;
+    }
+
+    openProfile(person: WorkflowPersonDto | undefined): void {
+        if (!this.canOpenProfile(person)) {
+            return;
+        }
+
+        this.profileModal()?.show(this.workflowRequestId(), person.employeeId, this.plainName(person));
     }
 
     jobTitle(person: WorkflowPersonDto | undefined): string {

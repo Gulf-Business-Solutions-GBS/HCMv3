@@ -6759,5 +6759,7 @@
     <text name="CoverFor">ينوب عن {0}</text>
     <text name="OnThisRequestInPlaceOf">على هذا الطلب بدلاً من {0}</text>
     <text name="ApproverListMayBeIncompleteForPastSteps">تعرض الخطوات السابقة من قام بالإجراء، أمّا من كان مخوّلاً بالإجراء ولم يقم به فلم يعد مسجّلاً.</text>
+    <text name="Extension">التحويلة</text>
+    <text name="NoContactDetailsRecorded">لا توجد بيانات اتصال مسجّلة</text>
   </texts>
 </localizationDictionary>

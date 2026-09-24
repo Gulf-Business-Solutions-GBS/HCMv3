@@ -6921,5 +6921,7 @@
     <text name="CoverFor">Cover for {0}</text>
     <text name="OnThisRequestInPlaceOf">On this request in place of {0}</text>
     <text name="ApproverListMayBeIncompleteForPastSteps">Earlier steps list who acted. Anyone who was entitled to act but did not is no longer recorded.</text>
+    <text name="Extension">Extension</text>
+    <text name="NoContactDetailsRecorded">No contact details recorded</text>
   </texts>
 </localizationDictionary>

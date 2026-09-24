@@ -43,6 +43,64 @@ public class GetWorkflowParticipantsInput
     public int WorkflowRequestId { get; set; }
 }
 
+public class GetWorkflowParticipantProfileInput
+{
+    [Range(1, int.MaxValue)]
+    public int WorkflowRequestId { get; set; }
+
+    /// <summary>
+    /// Must be somebody already ON that request -- its requester, one of its approvers, a delegate of one
+    /// of them, or somebody who has opened it. See the authorization note on the service method.
+    /// </summary>
+    [Range(1, int.MaxValue)]
+    public int EmployeeId { get; set; }
+}
+
+/// <summary>
+/// A colleague's directory card: enough to know who you are looking at, and nothing more.
+///
+/// <para>
+/// <b>What is deliberately NOT here, and why.</b> This is a directory entry, not a personnel file. Salary,
+/// bank details, civil ID, passport, date of birth, marital status, home address, personal mobile,
+/// emergency contacts and medical flags are all on <c>Employee</c> and all deliberately excluded: an
+/// approver needs to know that the person who signed off at step 2 is the Finance Manager in Kuwait City,
+/// not what they earn or where they live. Everything on this DTO is work contact information of the kind
+/// an internal staff directory carries.
+/// </para>
+/// </summary>
+public class WorkflowParticipantProfileDto
+{
+    public int EmployeeId { get; set; }
+
+    public string Code { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
+
+    public string JobTitleEn { get; set; }
+
+    public string JobTitleAr { get; set; }
+
+    /// <summary>The organization unit of their current assignment. Often blank -- see the note in
+    /// <c>MyDashboardAppService</c>: many deployments never populate it.</summary>
+    public string Department { get; set; }
+
+    public string WorkLocationEn { get; set; }
+
+    public string WorkLocationAr { get; set; }
+
+    /// <summary>The corporate address the system itself writes to. Not <c>AlternateEmail</c>, which is
+    /// where people put their personal one.</summary>
+    public string WorkEmail { get; set; }
+
+    public string BusinessLandline { get; set; }
+
+    public string BusinessExtension { get; set; }
+
+    public string PhotoUrl { get; set; }
+}
+
 /// <summary>A person on one of the participant lists, rendered the same way wherever they appear.</summary>
 public class WorkflowPersonDto
 {

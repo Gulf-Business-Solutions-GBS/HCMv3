@@ -41,7 +41,14 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
 
     private static string Unique() => Guid.NewGuid().ToString("N").Substring(0, 8);
 
-    private int CreateEmployee(string code, long? userId = null)
+    /// <summary>
+    /// <paramref name="status"/> defaults to Active and must: <c>EmployeeStatus.Inactive</c> is the enum's
+    /// zero, so an employee row that never sets it is a LEAVER as far as
+    /// <c>WorkflowDelegationResolver.ResolveDelegateFor</c> is concerned, and it refuses to name a leaver as
+    /// anybody's cover. A fixture that left the field alone therefore produced no delegates at all, which
+    /// looked like a bug in the endpoint and was not.
+    /// </summary>
+    private int CreateEmployee(string code, long? userId = null, EmployeeStatus status = EmployeeStatus.Active)
     {
         Nationality nationality = null;
         UsingDbContext(context =>
@@ -71,6 +78,7 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
                 BirthDate = new DateTime(1990, 1, 1),
                 JoiningDate = new DateTime(2020, 1, 1),
                 ProbationEndDate = new DateTime(2020, 4, 1),
+                Status = status,
                 UserId = userId,
                 NationalityId = nationality.Id
             }).Entity;
@@ -159,6 +167,19 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
                 StartDate = DateTime.Now.Date.AddDays(-daysBefore),
                 EndDate = DateTime.Now.Date.AddDays(daysAfter)
             });
+        });
+    }
+
+    /// <summary>Work contact details, which is all the directory card is allowed to carry.</summary>
+    private void SetWorkContact(int employeeId, string email, string landline, string extension)
+    {
+        UsingDbContext(context =>
+        {
+            var employee = context.Set<Employee>().Single(e => e.Id == employeeId);
+
+            employee.Email = email;
+            employee.BusinessLandline = landline;
+            employee.BusinessExtension = extension;
         });
     }
 
@@ -523,6 +544,26 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
         result.Delegates.ShouldBeEmpty();
     }
 
+    [Fact]
+    public async Task Should_Not_Name_A_Leaver_As_Anybodys_Cover()
+    {
+        // WorkflowDelegationResolver refuses to substitute to an inactive employee, because doing so would
+        // remove the delegator AND put an unreachable person in their place. The panel has to agree with
+        // the router: naming a stand-in here whom the engine would ignore tells an approver they are
+        // covered when they are not.
+        var meId = CreateCurrentUserEmployee("PART1550ME");
+        var approverId = CreateEmployee("PART1550APPROVER");
+        var leaverId = CreateEmployee("PART1550LEAVER", status: EmployeeStatus.Inactive);
+
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, approverId);
+        AddDelegation(fromEmployeeId: approverId, toEmployeeId: leaverId);
+
+        var result = await GetParticipants(requestId);
+
+        result.Delegates.ShouldBeEmpty();
+    }
+
     // ---------------------------------------------------------------------------------------------------
     // Read log
     // ---------------------------------------------------------------------------------------------------
@@ -586,6 +627,90 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
         var result = await GetParticipants(requestId);
 
         result.ReadLog.ShouldBeEmpty();
+    }
+
+    // ---------------------------------------------------------------------------------------------------
+    // Participant profile (the directory card behind a name on the panel)
+    // ---------------------------------------------------------------------------------------------------
+
+    [Fact]
+    public async Task Should_Return_A_Participants_Directory_Card()
+    {
+        var meId = CreateCurrentUserEmployee("PART2000ME");
+        var approverId = CreateEmployee("PART2000APPROVER");
+        GiveJobTitle(approverId, "JT2000");
+        SetWorkContact(approverId, "approver@gbskw.com", "1800000", "412");
+
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, approverId);
+
+        var card = await _activityService.GetParticipantProfile(new GetWorkflowParticipantProfileInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeId = approverId
+        });
+
+        card.EmployeeId.ShouldBe(approverId);
+        card.Code.ShouldBe("PART2000APPROVER");
+        card.NameEn.ShouldBe("PART2000APPROVER Test");
+        card.JobTitleEn.ShouldBe("JT2000 EN");
+        card.WorkEmail.ShouldBe("approver@gbskw.com");
+        card.BusinessLandline.ShouldBe("1800000");
+        card.BusinessExtension.ShouldBe("412");
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Profile_For_Somebody_Who_Is_Not_On_The_Request()
+    {
+        // The gate that stops this being an employee lookup by id wearing a workflow id as a hat. Without
+        // it, anyone with one request of their own could walk the employee table and print the directory.
+        var meId = CreateCurrentUserEmployee("PART2100ME");
+        var requestId = CreateRequest(meId);
+
+        var strangerId = CreateEmployee("PART2100STRANGER");
+
+        await Assert.ThrowsAsync<AbpAuthorizationException>(() =>
+            _activityService.GetParticipantProfile(new GetWorkflowParticipantProfileInput
+            {
+                WorkflowRequestId = requestId,
+                EmployeeId = strangerId
+            }));
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Profile_To_A_User_Who_Cannot_View_The_Request()
+    {
+        var requesterId = CreateEmployee("PART2200REQ");
+        var approverId = CreateEmployee("PART2200APPROVER");
+        var requestId = CreateRequest(requesterId);
+        AddApprover(requestId, approverId);
+
+        LoginAsAnOutsider();
+
+        await Assert.ThrowsAsync<AbpAuthorizationException>(() =>
+            _activityService.GetParticipantProfile(new GetWorkflowParticipantProfileInput
+            {
+                WorkflowRequestId = requestId,
+                EmployeeId = approverId
+            }));
+    }
+
+    [Fact]
+    public async Task Should_Return_The_Requesters_Own_Card()
+    {
+        // The requester is a participant too -- their name heads the request, and an approver reading it
+        // should be able to find out who they are.
+        var meId = CreateCurrentUserEmployee("PART2300ME");
+        var requestId = CreateRequest(meId);
+
+        var card = await _activityService.GetParticipantProfile(new GetWorkflowParticipantProfileInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeId = meId
+        });
+
+        card.EmployeeId.ShouldBe(meId);
+        card.Code.ShouldBe("PART2300ME");
     }
 
     [Fact]

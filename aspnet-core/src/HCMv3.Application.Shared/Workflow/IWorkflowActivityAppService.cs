@@ -44,6 +44,18 @@ public interface IWorkflowActivityAppService : IApplicationService
     /// </summary>
     Task<WorkflowParticipantsDto> GetParticipants(GetWorkflowParticipantsInput input);
 
+    /// <summary>
+    /// The directory card behind a name on the participants panel -- who this colleague is, what they do
+    /// and how to reach them at work.
+    ///
+    /// <para>
+    /// Scoped to one request ON PURPOSE. The caller must be able to view the request AND the employee must
+    /// already appear on it, so this cannot be used to walk the employee table and dump the staff
+    /// directory: it only ever tells you about somebody the request has already named to you.
+    /// </para>
+    /// </summary>
+    Task<WorkflowParticipantProfileDto> GetParticipantProfile(GetWorkflowParticipantProfileInput input);
+
     Task<WorkflowActivityDto> AddComment(AddWorkflowCommentInput input);
 
     Task<WorkflowActivityDto> EditComment(EditWorkflowCommentInput input);

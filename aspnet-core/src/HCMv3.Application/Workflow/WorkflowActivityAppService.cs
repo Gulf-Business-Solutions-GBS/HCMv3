@@ -32,6 +32,8 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly IRepository<HCMv3.OrganizationManagement.JobTitle> _jobTitleRepository;
+    private readonly IRepository<Abp.Organizations.OrganizationUnit, long> _organizationUnitRepository;
+    private readonly IRepository<HCMv3.OrganizationManagement.WorkLocation> _workLocationRepository;
     private readonly IRepository<WFReadLog> _readLogRepository;
     private readonly IRepository<EmployeeDelegation> _delegationRepository;
     private readonly IRepository<WorkflowRole> _workflowRoleRepository;
@@ -54,6 +56,8 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         IRepository<RequestDetail> requestDetailRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
         IRepository<HCMv3.OrganizationManagement.JobTitle> jobTitleRepository,
+        IRepository<Abp.Organizations.OrganizationUnit, long> organizationUnitRepository,
+        IRepository<HCMv3.OrganizationManagement.WorkLocation> workLocationRepository,
         IRepository<WFReadLog> readLogRepository,
         IRepository<EmployeeDelegation> delegationRepository,
         IRepository<WorkflowRole> workflowRoleRepository,
@@ -76,6 +80,8 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         _requestDetailRepository = requestDetailRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _jobTitleRepository = jobTitleRepository;
+        _organizationUnitRepository = organizationUnitRepository;
+        _workLocationRepository = workLocationRepository;
         _readLogRepository = readLogRepository;
         _delegationRepository = delegationRepository;
         _workflowRoleRepository = workflowRoleRepository;
@@ -213,6 +219,148 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         await FillPeopleAsync(result);
 
         return result;
+    }
+
+    /// <summary>
+    /// One participant's directory card.
+    ///
+    /// <para>
+    /// <b>Two gates, not one.</b> The caller must be able to view the request -- the same
+    /// <see cref="EnsureCanView"/> rule as everywhere else on this service -- AND the employee they are
+    /// asking about must already be ON that request. Without the second gate this would be an employee
+    /// lookup by id wearing a workflow id as a hat: anyone with one request of their own could walk the
+    /// employee table and print the staff directory. With it, the endpoint can only ever describe somebody
+    /// the request has already named to this caller.
+    /// </para>
+    ///
+    /// <para>
+    /// The card itself is work contact information only. See <see cref="WorkflowParticipantProfileDto"/>
+    /// for what is excluded and why.
+    /// </para>
+    /// </summary>
+    [HttpPost]
+    public async Task<WorkflowParticipantProfileDto> GetParticipantProfile(GetWorkflowParticipantProfileInput input)
+    {
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+        var access = await GetAccessAsync(request);
+
+        EnsureCanView(access);
+
+        if (!await IsParticipantAsync(request, input.EmployeeId))
+        {
+            throw new AbpAuthorizationException(L("YouCannotViewThisWorkflowRequest"));
+        }
+
+        var employee = await _employeeRepository.GetAll()
+            .Where(e => e.Id == input.EmployeeId)
+            .Select(e => new
+            {
+                e.Id,
+                e.Code,
+                e.FullNameEn,
+                e.FullNameAr,
+                e.Email,
+                e.BusinessLandline,
+                e.BusinessExtension,
+                HasPhoto = e.PhotoPath != null
+            })
+            .FirstOrDefaultAsync();
+
+        if (employee == null)
+        {
+            throw new UserFriendlyException(L("EmployeeNotFound"));
+        }
+
+        var result = new WorkflowParticipantProfileDto
+        {
+            EmployeeId = employee.Id,
+            Code = employee.Code,
+            NameEn = employee.FullNameEn,
+            NameAr = employee.FullNameAr,
+            WorkEmail = employee.Email,
+            BusinessLandline = employee.BusinessLandline,
+            BusinessExtension = employee.BusinessExtension,
+            PhotoUrl = employee.HasPhoto ? "/api/employee-photo/" + employee.Id : null
+        };
+
+        // The assignment they hold TODAY -- same "most recent wins" rule the rest of this service uses,
+        // because an older assignment describes a job they have already left.
+        var assignment = await _orgAssignmentRepository.GetAll()
+            .Where(a => a.EmployeeId == employee.Id)
+            .OrderByDescending(a => a.StartDate)
+            .Select(a => new { a.JobTitleId, a.OrganizationUnitId, a.WorkLocationId })
+            .FirstOrDefaultAsync();
+
+        if (assignment == null)
+        {
+            return result;
+        }
+
+        if (assignment.JobTitleId.HasValue)
+        {
+            var jobTitle = await _jobTitleRepository.GetAll()
+                .Where(t => t.Id == assignment.JobTitleId.Value)
+                .Select(t => new { t.NameEn, t.NameAr })
+                .FirstOrDefaultAsync();
+
+            result.JobTitleEn = jobTitle?.NameEn;
+            result.JobTitleAr = jobTitle?.NameAr;
+        }
+
+        if (assignment.OrganizationUnitId.HasValue)
+        {
+            result.Department = await _organizationUnitRepository.GetAll()
+                .Where(o => o.Id == assignment.OrganizationUnitId.Value)
+                .Select(o => o.DisplayName)
+                .FirstOrDefaultAsync();
+        }
+
+        if (assignment.WorkLocationId.HasValue)
+        {
+            var location = await _workLocationRepository.GetAll()
+                .Where(w => w.Id == assignment.WorkLocationId.Value)
+                .Select(w => new { w.NameEn, w.NameAr })
+                .FirstOrDefaultAsync();
+
+            result.WorkLocationEn = location?.NameEn;
+            result.WorkLocationAr = location?.NameAr;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Whether this employee appears anywhere on the request -- as its requester, an approver at any step,
+    /// either side of a delegation touching an approver, or somebody who has opened it.
+    ///
+    /// <para>
+    /// Built from the same three methods the panel itself uses, so the set of people whose card can be
+    /// opened is exactly the set of names the panel can display. A person who is not on the panel has no
+    /// card here, which is what keeps this from being a general employee lookup.
+    /// </para>
+    /// </summary>
+    private async Task<bool> IsParticipantAsync(WorkflowRequest request, int employeeId)
+    {
+        if (request.EmployeeId == employeeId)
+        {
+            return true;
+        }
+
+        var approvers = await BuildApproversAsync(request);
+        if (approvers.Any(a => a.Person.EmployeeId == employeeId))
+        {
+            return true;
+        }
+
+        var delegates = await BuildDelegatesAsync(approvers);
+        if (delegates.Any(d => d.Person.EmployeeId == employeeId || d.DelegatedBy.EmployeeId == employeeId))
+        {
+            return true;
+        }
+
+        var readLog = await BuildReadLogAsync(request.Id);
+
+        return readLog.Any(r => r.Person != null && r.Person.EmployeeId == employeeId);
     }
 
     /// <summary>

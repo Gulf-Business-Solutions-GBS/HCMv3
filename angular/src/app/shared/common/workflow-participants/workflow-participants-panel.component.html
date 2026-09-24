@@ -53,11 +53,19 @@
                         <div class="wf-parts__row">
                             <employee-avatar
                                 [photoUrl]="entry.person.photoUrl"
-                                [name]="displayName(entry.person)"
+                                [name]="plainName(entry.person)"
                                 [size]="28"></employee-avatar>
 
                             <span class="wf-parts__who">
-                                <span class="wf-parts__name">{{ displayName(entry.person) || '-' }}</span>
+                                <!-- A real <button>, styled as a link: it opens a dialog rather than
+                                     navigating, so an anchor would be lying about what it does and an
+                                     anchor without href is not keyboard-reachable anyway. -->
+                                <button
+                                    type="button"
+                                    class="wf-parts__name wf-parts__name--link"
+                                    (click)="openProfile(entry.person)">
+                                    {{ displayName(entry.person) || '-' }}
+                                </button>
                                 <span class="wf-parts__meta">
                                     <span>{{ 'Step' | localize }} {{ entry.workflowStep }}</span>
                                     @if (jobTitle(entry.person)) {
@@ -88,11 +96,22 @@
                         <div class="wf-parts__row">
                             <employee-avatar
                                 [photoUrl]="entry.person?.photoUrl"
-                                [name]="readLogWho(entry)"
+                                [name]="plainName(entry.person)"
                                 [size]="28"></employee-avatar>
 
                             <span class="wf-parts__who">
-                                <span class="wf-parts__name">{{ readLogWho(entry) }}</span>
+                                @if (canOpenProfile(entry.person)) {
+                                    <button
+                                        type="button"
+                                        class="wf-parts__name wf-parts__name--link"
+                                        (click)="openProfile(entry.person)">
+                                        {{ readLogWho(entry) }}
+                                    </button>
+                                } @else {
+                                    <!-- An unresolved reader has no card to open, so the raw stored value
+                                         stays plain text rather than becoming a link that goes nowhere. -->
+                                    <span class="wf-parts__name">{{ readLogWho(entry) }}</span>
+                                }
                                 @if (jobTitle(entry.person)) {
                                     <span class="wf-parts__meta">{{ jobTitle(entry.person) }}</span>
                                 }
@@ -110,11 +129,16 @@
                         <div class="wf-parts__row">
                             <employee-avatar
                                 [photoUrl]="entry.person.photoUrl"
-                                [name]="displayName(entry.person)"
+                                [name]="plainName(entry.person)"
                                 [size]="28"></employee-avatar>
 
                             <span class="wf-parts__who">
-                                <span class="wf-parts__name">{{ displayName(entry.person) || '-' }}</span>
+                                <button
+                                    type="button"
+                                    class="wf-parts__name wf-parts__name--link"
+                                    (click)="openProfile(entry.person)">
+                                    {{ displayName(entry.person) || '-' }}
+                                </button>
                                 <span class="wf-parts__meta">
                                     <span>{{ delegationLabel(entry) }}</span>
                                     @if (jobTitle(entry.person)) {
@@ -136,3 +160,5 @@
         }
     </div>
 </div>
+
+<workflowParticipantProfileModal #profileModal></workflowParticipantProfileModal>
