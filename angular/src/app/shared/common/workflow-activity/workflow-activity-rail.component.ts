@@ -287,7 +287,12 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
     }
 
     actorName(activity: WorkflowActivityDto): string {
-        return (this.isRtl ? activity.actorNameAr || activity.actorNameEn : activity.actorNameEn) ?? '';
+        const name = (this.isRtl ? activity.actorNameAr || activity.actorNameEn : activity.actorNameEn) ?? '';
+
+        // "Name (code)", matching how the approvers list beside this names the same people. Two colleagues
+        // can share a name and the code is what separates them, so showing it in one place and not the
+        // other made the two lists look like they were describing different people.
+        return name && activity.actorCode ? `${name} (${activity.actorCode})` : name;
     }
 
     /**

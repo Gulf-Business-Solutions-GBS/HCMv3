@@ -1069,6 +1069,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             .Select(e => new
             {
                 e.Id,
+                e.Code,
                 e.FullNameEn,
                 e.FullNameAr,
                 HasPhoto = e.PhotoPath != null
@@ -1086,6 +1087,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
             activity.ActorNameEn = employee.FullNameEn;
             activity.ActorNameAr = employee.FullNameAr;
+            activity.ActorCode = employee.Code;
             activity.ActorPhotoUrl = employee.HasPhoto
                 ? "/api/employee-photo/" + employee.Id
                 : null;

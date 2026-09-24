@@ -217,8 +217,12 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
     readonly requesterName = computed(() => {
         const served = this.detail();
         const fromServer = this.pick(served?.requesterNameEn, served?.requesterNameAr);
+        const name = fromServer || this.config()?.requesterName || '';
 
-        return fromServer || this.config()?.requesterName || '';
+        // "Name (code)", the same way the approvers list and the conversation name everybody else. The code
+        // is what separates two colleagues who share a name, and showing it in one list but not another
+        // made them read as different people.
+        return name && served?.requesterCode ? `${name} (${served.requesterCode})` : name;
     });
 
     readonly requesterJobTitle = computed(() =>

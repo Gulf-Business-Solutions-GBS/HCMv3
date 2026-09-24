@@ -340782,6 +340782,7 @@ export class WorkflowActivityDto implements IWorkflowActivityDto {
     actorEmployeeId!: number | undefined;
     actorNameEn!: string | undefined;
     actorNameAr!: string | undefined;
+    actorCode!: string | undefined;
     actorJobTitleEn!: string | undefined;
     actorPhotoUrl!: string | undefined;
     occurredAt!: DateTime;
@@ -340809,6 +340810,7 @@ export class WorkflowActivityDto implements IWorkflowActivityDto {
             this.actorEmployeeId = _data["actorEmployeeId"];
             this.actorNameEn = _data["actorNameEn"];
             this.actorNameAr = _data["actorNameAr"];
+            this.actorCode = _data["actorCode"];
             this.actorJobTitleEn = _data["actorJobTitleEn"];
             this.actorPhotoUrl = _data["actorPhotoUrl"];
             this.occurredAt = _data["occurredAt"] ? DateTime.fromISO(_data["occurredAt"].toString()) : undefined as any;
@@ -340836,6 +340838,7 @@ export class WorkflowActivityDto implements IWorkflowActivityDto {
         data["actorEmployeeId"] = this.actorEmployeeId;
         data["actorNameEn"] = this.actorNameEn;
         data["actorNameAr"] = this.actorNameAr;
+        data["actorCode"] = this.actorCode;
         data["actorJobTitleEn"] = this.actorJobTitleEn;
         data["actorPhotoUrl"] = this.actorPhotoUrl;
         data["occurredAt"] = this.occurredAt ? this.occurredAt.toString() : undefined as any;
@@ -340856,6 +340859,7 @@ export interface IWorkflowActivityDto {
     actorEmployeeId: number | undefined;
     actorNameEn: string | undefined;
     actorNameAr: string | undefined;
+    actorCode: string | undefined;
     actorJobTitleEn: string | undefined;
     actorPhotoUrl: string | undefined;
     occurredAt: DateTime;

@@ -42,6 +42,14 @@ public class WorkflowActivityDto
 
     public string ActorNameAr { get; set; }
 
+    /// <summary>
+    /// The actor's employee code, so the feed can name people the same way the rest of the request does --
+    /// "Muzammil Ahmed Chiplunkar (3400)". Two colleagues can share a name; the code is what tells them
+    /// apart, and it was already shown on the approvers list while the conversation beside it showed a bare
+    /// name for the same person.
+    /// </summary>
+    public string ActorCode { get; set; }
+
     public string ActorJobTitleEn { get; set; }
 
     /// <summary>
