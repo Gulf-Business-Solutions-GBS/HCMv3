@@ -7,6 +7,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import { WorkflowActivityRailComponent } from '@app/shared/common/workflow-activity/workflow-activity-rail.component';
 import { WorkflowParticipantsPanelComponent } from '@app/shared/common/workflow-participants/workflow-participants-panel.component';
+import { WorkflowParticipantProfileModalComponent } from '@app/shared/common/workflow-participants/workflow-participant-profile-modal.component';
 import {
     GetWorkflowRequestDetailInput,
     WorkflowActivityServiceProxy,
@@ -101,6 +102,7 @@ export interface EssRequestDetailConfig {
         EmployeeAvatarComponent,
         WorkflowActivityRailComponent,
         WorkflowParticipantsPanelComponent,
+        WorkflowParticipantProfileModalComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

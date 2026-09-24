@@ -222,3 +222,20 @@
         }
     }
 }
+
+// A name in the thread opens that person's card. Link styling on hover only, matching the approvers list
+// beside it: underlining every name in a conversation would make the thread harder to read, not easier.
+.wf-post__author--link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        color: var(--bs-primary);
+        text-decoration: underline;
+    }
+}

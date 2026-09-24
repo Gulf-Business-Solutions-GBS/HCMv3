@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, effect, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -39,6 +39,14 @@ export interface WorkflowFeedEntry {
     isSystem: boolean;
 
     authorName: string;
+
+    /**
+     * Who wrote it, so the name can open their card the way the approvers list does. Undefined for an
+     * entry the engine wrote with nobody behind it, and the name then stays plain text rather than
+     * becoming a link that opens nothing.
+     */
+    authorEmployeeId: number | undefined;
+
     authorPhotoUrl: string | undefined;
     occurredAt: DateTime | undefined;
     body: string | undefined;
@@ -86,6 +94,12 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
 
     /** Hidden when the host's card title already says what this is. */
     readonly showHeader = input(true);
+
+    /**
+     * A name in the thread was clicked. The host owns the profile card, because the same card is opened
+     * from the approvers list beside this and one of them has to be in charge of it.
+     */
+    readonly personClicked = output<number>();
 
     /**
      * The comment the requester typed on the request itself, shown as the first post in the thread.
@@ -149,6 +163,7 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             id: 0,
             isSystem: false,
             authorName: this.leadAuthorName() || (created ? this.actorName(created) : ''),
+            authorEmployeeId: created?.actorEmployeeId ?? undefined,
             authorPhotoUrl: this.leadAuthorPhotoUrl() ?? created?.actorPhotoUrl,
             occurredAt: created?.occurredAt,
             body,
@@ -341,6 +356,7 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             id: activity.id,
             isSystem,
             authorName: this.actorName(activity),
+            authorEmployeeId: activity.actorEmployeeId ?? undefined,
             authorPhotoUrl: activity.actorPhotoUrl,
             occurredAt: activity.occurredAt,
             body: activity.body,

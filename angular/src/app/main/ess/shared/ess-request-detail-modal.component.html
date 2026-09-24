@@ -16,13 +16,10 @@
         <div class="modal-content">
             @if (active()) {
                 <div class="modal-header">
-                    <!-- Bottom edges level, which is what was asked for and is NOT what baseline alignment gives.
-                         The theme makes .badge a flex box with line-height:1 and 3.9px of padding under its
-                         text, so aligning the two baselines left the pill sitting 2px high: the padding
-                         hangs below the baseline it was aligned on. align-items-end aligns the boxes' bottom
-                         margin edges instead, which is the thing the eye reads as "level".
-                         gap-2 rather than ms-2 so the spacing follows the writing direction in Arabic. -->
-                    <h4 class="modal-title d-flex align-items-end gap-2">
+                    <!-- The pill is inline text, not a flex item, so it sits on the title's baseline by
+                         construction. See the stylesheet for why three attempts at flex alignment all
+                         landed a pixel or two out. -->
+                    <h4 class="modal-title">
                         <span>{{ config()?.title }}</span>
                         <span class="badge" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
                     </h4>
@@ -171,7 +168,8 @@
                                             [readOnly]="true"
                                             [leadComment]="detail()?.submissionComment ?? config()?.comments"
                                             [leadAuthorName]="requesterName()"
-                                            [leadAuthorPhotoUrl]="requesterPhotoUrl()"></workflow-activity-rail>
+                                            [leadAuthorPhotoUrl]="requesterPhotoUrl()"
+                                            (personClicked)="profileCard.show(workflowRequestId, $event)"></workflow-activity-rail>
                                     } @else if (config()?.comments) {
                                         <div class="text-muted">{{ config()?.comments }}</div>
                                     } @else {
@@ -210,3 +208,8 @@
         </div>
     </div>
 </div>
+
+<!-- One card for the whole dialog, opened from a name in the conversation. The participants panel keeps its
+     own for the names in its lists; both are plain overlays rather than nested dialogs, so neither can leave
+     a backdrop over a page that has nothing left to dismiss it. -->
+<workflowParticipantProfileModal #profileCard></workflowParticipantProfileModal>

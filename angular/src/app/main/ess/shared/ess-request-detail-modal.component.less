@@ -68,13 +68,23 @@
     overflow-y: auto;
 }
 
-// The status pill, sitting on the title's own bottom edge.
+
+// The status pill sits ON the title's baseline, by being inline text rather than a flex item.
 //
-// align-items-end lines up the two BOXES, and that is not what the eye reads -- it reads the words. The
-// theme gives .badge 3.9px of padding under its text while the title's box carries only its descender
-// space below the baseline, so bottom-aligned boxes leave the pill's text 2px high. Measured, repeatedly,
-// rather than guessed: the gap is a fixed consequence of the theme's badge metrics, so a fixed correction
-// closes it. If the theme's badge padding ever changes, re-measure -- do not scale this by eye.
-.modal-title > .badge {
-    margin-bottom: -2px;
+// Flex alignment was the wrong tool and I used it three times. align-items lines up BOXES -- bottom edges,
+// centres, or the boxes' own baselines -- and none of those is where the words are, because the theme gives
+// .badge its own line-height and padding. Every attempt landed a pixel or two out in one direction or the
+// other, and the correction for one was wrong for the next.
+//
+// An inline-block's baseline IS the baseline of the text inside it. So making the pill inline and aligning
+// it to the baseline puts its words on the same line as the title's words by construction, with nothing to
+// measure and no constant to maintain.
+.modal-title {
+    display: block;
+
+    > .badge {
+        display: inline-block;
+        vertical-align: baseline;
+        margin-inline-start: 0.5rem;
+    }
 }

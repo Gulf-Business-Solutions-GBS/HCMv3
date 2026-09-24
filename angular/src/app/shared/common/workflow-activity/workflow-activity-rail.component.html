@@ -33,7 +33,18 @@
                         @if (entry.isSystem) {
                             <!-- "Ahlam Ahmad Seblani  Approved  2 hours ago", on one quiet line. -->
                             <div class="wf-post__line">
-                                <span class="wf-post__author">{{ entry.authorName }}</span>
+                                @if (entry.authorEmployeeId) {
+                                    <!-- A name opens that person's card, as it does in the approvers list.
+                                         Link styling appears on hover so the thread is not a wall of blue. -->
+                                    <button
+                                        type="button"
+                                        class="wf-post__author wf-post__author--link"
+                                        (click)="personClicked.emit(entry.authorEmployeeId!)">
+                                        {{ entry.authorName }}
+                                    </button>
+                                } @else {
+                                    <span class="wf-post__author">{{ entry.authorName }}</span>
+                                }
                                 <span class="wf-post__action">{{ entry.actionLabel }}</span>
                                 <span class="wf-post__time" [title]="timeExact(entry.occurredAt)">{{ timeAgo(entry.occurredAt) }}</span>
                             </div>
@@ -44,7 +55,18 @@
                         } @else {
                             <div class="wf-post__bubble">
                                 <div class="wf-post__line">
+                                    @if (entry.authorEmployeeId) {
+                                    <!-- A name opens that person's card, as it does in the approvers list.
+                                         Link styling appears on hover so the thread is not a wall of blue. -->
+                                    <button
+                                        type="button"
+                                        class="wf-post__author wf-post__author--link"
+                                        (click)="personClicked.emit(entry.authorEmployeeId!)">
+                                        {{ entry.authorName }}
+                                    </button>
+                                } @else {
                                     <span class="wf-post__author">{{ entry.authorName }}</span>
+                                }
 
                                     @if (entry.actionLabel) {
                                         <span class="wf-post__action">{{ entry.actionLabel }}</span>
