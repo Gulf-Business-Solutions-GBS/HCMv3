@@ -16,13 +16,13 @@
         <div class="modal-content">
             @if (active()) {
                 <div class="modal-header">
-                    <!-- d-flex align-items-end, not two inline spans. The theme redefines .badge as
-                         inline-flex with its own line-height:1, and an inline-flex box's baseline does not
-                         line up with the surrounding text's -- which is why the pill floated off the title
-                         instead of sitting on it. Laying the header out as a flex row and aligning to the
-                         end puts the two on a common bottom edge whatever either one's line-height is.
+                    <!-- Bottom edges level, which is what was asked for and is NOT what baseline alignment gives.
+                         The theme makes .badge a flex box with line-height:1 and 3.9px of padding under its
+                         text, so aligning the two baselines left the pill sitting 2px high: the padding
+                         hangs below the baseline it was aligned on. align-items-end aligns the boxes' bottom
+                         margin edges instead, which is the thing the eye reads as "level".
                          gap-2 rather than ms-2 so the spacing follows the writing direction in Arabic. -->
-                    <h4 class="modal-title d-flex align-items-baseline gap-2">
+                    <h4 class="modal-title d-flex align-items-end gap-2">
                         <span>{{ config()?.title }}</span>
                         <span class="badge" [ngClass]="config()?.statusClass">{{ config()?.statusLabel }}</span>
                     </h4>
