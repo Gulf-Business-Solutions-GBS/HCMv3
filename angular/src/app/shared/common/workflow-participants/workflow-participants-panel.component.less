@@ -1,0 +1,168 @@
+// The participants panel: reference material, sized and coloured to stay behind the decision buttons.
+//
+// Every colour is a --bs-* token, so the panel follows all thirteen themes and dark mode without a second
+// stylesheet. Spacing uses logical properties (inline-start/end, margin-inline) so it mirrors in Arabic.
+.wf-parts {
+    font-size: 0.85rem;
+
+    &__facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1.25rem;
+        margin-bottom: 0.65rem;
+    }
+
+    &__fact {
+        display: flex;
+        align-items: baseline;
+        gap: 0.35rem;
+        min-width: 0;
+    }
+
+    &__fact-label {
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+        font-size: 0.78rem;
+    }
+
+    &__fact-value {
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    // Tabs, but quiet ones: no heavy borders, no pill fills. They label three short lists that happen to
+    // share a box; they are not a second navigation for the dialog.
+    &__tabs.nav-tabs {
+        border-bottom: 1px solid var(--bs-border-color);
+        gap: 0.25rem;
+        flex-wrap: nowrap;
+
+        .nav-link {
+            padding: 0.35rem 0.6rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--bs-secondary-color, var(--bs-gray-600));
+            background: transparent;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            white-space: nowrap;
+
+            &:hover {
+                color: var(--bs-body-color);
+            }
+
+            &.active {
+                color: var(--bs-primary);
+                border-bottom-color: var(--bs-primary);
+                background: transparent;
+            }
+        }
+    }
+
+    &__count {
+        display: inline-block;
+        margin-inline-start: 0.3rem;
+        padding: 0 0.35rem;
+        border-radius: 0.6rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        background: var(--bs-secondary-bg, var(--bs-gray-200));
+        color: var(--bs-secondary-color, var(--bs-gray-700));
+    }
+
+    // Capped and scrollable: a request read by twenty people must not push the panel past the bottom of
+    // the column it sits in.
+    &__body {
+        padding-top: 0.35rem;
+        max-height: 15rem;
+        overflow-y: auto;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid var(--bs-border-color-translucent, var(--bs-border-color));
+
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+
+    &__who {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    &__name {
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    &__meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        font-size: 0.76rem;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+    }
+
+    &__dot {
+        opacity: 0.6;
+    }
+
+    &__when {
+        flex: 0 0 auto;
+        font-size: 0.76rem;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+        text-align: end;
+        white-space: nowrap;
+    }
+
+    // Status pills are tinted rather than solid. A solid green badge per approver would out-shout the
+    // Approve button, which is the one thing on this screen that must stay loudest.
+    &__pill {
+        flex: 0 0 auto;
+        padding: 0.1rem 0.45rem;
+        border-radius: 0.35rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &--approved {
+            background: rgba(var(--bs-success-rgb), 0.14);
+            color: var(--bs-success);
+        }
+
+        &--rejected {
+            background: rgba(var(--bs-danger-rgb), 0.14);
+            color: var(--bs-danger);
+        }
+
+        &--sentback {
+            background: rgba(var(--bs-warning-rgb), 0.16);
+            color: var(--bs-warning);
+        }
+
+        &--pending {
+            background: var(--bs-secondary-bg, var(--bs-gray-200));
+            color: var(--bs-secondary-color, var(--bs-gray-600));
+        }
+    }
+
+    &__empty {
+        padding: 1rem 0;
+        text-align: center;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+    }
+
+    &__note {
+        margin-top: 0.5rem;
+        font-size: 0.74rem;
+        line-height: 1.35;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+    }
+}

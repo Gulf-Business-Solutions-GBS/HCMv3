@@ -6,6 +6,7 @@ import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.dire
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import { WorkflowActivityRailComponent } from '@app/shared/common/workflow-activity/workflow-activity-rail.component';
+import { WorkflowParticipantsPanelComponent } from '@app/shared/common/workflow-participants/workflow-participants-panel.component';
 import {
     GetWorkflowRequestDetailInput,
     WorkflowActivityServiceProxy,
@@ -99,6 +100,7 @@ export interface EssRequestDetailConfig {
         LocalizePipe,
         EmployeeAvatarComponent,
         WorkflowActivityRailComponent,
+        WorkflowParticipantsPanelComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

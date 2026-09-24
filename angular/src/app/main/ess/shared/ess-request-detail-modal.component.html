@@ -179,6 +179,24 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Below the conversation, in the same column, because this is the rest of the
+                                 same story: the thread says what happened, this says who is entitled to act
+                                 and who has looked. It belongs beside the fields the approver is reading,
+                                 not under the form they came here to review.
+
+                                 A card of its own with a quiet title. It is reference material an approver
+                                 consults, so it must not compete with the decision buttons on the left. -->
+                            @if (config()?.workflowRequestId; as workflowRequestId) {
+                                <div class="card card-custom mt-5 ess-detail__participants">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ 'WorkflowActionsAndInformation' | localize }}</h5>
+
+                                        <workflow-participants-panel
+                                            [workflowRequestId]="workflowRequestId"></workflow-participants-panel>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
