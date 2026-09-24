@@ -92,7 +92,7 @@
                                      with, because this component had no approver mode to hold it. -->
                                 <div class="card card-custom gutter-b mb-5 ess-detail__decision">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ 'ApprovalDecision' | localize }}</h5>
+                                        <h5 class="card-title">{{ 'Comments' | localize }}</h5>
 
                                         <textarea
                                             class="form-control mb-4"
@@ -141,11 +141,19 @@
                                 </div>
                             }
 
-                            <!-- Card 3: one conversation. The requester's own note, every approver's comment
-                                 and every workflow event in a single column, which is what the user asked
-                                 for in place of the two textareas and the tabbed log grid legacy showed
-                                 here, and what the reference screen calls Activity. -->
-                            <div class="card card-custom">
+                        </div>
+
+                        <!-- The conversation lives beside the request, not beneath it: an approver reads the
+                             thread while looking at the fields they are deciding on, rather than scrolling
+                             past them. Newest first, because the thing that just happened is the thing you
+                             came to see.
+
+                             No composer here. There is exactly one comment box on this screen -- the one in
+                             the Comments card, next to the buttons -- because a comment an approver types
+                             IS their decision's comment. Two boxes asked them to choose which kind of
+                             remark they were making, a distinction nobody wanted to draw. -->
+                        <div [class]="isApproverMode() ? 'col-12 col-lg-4' : 'col-12'">
+                            <div class="card card-custom ess-detail__conversation">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ 'Conversation' | localize }}</h5>
 
@@ -154,13 +162,12 @@
                                             [workflowRequestId]="workflowRequestId"
                                             [flush]="true"
                                             [showHeader]="false"
+                                            [newestFirst]="true"
+                                            [readOnly]="true"
                                             [leadComment]="detail()?.submissionComment ?? config()?.comments"
                                             [leadAuthorName]="requesterName()"
                                             [leadAuthorPhotoUrl]="requesterPhotoUrl()"></workflow-activity-rail>
                                     } @else if (config()?.comments) {
-                                        <!-- Recorded directly by HR, so there is no chain and nothing to
-                                             converse with; the note the employee left is still worth
-                                             showing. -->
                                         <div class="text-muted">{{ config()?.comments }}</div>
                                     } @else {
                                         <div class="text-muted">{{ 'NoCommentsYet' | localize }}</div>
@@ -168,46 +175,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        @if (isApproverMode()) {
-                            <!-- The subject as a person, not as an employee id. An approver deciding on a
-                                 permit wants to know whose it is; the reference screen gives this its own
-                                 column and so does this. -->
-                            <div class="col-12 col-lg-4">
-                                <div class="card card-custom ess-detail__person">
-                                    <div class="card-body text-center">
-                                        <employee-avatar
-                                            [photoUrl]="requesterPhotoUrl()"
-                                            [name]="requesterName()"
-                                            [size]="96" />
-
-                                        <div class="fw-bold fs-5 mt-4">{{ requesterName() }}</div>
-
-                                        @if (requesterJobTitle()) {
-                                            <div class="text-muted">{{ requesterJobTitle() }}</div>
-                                        }
-
-                                        @if (detail()?.requesterCode; as code) {
-                                            <div class="text-muted small mt-2">
-                                                {{ 'Employee' | localize }} #{{ code }}
-                                            </div>
-                                        }
-
-                                        <div class="separator separator-dashed my-5"></div>
-
-                                        <div class="ess-detail__person-row">
-                                            <span class="text-muted">{{ 'RequestNumber' | localize }}</span>
-                                            <span class="fw-bold">{{ detail()?.requestNumber ?? '-' }}</span>
-                                        </div>
-
-                                        <div class="ess-detail__person-row">
-                                            <span class="text-muted">{{ 'ApprovalStatus' | localize }}</span>
-                                            <span class="fw-bold">{{ config()?.statusLabel }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
                     </div>
                 </div>
 

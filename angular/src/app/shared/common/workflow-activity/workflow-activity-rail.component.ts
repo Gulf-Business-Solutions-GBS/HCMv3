@@ -159,11 +159,33 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
         };
     });
 
+    /**
+     * Newest at the top. Off by default, because read in full a request's story runs forwards -- raised,
+     * then read, then approved. An approver deciding on one is not reading it in full: they want what just
+     * happened, so beside the decision buttons the thread is inverted.
+     */
+    readonly newestFirst = input(false);
+
     readonly entries = computed<WorkflowFeedEntry[]>(() => {
         const mapped = this.activities().map((a) => this.toEntry(a));
         const lead = this.leadEntry();
 
-        return lead ? [lead, ...mapped] : mapped;
+        const ordered = lead ? [lead, ...mapped] : mapped;
+
+        if (!this.newestFirst()) {
+            return ordered;
+        }
+
+        // Sorted on the timestamp rather than reversed: the lead entry is spliced in at the front by hand
+        // and the rest arrive in the server's order, so reversing would only guarantee the opposite of
+        // whatever that happened to be. An entry with no timestamp sorts last, where it cannot claim to be
+        // the latest thing that happened.
+        return [...ordered].sort((a, b) => {
+            const at = a.occurredAt?.toMillis() ?? Number.NEGATIVE_INFINITY;
+            const bt = b.occurredAt?.toMillis() ?? Number.NEGATIVE_INFINITY;
+
+            return bt - at;
+        });
     });
 
     constructor() {
