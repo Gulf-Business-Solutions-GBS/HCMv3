@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
@@ -9,7 +8,6 @@ import {
     WorkflowActivityServiceProxy,
     WorkflowParticipantProfileDto,
 } from '@shared/service-proxies/service-proxies';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 
 /**
@@ -35,14 +33,16 @@ import { finalize } from 'rxjs/operators';
     selector: 'workflowParticipantProfileModal',
     templateUrl: './workflow-participant-profile-modal.component.html',
     styleUrls: ['./workflow-participant-profile-modal.component.less'],
-    imports: [CommonModule, AppBsModalDirective, LocalizePipe, EmployeeAvatarComponent],
+    imports: [CommonModule, LocalizePipe, EmployeeAvatarComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkflowParticipantProfileModalComponent extends AppComponentBase {
     private readonly _activityService = inject(WorkflowActivityServiceProxy);
 
-    readonly modal = viewChild<ModalDirective>('workflowParticipantProfileModal');
-
+    /**
+     * No ModalDirective. `active` alone puts the card on screen and takes it off again, because the card is
+     * a plain overlay rather than a second bs-modal opened inside the request dialog -- see the template.
+     */
     readonly active = signal(false);
     readonly loading = signal(false);
     readonly profile = signal<WorkflowParticipantProfileDto | undefined>(undefined);
@@ -91,7 +91,6 @@ export class WorkflowParticipantProfileModalComponent extends AppComponentBase {
         this.profile.set(undefined);
         this.pendingName.set(fallbackName);
         this.active.set(true);
-        this.modal()?.show();
 
         this.loading.set(true);
 
@@ -115,7 +114,6 @@ export class WorkflowParticipantProfileModalComponent extends AppComponentBase {
         this.active.set(false);
         this.profile.set(undefined);
         this.pendingName.set('');
-        this.modal()?.hide();
     }
 
     private pick(en: string | undefined, ar: string | undefined): string {
