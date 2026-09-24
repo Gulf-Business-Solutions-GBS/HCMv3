@@ -45,7 +45,13 @@ public abstract class WorkflowAppServiceTestBase : AppTestBase
         return service;
     }
 
-    private IUnitOfWorkManager CreateFakeUnitOfWorkManager()
+    /// <summary>
+    /// Protected, not private, because domain services need it too. An app service gets one through
+    /// <see cref="CreateService{TService}"/>; a domain service built with <c>new</c> -- which is how
+    /// <c>WorkflowApprovalService</c> is tested -- has to be given one by hand, and without it any call to
+    /// <c>CurrentUnitOfWork</c> throws "Must set UnitOfWorkManager before use it".
+    /// </summary>
+    protected IUnitOfWorkManager CreateFakeUnitOfWorkManager()
     {
         var activeUnitOfWork = Substitute.For<IActiveUnitOfWork>();
         activeUnitOfWork.SaveChangesAsync().Returns(_ => Context.SaveChangesAsync());

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
+using Abp.Localization;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 using NSubstitute;
@@ -25,6 +26,20 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
 {
     private WorkflowApprovalService CreateService()
     {
+        var service = BuildService();
+
+        // The engine flushes the unit of work before dispatching notifications, so the approvers it has just
+        // inserted are visible to the dispatcher's query rather than being tracked entities nobody can see.
+        // Constructed with new(), it gets none of the property injection the container would do, so this has
+        // to be handed over explicitly -- otherwise every test here dies on CurrentUnitOfWork.
+        service.UnitOfWorkManager = CreateFakeUnitOfWorkManager();
+        service.LocalizationManager = LocalIocManager.Resolve<ILocalizationManager>();
+
+        return service;
+    }
+
+    private WorkflowApprovalService BuildService()
+    {
         return new WorkflowApprovalService(
             FakeRepository.For<WorkflowRequest>(Context),
             FakeRepository.For<WorkFlowApprover>(Context),
@@ -37,8 +52,27 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             CreateHandlerResolver(),
             CreateNotificationDispatcher(),
             CreateStepSequence(),
-            CreateEmployeeScopeProvider());
+            CreateEmployeeScopeProvider(),
+            CreatePlatformProvider());
     }
+
+    /// <summary>
+    /// Reports whatever <see cref="_platform"/> currently holds, so a test can say "this action arrived
+    /// from the mobile app" without an HTTP request to carry the header.
+    /// </summary>
+    private IWorkflowPlatformProvider CreatePlatformProvider()
+    {
+        var provider = Substitute.For<IWorkflowPlatformProvider>();
+        provider.Current.Returns(_ => _platform);
+
+        return provider;
+    }
+
+    /// <summary>
+    /// The platform the next action will be recorded against. Core by default, which is what a test with
+    /// no HTTP context behind it would really see.
+    /// </summary>
+    private WorkflowPlatform _platform = WorkflowPlatform.Core;
 
     /// <summary>
     /// The REAL step sequencer, over the same fake <c>RequestDetail</c> repository. It is what decides which
@@ -607,5 +641,239 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
         request.RequestStatus.ShouldBe(RequestStatus.Open);
         request.WorkflowStep.ShouldBe(2);
         request.ApproverId.ShouldBe(approverId);
+    }
+
+    // ---------------------------------------------------------------- the two columns the log never filled
+
+    /// <summary>
+    /// Both columns existed on the entity from the port and neither was ever given a real value:
+    /// <c>ActionDays</c> was written as 0 and <c>Platform</c> as Core at every site. A column that always
+    /// says the same thing is worse than a missing one, because a report will quote it.
+    /// </summary>
+    [Fact]
+    public async Task Should_Record_The_Platform_An_Action_Came_From()
+    {
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+
+        var masterId = CreateRequestMaster("PlatformRequest", steps: 1);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "PlatformRequest");
+        var service = CreateService();
+
+        // Raised on the phone, approved at a desk -- which is the ordinary case, and the one a single
+        // hardcoded value cannot represent.
+        _platform = WorkflowPlatform.Mobile;
+        await service.SubmitAsync(requestId, submitterId);
+
+        _platform = WorkflowPlatform.ESS;
+        await service.ApproveAsync(requestId, approverId, "fine");
+
+        var logs = Context.RequestLogs
+            .Where(l => l.WorkflowRequestId == requestId)
+            .OrderBy(l => l.Id)
+            .ToList();
+
+        logs.First(l => l.ActionType == RequestActionType.Created).Platform.ShouldBe(WorkflowPlatform.Mobile);
+        logs.First(l => l.ActionType == RequestActionType.Approved).Platform.ShouldBe(WorkflowPlatform.ESS);
+    }
+
+    /// <summary>
+    /// The first action has nothing before it, so it is zero rather than "days since the epoch".
+    /// </summary>
+    [Fact]
+    public async Task Should_Record_Zero_Action_Days_For_The_First_Action()
+    {
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+
+        var masterId = CreateRequestMaster("FirstActionRequest", steps: 1);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "FirstActionRequest");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+
+        var created = Context.RequestLogs.Single(l => l.WorkflowRequestId == requestId);
+        created.ActionType.ShouldBe(RequestActionType.Created);
+        created.ActionDays.ShouldBe(0);
+    }
+
+    /// <summary>
+    /// Measured from the PREVIOUS action, not from submission.
+    ///
+    /// <para>
+    /// This is the distinction the column exists to make. Backdating the step-1 approval by four days and
+    /// leaving submission six days back means an implementation measuring from the start would say 6 for
+    /// step 2; measuring from the step it actually waited on says 4. The wrong one makes every later
+    /// approver inherit the delays of everyone before them.
+    /// </para>
+    /// </summary>
+    [Fact]
+    public async Task Should_Count_Action_Days_From_The_Previous_Action_Not_From_Submission()
+    {
+        var submitterId = CreateEmployee();
+        var step1ApproverId = CreateEmployee();
+        var step2ApproverId = CreateEmployee();
+        var role1Id = CreateWorkflowRole();
+        var role2Id = CreateWorkflowRole();
+        AssignEmployeeToRole(step1ApproverId, role1Id);
+        AssignEmployeeToRole(step2ApproverId, role2Id);
+
+        var masterId = CreateRequestMaster("ActionDaysRequest", steps: 2);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: role1Id);
+        CreateRequestDetail(masterId, step: 2, workflowRoleId: role2Id);
+
+        var requestId = CreateDraftRequest(submitterId, "ActionDaysRequest");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+        await service.ApproveAsync(requestId, step1ApproverId, "step1 ok");
+
+        // Age the two rows that exist, so the step-2 approval lands four days after step 1 and six after
+        // submission. Done to the stored rows because the engine stamps DateTime.Now and a test cannot
+        // wait four days for it.
+        var created = Context.RequestLogs.Single(l => l.WorkflowRequestId == requestId && l.ActionType == RequestActionType.Created);
+        var step1 = Context.RequestLogs.Single(l => l.WorkflowRequestId == requestId && l.ActionType == RequestActionType.Approved);
+
+        created.ActionDateTime = DateTime.Now.AddDays(-6);
+        step1.ActionDateTime = DateTime.Now.AddDays(-4);
+        Context.SaveChanges();
+
+        await service.ApproveAsync(requestId, step2ApproverId, "step2 ok");
+
+        var step2 = Context.RequestLogs
+            .Where(l => l.WorkflowRequestId == requestId && l.ActionType == RequestActionType.Approved)
+            .OrderByDescending(l => l.Id)
+            .First();
+
+        step2.ActionDays.ShouldBe(4);
+    }
+
+    // ---------------------------------------------------------------- approver rows survive a step change
+
+    /// <summary>
+    /// The defect this column exists to fix: the engine used to delete every approver row on a request
+    /// before inserting the next step's, so the moment a request reached step 2 there was nothing left
+    /// saying who had been entitled to approve step 1, nor that they had.
+    /// </summary>
+    [Fact]
+    public async Task Should_Keep_Past_Steps_Approver_Rows_After_Advancing()
+    {
+        var submitterId = CreateEmployee();
+        var step1ApproverId = CreateEmployee();
+        var step2ApproverId = CreateEmployee();
+        var role1Id = CreateWorkflowRole();
+        var role2Id = CreateWorkflowRole();
+        AssignEmployeeToRole(step1ApproverId, role1Id);
+        AssignEmployeeToRole(step2ApproverId, role2Id);
+
+        var masterId = CreateRequestMaster("KeepRowsRequest", steps: 2);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: role1Id);
+        CreateRequestDetail(masterId, step: 2, workflowRoleId: role2Id);
+
+        var requestId = CreateDraftRequest(submitterId, "KeepRowsRequest");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+        await service.ApproveAsync(requestId, step1ApproverId, "step1 ok");
+
+        // !IsDeleted throughout: WorkFlowApprover is a FullAuditedEntity, so the engine soft-deletes. The
+        // application only ever sees live rows because ABP's repositories filter them; this bare test
+        // DbContext has no such filter and would otherwise assert against rows nothing can read.
+        var rows = Context.WorkFlowApprovers
+            .Where(a => a.WorkflowRequestId == requestId && !a.IsDeleted)
+            .ToList();
+
+        // Step 1's row is still there, still saying who approved it.
+        var step1Row = rows.SingleOrDefault(a => a.WorkflowStep == 1);
+        step1Row.ShouldNotBeNull("Step 1's approver row must survive the move to step 2.");
+        step1Row.ApproverId.ShouldBe(step1ApproverId);
+        step1Row.IsApproved.ShouldBeTrue();
+
+        // And step 2 has its own, pending.
+        var step2Row = rows.SingleOrDefault(a => a.WorkflowStep == 2);
+        step2Row.ShouldNotBeNull();
+        step2Row.ApproverId.ShouldBe(step2ApproverId);
+        step2Row.IsApproved.ShouldBeFalse();
+    }
+
+    /// <summary>
+    /// Keeping the rows must not let their owners act again.
+    ///
+    /// <para>
+    /// The step-1 approver has a row on this request forever now. Without the step filter on the
+    /// current-approver check, that row would make them a valid approver of step 2 as well -- and of every
+    /// step after it. This is the failure mode that makes "just stop deleting" wrong on its own.
+    /// </para>
+    /// </summary>
+    [Fact]
+    public async Task Should_Not_Let_A_Past_Step_Approver_Act_On_The_Current_Step()
+    {
+        var submitterId = CreateEmployee();
+        var step1ApproverId = CreateEmployee();
+        var step2ApproverId = CreateEmployee();
+        var role1Id = CreateWorkflowRole();
+        var role2Id = CreateWorkflowRole();
+        AssignEmployeeToRole(step1ApproverId, role1Id);
+        AssignEmployeeToRole(step2ApproverId, role2Id);
+
+        var masterId = CreateRequestMaster("PastApproverRequest", steps: 2);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: role1Id);
+        CreateRequestDetail(masterId, step: 2, workflowRoleId: role2Id);
+
+        var requestId = CreateDraftRequest(submitterId, "PastApproverRequest");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+        await service.ApproveAsync(requestId, step1ApproverId, "step1 ok");
+
+        await Should.ThrowAsync<UserFriendlyException>(
+            () => service.ApproveAsync(requestId, step1ApproverId, "and step 2 as well"));
+
+        var request = await Context.WorkflowRequests.FindAsync(requestId);
+        request.WorkflowStep.ShouldBe(2);
+        request.RequestStatus.ShouldBe(RequestStatus.Open);
+    }
+
+    /// <summary>
+    /// A step can be assigned twice -- send back, then re-submit -- and must not end up with two sets of
+    /// approvers. Two rows where ApprovalRequire.All applies would silently double what the step requires.
+    /// </summary>
+    [Fact]
+    public async Task Should_Supersede_Rather_Than_Duplicate_When_A_Step_Is_Assigned_Again()
+    {
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+
+        var masterId = CreateRequestMaster("ResubmitRequest", steps: 1);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "ResubmitRequest");
+        var service = CreateService();
+
+        await service.SubmitAsync(requestId, submitterId);
+        await service.SendBackAsync(requestId, approverId, "Please correct the dates");
+        await service.SubmitAsync(requestId, submitterId);
+
+        var rows = Context.WorkFlowApprovers
+            .Where(a => a.WorkflowRequestId == requestId && a.WorkflowStep == 1 && !a.IsDeleted)
+            .ToList();
+
+        rows.Count.ShouldBe(1, "Re-assigning a step must replace its rows, not add a second set.");
+        rows[0].IsApproved.ShouldBeFalse();
+
+        // Nothing asserted about soft-deletion here. WorkFlowApprover is a FullAuditedEntity, so a real
+        // Abp repository keeps the superseded row with IsDeleted set, but this harness removes it outright
+        // -- and a test that asserted the harness's behaviour would be pinning the double, not the engine.
+        // What matters either way is the count the application can see, which is what is checked above.
     }
 }

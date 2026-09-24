@@ -10,11 +10,17 @@ import { WorkflowParticipantsPanelComponent } from '@app/shared/common/workflow-
 import { WorkflowParticipantProfileModalComponent } from '@app/shared/common/workflow-participants/workflow-participant-profile-modal.component';
 import {
     GetWorkflowRequestDetailInput,
+    GetWorkflowRequestLogInput,
+    RequestActionType,
+    RequestStatus,
+    WorkflowPlatform,
+    WorkflowRequestLogEntryDto,
     WorkflowActivityServiceProxy,
     WorkflowDetailFieldDto,
     WorkflowDetailFieldKind,
     WorkflowRequestDetailDto,
 } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 import { DateTime } from 'luxon';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -120,6 +126,7 @@ export interface EssRequestDetailConfig {
 })
 export class EssRequestDetailModalComponent extends AppComponentBase {
     private readonly _activityService = inject(WorkflowActivityServiceProxy);
+    private readonly _fileDownloadService = inject(FileDownloadService);
 
     readonly modal = viewChild<ModalDirective>('essRequestDetailModal');
 
@@ -136,6 +143,25 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
 
     /** The comment attached to the decision. Distinct from the conversation composer, which posts a remark. */
     decisionComment = '';
+
+    // ------------------------------------------------------------------ conversation / log
+
+    /**
+     * Which view of the same history is showing.
+     *
+     * <p>Two shapes of one table, and both were asked for. The thread is how a person reads a request
+     * once -- who said what, in order, with faces. The grid is how the same history is measured and
+     * exported: how many days each step took, on which platform, by whom. Asking the thread to be
+     * reportable would have ruined it as a thread; asking the grid to be readable would have ruined it as
+     * a report. So they are a toggle, defaulting to the thread because that is what an approver came for.</p>
+     */
+    readonly rightPaneView = signal<'conversation' | 'log'>('conversation');
+
+    readonly logEntries = signal<WorkflowRequestLogEntryDto[]>([]);
+    readonly loadingLog = signal(false);
+    readonly exportingLog = signal(false);
+
+    readonly ActionType = RequestActionType;
 
     /** True while the host's approve/reject/send-back call is in flight. */
     readonly acting = signal(false);
@@ -261,9 +287,7 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         this.pick(this.detail()?.requesterJobTitleEn, this.detail()?.requesterJobTitleAr)
     );
 
-    readonly requesterPhotoUrl = computed(
-        () => this.detail()?.requesterPhotoUrl ?? this.config()?.requesterPhotoUrl
-    );
+    readonly requesterPhotoUrl = computed(() => this.detail()?.requesterPhotoUrl ?? this.config()?.requesterPhotoUrl);
 
     readonly typeName = computed(() => {
         const served = this.detail();
@@ -279,6 +303,34 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
      * and the number is the more useful thing to carry in a heading anyway, because it is what one person
      * quotes to another.</p>
      */
+    /**
+     * The one-line verdict at the top of a request that is no longer running.
+     *
+     * <p>Taken from the SuccessFactors approval screen, which opens with "This workflow request is
+     * complete." An approver who arrives at a request somebody else has already settled currently has to
+     * infer that from the absence of buttons, which is a thing you only notice if you knew to expect them.
+     * Null while the request is still open, because then the buttons ARE the answer.</p>
+     */
+    /**
+     * Whether this step refuses a decision without a comment. The engine has always enforced it and still
+     * does -- this only decides whether the approver is told before they press the button rather than
+     * after, which is the difference between a rule and an ambush.
+     */
+    readonly isCommentRequired = computed(() => this.detail()?.isCommentRequired ?? false);
+
+    readonly outcomeBanner = computed(() => {
+        switch (this.detail()?.requestStatus) {
+            case RequestStatus.Approved:
+                return { text: this.l('ThisRequestIsComplete'), kind: 'success' };
+            case RequestStatus.Rejected:
+                return { text: this.l('ThisRequestWasRejected'), kind: 'danger' };
+            case RequestStatus.Closed:
+                return { text: this.l('ThisRequestIsClosed'), kind: 'secondary' };
+            default:
+                return undefined;
+        }
+    });
+
     readonly headerTitle = computed(() => {
         const name = this.typeName();
         const number = this.detail()?.requestNumber;
@@ -352,6 +404,75 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
      * name in the conversation or in the approvers list opens. Silently does nothing without a workflow id,
      * because the card reads the person's role ON THIS REQUEST and has nothing to read without one.
      */
+    /**
+     * Switches the right-hand pane, loading the log the first time it is asked for.
+     *
+     * <p>Lazily, because most people never open it: fetching a second view of the history on every dialog
+     * open would cost a request per approval for a tab nobody clicked.</p>
+     */
+    showPane(view: 'conversation' | 'log'): void {
+        this.rightPaneView.set(view);
+
+        if (view === 'log' && !this.logEntries().length && !this.loadingLog()) {
+            this.loadLog();
+        }
+    }
+
+    private loadLog(): void {
+        const requestId = this.config()?.workflowRequestId;
+        if (!requestId) {
+            return;
+        }
+
+        this.loadingLog.set(true);
+
+        const input = new GetWorkflowRequestLogInput();
+        input.workflowRequestId = requestId;
+
+        this._activityService
+            .getRequestLog(input)
+            .pipe(finalize(() => this.loadingLog.set(false)))
+            .subscribe((entries) => this.logEntries.set(entries ?? []));
+    }
+
+    exportLog(): void {
+        const requestId = this.config()?.workflowRequestId;
+        if (!requestId || this.exportingLog()) {
+            return;
+        }
+
+        this.exportingLog.set(true);
+
+        const input = new GetWorkflowRequestLogInput();
+        input.workflowRequestId = requestId;
+
+        this._activityService
+            .exportRequestLogToExcel(input)
+            .pipe(finalize(() => this.exportingLog.set(false)))
+            .subscribe((file) => this._fileDownloadService.downloadTempFile(file));
+    }
+
+    /** The action's own word -- "Approved", "Sent back" -- rather than its number. */
+    actionTypeLabel(actionType: RequestActionType): string {
+        return this.l('RequestActionType_' + RequestActionType[actionType]);
+    }
+
+    /**
+     * Likewise for the platform, and for the same reason it needs a method at all: interpolating the enum
+     * straight into the key builds "WorkflowPlatform_0", which matches nothing and renders as itself. The
+     * reverse lookup turns the number back into the name the localisation file is keyed by.
+     */
+    platformLabel(platform: WorkflowPlatform): string {
+        return this.l('WorkflowPlatform_' + WorkflowPlatform[platform]);
+    }
+
+    /** Whose name to show, in the viewer's language, falling back to whichever one is stored. */
+    logActorName(entry: WorkflowRequestLogEntryDto): string {
+        const name = this.pick(entry.actionByNameEn, entry.actionByNameAr) || '';
+
+        return name && entry.actionByCode ? `${name} (${entry.actionByCode})` : name;
+    }
+
     openRequesterProfile(employeeId: number): void {
         const workflowRequestId = this.config()?.workflowRequestId;
 
@@ -400,7 +521,16 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         // Told here rather than after a round trip. The server requires a reason for both of these, and an
         // approver who has just typed nothing should learn that before the request is sent, not after.
         if ((action === 'reject' || action === 'sendBack') && !comment) {
-            this.message.warn(this.l(action === 'reject' ? 'AReasonIsRequiredToReject' : 'AReasonIsRequiredToSendBack'));
+            this.message.warn(
+                this.l(action === 'reject' ? 'AReasonIsRequiredToReject' : 'AReasonIsRequiredToSendBack')
+            );
+            return;
+        }
+
+        // The same courtesy for a step configured to demand a comment on approval too. The server throws
+        // either way; this only decides whether the approver finds out before or after committing.
+        if (action === 'approve' && this.isCommentRequired() && !comment) {
+            this.message.warn(this.l('CommentIsRequiredForThisStep'));
             return;
         }
 

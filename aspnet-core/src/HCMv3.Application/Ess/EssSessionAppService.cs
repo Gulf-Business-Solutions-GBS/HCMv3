@@ -91,6 +91,7 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
         result.PendingApprovalCount = await _workFlowApproverRepository.GetAll()
             .CountAsync(a => a.ApproverId == employeeId.Value
                              && !a.IsApproved
+                             && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
                              && a.WorkflowRequest.RequestStatus == RequestStatus.Open);
 
         result.AvailableTransactionTypes = await GetAvailableTransactionTypesAsync();

@@ -14,8 +14,6 @@ namespace HCMv3.EntityFrameworkCore.Workflow;
 /// <inheritdoc cref="IRequestNumberGenerator"/>
 public class RequestNumberGenerator : IRequestNumberGenerator, ITransientDependency
 {
-    /// <summary>Used when a caller has no type tag of its own to offer.</summary>
-    private const string DefaultPrefix = "REQ";
 
     /// <summary>
     /// The number, and nothing else: "1", "2", "17".

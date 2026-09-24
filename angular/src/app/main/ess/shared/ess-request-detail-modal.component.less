@@ -88,6 +88,32 @@
     overflow-y: auto;
 }
 
+// The toggle between the two views of the history, and the export that only belongs to one of them.
+// Sits where the card title used to: the two buttons name the pane, so a heading above them would only
+// repeat whichever one is pressed.
+.ess-detail__pane-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+
+// Denser than the page default. This is a measurement table read in a narrow column beside the form, so
+// the numbers matter more than the whitespace around them.
+.ess-detail__log {
+    table {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    th {
+        white-space: nowrap;
+        font-weight: 600;
+    }
+}
+
 
 // The title is one run of text -- "Exit Permit (17)" -- and carries no pill.
 //

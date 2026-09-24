@@ -62,6 +62,21 @@ public static class FakeRepository
             }
         });
 
+        // The ENTITY overload, which was missing.
+        //
+        // Production code deletes the row it is holding -- DeleteAsync(existing) -- not an id it would have
+        // to look up again. Unstubbed, NSubstitute answers that call by doing nothing at all and returning
+        // a completed task, so every delete in every service under test silently did not happen. Nothing
+        // caught it because no test had asserted on rows a service was supposed to have removed; the first
+        // one that did reported two rows where the application would have had one, and looked for all the
+        // world like a bug in the code under test.
+        repository.DeleteAsync(Arg.Any<TEntity>()).Returns(async call =>
+        {
+            var entity = call.Arg<TEntity>();
+            set.Remove(entity);
+            await context.SaveChangesAsync();
+        });
+
         return repository;
     }
 }

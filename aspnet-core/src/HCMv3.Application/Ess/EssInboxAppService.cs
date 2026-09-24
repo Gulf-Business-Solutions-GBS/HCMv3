@@ -64,9 +64,14 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 
         // One query for every transaction type at once. Nothing here touches a transaction table -- the
         // label comes from the request's own summary.
+        // The step filter is what keeps this an inbox rather than an archive. Approver rows now survive a
+        // step change, so "not yet approved" alone would also match a row left unapproved at an earlier
+        // step -- one of three approvers where any one sufficed -- and that request would sit in their
+        // inbox for the rest of its life, unactionable.
         var query = _approverRepository.GetAll()
             .Where(a => a.ApproverId == employeeId
                         && !a.IsApproved
+                        && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
                         && a.WorkflowRequest.RequestStatus == RequestStatus.Open)
             .Select(a => a.WorkflowRequest)
             .WhereIf(!input.RequestType.IsNullOrWhiteSpace(), r => r.RequestType == input.RequestType);
@@ -94,9 +99,11 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
             return 0;
         }
 
+        // Must match GetMyInbox exactly, or the badge says a number the list cannot produce.
         return await _approverRepository.GetAll()
             .CountAsync(a => a.ApproverId == employeeId.Value
                              && !a.IsApproved
+                             && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
                              && a.WorkflowRequest.RequestStatus == RequestStatus.Open);
     }
 

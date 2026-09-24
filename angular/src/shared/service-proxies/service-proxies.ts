@@ -158834,6 +158834,125 @@ export class WorkflowActivityServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    getRequestLog(body?: GetWorkflowRequestLogInput | undefined): Observable<WorkflowRequestLogEntryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/GetRequestLog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRequestLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRequestLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowRequestLogEntryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowRequestLogEntryDto[]>;
+        }));
+    }
+
+    protected processGetRequestLog(response: HttpResponseBase): Observable<WorkflowRequestLogEntryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(WorkflowRequestLogEntryDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportRequestLogToExcel(body?: GetWorkflowRequestLogInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/ExportRequestLogToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportRequestLogToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportRequestLogToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportRequestLogToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     addComment(body?: AddWorkflowCommentInput | undefined): Observable<WorkflowActivityDto> {
         let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/AddComment";
         url_ = url_.replace(/[?&]$/, "");
@@ -265077,6 +265196,42 @@ export interface IGetWorkflowRequestForEditOutput {
     workflowRequest: CreateOrEditWorkflowRequestDto;
 }
 
+export class GetWorkflowRequestLogInput implements IGetWorkflowRequestLogInput {
+    workflowRequestId!: number;
+
+    constructor(data?: IGetWorkflowRequestLogInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkflowRequestLogInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkflowRequestLogInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        return data;
+    }
+}
+
+export interface IGetWorkflowRequestLogInput {
+    workflowRequestId: number;
+}
+
 export class GetWorkflowRoleForEditOutput implements IGetWorkflowRoleForEditOutput {
     workflowRole!: CreateOrEditWorkflowRoleDto;
 
@@ -341401,6 +341556,7 @@ export class WorkflowParticipantsDto implements IWorkflowParticipantsDto {
     requestStatus!: RequestStatus;
     currentWorkflowRoleNameEn!: string | undefined;
     currentWorkflowRoleNameAr!: string | undefined;
+    currentApprovalRequire!: ApprovalRequire;
     approvers!: WorkflowApproverEntryDto[] | undefined;
     delegates!: WorkflowDelegateEntryDto[] | undefined;
     readLog!: WorkflowReadLogEntryDto[] | undefined;
@@ -341422,6 +341578,7 @@ export class WorkflowParticipantsDto implements IWorkflowParticipantsDto {
             this.requestStatus = _data["requestStatus"];
             this.currentWorkflowRoleNameEn = _data["currentWorkflowRoleNameEn"];
             this.currentWorkflowRoleNameAr = _data["currentWorkflowRoleNameAr"];
+            this.currentApprovalRequire = _data["currentApprovalRequire"];
             if (Array.isArray(_data["approvers"])) {
                 this.approvers = [] as any;
                 for (let item of _data["approvers"])
@@ -341455,6 +341612,7 @@ export class WorkflowParticipantsDto implements IWorkflowParticipantsDto {
         data["requestStatus"] = this.requestStatus;
         data["currentWorkflowRoleNameEn"] = this.currentWorkflowRoleNameEn;
         data["currentWorkflowRoleNameAr"] = this.currentWorkflowRoleNameAr;
+        data["currentApprovalRequire"] = this.currentApprovalRequire;
         if (Array.isArray(this.approvers)) {
             data["approvers"] = [];
             for (let item of this.approvers)
@@ -341481,6 +341639,7 @@ export interface IWorkflowParticipantsDto {
     requestStatus: RequestStatus;
     currentWorkflowRoleNameEn: string | undefined;
     currentWorkflowRoleNameAr: string | undefined;
+    currentApprovalRequire: ApprovalRequire;
     approvers: WorkflowApproverEntryDto[] | undefined;
     delegates: WorkflowDelegateEntryDto[] | undefined;
     readLog: WorkflowReadLogEntryDto[] | undefined;
@@ -341678,6 +341837,7 @@ export class WorkflowRequestDetailDto implements IWorkflowRequestDetailDto {
     canApprove!: boolean;
     canReject!: boolean;
     canSendBack!: boolean;
+    isCommentRequired!: boolean;
 
     constructor(data?: IWorkflowRequestDetailDto) {
         if (data) {
@@ -341719,6 +341879,7 @@ export class WorkflowRequestDetailDto implements IWorkflowRequestDetailDto {
             this.canApprove = _data["canApprove"];
             this.canReject = _data["canReject"];
             this.canSendBack = _data["canSendBack"];
+            this.isCommentRequired = _data["isCommentRequired"];
         }
     }
 
@@ -341760,6 +341921,7 @@ export class WorkflowRequestDetailDto implements IWorkflowRequestDetailDto {
         data["canApprove"] = this.canApprove;
         data["canReject"] = this.canReject;
         data["canSendBack"] = this.canSendBack;
+        data["isCommentRequired"] = this.isCommentRequired;
         return data;
     }
 }
@@ -341790,6 +341952,7 @@ export interface IWorkflowRequestDetailDto {
     canApprove: boolean;
     canReject: boolean;
     canSendBack: boolean;
+    isCommentRequired: boolean;
 }
 
 export class WorkflowRequestDto implements IWorkflowRequestDto {
@@ -341862,6 +342025,86 @@ export interface IWorkflowRequestDto {
     requestNumber: string | undefined;
     requestStatus: RequestStatus;
     approvalProcessTime: number;
+}
+
+export class WorkflowRequestLogEntryDto implements IWorkflowRequestLogEntryDto {
+    id!: number;
+    actionByEmployeeId!: number | undefined;
+    actionByCode!: string | undefined;
+    actionByNameEn!: string | undefined;
+    actionByNameAr!: string | undefined;
+    actionByPhotoUrl!: string | undefined;
+    actionDateTime!: DateTime;
+    actionType!: RequestActionType;
+    workflowStep!: number;
+    actionDays!: number;
+    platform!: WorkflowPlatform;
+    comment!: string | undefined;
+
+    constructor(data?: IWorkflowRequestLogEntryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.actionByEmployeeId = _data["actionByEmployeeId"];
+            this.actionByCode = _data["actionByCode"];
+            this.actionByNameEn = _data["actionByNameEn"];
+            this.actionByNameAr = _data["actionByNameAr"];
+            this.actionByPhotoUrl = _data["actionByPhotoUrl"];
+            this.actionDateTime = _data["actionDateTime"] ? DateTime.fromISO(_data["actionDateTime"].toString()) : undefined as any;
+            this.actionType = _data["actionType"];
+            this.workflowStep = _data["workflowStep"];
+            this.actionDays = _data["actionDays"];
+            this.platform = _data["platform"];
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowRequestLogEntryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowRequestLogEntryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["actionByEmployeeId"] = this.actionByEmployeeId;
+        data["actionByCode"] = this.actionByCode;
+        data["actionByNameEn"] = this.actionByNameEn;
+        data["actionByNameAr"] = this.actionByNameAr;
+        data["actionByPhotoUrl"] = this.actionByPhotoUrl;
+        data["actionDateTime"] = this.actionDateTime ? this.actionDateTime.toString() : undefined as any;
+        data["actionType"] = this.actionType;
+        data["workflowStep"] = this.workflowStep;
+        data["actionDays"] = this.actionDays;
+        data["platform"] = this.platform;
+        data["comment"] = this.comment;
+        return data;
+    }
+}
+
+export interface IWorkflowRequestLogEntryDto {
+    id: number;
+    actionByEmployeeId: number | undefined;
+    actionByCode: string | undefined;
+    actionByNameEn: string | undefined;
+    actionByNameAr: string | undefined;
+    actionByPhotoUrl: string | undefined;
+    actionDateTime: DateTime;
+    actionType: RequestActionType;
+    workflowStep: number;
+    actionDays: number;
+    platform: WorkflowPlatform;
+    comment: string | undefined;
 }
 
 export class WorkflowRoleDto implements IWorkflowRoleDto {

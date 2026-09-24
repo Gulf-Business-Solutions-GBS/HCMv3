@@ -68,7 +68,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpEditions");
+                    b.ToTable("AbpEditions", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Edition");
 
@@ -109,7 +109,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpFeatures");
+                    b.ToTable("AbpFeatures", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("FeatureSetting");
 
@@ -189,7 +189,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId");
 
-                    b.ToTable("AbpAuditLogs");
+                    b.ToTable("AbpAuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.PermissionSetting", b =>
@@ -226,7 +226,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "Name");
 
-                    b.ToTable("AbpPermissions");
+                    b.ToTable("AbpPermissions", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("PermissionSetting");
 
@@ -266,7 +266,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "ClaimType");
 
-                    b.ToTable("AbpRoleClaims");
+                    b.ToTable("AbpRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserAccount", b =>
@@ -327,7 +327,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserName");
 
-                    b.ToTable("AbpUserAccounts");
+                    b.ToTable("AbpUserAccounts", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserClaim", b =>
@@ -363,7 +363,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "ClaimType");
 
-                    b.ToTable("AbpUserClaims");
+                    b.ToTable("AbpUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserLogin", b =>
@@ -402,7 +402,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "LoginProvider", "ProviderKey");
 
-                    b.ToTable("AbpUserLogins");
+                    b.ToTable("AbpUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserLoginAttempt", b =>
@@ -455,7 +455,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenancyName", "UserNameOrEmailAddress", "Result");
 
-                    b.ToTable("AbpUserLoginAttempts");
+                    b.ToTable("AbpUserLoginAttempts", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserOrganizationUnit", b =>
@@ -492,7 +492,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId");
 
-                    b.ToTable("AbpUserOrganizationUnits");
+                    b.ToTable("AbpUserOrganizationUnits", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserRole", b =>
@@ -526,7 +526,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId");
 
-                    b.ToTable("AbpUserRoles");
+                    b.ToTable("AbpUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Authorization.Users.UserToken", b =>
@@ -564,7 +564,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId");
 
-                    b.ToTable("AbpUserTokens");
+                    b.ToTable("AbpUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Abp.BackgroundJobs.BackgroundJobInfo", b =>
@@ -610,7 +610,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("IsAbandoned", "NextTryTime");
 
-                    b.ToTable("AbpBackgroundJobs");
+                    b.ToTable("AbpBackgroundJobs", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Configuration.Setting", b =>
@@ -654,7 +654,7 @@ namespace HCMv3.Migrations
                     b.HasIndex("TenantId", "Name", "UserId")
                         .IsUnique();
 
-                    b.ToTable("AbpSettings");
+                    b.ToTable("AbpSettings", (string)null);
                 });
 
             modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicEntityProperty", b =>
@@ -683,7 +683,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[EntityFullName] IS NOT NULL AND [TenantId] IS NOT NULL");
 
-                    b.ToTable("AbpDynamicEntityProperties");
+                    b.ToTable("AbpDynamicEntityProperties", (string)null);
                 });
 
             modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicEntityPropertyValue", b =>
@@ -711,7 +711,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("DynamicEntityPropertyId");
 
-                    b.ToTable("AbpDynamicEntityPropertyValues");
+                    b.ToTable("AbpDynamicEntityPropertyValues", (string)null);
                 });
 
             modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicProperty", b =>
@@ -744,7 +744,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[PropertyName] IS NOT NULL AND [TenantId] IS NOT NULL");
 
-                    b.ToTable("AbpDynamicProperties");
+                    b.ToTable("AbpDynamicProperties", (string)null);
                 });
 
             modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicPropertyValue", b =>
@@ -769,7 +769,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("DynamicPropertyId");
 
-                    b.ToTable("AbpDynamicPropertyValues");
+                    b.ToTable("AbpDynamicPropertyValues", (string)null);
                 });
 
             modelBuilder.Entity("Abp.EntityHistory.EntityChange", b =>
@@ -806,7 +806,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EntityTypeFullName", "EntityId");
 
-                    b.ToTable("AbpEntityChanges");
+                    b.ToTable("AbpEntityChanges", (string)null);
                 });
 
             modelBuilder.Entity("Abp.EntityHistory.EntityChangeSet", b =>
@@ -859,7 +859,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId");
 
-                    b.ToTable("AbpEntityChangeSets");
+                    b.ToTable("AbpEntityChangeSets", (string)null);
                 });
 
             modelBuilder.Entity("Abp.EntityHistory.EntityPropertyChange", b =>
@@ -902,7 +902,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EntityChangeId");
 
-                    b.ToTable("AbpEntityPropertyChanges");
+                    b.ToTable("AbpEntityPropertyChanges", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Localization.ApplicationLanguage", b =>
@@ -958,7 +958,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "Name");
 
-                    b.ToTable("AbpLanguages");
+                    b.ToTable("AbpLanguages", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Localization.ApplicationLanguageText", b =>
@@ -1008,7 +1008,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "Source", "LanguageName", "Key");
 
-                    b.ToTable("AbpLanguageTexts");
+                    b.ToTable("AbpLanguageTexts", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Notifications.NotificationInfo", b =>
@@ -1069,7 +1069,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpNotifications");
+                    b.ToTable("AbpNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Notifications.NotificationSubscriptionInfo", b =>
@@ -1116,7 +1116,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "NotificationName", "EntityTypeName", "EntityId", "UserId");
 
-                    b.ToTable("AbpNotificationSubscriptions");
+                    b.ToTable("AbpNotificationSubscriptions", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Notifications.TenantNotificationInfo", b =>
@@ -1166,7 +1166,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("AbpTenantNotifications");
+                    b.ToTable("AbpTenantNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Notifications.UserNotificationInfo", b =>
@@ -1198,7 +1198,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("UserId", "State", "CreationTime");
 
-                    b.ToTable("AbpUserNotifications");
+                    b.ToTable("AbpUserNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Abp.OpenIddict.Applications.OpenIddictApplication", b =>
@@ -1527,7 +1527,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "Code");
 
-                    b.ToTable("AbpOrganizationUnits");
+                    b.ToTable("AbpOrganizationUnits", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Organizations.OrganizationUnitRole", b =>
@@ -1562,7 +1562,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "RoleId");
 
-                    b.ToTable("AbpOrganizationUnitRoles");
+                    b.ToTable("AbpOrganizationUnitRoles", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Webhooks.WebhookEvent", b =>
@@ -1592,7 +1592,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpWebhookEvents");
+                    b.ToTable("AbpWebhookEvents", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Webhooks.WebhookSendAttempt", b =>
@@ -1626,7 +1626,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WebhookEventId");
 
-                    b.ToTable("AbpWebhookSendAttempts");
+                    b.ToTable("AbpWebhookSendAttempts", (string)null);
                 });
 
             modelBuilder.Entity("Abp.Webhooks.WebhookSubscriptionInfo", b =>
@@ -1663,7 +1663,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpWebhookSubscriptions");
+                    b.ToTable("AbpWebhookSubscriptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.AccommodationServiceType", b =>
@@ -1717,7 +1717,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccommodationServiceTypes");
+                    b.ToTable("AccommodationServiceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.AccommodationServices", b =>
@@ -1773,7 +1773,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeAccommodationId");
 
-                    b.ToTable("AccommodationServices");
+                    b.ToTable("AccommodationServices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.AccommodationType", b =>
@@ -1827,7 +1827,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccommodationTypes");
+                    b.ToTable("AccommodationTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.Bed", b =>
@@ -1886,7 +1886,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Beds");
+                    b.ToTable("Beds", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.Building", b =>
@@ -1945,7 +1945,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Buildings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.BuildingContract", b =>
@@ -1996,7 +1996,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("BuildingId");
 
-                    b.ToTable("BuildingContracts");
+                    b.ToTable("BuildingContracts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.EmployeeAccommodation", b =>
@@ -2085,7 +2085,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("EmployeeAccommodations");
+                    b.ToTable("EmployeeAccommodations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.Flat", b =>
@@ -2144,7 +2144,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("FloorId");
 
-                    b.ToTable("Flats");
+                    b.ToTable("Flats", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.Floor", b =>
@@ -2203,7 +2203,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("BuildingId");
 
-                    b.ToTable("Floors");
+                    b.ToTable("Floors", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.Location", b =>
@@ -2257,7 +2257,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AccommodationManagement.Room", b =>
@@ -2316,7 +2316,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("FlatId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AiAgent.AiConversation", b =>
@@ -2366,7 +2366,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId", "LastMessageTime");
 
-                    b.ToTable("AiConversations");
+                    b.ToTable("AiConversations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AiAgent.AiMessage", b =>
@@ -2430,7 +2430,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "ConversationId");
 
-                    b.ToTable("AiMessages");
+                    b.ToTable("AiMessages", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.AiAgent.AiPendingAction", b =>
@@ -2496,7 +2496,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "ConversationId", "Status");
 
-                    b.ToTable("AiPendingActions");
+                    b.ToTable("AiPendingActions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Authorization.Delegation.UserDelegation", b =>
@@ -2549,7 +2549,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "TargetUserId");
 
-                    b.ToTable("AppUserDelegations");
+                    b.ToTable("AppUserDelegations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Authorization.Roles.Role", b =>
@@ -2620,7 +2620,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "NormalizedName");
 
-                    b.ToTable("AbpRoles");
+                    b.ToTable("AbpRoles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Authorization.Session.UserSession", b =>
@@ -2697,7 +2697,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("UserId", "IsActive");
 
-                    b.ToTable("AppUserSessions");
+                    b.ToTable("AppUserSessions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Authorization.Users.RecentPassword", b =>
@@ -2724,7 +2724,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppRecentPasswords");
+                    b.ToTable("AppRecentPasswords", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Authorization.Users.User", b =>
@@ -2870,7 +2870,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "NormalizedUserName");
 
-                    b.ToTable("AbpUsers");
+                    b.ToTable("AbpUsers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Authorization.Users.UserAccountLink", b =>
@@ -2895,7 +2895,7 @@ namespace HCMv3.Migrations
                     b.HasIndex("UserAccountId", "LinkedUserAccountId")
                         .IsUnique();
 
-                    b.ToTable("UserAccountLinks");
+                    b.ToTable("UserAccountLinks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BackgroundJobs.BackgroundJobFailure", b =>
@@ -2954,7 +2954,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "FailedTime");
 
-                    b.ToTable("BackgroundJobFailures");
+                    b.ToTable("BackgroundJobFailures", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BackgroundJobs.BackgroundWorkerStatus", b =>
@@ -3025,7 +3025,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("BackgroundWorkerStatuses");
+                    b.ToTable("BackgroundWorkerStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BenefitsManagement.CompanyInsuranceDetail", b =>
@@ -3076,7 +3076,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeInsuranceId");
 
-                    b.ToTable("CompanyInsuranceDetails");
+                    b.ToTable("CompanyInsuranceDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BenefitsManagement.EmployeeInsurance", b =>
@@ -3173,7 +3173,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("InsuranceProviderId");
 
-                    b.ToTable("EmployeeInsurances");
+                    b.ToTable("EmployeeInsurances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BenefitsManagement.EmployeeInsuranceDetail", b =>
@@ -3224,7 +3224,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeInsuranceId");
 
-                    b.ToTable("EmployeeInsuranceDetails");
+                    b.ToTable("EmployeeInsuranceDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BenefitsManagement.InsurancePlan", b =>
@@ -3275,7 +3275,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InsurancePlans");
+                    b.ToTable("InsurancePlans", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BenefitsManagement.InsuranceProvider", b =>
@@ -3326,7 +3326,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InsuranceProviders");
+                    b.ToTable("InsuranceProviders", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BusinessRules.BusinessRule", b =>
@@ -3409,7 +3409,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("BusinessRules");
+                    b.ToTable("BusinessRules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BusinessRules.BusinessRuleAssignment", b =>
@@ -3473,7 +3473,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "BaseObject", "EventType", "IsActive");
 
-                    b.ToTable("BusinessRuleAssignments");
+                    b.ToTable("BusinessRuleAssignments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.BusinessRules.BusinessRuleExecutionLog", b =>
@@ -3534,7 +3534,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "Succeeded", "ExecutedAt");
 
-                    b.ToTable("BusinessRuleExecutionLogs");
+                    b.ToTable("BusinessRuleExecutionLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Chat.ChatMessage", b =>
@@ -3587,7 +3587,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId", "ReadState");
 
-                    b.ToTable("AppChatMessages");
+                    b.ToTable("AppChatMessages", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CDAnnualYearReview", b =>
@@ -3654,7 +3654,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CompetencyId");
 
-                    b.ToTable("CDAnnualYearReviews");
+                    b.ToTable("CDAnnualYearReviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CDForm", b =>
@@ -3713,7 +3713,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("CDForms");
+                    b.ToTable("CDForms", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CDMidYearReview", b =>
@@ -3775,7 +3775,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CompetencyId");
 
-                    b.ToTable("CDMidYearReviews");
+                    b.ToTable("CDMidYearReviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CDPeriod", b =>
@@ -3820,7 +3820,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CDPeriods");
+                    b.ToTable("CDPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CDPlan", b =>
@@ -3882,7 +3882,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CompetencyId");
 
-                    b.ToTable("CDPlans");
+                    b.ToTable("CDPlans", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CDRating", b =>
@@ -3933,7 +3933,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CDRatings");
+                    b.ToTable("CDRatings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.Competency", b =>
@@ -3996,7 +3996,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CompetencyTypeId");
 
-                    b.ToTable("Competencies");
+                    b.ToTable("Competencies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CompetencyByJobTitle", b =>
@@ -4044,7 +4044,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("CompetencyByJobTitles");
+                    b.ToTable("CompetencyByJobTitles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CompetencyByJobTitleDetail", b =>
@@ -4098,7 +4098,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CompetencyId");
 
-                    b.ToTable("CompetencyByJobTitleDetails");
+                    b.ToTable("CompetencyByJobTitleDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.CompetencyDevelopment.CompetencyType", b =>
@@ -4157,7 +4157,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CompetencyTypes");
+                    b.ToTable("CompetencyTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.EngineRuns.EngineRun", b =>
@@ -4246,7 +4246,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EngineType", "Id");
 
-                    b.ToTable("EngineRuns");
+                    b.ToTable("EngineRuns", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.EngineRuns.EngineRunEmployee", b =>
@@ -4317,7 +4317,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EngineRunId", "SequenceNo");
 
-                    b.ToTable("EngineRunEmployees");
+                    b.ToTable("EngineRunEmployees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Friendships.Friendship", b =>
@@ -4367,7 +4367,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "UserId");
 
-                    b.ToTable("AppFriendships");
+                    b.ToTable("AppFriendships", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.EmployeePoolCar", b =>
@@ -4429,7 +4429,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PoolCarId");
 
-                    b.ToTable("EmployeePoolCars");
+                    b.ToTable("EmployeePoolCars", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePass", b =>
@@ -4512,7 +4512,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RequestedById");
 
-                    b.ToTable("GatePasses");
+                    b.ToTable("GatePasses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassMaterial", b =>
@@ -4573,7 +4573,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("GatePassId");
 
-                    b.ToTable("GatePassMaterials");
+                    b.ToTable("GatePassMaterials", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassMovement", b =>
@@ -4624,7 +4624,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GatePassMovements");
+                    b.ToTable("GatePassMovements", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassPerson", b =>
@@ -4694,7 +4694,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PersonTypeId");
 
-                    b.ToTable("GatePassPersons");
+                    b.ToTable("GatePassPersons", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassStatus", b =>
@@ -4745,7 +4745,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GatePassStatuses");
+                    b.ToTable("GatePassStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassType", b =>
@@ -4796,7 +4796,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GatePassTypes");
+                    b.ToTable("GatePassTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassVehicle", b =>
@@ -4861,7 +4861,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("VehicleTypeId");
 
-                    b.ToTable("GatePassVehicles");
+                    b.ToTable("GatePassVehicles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.GatePassVendor", b =>
@@ -4916,7 +4916,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GatePassVendors");
+                    b.ToTable("GatePassVendors", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.PersonType", b =>
@@ -4967,7 +4967,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PersonTypes");
+                    b.ToTable("PersonTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.PoolCar", b =>
@@ -5027,7 +5027,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("VehicleTypeId");
 
-                    b.ToTable("PoolCars");
+                    b.ToTable("PoolCars", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.VehicleBrand", b =>
@@ -5078,7 +5078,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleBrands");
+                    b.ToTable("VehicleBrands", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.VehicleModel", b =>
@@ -5129,7 +5129,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleModels");
+                    b.ToTable("VehicleModels", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GatePassManagement.VehicleType", b =>
@@ -5180,7 +5180,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleTypes");
+                    b.ToTable("VehicleTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.AccessUnit", b =>
@@ -5242,7 +5242,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "NameEn");
 
-                    b.ToTable("AccessUnits");
+                    b.ToTable("AccessUnits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Asset", b =>
@@ -5341,7 +5341,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AssetTypeId");
 
-                    b.ToTable("Assets");
+                    b.ToTable("Assets", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.AssetType", b =>
@@ -5392,7 +5392,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AssetTypes");
+                    b.ToTable("AssetTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Bank", b =>
@@ -5460,7 +5460,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("BankFileId");
 
-                    b.ToTable("Banks");
+                    b.ToTable("Banks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.BankFile", b =>
@@ -5511,7 +5511,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BankFiles");
+                    b.ToTable("BankFiles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.BenefitType", b =>
@@ -5562,7 +5562,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BenefitTypes");
+                    b.ToTable("BenefitTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.BudgetingGroup", b =>
@@ -5613,7 +5613,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BudgetingGroups");
+                    b.ToTable("BudgetingGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.BudgetingGroupRateDetail", b =>
@@ -5664,7 +5664,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("BudgetingGroupId");
 
-                    b.ToTable("BudgetingGroupRateDetails");
+                    b.ToTable("BudgetingGroupRateDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.City", b =>
@@ -5720,7 +5720,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.ClearanceRequestField", b =>
@@ -5779,7 +5779,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ClearanceRequestTypeId");
 
-                    b.ToTable("ClearanceRequestFields");
+                    b.ToTable("ClearanceRequestFields", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.ClearanceRequestFieldDetail", b =>
@@ -5828,7 +5828,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "WorkflowRoleId");
 
-                    b.ToTable("ClearanceRequestFieldDetails");
+                    b.ToTable("ClearanceRequestFieldDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.ClearanceRequestType", b =>
@@ -5882,7 +5882,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClearanceRequestTypes");
+                    b.ToTable("ClearanceRequestTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.ContractType", b =>
@@ -5933,7 +5933,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContractTypes");
+                    b.ToTable("ContractTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Country", b =>
@@ -5984,7 +5984,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Currency", b =>
@@ -6054,7 +6054,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currencies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.CurrencyConvertor", b =>
@@ -6107,7 +6107,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ToCurrId");
 
-                    b.ToTable("CurrencyConvertors");
+                    b.ToTable("CurrencyConvertors", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DateType", b =>
@@ -6158,7 +6158,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DateTypes");
+                    b.ToTable("DateTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DependantType", b =>
@@ -6215,7 +6215,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DependantTypes");
+                    b.ToTable("DependantTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DisciplinaryDeductionType", b =>
@@ -6272,7 +6272,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DisciplinaryDeductionTypes");
+                    b.ToTable("DisciplinaryDeductionTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DisciplinaryType", b =>
@@ -6326,7 +6326,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DisciplinaryTypes");
+                    b.ToTable("DisciplinaryTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DisciplinaryTypeDetail", b =>
@@ -6376,7 +6376,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("DisciplinaryTypeId");
 
-                    b.ToTable("DisciplinaryTypeDetails");
+                    b.ToTable("DisciplinaryTypeDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentPlace", b =>
@@ -6427,7 +6427,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DocumentPlaces");
+                    b.ToTable("DocumentPlaces", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentPrintForm", b =>
@@ -6469,7 +6469,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("DocumentTypeId");
 
-                    b.ToTable("DocumentPrintForms");
+                    b.ToTable("DocumentPrintForms", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentType", b =>
@@ -6540,7 +6540,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("NotificationConfigId");
 
-                    b.ToTable("DocumentTypes");
+                    b.ToTable("DocumentTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Education", b =>
@@ -6591,7 +6591,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Educations");
+                    b.ToTable("Educations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.EducationBranch", b =>
@@ -6642,7 +6642,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EducationBranches");
+                    b.ToTable("EducationBranches", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Governorate", b =>
@@ -6693,7 +6693,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Governorates");
+                    b.ToTable("Governorates", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.GrievanceType", b =>
@@ -6744,7 +6744,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GrievanceTypes");
+                    b.ToTable("GrievanceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.HRServiceType", b =>
@@ -6795,7 +6795,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HRServiceTypes");
+                    b.ToTable("HRServiceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.ITServiceType", b =>
@@ -6846,7 +6846,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ITServiceTypes");
+                    b.ToTable("ITServiceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Institution", b =>
@@ -6902,7 +6902,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("UniversityId");
 
-                    b.ToTable("Institutions");
+                    b.ToTable("Institutions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.LanguageInfo", b =>
@@ -6953,7 +6953,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LanguageInfos");
+                    b.ToTable("LanguageInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.LoanType", b =>
@@ -7030,7 +7030,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("LoanTypes");
+                    b.ToTable("LoanTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.LoanTypeDetail", b =>
@@ -7075,7 +7075,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("LoanTypeId");
 
-                    b.ToTable("LoanTypeDetails");
+                    b.ToTable("LoanTypeDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.MaritalStatus", b =>
@@ -7126,7 +7126,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MaritalStatuses");
+                    b.ToTable("MaritalStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Nationality", b =>
@@ -7182,7 +7182,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("NationalityGroupId");
 
-                    b.ToTable("Nationalities");
+                    b.ToTable("Nationalities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.NationalityGroup", b =>
@@ -7233,7 +7233,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NationalityGroups");
+                    b.ToTable("NationalityGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.NewsType", b =>
@@ -7284,7 +7284,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NewsTypes");
+                    b.ToTable("NewsTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.NotificationConfig", b =>
@@ -7355,7 +7355,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmailTemplateId");
 
-                    b.ToTable("NotificationConfigs");
+                    b.ToTable("NotificationConfigs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.NotificationGroup", b =>
@@ -7410,7 +7410,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRoleOrgId");
 
-                    b.ToTable("NotificationGroups");
+                    b.ToTable("NotificationGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.NumberSeries", b =>
@@ -7468,7 +7468,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NumberSeries");
+                    b.ToTable("NumberSeries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.OvertimeType", b =>
@@ -7527,7 +7527,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("OvertimeTypes");
+                    b.ToTable("OvertimeTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.OvertimeTypeDetail", b =>
@@ -7581,7 +7581,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OvertimeTypeId");
 
-                    b.ToTable("OvertimeTypeDetails");
+                    b.ToTable("OvertimeTypeDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.PassportType", b =>
@@ -7632,7 +7632,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PassportTypes");
+                    b.ToTable("PassportTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.PayeeBankDetail", b =>
@@ -7688,7 +7688,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayeeBankId");
 
-                    b.ToTable("PayeeBankDetails");
+                    b.ToTable("PayeeBankDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.PersonalAction", b =>
@@ -7766,7 +7766,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PersonalActions");
+                    b.ToTable("PersonalActions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.PersonalActionReason", b =>
@@ -7822,7 +7822,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PersonalActionId");
 
-                    b.ToTable("PersonalActionReasons");
+                    b.ToTable("PersonalActionReasons", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.PostingGroup", b =>
@@ -7873,7 +7873,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostingGroups");
+                    b.ToTable("PostingGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Qualification", b =>
@@ -7924,7 +7924,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Qualifications");
+                    b.ToTable("Qualifications", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.RecruitmentType", b =>
@@ -7975,7 +7975,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RecruitmentTypes");
+                    b.ToTable("RecruitmentTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.RelationshipType", b =>
@@ -8026,7 +8026,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RelationshipTypes");
+                    b.ToTable("RelationshipTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Religion", b =>
@@ -8077,7 +8077,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Religions");
+                    b.ToTable("Religions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.SeparationReason", b =>
@@ -8134,7 +8134,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SeparationReasons");
+                    b.ToTable("SeparationReasons", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.State", b =>
@@ -8185,7 +8185,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("States");
+                    b.ToTable("States", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.TaskType", b =>
@@ -8236,7 +8236,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskTypes");
+                    b.ToTable("TaskTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Title", b =>
@@ -8287,7 +8287,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Titles");
+                    b.ToTable("Titles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.TrainingType", b =>
@@ -8338,7 +8338,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingTypes");
+                    b.ToTable("TrainingTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.University", b =>
@@ -8389,7 +8389,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Universities");
+                    b.ToTable("Universities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.VisaType", b =>
@@ -8440,7 +8440,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VisaTypes");
+                    b.ToTable("VisaTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.WorkVisaType", b =>
@@ -8491,7 +8491,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkVisaTypes");
+                    b.ToTable("WorkVisaTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.BusinessType", b =>
@@ -8542,7 +8542,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BusinessTypes");
+                    b.ToTable("BusinessTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.EmployeeExitPermit", b =>
@@ -8608,7 +8608,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeExitPermits");
+                    b.ToTable("EmployeeExitPermits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.GovtJobCategory", b =>
@@ -8659,7 +8659,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GovtJobCategories");
+                    b.ToTable("GovtJobCategories", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.GovtJobTitle", b =>
@@ -8715,7 +8715,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("GovtJobCategoryId");
 
-                    b.ToTable("GovtJobTitles");
+                    b.ToTable("GovtJobTitles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.OrganizationDocument", b =>
@@ -8788,7 +8788,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("OrganizationDocuments");
+                    b.ToTable("OrganizationDocuments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.Signatory", b =>
@@ -8842,7 +8842,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Signatories");
+                    b.ToTable("Signatories", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.Sponsor", b =>
@@ -8968,7 +8968,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OrganizationUnitId");
 
-                    b.ToTable("Sponsors");
+                    b.ToTable("Sponsors", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.SponsorBank", b =>
@@ -9034,7 +9034,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("SponsorBanks");
+                    b.ToTable("SponsorBanks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.SponsorGovtRepresentative", b =>
@@ -9087,7 +9087,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("SponsorGovtRepresentatives");
+                    b.ToTable("SponsorGovtRepresentatives", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.SponsorJobTitle", b =>
@@ -9161,7 +9161,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("SponsorJobTitles");
+                    b.ToTable("SponsorJobTitles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.SponsorLicenseInfo", b =>
@@ -9220,7 +9220,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("SponsorLicenseInfos");
+                    b.ToTable("SponsorLicenseInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.GovtRelationsManagement.SponsorSignatory", b =>
@@ -9267,7 +9267,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("SponsorSignatories");
+                    b.ToTable("SponsorSignatories", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.ActionRegister", b =>
@@ -9330,7 +9330,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("ActionRegisters");
+                    b.ToTable("ActionRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.ActionStatus", b =>
@@ -9381,7 +9381,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActionStatuses");
+                    b.ToTable("ActionStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.FirstAidBox", b =>
@@ -9438,7 +9438,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ResponsiblePersonId");
 
-                    b.ToTable("FirstAidBoxes");
+                    b.ToTable("FirstAidBoxes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.FirstAidBoxDetail", b =>
@@ -9505,7 +9505,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("MedicineId");
 
-                    b.ToTable("FirstAidBoxDetails");
+                    b.ToTable("FirstAidBoxDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.FirstAidMedicine", b =>
@@ -9556,7 +9556,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FirstAidMedicines");
+                    b.ToTable("FirstAidMedicines", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentClaim", b =>
@@ -9620,7 +9620,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("IncidentId");
 
-                    b.ToTable("IncidentClaims");
+                    b.ToTable("IncidentClaims", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentClaimStatus", b =>
@@ -9671,7 +9671,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IncidentClaimStatuses");
+                    b.ToTable("IncidentClaimStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentInvestigation", b =>
@@ -9730,7 +9730,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RootCauseId");
 
-                    b.ToTable("IncidentInvestigations");
+                    b.ToTable("IncidentInvestigations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentNature", b =>
@@ -9781,7 +9781,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IncidentNatures");
+                    b.ToTable("IncidentNatures", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentRegister", b =>
@@ -9876,7 +9876,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("IncidentRegisters");
+                    b.ToTable("IncidentRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentSeverity", b =>
@@ -9927,7 +9927,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IncidentSeverities");
+                    b.ToTable("IncidentSeverities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentStatus", b =>
@@ -9978,7 +9978,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IncidentStatuses");
+                    b.ToTable("IncidentStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.IncidentType", b =>
@@ -10029,7 +10029,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IncidentTypes");
+                    b.ToTable("IncidentTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.InvestigationRootCause", b =>
@@ -10080,7 +10080,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InvestigationRootCauses");
+                    b.ToTable("InvestigationRootCauses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.RiskAction", b =>
@@ -10131,7 +10131,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskActions");
+                    b.ToTable("RiskActions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.RiskImpact", b =>
@@ -10182,7 +10182,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskImpacts");
+                    b.ToTable("RiskImpacts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.RiskPossibility", b =>
@@ -10233,7 +10233,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskPossibilities");
+                    b.ToTable("RiskPossibilities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.RiskRegister", b =>
@@ -10325,7 +10325,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("RiskRegisters");
+                    b.ToTable("RiskRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.RiskStatus", b =>
@@ -10376,7 +10376,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskStatuses");
+                    b.ToTable("RiskStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.RiskType", b =>
@@ -10427,7 +10427,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskTypes");
+                    b.ToTable("RiskTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.SafetyAreaAsset", b =>
@@ -10478,7 +10478,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SafetyAreaAssets");
+                    b.ToTable("SafetyAreaAssets", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.SafetyChecklist", b =>
@@ -10530,7 +10530,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SafetyAreaAssetId");
 
-                    b.ToTable("SafetyChecklists");
+                    b.ToTable("SafetyChecklists", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.SiteAudit", b =>
@@ -10589,7 +10589,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("SiteAudits");
+                    b.ToTable("SiteAudits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.HealthAndSafetyManagement.SiteAuditDetail", b =>
@@ -10637,7 +10637,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SiteAuditId");
 
-                    b.ToTable("SiteAuditDetails");
+                    b.ToTable("SiteAuditDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Integrations.IntegrationConnectionLog", b =>
@@ -10697,7 +10697,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "IntegrationKey", "CreationTime");
 
-                    b.ToTable("IntegrationConnectionLogs");
+                    b.ToTable("IntegrationConnectionLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Integrations.IntegrationSetting", b =>
@@ -10755,7 +10755,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("IntegrationSettings");
+                    b.ToTable("IntegrationSettings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.EducationCertificate", b =>
@@ -10806,7 +10806,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EducationCertificates");
+                    b.ToTable("EducationCertificates", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.EducationDegree", b =>
@@ -10857,7 +10857,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EducationDegrees");
+                    b.ToTable("EducationDegrees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.InterviewQuestion", b =>
@@ -10908,7 +10908,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InterviewQuestions");
+                    b.ToTable("InterviewQuestions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescription", b =>
@@ -10975,7 +10975,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("JobDescriptions");
+                    b.ToTable("JobDescriptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionAcknowledgement", b =>
@@ -11033,7 +11033,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("JobDescriptionAcknowledgements");
+                    b.ToTable("JobDescriptionAcknowledgements", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionCertificate", b =>
@@ -11080,7 +11080,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobDescriptionId");
 
-                    b.ToTable("JobDescriptionCertificates");
+                    b.ToTable("JobDescriptionCertificates", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionCompetency", b =>
@@ -11127,7 +11127,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobDescriptionId");
 
-                    b.ToTable("JobDescriptionCompetencies");
+                    b.ToTable("JobDescriptionCompetencies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionDegree", b =>
@@ -11174,7 +11174,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobDescriptionId");
 
-                    b.ToTable("JobDescriptionDegrees");
+                    b.ToTable("JobDescriptionDegrees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionInterviewQuestion", b =>
@@ -11221,7 +11221,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobDescriptionId");
 
-                    b.ToTable("JobDescriptionInterviewQuestions");
+                    b.ToTable("JobDescriptionInterviewQuestions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionResponsibility", b =>
@@ -11268,7 +11268,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobResponsibilityId");
 
-                    b.ToTable("JobDescriptionResponsibilities");
+                    b.ToTable("JobDescriptionResponsibilities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobDescriptionSkill", b =>
@@ -11315,7 +11315,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("JobDescriptionSkills");
+                    b.ToTable("JobDescriptionSkills", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobFamily", b =>
@@ -11366,7 +11366,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobFamilies");
+                    b.ToTable("JobFamilies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobFunction", b =>
@@ -11417,7 +11417,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobFunctions");
+                    b.ToTable("JobFunctions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.JobResponsibility", b =>
@@ -11468,7 +11468,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobResponsibilities");
+                    b.ToTable("JobResponsibilities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.JobProfileManagement.Skill", b =>
@@ -11519,7 +11519,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skills", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.ManpowerPlanning", b =>
@@ -11584,7 +11584,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PeriodId");
 
-                    b.ToTable("ManpowerPlannings");
+                    b.ToTable("ManpowerPlannings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.ManpowerPlanningDetail", b =>
@@ -11680,7 +11680,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("ManpowerPlanningDetails");
+                    b.ToTable("ManpowerPlanningDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.ManpowerPlanningPeriod", b =>
@@ -11731,7 +11731,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManpowerPlanningPeriods");
+                    b.ToTable("ManpowerPlanningPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.Position", b =>
@@ -11851,7 +11851,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "ParentPositionId");
 
-                    b.ToTable("Positions");
+                    b.ToTable("Positions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.PositionRelationship", b =>
@@ -11907,7 +11907,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("PositionRelationships");
+                    b.ToTable("PositionRelationships", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.MultiTenancy.Accounting.Invoice", b =>
@@ -11935,7 +11935,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppInvoices");
+                    b.ToTable("AppInvoices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.MultiTenancy.Payments.SubscriptionPayment", b =>
@@ -12009,7 +12009,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("Status", "CreationTime");
 
-                    b.ToTable("AppSubscriptionPayments");
+                    b.ToTable("AppSubscriptionPayments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.MultiTenancy.Payments.SubscriptionPaymentProduct", b =>
@@ -12065,7 +12065,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SubscriptionPaymentId");
 
-                    b.ToTable("AppSubscriptionPaymentProducts");
+                    b.ToTable("AppSubscriptionPaymentProducts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.MultiTenancy.Tenant", b =>
@@ -12173,7 +12173,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenancyName");
 
-                    b.ToTable("AbpTenants");
+                    b.ToTable("AbpTenants", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Navigation.Screen", b =>
@@ -12246,7 +12246,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("Screens");
+                    b.ToTable("Screens", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Navigation.SharedQuickLink", b =>
@@ -12293,7 +12293,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "DisplayOrder");
 
-                    b.ToTable("SharedQuickLinks");
+                    b.ToTable("SharedQuickLinks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Navigation.UserScreenUsage", b =>
@@ -12336,7 +12336,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[TenantId] IS NOT NULL");
 
-                    b.ToTable("UserScreenUsages");
+                    b.ToTable("UserScreenUsages", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.CostCenter", b =>
@@ -12392,7 +12392,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CostCenterGroupId");
 
-                    b.ToTable("CostCenters");
+                    b.ToTable("CostCenters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.CostCenterGroup", b =>
@@ -12443,7 +12443,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CostCenterGroups");
+                    b.ToTable("CostCenterGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.CostElement", b =>
@@ -12499,7 +12499,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CostElementTypeId");
 
-                    b.ToTable("CostElements");
+                    b.ToTable("CostElements", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.CostElementType", b =>
@@ -12550,7 +12550,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CostElementTypes");
+                    b.ToTable("CostElementTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.JobTitle", b =>
@@ -12601,7 +12601,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobTitles");
+                    b.ToTable("JobTitles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.OrgUnitProfile", b =>
@@ -12671,7 +12671,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayrollAreaId");
 
-                    b.ToTable("OrgUnitProfiles");
+                    b.ToTable("OrgUnitProfiles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.OrganizationBankInfo", b =>
@@ -12727,7 +12727,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OrganizationUnitId");
 
-                    b.ToTable("OrganizationBankInfos");
+                    b.ToTable("OrganizationBankInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.OrganizationUnitType", b =>
@@ -12784,7 +12784,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrganizationUnitTypes");
+                    b.ToTable("OrganizationUnitTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.OrganizationManagement.WorkLocation", b =>
@@ -12855,7 +12855,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkLocations");
+                    b.ToTable("WorkLocations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AXBatch", b =>
@@ -12907,7 +12907,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AXBatches");
+                    b.ToTable("AXBatches", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceDedRuleDetail", b =>
@@ -12964,7 +12964,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AbsenceDeductionRuleId");
 
-                    b.ToTable("AbsenceDedRuleDetails");
+                    b.ToTable("AbsenceDedRuleDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceDeductionRule", b =>
@@ -13010,7 +13010,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbsenceDeductionRules");
+                    b.ToTable("AbsenceDeductionRules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsencePayment", b =>
@@ -13057,7 +13057,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("AbsencePayments");
+                    b.ToTable("AbsencePayments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceType", b =>
@@ -13275,7 +13275,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AbsenceViolationRuleId");
 
-                    b.ToTable("AbsenceTypes");
+                    b.ToTable("AbsenceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceTypeException", b =>
@@ -13322,7 +13322,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ExceptAbsenceTypeId");
 
-                    b.ToTable("AbsenceTypeExceptions");
+                    b.ToTable("AbsenceTypeExceptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceViolationActionLog", b =>
@@ -13376,7 +13376,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AbsenceViolationActionRecordId");
 
-                    b.ToTable("AbsenceViolationActionLogs");
+                    b.ToTable("AbsenceViolationActionLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceViolationActionRecord", b =>
@@ -13422,7 +13422,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbsenceViolationActionRecords");
+                    b.ToTable("AbsenceViolationActionRecords", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceViolationRule", b =>
@@ -13473,7 +13473,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbsenceViolationRules");
+                    b.ToTable("AbsenceViolationRules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceViolationRuleDetail", b =>
@@ -13527,7 +13527,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AbsenceViolationRuleId");
 
-                    b.ToTable("AbsenceViolationRuleDetails");
+                    b.ToTable("AbsenceViolationRuleDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceViolationRuleException", b =>
@@ -13580,7 +13580,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("AbsenceViolationRuleExceptions");
+                    b.ToTable("AbsenceViolationRuleExceptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AccountInfo", b =>
@@ -13636,7 +13636,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AccountTypeId");
 
-                    b.ToTable("AccountInfos");
+                    b.ToTable("AccountInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AccountType", b =>
@@ -13687,7 +13687,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PayrollAccountTypes");
+                    b.ToTable("PayrollAccountTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AttendanceType", b =>
@@ -13770,7 +13770,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("LinkLeaveQuotaId");
 
-                    b.ToTable("AttendanceTypes");
+                    b.ToTable("AttendanceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.CostRegister", b =>
@@ -13818,7 +13818,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("CostRegisters");
+                    b.ToTable("CostRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.CostRegisterDetail", b =>
@@ -13913,7 +13913,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("CostRegisterDetails");
+                    b.ToTable("CostRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeGroup", b =>
@@ -13973,7 +13973,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmployeeGroups");
+                    b.ToTable("EmployeeGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeePayrollStatus", b =>
@@ -14045,7 +14045,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeePayrollStatuses");
+                    b.ToTable("EmployeePayrollStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroup", b =>
@@ -14125,7 +14125,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeGroupId");
 
-                    b.ToTable("EmployeeSubGroups");
+                    b.ToTable("EmployeeSubGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupAbsence", b =>
@@ -14195,7 +14195,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupAbsences");
+                    b.ToTable("EmployeeSubGroupAbsences", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupAbsenceType", b =>
@@ -14242,7 +14242,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupAbsenceTypes");
+                    b.ToTable("EmployeeSubGroupAbsenceTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupAssetAllowance", b =>
@@ -14290,7 +14290,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupAssetAllowances");
+                    b.ToTable("EmployeeSubGroupAssetAllowances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupBenefit", b =>
@@ -14340,7 +14340,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupBenefits");
+                    b.ToTable("EmployeeSubGroupBenefits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail", b =>
@@ -14399,7 +14399,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupBenefitId");
 
-                    b.ToTable("EmployeeSubGroupBenefitDetails");
+                    b.ToTable("EmployeeSubGroupBenefitDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupBonus", b =>
@@ -14453,7 +14453,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupBonuses");
+                    b.ToTable("EmployeeSubGroupBonuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupCommission", b =>
@@ -14498,7 +14498,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupCommissions");
+                    b.ToTable("EmployeeSubGroupCommissions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupFund", b =>
@@ -14561,7 +14561,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupFunds");
+                    b.ToTable("EmployeeSubGroupFunds", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupGratuity", b =>
@@ -14621,7 +14621,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupGratuities");
+                    b.ToTable("EmployeeSubGroupGratuities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupHealthReimburse", b =>
@@ -14680,7 +14680,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupHealthReimburses");
+                    b.ToTable("EmployeeSubGroupHealthReimburses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupPayment", b =>
@@ -14734,7 +14734,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupPayments");
+                    b.ToTable("EmployeeSubGroupPayments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupTicket", b =>
@@ -14803,7 +14803,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupTickets");
+                    b.ToTable("EmployeeSubGroupTickets", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeSubGroupWageType", b =>
@@ -14848,7 +14848,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeSubGroupId");
 
-                    b.ToTable("EmployeeSubGroupWageTypes");
+                    b.ToTable("EmployeeSubGroupWageTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeWageAccGroup", b =>
@@ -14901,7 +14901,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageAccGroupId");
 
-                    b.ToTable("EmployeeWageAccGroups");
+                    b.ToTable("EmployeeWageAccGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.EmployeeWageAccount", b =>
@@ -15005,7 +15005,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("EmployeeWageAccounts");
+                    b.ToTable("EmployeeWageAccounts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.GratuityAccrualSummary", b =>
@@ -15065,7 +15065,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("GratuityAccrualSummaries");
+                    b.ToTable("GratuityAccrualSummaries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.IndemnityPayRule", b =>
@@ -15125,7 +15125,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("IndemnityPayRules");
+                    b.ToTable("IndemnityPayRules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.IndemnityPayRuleDetail", b =>
@@ -15182,7 +15182,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("IndemnityPayRuleId");
 
-                    b.ToTable("IndemnityPayRuleDetails");
+                    b.ToTable("IndemnityPayRuleDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.LeaveAccrualSummary", b =>
@@ -15244,7 +15244,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("LeaveAccrualSummaries");
+                    b.ToTable("LeaveAccrualSummaries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.OrgUnitWageAccGroup", b =>
@@ -15297,7 +15297,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageAccGroupId");
 
-                    b.ToTable("OrgUnitWageAccGroups");
+                    b.ToTable("OrgUnitWageAccGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.PayrollArea", b =>
@@ -15371,7 +15371,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayrollPeriodId");
 
-                    b.ToTable("PayrollAreas");
+                    b.ToTable("PayrollAreas", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.PayrollCalendar", b =>
@@ -15425,7 +15425,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayrollAreaId");
 
-                    b.ToTable("PayrollCalendars");
+                    b.ToTable("PayrollCalendars", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.PayrollControlRecord", b =>
@@ -15494,7 +15494,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayrollAreaId");
 
-                    b.ToTable("PayrollControlRecords");
+                    b.ToTable("PayrollControlRecords", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.PayrollLog", b =>
@@ -15554,7 +15554,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("PayrollLogs");
+                    b.ToTable("PayrollLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.PayrollPeriod", b =>
@@ -15605,7 +15605,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PayrollPeriods");
+                    b.ToTable("PayrollPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.PayrollReasonType", b =>
@@ -15656,7 +15656,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PayrollReasonTypes");
+                    b.ToTable("PayrollReasonTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SalaryRegister", b =>
@@ -15721,7 +15721,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayrollReasonTypeId");
 
-                    b.ToTable("SalaryRegisters");
+                    b.ToTable("SalaryRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SalaryRegisterDaysDetail", b =>
@@ -15775,7 +15775,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SalaryRegisterDetailId");
 
-                    b.ToTable("SalaryRegisterDaysDetails");
+                    b.ToTable("SalaryRegisterDaysDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SalaryRegisterDetail", b =>
@@ -15834,7 +15834,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("SalaryRegisterDetails");
+                    b.ToTable("SalaryRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SimulationSalaryRegister", b =>
@@ -15893,7 +15893,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PayrollReasonTypeId");
 
-                    b.ToTable("SimulationSalaryRegisters");
+                    b.ToTable("SimulationSalaryRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SimulationSalaryRegisterDaysDetail", b =>
@@ -15947,7 +15947,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SimulationSalaryRegisterDetailId");
 
-                    b.ToTable("SimulationSalaryRegisterDaysDetails");
+                    b.ToTable("SimulationSalaryRegisterDaysDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SimulationSalaryRegisterDetail", b =>
@@ -16003,7 +16003,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("SimulationSalaryRegisterDetails");
+                    b.ToTable("SimulationSalaryRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SocialSecurity", b =>
@@ -16060,7 +16060,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("NationalityId");
 
-                    b.ToTable("SocialSecurities");
+                    b.ToTable("SocialSecurities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SocialSecurityDetail", b =>
@@ -16117,7 +16117,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SocialSecurityId");
 
-                    b.ToTable("SocialSecurityDetails");
+                    b.ToTable("SocialSecurityDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SocialSecurityEducationAllowance", b =>
@@ -16172,7 +16172,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SocialSecurityId");
 
-                    b.ToTable("SocialSecurityEducationAllowances");
+                    b.ToTable("SocialSecurityEducationAllowances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SocialSecurityMaritalAllowance", b =>
@@ -16227,7 +16227,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SocialSecurityId");
 
-                    b.ToTable("SocialSecurityMaritalAllowances");
+                    b.ToTable("SocialSecurityMaritalAllowances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.SocialSecurityRule", b =>
@@ -16297,7 +16297,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SocialSecurityId");
 
-                    b.ToTable("SocialSecurityRules");
+                    b.ToTable("SocialSecurityRules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TempBenefitType", b =>
@@ -16435,7 +16435,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TempBenefitTypes");
+                    b.ToTable("TempBenefitTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TempEmployeeBenefit", b =>
@@ -16482,7 +16482,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TempBenefitTypeId");
 
-                    b.ToTable("TempEmployeeBenefits");
+                    b.ToTable("TempEmployeeBenefits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TicketAccrualSummary", b =>
@@ -16536,7 +16536,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("TicketAccrualSummaries");
+                    b.ToTable("TicketAccrualSummaries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TicketClass", b =>
@@ -16587,7 +16587,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketClasses");
+                    b.ToTable("TicketClasses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TicketFare", b =>
@@ -16651,7 +16651,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TicketRouteId");
 
-                    b.ToTable("TicketFares");
+                    b.ToTable("TicketFares", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TicketPaxType", b =>
@@ -16708,7 +16708,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketPaxTypes");
+                    b.ToTable("TicketPaxTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TicketRoute", b =>
@@ -16759,7 +16759,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketRoutes");
+                    b.ToTable("TicketRoutes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.TicketType", b =>
@@ -16839,7 +16839,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("TicketTypes");
+                    b.ToTable("TicketTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageAccGroup", b =>
@@ -16890,7 +16890,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WageAccGroups");
+                    b.ToTable("WageAccGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageAccGroupDetail", b =>
@@ -16991,7 +16991,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("WageAccGroupDetails");
+                    b.ToTable("WageAccGroupDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageAccount", b =>
@@ -17087,7 +17087,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("WageAccounts");
+                    b.ToTable("WageAccounts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageType", b =>
@@ -17230,7 +17230,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ArrearSourceWageTypeId");
 
-                    b.ToTable("WageTypes");
+                    b.ToTable("WageTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageTypeException", b =>
@@ -17277,7 +17277,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("WageTypeExceptions");
+                    b.ToTable("WageTypeExceptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageTypeLeave", b =>
@@ -17324,7 +17324,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("WageTypeLeaves");
+                    b.ToTable("WageTypeLeaves", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageTypeRegister", b =>
@@ -17372,7 +17372,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("WageTypeRegisters");
+                    b.ToTable("WageTypeRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.WageTypeSecurityRole", b =>
@@ -17419,7 +17419,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("WageTypeSecurityRoles");
+                    b.ToTable("WageTypeSecurityRoles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.FormType", b =>
@@ -17476,7 +17476,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FormTypes");
+                    b.ToTable("FormTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiByJobTitle", b =>
@@ -17524,7 +17524,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("KpiByJobTitles");
+                    b.ToTable("KpiByJobTitles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiByJobTitleDetail", b =>
@@ -17577,7 +17577,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("KpiInfoId");
 
-                    b.ToTable("KpiByJobTitleDetails");
+                    b.ToTable("KpiByJobTitleDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiByOrgUnit", b =>
@@ -17625,7 +17625,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OrganizationUnitId");
 
-                    b.ToTable("KpiByOrgUnits");
+                    b.ToTable("KpiByOrgUnits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiByOrgUnitDetail", b =>
@@ -17678,7 +17678,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("KpiInfoId");
 
-                    b.ToTable("KpiByOrgUnitDetails");
+                    b.ToTable("KpiByOrgUnitDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiCategory", b =>
@@ -17733,7 +17733,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KpiCategories");
+                    b.ToTable("KpiCategories", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiInfo", b =>
@@ -17794,7 +17794,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("KpiCategoryId");
 
-                    b.ToTable("KpiInfos");
+                    b.ToTable("KpiInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAAnnualYearReview", b =>
@@ -17865,7 +17865,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAAnnualYearReviews");
+                    b.ToTable("PAAnnualYearReviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PACycle", b =>
@@ -17919,7 +17919,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PACycles");
+                    b.ToTable("PACycles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAEmployee", b =>
@@ -18020,7 +18020,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PeerAverageRatingId");
 
-                    b.ToTable("PAEmployees");
+                    b.ToTable("PAEmployees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAEmployeeDetail", b =>
@@ -18073,7 +18073,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PAEmployeeId");
 
-                    b.ToTable("PAEmployeeDetails");
+                    b.ToTable("PAEmployeeDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAEmployeeRating", b =>
@@ -18137,7 +18137,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAEmployeeRatings");
+                    b.ToTable("PAEmployeeRatings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAEmployeeReviewer", b =>
@@ -18218,7 +18218,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PeerAddedById");
 
-                    b.ToTable("PAEmployeeReviewers");
+                    b.ToTable("PAEmployeeReviewers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAForm", b =>
@@ -18331,7 +18331,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PAPeriodId");
 
-                    b.ToTable("PAForms");
+                    b.ToTable("PAForms", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAGoal", b =>
@@ -18377,7 +18377,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PAFormId");
 
-                    b.ToTable("PAGoals");
+                    b.ToTable("PAGoals", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAMidYearReview", b =>
@@ -18448,7 +18448,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAMidYearReviews");
+                    b.ToTable("PAMidYearReviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAPeerNominee", b =>
@@ -18503,7 +18503,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PeerId");
 
-                    b.ToTable("PAPeerNominees");
+                    b.ToTable("PAPeerNominees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAPeerReview", b =>
@@ -18564,7 +18564,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAPeerReviews");
+                    b.ToTable("PAPeerReviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAPeriod", b =>
@@ -18609,7 +18609,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PAPeriods");
+                    b.ToTable("PAPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAPlan", b =>
@@ -18680,7 +18680,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAPlans");
+                    b.ToTable("PAPlans", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAQuarter1Review", b =>
@@ -18751,7 +18751,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAQuarter1Reviews");
+                    b.ToTable("PAQuarter1Reviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PAQuarter3Review", b =>
@@ -18822,7 +18822,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("PAQuarter3Reviews");
+                    b.ToTable("PAQuarter3Reviews", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PARating", b =>
@@ -18896,7 +18896,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PARatings");
+                    b.ToTable("PARatings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PATimeline", b =>
@@ -18947,7 +18947,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PAPeriodId");
 
-                    b.ToTable("PATimelines");
+                    b.ToTable("PATimelines", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.PATimelineException", b =>
@@ -19000,7 +19000,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PAPeriodId");
 
-                    b.ToTable("PATimelineExceptions");
+                    b.ToTable("PATimelineExceptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.Employee", b =>
@@ -19294,7 +19294,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAbsAdjustment", b =>
@@ -19357,7 +19357,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAbsAdjustments");
+                    b.ToTable("EmployeeAbsAdjustments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit", b =>
@@ -19414,7 +19414,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAbsQuotaForfeits");
+                    b.ToTable("EmployeeAbsQuotaForfeits", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAbsence", b =>
@@ -19530,7 +19530,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ExtAbsenceTypeId");
 
-                    b.ToTable("EmployeeAbsences");
+                    b.ToTable("EmployeeAbsences", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAbsenceQuota", b =>
@@ -19607,7 +19607,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAbsenceQuotas");
+                    b.ToTable("EmployeeAbsenceQuotas", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAccountAssignment", b =>
@@ -19693,7 +19693,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAccountAssignments");
+                    b.ToTable("EmployeeAccountAssignments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAction", b =>
@@ -19762,7 +19762,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PersonalActionId");
 
-                    b.ToTable("EmployeeActions");
+                    b.ToTable("EmployeeActions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAsset", b =>
@@ -19827,7 +19827,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAssets");
+                    b.ToTable("EmployeeAssets", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAssetInvoice", b =>
@@ -19892,7 +19892,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAssetInvoices");
+                    b.ToTable("EmployeeAssetInvoices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAssignedTask", b =>
@@ -19963,7 +19963,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeAssignedTasks");
+                    b.ToTable("EmployeeAssignedTasks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAttendance", b =>
@@ -20041,7 +20041,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAttendances");
+                    b.ToTable("EmployeeAttendances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAttendanceQuota", b =>
@@ -20101,7 +20101,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeAttendanceQuotas");
+                    b.ToTable("EmployeeAttendanceQuotas", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeBank", b =>
@@ -20190,7 +20190,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PaymentCurrencyId");
 
-                    b.ToTable("EmployeeBanks");
+                    b.ToTable("EmployeeBanks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeBasicPay", b =>
@@ -20252,7 +20252,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeBasicPays");
+                    b.ToTable("EmployeeBasicPays", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeBasicPayDetail", b =>
@@ -20318,7 +20318,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("EmployeeBasicPayDetails");
+                    b.ToTable("EmployeeBasicPayDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeBenefitException", b =>
@@ -20376,7 +20376,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeBenefitExceptions");
+                    b.ToTable("EmployeeBenefitExceptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeCertification", b =>
@@ -20446,7 +20446,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("InstitutionId");
 
-                    b.ToTable("EmployeeCertifications");
+                    b.ToTable("EmployeeCertifications", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeClearance", b =>
@@ -20511,7 +20511,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeClearances");
+                    b.ToTable("EmployeeClearances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeClearanceDetail", b =>
@@ -20570,7 +20570,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeClearanceId", "ClearanceRequestFieldId");
 
-                    b.ToTable("EmployeeClearanceDetails");
+                    b.ToTable("EmployeeClearanceDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeContract", b =>
@@ -20628,7 +20628,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeContracts");
+                    b.ToTable("EmployeeContracts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeCostDistribution", b =>
@@ -20687,7 +20687,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OrganizationUnitId");
 
-                    b.ToTable("EmployeeCostDistributions");
+                    b.ToTable("EmployeeCostDistributions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDate", b =>
@@ -20740,7 +20740,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeDates");
+                    b.ToTable("EmployeeDates", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDelegation", b =>
@@ -20805,7 +20805,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeDelegations");
+                    b.ToTable("EmployeeDelegations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDependant", b =>
@@ -20885,7 +20885,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TicketTypeId");
 
-                    b.ToTable("EmployeeDependants");
+                    b.ToTable("EmployeeDependants", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDependantException", b =>
@@ -20939,7 +20939,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeDependantId");
 
-                    b.ToTable("EmployeeDependantExceptions");
+                    b.ToTable("EmployeeDependantExceptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDisciplinary", b =>
@@ -21031,7 +21031,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkLocationId");
 
-                    b.ToTable("EmployeeDisciplinaries");
+                    b.ToTable("EmployeeDisciplinaries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocument", b =>
@@ -21102,7 +21102,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeDocuments");
+                    b.ToTable("EmployeeDocuments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocumentMvmt", b =>
@@ -21179,7 +21179,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeDocumentMvmts");
+                    b.ToTable("EmployeeDocumentMvmts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDottedLineManager", b =>
@@ -21232,7 +21232,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("EmployeeDottedLineManagers");
+                    b.ToTable("EmployeeDottedLineManagers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeEducation", b =>
@@ -21320,7 +21320,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("UniversityId");
 
-                    b.ToTable("EmployeeEducations");
+                    b.ToTable("EmployeeEducations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeExtdWorkLocation", b =>
@@ -21373,7 +21373,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkLocationId");
 
-                    b.ToTable("EmployeeExtdWorkLocations");
+                    b.ToTable("EmployeeExtdWorkLocations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeFnFPayment", b =>
@@ -21462,7 +21462,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeFnFPayments");
+                    b.ToTable("EmployeeFnFPayments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeFund", b =>
@@ -21523,7 +21523,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeFunds");
+                    b.ToTable("EmployeeFunds", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeFundDetail", b =>
@@ -21578,7 +21578,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeFundId");
 
-                    b.ToTable("EmployeeFundDetails");
+                    b.ToTable("EmployeeFundDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeFundExemption", b =>
@@ -21630,7 +21630,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeFundId");
 
-                    b.ToTable("EmployeeFundExemptions");
+                    b.ToTable("EmployeeFundExemptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeGratuity", b =>
@@ -21685,7 +21685,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeGratuities");
+                    b.ToTable("EmployeeGratuities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeGratuityQuota", b =>
@@ -21748,7 +21748,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeGratuityQuotas");
+                    b.ToTable("EmployeeGratuityQuotas", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeGrievance", b =>
@@ -21802,7 +21802,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("GrievanceTypeId");
 
-                    b.ToTable("EmployeeGrievances");
+                    b.ToTable("EmployeeGrievances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeHRService", b =>
@@ -21865,7 +21865,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("HRServiceTypeId");
 
-                    b.ToTable("EmployeeHRServices");
+                    b.ToTable("EmployeeHRServices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeHealthReimburse", b =>
@@ -21925,7 +21925,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "PaymentDate", "WorkflowStatus");
 
-                    b.ToTable("EmployeeHealthReimburses");
+                    b.ToTable("EmployeeHealthReimburses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeITService", b =>
@@ -21985,7 +21985,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ITServiceTypeId");
 
-                    b.ToTable("EmployeeITServices");
+                    b.ToTable("EmployeeITServices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLetterRequest", b =>
@@ -22057,7 +22057,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeLetterRequests");
+                    b.ToTable("EmployeeLetterRequests", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoan", b =>
@@ -22141,7 +22141,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("LoanTypeId");
 
-                    b.ToTable("EmployeeLoans");
+                    b.ToTable("EmployeeLoans", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoanExemption", b =>
@@ -22203,7 +22203,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeLoanExemptions");
+                    b.ToTable("EmployeeLoanExemptions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoanRecovery", b =>
@@ -22258,7 +22258,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeLoanId");
 
-                    b.ToTable("EmployeeLoanRecoveries");
+                    b.ToTable("EmployeeLoanRecoveries", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeManager", b =>
@@ -22311,7 +22311,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("EmployeeManagers");
+                    b.ToTable("EmployeeManagers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeNonPayrollTrans", b =>
@@ -22387,7 +22387,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("EmployeeNonPayrollTrans");
+                    b.ToTable("EmployeeNonPayrollTrans", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeOnHold", b =>
@@ -22471,7 +22471,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeOnHolds");
+                    b.ToTable("EmployeeOnHolds", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeOrgAssignment", b =>
@@ -22579,7 +22579,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowGroupId");
 
-                    b.ToTable("EmployeeOrgAssignments");
+                    b.ToTable("EmployeeOrgAssignments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeOvertime", b =>
@@ -22648,7 +22648,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OvertimeTypeId");
 
-                    b.ToTable("EmployeeOvertimes");
+                    b.ToTable("EmployeeOvertimes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeePayment", b =>
@@ -22731,7 +22731,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeePaymentBatchId");
 
-                    b.ToTable("EmployeePayments");
+                    b.ToTable("EmployeePayments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeePaymentBatch", b =>
@@ -22796,7 +22796,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "WorkflowStatus");
 
-                    b.ToTable("EmployeePaymentBatches");
+                    b.ToTable("EmployeePaymentBatches", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeePaymentBatchDetail", b =>
@@ -22848,7 +22848,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeePaymentBatchId");
 
-                    b.ToTable("EmployeePaymentBatchDetails");
+                    b.ToTable("EmployeePaymentBatchDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeePersonalDataChange", b =>
@@ -23065,7 +23065,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeePersonalDataChanges");
+                    b.ToTable("EmployeePersonalDataChanges", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRecurringPayment", b =>
@@ -23128,7 +23128,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("EmployeeRecurringPayments");
+                    b.ToTable("EmployeeRecurringPayments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRejoin", b =>
@@ -23189,7 +23189,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeRejoins");
+                    b.ToTable("EmployeeRejoins", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRelationship", b =>
@@ -23247,7 +23247,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RelationshipTypeId");
 
-                    b.ToTable("EmployeeRelationships");
+                    b.ToTable("EmployeeRelationships", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRemuneration", b =>
@@ -23306,7 +23306,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("EmployeeRemunerations");
+                    b.ToTable("EmployeeRemunerations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeReward", b =>
@@ -23362,7 +23362,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeRewards");
+                    b.ToTable("EmployeeRewards", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSeparation", b =>
@@ -23432,7 +23432,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SeparationReasonId");
 
-                    b.ToTable("EmployeeSeparations");
+                    b.ToTable("EmployeeSeparations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSignature", b =>
@@ -23478,7 +23478,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeSignatures");
+                    b.ToTable("EmployeeSignatures", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSocialSecurity", b =>
@@ -23532,7 +23532,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeSocialSecurities");
+                    b.ToTable("EmployeeSocialSecurities", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSocialSecurityClaim", b =>
@@ -23583,7 +23583,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeSocialSecurityClaims");
+                    b.ToTable("EmployeeSocialSecurityClaims", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSponsor", b =>
@@ -23661,7 +23661,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkVisaTypeId");
 
-                    b.ToTable("EmployeeSponsors");
+                    b.ToTable("EmployeeSponsors", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeTask", b =>
@@ -23730,7 +23730,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TaskTypeId");
 
-                    b.ToTable("EmployeeTasks");
+                    b.ToTable("EmployeeTasks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeTicket", b =>
@@ -23808,7 +23808,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TicketTypeId");
 
-                    b.ToTable("EmployeeTickets");
+                    b.ToTable("EmployeeTickets", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeTicketQuota", b =>
@@ -23876,7 +23876,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TicketTypeId");
 
-                    b.ToTable("EmployeeTicketQuotas");
+                    b.ToTable("EmployeeTicketQuotas", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeTicketRoute", b =>
@@ -23929,7 +23929,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TicketRouteId");
 
-                    b.ToTable("EmployeeTicketRoutes");
+                    b.ToTable("EmployeeTicketRoutes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeTktAdjustment", b =>
@@ -23995,7 +23995,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TicketTypeId");
 
-                    b.ToTable("EmployeeTktAdjustments");
+                    b.ToTable("EmployeeTktAdjustments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeVisaInfo", b =>
@@ -24140,7 +24140,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PassportTypeId");
 
-                    b.ToTable("EmployeeVisaInfos");
+                    b.ToTable("EmployeeVisaInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeWorkExperience", b =>
@@ -24205,7 +24205,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeWorkExperiences");
+                    b.ToTable("EmployeeWorkExperiences", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.LoanInstallment", b =>
@@ -24256,7 +24256,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeLoanId");
 
-                    b.ToTable("LoanInstallments");
+                    b.ToTable("LoanInstallments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.News", b =>
@@ -24343,7 +24343,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OrganizationUnitTypeId");
 
-                    b.ToTable("News");
+                    b.ToTable("News", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.EmployeeProject", b =>
@@ -24394,7 +24394,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeProjects");
+                    b.ToTable("EmployeeProjects", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.EmployeeProjectDetail", b =>
@@ -24450,7 +24450,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("EmployeeProjectDetails");
+                    b.ToTable("EmployeeProjectDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.Project", b =>
@@ -24516,7 +24516,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ProjectTypeId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.ProjectLog", b =>
@@ -24576,7 +24576,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("ProjectLogs");
+                    b.ToTable("ProjectLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.ProjectRegister", b =>
@@ -24621,7 +24621,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("ProjectRegisters");
+                    b.ToTable("ProjectRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.ProjectRegisterDetail", b =>
@@ -24679,7 +24679,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("ProjectRegisterDetails");
+                    b.ToTable("ProjectRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.ProjectType", b =>
@@ -24730,7 +24730,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProjectTypes");
+                    b.ToTable("ProjectTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.ProjectWageType", b =>
@@ -24777,7 +24777,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("ProjectWageTypes");
+                    b.ToTable("ProjectWageTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.Applicant", b =>
@@ -24973,7 +24973,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
 
-                    b.ToTable("Applicants");
+                    b.ToTable("Applicants", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.ApplicantCV", b =>
@@ -25027,7 +25027,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("ApplicantCVs");
+                    b.ToTable("ApplicantCVs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.ApplicationStatus", b =>
@@ -25081,7 +25081,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("VacancyId");
 
-                    b.ToTable("ApplicationStatuses");
+                    b.ToTable("ApplicationStatuses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.CVLanguage", b =>
@@ -25131,7 +25131,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("LanguageInfoId");
 
-                    b.ToTable("CVLanguages");
+                    b.ToTable("CVLanguages", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.CVQualification", b =>
@@ -25188,7 +25188,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("QualificationId");
 
-                    b.ToTable("CVQualifications");
+                    b.ToTable("CVQualifications", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.CVSkill", b =>
@@ -25237,7 +25237,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ApplicantCVId");
 
-                    b.ToTable("CVSkills");
+                    b.ToTable("CVSkills", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.CVWorkExp", b =>
@@ -25296,7 +25296,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ApplicantCVId");
 
-                    b.ToTable("CVWorkExps");
+                    b.ToTable("CVWorkExps", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.InterviewDetails", b =>
@@ -25366,7 +25366,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ApplicationStatusId");
 
-                    b.ToTable("InterviewDetails");
+                    b.ToTable("InterviewDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbAppTaskComments", b =>
@@ -25415,7 +25415,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OnbApplicantTasksId");
 
-                    b.ToTable("OnbAppTaskComments");
+                    b.ToTable("OnbAppTaskComments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbApplicantTasks", b =>
@@ -25475,7 +25475,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OnbTaskId");
 
-                    b.ToTable("OnbApplicantTasks");
+                    b.ToTable("OnbApplicantTasks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbGroup", b =>
@@ -25522,7 +25522,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OnbGroups");
+                    b.ToTable("OnbGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbGroupDetail", b =>
@@ -25574,7 +25574,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OnbTaskId");
 
-                    b.ToTable("OnbGroupDetails");
+                    b.ToTable("OnbGroupDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbTask", b =>
@@ -25632,7 +25632,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OnbTemplateId");
 
-                    b.ToTable("OnbTasks");
+                    b.ToTable("OnbTasks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbTemplate", b =>
@@ -25676,7 +25676,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OnbTemplates");
+                    b.ToTable("OnbTemplates", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbTemplateDetails", b =>
@@ -25725,7 +25725,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OnbTemplateId");
 
-                    b.ToTable("OnbTemplateDetails");
+                    b.ToTable("OnbTemplateDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.OnbVideoLink", b =>
@@ -25779,7 +25779,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OnbVideoLinks");
+                    b.ToTable("OnbVideoLinks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Recruitment.Vacancy", b =>
@@ -25888,7 +25888,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkLocationId");
 
-                    b.ToTable("Vacancies");
+                    b.ToTable("Vacancies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.DomainType", b =>
@@ -25938,7 +25938,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DomainTypes");
+                    b.ToTable("DomainTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.PrintReport", b =>
@@ -26005,7 +26005,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PrintReports");
+                    b.ToTable("PrintReports", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.PrintReportPermission", b =>
@@ -26051,7 +26051,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("PrintReportPermissions");
+                    b.ToTable("PrintReportPermissions", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.PrintReportPermissionDetail", b =>
@@ -26098,7 +26098,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PrintReportPermissionId");
 
-                    b.ToTable("PrintReportPermissionDetails");
+                    b.ToTable("PrintReportPermissionDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportDetail", b =>
@@ -26148,7 +26148,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportSettingId");
 
-                    b.ToTable("ReportDetails");
+                    b.ToTable("ReportDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportInfo", b =>
@@ -26210,7 +26210,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportTypeId");
 
-                    b.ToTable("ReportInfos");
+                    b.ToTable("ReportInfos", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportInfoDetail", b =>
@@ -26303,7 +26303,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportInfoId");
 
-                    b.ToTable("ReportInfoDetails");
+                    b.ToTable("ReportInfoDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportMaster", b =>
@@ -26354,7 +26354,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReportMasters");
+                    b.ToTable("ReportMasters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportSchedule", b =>
@@ -26448,7 +26448,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReportSchedules");
+                    b.ToTable("ReportSchedules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleDestination", b =>
@@ -26527,7 +26527,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportScheduleId");
 
-                    b.ToTable("ReportScheduleDestinations");
+                    b.ToTable("ReportScheduleDestinations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleFilter", b =>
@@ -26582,7 +26582,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportScheduleId");
 
-                    b.ToTable("ReportScheduleFilters");
+                    b.ToTable("ReportScheduleFilters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRecipient", b =>
@@ -26640,7 +26640,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportScheduleId");
 
-                    b.ToTable("ReportScheduleRecipients");
+                    b.ToTable("ReportScheduleRecipients", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRun", b =>
@@ -26701,7 +26701,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportScheduleId");
 
-                    b.ToTable("ReportScheduleRuns");
+                    b.ToTable("ReportScheduleRuns", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRunSlice", b =>
@@ -26778,7 +26778,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportScheduleRunId");
 
-                    b.ToTable("ReportScheduleRunSlices");
+                    b.ToTable("ReportScheduleRunSlices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportSetting", b =>
@@ -26835,7 +26835,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReportSettings");
+                    b.ToTable("ReportSettings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportSettingDetail", b =>
@@ -26911,7 +26911,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReportSettingId");
 
-                    b.ToTable("ReportSettingDetails");
+                    b.ToTable("ReportSettingDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportType", b =>
@@ -26957,7 +26957,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReportTypes");
+                    b.ToTable("ReportTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Storage.AppAttachment", b =>
@@ -27026,7 +27026,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EntityType", "EntityId");
 
-                    b.ToTable("AppAttachments");
+                    b.ToTable("AppAttachments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Storage.BinaryObject", b =>
@@ -27050,7 +27050,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("AppBinaryObjects");
+                    b.ToTable("AppBinaryObjects", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.EmpPerformanceHistory", b =>
@@ -27118,7 +27118,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("EmpPerformanceHistories");
+                    b.ToTable("EmpPerformanceHistories", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.EmpPotentialAssessment", b =>
@@ -27186,7 +27186,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("EmpPotentialAssessments");
+                    b.ToTable("EmpPotentialAssessments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.EmpTalentMatrixData", b =>
@@ -27254,7 +27254,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("PotentialRatingId");
 
-                    b.ToTable("EmpTalentMatrixData");
+                    b.ToTable("EmpTalentMatrixData", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.EmployeeTalentFlag", b =>
@@ -27316,7 +27316,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TalentPoolId");
 
-                    b.ToTable("EmployeeTalentFlags");
+                    b.ToTable("EmployeeTalentFlags", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.ImpactOfLoss", b =>
@@ -27367,7 +27367,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ImpactOfLosses");
+                    b.ToTable("ImpactOfLosses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.NineBoxMapping", b =>
@@ -27414,7 +27414,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("NineBoxMappings");
+                    b.ToTable("NineBoxMappings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.NineBoxRating", b =>
@@ -27465,7 +27465,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NineBoxRatings");
+                    b.ToTable("NineBoxRatings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.Ranking", b =>
@@ -27516,7 +27516,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rankings");
+                    b.ToTable("Rankings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.Readiness", b =>
@@ -27567,7 +27567,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Readinesses");
+                    b.ToTable("Readinesses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.ReasonForLeaving", b =>
@@ -27618,7 +27618,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReasonForLeavings");
+                    b.ToTable("ReasonForLeavings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.RiskOfLoss", b =>
@@ -27669,7 +27669,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskOfLosses");
+                    b.ToTable("RiskOfLosses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.SuccessionRating", b =>
@@ -27720,7 +27720,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SuccessionRatings");
+                    b.ToTable("SuccessionRatings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.SuccessorNominee", b =>
@@ -27781,7 +27781,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ReadinessId");
 
-                    b.ToTable("SuccessorNominees");
+                    b.ToTable("SuccessorNominees", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SuccessionManagement.TalentPool", b =>
@@ -27832,7 +27832,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TalentPools");
+                    b.ToTable("TalentPools", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SurveyManagement.EmployeeSurvey", b =>
@@ -27879,7 +27879,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SurveyId");
 
-                    b.ToTable("EmployeeSurveys");
+                    b.ToTable("EmployeeSurveys", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SurveyManagement.EmployeeSurveyDetail", b =>
@@ -27930,7 +27930,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("EmployeeSurveyDetails");
+                    b.ToTable("EmployeeSurveyDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SurveyManagement.Survey", b =>
@@ -27987,7 +27987,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Surveys");
+                    b.ToTable("Surveys", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SurveyManagement.SurveyDetail", b =>
@@ -28044,7 +28044,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("SurveyId");
 
-                    b.ToTable("SurveyDetails");
+                    b.ToTable("SurveyDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.BulkUploadLog", b =>
@@ -28110,7 +28110,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("BulkUploadLogs");
+                    b.ToTable("BulkUploadLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.EmailNotificationLog", b =>
@@ -28171,7 +28171,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailNotificationLogs");
+                    b.ToTable("EmailNotificationLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.EmailTemplate", b =>
@@ -28236,7 +28236,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailTemplates");
+                    b.ToTable("EmailTemplates", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.EmailToken", b =>
@@ -28293,7 +28293,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmailTemplateId");
 
-                    b.ToTable("EmailTokens");
+                    b.ToTable("EmailTokens", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.EmployeesNotification", b =>
@@ -28346,7 +28346,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TaskEventId");
 
-                    b.ToTable("EmployeesNotifications");
+                    b.ToTable("EmployeesNotifications", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.EmployeesNotificationLog", b =>
@@ -28408,7 +28408,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TaskEventId");
 
-                    b.ToTable("EmployeesNotificationLogs");
+                    b.ToTable("EmployeesNotificationLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.ExecutionLog", b =>
@@ -28481,7 +28481,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExecutionLogs");
+                    b.ToTable("ExecutionLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.NotificationMaster", b =>
@@ -28534,7 +28534,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("NotificationConfigId");
 
-                    b.ToTable("NotificationMasters");
+                    b.ToTable("NotificationMasters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.PayslipConfig", b =>
@@ -28576,7 +28576,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmailTemplateId");
 
-                    b.ToTable("PayslipConfigs");
+                    b.ToTable("PayslipConfigs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.PunchNotificationLog", b =>
@@ -28630,7 +28630,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeDutyPeriodId");
 
-                    b.ToTable("PunchNotificationLogs");
+                    b.ToTable("PunchNotificationLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.RetroReasonLog", b =>
@@ -28689,7 +28689,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("RetroReasonLogs");
+                    b.ToTable("RetroReasonLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.SysObject", b =>
@@ -28806,7 +28806,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SysTenantConfigs");
+                    b.ToTable("SysTenantConfigs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.SysUserOrgUnitData", b =>
@@ -28866,7 +28866,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("SysUserOrgUnitDatas");
+                    b.ToTable("SysUserOrgUnitDatas", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.SystemNotification", b =>
@@ -28918,7 +28918,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("NotificationConfigId");
 
-                    b.ToTable("SystemNotifications");
+                    b.ToTable("SystemNotifications", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.TaskEvent", b =>
@@ -28999,7 +28999,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RefEmployeeId");
 
-                    b.ToTable("TaskEvents");
+                    b.ToTable("TaskEvents", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageAppraisalSettings", b =>
@@ -29054,7 +29054,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageAppraisalSettingses");
+                    b.ToTable("ManageAppraisalSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageDocumentSettings", b =>
@@ -29117,7 +29117,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageDocumentSettingses");
+                    b.ToTable("ManageDocumentSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageFIPostingSettings", b =>
@@ -29166,7 +29166,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageFIPostingSettingses");
+                    b.ToTable("ManageFIPostingSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageGeneralSettings", b =>
@@ -29233,7 +29233,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageGeneralSettingses");
+                    b.ToTable("ManageGeneralSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageNotificationSettings", b =>
@@ -29276,7 +29276,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageNotificationSettingses");
+                    b.ToTable("ManageNotificationSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageOrgSettings", b =>
@@ -29325,7 +29325,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageOrgSettingses");
+                    b.ToTable("ManageOrgSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManagePayrollSettings", b =>
@@ -29500,7 +29500,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManagePayrollSettingses");
+                    b.ToTable("ManagePayrollSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManagePersonnelSettings", b =>
@@ -29549,7 +29549,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManagePersonnelSettingses");
+                    b.ToTable("ManagePersonnelSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageProjectCostingSettings", b =>
@@ -29589,7 +29589,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageProjectCostingSettingses");
+                    b.ToTable("ManageProjectCostingSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageReportSettings", b =>
@@ -29662,7 +29662,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageReportSettingses");
+                    b.ToTable("ManageReportSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageSecuritySettings", b =>
@@ -29723,7 +29723,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageSecuritySettingses");
+                    b.ToTable("ManageSecuritySettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageSelfServiceSettings", b =>
@@ -29823,7 +29823,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageSelfServiceSettingses");
+                    b.ToTable("ManageSelfServiceSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageTimeSettings", b =>
@@ -29989,7 +29989,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageTimeSettingses");
+                    b.ToTable("ManageTimeSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.ManageWorkflowSettings", b =>
@@ -30050,7 +30050,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ManageWorkflowSettingses");
+                    b.ToTable("ManageWorkflowSettingses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSettings.PayrollDriver", b =>
@@ -30093,7 +30093,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PayrollDrivers");
+                    b.ToTable("PayrollDrivers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.BreakShift", b =>
@@ -30165,7 +30165,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BreakShifts");
+                    b.ToTable("BreakShifts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.DailyDuty", b =>
@@ -30242,7 +30242,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("BreakShiftId");
 
-                    b.ToTable("DailyDuties");
+                    b.ToTable("DailyDuties", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.Duty", b =>
@@ -30339,7 +30339,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OvertimeTypeId");
 
-                    b.ToTable("Duties");
+                    b.ToTable("Duties", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.DutyPeriod", b =>
@@ -30436,7 +30436,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WednesdayDutyId");
 
-                    b.ToTable("DutyPeriods");
+                    b.ToTable("DutyPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.DutyPeriodDetail", b =>
@@ -30516,7 +30516,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("DutyPeriodId");
 
-                    b.ToTable("DutyPeriodDetails");
+                    b.ToTable("DutyPeriodDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.EmployeeDutyPeriod", b =>
@@ -30572,7 +30572,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeDutyPeriods");
+                    b.ToTable("EmployeeDutyPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.EmployeeDutySchedule", b =>
@@ -30625,7 +30625,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RosterDutyScheduleId");
 
-                    b.ToTable("EmployeeDutySchedules");
+                    b.ToTable("EmployeeDutySchedules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.EmployeeMobileDevice", b =>
@@ -30697,7 +30697,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("EmployeeMobileDevices");
+                    b.ToTable("EmployeeMobileDevices", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.EmployeeSubstituteDuty", b =>
@@ -30753,7 +30753,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeSubstituteDuties");
+                    b.ToTable("EmployeeSubstituteDuties", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.EmployeeTimePolicy", b =>
@@ -30806,7 +30806,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TimePolicyId");
 
-                    b.ToTable("EmployeeTimePolicies");
+                    b.ToTable("EmployeeTimePolicies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.EmployeeTimesheet", b =>
@@ -30873,7 +30873,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeTimesheets");
+                    b.ToTable("EmployeeTimesheets", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.Holiday", b =>
@@ -30934,7 +30934,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OvertimeTypeId");
 
-                    b.ToTable("Holidays");
+                    b.ToTable("Holidays", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.HolidayCalendar", b =>
@@ -30985,7 +30985,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HolidayCalendars");
+                    b.ToTable("HolidayCalendars", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.HolidayPeriod", b =>
@@ -31030,7 +31030,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("HolidayId");
 
-                    b.ToTable("HolidayPeriods");
+                    b.ToTable("HolidayPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.MonthlyTimeRegister", b =>
@@ -31168,7 +31168,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("MonthlyTimeRegisters");
+                    b.ToTable("MonthlyTimeRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.MonthlyTimeRegisterDetail", b =>
@@ -31218,7 +31218,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TimeTypeId");
 
-                    b.ToTable("MonthlyTimeRegisterDetails");
+                    b.ToTable("MonthlyTimeRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterDailyDuty", b =>
@@ -31268,7 +31268,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RosterDutyScheduleId");
 
-                    b.ToTable("RosterDailyDuties");
+                    b.ToTable("RosterDailyDuties", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterDutyPeriod", b =>
@@ -31319,7 +31319,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RosterDutyPeriods");
+                    b.ToTable("RosterDutyPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterDutyPeriodDetail", b =>
@@ -31399,7 +31399,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RosterDutyPeriodId");
 
-                    b.ToTable("RosterDutyPeriodDetails");
+                    b.ToTable("RosterDutyPeriodDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterDutySchedule", b =>
@@ -31466,7 +31466,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("HolidayCalendarId");
 
-                    b.ToTable("RosterDutySchedules");
+                    b.ToTable("RosterDutySchedules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterGroup", b =>
@@ -31517,7 +31517,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RosterGroups");
+                    b.ToTable("RosterGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterGroupDetail", b =>
@@ -31570,7 +31570,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RosterGroupId");
 
-                    b.ToTable("RosterGroupDetails");
+                    b.ToTable("RosterGroupDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.RosterGroupSchedule", b =>
@@ -31626,7 +31626,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RosterGroupId");
 
-                    b.ToTable("RosterGroupSchedules");
+                    b.ToTable("RosterGroupSchedules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.SimulationTimeRegister", b =>
@@ -31676,7 +31676,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("SimulationTimeRegisters");
+                    b.ToTable("SimulationTimeRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.SimulationTimeRegisterDetail", b =>
@@ -31726,7 +31726,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TimeTypeId");
 
-                    b.ToTable("SimulationTimeRegisterDetails");
+                    b.ToTable("SimulationTimeRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeAttAPI", b =>
@@ -31810,7 +31810,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeAttAPIs");
+                    b.ToTable("TimeAttAPIs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeEvent", b =>
@@ -31921,7 +31921,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkLocationId");
 
-                    b.ToTable("TimeEvents");
+                    b.ToTable("TimeEvents", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeLog", b =>
@@ -31981,7 +31981,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("TimeLogs");
+                    b.ToTable("TimeLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApproval", b =>
@@ -32044,7 +32044,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("TimeLogApprovals");
+                    b.ToTable("TimeLogApprovals", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApprovalDetail", b =>
@@ -32102,7 +32102,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "TimeRegisterId");
 
-                    b.ToTable("TimeLogApprovalDetails");
+                    b.ToTable("TimeLogApprovalDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeLogHistory", b =>
@@ -32172,7 +32172,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "TimeRegisterId");
 
-                    b.ToTable("TimeLogHistories");
+                    b.ToTable("TimeLogHistories", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimePolicy", b =>
@@ -32334,7 +32334,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimePolicies");
+                    b.ToTable("TimePolicies", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeRegister", b =>
@@ -32573,7 +32573,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TimePolicyId");
 
-                    b.ToTable("TimeRegisters");
+                    b.ToTable("TimeRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeTransfer", b =>
@@ -32630,7 +32630,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TransferTypeId");
 
-                    b.ToTable("TimeTransfers");
+                    b.ToTable("TimeTransfers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeTransferType", b =>
@@ -32681,7 +32681,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeTransferTypes");
+                    b.ToTable("TimeTransferTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TimeType", b =>
@@ -32732,7 +32732,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeTypes");
+                    b.ToTable("TimeTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.TransType", b =>
@@ -32783,7 +32783,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TransTypes");
+                    b.ToTable("TransTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.WorkLocationDutyPeriod", b =>
@@ -32836,7 +32836,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkLocationId");
 
-                    b.ToTable("WorkLocationDutyPeriods");
+                    b.ToTable("WorkLocationDutyPeriods", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.YearlyTimeRegister", b =>
@@ -32974,7 +32974,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("YearlyTimeRegisters");
+                    b.ToTable("YearlyTimeRegisters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TimeManagement.YearlyTimeRegisterDetail", b =>
@@ -33024,7 +33024,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("YearlyTimeRegisterId");
 
-                    b.ToTable("YearlyTimeRegisterDetails");
+                    b.ToTable("YearlyTimeRegisterDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TrainingManagement.EmployeeTraining", b =>
@@ -33086,7 +33086,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TrainingScheduleId");
 
-                    b.ToTable("EmployeeTrainings");
+                    b.ToTable("EmployeeTrainings", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TrainingManagement.TrainingAttendance", b =>
@@ -33139,7 +33139,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TrainingScheduleId");
 
-                    b.ToTable("TrainingAttendances");
+                    b.ToTable("TrainingAttendances", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TrainingManagement.TrainingCourse", b =>
@@ -33199,7 +33199,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingCourses");
+                    b.ToTable("TrainingCourses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TrainingManagement.TrainingSchedule", b =>
@@ -33261,7 +33261,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TrainingCourseId");
 
-                    b.ToTable("TrainingSchedules");
+                    b.ToTable("TrainingSchedules", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.ExpenseType", b =>
@@ -33312,7 +33312,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExpenseTypes");
+                    b.ToTable("ExpenseTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.Hotel", b =>
@@ -33363,7 +33363,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.Travel", b =>
@@ -33439,7 +33439,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("Travels");
+                    b.ToTable("Travels", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelAirline", b =>
@@ -33490,7 +33490,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TravelAirlines");
+                    b.ToTable("TravelAirlines", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelCancelReason", b =>
@@ -33541,7 +33541,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TravelCancelReasons");
+                    b.ToTable("TravelCancelReasons", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelDestination", b =>
@@ -33592,7 +33592,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TravelDestinations");
+                    b.ToTable("TravelDestinations", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelDetail", b =>
@@ -33700,7 +33700,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TravelId");
 
-                    b.ToTable("TravelDetails");
+                    b.ToTable("TravelDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelDetailCost", b =>
@@ -33759,7 +33759,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TravelDetailId");
 
-                    b.ToTable("TravelDetailCosts");
+                    b.ToTable("TravelDetailCosts", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelFeedback", b =>
@@ -33822,7 +33822,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TravelId");
 
-                    b.ToTable("TravelFeedbacks");
+                    b.ToTable("TravelFeedbacks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelPerDiem", b =>
@@ -33882,7 +33882,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("ToDestinationId");
 
-                    b.ToTable("TravelPerDiems");
+                    b.ToTable("TravelPerDiems", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelType", b =>
@@ -33938,7 +33938,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WageTypeId");
 
-                    b.ToTable("TravelTypes");
+                    b.ToTable("TravelTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.EmployeeWorkflowRole", b =>
@@ -33991,7 +33991,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRoleId");
 
-                    b.ToTable("EmployeeWorkflowRoles");
+                    b.ToTable("EmployeeWorkflowRoles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestDetail", b =>
@@ -34136,7 +34136,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRoleOrgId");
 
-                    b.ToTable("RequestDetails");
+                    b.ToTable("RequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestDetailParallel", b =>
@@ -34188,7 +34188,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRoleId");
 
-                    b.ToTable("RequestDetailParallels");
+                    b.ToTable("RequestDetailParallels", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestLog", b =>
@@ -34254,7 +34254,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRequestId");
 
-                    b.ToTable("RequestLogs");
+                    b.ToTable("RequestLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestMaster", b =>
@@ -34328,7 +34328,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("DefaultApproverId");
 
-                    b.ToTable("RequestMasters");
+                    b.ToTable("RequestMasters", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestNumberSequence", b =>
@@ -34350,7 +34350,7 @@ namespace HCMv3.Migrations
                     b.HasIndex("TenantId")
                         .IsUnique();
 
-                    b.ToTable("RequestNumberSequences");
+                    b.ToTable("RequestNumberSequences", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WFReadLog", b =>
@@ -34399,7 +34399,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRequestId");
 
-                    b.ToTable("WFReadLogs");
+                    b.ToTable("WFReadLogs", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkFlowApprover", b =>
@@ -34443,6 +34443,9 @@ namespace HCMv3.Migrations
                     b.Property<int>("WorkflowRequestId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkflowStep")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApproverId");
@@ -34451,7 +34454,9 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "ApproverId", "IsApproved");
 
-                    b.ToTable("WorkFlowApprovers");
+                    b.HasIndex("WorkflowRequestId", "WorkflowStep");
+
+                    b.ToTable("WorkFlowApprovers", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowComment", b =>
@@ -34516,7 +34521,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "WorkflowRequestId", "CreationTime");
 
-                    b.ToTable("WorkflowComments");
+                    b.ToTable("WorkflowComments", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowGroup", b =>
@@ -34570,7 +34575,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkflowGroups");
+                    b.ToTable("WorkflowGroups", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowGroupDetail", b =>
@@ -34628,7 +34633,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowGroupId");
 
-                    b.ToTable("WorkflowGroupDetails");
+                    b.ToTable("WorkflowGroupDetails", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowGroupFieldAccess", b =>
@@ -34687,7 +34692,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowGroupDetailId");
 
-                    b.ToTable("WorkflowGroupFieldAccesses");
+                    b.ToTable("WorkflowGroupFieldAccesses", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowRemark", b =>
@@ -34734,7 +34739,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRequestId");
 
-                    b.ToTable("WorkflowRemarks");
+                    b.ToTable("WorkflowRemarks", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowRequest", b =>
@@ -34823,7 +34828,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "RequestType", "TargetEntityId");
 
-                    b.ToTable("WorkflowRequests");
+                    b.ToTable("WorkflowRequests", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowRole", b =>
@@ -34882,7 +34887,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRoleOrgId");
 
-                    b.ToTable("WorkflowRoles");
+                    b.ToTable("WorkflowRoles", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowTransactionType", b =>
@@ -34971,7 +34976,7 @@ namespace HCMv3.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("WorkflowTransactionTypes");
+                    b.ToTable("WorkflowTransactionTypes", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.Editions.SubscribableEdition", b =>
@@ -34995,7 +35000,7 @@ namespace HCMv3.Migrations
                     b.Property<int?>("WaitingDayAfterExpire")
                         .HasColumnType("int");
 
-                    b.ToTable("AbpEditions");
+                    b.ToTable("AbpEditions", (string)null);
 
                     b.HasDiscriminator().HasValue("SubscribableEdition");
                 });
@@ -35009,7 +35014,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EditionId", "Name");
 
-                    b.ToTable("AbpFeatures");
+                    b.ToTable("AbpFeatures", (string)null);
 
                     b.HasDiscriminator().HasValue("EditionFeatureSetting");
                 });
@@ -35020,7 +35025,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("TenantId", "Name");
 
-                    b.ToTable("AbpFeatures");
+                    b.ToTable("AbpFeatures", (string)null);
 
                     b.HasDiscriminator().HasValue("TenantFeatureSetting");
                 });
@@ -35034,7 +35039,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AbpPermissions");
+                    b.ToTable("AbpPermissions", (string)null);
 
                     b.HasDiscriminator().HasValue("RolePermissionSetting");
                 });
@@ -35048,7 +35053,7 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AbpPermissions");
+                    b.ToTable("AbpPermissions", (string)null);
 
                     b.HasDiscriminator().HasValue("UserPermissionSetting");
                 });

@@ -6923,5 +6923,25 @@
     <text name="ApproverListMayBeIncompleteForPastSteps">Earlier steps list who acted. Anyone who was entitled to act but did not is no longer recorded.</text>
     <text name="Extension">Extension</text>
     <text name="NoContactDetailsRecorded">No contact details recorded</text>
+    <text name="ThisRequestIsComplete">This request is complete.</text>
+    <text name="ThisRequestWasRejected">This request was rejected.</text>
+    <text name="ThisRequestIsClosed">This request is closed.</text>
+    <text name="ApprovalRuleSingle">Any one of these approvers is enough</text>
+    <text name="ApprovalRuleAll">All of these approvers must approve</text>
+    <text name="ApprovalRuleParallel">All of these approvers must approve, in any order</text>
+    <text name="CommentIsRequiredForThisStep">A comment is required at this step</text>
+    <text name="RequestActionType_Created">Created</text>
+    <text name="RequestActionType_Approved">Approved</text>
+    <text name="RequestActionType_Rejected">Rejected</text>
+    <text name="RequestActionType_Escalated">Escalated</text>
+    <text name="RequestActionType_Read">Read</text>
+    <text name="RequestActionType_SentBack">Sent back</text>
+    <text name="RequestActionType_Closed">Closed</text>
+    <text name="RequestActionType_Remarked">Remarked</text>
+    <text name="WorkflowPlatform_Core">Back office</text>
+    <text name="WorkflowPlatform_ESS">Web</text>
+    <text name="WorkflowPlatform_Mobile">Mobile</text>
+    <text name="Conversation_View">Conversation</text>
+    <text name="LogView">Log</text>
   </texts>
 </localizationDictionary>

@@ -6761,5 +6761,25 @@
     <text name="ApproverListMayBeIncompleteForPastSteps">تعرض الخطوات السابقة من قام بالإجراء، أمّا من كان مخوّلاً بالإجراء ولم يقم به فلم يعد مسجّلاً.</text>
     <text name="Extension">التحويلة</text>
     <text name="NoContactDetailsRecorded">لا توجد بيانات اتصال مسجّلة</text>
+    <text name="ThisRequestIsComplete">اكتمل هذا الطلب.</text>
+    <text name="ThisRequestWasRejected">تم رفض هذا الطلب.</text>
+    <text name="ThisRequestIsClosed">تم إغلاق هذا الطلب.</text>
+    <text name="ApprovalRuleSingle">تكفي موافقة أي من هؤلاء المعتمدين</text>
+    <text name="ApprovalRuleAll">يجب أن يوافق جميع هؤلاء المعتمدين</text>
+    <text name="ApprovalRuleParallel">يجب أن يوافق جميع هؤلاء المعتمدين، بأي ترتيب</text>
+    <text name="CommentIsRequiredForThisStep">يلزم إدخال ملاحظة في هذه الخطوة</text>
+    <text name="RequestActionType_Created">تم الإنشاء</text>
+    <text name="RequestActionType_Approved">تمت الموافقة</text>
+    <text name="RequestActionType_Rejected">تم الرفض</text>
+    <text name="RequestActionType_Escalated">تم التصعيد</text>
+    <text name="RequestActionType_Read">تمت القراءة</text>
+    <text name="RequestActionType_SentBack">تمت الإعادة</text>
+    <text name="RequestActionType_Closed">تم الإغلاق</text>
+    <text name="RequestActionType_Remarked">تمت الملاحظة</text>
+    <text name="WorkflowPlatform_Core">النظام الإداري</text>
+    <text name="WorkflowPlatform_ESS">الويب</text>
+    <text name="WorkflowPlatform_Mobile">الهاتف المحمول</text>
+    <text name="Conversation_View">المحادثة</text>
+    <text name="LogView">السجل</text>
   </texts>
 </localizationDictionary>

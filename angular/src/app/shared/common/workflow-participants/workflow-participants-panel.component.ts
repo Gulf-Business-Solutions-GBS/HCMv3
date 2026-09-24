@@ -1,18 +1,10 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    effect,
-    inject,
-    input,
-    signal,
-    viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
+    ApprovalRequire,
     GetWorkflowParticipantsInput,
     RequestActionType,
     RequestStatus,
@@ -89,6 +81,27 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
         const status = this.participants()?.requestStatus;
 
         return status === undefined || status === null ? '' : this.l('WorkflowRequestStatus_' + RequestStatus[status]);
+    });
+
+    /**
+     * "Any one of these approvers is enough" / "All of these approvers must approve".
+     *
+     * <p>The engine has enforced this since the port; the panel never said it. With three names listed as
+     * pending and no rule stated, the reader cannot tell whether the request is waiting on THEM or merely
+     * might be -- which is the one thing an approvers list exists to answer. Empty when the step could not
+     * be resolved, so the panel says nothing rather than asserting a default.</p>
+     */
+    readonly approvalRuleLabel = computed(() => {
+        switch (this.participants()?.currentApprovalRequire) {
+            case ApprovalRequire.Single:
+                return this.l('ApprovalRuleSingle');
+            case ApprovalRequire.All:
+                return this.l('ApprovalRuleAll');
+            case ApprovalRequire.Parallel:
+                return this.l('ApprovalRuleParallel');
+            default:
+                return '';
+        }
     });
 
     readonly currentWorkflowRole = computed(() =>

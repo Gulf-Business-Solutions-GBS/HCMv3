@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using HCMv3.Dto;
 using HCMv3.Workflow.Dto;
 
 namespace HCMv3.Workflow;
@@ -55,6 +57,24 @@ public interface IWorkflowActivityAppService : IApplicationService
     /// </para>
     /// </summary>
     Task<WorkflowParticipantProfileDto> GetParticipantProfile(GetWorkflowParticipantProfileInput input);
+
+    /// <summary>
+    /// The same action trail the feed shows, as rows: who acted, when, at which step, how long they took,
+    /// and from which client.
+    ///
+    /// <para>
+    /// The feed and this method read the same table and are not redundant. A thread is for understanding
+    /// one request; a grid is for measuring many. "Reportable and exportable" was the explicit requirement,
+    /// and neither is true of a conversation.
+    /// </para>
+    /// </summary>
+    Task<List<WorkflowRequestLogEntryDto>> GetRequestLog(GetWorkflowRequestLogInput input);
+
+    /// <summary>
+    /// The same rows as <see cref="GetRequestLog"/>, written to a spreadsheet. Same access check, so an
+    /// export can never reveal a request its caller may not open.
+    /// </summary>
+    Task<FileDto> ExportRequestLogToExcel(GetWorkflowRequestLogInput input);
 
     Task<WorkflowActivityDto> AddComment(AddWorkflowCommentInput input);
 

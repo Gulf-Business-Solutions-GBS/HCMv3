@@ -49,6 +49,11 @@
         } @else {
             @switch (tab()) {
                 @case ('approvers') {
+                    @if (approvalRuleLabel(); as rule) {
+                        <!-- Above the names, because it changes how the names are read. -->
+                        <div class="wf-parts__rule">{{ rule }}</div>
+                    }
+
                     @for (entry of approvers(); track entry.person?.employeeId + '-' + entry.workflowStep) {
                         <div class="wf-parts__row">
                             <employee-avatar

@@ -78,6 +78,15 @@
         overflow-y: auto;
     }
 
+    // Quiet, because it is a caption for the list rather than an item in it -- but not muted to the point
+    // of being missed, since it changes what the list means.
+    &__rule {
+        font-size: 0.85rem;
+        font-style: italic;
+        color: var(--bs-secondary-color, var(--bs-gray-600));
+        padding: 0.15rem 0 0.4rem;
+    }
+
     &__row {
         display: flex;
         align-items: center;

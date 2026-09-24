@@ -193,11 +193,22 @@ public class NotificationRecipientResolver : HCMv3DomainServiceBase, INotificati
             .FirstOrDefault();
     }
 
-    /// <summary>The people the request is sitting with right now.</summary>
+    /// <summary>
+    /// The people the request is sitting with right now.
+    ///
+    /// <para>
+    /// Scoped to the request's current step. Approver rows outlive their step now, so without this an
+    /// unapproved row from step 1 would keep receiving every notification the request generates for the
+    /// rest of its life.
+    /// </para>
+    /// </summary>
     private List<int> PendingApproverIds(int workflowRequestId)
     {
         return _workFlowApproverRepository.GetAll()
-            .Where(a => a.WorkflowRequestId == workflowRequestId && !a.IsApproved && a.ApproverId != null)
+            .Where(a => a.WorkflowRequestId == workflowRequestId
+                        && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
+                        && !a.IsApproved
+                        && a.ApproverId != null)
             .Select(a => a.ApproverId.Value)
             .Distinct()
             .ToList();

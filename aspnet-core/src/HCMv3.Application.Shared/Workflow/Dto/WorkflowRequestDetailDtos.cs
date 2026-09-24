@@ -121,4 +121,16 @@ public class WorkflowRequestDetailDto
     public bool CanReject { get; set; }
 
     public bool CanSendBack { get; set; }
+
+    /// <summary>
+    /// True when this step will refuse a decision without a comment.
+    ///
+    /// <para>
+    /// The rule already existed and was already enforced -- the engine throws
+    /// "a comment is required to approve at this workflow step". What was missing was telling the approver
+    /// BEFORE they press Approve. Being refused after deciding is the worst moment to learn a field was
+    /// mandatory, and the fix is to mark the box, not to relax the rule.
+    /// </para>
+    /// </summary>
+    public bool IsCommentRequired { get; set; }
 }

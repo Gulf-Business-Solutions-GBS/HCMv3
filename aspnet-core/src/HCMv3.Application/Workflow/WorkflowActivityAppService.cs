@@ -14,6 +14,7 @@ using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow.Services;
 using HCMv3.Workflow.Dto;
+using HCMv3.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.Workflow;
@@ -44,6 +45,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly HCMv3.Workflow.Exporting.IWorkflowRequestLogExcelExporter _requestLogExporter;
 
     public WorkflowActivityAppService(
         IRepository<WorkflowRequest> requestRepository,
@@ -67,7 +69,8 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         IWorkflowNotificationDispatcher notificationDispatcher,
         IWorkflowTransactionHandlerResolver handlerResolver,
         IRequestMasterResolver requestMasterResolver,
-        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
+        HCMv3.Workflow.Exporting.IWorkflowRequestLogExcelExporter requestLogExporter)
     {
         _notificationDispatcher = notificationDispatcher;
         _requestRepository = requestRepository;
@@ -91,6 +94,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         _handlerResolver = handlerResolver;
         _requestMasterResolver = requestMasterResolver;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _requestLogExporter = requestLogExporter;
     }
 
     /// <summary>
@@ -374,10 +378,23 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         {
             var master = await _requestMasterResolver.ResolveAsync(request);
 
-            var roleId = await _requestDetailRepository.GetAll()
+            // One read for both facts about the current step. They are answered together because they are
+            // read together: "who is this waiting on, and how many of them does it need".
+            var step = await _requestDetailRepository.GetAll()
                 .Where(d => d.RequestMasterId == master.Id && d.Step == request.WorkflowStep)
-                .Select(d => d.WorkflowRoleId)
+                .Select(d => new { d.WorkflowRoleId, d.ApprovalRequire })
                 .FirstOrDefaultAsync();
+
+            if (step == null)
+            {
+                return;
+            }
+
+            // Set before the role lookup can return early: a step with no workflow role still has an
+            // approval rule, and the panel should say so.
+            result.CurrentApprovalRequire = step.ApprovalRequire;
+
+            var roleId = step.WorkflowRoleId;
 
             if (!roleId.HasValue)
             {
@@ -425,20 +442,19 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     /// Everyone entitled to act, across every step the request has passed through.
     ///
     /// <para>
-    /// <b>Why this is two queries and not one.</b> <c>AssignApproversForStepAsync</c> deletes every
-    /// <c>WorkFlowApprover</c> row for a request before inserting the next step's, so that table can only
-    /// ever answer for the step the request is sitting on now. At step 3 it holds no trace that anybody
-    /// approved at step 2, and a step-1 approver has no row at all. So the live table supplies the current
-    /// step and <c>RequestLog</c> -- which is never deleted, and does record who acted at which step --
-    /// supplies the history.
+    /// <b>Still two queries, for a narrower reason than before.</b> <c>WorkFlowApprover</c> now records the
+    /// step each row was assigned for and the engine no longer deletes the request's rows on every step
+    /// change, so the table answers for every step of a request routed since that change -- including the
+    /// people who were ENTITLED to approve a past step and did not, which is the part no reconstruction
+    /// could ever recover.
     /// </para>
     ///
     /// <para>
-    /// The reconstruction is not free of the underlying defect, and the DTO says so on every row it
-    /// produces: a past step lists whoever ACTED, not whoever was ENTITLED to. Where three people could
-    /// have approved step 1 and one of them did, the other two are gone for good. Only making the engine
-    /// mark rows approved instead of deleting them can restore that, which is a change to the approval
-    /// path rather than to this read.
+    /// <c>RequestLog</c> is still read, for requests that were already in flight when the column arrived.
+    /// Their earlier steps were deleted before there was anywhere to record them and only the action trail
+    /// remembers who acted. Those rows keep saying so -- <c>ReconstructedFromLog</c> -- so the panel can go
+    /// on warning that a past step lists whoever acted rather than whoever could have. New requests simply
+    /// stop producing them.
     /// </para>
     /// </summary>
     private async Task<List<WorkflowApproverEntryDto>> BuildApproversAsync(WorkflowRequest request)
@@ -447,7 +463,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
         var live = await _approverRepository.GetAll()
             .Where(a => a.WorkflowRequestId == request.Id && a.ApproverId.HasValue)
-            .Select(a => new { a.ApproverId, a.IsApproved })
+            .Select(a => new { a.ApproverId, a.IsApproved, a.WorkflowStep })
             .ToListAsync();
 
         foreach (var row in live)
@@ -455,9 +471,14 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             entries.Add(new WorkflowApproverEntryDto
             {
                 Person = new WorkflowPersonDto { EmployeeId = row.ApproverId.Value },
-                WorkflowStep = request.WorkflowStep,
+
+                // The row's own step, not the request's. They are the same for the current step and differ
+                // for every earlier one, which is the whole point of keeping the rows.
+                WorkflowStep = row.WorkflowStep,
                 IsApproved = row.IsApproved,
-                Origin = WorkflowApproverOrigin.CurrentStep
+                Origin = row.WorkflowStep == request.WorkflowStep
+                    ? WorkflowApproverOrigin.CurrentStep
+                    : WorkflowApproverOrigin.PastStep
             });
         }
 
@@ -473,9 +494,13 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             var employeeId = group.Key.ActionById.Value;
             var step = group.Key.WorkflowStep;
 
-            // A live row for the same person at the same step already says whether they have approved, and
-            // says it from the engine's own state rather than from an inference. Skip rather than duplicate.
-            var alreadyLive = entries.Any(e => e.Origin == WorkflowApproverOrigin.CurrentStep
+            // A stored row for the same person at the same step already says whether they approved, from
+            // the engine's own state rather than from an inference. Skip rather than duplicate.
+            //
+            // Any stored origin counts, not just CurrentStep: past steps now have real rows too, and
+            // testing only for CurrentStep would list every past approver twice -- once from the table and
+            // once from the log.
+            var alreadyLive = entries.Any(e => e.Origin != WorkflowApproverOrigin.ReconstructedFromLog
                                                && e.WorkflowStep == step
                                                && e.Person.EmployeeId == employeeId);
 
@@ -824,6 +849,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
                                    && request.RequestStatus == RequestStatus.Open
                                    && await _approverRepository.GetAll()
                                        .AnyAsync(a => a.WorkflowRequestId == request.Id
+                                                      && a.WorkflowStep == request.WorkflowStep
                                                       && a.ApproverId == access.EmployeeId.Value
                                                       && !a.IsApproved);
 
@@ -840,7 +866,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
             var detail = await _requestDetailRepository.GetAll()
                 .Where(d => d.RequestMasterId == master.Id && d.Step == request.WorkflowStep)
-                .Select(d => new { d.CanReject, d.CanSendBack })
+                .Select(d => new { d.CanReject, d.CanSendBack, d.IsCommentRequire })
                 .FirstOrDefaultAsync();
 
             var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
@@ -848,11 +874,17 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
             result.CanReject = detail?.CanReject ?? false;
             result.CanSendBack = (detail?.CanSendBack ?? false) && sendBackToCreator;
+            result.IsCommentRequired = detail?.IsCommentRequire ?? false;
         }
         catch (UserFriendlyException)
         {
             result.CanReject = false;
             result.CanSendBack = false;
+
+            // Not required, because we could not read the step that would have required it. The engine is
+            // still the authority and will refuse the decision if it disagrees -- this flag only decides
+            // whether the screen warns first.
+            result.IsCommentRequired = false;
         }
     }
 
@@ -863,6 +895,110 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         return isArabic
             ? (request.SummaryAr.IsNullOrWhiteSpace() ? request.SummaryEn : request.SummaryAr)
             : request.SummaryEn;
+    }
+
+    /// <summary>
+    /// <c>[HttpPost]</c> for the reason given on <see cref="GetActivityFeed"/>: a <c>Get*</c> method with a
+    /// custom input DTO is emitted by NSwag as loose query parameters and the DTO class never generated.
+    /// </summary>
+    [HttpPost]
+    public async Task<List<WorkflowRequestLogEntryDto>> GetRequestLog(GetWorkflowRequestLogInput input)
+    {
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+
+        EnsureCanView(await GetAccessAsync(request));
+
+        return await ReadRequestLogAsync(request.Id);
+    }
+
+    [HttpPost]
+    public async Task<FileDto> ExportRequestLogToExcel(GetWorkflowRequestLogInput input)
+    {
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+
+        // The same check the grid makes, not a weaker one. An export that skipped it would be a way to read
+        // any request in the tenant by guessing an id.
+        EnsureCanView(await GetAccessAsync(request));
+
+        var entries = await ReadRequestLogAsync(request.Id);
+
+        return await _requestLogExporter.ExportToFile(
+            request.RequestNumber,
+            entries,
+            CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar");
+    }
+
+    /// <summary>
+    /// The rows themselves, oldest first -- a log is read forwards, unlike the conversation, which shows
+    /// the newest post at the top because that is the one you came back for.
+    /// </summary>
+    private async Task<List<WorkflowRequestLogEntryDto>> ReadRequestLogAsync(int requestId)
+    {
+        var logs = await _requestLogRepository.GetAll()
+            .Where(l => l.WorkflowRequestId == requestId)
+            .OrderBy(l => l.ActionDateTime)
+            .ThenBy(l => l.Id)
+            .Select(l => new WorkflowRequestLogEntryDto
+            {
+                Id = l.Id,
+                ActionByEmployeeId = l.ActionById,
+                ActionDateTime = l.ActionDateTime,
+                ActionType = l.ActionType,
+                WorkflowStep = l.WorkflowStep,
+                ActionDays = l.ActionDays,
+                Platform = l.Platform,
+                Comment = l.RequestActionComment
+            })
+            .ToListAsync();
+
+        await FillLogActorsAsync(logs);
+
+        return logs;
+    }
+
+    /// <summary>
+    /// Names and photos for the grid, resolved in one query rather than per row -- the same approach
+    /// <see cref="FillActorsAsync"/> takes for the feed, against a different DTO.
+    /// </summary>
+    private async Task FillLogActorsAsync(List<WorkflowRequestLogEntryDto> entries)
+    {
+        var employeeIds = entries
+            .Where(e => e.ActionByEmployeeId.HasValue)
+            .Select(e => e.ActionByEmployeeId.Value)
+            .Distinct()
+            .ToList();
+
+        if (employeeIds.Count == 0)
+        {
+            return;
+        }
+
+        var employees = await _employeeRepository.GetAll()
+            .Where(e => employeeIds.Contains(e.Id))
+            .Select(e => new
+            {
+                e.Id,
+                e.Code,
+                e.FullNameEn,
+                e.FullNameAr,
+                HasPhoto = e.PhotoPath != null
+            })
+            .ToListAsync();
+
+        var byId = employees.ToDictionary(e => e.Id);
+
+        foreach (var entry in entries.Where(e => e.ActionByEmployeeId.HasValue))
+        {
+            if (!byId.TryGetValue(entry.ActionByEmployeeId.Value, out var employee))
+            {
+                continue;
+            }
+
+            entry.ActionByCode = employee.Code;
+            entry.ActionByNameEn = employee.FullNameEn;
+            entry.ActionByNameAr = employee.FullNameAr;
+            entry.ActionByPhotoUrl = employee.HasPhoto ? "/api/employee-photo/" + employee.Id : null;
+        }
     }
 
     public async Task<WorkflowActivityDto> AddComment(AddWorkflowCommentInput input)

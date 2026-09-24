@@ -8,16 +8,24 @@ namespace HCMv3.Workflow.Dto;
 public enum WorkflowApproverOrigin
 {
     /// <summary>
-    /// A live <c>WorkFlowApprover</c> row. This is the step the request is sitting on right now, and the
-    /// only step for which the engine still holds the full list of people entitled to act.
+    /// A stored <c>WorkFlowApprover</c> row for the step the request is sitting on right now: everybody
+    /// entitled to act on it, whether or not they have.
     /// </summary>
     CurrentStep = 0,
 
     /// <summary>
-    /// Reconstructed from <c>RequestLog</c>, because the engine deleted the step's approver rows when the
-    /// request moved on. See <see cref="WorkflowApproverEntryDto.Origin"/> for what this costs.
+    /// Reconstructed from <c>RequestLog</c>, for a step whose approver rows were deleted before
+    /// <c>WorkFlowApprover.WorkflowStep</c> existed. Only requests already in flight at that point can
+    /// still produce these. See <see cref="WorkflowApproverEntryDto.Origin"/> for what it costs.
     /// </summary>
-    ReconstructedFromLog = 1
+    ReconstructedFromLog = 1,
+
+    /// <summary>
+    /// A stored row for a step the request has already passed. As complete as
+    /// <see cref="CurrentStep"/> -- it names everyone who was entitled to approve that step, not merely
+    /// whoever did -- which is exactly what <see cref="ReconstructedFromLog"/> cannot do.
+    /// </summary>
+    PastStep = 2
 }
 
 /// <summary>Which way round a delegation runs relative to the approver it was found for.</summary>
@@ -229,6 +237,18 @@ public class WorkflowParticipantsDto
 
     /// <inheritdoc cref="CurrentWorkflowRoleNameEn"/>
     public string CurrentWorkflowRoleNameAr { get; set; }
+
+    /// <summary>
+    /// Whether one approver on the current step is enough, or every one of them must approve.
+    ///
+    /// <para>
+    /// The engine has always enforced this; the panel never said it. With several names listed as pending
+    /// and no rule stated, "Approvers 3" is ambiguous in the way that matters most -- whether the request is
+    /// waiting on YOU or merely might be. Null when the step cannot be resolved, in which case the screen
+    /// says nothing rather than guessing.
+    /// </para>
+    /// </summary>
+    public ApprovalRequire? CurrentApprovalRequire { get; set; }
 
     public List<WorkflowApproverEntryDto> Approvers { get; set; } = new List<WorkflowApproverEntryDto>();
 

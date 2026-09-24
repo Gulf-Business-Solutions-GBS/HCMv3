@@ -93,6 +93,7 @@ public class WorkflowAdminToolsAppService : HCMv3AppServiceBase, IWorkflowAdminT
         var query = _workFlowApproverRepository.GetAll()
             .Where(r => r.ApproverId == fromManager.Id
                         && !r.IsApproved
+                        && r.WorkflowStep == r.WorkflowRequest.WorkflowStep
                         && r.WorkflowRequest.RequestStatus == RequestStatus.Open);
 
         if (input.RequestingEmployeeId.HasValue)

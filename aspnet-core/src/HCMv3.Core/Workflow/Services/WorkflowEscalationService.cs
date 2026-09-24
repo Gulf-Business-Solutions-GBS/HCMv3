@@ -191,8 +191,13 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
         RequestDetail requestDetail,
         int currentStep)
     {
+        // The step being escalated from, not every approver the request has ever had. This list is handed
+        // to the resolver to exclude, so without the filter an escalation would refuse to pick anyone who
+        // approved at any earlier step -- steadily running out of candidates on a long chain.
         var currentApproverIds = _workFlowApproverRepository.GetAll()
-            .Where(a => a.WorkflowRequestId == request.Id && a.ApproverId.HasValue)
+            .Where(a => a.WorkflowRequestId == request.Id
+                        && a.WorkflowStep == currentStep
+                        && a.ApproverId.HasValue)
             .Select(a => a.ApproverId.Value)
             .ToList();
 
@@ -260,8 +265,13 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
                 continue;
             }
 
+            // Pending ON THE CURRENT STEP. An unapproved row from an earlier step -- one of three where
+            // any one sufficed -- is not somebody to chase; the request is not with them.
             var approverIds = _workFlowApproverRepository.GetAll()
-                .Where(a => a.WorkflowRequestId == request.Id && !a.IsApproved && a.ApproverId.HasValue)
+                .Where(a => a.WorkflowRequestId == request.Id
+                            && a.WorkflowStep == request.WorkflowStep
+                            && !a.IsApproved
+                            && a.ApproverId.HasValue)
                 .Select(a => a.ApproverId.Value)
                 .Distinct()
                 .ToList();
@@ -324,12 +334,17 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
             .FirstOrDefault(d => d.RequestMasterId == requestMasterId && d.Step == step);
     }
 
+    /// <summary>
+    /// Swaps the CURRENT step's approvers for the escalation's. Earlier steps keep theirs -- an escalation
+    /// changes who the request is waiting on now, not who approved it before.
+    /// </summary>
     private async Task ReplaceApproversAsync(WorkflowRequest request, List<int> approverEmployeeIds)
     {
-        foreach (var existing in _workFlowApproverRepository.GetAll()
-                     .Where(a => a.WorkflowRequestId == request.Id).ToList())
+        foreach (var superseded in _workFlowApproverRepository.GetAll()
+                     .Where(a => a.WorkflowRequestId == request.Id && a.WorkflowStep == request.WorkflowStep)
+                     .ToList())
         {
-            await _workFlowApproverRepository.DeleteAsync(existing);
+            await _workFlowApproverRepository.DeleteAsync(superseded);
         }
 
         foreach (var employeeId in approverEmployeeIds)
@@ -339,7 +354,8 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
                 TenantId = request.TenantId,
                 WorkflowRequestId = request.Id,
                 ApproverId = employeeId,
-                IsApproved = false
+                IsApproved = false,
+                WorkflowStep = request.WorkflowStep
             });
         }
 
@@ -352,6 +368,11 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
     /// </summary>
     private async Task AddEscalationLogAsync(WorkflowRequest request, int newApproverId, int fromStep)
     {
+        // Read BEFORE the row goes in, or it measures against itself and every escalation records zero.
+        // This is the same count the escalation threshold was tested against a moment ago, which is the
+        // point: the log should say the number that caused the escalation, not a second opinion of it.
+        var stalledDays = DaysSinceLastAction(request) ?? 0;
+
         await _requestLogRepository.InsertAsync(new RequestLog
         {
             TenantId = request.TenantId,
@@ -361,6 +382,9 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
             ActionDateTime = DateTime.Now,
             ActionType = RequestActionType.Escalated,
             WorkflowStep = fromStep,
+            ActionDays = stalledDays,
+
+            // Core, and correct: nobody clicked anything. A timer did this.
             Platform = WorkflowPlatform.Core
         });
     }

@@ -8,6 +8,7 @@ using Abp.Extensions;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.Workflow.Services;
 
@@ -27,6 +28,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IWorkflowNotificationDispatcher _notificationDispatcher;
     private readonly IWorkflowStepSequence _stepSequence;
     private readonly IEmployeeScopeProvider _employeeScopeProvider;
+    private readonly IWorkflowPlatformProvider _platformProvider;
 
     public WorkflowApprovalService(
         IRepository<WorkflowRequest> workflowRequestRepository,
@@ -40,8 +42,10 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         IWorkflowTransactionHandlerResolver handlerResolver,
         IWorkflowNotificationDispatcher notificationDispatcher,
         IWorkflowStepSequence stepSequence,
-        IEmployeeScopeProvider employeeScopeProvider)
+        IEmployeeScopeProvider employeeScopeProvider,
+        IWorkflowPlatformProvider platformProvider)
     {
+        _platformProvider = platformProvider;
         _stepSequence = stepSequence;
         _employeeScopeProvider = employeeScopeProvider;
         _notificationDispatcher = notificationDispatcher;
@@ -160,9 +164,11 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             throw new UserFriendlyException(L("ACommentIsRequiredToApproveAtThisWorkflowStep"));
         }
 
-        // Mark this employee's pending approver row(s) at the current step as approved.
+        // This step's rows only. Rows now survive a step change, so an unqualified read would drag in
+        // step 1's approvals and let ApprovalRequire.All be satisfied by people who approved something
+        // else -- the step would pass without its own approvers having acted.
         var approvers = _workFlowApproverRepository.GetAll()
-            .Where(a => a.WorkflowRequestId == request.Id)
+            .Where(a => a.WorkflowRequestId == request.Id && a.WorkflowStep == request.WorkflowStep)
             .ToList();
 
         foreach (var approverRow in approvers.Where(a => !a.IsApproved && a.ApproverId == actingEmployeeId))
@@ -299,11 +305,9 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
         var stepBeingSentBackFrom = request.WorkflowStep;
 
-        foreach (var approverRow in _workFlowApproverRepository.GetAll()
-                     .Where(a => a.WorkflowRequestId == request.Id).ToList())
-        {
-            await _workFlowApproverRepository.DeleteAsync(approverRow);
-        }
+        // Nothing is deleted. A send-back is part of the request's history, and so are the people it was
+        // sitting with when it happened. Re-submission re-assigns the step it lands on, which supersedes
+        // that step's rows in place -- see AssignApproversForStepAsync.
 
         // Back to the first APPROVER step, not to step 1. Where step 1 is a creator row, parking the request
         // there would leave a resubmitted request looking for an approver on a row that nominates none.
@@ -343,7 +347,10 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         EnsureOpenAndCurrentApprover(request, actingEmployeeId);
 
         var pendingApproverRows = _workFlowApproverRepository.GetAll()
-            .Where(a => a.WorkflowRequestId == request.Id && !a.IsApproved && a.ApproverId == actingEmployeeId)
+            .Where(a => a.WorkflowRequestId == request.Id
+                        && a.WorkflowStep == request.WorkflowStep
+                        && !a.IsApproved
+                        && a.ApproverId == actingEmployeeId)
             .ToList();
 
         foreach (var approverRow in pendingApproverRows)
@@ -476,8 +483,14 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             throw new UserFriendlyException(L("WorkflowRequestHasNotBeenSubmittedYet"));
         }
 
+        // "Not yet approved" is no longer enough on its own: a row left unapproved at an earlier step --
+        // one of three approvers where any one was sufficient -- stays on the request forever. Without the
+        // step filter that person could act on every later step of a request they were never asked about.
         var isCurrentApprover = _workFlowApproverRepository.GetAll()
-            .Any(a => a.WorkflowRequestId == request.Id && !a.IsApproved && a.ApproverId == actingEmployeeId);
+            .Any(a => a.WorkflowRequestId == request.Id
+                      && a.WorkflowStep == request.WorkflowStep
+                      && !a.IsApproved
+                      && a.ApproverId == actingEmployeeId);
 
         if (!isCurrentApprover && request.ApproverId != actingEmployeeId)
         {
@@ -678,10 +691,16 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             throw new UserFriendlyException(L("NoApproverCouldBeResolvedForThisWorkflowStep"));
         }
 
-        foreach (var existing in _workFlowApproverRepository.GetAll()
-                     .Where(a => a.WorkflowRequestId == request.Id).ToList())
+        // THIS step's rows are replaced; every other step's are left alone.
+        //
+        // The old code deleted every row on the request, which is what destroyed the history. Deleting
+        // nothing is not the answer either: a step can be assigned twice -- a send-back and re-submission
+        // land on the same step, and escalation re-resolves one -- and leaving the previous attempt behind
+        // would give the step two sets of approvers, doubling ApprovalRequire.All's requirement.
+        foreach (var superseded in _workFlowApproverRepository.GetAll()
+                     .Where(a => a.WorkflowRequestId == request.Id && a.WorkflowStep == step).ToList())
         {
-            await _workFlowApproverRepository.DeleteAsync(existing);
+            await _workFlowApproverRepository.DeleteAsync(superseded);
         }
 
         foreach (var employeeId in approverEmployeeIds)
@@ -691,7 +710,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
                 TenantId = request.TenantId,
                 WorkflowRequestId = request.Id,
                 ApproverId = employeeId,
-                IsApproved = false
+                IsApproved = false,
+                WorkflowStep = step
             });
         }
 
@@ -731,17 +751,62 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         int workflowStep,
         int? onBehalfOfEmployeeId = null)
     {
+        var now = DateTime.Now;
+
         await _requestLogRepository.InsertAsync(new RequestLog
         {
             TenantId = request.TenantId,
             WorkflowRequestId = request.Id,
             ActionById = actingEmployeeId,
             RequestActionComment = ComposeComment(remark, onBehalfOfEmployeeId),
-            ActionDateTime = DateTime.Now,
+            ActionDateTime = now,
             ActionType = actionType,
             WorkflowStep = workflowStep,
-            Platform = WorkflowPlatform.Core
+            ActionDays = await CalculateActionDaysAsync(request.Id, now),
+            Platform = _platformProvider.Current
         });
+    }
+
+    /// <summary>
+    /// How long this action sat waiting, in whole days.
+    ///
+    /// <para>
+    /// Measured from the PREVIOUS action on the request, not from when the request was raised. That is the
+    /// question the column is asked -- "how many days did this approver take" -- and measuring from the
+    /// start instead would charge every approver for the delays of everyone before them, so the last person
+    /// in a five-step chain would always look like the slowest.
+    /// </para>
+    ///
+    /// <para>
+    /// The first action has nothing before it and is zero.
+    /// </para>
+    ///
+    /// <para>
+    /// CALENDAR days, not elapsed hours divided by 24. An approval at 08:00 the morning after a 23:00
+    /// submission is "next day" to everyone who will read this, and elapsed-time arithmetic calls it zero.
+    /// More decisively: the escalation service writes this same column using calendar days, and
+    /// EscalateAfterDays and ReminderDays are configured in calendar days too. A report that sets "days taken"
+    /// beside "escalate after" has to be comparing the same unit, or the comparison means nothing.
+    /// </para>
+    /// </summary>
+    private async Task<int> CalculateActionDaysAsync(int requestId, DateTime actionDateTime)
+    {
+        var previous = await _requestLogRepository.GetAll()
+            .Where(l => l.WorkflowRequestId == requestId)
+            .OrderByDescending(l => l.ActionDateTime)
+            .Select(l => (DateTime?)l.ActionDateTime)
+            .FirstOrDefaultAsync();
+
+        if (!previous.HasValue)
+        {
+            return 0;
+        }
+
+        var days = (actionDateTime.Date - previous.Value.Date).Days;
+
+        // Never negative. Clock adjustments and rows written by a migration with a backdated timestamp are
+        // both real, and a negative "days taken" in a report is worse than a zero.
+        return days <= 0 ? 0 : days;
     }
 
     private string ComposeComment(string remark, int? onBehalfOfEmployeeId)

@@ -9,6 +9,7 @@ using HCMv3.Maui.Services.Account;
 using HCMv3.Maui.Services.Navigation;
 using HCMv3.Maui.Services.Tenants;
 using HCMv3.Maui.Services.UI;
+using HCMv3.Workflow;
 
 #if ANDROID
 using HCMv3.Maui.Core.Platforms.Android.HttpClient;
@@ -101,6 +102,10 @@ public partial class MainLayout
     private static void ConfigureFlurlHttp()
     {
         FlurlHttp.Clients.WithDefaults(builer => builer
+            // Says "mobile" on every call this app makes, so the request log can record where an action
+            // came from. The mobile app hits exactly the same endpoints the web app does, so a header is
+            // the only thing that tells the two apart -- see WorkflowClientHeader.
+            .WithHeader(WorkflowClientHeader.Name, WorkflowClientHeader.Mobile)
             .OnError(call => HandleHttpErrorAsync(call))
             .ConfigureInnerHandler(hch =>
             {
