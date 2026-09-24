@@ -64,24 +64,25 @@
     </div>
 </div>
 
-<!-- Request Comment is its own card, as in legacy: it is what the requester says to the approver, not
-     another field of the transaction. Kept in read-only mode too, in the same place -- an approver reading
-     the form should find the requester's note where the requester left it. -->
-<div class="card card-custom gutter-b mb-5">
-    <div class="card-body">
-        <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
+<!-- Request Comment is its own card, as in legacy: what the requester says to the approver, rather than
+     another field of the transaction.
+     
+     Shown only while it is being written. Once the request is submitted those same words open the
+     conversation below -- SubmitAsync carries them onto the Created log entry -- so rendering the card as
+     well put the identical text on screen twice for the approver: once in a dead grey box, once in the
+     thread. They read as two different comments. The thread is the better of the two, because it says who
+     wrote it and when, and everything said since follows underneath it. -->
+@if (!readOnly()) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
 
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                @if (readOnly()) {
-                    <textarea class="form-control" rows="3" [value]="value().comments" readonly disabled></textarea>
-                } @else {
+            <div class="row">
+                <div class="col-12 col-lg-6">
                     <textarea class="form-control" rows="3" maxlength="500" [(ngModel)]="value().comments"></textarea>
-                }
+                </div>
             </div>
-        </div>
 
-        @if (!readOnly()) {
             <div class="mt-4">
                 <!-- Three actions, and the order is deliberate: Save first because it is the safe one, Submit
                      second because it is the one that needs an approver to undo, Cancel last and quietest.
@@ -95,6 +96,6 @@
                 </button>
                 <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
             </div>
-        }
+        </div>
     </div>
-</div>
+}
