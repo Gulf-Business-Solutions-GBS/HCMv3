@@ -14,31 +14,26 @@
                     <div class="modal-header">
                         <h4 class="modal-title">
                             @if (record().id) {
-                                <span>{{ 'EditItem' | localize }}: {{ 'RequestDetails' | localize }}</span>
+                                <span>{{ 'EditItem' | localize }}: {{ 'ApprovalStep' | localize }}</span>
                             } @else {
-                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RequestDetails' | localize }}</span>
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ApprovalStep' | localize }}</span>
                             }
                         </h4>
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
+                            <!-- The chain is shown, not chosen. A step reached from a chain belongs to that
+                                 chain; offering a dropdown here only invites moving a step into a different
+                                 one by accident. -->
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="RequestDetail_RequestMasterId">{{ 'RequestMaster' | localize }}</label>
-                                <select
-                                    id="RequestDetail_RequestMasterId"
-                                    #requestMasterIdInput="ngModel"
-                                    class="form-select"
-                                    name="RequestMasterId"
-                                    [ngModel]="record().requestMasterId"
-                                    (ngModelChange)="updateField('requestMasterId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (requestMaster of requestMasters(); track requestMaster.id) {
-                                        <option [ngValue]="requestMaster.id">{{ requestMaster.nameEn }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="requestMasterIdInput" />
+                                <label class="form-label" for="RequestDetail_RequestMasterName">{{ 'RequestMaster' | localize }}</label>
+                                <input
+                                    id="RequestDetail_RequestMasterName"
+                                    type="text"
+                                    class="form-control"
+                                    [value]="requestMasterName()"
+                                    readonly />
                             </div>
                             <div class="col-md-2 mb-5">
                                 <label class="form-label required" for="RequestDetail_Step">{{ 'Step' | localize }}</label>

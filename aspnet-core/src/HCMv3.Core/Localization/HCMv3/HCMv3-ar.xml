@@ -6862,5 +6862,24 @@
     <text name="SetupCheck_EMP010_Title">للموظفين الذين يُدفع لهم عن طريق البنك رقم آيبان أو رقم حساب</text>
     <text name="SetupCheck_EMP010_Why">لا يستطيع ملف البنك الدفع لموظف ليس له أحدهما.</text>
     <text name="IsCommentRequire">الملاحظة إلزامية</text>
+    <text name="WorkflowEnabled">دورة الاعتماد مفعّلة</text>
+    <text name="EssEnabled">الخدمة الذاتية مفعّلة</text>
+    <text name="DefaultRequestMaster">دورة الاعتماد الافتراضية</text>
+    <text name="NotSet">غير محدد</text>
+    <text name="EssRoute">مسار الخدمة الذاتية</text>
+    <text name="EssPermissionName">صلاحية الخدمة الذاتية</text>
+    <text name="IconClass">فئة الأيقونة</text>
+    <text name="SubTypeSource">مصدر النوع الفرعي</text>
+    <text name="Steps">خطوات</text>
+    <text name="TransactionTypeCodeHint">يجب أن يطابق الرمز الذي يستخدمه النظام لهذه المعاملة. الرمز غير المطابق لا يُعثر عليه أبداً، ويتصرف النوع كأنه غير مسجّل.</text>
+    <text name="WorkflowEnabledWithoutChainWarning">دورة الاعتماد مفعّلة لكن لم تُحدد دورة اعتماد افتراضية. لا يمكن تقديم طلبات من هذا النوع حتى يتم اختيار دورة.</text>
+    <text name="EmployeeWorkflowRole">إسناد دور الاعتماد</text>
+    <text name="AllWorkflowRoles">كل أدوار الاعتماد</text>
+    <text name="OnlyActiveToday">السارية اليوم فقط</text>
+    <text name="ActiveToday">سارية اليوم</text>
+    <text name="AssignmentNotActiveTodayWarning">هذه التواريخ لا تشمل اليوم، لذلك سيُحفظ الإسناد لكنه لن يُعثر عليه عند توجيه الاعتمادات.</text>
+    <text name="ApprovalSteps">خطوات الاعتماد</text>
+    <text name="CreatorStep">خطوة مُنشئ الطلب</text>
+    <text name="ApprovalStep">خطوة اعتماد</text>
   </texts>
 </localizationDictionary>

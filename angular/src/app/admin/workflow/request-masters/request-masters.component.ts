@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -40,6 +41,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 })
 export class RequestMastersComponent extends AppComponentBase implements OnInit {
     private _service = inject(RequestMastersServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditRequestMasterModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -95,14 +97,35 @@ export class RequestMastersComponent extends AppComponentBase implements OnInit 
         menu.toggle(event);
     }
 
+    /**
+     * Opens the chain's own page, where its fields and its steps live.
+     *
+     * <p>Steps used to be a screen of their own behind a chain dropdown. They are reached from the chain
+     * now, which is the only place a step means anything.</p>
+     */
+    viewDetails(record: RequestMasterDto): void {
+        this._router.navigate(['/app/admin/request-masters', record.id]);
+    }
+
+    /** Same page, opened straight into editing -- there is no edit dialog for an existing chain. */
+    openRequestMaster(record: RequestMasterDto): void {
+        this._router.navigate(['/app/admin/request-masters', record.id], { queryParams: { edit: true } });
+    }
+
     getMenuItems(record: RequestMasterDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-eye',
+            command: () => this.viewDetails(record),
+        });
 
         if (this.permission.isGranted('Pages.Workflow.RequestMasters.Edit')) {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal().show(record.id),
+                command: () => this.openRequestMaster(record),
             });
         }
 

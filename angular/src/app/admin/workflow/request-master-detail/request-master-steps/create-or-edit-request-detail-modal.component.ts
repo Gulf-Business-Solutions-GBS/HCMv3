@@ -60,6 +60,9 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditRequestDetailDto>(new CreateOrEditRequestDetailDto());
     readonly requestMasters = signal<RequestMasterDto[]>([]);
+
+    /** The chain's name, shown read-only on the form so the step is unmistakably attached to it. */
+    readonly requestMasterName = signal<string>('');
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
     readonly orgUnits = signal<OrgUnitDto[]>([]);
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
@@ -117,12 +120,20 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         { field: 'reminderNotificationConfigId', domId: 'RequestDetail_ReminderNotificationConfigId', key: 'OnReminder' },
     ];
 
-    show(id?: number): void {
+    /**
+     * @param requestMasterId the chain this step belongs to. Required: a step exists only inside a chain, and
+     *                        the caller always knows which one because the grid is already scoped to it.
+     * @param id the step to edit, or omitted to add one.
+     */
+    show(requestMasterId: number, id?: number): void {
         this.active.set(true);
 
         this._requestMastersService
             .getAll(new GetAllRequestMastersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.requestMasters.set(result.items));
+            .subscribe((result) => {
+                this.requestMasters.set(result.items);
+                this.requestMasterName.set(result.items.find((m) => m.id === requestMasterId)?.nameEn ?? '');
+            });
         this._workflowRolesService
             .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.workflowRoles.set(result.items));
@@ -136,6 +147,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         if (!id) {
             this.record.set(
                 new CreateOrEditRequestDetailDto({
+                    requestMasterId,
                     workflowRoleGroup: WorkflowRoleGroup.None,
                     escalateWorkflowRoleGroup: WorkflowRoleGroup.None,
                     person: WorkflowPersonScope.None,
@@ -153,7 +165,8 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     }
 
     onShown(): void {
-        document.getElementById('RequestDetail_RequestMasterId')?.focus();
+        // The chain field is read-only now, so focus goes to the first thing worth typing into.
+        document.getElementById('RequestDetail_Step')?.focus();
     }
 
     save(): void {

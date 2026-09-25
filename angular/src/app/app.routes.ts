@@ -3437,12 +3437,28 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.BusinessRules' },
                     },
                     {
+                        path: 'workflow-transaction-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/workflow/workflow-transaction-types/workflow-transaction-types.component'
+                            ).then((m) => m.WorkflowTransactionTypesComponent),
+                        data: { permission: 'Pages.Workflow.WorkflowTransactionTypes' },
+                    },
+                    {
                         path: 'workflow-roles',
                         loadComponent: () =>
                             import('./admin/workflow/workflow-roles/workflow-roles.component').then(
                                 (m) => m.WorkflowRolesComponent
                             ),
                         data: { permission: 'Pages.Workflow.WorkflowRoles' },
+                    },
+                    {
+                        path: 'employee-workflow-roles',
+                        loadComponent: () =>
+                            import(
+                                './admin/workflow/employee-workflow-roles/employee-workflow-roles.component'
+                            ).then((m) => m.EmployeeWorkflowRolesComponent),
+                        data: { permission: 'Pages.Workflow.EmployeeWorkflowRoles' },
                     },
                     {
                         path: 'workflow-groups',
@@ -3469,12 +3485,12 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Workflow.RequestMasters' },
                     },
                     {
-                        path: 'request-details',
+                        path: 'request-masters/:id',
                         loadComponent: () =>
-                            import('./admin/workflow/request-details/request-details.component').then(
-                                (m) => m.RequestDetailsComponent
-                            ),
-                        data: { permission: 'Pages.Workflow.RequestDetails' },
+                            import(
+                                './admin/workflow/request-master-detail/request-master-detail.component'
+                            ).then((m) => m.RequestMasterDetailComponent),
+                        data: { permission: 'Pages.Workflow.RequestMasters' },
                     },
                     {
                         path: 'request-detail-parallels',

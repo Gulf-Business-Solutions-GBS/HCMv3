@@ -2544,10 +2544,22 @@ export class AppNavigationService {
                 [],
                 [
                     new AppMenuItem(
+                        'WorkflowTransactionTypes',
+                        'Pages.Workflow.WorkflowTransactionTypes',
+                        'flaticon-settings',
+                        '/app/admin/workflow-transaction-types'
+                    ),
+                    new AppMenuItem(
                         'WorkflowRoles',
                         'Pages.Workflow.WorkflowRoles',
                         'flaticon-list-3',
                         '/app/admin/workflow-roles'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeWorkflowRoles',
+                        'Pages.Workflow.EmployeeWorkflowRoles',
+                        'flaticon-users',
+                        '/app/admin/employee-workflow-roles'
                     ),
                     new AppMenuItem(
                         'WorkflowGroups',
@@ -2560,12 +2572,6 @@ export class AppNavigationService {
                         'Pages.Workflow.RequestMasters',
                         'flaticon-list-3',
                         '/app/admin/request-masters'
-                    ),
-                    new AppMenuItem(
-                        'RequestDetails',
-                        'Pages.Workflow.RequestDetails',
-                        'flaticon-list-3',
-                        '/app/admin/request-details'
                     ),
                     new AppMenuItem(
                         'RequestDetailParallels',

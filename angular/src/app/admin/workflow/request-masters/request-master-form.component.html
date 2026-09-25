@@ -1,0 +1,134 @@
+<!-- One fieldset for the whole form: the detail page opens read-only, and disabling the container is both
+     less to get wrong than a flag on every control and what actually stops a keystroke landing. -->
+<fieldset [disabled]="readOnly()">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label required" for="RequestMaster_Code">{{ 'Code' | localize }}</label>
+            <input
+                id="RequestMaster_Code"
+                #codeInput="ngModel"
+                type="text"
+                class="form-control"
+                name="Code"
+                maxlength="64"
+                [ngModel]="requestMaster().code"
+                (ngModelChange)="updateField('code', $event)"
+                required />
+            <validation-messages [formCtrl]="codeInput" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label required" for="RequestMaster_SecurityLevel">{{ 'SecurityLevel' | localize }}</label>
+            <select
+                id="RequestMaster_SecurityLevel"
+                #securityLevelInput="ngModel"
+                class="form-select"
+                name="SecurityLevel"
+                [ngModel]="requestMaster().securityLevel"
+                (ngModelChange)="updateField('securityLevel', $event)"
+                required>
+                @for (item of securityLevels; track item.value) {
+                    <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                }
+            </select>
+            <validation-messages [formCtrl]="securityLevelInput" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label required" for="RequestMaster_NameEn">{{ 'NameEn' | localize }}</label>
+            <input
+                id="RequestMaster_NameEn"
+                #nameEnInput="ngModel"
+                type="text"
+                class="form-control"
+                name="NameEn"
+                maxlength="256"
+                [ngModel]="requestMaster().nameEn"
+                (ngModelChange)="updateField('nameEn', $event)"
+                required />
+            <validation-messages [formCtrl]="nameEnInput" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label required" for="RequestMaster_NameAr">{{ 'NameAr' | localize }}</label>
+            <input
+                id="RequestMaster_NameAr"
+                #nameArInput="ngModel"
+                type="text"
+                class="form-control"
+                name="NameAr"
+                maxlength="256"
+                [ngModel]="requestMaster().nameAr"
+                (ngModelChange)="updateField('nameAr', $event)"
+                required />
+            <validation-messages [formCtrl]="nameArInput" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label" for="RequestMaster_DefaultApproverId">{{ 'DefaultApprover' | localize }}</label>
+            <select
+                id="RequestMaster_DefaultApproverId"
+                class="form-select"
+                name="DefaultApproverId"
+                [ngModel]="requestMaster().defaultApproverId"
+                (ngModelChange)="updateField('defaultApproverId', $event)">
+                <option [ngValue]="undefined"></option>
+                @for (employee of employees(); track employee.id) {
+                    <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 mb-5">
+            <label class="form-label required" for="RequestMaster_AutoCloseInDays">{{ 'AutoCloseInDays' | localize }}</label>
+            <input
+                id="RequestMaster_AutoCloseInDays"
+                #autoCloseInDaysInput="ngModel"
+                type="number"
+                class="form-control"
+                name="AutoCloseInDays"
+                [ngModel]="requestMaster().autoCloseInDays"
+                (ngModelChange)="updateField('autoCloseInDays', $event)"
+                required />
+            <validation-messages [formCtrl]="autoCloseInDaysInput" />
+        </div>
+        <div class="col-md-3 mb-5">
+            <label class="form-label required" for="RequestMaster_DueInDays">{{ 'DueInDays' | localize }}</label>
+            <input
+                id="RequestMaster_DueInDays"
+                #dueInDaysInput="ngModel"
+                type="number"
+                class="form-control"
+                name="DueInDays"
+                [ngModel]="requestMaster().dueInDays"
+                (ngModelChange)="updateField('dueInDays', $event)"
+                required />
+            <validation-messages [formCtrl]="dueInDaysInput" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-5">
+            <div class="form-check form-switch">
+                <input
+                    id="RequestMaster_AutoClose"
+                    type="checkbox"
+                    class="form-check-input"
+                    name="AutoClose"
+                    [ngModel]="requestMaster().autoClose"
+                    (ngModelChange)="updateField('autoClose', $event)" />
+                <label class="form-check-label" for="RequestMaster_AutoClose">{{ 'AutoClose' | localize }}</label>
+            </div>
+        </div>
+        <div class="col-md-4 mb-5">
+            <div class="form-check form-switch">
+                <input
+                    id="RequestMaster_IsCommentRequire"
+                    type="checkbox"
+                    class="form-check-input"
+                    name="IsCommentRequire"
+                    [ngModel]="requestMaster().isCommentRequire"
+                    (ngModelChange)="updateField('isCommentRequire', $event)" />
+                <label class="form-check-label" for="RequestMaster_IsCommentRequire">{{ 'IsCommentRequired' | localize }}</label>
+            </div>
+        </div>
+    </div>
+</fieldset>

@@ -1,10 +1,13 @@
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Workflow.Dto;
@@ -34,10 +37,20 @@ public class EmployeeWorkflowRolesAppService : HCMv3AppServiceBase, IEmployeeWor
     {
         input.Normalize();
 
+        // Taken once and reused for both the filter and the per-row flag, so a request crossing midnight
+        // cannot answer "is this live?" one way in the WHERE clause and the other way in the column.
+        var today = Clock.Now.Date;
+
         var query = _repository.GetAll()
             .Include(r => r.Employee)
             .Include(r => r.WorkflowRole)
-            .WhereIf(input.EmployeeId.HasValue, r => r.EmployeeId == input.EmployeeId);
+            .WhereIf(input.EmployeeId.HasValue, r => r.EmployeeId == input.EmployeeId)
+            .WhereIf(input.WorkflowRoleId.HasValue, r => r.WorkflowRoleId == input.WorkflowRoleId)
+            .WhereIf(input.OnlyActiveToday == true, r => r.StartDate <= today && r.EndDate >= today)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), r =>
+                r.Employee.Code.Contains(input.Filter) ||
+                r.Employee.FullNameEn.Contains(input.Filter) ||
+                r.WorkflowRole.NameEn.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 
@@ -46,7 +59,7 @@ public class EmployeeWorkflowRolesAppService : HCMv3AppServiceBase, IEmployeeWor
             .PageBy(input)
             .ToListAsync();
 
-        return new PagedResultDto<EmployeeWorkflowRoleDto>(totalCount, items.Select(ToDto).ToList());
+        return new PagedResultDto<EmployeeWorkflowRoleDto>(totalCount, items.Select(r => ToDto(r, today)).ToList());
     }
 
     public async Task<GetEmployeeWorkflowRoleForEditOutput> GetEmployeeWorkflowRoleForEdit(EntityDto input)
@@ -116,17 +129,23 @@ public class EmployeeWorkflowRolesAppService : HCMv3AppServiceBase, IEmployeeWor
         return entity;
     }
 
-    private static EmployeeWorkflowRoleDto ToDto(EmployeeWorkflowRole entity)
+    private static EmployeeWorkflowRoleDto ToDto(EmployeeWorkflowRole entity, DateTime today)
     {
         return new EmployeeWorkflowRoleDto
         {
             Id = entity.Id,
             EmployeeId = entity.EmployeeId,
+            EmployeeCode = entity.Employee?.Code,
             EmployeeFullNameEn = entity.Employee?.FullNameEn,
             WorkflowRoleId = entity.WorkflowRoleId,
             WorkflowRoleNameEn = entity.WorkflowRole?.NameEn,
+            WorkflowRoleNameAr = entity.WorkflowRole?.NameAr,
             StartDate = entity.StartDate,
-            EndDate = entity.EndDate
+            EndDate = entity.EndDate,
+
+            // Inclusive at both ends, matching the range approver resolution reads: an assignment ending
+            // today is still today's assignment.
+            IsActiveToday = entity.StartDate.Date <= today && entity.EndDate.Date >= today
         };
     }
 

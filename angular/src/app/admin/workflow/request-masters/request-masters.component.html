@@ -94,7 +94,14 @@
                                     <td style="min-width: 120px">
                                         <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
                                     </td>
-                                    <td style="min-width: 180px">{{ record.nameEn }}</td>
+                                    <td style="min-width: 180px">
+                                        <!-- The name is the way into the chain's steps. text-start because a
+                                             button inherits centred text, which pulls a wrapped second line
+                                             into the middle of the cell. -->
+                                        <button type="button" class="btn btn-link p-0 text-start" (click)="viewDetails(record)">
+                                            {{ record.nameEn }}
+                                        </button>
+                                    </td>
                                     <td style="min-width: 180px">{{ record.nameAr }}</td>
                                     <td style="min-width: 130px">{{ record.workflowSteps }}</td>
                                     <td style="min-width: 160px">{{ securityLevelLabel(record.securityLevel) }}</td>

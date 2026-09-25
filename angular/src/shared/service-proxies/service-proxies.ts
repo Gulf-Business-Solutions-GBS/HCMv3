@@ -143923,6 +143923,181 @@ export class TenantSettingsServiceProxy {
 }
 
 @Injectable()
+export class TenantSetupCheckServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getOptions(): Observable<TenantSetupCheckOptionsDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantSetupCheck/GetOptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TenantSetupCheckOptionsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TenantSetupCheckOptionsDto>;
+        }));
+    }
+
+    protected processGetOptions(response: HttpResponseBase): Observable<TenantSetupCheckOptionsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TenantSetupCheckOptionsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    runChecks(body?: RunTenantSetupChecksInput | undefined): Observable<TenantSetupCheckReportDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantSetupCheck/RunChecks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRunChecks(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRunChecks(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TenantSetupCheckReportDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TenantSetupCheckReportDto>;
+        }));
+    }
+
+    protected processRunChecks(response: HttpResponseBase): Observable<TenantSetupCheckReportDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TenantSetupCheckReportDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: RunTenantSetupChecksInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantSetupCheck/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class TenantUiSettingsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -191944,7 +192119,7 @@ export class CreateOrEditRequestDetailDto implements ICreateOrEditRequestDetailD
     escalateWorkflowRoleId!: number | undefined;
     escalateWorkflowRoleGroup!: WorkflowRoleGroup;
     escalateWorkflowRoleOrgId!: number | undefined;
-    enableReadLog!: boolean;
+    enableReadLog!: boolean | undefined;
     person!: WorkflowPersonScope;
     approverPerson!: WorkflowApproverPersonType;
     workflowRoleGroup!: WorkflowRoleGroup;
@@ -192060,7 +192235,7 @@ export interface ICreateOrEditRequestDetailDto {
     escalateWorkflowRoleId: number | undefined;
     escalateWorkflowRoleGroup: WorkflowRoleGroup;
     escalateWorkflowRoleOrgId: number | undefined;
-    enableReadLog: boolean;
+    enableReadLog: boolean | undefined;
     person: WorkflowPersonScope;
     approverPerson: WorkflowApproverPersonType;
     workflowRoleGroup: WorkflowRoleGroup;
@@ -216653,11 +216828,14 @@ export interface IEmployeeWorkLocationReportRowDto {
 export class EmployeeWorkflowRoleDto implements IEmployeeWorkflowRoleDto {
     id!: number;
     employeeId!: number;
+    employeeCode!: string | undefined;
     employeeFullNameEn!: string | undefined;
     workflowRoleId!: number;
     workflowRoleNameEn!: string | undefined;
+    workflowRoleNameAr!: string | undefined;
     startDate!: DateTime;
     endDate!: DateTime;
+    isActiveToday!: boolean;
 
     constructor(data?: IEmployeeWorkflowRoleDto) {
         if (data) {
@@ -216672,11 +216850,14 @@ export class EmployeeWorkflowRoleDto implements IEmployeeWorkflowRoleDto {
         if (_data) {
             this.id = _data["id"];
             this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
             this.employeeFullNameEn = _data["employeeFullNameEn"];
             this.workflowRoleId = _data["workflowRoleId"];
             this.workflowRoleNameEn = _data["workflowRoleNameEn"];
+            this.workflowRoleNameAr = _data["workflowRoleNameAr"];
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.isActiveToday = _data["isActiveToday"];
         }
     }
 
@@ -216691,11 +216872,14 @@ export class EmployeeWorkflowRoleDto implements IEmployeeWorkflowRoleDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
         data["employeeFullNameEn"] = this.employeeFullNameEn;
         data["workflowRoleId"] = this.workflowRoleId;
         data["workflowRoleNameEn"] = this.workflowRoleNameEn;
+        data["workflowRoleNameAr"] = this.workflowRoleNameAr;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["isActiveToday"] = this.isActiveToday;
         return data;
     }
 }
@@ -216703,11 +216887,14 @@ export class EmployeeWorkflowRoleDto implements IEmployeeWorkflowRoleDto {
 export interface IEmployeeWorkflowRoleDto {
     id: number;
     employeeId: number;
+    employeeCode: string | undefined;
     employeeFullNameEn: string | undefined;
     workflowRoleId: number;
     workflowRoleNameEn: string | undefined;
+    workflowRoleNameAr: string | undefined;
     startDate: DateTime;
     endDate: DateTime;
+    isActiveToday: boolean;
 }
 
 export class EmployeeWorkflowRoleReportRowDto implements IEmployeeWorkflowRoleReportRowDto {
@@ -229756,6 +229943,9 @@ export class GetAllEmployeeWorkflowRolesInput implements IGetAllEmployeeWorkflow
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    workflowRoleId!: number | undefined;
+    filter!: string | undefined;
+    onlyActiveToday!: boolean | undefined;
 
     constructor(data?: IGetAllEmployeeWorkflowRolesInput) {
         if (data) {
@@ -229772,6 +229962,9 @@ export class GetAllEmployeeWorkflowRolesInput implements IGetAllEmployeeWorkflow
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.filter = _data["filter"];
+            this.onlyActiveToday = _data["onlyActiveToday"];
         }
     }
 
@@ -229788,6 +229981,9 @@ export class GetAllEmployeeWorkflowRolesInput implements IGetAllEmployeeWorkflow
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["filter"] = this.filter;
+        data["onlyActiveToday"] = this.onlyActiveToday;
         return data;
     }
 }
@@ -229797,6 +229993,9 @@ export interface IGetAllEmployeeWorkflowRolesInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    workflowRoleId: number | undefined;
+    filter: string | undefined;
+    onlyActiveToday: boolean | undefined;
 }
 
 export class GetAllEmployeesInput implements IGetAllEmployeesInput {
@@ -326310,6 +326509,50 @@ export interface IRunReportScheduleOutput {
     message: string | undefined;
 }
 
+export class RunTenantSetupChecksInput implements IRunTenantSetupChecksInput {
+    tenantId!: number;
+    version!: string;
+    onlyThisVersion!: boolean;
+
+    constructor(data?: IRunTenantSetupChecksInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tenantId = _data["tenantId"];
+            this.version = _data["version"];
+            this.onlyThisVersion = _data["onlyThisVersion"];
+        }
+    }
+
+    static fromJS(data: any): RunTenantSetupChecksInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RunTenantSetupChecksInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenantId"] = this.tenantId;
+        data["version"] = this.version;
+        data["onlyThisVersion"] = this.onlyThisVersion;
+        return data;
+    }
+}
+
+export interface IRunTenantSetupChecksInput {
+    tenantId: number;
+    version: string;
+    onlyThisVersion: boolean;
+}
+
 export class RunTimeEngineInput implements IRunTimeEngineInput {
     employeeCodes!: string | undefined;
     startDate!: DateTime | undefined;
@@ -330003,6 +330246,119 @@ export enum SettingScopes {
     Tenant = 2,
     User = 4,
     All = 7,
+}
+
+export enum SetupCheckOutcome {
+    Ok = 0,
+    Missing = 1,
+    NotApplicable = 2,
+    Error = 3,
+}
+
+export class SetupCheckReleaseDto implements ISetupCheckReleaseDto {
+    version!: string | undefined;
+    releasedOn!: DateTime;
+    title!: string | undefined;
+    notes!: string | undefined;
+    checkCount!: number;
+
+    constructor(data?: ISetupCheckReleaseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.version = _data["version"];
+            this.releasedOn = _data["releasedOn"] ? DateTime.fromISO(_data["releasedOn"].toString()) : undefined as any;
+            this.title = _data["title"];
+            this.notes = _data["notes"];
+            this.checkCount = _data["checkCount"];
+        }
+    }
+
+    static fromJS(data: any): SetupCheckReleaseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetupCheckReleaseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["version"] = this.version;
+        data["releasedOn"] = this.releasedOn ? this.releasedOn.toString() : undefined as any;
+        data["title"] = this.title;
+        data["notes"] = this.notes;
+        data["checkCount"] = this.checkCount;
+        return data;
+    }
+}
+
+export interface ISetupCheckReleaseDto {
+    version: string | undefined;
+    releasedOn: DateTime;
+    title: string | undefined;
+    notes: string | undefined;
+    checkCount: number;
+}
+
+export enum SetupCheckSeverity {
+    Blocker = 0,
+    Warning = 1,
+    Info = 2,
+}
+
+export class SetupCheckTenantDto implements ISetupCheckTenantDto {
+    id!: number;
+    tenancyName!: string | undefined;
+    name!: string | undefined;
+    isActive!: boolean;
+
+    constructor(data?: ISetupCheckTenantDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenancyName = _data["tenancyName"];
+            this.name = _data["name"];
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): SetupCheckTenantDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetupCheckTenantDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenancyName"] = this.tenancyName;
+        data["name"] = this.name;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface ISetupCheckTenantDto {
+    id: number;
+    tenancyName: string | undefined;
+    name: string | undefined;
+    isActive: boolean;
 }
 
 export enum Severity {
@@ -334571,6 +334927,226 @@ export interface ITenantSettingsEditDto {
     billing: TenantBillingSettingsEditDto;
     otherSettings: TenantOtherSettingsEditDto;
     externalLoginProviderSettings: ExternalLoginProviderSettingsEditDto;
+}
+
+export class TenantSetupCheckItemDto implements ITenantSetupCheckItemDto {
+    code!: string | undefined;
+    module!: string | undefined;
+    moduleName!: string | undefined;
+    introducedIn!: string | undefined;
+    severity!: SetupCheckSeverity;
+    title!: string | undefined;
+    why!: string | undefined;
+    outcome!: SetupCheckOutcome;
+    checkedCount!: number;
+    missingCount!: number;
+    examples!: string[] | undefined;
+    message!: string | undefined;
+    fixScreenCode!: string | undefined;
+    fixScreenName!: string | undefined;
+
+    constructor(data?: ITenantSetupCheckItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.module = _data["module"];
+            this.moduleName = _data["moduleName"];
+            this.introducedIn = _data["introducedIn"];
+            this.severity = _data["severity"];
+            this.title = _data["title"];
+            this.why = _data["why"];
+            this.outcome = _data["outcome"];
+            this.checkedCount = _data["checkedCount"];
+            this.missingCount = _data["missingCount"];
+            if (Array.isArray(_data["examples"])) {
+                this.examples = [] as any;
+                for (let item of _data["examples"])
+                    this.examples!.push(item);
+            }
+            this.message = _data["message"];
+            this.fixScreenCode = _data["fixScreenCode"];
+            this.fixScreenName = _data["fixScreenName"];
+        }
+    }
+
+    static fromJS(data: any): TenantSetupCheckItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantSetupCheckItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["module"] = this.module;
+        data["moduleName"] = this.moduleName;
+        data["introducedIn"] = this.introducedIn;
+        data["severity"] = this.severity;
+        data["title"] = this.title;
+        data["why"] = this.why;
+        data["outcome"] = this.outcome;
+        data["checkedCount"] = this.checkedCount;
+        data["missingCount"] = this.missingCount;
+        if (Array.isArray(this.examples)) {
+            data["examples"] = [];
+            for (let item of this.examples)
+                data["examples"].push(item);
+        }
+        data["message"] = this.message;
+        data["fixScreenCode"] = this.fixScreenCode;
+        data["fixScreenName"] = this.fixScreenName;
+        return data;
+    }
+}
+
+export interface ITenantSetupCheckItemDto {
+    code: string | undefined;
+    module: string | undefined;
+    moduleName: string | undefined;
+    introducedIn: string | undefined;
+    severity: SetupCheckSeverity;
+    title: string | undefined;
+    why: string | undefined;
+    outcome: SetupCheckOutcome;
+    checkedCount: number;
+    missingCount: number;
+    examples: string[] | undefined;
+    message: string | undefined;
+    fixScreenCode: string | undefined;
+    fixScreenName: string | undefined;
+}
+
+export class TenantSetupCheckOptionsDto implements ITenantSetupCheckOptionsDto {
+    currentVersion!: string | undefined;
+    releases!: SetupCheckReleaseDto[] | undefined;
+    tenants!: SetupCheckTenantDto[] | undefined;
+
+    constructor(data?: ITenantSetupCheckOptionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.currentVersion = _data["currentVersion"];
+            if (Array.isArray(_data["releases"])) {
+                this.releases = [] as any;
+                for (let item of _data["releases"])
+                    this.releases!.push(SetupCheckReleaseDto.fromJS(item));
+            }
+            if (Array.isArray(_data["tenants"])) {
+                this.tenants = [] as any;
+                for (let item of _data["tenants"])
+                    this.tenants!.push(SetupCheckTenantDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TenantSetupCheckOptionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantSetupCheckOptionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["currentVersion"] = this.currentVersion;
+        if (Array.isArray(this.releases)) {
+            data["releases"] = [];
+            for (let item of this.releases)
+                data["releases"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.tenants)) {
+            data["tenants"] = [];
+            for (let item of this.tenants)
+                data["tenants"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ITenantSetupCheckOptionsDto {
+    currentVersion: string | undefined;
+    releases: SetupCheckReleaseDto[] | undefined;
+    tenants: SetupCheckTenantDto[] | undefined;
+}
+
+export class TenantSetupCheckReportDto implements ITenantSetupCheckReportDto {
+    tenantId!: number;
+    tenantName!: string | undefined;
+    version!: string | undefined;
+    onlyThisVersion!: boolean;
+    checkedOn!: DateTime;
+    items!: TenantSetupCheckItemDto[] | undefined;
+
+    constructor(data?: ITenantSetupCheckReportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tenantId = _data["tenantId"];
+            this.tenantName = _data["tenantName"];
+            this.version = _data["version"];
+            this.onlyThisVersion = _data["onlyThisVersion"];
+            this.checkedOn = _data["checkedOn"] ? DateTime.fromISO(_data["checkedOn"].toString()) : undefined as any;
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(TenantSetupCheckItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TenantSetupCheckReportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantSetupCheckReportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenantId"] = this.tenantId;
+        data["tenantName"] = this.tenantName;
+        data["version"] = this.version;
+        data["onlyThisVersion"] = this.onlyThisVersion;
+        data["checkedOn"] = this.checkedOn ? this.checkedOn.toString() : undefined as any;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ITenantSetupCheckReportDto {
+    tenantId: number;
+    tenantName: string | undefined;
+    version: string | undefined;
+    onlyThisVersion: boolean;
+    checkedOn: DateTime;
+    items: TenantSetupCheckItemDto[] | undefined;
 }
 
 export class TenantUiSettingsDto implements ITenantUiSettingsDto {

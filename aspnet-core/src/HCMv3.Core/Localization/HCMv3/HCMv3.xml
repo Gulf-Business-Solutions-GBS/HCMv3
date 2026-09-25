@@ -7024,5 +7024,24 @@
     <text name="SetupCheck_EMP010_Title">Employees paid by bank have an IBAN or account number</text>
     <text name="SetupCheck_EMP010_Why">The bank file cannot pay an employee without one.</text>
     <text name="IsCommentRequire">Comment Required</text>
+    <text name="WorkflowEnabled">Workflow Enabled</text>
+    <text name="EssEnabled">Self-Service Enabled</text>
+    <text name="DefaultRequestMaster">Default Approval Chain</text>
+    <text name="NotSet">Not set</text>
+    <text name="EssRoute">Self-Service Route</text>
+    <text name="EssPermissionName">Self-Service Permission</text>
+    <text name="IconClass">Icon Class</text>
+    <text name="SubTypeSource">Sub Type Source</text>
+    <text name="Steps">step(s)</text>
+    <text name="TransactionTypeCodeHint">Must match the code the application uses for this transaction. A code that does not match is never found, and the type behaves as if it had not been registered.</text>
+    <text name="WorkflowEnabledWithoutChainWarning">Workflow is switched on but no default approval chain is set. Requests of this type cannot be submitted until a chain is chosen.</text>
+    <text name="EmployeeWorkflowRole">Workflow Role Assignment</text>
+    <text name="AllWorkflowRoles">All workflow roles</text>
+    <text name="OnlyActiveToday">In force today only</text>
+    <text name="ActiveToday">In Force Today</text>
+    <text name="AssignmentNotActiveTodayWarning">These dates do not include today, so this assignment will save but will not be found while approvals are being routed.</text>
+    <text name="ApprovalSteps">Approval Steps</text>
+    <text name="CreatorStep">Creator step</text>
+    <text name="ApprovalStep">Approval Step</text>
   </texts>
 </localizationDictionary>
