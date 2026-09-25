@@ -54,6 +54,8 @@ import {
     PasteGridRow,
     isRowEmpty,
 } from './shared/paste-grid/paste-grid.types';
+import { FormsModule } from '@angular/forms';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /** One line in the log: a press of Run payroll, a set-up step, or a load of employees. */
 interface Attempt {
@@ -126,6 +128,8 @@ const DefaultPayrollArea = 'Default Payroll Area';
     styleUrl: './go-live-setup.component.css',
     animations: [appModuleAnimation()],
     imports: [
+        FormsModule,
+        DateInputDirective,
         SubHeaderComponent,
         LocalizePipe,
         DatePipe,
@@ -1314,8 +1318,9 @@ export class GoLiveSetupComponent extends AppComponentBase implements OnInit, On
             });
     }
 
-    onPayMonthChange(event: Event): void {
-        this.payMonth.set((event.target as HTMLInputElement).value);
+    /** The month field hands back "yyyy-MM", or nothing while what is typed is not yet a month. */
+    onPayMonthChange(value: string | null): void {
+        this.payMonth.set(value ?? '');
     }
 
     /** Where the run stopped, as a sentence the customer recognises. */

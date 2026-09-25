@@ -19,6 +19,14 @@ class DateTimeHostComponent {
     readonly value = signal<string | null>(null);
 }
 
+@Component({
+    template: `<input type="month" name="month" [ngModel]="value()" (ngModelChange)="value.set($event)" />`,
+    imports: [FormsModule, DateInputDirective],
+})
+class MonthHostComponent {
+    readonly value = signal<string | null>(null);
+}
+
 /** ngModel writes through a microtask, and a value written back reaches the field on the next change detection. */
 function settle(fixture: ComponentFixture<unknown>): Promise<void> {
     return fixture.whenStable().then(() => {
@@ -153,5 +161,66 @@ describe('DateInputDirective on a date and time', () => {
         await settle(fixture);
 
         expect(host.value()).toBe('2026-09-24T07:30');
+    });
+});
+
+describe('DateInputDirective on a month', () => {
+    let fixture: ComponentFixture<MonthHostComponent>;
+    let host: MonthHostComponent;
+    let input: HTMLInputElement;
+
+    async function type(text: string): Promise<void> {
+        input.value = text;
+        input.setSelectionRange(text.length, text.length);
+        input.dispatchEvent(new Event('input'));
+        await settle(fixture);
+    }
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({ imports: [MonthHostComponent] }).compileComponents();
+
+        fixture = TestBed.createComponent(MonthHostComponent);
+        fixture.autoDetectChanges(true);
+        await fixture.whenStable();
+
+        host = fixture.componentInstance;
+        input = fixture.nativeElement.querySelector('input');
+    });
+
+    it('asks for the month in figures rather than by name', () => {
+        expect(input.type).toBe('text');
+        expect(input.placeholder).toBe('mm/yyyy');
+    });
+
+    it('shows a stored month as mm/yyyy', async () => {
+        host.value.set('2026-09');
+        await settle(fixture);
+
+        expect(input.value).toBe('09/2026');
+    });
+
+    it('hands back the month they typed', async () => {
+        await type('092026');
+
+        expect(input.value).toBe('09/2026');
+        expect(host.value()).toBe('2026-09');
+    });
+
+    it('takes a month typed short, with its own slash', async () => {
+        await type('9/2026');
+
+        expect(host.value()).toBe('2026-09');
+    });
+
+    it('refuses a month there is no such thing as', async () => {
+        await type('13/2026');
+
+        expect(host.value()).toBeNull();
+    });
+
+    it('holds nothing back while the year is half typed', async () => {
+        await type('09/20');
+
+        expect(host.value()).toBeNull();
     });
 });

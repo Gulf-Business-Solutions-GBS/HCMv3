@@ -9,11 +9,12 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
  * reads and writes dd/MM/yyyy everywhere, and keeps the calendar button: pressing it (or Alt+Down) hands over to the
  * browser's own picker for the moment it is open.
  *
- * The value passed in and out is unchanged: the ISO date the screens already bind (yyyy-MM-dd, or yyyy-MM-ddTHH:mm
- * for a date and time). Nothing in a template has to change beyond listing this directive in the component.
+ * The value passed in and out is unchanged: the ISO date the screens already bind (yyyy-MM-dd, yyyy-MM-ddTHH:mm for
+ * a date and time, yyyy-MM for a month). Nothing in a template has to change beyond listing this directive in the
+ * component. A month field reads mm/yyyy, for the same reason: the browser spells the month out as "September".
  */
 @Directive({
-    selector: 'input[type=date], input[type=datetime-local]',
+    selector: 'input[type=date], input[type=datetime-local], input[type=month]',
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -25,9 +26,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DateInputDirective implements ControlValueAccessor, OnInit {
     private readonly element: HTMLInputElement = inject(ElementRef).nativeElement;
 
-    /** "date" or "datetime-local": what the field was before it became a text box, and what the picker needs back. */
-    private nativeType = 'date';
-    private withTime = false;
+    /**
+     * What the field was before it became a text box: a day, a day and a time, or a month on its own. It is also
+     * what the picker is handed back when one is opened.
+     */
+    private kind: FieldKind = 'date';
 
     /** The last value handed out, in ISO. Kept so the picker can open on it and so blur can restore it. */
     private iso: string | null = null;
@@ -39,16 +42,15 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
     private propagateTouched: () => void = () => undefined;
 
     ngOnInit(): void {
-        this.nativeType = this.element.type === 'datetime-local' ? 'datetime-local' : 'date';
-        this.withTime = this.nativeType === 'datetime-local';
+        this.kind = FieldKinds.includes(this.element.type as FieldKind) ? (this.element.type as FieldKind) : 'date';
 
         this.element.type = 'text';
         this.element.autocomplete = 'off';
         this.element.setAttribute('inputmode', 'numeric');
-        this.element.maxLength = this.withTime ? 16 : 10;
+        this.element.maxLength = Lengths[this.kind];
 
         if (!this.element.placeholder) {
-            this.element.placeholder = this.withTime ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy';
+            this.element.placeholder = Placeholders[this.kind];
         }
 
         // The calendar button, drawn on the field itself rather than by wrapping it in more markup: a wrapper would
@@ -63,8 +65,8 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
     // ------------------------------------------------------------------ ControlValueAccessor
 
     writeValue(value: unknown): void {
-        this.iso = normalizeIso(value, this.withTime);
-        this.element.value = this.iso ? display(this.iso, this.withTime) : '';
+        this.iso = normalizeIso(value, this.kind);
+        this.element.value = this.iso ? display(this.iso, this.kind) : '';
     }
 
     registerOnChange(fn: (value: string | null) => void): void {
@@ -92,13 +94,13 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
         const caretAtEnd = this.element.selectionStart === this.element.value.length;
         if (caretAtEnd) {
             // Separators as they type, so nobody has to reach for the slash key.
-            const typed = punctuate(this.element.value, this.withTime);
+            const typed = punctuate(this.element.value, this.kind);
             if (typed !== this.element.value) {
                 this.element.value = typed;
             }
         }
 
-        this.commit(parse(this.element.value, this.withTime));
+        this.commit(parse(this.element.value, this.kind));
     }
 
     @HostListener('blur')
@@ -109,7 +111,7 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
 
         // Tidied to the canonical form once they leave: "9/9/2026" typed in a hurry comes back as 09/09/2026.
         if (this.iso) {
-            this.element.value = display(this.iso, this.withTime);
+            this.element.value = display(this.iso, this.kind);
         }
 
         this.propagateTouched();
@@ -148,7 +150,7 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
         }
 
         this.picking = true;
-        this.element.type = this.nativeType;
+        this.element.type = this.kind;
         this.element.value = this.iso ?? '';
 
         // The native field brings a calendar button of its own for as long as it is up; two would be one too many.
@@ -166,7 +168,7 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
         this.picking = false;
         this.element.type = 'text';
         this.element.style.backgroundImage = CalendarIcon;
-        this.element.value = this.iso ? display(this.iso, this.withTime) : '';
+        this.element.value = this.iso ? display(this.iso, this.kind) : '';
     }
 
     /** Hands out an ISO value, or null while what is typed is not yet a date -- which is what makes "required" fire. */
@@ -181,6 +183,19 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
     }
 }
 
+/** The three native fields this stands in for: a day, a day and a time, and a month on its own. */
+type FieldKind = 'date' | 'datetime-local' | 'month';
+
+const FieldKinds: FieldKind[] = ['date', 'datetime-local', 'month'];
+
+const Lengths: Record<FieldKind, number> = { date: 10, 'datetime-local': 16, month: 7 };
+
+const Placeholders: Record<FieldKind, string> = {
+    date: 'dd/mm/yyyy',
+    'datetime-local': 'dd/mm/yyyy hh:mm',
+    month: 'mm/yyyy',
+};
+
 /** A calendar, drawn in the field. Grey enough to read as a button without competing with the text. */
 const CalendarIcon =
     "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237e8299' stroke-width='1.3'%3E%3Crect x='1.6' y='2.8' width='12.8' height='11.6' rx='1.6'/%3E%3Cpath d='M1.6 6.2h12.8M5 1.6v2.4M11 1.6v2.4'/%3E%3C/svg%3E\")";
@@ -193,29 +208,42 @@ function pad(value: number, length = 2): string {
  * What arrives from a screen: the ISO string they bind, or occasionally a Date. Only the shape matters here -- the
  * value is handed straight back out in the same form, never reinterpreted in a time zone.
  */
-function normalizeIso(value: unknown, withTime: boolean): string | null {
+function normalizeIso(value: unknown, kind: FieldKind): string | null {
     if (value === null || value === undefined || value === '') {
         return null;
     }
 
     if (value instanceof Date) {
-        const date = `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`;
-        return withTime ? `${date}T${pad(value.getHours())}:${pad(value.getMinutes())}` : date;
+        const month = `${value.getFullYear()}-${pad(value.getMonth() + 1)}`;
+        if (kind === 'month') {
+            return month;
+        }
+
+        const date = `${month}-${pad(value.getDate())}`;
+        return kind === 'datetime-local' ? `${date}T${pad(value.getHours())}:${pad(value.getMinutes())}` : date;
     }
 
     const text = String(value);
-    return withTime ? text.substring(0, 16) : text.substring(0, 10);
+    return text.substring(0, kind === 'month' ? 7 : kind === 'datetime-local' ? 16 : 10);
 }
 
-function display(iso: string, withTime: boolean): string {
+function display(iso: string, kind: FieldKind): string {
     const [datePart, timePart] = iso.split('T');
     const [year, month, day] = datePart.split('-');
-    if (!year || !month || !day) {
+    if (!year || !month) {
+        return '';
+    }
+
+    if (kind === 'month') {
+        return `${month}/${year}`;
+    }
+
+    if (!day) {
         return '';
     }
 
     const date = `${day}/${month}/${year}`;
-    return withTime && timePart ? `${date} ${timePart.substring(0, 5)}` : date;
+    return kind === 'datetime-local' && timePart ? `${date} ${timePart.substring(0, 5)}` : date;
 }
 
 /**
@@ -224,7 +252,10 @@ function display(iso: string, withTime: boolean): string {
  * A separator they typed themselves ends that part, short or not: "9/9/2026" is the 9th of September, not the digits
  * 992026 read off in fours. Only the year is left alone -- a year is the one part nobody writes short and means.
  */
-function punctuate(text: string, withTime: boolean): string {
+function punctuate(text: string, kind: FieldKind): string {
+    // Where the year starts, and so the one part a lone digit is never padded into.
+    const yearAt = kind === 'month' ? 2 : 4;
+
     let digits = '';
     let part = '';
 
@@ -234,7 +265,7 @@ function punctuate(text: string, withTime: boolean): string {
             continue;
         }
 
-        if (part.length === 1 && digits.length !== 4) {
+        if (part.length === 1 && digits.length !== yearAt) {
             part = '0' + part;
         }
 
@@ -242,7 +273,11 @@ function punctuate(text: string, withTime: boolean): string {
         part = '';
     }
 
-    digits = (digits + part).substring(0, withTime ? 12 : 8);
+    digits = (digits + part).substring(0, kind === 'month' ? 6 : kind === 'datetime-local' ? 12 : 8);
+
+    if (kind === 'month') {
+        return digits.length > 2 ? digits.substring(0, 2) + '/' + digits.substring(2, 6) : digits;
+    }
 
     let out = digits.substring(0, 2);
     if (digits.length > 2) {
@@ -251,10 +286,10 @@ function punctuate(text: string, withTime: boolean): string {
     if (digits.length > 4) {
         out += '/' + digits.substring(4, 8);
     }
-    if (withTime && digits.length > 8) {
+    if (kind === 'datetime-local' && digits.length > 8) {
         out += ' ' + digits.substring(8, 10);
     }
-    if (withTime && digits.length > 10) {
+    if (kind === 'datetime-local' && digits.length > 10) {
         out += ':' + digits.substring(10, 12);
     }
 
@@ -266,10 +301,20 @@ function punctuate(text: string, withTime: boolean): string {
  * year is refused rather than guessed -- "80" in a date of birth is not 2080, and nobody would notice the difference
  * until a length of service came out a century short.
  */
-function parse(text: string, withTime: boolean): string | null {
+function parse(text: string, kind: FieldKind): string | null {
     const trimmed = (text ?? '').trim();
     if (!trimmed) {
         return null;
+    }
+
+    if (kind === 'month') {
+        const monthMatch = trimmed.match(/^(\d{1,2})[\/\-. ]?(\d{4})$/);
+        if (!monthMatch) {
+            return null;
+        }
+
+        const onlyMonth = Number(monthMatch[1]);
+        return onlyMonth >= 1 && onlyMonth <= 12 ? `${monthMatch[2]}-${pad(onlyMonth)}` : null;
     }
 
     const match = trimmed.match(/^(\d{1,2})[\/\-. ]?(\d{1,2})[\/\-. ]?(\d{4})(?:[ T,]+(\d{1,2}):?(\d{2}))?$/);
@@ -288,7 +333,7 @@ function parse(text: string, withTime: boolean): string | null {
     }
 
     const iso = `${pad(year, 4)}-${pad(month)}-${pad(day)}`;
-    if (!withTime) {
+    if (kind !== 'datetime-local') {
         return iso;
     }
 

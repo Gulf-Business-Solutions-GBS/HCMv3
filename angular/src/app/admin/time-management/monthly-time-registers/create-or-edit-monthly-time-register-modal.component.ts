@@ -15,11 +15,13 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditMonthlyTimeRegisterModal',
     templateUrl: './create-or-edit-monthly-time-register-modal.component.html',
     imports: [
+        DateInputDirective,
         AppBsModalDirective,
         FormsModule,
         ValidationMessagesComponent,
@@ -43,17 +45,21 @@ export class CreateOrEditMonthlyTimeRegisterModalComponent extends AppComponentB
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         if (!monthlyTimeRegisterId) {
             this.monthlyTimeRegister.set(new CreateOrEditMonthlyTimeRegisterDto());
             this.modal().show();
         } else {
-            this._monthlyTimeRegistersService.getMonthlyTimeRegisterForEdit(monthlyTimeRegisterId).subscribe((result) => {
-                this.monthlyTimeRegister.set(result.monthlyTimeRegister);
-                this.modal().show();
-            });
+            this._monthlyTimeRegistersService
+                .getMonthlyTimeRegisterForEdit(monthlyTimeRegisterId)
+                .subscribe((result) => {
+                    this.monthlyTimeRegister.set(result.monthlyTimeRegister);
+                    this.modal().show();
+                });
         }
     }
 

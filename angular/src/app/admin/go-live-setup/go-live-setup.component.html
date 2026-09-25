@@ -256,8 +256,8 @@
                             id="gl-pay-month"
                             type="month"
                             class="form-control"
-                            [value]="payMonth()"
-                            (input)="onPayMonthChange($event)" />
+                            [ngModel]="payMonth()"
+                            (ngModelChange)="onPayMonthChange($event)" />
                         @if (monthEnd(); as end) {
                             <div class="gl-field-note">{{ l('GoLivePaysUpTo', end.toFormat('dd/MM/yyyy')) }}</div>
                         }

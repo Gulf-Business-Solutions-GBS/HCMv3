@@ -19,6 +19,7 @@ import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Self-service loan recovery exemptions: skipping one month's instalment on a loan the employee already
@@ -31,7 +32,16 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 @Component({
     templateUrl: './my-loan-exemption.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemptionDto> implements OnInit {
@@ -42,7 +52,9 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
     readonly selectedLoanId = signal<number | null>(null);
 
     /** The picked loan, so the form can show what a single exemption defers and the window it must fall in. */
-    readonly selectedLoan = computed(() => this.loans().find((loan) => loan.employeeLoanId === this.selectedLoanId()) ?? null);
+    readonly selectedLoan = computed(
+        () => this.loans().find((loan) => loan.employeeLoanId === this.selectedLoanId()) ?? null
+    );
 
     /** 'yyyy-MM' from an <input type="month">; the month is the unit an exemption is granted in. */
     form = { exemptionMonth: '', comments: '' };
@@ -95,7 +107,10 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
         // recorded and then quietly defer nothing, which is worse than being refused.
         const loan = this.selectedLoan();
 
-        if (loan && (exemptionDate.endOf('month') < loan.recoveryStartDate || exemptionDate.startOf('month') > loan.endDate)) {
+        if (
+            loan &&
+            (exemptionDate.endOf('month') < loan.recoveryStartDate || exemptionDate.startOf('month') > loan.endDate)
+        ) {
             this.message.warn(this.l('ExemptionMonthIsOutsideTheRecoveryPeriod'));
             return;
         }
