@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -22,7 +23,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditPunchNotificationLogModal',
     templateUrl: './create-or-edit-punch-notification-log-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditPunchNotificationLogModalComponent extends AppComponentBase {
     private _service = inject(PunchNotificationLogsServiceProxy);
@@ -42,11 +50,25 @@ export class CreateOrEditPunchNotificationLogModalComponent extends AppComponent
         this.active.set(true);
 
         this._employeeDutyPeriodsService
-            .getAll(new GetAllEmployeeDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllEmployeeDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.employeeDutyPeriods.set(result.items));
 
         this._emailNotificationLogsService
-            .getAll(new GetAllEmailNotificationLogsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmailNotificationLogsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.emailNotificationLogs.set(result.items));
 
         if (!id) {

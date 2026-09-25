@@ -34,6 +34,7 @@ import {
     newConstant,
     pruneDefinition,
 } from './rule-model';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Authors one rule: its header, its if/then tree, the events it is armed on, and a dry-run panel.
@@ -48,6 +49,7 @@ import {
     templateUrl: './create-or-edit-business-rule-modal.component.html',
     styleUrls: ['./create-or-edit-business-rule-modal.component.css'],
     imports: [
+        DateInputDirective,
         AppBsModalDirective,
         FormsModule,
         ValidationMessagesComponent,

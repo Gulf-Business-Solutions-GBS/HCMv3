@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -55,7 +56,16 @@ interface PersonalDataSection {
 @Component({
     templateUrl: './my-personal-data.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, WorkflowHistoryModalComponent, AttachmentsComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        WorkflowHistoryModalComponent,
+        AttachmentsComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDataChangeDto> implements OnInit {
@@ -321,22 +331,20 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
 
         this.saving.set(true);
 
-        this._service
-            .requestPersonalDataChange(input)
-            .subscribe({
-                next: async (result) => {
-                    // Proof (legacy SampleImage) is attached to the request now that it exists, before the
-                    // form closes and takes the chosen files with it.
-                    try {
-                        await this._formAttachments()?.attachPending(result.transactionId);
-                    } finally {
-                        this.saving.set(false);
-                    }
-                    this.notifySubmitted(result.submittedForApproval);
-                    this.loadCurrent();
-                },
-                error: () => this.saving.set(false),
-            });
+        this._service.requestPersonalDataChange(input).subscribe({
+            next: async (result) => {
+                // Proof (legacy SampleImage) is attached to the request now that it exists, before the
+                // form closes and takes the chosen files with it.
+                try {
+                    await this._formAttachments()?.attachPending(result.transactionId);
+                } finally {
+                    this.saving.set(false);
+                }
+                this.notifySubmitted(result.submittedForApproval);
+                this.loadCurrent();
+            },
+            error: () => this.saving.set(false),
+        });
     }
 
     toggleAttachments(row: MyPersonalDataChangeDto): void {

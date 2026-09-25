@@ -24,7 +24,7 @@
                         @for (entityAndPropertChange of entityAndPropertyChanges(); track entityAndPropertChange) {
                             <div class="timeline-item">
                                 <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                    {{ entityAndPropertChange.entityChange.changeTime.toJSDate() | date: 'shortDate' }}
+                                    {{ entityAndPropertChange.entityChange.changeTime.toJSDate() | date: 'dd/MM/yyyy' }}
                                     <br />
                                     {{ entityAndPropertChange.entityChange.changeTime.toJSDate() | date: 'shortTime' }}
                                 </div>

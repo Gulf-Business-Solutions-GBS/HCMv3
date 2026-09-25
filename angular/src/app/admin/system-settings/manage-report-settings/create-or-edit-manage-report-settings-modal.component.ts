@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ReportSettingsEditDto, ManageReportSettingsServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -13,7 +14,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditManageReportSettingsModal',
     templateUrl: './create-or-edit-manage-report-settings-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditManageReportSettingsModalComponent extends AppComponentBase {
     private _service = inject(ManageReportSettingsServiceProxy);

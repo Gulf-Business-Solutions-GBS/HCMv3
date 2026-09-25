@@ -16,11 +16,13 @@ import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.direct
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditOvertimeTypeDetailModal',
     templateUrl: './create-or-edit-overtime-type-detail-modal.component.html',
     imports: [
+        DateInputDirective,
         AppBsModalDirective,
         FormsModule,
         ValidationMessagesComponent,

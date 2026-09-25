@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,7 +35,16 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 @Component({
     templateUrl: './my-passport-withdrawal.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPassportWithdrawalDto> implements OnInit {
@@ -74,7 +84,9 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
         });
 
         this._documentService
-            .getMyDocuments(new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined }))
+            .getMyDocuments(
+                new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined })
+            )
             .subscribe({
                 next: (result) => this.myDocuments.set(result.items ?? []),
                 error: () => this.myDocuments.set([]),

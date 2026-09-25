@@ -21,11 +21,19 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditEmployeeEducationModal',
     templateUrl: './create-or-edit-employee-education-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditEmployeeEducationModalComponent extends AppComponentBase {
     private _service = inject(EmployeeEducationsServiceProxy);

@@ -28,6 +28,7 @@ import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Self-service leave: balances, my requests, and applying.
@@ -40,7 +41,16 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
     templateUrl: './my-leave.component.html',
     styleUrls: ['./my-leave.component.less'],
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyLeaveComponent extends AppComponentBase implements OnInit {

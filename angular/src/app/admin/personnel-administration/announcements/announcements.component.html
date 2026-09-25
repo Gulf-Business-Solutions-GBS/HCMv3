@@ -54,8 +54,8 @@
                                         }
                                     </td>
                                     <td>{{ item.title }}</td>
-                                    <td>{{ toDate(item.issueDate) | date: 'shortDate' }}</td>
-                                    <td>{{ toDate(item.expiryDate) | date: 'shortDate' }}</td>
+                                    <td>{{ toDate(item.issueDate) | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ toDate(item.expiryDate) | date: 'dd/MM/yyyy' }}</td>
                                     <td class="text-muted">
                                         <!-- Blank means everybody. Saying so beats an empty cell that
                                              looks like missing data. -->

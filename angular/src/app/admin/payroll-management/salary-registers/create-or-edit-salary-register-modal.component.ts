@@ -17,11 +17,19 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditSalaryRegisterModal',
     templateUrl: './create-or-edit-salary-register-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditSalaryRegisterModalComponent extends AppComponentBase {
     private _salaryRegistersService = inject(SalaryRegistersServiceProxy);

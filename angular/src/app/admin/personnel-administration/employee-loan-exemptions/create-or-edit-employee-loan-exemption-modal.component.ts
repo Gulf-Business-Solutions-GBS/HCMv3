@@ -16,11 +16,20 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditEmployeeLoanExemptionModal',
     templateUrl: './create-or-edit-employee-loan-exemption-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class CreateOrEditEmployeeLoanExemptionModalComponent extends AppComponentBase {
     private _service = inject(EmployeeLoanExemptionsServiceProxy);

@@ -128,9 +128,9 @@
                                     <td style="min-width: 160px">{{ record.baseObjectDisplayName }}</td>
                                     <td style="min-width: 120px">{{ purposeLabel(record.purpose) }}</td>
                                     <td style="min-width: 200px">
-                                        {{ record.effectiveFrom | date: 'yyyy-MM-dd' }}
+                                        {{ record.effectiveFrom | date: 'dd/MM/yyyy' }}
                                         &ndash;
-                                        {{ record.effectiveTo ? (record.effectiveTo | date: 'yyyy-MM-dd') : ('Open' | localize) }}
+                                        {{ record.effectiveTo ? (record.effectiveTo | date: 'dd/MM/yyyy') : ('Open' | localize) }}
                                     </td>
                                     <td style="min-width: 120px">
                                         @if (!record.isActive) {

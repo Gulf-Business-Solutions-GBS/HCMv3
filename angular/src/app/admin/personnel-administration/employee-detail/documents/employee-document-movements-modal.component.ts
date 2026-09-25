@@ -15,11 +15,20 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'employee-document-movements-modal',
     templateUrl: './employee-document-movements-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe, PermissionPipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ButtonBusyDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+        PermissionPipe,
+    ],
 })
 export class EmployeeDocumentMovementsModalComponent extends AppComponentBase {
     private _service = inject(EmployeeDocumentMvmtsServiceProxy);

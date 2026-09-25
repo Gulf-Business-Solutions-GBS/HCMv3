@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +31,16 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 @Component({
     templateUrl: './my-hr-service.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyHRServiceComponent extends MyRequestComponentBase<MyHRServiceRequestDto> implements OnInit {

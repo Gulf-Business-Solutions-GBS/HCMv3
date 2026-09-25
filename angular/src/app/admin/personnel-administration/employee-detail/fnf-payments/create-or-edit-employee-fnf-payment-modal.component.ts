@@ -21,11 +21,21 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { DecimalPipe } from '@angular/common';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditEmployeeFnFPaymentModal',
     templateUrl: './create-or-edit-employee-fnf-payment-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe, DecimalPipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+        DecimalPipe,
+    ],
 })
 export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBase {
     private _service = inject(EmployeeFnFPaymentsServiceProxy);

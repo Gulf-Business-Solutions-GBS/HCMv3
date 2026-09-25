@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -20,7 +21,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditManagePayrollSettingsModal',
     templateUrl: './create-or-edit-manage-payroll-settings-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditManagePayrollSettingsModalComponent extends AppComponentBase {
     private _service = inject(ManagePayrollSettingsServiceProxy);

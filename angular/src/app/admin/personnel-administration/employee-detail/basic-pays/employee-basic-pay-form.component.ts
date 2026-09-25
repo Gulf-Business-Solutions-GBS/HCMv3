@@ -13,6 +13,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * A basic pay's own fields, shared by the Create/Edit modal and the basic pay detail view.
@@ -24,7 +25,7 @@ import { DateTime } from 'luxon';
     selector: 'employeeBasicPayForm',
     templateUrl: './employee-basic-pay-form.component.html',
     viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-    imports: [FormsModule, ValidationMessagesComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [DateInputDirective, FormsModule, ValidationMessagesComponent, LocalizePipe, LuxonFormatPipe],
 })
 export class EmployeeBasicPayFormComponent extends AppComponentBase {
     private _employeeActionsService = inject(EmployeeActionsServiceProxy);

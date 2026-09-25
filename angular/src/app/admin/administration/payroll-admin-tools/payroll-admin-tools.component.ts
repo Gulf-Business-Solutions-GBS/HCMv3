@@ -21,6 +21,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Port of legacy HCM10.Web/UserControls/Administration/uscPayrollConfigPanel.ascx.
@@ -31,7 +32,15 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 @Component({
     templateUrl: './payroll-admin-tools.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, Tooltip, LocalizePipe, PermissionPipe],
+    imports: [
+        DateInputDirective,
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        Tooltip,
+        LocalizePipe,
+        PermissionPipe,
+    ],
 })
 export class PayrollAdminToolsComponent extends AppComponentBase implements OnInit {
     private _payrollAdminToolsService = inject(PayrollAdminToolsServiceProxy);

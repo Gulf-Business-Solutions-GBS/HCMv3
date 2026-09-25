@@ -15,11 +15,12 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'employee-visa-info',
     templateUrl: './employee-visa-info.component.html',
-    imports: [FormsModule, ButtonBusyDirective, LocalizePipe, PermissionPipe, BusyIfDirective],
+    imports: [DateInputDirective, FormsModule, ButtonBusyDirective, LocalizePipe, PermissionPipe, BusyIfDirective],
 })
 export class EmployeeVisaInfoComponent extends AppComponentBase {
     private _service = inject(EmployeeVisaInfosServiceProxy);

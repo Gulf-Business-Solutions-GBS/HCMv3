@@ -53,7 +53,7 @@
                     <dd>{{ genderText() }}</dd>
 
                     <dt data-help-loc="BirthDate">{{ 'BirthDate' | localize }}</dt>
-                    <dd>{{ p.birthDate ? (p.birthDate.toJSDate() | date: 'mediumDate') : '' }}</dd>
+                    <dd>{{ p.birthDate ? (p.birthDate.toJSDate() | date: 'dd/MM/yyyy') : '' }}</dd>
 
                     <dt data-help-loc="BirthPlace">{{ 'BirthPlace' | localize }}</dt>
                     <dd>{{ p.birthPlaceName }}</dd>
@@ -86,14 +86,14 @@
                 <h4 class="epi-card-title">{{ 'EmpCard_Employment' | localize }}</h4>
                 <dl class="epi-fields">
                     <dt data-help-loc="JoiningDate">{{ 'JoiningDate' | localize }}</dt>
-                    <dd>{{ p.joiningDate ? (p.joiningDate.toJSDate() | date: 'mediumDate') : '' }}</dd>
+                    <dd>{{ p.joiningDate ? (p.joiningDate.toJSDate() | date: 'dd/MM/yyyy') : '' }}</dd>
 
                     <dt data-help-loc="ProbationDays">{{ 'ProbationDays' | localize }}</dt>
                     <dd>{{ p.probationDays }}</dd>
 
                     <dt data-help-loc="ProbationEndDate">{{ 'ProbationEndDate' | localize }}</dt>
                     <dd>
-                        {{ p.probationEndDate ? (p.probationEndDate.toJSDate() | date: 'mediumDate') : '' }}
+                        {{ p.probationEndDate ? (p.probationEndDate.toJSDate() | date: 'dd/MM/yyyy') : '' }}
                     </dd>
 
                     <dt data-help-loc="RecruitmentType">{{ 'RecruitmentType' | localize }}</dt>

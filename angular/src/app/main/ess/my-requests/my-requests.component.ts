@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -44,6 +45,7 @@ import {
     templateUrl: './my-requests.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        DateInputDirective,
         CommonModule,
         FormsModule,
         SubHeaderComponent,

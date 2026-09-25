@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -36,6 +37,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
     templateUrl: './business-rules.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        DateInputDirective,
         SubHeaderComponent,
         BusyIfDirective,
         FormsModule,

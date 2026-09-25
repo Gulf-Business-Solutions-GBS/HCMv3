@@ -16,11 +16,19 @@ import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.direct
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditSocialSecurityModal',
     templateUrl: './create-or-edit-social-security-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditSocialSecurityModalComponent extends AppComponentBase {
     private _socialSecuritiesService = inject(SocialSecuritiesServiceProxy);

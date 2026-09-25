@@ -39,7 +39,7 @@
             <div class="col-12 col-md-6 col-xl-2">
                 <label class="form-label" data-help-loc="StartDate">{{ 'StartDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
                 @if (readOnly()) {
-                    <input type="date" class="form-control" [value]="value().startDate" readonly disabled />
+                    <input type="text" class="form-control" [value]="asDayMonthYear(value().startDate)" readonly disabled />
                 } @else {
                     <input type="date" class="form-control" [(ngModel)]="value().startDate" />
                 }
@@ -47,7 +47,7 @@
             <div class="col-12 col-md-6 col-xl-2">
                 <label class="form-label" data-help-loc="ExitDate">{{ 'ExitDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
                 @if (readOnly()) {
-                    <input type="date" class="form-control" [value]="value().exitDate" readonly disabled />
+                    <input type="text" class="form-control" [value]="asDayMonthYear(value().exitDate)" readonly disabled />
                 } @else {
                     <input type="date" class="form-control" [(ngModel)]="value().exitDate" />
                 }

@@ -34,7 +34,7 @@
                                             style="cursor: pointer"
                                             [class.table-active]="selectedRunId() === run.id"
                                             (click)="selectRun(run)">
-                                            <td>{{ toDate(run.startedAt) | date: 'short' }}</td>
+                                            <td>{{ toDate(run.startedAt) | date: 'dd/MM/yyyy HH:mm' }}</td>
                                             <td>{{ run.sliceCount }}</td>
                                             <td>
                                                 <span [class]="statusClass(run.status)">

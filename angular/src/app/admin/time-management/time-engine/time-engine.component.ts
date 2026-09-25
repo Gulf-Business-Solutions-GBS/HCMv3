@@ -27,6 +27,7 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { EngineRunProgressComponent } from '@app/shared/common/engine-run-progress/engine-run-progress.component';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Port of the legacy Time Engine run screen
@@ -41,6 +42,7 @@ import { EngineRunProgressComponent } from '@app/shared/common/engine-run-progre
     templateUrl: './time-engine.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        DateInputDirective,
         SubHeaderComponent,
         EngineRunProgressComponent,
         BusyIfDirective,

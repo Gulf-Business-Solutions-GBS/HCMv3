@@ -26,6 +26,7 @@ import {
     SchedulableReportParameterDto,
     EntityDto,
 } from '@shared/service-proxies/service-proxies';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Four-step Report Distribution wizard: Definition, Filter, Destination, Occurrence.
@@ -45,7 +46,7 @@ import {
 @Component({
     templateUrl: './report-schedule-wizard.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, PermissionPipe],
+    imports: [DateInputDirective, SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, PermissionPipe],
 })
 export class ReportScheduleWizardComponent extends AppComponentBase implements OnInit {
     private _service = inject(ReportSchedulesServiceProxy);

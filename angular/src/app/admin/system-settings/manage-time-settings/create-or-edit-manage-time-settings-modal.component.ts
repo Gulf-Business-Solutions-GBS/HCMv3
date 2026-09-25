@@ -1,6 +1,12 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { TimeSettingsEditDto, ManageTimeSettingsServiceProxy, ForfeitRule, RosterPlannerFrequency } from '@shared/service-proxies/service-proxies';
+import {
+    TimeSettingsEditDto,
+    ManageTimeSettingsServiceProxy,
+    ForfeitRule,
+    RosterPlannerFrequency,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
@@ -13,7 +19,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditManageTimeSettingsModal',
     templateUrl: './create-or-edit-manage-time-settings-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditManageTimeSettingsModalComponent extends AppComponentBase {
     private _service = inject(ManageTimeSettingsServiceProxy);

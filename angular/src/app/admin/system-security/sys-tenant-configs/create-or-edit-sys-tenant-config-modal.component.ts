@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -17,7 +18,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditSysTenantConfigModal',
     templateUrl: './create-or-edit-sys-tenant-config-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditSysTenantConfigModalComponent extends AppComponentBase {
     private _service = inject(SysTenantConfigsServiceProxy);

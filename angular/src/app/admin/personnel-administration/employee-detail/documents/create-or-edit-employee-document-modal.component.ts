@@ -16,11 +16,20 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditEmployeeDocumentModal',
     templateUrl: './create-or-edit-employee-document-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, AttachmentsComponent],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        AttachmentsComponent,
+    ],
 })
 export class CreateOrEditEmployeeDocumentModalComponent extends AppComponentBase {
     private _service = inject(EmployeeDocumentsServiceProxy);

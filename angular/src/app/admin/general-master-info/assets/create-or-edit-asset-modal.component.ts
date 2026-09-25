@@ -17,11 +17,13 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditAssetModal',
     templateUrl: './create-or-edit-asset-modal.component.html',
     imports: [
+        DateInputDirective,
         AppBsModalDirective,
         FormsModule,
         ValidationMessagesComponent,

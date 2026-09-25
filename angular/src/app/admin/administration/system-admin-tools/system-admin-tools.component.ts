@@ -14,6 +14,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Port of legacy HCM10.Web/UserControls/Administration/uscSystemConfigPanel.ascx.
@@ -24,7 +25,7 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 @Component({
     templateUrl: './system-admin-tools.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, PermissionPipe],
+    imports: [DateInputDirective, SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, PermissionPipe],
 })
 export class SystemAdminToolsComponent extends AppComponentBase {
     private _systemAdminToolsService = inject(SystemAdminToolsServiceProxy);

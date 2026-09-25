@@ -316,6 +316,7 @@
                             [ngClass]="{ 'has-error': !subscriptionEndDateIsValid() }">
                             <label for="SubscriptionEndDate">{{ 'SubscriptionEndDate' | localize }}</label>
                             <p-datepicker
+                                dateFormat="dd/mm/yy"
                                 inputId="SubscriptionEndDate"
                                 name="SubscriptionEndDateUtc"
                                 datePickerLuxonModifier

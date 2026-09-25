@@ -18,11 +18,19 @@ import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.direct
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditOrgUnitWageAccGroupModal',
     templateUrl: './create-or-edit-org-unit-wage-acc-group-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditOrgUnitWageAccGroupModalComponent extends AppComponentBase {
     private _orgUnitWageAccGroupsService = inject(OrgUnitWageAccGroupsServiceProxy);

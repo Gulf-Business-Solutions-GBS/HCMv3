@@ -8,6 +8,7 @@ import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.dire
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { NewsServiceProxy, CreateOrEditNewsDto } from '@shared/service-proxies/service-proxies';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Post or amend an announcement.
@@ -19,7 +20,7 @@ import { NewsServiceProxy, CreateOrEditNewsDto } from '@shared/service-proxies/s
 @Component({
     selector: 'createOrEditAnnouncementModal',
     templateUrl: './create-or-edit-announcement-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe],
+    imports: [DateInputDirective, AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditAnnouncementModalComponent extends AppComponentBase {
     private _newsService = inject(NewsServiceProxy);

@@ -20,12 +20,14 @@ import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-a
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /** Self-service document requests, with the scan attached (legacy DocumentRequest.DocAttachment). */
 @Component({
     templateUrl: './my-document.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        DateInputDirective,
         CommonModule,
         FormsModule,
         SubHeaderComponent,

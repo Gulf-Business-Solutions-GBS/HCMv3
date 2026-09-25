@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -53,7 +54,7 @@ export interface ExitPermitFormValue {
 @Component({
     selector: 'exit-permit-form',
     templateUrl: './exit-permit-form.component.html',
-    imports: [CommonModule, FormsModule, LocalizePipe],
+    imports: [DateInputDirective, CommonModule, FormsModule, LocalizePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExitPermitFormComponent extends AppComponentBase {
@@ -67,6 +68,15 @@ export class ExitPermitFormComponent extends AppComponentBase {
 
     /** Disabled while the host is saving, so a double Submit cannot raise two permits. */
     readonly saving = input(false);
+
+    /**
+     * A stored date shown the way the rest of the system shows one. Read-only, so it is plain text rather than a
+     * field, and rearranged as text rather than through a date so that no time zone can move it a day.
+     */
+    asDayMonthYear(iso: string | undefined): string {
+        const [year, month, day] = (iso ?? '').split('-');
+        return year && month && day ? `${day.substring(0, 2)}/${month}/${year}` : '';
+    }
 
     /** Save as draft: files the permit without sending it to an approver. */
     readonly saved = output<void>();

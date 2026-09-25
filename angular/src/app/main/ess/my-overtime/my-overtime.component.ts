@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +27,16 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 @Component({
     templateUrl: './my-overtime.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeRequestDto> implements OnInit {
@@ -37,7 +47,12 @@ export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeReques
 
     readonly Status = RequestStatus;
 
-    form = { overtimeTypeId: null as number | null, effectiveDate: '', overtimeHours: null as number | null, comments: '' };
+    form = {
+        overtimeTypeId: null as number | null,
+        effectiveDate: '',
+        overtimeHours: null as number | null,
+        comments: '',
+    };
 
     ngOnInit(): void {
         this._lookups.getOvertimeTypes().subscribe((result) => this.overtimeTypes.set(result ?? []));

@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -71,7 +72,16 @@ interface TravelLegForm {
 @Component({
     templateUrl: './my-travel.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> implements OnInit {
@@ -165,7 +175,10 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
         this.legs.update((legs) =>
             legs.map((leg, i) =>
                 i === legIndex
-                    ? { ...leg, costs: [...leg.costs, { expenseTypeId: null, currencyId: null, amount: null, comments: '' }] }
+                    ? {
+                          ...leg,
+                          costs: [...leg.costs, { expenseTypeId: null, currencyId: null, amount: null, comments: '' }],
+                      }
                     : leg
             )
         );
@@ -173,7 +186,9 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
 
     removeCost(legIndex: number, costIndex: number): void {
         this.legs.update((legs) =>
-            legs.map((leg, i) => (i === legIndex ? { ...leg, costs: leg.costs.filter((_, c) => c !== costIndex) } : leg))
+            legs.map((leg, i) =>
+                i === legIndex ? { ...leg, costs: leg.costs.filter((_, c) => c !== costIndex) } : leg
+            )
         );
     }
 

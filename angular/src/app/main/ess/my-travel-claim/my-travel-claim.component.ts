@@ -18,12 +18,22 @@ import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /** Self-service travel expense claims. */
 @Component({
     templateUrl: './my-travel-claim.component.html',
     animations: [appModuleAnimation()],
-    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [
+        DateInputDirective,
+        CommonModule,
+        FormsModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        WorkflowHistoryModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyTravelClaimComponent extends MyRequestComponentBase<MyTravelClaimDto> implements OnInit {

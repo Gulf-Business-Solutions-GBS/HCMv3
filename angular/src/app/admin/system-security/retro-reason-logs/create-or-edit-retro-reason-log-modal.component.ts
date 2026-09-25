@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -19,7 +20,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditRetroReasonLogModal',
     templateUrl: './create-or-edit-retro-reason-log-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditRetroReasonLogModalComponent extends AppComponentBase {
     private _service = inject(RetroReasonLogsServiceProxy);
@@ -37,7 +45,9 @@ export class CreateOrEditRetroReasonLogModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         if (!id) {

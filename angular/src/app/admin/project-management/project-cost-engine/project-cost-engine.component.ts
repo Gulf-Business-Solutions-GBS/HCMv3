@@ -24,6 +24,7 @@ import {
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 /**
  * Port of the legacy Project Cost Engine screen
@@ -43,6 +44,7 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
     templateUrl: './project-cost-engine.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        DateInputDirective,
         SubHeaderComponent,
         BusyIfDirective,
         FormsModule,

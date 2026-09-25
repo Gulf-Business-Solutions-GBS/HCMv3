@@ -18,11 +18,13 @@ import { CvQualificationsComponent } from './qualifications/cv-qualifications.co
 import { CvWorkExpsComponent } from './work-exps/cv-work-exps.component';
 import { CvSkillsComponent } from './skills/cv-skills.component';
 import { CvLanguagesComponent } from './languages/cv-languages.component';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'applicant-cv',
     templateUrl: './applicant-cv.component.html',
     imports: [
+        DateInputDirective,
         FormsModule,
         ButtonBusyDirective,
         LocalizePipe,

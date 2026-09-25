@@ -1,6 +1,10 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditEmailNotificationLogDto, EmailNotificationLogsServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditEmailNotificationLogDto,
+    EmailNotificationLogsServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
@@ -13,7 +17,14 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditEmailNotificationLogModal',
     templateUrl: './create-or-edit-email-notification-log-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditEmailNotificationLogModalComponent extends AppComponentBase {
     private _service = inject(EmailNotificationLogsServiceProxy);

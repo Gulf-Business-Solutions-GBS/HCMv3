@@ -225,3 +225,115 @@ html[dir="rtl"] {
         overflow: hidden;
     }
 }
+
+/*
+ * The field you are typing in, made obvious.
+ *
+ * The theme means to do this and cannot: its own rule reads
+ *   box-shadow: false, 0 0 0 .25rem rgba(27,132,255,.25)
+ * and the stray "false" makes the whole declaration invalid, so every browser throws it away -- nine rules,
+ * including .form-control:focus and .form-select:focus. The border it also sets is grey, all but invisible against
+ * the field's own border. The result was a cursor and nothing else.
+ *
+ * Written against the theme's own colour variables, so it follows light and dark mode and any re-skinning.
+ */
+.form-control:focus:focus,
+.form-select:focus:focus,
+textarea.form-control:focus:focus,
+.input-group:focus-within .form-control,
+.input-group:focus-within .form-select {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * PrimeNG's own inputs -- dropdowns, date pickers, autocompletes -- so a form does not highlight in two styles.
+ *
+ * Written ":enabled:focus:focus" rather than ":focus". PrimeNG styles a focused field from ".p-inputtext:enabled:focus",
+ * which counts for more than a plain ":focus" and so won every time: the header search box took the library's own
+ * colour instead of the application's and, on the screens that had already loaded, went on doing it. Repeating the
+ * pseudo-class costs nothing and outranks it. A disabled field is left alone -- it cannot be typed in.
+ */
+.p-inputtext:enabled:focus:focus,
+.p-select:enabled:focus:focus,
+.p-select.p-focus:not(.p-disabled),
+.p-datepicker-input:enabled:focus:focus,
+.p-autocomplete-input:enabled:focus:focus,
+.p-multiselect.p-focus:not(.p-disabled),
+.p-inputnumber-input:enabled:focus:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+    outline: none;
+}
+
+/* A checkbox or radio gets the same ring, so tabbing through a form never loses where you are. */
+.form-check-input:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * PrimeNG's own colours, pointed at the application's blue.
+ *
+ * PrimeNG v21 styles its inputs from design tokens, and its stock palette is emerald -- which is why the header
+ * search box, its dropdowns and its date pickers ringed GREEN while everything else in the app rings blue. The app
+ * never chose green; it is simply the library default nobody overrode.
+ */
+:root:root {
+    --p-primary-50: #eff6ff;
+    --p-primary-100: #dbeafe;
+    --p-primary-200: #bfdbfe;
+    --p-primary-300: #93c5fd;
+    --p-primary-400: #60a5fa;
+    --p-primary-500: #1b84ff;
+    --p-primary-600: #006ae6;
+    --p-primary-700: #0055b8;
+    --p-primary-800: #00408a;
+    --p-primary-900: #002b5c;
+    --p-primary-950: #001a38;
+
+    /* The ring PrimeNG puts round a focused field, in the same blue as everything else. */
+    --p-form-field-focus-ring-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+    --p-form-field-focus-border-color: #1b84ff;
+}
+
+/*
+ * Dropdowns, date pickers and tick boxes highlight like text fields do.
+ *
+ * A dropdown is a wrapper element with the real control inside it, so ":focus" on the wrapper never matches and
+ * tabbing onto one showed nothing at all -- the cursor was somewhere, but nowhere visible. ":focus-within" is what
+ * catches those.
+ *
+ * Only controls that have NO input of their own are ringed here. A search box, a date picker and a number field all
+ * wrap a real input, and ringing the wrapper as well drew a second box around the first -- which is exactly what the
+ * header search looked like.
+ */
+.p-select:focus-within,
+.p-multiselect:focus-within,
+.p-treeselect:focus-within,
+.p-cascadeselect:focus-within {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/*
+ * A tick box or radio gets the ring too, so tabbing through a form never loses where you are.
+ *
+ * ":focus:focus" is not a typo. The theme says "box-shadow: none" for a focused tick box, and its stylesheet is
+ * fetched at runtime -- after this one -- so an equally specific selector loses to it. Repeating the pseudo-class
+ * wins the argument without !important.
+ */
+.form-check-input:focus:focus,
+.form-check-input:focus-visible,
+.p-checkbox:focus-within .p-checkbox-box,
+.p-radiobutton:focus-within .p-radiobutton-box {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}
+
+/* Native selects rendered without the Bootstrap class still count as fields. */
+select:focus,
+select.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
+}

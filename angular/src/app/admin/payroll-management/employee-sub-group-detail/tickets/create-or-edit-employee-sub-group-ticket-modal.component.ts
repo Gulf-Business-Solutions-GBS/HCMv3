@@ -17,11 +17,12 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
 @Component({
     selector: 'createOrEditEmployeeSubGroupTicketModal',
     templateUrl: './create-or-edit-employee-sub-group-ticket-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe],
+    imports: [DateInputDirective, AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditEmployeeSubGroupTicketModalComponent extends AppComponentBase {
     private _service = inject(EmployeeSubGroupTicketsServiceProxy);
