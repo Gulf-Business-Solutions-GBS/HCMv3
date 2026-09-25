@@ -22,6 +22,30 @@
                         {{ 'YouWereAskedForFeedbackNotApproval' | localize }}
                     </div>
 
+                    @if (selectedPeople().length) {
+                        <!-- Above the list, because the list scrolls and this must not: with several hundred
+                             names a tick two hundred rows up cannot be seen, and the only way to find out
+                             who was selected was to send it. -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{{ 'Selected' | localize }} ({{ selectedPeople().length }})</label>
+
+                            <div class="ess-feedback__chips">
+                                @for (person of selectedPeople(); track person.employeeId) {
+                                    <span class="ess-feedback__chip">
+                                        {{ displayName(person) }}
+                                        <button
+                                            type="button"
+                                            class="ess-feedback__chip-remove"
+                                            [attr.aria-label]="'RemoveFromSelection' | localize"
+                                            (click)="remove(person)">
+                                            &times;
+                                        </button>
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    }
+
                     <div class="mb-4">
                         <label class="form-label fw-bold">{{ 'WhoShouldLookAtThis' | localize }}</label>
 
@@ -60,6 +84,10 @@
 
                                     @if (candidate.alreadyAsked) {
                                         <span class="badge bg-light text-muted">{{ 'AlreadyAsked' | localize }}</span>
+                                    } @else if (candidate.isAlreadyApprover) {
+                                        <!-- Flagged, not disabled. Asking an approver is redundant often
+                                             enough to warn about and useful often enough to allow. -->
+                                        <span class="badge bg-light-warning text-warning">{{ 'AlreadyAnApprover' | localize }}</span>
                                     }
                                 </label>
                             } @empty {

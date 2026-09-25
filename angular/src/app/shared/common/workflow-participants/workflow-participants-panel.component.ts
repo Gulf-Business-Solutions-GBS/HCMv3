@@ -245,8 +245,11 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
      * already says.</p>
      */
     approverStatusLabel(entry: WorkflowApproverEntryDto): string {
+        // The creator step gets a badge of its own rather than an empty column. Submitting is the act that
+        // started the chain, and a blank where every other row has a word reads as a step that has not
+        // happened yet -- which is the opposite of what it means.
         if (entry.origin === WorkflowApproverOrigin.CreatorStep) {
-            return '';
+            return this.l('Submitted');
         }
 
         if (entry.isApproved) {
@@ -266,7 +269,9 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
 
     /** Colour follows meaning, from the theme palette so it holds up in dark mode and in all 13 themes. */
     approverStatusClass(entry: WorkflowApproverEntryDto): string {
-        if (entry.isApproved) {
+        // Same green as Approved: both are things that have happened and need nothing further, and giving
+        // them different colours would imply a difference in state that does not exist.
+        if (entry.isApproved || entry.origin === WorkflowApproverOrigin.CreatorStep) {
             return 'wf-parts__pill--approved';
         }
 

@@ -260,4 +260,4 @@
          fields being decided on, which is what the user asked for. -->
 </div>
 
-<essRequestDetailModal #detail (decided)="onDecided($event)" />
+<essRequestDetailModal #detail (decided)="onDecided($event)" (feedbackSubmitted)="reloadFromServer()" />

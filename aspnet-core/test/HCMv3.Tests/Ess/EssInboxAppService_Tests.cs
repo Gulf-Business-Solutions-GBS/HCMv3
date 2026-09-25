@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
@@ -65,6 +66,11 @@ public class EssInboxAppService_Tests : AppTestBase
                 JoiningDate = new DateTime(2020, 1, 1),
                 ProbationEndDate = new DateTime(2020, 4, 1),
                 UserId = userId,
+
+                // Active, explicitly. The column defaults to Inactive, which made every employee this
+                // helper built invisible to any query that filters on status -- a trap for the next test
+                // that touches one, and the reason the feedback-candidates test could find nobody.
+                Status = EmployeeStatus.Active,
                 NationalityId = nationality.Id
             }).Entity;
         });
@@ -567,5 +573,247 @@ public class EssInboxAppService_Tests : AppTestBase
         // what counts as pending.
         badge.ShouldBe(listed);
         badge.ShouldBe(2);
+    }
+
+    // ---------------------------------------------------------------- get feedback
+
+    /// <summary>
+    /// THE property of this feature, and the one everything else depends on: asking moves nothing.
+    ///
+    /// <para>
+    /// The approver who asks is still the approver, the request is still on its step, and its status has
+    /// not changed. If any of that stopped being true, "get feedback" would have quietly become a
+    /// delegation -- which is a different feature with different consequences for who is accountable.
+    /// </para>
+    /// </summary>
+    [Fact]
+    public async Task Asking_For_Feedback_Should_Not_Move_The_Request()
+    {
+        var meId = CreateCurrentUserEmployee("FBK100ME");
+        var requesterId = CreateEmployee("FBK100REQ");
+        var colleagueId = CreateEmployee("FBK100COL");
+        var requestId = CreatePendingRequest(requesterId, meId);
+
+        await _inbox.RequestFeedback(new RequestFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeIds = new List<int> { colleagueId },
+            Note = "Does this date look right to you?"
+        });
+
+        var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == requestId));
+
+        request.WorkflowStep.ShouldBe(1);
+        request.RequestStatus.ShouldBe(RequestStatus.Open);
+
+        // And it is still sitting with the person who asked.
+        var stillMine = await _inbox.GetMyInbox(Query());
+        stillMine.Items.ShouldContain(i => i.Id == requestId && i.Kind == EssInboxItemKind.Approval);
+    }
+
+    /// <summary>
+    /// An unanswered ask must not be able to hold a request up. The approver can decide at any moment, and
+    /// nobody has to chase the colleague first.
+    /// </summary>
+    [Fact]
+    public async Task An_Unanswered_Ask_Should_Not_Block_The_Approval()
+    {
+        var meId = CreateCurrentUserEmployee("FBK200ME");
+        var requesterId = CreateEmployee("FBK200REQ");
+        var colleagueId = CreateEmployee("FBK200COL");
+        var requestId = CreatePendingRequest(requesterId, meId);
+        ConfigureLeaveChain();
+
+        await _inbox.RequestFeedback(new RequestFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeIds = new List<int> { colleagueId }
+        });
+
+        // Nobody has replied. Approve anyway.
+        await _inbox.Approve(new ApproveRequestInput { WorkflowRequestId = requestId, Comment = "fine" });
+
+        var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == requestId));
+        request.RequestStatus.ShouldBe(RequestStatus.Approved);
+    }
+
+    /// <summary>
+    /// Only the approver the request is waiting on may pull colleagues into it. Being able to READ a
+    /// request is not the same entitlement -- the requester can read their own.
+    /// </summary>
+    [Fact]
+    public async Task Someone_Who_Is_Not_The_Current_Approver_Should_Not_Be_Able_To_Ask()
+    {
+        var meId = CreateCurrentUserEmployee("FBK300ME");
+        var requesterId = CreateEmployee("FBK300REQ");
+        var otherApproverId = CreateEmployee("FBK300OTHER");
+        var colleagueId = CreateEmployee("FBK300COL");
+
+        // Waiting on somebody else entirely.
+        var requestId = CreatePendingRequest(requesterId, otherApproverId);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _inbox.RequestFeedback(new RequestFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeIds = new List<int> { colleagueId }
+        }));
+    }
+
+    /// <summary>Asking the requester what they think of their own request is not a thing anyone means.</summary>
+    [Fact]
+    public async Task The_Requester_Should_Not_Be_Askable_On_Their_Own_Request()
+    {
+        var meId = CreateCurrentUserEmployee("FBK400ME");
+        var requesterId = CreateEmployee("FBK400REQ");
+        var requestId = CreatePendingRequest(requesterId, meId);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _inbox.RequestFeedback(new RequestFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeIds = new List<int> { requesterId }
+        }));
+    }
+
+    /// <summary>
+    /// Answering closes the ask: it leaves the answerer's list, the words land in the conversation everyone
+    /// reads, and the log records that somebody was asked and replied.
+    ///
+    /// <para>
+    /// The log entry is Remarked and not Approved on purpose. A feedback entry counted as an approval would
+    /// make a report say a request was approved by somebody who decided nothing.
+    /// </para>
+    /// </summary>
+    [Fact]
+    public async Task Answering_Should_Close_The_Ask_And_Be_Recorded()
+    {
+        var approverId = CreateEmployee("FBK500APR");
+        var requesterId = CreateEmployee("FBK500REQ");
+        var meId = CreateCurrentUserEmployee("FBK500ME");
+        var requestId = CreatePendingRequest(requesterId, approverId);
+
+        // Asked directly, since the asking path needs the asker to be the current approver and this test
+        // is about the answering half.
+        UsingDbContext(context => context.Set<WorkflowRemark>().Add(new WorkflowRemark
+        {
+            TenantId = TenantId,
+            WorkflowRequestId = requestId,
+            CCReceiverId = meId,
+            RequestedById = approverId,
+            WorkflowStep = 1
+        }));
+
+        var before = await _inbox.GetMyInbox(Query());
+        before.Items.ShouldContain(i => i.Id == requestId && i.Kind == EssInboxItemKind.FeedbackRequest);
+
+        await _inbox.SubmitFeedback(new SubmitFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            Comment = "The dates are consistent with the roster."
+        });
+
+        // Gone from the list: nothing is expected of them any more.
+        var after = await _inbox.GetMyInbox(Query());
+        after.Items.ShouldNotContain(i => i.Id == requestId && i.Kind == EssInboxItemKind.FeedbackRequest);
+
+        var ask = UsingDbContext(c => c.Set<WorkflowRemark>().Single(r => r.WorkflowRequestId == requestId));
+        ask.RespondedAt.ShouldNotBeNull();
+
+        var log = UsingDbContext(c => c.Set<RequestLog>()
+            .Where(l => l.WorkflowRequestId == requestId && l.ActionById == meId)
+            .ToList());
+
+        log.ShouldContain(l => l.ActionType == RequestActionType.Remarked);
+        log.ShouldNotContain(l => l.ActionType == RequestActionType.Approved);
+    }
+
+    /// <summary>A settled ask cannot be answered twice -- the second submission has nothing to close.</summary>
+    [Fact]
+    public async Task Answering_Twice_Should_Be_Refused()
+    {
+        var approverId = CreateEmployee("FBK600APR");
+        var requesterId = CreateEmployee("FBK600REQ");
+        var meId = CreateCurrentUserEmployee("FBK600ME");
+        var requestId = CreatePendingRequest(requesterId, approverId);
+
+        UsingDbContext(context => context.Set<WorkflowRemark>().Add(new WorkflowRemark
+        {
+            TenantId = TenantId,
+            WorkflowRequestId = requestId,
+            CCReceiverId = meId,
+            RequestedById = approverId,
+            WorkflowStep = 1
+        }));
+
+        await _inbox.SubmitFeedback(new SubmitFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            Comment = "First and only answer."
+        });
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _inbox.SubmitFeedback(new SubmitFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            Comment = "Second answer."
+        }));
+    }
+
+    /// <summary>
+    /// Somebody who was never asked cannot answer. Without this, anyone who could see a request could post
+    /// into its conversation through this path and have it recorded as solicited feedback.
+    /// </summary>
+    [Fact]
+    public async Task Answering_Without_Being_Asked_Should_Be_Refused()
+    {
+        var approverId = CreateEmployee("FBK700APR");
+        var requesterId = CreateEmployee("FBK700REQ");
+        CreateCurrentUserEmployee("FBK700ME");
+        var requestId = CreatePendingRequest(requesterId, approverId);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _inbox.SubmitFeedback(new SubmitFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            Comment = "Nobody asked me."
+        }));
+    }
+
+    /// <summary>
+    /// The picker flags people rather than hiding them: already asked, and already in the approval chain.
+    /// The requester is the one genuine exclusion.
+    /// </summary>
+    [Fact]
+    public async Task Candidates_Should_Flag_Existing_Approvers_And_Exclude_The_Requester()
+    {
+        var meId = CreateCurrentUserEmployee("FBK800ME");
+        var requesterId = CreateEmployee("FBK800REQ");
+        var colleagueId = CreateEmployee("FBK800COL");
+        var requestId = CreatePendingRequest(requesterId, meId);
+
+        var candidates = await _inbox.GetFeedbackCandidates(new GetFeedbackCandidatesInput
+        {
+            WorkflowRequestId = requestId
+        });
+
+        // The requester is not on the list at all.
+        candidates.ShouldNotContain(c => c.EmployeeId == requesterId);
+
+        // Nor is the person doing the asking.
+        candidates.ShouldNotContain(c => c.EmployeeId == meId);
+
+        var colleague = candidates.Single(c => c.EmployeeId == colleagueId);
+        colleague.AlreadyAsked.ShouldBeFalse();
+        colleague.IsAlreadyApprover.ShouldBeFalse();
+
+        await _inbox.RequestFeedback(new RequestFeedbackInput
+        {
+            WorkflowRequestId = requestId,
+            EmployeeIds = new List<int> { colleagueId }
+        });
+
+        var afterAsking = await _inbox.GetFeedbackCandidates(new GetFeedbackCandidatesInput
+        {
+            WorkflowRequestId = requestId
+        });
+
+        afterAsking.Single(c => c.EmployeeId == colleagueId).AlreadyAsked.ShouldBeTrue();
     }
 }

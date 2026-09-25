@@ -218692,6 +218692,7 @@ export class FeedbackCandidateDto implements IFeedbackCandidateDto {
     jobTitleAr!: string | undefined;
     photoUrl!: string | undefined;
     alreadyAsked!: boolean;
+    isAlreadyApprover!: boolean;
 
     constructor(data?: IFeedbackCandidateDto) {
         if (data) {
@@ -218712,6 +218713,7 @@ export class FeedbackCandidateDto implements IFeedbackCandidateDto {
             this.jobTitleAr = _data["jobTitleAr"];
             this.photoUrl = _data["photoUrl"];
             this.alreadyAsked = _data["alreadyAsked"];
+            this.isAlreadyApprover = _data["isAlreadyApprover"];
         }
     }
 
@@ -218732,6 +218734,7 @@ export class FeedbackCandidateDto implements IFeedbackCandidateDto {
         data["jobTitleAr"] = this.jobTitleAr;
         data["photoUrl"] = this.photoUrl;
         data["alreadyAsked"] = this.alreadyAsked;
+        data["isAlreadyApprover"] = this.isAlreadyApprover;
         return data;
     }
 }
@@ -218745,6 +218748,7 @@ export interface IFeedbackCandidateDto {
     jobTitleAr: string | undefined;
     photoUrl: string | undefined;
     alreadyAsked: boolean;
+    isAlreadyApprover: boolean;
 }
 
 export class FeedbackRequestDto implements IFeedbackRequestDto {

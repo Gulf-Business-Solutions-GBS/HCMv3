@@ -6776,11 +6776,11 @@
     <text name="RequestActionType_SentBack">تمت الإعادة</text>
     <text name="RequestActionType_Closed">تم الإغلاق</text>
     <text name="RequestActionType_Remarked">تمت الملاحظة</text>
-    <text name="WorkflowPlatform_Core">النظام الإداري</text>
+    <text name="WorkflowPlatform_Core">النظام</text>
     <text name="WorkflowPlatform_ESS">الويب</text>
     <text name="WorkflowPlatform_Mobile">الهاتف المحمول</text>
     <text name="Conversation_View">المحادثة</text>
-    <text name="LogView">السجل</text>
+    <text name="LogView">سجل الطلب</text>
     <text name="GetFeedback">طلب رأي</text>
     <text name="SubmitFeedback">إرسال الرأي</text>
     <text name="AskedForMyFeedback">مطلوب رأيي</text>
@@ -6802,5 +6802,9 @@
     <text name="NoFeedbackRequested">لم يُطلب رأي أحد</text>
     <text name="Responded">تم الرد</text>
     <text name="AwaitingResponse">بانتظار الرد</text>
+    <text name="Selected">المحددون</text>
+    <text name="AlreadyAnApprover">معتمد بالفعل</text>
+    <text name="AlreadyInApprovalCycleConfirm">{0} ضمن دورة الاعتماد لهذا الطلب بالفعل. هل ما زلت تريد طلب رأيه؟</text>
+    <text name="RemoveFromSelection">إزالة</text>
   </texts>
 </localizationDictionary>

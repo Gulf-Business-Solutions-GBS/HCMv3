@@ -6938,11 +6938,11 @@
     <text name="RequestActionType_SentBack">Sent back</text>
     <text name="RequestActionType_Closed">Closed</text>
     <text name="RequestActionType_Remarked">Remarked</text>
-    <text name="WorkflowPlatform_Core">Back office</text>
+    <text name="WorkflowPlatform_Core">System</text>
     <text name="WorkflowPlatform_ESS">Web</text>
     <text name="WorkflowPlatform_Mobile">Mobile</text>
     <text name="Conversation_View">Conversation</text>
-    <text name="LogView">Log</text>
+    <text name="LogView">Request Log</text>
     <text name="GetFeedback">Get feedback</text>
     <text name="SubmitFeedback">Submit feedback</text>
     <text name="AskedForMyFeedback">Asked for my feedback</text>
@@ -6964,5 +6964,9 @@
     <text name="NoFeedbackRequested">Nobody has been asked for feedback</text>
     <text name="Responded">Responded</text>
     <text name="AwaitingResponse">Awaiting response</text>
+    <text name="Selected">Selected</text>
+    <text name="AlreadyAnApprover">Already an approver</text>
+    <text name="AlreadyInApprovalCycleConfirm">{0} is already part of the approval cycle for this request. Do you still want to ask for their feedback?</text>
+    <text name="RemoveFromSelection">Remove</text>
   </texts>
 </localizationDictionary>

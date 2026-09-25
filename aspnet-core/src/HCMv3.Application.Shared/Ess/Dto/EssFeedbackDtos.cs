@@ -78,6 +78,18 @@ public class FeedbackCandidateDto
     /// letting the approver ask twice and wonder why nothing happened.
     /// </summary>
     public bool AlreadyAsked { get; set; }
+
+    /// <summary>
+    /// True when this person is already an approver on this request -- now or at an earlier step.
+    ///
+    /// <para>
+    /// Asking them is usually pointless: they can read the request and say what they think through the
+    /// ordinary approval route, and on a step where any one approval is enough they may simply approve it.
+    /// Not forbidden, though, because a later approver genuinely may want an earlier one's view before
+    /// deciding -- so the screen warns and lets the approver go ahead rather than hiding the name.
+    /// </para>
+    /// </summary>
+    public bool IsAlreadyApprover { get; set; }
 }
 
 /// <summary>Who has been asked on a request, and whether they have answered.</summary>

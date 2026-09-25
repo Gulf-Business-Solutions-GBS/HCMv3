@@ -75,6 +75,19 @@ export class EssGetFeedbackModalComponent extends AppComponentBase {
 
     readonly selectedCount = computed(() => this.selected().size);
 
+    /**
+     * The chosen colleagues, in full.
+     *
+     * <p>Shown above the list because the list scrolls and the choice does not: with several hundred names
+     * a ticked box two hundred rows up is invisible, and the only way to find out who was selected was to
+     * send it. Each chip removes itself, so a mis-click is undone where it is seen.</p>
+     */
+    readonly selectedPeople = computed(() => {
+        const ids = this.selected();
+
+        return this.candidates().filter((c) => c.employeeId && ids.has(c.employeeId));
+    });
+
     show(workflowRequestId: number): void {
         this.workflowRequestId = workflowRequestId;
         this.active.set(true);
@@ -111,14 +124,52 @@ export class EssGetFeedbackModalComponent extends AppComponentBase {
             return;
         }
 
-        // A new Set each time: mutating the existing one in place would not change the signal's reference,
-        // so nothing downstream would recompute.
+        // Deselecting never needs a warning -- it takes somebody out of the ask, which cannot surprise
+        // anyone. Only adding does.
+        if (this.selected().has(candidate.employeeId)) {
+            this.setSelected(candidate.employeeId, false);
+            return;
+        }
+
+        // Somebody already in the approval chain can read the request and say their piece through the
+        // ordinary route, so asking them is usually redundant -- but not always: a later approver may
+        // genuinely want an earlier one's view first. Asked rather than forbidden, and asked at the moment
+        // of choosing rather than at Send, where it would be too late to tell which name caused it.
+        if (candidate.isAlreadyApprover) {
+            this.message.confirm(
+                this.l('AlreadyInApprovalCycleConfirm', this.displayName(candidate)),
+                this.l('GetFeedback'),
+                (confirmed: boolean) => {
+                    if (confirmed) {
+                        this.setSelected(candidate.employeeId!, true);
+                    }
+                }
+            );
+
+            return;
+        }
+
+        this.setSelected(candidate.employeeId, true);
+    }
+
+    /** Removes one chip. The same path as unticking, so the two cannot drift apart. */
+    remove(candidate: FeedbackCandidateDto): void {
+        if (candidate.employeeId) {
+            this.setSelected(candidate.employeeId, false);
+        }
+    }
+
+    /**
+     * A new Set each time: mutating the existing one in place would not change the signal's reference, so
+     * nothing downstream would recompute and the chips would not appear.
+     */
+    private setSelected(employeeId: number, selected: boolean): void {
         const next = new Set(this.selected());
 
-        if (next.has(candidate.employeeId)) {
-            next.delete(candidate.employeeId);
+        if (selected) {
+            next.add(employeeId);
         } else {
-            next.add(candidate.employeeId);
+            next.delete(employeeId);
         }
 
         this.selected.set(next);

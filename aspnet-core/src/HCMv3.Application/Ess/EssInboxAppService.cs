@@ -29,6 +29,8 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 {
     private readonly IRepository<WorkFlowApprover> _approverRepository;
     private readonly IRepository<WorkflowRemark> _feedbackRepository;
+    private readonly IRepository<RequestLog> _requestLogRepository;
+    private readonly IWorkflowPlatformProvider _platformProvider;
     private readonly IWorkflowActivityAppService _activityAppService;
     private readonly IRepository<WorkflowRequest> _requestRepository;
     private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
@@ -42,6 +44,8 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
     public EssInboxAppService(
         IRepository<WorkFlowApprover> approverRepository,
         IRepository<WorkflowRemark> feedbackRepository,
+        IRepository<RequestLog> requestLogRepository,
+        IWorkflowPlatformProvider platformProvider,
         IWorkflowActivityAppService activityAppService,
         IRepository<WorkflowRequest> requestRepository,
         IRepository<WorkflowTransactionType> transactionTypeRepository,
@@ -54,6 +58,8 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
     {
         _approverRepository = approverRepository;
         _feedbackRepository = feedbackRepository;
+        _requestLogRepository = requestLogRepository;
+        _platformProvider = platformProvider;
         _activityAppService = activityAppService;
         _requestRepository = requestRepository;
         _transactionTypeRepository = transactionTypeRepository;
@@ -331,6 +337,25 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 
         ask.RespondedAt = Clock.Now;
         await _feedbackRepository.UpdateAsync(ask);
+
+        // And into the request log, which is the durable account of what was done to this request. The
+        // conversation carries the words; the log carries the fact that somebody was asked and answered,
+        // with a step and a timestamp, in the one place a report reads.
+        await _requestLogRepository.InsertAsync(new RequestLog
+        {
+            TenantId = AbpSession.GetTenantId(),
+            WorkflowRequestId = input.WorkflowRequestId,
+            ActionById = employeeId,
+            RequestActionComment = input.Comment,
+            ActionDateTime = Clock.Now,
+
+            // Remarked, not Approved: this person decided nothing. The type is what stops a feedback entry
+            // being counted as an approval by anything reading the log.
+            ActionType = RequestActionType.Remarked,
+            WorkflowStep = ask.WorkflowStep,
+            ActionDays = 0,
+            Platform = _platformProvider.Current
+        });
     }
 
     [HttpPost]
@@ -366,9 +391,17 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
             .OrderBy(e => e.NameEn)
             .ToListAsync();
 
+        // Anyone with an approver row on this request, at any step. Not just the current one: an earlier
+        // approver has already had their say and a later one has it coming, and both are worth flagging.
+        var approvers = await _approverRepository.GetAll()
+            .Where(a => a.WorkflowRequestId == request.Id && a.ApproverId.HasValue)
+            .Select(a => a.ApproverId.Value)
+            .ToListAsync();
+
         foreach (var candidate in candidates)
         {
             candidate.AlreadyAsked = asked.Contains(candidate.EmployeeId);
+            candidate.IsAlreadyApprover = approvers.Contains(candidate.EmployeeId);
         }
 
         return candidates;

@@ -153,6 +153,15 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
     /** Raised when the approver decides. The host owns the call, because it also owns the list to refresh. */
     readonly decided = output<EssRequestDecision>();
 
+    /**
+     * Raised once feedback has been submitted, so the host can re-ask the server.
+     *
+     * <p>Without this the dialog closed on a list that still held the row: the ask was settled on the
+     * server and the screen went on showing it as outstanding, which reads as the submission not having
+     * worked. The host owns the list, so the host has to be told.</p>
+     */
+    readonly feedbackSubmitted = output<void>();
+
     readonly active = signal(false);
     readonly config = signal<EssRequestDetailConfig | undefined>(undefined);
     readonly detail = signal<WorkflowRequestDetailDto | undefined>(undefined);
@@ -467,6 +476,7 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
             .subscribe(() => {
                 this.notify.success(this.l('FeedbackSubmitted'));
                 this.feedbackComment = '';
+                this.feedbackSubmitted.emit();
                 this.close();
             });
     }
