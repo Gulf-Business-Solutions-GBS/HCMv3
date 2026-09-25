@@ -88,6 +88,18 @@ export class EssGetFeedbackModalComponent extends AppComponentBase {
         return this.candidates().filter((c) => c.employeeId && ids.has(c.employeeId));
     });
 
+    /**
+     * The people already asked on this request, shown the same way as the ones being chosen.
+     *
+     * <p>They are flagged in the list too, but the list is several hundred names long and scrolls: finding
+     * out who had already been asked meant hunting for greyed rows. As chips they are simply readable,
+     * which is the question an approver opening this dialog a second time actually has.</p>
+     *
+     * <p>Not removable. Un-asking somebody is not a thing -- the request has already reached them -- so a
+     * remove button here would promise something the feature does not do.</p>
+     */
+    readonly askedPeople = computed(() => this.candidates().filter((c) => c.alreadyAsked));
+
     show(workflowRequestId: number): void {
         this.workflowRequestId = workflowRequestId;
         this.active.set(true);

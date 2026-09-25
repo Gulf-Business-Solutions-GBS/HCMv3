@@ -227,9 +227,13 @@
             color: var(--bs-warning);
         }
 
+        // Tinted red, not grey. Grey read as "nothing to see here" next to a green Approved, when it is
+        // in fact the only row on the panel that somebody still has to act on. Kept as a tint rather than
+        // a solid fill for the reason above -- it must not out-shout the Approve button -- and it is a
+        // softer red than Rejected, which is an outcome rather than a thing still waiting.
         &--pending {
-            background: var(--bs-secondary-bg, var(--bs-gray-200));
-            color: var(--bs-secondary-color, var(--bs-gray-600));
+            background: rgba(var(--bs-danger-rgb), 0.10);
+            color: var(--bs-danger);
         }
     }
 

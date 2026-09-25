@@ -80,3 +80,11 @@
         opacity: 1;
     }
 }
+
+// Already asked: the same chip, in a quieter tint. These are settled rather than pending a Send, and they
+// carry no remove button because un-asking somebody is not something the feature can do -- the request has
+// already reached them.
+.ess-feedback__chip--asked {
+    background: var(--bs-secondary-bg, var(--bs-gray-200));
+    color: var(--bs-secondary-color, var(--bs-gray-600));
+}

@@ -22,6 +22,23 @@
                         {{ 'YouWereAskedForFeedbackNotApproval' | localize }}
                     </div>
 
+                    @if (askedPeople().length) {
+                        <!-- Who has already been asked, at a glance. The same shape as the selection below
+                             because it answers the same question -- who is on this request -- and a
+                             different tint because these are done rather than pending a Send. -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{{ 'AlreadyAsked' | localize }} ({{ askedPeople().length }})</label>
+
+                            <div class="ess-feedback__chips">
+                                @for (person of askedPeople(); track person.employeeId) {
+                                    <span class="ess-feedback__chip ess-feedback__chip--asked">
+                                        {{ displayName(person) }}
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    }
+
                     @if (selectedPeople().length) {
                         <!-- Above the list, because the list scrolls and this must not: with several hundred
                              names a tick two hundred rows up cannot be seen, and the only way to find out
