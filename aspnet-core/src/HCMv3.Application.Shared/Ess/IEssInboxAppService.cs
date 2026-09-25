@@ -64,6 +64,17 @@ public interface IEssInboxAppService : IApplicationService
     /// </summary>
     Task<List<FeedbackCandidateDto>> GetFeedbackCandidates(GetFeedbackCandidatesInput input);
 
+    /// <summary>
+    /// Withdraws a feedback request nobody has answered yet -- asked the wrong person, or no longer needs
+    /// their view.
+    ///
+    /// <para>
+    /// Refused once they have answered. Their opinion is already in the conversation by then, and removing
+    /// the ask would leave a comment on the request that nothing explains -- worse than the ask itself.
+    /// </para>
+    /// </summary>
+    Task CancelFeedbackRequest(CancelFeedbackInput input);
+
     /// <summary>Who has been asked on a request, and whether they have answered.</summary>
     Task<List<FeedbackRequestDto>> GetFeedbackRequests(GetFeedbackCandidatesInput input);
 }

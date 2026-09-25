@@ -61931,6 +61931,58 @@ export class EssInboxServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    cancelFeedbackRequest(body?: CancelFeedbackInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/CancelFeedbackRequest";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelFeedbackRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelFeedbackRequest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelFeedbackRequest(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     getFeedbackRequests(body?: GetFeedbackCandidatesInput | undefined): Observable<FeedbackRequestDto[]> {
         let url_ = this.baseUrl + "/api/services/app/EssInbox/GetFeedbackRequests";
         url_ = url_.replace(/[?&]$/, "");
@@ -170285,6 +170337,46 @@ export interface ICalculateWorkDaysOutput {
     workDays: number;
 }
 
+export class CancelFeedbackInput implements ICancelFeedbackInput {
+    workflowRequestId!: number;
+    employeeId!: number;
+
+    constructor(data?: ICancelFeedbackInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): CancelFeedbackInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CancelFeedbackInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["employeeId"] = this.employeeId;
+        return data;
+    }
+}
+
+export interface ICancelFeedbackInput {
+    workflowRequestId: number;
+    employeeId: number;
+}
+
 export class CancelPaymentDto implements ICancelPaymentDto {
     paymentId!: string | undefined;
     gateway!: SubscriptionPaymentGatewayType;
@@ -218693,6 +218785,7 @@ export class FeedbackCandidateDto implements IFeedbackCandidateDto {
     photoUrl!: string | undefined;
     alreadyAsked!: boolean;
     isAlreadyApprover!: boolean;
+    hasResponded!: boolean;
 
     constructor(data?: IFeedbackCandidateDto) {
         if (data) {
@@ -218714,6 +218807,7 @@ export class FeedbackCandidateDto implements IFeedbackCandidateDto {
             this.photoUrl = _data["photoUrl"];
             this.alreadyAsked = _data["alreadyAsked"];
             this.isAlreadyApprover = _data["isAlreadyApprover"];
+            this.hasResponded = _data["hasResponded"];
         }
     }
 
@@ -218735,6 +218829,7 @@ export class FeedbackCandidateDto implements IFeedbackCandidateDto {
         data["photoUrl"] = this.photoUrl;
         data["alreadyAsked"] = this.alreadyAsked;
         data["isAlreadyApprover"] = this.isAlreadyApprover;
+        data["hasResponded"] = this.hasResponded;
         return data;
     }
 }
@@ -218749,6 +218844,7 @@ export interface IFeedbackCandidateDto {
     photoUrl: string | undefined;
     alreadyAsked: boolean;
     isAlreadyApprover: boolean;
+    hasResponded: boolean;
 }
 
 export class FeedbackRequestDto implements IFeedbackRequestDto {

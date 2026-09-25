@@ -33,6 +33,22 @@
                                 @for (person of askedPeople(); track person.employeeId) {
                                     <span class="ess-feedback__chip ess-feedback__chip--asked">
                                         {{ displayName(person) }}
+
+                                        @if (person.hasResponded) {
+                                            <!-- Answered: no cross. Their view is in the conversation and
+                                                 withdrawing the ask would not unsay it. -->
+                                            <span class="ess-feedback__chip-done" [title]="'Responded' | localize">&#10003;</span>
+                                        } @else {
+                                            <button
+                                                type="button"
+                                                class="ess-feedback__chip-remove"
+                                                [disabled]="withdrawing() === person.employeeId"
+                                                [attr.aria-label]="'WithdrawFeedbackRequest' | localize"
+                                                [title]="'WithdrawFeedbackRequest' | localize"
+                                                (click)="withdraw(person)">
+                                                &times;
+                                            </button>
+                                        }
                                     </span>
                                 }
                             </div>

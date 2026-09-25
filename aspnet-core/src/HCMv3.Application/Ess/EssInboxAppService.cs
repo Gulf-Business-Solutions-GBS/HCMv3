@@ -366,10 +366,13 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 
         await EnsureCurrentApproverAsync(request, employeeId);
 
-        var asked = await _feedbackRepository.GetAll()
+        var asks = await _feedbackRepository.GetAll()
             .Where(r => r.WorkflowRequestId == request.Id && r.CCReceiverId.HasValue)
-            .Select(r => r.CCReceiverId.Value)
+            .Select(r => new { EmployeeId = r.CCReceiverId.Value, Answered = r.RespondedAt != null })
             .ToListAsync();
+
+        var asked = asks.Select(a => a.EmployeeId).ToList();
+        var answered = asks.Where(a => a.Answered).Select(a => a.EmployeeId).ToList();
 
         var excluded = new List<int> { employeeId };
 
@@ -401,10 +404,41 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         foreach (var candidate in candidates)
         {
             candidate.AlreadyAsked = asked.Contains(candidate.EmployeeId);
+            candidate.HasResponded = answered.Contains(candidate.EmployeeId);
             candidate.IsAlreadyApprover = approvers.Contains(candidate.EmployeeId);
         }
 
         return candidates;
+    }
+
+    public async Task CancelFeedbackRequest(CancelFeedbackInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+
+        // The same entitlement as asking. Somebody who cannot pull a colleague into a request should not be
+        // able to pull them back out of it either.
+        await EnsureCurrentApproverAsync(request, employeeId);
+
+        var ask = await _feedbackRepository.GetAll()
+            .Where(r => r.WorkflowRequestId == input.WorkflowRequestId && r.CCReceiverId == input.EmployeeId)
+            .FirstOrDefaultAsync();
+
+        if (ask == null)
+        {
+            throw new UserFriendlyException(L("YouHaveNotBeenAskedForFeedbackOnThisRequest"));
+        }
+
+        // Answered asks stay. What they said is in the conversation and withdrawing the request would not
+        // unsay it -- it would leave a remark on the request with nothing to explain why it is there.
+        if (ask.RespondedAt.HasValue)
+        {
+            throw new UserFriendlyException(L("CannotWithdrawAFeedbackRequestAlreadyAnswered"));
+        }
+
+        // Soft-deleted, like everything else here: FullAuditedEntity records who withdrew it and when, so
+        // the fact that somebody was asked and un-asked is not lost.
+        await _feedbackRepository.DeleteAsync(ask);
     }
 
     [HttpPost]

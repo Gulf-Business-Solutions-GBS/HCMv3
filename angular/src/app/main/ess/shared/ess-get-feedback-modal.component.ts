@@ -6,6 +6,7 @@ import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.dire
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
+    CancelFeedbackInput,
     EssInboxServiceProxy,
     FeedbackCandidateDto,
     GetFeedbackCandidatesInput,
@@ -95,10 +96,14 @@ export class EssGetFeedbackModalComponent extends AppComponentBase {
      * out who had already been asked meant hunting for greyed rows. As chips they are simply readable,
      * which is the question an approver opening this dialog a second time actually has.</p>
      *
-     * <p>Not removable. Un-asking somebody is not a thing -- the request has already reached them -- so a
-     * remove button here would promise something the feature does not do.</p>
+     * <p>Each carries a cross while the ask is outstanding, because "asked the wrong person" and "no
+     * longer need their view" are both ordinary. One that has been answered does not: what they said is in
+     * the conversation, and withdrawing the ask would leave a remark on the request with nothing to
+     * explain why it is there.</p>
      */
     readonly askedPeople = computed(() => this.candidates().filter((c) => c.alreadyAsked));
+
+    readonly withdrawing = signal<number | undefined>(undefined);
 
     show(workflowRequestId: number): void {
         this.workflowRequestId = workflowRequestId;
@@ -164,7 +169,47 @@ export class EssGetFeedbackModalComponent extends AppComponentBase {
         this.setSelected(candidate.employeeId, true);
     }
 
-    /** Removes one chip. The same path as unticking, so the two cannot drift apart. */
+    /**
+     * Takes back an ask that has not been answered.
+     *
+     * <p>Confirmed first: the colleague has already seen it in their list, so this is not the same kind of
+     * undo as unticking a box before sending.</p>
+     */
+    withdraw(candidate: FeedbackCandidateDto): void {
+        if (!candidate.employeeId || candidate.hasResponded || this.withdrawing()) {
+            return;
+        }
+
+        this.message.confirm(
+            this.l('AreYouSure'),
+            this.l('WithdrawFeedbackRequest'),
+            (confirmed: boolean) => {
+                if (!confirmed) {
+                    return;
+                }
+
+                this.withdrawing.set(candidate.employeeId);
+
+                const input = new CancelFeedbackInput();
+                input.workflowRequestId = this.workflowRequestId;
+                input.employeeId = candidate.employeeId!;
+
+                this._inboxService
+                    .cancelFeedbackRequest(input)
+                    .pipe(finalize(() => this.withdrawing.set(undefined)))
+                    .subscribe(() => {
+                        this.notify.success(this.l('FeedbackRequestWithdrawn'));
+
+                        // Re-read rather than patching the list in place: the server is what decides who
+                        // counts as asked, and a local edit would be a second opinion about that.
+                        this.load();
+                        this.requested.emit();
+                    });
+            }
+        );
+    }
+
+    /** Removes one chip from the pending selection. The same path as unticking, so the two cannot drift. */
     remove(candidate: FeedbackCandidateDto): void {
         if (candidate.employeeId) {
             this.setSelected(candidate.employeeId, false);

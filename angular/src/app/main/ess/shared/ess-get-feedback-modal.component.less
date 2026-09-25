@@ -88,3 +88,11 @@
     background: var(--bs-secondary-bg, var(--bs-gray-200));
     color: var(--bs-secondary-color, var(--bs-gray-600));
 }
+
+// The tick on an answered ask, where the withdraw cross would otherwise be. Present rather than blank so
+// the two kinds of chip stay the same width and the row does not look ragged.
+.ess-feedback__chip-done {
+    color: var(--bs-success);
+    font-size: 0.9rem;
+    line-height: 1;
+}

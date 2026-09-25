@@ -29,6 +29,17 @@ public class RequestFeedbackInput
     public string Note { get; set; }
 }
 
+/// <summary>Takes back a feedback request that has not been answered yet.</summary>
+public class CancelFeedbackInput
+{
+    [Required]
+    public int WorkflowRequestId { get; set; }
+
+    /// <summary>Whose ask to withdraw.</summary>
+    [Required]
+    public int EmployeeId { get; set; }
+}
+
 /// <summary>What somebody asked for feedback has to say about the request.</summary>
 public class SubmitFeedbackInput
 {
@@ -90,6 +101,17 @@ public class FeedbackCandidateDto
     /// </para>
     /// </summary>
     public bool IsAlreadyApprover { get; set; }
+
+    /// <summary>
+    /// True when this person was asked and has already answered.
+    ///
+    /// <para>
+    /// Separates the two kinds of "already asked", which the screen needs because only one of them can be
+    /// withdrawn: an outstanding ask can be taken back, an answered one cannot -- their opinion is in the
+    /// conversation and removing the request would not remove what they said.
+    /// </para>
+    /// </summary>
+    public bool HasResponded { get; set; }
 }
 
 /// <summary>Who has been asked on a request, and whether they have answered.</summary>
