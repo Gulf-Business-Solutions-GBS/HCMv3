@@ -201,7 +201,11 @@ public class EmployeeActionWorkflow_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.RequestType == "EmployeeAction"));
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("PA-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
 
         // The request is about the SUBJECT employee, not whoever in HR raised it. The approver inbox and
         // the employee's own request list both have to show it against them.

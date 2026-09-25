@@ -6781,5 +6781,26 @@
     <text name="WorkflowPlatform_Mobile">الهاتف المحمول</text>
     <text name="Conversation_View">المحادثة</text>
     <text name="LogView">السجل</text>
+    <text name="GetFeedback">طلب رأي</text>
+    <text name="SubmitFeedback">إرسال الرأي</text>
+    <text name="AskedForMyFeedback">مطلوب رأيي</text>
+    <text name="AwaitingApprovals">بانتظار موافقتي</text>
+    <text name="FeedbackRequestedBy">طلب {0} رأيك</text>
+    <text name="AskColleaguesForFeedback">طلب رأي الزملاء</text>
+    <text name="WhoShouldLookAtThis">من تود أن يطّلع على هذا الطلب؟</text>
+    <text name="WhatWouldYouLikeThemToLookAt">ما الذي تود منهم الاطلاع عليه؟ (اختياري)</text>
+    <text name="AlreadyAsked">سبق طلب رأيه</text>
+    <text name="SendRequest">إرسال الطلب</text>
+    <text name="FeedbackRequestsSent">تم طلب الرأي</text>
+    <text name="YourFeedback">رأيك</text>
+    <text name="FeedbackIsRequired">يرجى كتابة رأيك قبل الإرسال</text>
+    <text name="FeedbackSubmitted">تمت إضافة رأيك إلى المحادثة</text>
+    <text name="YouWereAskedForFeedbackNotApproval">طُلب رأيك في هذا الطلب. القرار يبقى لدى المعتمد.</text>
+    <text name="SelectAtLeastOneColleagueToAsk">اختر زميلًا واحدًا على الأقل</text>
+    <text name="CannotAskTheRequesterForFeedbackOnTheirOwnRequest">لا يمكن طلب رأي مُقدّم الطلب في طلبه</text>
+    <text name="YouHaveNotBeenAskedForFeedbackOnThisRequest">لم يُطلب رأيك في هذا الطلب</text>
+    <text name="NoFeedbackRequested">لم يُطلب رأي أحد</text>
+    <text name="Responded">تم الرد</text>
+    <text name="AwaitingResponse">بانتظار الرد</text>
   </texts>
 </localizationDictionary>

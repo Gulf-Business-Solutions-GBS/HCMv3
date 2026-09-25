@@ -17,6 +17,7 @@
 // they appear.
 .ess-detail__person-link {
     padding: 0;
+    text-align: start;
     border: 0;
     background: none;
     color: inherit;
@@ -83,34 +84,31 @@
 
 // The thread sits beside the request rather than beneath it, so it has to be able to scroll on its own:
 // a long conversation must not push the decision buttons off the bottom of the dialog.
+// No height cap and no scrollbar of its own any more: the rail scrolls as one, so a card inside it with a
+// second scrollbar meant two nested scrolling regions and a thread that would not scroll the panel under
+// it into view.
 .ess-detail__conversation .card-body {
-    max-height: 70vh;
-    overflow-y: auto;
+    padding-bottom: 0.75rem;
 }
 
-// The toggle between the two views of the history, and the export that only belongs to one of them.
-// Sits where the card title used to: the two buttons name the pane, so a heading above them would only
-// repeat whichever one is pressed.
-.ess-detail__pane-switch {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.75rem;
-}
+// The right-hand column: stays put, scrolls on its own.
+//
+// The request and its history are read together -- that is why this is a column beside the form rather
+// than a section under it. But a twenty-field form is taller than this rail, and a rail that simply flowed
+// with the page scrolled out of view exactly when the fields it explains came into it. Sticky, with its
+// own overflow, makes the form's length stop mattering.
+//
+// Only from lg up. Below that the grid has already stacked the columns, and a sticky element in a
+// single-column layout just covers the thing underneath it.
+@media (min-width: 992px) {
+    .ess-detail__rail {
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
 
-// Denser than the page default. This is a measurement table read in a narrow column beside the form, so
-// the numbers matter more than the whitespace around them.
-.ess-detail__log {
-    table {
-        font-size: 0.85rem;
-        margin-bottom: 0;
-    }
-
-    th {
-        white-space: nowrap;
-        font-weight: 600;
+        // Its own scrollbar rather than the dialog's, so the form and the rail scroll independently.
+        max-height: calc(100vh - 12rem);
+        overflow-y: auto;
     }
 }
 

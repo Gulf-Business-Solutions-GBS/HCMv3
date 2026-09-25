@@ -278,10 +278,10 @@ public class EssSessionAppService_Tests : AppTestBase
             context.SaveChanges();
 
             context.Set<WorkFlowApprover>().AddRange(
-                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = waitingOnMe.Id, ApproverId = meId, IsApproved = false },
-                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = alreadyApproved.Id, ApproverId = meId, IsApproved = true },
-                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = closedRequest.Id, ApproverId = meId, IsApproved = false },
-                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = waitingOnSomeoneElse.Id, ApproverId = otherApproverId, IsApproved = false });
+                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = waitingOnMe.Id, ApproverId = meId, IsApproved = false, WorkflowStep = 1 },
+                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = alreadyApproved.Id, ApproverId = meId, IsApproved = true, WorkflowStep = 1 },
+                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = closedRequest.Id, ApproverId = meId, IsApproved = false, WorkflowStep = 1 },
+                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = waitingOnSomeoneElse.Id, ApproverId = otherApproverId, IsApproved = false, WorkflowStep = 1 });
         });
 
         var essContext = await _essSessionAppService.GetEssContext();
@@ -339,7 +339,11 @@ public class EssSessionAppService_Tests : AppTestBase
                 TenantId = TenantId,
                 WorkflowRequestId = theirRequestId,
                 ApproverId = meId,
-                IsApproved = false
+                IsApproved = false,
+
+                // The step this row belongs to. Without it the column defaults to 0, which matches no
+                // request past step 0, and every step-scoped query skips the row.
+                WorkflowStep = 1
             });
         });
 

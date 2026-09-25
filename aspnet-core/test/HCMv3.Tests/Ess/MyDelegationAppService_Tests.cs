@@ -514,7 +514,11 @@ public class MyDelegationAppService_Tests : AppTestBase
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>()
             .Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("DEL-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
         request.SummaryEn.ShouldNotBeNullOrWhiteSpace();
         request.SummaryEn.Contains("DEL410D T").ShouldBeTrue(
             "The summary does not name the delegate, so the approver is being asked to hand over authority " +

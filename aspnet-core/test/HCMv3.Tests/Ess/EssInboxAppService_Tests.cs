@@ -109,7 +109,11 @@ public class EssInboxAppService_Tests : AppTestBase
                 TenantId = TenantId,
                 WorkflowRequestId = requestId,
                 ApproverId = approverId,
-                IsApproved = approverAlreadyActed
+                IsApproved = approverAlreadyActed,
+
+                // The step this row belongs to. Without it the column defaults to 0, which matches no
+                // request past step 0, and every step-scoped query skips the row.
+                WorkflowStep = workflowStep
             });
         });
 

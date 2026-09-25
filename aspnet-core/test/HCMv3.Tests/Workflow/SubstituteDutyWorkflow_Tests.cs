@@ -492,7 +492,11 @@ public class SubstituteDutyWorkflow_Tests : AppTestBase
         // it -- that is the whole difference between the admin path and self-service.
         var request = RequestForOverride(row.Id);
         request.EmployeeId.ShouldBe(employeeId);
-        request.RequestNumber.ShouldStartWith("SFT-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
 
         await _approvalService.ApproveAsync(request.Id, approverId, "cover agreed");
 

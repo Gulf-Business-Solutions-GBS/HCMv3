@@ -57,12 +57,54 @@ public class EssInboxItemDto : EntityDto<int>
     /// <c>ManageWorkflowSettings.EnableTravelCostOnWorkflowstep</c>, so the approver may enter the travel cost.
     /// </summary>
     public bool EnableTravelCost { get; set; }
+
+    /// <summary>
+    /// What this row wants from the reader.
+    ///
+    /// <para>
+    /// The inbox used to hold one kind of thing, so it needed no discriminator. It now also carries
+    /// requests somebody has been asked to comment on, and the difference matters before the row is even
+    /// opened: an approval is a decision this person must make, and a feedback request is an opinion
+    /// somebody would like. Showing them identically would have people approving things they were only
+    /// asked about -- or, far more likely, ignoring an ask because it looked like a duplicate approval.
+    /// </para>
+    /// </summary>
+    public EssInboxItemKind Kind { get; set; }
+
+    /// <summary>Who asked for the feedback. Null on an approval row, where nobody had to ask.</summary>
+    public int? FeedbackRequestedByEmployeeId { get; set; }
+
+    public string FeedbackRequestedByNameEn { get; set; }
+
+    public string FeedbackRequestedByNameAr { get; set; }
+
+    /// <summary>What they wanted looked at, if they said.</summary>
+    public string FeedbackNote { get; set; }
+}
+
+/// <summary>Which of the two things an inbox row is.</summary>
+public enum EssInboxItemKind
+{
+    /// <summary>The request is waiting on this person to decide it.</summary>
+    Approval = 0,
+
+    /// <summary>
+    /// An approver has asked this person what they think. They can read it and comment; they cannot
+    /// approve it, and the approver is not waiting on them.
+    /// </summary>
+    FeedbackRequest = 1
 }
 
 public class GetMyInboxInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     /// <summary>Optional filter to one transaction type.</summary>
     public string RequestType { get; set; }
+
+    /// <summary>
+    /// Optional filter to approvals or to feedback requests. Null returns both, which is what the
+    /// unfiltered inbox shows.
+    /// </summary>
+    public EssInboxItemKind? Kind { get; set; }
 
     public void Normalize()
     {

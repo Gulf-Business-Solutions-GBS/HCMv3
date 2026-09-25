@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +12,7 @@ import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee
 import {
     ApproveRequestInput,
     EssInboxItemDto,
+    EssInboxItemKind,
     EssInboxServiceProxy,
     GetMyInboxInput,
     RejectRequestInput,
@@ -51,6 +53,19 @@ export interface EssInboxRow {
     statusClass: string;
     canReject: boolean;
     canSendBack: boolean;
+
+    /**
+     * True when a colleague asked this person to look, rather than the request waiting on their decision.
+     *
+     * <p>It changes what the row offers and what opening it shows, so it is on the row rather than read
+     * out of the DTO at each use -- the grid, the action menu and the dialog all need the same answer.</p>
+     */
+    isFeedbackRequest: boolean;
+
+    /** Who asked, for the row and for the dialog. Empty on an approval. */
+    feedbackRequestedByName: string;
+
+    feedbackNote: string;
 }
 
 /**
@@ -74,6 +89,7 @@ export interface EssInboxRow {
     styleUrls: ['./ess-inbox.component.less'],
     animations: [appModuleAnimation()],
     imports: [
+        DateInputDirective,
         CommonModule,
         FormsModule,
         TableModule,
@@ -194,6 +210,10 @@ export class EssInboxComponent extends AppComponentBase {
             .getMyInbox(
                 new GetMyInboxInput({
                     requestType: undefined,
+
+                    // Both kinds. The grid shows approvals and feedback asks together, each row saying
+                    // which it is -- an ask filed on a screen nobody checks is an ask nobody answers.
+                    kind: undefined,
                     maxResultCount: EssInboxComponent.MaxInboxRows,
                     skipCount: 0,
                     sorting: undefined,
@@ -271,6 +291,28 @@ export class EssInboxComponent extends AppComponentBase {
     openDetail(row: EssInboxRow): void {
         this.select(row);
 
+        const common = {
+            title: row.typeName || this.l('EssInbox'),
+            workflowRequestId: row.id,
+            requesterName: row.employeeName,
+            requesterPhotoUrl: row.photoUrl,
+            statusLabel: row.statusLabel,
+            statusClass: row.statusClass,
+        };
+
+        // Somebody asked for a view gets no decision buttons at all, rather than disabled ones. A greyed
+        // Approve invites the question "why can I not?", which the screen would then have to answer.
+        if (row.isFeedbackRequest) {
+            this.detail()?.show({
+                ...common,
+                feedbackMode: true,
+                feedbackRequestedByName: row.feedbackRequestedByName,
+                feedbackNote: row.feedbackNote,
+            });
+
+            return;
+        }
+
         const actions: EssRequestAction[] = ['approve'];
 
         if (row.canReject) {
@@ -281,15 +323,7 @@ export class EssInboxComponent extends AppComponentBase {
             actions.push('sendBack');
         }
 
-        this.detail()?.show({
-            title: row.typeName || this.l('EssInbox'),
-            workflowRequestId: row.id,
-            requesterName: row.employeeName,
-            requesterPhotoUrl: row.photoUrl,
-            statusLabel: row.statusLabel,
-            statusClass: row.statusClass,
-            actions: actions,
-        });
+        this.detail()?.show({ ...common, actions: actions });
     }
 
     /** The ?requestId= this screen was opened with, or null when it was opened normally. */
@@ -418,15 +452,23 @@ export class EssInboxComponent extends AppComponentBase {
                 icon: 'pi pi-eye',
                 command: () => this.openDetail(row),
             },
-            {
-                label: this.l('Approve'),
-                icon: 'pi pi-check',
-                command: () => {
-                    this.select(row);
-                    this.approve();
-                },
-            },
         ];
+
+        // A feedback request offers Details and nothing else: this person cannot approve, reject or send
+        // back, and the server would refuse all three. Opening it gives them the one thing they can do,
+        // which is say what they think.
+        if (row.isFeedbackRequest) {
+            return items;
+        }
+
+        items.push({
+            label: this.l('Approve'),
+            icon: 'pi pi-check',
+            command: () => {
+                this.select(row);
+                this.approve();
+            },
+        });
 
         // Offered only when the step's configuration actually permits it, so the screen never shows a
         // button the engine would refuse.
@@ -574,6 +616,9 @@ export class EssInboxComponent extends AppComponentBase {
             statusClass: 'badge-warning',
             canReject: item.canReject,
             canSendBack: item.canSendBack,
+            isFeedbackRequest: item.kind === EssInboxItemKind.FeedbackRequest,
+            feedbackRequestedByName: this.pick(item.feedbackRequestedByNameEn, item.feedbackRequestedByNameAr),
+            feedbackNote: item.feedbackNote ?? '',
         };
     }
 

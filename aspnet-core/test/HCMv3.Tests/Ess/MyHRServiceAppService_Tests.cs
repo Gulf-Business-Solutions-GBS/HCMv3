@@ -257,7 +257,11 @@ public class MyHRServiceAppService_Tests : AppTestBase
         var request = UsingDbContext(c => c.Set<WorkflowRequest>()
             .Single(r => r.Id == result.WorkflowRequestId.Value));
 
-        request.RequestNumber.ShouldStartWith("HRS-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
 
         // Routing needs the sub-type, or a chain configured per service type could never match.
         request.RequestSubTypeId.ShouldBe(typeId);

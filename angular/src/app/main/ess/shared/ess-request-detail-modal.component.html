@@ -39,6 +39,23 @@
                         <!-- The question first, exactly as the reference screen asks it. An approver opens
                              this to decide, so the page says what it is for before anything else. -->
                         <h3 class="ess-detail__question">{{ 'DoYouApproveThisRequest' | localize }}</h3>
+                    } @else if (isFeedbackMode()) {
+                        <!-- A different question, because a different thing is being asked. Somebody here
+                             by invitation must not be left to work out whether they are expected to
+                             approve -- the answer is no, and saying so is cheaper than letting them
+                             wonder. -->
+                        <h3 class="ess-detail__question">{{ 'YourFeedback' | localize }}</h3>
+
+                        <div class="alert alert-light-primary">
+                            @if (config()?.feedbackRequestedByName; as asker) {
+                                <div class="fw-bold">{{ 'FeedbackRequestedBy' | localize: asker }}</div>
+                            }
+                            <div>{{ 'YouWereAskedForFeedbackNotApproval' | localize }}</div>
+
+                            @if (config()?.feedbackNote; as note) {
+                                <div class="mt-2 fst-italic">&ldquo;{{ note }}&rdquo;</div>
+                            }
+                        </div>
                     }
 
                     @if (initiatedByParts(); as initiated) {
@@ -65,7 +82,7 @@
                     }
 
                     <div class="row g-5">
-                        <div [class]="isApproverMode() ? 'col-12 col-lg-8' : 'col-12'">
+                        <div [class]="isWideMode() ? 'col-12 col-lg-7' : 'col-12'">
                             @if (requestForm(); as form) {
                                 <!-- THE request's own form, read-only: the same component, the same cards
                                      and the same column widths the requester filled in, with its inputs
@@ -108,6 +125,35 @@
                                 </div>
                             }
 
+                            @if (isFeedbackMode()) {
+                                <!-- One box and one button. No Approve, no Reject, no Send back: this
+                                     person was asked what they think, and the decision stays with the
+                                     approver who asked. -->
+                                <div class="card card-custom gutter-b mb-5 ess-detail__decision">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ 'YourFeedback' | localize }}
+                                            <span class="text-danger" aria-hidden="true">*</span>
+                                        </h5>
+
+                                        <textarea
+                                            class="form-control mb-4"
+                                            data-help-loc="Feedback"
+                                            rows="3"
+                                            [(ngModel)]="feedbackComment"></textarea>
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary"
+                                            data-help-loc="SubmitFeedback"
+                                            [disabled]="submittingFeedback()"
+                                            (click)="submitFeedback()">
+                                            {{ 'SubmitFeedback' | localize }}
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
                             @if (availableActions().length) {
                                 <!-- Card 2: the decision, INSIDE the dialog. It used to be a bar docked to
                                      the bottom of the window, floating under a dialog it had nothing to do
@@ -134,6 +180,18 @@
                                             [(ngModel)]="decisionComment"></textarea>
 
                                         <div class="ess-detail__decision-buttons">
+                                            <!-- Secondary and set apart, because it is not a decision.
+                                                 Asking a colleague leaves the request exactly where it is
+                                                 and leaves this approver holding it. -->
+                                            <button
+                                                type="button"
+                                                class="btn btn-light-primary ess-detail__ask"
+                                                data-help-loc="GetFeedback"
+                                                [disabled]="acting()"
+                                                (click)="askForFeedback()">
+                                                <i class="fa fa-comments me-1"></i>{{ 'GetFeedback' | localize }}
+                                            </button>
+
                                             @for (action of availableActions(); track action) {
                                                 @switch (action) {
                                                     @case ('approve') {
@@ -184,98 +242,30 @@
                              the Comments card, next to the buttons -- because a comment an approver types
                              IS their decision's comment. Two boxes asked them to choose which kind of
                              remark they were making, a distinction nobody wanted to draw. -->
-                        <div [class]="isApproverMode() ? 'col-12 col-lg-4' : 'col-12'">
+                        <!-- Sticky, with its own scrollbar. The request and its history are read together
+                             -- that is why this is a column and not a section underneath -- but a form with
+                             twenty fields is taller than this rail, and a rail that simply flowed with the
+                             page scrolled out of sight exactly when the fields it explains came into view. -->
+                        <div [class]="isWideMode() ? 'col-12 col-lg-5 ess-detail__rail' : 'col-12'">
                             <div class="card card-custom ess-detail__conversation">
                                 <div class="card-body">
-                                    <!-- Two views of one history. The thread is for reading a request; the
-                                         grid is for measuring and exporting it -- days taken, platform, step.
-                                         Neither shape does the other's job, so they are a toggle rather than
-                                         a compromise between them. -->
-                                    <div class="ess-detail__pane-switch">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <button
-                                                type="button"
-                                                class="btn"
-                                                [class.btn-primary]="rightPaneView() === 'conversation'"
-                                                [class.btn-light]="rightPaneView() !== 'conversation'"
-                                                (click)="showPane('conversation')">
-                                                {{ 'Conversation_View' | localize }}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="btn"
-                                                [class.btn-primary]="rightPaneView() === 'log'"
-                                                [class.btn-light]="rightPaneView() !== 'log'"
-                                                (click)="showPane('log')">
-                                                {{ 'LogView' | localize }}
-                                            </button>
-                                        </div>
+                                    <h5 class="card-title">{{ 'Conversation' | localize }}</h5>
 
-                                        @if (rightPaneView() === 'log') {
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-light-primary"
-                                                [disabled]="exportingLog() || !logEntries().length"
-                                                (click)="exportLog()">
-                                                <i class="fa fa-file-excel me-1"></i>{{ 'ExportToExcel' | localize }}
-                                            </button>
-                                        }
-                                    </div>
-
-                                    @if (rightPaneView() === 'conversation') {
-                                        @if (config()?.workflowRequestId; as workflowRequestId) {
-                                            <workflow-activity-rail
-                                                [workflowRequestId]="workflowRequestId"
-                                                [flush]="true"
-                                                [showHeader]="false"
-                                                [newestFirst]="true"
-                                                [readOnly]="true"
-                                                [leadComment]="detail()?.submissionComment ?? config()?.comments"
-                                                [leadAuthorName]="requesterName()"
-                                                [leadAuthorPhotoUrl]="requesterPhotoUrl()"
-                                                (personClicked)="profileCard.show(workflowRequestId, $event)"></workflow-activity-rail>
-                                        } @else if (config()?.comments) {
-                                            <div class="text-muted">{{ config()?.comments }}</div>
-                                        } @else {
-                                            <div class="text-muted">{{ 'NoCommentsYet' | localize }}</div>
-                                        }
+                                    @if (config()?.workflowRequestId; as workflowRequestId) {
+                                        <workflow-activity-rail
+                                            [workflowRequestId]="workflowRequestId"
+                                            [flush]="true"
+                                            [showHeader]="false"
+                                            [newestFirst]="true"
+                                            [readOnly]="true"
+                                            [leadComment]="detail()?.submissionComment ?? config()?.comments"
+                                            [leadAuthorName]="requesterName()"
+                                            [leadAuthorPhotoUrl]="requesterPhotoUrl()"
+                                            (personClicked)="profileCard.show(workflowRequestId, $event)"></workflow-activity-rail>
+                                    } @else if (config()?.comments) {
+                                        <div class="text-muted">{{ config()?.comments }}</div>
                                     } @else {
-                                        @if (loadingLog()) {
-                                            <div class="text-muted"><i class="fa fa-spinner fa-spin"></i></div>
-                                        } @else {
-                                            <!-- Oldest first: a log is read forwards, unlike the thread,
-                                                 which leads with what just happened. -->
-                                            <div class="table-responsive ess-detail__log">
-                                                <table class="table table-sm align-middle">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>{{ 'ActionBy' | localize }}</th>
-                                                            <th>{{ 'ActionType' | localize }}</th>
-                                                            <th>{{ 'ActionDate' | localize }}</th>
-                                                            <th class="text-end">{{ 'WorkflowStep' | localize }}</th>
-                                                            <th class="text-end">{{ 'ActionDays' | localize }}</th>
-                                                            <th>{{ 'Platform' | localize }}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @for (entry of logEntries(); track entry.id) {
-                                                            <tr>
-                                                                <td>{{ logActorName(entry) || '-' }}</td>
-                                                                <td>{{ actionTypeLabel(entry.actionType) }}</td>
-                                                                <td>{{ entry.actionDateTime?.toFormat('dd MMM yyyy HH:mm') }}</td>
-                                                                <td class="text-end">{{ entry.workflowStep }}</td>
-                                                                <td class="text-end">{{ entry.actionDays }}</td>
-                                                                <td>{{ platformLabel(entry.platform) }}</td>
-                                                            </tr>
-                                                        } @empty {
-                                                            <tr>
-                                                                <td colspan="6" class="text-muted">{{ 'NoData' | localize }}</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        }
+                                        <div class="text-muted">{{ 'NoCommentsYet' | localize }}</div>
                                     }
                                 </div>
                             </div>
@@ -315,3 +305,7 @@
      own for the names in its lists; both are plain overlays rather than nested dialogs, so neither can leave
      a backdrop over a page that has nothing left to dismiss it. -->
 <workflowParticipantProfileModal #profileCard></workflowParticipantProfileModal>
+
+<!-- Hosted here rather than inside the dialog: a bs-modal nested in another bs-modal leaves a backdrop
+     over a page with nothing left to dismiss it, which froze this screen once already. -->
+<essGetFeedbackModal #feedbackModal></essGetFeedbackModal>

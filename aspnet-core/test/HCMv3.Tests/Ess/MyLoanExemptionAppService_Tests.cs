@@ -449,7 +449,11 @@ public class MyLoanExemptionAppService_Tests : AppTestBase
         row.EmployeeId.ShouldBe(meId);
 
         var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
-        request.RequestNumber.ShouldStartWith("LEX-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
     }
 
     [Fact]

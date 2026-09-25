@@ -227,7 +227,11 @@ public class AppraisalWorkflow_Tests : AppTestBase
 
         var request = AppraisalRequest();
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("APR-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
 
         // About the appraisee, not about whoever in HR opened the appraisal -- the approver inbox and the
         // employee's own request list both have to show it against them.

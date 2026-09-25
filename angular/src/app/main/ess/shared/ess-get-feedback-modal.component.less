@@ -1,0 +1,47 @@
+// The "this is not delegation" line. Quiet, but present on every open: the dialog is reached from beside
+// the Approve button, which is exactly where the misreading would happen.
+.ess-feedback__explainer {
+    margin-bottom: 1rem;
+}
+
+// Scrolls rather than growing the dialog to the height of the staff list.
+.ess-feedback__list {
+    max-height: 22rem;
+    overflow-y: auto;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.475rem;
+    padding: 0.25rem;
+}
+
+.ess-feedback__row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    margin: 0;
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+
+    &:hover {
+        background: var(--bs-secondary-bg, var(--bs-gray-100));
+    }
+
+    // Already asked: still listed, because the approver needs to see that the ask exists rather than
+    // wondering why a name is missing -- but not selectable, since asking again stores nothing.
+    &--asked {
+        cursor: default;
+        opacity: 0.65;
+
+        &:hover {
+            background: none;
+        }
+    }
+}
+
+.ess-feedback__who {
+    flex: 1 1 auto;
+
+    // start, not left: a wrapped name in Arabic should align to the right edge of its own column.
+    text-align: start;
+}

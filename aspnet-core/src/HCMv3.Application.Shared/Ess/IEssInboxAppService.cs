@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
@@ -27,4 +28,42 @@ public interface IEssInboxAppService : IApplicationService
     Task Reject(RejectRequestInput input);
 
     Task SendBack(SendBackRequestInput input);
+
+    // ------------------------------------------------------------------ get feedback
+
+    /// <summary>
+     /// Asks one or more colleagues what they think, WITHOUT handing over the decision.
+    ///
+    /// <para>
+    /// The approver who asks stays the approver. Nothing about this moves the request, changes its step or
+    /// makes it wait: it can be approved a second later with none of the answers in. That is the whole
+    /// distinction from delegation, where the authority itself moves, and it is why this is offered
+    /// alongside the decision buttons rather than among them.
+    /// </para>
+    /// </summary>
+    Task RequestFeedback(RequestFeedbackInput input);
+
+    /// <summary>
+    /// Records what somebody asked for feedback has to say, and closes their ask.
+    ///
+    /// <para>
+    /// Their comment goes into the same conversation everyone else is reading. It is not a separate
+    /// channel -- an opinion nobody can see is not feedback.
+    /// </para>
+    /// </summary>
+    Task SubmitFeedback(SubmitFeedbackInput input);
+
+    /// <summary>
+    /// Who the current approver may ask on a request.
+    ///
+    /// <para>
+    /// Scoped to the request rather than returning the staff directory: the caller must be able to act on
+    /// it, and the list excludes the requester and the caller themselves -- asking the person whose request
+    /// it is what they think of it is not a thing anybody wants to do by accident.
+    /// </para>
+    /// </summary>
+    Task<List<FeedbackCandidateDto>> GetFeedbackCandidates(GetFeedbackCandidatesInput input);
+
+    /// <summary>Who has been asked on a request, and whether they have answered.</summary>
+    Task<List<FeedbackRequestDto>> GetFeedbackRequests(GetFeedbackCandidatesInput input);
 }

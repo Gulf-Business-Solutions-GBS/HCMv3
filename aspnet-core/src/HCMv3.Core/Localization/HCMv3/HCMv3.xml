@@ -6943,5 +6943,26 @@
     <text name="WorkflowPlatform_Mobile">Mobile</text>
     <text name="Conversation_View">Conversation</text>
     <text name="LogView">Log</text>
+    <text name="GetFeedback">Get feedback</text>
+    <text name="SubmitFeedback">Submit feedback</text>
+    <text name="AskedForMyFeedback">Asked for my feedback</text>
+    <text name="AwaitingApprovals">Waiting on me</text>
+    <text name="FeedbackRequestedBy">{0} asked for your feedback</text>
+    <text name="AskColleaguesForFeedback">Ask colleagues for feedback</text>
+    <text name="WhoShouldLookAtThis">Who should look at this?</text>
+    <text name="WhatWouldYouLikeThemToLookAt">What would you like them to look at? (optional)</text>
+    <text name="AlreadyAsked">Already asked</text>
+    <text name="SendRequest">Send request</text>
+    <text name="FeedbackRequestsSent">Feedback requested</text>
+    <text name="YourFeedback">Your feedback</text>
+    <text name="FeedbackIsRequired">Please write your feedback before submitting</text>
+    <text name="FeedbackSubmitted">Your feedback has been added to the conversation</text>
+    <text name="YouWereAskedForFeedbackNotApproval">You have been asked for your view on this request. The approver still makes the decision.</text>
+    <text name="SelectAtLeastOneColleagueToAsk">Select at least one colleague to ask</text>
+    <text name="CannotAskTheRequesterForFeedbackOnTheirOwnRequest">You cannot ask the requester for feedback on their own request</text>
+    <text name="YouHaveNotBeenAskedForFeedbackOnThisRequest">You have not been asked for feedback on this request</text>
+    <text name="NoFeedbackRequested">Nobody has been asked for feedback</text>
+    <text name="Responded">Responded</text>
+    <text name="AwaitingResponse">Awaiting response</text>
   </texts>
 </localizationDictionary>

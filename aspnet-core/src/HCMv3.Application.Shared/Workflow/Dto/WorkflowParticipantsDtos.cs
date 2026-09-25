@@ -25,7 +25,18 @@ public enum WorkflowApproverOrigin
     /// <see cref="CurrentStep"/> -- it names everyone who was entitled to approve that step, not merely
     /// whoever did -- which is exactly what <see cref="ReconstructedFromLog"/> cannot do.
     /// </summary>
-    PastStep = 2
+    PastStep = 2,
+
+    /// <summary>
+    /// The step that says who may RAISE the request, shown as the person who did.
+    ///
+    /// <para>
+    /// It has no approver row and never will -- nobody approves at a creator step -- so the list used to
+    /// begin at step 2 and the reader was left asking what had happened to step 1. A chain that starts at
+    /// 2 looks like a chain with something missing, because it is.
+    /// </para>
+    /// </summary>
+    CreatorStep = 3
 }
 
 /// <summary>Which way round a delegation runs relative to the approver it was found for.</summary>
@@ -168,6 +179,30 @@ public class WorkflowApproverEntryDto
 
     /// <summary>When they acted. Null while they have not.</summary>
     public DateTime? ActedAt { get; set; }
+
+    /// <summary>
+    /// The approval rule for THIS row's step -- not the request's current one.
+    ///
+    /// <para>
+    /// Sent per row because the rule is a property of the step and the panel shows several steps at once.
+    /// One rule for the whole list was actively misleading: "any one of these approvers is enough" sat
+    /// above a list containing both step 2 and step 3, describing only one of them.
+    /// </para>
+    /// </summary>
+    public ApprovalRequire? ApprovalRequire { get; set; }
+
+    /// <summary>
+    /// True when this step no longer needs this person, because the rule it runs under is already
+    /// satisfied -- one approval on a step where any one is enough.
+    ///
+    /// <para>
+    /// Distinct from approved and distinct from pending, and the distinction is the point: "Pending"
+    /// against a colleague whose approval will never be asked for is a request for action that is not
+    /// coming. Computed on the server, because it depends on the step's rule and on every other row at
+    /// that step -- neither of which one row can see.
+    /// </para>
+    /// </summary>
+    public bool IsNotRequired { get; set; }
 }
 
 /// <summary>An active delegation touching one of this request's approvers.</summary>

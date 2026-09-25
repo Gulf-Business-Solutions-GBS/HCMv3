@@ -308,7 +308,11 @@ public class DisciplinaryWorkflow_Tests : AppTestBase
             .Single(r => r.RequestType == "EmployeeDisciplinary"));
 
         request.RequestStatus.ShouldBe(RequestStatus.Open);
-        request.RequestNumber.ShouldStartWith("DSC-");
+        // A number of its own, and nothing but digits: the per-type prefix went when the counter became
+        // tenant-wide, so "which type is this" is no longer something the number answers.
+        request.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        request.RequestNumber.ShouldNotContain("-");
+        int.Parse(request.RequestNumber).ShouldBeGreaterThan(0);
 
         // About the SUBJECT of the record, not the person in HR who typed it -- the same rule as every
         // other admin-raised type.

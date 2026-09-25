@@ -525,10 +525,141 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             });
         }
 
+        await AddCreatorStepAsync(request, entries);
+        await ApplyStepRulesAsync(request, entries);
+
         return entries
             .OrderBy(e => e.WorkflowStep)
             .ThenBy(e => e.Person.EmployeeId)
             .ToList();
+    }
+
+    /// <summary>
+    /// Puts the person who RAISED the request at the head of the chain.
+    ///
+    /// <para>
+    /// A creator step names who may submit, not who approves, so it has no approver row and the list used
+    /// to start at step 2 -- which reads as a chain with its first link missing. The submitter is taken
+    /// from the Created log entry rather than from the request's employee, because on a request raised by
+    /// HR on somebody else's behalf those are two different people and the chain is about who acted.
+    /// </para>
+    /// </summary>
+    private async Task AddCreatorStepAsync(WorkflowRequest request, List<WorkflowApproverEntryDto> entries)
+    {
+        var creatorSteps = await CreatorStepsAsync(request);
+
+        if (creatorSteps.Count == 0)
+        {
+            return;
+        }
+
+        var created = await _requestLogRepository.GetAll()
+            .Where(l => l.WorkflowRequestId == request.Id
+                        && l.ActionType == RequestActionType.Created
+                        && l.ActionById.HasValue)
+            .OrderBy(l => l.ActionDateTime)
+            .Select(l => new { l.ActionById, l.ActionDateTime })
+            .FirstOrDefaultAsync();
+
+        if (created == null)
+        {
+            return;
+        }
+
+        entries.Add(new WorkflowApproverEntryDto
+        {
+            Person = new WorkflowPersonDto { EmployeeId = created.ActionById.Value },
+            WorkflowStep = creatorSteps.Min(),
+
+            // Not "approved". They submitted it; approving your own request is a different claim and one
+            // the engine does not make.
+            IsApproved = false,
+            Origin = WorkflowApproverOrigin.CreatorStep,
+            ActionType = RequestActionType.Created,
+            ActedAt = created.ActionDateTime
+        });
+    }
+
+    /// <summary>The steps of this request's chain that nominate nobody to approve.</summary>
+    private async Task<List<int>> CreatorStepsAsync(WorkflowRequest request)
+    {
+        try
+        {
+            var master = await _requestMasterResolver.ResolveAsync(request);
+
+            return await _requestDetailRepository.GetAll()
+                .Where(d => d.RequestMasterId == master.Id
+                            && d.ApproverPerson == WorkflowApproverPersonType.None)
+                .Select(d => d.Step)
+                .ToListAsync();
+        }
+        catch (UserFriendlyException)
+        {
+            // Unroutable. The panel still shows what it has rather than refusing the whole read.
+            return new List<int>();
+        }
+    }
+
+    /// <summary>
+    /// Tags each row with its own step's approval rule, and marks the rows that rule has made moot.
+    ///
+    /// <para>
+    /// The "not required" part is the one worth being careful about. On a step where any one approval is
+    /// enough, the moment somebody approves, the others are not late -- they are simply not being asked.
+    /// Showing them as Pending is a request for an action that will never come, which is how an approver
+    /// ends up chasing a colleague for nothing.
+    /// </para>
+    /// </summary>
+    private async Task ApplyStepRulesAsync(WorkflowRequest request, List<WorkflowApproverEntryDto> entries)
+    {
+        if (entries.Count == 0)
+        {
+            return;
+        }
+
+        Dictionary<int, ApprovalRequire> rules;
+
+        try
+        {
+            var master = await _requestMasterResolver.ResolveAsync(request);
+
+            rules = await _requestDetailRepository.GetAll()
+                .Where(d => d.RequestMasterId == master.Id)
+                .Select(d => new { d.Step, d.ApprovalRequire })
+                .ToDictionaryAsync(d => d.Step, d => d.ApprovalRequire);
+        }
+        catch (UserFriendlyException)
+        {
+            // Unroutable: no rule to state, so the panel states none rather than guessing one.
+            return;
+        }
+
+        foreach (var group in entries.GroupBy(e => e.WorkflowStep))
+        {
+            if (!rules.TryGetValue(group.Key, out var rule))
+            {
+                continue;
+            }
+
+            var rows = group.ToList();
+
+            foreach (var entry in rows)
+            {
+                entry.ApprovalRequire = rule;
+            }
+
+            // Only Single can make anybody redundant. Under All and Parallel every approver is still wanted
+            // however many have already acted.
+            if (rule != ApprovalRequire.Single || !rows.Any(r => r.IsApproved))
+            {
+                continue;
+            }
+
+            foreach (var entry in rows.Where(r => !r.IsApproved && r.Origin != WorkflowApproverOrigin.CreatorStep))
+            {
+                entry.IsNotRequired = true;
+            }
+        }
     }
 
     /// <summary>

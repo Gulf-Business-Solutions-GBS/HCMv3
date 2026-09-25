@@ -263,12 +263,19 @@ public class WorkflowDelegationSubstitution_Tests : AppTestBase
     {
         UsingDbContext(context =>
         {
+            // The row must carry its request's step. Read rather than assumed: these helpers serve
+            // requests on different steps, and a row whose step does not match its request is invisible
+            // to every step-scoped query -- which looks, from the test, like a broken service.
+            var approverStep = context.Set<WorkflowRequest>().Single(r => r.Id == requestId).WorkflowStep;
+
             context.Set<WorkFlowApprover>().Add(new WorkFlowApprover
             {
                 TenantId = TenantId,
                 WorkflowRequestId = requestId,
                 ApproverId = approverId,
-                IsApproved = false
+                IsApproved = false,
+
+                WorkflowStep = approverStep
             });
 
             var request = context.Set<WorkflowRequest>().Single(r => r.Id == requestId);

@@ -7,12 +7,16 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
+using Abp.Runtime.Session;
+using Abp.Timing;
+using Abp.UI;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.Ess.Dto;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
+using HCMv3.Workflow.Dto;
 using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +28,8 @@ namespace HCMv3.Ess;
 public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 {
     private readonly IRepository<WorkFlowApprover> _approverRepository;
+    private readonly IRepository<WorkflowRemark> _feedbackRepository;
+    private readonly IWorkflowActivityAppService _activityAppService;
     private readonly IRepository<WorkflowRequest> _requestRepository;
     private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
     private readonly IRepository<RequestDetail> _requestDetailRepository;
@@ -35,6 +41,8 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 
     public EssInboxAppService(
         IRepository<WorkFlowApprover> approverRepository,
+        IRepository<WorkflowRemark> feedbackRepository,
+        IWorkflowActivityAppService activityAppService,
         IRepository<WorkflowRequest> requestRepository,
         IRepository<WorkflowTransactionType> transactionTypeRepository,
         IRepository<RequestDetail> requestDetailRepository,
@@ -45,6 +53,8 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
     {
         _approverRepository = approverRepository;
+        _feedbackRepository = feedbackRepository;
+        _activityAppService = activityAppService;
         _requestRepository = requestRepository;
         _transactionTypeRepository = transactionTypeRepository;
         _requestDetailRepository = requestDetailRepository;
@@ -62,30 +72,140 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
 
         var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
 
-        // One query for every transaction type at once. Nothing here touches a transaction table -- the
-        // label comes from the request's own summary.
-        // The step filter is what keeps this an inbox rather than an archive. Approver rows now survive a
-        // step change, so "not yet approved" alone would also match a row left unapproved at an earlier
-        // step -- one of three approvers where any one sufficed -- and that request would sit in their
-        // inbox for the rest of its life, unactionable.
-        var query = _approverRepository.GetAll()
+        // Two sources, paged as one list.
+        //
+        // Approvals are the requests this person must decide. Feedback requests are the ones a colleague
+        // has asked them to look at. Both are "waiting on you" in the sense that matters -- something is
+        // expected -- and putting them in separate screens would mean an ask nobody opened because it was
+        // filed somewhere they do not check. They are paged together and each row says which it is.
+        var approvals = input.Kind == EssInboxItemKind.FeedbackRequest
+            ? new List<WorkflowRequest>()
+            : await ApprovalRequestsAsync(employeeId, input.RequestType);
+
+        var feedback = input.Kind == EssInboxItemKind.Approval
+            ? new List<WorkflowRemark>()
+            : await FeedbackRequestsAsync(employeeId, input.RequestType);
+
+        var items = await BuildItemsAsync(approvals);
+
+        items.AddRange(await BuildFeedbackItemsAsync(feedback));
+
+        // Newest first, across both kinds. Sorting each source separately and concatenating would put every
+        // feedback request below every approval regardless of age.
+        var ordered = items
+            .OrderByDescending(i => i.SubmittedOn ?? DateTime.MinValue)
+            .ToList();
+
+        var totalCount = ordered.Count;
+
+        // Paged in memory rather than in SQL, deliberately. Two different tables cannot be paged as one
+        // without a union the ORM would have to materialise anyway, and an inbox is small -- what is
+        // waiting on one person right now, not an archive. If that ever stops being true this is the line
+        // to revisit, and it will be obvious which one it was.
+        var page = ordered
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount)
+            .ToList();
+
+        return new PagedResultDto<EssInboxItemDto>(totalCount, page);
+    }
+
+    /// <summary>
+    /// The requests waiting on this person to decide them.
+    ///
+    /// <para>
+    /// The step filter is what keeps this an inbox rather than an archive. Approver rows survive a step
+    /// change now, so "not yet approved" alone would also match a row left unapproved at an earlier step --
+    /// one of three approvers where any one sufficed -- and that request would sit in their inbox for the
+    /// rest of its life, unactionable.
+    /// </para>
+    /// </summary>
+    private Task<List<WorkflowRequest>> ApprovalRequestsAsync(int employeeId, string requestType)
+    {
+        return _approverRepository.GetAll()
             .Where(a => a.ApproverId == employeeId
                         && !a.IsApproved
                         && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
                         && a.WorkflowRequest.RequestStatus == RequestStatus.Open)
             .Select(a => a.WorkflowRequest)
-            .WhereIf(!input.RequestType.IsNullOrWhiteSpace(), r => r.RequestType == input.RequestType);
+            .WhereIf(!requestType.IsNullOrWhiteSpace(), r => r.RequestType == requestType)
+            .ToListAsync();
+    }
 
-        var totalCount = await query.CountAsync();
+    /// <summary>
+    /// The requests somebody has asked this person to comment on and which they have not answered.
+    ///
+    /// <para>
+    /// Answered asks drop out: the point of the row is that something is expected, and once they have said
+    /// their piece nothing is. The request stays readable to them either way -- being asked is permanent,
+    /// being asked and not having replied is not.
+    /// </para>
+    /// </summary>
+    private Task<List<WorkflowRemark>> FeedbackRequestsAsync(int employeeId, string requestType)
+    {
+        return _feedbackRepository.GetAll()
+            .Where(r => r.CCReceiverId == employeeId
+                        && r.RespondedAt == null
+                        && r.WorkflowRequest.RequestStatus == RequestStatus.Open)
+            .WhereIf(!requestType.IsNullOrWhiteSpace(), r => r.WorkflowRequest.RequestType == requestType)
+            .ToListAsync();
+    }
 
-        var requests = await query
-            .OrderBy(input.Sorting)
-            .PageBy(input)
+    /// <summary>
+    /// Feedback asks as inbox rows: the same request summary, but saying who asked and why, and offering
+    /// none of the decision buttons -- this person cannot approve anything.
+    /// </summary>
+    private async Task<List<EssInboxItemDto>> BuildFeedbackItemsAsync(List<WorkflowRemark> asks)
+    {
+        if (asks.Count == 0)
+        {
+            return new List<EssInboxItemDto>();
+        }
+
+        var requestIds = asks.Select(a => a.WorkflowRequestId).Distinct().ToList();
+
+        var requests = await _requestRepository.GetAll()
+            .Where(r => requestIds.Contains(r.Id))
             .ToListAsync();
 
         var items = await BuildItemsAsync(requests);
+        var byRequestId = items.ToDictionary(i => i.Id);
 
-        return new PagedResultDto<EssInboxItemDto>(totalCount, items);
+        var askerIds = asks.Where(a => a.RequestedById.HasValue).Select(a => a.RequestedById.Value).Distinct().ToList();
+
+        var askers = (await _employeeRepository.GetAll()
+            .Where(e => askerIds.Contains(e.Id))
+            .Select(e => new { e.Id, e.FullNameEn, e.FullNameAr })
+            .ToListAsync()).ToDictionary(e => e.Id);
+
+        var result = new List<EssInboxItemDto>();
+
+        foreach (var ask in asks)
+        {
+            if (!byRequestId.TryGetValue(ask.WorkflowRequestId, out var item))
+            {
+                continue;
+            }
+
+            item.Kind = EssInboxItemKind.FeedbackRequest;
+            item.FeedbackNote = ask.RequestNote;
+            item.FeedbackRequestedByEmployeeId = ask.RequestedById;
+
+            // No decision is theirs to take. Said here as well as enforced on the server, so the screen
+            // never offers a button that would be refused.
+            item.CanReject = false;
+            item.CanSendBack = false;
+
+            if (ask.RequestedById.HasValue && askers.TryGetValue(ask.RequestedById.Value, out var asker))
+            {
+                item.FeedbackRequestedByNameEn = asker.FullNameEn;
+                item.FeedbackRequestedByNameAr = asker.FullNameAr;
+            }
+
+            result.Add(item);
+        }
+
+        return result;
     }
 
     public async Task<int> GetMyPendingCount()
@@ -134,6 +254,207 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
     /// Fills in the display fields for a page of requests, resolving requesters and type names in one query
     /// each rather than per row.
     /// </summary>
+    // ------------------------------------------------------------------ get feedback
+
+    public async Task RequestFeedback(RequestFeedbackInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+
+        // Only somebody the request is actually with may ask. Otherwise anyone who could see a request
+        // could pull colleagues into it, and "who asked you?" would have no good answer.
+        await EnsureCurrentApproverAsync(request, employeeId);
+
+        var wanted = (input.EmployeeIds ?? new List<int>())
+            .Where(id => id > 0)
+            .Distinct()
+            .ToList();
+
+        if (wanted.Count == 0)
+        {
+            throw new UserFriendlyException(L("SelectAtLeastOneColleagueToAsk"));
+        }
+
+        // Neither the requester nor the asker. Asking the person whose request it is what they think of it
+        // is not something anyone means to do, and asking yourself is a no-op that would still send a
+        // notification.
+        if (request.EmployeeId.HasValue && wanted.Contains(request.EmployeeId.Value))
+        {
+            throw new UserFriendlyException(L("CannotAskTheRequesterForFeedbackOnTheirOwnRequest"));
+        }
+
+        wanted.Remove(employeeId);
+
+        var alreadyAsked = await _feedbackRepository.GetAll()
+            .Where(r => r.WorkflowRequestId == request.Id && r.CCReceiverId.HasValue)
+            .Select(r => r.CCReceiverId.Value)
+            .ToListAsync();
+
+        var note = input.Note.IsNullOrWhiteSpace() ? null : input.Note.Trim();
+
+        foreach (var candidate in wanted.Where(id => !alreadyAsked.Contains(id)))
+        {
+            await _feedbackRepository.InsertAsync(new WorkflowRemark
+            {
+                TenantId = AbpSession.GetTenantId(),
+                WorkflowRequestId = request.Id,
+                CCReceiverId = candidate,
+                RequestedById = employeeId,
+                WorkflowStep = request.WorkflowStep,
+                RequestNote = note
+            });
+        }
+    }
+
+    public async Task SubmitFeedback(SubmitFeedbackInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        var ask = await _feedbackRepository.GetAll()
+            .Where(r => r.WorkflowRequestId == input.WorkflowRequestId
+                        && r.CCReceiverId == employeeId
+                        && r.RespondedAt == null)
+            .FirstOrDefaultAsync();
+
+        if (ask == null)
+        {
+            throw new UserFriendlyException(L("YouHaveNotBeenAskedForFeedbackOnThisRequest"));
+        }
+
+        // Posted through the ordinary comment path, so it lands in the conversation everyone reads rather
+        // than in a private channel only the asker would see.
+        await _activityAppService.AddComment(new AddWorkflowCommentInput
+        {
+            WorkflowRequestId = input.WorkflowRequestId,
+            Body = input.Comment
+        });
+
+        ask.RespondedAt = Clock.Now;
+        await _feedbackRepository.UpdateAsync(ask);
+    }
+
+    [HttpPost]
+    public async Task<List<FeedbackCandidateDto>> GetFeedbackCandidates(GetFeedbackCandidatesInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+        var request = await _requestRepository.GetAsync(input.WorkflowRequestId);
+
+        await EnsureCurrentApproverAsync(request, employeeId);
+
+        var asked = await _feedbackRepository.GetAll()
+            .Where(r => r.WorkflowRequestId == request.Id && r.CCReceiverId.HasValue)
+            .Select(r => r.CCReceiverId.Value)
+            .ToListAsync();
+
+        var excluded = new List<int> { employeeId };
+
+        if (request.EmployeeId.HasValue)
+        {
+            excluded.Add(request.EmployeeId.Value);
+        }
+
+        var candidates = await _employeeRepository.GetAll()
+            .Where(e => e.Status == EmployeeStatus.Active && !excluded.Contains(e.Id))
+            .Select(e => new FeedbackCandidateDto
+            {
+                EmployeeId = e.Id,
+                Code = e.Code,
+                NameEn = e.FullNameEn,
+                NameAr = e.FullNameAr,
+                PhotoUrl = e.PhotoPath != null ? "/api/employee-photo/" + e.Id : null
+            })
+            .OrderBy(e => e.NameEn)
+            .ToListAsync();
+
+        foreach (var candidate in candidates)
+        {
+            candidate.AlreadyAsked = asked.Contains(candidate.EmployeeId);
+        }
+
+        return candidates;
+    }
+
+    [HttpPost]
+    public async Task<List<FeedbackRequestDto>> GetFeedbackRequests(GetFeedbackCandidatesInput input)
+    {
+        var rows = await _feedbackRepository.GetAll()
+            .Where(r => r.WorkflowRequestId == input.WorkflowRequestId)
+            .Select(r => new FeedbackRequestDto
+            {
+                Id = r.Id,
+                EmployeeId = r.CCReceiverId ?? 0,
+                RequestedByEmployeeId = r.RequestedById,
+                Note = r.RequestNote,
+                WorkflowStep = r.WorkflowStep,
+                RequestedAt = r.CreationTime,
+                RespondedAt = r.RespondedAt
+            })
+            .ToListAsync();
+
+        await FillFeedbackPeopleAsync(rows);
+
+        return rows;
+    }
+
+    /// <summary>Names and photos for the feedback rows, in one query rather than per row.</summary>
+    private async Task FillFeedbackPeopleAsync(List<FeedbackRequestDto> rows)
+    {
+        var ids = rows.Select(r => r.EmployeeId)
+            .Concat(rows.Where(r => r.RequestedByEmployeeId.HasValue).Select(r => r.RequestedByEmployeeId.Value))
+            .Where(id => id > 0)
+            .Distinct()
+            .ToList();
+
+        if (ids.Count == 0)
+        {
+            return;
+        }
+
+        var people = (await _employeeRepository.GetAll()
+            .Where(e => ids.Contains(e.Id))
+            .Select(e => new { e.Id, e.Code, e.FullNameEn, e.FullNameAr, HasPhoto = e.PhotoPath != null })
+            .ToListAsync()).ToDictionary(e => e.Id);
+
+        foreach (var row in rows)
+        {
+            if (people.TryGetValue(row.EmployeeId, out var person))
+            {
+                row.Code = person.Code;
+                row.NameEn = person.FullNameEn;
+                row.NameAr = person.FullNameAr;
+                row.PhotoUrl = person.HasPhoto ? "/api/employee-photo/" + person.Id : null;
+            }
+
+            if (row.RequestedByEmployeeId.HasValue && people.TryGetValue(row.RequestedByEmployeeId.Value, out var asker))
+            {
+                row.RequestedByNameEn = asker.FullNameEn;
+                row.RequestedByNameAr = asker.FullNameAr;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Throws unless the caller is the approver this request is presently waiting on.
+    ///
+    /// <para>
+    /// Deliberately narrower than "can see it". A past approver, the requester and an administrator can all
+    /// read a request; none of them is entitled to pull colleagues into somebody else's decision.
+    /// </para>
+    /// </summary>
+    private async Task EnsureCurrentApproverAsync(WorkflowRequest request, int employeeId)
+    {
+        var isCurrentApprover = await _approverRepository.GetAll()
+            .AnyAsync(a => a.WorkflowRequestId == request.Id
+                           && a.WorkflowStep == request.WorkflowStep
+                           && a.ApproverId == employeeId
+                           && !a.IsApproved);
+
+        if (!isCurrentApprover)
+        {
+            throw new UserFriendlyException(L("YouAreNotTheCurrentApproverForThisWorkflowRequest"));
+        }
+    }
+
     private async Task<List<EssInboxItemDto>> BuildItemsAsync(List<WorkflowRequest> requests)
     {
         if (requests.Count == 0)

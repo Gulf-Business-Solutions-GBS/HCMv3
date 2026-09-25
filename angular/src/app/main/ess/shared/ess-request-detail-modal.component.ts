@@ -8,19 +8,18 @@ import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee
 import { WorkflowActivityRailComponent } from '@app/shared/common/workflow-activity/workflow-activity-rail.component';
 import { WorkflowParticipantsPanelComponent } from '@app/shared/common/workflow-participants/workflow-participants-panel.component';
 import { WorkflowParticipantProfileModalComponent } from '@app/shared/common/workflow-participants/workflow-participant-profile-modal.component';
+import { EssGetFeedbackModalComponent } from './ess-get-feedback-modal.component';
 import {
+    EssInboxServiceProxy,
     GetWorkflowRequestDetailInput,
-    GetWorkflowRequestLogInput,
+    SubmitFeedbackInput,
     RequestActionType,
     RequestStatus,
-    WorkflowPlatform,
-    WorkflowRequestLogEntryDto,
     WorkflowActivityServiceProxy,
     WorkflowDetailFieldDto,
     WorkflowDetailFieldKind,
     WorkflowRequestDetailDto,
 } from '@shared/service-proxies/service-proxies';
-import { FileDownloadService } from '@shared/utils/file-download.service';
 import { DateTime } from 'luxon';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -88,6 +87,21 @@ export interface EssRequestDetailConfig {
      * lists only the actions the step actually permits, and the server re-checks every one of them.
      */
     actions?: EssRequestAction[];
+
+    /**
+     * Turns on FEEDBACK mode instead: the reader was asked for their view, not for a decision.
+     *
+     * <p>Mutually exclusive with actions in practice, and the screen treats it that way -- somebody asked
+     * for feedback is not the approver, so offering them Approve would be offering a button the server
+     * would refuse. They get one box and one button.</p>
+     */
+    feedbackMode?: boolean;
+
+    /** Who asked, so the screen can say why this request is in front of them. */
+    feedbackRequestedByName?: string;
+
+    /** What the asker wanted looked at, if they said.  */
+    feedbackNote?: string;
 }
 
 /**
@@ -121,17 +135,20 @@ export interface EssRequestDetailConfig {
         WorkflowActivityRailComponent,
         WorkflowParticipantsPanelComponent,
         WorkflowParticipantProfileModalComponent,
+        EssGetFeedbackModalComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssRequestDetailModalComponent extends AppComponentBase {
     private readonly _activityService = inject(WorkflowActivityServiceProxy);
-    private readonly _fileDownloadService = inject(FileDownloadService);
+    private readonly _inboxService = inject(EssInboxServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('essRequestDetailModal');
 
     /** The one profile card for this dialog, shared by the "Initiated by" link and the conversation. */
     readonly profileCard = viewChild<WorkflowParticipantProfileModalComponent>('profileCard');
+
+    readonly feedbackModal = viewChild<EssGetFeedbackModalComponent>('feedbackModal');
 
     /** Raised when the approver decides. The host owns the call, because it also owns the list to refresh. */
     readonly decided = output<EssRequestDecision>();
@@ -144,31 +161,26 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
     /** The comment attached to the decision. Distinct from the conversation composer, which posts a remark. */
     decisionComment = '';
 
-    // ------------------------------------------------------------------ conversation / log
-
-    /**
-     * Which view of the same history is showing.
-     *
-     * <p>Two shapes of one table, and both were asked for. The thread is how a person reads a request
-     * once -- who said what, in order, with faces. The grid is how the same history is measured and
-     * exported: how many days each step took, on which platform, by whom. Asking the thread to be
-     * reportable would have ruined it as a thread; asking the grid to be readable would have ruined it as
-     * a report. So they are a toggle, defaulting to the thread because that is what an approver came for.</p>
-     */
-    readonly rightPaneView = signal<'conversation' | 'log'>('conversation');
-
-    readonly logEntries = signal<WorkflowRequestLogEntryDto[]>([]);
-    readonly loadingLog = signal(false);
-    readonly exportingLog = signal(false);
-
-    readonly ActionType = RequestActionType;
-
     /** True while the host's approve/reject/send-back call is in flight. */
     readonly acting = signal(false);
 
     readonly Kind = WorkflowDetailFieldKind;
 
     readonly isApproverMode = computed(() => (this.config()?.actions?.length ?? 0) > 0);
+
+    /** The reader was asked for an opinion, not a decision. */
+    readonly isFeedbackMode = computed(() => this.config()?.feedbackMode === true);
+
+    /**
+     * Whether the two-column layout applies. Both modes want the request beside its history -- somebody
+     * asked for their view needs the same context an approver does to have a view worth giving.
+     */
+    readonly isWideMode = computed(() => this.isApproverMode() || this.isFeedbackMode());
+
+    /** What a feedback recipient types. Separate from decisionComment: they are not deciding anything. */
+    feedbackComment = '';
+
+    readonly submittingFeedback = signal(false);
 
     /**
      * The server's projection wins when it is the handler's own; otherwise whatever the host passed wins;
@@ -404,75 +416,6 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
      * name in the conversation or in the approvers list opens. Silently does nothing without a workflow id,
      * because the card reads the person's role ON THIS REQUEST and has nothing to read without one.
      */
-    /**
-     * Switches the right-hand pane, loading the log the first time it is asked for.
-     *
-     * <p>Lazily, because most people never open it: fetching a second view of the history on every dialog
-     * open would cost a request per approval for a tab nobody clicked.</p>
-     */
-    showPane(view: 'conversation' | 'log'): void {
-        this.rightPaneView.set(view);
-
-        if (view === 'log' && !this.logEntries().length && !this.loadingLog()) {
-            this.loadLog();
-        }
-    }
-
-    private loadLog(): void {
-        const requestId = this.config()?.workflowRequestId;
-        if (!requestId) {
-            return;
-        }
-
-        this.loadingLog.set(true);
-
-        const input = new GetWorkflowRequestLogInput();
-        input.workflowRequestId = requestId;
-
-        this._activityService
-            .getRequestLog(input)
-            .pipe(finalize(() => this.loadingLog.set(false)))
-            .subscribe((entries) => this.logEntries.set(entries ?? []));
-    }
-
-    exportLog(): void {
-        const requestId = this.config()?.workflowRequestId;
-        if (!requestId || this.exportingLog()) {
-            return;
-        }
-
-        this.exportingLog.set(true);
-
-        const input = new GetWorkflowRequestLogInput();
-        input.workflowRequestId = requestId;
-
-        this._activityService
-            .exportRequestLogToExcel(input)
-            .pipe(finalize(() => this.exportingLog.set(false)))
-            .subscribe((file) => this._fileDownloadService.downloadTempFile(file));
-    }
-
-    /** The action's own word -- "Approved", "Sent back" -- rather than its number. */
-    actionTypeLabel(actionType: RequestActionType): string {
-        return this.l('RequestActionType_' + RequestActionType[actionType]);
-    }
-
-    /**
-     * Likewise for the platform, and for the same reason it needs a method at all: interpolating the enum
-     * straight into the key builds "WorkflowPlatform_0", which matches nothing and renders as itself. The
-     * reverse lookup turns the number back into the name the localisation file is keyed by.
-     */
-    platformLabel(platform: WorkflowPlatform): string {
-        return this.l('WorkflowPlatform_' + WorkflowPlatform[platform]);
-    }
-
-    /** Whose name to show, in the viewer's language, falling back to whichever one is stored. */
-    logActorName(entry: WorkflowRequestLogEntryDto): string {
-        const name = this.pick(entry.actionByNameEn, entry.actionByNameAr) || '';
-
-        return name && entry.actionByCode ? `${name} (${entry.actionByCode})` : name;
-    }
-
     openRequesterProfile(employeeId: number): void {
         const workflowRequestId = this.config()?.workflowRequestId;
 
@@ -481,6 +424,51 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         }
 
         this.profileCard()?.show(workflowRequestId, employeeId, this.requesterPlainName());
+    }
+
+    /** Opens the colleague picker. Only reachable in approver mode, where the server also requires it. */
+    askForFeedback(): void {
+        const requestId = this.config()?.workflowRequestId;
+
+        if (requestId) {
+            this.feedbackModal()?.show(requestId);
+        }
+    }
+
+    /**
+     * Sends this reader's view and closes their ask.
+     *
+     * <p>Guarded here as well as on the server because the server's refusal would come after they had
+     * pressed the button, and an empty submission is the one mistake worth catching first: it would close
+     * the ask without answering it, which is worse than not answering.</p>
+     */
+    submitFeedback(): void {
+        const requestId = this.config()?.workflowRequestId;
+        const comment = (this.feedbackComment || '').trim();
+
+        if (!requestId || this.submittingFeedback()) {
+            return;
+        }
+
+        if (!comment) {
+            this.message.warn(this.l('FeedbackIsRequired'));
+            return;
+        }
+
+        this.submittingFeedback.set(true);
+
+        const input = new SubmitFeedbackInput();
+        input.workflowRequestId = requestId;
+        input.comment = comment;
+
+        this._inboxService
+            .submitFeedback(input)
+            .pipe(finalize(() => this.submittingFeedback.set(false)))
+            .subscribe(() => {
+                this.notify.success(this.l('FeedbackSubmitted'));
+                this.feedbackComment = '';
+                this.close();
+            });
     }
 
     show(config: EssRequestDetailConfig): void {

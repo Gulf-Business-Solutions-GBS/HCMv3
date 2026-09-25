@@ -1,0 +1,96 @@
+<div
+    appBsModal
+    #getFeedbackModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="getFeedbackModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ 'AskColleaguesForFeedback' | localize }}</h4>
+                    <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="'Close' | localize"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Said outright, because this dialog sits next to Approve and Reject and the one thing
+                         it must not be mistaken for is handing the decision over. -->
+                    <div class="alert alert-light-primary ess-feedback__explainer">
+                        {{ 'YouWereAskedForFeedbackNotApproval' | localize }}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">{{ 'WhoShouldLookAtThis' | localize }}</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            [placeholder]="'SearchWithThreeDot' | localize"
+                            [ngModel]="filterText"
+                            (ngModelChange)="onFilterChange($event)"
+                            name="feedbackFilter" />
+                    </div>
+
+                    @if (loading()) {
+                        <div class="text-muted"><i class="fa fa-spinner fa-spin"></i></div>
+                    } @else {
+                        <div class="ess-feedback__list">
+                            @for (candidate of visibleCandidates(); track candidate.employeeId) {
+                                <!-- A label wrapping the checkbox, so the whole row is a hit target rather
+                                     than the 13px box alone. -->
+                                <label
+                                    class="ess-feedback__row"
+                                    [class.ess-feedback__row--asked]="candidate.alreadyAsked">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        [checked]="isSelected(candidate.employeeId)"
+                                        [disabled]="candidate.alreadyAsked"
+                                        (change)="toggle(candidate)" />
+
+                                    <employee-avatar
+                                        [photoUrl]="candidate.photoUrl"
+                                        [name]="plainName(candidate)"
+                                        [size]="28"></employee-avatar>
+
+                                    <span class="ess-feedback__who">{{ displayName(candidate) }}</span>
+
+                                    @if (candidate.alreadyAsked) {
+                                        <span class="badge bg-light text-muted">{{ 'AlreadyAsked' | localize }}</span>
+                                    }
+                                </label>
+                            } @empty {
+                                <div class="text-muted">{{ 'NoData' | localize }}</div>
+                            }
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <label class="form-label">{{ 'WhatWouldYouLikeThemToLookAt' | localize }}</label>
+                        <textarea class="form-control" rows="2" [(ngModel)]="note" name="feedbackNote"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        [disabled]="!selectedCount() || saving()"
+                        (click)="send()">
+                        {{ 'SendRequest' | localize }}
+                        @if (selectedCount()) {
+                            <span class="ms-1">({{ selectedCount() }})</span>
+                        }
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

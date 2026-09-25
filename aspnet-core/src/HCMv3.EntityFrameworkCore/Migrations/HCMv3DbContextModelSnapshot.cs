@@ -34727,17 +34727,33 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("RequestNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RequestedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<int>("WorkflowRequestId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkflowStep")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CCReceiverId");
 
+                    b.HasIndex("RequestedById");
+
                     b.HasIndex("WorkflowRequestId");
+
+                    b.HasIndex("CCReceiverId", "RespondedAt");
 
                     b.ToTable("WorkflowRemarks", (string)null);
                 });
@@ -42075,6 +42091,10 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("CCReceiverId");
 
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "RequestedBy")
+                        .WithMany()
+                        .HasForeignKey("RequestedById");
+
                     b.HasOne("HCMv3.Workflow.WorkflowRequest", "WorkflowRequest")
                         .WithMany("WorkflowRemarks")
                         .HasForeignKey("WorkflowRequestId")
@@ -42082,6 +42102,8 @@ namespace HCMv3.Migrations
                         .IsRequired();
 
                     b.Navigation("CCReceiver");
+
+                    b.Navigation("RequestedBy");
 
                     b.Navigation("WorkflowRequest");
                 });

@@ -61759,6 +61759,236 @@ export class EssInboxServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestFeedback(body?: RequestFeedbackInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/RequestFeedback";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestFeedback(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestFeedback(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRequestFeedback(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitFeedback(body?: SubmitFeedbackInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/SubmitFeedback";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitFeedback(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitFeedback(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSubmitFeedback(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getFeedbackCandidates(body?: GetFeedbackCandidatesInput | undefined): Observable<FeedbackCandidateDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/GetFeedbackCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFeedbackCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFeedbackCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FeedbackCandidateDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FeedbackCandidateDto[]>;
+        }));
+    }
+
+    protected processGetFeedbackCandidates(response: HttpResponseBase): Observable<FeedbackCandidateDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(FeedbackCandidateDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getFeedbackRequests(body?: GetFeedbackCandidatesInput | undefined): Observable<FeedbackRequestDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/GetFeedbackRequests";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFeedbackRequests(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFeedbackRequests(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FeedbackRequestDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FeedbackRequestDto[]>;
+        }));
+    }
+
+    protected processGetFeedbackRequests(response: HttpResponseBase): Observable<FeedbackRequestDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(FeedbackRequestDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -217453,6 +217683,11 @@ export class EssInboxItemDto implements IEssInboxItemDto {
     canReject!: boolean;
     canSendBack!: boolean;
     enableTravelCost!: boolean;
+    kind!: EssInboxItemKind;
+    feedbackRequestedByEmployeeId!: number | undefined;
+    feedbackRequestedByNameEn!: string | undefined;
+    feedbackRequestedByNameAr!: string | undefined;
+    feedbackNote!: string | undefined;
 
     constructor(data?: IEssInboxItemDto) {
         if (data) {
@@ -217482,6 +217717,11 @@ export class EssInboxItemDto implements IEssInboxItemDto {
             this.canReject = _data["canReject"];
             this.canSendBack = _data["canSendBack"];
             this.enableTravelCost = _data["enableTravelCost"];
+            this.kind = _data["kind"];
+            this.feedbackRequestedByEmployeeId = _data["feedbackRequestedByEmployeeId"];
+            this.feedbackRequestedByNameEn = _data["feedbackRequestedByNameEn"];
+            this.feedbackRequestedByNameAr = _data["feedbackRequestedByNameAr"];
+            this.feedbackNote = _data["feedbackNote"];
         }
     }
 
@@ -217511,6 +217751,11 @@ export class EssInboxItemDto implements IEssInboxItemDto {
         data["canReject"] = this.canReject;
         data["canSendBack"] = this.canSendBack;
         data["enableTravelCost"] = this.enableTravelCost;
+        data["kind"] = this.kind;
+        data["feedbackRequestedByEmployeeId"] = this.feedbackRequestedByEmployeeId;
+        data["feedbackRequestedByNameEn"] = this.feedbackRequestedByNameEn;
+        data["feedbackRequestedByNameAr"] = this.feedbackRequestedByNameAr;
+        data["feedbackNote"] = this.feedbackNote;
         return data;
     }
 }
@@ -217533,6 +217778,16 @@ export interface IEssInboxItemDto {
     canReject: boolean;
     canSendBack: boolean;
     enableTravelCost: boolean;
+    kind: EssInboxItemKind;
+    feedbackRequestedByEmployeeId: number | undefined;
+    feedbackRequestedByNameEn: string | undefined;
+    feedbackRequestedByNameAr: string | undefined;
+    feedbackNote: string | undefined;
+}
+
+export enum EssInboxItemKind {
+    Approval = 0,
+    FeedbackRequest = 1,
 }
 
 export class EssRecentRequestDto implements IEssRecentRequestDto {
@@ -218426,6 +218681,154 @@ export interface IFeatureInputTypeDto {
     attributes: { [key: string]: any; } | undefined;
     validator: IValueValidator;
     itemSource: LocalizableComboboxItemSourceDto;
+}
+
+export class FeedbackCandidateDto implements IFeedbackCandidateDto {
+    employeeId!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    jobTitleEn!: string | undefined;
+    jobTitleAr!: string | undefined;
+    photoUrl!: string | undefined;
+    alreadyAsked!: boolean;
+
+    constructor(data?: IFeedbackCandidateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.jobTitleEn = _data["jobTitleEn"];
+            this.jobTitleAr = _data["jobTitleAr"];
+            this.photoUrl = _data["photoUrl"];
+            this.alreadyAsked = _data["alreadyAsked"];
+        }
+    }
+
+    static fromJS(data: any): FeedbackCandidateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FeedbackCandidateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["jobTitleEn"] = this.jobTitleEn;
+        data["jobTitleAr"] = this.jobTitleAr;
+        data["photoUrl"] = this.photoUrl;
+        data["alreadyAsked"] = this.alreadyAsked;
+        return data;
+    }
+}
+
+export interface IFeedbackCandidateDto {
+    employeeId: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    jobTitleEn: string | undefined;
+    jobTitleAr: string | undefined;
+    photoUrl: string | undefined;
+    alreadyAsked: boolean;
+}
+
+export class FeedbackRequestDto implements IFeedbackRequestDto {
+    id!: number;
+    employeeId!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    photoUrl!: string | undefined;
+    requestedByEmployeeId!: number | undefined;
+    requestedByNameEn!: string | undefined;
+    requestedByNameAr!: string | undefined;
+    note!: string | undefined;
+    workflowStep!: number;
+    requestedAt!: DateTime;
+    respondedAt!: DateTime | undefined;
+
+    constructor(data?: IFeedbackRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeId = _data["employeeId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.photoUrl = _data["photoUrl"];
+            this.requestedByEmployeeId = _data["requestedByEmployeeId"];
+            this.requestedByNameEn = _data["requestedByNameEn"];
+            this.requestedByNameAr = _data["requestedByNameAr"];
+            this.note = _data["note"];
+            this.workflowStep = _data["workflowStep"];
+            this.requestedAt = _data["requestedAt"] ? DateTime.fromISO(_data["requestedAt"].toString()) : undefined as any;
+            this.respondedAt = _data["respondedAt"] ? DateTime.fromISO(_data["respondedAt"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): FeedbackRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FeedbackRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeId"] = this.employeeId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["photoUrl"] = this.photoUrl;
+        data["requestedByEmployeeId"] = this.requestedByEmployeeId;
+        data["requestedByNameEn"] = this.requestedByNameEn;
+        data["requestedByNameAr"] = this.requestedByNameAr;
+        data["note"] = this.note;
+        data["workflowStep"] = this.workflowStep;
+        data["requestedAt"] = this.requestedAt ? this.requestedAt.toString() : undefined as any;
+        data["respondedAt"] = this.respondedAt ? this.respondedAt.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IFeedbackRequestDto {
+    id: number;
+    employeeId: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    photoUrl: string | undefined;
+    requestedByEmployeeId: number | undefined;
+    requestedByNameEn: string | undefined;
+    requestedByNameAr: string | undefined;
+    note: string | undefined;
+    workflowStep: number;
+    requestedAt: DateTime;
+    respondedAt: DateTime | undefined;
 }
 
 export class FetchMissingTimeAttendanceDataInput implements IFetchMissingTimeAttendanceDataInput {
@@ -250232,6 +250635,42 @@ export interface IGetExpiringTenantsOutput {
     subscriptionEndDateEnd: DateTime;
 }
 
+export class GetFeedbackCandidatesInput implements IGetFeedbackCandidatesInput {
+    workflowRequestId!: number;
+
+    constructor(data?: IGetFeedbackCandidatesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+        }
+    }
+
+    static fromJS(data: any): GetFeedbackCandidatesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetFeedbackCandidatesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        return data;
+    }
+}
+
+export interface IGetFeedbackCandidatesInput {
+    workflowRequestId: number;
+}
+
 export class GetFirstAidBoxDetailForEditOutput implements IGetFirstAidBoxDetailForEditOutput {
     firstAidBoxDetail!: CreateOrEditFirstAidBoxDetailDto;
 
@@ -253457,6 +253896,7 @@ export class GetMyInboxInput implements IGetMyInboxInput {
     skipCount!: number;
     sorting!: string | undefined;
     requestType!: string | undefined;
+    kind!: EssInboxItemKind;
 
     constructor(data?: IGetMyInboxInput) {
         if (data) {
@@ -253473,6 +253913,7 @@ export class GetMyInboxInput implements IGetMyInboxInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.requestType = _data["requestType"];
+            this.kind = _data["kind"];
         }
     }
 
@@ -253489,6 +253930,7 @@ export class GetMyInboxInput implements IGetMyInboxInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["requestType"] = this.requestType;
+        data["kind"] = this.kind;
         return data;
     }
 }
@@ -253498,6 +253940,7 @@ export interface IGetMyInboxInput {
     skipCount: number;
     sorting: string | undefined;
     requestType: string | undefined;
+    kind: EssInboxItemKind;
 }
 
 export class GetMyLeavesInput implements IGetMyLeavesInput {
@@ -322444,6 +322887,61 @@ export interface IRequestExitPermitInput {
     comments: string | undefined;
 }
 
+export class RequestFeedbackInput implements IRequestFeedbackInput {
+    workflowRequestId!: number;
+    employeeIds!: number[];
+    note!: string | undefined;
+
+    constructor(data?: IRequestFeedbackInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+        if (!data) {
+            this.employeeIds = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            if (Array.isArray(_data["employeeIds"])) {
+                this.employeeIds = [] as any;
+                for (let item of _data["employeeIds"])
+                    this.employeeIds!.push(item);
+            }
+            this.note = _data["note"];
+        }
+    }
+
+    static fromJS(data: any): RequestFeedbackInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestFeedbackInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        if (Array.isArray(this.employeeIds)) {
+            data["employeeIds"] = [];
+            for (let item of this.employeeIds)
+                data["employeeIds"].push(item);
+        }
+        data["note"] = this.note;
+        return data;
+    }
+}
+
+export interface IRequestFeedbackInput {
+    workflowRequestId: number;
+    employeeIds: number[];
+    note: string | undefined;
+}
+
 export class RequestHRServiceInput implements IRequestHRServiceInput {
     hrServiceTypeId!: number;
     serviceDate!: DateTime;
@@ -331856,6 +332354,46 @@ export interface ISubmitEmployeeSurveyInput {
     answers: EmployeeSurveyAnswerInput[] | undefined;
 }
 
+export class SubmitFeedbackInput implements ISubmitFeedbackInput {
+    workflowRequestId!: number;
+    comment!: string;
+
+    constructor(data?: ISubmitFeedbackInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): SubmitFeedbackInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubmitFeedbackInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["comment"] = this.comment;
+        return data;
+    }
+}
+
+export interface ISubmitFeedbackInput {
+    workflowRequestId: number;
+    comment: string;
+}
+
 export class SubmitTimeLogApprovalDayDto implements ISubmitTimeLogApprovalDayDto {
     timeRegisterId!: number;
     proposedAbsentDay!: boolean;
@@ -341112,6 +341650,8 @@ export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
     origin!: WorkflowApproverOrigin;
     actionType!: RequestActionType;
     actedAt!: DateTime | undefined;
+    approvalRequire!: ApprovalRequire;
+    isNotRequired!: boolean;
 
     constructor(data?: IWorkflowApproverEntryDto) {
         if (data) {
@@ -341130,6 +341670,8 @@ export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
             this.origin = _data["origin"];
             this.actionType = _data["actionType"];
             this.actedAt = _data["actedAt"] ? DateTime.fromISO(_data["actedAt"].toString()) : undefined as any;
+            this.approvalRequire = _data["approvalRequire"];
+            this.isNotRequired = _data["isNotRequired"];
         }
     }
 
@@ -341148,6 +341690,8 @@ export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
         data["origin"] = this.origin;
         data["actionType"] = this.actionType;
         data["actedAt"] = this.actedAt ? this.actedAt.toString() : undefined as any;
+        data["approvalRequire"] = this.approvalRequire;
+        data["isNotRequired"] = this.isNotRequired;
         return data;
     }
 }
@@ -341159,11 +341703,15 @@ export interface IWorkflowApproverEntryDto {
     origin: WorkflowApproverOrigin;
     actionType: RequestActionType;
     actedAt: DateTime | undefined;
+    approvalRequire: ApprovalRequire;
+    isNotRequired: boolean;
 }
 
 export enum WorkflowApproverOrigin {
     CurrentStep = 0,
     ReconstructedFromLog = 1,
+    PastStep = 2,
+    CreatorStep = 3,
 }
 
 export enum WorkflowApproverPersonType {

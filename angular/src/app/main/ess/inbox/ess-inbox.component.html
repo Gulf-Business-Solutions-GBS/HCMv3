@@ -188,7 +188,19 @@
                                                 {{ 'Actions' | localize }}
                                             </button>
                                         </td>
-                                        <td style="min-width: 160px">{{ record.typeName }}</td>
+                                        <td style="min-width: 160px">
+                                            {{ record.typeName }}
+
+                                            @if (record.isFeedbackRequest) {
+                                                <!-- Marked in the grid, not only once the row is opened. A
+                                                     feedback request and an approval look identical here
+                                                     otherwise, and the difference is whether this person
+                                                     is expected to decide anything. -->
+                                                <span class="badge badge-light-primary ms-2">
+                                                    {{ 'AskedForMyFeedback' | localize }}
+                                                </span>
+                                            }
+                                        </td>
                                         <td style="min-width: 150px">{{ record.requestNumber }}</td>
                                         <td style="min-width: 200px">
                                             <div class="d-flex align-items-center">

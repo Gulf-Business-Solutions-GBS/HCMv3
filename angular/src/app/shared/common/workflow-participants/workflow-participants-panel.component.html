@@ -24,21 +24,29 @@
          switch a view rather than navigate anywhere. -->
     <ul class="nav nav-tabs wf-parts__tabs">
         <li class="nav-item">
-            <button type="button" class="nav-link" [class.active]="tab() === 'approvers'" (click)="tab.set('approvers')">
+            <button type="button" class="nav-link" [class.active]="tab() === 'approvers'" (click)="selectTab('approvers')">
                 {{ 'Approvers' | localize }}
                 <span class="wf-parts__count">{{ approvers().length }}</span>
             </button>
         </li>
         <li class="nav-item">
-            <button type="button" class="nav-link" [class.active]="tab() === 'readLog'" (click)="tab.set('readLog')">
+            <button type="button" class="nav-link" [class.active]="tab() === 'readLog'" (click)="selectTab('readLog')">
                 {{ 'ReadLog' | localize }}
                 <span class="wf-parts__count">{{ readLog().length }}</span>
             </button>
         </li>
         <li class="nav-item">
-            <button type="button" class="nav-link" [class.active]="tab() === 'delegates'" (click)="tab.set('delegates')">
+            <button type="button" class="nav-link" [class.active]="tab() === 'delegates'" (click)="selectTab('delegates')">
                 {{ 'Delegates' | localize }}
                 <span class="wf-parts__count">{{ delegates().length }}</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <!-- The action trail, alongside the other answers about how this request has been handled
+                 rather than as a toggle on the conversation card. Both were views of the same request and
+                 living in two places meant two places to look. -->
+            <button type="button" class="nav-link" [class.active]="tab() === 'log'" (click)="selectTab('log')">
+                {{ 'LogView' | localize }}
             </button>
         </li>
     </ul>
@@ -49,40 +57,54 @@
         } @else {
             @switch (tab()) {
                 @case ('approvers') {
-                    @if (approvalRuleLabel(); as rule) {
-                        <!-- Above the names, because it changes how the names are read. -->
-                        <div class="wf-parts__rule">{{ rule }}</div>
-                    }
+                    <!-- A chain is a sequence of steps, so it is drawn as one: each step its own block,
+                         separated by a rule, with its own heading. The rule that governs a step sits
+                         inside that step and nowhere else -- one line above the whole list described
+                         whichever step happened to be first and silently mis-described the rest. -->
+                    @for (group of approverSteps(); track group.step) {
+                        <div class="wf-parts__step">
+                            <div class="wf-parts__step-head">
+                                {{ 'Step' | localize }} {{ group.step }}
+                                @if (group.isCreatorStep) {
+                                    <span class="wf-parts__step-kind">{{ 'Submitted' | localize }}</span>
+                                }
+                            </div>
 
-                    @for (entry of approvers(); track entry.person?.employeeId + '-' + entry.workflowStep) {
-                        <div class="wf-parts__row">
-                            <employee-avatar
-                                [photoUrl]="entry.person?.photoUrl"
-                                [name]="plainName(entry.person)"
-                                [size]="28"></employee-avatar>
+                            @if (group.rule) {
+                                <!-- Only where it says something: a step with one approver has no choice
+                                     to describe, and a creator step has no approval rule at all. -->
+                                <div class="wf-parts__rule">{{ group.rule }}</div>
+                            }
 
-                            <span class="wf-parts__who">
-                                <!-- A real <button>, styled as a link: it opens a dialog rather than
-                                     navigating, so an anchor would be lying about what it does and an
-                                     anchor without href is not keyboard-reachable anyway. -->
-                                <button
-                                    type="button"
-                                    class="wf-parts__name wf-parts__name--link"
-                                    (click)="openProfile(entry.person)">
-                                    {{ displayName(entry.person) || '-' }}
-                                </button>
-                                <span class="wf-parts__meta">
-                                    <span>{{ 'Step' | localize }} {{ entry.workflowStep }}</span>
-                                    @if (jobTitle(entry.person)) {
-                                        <span class="wf-parts__dot">&middot;</span>
-                                        <span>{{ jobTitle(entry.person) }}</span>
+                            @for (entry of group.entries; track entry.person?.employeeId + '-' + entry.workflowStep) {
+                                <div class="wf-parts__row">
+                                    <employee-avatar
+                                        [photoUrl]="entry.person?.photoUrl"
+                                        [name]="plainName(entry.person)"
+                                        [size]="28"></employee-avatar>
+
+                                    <span class="wf-parts__who">
+                                        <!-- A real <button>, styled as a link: it opens a dialog rather
+                                             than navigating, so an anchor would be lying about what it
+                                             does and an anchor without href is not keyboard-reachable. -->
+                                        <button
+                                            type="button"
+                                            class="wf-parts__name wf-parts__name--link"
+                                            (click)="openProfile(entry.person)">
+                                            {{ displayName(entry.person) || '-' }}
+                                        </button>
+                                        @if (jobTitle(entry.person)) {
+                                            <span class="wf-parts__meta">{{ jobTitle(entry.person) }}</span>
+                                        }
+                                    </span>
+
+                                    @if (approverStatusLabel(entry); as status) {
+                                        <span class="wf-parts__pill" [ngClass]="approverStatusClass(entry)">
+                                            {{ status }}
+                                        </span>
                                     }
-                                </span>
-                            </span>
-
-                            <span class="wf-parts__pill" [ngClass]="approverStatusClass(entry)">
-                                {{ approverStatusLabel(entry) }}
-                            </span>
+                                </div>
+                            }
                         </div>
                     } @empty {
                         <div class="wf-parts__empty">{{ 'NoApproversRecorded' | localize }}</div>
@@ -129,6 +151,54 @@
                     }
                 }
 
+                @case ('log') {
+                    <div class="wf-parts__log-head">
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-light-primary"
+                            [disabled]="exportingLog() || !logEntries().length"
+                            (click)="exportLog()">
+                            <i class="fa fa-file-excel me-1"></i>{{ 'ExportToExcel' | localize }}
+                        </button>
+                    </div>
+
+                    @if (loadingLog()) {
+                        <div class="wf-parts__empty"><i class="fa fa-spinner fa-spin"></i></div>
+                    } @else {
+                        <!-- Scrolls sideways rather than shrinking its columns to fit a side rail. Who,
+                             what and when are readable without moving; step, days and platform are there
+                             for anyone looking for them, and anybody actually measuring durations wants
+                             the export, which is what the export is for. -->
+                        <div class="table-responsive wf-parts__log">
+                            <table class="table table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'ActionBy' | localize }}</th>
+                                        <th>{{ 'ActionType' | localize }}</th>
+                                        <th>{{ 'ActionDate' | localize }}</th>
+                                        <th class="text-end">{{ 'WorkflowStep' | localize }}</th>
+                                        <th class="text-end">{{ 'ActionDays' | localize }}</th>
+                                        <th>{{ 'Platform' | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (entry of logEntries(); track entry.id) {
+                                        <tr>
+                                            <td>{{ logActorName(entry) || '-' }}</td>
+                                            <td>{{ actionTypeLabel(entry.actionType) }}</td>
+                                            <td>{{ dateTime(entry.actionDateTime) }}</td>
+                                            <td class="text-end">{{ entry.workflowStep }}</td>
+                                            <td class="text-end">{{ entry.actionDays }}</td>
+                                            <td>{{ platformLabel(entry.platform) }}</td>
+                                        </tr>
+                                    } @empty {
+                                        <tr><td colspan="6" class="text-muted">{{ 'NoData' | localize }}</td></tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
                 @case ('delegates') {
                     @for (entry of delegates(); track $index) {
                         <div class="wf-parts__row">

@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
     ApprovalRequire,
     GetWorkflowParticipantsInput,
+    GetWorkflowRequestLogInput,
+    WorkflowPlatform,
+    WorkflowRequestLogEntryDto,
     RequestActionType,
     RequestStatus,
     WorkflowActivityServiceProxy,
@@ -22,7 +26,7 @@ import { finalize } from 'rxjs/operators';
 import { WorkflowParticipantProfileModalComponent } from './workflow-participant-profile-modal.component';
 
 /** Which of the three lists is on show. */
-export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'delegates';
+export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'delegates' | 'log';
 
 /**
  * Who may act on a request, who has acted, who stands in for whom, and who has merely looked.
@@ -52,6 +56,7 @@ export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'delegates';
 })
 export class WorkflowParticipantsPanelComponent extends AppComponentBase {
     private readonly _activityService = inject(WorkflowActivityServiceProxy);
+    private readonly _fileDownloadService = inject(FileDownloadService);
 
     readonly workflowRequestId = input.required<number>();
 
@@ -61,12 +66,63 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
     readonly participants = signal<WorkflowParticipantsDto | undefined>(undefined);
     readonly tab = signal<WorkflowParticipantsTab>('approvers');
 
+    // ---------------------------------------------------------------- log
+
+    /**
+     * The action trail, as a tab of this panel rather than a toggle on the conversation card.
+     *
+     * <p>It belongs here because this panel is where a reader already comes for the mechanics of the
+     * request -- who is entitled to act, who has looked, who is standing in. The log is the fourth answer
+     * of that set, and having it live somewhere else meant two different places to look for one story.</p>
+     */
+    readonly logEntries = signal<WorkflowRequestLogEntryDto[]>([]);
+    readonly loadingLog = signal(false);
+    readonly exportingLog = signal(false);
+
     readonly Origin = WorkflowApproverOrigin;
     readonly Relation = WorkflowDelegationRelation;
 
     readonly approvers = computed(() => this.participants()?.approvers ?? []);
     readonly readLog = computed(() => this.participants()?.readLog ?? []);
     readonly delegates = computed(() => this.participants()?.delegates ?? []);
+
+    /**
+     * The approvers split into their steps, in order, each carrying the rule that governs it.
+     *
+     * <p>One flat list with a single rule above it was the bug: "any one of these approvers is enough"
+     * described step 3 while sitting above step 2 as well. A chain is a sequence of steps and reads as
+     * one.</p>
+     */
+    readonly approverSteps = computed(() => {
+        const byStep = new Map<number, WorkflowApproverEntryDto[]>();
+
+        for (const entry of this.approvers()) {
+            const step = entry.workflowStep ?? 0;
+            const group = byStep.get(step);
+
+            if (group) {
+                group.push(entry);
+            } else {
+                byStep.set(step, [entry]);
+            }
+        }
+
+        return [...byStep.entries()]
+            .sort((a, b) => a[0] - b[0])
+            .map(([step, entries]) => ({
+                step,
+                entries,
+                isCreatorStep: entries.every((e) => e.origin === WorkflowApproverOrigin.CreatorStep),
+
+                // Stated only where it tells the reader something. One approver means there is no choice
+                // to describe -- "any one of these approvers is enough" above a list of one is noise --
+                // and a creator step has no approval rule at all.
+                rule:
+                    entries.length > 1 && entries.some((e) => e.origin !== WorkflowApproverOrigin.CreatorStep)
+                        ? this.ruleLabel(entries[0].approvalRequire)
+                        : '',
+            }));
+    });
 
     /**
      * Whether any row on the Approvers tab was rebuilt from the action trail rather than read from the
@@ -84,15 +140,13 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
     });
 
     /**
-     * "Any one of these approvers is enough" / "All of these approvers must approve".
+     * "Any one of these approvers is enough" / "All of these approvers must approve", for one step.
      *
-     * <p>The engine has enforced this since the port; the panel never said it. With three names listed as
-     * pending and no rule stated, the reader cannot tell whether the request is waiting on THEM or merely
-     * might be -- which is the one thing an approvers list exists to answer. Empty when the step could not
-     * be resolved, so the panel says nothing rather than asserting a default.</p>
+     * <p>Empty for a rule the server could not resolve, so the panel says nothing rather than asserting a
+     * default -- claiming the wrong rule is worse than claiming none.</p>
      */
-    readonly approvalRuleLabel = computed(() => {
-        switch (this.participants()?.currentApprovalRequire) {
+    private ruleLabel(rule: ApprovalRequire | undefined): string {
+        switch (rule) {
             case ApprovalRequire.Single:
                 return this.l('ApprovalRuleSingle');
             case ApprovalRequire.All:
@@ -102,7 +156,7 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
             default:
                 return '';
         }
-    });
+    }
 
     readonly currentWorkflowRole = computed(() =>
         this.pick(this.participants()?.currentWorkflowRoleNameEn, this.participants()?.currentWorkflowRoleNameAr)
@@ -179,13 +233,32 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
      * <p>A step that was REJECTED or SENT BACK must not read as "has not got round to it yet", which is
      * what a bare is-approved flag would say about it.</p>
      */
+    /**
+     * The word against a name, or nothing at all.
+     *
+     * <p>Nothing is a real answer here and the reason it exists: on a step where any one approval is
+     * enough and somebody has approved, the others are not late. They are not being asked. "Pending"
+     * against them is a request for an action that is never coming, and it is how one approver ends up
+     * chasing a colleague for an approval nobody needs.</p>
+     *
+     * <p>The creator is likewise not pending anything -- they submitted it, which the step heading
+     * already says.</p>
+     */
     approverStatusLabel(entry: WorkflowApproverEntryDto): string {
+        if (entry.origin === WorkflowApproverOrigin.CreatorStep) {
+            return '';
+        }
+
         if (entry.isApproved) {
             return this.l('Approved');
         }
 
         if (entry.actionType !== undefined && entry.actionType !== null) {
             return this.l('WorkflowAction_' + RequestActionType[entry.actionType]);
+        }
+
+        if (entry.isNotRequired) {
+            return '';
         }
 
         return this.l('Pending');
@@ -240,6 +313,79 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
 
     dateOnly(value: DateTime | undefined): string {
         return value?.toFormat('dd MMM yyyy') ?? '';
+    }
+
+    /**
+     * Switches tab, fetching the log the first time it is asked for.
+     *
+     * <p>Lazily: most readers never open it, and a second read of the request's history on every dialog
+     * open would cost a round trip per approval for a tab nobody pressed.</p>
+     */
+    selectTab(tab: WorkflowParticipantsTab): void {
+        this.tab.set(tab);
+
+        if (tab === 'log' && !this.logEntries().length && !this.loadingLog()) {
+            this.loadLog();
+        }
+    }
+
+    private loadLog(): void {
+        const requestId = this.workflowRequestId();
+
+        if (!requestId) {
+            return;
+        }
+
+        this.loadingLog.set(true);
+
+        const input = new GetWorkflowRequestLogInput();
+        input.workflowRequestId = requestId;
+
+        this._activityService
+            .getRequestLog(input)
+            .pipe(finalize(() => this.loadingLog.set(false)))
+            .subscribe({
+                next: (entries) => this.logEntries.set(entries ?? []),
+                error: () => this.logEntries.set([]),
+            });
+    }
+
+    exportLog(): void {
+        const requestId = this.workflowRequestId();
+
+        if (!requestId || this.exportingLog()) {
+            return;
+        }
+
+        this.exportingLog.set(true);
+
+        const input = new GetWorkflowRequestLogInput();
+        input.workflowRequestId = requestId;
+
+        this._activityService
+            .exportRequestLogToExcel(input)
+            .pipe(finalize(() => this.exportingLog.set(false)))
+            .subscribe((file) => this._fileDownloadService.downloadTempFile(file));
+    }
+
+    /** The action's own word -- "Approved", "Sent back" -- rather than its number. */
+    actionTypeLabel(actionType: RequestActionType): string {
+        return this.l('RequestActionType_' + RequestActionType[actionType]);
+    }
+
+    /**
+     * Likewise for the platform. Interpolating the enum straight into the key builds
+     * "WorkflowPlatform_0", which matches nothing and renders as itself.
+     */
+    platformLabel(platform: WorkflowPlatform): string {
+        return this.l('WorkflowPlatform_' + WorkflowPlatform[platform]);
+    }
+
+    /** Whose name to show on a log row, in the reader's language, with the code that disambiguates it. */
+    logActorName(entry: WorkflowRequestLogEntryDto): string {
+        const name = this.pick(entry.actionByNameEn, entry.actionByNameAr) || '';
+
+        return name && entry.actionByCode ? `${name} (${entry.actionByCode})` : name;
     }
 
     private load(workflowRequestId: number): void {

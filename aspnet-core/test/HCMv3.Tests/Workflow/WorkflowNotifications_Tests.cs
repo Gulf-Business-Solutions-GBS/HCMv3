@@ -426,7 +426,10 @@ public class WorkflowNotifications_Tests : EssLeaveWorkflowTestBase
             TenantId = TenantId,
             WorkflowRequestId = requestId,
             ApproverId = approverId,
-            IsApproved = approved
+            IsApproved = approved,
+
+            // See the note in EssInboxAppService_Tests: an approver row with no step matches no request.
+            WorkflowStep = 1
         }));
 
     private void GivenAnApprovalLog(int requestId, int approverId) =>
