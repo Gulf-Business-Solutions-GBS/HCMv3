@@ -45,6 +45,10 @@ public class WorkflowTestDbContext : DbContext
     public DbSet<HCMv3.PersonnelAdministration.EmployeeDelegation> EmployeeDelegations { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.Nationality> Nationalities { get; set; }
 
+    // The tenant's notification configurations, which RequestDetailsAppService reads to default a new
+    // step at one.
+    public DbSet<HCMv3.GeneralMasterInfo.NotificationConfig> NotificationConfigs { get; set; }
+
     public WorkflowTestDbContext(DbContextOptions<WorkflowTestDbContext> options) : base(options)
     {
     }

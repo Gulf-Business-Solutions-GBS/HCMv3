@@ -226,11 +226,23 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         }
 
         // Must match GetMyInbox exactly, or the badge says a number the list cannot produce.
-        return await _approverRepository.GetAll()
+        //
+        // BOTH kinds, because the list shows both. This counted approvals alone while the list had already
+        // gained feedback requests, so somebody asked for their view saw a request in the list and a badge
+        // that said nothing was waiting -- and the tile on the home page, which reads this same count,
+        // stayed empty. The comment above is the one I wrote and then broke.
+        var approvals = await _approverRepository.GetAll()
             .CountAsync(a => a.ApproverId == employeeId.Value
                              && !a.IsApproved
                              && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
                              && a.WorkflowRequest.RequestStatus == RequestStatus.Open);
+
+        var feedback = await _feedbackRepository.GetAll()
+            .CountAsync(r => r.CCReceiverId == employeeId.Value
+                             && r.RespondedAt == null
+                             && r.WorkflowRequest.RequestStatus == RequestStatus.Open);
+
+        return approvals + feedback;
     }
 
     public async Task Approve(ApproveRequestInput input)

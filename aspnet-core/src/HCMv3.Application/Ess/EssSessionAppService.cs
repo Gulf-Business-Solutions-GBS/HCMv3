@@ -23,6 +23,7 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
     private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
     private readonly IRepository<WorkFlowApprover> _workFlowApproverRepository;
+    private readonly IRepository<WorkflowRemark> _feedbackRepository;
     private readonly IRepository<WorkflowRequest> _workflowRequestRepository;
 
     public EssSessionAppService(
@@ -31,6 +32,7 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<WorkflowTransactionType> transactionTypeRepository,
         IRepository<WorkFlowApprover> workFlowApproverRepository,
+        IRepository<WorkflowRemark> feedbackRepository,
         IRepository<WorkflowRequest> workflowRequestRepository)
     {
         _employeeSessionService = employeeSessionService;
@@ -38,6 +40,7 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
         _employeeManagerRepository = employeeManagerRepository;
         _transactionTypeRepository = transactionTypeRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
+        _feedbackRepository = feedbackRepository;
         _workflowRequestRepository = workflowRequestRepository;
     }
 
@@ -88,11 +91,20 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
 
         // The inbox badge. A single indexed query over WorkFlowApprovers joined to WorkflowRequests, for
         // every transaction type at once -- which is only possible because the workflow tables are generic.
-        result.PendingApprovalCount = await _workFlowApproverRepository.GetAll()
+        // Approvals AND outstanding feedback requests -- the same two things the Approvals list shows, so
+        // the home tile and the list cannot disagree about how much is waiting.
+        var pendingApprovals = await _workFlowApproverRepository.GetAll()
             .CountAsync(a => a.ApproverId == employeeId.Value
                              && !a.IsApproved
                              && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
                              && a.WorkflowRequest.RequestStatus == RequestStatus.Open);
+
+        var pendingFeedback = await _feedbackRepository.GetAll()
+            .CountAsync(r => r.CCReceiverId == employeeId.Value
+                             && r.RespondedAt == null
+                             && r.WorkflowRequest.RequestStatus == RequestStatus.Open);
+
+        result.PendingApprovalCount = pendingApprovals + pendingFeedback;
 
         result.AvailableTransactionTypes = await GetAvailableTransactionTypesAsync();
 

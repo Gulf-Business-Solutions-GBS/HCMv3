@@ -43,15 +43,29 @@ public static class SeedHelper
             //Default tenant configuration keys (legacy DefaultDataService.CreateDefaultSysTenantConfig). A tenant's
             //first Manage*Settings rows are built from these, so they must exist before settings are first read.
             new SysTenantConfigDefaultsBuilder(context, tenantId).Create();
+
+            //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a
+            //type must not start routing live transactions through approval. See the builder's remarks.
+            //
+            //INSIDE the loop, like the print report catalog above and for the same reason. Seeded against
+            //tenant 1 alone, every other tenant began life with an empty catalog: no request type could be
+            //routed, because the resolver looks the type up by code WITHIN the tenant and finds nothing. The
+            //symptom is not an error -- an unregistered type is treated as not workflow-managed, so requests
+            //save straight to the table and never reach an approver, which reads as "approvals do not work".
+            new WorkflowTransactionTypeBuilder(context, tenantId).Create();
+
+            //The two workflow notification configurations. Without one the dispatcher finds nothing for a
+            //step and returns silently, so a tenant routes approvals correctly and tells nobody -- the
+            //Approvals list fills while the bell stays empty.
+            new WorkflowNotificationConfigBuilder(context, tenantId).Create();
+
+            //The "Employee" role, granted Ess.* and nothing else. This is what lets one application serve HR
+            //and employees without a separate ESS project.
+            //
+            //Also per tenant, and for the same reason: a tenant without it has no role to give employees, so
+            //self-service is unreachable there until somebody builds one by hand.
+            new EmployeeRoleBuilder(context, tenantId).Create();
         }
-
-        //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a
-        //type must not start routing live transactions through approval. See the builder's remarks.
-        new WorkflowTransactionTypeBuilder(context, 1).Create();
-
-        //The "Employee" role, granted Ess.* and nothing else. This is what lets one application serve HR
-        //and employees without a separate ESS project.
-        new EmployeeRoleBuilder(context, 1).Create();
     }
 
     private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

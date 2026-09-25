@@ -6861,5 +6861,6 @@
     <text name="SetupCheck_EMP009_Why">تعمل الرواتب، لكن ملف البنك يستبعد الموظفين الذين ليس لهم بيانات دفع.</text>
     <text name="SetupCheck_EMP010_Title">للموظفين الذين يُدفع لهم عن طريق البنك رقم آيبان أو رقم حساب</text>
     <text name="SetupCheck_EMP010_Why">لا يستطيع ملف البنك الدفع لموظف ليس له أحدهما.</text>
+    <text name="IsCommentRequire">الملاحظة إلزامية</text>
   </texts>
 </localizationDictionary>

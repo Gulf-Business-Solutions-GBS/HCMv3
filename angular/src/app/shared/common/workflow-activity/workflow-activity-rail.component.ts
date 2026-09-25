@@ -41,6 +41,16 @@ export interface WorkflowFeedEntry {
     authorName: string;
 
     /**
+     * The same person without their employee code, for the avatar.
+     *
+     * <p>The avatar builds initials from the first and last word of whatever it is given. Handed
+     * "Dummy Adam Carter (1001)" it took D from the first word and an opening bracket from the last, and
+     * rendered "D(". The code belongs in the line of text, where it disambiguates two people with the
+     * same name; it has no business in a two-letter monogram.</p>
+     */
+    authorPlainName: string;
+
+    /**
      * Who wrote it, so the name can open their card the way the approvers list does. Undefined for an
      * entry the engine wrote with nobody behind it, and the name then stays plain text rather than
      * becoming a link that opens nothing.
@@ -163,6 +173,7 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             id: 0,
             isSystem: false,
             authorName: this.leadAuthorName() || (created ? this.actorName(created) : ''),
+            authorPlainName: this.leadAuthorName() || (created ? this.plainActorName(created) : ''),
             authorEmployeeId: created?.actorEmployeeId ?? undefined,
             authorPhotoUrl: this.leadAuthorPhotoUrl() ?? created?.actorPhotoUrl,
             occurredAt: created?.occurredAt,
@@ -301,6 +312,11 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
         });
     }
 
+    /** The person's name alone. See authorPlainName for why the avatar needs it without the code. */
+    plainActorName(activity: WorkflowActivityDto): string {
+        return (this.isRtl ? activity.actorNameAr || activity.actorNameEn : activity.actorNameEn) ?? '';
+    }
+
     actorName(activity: WorkflowActivityDto): string {
         const name = (this.isRtl ? activity.actorNameAr || activity.actorNameEn : activity.actorNameEn) ?? '';
 
@@ -356,6 +372,7 @@ export class WorkflowActivityRailComponent extends AppComponentBase implements O
             id: activity.id,
             isSystem,
             authorName: this.actorName(activity),
+            authorPlainName: this.plainActorName(activity),
             authorEmployeeId: activity.actorEmployeeId ?? undefined,
             authorPhotoUrl: activity.actorPhotoUrl,
             occurredAt: activity.occurredAt,

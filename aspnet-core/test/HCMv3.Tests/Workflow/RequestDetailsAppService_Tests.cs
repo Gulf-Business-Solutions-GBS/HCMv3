@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Dto;
 using NSubstitute;
@@ -27,6 +28,10 @@ public class RequestDetailsAppService_Tests : WorkflowAppServiceTestBase
         return CreateService(() => new RequestDetailsAppService(
             FakeRepository.For<RequestDetail>(Context),
             FakeRepository.For<RequestMaster>(Context),
+
+            // The tenant's default notification configurations. Empty here: these tests are about step
+            // numbering, and a step saved with no defaults to find simply keeps its nulls.
+            FakeRepository.For<NotificationConfig>(Context),
             _sysSettingsAccessor));
     }
 

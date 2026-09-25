@@ -31,7 +31,17 @@ public class CreateOrEditRequestDetailDto
 
     public int? EscalateWorkflowRoleOrgId { get; set; }
 
-    public bool EnableReadLog { get; set; }
+    /// <summary>
+    /// Whether to record who opened this step's requests without acting on them.
+    ///
+    /// <para>
+    /// Nullable so that "not specified" is a thing a caller can say, which a plain bool cannot: false and
+    /// unset are the same value, and the two need different answers. Unset means on -- an approver wanting
+    /// to know whether a colleague has even looked is the ordinary case, and leaving it off by default
+    /// meant the read log stayed empty on every chain until somebody knew the toggle existed.
+    /// </para>
+    /// </summary>
+    public bool? EnableReadLog { get; set; }
 
     public WorkflowPersonScope Person { get; set; }
 

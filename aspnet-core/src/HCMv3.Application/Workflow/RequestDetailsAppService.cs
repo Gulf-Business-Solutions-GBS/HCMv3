@@ -9,6 +9,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.SystemSettings.Services;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.Workflow.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,15 +38,18 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
 {
     private readonly IRepository<RequestDetail> _repository;
     private readonly IRepository<RequestMaster> _requestMasterRepository;
+    private readonly IRepository<NotificationConfig> _notificationConfigRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
 
     public RequestDetailsAppService(
         IRepository<RequestDetail> repository,
         IRepository<RequestMaster> requestMasterRepository,
+        IRepository<NotificationConfig> notificationConfigRepository,
         ISysSettingsAccessor sysSettingsAccessor)
     {
         _repository = repository;
         _requestMasterRepository = requestMasterRepository;
+        _notificationConfigRepository = notificationConfigRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
     }
 
@@ -207,7 +211,8 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         await _requestMasterRepository.UpdateAsync(requestMaster);
     }
 
-    private static RequestDetail MapToEntity(CreateOrEditRequestDetailDto input, RequestDetail entity)
+    // Not static: it reads the tenant's default notification configurations, which needs a repository.
+    private RequestDetail MapToEntity(CreateOrEditRequestDetailDto input, RequestDetail entity)
     {
         entity.RequestMasterId = input.RequestMasterId;
         entity.Step = input.Step;
@@ -221,7 +226,9 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         entity.EscalateWorkflowRoleId = input.EscalateWorkflowRoleId;
         entity.EscalateWorkflowRoleGroup = input.EscalateWorkflowRoleGroup;
         entity.EscalateWorkflowRoleOrgId = input.EscalateWorkflowRoleOrgId;
-        entity.EnableReadLog = input.EnableReadLog;
+        // Unset means on. See the DTO: false and "not specified" are indistinguishable on a plain bool,
+        // and defaulting to off left every chain with an empty read log.
+        entity.EnableReadLog = input.EnableReadLog ?? true;
         entity.Person = input.Person;
         entity.ApproverPerson = input.ApproverPerson;
         entity.WorkflowRoleGroup = input.WorkflowRoleGroup;
@@ -237,7 +244,52 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         entity.RemarksNotificationConfigId = input.RemarksNotificationConfigId;
         entity.AssignNotificationConfigId = input.AssignNotificationConfigId;
         entity.ReminderNotificationConfigId = input.ReminderNotificationConfigId;
+
+        ApplyDefaultNotificationConfigs(entity);
+
         return entity;
+    }
+
+    /// <summary>
+    /// Points a step at the tenant's default notification configurations wherever it names none.
+    ///
+    /// <para>
+    /// The dispatcher sends nothing when a step has no configuration for the action, so a step saved with
+    /// these left blank -- which is every step, since the screen does not require them -- notifies nobody.
+    /// A chain that routes correctly and tells no one reads as broken notifications rather than as missing
+    /// setup, and there is no obvious place to go and look.
+    /// </para>
+    ///
+    /// <para>
+    /// Only fills what the caller left null, so an administrator who has chosen a configuration keeps it,
+    /// and one who wants a step silent can point it at a configuration that addresses nobody. It does not
+    /// overwrite on edit for the same reason.
+    /// </para>
+    /// </summary>
+    private void ApplyDefaultNotificationConfigs(RequestDetail entity)
+    {
+        var defaults = _notificationConfigRepository.GetAll()
+            .Where(c => c.Name == WorkflowNotificationDefaults.ToApproverName
+                        || c.Name == WorkflowNotificationDefaults.ToRequesterName)
+            .Select(c => new { c.Id, c.Name })
+            .ToList();
+
+        var toApprover = defaults
+            .FirstOrDefault(c => c.Name == WorkflowNotificationDefaults.ToApproverName)?.Id;
+
+        var toRequester = defaults
+            .FirstOrDefault(c => c.Name == WorkflowNotificationDefaults.ToRequesterName)?.Id;
+
+        // Arriving somewhere: whoever it is now with needs to know.
+        entity.SubmitNotificationConfigId ??= toApprover;
+        entity.AssignNotificationConfigId ??= toApprover;
+        entity.ReminderNotificationConfigId ??= toApprover;
+
+        // Being decided: the person who raised it needs to know.
+        entity.NotificationConfigId ??= toRequester;
+        entity.RejectNotificationConfigId ??= toRequester;
+        entity.SendBackNotificationConfigId ??= toRequester;
+        entity.RemarksNotificationConfigId ??= toRequester;
     }
 
     private static RequestDetailDto ToDto(RequestDetail entity)

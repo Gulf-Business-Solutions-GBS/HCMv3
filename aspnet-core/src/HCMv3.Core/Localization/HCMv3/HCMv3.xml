@@ -7023,5 +7023,6 @@
     <text name="SetupCheck_EMP009_Why">Payroll still runs, but the bank file leaves out employees without payment details.</text>
     <text name="SetupCheck_EMP010_Title">Employees paid by bank have an IBAN or account number</text>
     <text name="SetupCheck_EMP010_Why">The bank file cannot pay an employee without one.</text>
+    <text name="IsCommentRequire">Comment Required</text>
   </texts>
 </localizationDictionary>

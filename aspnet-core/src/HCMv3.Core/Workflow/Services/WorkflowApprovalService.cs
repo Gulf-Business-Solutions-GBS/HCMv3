@@ -113,7 +113,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
         // The requester's own words, carried onto the Created entry so the activity feed opens with what
         // they said rather than with a bare "Created" line and their comment nowhere at all.
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: submissionComment, workflowStep: firstApproverStep);
+        //
+        // Logged against the step the request was CREATED at, not the step it was routed to. Those are
+        // different questions and the log answers the first: a reader looking at "Created ... step 2" sees
+        // an act attributed to a step whose approver had nothing to do with it, while step 1 -- the step
+        // that says who may raise this request -- shows no activity at all.
+        await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: submissionComment,
+            workflowStep: FirstStepOf(requestMaster, firstApproverStep));
 
         await _workflowRequestRepository.UpdateAsync(request);
 
@@ -716,6 +722,25 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         }
 
         request.ApproverId = approverEmployeeIds[0];
+    }
+
+    /// <summary>
+    /// The first step of the chain, whatever it is for.
+    ///
+    /// <para>
+    /// Normally the creator step -- the one naming who may raise the request, which approves nothing. A
+    /// chain configured without one starts at its first approver step instead, and the fallback says so
+    /// rather than inventing a step 1 that does not exist.
+    /// </para>
+    /// </summary>
+    private int FirstStepOf(RequestMaster requestMaster, int fallback)
+    {
+        var steps = _requestDetailRepository.GetAll()
+            .Where(d => d.RequestMasterId == requestMaster.Id)
+            .Select(d => d.Step)
+            .ToList();
+
+        return steps.Count == 0 ? fallback : steps.Min();
     }
 
     private List<int> ResolveApproversForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
