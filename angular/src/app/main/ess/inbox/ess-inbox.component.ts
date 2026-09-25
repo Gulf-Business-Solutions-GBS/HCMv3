@@ -1,4 +1,3 @@
-import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -89,7 +88,6 @@ export interface EssInboxRow {
     styleUrls: ['./ess-inbox.component.less'],
     animations: [appModuleAnimation()],
     imports: [
-        DateInputDirective,
         CommonModule,
         FormsModule,
         TableModule,
