@@ -1,4 +1,5 @@
-﻿using System.Net.Security;
+using System.Net.Security;
+using HCMv3.ApiClient;
 
 namespace HCMv3.Maui.Core.Platforms.Android.HttpClient;
 
@@ -6,21 +7,15 @@ public class AndroidHttpClientHandlerConfigurer
 {
     public void Configure(HttpClientHandler handler)
     {
-#if DEBUG
-        TrustLocalDeveloperCert(handler);
-#endif
-    }
-
-    private void TrustLocalDeveloperCert(HttpClientHandler handler)
-    {
         handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
         {
+#if DEBUG
             if (cert != null && cert.Issuer.Equals("CN=localhost"))
             {
                 return true;
             }
-
-            return errors == SslPolicyErrors.None;
+#endif
+            return TrustedServerCertificates.IsTrusted(cert, errors);
         };
     }
 }

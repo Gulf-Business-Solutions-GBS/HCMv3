@@ -1,0 +1,142 @@
+@using HCMv3.Maui.Services.Navigation
+@using HCMv3.Maui.Core.Helpers
+@inherits HCMv3MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.MyLeave)]
+
+@if (!_loaded)
+{
+    <div></div>
+}
+else if (_notLinked)
+{
+    <div class="card mb-5">
+        <div class="card-body">
+            <div class="alert alert-warning mb-0">@L("CurrentUserHasNoEmployeeRecord")</div>
+        </div>
+    </div>
+}
+else
+{
+    @if (!_showForm)
+    {
+        <button class="btn btn-primary btn-lg w-100 mb-5" @onclick="OpenForm">
+            <i class="fa-solid fa-plus me-2"></i>@L("ApplyForLeave")
+        </button>
+    }
+    else
+    {
+        <div class="card mb-5 border border-primary">
+            <div class="card-header min-h-50px">
+                <h3 class="card-title fs-5">@L("ApplyForLeave")</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <label class="form-label required">@L("AbsenceType")</label>
+                    <select class="form-select form-select-lg" @bind="_absenceTypeId">
+                        <option value="">-</option>
+                        @foreach (var type in _absenceTypes)
+                        {
+                            <option value="@type.Id">@LookupName(type)</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label required">@L("StartDate")</label>
+                    <input type="date" class="form-control form-control-lg" @bind="_startDate" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label required">@L("EndDate")</label>
+                    <input type="date" class="form-control form-control-lg" @bind="_endDate" />
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">@L("Comments")</label>
+                    <textarea class="form-control" rows="3" maxlength="4000" @bind="_comments"></textarea>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary btn-lg flex-grow-1" @onclick="ApplyAsync">@L("Submit")</button>
+                    <button class="btn btn-light btn-lg" @onclick="CloseForm">@L("Cancel")</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card mb-5">
+        <div class="card-header min-h-50px">
+            <h3 class="card-title fs-5">@L("BookableBalance")</h3>
+        </div>
+        <div class="card-body p-3">
+            @if (_balances.Count == 0)
+            {
+                <p class="text-muted mb-0">@L("NoLeaveQuotaConfigured")</p>
+            }
+            else
+            {
+                @foreach (var balance in _balances)
+                {
+                    <div class="border-bottom py-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <span class="fw-bold text-gray-800">@BalanceTypeName(balance)</span>
+                            <span class="fs-2 fw-bold text-primary">@EssText.Number(balance.Bookable)</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-3 fs-7 text-muted">
+                            <span>@L("Remaining"): @EssText.Number(balance.Remaining)</span>
+                            <span>@L("Used"): @EssText.Number(balance.Used)</span>
+                            @if (balance.Pending > 0)
+                            {
+                                <span class="text-warning">@L("PendingApproval"): @EssText.Number(balance.Pending)</span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header min-h-50px d-flex align-items-center justify-content-between">
+            <h3 class="card-title fs-5">@L("EssMyRequests")</h3>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="leaveHistory" checked="@_includeHistory" @onchange="ToggleHistoryAsync" />
+                <label class="form-check-label" for="leaveHistory">@L("History")</label>
+            </div>
+        </div>
+        <div class="card-body p-3">
+            @if (_leaves.Count == 0)
+            {
+                <p class="text-muted mb-0">@L("NoData")</p>
+            }
+            else
+            {
+                @foreach (var leave in _leaves)
+                {
+                    <div class="border-bottom py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="min-w-0 me-2">
+                                <div class="fw-bold text-gray-800">@LeaveTypeName(leave)</div>
+                                <div class="text-muted fs-7">
+                                    @EssText.Date(leave.StartDate) - @EssText.Date(leave.EndDate)
+                                    &middot; @EssText.Number(leave.TotalLeaveDays) @L("Days")
+                                </div>
+                                @if (leave.HasPendingAmendment)
+                                {
+                                    <span class="badge badge-light-info mt-1">@L("ChangePending")</span>
+                                }
+                                @if (leave.IsReturned)
+                                {
+                                    <span class="badge badge-light-success mt-1">@L("LeaveReturned")</span>
+                                }
+                            </div>
+                            <EssStatusBadge Status="leave.WorkflowStatus" />
+                        </div>
+                        @if (leave.CanCancel)
+                        {
+                            <button class="btn btn-light-danger w-100 mt-3" @onclick="() => CancelLeaveAsync(leave)">
+                                <i class="fa-solid fa-xmark me-2"></i>@L("Cancel")
+                            </button>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

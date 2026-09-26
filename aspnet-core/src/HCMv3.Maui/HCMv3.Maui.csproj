@@ -9,9 +9,9 @@
     <EnableDefaultCssItems>false</EnableDefaultCssItems>
     <AssemblyName>HCMv3.Maui</AssemblyName>
     <!-- Display name -->
-    <ApplicationTitle>HCMv3.Maui</ApplicationTitle>
-    <!-- App Identifier -->
-    <ApplicationId>com.companyname.HCMv3.Maui</ApplicationId>
+    <ApplicationTitle>Pinnacle Lite</ApplicationTitle>
+    <!-- App Identifier: fixed for good once published to a store, so it does not carry the display name -->
+    <ApplicationId>com.gbskw.ess</ApplicationId>
     <ApplicationIdGuid>5664ADE0-0A6B-4CFF-A3FD-975486AE90CA</ApplicationIdGuid>
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

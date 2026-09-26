@@ -1,0 +1,94 @@
+@using HCMv3.Maui.Services.Navigation
+@using HCMv3.Maui.Core.Helpers
+@inherits HCMv3MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.Inbox)]
+
+@if (_loaded)
+{
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-sm btn-light" @onclick="ReloadAsync">
+            <i class="fa-solid fa-rotate me-2"></i>@L("Refresh")
+        </button>
+    </div>
+
+    @if (_items.Count == 0)
+    {
+        <div class="card mb-5">
+            <div class="card-body text-center text-muted">@L("NoData")</div>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in _items)
+        {
+            <div class="card shadow-xs mb-4 @(IsFeedback(item) ? "border border-info" : "")">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="min-w-0 me-2">
+                            <div class="fw-bold text-gray-800 fs-5">@TypeName(item)</div>
+                            <div class="text-muted fs-7">@item.RequestNumber</div>
+                        </div>
+                        @if (IsFeedback(item))
+                        {
+                            <span class="badge badge-light-info">@L("AskedForMyFeedback")</span>
+                        }
+                        else if (item.TotalSteps > 0)
+                        {
+                            <span class="badge badge-light-primary">@L("WorkflowStep") @item.WorkflowStep/@item.TotalSteps</span>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Summary(item)))
+                    {
+                        <div class="text-gray-700 mb-2">@Summary(item)</div>
+                    }
+
+                    <div class="fs-7 text-muted">
+                        <i class="fa-solid fa-user me-1"></i>@RequesterName(item)
+                        &middot; @EssText.Date(item.SubmittedOn)
+                    </div>
+
+                    @if (IsFeedback(item))
+                    {
+                        <div class="fs-7 text-muted mt-2">
+                            @L("FeedbackRequestedBy"): @FeedbackRequestedByName(item)
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(item.FeedbackNote))
+                        {
+                            <div class="fs-7 fst-italic mt-1">@item.FeedbackNote</div>
+                        }
+
+                        <button class="btn btn-info w-100 mt-4" @onclick="() => SubmitFeedbackAsync(item)">
+                            <i class="fa-solid fa-comment me-2"></i>@L("SubmitFeedback")
+                        </button>
+                    }
+                    else
+                    {
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-success btn-lg" @onclick="() => ApproveAsync(item)">
+                                <i class="fa-solid fa-check me-2"></i>@L("Approve")
+                            </button>
+                            @if (item.CanReject || item.CanSendBack)
+                            {
+                                <div class="d-flex gap-2">
+                                    @if (item.CanReject)
+                                    {
+                                        <button class="btn btn-light-danger flex-grow-1" @onclick="() => RejectAsync(item)">
+                                            <i class="fa-solid fa-xmark me-2"></i>@L("Reject")
+                                        </button>
+                                    }
+                                    @if (item.CanSendBack)
+                                    {
+                                        <button class="btn btn-light-warning flex-grow-1" @onclick="() => SendBackAsync(item)">
+                                            <i class="fa-solid fa-reply me-2"></i>@L("SendBack")
+                                        </button>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+}

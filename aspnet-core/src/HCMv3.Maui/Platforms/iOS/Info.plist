@@ -28,5 +28,9 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is sent with a geo punch so your employer can confirm you are at your work location.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The camera takes a selfie for geo punch when your employer requires one, and scans QR codes for login.</string>
 </dict>
 </plist>

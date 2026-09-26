@@ -1,4 +1,5 @@
-﻿using System.Net;
+using System.Net;
+using HCMv3.ApiClient;
 
 namespace HCMv3.Maui.Core.Platforms.iOS.HttpClient;
 
@@ -7,13 +8,15 @@ public class IOSHttpClientHandlerConfigurer
     public void Configure(HttpClientHandler handler)
     {
         handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+        {
 #if DEBUG
-        TrustLocalDeveloperCert(handler);
+            if (cert != null && cert.Issuer.Equals("CN=localhost"))
+            {
+                return true;
+            }
 #endif
-    }
-
-    private static void TrustLocalDeveloperCert(HttpClientHandler messageHandler)
-    {
-        messageHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            return TrustedServerCertificates.IsTrusted(cert, errors);
+        };
     }
 }

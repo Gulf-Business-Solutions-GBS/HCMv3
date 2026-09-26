@@ -73,7 +73,7 @@ public class AccountService : IAccountService, ISingletonDependency
         AbpAuthenticateModel.Password = null;
         await SetCurrentUserInfoAsync();
         await UserConfigurationManager.GetAsync();
-        _navigationService.NavigateTo(NavigationUrlConsts.Users);
+        _navigationService.NavigateTo(NavigationUrlConsts.EssHome);
     }
 
     private async Task SetCurrentUserInfoAsync()

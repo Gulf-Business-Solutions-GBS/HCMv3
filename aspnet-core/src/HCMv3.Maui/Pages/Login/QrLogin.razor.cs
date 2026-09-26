@@ -73,9 +73,7 @@ public partial class QrLogin : HCMv3MainLayoutPageComponentBase
 
     private string GetReturnUrl()
     {
-        return _context.LoginInfo.Tenant == null
-            ? NavigationUrlConsts.HostDashboard
-            : NavigationUrlConsts.TenantDashboard;
+        return NavigationUrlConsts.EssHome;
     }
 
     private void OnQrCodeReaderDisappearing(object sender, EventArgs args)

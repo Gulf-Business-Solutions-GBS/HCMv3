@@ -5,7 +5,8 @@ namespace HCMv3.ApiClient;
 
 public static class ApiUrlConfig
 {
-    private const string DefaultHostUrl = "https://localhost:44301/"; //TODO: Replace with PROD WebAPI URL.
+    // Webtropia test server's Web.Host. For a local backend use "https://localhost:44301/".
+    private const string DefaultHostUrl = "https://vps2656276.fastwebserver.de:9443/";
 
     public static string BaseUrl { get; private set; }
 

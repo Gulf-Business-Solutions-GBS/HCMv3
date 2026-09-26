@@ -1,4 +1,4 @@
-﻿using Abp.Dependency;
+using Abp.Dependency;
 using Abp.Extensions;
 using HCMv3.ApiClient;
 using HCMv3.Authorization;
@@ -12,7 +12,7 @@ public class MenuProvider : ISingletonDependency, IMenuProvider
     private readonly IApplicationContext _context;
 
     /* For more icons:
-        https://material.io/icons/
+        https://fontawesome.com/icons
     */
     private List<NavigationMenuItem> _menuItems;
 
@@ -21,41 +21,53 @@ public class MenuProvider : ISingletonDependency, IMenuProvider
         _context = context;
     }
 
+    // Employee self-service only: the app deliberately has no admin screens. Each item carries the same
+    // permission as the web ESS menu, and the server enforces it again on every call.
     public void InitializeMenuItems()
     {
         _menuItems = new List<NavigationMenuItem>
         {
-            GetDashboardMenuItem(),
             new NavigationMenuItem
             {
-                Title = L.Localize("Tenants"),
-                Icon = "fa-solid fa-list",
-                NavigationUrl = NavigationUrlConsts.Tenants,
-                RequiredPermissionName = AppPermissions.Pages_Tenants,
+                Title = L.Localize("EmployeeSelfService"),
+                Icon = "fa-solid fa-house",
+                NavigationUrl = NavigationUrlConsts.EssHome,
+                RequiredPermissionName = AppPermissions.Ess,
             },
             new NavigationMenuItem
             {
-                Title = L.Localize("Users"),
-                Icon = "fa-solid fa-filter",
-                NavigationUrl= NavigationUrlConsts.Users,
-                RequiredPermissionName = AppPermissions.Pages_Administration_Users,
+                Title = L.Localize("EssMyLeave"),
+                Icon = "fa-solid fa-calendar-days",
+                NavigationUrl = NavigationUrlConsts.MyLeave,
+                RequiredPermissionName = AppPermissions.Ess_MyLeave,
+            },
+            new NavigationMenuItem
+            {
+                Title = L.Localize("EssGeoPunch"),
+                Icon = "fa-solid fa-location-dot",
+                NavigationUrl = NavigationUrlConsts.GeoPunch,
+                RequiredPermissionName = AppPermissions.Ess_GeoPunch,
+            },
+            new NavigationMenuItem
+            {
+                Title = L.Localize("EssMyExitPermits"),
+                Icon = "fa-solid fa-plane-departure",
+                NavigationUrl = NavigationUrlConsts.ExitPermit,
+                RequiredPermissionName = AppPermissions.Ess_MyExitPermits,
+            },
+            new NavigationMenuItem
+            {
+                Title = L.Localize("EssInbox"),
+                Icon = "fa-solid fa-inbox",
+                NavigationUrl = NavigationUrlConsts.Inbox,
+                RequiredPermissionName = AppPermissions.Ess_Inbox,
             },
             new NavigationMenuItem
             {
                 Title = L.Localize("MySettings"),
                 Icon = "fa-solid fa-cog",
-                NavigationUrl  = NavigationUrlConsts.Settings
+                NavigationUrl = NavigationUrlConsts.Settings
             },
-            
-            /*This is a sample menu item to guide how to add a new item.
-                ,new NavigationMenuItem
-                {
-                    Title = "Sample View",
-                    Icon = "MyIcon.png",
-                    TargetType = typeof(_SampleView),
-                    Order = 10
-                }
-            */
         };
 
         InsertQrLoginMenuItemBeforeSettings();
@@ -65,27 +77,6 @@ public class MenuProvider : ISingletonDependency, IMenuProvider
     {
         InitializeMenuItems();
         return FilterAuthorizedMenuItems(_menuItems, grantedPermissions);
-    }
-
-    private NavigationMenuItem GetDashboardMenuItem()
-    {
-        var isHost = _context.LoginInfo.Tenant == null;
-
-        var permission = isHost
-            ? AppPermissions.Pages_Administration_Host_Dashboard
-            : AppPermissions.Pages_Tenant_Dashboard;
-
-        var navigationUrl = isHost
-            ? NavigationUrlConsts.HostDashboard
-            : NavigationUrlConsts.TenantDashboard;
-
-        return new NavigationMenuItem
-        {
-            Title = L.Localize("Dashboard"),
-            Icon = "fa-solid fa-chart-line",
-            NavigationUrl = navigationUrl,
-            RequiredPermissionName = permission
-        };
     }
 
     private List<NavigationMenuItem> FilterAuthorizedMenuItems(List<NavigationMenuItem> menuItems, Dictionary<string, string> grantedPermissions)
