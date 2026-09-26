@@ -129,6 +129,64 @@ describe('DateInputDirective', () => {
 
         expect(host.value()).toBeNull();
     });
+
+    // The 22nd month, typed on the exit permit screen by somebody expecting mm/dd/yyyy. It used to sit in the field
+    // looking like a date while nothing was handed over, so the form said the date was missing.
+    it('will not let a month past December be typed', async () => {
+        await type('01/2');
+        await type('01/22');
+
+        expect(input.value).toBe('01/2');
+        expect(host.value()).toBeNull();
+    });
+
+    it('will not let a day past the 31st be typed', async () => {
+        await type('3');
+        await type('32');
+
+        expect(input.value).toBe('3');
+    });
+
+    it('will not let a day or a month be typed as zero', async () => {
+        await type('0');
+        await type('00');
+
+        expect(input.value).toBe('0');
+    });
+
+    it('takes the second digit once it makes a month there is', async () => {
+        await type('01/1');
+        await type('01/12');
+        await type('01/12/2026');
+
+        expect(host.value()).toBe('2026-12-01');
+    });
+
+    it('marks a field left holding half a date', async () => {
+        await type('01/2');
+        input.dispatchEvent(new Event('blur'));
+        await settle(fixture);
+
+        expect(input.classList).toContain('is-invalid');
+        expect(host.value()).toBeNull();
+    });
+
+    it('stops marking it as soon as they go back to it', async () => {
+        await type('01/2');
+        input.dispatchEvent(new Event('blur'));
+        await settle(fixture);
+        await type('01/02');
+
+        expect(input.classList).not.toContain('is-invalid');
+    });
+
+    it('leaves a finished date unmarked', async () => {
+        await type('24/09/2026');
+        input.dispatchEvent(new Event('blur'));
+        await settle(fixture);
+
+        expect(input.classList).not.toContain('is-invalid');
+    });
 });
 
 describe('DateInputDirective on a date and time', () => {

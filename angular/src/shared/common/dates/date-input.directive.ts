@@ -35,6 +35,12 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
     /** The last value handed out, in ISO. Kept so the picker can open on it and so blur can restore it. */
     private iso: string | null = null;
 
+    /**
+     * What the field held after the last keystroke it accepted. A keystroke that could only make an impossible date --
+     * a 22nd month -- is undone back to this, so the field never shows a date it will not hand over.
+     */
+    private lastText = '';
+
     /** True only while the browser's own picker is up, when the field briefly holds a native value. */
     private picking = false;
 
@@ -67,6 +73,8 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
     writeValue(value: unknown): void {
         this.iso = normalizeIso(value, this.kind);
         this.element.value = this.iso ? display(this.iso, this.kind) : '';
+        this.lastText = this.element.value;
+        this.element.classList.remove(IncompleteClass);
     }
 
     registerOnChange(fn: (value: string | null) => void): void {
@@ -91,14 +99,34 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
             return;
         }
 
-        const caretAtEnd = this.element.selectionStart === this.element.value.length;
+        const caret = this.element.selectionStart ?? this.element.value.length;
+        const caretAtEnd = caret === this.element.value.length;
+
+        let typed = this.element.value;
         if (caretAtEnd) {
             // Separators as they type, so nobody has to reach for the slash key.
-            const typed = punctuate(this.element.value, this.kind);
-            if (typed !== this.element.value) {
-                this.element.value = typed;
-            }
+            typed = punctuate(typed, this.kind);
         }
+
+        // A part that can no longer come good is refused at the keystroke that made it, rather than accepted and
+        // quietly dropped at the end. Typing 01222026 used to leave "01/22/2026" sitting in the field -- a 22nd month,
+        // so nothing was handed over, and the form then complained that the date was missing while showing one.
+        if (impossible(typed, this.kind)) {
+            this.element.value = this.lastText;
+            const at = Math.max(0, Math.min(caret - 1, this.lastText.length));
+            this.element.setSelectionRange(at, at);
+            return;
+        }
+
+        if (typed !== this.element.value) {
+            this.element.value = typed;
+        }
+
+        this.lastText = this.element.value;
+
+        // Nothing is marked wrong mid-word: "01/2" is a perfectly good start. Blur is where a field that never became
+        // a date says so.
+        this.element.classList.remove(IncompleteClass);
 
         this.commit(parse(this.element.value, this.kind));
     }
@@ -113,6 +141,12 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
         if (this.iso) {
             this.element.value = display(this.iso, this.kind);
         }
+
+        this.lastText = this.element.value;
+
+        // Half a date left behind -- "01/2", or a 31st of February -- is marked here. Without it the field looks
+        // filled while holding nothing, and the only hint is a "required" message on a field that plainly has text.
+        this.element.classList.toggle(IncompleteClass, !!this.element.value && !this.iso);
 
         this.propagateTouched();
     }
@@ -169,6 +203,7 @@ export class DateInputDirective implements ControlValueAccessor, OnInit {
         this.element.type = 'text';
         this.element.style.backgroundImage = CalendarIcon;
         this.element.value = this.iso ? display(this.iso, this.kind) : '';
+        this.lastText = this.element.value;
     }
 
     /** Hands out an ISO value, or null while what is typed is not yet a date -- which is what makes "required" fire. */
@@ -294,6 +329,47 @@ function punctuate(text: string, kind: FieldKind): string {
     }
 
     return out;
+}
+
+/** Put on a field left holding something that is not a date, so it is obvious before anybody presses Save. */
+const IncompleteClass = 'is-invalid';
+
+/**
+ * Whether what is now in the field can never become a date, so the keystroke behind it should be refused.
+ *
+ * Judged only on parts that are finished -- two digits for a day, a month, an hour or a minute, four for a year. A
+ * part still being typed is left alone: "3" is the start of the 3rd or the 31st, and "1" of January, October,
+ * November or December. Whether the day exists in that particular month is a separate question, answered by
+ * <c>parse</c> once the month is known, because 31 is only wrong once February is typed beside it.
+ */
+function impossible(text: string, kind: FieldKind): boolean {
+    const [datePart, timePart] = text.split(' ');
+    const parts = datePart.split('/');
+
+    if (kind === 'month') {
+        return outOfRange(parts[0], 1, 12) || outOfRange(parts[1], 1, 9999, 4);
+    }
+
+    if (outOfRange(parts[0], 1, 31) || outOfRange(parts[1], 1, 12) || outOfRange(parts[2], 1, 9999, 4)) {
+        return true;
+    }
+
+    if (kind !== 'datetime-local' || !timePart) {
+        return false;
+    }
+
+    const [hour, minute] = timePart.split(':');
+    return outOfRange(hour, 0, 23) || outOfRange(minute, 0, 59);
+}
+
+/** True once a part is as long as it will get and still outside what it could mean. */
+function outOfRange(part: string | undefined, low: number, high: number, length = 2): boolean {
+    if (part === undefined || part.length < length) {
+        return false;
+    }
+
+    const value = Number(part);
+    return !Number.isNaN(value) && (value < low || value > high);
 }
 
 /**
