@@ -1,4 +1,4 @@
-import { Directive, inject, signal, viewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     EntityDto,
@@ -22,9 +22,16 @@ import { EssRequestDetailField, EssRequestDetailModalComponent } from './shared/
  *
  * <p>What stays in each component is what genuinely differs: the form fields and the table columns.</p>
  */
-// Decorated, with no selector, purely so the viewChild below is legal: Angular only compiles a query when
-// the class it sits on is a component or directive. Nothing is ever declared or imported from here.
-@Directive()
+// Decorated purely so the viewChild below is legal: Angular only compiles a query when the class it sits on
+// is a component or directive. Nothing is ever declared or imported from here.
+//
+// A @Component with an empty template, matching AppComponentBase, and NOT a @Directive. Angular refuses a
+// directive that inherits a component -- NG0903 -- and AppComponentBase is a @Component. A bare @Directive()
+// here compiled perfectly and then threw on every ESS screen the moment one was opened.
+@Component({
+    template: '',
+    standalone: false,
+})
 export abstract class MyRequestComponentBase<TDto extends { id: number; workflowStatus?: RequestStatus }> extends AppComponentBase {
     readonly loading = signal(false);
     readonly saving = signal(false);
