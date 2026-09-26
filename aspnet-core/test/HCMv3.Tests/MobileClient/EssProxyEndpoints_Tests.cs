@@ -16,7 +16,7 @@ public class EssProxyEndpoints_Tests
 {
     private static readonly Type[] EssProxyTypes = typeof(ProxyEssSessionAppService).Assembly
         .GetTypes()
-        .Where(t => t.Namespace == "HCMv3.Ess" && t.Name.StartsWith("Proxy") && !t.IsAbstract)
+        .Where(t => t.Namespace == "HCMv3.Ess" && t.Name.StartsWith("Proxy") && t.Name.EndsWith("AppService") && !t.IsAbstract)
         .ToArray();
 
     private static string GetEndpoint(Type proxyType, string methodName)

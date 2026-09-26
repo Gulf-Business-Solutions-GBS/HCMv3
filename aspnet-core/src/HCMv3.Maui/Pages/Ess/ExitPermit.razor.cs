@@ -14,7 +14,7 @@ namespace HCMv3.Maui.Pages.Ess;
 public partial class ExitPermit : HCMv3MainLayoutPageComponentBase
 {
     protected IMyExitPermitAppService MyExitPermitAppService { get; set; }
-    protected IEssSessionAppService EssSessionAppService { get; set; }
+    protected EssContextCache EssContextCache { get; set; }
 
     private static readonly TravelReason[] TravelReasons =
     {
@@ -38,7 +38,7 @@ public partial class ExitPermit : HCMv3MainLayoutPageComponentBase
     public ExitPermit()
     {
         MyExitPermitAppService = Resolve<IMyExitPermitAppService>();
-        EssSessionAppService = Resolve<IEssSessionAppService>();
+        EssContextCache = Resolve<EssContextCache>();
     }
 
     protected override async Task OnInitializedAsync()
@@ -48,7 +48,7 @@ public partial class ExitPermit : HCMv3MainLayoutPageComponentBase
         await SetBusyAsync(async () =>
         {
             await WebRequestExecuter.Execute(
-                async () => await EssSessionAppService.GetEssContext(),
+                async () => await EssContextCache.GetAsync(),
                 result =>
                 {
                     _notLinked = result != null && !result.IsLinkedToEmployee;

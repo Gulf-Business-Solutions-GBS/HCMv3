@@ -18,7 +18,7 @@ public partial class MyLeave : HCMv3MainLayoutPageComponentBase
 {
     protected IMyLeaveAppService MyLeaveAppService { get; set; }
     protected IEssLookupAppService EssLookupAppService { get; set; }
-    protected IEssSessionAppService EssSessionAppService { get; set; }
+    protected EssContextCache EssContextCache { get; set; }
 
     private bool _loaded;
     private bool _notLinked;
@@ -40,7 +40,7 @@ public partial class MyLeave : HCMv3MainLayoutPageComponentBase
     {
         MyLeaveAppService = Resolve<IMyLeaveAppService>();
         EssLookupAppService = Resolve<IEssLookupAppService>();
-        EssSessionAppService = Resolve<IEssSessionAppService>();
+        EssContextCache = Resolve<EssContextCache>();
     }
 
     protected override async Task OnInitializedAsync()
@@ -50,7 +50,7 @@ public partial class MyLeave : HCMv3MainLayoutPageComponentBase
         await SetBusyAsync(async () =>
         {
             await WebRequestExecuter.Execute(
-                async () => await EssSessionAppService.GetEssContext(),
+                async () => await EssContextCache.GetAsync(),
                 result =>
                 {
                     _notLinked = result != null && !result.IsLinkedToEmployee;
@@ -62,23 +62,23 @@ public partial class MyLeave : HCMv3MainLayoutPageComponentBase
                 return;
             }
 
-            await WebRequestExecuter.Execute(
-                async () => await EssLookupAppService.GetAbsenceTypes(),
-                result =>
-                {
-                    _absenceTypes = result ?? new List<SimpleLookupDto>();
-                    return Task.CompletedTask;
-                });
-
-            await WebRequestExecuter.Execute(
-                async () => await MyLeaveAppService.GetLeaveFormSettings(),
-                result =>
-                {
-                    _settings = result;
-                    return Task.CompletedTask;
-                });
-
-            await LoadListsAsync();
+            // Independent calls: ask for them together rather than one after another.
+            await Task.WhenAll(
+                WebRequestExecuter.Execute(
+                    async () => await EssLookupAppService.GetAbsenceTypes(),
+                    result =>
+                    {
+                        _absenceTypes = result ?? new List<SimpleLookupDto>();
+                        return Task.CompletedTask;
+                    }),
+                WebRequestExecuter.Execute(
+                    async () => await MyLeaveAppService.GetLeaveFormSettings(),
+                    result =>
+                    {
+                        _settings = result;
+                        return Task.CompletedTask;
+                    }),
+                LoadListsAsync());
         });
 
         _loaded = true;
@@ -92,26 +92,26 @@ public partial class MyLeave : HCMv3MainLayoutPageComponentBase
 
     private async Task LoadListsAsync()
     {
-        await WebRequestExecuter.Execute(
-            async () => await MyLeaveAppService.GetMyBalances(),
-            result =>
-            {
-                _balances = result ?? new List<MyLeaveBalanceDto>();
-                return Task.CompletedTask;
-            });
-
-        await WebRequestExecuter.Execute(
-            async () => await MyLeaveAppService.GetMyLeaves(new GetMyLeavesInput
-            {
-                MaxResultCount = 50,
-                SkipCount = 0,
-                IncludeHistory = _includeHistory
-            }),
-            result =>
-            {
-                _leaves = result?.Items?.ToList() ?? new List<MyLeaveDto>();
-                return Task.CompletedTask;
-            });
+        await Task.WhenAll(
+            WebRequestExecuter.Execute(
+                async () => await MyLeaveAppService.GetMyBalances(),
+                result =>
+                {
+                    _balances = result ?? new List<MyLeaveBalanceDto>();
+                    return Task.CompletedTask;
+                }),
+            WebRequestExecuter.Execute(
+                async () => await MyLeaveAppService.GetMyLeaves(new GetMyLeavesInput
+                {
+                    MaxResultCount = 50,
+                    SkipCount = 0,
+                    IncludeHistory = _includeHistory
+                }),
+                result =>
+                {
+                    _leaves = result?.Items?.ToList() ?? new List<MyLeaveDto>();
+                    return Task.CompletedTask;
+                }));
     }
 
     private async Task ToggleHistoryAsync()

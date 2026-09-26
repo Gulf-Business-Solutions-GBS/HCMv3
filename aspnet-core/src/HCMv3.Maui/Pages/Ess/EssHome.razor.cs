@@ -12,7 +12,7 @@ namespace HCMv3.Maui.Pages.Ess;
 /// </summary>
 public partial class EssHome : HCMv3MainLayoutPageComponentBase
 {
-    protected IEssSessionAppService EssSessionAppService { get; set; }
+    protected EssContextCache EssContextCache { get; set; }
 
     private EssContextDto _context;
 
@@ -20,7 +20,7 @@ public partial class EssHome : HCMv3MainLayoutPageComponentBase
 
     public EssHome()
     {
-        EssSessionAppService = Resolve<IEssSessionAppService>();
+        EssContextCache = Resolve<EssContextCache>();
     }
 
     protected override async Task OnInitializedAsync()
@@ -34,7 +34,7 @@ public partial class EssHome : HCMv3MainLayoutPageComponentBase
         await SetBusyAsync(async () =>
         {
             await WebRequestExecuter.Execute(
-                async () => await EssSessionAppService.GetEssContext(),
+                async () => await EssContextCache.GetAsync(refresh: true),
                 result =>
                 {
                     _context = result;

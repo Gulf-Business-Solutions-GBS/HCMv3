@@ -11,13 +11,6 @@ using HCMv3.Maui.Services.Tenants;
 using HCMv3.Maui.Services.UI;
 using HCMv3.Workflow;
 
-#if ANDROID
-using HCMv3.Maui.Core.Platforms.Android.HttpClient;
-#endif
-#if IOS
-using HCMv3.Maui.Core.Platforms.iOS.HttpClient;
-#endif
-
 namespace HCMv3.Maui.Pages.Layout;
 
 public partial class MainLayout
@@ -107,12 +100,14 @@ public partial class MainLayout
             // the only thing that tells the two apart -- see WorkflowClientHeader.
             .WithHeader(WorkflowClientHeader.Name, WorkflowClientHeader.Mobile)
             .OnError(call => HandleHttpErrorAsync(call))
-            .ConfigureInnerHandler(hch =>
+            .WithTimeout(MobileHttpHandlerSettings.RequestTimeout)
+            .AddMiddleware(() => new ConnectRetryHandler())
+            .UseSocketsHttpHandler(handler =>
             {
-#if ANDROID
-                new AndroidHttpClientHandlerConfigurer().Configure(hch);
-#elif IOS
-                new IOSHttpClientHandlerConfigurer().Configure(hch);
+#if DEBUG
+                MobileHttpHandlerSettings.Apply(handler, trustLocalDeveloperCertificate: true);
+#else
+                MobileHttpHandlerSettings.Apply(handler);
 #endif
             }));
     }

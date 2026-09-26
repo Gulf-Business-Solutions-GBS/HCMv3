@@ -32,7 +32,7 @@ public partial class GeoPunch : HCMv3MainLayoutPageComponentBase
     private const float SelfieMaxEdge = 1024f;
 
     protected IMyGeoPunchAppService MyGeoPunchAppService { get; set; }
-    protected IEssSessionAppService EssSessionAppService { get; set; }
+    protected EssContextCache EssContextCache { get; set; }
     protected IAccountService AccountService { get; set; }
 
     private bool _loaded;
@@ -47,7 +47,7 @@ public partial class GeoPunch : HCMv3MainLayoutPageComponentBase
     public GeoPunch()
     {
         MyGeoPunchAppService = Resolve<IMyGeoPunchAppService>();
-        EssSessionAppService = Resolve<IEssSessionAppService>();
+        EssContextCache = Resolve<EssContextCache>();
         AccountService = Resolve<IAccountService>();
     }
 
@@ -58,7 +58,7 @@ public partial class GeoPunch : HCMv3MainLayoutPageComponentBase
         await SetBusyAsync(async () =>
         {
             await WebRequestExecuter.Execute(
-                async () => await EssSessionAppService.GetEssContext(),
+                async () => await EssContextCache.GetAsync(),
                 result =>
                 {
                     _notLinked = result != null && !result.IsLinkedToEmployee;

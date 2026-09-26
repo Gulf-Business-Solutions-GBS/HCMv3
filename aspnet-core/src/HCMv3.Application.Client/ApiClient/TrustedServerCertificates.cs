@@ -22,12 +22,12 @@ public static class TrustedServerCertificates
         "735A53555BB11670655B81F439F589B692F6287809BE347A41639B29DA9DA887"
     };
 
-    public static bool IsTrusted(X509Certificate2 certificate, SslPolicyErrors errors)
+    public static bool IsTrusted(X509Certificate certificate, SslPolicyErrors errors)
     {
         return IsTrusted(certificate, errors, PinnedSha256Fingerprints);
     }
 
-    public static bool IsTrusted(X509Certificate2 certificate, SslPolicyErrors errors, IEnumerable<string> pinnedSha256Fingerprints)
+    public static bool IsTrusted(X509Certificate certificate, SslPolicyErrors errors, IEnumerable<string> pinnedSha256Fingerprints)
     {
         if (errors == SslPolicyErrors.None)
         {
@@ -39,7 +39,7 @@ public static class TrustedServerCertificates
             return false;
         }
 
-        var fingerprint = Convert.ToHexString(SHA256.HashData(certificate.RawData));
+        var fingerprint = Convert.ToHexString(SHA256.HashData(certificate.GetRawCertData()));
         return pinnedSha256Fingerprints.Any(pinned => string.Equals(pinned, fingerprint, StringComparison.OrdinalIgnoreCase));
     }
 }
