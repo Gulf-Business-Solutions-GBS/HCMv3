@@ -17,9 +17,19 @@ public class ProxyEssInboxAppService : ProxyAppServiceBase, IEssInboxAppService
         return await ApiClient.GetAsync<int>(GetEndpoint(nameof(GetMyPendingCount)));
     }
 
+    public async Task<EssInboxCountsDto> GetMyInboxCounts()
+    {
+        return await ApiClient.GetAsync<EssInboxCountsDto>(GetEndpoint(nameof(GetMyInboxCounts)));
+    }
+
     public async Task Approve(ApproveRequestInput input)
     {
         await ApiClient.PostAsync(GetEndpoint(nameof(Approve)), input);
+    }
+
+    public async Task<BulkApproveResultDto> BulkApprove(BulkApproveInput input)
+    {
+        return await ApiClient.PostAsync<BulkApproveResultDto>(GetEndpoint(nameof(BulkApprove)), input);
     }
 
     public async Task Reject(RejectRequestInput input)
