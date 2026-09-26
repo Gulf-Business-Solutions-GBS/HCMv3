@@ -816,4 +816,285 @@ public class EssInboxAppService_Tests : AppTestBase
 
         afterAsking.Single(c => c.EmployeeId == colleagueId).AlreadyAsked.ShouldBeTrue();
     }
+
+    // ------------------------------------------------------------------ tabs
+
+    private static GetMyInboxInput TabQuery(EssInboxTab tab) =>
+        new GetMyInboxInput { Tab = tab, MaxResultCount = 50, SkipCount = 0 };
+
+    /// <summary>Records that this person sent the request back, which is the only trace a send-back leaves.</summary>
+    private void LogSendBack(int requestId, int actorEmployeeId)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<RequestLog>().Add(new RequestLog
+            {
+                TenantId = TenantId,
+                WorkflowRequestId = requestId,
+                ActionById = actorEmployeeId,
+                ActionType = RequestActionType.SentBack,
+                ActionDateTime = DateTime.Now,
+                WorkflowStep = 1
+            });
+        });
+    }
+
+    [Fact]
+    public async Task The_Awaiting_Me_Tab_Should_Show_Only_Requests_Waiting_On_Me()
+    {
+        var meId = CreateCurrentUserEmployee("TAB100ME");
+        var requesterId = CreateEmployee("TAB100REQ");
+        var waiting = CreatePendingRequest(requesterId, meId);
+        CreatePendingRequest(requesterId, meId, approverAlreadyActed: true);
+
+        var result = await _inbox.GetMyInbox(TabQuery(EssInboxTab.AwaitingMe));
+
+        result.Items.Select(i => i.Id).ShouldBe(new[] { waiting });
+    }
+
+    [Fact]
+    public async Task The_Approved_Tab_Should_Show_What_I_Approved_And_Is_Still_Running()
+    {
+        var meId = CreateCurrentUserEmployee("TAB200ME");
+        var requesterId = CreateEmployee("TAB200REQ");
+        var stillWaiting = CreatePendingRequest(requesterId, meId);
+        var alreadyApproved = CreatePendingRequest(requesterId, meId, approverAlreadyActed: true);
+
+        var result = await _inbox.GetMyInbox(TabQuery(EssInboxTab.Approved));
+
+        var ids = result.Items.Select(i => i.Id).ToList();
+        ids.ShouldContain(alreadyApproved);
+        ids.ShouldNotContain(stillWaiting);
+    }
+
+    /// <summary>
+    /// The point of the tab: it answers whether something went through, so a request that has finished is
+    /// no longer an open question and drops out.
+    /// </summary>
+    [Fact]
+    public async Task The_Approved_Tab_Should_Drop_A_Request_That_Has_Finished()
+    {
+        var meId = CreateCurrentUserEmployee("TAB210ME");
+        var requesterId = CreateEmployee("TAB210REQ");
+        CreatePendingRequest(requesterId, meId, approverAlreadyActed: true, status: RequestStatus.Approved);
+
+        var result = await _inbox.GetMyInbox(TabQuery(EssInboxTab.Approved));
+
+        result.TotalCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task The_Sent_Back_Tab_Should_Show_What_I_Pushed_Back()
+    {
+        var meId = CreateCurrentUserEmployee("TAB300ME");
+        var requesterId = CreateEmployee("TAB300REQ");
+        var pushedBack = CreatePendingRequest(requesterId, meId);
+        var untouched = CreatePendingRequest(requesterId, meId);
+        LogSendBack(pushedBack, meId);
+
+        var result = await _inbox.GetMyInbox(TabQuery(EssInboxTab.SentBack));
+
+        var ids = result.Items.Select(i => i.Id).ToList();
+        ids.ShouldContain(pushedBack);
+        ids.ShouldNotContain(untouched);
+    }
+
+    /// <summary>Another approver's send-back is not mine, however open the request still is.</summary>
+    [Fact]
+    public async Task The_Sent_Back_Tab_Should_Not_Show_Another_Approvers_Send_Back()
+    {
+        var meId = CreateCurrentUserEmployee("TAB310ME");
+        var colleagueId = CreateEmployee("TAB310COL");
+        var requesterId = CreateEmployee("TAB310REQ");
+        var request = CreatePendingRequest(requesterId, meId);
+        LogSendBack(request, colleagueId);
+
+        var result = await _inbox.GetMyInbox(TabQuery(EssInboxTab.SentBack));
+
+        result.TotalCount.ShouldBe(0);
+    }
+
+    /// <summary>Neither retrospective tab is actionable; the buttons must not be offered.</summary>
+    [Fact]
+    public async Task The_Retrospective_Tabs_Should_Offer_No_Decisions()
+    {
+        var meId = CreateCurrentUserEmployee("TAB400ME");
+        var requesterId = CreateEmployee("TAB400REQ");
+        ConfigureLeaveChain();
+        var request = CreatePendingRequest(requesterId, meId, approverAlreadyActed: true);
+        LogSendBack(request, meId);
+
+        var approved = await _inbox.GetMyInbox(TabQuery(EssInboxTab.Approved));
+        var sentBack = await _inbox.GetMyInbox(TabQuery(EssInboxTab.SentBack));
+
+        approved.Items.Single().CanReject.ShouldBeFalse();
+        approved.Items.Single().CanSendBack.ShouldBeFalse();
+        sentBack.Items.Single().CanReject.ShouldBeFalse();
+        sentBack.Items.Single().CanSendBack.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task The_Counts_Should_Agree_With_What_Each_Tab_Lists()
+    {
+        var meId = CreateCurrentUserEmployee("CNT100ME");
+        var requesterId = CreateEmployee("CNT100REQ");
+        CreatePendingRequest(requesterId, meId);
+        CreatePendingRequest(requesterId, meId, approverAlreadyActed: true);
+        var pushedBack = CreatePendingRequest(requesterId, meId);
+        LogSendBack(pushedBack, meId);
+
+        var counts = await _inbox.GetMyInboxCounts();
+
+        counts.AwaitingMe.ShouldBe((await _inbox.GetMyInbox(TabQuery(EssInboxTab.AwaitingMe))).TotalCount);
+        counts.Approved.ShouldBe((await _inbox.GetMyInbox(TabQuery(EssInboxTab.Approved))).TotalCount);
+        counts.SentBack.ShouldBe((await _inbox.GetMyInbox(TabQuery(EssInboxTab.SentBack))).TotalCount);
+        counts.Approved.ShouldBe(1);
+        counts.SentBack.ShouldBe(1);
+    }
+
+    /// <summary>Sending the same request back twice is one row in the tab, so it must be one in the count.</summary>
+    [Fact]
+    public async Task Sending_The_Same_Request_Back_Twice_Should_Count_Once()
+    {
+        var meId = CreateCurrentUserEmployee("CNT200ME");
+        var requesterId = CreateEmployee("CNT200REQ");
+        var request = CreatePendingRequest(requesterId, meId);
+        LogSendBack(request, meId);
+        LogSendBack(request, meId);
+
+        var counts = await _inbox.GetMyInboxCounts();
+
+        counts.SentBack.ShouldBe(1);
+    }
+
+    // ------------------------------------------------------------------ bulk approve
+
+    [Fact]
+    public async Task Should_Approve_Several_Requests_At_Once()
+    {
+        var meId = CreateCurrentUserEmployee("BLK100ME");
+        var requesterId = CreateEmployee("BLK100REQ");
+        ConfigureLeaveChain();
+        var first = CreatePendingRequest(requesterId, meId);
+        var second = CreatePendingRequest(requesterId, meId);
+
+        var result = await _inbox.BulkApprove(new BulkApproveInput
+        {
+            WorkflowRequestIds = new List<int> { first, second }
+        });
+
+        result.ApprovedCount.ShouldBe(2);
+        result.FailedCount.ShouldBe(0);
+        result.SkippedCount.ShouldBe(0);
+        (await _inbox.GetMyInbox(TabQuery(EssInboxTab.AwaitingMe))).TotalCount.ShouldBe(0);
+    }
+
+    /// <summary>
+    /// The rule the audit called out: a step that demands a comment is left alone rather than approved with
+    /// a blank one, and says so per row.
+    /// </summary>
+    [Fact]
+    public async Task Should_Skip_A_Request_Whose_Step_Requires_A_Comment()
+    {
+        var meId = CreateCurrentUserEmployee("BLK200ME");
+        var requesterId = CreateEmployee("BLK200REQ");
+        ConfigureLeaveChain();
+        RequireCommentOnEveryStep();
+
+        var request = CreatePendingRequest(requesterId, meId);
+
+        var result = await _inbox.BulkApprove(new BulkApproveInput
+        {
+            WorkflowRequestIds = new List<int> { request }
+        });
+
+        result.SkippedCount.ShouldBe(1);
+        result.ApprovedCount.ShouldBe(0);
+        result.Items.Single().Outcome.ShouldBe(BulkApproveOutcome.SkippedCommentRequired);
+
+        // Left where it was, so it can be opened and answered properly.
+        (await _inbox.GetMyInbox(TabQuery(EssInboxTab.AwaitingMe))).TotalCount.ShouldBe(1);
+    }
+
+    /// <summary>A comment on the batch satisfies those same steps -- otherwise they could never be cleared.</summary>
+    [Fact]
+    public async Task A_Comment_On_The_Batch_Should_Satisfy_A_Step_That_Requires_One()
+    {
+        var meId = CreateCurrentUserEmployee("BLK300ME");
+        var requesterId = CreateEmployee("BLK300REQ");
+        ConfigureLeaveChain();
+        RequireCommentOnEveryStep();
+
+        var request = CreatePendingRequest(requesterId, meId);
+
+        var result = await _inbox.BulkApprove(new BulkApproveInput
+        {
+            WorkflowRequestIds = new List<int> { request },
+            Comment = "Checked against the roster."
+        });
+
+        result.ApprovedCount.ShouldBe(1);
+        result.SkippedCount.ShouldBe(0);
+    }
+
+    private void RequireCommentOnEveryStep()
+    {
+        UsingDbContext(context =>
+        {
+            foreach (var detail in context.Set<RequestDetail>().ToList())
+            {
+                detail.IsCommentRequire = true;
+            }
+        });
+    }
+
+    /// <summary>
+    /// One refusal must not cost the others. This is the whole reason the call reports per row instead of
+    /// throwing.
+    /// </summary>
+    [Fact]
+    public async Task One_Refusal_Should_Not_Stop_The_Rest_Being_Approved()
+    {
+        var meId = CreateCurrentUserEmployee("BLK400ME");
+        var requesterId = CreateEmployee("BLK400REQ");
+        ConfigureLeaveChain();
+        var mine = CreatePendingRequest(requesterId, meId);
+
+        // Waiting on somebody else, so the engine will refuse it for this approver.
+        var colleagueId = CreateEmployee("BLK400COL");
+        var theirs = CreatePendingRequest(requesterId, colleagueId);
+
+        var result = await _inbox.BulkApprove(new BulkApproveInput
+        {
+            WorkflowRequestIds = new List<int> { theirs, mine }
+        });
+
+        result.ApprovedCount.ShouldBe(1);
+        result.FailedCount.ShouldBe(1);
+        result.Items.Single(i => i.WorkflowRequestId == mine).Outcome.ShouldBe(BulkApproveOutcome.Approved);
+        result.Items.Single(i => i.WorkflowRequestId == theirs).Outcome.ShouldBe(BulkApproveOutcome.Failed);
+    }
+
+    [Fact]
+    public async Task Bulk_Approving_Nothing_Should_Do_Nothing()
+    {
+        CreateCurrentUserEmployee("BLK500ME");
+
+        var result = await _inbox.BulkApprove(new BulkApproveInput { WorkflowRequestIds = new List<int>() });
+
+        result.ApprovedCount.ShouldBe(0);
+        result.Items.ShouldBeEmpty();
+    }
+
+    /// <summary>A request that has gone is reported as a failed row, not an exception that loses the batch.</summary>
+    [Fact]
+    public async Task A_Missing_Request_Should_Be_Reported_Rather_Than_Thrown()
+    {
+        CreateCurrentUserEmployee("BLK600ME");
+
+        var result = await _inbox.BulkApprove(new BulkApproveInput { WorkflowRequestIds = new List<int> { 999999 } });
+
+        result.FailedCount.ShouldBe(1);
+        result.Items.Single().Outcome.ShouldBe(BulkApproveOutcome.Failed);
+    }
 }

@@ -10,3 +10,50 @@
 // detail dialog, where the fields being decided on are. Nothing is left to dock, so nothing is left to
 // reserve space for -- and the z-index note that used to live here, about sitting above the modal, went with
 // the problem it solved.
+
+/*
+ * Inbox tab strip. Same shape as the wage type and chain detail screens, so a tab reads as a tab
+ * everywhere in the product: a filled primary pill when selected, an outlined one when not.
+ */
+.inbox-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.inbox-tab {
+    border: 1px solid var(--bs-gray-300, #e4e6ef);
+    border-radius: 0.475rem;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-gray-700, #5e6278);
+    font-weight: 600;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.inbox-tab:hover {
+    color: var(--bs-primary, #009ef7);
+    border-color: var(--bs-primary, #009ef7);
+}
+
+.inbox-tab:focus-visible {
+    outline: 2px solid var(--bs-primary, #009ef7);
+    outline-offset: 2px;
+}
+
+.inbox-tab.inbox-tab-active,
+.inbox-tab.inbox-tab-active:hover {
+    background: var(--bs-primary, #009ef7);
+    border-color: var(--bs-primary, #009ef7);
+    color: #fff;
+}
+
+/* The count sits on a filled pill when the tab is active, so it needs its own contrast. */
+.inbox-tab.inbox-tab-active .badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}

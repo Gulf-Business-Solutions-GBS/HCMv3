@@ -6881,5 +6881,17 @@
     <text name="ApprovalSteps">خطوات الاعتماد</text>
     <text name="CreatorStep">خطوة مُنشئ الطلب</text>
     <text name="ApprovalStep">خطوة اعتماد</text>
+    <text name="WorkflowRequestNotFound">لم يعد الطلب موجوداً.</text>
+    <text name="InboxTabAwaitingMe">بانتظار إجرائي</text>
+    <text name="InboxTabFeedback">مطلوب رأيي</text>
+    <text name="InboxTabSentBack">أعدتها للطالب</text>
+    <text name="InboxTabApproved">اعتمدتها</text>
+    <text name="ApproveSelected">اعتماد المحدد</text>
+    <text name="BulkApproveConfirm">هل تريد اعتماد {0} طلب؟</text>
+    <text name="BulkApproveComment">ملاحظة (تُطبق على الكل)</text>
+    <text name="BulkApproveResult">{0} معتمد، {1} متروك، {2} فشل.</text>
+    <text name="BulkApproveSkippedHint">الطلبات المتروكة تتطلب ملاحظة في خطوتها. افتحها كل على حدة، أو أضف ملاحظة أعلاه وأعد المحاولة.</text>
+    <text name="NothingSelected">لم يتم تحديد أي عنصر.</text>
+    <text name="SelectedCount">{0} محدد</text>
   </texts>
 </localizationDictionary>

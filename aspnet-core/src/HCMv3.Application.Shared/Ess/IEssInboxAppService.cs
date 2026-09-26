@@ -23,6 +23,12 @@ public interface IEssInboxAppService : IApplicationService
     /// <summary>Count only -- for the menu badge and the landing tile, which should not pay for the list.</summary>
     Task<int> GetMyPendingCount();
 
+    /// <summary>How many rows sit behind each inbox tab.</summary>
+    Task<EssInboxCountsDto> GetMyInboxCounts();
+
+    /// <summary>Approves several requests at once, reporting the outcome of each rather than failing as one.</summary>
+    Task<BulkApproveResultDto> BulkApprove(BulkApproveInput input);
+
     Task Approve(ApproveRequestInput input);
 
     Task Reject(RejectRequestInput input);

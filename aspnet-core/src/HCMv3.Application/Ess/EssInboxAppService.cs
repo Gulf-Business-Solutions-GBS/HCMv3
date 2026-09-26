@@ -84,15 +84,51 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         // has asked them to look at. Both are "waiting on you" in the sense that matters -- something is
         // expected -- and putting them in separate screens would mean an ask nobody opened because it was
         // filed somewhere they do not check. They are paged together and each row says which it is.
-        var approvals = input.Kind == EssInboxItemKind.FeedbackRequest
-            ? new List<WorkflowRequest>()
-            : await ApprovalRequestsAsync(employeeId, input.RequestType);
+        // The tab, when one is named, decides the sources outright. Kind stays honoured underneath it so a
+        // caller written before the tabs existed keeps the behaviour it was built against.
+        var wantsApprovals = input.Tab switch
+        {
+            EssInboxTab.AwaitingMe => true,
+            EssInboxTab.Feedback or EssInboxTab.SentBack or EssInboxTab.Approved => false,
+            _ => input.Kind != EssInboxItemKind.FeedbackRequest
+        };
 
-        var feedback = input.Kind == EssInboxItemKind.Approval
-            ? new List<WorkflowRemark>()
-            : await FeedbackRequestsAsync(employeeId, input.RequestType);
+        var wantsFeedback = input.Tab switch
+        {
+            EssInboxTab.Feedback => true,
+            EssInboxTab.AwaitingMe or EssInboxTab.SentBack or EssInboxTab.Approved => false,
+            _ => input.Kind != EssInboxItemKind.Approval
+        };
+
+        var approvals = wantsApprovals
+            ? await ApprovalRequestsAsync(employeeId, input.RequestType)
+            : new List<WorkflowRequest>();
+
+        var feedback = wantsFeedback
+            ? await FeedbackRequestsAsync(employeeId, input.RequestType)
+            : new List<WorkflowRemark>();
+
+        if (input.Tab == EssInboxTab.SentBack)
+        {
+            approvals = await SentBackRequestsAsync(employeeId, input.RequestType);
+        }
+        else if (input.Tab == EssInboxTab.Approved)
+        {
+            approvals = await ApprovedStillRunningRequestsAsync(employeeId, input.RequestType);
+        }
 
         var items = await BuildItemsAsync(approvals);
+
+        // Neither of the two retrospective tabs is actionable: the request is with the requester or with a
+        // later approver, so offering a decision would only produce a refusal from the engine.
+        if (input.Tab == EssInboxTab.SentBack || input.Tab == EssInboxTab.Approved)
+        {
+            foreach (var item in items)
+            {
+                item.CanReject = false;
+                item.CanSendBack = false;
+            }
+        }
 
         items.AddRange(await BuildFeedbackItemsAsync(feedback));
 
@@ -135,6 +171,61 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
                         && a.WorkflowRequest.RequestStatus == RequestStatus.Open)
             .Select(a => a.WorkflowRequest)
             .WhereIf(!requestType.IsNullOrWhiteSpace(), r => r.RequestType == requestType)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// The requests this person sent back to the requester, which are still open.
+    ///
+    /// <para>
+    /// Read from the action log rather than from approver rows, because a send-back is an event, not a
+    /// state: the request returns to an earlier step and this person's approver row goes back to pending,
+    /// which is indistinguishable from never having acted at all. The log is the only record that they were
+    /// the one who pushed it back.
+    /// </para>
+    ///
+    /// <para>
+    /// A request they sent back and which then came round to them again appears here as well as in Awaiting
+    /// me. That is correct: both statements are true, and hiding it from one of them would mean an approver
+    /// who works from a single tab never sees it.
+    /// </para>
+    /// </summary>
+    private async Task<List<WorkflowRequest>> SentBackRequestsAsync(int employeeId, string requestType)
+    {
+        var requestIds = await _requestLogRepository.GetAll()
+            .Where(l => l.ActionById == employeeId && l.ActionType == RequestActionType.SentBack)
+            .Select(l => l.WorkflowRequestId)
+            .Distinct()
+            .ToListAsync();
+
+        if (requestIds.Count == 0)
+        {
+            return new List<WorkflowRequest>();
+        }
+
+        return await _requestRepository.GetAll()
+            .Where(r => requestIds.Contains(r.Id) && r.RequestStatus == RequestStatus.Open)
+            .WhereIf(!requestType.IsNullOrWhiteSpace(), r => r.RequestType == requestType)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// The requests this person approved which are still running through later steps.
+    ///
+    /// <para>
+    /// Approver rows rather than the log, and deliberately not restricted to the current step: the whole
+    /// point is the ones that have moved on past them.
+    /// </para>
+    /// </summary>
+    private Task<List<WorkflowRequest>> ApprovedStillRunningRequestsAsync(int employeeId, string requestType)
+    {
+        return _approverRepository.GetAll()
+            .Where(a => a.ApproverId == employeeId
+                        && a.IsApproved
+                        && a.WorkflowRequest.RequestStatus == RequestStatus.Open)
+            .Select(a => a.WorkflowRequest)
+            .WhereIf(!requestType.IsNullOrWhiteSpace(), r => r.RequestType == requestType)
+            .Distinct()
             .ToListAsync();
     }
 
@@ -245,6 +336,66 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         return approvals + feedback;
     }
 
+    /// <summary>
+    /// How many rows sit behind each tab.
+    ///
+    /// <para>
+    /// A separate call from the list on purpose: the tab strip needs all four numbers at once, and the list
+    /// only ever holds one tab's rows. Counting them client-side would mean fetching four lists to render
+    /// four numbers.
+    /// </para>
+    /// </summary>
+    public async Task<EssInboxCountsDto> GetMyInboxCounts()
+    {
+        var employeeId = await _employeeScopeProvider.GetCurrentEmployeeIdAsync();
+
+        // Zeroes rather than an error, for the same reason GetMyPendingCount returns zero: an unlinked
+        // account is a setup gap the screens themselves explain.
+        if (!employeeId.HasValue)
+        {
+            return new EssInboxCountsDto();
+        }
+
+        var id = employeeId.Value;
+
+        var awaitingMe = await _approverRepository.GetAll()
+            .CountAsync(a => a.ApproverId == id
+                             && !a.IsApproved
+                             && a.WorkflowStep == a.WorkflowRequest.WorkflowStep
+                             && a.WorkflowRequest.RequestStatus == RequestStatus.Open);
+
+        var feedback = await _feedbackRepository.GetAll()
+            .CountAsync(r => r.CCReceiverId == id
+                             && r.RespondedAt == null
+                             && r.WorkflowRequest.RequestStatus == RequestStatus.Open);
+
+        // Distinct on the request, not on the log row: sending the same request back twice is one entry in
+        // the tab, and the count has to agree with the list or the tab lies about its own contents.
+        var sentBack = await _requestLogRepository.GetAll()
+            .Where(l => l.ActionById == id
+                        && l.ActionType == RequestActionType.SentBack
+                        && l.WorkflowRequest.RequestStatus == RequestStatus.Open)
+            .Select(l => l.WorkflowRequestId)
+            .Distinct()
+            .CountAsync();
+
+        var approved = await _approverRepository.GetAll()
+            .Where(a => a.ApproverId == id
+                        && a.IsApproved
+                        && a.WorkflowRequest.RequestStatus == RequestStatus.Open)
+            .Select(a => a.WorkflowRequestId)
+            .Distinct()
+            .CountAsync();
+
+        return new EssInboxCountsDto
+        {
+            AwaitingMe = awaitingMe,
+            Feedback = feedback,
+            SentBack = sentBack,
+            Approved = approved
+        };
+    }
+
     public async Task Approve(ApproveRequestInput input)
     {
         var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
@@ -252,6 +403,115 @@ public class EssInboxAppService : HCMv3AppServiceBase, IEssInboxAppService
         // The engine re-checks that this employee is actually the current approver, so authorization does
         // not rest on the inbox query having been honest about what it listed.
         await _workflowApprovalService.ApproveAsync(input.WorkflowRequestId, employeeId, input.Comment);
+    }
+
+    /// <summary>
+    /// Approves several requests in one go, reporting what happened to each.
+    ///
+    /// <para>
+    /// Every request goes through the same engine call a single approval does, so nothing is authorised
+    /// more loosely here than it is one at a time. What differs is the failure handling: one refusal must
+    /// not undo or prevent the rest. Approving twenty and being told "the eleventh was refused" is useful;
+    /// approving twenty and being told the whole thing failed is not, because the list gives no way to find
+    /// out which one or to retry the other nineteen.
+    /// </para>
+    ///
+    /// <para>
+    /// A step that demands a comment is skipped rather than approved with a blank one. Supplying a comment
+    /// with the batch satisfies those steps, which is why the comment is offered at all -- otherwise the
+    /// rows that most need a note would be exactly the ones bulk approval could never clear.
+    /// </para>
+    /// </summary>
+    [HttpPost]
+    public async Task<BulkApproveResultDto> BulkApprove(BulkApproveInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+        var result = new BulkApproveResultDto();
+
+        var ids = input.WorkflowRequestIds?.Distinct().ToList() ?? new List<int>();
+        if (ids.Count == 0)
+        {
+            return result;
+        }
+
+        var requests = await _requestRepository.GetAll()
+            .Where(r => ids.Contains(r.Id))
+            .ToListAsync();
+
+        var hasComment = !input.Comment.IsNullOrWhiteSpace();
+
+        foreach (var id in ids)
+        {
+            var request = requests.FirstOrDefault(r => r.Id == id);
+            var item = new BulkApproveItemResultDto
+            {
+                WorkflowRequestId = id,
+                RequestNumber = request?.RequestNumber
+            };
+
+            if (request == null)
+            {
+                item.Outcome = BulkApproveOutcome.Failed;
+                item.Message = L("WorkflowRequestNotFound");
+                result.FailedCount++;
+                result.Items.Add(item);
+                continue;
+            }
+
+            if (!hasComment && await StepRequiresCommentAsync(request))
+            {
+                item.Outcome = BulkApproveOutcome.SkippedCommentRequired;
+                item.Message = L("ACommentIsRequiredToApproveAtThisWorkflowStep");
+                result.SkippedCount++;
+                result.Items.Add(item);
+                continue;
+            }
+
+            try
+            {
+                await _workflowApprovalService.ApproveAsync(id, employeeId, input.Comment);
+                item.Outcome = BulkApproveOutcome.Approved;
+                result.ApprovedCount++;
+            }
+            catch (UserFriendlyException ex)
+            {
+                // Only the engine's own refusals are caught. Anything else -- a broken query, a failed
+                // save -- is a fault rather than an outcome, and swallowing it here would turn a bug into
+                // twenty quiet "failed" rows nobody could diagnose.
+                item.Outcome = BulkApproveOutcome.Failed;
+                item.Message = ex.Message;
+                result.FailedCount++;
+            }
+
+            result.Items.Add(item);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Whether the request's current step insists on a comment.
+    ///
+    /// <para>
+    /// Asked before calling the engine rather than catching the engine's refusal, because the two outcomes
+    /// mean different things to the person reading the result: a step needing a comment is a row to go and
+    /// open, not a row that went wrong.
+    /// </para>
+    /// </summary>
+    private async Task<bool> StepRequiresCommentAsync(WorkflowRequest request)
+    {
+        // Resolved the same way the engine resolves it. A request does not carry its chain: the chain comes
+        // from the transaction type, and reading it any other way here would let the two disagree.
+        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
+        if (requestMaster == null)
+        {
+            return false;
+        }
+
+        return await _requestDetailRepository.GetAll()
+            .AnyAsync(d => d.RequestMasterId == requestMaster.Id
+                           && d.Step == request.WorkflowStep
+                           && d.IsCommentRequire);
     }
 
     public async Task Reject(RejectRequestInput input)

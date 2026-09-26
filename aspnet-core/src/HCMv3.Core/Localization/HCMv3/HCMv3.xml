@@ -7043,5 +7043,17 @@
     <text name="ApprovalSteps">Approval Steps</text>
     <text name="CreatorStep">Creator step</text>
     <text name="ApprovalStep">Approval Step</text>
+    <text name="WorkflowRequestNotFound">The request no longer exists.</text>
+    <text name="InboxTabAwaitingMe">Awaiting me</text>
+    <text name="InboxTabFeedback">Asked for my feedback</text>
+    <text name="InboxTabSentBack">I sent back</text>
+    <text name="InboxTabApproved">I approved</text>
+    <text name="ApproveSelected">Approve selected</text>
+    <text name="BulkApproveConfirm">Approve {0} request(s)?</text>
+    <text name="BulkApproveComment">Comment (applied to all)</text>
+    <text name="BulkApproveResult">{0} approved, {1} skipped, {2} failed.</text>
+    <text name="BulkApproveSkippedHint">Skipped requests need a comment on their step. Open them individually, or add a comment above and try again.</text>
+    <text name="NothingSelected">Nothing is selected.</text>
+    <text name="SelectedCount">{0} selected</text>
   </texts>
 </localizationDictionary>

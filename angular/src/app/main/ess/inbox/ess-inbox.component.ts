@@ -10,9 +10,12 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { EmployeeAvatarComponent } from '@shared/common/employee-avatar/employee-avatar.component';
 import {
     ApproveRequestInput,
+    BulkApproveInput,
+    EssInboxCountsDto,
     EssInboxItemDto,
     EssInboxItemKind,
     EssInboxServiceProxy,
+    EssInboxTab,
     GetMyInboxInput,
     RejectRequestInput,
     SendBackRequestInput,
@@ -142,6 +145,37 @@ export class EssInboxComponent extends AppComponentBase {
     readonly selected = signal<EssInboxRow | undefined>(undefined);
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
+    /**
+     * Which slice of the inbox is on screen.
+     *
+     * <p>Unlike the filters below, changing this goes back to the server: the other three tabs are sources
+     * the inbox never fetched, not subsets of what it already holds.</p>
+     */
+    readonly tab = signal<EssInboxTab>(EssInboxTab.AwaitingMe);
+
+    readonly counts = signal<EssInboxCountsDto | undefined>(undefined);
+
+    readonly tabs: { id: EssInboxTab; labelKey: string }[] = [
+        { id: EssInboxTab.AwaitingMe, labelKey: 'InboxTabAwaitingMe' },
+        { id: EssInboxTab.Feedback, labelKey: 'InboxTabFeedback' },
+        { id: EssInboxTab.SentBack, labelKey: 'InboxTabSentBack' },
+        { id: EssInboxTab.Approved, labelKey: 'InboxTabApproved' },
+    ];
+
+    /**
+     * The rows ticked for bulk approval, by request id.
+     *
+     * <p>Held as ids rather than rows because the grid re-creates its row objects on every render -- a sort
+     * or a page change would otherwise silently empty the selection.</p>
+     */
+    readonly checkedIds = signal<Set<number>>(new Set<number>());
+
+    /** One comment applied to the whole batch. Separate from the single-decision comment below. */
+    bulkComment = '';
+
+    /** Only the tab of things waiting on this person can be acted on at all. */
+    readonly canBulkApprove = computed(() => this.tab() === EssInboxTab.AwaitingMe);
+
     readonly filterText = signal('');
     readonly requestTypeFilter = signal('');
     readonly employeeFilter = signal('');
@@ -204,14 +238,21 @@ export class EssInboxComponent extends AppComponentBase {
         this.fetching = true;
         this.primengTableHelper.showLoadingIndicator();
 
+        // Here rather than in reloadFromServer, so the strip has its numbers on the FIRST open too. The
+        // initial load is driven by the table's own lazy-load event, which never goes through the reload
+        // path -- put it there and every tab reads zero until somebody presses Refresh.
+        this.loadCounts();
+
         this._inboxService
             .getMyInbox(
                 new GetMyInboxInput({
                     requestType: undefined,
 
-                    // Both kinds. The grid shows approvals and feedback asks together, each row saying
-                    // which it is -- an ask filed on a screen nobody checks is an ask nobody answers.
+                    // Kind is left to the tab. It used to fetch both, so that approvals and feedback asks
+                    // sat in one list -- an ask filed on a screen nobody checks is an ask nobody answers.
+                    // The tabs keep that visible instead, by putting a count on the feedback tab.
                     kind: undefined,
+                    tab: this.tab(),
                     maxResultCount: EssInboxComponent.MaxInboxRows,
                     skipCount: 0,
                     sorting: undefined,
@@ -241,12 +282,61 @@ export class EssInboxComponent extends AppComponentBase {
             });
     }
 
+    /**
+     * Switches tab. Always a round trip: the other tabs hold requests this screen never fetched.
+     */
+    selectTab(tab: EssInboxTab): void {
+        if (this.tab() === tab) {
+            return;
+        }
+
+        this.tab.set(tab);
+        this.reloadFromServer();
+    }
+
+    tabCount(tab: EssInboxTab): number {
+        const counts = this.counts();
+        if (!counts) {
+            return 0;
+        }
+
+        switch (tab) {
+            case EssInboxTab.AwaitingMe:
+                return counts.awaitingMe;
+            case EssInboxTab.Feedback:
+                return counts.feedback;
+            case EssInboxTab.SentBack:
+                return counts.sentBack;
+            case EssInboxTab.Approved:
+                return counts.approved;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Refreshes the four tab numbers.
+     *
+     * <p>Failure is swallowed: the counts decorate the tab strip, and losing them must not stop the list
+     * itself loading. An unlinked account gets zeroes from the server anyway.</p>
+     */
+    private loadCounts(): void {
+        this._inboxService.getMyInboxCounts().subscribe({
+            next: (result) => this.counts.set(result),
+            error: () => undefined,
+        });
+    }
+
     /** Re-asks the server. Used by Refresh and after any decision, since an approval may or may not finish
      * the request and only the server knows which. */
     reloadFromServer(): void {
         this.loaded = false;
         this.selected.set(undefined);
         this.allRows.set([]);
+
+        // A row that is gone cannot stay ticked, and a tick that survives a refresh is a request the next
+        // Approve would try to approve twice.
+        this.checkedIds.set(new Set<number>());
 
         // Back to the first page: an approval removes a row, and page four of a list that is now three
         // pages long shows nothing at all.
@@ -389,6 +479,93 @@ export class EssInboxComponent extends AppComponentBase {
     showMenu(event: Event, row: EssInboxRow, menu: TieredMenu): void {
         this.activeMenuItems.set(this.getMenuItems(row));
         menu.toggle(event);
+    }
+
+    // ---------------------------------------------------------------- bulk approval
+
+    isChecked(row: EssInboxRow): boolean {
+        return this.checkedIds().has(row.id);
+    }
+
+    toggleChecked(row: EssInboxRow, checked: boolean): void {
+        // A new Set, not a mutated one: the signal compares by reference, and mutating in place leaves the
+        // header checkbox and the button label reading the previous state.
+        const next = new Set(this.checkedIds());
+        checked ? next.add(row.id) : next.delete(row.id);
+        this.checkedIds.set(next);
+    }
+
+    /** The rows a tick would apply to: what is on screen after filtering, not the whole fetched set. */
+    private selectableRows(): EssInboxRow[] {
+        return (this.primengTableHelper.records() as EssInboxRow[]).filter((r) => !r.isFeedbackRequest);
+    }
+
+    readonly allChecked = computed(() => {
+        const ids = this.checkedIds();
+        const rows = (this.primengTableHelper.records() as EssInboxRow[]).filter((r) => !r.isFeedbackRequest);
+
+        return rows.length > 0 && rows.every((r) => ids.has(r.id));
+    });
+
+    toggleAll(checked: boolean): void {
+        const next = new Set(this.checkedIds());
+
+        for (const row of this.selectableRows()) {
+            checked ? next.add(row.id) : next.delete(row.id);
+        }
+
+        this.checkedIds.set(next);
+    }
+
+    readonly checkedCount = computed(() => this.checkedIds().size);
+
+    /**
+     * Approves everything ticked, then reports what happened row by row.
+     *
+     * <p>The server never fails the batch as a whole, so the message afterwards has three numbers in it.
+     * Skipped rows are the interesting ones -- they need a comment on their step and are still sitting in
+     * the list -- so they get a line of their own explaining what to do rather than being folded into a
+     * count nobody can act on.</p>
+     */
+    bulkApprove(): void {
+        const ids = [...this.checkedIds()];
+
+        if (ids.length === 0) {
+            this.message.warn(this.l('NothingSelected'));
+            return;
+        }
+
+        if (this.acting()) {
+            return;
+        }
+
+        this.message.confirm(this.l('BulkApproveConfirm', ids.length), this.l('AreYouSure'), (isConfirmed) => {
+            if (!isConfirmed) {
+                return;
+            }
+
+            const input = new BulkApproveInput();
+            input.workflowRequestIds = ids;
+            input.comment = this.bulkComment;
+
+            this.acting.set(true);
+
+            this._inboxService
+                .bulkApprove(input)
+                .pipe(finalize(() => this.acting.set(false)))
+                .subscribe((result) => {
+                    this.notify.info(
+                        this.l('BulkApproveResult', result.approvedCount, result.skippedCount, result.failedCount)
+                    );
+
+                    if (result.skippedCount > 0) {
+                        this.message.warn(this.l('BulkApproveSkippedHint'));
+                    }
+
+                    this.bulkComment = '';
+                    this.reloadFromServer();
+                });
+        });
     }
 
     // ---------------------------------------------------------------- decisions

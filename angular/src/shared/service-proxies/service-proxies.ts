@@ -61605,6 +61605,57 @@ export class EssInboxServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getMyInboxCounts(): Observable<EssInboxCountsDto> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/GetMyInboxCounts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyInboxCounts(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyInboxCounts(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EssInboxCountsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EssInboxCountsDto>;
+        }));
+    }
+
+    protected processGetMyInboxCounts(response: HttpResponseBase): Observable<EssInboxCountsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EssInboxCountsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -61647,6 +61698,62 @@ export class EssInboxServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    bulkApprove(body?: BulkApproveInput | undefined): Observable<BulkApproveResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/BulkApprove";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBulkApprove(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBulkApprove(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BulkApproveResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BulkApproveResultDto>;
+        }));
+    }
+
+    protected processBulkApprove(response: HttpResponseBase): Observable<BulkApproveResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BulkApproveResultDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -169006,6 +169113,167 @@ export interface IBuildingDto {
     comments: string | undefined;
 }
 
+export class BulkApproveInput implements IBulkApproveInput {
+    workflowRequestIds!: number[];
+    comment!: string | undefined;
+
+    constructor(data?: IBulkApproveInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+        if (!data) {
+            this.workflowRequestIds = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["workflowRequestIds"])) {
+                this.workflowRequestIds = [] as any;
+                for (let item of _data["workflowRequestIds"])
+                    this.workflowRequestIds!.push(item);
+            }
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): BulkApproveInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new BulkApproveInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.workflowRequestIds)) {
+            data["workflowRequestIds"] = [];
+            for (let item of this.workflowRequestIds)
+                data["workflowRequestIds"].push(item);
+        }
+        data["comment"] = this.comment;
+        return data;
+    }
+}
+
+export interface IBulkApproveInput {
+    workflowRequestIds: number[];
+    comment: string | undefined;
+}
+
+export class BulkApproveItemResultDto implements IBulkApproveItemResultDto {
+    workflowRequestId!: number;
+    requestNumber!: string | undefined;
+    outcome!: BulkApproveOutcome;
+    message!: string | undefined;
+
+    constructor(data?: IBulkApproveItemResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.requestNumber = _data["requestNumber"];
+            this.outcome = _data["outcome"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): BulkApproveItemResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BulkApproveItemResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["requestNumber"] = this.requestNumber;
+        data["outcome"] = this.outcome;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IBulkApproveItemResultDto {
+    workflowRequestId: number;
+    requestNumber: string | undefined;
+    outcome: BulkApproveOutcome;
+    message: string | undefined;
+}
+
+export enum BulkApproveOutcome {
+    Approved = 0,
+    SkippedCommentRequired = 1,
+    Failed = 2,
+}
+
+export class BulkApproveResultDto implements IBulkApproveResultDto {
+    approvedCount!: number;
+    skippedCount!: number;
+    failedCount!: number;
+    items!: BulkApproveItemResultDto[] | undefined;
+
+    constructor(data?: IBulkApproveResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.approvedCount = _data["approvedCount"];
+            this.skippedCount = _data["skippedCount"];
+            this.failedCount = _data["failedCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BulkApproveItemResultDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): BulkApproveResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BulkApproveResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["approvedCount"] = this.approvedCount;
+        data["skippedCount"] = this.skippedCount;
+        data["failedCount"] = this.failedCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IBulkApproveResultDto {
+    approvedCount: number;
+    skippedCount: number;
+    failedCount: number;
+    items: BulkApproveItemResultDto[] | undefined;
+}
+
 export class BulkExcelOutput implements IBulkExcelOutput {
     fileName!: string | undefined;
     base64Content!: string | undefined;
@@ -217944,6 +218212,54 @@ export interface IEssContextDto {
     availableTransactionTypes: EssTransactionTypeDto[] | undefined;
 }
 
+export class EssInboxCountsDto implements IEssInboxCountsDto {
+    awaitingMe!: number;
+    feedback!: number;
+    sentBack!: number;
+    approved!: number;
+
+    constructor(data?: IEssInboxCountsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.awaitingMe = _data["awaitingMe"];
+            this.feedback = _data["feedback"];
+            this.sentBack = _data["sentBack"];
+            this.approved = _data["approved"];
+        }
+    }
+
+    static fromJS(data: any): EssInboxCountsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssInboxCountsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["awaitingMe"] = this.awaitingMe;
+        data["feedback"] = this.feedback;
+        data["sentBack"] = this.sentBack;
+        data["approved"] = this.approved;
+        return data;
+    }
+}
+
+export interface IEssInboxCountsDto {
+    awaitingMe: number;
+    feedback: number;
+    sentBack: number;
+    approved: number;
+}
+
 export class EssInboxItemDto implements IEssInboxItemDto {
     id!: number;
     requestType!: string | undefined;
@@ -218067,6 +218383,13 @@ export interface IEssInboxItemDto {
 export enum EssInboxItemKind {
     Approval = 0,
     FeedbackRequest = 1,
+}
+
+export enum EssInboxTab {
+    AwaitingMe = 0,
+    Feedback = 1,
+    SentBack = 2,
+    Approved = 3,
 }
 
 export class EssRecentRequestDto implements IEssRecentRequestDto {
@@ -254196,6 +254519,7 @@ export class GetMyInboxInput implements IGetMyInboxInput {
     sorting!: string | undefined;
     requestType!: string | undefined;
     kind!: EssInboxItemKind;
+    tab!: EssInboxTab;
 
     constructor(data?: IGetMyInboxInput) {
         if (data) {
@@ -254213,6 +254537,7 @@ export class GetMyInboxInput implements IGetMyInboxInput {
             this.sorting = _data["sorting"];
             this.requestType = _data["requestType"];
             this.kind = _data["kind"];
+            this.tab = _data["tab"];
         }
     }
 
@@ -254230,6 +254555,7 @@ export class GetMyInboxInput implements IGetMyInboxInput {
         data["sorting"] = this.sorting;
         data["requestType"] = this.requestType;
         data["kind"] = this.kind;
+        data["tab"] = this.tab;
         return data;
     }
 }
@@ -254240,6 +254566,7 @@ export interface IGetMyInboxInput {
     sorting: string | undefined;
     requestType: string | undefined;
     kind: EssInboxItemKind;
+    tab: EssInboxTab;
 }
 
 export class GetMyLeavesInput implements IGetMyLeavesInput {

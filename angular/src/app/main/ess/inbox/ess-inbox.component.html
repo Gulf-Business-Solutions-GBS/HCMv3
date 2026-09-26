@@ -18,6 +18,29 @@
                 </div>
             </div>
         } @else {
+            <!-- The four questions somebody asks of their own inbox: what needs me, what was I asked
+                 about, what did I push back, and did the thing I approved go through. Counts come from
+                 their own call, so the strip can say how many are behind a tab before it is opened. -->
+            <div class="card card-custom gutter-b">
+                <div class="card-body py-3">
+                    <ul class="nav inbox-tabs" role="tablist">
+                        @for (t of tabs; track t.id) {
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    type="button"
+                                    role="tab"
+                                    class="inbox-tab"
+                                    [class.inbox-tab-active]="tab() === t.id"
+                                    [attr.aria-selected]="tab() === t.id"
+                                    (click)="selectTab(t.id)">
+                                    {{ t.labelKey | localize }}
+                                    <span class="badge badge-light ms-1">{{ tabCount(t.id) }}</span>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <form class="form" autocomplete="off">
@@ -125,6 +148,38 @@
                         <div class="alert alert-warning">{{ 'OnlyFirstRecordsAreShown' | localize }}</div>
                     }
 
+
+                    <!-- Appears only once something is ticked. A bar that is always there, greyed out, is
+                         one more thing to read past on a screen whose job is to be scanned. -->
+                    @if (canBulkApprove() && checkedCount() > 0) {
+                        <div class="alert alert-light-primary d-flex flex-wrap align-items-center gap-2 mb-4">
+                            <span class="fw-bold me-2">{{ 'SelectedCount' | localize: checkedCount() }}</span>
+
+                            <!-- Offered up front rather than after the first attempt: a step that demands a
+                                 comment is skipped without one, and finding that out from the result is a
+                                 wasted round trip for everybody. -->
+                            <input
+                                type="text"
+                                name="bulkComment"
+                                class="form-control form-control-sm flex-grow-1"
+                                style="min-width: 240px"
+                                [placeholder]="'BulkApproveComment' | localize"
+                                [(ngModel)]="bulkComment"
+                                [ngModelOptions]="{ standalone: true }" />
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-primary"
+                                [disabled]="acting()"
+                                (click)="bulkApprove()">
+                                <i class="fa fa-check"></i>
+                                {{ 'ApproveSelected' | localize }}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-light" (click)="toggleAll(false)">
+                                {{ 'Cancel' | localize }}
+                            </button>
+                        </div>
+                    }
                     <div class="row align-items-center">
                         <!--<Primeng-TurboTable-Start>-->
                         <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
@@ -141,6 +196,19 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template #header>
                                     <tr>
+                                        <!-- Only on the actionable tab: nothing on the other three can be
+                                             approved, so a column of ticks there would promise something
+                                             the server would refuse. -->
+                                        @if (canBulkApprove()) {
+                                            <th style="width: 48px">
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [checked]="allChecked()"
+                                                    (change)="toggleAll($any($event.target).checked)"
+                                                    [attr.aria-label]="'SelectAll' | localize" />
+                                            </th>
+                                        }
                                         <th style="min-width: 110px">{{ 'Actions' | localize }}</th>
                                         <th style="min-width: 160px" pSortableColumn="typeName">
                                             {{ 'RequestType' | localize }}
@@ -178,6 +246,20 @@
                                         class="ess-inbox__row"
                                         [class.ess-inbox__row--selected]="selected()?.id === record.id"
                                         (click)="openDetail(record)">
+                                        @if (canBulkApprove()) {
+                                            <td style="width: 48px" (click)="$event.stopPropagation()">
+                                                <!-- A feedback ask offers no tick: this person cannot
+                                                     approve it, so including it in a batch would only
+                                                     produce a refusal. -->
+                                                @if (!record.isFeedbackRequest) {
+                                                    <input
+                                                        type="checkbox"
+                                                        class="form-check-input"
+                                                        [checked]="isChecked(record)"
+                                                        (change)="toggleChecked(record, $any($event.target).checked)" />
+                                                }
+                                            </td>
+                                        }
                                         <td style="min-width: 110px" (click)="$event.stopPropagation()">
                                             <button
                                                 type="button"
