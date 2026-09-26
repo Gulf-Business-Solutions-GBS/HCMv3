@@ -137,7 +137,7 @@
                                     [ngModel]="record().approverPerson"
                                     (ngModelChange)="updateField('approverPerson', $event)"
                                     required>
-                                    @for (item of approverPersonTypes; track item.value) {
+                                    @for (item of availableApproverPersonTypes(); track item.value) {
                                         <option [ngValue]="item.value">{{ item.key | localize }}</option>
                                     }
                                 </select>

@@ -1,7 +1,22 @@
 <div class="row align-items-center mb-4">
     <div class="col-md-12 text-end">
+        <!-- Only while there is something to save. Dragging a chain into shape takes several moves, so the
+             order is held on screen until it is right and sent once -- not a round trip per drag. -->
+        @if (orderChanged()) {
+            <button type="button" class="btn btn-light me-2" [disabled]="savingOrder()" (click)="discardOrder()">
+                {{ 'Cancel' | localize }}
+            </button>
+            <button
+                type="button"
+                class="btn btn-success me-2"
+                [buttonBusy]="savingOrder()"
+                (click)="saveOrder()">
+                <i class="fa fa-save"></i>
+                {{ 'SaveStepOrder' | localize }}
+            </button>
+        }
         @if ('Pages.Workflow.RequestDetails.Create' | permission) {
-            <button type="button" class="btn btn-primary" (click)="createRecord()">
+            <button type="button" class="btn btn-primary" [disabled]="orderChanged()" (click)="createRecord()">
                 <i class="fa fa-plus"></i>
                 {{ 'CreateNew' | localize }}
             </button>
@@ -23,18 +38,21 @@
             [scrollable]="true"
             scrollDirection="horizontal"
             [tableStyle]="{ 'min-width': '80rem' }"
-            [resizableColumns]="primengTableHelper.resizableColumns">
+            [resizableColumns]="primengTableHelper.resizableColumns"
+            (onRowReorder)="onRowReorder()">
             <ng-template #header>
                 <tr>
+                    <!-- The handle column. Dragging is the only way the order is meant to change: the
+                         Step number itself is not typed, it is whatever position the row sits in. -->
+                    <th style="width: 48px" [pTooltip]="'ReorderSteps' | localize"></th>
                     <th
                         style="width: 130px"
                         [hidden]="!(['Pages.Workflow.RequestDetails.Edit', 'Pages.Workflow.RequestDetails.Delete'] | permissionAny)">
                         {{ 'Actions' | localize }}
                     </th>
-                    <th style="min-width: 90px" pSortableColumn="step">
-                        {{ 'Step' | localize }}
-                        <p-sortIcon field="step" />
-                    </th>
+                    <!-- Not sortable: the order is now dragged, and a sorted view would reorder rows the person
+                             did not move. The number shown is the row's position for the same reason. -->
+                    <th style="min-width: 90px">{{ 'Step' | localize }}</th>
                     <th style="min-width: 200px">{{ 'Approver' | localize }}</th>
                     <th style="min-width: 180px">{{ 'WorkflowRole' | localize }}</th>
                     <th style="min-width: 160px">{{ 'ApprovalRequire' | localize }}</th>
@@ -44,8 +62,13 @@
                     <th style="min-width: 130px">{{ 'ShouldEscalate' | localize }}</th>
                 </tr>
             </ng-template>
-            <ng-template #body let-record="$implicit">
-                <tr>
+            <ng-template #body let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [pReorderableRow]="rowIndex">
+                    <!-- The whole cell is the handle, not just the icon. A 12px glyph is a 12px target, which is
+                         why grabbing it took several attempts. -->
+                    <td class="step-drag-cell" pReorderableRowHandle>
+                        <i class="fa fa-grip-vertical"></i>
+                    </td>
                     <td
                         style="width: 130px"
                         [hidden]="!(['Pages.Workflow.RequestDetails.Edit', 'Pages.Workflow.RequestDetails.Delete'] | permissionAny)">
@@ -57,7 +80,7 @@
                             {{ 'Actions' | localize }}
                         </button>
                     </td>
-                    <td style="min-width: 90px">{{ record.step }}</td>
+                    <td style="min-width: 90px">{{ rowIndex + 1 }}</td>
 
                     <!-- A step naming nobody is the creator's own step; approvals begin at the first step
                          that names somebody. Shown greyed rather than blank so a chain of nothing but

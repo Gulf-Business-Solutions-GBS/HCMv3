@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -99,6 +100,117 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         await RecalculateWorkflowStepsAsync(requestMasterId);
     }
 
+    /// <summary>
+    /// Puts the chain's steps in the order given, then renumbers 1..n.
+    ///
+    /// <para>
+    /// Takes the whole order rather than a move instruction, so a drag needs one call and there is no
+    /// position arithmetic to get wrong on either side. The list must be exactly this chain's steps: a
+    /// missing or foreign id means the grid was working from a stale read, and quietly reordering what it
+    /// sent would renumber the chain around a step somebody else had just deleted.
+    /// </para>
+    ///
+    /// <para>
+    /// Requests already in flight keep the approver rows they were given, so nothing loses its approvers.
+    /// What changes for them is the configuration their current step number now points at. The same is
+    /// already true of editing a step number by hand, which is why this does not refuse -- but it is worth
+    /// knowing before reordering a chain that is carrying live requests.
+    /// </para>
+    /// </summary>
+    [AbpAuthorize(AppPermissions.Pages_Workflow_RequestDetails_Edit)]
+    public async Task ReorderSteps(ReorderRequestDetailsInput input)
+    {
+        var details = await _repository.GetAll()
+            .Where(d => d.RequestMasterId == input.RequestMasterId)
+            .ToListAsync();
+
+        var ordered = input.OrderedIds ?? new List<int>();
+
+        // Set equality, not just count: the same id twice would pass a count check and leave one step
+        // unnumbered.
+        if (ordered.Count != details.Count || ordered.Distinct().Count() != ordered.Count ||
+            ordered.Any(id => details.All(d => d.Id != id)))
+        {
+            throw new UserFriendlyException(L("ApprovalStepsChangedReloadAndTryAgain"));
+        }
+
+        for (var i = 0; i < ordered.Count; i++)
+        {
+            var detail = details.First(d => d.Id == ordered[i]);
+            detail.Step = i + 1;
+        }
+
+        await RecalculateWorkflowStepsAsync(input.RequestMasterId);
+    }
+
+    /// <summary>
+    /// Duplicates a step onto the end of its chain.
+    ///
+    /// <para>
+    /// Steps in one chain differ in a field or two and agree on the other twenty -- the same escalation
+    /// days, the same notification settings, the same send-back and reject rules. Copying one and changing
+    /// what differs is the difference between a chain taking a minute to build and taking ten.
+    /// </para>
+    ///
+    /// <para>
+    /// Appended rather than inserted after the original, because the new step is going to be edited
+    /// immediately anyway and can be dragged where it belongs. Parallel approvers are not copied: they name
+    /// specific people for a specific step, and carrying them over silently would give the new step
+    /// approvers nobody chose for it.
+    /// </para>
+    /// </summary>
+    [AbpAuthorize(AppPermissions.Pages_Workflow_RequestDetails_Create)]
+    public async Task<EntityDto> CopyStep(EntityDto input)
+    {
+        var source = await _repository.GetAsync(input.Id);
+
+        // Copying the creator step is the likeliest way a chain would end up with two of them, since the
+        // copy carries the approver setting across untouched.
+        if (source.ApproverPerson == WorkflowApproverPersonType.None)
+        {
+            throw new UserFriendlyException(L("AChainCanHaveOnlyOneCreatorStep"));
+        }
+
+        var copy = new RequestDetail
+        {
+            TenantId = AbpSession.TenantId ?? 0,
+            RequestMasterId = source.RequestMasterId,
+            WorkflowRoleId = source.WorkflowRoleId,
+            ShowPayment = source.ShowPayment,
+            CanSendBack = source.CanSendBack,
+            CanReject = source.CanReject,
+            ShouldEscalate = source.ShouldEscalate,
+            EscalateAfterDays = source.EscalateAfterDays,
+            EscalateNextLevel = source.EscalateNextLevel,
+            EscalateWorkflowRoleId = source.EscalateWorkflowRoleId,
+            EscalateWorkflowRoleGroup = source.EscalateWorkflowRoleGroup,
+            EscalateWorkflowRoleOrgId = source.EscalateWorkflowRoleOrgId,
+            EnableReadLog = source.EnableReadLog,
+            Person = source.Person,
+            ApproverPerson = source.ApproverPerson,
+            WorkflowRoleGroup = source.WorkflowRoleGroup,
+            WorkflowRoleOrgId = source.WorkflowRoleOrgId,
+            ApprovalRequire = source.ApprovalRequire,
+            IsCommentRequire = source.IsCommentRequire,
+            SignatoryStep = source.SignatoryStep,
+            ReminderDays = source.ReminderDays,
+            NotificationConfigId = source.NotificationConfigId,
+            SubmitNotificationConfigId = source.SubmitNotificationConfigId,
+            RejectNotificationConfigId = source.RejectNotificationConfigId,
+            SendBackNotificationConfigId = source.SendBackNotificationConfigId,
+            RemarksNotificationConfigId = source.RemarksNotificationConfigId,
+            AssignNotificationConfigId = source.AssignNotificationConfigId,
+            ReminderNotificationConfigId = source.ReminderNotificationConfigId,
+            Step = await _repository.GetAll().CountAsync(d => d.RequestMasterId == source.RequestMasterId) + 1
+        };
+
+        await _repository.InsertAsync(copy);
+
+        await RecalculateWorkflowStepsAsync(source.RequestMasterId);
+
+        return new EntityDto(copy.Id);
+    }
+
     [AbpAuthorize(AppPermissions.Pages_Workflow_RequestDetails_Create)]
     protected virtual async Task CreateAsync(CreateOrEditRequestDetailDto input)
     {
@@ -106,6 +218,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         entity.TenantId = AbpSession.TenantId ?? 0;
 
         ValidateReminderVsEscalate(entity);
+        await ValidateSingleCreatorStepAsync(entity);
 
         // Legacy AddStep(count): a new step is appended, whatever number the screen sent.
         entity.Step = await _repository.GetAll().CountAsync(d => d.RequestMasterId == entity.RequestMasterId) + 1;
@@ -123,6 +236,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         entity = MapToEntity(input, entity);
 
         ValidateReminderVsEscalate(entity);
+        await ValidateSingleCreatorStepAsync(entity);
 
         if (entity.Step != previousStep)
         {
@@ -177,6 +291,38 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         if (entity.EscalateAfterDays != 0 && entity.ReminderDays >= entity.EscalateAfterDays)
         {
             throw new UserFriendlyException(L("ReminderDaysMustBeLessThanEscalateAfterDays"));
+        }
+    }
+
+    /// <summary>
+    /// A chain may hold at most one creator step.
+    ///
+    /// <para>
+    /// A step naming nobody is the requester's own: approvals begin at the first step that DOES name
+    /// somebody. A second one is therefore not a second anything -- it is a step no one is ever asked to
+    /// act on, sitting in the middle of a chain, silently stalling every request that reaches it.
+    /// </para>
+    ///
+    /// <para>
+    /// Enforced on the server rather than only in the form, so it holds for the copy action and for any
+    /// other caller as well as for the dialog.
+    /// </para>
+    /// </summary>
+    private async Task ValidateSingleCreatorStepAsync(RequestDetail entity)
+    {
+        if (entity.ApproverPerson != WorkflowApproverPersonType.None)
+        {
+            return;
+        }
+
+        var alreadyHasOne = await _repository.GetAll()
+            .AnyAsync(d => d.RequestMasterId == entity.RequestMasterId
+                           && d.Id != entity.Id
+                           && d.ApproverPerson == WorkflowApproverPersonType.None);
+
+        if (alreadyHasOne)
+        {
+            throw new UserFriendlyException(L("AChainCanHaveOnlyOneCreatorStep"));
         }
     }
 

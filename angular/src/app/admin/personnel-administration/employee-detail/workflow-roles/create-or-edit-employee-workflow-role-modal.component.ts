@@ -43,6 +43,9 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeWorkflowRoleDto>(new CreateOrEditEmployeeWorkflowRoleDto());
     readonly employees = signal<EmployeeDto[]>([]);
+
+    /** The employee's name, shown read-only: the section already belongs to one person. */
+    readonly employeeName = signal<string>('');
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
 
     /**
@@ -52,12 +55,21 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
      */
     readonly isNotActiveToday = signal<boolean>(false);
 
-    show(id?: number): void {
+    /**
+     * @param employeeId whose record this is. Always known, because the section lives inside one employee.
+     * @param id the assignment to edit, or omitted to add one.
+     */
+    show(employeeId: number, id?: number): void {
         this.active.set(true);
 
         this._employeesService
             .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.employees.set(result.items));
+            .subscribe((result) => {
+                this.employees.set(result.items);
+
+                const employee = result.items.find((e) => e.id === employeeId);
+                this.employeeName.set(employee ? this.employeeLabel(employee) : '');
+            });
 
         this._workflowRolesService
             .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
@@ -68,6 +80,7 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
             // always "from now until somebody says otherwise", and an open-ended default is what makes the
             // common case one field instead of three.
             const record = new CreateOrEditEmployeeWorkflowRoleDto();
+            record.employeeId = employeeId;
             record.startDate = DateTime.now().startOf('day');
             record.endDate = DateTime.fromISO('2099-12-31');
             this.record.set(record);
@@ -83,7 +96,8 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
     }
 
     onShown(): void {
-        document.getElementById('EmployeeWorkflowRole_EmployeeId')?.focus();
+        // The employee field is read-only here, so focus goes to the first thing worth choosing.
+        document.getElementById('EmployeeWorkflowRole_WorkflowRoleId')?.focus();
     }
 
     save(): void {

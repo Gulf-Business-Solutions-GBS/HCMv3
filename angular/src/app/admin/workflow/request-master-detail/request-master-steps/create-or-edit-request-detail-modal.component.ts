@@ -1,10 +1,11 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     ApprovalRequire,
     CreateOrEditRequestDetailDto,
     GetAllNotificationConfigsInput,
     GetAllOrgUnitsInput,
+    GetAllRequestDetailsInput,
     GetAllRequestMastersInput,
     GetAllWorkflowRolesInput,
     NotificationConfigDto,
@@ -63,6 +64,9 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
 
     /** The chain's name, shown read-only on the form so the step is unmistakably attached to it. */
     readonly requestMasterName = signal<string>('');
+
+    /** True when another step in this chain is already the creator step. */
+    readonly creatorStepTaken = signal<boolean>(false);
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
     readonly orgUnits = signal<OrgUnitDto[]>([]);
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
@@ -102,6 +106,19 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     ];
 
     /**
+     * The approver choices this step may take.
+     *
+     * <p>"None" -- the creator step -- is dropped once another step in the chain holds it. A second one is
+     * not a second anything: approvals start at the first step naming somebody, so an extra creator step
+     * sits mid-chain and is never asked to act.</p>
+     */
+    readonly availableApproverPersonTypes = computed(() =>
+        this.creatorStepTaken()
+            ? this.approverPersonTypes.filter((t) => t.value !== WorkflowApproverPersonType.None)
+            : this.approverPersonTypes
+    );
+
+    /**
      * One notification setting per action, in the order a request meets them: it arrives, somebody acts on it,
      * and it is chased while nobody does. Listed here rather than repeated seven times in the template, which
      * is how one of them ends up bound to the wrong field.
@@ -133,6 +150,24 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
             .subscribe((result) => {
                 this.requestMasters.set(result.items);
                 this.requestMasterName.set(result.items.find((m) => m.id === requestMasterId)?.nameEn ?? '');
+            });
+
+        // Whether this chain already has its one creator step, so the dropdown can stop offering a second.
+        // The server refuses one either way; this is so the choice is never presented rather than taken
+        // and then rejected.
+        this._service
+            .getAll(
+                new GetAllRequestDetailsInput({
+                    requestMasterId,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
+            .subscribe((result) => {
+                this.creatorStepTaken.set(
+                    result.items.some((d) => d.approverPerson === WorkflowApproverPersonType.None && d.id !== id)
+                );
             });
         this._workflowRolesService
             .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))

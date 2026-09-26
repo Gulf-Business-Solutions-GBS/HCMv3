@@ -3453,14 +3453,6 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Workflow.WorkflowRoles' },
                     },
                     {
-                        path: 'employee-workflow-roles',
-                        loadComponent: () =>
-                            import(
-                                './admin/workflow/employee-workflow-roles/employee-workflow-roles.component'
-                            ).then((m) => m.EmployeeWorkflowRolesComponent),
-                        data: { permission: 'Pages.Workflow.EmployeeWorkflowRoles' },
-                    },
-                    {
                         path: 'workflow-groups',
                         loadComponent: () =>
                             import('./admin/workflow/workflow-groups/workflow-groups.component').then(

@@ -24,24 +24,18 @@
 
                     <div class="modal-body">
                         <div class="row">
+                            <!-- Shown, not chosen. The section belongs to one employee, and a dropdown
+                                 here would invite filing the assignment against somebody else. -->
                             <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeWorkflowRole_EmployeeId">
+                                <label class="form-label" for="EmployeeWorkflowRole_EmployeeName">
                                     {{ 'Employee' | localize }}
                                 </label>
-                                <select
-                                    id="EmployeeWorkflowRole_EmployeeId"
-                                    #employeeIdInput="ngModel"
-                                    class="form-select"
-                                    name="EmployeeId"
-                                    [ngModel]="record().employeeId"
-                                    (ngModelChange)="updateField('employeeId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (employee of employees(); track employee.id) {
-                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="employeeIdInput" />
+                                <input
+                                    id="EmployeeWorkflowRole_EmployeeName"
+                                    type="text"
+                                    class="form-control"
+                                    [value]="employeeName()"
+                                    readonly />
                             </div>
 
                             <div class="col-md-6 mb-5">

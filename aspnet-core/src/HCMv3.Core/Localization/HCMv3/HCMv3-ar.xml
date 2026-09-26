@@ -5725,6 +5725,7 @@
     <text name="EmpSection_Managers">المدراء</text>
     <text name="EmpSection_DottedLineManagers">المدراء غير المباشرين</text>
     <text name="EmpSection_Delegations">التفويضات</text>
+    <text name="EmpSection_WorkflowRoles">أدوار الاعتماد</text>
     <text name="EmpSection_ExtendedWorkLocations">أماكن العمل الإضافية</text>
     <text name="EmpSection_Separations">حالات الفصل</text>
     <text name="EmpSection_Rejoins">حالات إعادة الالتحاق</text>
@@ -6893,5 +6894,11 @@
     <text name="BulkApproveSkippedHint">الطلبات المتروكة تتطلب ملاحظة في خطوتها. افتحها كل على حدة، أو أضف ملاحظة أعلاه وأعد المحاولة.</text>
     <text name="NothingSelected">لم يتم تحديد أي عنصر.</text>
     <text name="SelectedCount">{0} محدد</text>
+    <text name="ApprovalStepsChangedReloadAndTryAgain">تغيرت الخطوات منذ فتح هذه الشاشة. حدّث الصفحة وأعد المحاولة.</text>
+    <text name="StepCopied">تم نسخ الخطوة. عدّل النسخة لتغيير ما يختلف.</text>
+    <text name="ReorderSteps">اسحب الصف لتغيير الترتيب</text>
+    <text name="StepsReordered">تمت إعادة ترقيم الخطوات.</text>
+    <text name="AChainCanHaveOnlyOneCreatorStep">لا يمكن أن تحتوي الدورة على أكثر من خطوة واحدة لمُنشئ الطلب. الخطوة التي ليس لها معتمد هي خطوة مقدّم الطلب نفسه، ووجود خطوة ثانية يوقف كل طلب يصل إليها.</text>
+    <text name="SaveStepOrder">حفظ ترتيب الخطوات</text>
   </texts>
 </localizationDictionary>

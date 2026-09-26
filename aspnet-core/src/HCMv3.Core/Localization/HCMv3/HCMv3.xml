@@ -5879,6 +5879,7 @@
     <text name="EmpSection_Managers">Managers</text>
     <text name="EmpSection_DottedLineManagers">Dotted Line Managers</text>
     <text name="EmpSection_Delegations">Delegations</text>
+    <text name="EmpSection_WorkflowRoles">Workflow Roles</text>
     <text name="EmpSection_ExtendedWorkLocations">Extended Work Locations</text>
     <text name="EmpSection_Separations">Separations</text>
     <text name="EmpSection_Rejoins">Rejoins</text>
@@ -7055,5 +7056,11 @@
     <text name="BulkApproveSkippedHint">Skipped requests need a comment on their step. Open them individually, or add a comment above and try again.</text>
     <text name="NothingSelected">Nothing is selected.</text>
     <text name="SelectedCount">{0} selected</text>
+    <text name="ApprovalStepsChangedReloadAndTryAgain">The steps have changed since this screen loaded. Refresh and try again.</text>
+    <text name="StepCopied">Step copied. Edit the copy to change what differs.</text>
+    <text name="ReorderSteps">Drag a row to change the order</text>
+    <text name="StepsReordered">Steps renumbered.</text>
+    <text name="AChainCanHaveOnlyOneCreatorStep">A chain can have only one creator step. A step with no approver is the requester's own, so a second one would stall every request that reached it.</text>
+    <text name="SaveStepOrder">Save Step Order</text>
   </texts>
 </localizationDictionary>

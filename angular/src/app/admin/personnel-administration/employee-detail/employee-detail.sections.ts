@@ -170,6 +170,17 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
                     import('./delegations/employee-delegations.component').then((m) => m.EmployeeDelegationsComponent),
             },
             {
+                // Next to Delegations, which is the other answer to "who acts on approvals for this
+                // person". Holding a workflow role is a fact about somebody, so it is asked here rather
+                // than on a screen of its own.
+                id: 'workflow-roles',
+                labelKey: 'EmpSection_WorkflowRoles',
+                load: () =>
+                    import('./workflow-roles/employee-workflow-roles.component').then(
+                        (m) => m.EmployeeWorkflowRolesComponent
+                    ),
+            },
+            {
                 id: 'extd-work-locations',
                 labelKey: 'EmpSection_ExtendedWorkLocations',
                 load: () =>

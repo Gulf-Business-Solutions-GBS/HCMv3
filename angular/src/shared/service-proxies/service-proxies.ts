@@ -125606,6 +125606,114 @@ export class RequestDetailsServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    reorderSteps(body?: ReorderRequestDetailsInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/RequestDetails/ReorderSteps";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processReorderSteps(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processReorderSteps(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processReorderSteps(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    copyStep(body?: EntityDto | undefined): Observable<EntityDto> {
+        let url_ = this.baseUrl + "/api/services/app/RequestDetails/CopyStep";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCopyStep(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCopyStep(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EntityDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EntityDto>;
+        }));
+    }
+
+    protected processCopyStep(response: HttpResponseBase): Observable<EntityDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EntityDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -321811,6 +321919,57 @@ export interface IRenamePageInput {
     id: string | undefined;
     name: string | undefined;
     application: string | undefined;
+}
+
+export class ReorderRequestDetailsInput implements IReorderRequestDetailsInput {
+    requestMasterId!: number;
+    orderedIds!: number[];
+
+    constructor(data?: IReorderRequestDetailsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+        if (!data) {
+            this.orderedIds = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.requestMasterId = _data["requestMasterId"];
+            if (Array.isArray(_data["orderedIds"])) {
+                this.orderedIds = [] as any;
+                for (let item of _data["orderedIds"])
+                    this.orderedIds!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ReorderRequestDetailsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReorderRequestDetailsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["requestMasterId"] = this.requestMasterId;
+        if (Array.isArray(this.orderedIds)) {
+            data["orderedIds"] = [];
+            for (let item of this.orderedIds)
+                data["orderedIds"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IReorderRequestDetailsInput {
+    requestMasterId: number;
+    orderedIds: number[];
 }
 
 export enum ReportBurstDimension {

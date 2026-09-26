@@ -2556,12 +2556,6 @@ export class AppNavigationService {
                         '/app/admin/workflow-roles'
                     ),
                     new AppMenuItem(
-                        'EmployeeWorkflowRoles',
-                        'Pages.Workflow.EmployeeWorkflowRoles',
-                        'flaticon-users',
-                        '/app/admin/employee-workflow-roles'
-                    ),
-                    new AppMenuItem(
                         'WorkflowGroups',
                         'Pages.Workflow.WorkflowGroups',
                         'flaticon-list-3',
