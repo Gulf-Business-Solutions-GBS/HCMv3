@@ -17,7 +17,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
@@ -62,7 +62,7 @@ interface PersonalDataSection {
         FormsModule,
         SubHeaderComponent,
         LocalizePipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         AttachmentsComponent,
         HelpPageDirective,
     ],
@@ -179,6 +179,7 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
     ngOnInit(): void {
         this.loadCurrent();
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyPersonalDataChangeDto[] }> {
@@ -417,5 +418,23 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
         }
 
         return String(value);
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyProfile');
+    }
+
+    /**
+     * The proposed changes themselves, one per row.
+     *
+     * <p>Unlike the other self-service screens this request has no fixed set of fields -- it is whatever the
+     * employee chose to change -- so the dialog lists exactly what the table lists. The labels come back as
+     * localization keys and are translated here, because the dialog renders its fields as plain text.</p>
+     */
+    protected detailFields(row: MyPersonalDataChangeDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            ...this.proposedFields(row).map((change) => ({ label: this.l(change.label), value: change.value })),
+        ];
     }
 }

@@ -18,7 +18,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -39,7 +39,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,6 +62,7 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
         this._lookups.getLetterTypes().subscribe((result) => this.letterTypes.set(result ?? []));
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyLetterRequestDto[] }> {
@@ -136,5 +137,18 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
 
     letterTypeName(type: SimpleLookupDto): string {
         return this.pick(type.nameEn, type.nameAr);
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyLetterRequests');
+    }
+
+    protected detailFields(row: MyLetterRequestDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('DocumentType'), value: this.typeName(row) },
+            { label: this.l('EffectiveDate'), value: this.detailDate(row.effectiveDate) },
+            { label: this.l('AddressedTo'), value: this.addressee(row) },
+        ];
     }
 }

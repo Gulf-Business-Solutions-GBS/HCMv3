@@ -310,13 +310,18 @@
                                                 }
                                             </td>
                                             <td class="text-end">
+                                                <!-- Opening the leave is the primary action: the old
+                                                     Workflow History button showed the trail but never what
+                                                     was actually requested. A leave with a change in flight
+                                                     opens the change instead, because that is the request
+                                                     waiting on somebody. -->
                                                 @if (leave.hasPendingAmendment && leave.pendingAmendmentRequestId) {
-                                                    <button class="btn btn-light-primary" (click)="history.show(leave.pendingAmendmentRequestId)">
+                                                    <button class="btn btn-light-primary" (click)="openDetail(leave, leave.pendingAmendmentRequestId)">
                                                         {{ 'ChangePending' | localize }}
                                                     </button>
-                                                } @else if (leave.workflowRequestId) {
-                                                    <button class="btn btn-light-primary" (click)="history.show(leave.workflowRequestId)" data-help-loc="WorkflowHistory">
-                                                        {{ 'WorkflowHistory' | localize }}
+                                                } @else {
+                                                    <button class="btn btn-light-primary" (click)="openDetail(leave)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canAmend) {
@@ -356,4 +361,4 @@
     </div>
 </div>
 
-<workflowHistoryModal #history />
+<essRequestDetailModal #detail />

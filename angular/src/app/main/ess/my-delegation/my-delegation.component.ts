@@ -19,7 +19,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -42,7 +42,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,6 +73,7 @@ export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDt
         });
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyDelegationDto[] }> {
@@ -136,5 +137,18 @@ export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDt
     delegateName(row: MyDelegationDto): string {
         const name = this.pick(row.delegateToFullNameEn, row.delegateToFullNameAr);
         return row.delegateToCode ? `${row.delegateToCode} - ${name}` : name;
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyDelegations');
+    }
+
+    protected detailFields(row: MyDelegationDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('DelegateTo'), value: this.delegateName(row) },
+            { label: this.l('StartDate'), value: this.detailDate(row.startDate) },
+            { label: this.l('EndDate'), value: this.detailDate(row.endDate) },
+        ];
     }
 }

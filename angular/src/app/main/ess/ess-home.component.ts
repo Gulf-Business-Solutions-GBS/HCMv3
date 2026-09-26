@@ -14,7 +14,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailModalComponent } from './shared/ess-request-detail-modal.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
@@ -34,7 +34,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
     templateUrl: './ess-home.component.html',
     styleUrls: ['./ess-home.component.less'],
     animations: [appModuleAnimation()],
-    imports: [CommonModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, RouterModule, WorkflowHistoryModalComponent, HelpPageDirective],
+    imports: [CommonModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, RouterModule, EssRequestDetailModalComponent, HelpPageDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssHomeComponent extends AppComponentBase implements OnInit {
@@ -52,7 +52,7 @@ export class EssHomeComponent extends AppComponentBase implements OnInit {
     readonly loading = signal(true);
     readonly context = signal<EssContextDto | undefined>(undefined);
 
-    readonly historyModal = viewChild<WorkflowHistoryModalComponent>('history');
+    readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
 
     readonly tiles = computed(() => this.context()?.availableTransactionTypes ?? []);
     readonly recent = computed(() => this.context()?.recentRequests ?? []);
@@ -138,8 +138,20 @@ export class EssHomeComponent extends AppComponentBase implements OnInit {
         }
     }
 
-    openHistory(request: EssRecentRequestDto): void {
-        this.historyModal()?.show(request.id);
+    /**
+     * Opens the request read-only, the same dialog the self-service lists use.
+     *
+     * <p>No fields are passed: every row here has a workflow request, so the dialog fetches that type's own
+     * projection and shows more than this summary card knows. It replaced a Workflow History button that
+     * showed the action trail without the request it belonged to.</p>
+     */
+    openDetail(request: EssRecentRequestDto): void {
+        this.detail()?.show({
+            title: this.requestTypeName(request),
+            workflowRequestId: request.id,
+            statusLabel: this.statusLabel(request),
+            statusClass: this.statusClass(request),
+        });
     }
 
     private get isRtl(): boolean {

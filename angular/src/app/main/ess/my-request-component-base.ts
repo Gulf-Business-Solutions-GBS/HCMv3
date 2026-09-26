@@ -1,8 +1,15 @@
-import { signal } from '@angular/core';
+import { Directive, inject, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { EntityDto, GetMyRequestsInput, RequestStatus } from '@shared/service-proxies/service-proxies';
+import {
+    EntityDto,
+    EssContextDto,
+    EssSessionServiceProxy,
+    GetMyRequestsInput,
+    RequestStatus,
+} from '@shared/service-proxies/service-proxies';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from './shared/ess-request-detail-modal.component';
 
 /**
  * The parts every self-service request screen shares: loading state, the unlinked-employee case, the status
@@ -15,6 +22,9 @@ import { finalize } from 'rxjs/operators';
  *
  * <p>What stays in each component is what genuinely differs: the form fields and the table columns.</p>
  */
+// Decorated, with no selector, purely so the viewChild below is legal: Angular only compiles a query when
+// the class it sits on is a component or directive. Nothing is ever declared or imported from here.
+@Directive()
 export abstract class MyRequestComponentBase<TDto extends { id: number; workflowStatus?: RequestStatus }> extends AppComponentBase {
     readonly loading = signal(false);
     readonly saving = signal(false);
@@ -22,6 +32,20 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     readonly showForm = signal(false);
 
     readonly rows = signal<TDto[]>([]);
+
+    protected readonly _essSessionService = inject(EssSessionServiceProxy);
+
+    /**
+     * Declared here rather than on each screen so every list opens the same dialog. The query resolves
+     * against the subclass's own template, which is where `#detail` lives.
+     */
+    readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
+
+    /**
+     * Who the signed-in employee is. Only so the dialog can say whose request this is -- the server takes
+     * the employee from the session, so nothing here is ever sent.
+     */
+    readonly context = signal<EssContextDto | undefined>(undefined);
 
     /**
      * The draft the form is currently open on, or undefined when the form is being used to raise something
@@ -38,6 +62,71 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
 
     /** Resets the form model; called when the form is opened. */
     protected abstract resetForm(): void;
+
+    /** The heading the detail dialog opens under -- normally the screen's own title. */
+    protected abstract detailTitle(): string;
+
+    /**
+     * What one row shows when opened, normally its table columns spelled out.
+     *
+     * <p>Still worth passing even though the dialog fetches the request's own projection: a row raised while
+     * workflow is switched off for its type has no workflow request, so there is nothing to fetch and these
+     * are all the dialog can show.</p>
+     */
+    protected abstract detailFields(row: TDto): EssRequestDetailField[];
+
+    /**
+     * Opens a submitted request read-only: its fields, the requester's comment, the approvers' remarks and
+     * the action trail.
+     *
+     * <p>This replaced a Workflow History button that showed the trail alone. Until it existed the requester
+     * could see a status badge and nothing else -- not what they had sent, not who was sitting on it.</p>
+     */
+    openDetail(row: TDto): void {
+        const dto = row as TDto & { comments?: string; workflowRequestId?: number };
+
+        this.detail()?.show({
+            title: this.detailTitle(),
+            fields: this.detailFields(row),
+            comments: dto.comments,
+            // These are the signed-in employee's own requests, so the first post in the conversation is
+            // theirs; naming them saves the dialog guessing from the Created activity.
+            requesterName: this.employeeDisplay(),
+            workflowRequestId: dto.workflowRequestId,
+            statusLabel: this.statusLabel(row),
+            statusClass: this.statusClass(row),
+        });
+    }
+
+    /**
+     * Fetches the signed-in employee, for the name on the detail dialog.
+     *
+     * <p>Failure is swallowed: an account with no employee record is already reported by the list call, and
+     * a second error toast for the same setup gap only adds noise.</p>
+     */
+    protected loadContext(): void {
+        this._essSessionService.getEssContext().subscribe({
+            next: (result) => this.context.set(result),
+            error: () => undefined,
+        });
+    }
+
+    /** "1042 - Ahmad Al Sayed", or just the name when the code is missing. */
+    employeeDisplay(): string {
+        const ctx = this.context();
+        if (!ctx) {
+            return '';
+        }
+
+        const name = this.isRtl ? ctx.employeeFullNameAr || ctx.employeeFullNameEn : ctx.employeeFullNameEn;
+
+        return [ctx.employeeCode, name].filter((p) => !!p).join(' - ');
+    }
+
+    /** A date as the lists and the dialog both show it. Empty rather than "Invalid DateTime" when unset. */
+    protected detailDate(value: { toFormat(format: string): string } | undefined): string {
+        return value?.toFormat('yyyy-MM-dd') ?? '';
+    }
 
     reload(): void {
         this.loading.set(true);

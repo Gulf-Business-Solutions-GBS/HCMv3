@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { signal } from '@angular/core';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -34,7 +34,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +51,20 @@ export class MyAssetComponent extends MyRequestComponentBase<MyAssetRequestDto> 
         this._lookups.getAssets().subscribe((result) => this.assets.set(result ?? []));
 
         this.reload();
+        this.loadContext();
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyAssets');
+    }
+
+    protected detailFields(row: MyAssetRequestDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('Asset'), value: this.assetName(row) },
+            { label: this.l('StartDate'), value: this.detailDate(row.startDate) },
+            { label: this.l('EndDate'), value: this.detailDate(row.endDate) },
+        ];
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyAssetRequestDto[] }> {

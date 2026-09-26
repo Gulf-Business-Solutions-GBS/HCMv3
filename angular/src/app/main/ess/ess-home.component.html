@@ -177,8 +177,8 @@
                                                 </span>
                                             </td>
                                             <td class="text-end text-nowrap">
-                                                <button type="button" class="btn btn-sm btn-light" (click)="openHistory(request)">
-                                                    {{ 'WorkflowHistory' | localize }}
+                                                <button type="button" class="btn btn-sm btn-light" (click)="openDetail(request)">
+                                                    {{ 'Details' | localize }}
                                                 </button>
                                             </td>
                                         </tr>
@@ -195,4 +195,4 @@
     </div>
 </div>
 
-<workflowHistoryModal #history />
+<essRequestDetailModal #detail />

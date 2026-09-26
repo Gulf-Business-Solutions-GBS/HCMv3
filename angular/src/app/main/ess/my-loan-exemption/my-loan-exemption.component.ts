@@ -16,7 +16,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
@@ -39,7 +39,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,6 +62,7 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
     ngOnInit(): void {
         this.loadLoans();
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyLoanExemptionDto[] }> {
@@ -142,5 +143,19 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
             next: (result) => this.loans.set(result ?? []),
             error: () => this.loans.set([]),
         });
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyLoanExemptions');
+    }
+
+    protected detailFields(row: MyLoanExemptionDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('LoanType'), value: this.typeName(row) },
+            { label: this.l('ExemptionMonth'), value: row.exemptionDate?.toFormat('yyyy-MM') ?? '' },
+            { label: this.l('InstallmentAmount'), value: `${row.instalmentAmount ?? ''}` },
+            { label: this.l('LoanEndDate'), value: this.detailDate(row.loanEndDate) },
+        ];
     }
 }

@@ -18,7 +18,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -33,7 +33,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +58,7 @@ export class MyLoanComponent extends MyRequestComponentBase<MyLoanRequestDto> im
         this._lookups.getLoanTypes().subscribe((result) => this.loanTypes.set(result ?? []));
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyLoanRequestDto[] }> {
@@ -113,5 +114,20 @@ export class MyLoanComponent extends MyRequestComponentBase<MyLoanRequestDto> im
 
     typeName(row: MyLoanRequestDto): string {
         return this.pick(row.loanTypeNameEn, row.loanTypeNameAr);
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyLoans');
+    }
+
+    protected detailFields(row: MyLoanRequestDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('LoanType'), value: this.typeName(row) },
+            { label: this.l('LoanAmount'), value: `${row.actualAmount ?? ''}` },
+            { label: this.l('Instalment'), value: `${row.fixedAmount ?? ''}` },
+            { label: this.l('StartDate'), value: this.detailDate(row.startDate) },
+            { label: this.l('EndDate'), value: this.detailDate(row.endDate) },
+        ];
     }
 }

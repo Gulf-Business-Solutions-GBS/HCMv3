@@ -16,7 +16,7 @@ import {
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
@@ -33,7 +33,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         AttachmentsComponent,
         HelpPageDirective,
     ],
@@ -59,6 +59,7 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         this._lookups.getDocumentTypes().subscribe((result) => this.documentTypes.set(result ?? []));
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyDocumentRequestDto[] }> {
@@ -116,5 +117,19 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
 
     typeName(row: MyDocumentRequestDto): string {
         return this.pick(row.documentTypeNameEn, row.documentTypeNameAr);
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyDocuments');
+    }
+
+    protected detailFields(row: MyDocumentRequestDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('DocumentType'), value: this.typeName(row) },
+            { label: this.l('DocumentNumber'), value: row.documentNum ?? '' },
+            { label: this.l('IssueDate'), value: this.detailDate(row.issueDate) },
+            { label: this.l('ExpiryDate'), value: this.detailDate(row.expiryDate) },
+        ];
     }
 }

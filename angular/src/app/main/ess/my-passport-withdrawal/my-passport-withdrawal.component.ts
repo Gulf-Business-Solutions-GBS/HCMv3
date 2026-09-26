@@ -21,7 +21,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -42,7 +42,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -93,6 +93,7 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
             });
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyPassportWithdrawalDto[] }> {
@@ -226,5 +227,21 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
 
     guarantorName(row: MyPassportWithdrawalDto): string {
         return this.pick(row.guarantorNameEn, row.guarantorNameAr);
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyPassportWithdrawals');
+    }
+
+    protected detailFields(row: MyPassportWithdrawalDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('DocumentType'), value: this.typeName(row) },
+            { label: this.l('DocumentNumber'), value: row.documentNum ?? '' },
+            { label: this.l('WithdrawDate'), value: this.detailDate(row.withdrawDate) },
+            { label: this.l('ReturnDate'), value: this.detailDate(row.returnDate) },
+            { label: this.l('ActualReturnDate'), value: this.detailDate(row.actualReturnDate) },
+            { label: this.l('Guarantor'), value: this.guarantorName(row) },
+        ];
     }
 }

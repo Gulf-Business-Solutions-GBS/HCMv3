@@ -15,7 +15,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
@@ -31,7 +31,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,6 +43,7 @@ export class MyTravelClaimComponent extends MyRequestComponentBase<MyTravelClaim
 
     ngOnInit(): void {
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyTravelClaimDto[] }> {
@@ -78,5 +79,17 @@ export class MyTravelClaimComponent extends MyRequestComponentBase<MyTravelClaim
             .requestTravelClaim(input)
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyTravelClaims');
+    }
+
+    protected detailFields(row: MyTravelClaimDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('ClaimDate'), value: this.detailDate(row.claimDate) },
+            { label: this.l('ClaimAmount'), value: `${row.claimAmount ?? ''}` },
+        ];
     }
 }

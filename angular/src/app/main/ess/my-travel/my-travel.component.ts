@@ -22,7 +22,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -79,7 +79,7 @@ interface TravelLegForm {
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -144,6 +144,7 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
         });
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyTravelDto[] }> {
@@ -365,5 +366,20 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
 
     private round3(value: number): number {
         return Math.round((value + Number.EPSILON) * 1000) / 1000;
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyTravel');
+    }
+
+    protected detailFields(row: MyTravelDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('TravelType'), value: this.typeName(row) },
+            { label: this.l('StartDate'), value: this.detailDate(row.startDate) },
+            { label: this.l('EndDate'), value: this.detailDate(row.endDate) },
+            { label: this.l('TravelPurpose'), value: row.travelPurpose ?? '' },
+            { label: this.l('TotalTravelCost'), value: `${row.totalTravelCost ?? ''}` },
+        ];
     }
 }

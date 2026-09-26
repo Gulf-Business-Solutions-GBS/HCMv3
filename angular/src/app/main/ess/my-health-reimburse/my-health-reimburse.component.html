@@ -135,11 +135,16 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-end">
-                                                @if (row.workflowRequestId) {
-                                                    <button class="btn btn-light-primary" (click)="history.show(row.workflowRequestId)" data-help-loc="WorkflowHistory">
-                                                        {{ 'WorkflowHistory' | localize }}
-                                                    </button>
-                                                }
+                                                <!-- Opening the request is the primary action: until this
+                                                     existed the requester could see a status badge but never
+                                                     what they had submitted, nor who was sitting on it.
+                                                     Replaces the old Workflow History button, whose trail
+                                                     the detail view now contains. Shown for every row, not
+                                                     only ones with a workflow request: a row recorded while
+                                                     workflow is off still has fields worth reading. -->
+                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                                    {{ 'Details' | localize }}
+                                                </button>
                                                 @if (row.canCancel) {
                                                     <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
                                                         {{ 'Withdraw' | localize }}
@@ -162,4 +167,4 @@
     </div>
 </div>
 
-<workflowHistoryModal #history />
+<essRequestDetailModal #detail />

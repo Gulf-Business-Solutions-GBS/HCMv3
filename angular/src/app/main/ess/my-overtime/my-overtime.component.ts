@@ -19,7 +19,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -34,7 +34,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +58,7 @@ export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeReques
         this._lookups.getOvertimeTypes().subscribe((result) => this.overtimeTypes.set(result ?? []));
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyOvertimeRequestDto[] }> {
@@ -111,5 +112,19 @@ export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeReques
      */
     showsApprovedHours(row: MyOvertimeRequestDto): boolean {
         return row.workflowStatus === RequestStatus.Approved || row.workflowStatus === RequestStatus.Closed;
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyOvertime');
+    }
+
+    protected detailFields(row: MyOvertimeRequestDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('OvertimeType'), value: this.typeName(row) },
+            { label: this.l('EffectiveDate'), value: this.detailDate(row.effectiveDate) },
+            { label: this.l('Hours'), value: `${row.overtimeHours ?? ''}` },
+            { label: this.l('ApprovedHours'), value: `${row.approvedOvertimeHours ?? ''}` },
+        ];
     }
 }

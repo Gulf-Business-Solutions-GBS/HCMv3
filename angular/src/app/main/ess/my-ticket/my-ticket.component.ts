@@ -18,7 +18,7 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -33,7 +33,7 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,6 +50,7 @@ export class MyTicketComponent extends MyRequestComponentBase<MyTicketRequestDto
         this._lookups.getTicketTypes().subscribe((result) => this.ticketTypes.set(result ?? []));
 
         this.reload();
+        this.loadContext();
     }
 
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyTicketRequestDto[] }> {
@@ -93,5 +94,18 @@ export class MyTicketComponent extends MyRequestComponentBase<MyTicketRequestDto
 
     typeName(row: MyTicketRequestDto): string {
         return this.pick(row.ticketTypeNameEn, row.ticketTypeNameAr);
+    }
+
+    protected detailTitle(): string {
+        return this.l('EssMyTickets');
+    }
+
+    protected detailFields(row: MyTicketRequestDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('TicketType'), value: this.typeName(row) },
+            { label: this.l('TicketDate'), value: this.detailDate(row.ticketDate) },
+            { label: this.l('Amount'), value: `${row.amount ?? ''}` },
+        ];
     }
 }

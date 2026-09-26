@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -6,7 +6,6 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
-    EssContextDto,
     EssSessionServiceProxy,
     GetMyRequestsInput,
     MyExitPermitDto,
@@ -20,7 +19,7 @@ import { Observable } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
-import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { ExitPermitFormComponent, ExitPermitFormValue } from './exit-permit-form.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -47,15 +46,6 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 })
 export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDto> implements OnInit {
     private readonly _service = inject(MyExitPermitServiceProxy);
-    private readonly _essSessionService = inject(EssSessionServiceProxy);
-
-    readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
-
-    /**
-     * Only so the form can SHOW whose permit this is. The server takes the employee from the session, so
-     * nothing here is ever sent -- but a form with no name on it reads as if it could be anyone's.
-     */
-    readonly context = signal<EssContextDto | undefined>(undefined);
 
     /** The create form's data, owned here and written into by the form component through ngModel. */
     form: ExitPermitFormValue = MyExitPermitComponent.emptyForm();
@@ -90,18 +80,6 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
         });
     }
 
-    /** "1042 - Ahmad Al Sayed", or just the name when the code is missing. */
-    employeeDisplay(): string {
-        const ctx = this.context();
-        if (!ctx) {
-            return '';
-        }
-
-        const name = this.isRtl ? ctx.employeeFullNameAr || ctx.employeeFullNameEn : ctx.employeeFullNameEn;
-
-        return [ctx.employeeCode, name].filter((p) => !!p).join(' - ');
-    }
-
     protected fetch(input: GetMyRequestsInput): Observable<{ items: MyExitPermitDto[] }> {
         return this._service.getMyExitPermits(input);
     }
@@ -124,24 +102,18 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
      * switched off for this type has no workflow request, so the dialog has nothing to fetch and these are
      * all it can show.</p>
      */
-    openDetail(row: MyExitPermitDto): void {
-        this.detail()?.show({
-            title: this.l('EssMyExitPermits'),
-            fields: [
-                { label: this.l('Employee'), value: this.employeeDisplay() },
-                { label: this.l('TravelReason'), value: this.travelReasonLabel(row.travelReason) },
-                { label: this.l('StartDate'), value: row.startDate?.toFormat('yyyy-MM-dd') ?? '' },
-                { label: this.l('ExitDate'), value: row.exitDate?.toFormat('yyyy-MM-dd') ?? '' },
-                { label: this.l('ExitPermitNumber'), value: row.externalRequestNumber ?? '' },
-            ],
-            comments: row.comments,
-            // These are the signed-in employee's own requests, so the first post in the conversation is
-            // theirs; naming them here saves the modal guessing from the Created activity.
-            requesterName: this.employeeDisplay(),
-            workflowRequestId: row.workflowRequestId,
-            statusLabel: this.statusLabel(row),
-            statusClass: this.statusClass(row),
-        });
+    protected detailTitle(): string {
+        return this.l('EssMyExitPermits');
+    }
+
+    protected detailFields(row: MyExitPermitDto): EssRequestDetailField[] {
+        return [
+            { label: this.l('Employee'), value: this.employeeDisplay() },
+            { label: this.l('TravelReason'), value: this.travelReasonLabel(row.travelReason) },
+            { label: this.l('StartDate'), value: this.detailDate(row.startDate) },
+            { label: this.l('ExitDate'), value: this.detailDate(row.exitDate) },
+            { label: this.l('ExitPermitNumber'), value: row.externalRequestNumber ?? '' },
+        ];
     }
 
     /**

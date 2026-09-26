@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -10,7 +10,9 @@ import {
     ApplyForLeaveInput,
     DeductionUnit,
     EntityDto,
+    EssContextDto,
     EssLookupServiceProxy,
+    EssSessionServiceProxy,
     GetMyLeavesInput,
     LeavePaymentType,
     LeaveReturnKind,
@@ -26,7 +28,7 @@ import {
 import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
-import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
@@ -48,7 +50,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
-        WorkflowHistoryModalComponent,
+        EssRequestDetailModalComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,6 +58,13 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 export class MyLeaveComponent extends AppComponentBase implements OnInit {
     private readonly _myLeaveService = inject(MyLeaveServiceProxy);
     private readonly _lookups = inject(EssLookupServiceProxy);
+
+    private readonly _essSessionService = inject(EssSessionServiceProxy);
+
+    readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
+
+    /** Who the signed-in employee is, for the name on the detail dialog. */
+    readonly context = signal<EssContextDto | undefined>(undefined);
 
     readonly loading = signal(false);
     readonly saving = signal(false);
@@ -114,6 +123,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     readonly ReturnKind = LeaveReturnKind;
 
     ngOnInit(): void {
+        this.loadContext();
         this.loadAbsenceTypes();
         this.reload();
     }
@@ -408,6 +418,54 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     leaveTypeName(leave: MyLeaveDto): string {
         return this.isRtl ? leave.absenceTypeNameAr || leave.absenceTypeNameEn : leave.absenceTypeNameEn;
+    }
+
+    /**
+     * Fetches the signed-in employee, for the name on the detail dialog. Failure is swallowed: an account
+     * with no employee record is already reported by the list call.
+     */
+    private loadContext(): void {
+        this._essSessionService.getEssContext().subscribe({
+            next: (result) => this.context.set(result),
+            error: () => undefined,
+        });
+    }
+
+    /** "1042 - Ahmad Al Sayed", or just the name when the code is missing. */
+    employeeDisplay(): string {
+        const ctx = this.context();
+        if (!ctx) {
+            return '';
+        }
+
+        const name = this.isRtl ? ctx.employeeFullNameAr || ctx.employeeFullNameEn : ctx.employeeFullNameEn;
+
+        return [ctx.employeeCode, name].filter((p) => !!p).join(' - ');
+    }
+
+    /**
+     * Opens a leave read-only: its dates, the note the employee sent, the approvers' remarks and the trail.
+     *
+     * <p>Takes the workflow request explicitly rather than reading it off the row, because a leave with a
+     * change in flight has two: its own, and the amendment's. The list picks whichever the button the
+     * employee pressed refers to, so "Change pending" opens the change rather than the original.</p>
+     */
+    openDetail(leave: MyLeaveDto, workflowRequestId?: number): void {
+        this.detail()?.show({
+            title: this.l('EssMyLeave'),
+            fields: [
+                { label: this.l('Employee'), value: this.employeeDisplay() },
+                { label: this.l('AbsenceType'), value: this.leaveTypeName(leave) },
+                { label: this.l('StartDate'), value: leave.startDate?.toFormat('yyyy-MM-dd') ?? '' },
+                { label: this.l('EndDate'), value: leave.endDate?.toFormat('yyyy-MM-dd') ?? '' },
+                { label: this.l('Days'), value: `${leave.totalLeaveDays ?? ''}` },
+            ],
+            comments: leave.comments,
+            requesterName: this.employeeDisplay(),
+            workflowRequestId: workflowRequestId ?? leave.workflowRequestId,
+            statusLabel: this.statusLabel(leave),
+            statusClass: this.statusClass(leave),
+        });
     }
 
     /**
