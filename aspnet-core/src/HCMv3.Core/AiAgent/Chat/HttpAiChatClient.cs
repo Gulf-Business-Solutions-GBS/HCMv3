@@ -42,6 +42,9 @@ public class HttpAiChatClient : IAiChatClient, ITransientDependency
     /// <summary>For tests: how a hostname is resolved when checking it is on the private network.</summary>
     public Func<string, Task<System.Net.IPAddress[]>> HostResolver { get; set; }
 
+    /// <summary>For tests: how long to pause before trying a host that is not answering again.</summary>
+    public Func<int, TimeSpan> RetryPause { get; set; } = PauseBeforeAttempt;
+
     public async Task<AiChatResponse> CompleteAsync(AiChatRequest request, CancellationToken cancellationToken = default)
     {
         if (!Uri.TryCreate(_configuration.ChatCompletionsUrl, UriKind.Absolute, out var endpoint))
@@ -62,12 +65,52 @@ public class HttpAiChatClient : IAiChatClient, ITransientDependency
         }
 
         var body = BuildRequestBody(request);
+        var json = body.ToJsonString();
 
+        // A host that is starting, or loading the model back into memory, refuses connections or answers "busy"
+        // for a while and is then perfectly well. Waiting through that is the honest answer; giving up in the
+        // first second and saying the assistant is unavailable is not. See StartupWaitSeconds.
+        var waitingSince = DateTime.UtcNow;
+        var attempt = 0;
+
+        while (true)
+        {
+            attempt++;
+
+            try
+            {
+                return await SendOnceAsync(endpoint, json, cancellationToken);
+            }
+            catch (AiChatClientException ex) when (ex.IsHostNotAnswering && !cancellationToken.IsCancellationRequested)
+            {
+                var waitedFor = DateTime.UtcNow - waitingSince;
+                var budget = TimeSpan.FromSeconds(_configuration.StartupWaitSeconds);
+                var pause = RetryPause(attempt);
+
+                if (waitedFor + pause >= budget)
+                {
+                    throw;
+                }
+
+                await Task.Delay(pause, cancellationToken);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Backs off gently: a host that is only busy answers on the next try, and one that is loading a model from
+    /// disk takes tens of seconds. Capped so a long wait is still made up of regular attempts.
+    /// </summary>
+    private static TimeSpan PauseBeforeAttempt(int attempt) =>
+        TimeSpan.FromSeconds(Math.Min(15, Math.Pow(2, Math.Min(attempt, 4))));
+
+    private async Task<AiChatResponse> SendOnceAsync(Uri endpoint, string json, CancellationToken cancellationToken)
+    {
         using var client = _handlerProvider.CreateClient(TimeSpan.FromSeconds(_configuration.TimeoutSeconds));
 
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, endpoint)
         {
-            Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json")
+            Content = new StringContent(json, Encoding.UTF8, "application/json")
         };
 
         if (!string.IsNullOrEmpty(_configuration.ApiKey))
@@ -87,7 +130,10 @@ public class HttpAiChatClient : IAiChatClient, ITransientDependency
         }
         catch (HttpRequestException ex)
         {
-            throw new AiChatClientException($"The model at {_configuration.ChatCompletionsUrl} could not be reached.", ex);
+            // Nothing listening, or the connection dropped: the host is down or still coming up, which is worth
+            // waiting for rather than reporting.
+            throw new AiChatClientException(
+                $"The model at {_configuration.ChatCompletionsUrl} could not be reached.", ex, isHostNotAnswering: true);
         }
 
         using (response)
@@ -97,11 +143,38 @@ public class HttpAiChatClient : IAiChatClient, ITransientDependency
             if (!response.IsSuccessStatusCode)
             {
                 throw new AiChatClientException(
-                    $"The model at {_configuration.ChatCompletionsUrl} returned {(int)response.StatusCode}: {Truncate(text, 500)}");
+                    $"The model at {_configuration.ChatCompletionsUrl} returned {(int)response.StatusCode}: {Truncate(text, 500)}",
+                    isHostNotAnswering: IsNotAnsweringYet(response.StatusCode, text));
             }
 
             return ParseResponse(text);
         }
+    }
+
+    /// <summary>
+    /// Told apart from a real refusal: "busy", "unavailable" and a gateway that has nothing behind it yet all
+    /// mean try again shortly. Ollama also answers 500 while a model is still being loaded, and says so in the
+    /// body -- a status code alone would not catch it.
+    /// </summary>
+    private static bool IsNotAnsweringYet(System.Net.HttpStatusCode status, string body)
+    {
+        if (status == System.Net.HttpStatusCode.TooManyRequests ||
+            status == System.Net.HttpStatusCode.BadGateway ||
+            status == System.Net.HttpStatusCode.ServiceUnavailable ||
+            status == System.Net.HttpStatusCode.GatewayTimeout)
+        {
+            return true;
+        }
+
+        if ((int)status < 500 || body == null)
+        {
+            return false;
+        }
+
+        return body.IndexOf("loading", StringComparison.OrdinalIgnoreCase) >= 0
+               || body.IndexOf("try again", StringComparison.OrdinalIgnoreCase) >= 0
+               || body.IndexOf("not ready", StringComparison.OrdinalIgnoreCase) >= 0
+               || body.IndexOf("server busy", StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     public JsonObject BuildRequestBody(AiChatRequest request)

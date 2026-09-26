@@ -52,6 +52,20 @@ public class AiAgentConfiguration : ITransientDependency
             ? value
             : DefaultTimeoutSeconds;
 
+    /// <summary>
+    /// How long a request keeps trying while the model host is not answering at all -- refusing the connection,
+    /// or saying it is busy or still loading. A host that has just started, or has just been asked to load the
+    /// model back into memory, is unreachable for a while and then perfectly fine; erring out in that window
+    /// tells a person the assistant is broken when it is merely waking up. Waiting is the honest answer, so the
+    /// default waits minutes rather than seconds. Set to 0 to answer the moment the first attempt fails.
+    /// </summary>
+    public int StartupWaitSeconds =>
+        int.TryParse(_appConfiguration["AiAgent:StartupWaitSeconds"], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) && value >= 0
+            ? value
+            : DefaultStartupWaitSeconds;
+
+    public const int DefaultStartupWaitSeconds = 300;
+
     /// <summary>Low: answers about balances and payslips should be the same every time they are asked.</summary>
     public double Temperature =>
         double.TryParse(_appConfiguration["AiAgent:Temperature"], NumberStyles.Float, CultureInfo.InvariantCulture, out var value) && value >= 0

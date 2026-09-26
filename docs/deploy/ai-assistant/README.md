@@ -51,6 +51,7 @@ tokens) will not fit: the assistant refuses rather than send it without its rule
   "ContextTokens": 12288,
   "ReservedOutputTokens": 1024,
   "TimeoutSeconds": 900,
+  "StartupWaitSeconds": 300,
   "AllowExternalModelHost": false
 }
 ```
@@ -64,6 +65,9 @@ tokens) will not fit: the assistant refuses rather than send it without its rule
   `qwen3:4b`, set `ContextTokens` to 4096 (or remove it: 4096 is the default).
 - No `ApiKey` — Ollama does not use one.
 - `TimeoutSeconds` 900: on a server without a graphics card an answer can take several minutes.
+- `StartupWaitSeconds` 300: how long a question keeps waiting while the model program is not answering at
+  all — it has just started, or is loading the model back into memory. In that window the API waits and asks
+  again instead of telling the person the assistant is unavailable.
 
 ## 4. Web server / network
 
@@ -103,9 +107,23 @@ use, downloads the model and creates the `hcmv3-qwen3-4b` variant with a 12,288-
 
 ## 7. If something goes wrong
 
+**Start here: `why-no-answer.ps1`** (this folder). Run it on the server and it says in plain words what is
+wrong and what to do — whether the model program is running, whether it answers, how long it takes, and what
+the API recorded. Add `-Restart` to start the model program if it has stopped, which is the usual cause.
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+.\why-no-answer.ps1 -Restart
+```
+
+A model host that is starting up no longer produces an error: since the change of 27 Sep 2026 the API waits
+and asks again for up to `AiAgent:StartupWaitSeconds` (5 minutes by default) while the host refuses
+connections or says it is busy or loading. So "not available" now means it was still not answering after
+five minutes of trying — the program is stopped or the server has no room for it, not merely slow.
+
 | Symptom | Check |
 |---|---|
-| "The AI assistant is not available right now" | Is Ollama running? `Get-ScheduledTask 'HCMv3 AI - Ollama'`, then `C:\Ollama\ollama-serve.log`. The API's log says exactly why the call failed. |
+| "The AI assistant is not available right now" | Run `why-no-answer.ps1`. Is Ollama running? `Get-ScheduledTask 'HCMv3 AI - Ollama'`, then `C:\Ollama\ollama-serve.log`. The API's log says exactly why the call failed. |
 | API log: "outside this server and its private network" | `AiAgent:BaseUrl` was changed to another address. Put it back to `http://localhost:11434/v1`. |
 | "took too long to answer" | The server is too slow for the model or busy. Raise `TimeoutSeconds`, or consider a bigger server / GPU. |
 | "…set up with too little room for everything it needs" | `AiAgent:Model` / `AiAgent:ContextTokens` are missing or still the plain 4,096 model. Set them as in section 3, restart the site. |
@@ -135,6 +153,7 @@ the migrator and before telling users about the new menu item.
            "ContextTokens": 12288,
            "ReservedOutputTokens": 1024,
            "TimeoutSeconds": 900,
+           "StartupWaitSeconds": 300,
            "AllowExternalModelHost": false
          }
      Leave AllowExternalModelHost = false: it is what stops employee data from ever

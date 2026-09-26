@@ -159,10 +159,91 @@ public class HttpAiChatClient_Tests
     [Fact]
     public async Task Should_Report_An_Unreachable_Host_As_A_Client_Exception()
     {
-        var client = CreateClient(new StubHandler(new HttpRequestException("connection refused")));
+        var client = CreateClient(new StubHandler(new HttpRequestException("connection refused")), NoWaiting);
 
         await Should.ThrowAsync<AiChatClientException>(() =>
             client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } }));
+    }
+
+    // ------------------------------------------------------------------ a host that is still waking up
+
+    [Fact]
+    public async Task Should_Wait_And_Ask_Again_While_Nothing_Is_Listening_Yet()
+    {
+        // What a restarted server does: refuses the connection, then answers. Ending the question with "the
+        // assistant is not available" in that window is what people were seeing.
+        var handler = new SequenceHandler(
+            new HttpRequestException("connection refused"),
+            new HttpRequestException("connection refused"),
+            Ok());
+
+        var response = await Patient(handler).CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } });
+
+        response.Content.ShouldBe("ok");
+        handler.Attempts.ShouldBe(3);
+    }
+
+    [Fact]
+    public async Task Should_Wait_While_The_Model_Is_Being_Loaded_Back_Into_Memory()
+    {
+        // Ollama's own answer while it pages a model in: a 500 that says what it is doing.
+        var handler = new SequenceHandler(
+            (HttpStatusCode.InternalServerError, @"{""error"":""model is loading, please try again""}"),
+            Ok());
+
+        var response = await Patient(handler).CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } });
+
+        response.Content.ShouldBe("ok");
+        handler.Attempts.ShouldBe(2);
+    }
+
+    [Theory]
+    [InlineData(HttpStatusCode.ServiceUnavailable)]
+    [InlineData(HttpStatusCode.BadGateway)]
+    [InlineData(HttpStatusCode.GatewayTimeout)]
+    [InlineData(HttpStatusCode.TooManyRequests)]
+    public async Task Should_Wait_While_The_Host_Says_It_Is_Busy(HttpStatusCode status)
+    {
+        var handler = new SequenceHandler((status, "busy"), Ok());
+
+        var response = await Patient(handler).CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } });
+
+        response.Content.ShouldBe("ok");
+    }
+
+    [Fact]
+    public async Task Should_Not_Wait_For_A_Refusal_That_Waiting_Cannot_Mend()
+    {
+        // A model that is not installed will not install itself: asking again for five minutes only delays
+        // telling somebody.
+        var handler = new SequenceHandler((HttpStatusCode.NotFound, @"{""error"":""model not found""}"), Ok());
+
+        await Should.ThrowAsync<AiChatClientException>(() =>
+            Patient(handler).CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } }));
+
+        handler.Attempts.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Should_Give_Up_Once_It_Has_Waited_As_Long_As_It_Was_Told_To()
+    {
+        var handler = new SequenceHandler(new HttpRequestException("connection refused"));
+
+        var client = CreateClient(handler, NoWaiting);
+
+        await Should.ThrowAsync<AiChatClientException>(() =>
+            client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } }));
+
+        handler.Attempts.ShouldBe(1);
+    }
+
+    [Fact]
+    public void Should_Wait_Minutes_By_Default_Rather_Than_Seconds()
+    {
+        var accessor = Substitute.For<IAppConfigurationAccessor>();
+        accessor.Configuration.Returns(new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>()).Build());
+
+        new AiAgentConfiguration(accessor).StartupWaitSeconds.ShouldBe(300);
     }
 
     [Fact]
@@ -325,7 +406,20 @@ public class HttpAiChatClient_Tests
 
     private static string Completion(string messageJson) => @"{""choices"":[{""index"":0,""message"":" + messageJson + "}]}";
 
-    private static HttpAiChatClient CreateClient(StubHandler handler, Dictionary<string, string> settings = null)
+    /// <summary>Answer at once rather than wait: for the tests about giving up, not about waiting.</summary>
+    private static readonly Dictionary<string, string> NoWaiting = new() { ["AiAgent:StartupWaitSeconds"] = "0" };
+
+    private static (HttpStatusCode, string) Ok() => (HttpStatusCode.OK, Completion(@"{""content"":""ok""}"));
+
+    /// <summary>A client that waits as it would on the server, but without the real pauses between tries.</summary>
+    private static HttpAiChatClient Patient(SequenceHandler handler)
+    {
+        var client = CreateClient(handler);
+        client.RetryPause = _ => TimeSpan.Zero;
+        return client;
+    }
+
+    private static HttpAiChatClient CreateClient(HttpMessageHandler handler, Dictionary<string, string> settings = null)
     {
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(settings ?? new Dictionary<string, string>())
@@ -369,6 +463,39 @@ public class HttpAiChatClient_Tests
             }
 
             return new HttpResponseMessage(_status) { Content = new StringContent(_body, Encoding.UTF8, "application/json") };
+        }
+    }
+
+    /// <summary>
+    /// Answers a scripted series: what a host does while it wakes up, where the same request fails and then
+    /// succeeds. The last answer stands for every attempt after it.
+    /// </summary>
+    private class SequenceHandler : HttpMessageHandler
+    {
+        private readonly object[] _answers;
+
+        public SequenceHandler(params object[] answers)
+        {
+            _answers = answers;
+        }
+
+        public int Attempts { get; private set; }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var answer = _answers[Math.Min(Attempts, _answers.Length - 1)];
+            Attempts++;
+
+            if (answer is Exception exception)
+            {
+                throw exception;
+            }
+
+            var (status, body) = ((HttpStatusCode, string))answer;
+            return Task.FromResult(new HttpResponseMessage(status)
+            {
+                Content = new StringContent(body, Encoding.UTF8, "application/json")
+            });
         }
     }
 }

@@ -89,9 +89,20 @@ public class AiChatClientException : Exception
 {
     public bool IsTimeout { get; }
 
-    public AiChatClientException(string message, Exception innerException = null, bool isTimeout = false)
+    /// <summary>
+    /// The host did not answer at all -- nothing listening, or it says it is busy or still loading. Worth
+    /// waiting through: a model host that has just started behaves exactly like this and is then fine.
+    /// </summary>
+    public bool IsHostNotAnswering { get; }
+
+    public AiChatClientException(
+        string message,
+        Exception innerException = null,
+        bool isTimeout = false,
+        bool isHostNotAnswering = false)
         : base(message, innerException)
     {
         IsTimeout = isTimeout;
+        IsHostNotAnswering = isHostNotAnswering;
     }
 }
