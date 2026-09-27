@@ -185,7 +185,12 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
             RequestType = requestType,
             TargetEntityId = transactionId,
             RequestSubTypeId = subTypeId,
-            RequestNumber = await _requestNumberGenerator.NextAsync(requestNumberPrefix),
+
+            // No request number, deliberately. The central counter numbers REQUESTS -- things somebody
+            // asked for and somebody else has to answer. This was recorded, not requested, so taking a
+            // number would put a gap in the sequence and give a reference to something nobody can chase.
+            RequestNumber = null,
+
             RequestStatus = RequestStatus.Closed,
 
             // Never entered the chain, so it never reached a step.

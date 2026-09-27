@@ -221,6 +221,48 @@ public class WorkflowDirectEntry_Tests : AppTestBase
     }
 
     /// <summary>
+    /// No number, and that is the rule rather than an omission. The counter numbers REQUESTS -- things
+    /// somebody asked for and somebody else must answer. Taking one for a record nobody has to act on would
+    /// leave a gap in the sequence and hand out a reference to something that cannot be chased.
+    /// </summary>
+    [Fact]
+    public async Task A_Directly_Recorded_Row_Should_Take_No_Request_Number()
+    {
+        ConfigureType(workflowEnabled: true, allowDirectEntry: true);
+        var subjectId = CreateEmployee("DIR350SUBJ");
+        var coverId = CreateEmployee("DIR350COVER");
+
+        var id = await RecordAsync(subjectId, coverId, recordDirectly: true);
+
+        var requestId = UsingDbContext(context =>
+            context.Set<EmployeeDelegation>().Single(d => d.Id == id).WorkflowRequestId.Value);
+
+        UsingDbContext(context =>
+            context.Set<WorkflowRequest>().Single(r => r.Id == requestId).RequestNumber.ShouldBeNull());
+    }
+
+    /// <summary>A routed request does take one, and it is a plain central number with no type prefix.</summary>
+    [Fact]
+    public async Task A_Routed_Request_Should_Take_A_Plain_Central_Number()
+    {
+        ConfigureType(workflowEnabled: true, allowDirectEntry: true);
+        var subjectId = CreateEmployee("DIR360SUBJ");
+        var coverId = CreateEmployee("DIR360COVER");
+
+        var id = await RecordAsync(subjectId, coverId, recordDirectly: false);
+
+        var requestId = UsingDbContext(context =>
+            context.Set<EmployeeDelegation>().Single(d => d.Id == id).WorkflowRequestId.Value);
+
+        var number = UsingDbContext(context =>
+            context.Set<WorkflowRequest>().Single(r => r.Id == requestId).RequestNumber);
+
+        number.ShouldNotBeNullOrWhiteSpace();
+        number.ShouldNotContain("-");
+        int.Parse(number).ShouldBeGreaterThan(0);
+    }
+
+    /// <summary>
     /// The audit. A transaction with no workflow trace at all is indistinguishable from an approved one, so
     /// who skipped approval has to survive -- as its own action, not as a fake approval.
     /// </summary>

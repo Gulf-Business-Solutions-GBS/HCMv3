@@ -99,8 +99,11 @@ public class WorkflowRequestsAppService : HCMv3AppServiceBase, IWorkflowRequests
             .Include(r => r.Employee)
             .Include(r => r.Approver)
             .WhereIf(input.EmployeeId.HasValue, r => r.EmployeeId == input.EmployeeId.Value)
+            // Null-guarded: a directly-recorded transaction has no request number, because the counter
+            // numbers things somebody asked for. Without the guard those rows would drop out of every
+            // filtered search rather than merely failing to match on number.
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), r =>
-                r.RequestNumber.Contains(input.Filter) ||
+                (r.RequestNumber != null && r.RequestNumber.Contains(input.Filter)) ||
                 r.RequestType.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();

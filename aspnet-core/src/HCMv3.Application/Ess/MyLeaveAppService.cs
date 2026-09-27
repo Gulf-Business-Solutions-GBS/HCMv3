@@ -33,6 +33,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private readonly IRepository<EmployeeAbsence> _absenceRepository;
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IRepository<WorkflowRequest> _requestRepository;
+    private readonly IRequestNumberGenerator _requestNumberGenerator;
     private readonly ILeaveBalanceService _leaveBalanceService;
     private readonly IEmployeeScopeProvider _employeeScopeProvider;
     private readonly IRequestMasterResolver _requestMasterResolver;
@@ -57,8 +58,10 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         IEmployeeAbsenceCalculationService absenceCalculationService,
         ISysSettingsAccessor sysSettingsAccessor,
         ISickLeaveDeductionPreview sickLeaveDeductionPreview,
-        HCMv3.Storage.IAttachmentAppService attachmentAppService)
+        HCMv3.Storage.IAttachmentAppService attachmentAppService,
+        IRequestNumberGenerator requestNumberGenerator)
     {
+        _requestNumberGenerator = requestNumberGenerator;
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _requestRepository = requestRepository;
@@ -678,7 +681,10 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             RequestType = LeaveWorkflowTransactionHandler.LeaveRequestType,
             TargetEntityId = leaveId,
             RequestSubTypeId = input.AbsenceTypeId,
-            RequestNumber = await GenerateRequestNumberAsync(),
+            // One central counter for every request type, with no prefix: the number identifies the
+            // request, and the type is a column on it. A per-type scheme meant leave raised here and
+            // leave recorded by HR carried different-looking numbers for the same transaction.
+            RequestNumber = await _requestNumberGenerator.NextAsync("LV"),
             RequestStatus = RequestStatus.Draft,
             WorkflowStep = 0
         };
@@ -903,26 +909,6 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private static bool CanCancel(EmployeeAbsence leave)
     {
         return leave.WorkflowStatus == RequestStatus.Draft || leave.WorkflowStatus == RequestStatus.Open;
-    }
-
-    private async Task<string> GenerateRequestNumberAsync()
-    {
-        var year = DateTime.Today.Year;
-        var prefix = "LV-" + year + "-";
-
-        var lastNumber = await _requestRepository.GetAll()
-            .Where(r => r.RequestNumber.StartsWith(prefix))
-            .OrderByDescending(r => r.RequestNumber)
-            .Select(r => r.RequestNumber)
-            .FirstOrDefaultAsync();
-
-        var next = 1;
-        if (!string.IsNullOrEmpty(lastNumber) && int.TryParse(lastNumber.Substring(prefix.Length), out var parsed))
-        {
-            next = parsed + 1;
-        }
-
-        return prefix + next.ToString("D5");
     }
 
     private static MyLeaveDto ToDto(EmployeeAbsence entity)

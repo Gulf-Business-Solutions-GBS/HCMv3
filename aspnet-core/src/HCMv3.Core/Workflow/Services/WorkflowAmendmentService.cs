@@ -13,6 +13,7 @@ namespace HCMv3.Workflow.Services;
 public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendmentService
 {
     private readonly IRepository<WorkflowRequest> _requestRepository;
+    private readonly IRequestNumberGenerator _requestNumberGenerator;
     private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
     private readonly IWorkflowApprovalService _approvalService;
@@ -25,8 +26,10 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
         IWorkflowTransactionHandlerResolver handlerResolver,
         IWorkflowApprovalService approvalService,
         IUnitOfWorkManager unitOfWorkManager,
-        IAbpSession abpSession)
+        IAbpSession abpSession,
+        IRequestNumberGenerator requestNumberGenerator)
     {
+        _requestNumberGenerator = requestNumberGenerator;
         _requestRepository = requestRepository;
         _transactionTypeRepository = transactionTypeRepository;
         _handlerResolver = handlerResolver;
@@ -101,7 +104,9 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
             RequestType = requestType,
             TargetEntityId = targetEntityId,
             RequestSubTypeId = requestSubTypeId,
-            RequestNumber = await GenerateRequestNumberAsync(),
+            // The same central counter every other request draws from. An amendment is a request like any
+            // other, and a scheme of its own only made it look like a different kind of thing.
+            RequestNumber = await _requestNumberGenerator.NextAsync("AMD"),
             RequestStatus = RequestStatus.Draft,
             WorkflowStep = 0,
             IsAmendment = true,
@@ -135,22 +140,4 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
                            && (r.RequestStatus == RequestStatus.Open || r.RequestStatus == RequestStatus.Draft));
     }
 
-    private async Task<string> GenerateRequestNumberAsync()
-    {
-        var prefix = "AMD-" + DateTime.Today.Year + "-";
-
-        var lastNumber = await _requestRepository.GetAll()
-            .Where(r => r.RequestNumber.StartsWith(prefix))
-            .OrderByDescending(r => r.RequestNumber)
-            .Select(r => r.RequestNumber)
-            .FirstOrDefaultAsync();
-
-        var next = 1;
-        if (!string.IsNullOrEmpty(lastNumber) && int.TryParse(lastNumber.Substring(prefix.Length), out var parsed))
-        {
-            next = parsed + 1;
-        }
-
-        return prefix + next.ToString("D5");
-    }
 }
