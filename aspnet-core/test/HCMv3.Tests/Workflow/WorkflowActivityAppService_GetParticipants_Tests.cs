@@ -109,7 +109,22 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
         return request.Id;
     }
 
-    private void AddApprover(int requestId, int approverEmployeeId, bool isApproved = false)
+    /// <summary>
+    /// An approver row at a step.
+    ///
+    /// <para>
+    /// The step MUST be set. Leaving it to default to 0 matches no request past step 0, so the service
+    /// reads the row as belonging to a step already passed: the entry comes back as <c>PastStep</c> rather
+    /// than <c>CurrentStep</c>, and where a log entry exists for the same person the two are no longer
+    /// recognised as one and the approver is listed twice.
+    /// </para>
+    ///
+    /// <para>
+    /// Defaulted to 1 to match <see cref="CreateRequest"/>'s own default, so the ordinary single-step case
+    /// lines up without either caller saying anything.
+    /// </para>
+    /// </summary>
+    private void AddApprover(int requestId, int approverEmployeeId, bool isApproved = false, int step = 1)
     {
         UsingDbContext(context =>
         {
@@ -118,7 +133,8 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
                 TenantId = TenantId,
                 WorkflowRequestId = requestId,
                 ApproverId = approverEmployeeId,
-                IsApproved = isApproved
+                IsApproved = isApproved,
+                WorkflowStep = step
             });
         });
     }
@@ -381,7 +397,7 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
         var requestId = CreateRequest(meId, step: 3);
 
         // Only the CURRENT step has approver rows -- exactly the state the engine leaves behind.
-        AddApprover(requestId, step3Id);
+        AddApprover(requestId, step3Id, step: 3);
 
         AddLog(requestId, step1Id, RequestActionType.Approved, step: 1, at: new DateTime(2026, 3, 1, 9, 0, 0));
         AddLog(requestId, step2Id, RequestActionType.Approved, step: 2, at: new DateTime(2026, 3, 2, 9, 0, 0));
