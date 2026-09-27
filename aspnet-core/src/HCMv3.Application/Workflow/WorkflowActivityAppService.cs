@@ -220,6 +220,8 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         result.Delegates = await BuildDelegatesAsync(result.Approvers);
         result.ReadLog = await BuildReadLogAsync(request.Id);
 
+        AttachDelegationsToApprovers(result);
+
         await FillPeopleAsync(result);
 
         return result;
@@ -675,6 +677,39 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     /// what answers "why is Sara on this?".
     /// </para>
     /// </summary>
+    /// <summary>
+    /// Hangs each delegation off the approver row it explains.
+    ///
+    /// <para>
+    /// Every delegation on the list is there BECAUSE one of its two people is an approver -- that is the
+    /// condition <see cref="BuildDelegatesAsync"/> queries on -- so each one always finds a row. Which of
+    /// the two is the approver is what <c>Relation</c> records: a stand-in appears as the approver on an
+    /// <c>ApproverIsStandingIn</c> row, and the delegator does on an <c>ApproverDelegatedOut</c> one.
+    /// </para>
+    ///
+    /// <para>
+    /// The same instances are attached, not copies, so <see cref="FillPeopleAsync"/> filling the flat
+    /// delegate list fills these too. The list itself stays on the result: the participant check reads it,
+    /// and a client that wants it whole should not have to walk the approvers to rebuild it.
+    /// </para>
+    /// </summary>
+    private static void AttachDelegationsToApprovers(WorkflowParticipantsDto result)
+    {
+        foreach (var delegation in result.Delegates)
+        {
+            var approverId = delegation.Relation == WorkflowDelegationRelation.ApproverDelegatedOut
+                ? delegation.DelegatedBy.EmployeeId
+                : delegation.Person.EmployeeId;
+
+            // Every row of theirs, not just the first: the same person can be listed at more than one step,
+            // and the delegation explains their presence at each of them.
+            foreach (var approver in result.Approvers.Where(a => a.Person != null && a.Person.EmployeeId == approverId))
+            {
+                approver.Delegations.Add(delegation);
+            }
+        }
+    }
+
     private async Task<List<WorkflowDelegateEntryDto>> BuildDelegatesAsync(List<WorkflowApproverEntryDto> approvers)
     {
         var result = new List<WorkflowDelegateEntryDto>();

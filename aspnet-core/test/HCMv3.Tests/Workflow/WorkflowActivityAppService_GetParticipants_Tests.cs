@@ -732,4 +732,69 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
         result.Approvers.ShouldBeEmpty();
         result.ReadLog.ShouldBeEmpty();
     }
+
+    /// <summary>
+    /// The delegation is carried on the approver row it explains, so the panel can say why a name is on the
+    /// list without the reader opening a second list and matching the two up.
+    /// </summary>
+    [Fact]
+    public async Task Should_Hang_A_Stand_Ins_Delegation_On_Their_Own_Approver_Row()
+    {
+        var meId = CreateCurrentUserEmployee("PART1700ME");
+        var awayId = CreateEmployee("PART1700AWAY");
+        var standInId = CreateEmployee("PART1700STANDIN");
+
+        var requestId = CreateRequest(meId);
+
+        // The stand-in is the approver: this is the substitution the router already applied.
+        AddApprover(requestId, standInId);
+        AddDelegation(fromEmployeeId: awayId, toEmployeeId: standInId);
+
+        var result = await GetParticipants(requestId);
+
+        var approver = result.Approvers.Single(a => a.Person.EmployeeId == standInId);
+        var delegation = approver.Delegations.Single();
+
+        delegation.Relation.ShouldBe(WorkflowDelegationRelation.ApproverIsStandingIn);
+        delegation.DelegatedBy.EmployeeId.ShouldBe(awayId);
+
+        // Named, not just identified: the row renders this without a second lookup.
+        delegation.DelegatedBy.Code.ShouldBe("PART1700AWAY");
+    }
+
+    /// <summary>The other direction: an approver who has handed their own authority to somebody else.</summary>
+    [Fact]
+    public async Task Should_Hang_A_Delegated_Out_Arrangement_On_The_Delegators_Approver_Row()
+    {
+        var meId = CreateCurrentUserEmployee("PART1800ME");
+        var approverId = CreateEmployee("PART1800APPROVER");
+        var standInId = CreateEmployee("PART1800STANDIN");
+
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, approverId);
+        AddDelegation(fromEmployeeId: approverId, toEmployeeId: standInId);
+
+        var result = await GetParticipants(requestId);
+
+        var approver = result.Approvers.Single(a => a.Person.EmployeeId == approverId);
+        var delegation = approver.Delegations.Single();
+
+        delegation.Relation.ShouldBe(WorkflowDelegationRelation.ApproverDelegatedOut);
+        delegation.Person.EmployeeId.ShouldBe(standInId);
+        delegation.Person.Code.ShouldBe("PART1800STANDIN");
+    }
+
+    [Fact]
+    public async Task An_Approver_With_No_Cover_Should_Carry_No_Delegations()
+    {
+        var meId = CreateCurrentUserEmployee("PART1900ME");
+        var approverId = CreateEmployee("PART1900APPROVER");
+
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, approverId);
+
+        var result = await GetParticipants(requestId);
+
+        result.Approvers.Single(a => a.Person.EmployeeId == approverId).Delegations.ShouldBeEmpty();
+    }
 }

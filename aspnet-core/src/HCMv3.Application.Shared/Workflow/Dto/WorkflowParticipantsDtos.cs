@@ -203,6 +203,23 @@ public class WorkflowApproverEntryDto
     /// </para>
     /// </summary>
     public bool IsNotRequired { get; set; }
+
+    /// <summary>
+    /// The active delegations that explain this row, if any.
+    ///
+    /// <para>
+    /// Carried on the approver rather than listed separately, because a delegation is only ever interesting
+    /// as an answer to a question the approver list itself raises: why is this name here, or why is this
+    /// person's authority somewhere else. A tab of its own made the reader hold two lists side by side and
+    /// match them up by name to learn something the first list could simply have said.
+    /// </para>
+    ///
+    /// <para>
+    /// A list rather than one entry: somebody can be standing in for a colleague AND have delegated their
+    /// own authority onward, and dropping either half would misstate who is acting for whom.
+    /// </para>
+    /// </summary>
+    public List<WorkflowDelegateEntryDto> Delegations { get; set; } = new List<WorkflowDelegateEntryDto>();
 }
 
 /// <summary>An active delegation touching one of this request's approvers.</summary>

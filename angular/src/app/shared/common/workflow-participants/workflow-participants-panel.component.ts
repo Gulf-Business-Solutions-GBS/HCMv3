@@ -26,7 +26,7 @@ import { finalize } from 'rxjs/operators';
 import { WorkflowParticipantProfileModalComponent } from './workflow-participant-profile-modal.component';
 
 /** Which of the three lists is on show. */
-export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'delegates' | 'log';
+export type WorkflowParticipantsTab = 'approvers' | 'readLog' | 'log';
 
 /**
  * Who may act on a request, who has acted, who stands in for whom, and who has merely looked.
@@ -84,7 +84,6 @@ export class WorkflowParticipantsPanelComponent extends AppComponentBase {
 
     readonly approvers = computed(() => this.participants()?.approvers ?? []);
     readonly readLog = computed(() => this.participants()?.readLog ?? []);
-    readonly delegates = computed(() => this.participants()?.delegates ?? []);
 
     /**
      * The approvers split into their steps, in order, each carrying the rule that governs it.

@@ -342814,6 +342814,7 @@ export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
     actedAt!: DateTime | undefined;
     approvalRequire!: ApprovalRequire;
     isNotRequired!: boolean;
+    delegations!: WorkflowDelegateEntryDto[] | undefined;
 
     constructor(data?: IWorkflowApproverEntryDto) {
         if (data) {
@@ -342834,6 +342835,11 @@ export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
             this.actedAt = _data["actedAt"] ? DateTime.fromISO(_data["actedAt"].toString()) : undefined as any;
             this.approvalRequire = _data["approvalRequire"];
             this.isNotRequired = _data["isNotRequired"];
+            if (Array.isArray(_data["delegations"])) {
+                this.delegations = [] as any;
+                for (let item of _data["delegations"])
+                    this.delegations!.push(WorkflowDelegateEntryDto.fromJS(item));
+            }
         }
     }
 
@@ -342854,6 +342860,11 @@ export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
         data["actedAt"] = this.actedAt ? this.actedAt.toString() : undefined as any;
         data["approvalRequire"] = this.approvalRequire;
         data["isNotRequired"] = this.isNotRequired;
+        if (Array.isArray(this.delegations)) {
+            data["delegations"] = [];
+            for (let item of this.delegations)
+                data["delegations"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -342867,6 +342878,7 @@ export interface IWorkflowApproverEntryDto {
     actedAt: DateTime | undefined;
     approvalRequire: ApprovalRequire;
     isNotRequired: boolean;
+    delegations: WorkflowDelegateEntryDto[] | undefined;
 }
 
 export enum WorkflowApproverOrigin {

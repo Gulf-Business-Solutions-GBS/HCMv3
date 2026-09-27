@@ -36,12 +36,6 @@
             </button>
         </li>
         <li class="nav-item">
-            <button type="button" class="nav-link" [class.active]="tab() === 'delegates'" (click)="selectTab('delegates')">
-                {{ 'Delegates' | localize }}
-                <span class="wf-parts__count">{{ delegates().length }}</span>
-            </button>
-        </li>
-        <li class="nav-item">
             <!-- The action trail, alongside the other answers about how this request has been handled
                  rather than as a toggle on the conversation card. Both were views of the same request and
                  living in two places meant two places to look. -->
@@ -92,6 +86,17 @@
                                         </button>
                                         @if (jobTitle(entry.person)) {
                                             <span class="wf-parts__meta">{{ jobTitle(entry.person) }}</span>
+                                        }
+
+                                        <!-- Why this name is on the list, said on the row that raises the
+                                             question. It used to be a tab of its own, which meant holding
+                                             two lists side by side and matching them up by name. -->
+                                        @for (d of entry.delegations; track $index) {
+                                            <span class="wf-parts__meta">
+                                                {{ delegationLabel(d) }}
+                                                <span class="wf-parts__dot">&middot;</span>
+                                                {{ dateOnly(d.startDate) }} &ndash; {{ dateOnly(d.endDate) }}
+                                            </span>
                                         }
                                     </span>
 
@@ -194,38 +199,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    }
-                }
-                @case ('delegates') {
-                    @for (entry of delegates(); track $index) {
-                        <div class="wf-parts__row">
-                            <employee-avatar
-                                [photoUrl]="entry.person?.photoUrl"
-                                [name]="plainName(entry.person)"
-                                [size]="28"></employee-avatar>
-
-                            <span class="wf-parts__who">
-                                <button
-                                    type="button"
-                                    class="wf-parts__name wf-parts__name--link"
-                                    (click)="openProfile(entry.person)">
-                                    {{ displayName(entry.person) || '-' }}
-                                </button>
-                                <span class="wf-parts__meta">
-                                    <span>{{ delegationLabel(entry) }}</span>
-                                    @if (jobTitle(entry.person)) {
-                                        <span class="wf-parts__dot">&middot;</span>
-                                        <span>{{ jobTitle(entry.person) }}</span>
-                                    }
-                                </span>
-                            </span>
-
-                            <span class="wf-parts__when">
-                                {{ dateOnly(entry.startDate) }} &ndash; {{ dateOnly(entry.endDate) }}
-                            </span>
-                        </div>
-                    } @empty {
-                        <div class="wf-parts__empty">{{ 'NoDelegatesForThisRequest' | localize }}</div>
                     }
                 }
             }
