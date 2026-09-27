@@ -13,6 +13,8 @@ using HCMv3.Storage;
 using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings.Services;
 
+using HCMv3.Workflow.Services;
+
 namespace HCMv3.ImportExport;
 
 /// <inheritdoc cref="IProfilePhotoImportService"/>
@@ -59,6 +61,16 @@ public class ProfilePhotoImportService : HCMv3DomainServiceBase, IProfilePhotoIm
     }
 
     public async Task<BulkImportRunResult> ImportAsync(ProfilePhotoImportInput input)
+    {
+        // Marked non-interactive for the same reason as the bulk import: nothing loaded from a file is
+        // something a person asked an approver to decide.
+        using (NonInteractiveScope.Begin("a profile photo import"))
+        {
+            return await ImportCoreAsync(input);
+        }
+    }
+
+    private async Task<BulkImportRunResult> ImportCoreAsync(ProfilePhotoImportInput input)
     {
         if (input == null)
         {

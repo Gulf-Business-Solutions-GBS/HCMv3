@@ -62,6 +62,11 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
     public async Task SubmitAsync(int requestId, int actingEmployeeId)
     {
+        // The second of the two routing chokepoints. The admin submitter guards the path that CREATES a
+        // request; this guards the path that SENDS one, so self-service and amendments are covered by the
+        // same rule without each having to remember it.
+        NonInteractiveScope.ThrowIfActive();
+
         var request = await _workflowRequestRepository.GetAsync(requestId);
 
         if (request.RequestStatus != RequestStatus.Draft)

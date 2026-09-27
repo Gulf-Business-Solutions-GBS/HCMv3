@@ -20,6 +20,8 @@ using HCMv3.TimeManagement;
 using HCMv3.TimeManagement.Dto;
 using Microsoft.EntityFrameworkCore;
 
+using HCMv3.Workflow.Services;
+
 namespace HCMv3.GoLiveSetup;
 
 /// <summary>
@@ -144,6 +146,18 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
     /// trigger runs as rows are saved.
     /// </summary>
     public async Task LoadAsync(IReadOnlyList<GoLiveEmployeeRowDto> rows, GoLiveEmployeeTargets targets, GoLiveLoadEmployeesOutput output)
+    {
+        // Migrated data, not requests. This load writes through application services -- bank details among
+        // them -- and several of those route for approval when the catalog says so. Marking the whole load
+        // non-interactive means a routed type cannot turn a company's opening data into one approval per
+        // employee, which is the difference between a working go-live and an unusable one.
+        using (NonInteractiveScope.Begin("the go-live employee load"))
+        {
+            await LoadCoreAsync(rows, targets, output);
+        }
+    }
+
+    private async Task LoadCoreAsync(IReadOnlyList<GoLiveEmployeeRowDto> rows, GoLiveEmployeeTargets targets, GoLiveLoadEmployeesOutput output)
     {
         using (_retroTrigger.SuppressEarliestMasterDataChange())
         {

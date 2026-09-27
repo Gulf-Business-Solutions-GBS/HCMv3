@@ -80,7 +80,19 @@ public class AdminTransactionSubmitter : HCMv3DomainServiceBase, IAdminTransacti
         bool recordDirectly = false)
         where TEntity : class, IEntity<int>, IWorkflowEnabledEntity
     {
-        var workflowEnabled = await _requestMasterResolver.IsWorkflowEnabledAsync(requestType);
+        // Routing is something a person asks for. Work that has declared itself non-interactive -- an
+        // import, a go-live load, a scheduled job -- never routes, however the catalog is configured.
+        //
+        // This is not theoretical. The go-live employee load writes bank details through
+        // EmployeeBanksAppService, which is routed; without this line, ticking "Workflow Enabled" on
+        // Employee Bank would turn a five-hundred-employee load into five hundred approval requests for
+        // data that was migrated, not requested. Nobody would connect the two settings until it happened.
+        //
+        // Treated as "not workflow-enabled" rather than refused, because that is the behaviour these
+        // paths want and already had: the row is written immediately and visible, exactly as an imported
+        // row has always been. The refusal lives at the other chokepoint, WorkflowApprovalService.
+        var workflowEnabled = !NonInteractiveScope.IsActive
+                              && await _requestMasterResolver.IsWorkflowEnabledAsync(requestType);
 
         if (recordDirectly && workflowEnabled)
         {

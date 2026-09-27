@@ -14,6 +14,7 @@ using Abp.Domain.Uow;
 using Abp.Timing;
 using ClosedXML.Excel;
 using HCMv3.SystemSecurity;
+using HCMv3.Workflow.Services;
 
 namespace HCMv3.ImportExport;
 
@@ -375,6 +376,17 @@ public class BulkImportExportService : HCMv3DomainServiceBase, IBulkImportExport
     #region Import (legacy Main / UploadData / SaveLog)
 
     public async Task<BulkImportRunResult> ImportAsync(BulkImportRunInput input)
+    {
+        // Everything below runs marked as non-interactive, so any attempt to route an imported row --
+        // now or from code written later that reasonably assumes it is an ordinary save -- fails at the
+        // first row instead of raising an approval request per imported record.
+        using (NonInteractiveScope.Begin("a bulk import"))
+        {
+            return await ImportCoreAsync(input);
+        }
+    }
+
+    private async Task<BulkImportRunResult> ImportCoreAsync(BulkImportRunInput input)
     {
         if (input == null)
         {
