@@ -6900,5 +6900,12 @@
     <text name="StepsReordered">تمت إعادة ترقيم الخطوات.</text>
     <text name="AChainCanHaveOnlyOneCreatorStep">لا يمكن أن تحتوي الدورة على أكثر من خطوة واحدة لمُنشئ الطلب. الخطوة التي ليس لها معتمد هي خطوة مقدّم الطلب نفسه، ووجود خطوة ثانية يوقف كل طلب يصل إليها.</text>
     <text name="SaveStepOrder">حفظ ترتيب الخطوات</text>
+    <text name="RecordWithoutApproval">التسجيل بدون اعتماد</text>
+    <text name="ThisTransactionTypeCannotBeRecordedWithoutApproval">هذا النوع من المعاملات يجب أن يمر بدورة الاعتماد. لا يُسمح بتسجيله مباشرة.</text>
+    <text name="YouAreNotPermittedToRecordWithoutApproval">لا تملك صلاحية تسجيل هذه المعاملة بدون اعتماد.</text>
+    <text name="AllowDirectEntry">يجوز للموارد البشرية التسجيل بدون اعتماد</text>
+    <text name="AllowDirectEntryHint">عند التفعيل، يستطيع المستخدم الذي يملك صلاحية "التسجيل بدون اعتماد" تسجيل هذه المعاملة للموظف كمعاملة نهائية بدلاً من إرسالها للاعتماد. ويُسجَّل كل إجراء من هذا النوع مع اسم من قام به.</text>
+    <text name="RequestActionTypeRecordedDirectly">سُجّلت بدون اعتماد</text>
+    <text name="RecordDirectlyNoApproval">تسجيل مباشر — بدون اعتماد</text>
   </texts>
 </localizationDictionary>

@@ -1919,6 +1919,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         workflowTransactionTypes.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Edit, L("EditItem"));
         workflowTransactionTypes.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Delete, L("DeleteItem"));
 
+        // A qualifier on the screens somebody already has rather than access to a new one, so it sits
+        // directly under Workflow instead of under a screen's node.
+        workflow.CreateChildPermission(AppPermissions.Pages_Workflow_RecordWithoutApproval, L("RecordWithoutApproval"));
+
         var requestDetails = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails, L("RequestDetails"));
         requestDetails.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails_Create, L("CreateNewItem"));
         requestDetails.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails_Edit, L("EditItem"));
@@ -2360,6 +2364,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         administration.CreateChildPermission(AppPermissions.Pages_Administration_HangfireDashboard, L("HangfireDashboard"), multiTenancySides: _isMultiTenancyEnabled ? MultiTenancySides.Host : MultiTenancySides.Tenant);
         administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_Dashboard, L("Dashboard"), multiTenancySides: MultiTenancySides.Host);
         administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_HealthCheck, L("HealthCheck"), multiTenancySides: _isMultiTenancyEnabled ? MultiTenancySides.Host : MultiTenancySides.Tenant);
+        administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_TenantSetupCheck, L("TenantSetupCheck"), multiTenancySides: MultiTenancySides.Host);
 
         var trainingManagement = pages.CreateChildPermission(AppPermissions.Pages_TrainingManagement_TrainingCourses, L("TrainingCourses"));
         trainingManagement.CreateChildPermission(AppPermissions.Pages_TrainingManagement_TrainingCourses_Create, L("CreateNewItem"));

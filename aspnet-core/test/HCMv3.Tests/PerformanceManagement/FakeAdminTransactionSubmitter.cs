@@ -26,7 +26,8 @@ public class FakeAdminTransactionSubmitter : IAdminTransactionSubmitter
         TEntity entity,
         string requestType,
         string requestNumberPrefix,
-        int? subTypeId = null)
+        int? subTypeId = null,
+        bool recordDirectly = false)
         where TEntity : class, IEntity<int>, IHasEmployeeId, IWorkflowEnabledEntity
     {
         await repository.InsertAsync(entity);
@@ -45,7 +46,8 @@ public class FakeAdminTransactionSubmitter : IAdminTransactionSubmitter
         string requestType,
         string requestNumberPrefix,
         int subjectEmployeeId,
-        int? subTypeId = null)
+        int? subTypeId = null,
+        bool recordDirectly = false)
         where TEntity : class, IEntity<int>, IWorkflowEnabledEntity
     {
         await repository.InsertAsync(entity);

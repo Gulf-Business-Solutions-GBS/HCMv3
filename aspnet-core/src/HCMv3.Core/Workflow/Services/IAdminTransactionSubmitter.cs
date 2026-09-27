@@ -40,12 +40,20 @@ public interface IAdminTransactionSubmitter
     /// </param>
     /// <param name="subTypeId">What the routing rules match against -- the personal action, the loan type.</param>
     /// <returns>The id of the inserted transaction row.</returns>
+    /// <param name="recordDirectly">
+    /// Record it as final instead of sending it for approval. Refused unless the type's catalog row permits
+    /// a bypass AND the caller holds <c>RecordWithoutApproval</c> -- and refused loudly, because a bypass
+    /// that quietly routed instead would leave somebody believing a record was effective when it was
+    /// waiting in an inbox. Ignored when the type is not workflow-enabled, where every save is already
+    /// direct.
+    /// </param>
     Task<int> CreateAndSubmitAsync<TEntity>(
         IRepository<TEntity> repository,
         TEntity entity,
         string requestType,
         string requestNumberPrefix,
-        int? subTypeId = null)
+        int? subTypeId = null,
+        bool recordDirectly = false)
         where TEntity : class, IEntity<int>, IHasEmployeeId, IWorkflowEnabledEntity;
 
     /// <summary>
@@ -70,12 +78,14 @@ public interface IAdminTransactionSubmitter
     /// The employee the request is recorded against and routed by -- for a batch, the requester. Also used as
     /// the acting employee at submit when the signed-in user has no employee link of their own.
     /// </param>
+    /// <inheritdoc cref="CreateAndSubmitAsync{TEntity}"/>
     Task<int> CreateAndSubmitForSubjectAsync<TEntity>(
         IRepository<TEntity> repository,
         TEntity entity,
         string requestType,
         string requestNumberPrefix,
         int subjectEmployeeId,
-        int? subTypeId = null)
+        int? subTypeId = null,
+        bool recordDirectly = false)
         where TEntity : class, IEntity<int>, IWorkflowEnabledEntity;
 }

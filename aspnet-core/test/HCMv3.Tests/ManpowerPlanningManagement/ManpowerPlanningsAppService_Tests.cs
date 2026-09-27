@@ -35,7 +35,8 @@ public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppSe
             TEntity entity,
             string requestType,
             string requestNumberPrefix,
-            int? subTypeId = null)
+            int? subTypeId = null,
+            bool recordDirectly = false)
             where TEntity : class, IEntity<int>, IHasEmployeeId, IWorkflowEnabledEntity
         {
             entity.WorkflowStatus = null;
@@ -53,7 +54,8 @@ public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppSe
             string requestType,
             string requestNumberPrefix,
             int subjectEmployeeId,
-            int? subTypeId = null)
+            int? subTypeId = null,
+            bool recordDirectly = false)
             where TEntity : class, IEntity<int>, IWorkflowEnabledEntity
         {
             entity.WorkflowStatus = null;

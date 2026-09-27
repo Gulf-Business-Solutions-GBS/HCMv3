@@ -75,7 +75,8 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
                 SubTypeSource = entity.SubTypeSource,
                 IconClass = entity.IconClass,
                 DisplayOrder = entity.DisplayOrder,
-                IsActive = entity.IsActive
+                IsActive = entity.IsActive,
+                AllowDirectEntry = entity.AllowDirectEntry
             }
         };
     }
@@ -187,6 +188,7 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
         entity.IconClass = input.IconClass;
         entity.DisplayOrder = input.DisplayOrder;
         entity.IsActive = input.IsActive;
+        entity.AllowDirectEntry = input.AllowDirectEntry;
     }
 
     private static WorkflowTransactionTypeDto ToDto(WorkflowTransactionType entity)
@@ -207,7 +209,8 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
             SubTypeSource = entity.SubTypeSource,
             IconClass = entity.IconClass,
             DisplayOrder = entity.DisplayOrder,
-            IsActive = entity.IsActive
+            IsActive = entity.IsActive,
+            AllowDirectEntry = entity.AllowDirectEntry
         };
     }
 }

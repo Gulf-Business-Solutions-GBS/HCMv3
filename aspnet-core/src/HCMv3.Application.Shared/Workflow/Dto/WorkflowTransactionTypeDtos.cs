@@ -36,6 +36,12 @@ public class WorkflowTransactionTypeDto : EntityDto<int>
     public int DisplayOrder { get; set; }
 
     public bool IsActive { get; set; }
+
+    /// <summary>
+    /// Whether somebody with the <c>RecordWithoutApproval</c> permission may record this type for an
+    /// employee as final instead of routing it. Off by default; see the entity for why both gates exist.
+    /// </summary>
+    public bool AllowDirectEntry { get; set; }
 }
 
 public class CreateOrEditWorkflowTransactionTypeDto
@@ -79,6 +85,12 @@ public class CreateOrEditWorkflowTransactionTypeDto
     public int DisplayOrder { get; set; }
 
     public bool IsActive { get; set; } = true;
+
+    /// <summary>
+    /// Whether somebody with the <c>RecordWithoutApproval</c> permission may record this type for an
+    /// employee as final instead of routing it. Off by default; see the entity for why both gates exist.
+    /// </summary>
+    public bool AllowDirectEntry { get; set; }
 }
 
 public class GetWorkflowTransactionTypeForEditOutput

@@ -7062,5 +7062,12 @@
     <text name="StepsReordered">Steps renumbered.</text>
     <text name="AChainCanHaveOnlyOneCreatorStep">A chain can have only one creator step. A step with no approver is the requester's own, so a second one would stall every request that reached it.</text>
     <text name="SaveStepOrder">Save Step Order</text>
+    <text name="RecordWithoutApproval">Record without approval</text>
+    <text name="ThisTransactionTypeCannotBeRecordedWithoutApproval">This transaction type must go for approval. Recording it directly is not permitted for this type.</text>
+    <text name="YouAreNotPermittedToRecordWithoutApproval">You are not permitted to record this without approval.</text>
+    <text name="AllowDirectEntry">HR entry may skip approval</text>
+    <text name="AllowDirectEntryHint">When on, a user holding the "Record without approval" permission may record this transaction for an employee as final, instead of sending it for approval. Every such record is logged with who did it.</text>
+    <text name="RequestActionTypeRecordedDirectly">Recorded without approval</text>
+    <text name="RecordDirectlyNoApproval">Record directly — no approval</text>
   </texts>
 </localizationDictionary>

@@ -92,4 +92,22 @@ public class WorkflowTransactionType : FullAuditedEntity, IMustHaveTenant
 
     /// <summary>Retires a type without deleting it, preserving the history of requests already raised against it.</summary>
     public virtual bool IsActive { get; set; }
+
+    /// <summary>
+    /// Whether somebody recording this transaction on an employee's behalf may skip approval.
+    ///
+    /// <para>
+    /// Two switches guard a bypass and this is the first: the type must permit it at all. Some transactions
+    /// should never skip however senior the person typing -- anything that moves money -- and that is a
+    /// property of the transaction, not of the user, so it belongs here. The second switch is the
+    /// <c>RecordWithoutApproval</c> permission, which says who may. Both must be true before the choice is
+    /// even offered, and the choice itself is explicit per record.
+    /// </para>
+    ///
+    /// <para>
+    /// Default false. Turning it on is a deliberate act, and until it is on a workflow-enabled type routes
+    /// no matter who is entering it -- which is the behaviour the routing rule exists to give.
+    /// </para>
+    /// </summary>
+    public virtual bool AllowDirectEntry { get; set; }
 }

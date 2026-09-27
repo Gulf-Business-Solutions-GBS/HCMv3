@@ -1814,6 +1814,17 @@ public static class AppPermissions
     public const string Pages_Workflow_WorkflowTransactionTypes_Edit = "Pages.Workflow.WorkflowTransactionTypes.Edit";
     public const string Pages_Workflow_WorkflowTransactionTypes_Delete = "Pages.Workflow.WorkflowTransactionTypes.Delete";
 
+    /// <summary>
+    /// May record a transaction on an employee's behalf without sending it for approval.
+    ///
+    /// <para>
+    /// Deliberately not a child of any one screen: it qualifies HOW somebody may use the screens they
+    /// already have, rather than granting access to a new one. Granting it offers the choice; it never
+    /// takes it automatically, and only on types whose catalog row permits a bypass at all.
+    /// </para>
+    /// </summary>
+    public const string Pages_Workflow_RecordWithoutApproval = "Pages.Workflow.RecordWithoutApproval";
+
     #region Business Rules
 
     // The rule engine is administrative configuration, not a data screen: a rule authored here runs inside
@@ -2451,6 +2462,7 @@ public static class AppPermissions
     public const string Pages_Administration_Host_Settings = "Pages.Administration.Host.Settings";
     public const string Pages_Administration_Host_Dashboard = "Pages.Administration.Host.Dashboard";
     public const string Pages_Administration_Host_HealthCheck = "Pages.Administration.Host.HealthCheck";
+    public const string Pages_Administration_Host_TenantSetupCheck = "Pages.Administration.Host.TenantSetupCheck";
 
     public const string Pages_TrainingManagement_TrainingCourses = "Pages.TrainingManagement.TrainingCourses";
     public const string Pages_TrainingManagement_TrainingCourses_Create = "Pages.TrainingManagement.TrainingCourses.Create";
