@@ -10,6 +10,8 @@ using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HCMv3.Workflow.Services;
+using HCMv3.PersonnelAdministration.Workflow;
 
 namespace HCMv3.PersonnelAdministration;
 
@@ -22,12 +24,15 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDocumentMvmtsAppService
 {
     private readonly IRepository<EmployeeDocumentMvmt> _repository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly IRepository<EmployeeDocument> _documentRepository;
 
     public EmployeeDocumentMvmtsAppService(
         IRepository<EmployeeDocumentMvmt> repository,
-        IRepository<EmployeeDocument> documentRepository)
+        IRepository<EmployeeDocument> documentRepository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
+        _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _documentRepository = documentRepository;
     }
@@ -110,7 +115,16 @@ public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDoc
         entity.EmployeeId = await GetDocumentOwnerIdAsync(input.EmployeeDocumentId);
 
         ValidateDates(entity);
-        await _repository.InsertAsync(entity);
+        // Routed for approval when the catalog says so, and simply filed when it does not -- the same
+        // question the self-service form asks, so the answer no longer depends on which screen was used.
+        // recordDirectly is refused unless the type permits a bypass AND the user holds the permission.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            PassportWithdrawalWorkflowTransactionHandler.PassportWithdrawalRequestType,
+            "PPW",
+            null,
+            input.RecordDirectly);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDocumentMvmts_Edit)]

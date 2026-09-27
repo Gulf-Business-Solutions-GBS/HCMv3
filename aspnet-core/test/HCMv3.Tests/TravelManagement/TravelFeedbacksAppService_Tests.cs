@@ -12,7 +12,11 @@ public class TravelFeedbacksAppService_Tests : TravelManagementAppServiceTestBas
 {
     private TravelFeedbacksAppService CreateAppService()
     {
-        return CreateService(() => new TravelFeedbacksAppService(FakeRepository.For<TravelFeedback>(Context)));
+        // The fake submitter inserts the row and leaves WorkflowStatus null, which is exactly what the real
+        // one does when the type is not workflow-enabled -- and this context has no catalog to route to.
+        return CreateService(() => new TravelFeedbacksAppService(
+            FakeRepository.For<TravelFeedback>(Context),
+            new HCMv3.Tests.PerformanceManagement.FakeAdminTransactionSubmitter()));
     }
 
     [Fact]

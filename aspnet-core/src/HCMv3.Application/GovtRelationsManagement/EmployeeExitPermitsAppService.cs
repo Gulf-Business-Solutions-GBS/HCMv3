@@ -11,6 +11,8 @@ using HCMv3.Authorization;
 using HCMv3.GovtRelationsManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HCMv3.Workflow.Services;
+using HCMv3.GovtRelationsManagement.Workflow;
 
 namespace HCMv3.GovtRelationsManagement;
 
@@ -28,9 +30,12 @@ namespace HCMv3.GovtRelationsManagement;
 public class EmployeeExitPermitsAppService : HCMv3AppServiceBase, IEmployeeExitPermitsAppService
 {
     private readonly IRepository<EmployeeExitPermit> _repository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
-    public EmployeeExitPermitsAppService(IRepository<EmployeeExitPermit> repository)
+    public EmployeeExitPermitsAppService(IRepository<EmployeeExitPermit> repository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
+        _transactionSubmitter = transactionSubmitter;
         _repository = repository;
     }
 
@@ -113,7 +118,16 @@ public class EmployeeExitPermitsAppService : HCMv3AppServiceBase, IEmployeeExitP
 
         Validate(entity);
 
-        await _repository.InsertAsync(entity);
+        // Routed for approval when the catalog says so, and simply filed when it does not -- the same
+        // question the self-service form asks, so the answer no longer depends on which screen was used.
+        // recordDirectly is refused unless the type permits a bypass AND the user holds the permission.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            ExitPermitWorkflowTransactionHandler.ExitPermitRequestType,
+            "EXP",
+            null,
+            input.RecordDirectly);
     }
 
     [AbpAuthorize(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits_Edit)]

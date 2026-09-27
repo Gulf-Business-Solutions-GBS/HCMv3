@@ -57,6 +57,17 @@ public class CreateOrEditEmployeeBankDto
     public string BankBranch { get; set; }
 
     public int? PayerBankId { get; set; }
+
+    /// <summary>
+    /// Record this as final instead of sending it for approval.
+    ///
+    /// <para>
+    /// Offered only to a user holding <c>RecordWithoutApproval</c>, and only on a type whose catalog row
+    /// permits a bypass. The server checks both and refuses otherwise, so this being true is a request
+    /// rather than a decision.
+    /// </para>
+    /// </summary>
+    public bool RecordDirectly { get; set; }
 }
 
 public class GetEmployeeBankForEditOutput

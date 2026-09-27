@@ -11,6 +11,8 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HCMv3.Workflow.Services;
+using HCMv3.PersonnelAdministration.Workflow;
 
 namespace HCMv3.PersonnelAdministration;
 
@@ -24,9 +26,12 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeeBanksAppService : HCMv3AppServiceBase, IEmployeeBanksAppService
 {
     private readonly IRepository<EmployeeBank> _repository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
-    public EmployeeBanksAppService(IRepository<EmployeeBank> repository)
+    public EmployeeBanksAppService(IRepository<EmployeeBank> repository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
+        _transactionSubmitter = transactionSubmitter;
         _repository = repository;
     }
 
@@ -96,7 +101,16 @@ public class EmployeeBanksAppService : HCMv3AppServiceBase, IEmployeeBanksAppSer
         entity.TenantId = AbpSession.TenantId ?? 0;
 
         await ValidateEntityAsync(entity);
-        await _repository.InsertAsync(entity);
+        // Routed for approval when the catalog says so, and simply filed when it does not -- the same
+        // question the self-service form asks, so the answer no longer depends on which screen was used.
+        // recordDirectly is refused unless the type permits a bypass AND the user holds the permission.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            BankWorkflowTransactionHandler.BankRequestType,
+            "BANK",
+            null,
+            input.RecordDirectly);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeBanks_Edit)]

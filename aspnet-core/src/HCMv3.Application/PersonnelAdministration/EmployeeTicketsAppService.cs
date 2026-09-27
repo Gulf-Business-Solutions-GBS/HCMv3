@@ -9,6 +9,8 @@ using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HCMv3.Workflow.Services;
+using HCMv3.PersonnelAdministration.Workflow;
 
 namespace HCMv3.PersonnelAdministration;
 
@@ -21,9 +23,12 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeeTicketsAppService : HCMv3AppServiceBase, IEmployeeTicketsAppService
 {
     private readonly IRepository<EmployeeTicket> _repository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
-    public EmployeeTicketsAppService(IRepository<EmployeeTicket> repository)
+    public EmployeeTicketsAppService(IRepository<EmployeeTicket> repository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
+        _transactionSubmitter = transactionSubmitter;
         _repository = repository;
     }
 
@@ -81,7 +86,16 @@ public class EmployeeTicketsAppService : HCMv3AppServiceBase, IEmployeeTicketsAp
         var entity = MapToEntity(input, new EmployeeTicket());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
-        await _repository.InsertAsync(entity);
+        // Routed for approval when the catalog says so, and simply filed when it does not -- the same
+        // question the self-service form asks, so the answer no longer depends on which screen was used.
+        // recordDirectly is refused unless the type permits a bypass AND the user holds the permission.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            TicketWorkflowTransactionHandler.TicketRequestType,
+            "TKT",
+            entity.TicketTypeId,
+            input.RecordDirectly);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeTickets_Edit)]
