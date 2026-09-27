@@ -81,6 +81,10 @@ export class MyTravelClaimComponent extends MyRequestComponentBase<MyTravelClaim
             .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
     }
 
+    protected requestType(): string {
+        return 'TravelFeedback';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyTravelClaims');
     }

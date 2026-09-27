@@ -368,6 +368,10 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
         return Math.round((value + Number.EPSILON) * 1000) / 1000;
     }
 
+    protected requestType(): string {
+        return 'Travel';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyTravel');
     }

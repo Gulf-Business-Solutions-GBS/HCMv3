@@ -51,7 +51,7 @@
                         </div>
 
                         <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
-                            {{ 'Save' | localize }}
+                            {{ submitLabel() }}
                         </button>
                         <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
                     </div>

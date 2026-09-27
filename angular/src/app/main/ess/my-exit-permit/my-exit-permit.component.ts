@@ -102,6 +102,10 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
      * switched off for this type has no workflow request, so the dialog has nothing to fetch and these are
      * all it can show.</p>
      */
+    protected requestType(): string {
+        return 'EmployeeExitPermit';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyExitPermits');
     }

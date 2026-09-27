@@ -420,6 +420,10 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
         return String(value);
     }
 
+    protected requestType(): string {
+        return 'EmployeePersonalDataChange';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyProfile');
     }

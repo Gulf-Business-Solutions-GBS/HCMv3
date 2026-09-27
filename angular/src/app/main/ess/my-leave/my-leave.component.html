@@ -93,7 +93,7 @@
                         </div>
 
                         <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitAmendment()">
-                            {{ 'Save' | localize }}
+                            {{ 'Submit' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeAmendForm()">{{ 'Cancel' | localize }}</button>
                     </div>
@@ -161,7 +161,7 @@
                             [disabled]="saving() || !returnForm.rejoiningDate"
                             (click)="submitReturn()"
                         >
-                            {{ 'Save' | localize }}
+                            {{ 'Submit' | localize }}
                         </button>
                         <button class="btn btn-light" (click)="closeReturnForm()">{{ 'Cancel' | localize }}</button>
                     </div>
@@ -254,7 +254,7 @@
                         }
 
                         <button class="btn btn-primary me-2" [disabled]="saving()" (click)="apply()">
-                            {{ 'Save' | localize }}
+                            {{ submitLabel() }}
                         </button>
                         <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
                     </div>

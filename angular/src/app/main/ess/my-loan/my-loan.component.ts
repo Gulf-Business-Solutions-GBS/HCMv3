@@ -116,6 +116,10 @@ export class MyLoanComponent extends MyRequestComponentBase<MyLoanRequestDto> im
         return this.pick(row.loanTypeNameEn, row.loanTypeNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeLoan';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyLoans');
     }

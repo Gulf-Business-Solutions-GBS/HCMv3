@@ -122,6 +122,20 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     readonly Status = RequestStatus;
     readonly ReturnKind = LeaveReturnKind;
 
+
+    /**
+     * Same rule as every other self-service screen, spelled out here because leave predates the shared
+     * base and does not extend it: the button says "Submit" when this genuinely goes to a manager and
+     * "Save" when it does not.
+     *
+     * <p>Defaults to "Save" while the context loads, rather than promising an approver who may not
+     * exist.</p>
+     */
+    submitLabel(): string {
+        const type = this.context()?.availableTransactionTypes?.find((t) => t.code === 'EmployeeAbsence');
+
+        return this.l(type?.isWorkflowEnabled ? 'Submit' : 'Save');
+    }
     ngOnInit(): void {
         this.loadContext();
         this.loadAbsenceTypes();

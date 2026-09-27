@@ -139,6 +139,10 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
         return this.pick(type.nameEn, type.nameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeLetterRequest';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyLetterRequests');
     }

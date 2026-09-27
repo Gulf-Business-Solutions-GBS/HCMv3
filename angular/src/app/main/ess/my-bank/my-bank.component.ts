@@ -102,6 +102,10 @@ export class MyBankComponent extends MyRequestComponentBase<MyBankRequestDto> im
         return this.pick(row.bankNameEn, row.bankNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeBank';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyBank');
     }

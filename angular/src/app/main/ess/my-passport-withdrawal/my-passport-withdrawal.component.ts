@@ -229,6 +229,10 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
         return this.pick(row.guarantorNameEn, row.guarantorNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeDocumentMvmt';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyPassportWithdrawals');
     }

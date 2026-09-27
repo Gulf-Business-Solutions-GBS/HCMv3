@@ -54,6 +54,10 @@ export class MyAssetComponent extends MyRequestComponentBase<MyAssetRequestDto> 
         this.loadContext();
     }
 
+    protected requestType(): string {
+        return 'EmployeeAsset';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyAssets');
     }

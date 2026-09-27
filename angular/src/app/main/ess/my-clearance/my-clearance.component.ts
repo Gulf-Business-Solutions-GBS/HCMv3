@@ -217,6 +217,10 @@ export class MyClearanceComponent extends MyRequestComponentBase<MyClearanceDto>
         return this.pick(type.nameEn, type.nameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeClearance';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyClearances');
     }

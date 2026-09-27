@@ -83,6 +83,41 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     protected abstract detailFields(row: TDto): EssRequestDetailField[];
 
     /**
+     * The catalog <c>Code</c> for this screen's transaction, which is its entity class name --
+     * <c>EmployeeAsset</c>, <c>EmployeeLoan</c> and so on.
+     *
+     * <p>Abstract rather than optional on purpose. It is what lets the screen tell the employee whether
+     * pressing the button sends this to somebody, and a screen that quietly forgot to declare it would go
+     * back to guessing -- which is the bug this exists to remove. Better that it does not compile.</p>
+     */
+    protected abstract requestType(): string;
+
+    /**
+     * True when this type routes for approval in this tenant.
+     *
+     * <p>Read from the ESS context, which already carries the catalog rows behind the home-page tiles, so
+     * no extra request. Defaults to false while the context is still loading: the button then reads
+     * "Save", and a moment later becomes "Submit" if that is what it is. Guessing "Submit" and downgrading
+     * would be the worse way round -- it promises an approver who may not exist.</p>
+     */
+    routesForApproval(): boolean {
+        const type = this.context()?.availableTransactionTypes?.find((t) => t.code === this.requestType());
+
+        return !!type?.isWorkflowEnabled;
+    }
+
+    /**
+     * What the primary button should say.
+     *
+     * <p>"Submit" when this genuinely goes to an approver and "Save" when it does not. The same word for
+     * both is how an employee ends up waiting on a manager who was never asked, or chasing an approval for
+     * something that was already final.</p>
+     */
+    submitLabel(): string {
+        return this.l(this.routesForApproval() ? 'Submit' : 'Save');
+    }
+
+    /**
      * Opens a submitted request read-only: its fields, the requester's comment, the approvers' remarks and
      * the action trail.
      *

@@ -4,13 +4,19 @@ import { AppSessionService } from '@shared/common/session/app-session.service';
 import { Injectable, inject } from '@angular/core';
 import { AppMenu } from './app-menu';
 import { AppMenuItem } from './app-menu-item';
+import { EssMenuCatalogService } from './ess-menu-catalog.service';
 
 @Injectable({ providedIn: 'root' })
 export class AppNavigationService {
     private _permissionCheckerService = inject(PermissionCheckerService);
     private _appSessionService = inject(AppSessionService);
+    private _essMenuCatalog = inject(EssMenuCatalogService);
 
     getMenu(): AppMenu {
+        // Self-service entries are hidden for types this tenant has switched off; the answer arrives
+        // asynchronously and nothing is hidden until it does.
+        this._essMenuCatalog.ensureLoaded();
+
         return new AppMenu('MainMenu', 'MainMenu', [
             new AppMenuItem(
                 'Dashboard',
@@ -68,56 +74,60 @@ export class AppNavigationService {
                 // redundancy the user kept pointing at.
                 new AppMenuItem('Workflow', '', 'flaticon-interface-8', '', [], [
                     new AppMenuItem('General', '', 'flaticon-folder-1', '', [], [
-                        new AppMenuItem('EssMyDocuments', 'Ess.MyDocuments', 'flaticon-file-2', '/app/main/ess/document'),
+                        new AppMenuItem('EssMyDocuments', 'Ess.MyDocuments', 'flaticon-file-2', '/app/main/ess/document').governedBy('EmployeeDocument'),
                         new AppMenuItem(
                             'EssMyPassportWithdrawals',
                             'Ess.MyPassportWithdrawals',
                             'flaticon-suitcase',
                             '/app/main/ess/passport-withdrawal'
-                        ),
-                        new AppMenuItem('EssMyHRServices', 'Ess.MyHRServices', 'flaticon-notepad', '/app/main/ess/hr-service'),
-                        new AppMenuItem('EssMyExitPermits', 'Ess.MyExitPermits', 'flaticon-paper-plane', '/app/main/ess/exit-permit'),
-                        new AppMenuItem('EssMyClearances', 'Ess.MyClearances', 'flaticon-list-3', '/app/main/ess/clearance'),
-                        new AppMenuItem('EssMyLoans', 'Ess.MyLoans', 'flaticon-piggy-bank', '/app/main/ess/loan'),
+                        ).governedBy('EmployeeDocumentMvmt'),
+                        new AppMenuItem('EssMyHRServices', 'Ess.MyHRServices', 'flaticon-notepad', '/app/main/ess/hr-service').governedBy('EmployeeHRService'),
+                        new AppMenuItem('EssMyExitPermits', 'Ess.MyExitPermits', 'flaticon-paper-plane', '/app/main/ess/exit-permit').governedBy('EmployeeExitPermit'),
+                        new AppMenuItem('EssMyClearances', 'Ess.MyClearances', 'flaticon-list-3', '/app/main/ess/clearance').governedBy('EmployeeClearance'),
+                        new AppMenuItem('EssMyLoans', 'Ess.MyLoans', 'flaticon-piggy-bank', '/app/main/ess/loan').governedBy('EmployeeLoan'),
                         new AppMenuItem(
                             'EssMyLoanExemptions',
                             'Ess.MyLoanExemptions',
                             'flaticon-coins',
                             '/app/main/ess/loan-exemption'
-                        ),
-                        new AppMenuItem('EssMyLetterRequests', 'Ess.MyLetterRequests', 'flaticon-mail-1', '/app/main/ess/letter'),
-                        new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket'),
-                        new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset'),
-                        new AppMenuItem('EssMyDelegations', 'Ess.MyDelegations', 'flaticon-user-ok', '/app/main/ess/delegation'),
+                        ).governedBy('EmployeeLoanExemption'),
+                        new AppMenuItem('EssMyLetterRequests', 'Ess.MyLetterRequests', 'flaticon-mail-1', '/app/main/ess/letter').governedBy('EmployeeLetterRequest'),
+                        new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket').governedBy('EmployeeTicket'),
+                        new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset').governedBy('EmployeeAsset'),
+                        new AppMenuItem('EssMyDelegations', 'Ess.MyDelegations', 'flaticon-user-ok', '/app/main/ess/delegation').governedBy('EmployeeDelegation'),
                     ]),
                     new AppMenuItem('Leave', '', 'flaticon-calendar', '', [], [
-                        new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave'),
+                        new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave').governedBy('EmployeeAbsence'),
                     ]),
                     // Directly under Workflow, not inside a group -- as legacy has Skip Punch Request.
-                    new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch'),
+                    new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch').governedBy('TimeEvent'),
                     new AppMenuItem('Travel', '', 'flaticon-airplane', '', [], [
-                        new AppMenuItem('EssMyTravel', 'Ess.MyTravel', 'flaticon-airplane', '/app/main/ess/travel'),
-                        new AppMenuItem('EssMyTravelClaims', 'Ess.MyTravelClaims', 'flaticon-map', '/app/main/ess/travel-claim'),
+                        new AppMenuItem('EssMyTravel', 'Ess.MyTravel', 'flaticon-airplane', '/app/main/ess/travel').governedBy('Travel'),
+                        new AppMenuItem('EssMyTravelClaims', 'Ess.MyTravelClaims', 'flaticon-map', '/app/main/ess/travel-claim').governedBy('TravelFeedback'),
                     ]),
                     new AppMenuItem('Payroll', '', 'flaticon-coins', '', [], [
-                        new AppMenuItem('EssMyBank', 'Ess.MyBank', 'flaticon-coins', '/app/main/ess/bank'),
+                        new AppMenuItem('EssMyBank', 'Ess.MyBank', 'flaticon-coins', '/app/main/ess/bank').governedBy('EmployeeBank'),
                         new AppMenuItem(
                             'EssMyHealthReimburses',
                             'Ess.MyHealthReimburses',
                             'flaticon-medical',
                             '/app/main/ess/health-reimburse'
-                        ),
-                        new AppMenuItem('EssMyAttendance', 'Ess.MyAttendance', 'flaticon-time-3', '/app/main/ess/attendance'),
+                        ).governedBy('EmployeeHealthReimburse'),
+                        new AppMenuItem('EssMyAttendance', 'Ess.MyAttendance', 'flaticon-time-3', '/app/main/ess/attendance').governedBy('EmployeeAttendance'),
                     ]),
                 ]),
 
                 new AppMenuItem('TimeManagement', '', 'flaticon-time-3', '', [], [
                     new AppMenuItem('EssGeoPunch', 'Ess.GeoPunch', 'flaticon-placeholder-3', '/app/main/ess/geo-punch'),
-                    new AppMenuItem('EssMyOvertime', 'Ess.MyOvertime', 'flaticon-time-3', '/app/main/ess/overtime'),
+                    new AppMenuItem('EssMyOvertime', 'Ess.MyOvertime', 'flaticon-time-3', '/app/main/ess/overtime').governedBy('EmployeeOvertime'),
                 ]),
 
                 // No Performance Management group: legacy has Appraisal there, and HCMv3 has no self-service
                 // appraisal screen yet. A group whose only child does not exist renders as an empty arrow.
+
+                // Deliberately NOT governed by the catalog. It opens the employee's own details; the
+                // personal-data-CHANGE transaction being switched off means they cannot request an
+                // amendment, not that they may no longer look at what is on file.
                 new AppMenuItem('EssMyProfile', 'Ess.MyProfile', 'flaticon-user', '/app/main/ess/my-details'),
             ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
@@ -3672,6 +3682,13 @@ export class AppNavigationService {
         }
 
         if (menuItem.permissionName && !this._permissionCheckerService.isGranted(menuItem.permissionName)) {
+            hideMenuItem = true;
+        }
+
+        // A self-service entry whose transaction this tenant has switched off. Hidden rather than left
+        // pointing at a screen that no longer applies -- the tile already disappears, and a menu entry
+        // that survives it reads as a broken link rather than a setting.
+        if (menuItem.transactionType && !this._essMenuCatalog.isEnabled(menuItem.transactionType)) {
             hideMenuItem = true;
         }
 

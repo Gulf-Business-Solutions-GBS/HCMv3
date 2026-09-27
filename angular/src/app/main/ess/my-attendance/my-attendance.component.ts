@@ -102,6 +102,10 @@ export class MyAttendanceComponent extends MyRequestComponentBase<MyAttendanceRe
         return this.pick(row.attendanceTypeNameEn, row.attendanceTypeNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeAttendance';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyAttendance');
     }

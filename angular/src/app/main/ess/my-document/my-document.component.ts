@@ -119,6 +119,10 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         return this.pick(row.documentTypeNameEn, row.documentTypeNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeDocument';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyDocuments');
     }

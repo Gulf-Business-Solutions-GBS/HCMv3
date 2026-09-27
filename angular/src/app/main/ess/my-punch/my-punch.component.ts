@@ -129,6 +129,10 @@ export class MyPunchComponent extends MyRequestComponentBase<MyPunchRequestDto> 
         return this.pick(type.nameEn, type.nameAr);
     }
 
+    protected requestType(): string {
+        return 'TimeEvent';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyPunches');
     }

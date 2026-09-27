@@ -140,6 +140,10 @@ export class MyHealthReimburseComponent extends MyRequestComponentBase<MyHealthR
         return this.pick(balance?.employeeSubGroupNameEn, balance?.employeeSubGroupNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeHealthReimburse';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyHealthReimburses');
     }

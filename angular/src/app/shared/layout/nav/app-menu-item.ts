@@ -44,6 +44,28 @@ export class AppMenuItem {
         }
     }
 
+    /**
+     * The catalog <c>Code</c> of the transaction this entry opens, for the self-service screens.
+     *
+     * <p>Set through <see cref="governedBy"/>. When present, the entry is hidden for a tenant that has
+     * switched that transaction off -- otherwise disabling a type removes its home-page tile but leaves a
+     * menu entry pointing at a screen that no longer applies, which reads as a broken link.</p>
+     *
+     * <p>Undefined on everything else, including the self-service entries that are not transactions at all
+     * (My Requests, the inbox, notifications). Those are always shown.</p>
+     */
+    transactionType?: string;
+
+    /**
+     * Marks this entry as governed by a catalog type, fluently, so the menu definition stays one readable
+     * line per item rather than growing an eleventh positional constructor argument.
+     */
+    governedBy(transactionType: string): AppMenuItem {
+        this.transactionType = transactionType;
+
+        return this;
+    }
+
     hasFeatureDependency(): boolean {
         return this.featureDependency !== undefined;
     }

@@ -139,6 +139,10 @@ export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDt
         return row.delegateToCode ? `${row.delegateToCode} - ${name}` : name;
     }
 
+    protected requestType(): string {
+        return 'EmployeeDelegation';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyDelegations');
     }

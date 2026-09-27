@@ -126,6 +126,10 @@ export class MyHRServiceComponent extends MyRequestComponentBase<MyHRServiceRequ
         return this.pick(lookup.nameEn, lookup.nameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeHRService';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyHRServices');
     }

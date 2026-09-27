@@ -145,6 +145,10 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
         });
     }
 
+    protected requestType(): string {
+        return 'EmployeeLoanExemption';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyLoanExemptions');
     }

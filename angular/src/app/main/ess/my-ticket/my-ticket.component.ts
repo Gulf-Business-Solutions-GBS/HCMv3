@@ -96,6 +96,10 @@ export class MyTicketComponent extends MyRequestComponentBase<MyTicketRequestDto
         return this.pick(row.ticketTypeNameEn, row.ticketTypeNameAr);
     }
 
+    protected requestType(): string {
+        return 'EmployeeTicket';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyTickets');
     }

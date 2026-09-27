@@ -114,6 +114,10 @@ export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeReques
         return row.workflowStatus === RequestStatus.Approved || row.workflowStatus === RequestStatus.Closed;
     }
 
+    protected requestType(): string {
+        return 'EmployeeOvertime';
+    }
+
     protected detailTitle(): string {
         return this.l('EssMyOvertime');
     }
