@@ -107,6 +107,12 @@
                             </div>
                         </form>
                     }
+                    <!-- Shows itself only if this user may bypass approval AND the catalog allows it for
+                         this type; otherwise the form is exactly as it was. -->
+                    <record-directly-check
+                        requestType="EmployeeDocumentMvmt"
+                        [value]="newRecord().recordDirectly"
+                        (valueChange)="updateField('recordDirectly', $event)" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">

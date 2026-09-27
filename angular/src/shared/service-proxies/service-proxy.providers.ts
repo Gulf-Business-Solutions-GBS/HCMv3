@@ -743,6 +743,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.GoLiveSetupServiceProxy,
     ApiServiceProxies.GoLivePayslipsServiceProxy,
     ApiServiceProxies.HelpMetadataServiceProxy,
+    ApiServiceProxies.DirectEntryServiceProxy,
     { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
     { provide: AbpHttpConfigurationService, useClass: ZeroTemplateHttpConfigurationService },
     { provide: HTTP_INTERCEPTORS, useClass: ZeroTemplateHttpInterceptor, multi: true },

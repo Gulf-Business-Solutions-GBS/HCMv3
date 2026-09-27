@@ -17,11 +17,13 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
 
 @Component({
     selector: 'createOrEditEmployeeAttendanceModal',
     templateUrl: './create-or-edit-employee-attendance-modal.component.html',
     imports: [
+        RecordDirectlyCheckComponent,
         DateInputDirective,
         AppBsModalDirective,
         FormsModule,

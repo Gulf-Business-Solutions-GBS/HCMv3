@@ -17,11 +17,13 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
 
 @Component({
     selector: 'createOrEditEmployeeDocumentModal',
     templateUrl: './create-or-edit-employee-document-modal.component.html',
     imports: [
+        RecordDirectlyCheckComponent,
         DateInputDirective,
         AppBsModalDirective,
         FormsModule,

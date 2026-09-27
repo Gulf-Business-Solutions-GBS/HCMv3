@@ -97,6 +97,12 @@
                                 <app-attachments entityType="EmployeeDocument" [entityId]="record().id" />
                             </div>
                         }
+                        <!-- Shows itself only if this user may bypass approval AND the catalog allows it for
+                             this type; otherwise the form is exactly as it was. -->
+                        <record-directly-check
+                            requestType="EmployeeDocument"
+                            [value]="record().recordDirectly"
+                            (valueChange)="updateField('recordDirectly', $event)" />
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

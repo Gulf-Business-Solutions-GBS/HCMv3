@@ -192,6 +192,26 @@
                                     </label>
                                 </div>
 
+                                <!-- Only meaningful while routing is on: with workflow off every entry is
+                                     already direct, so the switch would promise a choice that does not
+                                     exist. Hidden rather than disabled, for the same reason. -->
+                                @if (record().isWorkflowEnabled) {
+                                    <div class="form-check form-switch form-check-custom form-check-solid mb-4">
+                                        <input
+                                            id="WorkflowTransactionType_AllowDirectEntry"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AllowDirectEntry"
+                                            [ngModel]="record().allowDirectEntry"
+                                            (ngModelChange)="updateField('allowDirectEntry', $event)" />
+                                        <label class="form-check-label" for="WorkflowTransactionType_AllowDirectEntry">
+                                            {{ 'AllowDirectEntry' | localize }}
+                                        </label>
+                                    </div>
+
+                                    <div class="form-text mb-4">{{ 'AllowDirectEntryHint' | localize }}</div>
+                                }
+
                                 <div class="form-check form-switch form-check-custom form-check-solid mb-4">
                                     <input
                                         id="WorkflowTransactionType_IsEssEnabled"

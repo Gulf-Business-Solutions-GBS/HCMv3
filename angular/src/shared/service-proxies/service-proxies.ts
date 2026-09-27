@@ -23506,6 +23506,76 @@ export class DependantTypesServiceProxy {
 }
 
 @Injectable()
+export class DirectEntryServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getDirectEntryRequestTypes(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/DirectEntry/GetDirectEntryRequestTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDirectEntryRequestTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDirectEntryRequestTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetDirectEntryRequestTypes(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class DisciplinaryDeductionTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -178824,6 +178894,7 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
     paidEndDate!: DateTime | undefined;
     unpaidStartDate!: DateTime | undefined;
     unpaidEndDate!: DateTime | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeAbsenceDto) {
         if (data) {
@@ -178858,6 +178929,7 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
             this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
             this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
             this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -178892,6 +178964,7 @@ export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbse
         data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
         data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
         data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -178919,6 +178992,7 @@ export interface ICreateOrEditEmployeeAbsenceDto {
     paidEndDate: DateTime | undefined;
     unpaidStartDate: DateTime | undefined;
     unpaidEndDate: DateTime | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeAbsenceQuotaDto implements ICreateOrEditEmployeeAbsenceQuotaDto {
@@ -179233,6 +179307,7 @@ export class CreateOrEditEmployeeAssetDto implements ICreateOrEditEmployeeAssetD
     endDate!: DateTime;
     assetDeductionMode!: AssetDeductionMode;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeAssetDto) {
         if (data) {
@@ -179252,6 +179327,7 @@ export class CreateOrEditEmployeeAssetDto implements ICreateOrEditEmployeeAssetD
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
             this.assetDeductionMode = _data["assetDeductionMode"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -179271,6 +179347,7 @@ export class CreateOrEditEmployeeAssetDto implements ICreateOrEditEmployeeAssetD
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
         data["assetDeductionMode"] = this.assetDeductionMode;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -179283,6 +179360,7 @@ export interface ICreateOrEditEmployeeAssetDto {
     endDate: DateTime;
     assetDeductionMode: AssetDeductionMode;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeAssetInvoiceDto implements ICreateOrEditEmployeeAssetInvoiceDto {
@@ -179428,6 +179506,7 @@ export class CreateOrEditEmployeeAttendanceDto implements ICreateOrEditEmployeeA
     endTime!: DateTime;
     attendanceHours!: number;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeAttendanceDto) {
         if (data) {
@@ -179450,6 +179529,7 @@ export class CreateOrEditEmployeeAttendanceDto implements ICreateOrEditEmployeeA
             this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : undefined as any;
             this.attendanceHours = _data["attendanceHours"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -179472,6 +179552,7 @@ export class CreateOrEditEmployeeAttendanceDto implements ICreateOrEditEmployeeA
         data["endTime"] = this.endTime ? this.endTime.toString() : undefined as any;
         data["attendanceHours"] = this.attendanceHours;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -179487,6 +179568,7 @@ export interface ICreateOrEditEmployeeAttendanceDto {
     endTime: DateTime;
     attendanceHours: number;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeAttendanceQuotaDto implements ICreateOrEditEmployeeAttendanceQuotaDto {
@@ -179566,6 +179648,7 @@ export class CreateOrEditEmployeeBankDto implements ICreateOrEditEmployeeBankDto
     iban!: string | undefined;
     bankBranch!: string | undefined;
     payerBankId!: number | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeBankDto) {
         if (data) {
@@ -179590,6 +179673,7 @@ export class CreateOrEditEmployeeBankDto implements ICreateOrEditEmployeeBankDto
             this.iban = _data["iban"];
             this.bankBranch = _data["bankBranch"];
             this.payerBankId = _data["payerBankId"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -179614,6 +179698,7 @@ export class CreateOrEditEmployeeBankDto implements ICreateOrEditEmployeeBankDto
         data["iban"] = this.iban;
         data["bankBranch"] = this.bankBranch;
         data["payerBankId"] = this.payerBankId;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -179631,6 +179716,7 @@ export interface ICreateOrEditEmployeeBankDto {
     iban: string | undefined;
     bankBranch: string | undefined;
     payerBankId: number | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeBasicPayDetailDto implements ICreateOrEditEmployeeBasicPayDetailDto {
@@ -180334,6 +180420,7 @@ export class CreateOrEditEmployeeDocumentDto implements ICreateOrEditEmployeeDoc
     expiryDate!: DateTime | undefined;
     comments!: string | undefined;
     description!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeDocumentDto) {
         if (data) {
@@ -180354,6 +180441,7 @@ export class CreateOrEditEmployeeDocumentDto implements ICreateOrEditEmployeeDoc
             this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
             this.comments = _data["comments"];
             this.description = _data["description"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -180374,6 +180462,7 @@ export class CreateOrEditEmployeeDocumentDto implements ICreateOrEditEmployeeDoc
         data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
         data["comments"] = this.comments;
         data["description"] = this.description;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -180387,6 +180476,7 @@ export interface ICreateOrEditEmployeeDocumentDto {
     expiryDate: DateTime | undefined;
     comments: string | undefined;
     description: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeDocumentMvmtDto implements ICreateOrEditEmployeeDocumentMvmtDto {
@@ -180398,6 +180488,7 @@ export class CreateOrEditEmployeeDocumentMvmtDto implements ICreateOrEditEmploye
     guarantorId!: number | undefined;
     withdrawalReason!: string | undefined;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeDocumentMvmtDto) {
         if (data) {
@@ -180418,6 +180509,7 @@ export class CreateOrEditEmployeeDocumentMvmtDto implements ICreateOrEditEmploye
             this.guarantorId = _data["guarantorId"];
             this.withdrawalReason = _data["withdrawalReason"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -180438,6 +180530,7 @@ export class CreateOrEditEmployeeDocumentMvmtDto implements ICreateOrEditEmploye
         data["guarantorId"] = this.guarantorId;
         data["withdrawalReason"] = this.withdrawalReason;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -180451,6 +180544,7 @@ export interface ICreateOrEditEmployeeDocumentMvmtDto {
     guarantorId: number | undefined;
     withdrawalReason: string | undefined;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeDottedLineManagerDto implements ICreateOrEditEmployeeDottedLineManagerDto {
@@ -180969,6 +181063,7 @@ export class CreateOrEditEmployeeExitPermitDto implements ICreateOrEditEmployeeE
     exitDate!: DateTime;
     startDate!: DateTime;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeExitPermitDto) {
         if (data) {
@@ -180988,6 +181083,7 @@ export class CreateOrEditEmployeeExitPermitDto implements ICreateOrEditEmployeeE
             this.exitDate = _data["exitDate"] ? DateTime.fromISO(_data["exitDate"].toString()) : undefined as any;
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -181007,6 +181103,7 @@ export class CreateOrEditEmployeeExitPermitDto implements ICreateOrEditEmployeeE
         data["exitDate"] = this.exitDate ? this.exitDate.toString() : undefined as any;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -181019,6 +181116,7 @@ export interface ICreateOrEditEmployeeExitPermitDto {
     exitDate: DateTime;
     startDate: DateTime;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeExtdWorkLocationDto implements ICreateOrEditEmployeeExtdWorkLocationDto {
@@ -181576,6 +181674,7 @@ export class CreateOrEditEmployeeHRServiceDto implements ICreateOrEditEmployeeHR
     serviceDate!: DateTime;
     amount!: number;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeHRServiceDto) {
         if (data) {
@@ -181594,6 +181693,7 @@ export class CreateOrEditEmployeeHRServiceDto implements ICreateOrEditEmployeeHR
             this.serviceDate = _data["serviceDate"] ? DateTime.fromISO(_data["serviceDate"].toString()) : undefined as any;
             this.amount = _data["amount"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -181612,6 +181712,7 @@ export class CreateOrEditEmployeeHRServiceDto implements ICreateOrEditEmployeeHR
         data["serviceDate"] = this.serviceDate ? this.serviceDate.toString() : undefined as any;
         data["amount"] = this.amount;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -181623,6 +181724,7 @@ export interface ICreateOrEditEmployeeHRServiceDto {
     serviceDate: DateTime;
     amount: number;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeHealthReimburseDto implements ICreateOrEditEmployeeHealthReimburseDto {
@@ -181885,6 +181987,7 @@ export class CreateOrEditEmployeeLetterRequestDto implements ICreateOrEditEmploy
     addressToEn!: string;
     addressToAr!: string;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeLetterRequestDto) {
         if (data) {
@@ -181904,6 +182007,7 @@ export class CreateOrEditEmployeeLetterRequestDto implements ICreateOrEditEmploy
             this.addressToEn = _data["addressToEn"];
             this.addressToAr = _data["addressToAr"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -181923,6 +182027,7 @@ export class CreateOrEditEmployeeLetterRequestDto implements ICreateOrEditEmploy
         data["addressToEn"] = this.addressToEn;
         data["addressToAr"] = this.addressToAr;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -181935,6 +182040,7 @@ export interface ICreateOrEditEmployeeLetterRequestDto {
     addressToEn: string;
     addressToAr: string;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeLoanDto implements ICreateOrEditEmployeeLoanDto {
@@ -181950,6 +182056,7 @@ export class CreateOrEditEmployeeLoanDto implements ICreateOrEditEmployeeLoanDto
     comments!: string | undefined;
     recoverFracInLastTrans!: boolean;
     includeInLoanPay!: boolean;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeLoanDto) {
         if (data) {
@@ -181974,6 +182081,7 @@ export class CreateOrEditEmployeeLoanDto implements ICreateOrEditEmployeeLoanDto
             this.comments = _data["comments"];
             this.recoverFracInLastTrans = _data["recoverFracInLastTrans"];
             this.includeInLoanPay = _data["includeInLoanPay"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -181998,6 +182106,7 @@ export class CreateOrEditEmployeeLoanDto implements ICreateOrEditEmployeeLoanDto
         data["comments"] = this.comments;
         data["recoverFracInLastTrans"] = this.recoverFracInLastTrans;
         data["includeInLoanPay"] = this.includeInLoanPay;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -182015,6 +182124,7 @@ export interface ICreateOrEditEmployeeLoanDto {
     comments: string | undefined;
     recoverFracInLastTrans: boolean;
     includeInLoanPay: boolean;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeLoanExemptionDto implements ICreateOrEditEmployeeLoanExemptionDto {
@@ -182418,6 +182528,7 @@ export class CreateOrEditEmployeeOvertimeDto implements ICreateOrEditEmployeeOve
     actualOvertimeHours!: number;
     approvedOvertimeHours!: number;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeOvertimeDto) {
         if (data) {
@@ -182438,6 +182549,7 @@ export class CreateOrEditEmployeeOvertimeDto implements ICreateOrEditEmployeeOve
             this.actualOvertimeHours = _data["actualOvertimeHours"];
             this.approvedOvertimeHours = _data["approvedOvertimeHours"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -182458,6 +182570,7 @@ export class CreateOrEditEmployeeOvertimeDto implements ICreateOrEditEmployeeOve
         data["actualOvertimeHours"] = this.actualOvertimeHours;
         data["approvedOvertimeHours"] = this.approvedOvertimeHours;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -182471,6 +182584,7 @@ export interface ICreateOrEditEmployeeOvertimeDto {
     actualOvertimeHours: number;
     approvedOvertimeHours: number;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeePaymentBatchDetailDto implements ICreateOrEditEmployeePaymentBatchDetailDto {
@@ -184605,6 +184719,7 @@ export class CreateOrEditEmployeeTicketDto implements ICreateOrEditEmployeeTicke
     advancedTicketPaid!: number;
     comments!: string | undefined;
     overrideAmount!: boolean;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeTicketDto) {
         if (data) {
@@ -184628,6 +184743,7 @@ export class CreateOrEditEmployeeTicketDto implements ICreateOrEditEmployeeTicke
             this.advancedTicketPaid = _data["advancedTicketPaid"];
             this.comments = _data["comments"];
             this.overrideAmount = _data["overrideAmount"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -184651,6 +184767,7 @@ export class CreateOrEditEmployeeTicketDto implements ICreateOrEditEmployeeTicke
         data["advancedTicketPaid"] = this.advancedTicketPaid;
         data["comments"] = this.comments;
         data["overrideAmount"] = this.overrideAmount;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -184667,6 +184784,7 @@ export interface ICreateOrEditEmployeeTicketDto {
     advancedTicketPaid: number;
     comments: string | undefined;
     overrideAmount: boolean;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditEmployeeTicketQuotaDto implements ICreateOrEditEmployeeTicketQuotaDto {
@@ -197004,6 +197122,7 @@ export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbac
     claimDate!: DateTime;
     claimAmount!: number;
     comments!: string | undefined;
+    recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditTravelFeedbackDto) {
         if (data) {
@@ -197022,6 +197141,7 @@ export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbac
             this.claimDate = _data["claimDate"] ? DateTime.fromISO(_data["claimDate"].toString()) : undefined as any;
             this.claimAmount = _data["claimAmount"];
             this.comments = _data["comments"];
+            this.recordDirectly = _data["recordDirectly"];
         }
     }
 
@@ -197040,6 +197160,7 @@ export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbac
         data["claimDate"] = this.claimDate ? this.claimDate.toString() : undefined as any;
         data["claimAmount"] = this.claimAmount;
         data["comments"] = this.comments;
+        data["recordDirectly"] = this.recordDirectly;
         return data;
     }
 }
@@ -197051,6 +197172,7 @@ export interface ICreateOrEditTravelFeedbackDto {
     claimDate: DateTime;
     claimAmount: number;
     comments: string | undefined;
+    recordDirectly: boolean;
 }
 
 export class CreateOrEditTravelPerDiemDto implements ICreateOrEditTravelPerDiemDto {
@@ -198315,6 +198437,7 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
     iconClass!: string | undefined;
     displayOrder!: number;
     isActive!: boolean;
+    allowDirectEntry!: boolean;
 
     constructor(data?: ICreateOrEditWorkflowTransactionTypeDto) {
         if (data) {
@@ -198340,6 +198463,7 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
             this.iconClass = _data["iconClass"];
             this.displayOrder = _data["displayOrder"];
             this.isActive = _data["isActive"];
+            this.allowDirectEntry = _data["allowDirectEntry"];
         }
     }
 
@@ -198365,6 +198489,7 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
         data["iconClass"] = this.iconClass;
         data["displayOrder"] = this.displayOrder;
         data["isActive"] = this.isActive;
+        data["allowDirectEntry"] = this.allowDirectEntry;
         return data;
     }
 }
@@ -198383,6 +198508,7 @@ export interface ICreateOrEditWorkflowTransactionTypeDto {
     iconClass: string | undefined;
     displayOrder: number;
     isActive: boolean;
+    allowDirectEntry: boolean;
 }
 
 export class CreateOrEditYearlyTimeRegisterDetailDto implements ICreateOrEditYearlyTimeRegisterDetailDto {
@@ -323102,6 +323228,7 @@ export enum RequestActionType {
     Assigned = 8,
     Transferred = 9,
     SentBackToCreator = 10,
+    RecordedDirectly = 11,
 }
 
 export class RequestAssetInput implements IRequestAssetInput {
@@ -344056,6 +344183,7 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
     iconClass!: string | undefined;
     displayOrder!: number;
     isActive!: boolean;
+    allowDirectEntry!: boolean;
 
     constructor(data?: IWorkflowTransactionTypeDto) {
         if (data) {
@@ -344083,6 +344211,7 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
             this.iconClass = _data["iconClass"];
             this.displayOrder = _data["displayOrder"];
             this.isActive = _data["isActive"];
+            this.allowDirectEntry = _data["allowDirectEntry"];
         }
     }
 
@@ -344110,6 +344239,7 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
         data["iconClass"] = this.iconClass;
         data["displayOrder"] = this.displayOrder;
         data["isActive"] = this.isActive;
+        data["allowDirectEntry"] = this.allowDirectEntry;
         return data;
     }
 }
@@ -344130,6 +344260,7 @@ export interface IWorkflowTransactionTypeDto {
     iconClass: string | undefined;
     displayOrder: number;
     isActive: boolean;
+    allowDirectEntry: boolean;
 }
 
 export class WsFederationExternalLoginProviderSettings implements IWsFederationExternalLoginProviderSettings {

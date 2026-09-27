@@ -24,11 +24,13 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
 
 @Component({
     selector: 'createOrEditEmployeeBankModal',
     templateUrl: './create-or-edit-employee-bank-modal.component.html',
     imports: [
+        RecordDirectlyCheckComponent,
         DateInputDirective,
         AppBsModalDirective,
         FormsModule,

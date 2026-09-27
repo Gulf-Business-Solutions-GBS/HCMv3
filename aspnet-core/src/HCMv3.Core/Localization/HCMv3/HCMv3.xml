@@ -7068,6 +7068,8 @@
     <text name="AllowDirectEntry">HR entry may skip approval</text>
     <text name="AllowDirectEntryHint">When on, a user holding the "Record without approval" permission may record this transaction for an employee as final, instead of sending it for approval. Every such record is logged with who did it.</text>
     <text name="RequestActionTypeRecordedDirectly">Recorded without approval</text>
+    <text name="RecordDirectly">Record without approval</text>
+    <text name="RecordDirectlyHint">Saves this as final immediately instead of sending it for approval. Your name is recorded against it.</text>
     <text name="RecordDirectlyNoApproval">Record directly — no approval</text>
   </texts>
 </localizationDictionary>

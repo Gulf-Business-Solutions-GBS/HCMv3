@@ -16,11 +16,13 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
 
 @Component({
     selector: 'employee-document-movements-modal',
     templateUrl: './employee-document-movements-modal.component.html',
     imports: [
+        RecordDirectlyCheckComponent,
         DateInputDirective,
         AppBsModalDirective,
         FormsModule,

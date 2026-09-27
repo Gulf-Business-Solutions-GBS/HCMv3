@@ -74,6 +74,7 @@
                                     <th style="min-width: 110px">{{ 'Active' | localize }}</th>
                                     <th style="min-width: 130px">{{ 'WorkflowEnabled' | localize }}</th>
                                     <th style="min-width: 130px">{{ 'EssEnabled' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'AllowDirectEntry' | localize }}</th>
                                     <th style="min-width: 200px">{{ 'DefaultRequestMaster' | localize }}</th>
                                 </tr>
                             </ng-template>
@@ -114,6 +115,19 @@
                                         <span class="badge" [class.badge-light-success]="record.isEssEnabled" [class.badge-light-secondary]="!record.isEssEnabled">
                                             {{ (record.isEssEnabled ? 'Yes' : 'No') | localize }}
                                         </span>
+                                    </td>
+                                    <td style="min-width: 140px">
+                                        <!-- Blank when routing is off: the flag is stored either way, but it
+                                             only decides anything while there is a chain to bypass, and a
+                                             "No" here would read as a restriction that is not in force. -->
+                                        @if (record.isWorkflowEnabled) {
+                                            <span
+                                                class="badge"
+                                                [class.badge-light-warning]="record.allowDirectEntry"
+                                                [class.badge-light-secondary]="!record.allowDirectEntry">
+                                                {{ (record.allowDirectEntry ? 'Yes' : 'No') | localize }}
+                                            </span>
+                                        }
                                     </td>
 
                                     <!-- A type enabled with no chain cannot be routed, and the submit fails

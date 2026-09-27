@@ -33,6 +33,32 @@ including Absences and Assets, do not.
 
 ---
 
+## Built since this was written (point 7)
+
+Point 7's recommendation is now in the product, in the shape the table proposed rather than a workbench.
+
+- **`AllowDirectEntry` on the catalog row**, off for every type, shown on the Transaction Types form only
+  while routing is on -- with routing off a transaction is already immediate, so a "skip approval" switch
+  there would offer a choice that does not exist.
+- **`Pages.Workflow.RecordWithoutApproval`**, held by nobody until granted.
+- **An unticked choice on the form**, one shared component rather than the same block pasted into every
+  dialog. It shows itself only when the user holds the permission *and* the catalog allows it for that type
+  -- the same two conditions the server enforces, so a form never offers a choice the save would refuse.
+- **A log line on every bypass**, `RecordedDirectly`, its own action type rather than Approved, because
+  nobody approved it. The row is Closed, and carries **no request number**: the counter numbers requests,
+  and a record nobody has to answer is not one.
+
+Both gates live in `AdminTransactionSubmitter`, not in a screen, so they hold for every caller including
+ones written later. Asking for a bypass that is not allowed is an error rather than a quiet fall back to
+routing -- a caller that asked and silently did not would leave HR believing a record was effective when it
+was sitting in an inbox.
+
+**Reachable from ten of the thirteen wired screens.** Exit permits, HR services and letter requests have
+no admin form at all -- they exist only in self-service -- so their server side accepts the flag and
+nothing sends it. That is a screen to build, not a gap in the mechanism.
+
+---
+
 ## What has to be decided
 
 Everything else follows from these two.

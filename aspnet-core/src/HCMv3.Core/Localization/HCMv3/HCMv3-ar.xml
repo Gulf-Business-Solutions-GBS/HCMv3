@@ -6906,6 +6906,8 @@
     <text name="AllowDirectEntry">يجوز للموارد البشرية التسجيل بدون اعتماد</text>
     <text name="AllowDirectEntryHint">عند التفعيل، يستطيع المستخدم الذي يملك صلاحية "التسجيل بدون اعتماد" تسجيل هذه المعاملة للموظف كمعاملة نهائية بدلاً من إرسالها للاعتماد. ويُسجَّل كل إجراء من هذا النوع مع اسم من قام به.</text>
     <text name="RequestActionTypeRecordedDirectly">سُجّلت بدون اعتماد</text>
+    <text name="RecordDirectly">تسجيل بدون اعتماد</text>
+    <text name="RecordDirectlyHint">يحفظ هذه المعاملة كنهائية فوراً بدلاً من إرسالها للاعتماد، ويُسجَّل اسمك عليها.</text>
     <text name="RecordDirectlyNoApproval">تسجيل مباشر — بدون اعتماد</text>
   </texts>
 </localizationDictionary>
