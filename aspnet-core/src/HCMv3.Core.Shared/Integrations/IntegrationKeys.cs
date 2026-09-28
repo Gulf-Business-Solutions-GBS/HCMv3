@@ -23,4 +23,13 @@ public static class IntegrationKeys
 
     /// <summary>Outbound webhooks (ABP webhook subscriptions).</summary>
     public const string Webhooks = "Webhooks";
+
+    /// <summary>
+    /// The access-control (punch machine) SQL Server database: legacy <c>AccessControlConnectionString</c>,
+    /// read by the time-event transfer and the middle-tier dump.
+    /// </summary>
+    public const string AccessControlDb = "AccessControlDb";
+
+    /// <summary>The MySQL attendance database: legacy <c>MySqlConnectionString</c>, read by the hourly import.</summary>
+    public const string MySqlAttendance = "MySqlAttendance";
 }

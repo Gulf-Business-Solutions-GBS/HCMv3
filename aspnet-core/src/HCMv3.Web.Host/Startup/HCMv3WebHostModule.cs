@@ -128,6 +128,11 @@ public class HCMv3WebHostModule : AbpModule
         // tenant unless ManageTimeSettings.EnableTimeAttIntegrationAPI is on.
         workManager.Add(IocManager.Resolve<TimeAttendanceApiSyncBackgroundWorker>());
 
+        // The access-control database transfer, middle-tier dump and MySQL import (legacy Hangfire jobs); each is
+        // a no-op per tenant unless its ManageTimeSettings flag is on and the Integration Center holds the
+        // connection string.
+        workManager.Add(IocManager.Resolve<AccessControlSyncBackgroundWorker>());
+
         // REPORT DISTRIBUTION: fires report schedules whose next occurrence has arrived. Registered
         // unconditionally -- it is a no-op unless a tenant has active schedules that are due, and there
         // is no host-level setting that could be evaluated here instead.

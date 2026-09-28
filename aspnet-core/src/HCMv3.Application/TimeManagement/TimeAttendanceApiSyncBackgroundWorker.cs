@@ -19,9 +19,8 @@ namespace HCMv3.TimeManagement;
 /// 15 minutes and <see cref="ITimeAttendanceIntegrationService.TransferTransactionFromApiAsync"/> returns at once
 /// for a tenant that has the setting off.
 ///
-/// The other two legacy sync jobs (access-control database transfer every <c>TimeEventSyncFreq</c> minutes and the
-/// middle-tier dump every <c>MidTierSyncFreq</c> minutes) read an access-control database whose connection
-/// HCMv3 does not hold anywhere yet, so they stay manual through the admin tools.
+/// The other legacy sync jobs (access-control database transfer, middle-tier dump, MySQL import) run in
+/// <see cref="AccessControlSyncBackgroundWorker"/>.
 /// </summary>
 public class TimeAttendanceApiSyncBackgroundWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {

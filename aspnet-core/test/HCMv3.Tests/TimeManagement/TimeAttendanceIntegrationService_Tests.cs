@@ -77,6 +77,8 @@ public class TimeAttendanceIntegrationService_Tests : AppTestBase
 
     private TimeAttendanceIntegrationService CreateService(HttpMessageHandler handler = null)
     {
+        // Built by hand, so the property the container would inject is set here: the service saves new access
+        // units and punches through the current unit of work.
         return new TimeAttendanceIntegrationService(
             Resolve<IRepository<TimeAttAPI>>(),
             Resolve<IRepository<TimeEvent>>(),
@@ -85,7 +87,10 @@ public class TimeAttendanceIntegrationService_Tests : AppTestBase
             Resolve<IRepository<AccessUnit>>(),
             Resolve<ISysSettingsAccessor>(),
             new FakeHttpClientFactory(handler ?? new RoutingHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.NotFound))),
-            AbpSession);
+            AbpSession)
+        {
+            UnitOfWorkManager = Resolve<IUnitOfWorkManager>()
+        };
     }
 
     private int CreateNationality()
@@ -440,8 +445,15 @@ public class TimeAttendanceIntegrationService_Tests : AppTestBase
     [Fact]
     public async Task TransferTransactionByParamAsync_Should_Return_Zero_When_Integration_Disabled()
     {
-        // No ManageTimeSettings row exists yet (EnableTimeAttendanceIntegration defaults to disabled) -- must
-        // return 0 without ever attempting to open the (fake, unreachable) OleDb connection.
+        // The integration is switched off -- must return 0 without ever attempting to open the (fake,
+        // unreachable) OleDb connection. Set explicitly: a missing settings row is now created from the tenant
+        // config defaults, which may switch the integration on.
+        UsingDbContext(context =>
+        {
+            var settings = context.Set<ManageTimeSettings>().FirstOrDefault()
+                           ?? context.Set<ManageTimeSettings>().Add(new ManageTimeSettings { TenantId = 1 }).Entity;
+            settings.EnableTimeAttendanceIntegration = false;
+        });
         var service = CreateService();
 
         var result = await RunInUnitOfWorkAsync(() => service.TransferTransactionByParamAsync(

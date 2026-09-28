@@ -32,6 +32,9 @@ namespace HCMv3.Administration.Tools;
 [AbpAuthorize(AppPermissions.Pages_Administration_Tools)]
 public class SystemAdminToolsAppService : HCMv3AppServiceBase, ISystemAdminToolsAppService
 {
+    /// <summary>The access-control database connection saved in the Integration Center, if any.</summary>
+    public HCMv3.Integrations.Connectors.AccessControlDbConnector AccessControlDbConnector { get; set; }
+
     private readonly IRepository<Employee> _employeeRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly ITimeAttendanceIntegrationService _timeAttendanceIntegrationService;
@@ -104,7 +107,14 @@ public class SystemAdminToolsAppService : HCMv3AppServiceBase, ISystemAdminTools
     {
         var result = new AdminToolResultDto();
 
-        if (input.AccessControlConnectionString.IsNullOrWhiteSpace())
+        // A connection string typed on the screen wins; otherwise the one saved in the Integration Center.
+        var connectionString = input.AccessControlConnectionString;
+        if (connectionString.IsNullOrWhiteSpace() && AccessControlDbConnector != null)
+        {
+            connectionString = await AccessControlDbConnector.GetConnectionStringAsync();
+        }
+
+        if (connectionString.IsNullOrWhiteSpace())
         {
             throw new UserFriendlyException(L("AccessControlConnectionStringIsRequired"));
         }
@@ -120,7 +130,7 @@ public class SystemAdminToolsAppService : HCMv3AppServiceBase, ISystemAdminTools
         var accessIdList = string.Join(",", employees.Select(r => "'" + r.AccessID + "'"));
 
         await _timeAttendanceIntegrationService.FetchMissingTimeAttendanceDataAsync(
-            input.AccessControlConnectionString, fromDate, toDate, accessIdList, string.Empty);
+            connectionString, fromDate, toDate, accessIdList, string.Empty);
 
         result.AffectedCount = employees.Count;
         return result;

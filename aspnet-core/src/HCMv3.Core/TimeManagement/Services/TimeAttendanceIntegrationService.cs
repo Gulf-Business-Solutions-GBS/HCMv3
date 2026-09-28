@@ -391,7 +391,15 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
             IPAddress = ipAddress
         };
 
-        return await _accessUnitRepository.InsertAsync(accessUnit);
+        accessUnit = await _accessUnitRepository.InsertAsync(accessUnit);
+
+        // Saved at once so the next row from the same device finds it instead of creating a second one.
+        if (CurrentUnitOfWork != null)
+        {
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        return accessUnit;
     }
 
     public async Task<string> GetTokenAsync(TimeAttAPI timeAttAPI)
@@ -678,9 +686,17 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
             var pin = row["pin"].ToString();
             var transTypeCode = row["transtype"].ToString();
             var transDate = DateTime.ParseExact(row["transdate"].ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            var transTime = DateTime.ParseExact(row["transtime"].ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            // Legacy stored transTime.GetTime() -- the time of day only. HCMv3 keeps a punch's time on its own
+            // date (TransDate + time of day, as the ESS punch and the workflow handler do), so the device's
+            // date part is dropped the same way and the duplicate check compares like with like.
+            var transTime = transDate.Date.Add(
+                DateTime.ParseExact(row["transtime"].ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).TimeOfDay);
             var accessUnitAlias = row["accessunit"].ToString();
             var ipAddress = row["ipaddress"].ToString();
+
+            // Legacy registers an unknown device for every row that carries an IP address, whether or not the
+            // punch itself can be imported.
+            var accessUnit = await ResolveOrCreateAccessUnitAsync(ipAddress, accessUnitAlias);
 
             // Legacy checks only Machine-sourced rows for the same RecordSource (parity with
             // InsertTransactionFromApiAsync's duplicate-RecordSource check).
@@ -700,8 +716,6 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
 
                 if (!duplicate)
                 {
-                    var accessUnit = await ResolveOrCreateAccessUnitAsync(ipAddress, accessUnitAlias);
-
                     var timeEvent = new TimeEvent
                     {
                         TenantId = _abpSession.TenantId ?? 0,
@@ -725,6 +739,14 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
             // Legacy marks EVERY row (imported, duplicate-skipped, or unresolvable Employee/TransType) as
             // successfully "transfered" -- only a hard exception during the loop would leave a row untouched.
             successRecordSources.Add(recordSource);
+        }
+
+        // Legacy committed each punch before flagging the source rows. Save first here too: flagging rows as
+        // transferred and then failing to save would lose those punches for good, because the next run only
+        // reads rows that are not yet flagged.
+        if (CurrentUnitOfWork != null)
+        {
+            await CurrentUnitOfWork.SaveChangesAsync();
         }
 
         if (successRecordSources.Count > 0)

@@ -23,13 +23,8 @@ public class FetchMissingTimeAttendanceDataInput
     public string[] EmployeeCodes { get; set; }
 
     /// <summary>
-    /// Connection string to the external access-control database.
-    ///
-    /// DEVIATION: legacy's <c>TimeAttendanceIntegrationService</c> read this from
-    /// <c>web.config</c>. The ported <c>ITimeAttendanceIntegrationService</c> takes it as a caller-supplied
-    /// parameter ("not stored anywhere in this app" — see its XML docs), and this port is forbidden from
-    /// touching <c>appsettings.json</c>, so the operator supplies it on the screen. Only used by
-    /// <c>FetchMissingTimeAttendanceData</c>; the API-based sync does not need it.
+    /// Connection string to the external access-control database. Optional: when blank, the one saved in the
+    /// Integration Center (Access-control database card) is used. Legacy read it from <c>web.config</c>.
     /// </summary>
     public string AccessControlConnectionString { get; set; }
 }
