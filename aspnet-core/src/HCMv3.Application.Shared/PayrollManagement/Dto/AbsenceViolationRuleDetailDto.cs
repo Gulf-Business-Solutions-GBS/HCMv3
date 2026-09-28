@@ -18,4 +18,10 @@ public class AbsenceViolationRuleDetailDto : EntityDto<int>
     public AbsenceViolationAction Action { get; set; }
 
     public int? ActionTypeId { get; set; }
+
+    public bool HoldTillPunchFound { get; set; }
+
+    public int? NotificationConfigId { get; set; }
+
+    public string NotificationConfigName { get; set; }
 }

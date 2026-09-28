@@ -1,5 +1,6 @@
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using HCMv3.GeneralMasterInfo;
 
 namespace HCMv3.PayrollManagement;
 
@@ -16,7 +17,9 @@ namespace HCMv3.PayrollManagement;
 /// target two different tables in EF Core, so <see cref="ActionTypeId"/> is ported as a plain nullable
 /// <c>int</c> column with NO foreign key / navigation property — callers must resolve it against
 /// <c>AbsenceType</c> or <c>DisciplinaryType</c> themselves based on <see cref="Action"/>. The legacy
-/// <c>HoldTillPunchFound</c> bool and <c>NotificationConfig</c> FK are not ported (no such lookup exists).
+/// <c>HoldTillPunchFound</c> bool and <c>NotificationConfig</c> FK were left out of the first pass (no
+/// <c>NotificationConfig</c> existed then) and were restored on 2026-09-23 together with the job that reads
+/// them (<c>AbsenceViolationService</c>).
 /// </summary>
 public class AbsenceViolationRuleDetail : FullAuditedEntity, IMustHaveTenant
 {
@@ -38,4 +41,20 @@ public class AbsenceViolationRuleDetail : FullAuditedEntity, IMustHaveTenant
     /// when <see cref="Action"/> is <see cref="AbsenceViolationAction.Violation"/>. See class remarks.
     /// </summary>
     public virtual int? ActionTypeId { get; set; }
+
+    /// <summary>
+    /// Legacy <c>HoldTillPunchFound</c>: the step waits until the employee punches again. For a missing-punch
+    /// day the step fires only on a following working day that has a punch; for a leave not returned from, only
+    /// when there is a punch today.
+    /// </summary>
+    public virtual bool HoldTillPunchFound { get; set; }
+
+    /// <summary>
+    /// Legacy <c>NotificationConfig</c>: who is told, and how, when this step fires. Optional -- a step with no
+    /// configuration acts silently.
+    /// </summary>
+    public virtual int? NotificationConfigId { get; set; }
+
+    /// <inheritdoc cref="NotificationConfigId"/>
+    public virtual NotificationConfig NotificationConfig { get; set; }
 }

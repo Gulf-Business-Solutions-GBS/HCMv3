@@ -1375,6 +1375,16 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
+        // Legacy AbsenceViolationRuleDetail.NotificationConfig: who is told when an escalation step fires.
+        // Restrict: a configuration still named on a step must not be deletable out from under it.
+        modelBuilder.Entity<AbsenceViolationRuleDetail>(b =>
+        {
+            b.HasOne(e => e.NotificationConfig)
+                .WithMany()
+                .HasForeignKey(e => e.NotificationConfigId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<HCMv3.GeneralMasterInfo.NotificationGroup>(b =>
         {
             b.HasOne(e => e.WorkflowRole)

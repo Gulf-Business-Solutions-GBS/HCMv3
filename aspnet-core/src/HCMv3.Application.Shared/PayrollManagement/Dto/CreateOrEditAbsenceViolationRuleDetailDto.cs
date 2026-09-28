@@ -24,4 +24,10 @@ public class CreateOrEditAbsenceViolationRuleDetailDto
     /// Deferred polymorphic reference — see <see cref="AbsenceViolationRuleDetail.ActionTypeId"/> remarks.
     /// </summary>
     public int? ActionTypeId { get; set; }
+
+    /// <summary>The step waits for the employee to punch again before it fires.</summary>
+    public bool HoldTillPunchFound { get; set; }
+
+    /// <summary>Optional: who is told, and how, when the step fires.</summary>
+    public int? NotificationConfigId { get; set; }
 }

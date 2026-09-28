@@ -5,8 +5,10 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Threading;
 using Abp.Threading.Timers;
+using Abp.Timing;
 using HCMv3.BackgroundJobs;
 using HCMv3.MultiTenancy;
+using HCMv3.PayrollManagement.Services;
 using HCMv3.SystemSecurity.Services;
 
 namespace HCMv3.Notifications;
@@ -41,17 +43,20 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly IRepository<Tenant> _tenantRepository;
     private readonly INotificationDispatchService _notificationDispatchService;
+    private readonly IAbsenceViolationService _absenceViolationService;
 
     public DailyNotificationWorker(
         AbpTimer timer,
         IUnitOfWorkManager unitOfWorkManager,
         IRepository<Tenant> tenantRepository,
-        INotificationDispatchService notificationDispatchService)
+        INotificationDispatchService notificationDispatchService,
+        IAbsenceViolationService absenceViolationService)
         : base(timer)
     {
         _unitOfWorkManager = unitOfWorkManager;
         _tenantRepository = tenantRepository;
         _notificationDispatchService = notificationDispatchService;
+        _absenceViolationService = absenceViolationService;
 
         Timer.Period = CheckPeriodAsMilliseconds;
 
@@ -84,6 +89,12 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
         Run(tenantId, "leave pay in advance", () => _notificationDispatchService.SendAdvancePaymentNotificationsAsync());
         Run(tenantId, "leave resumption", () => _notificationDispatchService.SendLeaveResumptionNotificationsAsync());
         Run(tenantId, "punch during leave", () => _notificationDispatchService.SendPunchDuringLeaveNotificationsAsync());
+
+        // Legacy SendRealTimeNotification ended with these two, in this order. Unlike the runs above they are
+        // not "is today the day" checks but escalation ladders; running them every four hours is still safe,
+        // because every step taken is logged against its day or leave and is never taken twice.
+        Run(tenantId, "leave not returned violation", () => _absenceViolationService.SendNotReturnViolationNotificationsAsync(Clock.Now.Date));
+        Run(tenantId, "absence violation", () => _absenceViolationService.SendAbsentViolationNotificationsAsync(Clock.Now.Date));
     }
 
     private void Run(int tenantId, string what, Func<System.Threading.Tasks.Task> send)

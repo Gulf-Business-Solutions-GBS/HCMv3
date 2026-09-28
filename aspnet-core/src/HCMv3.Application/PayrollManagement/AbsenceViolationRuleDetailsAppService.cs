@@ -37,6 +37,7 @@ public class AbsenceViolationRuleDetailsAppService : HCMv3AppServiceBase, IAbsen
 
         var query = _absenceViolationRuleDetailRepository.GetAll()
             .Include(d => d.AbsenceViolationRule)
+            .Include(d => d.NotificationConfig)
             .WhereIf(input.AbsenceViolationRuleId.HasValue, d => d.AbsenceViolationRuleId == input.AbsenceViolationRuleId);
 
         var totalCount = await query.CountAsync();
@@ -108,6 +109,8 @@ public class AbsenceViolationRuleDetailsAppService : HCMv3AppServiceBase, IAbsen
         entity.DayInterval = input.DayInterval;
         entity.Action = input.Action;
         entity.ActionTypeId = input.ActionTypeId;
+        entity.HoldTillPunchFound = input.HoldTillPunchFound;
+        entity.NotificationConfigId = input.NotificationConfigId;
 
         return entity;
     }
@@ -143,7 +146,10 @@ public class AbsenceViolationRuleDetailsAppService : HCMv3AppServiceBase, IAbsen
             Step = entity.Step,
             DayInterval = entity.DayInterval,
             Action = entity.Action,
-            ActionTypeId = entity.ActionTypeId
+            ActionTypeId = entity.ActionTypeId,
+            HoldTillPunchFound = entity.HoldTillPunchFound,
+            NotificationConfigId = entity.NotificationConfigId,
+            NotificationConfigName = entity.NotificationConfig?.Name
         };
     }
 
@@ -156,7 +162,9 @@ public class AbsenceViolationRuleDetailsAppService : HCMv3AppServiceBase, IAbsen
             Step = entity.Step,
             DayInterval = entity.DayInterval,
             Action = entity.Action,
-            ActionTypeId = entity.ActionTypeId
+            ActionTypeId = entity.ActionTypeId,
+            HoldTillPunchFound = entity.HoldTillPunchFound,
+            NotificationConfigId = entity.NotificationConfigId
         };
     }
 }
