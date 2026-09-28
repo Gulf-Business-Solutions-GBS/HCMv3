@@ -1642,6 +1642,17 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         modelBuilder.Entity<WorkFlowApprover>(b =>
         {
             b.HasIndex(e => new { e.TenantId, e.ApproverId, e.IsApproved });
+
+            // Created by Added_WorkflowStep_To_WorkFlowApprovers, which was written by hand and did not say so
+            // here. Declared now so the model matches the database: without it every later "add migration"
+            // offers to drop an index the application relies on.
+            b.HasIndex(e => new { e.WorkflowRequestId, e.WorkflowStep });
+        });
+
+        // Created by Added_Feedback_Fields_To_WorkflowRemarks, by hand, for the same reason as above.
+        modelBuilder.Entity<WorkflowRemark>(b =>
+        {
+            b.HasIndex(e => new { e.CCReceiverId, e.RespondedAt });
         });
 
         modelBuilder.Entity<Employee>(b =>
