@@ -9,6 +9,8 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.Authorization;
+using HCMv3.ManpowerPlanningManagement;
+using HCMv3.ManpowerPlanningManagement.Services;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,12 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
     private readonly IRepository<HCMv3.OrganizationManagement.CostElementType> _costElementTypeRepository;
     private readonly IRepository<HCMv3.OrganizationManagement.CostElement> _costElementRepository;
     private readonly IRepository<HCMv3.OrganizationManagement.CostCenter> _costCenterRepository;
+
+    /// <summary>Property-injected so existing callers that build this service by hand keep compiling.</summary>
+    public IPositionOccupancyService PositionOccupancy { get; set; }
+
+    /// <summary>Property-injected for the same reason as <see cref="PositionOccupancy"/>.</summary>
+    public IRepository<Position> PositionRepository { get; set; }
 
     public EmployeeOrgAssignmentsAppService(
         IRepository<EmployeeOrgAssignment> repository,
@@ -66,6 +74,7 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             .Include(a => a.PostingGroup)
             .Include(a => a.BudgetingGroup)
             .Include(a => a.OrganizationUnit)
+            .Include(a => a.Position)
             .WhereIf(input.EmployeeId.HasValue, a => a.EmployeeId == input.EmployeeId.Value);
 
         var totalCount = await query.CountAsync();
@@ -94,7 +103,8 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
                 WorkLocationId = entity.WorkLocationId,
                 PostingGroupId = entity.PostingGroupId,
                 BudgetingGroupId = entity.BudgetingGroupId,
-                OrganizationUnitId = entity.OrganizationUnitId
+                OrganizationUnitId = entity.OrganizationUnitId,
+                PositionId = entity.PositionId
             }
         };
     }
@@ -125,11 +135,13 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             WorkLocationId = input.WorkLocationId,
             PostingGroupId = input.PostingGroupId,
             BudgetingGroupId = input.BudgetingGroupId,
-            OrganizationUnitId = input.OrganizationUnitId
+            OrganizationUnitId = input.OrganizationUnitId,
+            PositionId = input.PositionId
         };
 
-        await ValidateAsync(entity);
         await PrefillFromPreviousAsync(entity);
+        await ApplyPositionDefaultsAsync(entity);
+        await ValidateAsync(entity);
         await MarkStopRetroEffectIfNothingPayRelevantChangedAsync(entity);
 
         var previousCostCenterId = await _repository.GetAll()
@@ -142,6 +154,7 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         await CurrentUnitOfWork.SaveChangesAsync();
 
         await SetEndDatesAsync(entity.EmployeeId);
+        await SyncPositionHoldersAsync(entity.EmployeeId);
 
         if (previousCostCenterId != null)
         {
@@ -229,6 +242,10 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeOrgAssignmentDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previousPositionId = entity.PositionId;
+        var previousStartDate = entity.StartDate;
+        var previousEmployeeId = entity.EmployeeId;
+
         entity.EmployeeId = input.EmployeeId;
         entity.StartDate = input.StartDate.Date;
         entity.JobTitleId = input.JobTitleId;
@@ -237,12 +254,28 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         entity.PostingGroupId = input.PostingGroupId;
         entity.BudgetingGroupId = input.BudgetingGroupId;
         entity.OrganizationUnitId = input.OrganizationUnitId;
+        entity.PositionId = input.PositionId;
+
+        if (entity.PositionId != previousPositionId)
+        {
+            await ApplyPositionDefaultsAsync(entity);
+        }
 
         await ValidateAsync(entity);
         await _repository.UpdateAsync(entity);
         await CurrentUnitOfWork.SaveChangesAsync();
 
         await SetEndDatesAsync(entity.EmployeeId);
+
+        // Legacy UpdatedPositionRelation, edit branch: the holder row keyed on the old position and start date
+        // goes, then every assignment's holder row is brought up to date.
+        if (previousPositionId != entity.PositionId || previousStartDate != entity.StartDate
+            || previousEmployeeId != entity.EmployeeId)
+        {
+            await RemovePositionHolderAsync(previousPositionId, previousEmployeeId, previousStartDate);
+        }
+
+        await SyncPositionHoldersAsync(entity.EmployeeId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgAssignments_Delete)]
@@ -250,12 +283,77 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
     {
         var entity = await _repository.GetAsync(input.Id);
         var employeeId = entity.EmployeeId;
+        var positionId = entity.PositionId;
+        var startDate = entity.StartDate;
 
         await _repository.DeleteAsync(entity);
         await CurrentUnitOfWork.SaveChangesAsync();
 
         await SetEndDatesAsync(employeeId);
+
+        // Legacy OnDeleting: DeletePositionRelation. The neighbours' holder rows follow their re-chained end dates.
+        await RemovePositionHolderAsync(positionId, employeeId, startDate);
+        await SyncPositionHoldersAsync(employeeId);
     }
+
+    public async Task<ListResultDto<PositionForOrgAssignmentDto>> GetPositionsForOrgAssignment(GetPositionsForOrgAssignmentInput input)
+    {
+        var positions = await PositionRepository.GetAll()
+            .Where(p => (p.Active && p.Vacant) || p.Id == input.CurrentPositionId)
+            .OrderBy(p => p.Code)
+            .Select(p => new PositionForOrgAssignmentDto
+            {
+                Id = p.Id,
+                Code = p.Code,
+                NameEn = p.NameEn,
+                NameAr = p.NameAr,
+                JobTitleId = p.JobTitleId,
+                EmployeeGroupId = p.EmployeeGroupId,
+                EmployeeSubGroupId = p.EmployeeSubGroupId,
+                PayrollAreaId = p.PayrollAreaId,
+                WorkLocationId = p.WorkLocationId,
+                CostCenterId = p.CostCenterId,
+                OrganizationUnitId = p.OrganizationUnitId
+            })
+            .ToListAsync();
+
+        return new ListResultDto<PositionForOrgAssignmentDto>(positions);
+    }
+
+    /// <summary>
+    /// Legacy <c>OnChanged("Position")</c>: choosing a position copies its job title, groups, payroll area,
+    /// work location, cost centre and org unit onto the assignment. Only values the position actually has are
+    /// copied, so a sparsely set up position does not blank the assignment.
+    /// </summary>
+    private async Task ApplyPositionDefaultsAsync(EmployeeOrgAssignment entity)
+    {
+        if (!entity.PositionId.HasValue || PositionRepository == null)
+        {
+            return;
+        }
+
+        var position = await PositionRepository.FirstOrDefaultAsync(entity.PositionId.Value);
+        if (position == null)
+        {
+            return;
+        }
+
+        entity.JobTitleId = position.JobTitleId ?? entity.JobTitleId;
+        entity.EmployeeGroupId = position.EmployeeGroupId ?? entity.EmployeeGroupId;
+        entity.EmployeeSubGroupId = position.EmployeeSubGroupId ?? entity.EmployeeSubGroupId;
+        entity.PayrollAreaId = position.PayrollAreaId ?? entity.PayrollAreaId;
+        entity.WorkLocationId = position.WorkLocationId ?? entity.WorkLocationId;
+        entity.CostCenterId = position.CostCenterId ?? entity.CostCenterId;
+        entity.OrganizationUnitId = position.OrganizationUnitId ?? entity.OrganizationUnitId;
+    }
+
+    private Task SyncPositionHoldersAsync(int employeeId) =>
+        PositionOccupancy == null ? Task.CompletedTask : PositionOccupancy.SyncEmployeeAsync(employeeId);
+
+    private Task RemovePositionHolderAsync(int? positionId, int employeeId, DateTime startDate) =>
+        PositionOccupancy == null
+            ? Task.CompletedTask
+            : PositionOccupancy.RemoveHolderAsync(positionId, employeeId, startDate);
 
     /// <summary>
     /// Legacy <c>PerformValidation</c> parity: Employee/StartDate required, no two records for the same
@@ -270,6 +368,16 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         if (duplicateStartDate)
         {
             throw new UserFriendlyException(L("StartDateAlreadyExists", entity.StartDate.ToString("dd/MM/yyyy")));
+        }
+
+        // Legacy PerformValidation line 766: "Position cannot be blank." when positions are switched on.
+        if (!entity.PositionId.HasValue)
+        {
+            var orgSettings = await _sysSettingsAccessor.GetOrgSettingsAsync();
+            if (orgSettings != null && orgSettings.EnablePosition)
+            {
+                throw new UserFriendlyException(L("PositionCannotBeBlank"));
+            }
         }
     }
 
@@ -297,6 +405,7 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         entity.PostingGroupId ??= previous.PostingGroupId;
         entity.BudgetingGroupId ??= previous.BudgetingGroupId;
         entity.OrganizationUnitId ??= previous.OrganizationUnitId;
+        entity.PositionId ??= previous.PositionId;
     }
 
     /// <summary>
@@ -377,7 +486,9 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             BudgetingGroupId = entity.BudgetingGroupId,
             BudgetingGroupName = entity.BudgetingGroup?.NameEn,
             OrganizationUnitId = entity.OrganizationUnitId,
-            OrganizationUnitName = entity.OrganizationUnit?.DisplayName
+            OrganizationUnitName = entity.OrganizationUnit?.DisplayName,
+            PositionId = entity.PositionId,
+            PositionName = entity.Position?.NameEn
         };
     }
 }

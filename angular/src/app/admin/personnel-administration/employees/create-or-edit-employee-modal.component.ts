@@ -1,3 +1,4 @@
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -28,6 +29,8 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { SimpleLookupModalComponent } from '@app/admin/general-master-info/shared/simple-lookup-modal.component';
+import { CreateOrEditNationalityModalComponent } from '@app/admin/general-master-info/nationalities/create-or-edit-nationality-modal.component';
 
 interface LookupOption {
     id: number;
@@ -38,14 +41,24 @@ interface LookupOption {
     selector: 'createOrEditEmployeeModal',
     templateUrl: './create-or-edit-employee-modal.component.html',
     styleUrl: './create-or-edit-employee-modal.component.css',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [
+        DateInputDirective,
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        SimpleLookupModalComponent,
+        CreateOrEditNationalityModalComponent,
+    ],
 })
 export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     private _employeesService = inject(EmployeesServiceProxy);
     private _nationalitiesService = inject(NationalitiesServiceProxy);
     private _religionsService = inject(ReligionsServiceProxy);
     private _maritalStatusesService = inject(MaritalStatusesServiceProxy);
-    private _titlesService = inject(TitlesServiceProxy);
+    /** Not private: the template hands it to the quick-add Title popup. */
+    readonly titlesService = inject(TitlesServiceProxy);
     private _governoratesService = inject(GovernoratesServiceProxy);
     private _countriesService = inject(CountriesServiceProxy);
     private _qualificationsService = inject(QualificationsServiceProxy);
@@ -53,6 +66,8 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     private _recruitmentTypesService = inject(RecruitmentTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
+    readonly titleModal = viewChild<SimpleLookupModalComponent>('titleModal');
+    readonly nationalityModal = viewChild<CreateOrEditNationalityModalComponent>('nationalityModal');
     readonly modalSave = output<void>();
 
     readonly active = signal<boolean>(false);
@@ -72,50 +87,93 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
             id: 'names',
             labelKey: 'Names',
             controls: [
-                'FirstNameEn', 'SecondNameEn', 'ThirdNameEn', 'LastNameEn',
-                'FirstNameAr', 'SecondNameAr', 'ThirdNameAr', 'LastNameAr',
+                'FirstNameEn',
+                'SecondNameEn',
+                'ThirdNameEn',
+                'LastNameEn',
+                'FirstNameAr',
+                'SecondNameAr',
+                'ThirdNameAr',
+                'LastNameAr',
             ],
         },
         {
             id: 'personal',
             labelKey: 'PersonalInfo',
             controls: [
-                'Code', 'TitleId', 'BirthDate', 'Gender', 'MaritalStatusId', 'NationalityId',
-                'ReligionId', 'QualificationId', 'BloodGroup', 'CivilID', 'BirthPlaceId',
-                'FatherNameEn', 'FatherNameAr', 'MotherNameEn', 'MotherNameAr',
+                'Code',
+                'TitleId',
+                'BirthDate',
+                'Gender',
+                'MaritalStatusId',
+                'NationalityId',
+                'ReligionId',
+                'QualificationId',
+                'BloodGroup',
+                'CivilID',
+                'BirthPlaceId',
+                'FatherNameEn',
+                'FatherNameAr',
+                'MotherNameEn',
+                'MotherNameAr',
             ],
         },
         {
             id: 'address',
             labelKey: 'Address',
             controls: [
-                'FlatNumn', 'FloorNum', 'BuildingNum', 'StreetNum', 'BlockNum', 'LaneNumber',
-                'PaciNumber', 'ZipCode', 'City', 'GovernorateId', 'CountryId',
-                'CurrentAddress', 'PermanentAddress',
+                'FlatNumn',
+                'FloorNum',
+                'BuildingNum',
+                'StreetNum',
+                'BlockNum',
+                'LaneNumber',
+                'PaciNumber',
+                'ZipCode',
+                'City',
+                'GovernorateId',
+                'CountryId',
+                'CurrentAddress',
+                'PermanentAddress',
             ],
         },
         {
             id: 'contact',
             labelKey: 'Contact',
             controls: [
-                'Telephone', 'Mobile', 'PermanentTelephone', 'Email', 'AlternateEmail',
-                'LoginID', 'AccessID', 'BusinessLandline', 'BusinessExtension',
+                'Telephone',
+                'Mobile',
+                'PermanentTelephone',
+                'Email',
+                'AlternateEmail',
+                'LoginID',
+                'AccessID',
+                'BusinessLandline',
+                'BusinessExtension',
             ],
         },
         {
             id: 'emergency',
             labelKey: 'EmergencyContactSection',
             controls: [
-                'EmergencyContact', 'EmergencyNumber', 'EmergencyRelation',
-                'EmergencyContactAddress', 'CriticalIllness',
+                'EmergencyContact',
+                'EmergencyNumber',
+                'EmergencyRelation',
+                'EmergencyContactAddress',
+                'CriticalIllness',
             ],
         },
         {
             id: 'employment',
             labelKey: 'Employment',
             controls: [
-                'Status', 'EmploymentType', 'JoiningDate', 'ProbationDays',
-                'RecruitmentTypeId', 'PreviousEmpCode', 'ReferenceCode',
+                'Status',
+                'EmploymentType',
+                'JoiningDate',
+                'ProbationDays',
+                'RecruitmentTypeId',
+                'PreviousEmpCode',
+                'ReferenceCode',
             ],
         },
     ];
@@ -220,41 +278,144 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     }
 
     private loadLookups(): void {
-        this._nationalitiesService
-            .getAll(new GetAllNationalitiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.nationalities.set(result.items));
+        this.loadNationalities();
 
         this._religionsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.religions.set(result.items));
 
         this._maritalStatusesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.maritalStatuses.set(result.items));
 
-        this._titlesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.titles.set(result.items));
+        this.loadTitles();
 
         this._governoratesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.governorates.set(result.items));
 
         this._countriesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.countries.set(result.items));
 
         this._qualificationsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.qualifications.set(result.items));
 
         this._citiesService
-            .getAll(new GetAllCitiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCitiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.cities.set(result.items));
 
         this._recruitmentTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.recruitmentTypes.set(result.items));
+    }
+
+    private loadTitles(onLoaded?: (items: SimpleLookupDto[]) => void): void {
+        this.titlesService
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
+            .subscribe((result) => {
+                this.titles.set(result.items);
+                onLoaded?.(result.items);
+            });
+    }
+
+    private loadNationalities(onLoaded?: (items: LookupOption[]) => void): void {
+        this._nationalitiesService
+            .getAll(
+                new GetAllNationalitiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
+            .subscribe((result) => {
+                this.nationalities.set(result.items);
+                onLoaded?.(result.items);
+            });
+    }
+
+    /** "+" beside Title: add a title missing from the list without leaving the employee form. */
+    addTitle(): void {
+        this.titleModal().show();
+    }
+
+    /** "+" beside Nationality: the same, for nationalities. */
+    addNationality(): void {
+        this.nationalityModal().show();
+    }
+
+    onTitleCreated(): void {
+        const before = new Set(this.titles().map((t) => t.id));
+        this.loadTitles((items) => this.selectNewItem('titleId', before, items));
+    }
+
+    onNationalityCreated(): void {
+        const before = new Set(this.nationalities().map((n) => n.id));
+        this.loadNationalities((items) => this.selectNewItem('nationalityId', before, items));
+    }
+
+    /**
+     * Selects the record the popup just saved. The save call returns no id, so the new record is the one that
+     * was not in the list before -- matching by name would pick the wrong one when two share a name.
+     */
+    private selectNewItem(field: 'titleId' | 'nationalityId', before: Set<number>, items: { id: number }[]): void {
+        const added = items.find((i) => !before.has(i.id));
+        if (added) {
+            this.updateField(field, added.id);
+        }
     }
 
     onShown(): void {

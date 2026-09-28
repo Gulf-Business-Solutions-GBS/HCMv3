@@ -1599,6 +1599,13 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.WorkflowGroupId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Legacy EmployeeOrgAssignment.Position. Restrict: a position still named on an assignment must not
+            // be deletable, and Employee already cascades to this table.
+            b.HasOne(e => e.Position)
+                .WithMany()
+                .HasForeignKey(e => e.PositionId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // Resolving "which request governs this transaction row" -- the lookup behind the Workflow History

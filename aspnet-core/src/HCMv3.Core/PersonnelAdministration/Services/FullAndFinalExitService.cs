@@ -48,9 +48,6 @@ namespace HCMv3.PersonnelAdministration.Services;
 /// refreshed whenever an end-of-service recovery is added or removed.</description></item>
 /// <item><description><b>The login is found by <c>Employee.UserId</c></b>, falling back to legacy's
 /// <c>LoginID == UserName</c> match only when no user id is linked (see <c>Employee.UserId</c>).</description></item>
-/// <item><description><b>A missing position holder record is not created.</b> Legacy took the position from the latest
-/// org assignment and created the holder row if missing; HCMv3's org assignment carries no position, so only an
-/// existing holder row (same employee, same start date as that org assignment) can be ended.</description></item>
 /// </list>
 /// </summary>
 public interface IFullAndFinalExitService
@@ -416,8 +413,8 @@ public class FullAndFinalExitService : HCMv3DomainServiceBase, IFullAndFinalExit
             return;
         }
 
-        // Legacy 1040: the holder row for this employee starting with that assignment. See class remarks: a
-        // missing row cannot be created here, because the org assignment carries no position.
+        // Legacy 1040-1058: the holder row for this employee starting with that assignment, created when it is
+        // missing and the assignment names a position. Like legacy, this does not depend on EnablePosition.
         var holder = _positionRelationshipRepository.GetAll()
             .Where(r => r.EmployeeId == employeeId
                         && r.StartDate == orgAssignment.StartDate
@@ -427,6 +424,20 @@ public class FullAndFinalExitService : HCMv3DomainServiceBase, IFullAndFinalExit
 
         if (holder == null)
         {
+            if (!orgAssignment.PositionId.HasValue)
+            {
+                return;
+            }
+
+            await _positionRelationshipRepository.InsertAsync(new PositionRelationship
+            {
+                TenantId = orgAssignment.TenantId,
+                PositionId = orgAssignment.PositionId.Value,
+                EmployeeId = employeeId,
+                RelationType = PositionRelationType.Holder,
+                StartDate = orgAssignment.StartDate,
+                EndDate = lastDayInService
+            });
             return;
         }
 

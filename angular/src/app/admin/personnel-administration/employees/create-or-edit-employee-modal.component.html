@@ -196,17 +196,29 @@
                             </div>
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_TitleId">{{ 'Title' | localize }}</label>
-                                <select
-                                    id="Employee_TitleId"
-                                    class="form-select"
-                                    name="TitleId"
-                                    [ngModel]="employee().titleId"
-                                    (ngModelChange)="updateField('titleId', $event)">
-                                    <option [ngValue]="undefined"></option>
-                                    @for (item of titles(); track item.id) {
-                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                <div class="input-group">
+                                    <select
+                                        id="Employee_TitleId"
+                                        class="form-select"
+                                        name="TitleId"
+                                        [ngModel]="employee().titleId"
+                                        (ngModelChange)="updateField('titleId', $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of titles(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                    @if (isGranted('Pages.GeneralMasterInfo.Titles.Create')) {
+                                        <button
+                                            type="button"
+                                            class="btn btn-light-primary"
+                                            (click)="addTitle()"
+                                            [title]="l('CreateNewItem')"
+                                            [attr.aria-label]="l('CreateNewItem')">
+                                            <i class="fa fa-plus p-0"></i>
+                                        </button>
                                     }
-                                </select>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="Employee_BirthDate">{{ 'BirthDate' | localize }}</label>
@@ -250,19 +262,31 @@
                             </div>
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="Employee_NationalityId">{{ 'Nationality' | localize }}</label>
-                                <select
-                                    id="Employee_NationalityId"
-                                    #nationalityInput="ngModel"
-                                    class="form-select"
-                                    name="NationalityId"
-                                    [ngModel]="employee().nationalityId"
-                                    (ngModelChange)="updateField('nationalityId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (item of nationalities(); track item.id) {
-                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                <div class="input-group">
+                                    <select
+                                        id="Employee_NationalityId"
+                                        #nationalityInput="ngModel"
+                                        class="form-select"
+                                        name="NationalityId"
+                                        [ngModel]="employee().nationalityId"
+                                        (ngModelChange)="updateField('nationalityId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (item of nationalities(); track item.id) {
+                                            <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                        }
+                                    </select>
+                                    @if (isGranted('Pages.GeneralMasterInfo.Nationalities.Create')) {
+                                        <button
+                                            type="button"
+                                            class="btn btn-light-primary"
+                                            (click)="addNationality()"
+                                            [title]="l('CreateNewItem')"
+                                            [attr.aria-label]="l('CreateNewItem')">
+                                            <i class="fa fa-plus p-0"></i>
+                                        </button>
                                     }
-                                </select>
+                                </div>
                                 <validation-messages [formCtrl]="nationalityInput" />
                             </div>
                             <div class="col-md-6 mb-5">
@@ -895,3 +919,8 @@
         </div>
     </div>
 </div>
+
+<!-- Quick-add popups for the "+" beside Title and Nationality. Outside the employee dialog, not inside it:
+     a dialog nested in another's markup inherits its stacking and opens underneath. -->
+<simpleLookupModal #titleModal [service]="titlesService" titleKey="Title" (modalSave)="onTitleCreated()" />
+<createOrEditNationalityModal #nationalityModal (modalSave)="onNationalityCreated()" />

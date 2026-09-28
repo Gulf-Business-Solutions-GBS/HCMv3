@@ -131,6 +131,9 @@ public class EmployeeActionsAppService : HCMv3AppServiceBase, IEmployeeActionsAp
     /// The legacy BasicPay/Manager/OnHold/Separation/FnFPayment cascade branches are skipped -- those
     /// entities aren't linked this wave.
     /// </summary>
+    /// <summary>Removes the holder rows of deleted org assignments; property-injected.</summary>
+    public HCMv3.ManpowerPlanningManagement.Services.IPositionOccupancyService PositionOccupancy { get; set; }
+
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeActions_Delete)]
     public async Task Delete(EntityDto input)
     {
@@ -140,6 +143,13 @@ public class EmployeeActionsAppService : HCMv3AppServiceBase, IEmployeeActionsAp
         foreach (var orgAssignment in linkedOrgAssignments)
         {
             await _orgAssignmentRepository.DeleteAsync(orgAssignment);
+
+            // Legacy EmployeeOrgAssignment.OnDeleting: DeletePositionRelation.
+            if (PositionOccupancy != null)
+            {
+                await PositionOccupancy.RemoveHolderAsync(
+                    orgAssignment.PositionId, orgAssignment.EmployeeId, orgAssignment.StartDate);
+            }
         }
 
         var linkedContracts = await _contractRepository.GetAll()

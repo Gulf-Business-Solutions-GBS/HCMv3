@@ -14,4 +14,9 @@ public interface IEmployeeOrgAssignmentsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditEmployeeOrgAssignmentDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>
+    /// Legacy position picker: active, vacant positions (plus the one the assignment already holds).
+    /// </summary>
+    Task<ListResultDto<PositionForOrgAssignmentDto>> GetPositionsForOrgAssignment(GetPositionsForOrgAssignmentInput input);
 }

@@ -32,9 +32,11 @@ namespace HCMv3.PersonnelAdministration;
 /// ALSO NO LONGER DEFERRED: <see cref="WorkflowGroupId"/>, for the same reason -- it stopped being a gap
 /// and became a blocker the moment approval routing was implemented. See that property's own remarks.
 ///
-/// STILL DEFERRED (see Wave B scope notes): the <c>Position</c> field;
-/// <c>AddBasicSalary</c>/<c>AddLocationInWageAccount</c> side effects; Position-vacancy-tracking
-/// (<c>UpdatedPositionRelation</c> family); the legacy "Check OrganizationUnitType" validation
+/// NO LONGER DEFERRED: <see cref="PositionId"/> and position occupancy (legacy <c>UpdatedPositionRelation</c>
+/// family), kept in step by <c>IPositionOccupancyService</c> when <c>ManageOrgSettings.EnablePosition</c> is on.
+///
+/// STILL DEFERRED (see Wave B scope notes):
+/// <c>AddBasicSalary</c>/<c>AddLocationInWageAccount</c> side effects; the legacy "Check OrganizationUnitType" validation
 /// (not applicable -- collapsed to one FK); the "system generated flag to stop
 /// EarliestMasterDataChange" block.
 ///
@@ -126,4 +128,12 @@ public class EmployeeOrgAssignment : FullAuditedEntity, IMustHaveTenant
     public virtual int? WorkflowGroupId { get; set; }
 
     public virtual WorkflowGroup WorkflowGroup { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeeOrgAssignment.Position</c>. Required when <c>ManageOrgSettings.EnablePosition</c> is on;
+    /// each assignment with a position keeps one holder row in <see cref="HCMv3.ManpowerPlanningManagement.PositionRelationship"/>.
+    /// </summary>
+    public virtual int? PositionId { get; set; }
+
+    public virtual HCMv3.ManpowerPlanningManagement.Position Position { get; set; }
 }

@@ -25,6 +25,8 @@ public class EmployeeOrgAssignmentDto : EntityDto<int>
     public string BudgetingGroupName { get; set; }
     public long? OrganizationUnitId { get; set; }
     public string OrganizationUnitName { get; set; }
+    public int? PositionId { get; set; }
+    public string PositionName { get; set; }
 }
 
 public class CreateOrEditEmployeeOrgAssignmentDto
@@ -48,6 +50,13 @@ public class CreateOrEditEmployeeOrgAssignmentDto
     public int? BudgetingGroupId { get; set; }
 
     public long? OrganizationUnitId { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeeOrgAssignment.Position</c>; required when <c>ManageOrgSettings.EnablePosition</c> is on.
+    /// Choosing a position fills the job title, groups, payroll area, work location, cost centre and org unit
+    /// from it, as legacy did.
+    /// </summary>
+    public int? PositionId { get; set; }
 }
 
 public class GetEmployeeOrgAssignmentForEditOutput
@@ -66,4 +75,25 @@ public class GetAllEmployeeOrgAssignmentsInput : PagedAndSortedResultRequestDto,
             Sorting = "StartDate DESC";
         }
     }
+}
+
+public class GetPositionsForOrgAssignmentInput
+{
+    /// <summary>The position the assignment being edited already holds, listed even though it is not vacant.</summary>
+    public int? CurrentPositionId { get; set; }
+}
+
+/// <summary>A position that can be chosen on an org assignment, with the values it fills in.</summary>
+public class PositionForOrgAssignmentDto : EntityDto<int>
+{
+    public string Code { get; set; }
+    public string NameEn { get; set; }
+    public string NameAr { get; set; }
+    public int? JobTitleId { get; set; }
+    public int? EmployeeGroupId { get; set; }
+    public int? EmployeeSubGroupId { get; set; }
+    public int? PayrollAreaId { get; set; }
+    public int? WorkLocationId { get; set; }
+    public int? CostCenterId { get; set; }
+    public long? OrganizationUnitId { get; set; }
 }
