@@ -92,6 +92,38 @@
                                     (ngModelChange)="updateField('actionTypeId', $event)" />
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="AbsenceViolationRuleDetail_NotificationConfigId">{{ 'NotificationConfig' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationRuleDetail_NotificationConfigId"
+                                    class="form-select"
+                                    name="NotificationConfigId"
+                                    [ngModel]="absenceViolationRuleDetail().notificationConfigId"
+                                    (ngModelChange)="updateField('notificationConfigId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (config of notificationConfigs(); track config.id) {
+                                        <option [ngValue]="config.id">{{ config.name }}</option>
+                                    }
+                                </select>
+                                <span class="form-text text-muted">{{ 'NotificationConfigStepHint' | localize }}</span>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label d-block">{{ 'HoldTillPunchFound' | localize }}</label>
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input
+                                        id="AbsenceViolationRuleDetail_HoldTillPunchFound"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="HoldTillPunchFound"
+                                        [ngModel]="absenceViolationRuleDetail().holdTillPunchFound"
+                                        (ngModelChange)="updateField('holdTillPunchFound', $event)" />
+                                    <label class="form-check-label" for="AbsenceViolationRuleDetail_HoldTillPunchFound">
+                                        {{ 'HoldTillPunchFoundHint' | localize }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

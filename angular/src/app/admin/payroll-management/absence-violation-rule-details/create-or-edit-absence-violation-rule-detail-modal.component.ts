@@ -5,7 +5,10 @@ import {
     AbsenceViolationRuleDetailsServiceProxy,
     AbsenceViolationRulesServiceProxy,
     CreateOrEditAbsenceViolationRuleDetailDto,
+    GetAllNotificationConfigsInput,
     GetAllSimpleLookupsInput,
+    NotificationConfigDto,
+    NotificationConfigsServiceProxy,
     SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -30,6 +33,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditAbsenceViolationRuleDetailModalComponent extends AppComponentBase {
     private _absenceViolationRuleDetailsService = inject(AbsenceViolationRuleDetailsServiceProxy);
     private _absenceViolationRulesService = inject(AbsenceViolationRulesServiceProxy);
+    private _notificationConfigsService = inject(NotificationConfigsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -40,6 +44,9 @@ export class CreateOrEditAbsenceViolationRuleDetailModalComponent extends AppCom
         new CreateOrEditAbsenceViolationRuleDetailDto()
     );
     readonly absenceViolationRules = signal<SimpleLookupDto[]>([]);
+
+    /** Who is told when this step fires. A step with none set takes its action and tells nobody. */
+    readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
 
     readonly actions = [
         { value: AbsenceViolationAction.Notification, name: 'Notification' },
@@ -53,6 +60,10 @@ export class CreateOrEditAbsenceViolationRuleDetailModalComponent extends AppCom
         this._absenceViolationRulesService
             .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.absenceViolationRules.set(result.items));
+
+        this._notificationConfigsService
+            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.notificationConfigs.set(result.items));
 
         if (!absenceViolationRuleDetailId) {
             this.absenceViolationRuleDetail.set(new CreateOrEditAbsenceViolationRuleDetailDto());

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -296,7 +297,7 @@ public class AbsenceViolationService : HCMv3DomainServiceBase, IAbsenceViolation
             }
 
             var comments = "Transaction created due to absence violation rule : " + rule.NameEn
-                           + " on not punch in/out found on Date : " + absentDate.ToString("dd/MM/yyyy");
+                           + " on not punch in/out found on Date : " + absentDate.ToString(DayMonthYear, CultureInfo.InvariantCulture);
 
             // Legacy 3069-3163.
             var objectId = await PerformActionAsync(
@@ -318,7 +319,7 @@ public class AbsenceViolationService : HCMv3DomainServiceBase, IAbsenceViolation
                 fallbackMessage: () => L(
                     "AbsentViolationNotificationMessage",
                     employeeName,
-                    absentDate.ToString("dd/MM/yyyy"),
+                    absentDate.ToString(DayMonthYear, CultureInfo.InvariantCulture),
                     rule.NameEn,
                     step.Step));
 
@@ -508,8 +509,8 @@ public class AbsenceViolationService : HCMv3DomainServiceBase, IAbsenceViolation
 
         var comments = "Transaction created due to absence violation rule : " + rule.NameEn
                        + " on not return from leave with leave type: " + absenceTypeName
-                       + ", start Date : " + leaveStartDate.ToString("dd/MM/yyyy")
-                       + ", end Date : " + leaveEndDate.ToString("dd/MM/yyyy");
+                       + ", start Date : " + leaveStartDate.ToString(DayMonthYear, CultureInfo.InvariantCulture)
+                       + ", end Date : " + leaveEndDate.ToString(DayMonthYear, CultureInfo.InvariantCulture);
 
         var now = Clock.Now;
         var actionTime = today.Add(now.TimeOfDay);
@@ -541,7 +542,7 @@ public class AbsenceViolationService : HCMv3DomainServiceBase, IAbsenceViolation
                 "NotReturnedViolationNotificationMessage",
                 employee.FullNameEn,
                 absenceTypeName,
-                leaveEndDate.ToString("dd/MM/yyyy"),
+                leaveEndDate.ToString(DayMonthYear, CultureInfo.InvariantCulture),
                 rule.NameEn,
                 step.Step));
 
@@ -911,6 +912,18 @@ public class AbsenceViolationService : HCMv3DomainServiceBase, IAbsenceViolation
             }
         }
     }
+
+    /// <summary>
+    /// The date as it is written into a disciplinary comment or a notification: dd/MM/yyyy, always.
+    ///
+    /// <para>
+    /// Used with <see cref="CultureInfo.InvariantCulture"/>, because the "/" in a .NET format string is not a
+    /// slash -- it is "whatever this culture separates dates with", and on a machine whose region says "-" the
+    /// same code wrote 02-03-2026. These strings are stored on the record and read back months later, so they
+    /// cannot be allowed to change shape with the regional settings of whichever server ran the job.
+    /// </para>
+    /// </summary>
+    private const string DayMonthYear = "dd/MM/yyyy";
 
     private static string Truncate(string value, int maxLength)
     {

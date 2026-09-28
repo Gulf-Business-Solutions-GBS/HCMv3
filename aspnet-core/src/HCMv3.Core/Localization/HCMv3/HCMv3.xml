@@ -2764,6 +2764,14 @@
     <text name="AbsenceViolationRules">Absence Violation Rules</text>
     <text name="AbsenceViolationRuleDetails">Absence Violation Rule Details</text>
     <text name="AbsenceViolationRuleExceptions">Absence Violation Rule Exceptions</text>
+    <text name="NotificationConfigStepHint">Leave empty and this step acts without telling anybody.</text>
+    <text name="HoldTillPunchFound">Hold till the employee punches</text>
+    <text name="HoldTillPunchFoundHint">Wait for this step until the employee punches again</text>
+    <!-- Sent by the absence violation escalation when a step has no notification template of its own.
+         0 = employee, 1 = the date, 2 = the rule, 3 = the step number. -->
+    <text name="AbsentViolationNotificationMessage">{0} did not punch in or out on {1}. This is step {3} of absence rule "{2}".</text>
+    <!-- 0 = employee, 1 = leave type, 2 = the day the leave ended, 3 = the rule, 4 = the step number. -->
+    <text name="NotReturnedViolationNotificationMessage">{0} has not returned from {1} leave, which ended on {2}. This is step {4} of absence rule "{3}".</text>
     <text name="AttendanceTypes">Attendance Types</text>
     <text name="AccountTypes">Account Types</text>
     <text name="AccountInfos">Account Infos</text>

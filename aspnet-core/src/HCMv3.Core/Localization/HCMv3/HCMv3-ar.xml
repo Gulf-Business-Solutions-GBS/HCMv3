@@ -2725,6 +2725,11 @@
     <text name="AbsenceViolationRules">قواعد مخالفات الغياب</text>
     <text name="AbsenceViolationRuleDetails">تفاصيل قواعد مخالفات الغياب</text>
     <text name="AbsenceViolationRuleExceptions">استثناءات قواعد مخالفات الغياب</text>
+    <text name="NotificationConfigStepHint">إذا تُرك فارغاً، تُنفَّذ هذه الخطوة دون إشعار أحد.</text>
+    <text name="HoldTillPunchFound">التأجيل حتى تسجيل الموظف</text>
+    <text name="HoldTillPunchFoundHint">تأجيل هذه الخطوة حتى يسجّل الموظف حضوره مرة أخرى</text>
+    <text name="AbsentViolationNotificationMessage">لم يسجّل {0} الحضور أو الانصراف بتاريخ {1}. هذه هي الخطوة {3} من قاعدة الغياب "{2}".</text>
+    <text name="NotReturnedViolationNotificationMessage">لم يعد {0} من إجازة {1} المنتهية بتاريخ {2}. هذه هي الخطوة {4} من قاعدة الغياب "{3}".</text>
     <text name="AttendanceTypes">أنواع المواظبة</text>
     <text name="AccountTypes">أنواع الحسابات</text>
     <text name="AccountInfos">بيانات الحسابات</text>
