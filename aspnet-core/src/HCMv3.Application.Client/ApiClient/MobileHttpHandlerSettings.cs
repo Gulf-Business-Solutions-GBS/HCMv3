@@ -9,9 +9,10 @@ namespace HCMv3.ApiClient;
 /// </summary>
 public static class MobileHttpHandlerSettings
 {
-    /// <summary>A healthy connection to the hosted server opens in well under a second; a stuck one never does.
-    /// Giving up early lets <see cref="ConnectRetryHandler"/> try again instead of waiting 15-20 seconds.</summary>
-    public static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(5);
+    /// <summary>A stuck connection to the hosted server hangs 15-20 seconds; giving up sooner lets
+    /// <see cref="ConnectRetryHandler"/> try again. Not much sooner: a phone's first connection after start
+    /// (radio wake-up, DNS, TLS handshake) can take several seconds, and 5 seconds cut those off too.</summary>
+    public static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(10);
 
     /// <summary>Keep an open connection for reuse, so moving between screens does not open a new one each time.</summary>
     public static readonly TimeSpan PooledConnectionIdleTimeout = TimeSpan.FromMinutes(5);

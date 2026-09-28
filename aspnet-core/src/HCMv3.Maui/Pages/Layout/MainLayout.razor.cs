@@ -94,6 +94,10 @@ public partial class MainLayout
 
     private static void ConfigureFlurlHttp()
     {
+        // AbpApiClient applies its own per-client timeout (30 s by default) over the defaults below; it has to
+        // leave room for ConnectRetryHandler's attempts.
+        AbpApiClient.TimeoutSeconds = (int)MobileHttpHandlerSettings.RequestTimeout.TotalSeconds;
+
         FlurlHttp.Clients.WithDefaults(builer => builer
             // Says "mobile" on every call this app makes, so the request log can record where an action
             // came from. The mobile app hits exactly the same endpoints the web app does, so a header is

@@ -21,4 +21,6 @@ public interface IDataStorageService
     Task StoreLoginInformationAsync(GetCurrentLoginInformationsOutput loginInfo);
 
     Task StoreTenantInfoAsync(TenantInformation tenantInfo);
+
+    void ClearTenantInfo();
 }

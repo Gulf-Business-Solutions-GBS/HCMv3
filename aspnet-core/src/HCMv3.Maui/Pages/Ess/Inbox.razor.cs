@@ -3,13 +3,16 @@ using HCMv3.Ess.Dto;
 using HCMv3.Maui.Core.Components;
 using HCMv3.Maui.Core.Helpers;
 using HCMv3.Maui.Core.Threading;
+using HCMv3.Maui.Services.Navigation;
 
 namespace HCMv3.Maui.Pages.Ess;
 
 /// <summary>
-/// The approver's inbox: every request waiting on the signed-in user, of every type. Approve takes an
-/// optional comment; reject and send back require one (as on the Angular inbox and on the server). A
-/// feedback request is not a decision -- it offers only "submit feedback", with a required comment.
+/// The approver's inbox: every request waiting on the signed-in user, of every type. Tapping a card opens
+/// <see cref="InboxDetail"/>, which shows the request the way the web's detail dialog does and carries the
+/// full decision (approve / reject / send back / get feedback) or, for a feedback ask, the feedback box.
+/// Approve stays on the card as a one-tap shortcut, as it does on the web inbox's row menu, because its
+/// comment is optional; reject and send back require a reason and so live on the detail page.
 /// </summary>
 public partial class Inbox : HCMv3MainLayoutPageComponentBase
 {
@@ -51,101 +54,42 @@ public partial class Inbox : HCMv3MainLayoutPageComponentBase
             });
     }
 
+    /// <summary>
+    /// Opens the request. A feedback ask says so on the query string, because the detail DTO does not know
+    /// which kind of inbox row it was reached from.
+    /// </summary>
+    private void OpenDetail(EssInboxItemDto item)
+    {
+        var url = $"{NavigationUrlConsts.InboxDetail}/{item.Id}";
+
+        if (IsFeedback(item))
+        {
+            url += "?kind=" + InboxDetail.FeedbackKind;
+        }
+
+        NavigationService.NavigateTo(url);
+    }
+
     private async Task ApproveAsync(EssInboxItemDto item)
     {
         // Optional comment: null means the dialog was cancelled, an empty string means "approve, no comment".
+        // A step that requires a comment is refused by the server, whose message is shown as usual.
         var comment = await UserDialogsService.Prompt(L("Comments"), L("DoYouApproveThisRequest"), L("Approve"), true, L("Cancel"), true);
         if (comment == null)
         {
             return;
         }
 
-        await ActAsync(
-            () => EssInboxAppService.Approve(new ApproveRequestInput
-            {
-                WorkflowRequestId = item.Id,
-                Comment = string.IsNullOrWhiteSpace(comment) ? null : comment.Trim()
-            }),
-            "RequestApproved");
-    }
-
-    private async Task RejectAsync(EssInboxItemDto item)
-    {
-        var comment = await UserDialogsService.Prompt(L("Comments"), L("Reject"), L("Reject"), true, L("Cancel"), true);
-        if (comment == null)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(comment))
-        {
-            await UserDialogsService.AlertWarn(L("AReasonIsRequiredToReject"));
-            return;
-        }
-
-        await ActAsync(
-            () => EssInboxAppService.Reject(new RejectRequestInput
-            {
-                WorkflowRequestId = item.Id,
-                Comment = comment.Trim()
-            }),
-            "RequestRejected");
-    }
-
-    private async Task SendBackAsync(EssInboxItemDto item)
-    {
-        var comment = await UserDialogsService.Prompt(L("Comments"), L("SendBack"), L("SendBack"), true, L("Cancel"), true);
-        if (comment == null)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(comment))
-        {
-            await UserDialogsService.AlertWarn(L("AReasonIsRequiredToSendBack"));
-            return;
-        }
-
-        await ActAsync(
-            () => EssInboxAppService.SendBack(new SendBackRequestInput
-            {
-                WorkflowRequestId = item.Id,
-                Comment = comment.Trim()
-            }),
-            "RequestSentBack");
-    }
-
-    private async Task SubmitFeedbackAsync(EssInboxItemDto item)
-    {
-        var comment = await UserDialogsService.Prompt(L("YouWereAskedForFeedbackNotApproval"), L("YourFeedback"), L("SubmitFeedback"), true, L("Cancel"), true);
-        if (comment == null)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(comment))
-        {
-            await UserDialogsService.AlertWarn(L("FeedbackIsRequired"));
-            return;
-        }
-
-        await ActAsync(
-            () => EssInboxAppService.SubmitFeedback(new SubmitFeedbackInput
-            {
-                WorkflowRequestId = item.Id,
-                Comment = comment.Trim()
-            }),
-            "FeedbackSubmitted");
-    }
-
-    private async Task ActAsync(Func<Task> call, string successKey)
-    {
         var done = false;
 
         await SetBusyAsync(async () =>
         {
             await WebRequestExecuter.Execute(
-                async () => await call(),
+                async () => await EssInboxAppService.Approve(new ApproveRequestInput
+                {
+                    WorkflowRequestId = item.Id,
+                    Comment = string.IsNullOrWhiteSpace(comment) ? null : comment.Trim()
+                }),
                 () =>
                 {
                     done = true;
@@ -158,7 +102,7 @@ public partial class Inbox : HCMv3MainLayoutPageComponentBase
             return;
         }
 
-        await UserDialogsService.AlertSuccess(L(successKey));
+        await UserDialogsService.AlertSuccess(L("RequestApproved"));
         await ReloadAsync();
     }
 

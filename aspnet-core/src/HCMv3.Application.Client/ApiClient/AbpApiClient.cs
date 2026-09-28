@@ -377,7 +377,10 @@ public class AbpApiClient : ISingletonDependency, IDisposable
         {
             response = await httpResponse.ReceiveJson<AjaxResponse<T>>();
         }
-        catch (FlurlHttpException e)
+        // Only an answer from the server (an ABP error body) is read here. With no answer at all - the
+        // connection failed or timed out - there is nothing to read, and returning null instead of the
+        // exception made callers fail later on a null result with a vague "an error occurred".
+        catch (FlurlHttpException e) when (e.Call?.Response != null)
         {
             response = await e.GetResponseJsonAsync<AjaxResponse<T>>();
         }

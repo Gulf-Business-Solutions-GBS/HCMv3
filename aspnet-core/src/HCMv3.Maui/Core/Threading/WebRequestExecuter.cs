@@ -191,7 +191,7 @@ public static class WebRequestExecuter
 
         await UserDialogsService.Instance.UnBlock();
 
-        var accepted = await UserDialogsService.Instance.Confirm(L.Localize("DoYouWantToTryAgain"), L.Localize("RequestIsTimedOut"));
+        var accepted = await UserDialogsService.Instance.Confirm(L.Localize("DoYouWantToTryAgain"), L.Localize("RequestTimedOut"));
 
         if (accepted)
         {
@@ -210,7 +210,7 @@ public static class WebRequestExecuter
     {
         await UserDialogsService.Instance.UnBlock();
 
-        var accepted = await UserDialogsService.Instance.Confirm(L.Localize("DoYouWantToTryAgain"), L.Localize("RequestIsTimedOut"));
+        var accepted = await UserDialogsService.Instance.Confirm(L.Localize("DoYouWantToTryAgain"), L.Localize("RequestTimedOut"));
 
         if (accepted)
         {
@@ -241,7 +241,7 @@ public static class WebRequestExecuter
 
         await UserDialogsService.Instance.UnBlock();
 
-        var accepted = await UserDialogsService.Instance.Confirm(httpExceptionMessage + " " + L.Localize("DoYouWantToTryAgain"), L.Localize("HTTPException"));
+        var accepted = await UserDialogsService.Instance.Confirm(httpExceptionMessage + " " + L.Localize("DoYouWantToTryAgain"), L.Localize("HttpException"));
 
         if (accepted)
         {
@@ -272,7 +272,7 @@ public static class WebRequestExecuter
 
         await UserDialogsService.Instance.UnBlock();
 
-        var accepted = await UserDialogsService.Instance.Confirm(httpExceptionMessage + " " + L.Localize("DoYouWantToTryAgain"), L.Localize("HTTPException"));
+        var accepted = await UserDialogsService.Instance.Confirm(httpExceptionMessage + " " + L.Localize("DoYouWantToTryAgain"), L.Localize("HttpException"));
 
         if (accepted)
         {

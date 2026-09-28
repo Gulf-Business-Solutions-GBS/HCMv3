@@ -21,7 +21,8 @@
     {
         @foreach (var item in _items)
         {
-            <div class="card shadow-xs mb-4 @(IsFeedback(item) ? "border border-info" : "")">
+            @* The whole card opens the request, as "Details" does on the web inbox. *@
+            <div class="card shadow-xs mb-4 @(IsFeedback(item) ? "border border-info" : "")" style="cursor: pointer;" @onclick="() => OpenDetail(item)">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div class="min-w-0 me-2">
@@ -50,41 +51,30 @@
 
                     @if (IsFeedback(item))
                     {
-                        <div class="fs-7 text-muted mt-2">
-                            @L("FeedbackRequestedBy"): @FeedbackRequestedByName(item)
-                        </div>
+                        @if (!string.IsNullOrWhiteSpace(FeedbackRequestedByName(item)))
+                        {
+                            <div class="fs-7 text-muted mt-2">@L("FeedbackRequestedBy", FeedbackRequestedByName(item))</div>
+                        }
                         @if (!string.IsNullOrWhiteSpace(item.FeedbackNote))
                         {
                             <div class="fs-7 fst-italic mt-1">@item.FeedbackNote</div>
                         }
 
-                        <button class="btn btn-info w-100 mt-4" @onclick="() => SubmitFeedbackAsync(item)">
+                        <button class="btn btn-info w-100 mt-4" @onclick="() => OpenDetail(item)" @onclick:stopPropagation="true">
                             <i class="fa-solid fa-comment me-2"></i>@L("SubmitFeedback")
                         </button>
                     }
                     else
                     {
-                        <div class="d-grid gap-2 mt-4">
-                            <button class="btn btn-success btn-lg" @onclick="() => ApproveAsync(item)">
+                        @* Approve stays a one-tap shortcut (its comment is optional, as on the web menu).
+                           Reject and Send back need a reason, so they live on the detail page. *@
+                        <div class="d-flex gap-2 mt-4">
+                            <button class="btn btn-success flex-grow-1" @onclick="() => ApproveAsync(item)" @onclick:stopPropagation="true">
                                 <i class="fa-solid fa-check me-2"></i>@L("Approve")
                             </button>
-                            @if (item.CanReject || item.CanSendBack)
-                            {
-                                <div class="d-flex gap-2">
-                                    @if (item.CanReject)
-                                    {
-                                        <button class="btn btn-light-danger flex-grow-1" @onclick="() => RejectAsync(item)">
-                                            <i class="fa-solid fa-xmark me-2"></i>@L("Reject")
-                                        </button>
-                                    }
-                                    @if (item.CanSendBack)
-                                    {
-                                        <button class="btn btn-light-warning flex-grow-1" @onclick="() => SendBackAsync(item)">
-                                            <i class="fa-solid fa-reply me-2"></i>@L("SendBack")
-                                        </button>
-                                    }
-                                </div>
-                            }
+                            <button class="btn btn-light-primary flex-grow-1" @onclick="() => OpenDetail(item)" @onclick:stopPropagation="true">
+                                <i class="fa-solid fa-eye me-2"></i>@L("Details")
+                            </button>
                         </div>
                     }
                 </div>

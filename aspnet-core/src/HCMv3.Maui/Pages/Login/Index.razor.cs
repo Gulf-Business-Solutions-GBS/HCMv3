@@ -5,6 +5,7 @@ using HCMv3.Authorization.Accounts.Dto;
 using HCMv3.Maui.Core.Components;
 using HCMv3.Maui.Core.Threading;
 using HCMv3.Maui.Services.Account;
+using HCMv3.Maui.Services.Storage;
 
 namespace HCMv3.Maui.Pages.Login;
 
@@ -33,6 +34,7 @@ public partial class Index : HCMv3ComponentBase
     private readonly IAccountService _accountService = Resolve<IAccountService>();
     private readonly IAccountAppService _accountAppService = Resolve<IAccountAppService>();
     private readonly IApplicationContext _applicationContext = Resolve<IApplicationContext>();
+    private readonly IDataStorageService _dataStorageService = Resolve<IDataStorageService>();
 
     SwitchTenantModal switchTenantModal;
     EmailActivationModal emailActivationModal;
@@ -81,6 +83,7 @@ public partial class Index : HCMv3ComponentBase
         if (string.IsNullOrEmpty(tenantName))
         {
             _applicationContext.SetAsHost();
+            _dataStorageService.ClearTenantInfo();
             ApiUrlConfig.ResetBaseUrl();
         }
         else
@@ -109,6 +112,7 @@ public partial class Index : HCMv3ComponentBase
         {
             case TenantAvailabilityState.Available:
                 _applicationContext.SetAsTenant(tenancyName, tenantAvailableResult.TenantId.Value);
+                await _dataStorageService.StoreTenantInfoAsync(_applicationContext.CurrentTenant);
                 ApiUrlConfig.ChangeBaseUrl(tenantAvailableResult.ServerRootAddress);
                 break;
             case TenantAvailabilityState.InActive:

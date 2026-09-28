@@ -53,11 +53,12 @@ public class DataStorageService : IDataStorageService, ISingletonDependency
 
     public TenantInformation RetrieveTenantInfo()
     {
-        return _objectMapper.Map<TenantInformation>(
-            _dataStorageManager.Retrieve<TenantInformationPersistanceModel>(
-                MauiConsts.CurrentSessionTenantInfo
-            )
+        var stored = _dataStorageManager.Retrieve<TenantInformationPersistanceModel>(
+            MauiConsts.CurrentSessionTenantInfo
         );
+
+        // Nothing saved yet (first start, or the tenant was cleared): no tenant, not an error.
+        return stored == null ? null : _objectMapper.Map<TenantInformation>(stored);
     }
 
     public async Task StoreTenantInfoAsync(TenantInformation tenantInfo)
@@ -87,10 +88,16 @@ public class DataStorageService : IDataStorageService, ISingletonDependency
         );
     }
 
+    // Signing out forgets who was signed in, not which company: like the web app, the chosen tenant stays
+    // so the next person on the phone does not have to pick it again.
     public void ClearSessionPersistance()
     {
         _dataStorageManager.RemoveIfExists(MauiConsts.CurrentSessionTokenInfo);
-        _dataStorageManager.RemoveIfExists(MauiConsts.CurrentSessionTenantInfo);
         _dataStorageManager.RemoveIfExists(MauiConsts.CurrentSessionLoginInfo);
+    }
+
+    public void ClearTenantInfo()
+    {
+        _dataStorageManager.RemoveIfExists(MauiConsts.CurrentSessionTenantInfo);
     }
 }

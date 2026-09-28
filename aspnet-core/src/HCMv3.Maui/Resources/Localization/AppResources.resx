@@ -153,4 +153,10 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="DoYouWantToEnableInternetAndTryAgain" xml:space="preserve">
+    <value>Please turn on Wi-Fi or mobile data. Do you want to try again?</value>
+  </data>
+  <data name="CurrentUserDidNotLoginToTheApplication" xml:space="preserve">
+    <value>Please log in again.</value>
+  </data>
 </root>

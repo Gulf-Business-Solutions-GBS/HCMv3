@@ -38,19 +38,18 @@ public static class L
             return text;
         }
 
+        // The server's texts once they have loaded; the app's own texts before that, and for the few app-only
+        // keys (connection errors) the server does not define. A missing key shows as itself rather than
+        // throwing: these texts are mostly used while reporting another error, and throwing there hid it.
         var appContext = ApplicationBootstrapper.AbpBootstrapper.IocManager.IocContainer.Resolve<IApplicationContext>();
-        if (appContext.Configuration != null)
+        var serverTexts = appContext.Configuration?.Localization?.Values;
+        if (serverTexts != null &&
+            serverTexts.TryGetValue(HCMv3Consts.LocalizationSourceName, out var source) &&
+            source.ContainsKey(text))
         {
             return appContext.Configuration.Localization.Localize(text);
         }
 
-        var localTranslation = AppResources.ResourceManager.GetString(text);
-
-        if (localTranslation == null)
-        {
-            throw new Exception(string.Format("Localization not found for given key {0}!", text));
-        }
-
-        return localTranslation;
+        return AppResources.ResourceManager.GetString(text) ?? text;
     }
 }

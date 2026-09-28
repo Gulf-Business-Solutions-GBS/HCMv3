@@ -13,4 +13,5 @@ internal class NavigationUrlConsts
     public const string GeoPunch = "GeoPunch";
     public const string ExitPermit = "ExitPermit";
     public const string Inbox = "Inbox";
+    public const string InboxDetail = "InboxDetail";
 }
