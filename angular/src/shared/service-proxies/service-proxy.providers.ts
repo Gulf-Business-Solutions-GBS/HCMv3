@@ -95,6 +95,8 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.WorkflowAdminToolsServiceProxy,
     ApiServiceProxies.BulkPasswordServiceProxy,
     ApiServiceProxies.ProjectCostEngineServiceProxy,
+    ApiServiceProxies.EmployeeWorkbenchServiceProxy,
+    ApiServiceProxies.EmployeeWorkbenchPayslipsServiceProxy,
     // Grid reports (Reports > Analysis). NSwag emits these as plain @Injectable() without
     // providedIn:'root', so each one MUST be registered here or the screen compiles cleanly and then
     // throws NullInjectorError at runtime -- ng build cannot catch it.

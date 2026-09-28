@@ -232,6 +232,7 @@ public static class ScreenCatalog
         new("app.admin.employees", "SPA007", "PersonnelAdministration", "Employees", "/app/admin/employees", "Pages.PersonnelAdministration.Employees"),
         new("app.admin.loan-installments", "SPA008", "PersonnelAdministration", "LoanInstallments", "/app/admin/loan-installments", "Pages.PersonnelAdministration.LoanInstallments"),
         new("app.admin.employee-org-chart", "SPA010", "PersonnelAdministration", "EmployeeChart", "/app/admin/org-charts/employee", "Pages.PersonnelAdministration.EmployeeOrgChart"),
+        new("app.admin.employee-workbench", "SPA011", "PersonnelAdministration", "EmployeeWorkbench", "/app/admin/employee-workbench", "Pages.PersonnelAdministration.EmployeeWorkbench"),
         new("app.admin.employee-project-details", "SPJ001", "ProjectManagement", "EmployeeProjectDetails", "/app/admin/employee-project-details", "Pages.ProjectManagement.EmployeeProjectDetails"),
         new("app.admin.employee-projects", "SPJ002", "ProjectManagement", "EmployeeProjects", "/app/admin/employee-projects", "Pages.ProjectManagement.EmployeeProjects"),
         new("app.admin.project-cost-engine", "SPJ003", "ProjectManagement", "ProjectCostEngine", "/app/admin/project-cost-engine", "Pages.ProjectManagement.ProjectCostEngine"),

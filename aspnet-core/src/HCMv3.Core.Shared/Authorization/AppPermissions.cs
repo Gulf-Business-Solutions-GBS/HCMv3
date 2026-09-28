@@ -336,6 +336,13 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_PersonnelAdministration_EmployeeOrgChart = "Pages.PersonnelAdministration.EmployeeOrgChart";
 
+    /// <summary>
+    /// Opens the Employee Workbench. It grants nothing by itself beyond the screen, the search and the
+    /// header: each tile's grids and forms still require the permission of the record they show, so a
+    /// payroll admin and an HR admin see different tiles on the same screen.
+    /// </summary>
+    public const string Pages_PersonnelAdministration_EmployeeWorkbench = "Pages.PersonnelAdministration.EmployeeWorkbench";
+
     public const string Pages_PersonnelAdministration_EmployeeDates = "Pages.PersonnelAdministration.EmployeeDates";
     public const string Pages_PersonnelAdministration_EmployeeDates_Create = "Pages.PersonnelAdministration.EmployeeDates.Create";
     public const string Pages_PersonnelAdministration_EmployeeDates_Edit = "Pages.PersonnelAdministration.EmployeeDates.Edit";

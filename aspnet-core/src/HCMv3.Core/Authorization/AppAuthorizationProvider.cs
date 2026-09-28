@@ -432,6 +432,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         // EmployeeManagers so that seeing the reporting structure does not require rights to change it.
         personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgChart, L("EmployeeChart"));
 
+        // No Create/Edit/Delete children: every change made from the workbench goes through the form of
+        // the record being changed, under that record's own permission.
+        personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeWorkbench, L("EmployeeWorkbench"));
+
         var employeeDates = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates, L("EmployeeDates"));
         employeeDates.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates_Create, L("CreateNewItem"));
         employeeDates.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates_Edit, L("EditItem"));

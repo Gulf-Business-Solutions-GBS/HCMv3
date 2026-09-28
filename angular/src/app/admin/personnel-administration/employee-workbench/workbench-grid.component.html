@@ -1,0 +1,99 @@
+<div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+    <span class="text-muted fs-7">{{ 'WorkbenchLatestRecords' | localize }}</span>
+    <span class="flex-grow-1"></span>
+    @if (subView().detailSectionId) {
+        <a
+            class="btn btn-sm btn-light"
+            [routerLink]="['/app/admin/employees', employeeId()]"
+            [fragment]="subView().detailSectionId">
+            {{ 'WorkbenchFullHistory' | localize }}
+            <i class="fa fa-arrow-right ms-1"></i>
+        </a>
+    }
+    @if (canCreate()) {
+        <button type="button" class="btn btn-sm btn-primary" (click)="openForm()">
+            <i class="fa fa-plus"></i>
+            {{ 'CreateNew' | localize }}
+        </button>
+    }
+</div>
+
+<div class="table-responsive">
+    <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-3 mb-0">
+        <thead>
+            <tr class="fw-bold text-muted">
+                @for (column of subView().columns; track column.labelKey) {
+                    <th>{{ column.labelKey | localize }}</th>
+                }
+                @if (hasRowButtons()) {
+                    <th class="text-end" style="width: 1%"></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (row of rows(); track $index) {
+                <tr [class]="tone(row)">
+                    @for (column of subView().columns; track column.labelKey) {
+                        @let value = cell(row, column);
+                        <td>
+                            @switch (column.type) {
+                                @case ('date') {
+                                    {{ isBlankDate(value) ? '' : ($any(value) | luxonFormat: 'DD') }}
+                                }
+                                @case ('time') {
+                                    {{ isBlankDate(value) ? '—' : ($any(value) | luxonFormat: 'HH:mm') }}
+                                }
+                                @case ('month') {
+                                    {{ isBlankDate(value) ? '' : ($any(value) | luxonFormat: 'MMM yyyy') }}
+                                }
+                                @case ('number') {
+                                    {{ $any(value) | number: '1.0-2' }}
+                                }
+                                @case ('amount') {
+                                    {{ $any(value) | number: '1.3-3' }}
+                                }
+                                @case ('yesNo') {
+                                    {{ (value ? 'Yes' : 'No') | localize }}
+                                }
+                                @default {
+                                    {{ value }}
+                                }
+                            }
+                        </td>
+                    }
+                    @if (hasRowButtons()) {
+                        <td class="text-end text-nowrap">
+                            @if (subView().rowAction === 'payslipPdf') {
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-light-primary"
+                                    [disabled]="openingPayslipId() === row.id"
+                                    (click)="openPayslip(row)">
+                                    <i class="fa fa-file-pdf"></i>
+                                    {{ 'ViewPayslip' | localize }}
+                                </button>
+                            }
+                            @if (canEdit()) {
+                                <button type="button" class="btn btn-sm btn-light" (click)="openForm(row.id)">
+                                    <i class="fa fa-pencil-alt"></i>
+                                    {{ (subView().editLabelKey ?? 'Edit') | localize }}
+                                </button>
+                            }
+                        </td>
+                    }
+                </tr>
+            } @empty {
+                <tr>
+                    <td [attr.colspan]="subView().columns.length + 1" class="text-center text-muted py-8">
+                        @if (loading()) {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                            {{ 'LoadingWithThreeDot' | localize }}
+                        } @else {
+                            {{ 'NoData' | localize }}
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

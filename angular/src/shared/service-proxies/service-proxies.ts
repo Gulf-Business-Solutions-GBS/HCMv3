@@ -59727,6 +59727,310 @@ export class EmployeeWageAccountsServiceProxy {
 }
 
 @Injectable()
+export class EmployeeWorkbenchServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    searchEmployees(body?: SearchWorkbenchEmployeesInput | undefined): Observable<ListResultDtoOfWorkbenchEmployeeSearchItemDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeWorkbench/SearchEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchEmployees(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfWorkbenchEmployeeSearchItemDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfWorkbenchEmployeeSearchItemDto>;
+        }));
+    }
+
+    protected processSearchEmployees(response: HttpResponseBase): Observable<ListResultDtoOfWorkbenchEmployeeSearchItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfWorkbenchEmployeeSearchItemDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getHeader(id?: number | undefined): Observable<EmployeeWorkbenchHeaderDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeWorkbench/GetHeader?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetHeader(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetHeader(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeWorkbenchHeaderDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeWorkbenchHeaderDto>;
+        }));
+    }
+
+    protected processGetHeader(response: HttpResponseBase): Observable<EmployeeWorkbenchHeaderDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeWorkbenchHeaderDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getNotReturnedLeaves(id?: number | undefined): Observable<ListResultDtoOfWorkbenchNotReturnedLeaveDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeWorkbench/GetNotReturnedLeaves?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNotReturnedLeaves(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNotReturnedLeaves(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfWorkbenchNotReturnedLeaveDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfWorkbenchNotReturnedLeaveDto>;
+        }));
+    }
+
+    protected processGetNotReturnedLeaves(response: HttpResponseBase): Observable<ListResultDtoOfWorkbenchNotReturnedLeaveDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfWorkbenchNotReturnedLeaveDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getRecentAttendance(id?: number | undefined): Observable<ListResultDtoOfWorkbenchAttendanceDayDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeWorkbench/GetRecentAttendance?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRecentAttendance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRecentAttendance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfWorkbenchAttendanceDayDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfWorkbenchAttendanceDayDto>;
+        }));
+    }
+
+    protected processGetRecentAttendance(response: HttpResponseBase): Observable<ListResultDtoOfWorkbenchAttendanceDayDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfWorkbenchAttendanceDayDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class EmployeeWorkbenchPayslipsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayslipPdf(body?: GetWorkbenchPayslipPdfInput | undefined): Observable<ReportPdfOutput> {
+        let url_ = this.baseUrl + "/api/services/app/employeeWorkbenchPayslips/GetPayslipPdf";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayslipPdf(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayslipPdf(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
+        }));
+    }
+
+    protected processGetPayslipPdf(response: HttpResponseBase): Observable<ReportPdfOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReportPdfOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeWorkExperiencesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -217327,6 +217631,98 @@ export interface IEmployeeWorkLocationReportRowDto {
     lastDayInService: DateTime | undefined;
 }
 
+export class EmployeeWorkbenchHeaderDto implements IEmployeeWorkbenchHeaderDto {
+    id!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+    status!: EmployeeStatus;
+    joiningDate!: DateTime;
+    jobTitleNameEn!: string | undefined;
+    jobTitleNameAr!: string | undefined;
+    positionNameEn!: string | undefined;
+    positionNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    payrollAreaName!: string | undefined;
+    managerFullNameEn!: string | undefined;
+    managerFullNameAr!: string | undefined;
+    lastDayInService!: DateTime | undefined;
+
+    constructor(data?: IEmployeeWorkbenchHeaderDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+            this.status = _data["status"];
+            this.joiningDate = _data["joiningDate"] ? DateTime.fromISO(_data["joiningDate"].toString()) : undefined as any;
+            this.jobTitleNameEn = _data["jobTitleNameEn"];
+            this.jobTitleNameAr = _data["jobTitleNameAr"];
+            this.positionNameEn = _data["positionNameEn"];
+            this.positionNameAr = _data["positionNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.managerFullNameEn = _data["managerFullNameEn"];
+            this.managerFullNameAr = _data["managerFullNameAr"];
+            this.lastDayInService = _data["lastDayInService"] ? DateTime.fromISO(_data["lastDayInService"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): EmployeeWorkbenchHeaderDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeWorkbenchHeaderDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        data["status"] = this.status;
+        data["joiningDate"] = this.joiningDate ? this.joiningDate.toString() : undefined as any;
+        data["jobTitleNameEn"] = this.jobTitleNameEn;
+        data["jobTitleNameAr"] = this.jobTitleNameAr;
+        data["positionNameEn"] = this.positionNameEn;
+        data["positionNameAr"] = this.positionNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["managerFullNameEn"] = this.managerFullNameEn;
+        data["managerFullNameAr"] = this.managerFullNameAr;
+        data["lastDayInService"] = this.lastDayInService ? this.lastDayInService.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IEmployeeWorkbenchHeaderDto {
+    id: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+    status: EmployeeStatus;
+    joiningDate: DateTime;
+    jobTitleNameEn: string | undefined;
+    jobTitleNameAr: string | undefined;
+    positionNameEn: string | undefined;
+    positionNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    payrollAreaName: string | undefined;
+    managerFullNameEn: string | undefined;
+    managerFullNameAr: string | undefined;
+    lastDayInService: DateTime | undefined;
+}
+
 export class EmployeeWorkflowRoleDto implements IEmployeeWorkflowRoleDto {
     id!: number;
     employeeId!: number;
@@ -266171,6 +266567,54 @@ export interface IGetWorkLocationForEditOutput {
     workLocation: CreateOrEditWorkLocationDto;
 }
 
+export class GetWorkbenchPayslipPdfInput implements IGetWorkbenchPayslipPdfInput {
+    employeeId!: number;
+    month!: number;
+    year!: number;
+    payrollRunType!: PayrollRunType;
+
+    constructor(data?: IGetWorkbenchPayslipPdfInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollRunType = _data["payrollRunType"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkbenchPayslipPdfInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkbenchPayslipPdfInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollRunType"] = this.payrollRunType;
+        return data;
+    }
+}
+
+export interface IGetWorkbenchPayslipPdfInput {
+    employeeId: number;
+    month: number;
+    year: number;
+    payrollRunType: PayrollRunType;
+}
+
 export class GetWorkflowActivityFeedInput implements IGetWorkflowActivityFeedInput {
     workflowRequestId!: number;
 
@@ -276762,6 +277206,138 @@ export class ListResultDtoOfUserSessionDto implements IListResultDtoOfUserSessio
 
 export interface IListResultDtoOfUserSessionDto {
     items: UserSessionDto[] | undefined;
+}
+
+export class ListResultDtoOfWorkbenchAttendanceDayDto implements IListResultDtoOfWorkbenchAttendanceDayDto {
+    items!: WorkbenchAttendanceDayDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfWorkbenchAttendanceDayDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkbenchAttendanceDayDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfWorkbenchAttendanceDayDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfWorkbenchAttendanceDayDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfWorkbenchAttendanceDayDto {
+    items: WorkbenchAttendanceDayDto[] | undefined;
+}
+
+export class ListResultDtoOfWorkbenchEmployeeSearchItemDto implements IListResultDtoOfWorkbenchEmployeeSearchItemDto {
+    items!: WorkbenchEmployeeSearchItemDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfWorkbenchEmployeeSearchItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkbenchEmployeeSearchItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfWorkbenchEmployeeSearchItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfWorkbenchEmployeeSearchItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfWorkbenchEmployeeSearchItemDto {
+    items: WorkbenchEmployeeSearchItemDto[] | undefined;
+}
+
+export class ListResultDtoOfWorkbenchNotReturnedLeaveDto implements IListResultDtoOfWorkbenchNotReturnedLeaveDto {
+    items!: WorkbenchNotReturnedLeaveDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfWorkbenchNotReturnedLeaveDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkbenchNotReturnedLeaveDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfWorkbenchNotReturnedLeaveDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfWorkbenchNotReturnedLeaveDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfWorkbenchNotReturnedLeaveDto {
+    items: WorkbenchNotReturnedLeaveDto[] | undefined;
 }
 
 export enum LoanDeductionType {
@@ -329617,6 +330193,50 @@ export interface ISearchPositionOrgChartNodesInput {
     maxResultCount: number;
 }
 
+export class SearchWorkbenchEmployeesInput implements ISearchWorkbenchEmployeesInput {
+    filter!: string;
+    includeExEmployees!: boolean;
+    maxResultCount!: number;
+
+    constructor(data?: ISearchWorkbenchEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+            this.includeExEmployees = _data["includeExEmployees"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): SearchWorkbenchEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchWorkbenchEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        data["includeExEmployees"] = this.includeExEmployees;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface ISearchWorkbenchEmployeesInput {
+    filter: string;
+    includeExEmployees: boolean;
+    maxResultCount: number;
+}
+
 export class SecuritySettingsEditDto implements ISecuritySettingsEditDto {
     allowOneConcurrentLoginPerUser!: boolean;
     useDefaultPasswordComplexitySettings!: boolean;
@@ -342756,6 +343376,178 @@ export interface IWorkLocationDutyPeriodDto {
     dutyPeriodName: string | undefined;
     startDate: DateTime;
     endDate: DateTime;
+}
+
+export class WorkbenchAttendanceDayDto implements IWorkbenchAttendanceDayDto {
+    dayDate!: DateTime;
+    actualIn!: DateTime | undefined;
+    actualOut!: DateTime | undefined;
+    isWorkingDay!: boolean;
+    isOnLeave!: boolean;
+    isAbsent!: boolean;
+    isMissingIn!: boolean;
+    isMissingOut!: boolean;
+
+    constructor(data?: IWorkbenchAttendanceDayDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.actualIn = _data["actualIn"] ? DateTime.fromISO(_data["actualIn"].toString()) : undefined as any;
+            this.actualOut = _data["actualOut"] ? DateTime.fromISO(_data["actualOut"].toString()) : undefined as any;
+            this.isWorkingDay = _data["isWorkingDay"];
+            this.isOnLeave = _data["isOnLeave"];
+            this.isAbsent = _data["isAbsent"];
+            this.isMissingIn = _data["isMissingIn"];
+            this.isMissingOut = _data["isMissingOut"];
+        }
+    }
+
+    static fromJS(data: any): WorkbenchAttendanceDayDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkbenchAttendanceDayDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["actualIn"] = this.actualIn ? this.actualIn.toString() : undefined as any;
+        data["actualOut"] = this.actualOut ? this.actualOut.toString() : undefined as any;
+        data["isWorkingDay"] = this.isWorkingDay;
+        data["isOnLeave"] = this.isOnLeave;
+        data["isAbsent"] = this.isAbsent;
+        data["isMissingIn"] = this.isMissingIn;
+        data["isMissingOut"] = this.isMissingOut;
+        return data;
+    }
+}
+
+export interface IWorkbenchAttendanceDayDto {
+    dayDate: DateTime;
+    actualIn: DateTime | undefined;
+    actualOut: DateTime | undefined;
+    isWorkingDay: boolean;
+    isOnLeave: boolean;
+    isAbsent: boolean;
+    isMissingIn: boolean;
+    isMissingOut: boolean;
+}
+
+export class WorkbenchEmployeeSearchItemDto implements IWorkbenchEmployeeSearchItemDto {
+    id!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+    status!: EmployeeStatus;
+
+    constructor(data?: IWorkbenchEmployeeSearchItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): WorkbenchEmployeeSearchItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkbenchEmployeeSearchItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IWorkbenchEmployeeSearchItemDto {
+    id: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+    status: EmployeeStatus;
+}
+
+export class WorkbenchNotReturnedLeaveDto implements IWorkbenchNotReturnedLeaveDto {
+    id!: number;
+    absenceTypeNameEn!: string | undefined;
+    absenceTypeNameAr!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    daysOverdue!: number;
+
+    constructor(data?: IWorkbenchNotReturnedLeaveDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.absenceTypeNameEn = _data["absenceTypeNameEn"];
+            this.absenceTypeNameAr = _data["absenceTypeNameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.daysOverdue = _data["daysOverdue"];
+        }
+    }
+
+    static fromJS(data: any): WorkbenchNotReturnedLeaveDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkbenchNotReturnedLeaveDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["absenceTypeNameEn"] = this.absenceTypeNameEn;
+        data["absenceTypeNameAr"] = this.absenceTypeNameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["daysOverdue"] = this.daysOverdue;
+        return data;
+    }
+}
+
+export interface IWorkbenchNotReturnedLeaveDto {
+    id: number;
+    absenceTypeNameEn: string | undefined;
+    absenceTypeNameAr: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    daysOverdue: number;
 }
 
 export class WorkflowActivityDto implements IWorkflowActivityDto {
