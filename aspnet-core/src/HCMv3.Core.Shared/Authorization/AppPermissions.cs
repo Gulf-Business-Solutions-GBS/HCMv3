@@ -1832,6 +1832,17 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Workflow_RecordWithoutApproval = "Pages.Workflow.RecordWithoutApproval";
 
+    /// <summary>
+    /// The Workflow Setup grid: one row per transaction, approvers across, switches at the end.
+    ///
+    /// <para>
+    /// A separate permission because it writes across four tables at once -- the catalog, the chains, their
+    /// steps and the roles -- so granting it is a bigger decision than granting any one of the detailed
+    /// screens it sits on top of.
+    /// </para>
+    /// </summary>
+    public const string Pages_Workflow_Setup = "Pages.Workflow.Setup";
+
     #region Business Rules
 
     // The rule engine is administrative configuration, not a data screen: a rule authored here runs inside

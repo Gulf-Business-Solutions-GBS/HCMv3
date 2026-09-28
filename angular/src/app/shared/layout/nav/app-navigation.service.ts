@@ -2553,6 +2553,14 @@ export class AppNavigationService {
                 '',
                 [],
                 [
+                    // First in the section deliberately: it is where setting workflow up starts, and the
+                    // screens below it are where the unusual cases get refined.
+                    new AppMenuItem(
+                        'WorkflowSetup',
+                        'Pages.Workflow.Setup',
+                        'flaticon-map',
+                        '/app/admin/workflow-setup'
+                    ),
                     new AppMenuItem(
                         'WorkflowTransactionTypes',
                         'Pages.Workflow.WorkflowTransactionTypes',

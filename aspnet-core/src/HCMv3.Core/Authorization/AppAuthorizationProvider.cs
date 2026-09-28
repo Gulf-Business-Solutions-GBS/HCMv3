@@ -1927,6 +1927,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         // directly under Workflow instead of under a screen's node.
         workflow.CreateChildPermission(AppPermissions.Pages_Workflow_RecordWithoutApproval, L("RecordWithoutApproval"));
 
+        // The wrapper screen over the detailed ones. Writes catalog, chains, steps and roles together, so
+        // it is its own grant rather than implied by any of them.
+        workflow.CreateChildPermission(AppPermissions.Pages_Workflow_Setup, L("WorkflowSetup"));
+
         var requestDetails = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails, L("RequestDetails"));
         requestDetails.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails_Create, L("CreateNewItem"));
         requestDetails.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails_Edit, L("EditItem"));

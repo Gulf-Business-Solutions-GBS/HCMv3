@@ -1,0 +1,123 @@
+<div
+    appBsModal
+    #createRoleModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #roleForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ 'WorkflowSetupNewRole' | localize }}</h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label required" for="WorkflowRole_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="WorkflowRole_Code"
+                                    #codeInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="6"
+                                    [ngModel]="code()"
+                                    (ngModelChange)="code.set($event)"
+                                    required />
+                                <validation-messages [formCtrl]="codeInput" />
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label required" for="WorkflowRole_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="WorkflowRole_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="nameEn()"
+                                    (ngModelChange)="nameEn.set($event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label" for="WorkflowRole_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="WorkflowRole_NameAr"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="nameAr()"
+                                    (ngModelChange)="nameAr.set($event)" />
+                                <div class="form-text">{{ 'WorkflowSetupArabicNameOptional' | localize }}</div>
+                            </div>
+                        </div>
+
+                        <label class="form-label">
+                            {{ 'WorkflowSetupWhoHoldsThisRole' | localize }}
+                            @if (selectedCount() > 0) {
+                                <span class="badge badge-light-primary ms-2">{{ selectedCount() }}</span>
+                            }
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control form-control-sm mb-2"
+                            name="EmployeeFilter"
+                            [ngModel]="filterText()"
+                            (ngModelChange)="filterText.set($event)"
+                            [placeholder]="l('SearchWithThreeDot')" />
+
+                        <!--
+                            Scrolls rather than pages. Picking a handful of people out of a list is a
+                            different job from browsing employees, and paging turns it into several.
+                        -->
+                        <div class="border rounded p-2" style="max-height: 300px; overflow-y: auto">
+                            @for (employee of filteredEmployees(); track employee.id) {
+                                <div class="form-check">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        [id]="'WorkflowRoleMember_' + employee.id"
+                                        [checked]="isSelected(employee.id)"
+                                        (change)="toggle(employee.id)" />
+                                    <label class="form-check-label" [for]="'WorkflowRoleMember_' + employee.id">
+                                        {{ employeeLabel(employee) }}
+                                    </label>
+                                </div>
+                            } @empty {
+                                <div class="text-muted small">{{ 'NoData' | localize }}</div>
+                            }
+                        </div>
+
+                        <!--
+                            Allowed, because a role is often created before it is known who will hold it.
+                            The grid marks it afterwards so it is not forgotten.
+                        -->
+                        @if (selectedCount() === 0) {
+                            <div class="form-text">{{ 'WorkflowSetupEmptyRoleIsAllowed' | localize }}</div>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary fw-bold" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary fw-bold" [buttonBusy]="saving()" [disabled]="!roleForm.form.valid">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

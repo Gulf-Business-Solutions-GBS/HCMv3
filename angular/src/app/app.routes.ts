@@ -3437,6 +3437,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.BusinessRules' },
                     },
                     {
+                        path: 'workflow-setup',
+                        loadComponent: () =>
+                            import('./admin/workflow/workflow-setup/workflow-setup.component').then(
+                                (m) => m.WorkflowSetupComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.Setup' },
+                    },
+                    {
                         path: 'workflow-transaction-types',
                         loadComponent: () =>
                             import(

@@ -1,0 +1,232 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WorkflowSetup' | localize" [description]="'Workflow' | localize">
+        <div role="actions">
+            <button (click)="load()" class="btn btn-light-primary float-end" [disabled]="loading()">
+                <i class="fa fa-refresh btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Refresh' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!--
+                    Said once at the top rather than on every affected row: a workflow group sends some
+                    employees down a different chain, and nothing in this grid can show that.
+                -->
+                @if (workflowGroupsEnabled()) {
+                    <div class="alert alert-warning">
+                        {{ 'WorkflowSetupGroupsInUseNotice' | localize }}
+                    </div>
+                }
+
+                @if (lockedCount() > 0) {
+                    <div class="alert alert-light-primary">
+                        {{ 'WorkflowSetupLockedRowsNotice' | localize: lockedCount() }}
+                    </div>
+                }
+
+                @if (loading()) {
+                    <div class="text-center py-10">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    </div>
+                } @else {
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 190px">{{ 'Transaction' | localize }}</th>
+                                    <th style="min-width: 210px">{{ 'WorkflowSetupApprover' | localize: 1 }}</th>
+                                    <th style="min-width: 210px">{{ 'WorkflowSetupApprover' | localize: 2 }}</th>
+                                    <th style="min-width: 210px">{{ 'WorkflowSetupApprover' | localize: 3 }}</th>
+                                    <th style="min-width: 160px">{{ 'WorkflowSetupRaisedBy' | localize }}</th>
+                                    <th style="min-width: 90px" class="text-center">{{ 'EssEnabled' | localize }}</th>
+                                    <th style="min-width: 110px" class="text-center">{{ 'AllowDirectEntry' | localize }}</th>
+                                    <th style="min-width: 90px" class="text-center">{{ 'WorkflowSetupNotifyByEmail' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'WorkflowSetupEscalateAfter' | localize }}</th>
+                                    <th style="min-width: 80px" class="text-center">{{ 'Active' | localize }}</th>
+                                    <th style="min-width: 100px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (row of rows(); track row.code) {
+                                    <tr [class.table-active]="isDirty(row.code)">
+                                        <td>
+                                            <div class="fw-bold">{{ typeName(row) }}</div>
+                                            <div class="text-muted small font-monospace">{{ row.code }}</div>
+                                        </td>
+
+                                        @if (row.isLocked) {
+                                            <!--
+                                                One cell across the editable columns. Showing empty dropdowns
+                                                that refuse to save would read as a bug; the reason reads as a
+                                                decision.
+                                            -->
+                                            <td colspan="9">
+                                                <div class="d-flex align-items-start gap-2">
+                                                    <i class="fa fa-lock text-muted mt-1"></i>
+                                                    <div>
+                                                        <div>{{ row.lockedReason }}</div>
+                                                        <a routerLink="/app/admin/request-masters" class="small">
+                                                            {{ 'WorkflowSetupOpenRequestMasters' | localize }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        } @else {
+                                            @for (index of stepIndexes; track index) {
+                                                <td>
+                                                    <select
+                                                        class="form-select form-select-sm mb-1"
+                                                        [ngModel]="row.steps[index].approverPerson"
+                                                        [name]="row.code + '_kind_' + index"
+                                                        (ngModelChange)="setApprover(row, index, $event)">
+                                                        @for (option of approverOptions; track option.value) {
+                                                            <option [ngValue]="option.value">{{ option.key | localize }}</option>
+                                                        }
+                                                    </select>
+
+                                                    @if (needsRole(row.steps[index])) {
+                                                        <select
+                                                            class="form-select form-select-sm mb-1"
+                                                            [ngModel]="row.steps[index].workflowRoleId"
+                                                            [name]="row.code + '_role_' + index"
+                                                            (ngModelChange)="setRole(row, index, $event)">
+                                                            <option [ngValue]="undefined">{{ 'WorkflowSetupChooseARole' | localize }}</option>
+                                                            @for (role of roles(); track role.id) {
+                                                                <option [ngValue]="role.id">{{ roleName(role) }}</option>
+                                                            }
+                                                        </select>
+
+                                                        <!--
+                                                            Only asked when the role can hold more than one
+                                                            person, because with one holder the answer makes
+                                                            no difference and the extra control is noise.
+                                                        -->
+                                                        @if (row.steps[index].currentHolderCount > 1) {
+                                                            <select
+                                                                class="form-select form-select-sm mb-1"
+                                                                [ngModel]="row.steps[index].approvalRequire"
+                                                                [name]="row.code + '_require_' + index"
+                                                                (ngModelChange)="setApprovalRequire(row, index, $event)">
+                                                                <option [ngValue]="0">{{ 'WorkflowSetupAnyOneOfThem' | localize }}</option>
+                                                                <option [ngValue]="1">{{ 'WorkflowSetupAllOfThem' | localize }}</option>
+                                                            </select>
+                                                        }
+
+                                                        @if (roleIsEmpty(row.steps[index])) {
+                                                            <div class="text-danger small">
+                                                                {{ 'WorkflowSetupRoleIsEmpty' | localize }}
+                                                            </div>
+                                                        }
+
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-link btn-sm p-0"
+                                                            (click)="openNewRole(row, index)">
+                                                            {{ 'WorkflowSetupNewRole' | localize }}
+                                                        </button>
+                                                    }
+                                                </td>
+                                            }
+
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [ngModel]="row.raisedBy"
+                                                    [name]="row.code + '_raisedBy'"
+                                                    (ngModelChange)="setRaisedBy(row, $event)">
+                                                    @for (option of raisedByOptions; track option.value) {
+                                                        <option [ngValue]="option.value">{{ option.key | localize }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="row.isEssEnabled"
+                                                    [name]="row.code + '_ess'"
+                                                    (ngModelChange)="setField(row, 'isEssEnabled', $event)" />
+                                            </td>
+
+                                            <td class="text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="row.allowDirectEntry"
+                                                    [name]="row.code + '_direct'"
+                                                    (ngModelChange)="setField(row, 'allowDirectEntry', $event)" />
+                                            </td>
+
+                                            <td class="text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="row.notifyByEmail"
+                                                    [name]="row.code + '_email'"
+                                                    (ngModelChange)="setField(row, 'notifyByEmail', $event)" />
+                                            </td>
+
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    min="0"
+                                                    class="form-control form-control-sm"
+                                                    [ngModel]="row.escalateAfterDays"
+                                                    [name]="row.code + '_escalate'"
+                                                    (ngModelChange)="setEscalation(row, $event)"
+                                                    [placeholder]="l('WorkflowSetupNever')" />
+                                            </td>
+
+                                            <td class="text-center">
+                                                <!--
+                                                    Routing lives here rather than in a column of its own:
+                                                    a transaction with approvers set and routing off is the
+                                                    state people most often leave by accident.
+                                                -->
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [ngModel]="row.isWorkflowEnabled"
+                                                    [name]="row.code + '_wf'"
+                                                    (ngModelChange)="setField(row, 'isWorkflowEnabled', $event)" />
+                                            </td>
+
+                                            <td class="text-end">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-primary btn-sm"
+                                                    [disabled]="!isDirty(row.code)"
+                                                    [buttonBusy]="isSaving(row.code)"
+                                                    (click)="save(row)">
+                                                    {{ 'Save' | localize }}
+                                                </button>
+                                            </td>
+                                        }
+                                    </tr>
+
+                                    @if (row.warnings.length) {
+                                        <tr>
+                                            <td colspan="11" class="pt-0">
+                                                @for (warning of row.warnings; track warning) {
+                                                    <div class="text-warning small">
+                                                        <i class="fa fa-exclamation-triangle me-1"></i>{{ warning }}
+                                                    </div>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <createWorkflowRoleModal #roleModal (modalSave)="onRoleCreated($event)"></createWorkflowRoleModal>
+</div>

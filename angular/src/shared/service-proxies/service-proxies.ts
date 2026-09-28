@@ -162141,6 +162141,240 @@ export class WorkflowRolesServiceProxy {
 }
 
 @Injectable()
+export class WorkflowSetupServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getGrid(): Observable<GetWorkflowSetupGridOutput> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowSetup/GetGrid";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetGrid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetGrid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetWorkflowSetupGridOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetWorkflowSetupGridOutput>;
+        }));
+    }
+
+    protected processGetGrid(response: HttpResponseBase): Observable<GetWorkflowSetupGridOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetWorkflowSetupGridOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveRow(body?: SaveWorkflowSetupRowInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowSetup/SaveRow";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveRow(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveRow(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSaveRow(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createRole(body?: CreateWorkflowSetupRoleInput | undefined): Observable<WorkflowSetupRoleDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowSetup/CreateRole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateRole(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowSetupRoleDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowSetupRoleDto>;
+        }));
+    }
+
+    protected processCreateRole(response: HttpResponseBase): Observable<WorkflowSetupRoleDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowSetupRoleDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param workflowRoleId (optional) 
+     * @return OK
+     */
+    getRoleMembers(workflowRoleId?: number | undefined): Observable<WorkflowSetupRoleMemberDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowSetup/GetRoleMembers?";
+        if (workflowRoleId === null)
+            throw new globalThis.Error("The parameter 'workflowRoleId' cannot be null.");
+        else if (workflowRoleId !== undefined)
+            url_ += "workflowRoleId=" + encodeURIComponent("" + workflowRoleId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRoleMembers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRoleMembers(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowSetupRoleMemberDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowSetupRoleMemberDto[]>;
+        }));
+    }
+
+    protected processGetRoleMembers(response: HttpResponseBase): Observable<WorkflowSetupRoleMemberDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(WorkflowSetupRoleMemberDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class WorkflowTransactionTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -199608,6 +199842,62 @@ export class CreateWFReadLogDto implements ICreateWFReadLogDto {
 export interface ICreateWFReadLogDto {
     workflowRequestId: number;
     user: string | undefined;
+}
+
+export class CreateWorkflowSetupRoleInput implements ICreateWorkflowSetupRoleInput {
+    code!: string;
+    nameEn!: string;
+    nameAr!: string;
+    employeeIds!: number[] | undefined;
+
+    constructor(data?: ICreateWorkflowSetupRoleInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            if (Array.isArray(_data["employeeIds"])) {
+                this.employeeIds = [] as any;
+                for (let item of _data["employeeIds"])
+                    this.employeeIds!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateWorkflowSetupRoleInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateWorkflowSetupRoleInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        if (Array.isArray(this.employeeIds)) {
+            data["employeeIds"] = [];
+            for (let item of this.employeeIds)
+                data["employeeIds"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface ICreateWorkflowSetupRoleInput {
+    code: string;
+    nameEn: string;
+    nameAr: string;
+    employeeIds: number[] | undefined;
 }
 
 export class Currency implements ICurrency {
@@ -267015,6 +267305,66 @@ export interface IGetWorkflowRoleForEditOutput {
     workflowRole: CreateOrEditWorkflowRoleDto;
 }
 
+export class GetWorkflowSetupGridOutput implements IGetWorkflowSetupGridOutput {
+    rows!: WorkflowSetupRowDto[] | undefined;
+    roles!: WorkflowSetupRoleDto[] | undefined;
+    workflowGroupsEnabled!: boolean;
+
+    constructor(data?: IGetWorkflowSetupGridOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["rows"])) {
+                this.rows = [] as any;
+                for (let item of _data["rows"])
+                    this.rows!.push(WorkflowSetupRowDto.fromJS(item));
+            }
+            if (Array.isArray(_data["roles"])) {
+                this.roles = [] as any;
+                for (let item of _data["roles"])
+                    this.roles!.push(WorkflowSetupRoleDto.fromJS(item));
+            }
+            this.workflowGroupsEnabled = _data["workflowGroupsEnabled"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkflowSetupGridOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkflowSetupGridOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.rows)) {
+            data["rows"] = [];
+            for (let item of this.rows)
+                data["rows"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.roles)) {
+            data["roles"] = [];
+            for (let item of this.roles)
+                data["roles"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["workflowGroupsEnabled"] = this.workflowGroupsEnabled;
+        return data;
+    }
+}
+
+export interface IGetWorkflowSetupGridOutput {
+    rows: WorkflowSetupRowDto[] | undefined;
+    roles: WorkflowSetupRoleDto[] | undefined;
+    workflowGroupsEnabled: boolean;
+}
+
 export class GetWorkflowTransactionTypeForEditOutput implements IGetWorkflowTransactionTypeForEditOutput {
     workflowTransactionType!: CreateOrEditWorkflowTransactionTypeDto;
 
@@ -329705,6 +330055,82 @@ export interface ISavePageInput {
     pages: Page[] | undefined;
 }
 
+export class SaveWorkflowSetupRowInput implements ISaveWorkflowSetupRowInput {
+    code!: string;
+    steps!: WorkflowSetupStepDto[] | undefined;
+    raisedBy!: WorkflowPersonScope;
+    isWorkflowEnabled!: boolean;
+    isEssEnabled!: boolean;
+    allowDirectEntry!: boolean;
+    notifyByEmail!: boolean;
+    escalateAfterDays!: number;
+    isActive!: boolean;
+
+    constructor(data?: ISaveWorkflowSetupRowInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            if (Array.isArray(_data["steps"])) {
+                this.steps = [] as any;
+                for (let item of _data["steps"])
+                    this.steps!.push(WorkflowSetupStepDto.fromJS(item));
+            }
+            this.raisedBy = _data["raisedBy"];
+            this.isWorkflowEnabled = _data["isWorkflowEnabled"];
+            this.isEssEnabled = _data["isEssEnabled"];
+            this.allowDirectEntry = _data["allowDirectEntry"];
+            this.notifyByEmail = _data["notifyByEmail"];
+            this.escalateAfterDays = _data["escalateAfterDays"];
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): SaveWorkflowSetupRowInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveWorkflowSetupRowInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        if (Array.isArray(this.steps)) {
+            data["steps"] = [];
+            for (let item of this.steps)
+                data["steps"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["raisedBy"] = this.raisedBy;
+        data["isWorkflowEnabled"] = this.isWorkflowEnabled;
+        data["isEssEnabled"] = this.isEssEnabled;
+        data["allowDirectEntry"] = this.allowDirectEntry;
+        data["notifyByEmail"] = this.notifyByEmail;
+        data["escalateAfterDays"] = this.escalateAfterDays;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface ISaveWorkflowSetupRowInput {
+    code: string;
+    steps: WorkflowSetupStepDto[] | undefined;
+    raisedBy: WorkflowPersonScope;
+    isWorkflowEnabled: boolean;
+    isEssEnabled: boolean;
+    allowDirectEntry: boolean;
+    notifyByEmail: boolean;
+    escalateAfterDays: number;
+    isActive: boolean;
+}
+
 export class SchedulableReportDto implements ISchedulableReportDto {
     reportKey!: string | undefined;
     reportKind!: ScheduledReportKind;
@@ -344957,6 +345383,266 @@ export interface IWorkflowSettingsListDto {
     dynamicWorkflowSteps: boolean;
     sendBackToCreator: boolean;
     delegateEmployeeListByOrganizationUnitTypeId: number | undefined;
+}
+
+export class WorkflowSetupRoleDto implements IWorkflowSetupRoleDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    currentHolderCount!: number;
+
+    constructor(data?: IWorkflowSetupRoleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.currentHolderCount = _data["currentHolderCount"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowSetupRoleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowSetupRoleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["currentHolderCount"] = this.currentHolderCount;
+        return data;
+    }
+}
+
+export interface IWorkflowSetupRoleDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    currentHolderCount: number;
+}
+
+export class WorkflowSetupRoleMemberDto implements IWorkflowSetupRoleMemberDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+
+    constructor(data?: IWorkflowSetupRoleMemberDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowSetupRoleMemberDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowSetupRoleMemberDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        return data;
+    }
+}
+
+export interface IWorkflowSetupRoleMemberDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+}
+
+export class WorkflowSetupRowDto implements IWorkflowSetupRowDto {
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    displayOrder!: number;
+    steps!: WorkflowSetupStepDto[] | undefined;
+    raisedBy!: WorkflowPersonScope;
+    isWorkflowEnabled!: boolean;
+    isEssEnabled!: boolean;
+    allowDirectEntry!: boolean;
+    notifyByEmail!: boolean;
+    escalateAfterDays!: number;
+    isActive!: boolean;
+    isLocked!: boolean;
+    lockedReason!: string | undefined;
+    warnings!: string[] | undefined;
+
+    constructor(data?: IWorkflowSetupRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.displayOrder = _data["displayOrder"];
+            if (Array.isArray(_data["steps"])) {
+                this.steps = [] as any;
+                for (let item of _data["steps"])
+                    this.steps!.push(WorkflowSetupStepDto.fromJS(item));
+            }
+            this.raisedBy = _data["raisedBy"];
+            this.isWorkflowEnabled = _data["isWorkflowEnabled"];
+            this.isEssEnabled = _data["isEssEnabled"];
+            this.allowDirectEntry = _data["allowDirectEntry"];
+            this.notifyByEmail = _data["notifyByEmail"];
+            this.escalateAfterDays = _data["escalateAfterDays"];
+            this.isActive = _data["isActive"];
+            this.isLocked = _data["isLocked"];
+            this.lockedReason = _data["lockedReason"];
+            if (Array.isArray(_data["warnings"])) {
+                this.warnings = [] as any;
+                for (let item of _data["warnings"])
+                    this.warnings!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): WorkflowSetupRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowSetupRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["displayOrder"] = this.displayOrder;
+        if (Array.isArray(this.steps)) {
+            data["steps"] = [];
+            for (let item of this.steps)
+                data["steps"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["raisedBy"] = this.raisedBy;
+        data["isWorkflowEnabled"] = this.isWorkflowEnabled;
+        data["isEssEnabled"] = this.isEssEnabled;
+        data["allowDirectEntry"] = this.allowDirectEntry;
+        data["notifyByEmail"] = this.notifyByEmail;
+        data["escalateAfterDays"] = this.escalateAfterDays;
+        data["isActive"] = this.isActive;
+        data["isLocked"] = this.isLocked;
+        data["lockedReason"] = this.lockedReason;
+        if (Array.isArray(this.warnings)) {
+            data["warnings"] = [];
+            for (let item of this.warnings)
+                data["warnings"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IWorkflowSetupRowDto {
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    displayOrder: number;
+    steps: WorkflowSetupStepDto[] | undefined;
+    raisedBy: WorkflowPersonScope;
+    isWorkflowEnabled: boolean;
+    isEssEnabled: boolean;
+    allowDirectEntry: boolean;
+    notifyByEmail: boolean;
+    escalateAfterDays: number;
+    isActive: boolean;
+    isLocked: boolean;
+    lockedReason: string | undefined;
+    warnings: string[] | undefined;
+}
+
+export class WorkflowSetupStepDto implements IWorkflowSetupStepDto {
+    approverPerson!: WorkflowApproverPersonType;
+    workflowRoleId!: number | undefined;
+    workflowRoleName!: string | undefined;
+    approvalRequire!: ApprovalRequire;
+    currentHolderCount!: number;
+
+    constructor(data?: IWorkflowSetupStepDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.approverPerson = _data["approverPerson"];
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.workflowRoleName = _data["workflowRoleName"];
+            this.approvalRequire = _data["approvalRequire"];
+            this.currentHolderCount = _data["currentHolderCount"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowSetupStepDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowSetupStepDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["approverPerson"] = this.approverPerson;
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["workflowRoleName"] = this.workflowRoleName;
+        data["approvalRequire"] = this.approvalRequire;
+        data["currentHolderCount"] = this.currentHolderCount;
+        return data;
+    }
+}
+
+export interface IWorkflowSetupStepDto {
+    approverPerson: WorkflowApproverPersonType;
+    workflowRoleId: number | undefined;
+    workflowRoleName: string | undefined;
+    approvalRequire: ApprovalRequire;
+    currentHolderCount: number;
 }
 
 export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
