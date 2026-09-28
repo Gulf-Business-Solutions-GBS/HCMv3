@@ -6959,6 +6959,16 @@
     <text name="WorkflowPersonScope_Department">لأي موظف في إدارته</text>
     <text name="WorkflowPersonScope_SelfSubordinates">لنفسه ولفريقه</text>
     <text name="WorkflowPersonScope_All">لأي موظف</text>
+    <text name="WorkflowSetupDefaultChain">مسار الاعتماد الافتراضي</text>
+    <text name="WorkflowSetupUseDefaultChain">استخدام الافتراضي</text>
+    <text name="WorkflowSetupEditDefaultChain">تعديل المسار الافتراضي</text>
+    <text name="WorkflowSetupSaveDefaultChain">حفظ المسار الافتراضي</text>
+    <text name="WorkflowSetupDefaultChainUsedBy">يتبع هذا المسار {0} من المعاملات، وتعديله يغيّرها جميعاً.</text>
+    <text name="WorkflowSetupNoDefaultChainYet">لا يوجد مسار افتراضي بعد. حدّد واحداً ليتمكن أي نوع معاملة من اتباعه بدلاً من تحديد المعتمدين لكل نوع على حدة.</text>
+    <text name="WorkflowSetupFollowsDefault">يتبع المسار الافتراضي</text>
+    <text name="WorkflowSetupDefineTheDefaultChainFirst">حدّد المسار الافتراضي قبل ربط أي معاملة به.</text>
+    <text name="WorkflowSetupCannotEmptyDefaultChainInUse">ما زال {0} من المعاملات يتبع المسار الافتراضي، لذا لا يمكن إفراغه. انقلها عنه أولاً.</text>
+    <text name="WorkflowSetupLockedRowsNoticeNamed">مقفلة هنا لأنها مُعدّة بطريقة لا تستطيع هذه الشاشة عرضها: {0}. وجميعها تعمل كما هي — افتح شاشة مسارات الاعتماد لتعديلها.</text>
     <text name="RecordDirectlyNoApproval">تسجيل مباشر — بدون اعتماد</text>
     <text name="EmployeeWorkbench">منصة عمل الموظف</text>
     <text name="WorkbenchView">طريقة العرض</text>

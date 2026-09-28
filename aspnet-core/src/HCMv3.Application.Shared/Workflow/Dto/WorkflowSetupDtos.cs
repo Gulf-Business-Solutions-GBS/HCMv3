@@ -59,6 +59,16 @@ public class WorkflowSetupRowDto
     /// </summary>
     public WorkflowPersonScope RaisedBy { get; set; }
 
+    /// <summary>
+    /// True when this transaction follows the shared default chain rather than one of its own.
+    ///
+    /// <para>
+    /// Its approver cells then show the default's, read-only: the grid exists to answer "who approves
+    /// this", and hiding the answer behind another panel would defeat that.
+    /// </para>
+    /// </summary>
+    public bool UsesDefaultChain { get; set; }
+
     public bool IsWorkflowEnabled { get; set; }
 
     public bool IsEssEnabled { get; set; }
@@ -92,6 +102,15 @@ public class GetWorkflowSetupGridOutput
 {
     public List<WorkflowSetupRowDto> Rows { get; set; } = new List<WorkflowSetupRowDto>();
 
+    /// <summary>
+    /// The shared default chain every transaction can be pointed at, so most of them need no chain of
+    /// their own. Empty until somebody defines it.
+    /// </summary>
+    public List<WorkflowSetupStepDto> DefaultChainSteps { get; set; } = new List<WorkflowSetupStepDto>();
+
+    /// <summary>How many transactions follow the default today, so editing it can say what it will change.</summary>
+    public int DefaultChainUsedByCount { get; set; }
+
     /// <summary>Every role that can be chosen, so the grid does not fetch them per cell.</summary>
     public List<WorkflowSetupRoleDto> Roles { get; set; } = new List<WorkflowSetupRoleDto>();
 
@@ -122,6 +141,12 @@ public class SaveWorkflowSetupRowInput
     [Required]
     [StringLength(128)]
     public string Code { get; set; }
+
+    /// <summary>
+    /// Point this transaction at the shared default chain instead of giving it one of its own. When true
+    /// <see cref="Steps"/> is ignored -- the default decides.
+    /// </summary>
+    public bool UseDefaultChain { get; set; }
 
     public List<WorkflowSetupStepDto> Steps { get; set; } = new List<WorkflowSetupStepDto>();
 
@@ -174,4 +199,21 @@ public class WorkflowSetupRoleMemberDto
     public string EmployeeNameEn { get; set; }
 
     public string EmployeeNameAr { get; set; }
+}
+
+/// <summary>
+/// Defines the shared default chain -- the one most transactions follow, so that setting approvals up is
+/// one decision rather than thirty.
+/// </summary>
+public class SaveWorkflowSetupDefaultChainInput
+{
+    /// <summary>
+    /// Its approver positions, in order. Saving it with none is how the default is cleared, and any
+    /// transaction still pointing at it is moved off it rather than left routing to nobody.
+    /// </summary>
+    public List<WorkflowSetupStepDto> Steps { get; set; } = new List<WorkflowSetupStepDto>();
+
+    public bool NotifyByEmail { get; set; }
+
+    public int EscalateAfterDays { get; set; }
 }

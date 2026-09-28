@@ -40,6 +40,12 @@ public interface IWorkflowSetupAppService : IApplicationService
     /// </summary>
     Task SaveRow(SaveWorkflowSetupRowInput input);
 
+    /// <summary>
+    /// Defines the shared default chain. Editing it changes every transaction following it at once,
+    /// which is the point of a default -- the screen says how many before the change is made.
+    /// </summary>
+    Task SaveDefaultChain(SaveWorkflowSetupDefaultChainInput input);
+
     /// <summary>Creates a role and its members without leaving the grid.</summary>
     Task<WorkflowSetupRoleDto> CreateRole(CreateWorkflowSetupRoleInput input);
 

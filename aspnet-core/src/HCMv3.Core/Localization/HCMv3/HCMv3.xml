@@ -7124,6 +7124,16 @@
     <text name="WorkflowPersonScope_Department">Anyone in their department</text>
     <text name="WorkflowPersonScope_SelfSubordinates">Themselves and their team</text>
     <text name="WorkflowPersonScope_All">Anyone</text>
+    <text name="WorkflowSetupDefaultChain">Default approval chain</text>
+    <text name="WorkflowSetupUseDefaultChain">Use default</text>
+    <text name="WorkflowSetupEditDefaultChain">Edit the default chain</text>
+    <text name="WorkflowSetupSaveDefaultChain">Save default chain</text>
+    <text name="WorkflowSetupDefaultChainUsedBy">{0} transactions follow this, and editing it changes all of them.</text>
+    <text name="WorkflowSetupNoDefaultChainYet">No default chain yet. Set one up and any transaction can follow it instead of having approvers set one by one.</text>
+    <text name="WorkflowSetupFollowsDefault">Follows the default chain</text>
+    <text name="WorkflowSetupDefineTheDefaultChainFirst">Set up the default chain before pointing anything at it.</text>
+    <text name="WorkflowSetupCannotEmptyDefaultChainInUse">{0} transactions still follow the default chain, so it cannot be emptied. Move them off it first.</text>
+    <text name="WorkflowSetupLockedRowsNoticeNamed">Locked here, because they are set up in ways this screen cannot show: {0}. Everything about them still works — open Request Masters to change them.</text>
     <text name="RecordDirectlyNoApproval">Record directly — no approval</text>
     <text name="EmployeeWorkbench">Employee Workbench</text>
     <text name="WorkbenchView">View</text>

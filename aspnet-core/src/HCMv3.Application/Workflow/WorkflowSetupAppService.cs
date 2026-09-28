@@ -27,6 +27,12 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
     /// </summary>
     private const string GridChainPrefix = "WF-";
 
+    /// <summary>
+    /// The one chain most transactions follow. Shared on purpose -- editing it is meant to change every
+    /// transaction pointed at it, which is what makes it a default rather than a template.
+    /// </summary>
+    private const string DefaultChainCode = GridChainPrefix + "DEFAULT";
+
     /// <summary>How many approver positions the grid shows. A longer chain is locked, never truncated.</summary>
     private const int MaxSteps = 3;
 
@@ -121,9 +127,21 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
 
         var employeesWithoutManager = await CountEmployeesWithoutManagerAsync(today);
 
+        var defaultMaster = masters.FirstOrDefault(m => IsDefaultChain(m));
+
+        var defaultSteps = defaultMaster == null
+            ? new List<RequestDetail>()
+            : details.Where(d => d.RequestMasterId == defaultMaster.Id && d.ApproverPerson != WorkflowApproverPersonType.None)
+                .OrderBy(d => d.Step)
+                .ToList();
+
         var output = new GetWorkflowSetupGridOutput
         {
             WorkflowGroupsEnabled = groupChainTypeNames.Count > 0,
+            DefaultChainUsedByCount = defaultMaster == null
+                ? 0
+                : types.Count(t => t.DefaultRequestMasterId == defaultMaster.Id),
+            DefaultChainSteps = defaultSteps.Select(s => ToStepDto(s, roles, holderCounts)).ToList(),
             Roles = roles
                 .OrderBy(r => r.NameEn)
                 .Select(r => new WorkflowSetupRoleDto
@@ -162,6 +180,7 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
                 IsEssEnabled = type.IsEssEnabled,
                 AllowDirectEntry = type.AllowDirectEntry,
                 IsActive = type.IsActive,
+                UsesDefaultChain = IsDefaultChain(master),
                 RaisedBy = creatorStep?.Person ?? WorkflowPersonScope.None,
                 NotifyByEmail = approverSteps.Any(s => s.NotificationConfigId.HasValue),
                 EscalateAfterDays = approverSteps
@@ -220,7 +239,11 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
             return null;
         }
 
-        if (masterUseCounts.TryGetValue(master.Id, out var uses) && uses > 1)
+        // The default chain is shared BY DESIGN, so sharing is not a reason to lock a row that follows
+        // it. Everything else shared is somebody else's chain and rewriting it would change them too.
+        var isDefaultChain = IsDefaultChain(master);
+
+        if (!isDefaultChain && masterUseCounts.TryGetValue(master.Id, out var uses) && uses > 1)
         {
             return L("WorkflowSetupLockedSharedChain", master.NameEn, uses);
         }
@@ -242,8 +265,9 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
 
         // A chain the grid did not create may carry per-step settings the grid has no column for, and
         // rewriting its steps would drop them. Anything the grid made is its own to rewrite.
-        var isGridOwned = master.Code != null
-                          && master.Code.Equals(GridChainPrefix + type.Code, StringComparison.OrdinalIgnoreCase);
+        var isGridOwned = isDefaultChain
+                          || (master.Code != null
+                              && master.Code.Equals(GridChainPrefix + type.Code, StringComparison.OrdinalIgnoreCase));
 
         if (!isGridOwned && allSteps.Any(HasSettingsTheGridCannotShow))
         {
@@ -251,6 +275,31 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
         }
 
         return null;
+    }
+
+
+    /// <summary>One step as the grid shows it. Shared by the rows and by the default chain panel.</summary>
+    private static WorkflowSetupStepDto ToStepDto(
+        RequestDetail step,
+        List<WorkflowRole> roles,
+        Dictionary<int, int> holderCounts)
+    {
+        return new WorkflowSetupStepDto
+        {
+            ApproverPerson = step.ApproverPerson,
+            WorkflowRoleId = step.WorkflowRoleId,
+            WorkflowRoleName = step.WorkflowRoleId.HasValue
+                ? roles.FirstOrDefault(r => r.Id == step.WorkflowRoleId.Value)?.NameEn
+                : null,
+            ApprovalRequire = step.ApprovalRequire,
+            CurrentHolderCount = step.WorkflowRoleId.HasValue && holderCounts.TryGetValue(step.WorkflowRoleId.Value, out var hc)
+                ? hc
+                : 0
+        };
+    }
+    private static bool IsDefaultChain(RequestMaster master)
+    {
+        return master?.Code != null && master.Code.Equals(DefaultChainCode, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>
@@ -360,11 +409,22 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
             .Take(MaxSteps)
             .ToList();
 
-        ValidateSteps(input, steps);
+        RequestMaster master;
 
-        var master = steps.Count == 0 && input.RaisedBy == WorkflowPersonScope.None
-            ? null
-            : await EnsureChainAsync(type, input, steps);
+        if (input.UseDefaultChain)
+        {
+            // The default decides the approvers, so whatever the row sent for them is ignored rather than
+            // written somewhere it would never be read.
+            master = await RequireDefaultChainAsync();
+        }
+        else
+        {
+            ValidateSteps(input, steps);
+
+            master = steps.Count == 0 && input.RaisedBy == WorkflowPersonScope.None
+                ? null
+                : await EnsureChainAsync(type, input, steps);
+        }
 
         type.IsWorkflowEnabled = input.IsWorkflowEnabled;
         type.IsEssEnabled = input.IsEssEnabled;
@@ -457,7 +517,27 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
         await _requestMasterRepository.UpdateAsync(master);
         await CurrentUnitOfWork.SaveChangesAsync();
 
-        var existing = await _requestDetailRepository.GetAllListAsync(d => d.RequestMasterId == master.Id);
+        await ReplaceStepsAsync(master.Id, steps, input.RaisedBy, input.NotifyByEmail, input.EscalateAfterDays);
+
+        return master;
+    }
+
+    /// <summary>
+    /// Replaces a chain's steps outright, creator row included.
+    ///
+    /// <para>
+    /// Shared by a transaction's own chain and by the default one, because they are the same thing written
+    /// to a different master -- and two copies of this would be two places for the step numbering to drift.
+    /// </para>
+    /// </summary>
+    private async Task ReplaceStepsAsync(
+        int masterId,
+        List<WorkflowSetupStepDto> steps,
+        WorkflowPersonScope raisedBy,
+        bool notifyByEmail,
+        int escalateAfterDays)
+    {
+        var existing = await _requestDetailRepository.GetAllListAsync(d => d.RequestMasterId == masterId);
 
         foreach (var detail in existing)
         {
@@ -466,8 +546,9 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
 
         await CurrentUnitOfWork.SaveChangesAsync();
 
-        var notificationConfigId = input.NotifyByEmail ? await EnsureNotificationConfigIdAsync() : (int?)null;
+        var notificationConfigId = notifyByEmail ? await EnsureNotificationConfigIdAsync() : (int?)null;
 
+        var hasCreatorRow = raisedBy != WorkflowPersonScope.None;
         var stepNumber = 1;
 
         if (hasCreatorRow)
@@ -477,10 +558,10 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
             await _requestDetailRepository.InsertAsync(new RequestDetail
             {
                 TenantId = AbpSession.TenantId ?? 0,
-                RequestMasterId = master.Id,
+                RequestMasterId = masterId,
                 Step = stepNumber++,
                 ApproverPerson = WorkflowApproverPersonType.None,
-                Person = input.RaisedBy,
+                Person = raisedBy,
                 ApprovalRequire = ApprovalRequire.Single
             });
         }
@@ -490,7 +571,7 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
             await _requestDetailRepository.InsertAsync(new RequestDetail
             {
                 TenantId = AbpSession.TenantId ?? 0,
-                RequestMasterId = master.Id,
+                RequestMasterId = masterId,
                 Step = stepNumber++,
                 ApproverPerson = step.ApproverPerson,
 
@@ -509,9 +590,9 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
                 CanReject = true,
                 CanSendBack = true,
 
-                ShouldEscalate = input.EscalateAfterDays > 0,
-                EscalateAfterDays = input.EscalateAfterDays,
-                EscalateNextLevel = input.EscalateAfterDays > 0,
+                ShouldEscalate = escalateAfterDays > 0,
+                EscalateAfterDays = escalateAfterDays,
+                EscalateNextLevel = escalateAfterDays > 0,
 
                 NotificationConfigId = notificationConfigId
             });
@@ -519,7 +600,7 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
 
         await CurrentUnitOfWork.SaveChangesAsync();
 
-        return master;
+
     }
 
     /// <summary>
@@ -548,6 +629,88 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
         });
     }
 
+
+    public async Task SaveDefaultChain(SaveWorkflowSetupDefaultChainInput input)
+    {
+        var steps = (input.Steps ?? new List<WorkflowSetupStepDto>())
+            .Where(s => s.ApproverPerson != WorkflowApproverPersonType.None)
+            .Take(MaxSteps)
+            .ToList();
+
+        foreach (var step in steps)
+        {
+            if (step.ApproverPerson == WorkflowApproverPersonType.Person && !step.WorkflowRoleId.HasValue)
+            {
+                throw new UserFriendlyException(L("WorkflowSetupPersonNeedsARole"));
+            }
+        }
+
+        if (input.EscalateAfterDays < 0)
+        {
+            throw new UserFriendlyException(L("WorkflowSetupEscalationDaysCannotBeNegative"));
+        }
+
+        var master = await _requestMasterRepository.FirstOrDefaultAsync(m => m.Code == DefaultChainCode);
+
+        // Emptying the default would leave every transaction following it routing to nobody, which fails
+        // at the first request rather than here. Refused while anything still uses it; the rows have to be
+        // moved off it first, deliberately, one at a time.
+        if (steps.Count == 0)
+        {
+            var followers = master == null
+                ? 0
+                : await _transactionTypeRepository.CountAsync(t => t.DefaultRequestMasterId == master.Id);
+
+            if (followers > 0)
+            {
+                throw new UserFriendlyException(L("WorkflowSetupCannotEmptyDefaultChainInUse", followers));
+            }
+        }
+
+        if (master == null)
+        {
+            master = new RequestMaster
+            {
+                TenantId = AbpSession.TenantId ?? 0,
+                Code = DefaultChainCode,
+                NameEn = "Default approval chain",
+                NameAr = "مسار الاعتماد الافتراضي"
+            };
+
+            master.Id = await _requestMasterRepository.InsertAndGetIdAsync(master);
+        }
+
+        master.WorkflowSteps = steps.Count;
+
+        await _requestMasterRepository.UpdateAsync(master);
+        await CurrentUnitOfWork.SaveChangesAsync();
+
+        // No creator row on the default: who may RAISE a transaction is a property of that transaction,
+        // not of the chain it happens to share. Each row keeps its own answer.
+        await ReplaceStepsAsync(
+            master.Id, steps, WorkflowPersonScope.None, input.NotifyByEmail, input.EscalateAfterDays);
+    }
+
+    /// <summary>Creates the default chain's master on demand, for a row asking to follow it.</summary>
+    private async Task<RequestMaster> RequireDefaultChainAsync()
+    {
+        var master = await _requestMasterRepository.FirstOrDefaultAsync(m => m.Code == DefaultChainCode);
+
+        if (master == null)
+        {
+            throw new UserFriendlyException(L("WorkflowSetupDefineTheDefaultChainFirst"));
+        }
+
+        var hasSteps = await _requestDetailRepository
+            .CountAsync(d => d.RequestMasterId == master.Id && d.ApproverPerson != WorkflowApproverPersonType.None);
+
+        if (hasSteps == 0)
+        {
+            throw new UserFriendlyException(L("WorkflowSetupDefineTheDefaultChainFirst"));
+        }
+
+        return master;
+    }
     // ------------------------------------------------------------------ roles
 
     public async Task<WorkflowSetupRoleDto> CreateRole(CreateWorkflowSetupRoleInput input)

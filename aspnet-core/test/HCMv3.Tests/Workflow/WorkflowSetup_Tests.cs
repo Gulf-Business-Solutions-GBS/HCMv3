@@ -580,4 +580,187 @@ public class WorkflowSetup_Tests : AppTestBase
 
         await Should.ThrowAsync<UserFriendlyException>(act);
     }
+
+    // ------------------------------------------------------------------ the default chain
+
+    private async Task DefineDefaultChainAsync(params WorkflowApproverPersonType[] approvers)
+    {
+        await _setup.SaveDefaultChain(new SaveWorkflowSetupDefaultChainInput
+        {
+            Steps = approvers.Select(a => new WorkflowSetupStepDto { ApproverPerson = a }).ToList()
+        });
+    }
+
+    [Fact]
+    public async Task Should_Define_A_Three_Step_Default_Chain()
+    {
+        await DefineDefaultChainAsync(
+            WorkflowApproverPersonType.PersonManager,
+            WorkflowApproverPersonType.ManagerLevel2,
+            WorkflowApproverPersonType.ManagerLevel3);
+
+        var grid = await _setup.GetGrid();
+
+        grid.DefaultChainSteps.Count.ShouldBe(3);
+        grid.DefaultChainSteps[0].ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonManager);
+        grid.DefaultChainSteps[2].ApproverPerson.ShouldBe(WorkflowApproverPersonType.ManagerLevel3);
+    }
+
+    [Fact]
+    public async Task Should_Point_A_Transaction_At_The_Default_Chain()
+    {
+        await DefineDefaultChainAsync(WorkflowApproverPersonType.PersonManager);
+
+        await _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            UseDefaultChain = true,
+            IsWorkflowEnabled = true,
+            IsActive = true
+        });
+
+        var row = await RowAsync();
+
+        row.UsesDefaultChain.ShouldBeTrue();
+
+        // The row shows the default's approvers, so the grid still answers "who approves this".
+        row.Steps.Count.ShouldBe(1);
+        row.Steps[0].ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonManager);
+    }
+
+    /// <summary>
+    /// The whole point of a default: edit once, every follower changes. Anything else would be a template,
+    /// which is a different and much less useful thing.
+    /// </summary>
+    [Fact]
+    public async Task Should_Change_Every_Follower_When_The_Default_Changes()
+    {
+        await DefineDefaultChainAsync(WorkflowApproverPersonType.PersonManager);
+
+        foreach (var code in new[] { Subject, "EmployeeAsset" })
+        {
+            await _setup.SaveRow(new SaveWorkflowSetupRowInput
+            {
+                Code = code,
+                UseDefaultChain = true,
+                IsWorkflowEnabled = true,
+                IsActive = true
+            });
+        }
+
+        await DefineDefaultChainAsync(
+            WorkflowApproverPersonType.PersonManager,
+            WorkflowApproverPersonType.ManagerLevel2);
+
+        var grid = await _setup.GetGrid();
+
+        grid.DefaultChainUsedByCount.ShouldBe(2);
+
+        foreach (var code in new[] { Subject, "EmployeeAsset" })
+        {
+            grid.Rows.Single(r => r.Code == code).Steps.Count.ShouldBe(2);
+        }
+    }
+
+    /// <summary>
+    /// A shared chain normally locks a row, because rewriting it would change the other transactions using
+    /// it. The default is shared deliberately, so that reason does not apply -- without this exemption
+    /// every row would lock itself the moment a second transaction followed the default.
+    /// </summary>
+    [Fact]
+    public async Task Should_Not_Lock_Rows_Merely_For_Sharing_The_Default_Chain()
+    {
+        await DefineDefaultChainAsync(WorkflowApproverPersonType.PersonManager);
+
+        foreach (var code in new[] { Subject, "EmployeeAsset" })
+        {
+            await _setup.SaveRow(new SaveWorkflowSetupRowInput
+            {
+                Code = code,
+                UseDefaultChain = true,
+                IsWorkflowEnabled = true,
+                IsActive = true
+            });
+        }
+
+        var grid = await _setup.GetGrid();
+
+        grid.Rows.Single(r => r.Code == Subject).IsLocked.ShouldBeFalse();
+        grid.Rows.Single(r => r.Code == "EmployeeAsset").IsLocked.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Should_Refuse_To_Follow_A_Default_Chain_That_Does_Not_Exist_Yet()
+    {
+        var act = () => _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            UseDefaultChain = true,
+            IsWorkflowEnabled = true,
+            IsActive = true
+        });
+
+        await Should.ThrowAsync<UserFriendlyException>(act);
+    }
+
+    /// <summary>
+    /// Emptying a default that transactions still follow would leave them routing to nobody, which fails
+    /// at the first request rather than at the moment somebody caused it.
+    /// </summary>
+    [Fact]
+    public async Task Should_Refuse_To_Empty_A_Default_Chain_Still_In_Use()
+    {
+        await DefineDefaultChainAsync(WorkflowApproverPersonType.PersonManager);
+
+        await _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            UseDefaultChain = true,
+            IsWorkflowEnabled = true,
+            IsActive = true
+        });
+
+        var act = () => _setup.SaveDefaultChain(new SaveWorkflowSetupDefaultChainInput
+        {
+            Steps = new List<WorkflowSetupStepDto>()
+        });
+
+        await Should.ThrowAsync<UserFriendlyException>(act);
+    }
+
+    /// <summary>Coming off the default gives the transaction its own chain, leaving the default alone.</summary>
+    [Fact]
+    public async Task Should_Give_A_Transaction_Its_Own_Chain_When_It_Stops_Following_The_Default()
+    {
+        await DefineDefaultChainAsync(WorkflowApproverPersonType.PersonManager);
+
+        await _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            UseDefaultChain = true,
+            IsWorkflowEnabled = true,
+            IsActive = true
+        });
+
+        await _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            UseDefaultChain = false,
+            IsWorkflowEnabled = true,
+            IsActive = true,
+            Steps = new List<WorkflowSetupStepDto>
+            {
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.ManagerLevel3 }
+            }
+        });
+
+        var grid = await _setup.GetGrid();
+        var row = grid.Rows.Single(r => r.Code == Subject);
+
+        row.UsesDefaultChain.ShouldBeFalse();
+        row.Steps[0].ApproverPerson.ShouldBe(WorkflowApproverPersonType.ManagerLevel3);
+
+        // The default itself is untouched by one follower leaving.
+        grid.DefaultChainSteps[0].ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonManager);
+    }
 }
