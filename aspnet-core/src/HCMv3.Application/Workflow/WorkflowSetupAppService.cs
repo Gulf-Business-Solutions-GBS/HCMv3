@@ -404,6 +404,8 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
 
         await EnsureRowIsEditableAsync(type);
 
+        EnsureNoGapsBetweenApprovers(input.Steps);
+
         var steps = (input.Steps ?? new List<WorkflowSetupStepDto>())
             .Where(s => s.ApproverPerson != WorkflowApproverPersonType.None)
             .Take(MaxSteps)
@@ -455,6 +457,41 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
         }
     }
 
+
+    /// <summary>
+    /// Refuses a route with a hole in it -- approver 3 set while approver 2 is blank.
+    ///
+    /// <para>
+    /// Checked on the RAW slots, before the blanks are filtered out, because filtering is exactly what
+    /// hides the mistake: the gap closes silently and the route saves with the approvers one position
+    /// earlier than they were typed. Somebody setting a two-step route leaves the last slot blank on
+    /// purpose; somebody leaving the MIDDLE one blank has made an error, and closing it for them means
+    /// the screen and the saved route no longer agree.
+    /// </para>
+    /// </summary>
+    private void EnsureNoGapsBetweenApprovers(List<WorkflowSetupStepDto> rawSteps)
+    {
+        if (rawSteps == null)
+        {
+            return;
+        }
+
+        var seenBlank = false;
+
+        for (var i = 0; i < rawSteps.Count && i < MaxSteps; i++)
+        {
+            if (rawSteps[i].ApproverPerson == WorkflowApproverPersonType.None)
+            {
+                seenBlank = true;
+                continue;
+            }
+
+            if (seenBlank)
+            {
+                throw new UserFriendlyException(L("WorkflowSetupApproversMustBeConsecutive", i + 1));
+            }
+        }
+    }
     private void ValidateSteps(SaveWorkflowSetupRowInput input, List<WorkflowSetupStepDto> steps)
     {
         foreach (var step in steps)
@@ -632,6 +669,8 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
 
     public async Task SaveDefaultChain(SaveWorkflowSetupDefaultChainInput input)
     {
+        EnsureNoGapsBetweenApprovers(input.Steps);
+
         var steps = (input.Steps ?? new List<WorkflowSetupStepDto>())
             .Where(s => s.ApproverPerson != WorkflowApproverPersonType.None)
             .Take(MaxSteps)
@@ -727,7 +766,12 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
             TenantId = AbpSession.TenantId ?? 0,
             Code = input.Code,
             NameEn = input.NameEn,
-            NameAr = input.NameAr
+            NameAr = input.NameAr,
+
+            // The same scoping the Workflow Roles screen offers, so a role created here is not a
+            // second-class one that has to be opened elsewhere to finish.
+            WorkflowRoleGroup = input.WorkflowRoleGroup,
+            WorkflowRoleOrgId = input.WorkflowRoleOrgId
         };
 
         role.Id = await _workflowRoleRepository.InsertAndGetIdAsync(role);

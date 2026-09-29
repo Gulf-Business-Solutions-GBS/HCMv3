@@ -763,4 +763,91 @@ public class WorkflowSetup_Tests : AppTestBase
         // The default itself is untouched by one follower leaving.
         grid.DefaultChainSteps[0].ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonManager);
     }
+
+    // ------------------------------------------------------------------ approver ordering
+
+    /// <summary>
+    /// A hole in the middle of a route is a mistake, not shorthand. Filtering the blank out would close it
+    /// silently and save the approvers one position earlier than they were typed, so the screen and the
+    /// saved route would disagree with nothing to say why.
+    /// </summary>
+    [Fact]
+    public async Task Should_Refuse_A_Route_With_A_Gap_Between_Approvers()
+    {
+        var act = () => _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            IsWorkflowEnabled = true,
+            IsActive = true,
+            Steps = new List<WorkflowSetupStepDto>
+            {
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.PersonManager },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.None },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.ManagerLevel3 }
+            }
+        });
+
+        await Should.ThrowAsync<UserFriendlyException>(act);
+    }
+
+    /// <summary>
+    /// The common case, and it must stay legal: most routes are one or two deep, so trailing blanks are
+    /// the normal shape rather than an incomplete one.
+    /// </summary>
+    [Fact]
+    public async Task Should_Allow_Trailing_Blank_Approvers()
+    {
+        await _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            IsWorkflowEnabled = true,
+            IsActive = true,
+            Steps = new List<WorkflowSetupStepDto>
+            {
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.PersonManager },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.ManagerLevel2 },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.None }
+            }
+        });
+
+        var row = await RowAsync();
+
+        row.Steps.Count.ShouldBe(2);
+    }
+
+    /// <summary>A blank first slot with anything after it is the same mistake, caught at approver 2.</summary>
+    [Fact]
+    public async Task Should_Refuse_A_Route_That_Starts_With_A_Blank()
+    {
+        var act = () => _setup.SaveRow(new SaveWorkflowSetupRowInput
+        {
+            Code = Subject,
+            IsWorkflowEnabled = true,
+            IsActive = true,
+            Steps = new List<WorkflowSetupStepDto>
+            {
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.None },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.PersonManager }
+            }
+        });
+
+        await Should.ThrowAsync<UserFriendlyException>(act);
+    }
+
+    /// <summary>The default route has the same three slots, so it gets the same rule.</summary>
+    [Fact]
+    public async Task Should_Refuse_A_Gap_In_The_Default_Route_Too()
+    {
+        var act = () => _setup.SaveDefaultChain(new SaveWorkflowSetupDefaultChainInput
+        {
+            Steps = new List<WorkflowSetupStepDto>
+            {
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.PersonManager },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.None },
+                new WorkflowSetupStepDto { ApproverPerson = WorkflowApproverPersonType.ManagerLevel2 }
+            }
+        });
+
+        await Should.ThrowAsync<UserFriendlyException>(act);
+    }
 }

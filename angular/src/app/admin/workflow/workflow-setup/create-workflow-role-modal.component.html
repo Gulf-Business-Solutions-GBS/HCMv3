@@ -61,6 +61,37 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" for="WorkflowRole_Group">{{ 'WorkflowRoleGroup' | localize }}</label>
+                                <select
+                                    id="WorkflowRole_Group"
+                                    class="form-select"
+                                    name="WorkflowRoleGroup"
+                                    [ngModel]="roleGroup()"
+                                    (ngModelChange)="roleGroup.set($event)">
+                                    @for (group of roleGroups; track group.value) {
+                                        <option [ngValue]="group.value">{{ group.key | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" for="WorkflowRole_OrgUnit">{{ 'OrganizationUnit' | localize }}</label>
+                                <select
+                                    id="WorkflowRole_OrgUnit"
+                                    class="form-select"
+                                    name="WorkflowRoleOrgId"
+                                    [ngModel]="orgUnitId()"
+                                    (ngModelChange)="orgUnitId.set($event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (orgUnit of orgUnits(); track orgUnit.id) {
+                                        <option [ngValue]="orgUnit.id">{{ orgUnit.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
                         <label class="form-label">
                             {{ 'WorkflowSetupWhoHoldsThisRole' | localize }}
                             @if (selectedCount() > 0) {

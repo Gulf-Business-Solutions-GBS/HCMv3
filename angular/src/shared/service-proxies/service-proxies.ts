@@ -162258,6 +162258,58 @@ export class WorkflowSetupServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    saveDefaultChain(body?: SaveWorkflowSetupDefaultChainInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowSetup/SaveDefaultChain";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveDefaultChain(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveDefaultChain(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSaveDefaultChain(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     createRole(body?: CreateWorkflowSetupRoleInput | undefined): Observable<WorkflowSetupRoleDto> {
         let url_ = this.baseUrl + "/api/services/app/WorkflowSetup/CreateRole";
         url_ = url_.replace(/[?&]$/, "");
@@ -199848,6 +199900,8 @@ export class CreateWorkflowSetupRoleInput implements ICreateWorkflowSetupRoleInp
     code!: string;
     nameEn!: string;
     nameAr!: string;
+    workflowRoleGroup!: WorkflowRoleGroup;
+    workflowRoleOrgId!: number | undefined;
     employeeIds!: number[] | undefined;
 
     constructor(data?: ICreateWorkflowSetupRoleInput) {
@@ -199864,6 +199918,8 @@ export class CreateWorkflowSetupRoleInput implements ICreateWorkflowSetupRoleInp
             this.code = _data["code"];
             this.nameEn = _data["nameEn"];
             this.nameAr = _data["nameAr"];
+            this.workflowRoleGroup = _data["workflowRoleGroup"];
+            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
             if (Array.isArray(_data["employeeIds"])) {
                 this.employeeIds = [] as any;
                 for (let item of _data["employeeIds"])
@@ -199884,6 +199940,8 @@ export class CreateWorkflowSetupRoleInput implements ICreateWorkflowSetupRoleInp
         data["code"] = this.code;
         data["nameEn"] = this.nameEn;
         data["nameAr"] = this.nameAr;
+        data["workflowRoleGroup"] = this.workflowRoleGroup;
+        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
         if (Array.isArray(this.employeeIds)) {
             data["employeeIds"] = [];
             for (let item of this.employeeIds)
@@ -199897,6 +199955,8 @@ export interface ICreateWorkflowSetupRoleInput {
     code: string;
     nameEn: string;
     nameAr: string;
+    workflowRoleGroup: WorkflowRoleGroup;
+    workflowRoleOrgId: number | undefined;
     employeeIds: number[] | undefined;
 }
 
@@ -267307,6 +267367,8 @@ export interface IGetWorkflowRoleForEditOutput {
 
 export class GetWorkflowSetupGridOutput implements IGetWorkflowSetupGridOutput {
     rows!: WorkflowSetupRowDto[] | undefined;
+    defaultChainSteps!: WorkflowSetupStepDto[] | undefined;
+    defaultChainUsedByCount!: number;
     roles!: WorkflowSetupRoleDto[] | undefined;
     workflowGroupsEnabled!: boolean;
 
@@ -267326,6 +267388,12 @@ export class GetWorkflowSetupGridOutput implements IGetWorkflowSetupGridOutput {
                 for (let item of _data["rows"])
                     this.rows!.push(WorkflowSetupRowDto.fromJS(item));
             }
+            if (Array.isArray(_data["defaultChainSteps"])) {
+                this.defaultChainSteps = [] as any;
+                for (let item of _data["defaultChainSteps"])
+                    this.defaultChainSteps!.push(WorkflowSetupStepDto.fromJS(item));
+            }
+            this.defaultChainUsedByCount = _data["defaultChainUsedByCount"];
             if (Array.isArray(_data["roles"])) {
                 this.roles = [] as any;
                 for (let item of _data["roles"])
@@ -267349,6 +267417,12 @@ export class GetWorkflowSetupGridOutput implements IGetWorkflowSetupGridOutput {
             for (let item of this.rows)
                 data["rows"].push(item ? item.toJSON() : undefined as any);
         }
+        if (Array.isArray(this.defaultChainSteps)) {
+            data["defaultChainSteps"] = [];
+            for (let item of this.defaultChainSteps)
+                data["defaultChainSteps"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["defaultChainUsedByCount"] = this.defaultChainUsedByCount;
         if (Array.isArray(this.roles)) {
             data["roles"] = [];
             for (let item of this.roles)
@@ -267361,6 +267435,8 @@ export class GetWorkflowSetupGridOutput implements IGetWorkflowSetupGridOutput {
 
 export interface IGetWorkflowSetupGridOutput {
     rows: WorkflowSetupRowDto[] | undefined;
+    defaultChainSteps: WorkflowSetupStepDto[] | undefined;
+    defaultChainUsedByCount: number;
     roles: WorkflowSetupRoleDto[] | undefined;
     workflowGroupsEnabled: boolean;
 }
@@ -330055,8 +330131,61 @@ export interface ISavePageInput {
     pages: Page[] | undefined;
 }
 
+export class SaveWorkflowSetupDefaultChainInput implements ISaveWorkflowSetupDefaultChainInput {
+    steps!: WorkflowSetupStepDto[] | undefined;
+    notifyByEmail!: boolean;
+    escalateAfterDays!: number;
+
+    constructor(data?: ISaveWorkflowSetupDefaultChainInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["steps"])) {
+                this.steps = [] as any;
+                for (let item of _data["steps"])
+                    this.steps!.push(WorkflowSetupStepDto.fromJS(item));
+            }
+            this.notifyByEmail = _data["notifyByEmail"];
+            this.escalateAfterDays = _data["escalateAfterDays"];
+        }
+    }
+
+    static fromJS(data: any): SaveWorkflowSetupDefaultChainInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveWorkflowSetupDefaultChainInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.steps)) {
+            data["steps"] = [];
+            for (let item of this.steps)
+                data["steps"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["notifyByEmail"] = this.notifyByEmail;
+        data["escalateAfterDays"] = this.escalateAfterDays;
+        return data;
+    }
+}
+
+export interface ISaveWorkflowSetupDefaultChainInput {
+    steps: WorkflowSetupStepDto[] | undefined;
+    notifyByEmail: boolean;
+    escalateAfterDays: number;
+}
+
 export class SaveWorkflowSetupRowInput implements ISaveWorkflowSetupRowInput {
     code!: string;
+    useDefaultChain!: boolean;
     steps!: WorkflowSetupStepDto[] | undefined;
     raisedBy!: WorkflowPersonScope;
     isWorkflowEnabled!: boolean;
@@ -330078,6 +330207,7 @@ export class SaveWorkflowSetupRowInput implements ISaveWorkflowSetupRowInput {
     init(_data?: any) {
         if (_data) {
             this.code = _data["code"];
+            this.useDefaultChain = _data["useDefaultChain"];
             if (Array.isArray(_data["steps"])) {
                 this.steps = [] as any;
                 for (let item of _data["steps"])
@@ -330103,6 +330233,7 @@ export class SaveWorkflowSetupRowInput implements ISaveWorkflowSetupRowInput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
+        data["useDefaultChain"] = this.useDefaultChain;
         if (Array.isArray(this.steps)) {
             data["steps"] = [];
             for (let item of this.steps)
@@ -330121,6 +330252,7 @@ export class SaveWorkflowSetupRowInput implements ISaveWorkflowSetupRowInput {
 
 export interface ISaveWorkflowSetupRowInput {
     code: string;
+    useDefaultChain: boolean;
     steps: WorkflowSetupStepDto[] | undefined;
     raisedBy: WorkflowPersonScope;
     isWorkflowEnabled: boolean;
@@ -345492,6 +345624,7 @@ export class WorkflowSetupRowDto implements IWorkflowSetupRowDto {
     displayOrder!: number;
     steps!: WorkflowSetupStepDto[] | undefined;
     raisedBy!: WorkflowPersonScope;
+    usesDefaultChain!: boolean;
     isWorkflowEnabled!: boolean;
     isEssEnabled!: boolean;
     allowDirectEntry!: boolean;
@@ -345523,6 +345656,7 @@ export class WorkflowSetupRowDto implements IWorkflowSetupRowDto {
                     this.steps!.push(WorkflowSetupStepDto.fromJS(item));
             }
             this.raisedBy = _data["raisedBy"];
+            this.usesDefaultChain = _data["usesDefaultChain"];
             this.isWorkflowEnabled = _data["isWorkflowEnabled"];
             this.isEssEnabled = _data["isEssEnabled"];
             this.allowDirectEntry = _data["allowDirectEntry"];
@@ -345558,6 +345692,7 @@ export class WorkflowSetupRowDto implements IWorkflowSetupRowDto {
                 data["steps"].push(item ? item.toJSON() : undefined as any);
         }
         data["raisedBy"] = this.raisedBy;
+        data["usesDefaultChain"] = this.usesDefaultChain;
         data["isWorkflowEnabled"] = this.isWorkflowEnabled;
         data["isEssEnabled"] = this.isEssEnabled;
         data["allowDirectEntry"] = this.allowDirectEntry;
@@ -345582,6 +345717,7 @@ export interface IWorkflowSetupRowDto {
     displayOrder: number;
     steps: WorkflowSetupStepDto[] | undefined;
     raisedBy: WorkflowPersonScope;
+    usesDefaultChain: boolean;
     isWorkflowEnabled: boolean;
     isEssEnabled: boolean;
     allowDirectEntry: boolean;

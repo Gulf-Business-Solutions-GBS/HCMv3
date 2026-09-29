@@ -183,6 +183,15 @@ public class CreateWorkflowSetupRoleInput
     public string NameAr { get; set; }
 
     /// <summary>
+    /// Scopes the role to a company, department, branch or cost centre, exactly as the Workflow Roles
+    /// screen does. None means it applies everywhere.
+    /// </summary>
+    public WorkflowRoleGroup WorkflowRoleGroup { get; set; }
+
+    /// <summary>The organization unit this role belongs to, when it is scoped to one.</summary>
+    public int? WorkflowRoleOrgId { get; set; }
+
+    /// <summary>
     /// Who holds it. May be empty -- a role with nobody in it is a legitimate half-finished state, and the
     /// grid warns about it rather than refusing to save.
     /// </summary>

@@ -6818,7 +6818,6 @@
     <text name="TenantSetupCheck">فحص إعدادات الجهة</text>
     <text name="SetupCheckModuleEmployeeProfile">ملف الموظف</text>
     <text name="SetupCheckUnknownVersion">الإصدار {0} غير موجود في قائمة الإصدارات.</text>
-    <text name="SetupCheckUnknownTenant">الجهة المختارة غير موجودة.</text>
     <text name="SetupCheckOnlyThisVersion">ما أضافه هذا الإصدار فقط</text>
     <text name="SetupCheckUpToThisVersion">كل ما يسبق هذا الإصدار ويشمله</text>
     <text name="SetupCheckCheckedOn">تاريخ الفحص</text>
@@ -6867,6 +6866,18 @@
     <text name="SetupCheck_EMP009_Why">تعمل الرواتب، لكن ملف البنك يستبعد الموظفين الذين ليس لهم بيانات دفع.</text>
     <text name="SetupCheck_EMP010_Title">للموظفين الذين يُدفع لهم عن طريق البنك رقم آيبان أو رقم حساب</text>
     <text name="SetupCheck_EMP010_Why">لا يستطيع ملف البنك الدفع لموظف ليس له أحدهما.</text>
+    <text name="SetupCheckDescription">ما يحتاجه كل إصدار من HCMv3 من إعدادات، وهل هي موجودة لدى هذه الشركة</text>
+    <text name="SetupCheckRelease">الإصدار</text>
+    <text name="SetupCheckShow">العرض</text>
+    <text name="SetupCheckRunChecks">تشغيل الفحص</text>
+    <text name="SetupCheckReleasedOn">تاريخ الإصدار {0}</text>
+    <text name="SetupCheckChecksInRelease">{0} فحصًا جاءت مع هذا الإصدار</text>
+    <text name="SetupCheckCurrentRelease">الحالي</text>
+    <text name="SetupCheckMoreCodes">+{0} أخرى</text>
+    <text name="SetupCheckAllModules">كل الوحدات</text>
+    <text name="SetupCheckAllSeverities">كل درجات الأهمية</text>
+    <text name="SetupCheckAllResults">كل النتائج</text>
+    <text name="SetupCheckOpenScreen">فتح {0}</text>
     <text name="IsCommentRequire">الملاحظة إلزامية</text>
     <text name="WorkflowEnabled">دورة الاعتماد مفعّلة</text>
     <text name="EssEnabled">الخدمة الذاتية مفعّلة</text>
@@ -6913,7 +6924,7 @@
     <text name="RequestActionTypeRecordedDirectly">سُجّلت بدون اعتماد</text>
     <text name="RecordDirectly">تسجيل بدون اعتماد</text>
     <text name="RecordDirectlyHint">يحفظ هذه المعاملة كنهائية فوراً بدلاً من إرسالها للاعتماد، ويُسجَّل اسمك عليها.</text>
-    <text name="WorkflowSetup">إعداد سير العمل</text>
+    <text name="WorkflowSetup">إعداد سير عمل بدء التشغيل</text>
     <text name="WorkflowSetupLockedSharedChain">‏"{0}" مستخدم في {1} من المعاملات، وتعديله هنا سيغيّرها جميعاً. عدّله في شاشة مسارات الاعتماد.</text>
     <text name="WorkflowSetupLockedChainUsedByGroup">‏"{0}" مستخدم أيضاً في مجموعة سير عمل، وهو ما لا تعرضه هذه الشاشة. عدّله في شاشة مسارات الاعتماد.</text>
     <text name="WorkflowSetupLockedTooManySteps">يحتوي هذا المسار على {0} معتمدين، وتعرض هذه الشاشة {1}. عدّله في شاشة مسارات الاعتماد.</text>
@@ -6926,6 +6937,7 @@
     <text name="WorkflowSetupWarningGroupChainOverrides">توجد مجموعة سير عمل توجّه بعض الموظفين إلى مسار مختلف عن المحدد هنا.</text>
     <text name="WorkflowSetupWarningDirectEntryWithoutWorkflow">لا أثر لتخطي الاعتماد ما دام سير العمل متوقفاً، إذ لا يوجد ما يُتخطى.</text>
     <text name="WorkflowSetupPersonNeedsARole">اختر دوراً لكل خطوة من نوع "شخص".</text>
+    <text name="WorkflowSetupApproversMustBeConsecutive">تم تحديد المعتمد {0} بينما السابق له فارغ. املأ المعتمدين بالترتيب واترك الأخيرة فارغة فقط.</text>
     <text name="WorkflowSetupCannotEnableWithoutApprovers">أضف معتمداً واحداً على الأقل قبل تفعيل سير العمل.</text>
     <text name="WorkflowSetupEscalationDaysCannotBeNegative">لا يمكن أن تكون أيام التصعيد بالسالب.</text>
     <text name="Transaction">المعاملة</text>
@@ -6961,6 +6973,8 @@
     <text name="WorkflowPersonScope_All">لأي موظف</text>
     <text name="WorkflowSetupDefaultChain">مسار الاعتماد الافتراضي</text>
     <text name="WorkflowSetupUseDefaultChain">استخدام الافتراضي</text>
+    <text name="WorkflowSetupSaveAll">حفظ جميع التغييرات</text>
+    <text name="WorkflowSetupUnsavedRows">يوجد {0} من المعاملات بتغييرات غير محفوظة.</text>
     <text name="WorkflowSetupEditDefaultChain">تعديل المسار الافتراضي</text>
     <text name="WorkflowSetupSaveDefaultChain">حفظ المسار الافتراضي</text>
     <text name="WorkflowSetupDefaultChainUsedBy">يتبع هذا المسار {0} من المعاملات، وتعديله يغيّرها جميعاً.</text>

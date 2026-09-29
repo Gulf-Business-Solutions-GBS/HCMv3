@@ -1,6 +1,21 @@
 <div [@routerTransition]>
     <sub-header [title]="'WorkflowSetup' | localize" [description]="'Workflow' | localize">
         <div role="actions">
+            <!--
+                Sits beside Refresh rather than under the grid: with thirty rows pre-filled the whole point
+                is one action, and a button at the bottom of a long table is a scroll away from being found.
+            -->
+            @if (unsavedCount() > 0) {
+                <button
+                    (click)="saveAll()"
+                    class="btn btn-primary float-end me-2"
+                    [buttonBusy]="savingAll()">
+                    <i class="fa fa-save btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'WorkflowSetupSaveAll' | localize }} ({{ unsavedCount() }})
+                    </span>
+                </button>
+            }
             <button (click)="load()" class="btn btn-light-primary float-end" [disabled]="loading()">
                 <i class="fa fa-refresh btn-md-icon"></i>
                 <span class="d-none d-md-inline-block">{{ 'Refresh' | localize }}</span>
@@ -22,11 +37,112 @@
                 }
 
                 @if (lockedCount() > 0) {
+                    <!-- Names them: a count alone tells you something is wrong and nothing about what. -->
                     <div class="alert alert-light-primary">
-                        {{ 'WorkflowSetupLockedRowsNotice' | localize: lockedCount() }}
+                        {{ 'WorkflowSetupLockedRowsNoticeNamed' | localize: lockedNames() }}
                     </div>
                 }
 
+
+                <!--
+                    The default chain, above the grid. Most organisations route almost everything the same
+                    way, so setting that once and pointing rows at it is the difference between one
+                    decision and thirty.
+                -->
+                <div class="card card-bordered mb-5">
+                    <div class="card-header align-items-center" style="min-height: 56px">
+                        <h3 class="card-title fs-5 mb-0">{{ 'WorkflowSetupDefaultChain' | localize }}</h3>
+                        <div class="card-toolbar">
+                            <button type="button" class="btn btn-sm btn-light-primary" (click)="toggleDefaultPanel()">
+                                {{ (defaultPanelOpen() ? 'Cancel' : 'WorkflowSetupEditDefaultChain') | localize }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body py-4">
+                        @if (!defaultPanelOpen()) {
+                            @if (hasDefaultChain()) {
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    @for (step of defaultSteps(); track $index) {
+                                        @if (isConfigured(step)) {
+                                            @if ($index > 0) {
+                                                <i class="fa fa-arrow-right text-muted small"></i>
+                                            }
+                                            <span class="badge badge-light-primary">{{ describeStep(step) }}</span>
+                                        }
+                                    }
+                                </div>
+
+                                @if (defaultUsedByCount() > 0) {
+                                    <div class="text-muted small mt-2">
+                                        {{ 'WorkflowSetupDefaultChainUsedBy' | localize: defaultUsedByCount() }}
+                                    </div>
+                                }
+                            } @else {
+                                <div class="text-muted">{{ 'WorkflowSetupNoDefaultChainYet' | localize }}</div>
+                            }
+                        } @else {
+                            <div class="row">
+                                @for (index of stepIndexes; track index) {
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label small">{{ 'WorkflowSetupApprover' | localize: index + 1 }}</label>
+                                        <select
+                                            class="form-select form-select-sm mb-1"
+                                            [ngModel]="defaultSteps()[index].approverPerson"
+                                            [name]="'default_kind_' + index"
+                                            (ngModelChange)="setDefaultApprover(index, $event)">
+                                            @for (option of approverOptions; track option.value) {
+                                                <option [ngValue]="option.value">{{ option.key | localize }}</option>
+                                            }
+                                        </select>
+
+                                        @if (needsRole(defaultSteps()[index])) {
+                                            <select
+                                                class="form-select form-select-sm"
+                                                [ngModel]="defaultSteps()[index].workflowRoleId"
+                                                [name]="'default_role_' + index"
+                                                (ngModelChange)="setDefaultRole(index, $event)">
+                                                <option [ngValue]="undefined">{{ 'WorkflowSetupChooseARole' | localize }}</option>
+                                                @for (role of roles(); track role.id) {
+                                                    <option [ngValue]="role.id">{{ roleName(role) }}</option>
+                                                }
+                                            </select>
+
+                                            <!--
+                                                The way out of a dead end: with no roles defined yet the
+                                                dropdown above has nothing in it, and sending somebody to
+                                                another screen mid-setup loses what they were building.
+                                            -->
+                                            <button
+                                                type="button"
+                                                class="btn btn-link btn-sm p-0"
+                                                (click)="openNewRoleForDefault(index)">
+                                                {{ 'WorkflowSetupNewRole' | localize }}
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                            @if (defaultUsedByCount() > 0) {
+                                <!-- Said before saving, not after: changing one chain that many transactions
+                                     follow is a bigger action than changing one row. -->
+                                <div class="alert alert-warning py-2">
+                                    {{ 'WorkflowSetupDefaultChainUsedBy' | localize: defaultUsedByCount() }}
+                                </div>
+                            }
+
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm"
+                                [disabled]="!defaultDirty()"
+                                [buttonBusy]="savingDefault()"
+                                (click)="saveDefaultChain()">
+                                {{ 'WorkflowSetupSaveDefaultChain' | localize }}
+                            </button>
+                        }
+                    </div>
+                </div>
                 @if (loading()) {
                     <div class="text-center py-10">
                         <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -37,6 +153,7 @@
                             <thead>
                                 <tr>
                                     <th style="min-width: 190px">{{ 'Transaction' | localize }}</th>
+                                    <th style="min-width: 110px" class="text-center">{{ 'WorkflowSetupUseDefaultChain' | localize }}</th>
                                     <th style="min-width: 210px">{{ 'WorkflowSetupApprover' | localize: 1 }}</th>
                                     <th style="min-width: 210px">{{ 'WorkflowSetupApprover' | localize: 2 }}</th>
                                     <th style="min-width: 210px">{{ 'WorkflowSetupApprover' | localize: 3 }}</th>
@@ -58,12 +175,28 @@
                                         </td>
 
                                         @if (row.isLocked) {
+                                            <td></td>
+                                        } @else {
+                                            <td class="text-center">
+                                                <!-- Disabled until a default exists: offering to follow
+                                                     something undefined is an offer that cannot be kept. -->
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    [disabled]="!hasDefaultChain()"
+                                                    [ngModel]="row.usesDefaultChain"
+                                                    [name]="row.code + '_useDefault'"
+                                                    (ngModelChange)="setUsesDefault(row, $event)" />
+                                            </td>
+                                        }
+
+                                        @if (row.isLocked) {
                                             <!--
                                                 One cell across the editable columns. Showing empty dropdowns
                                                 that refuse to save would read as a bug; the reason reads as a
                                                 decision.
                                             -->
-                                            <td colspan="9">
+                                            <td colspan="10">
                                                 <div class="d-flex align-items-start gap-2">
                                                     <i class="fa fa-lock text-muted mt-1"></i>
                                                     <div>
@@ -77,6 +210,19 @@
                                         } @else {
                                             @for (index of stepIndexes; track index) {
                                                 <td>
+                                                    @if (row.usesDefaultChain) {
+                                                        <!--
+                                                            The default decides these. Shown rather than
+                                                            hidden: the grid exists to answer "who approves
+                                                            this", and sending the reader to another panel
+                                                            for the answer defeats it.
+                                                        -->
+                                                        @if (isConfigured(row.steps[index])) {
+                                                            <span class="badge badge-light">{{ describeStep(row.steps[index]) }}</span>
+                                                        } @else {
+                                                            <span class="text-muted small">&mdash;</span>
+                                                        }
+                                                    } @else {
                                                     <select
                                                         class="form-select form-select-sm mb-1"
                                                         [ngModel]="row.steps[index].approverPerson"
@@ -128,12 +274,14 @@
                                                             {{ 'WorkflowSetupNewRole' | localize }}
                                                         </button>
                                                     }
+                                                    }
                                                 </td>
                                             }
 
                                             <td>
                                                 <select
                                                     class="form-select form-select-sm"
+                                                    [disabled]="row.usesDefaultChain"
                                                     [ngModel]="row.raisedBy"
                                                     [name]="row.code + '_raisedBy'"
                                                     (ngModelChange)="setRaisedBy(row, $event)">
@@ -210,7 +358,7 @@
 
                                     @if (row.warnings.length) {
                                         <tr>
-                                            <td colspan="11" class="pt-0">
+                                            <td colspan="12" class="pt-0">
                                                 @for (warning of row.warnings; track warning) {
                                                     <div class="text-warning small">
                                                         <i class="fa fa-exclamation-triangle me-1"></i>{{ warning }}

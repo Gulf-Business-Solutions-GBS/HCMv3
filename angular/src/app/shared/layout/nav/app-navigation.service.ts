@@ -45,6 +45,17 @@ export class AppNavigationService {
                 '/app/admin/go-live-setup'
             ),
 
+            // Directly below Go-Live Setup, because configuring approvals is part of bringing a company
+            // live. Kept SEPARATE from it on purpose: Go-Live Setup revokes its own permission and
+            // disappears once setup is locked, and workflow configuration has to outlive that -- it is
+            // revisited whenever somebody reorganises or an approver leaves.
+            new AppMenuItem(
+                'WorkflowSetup',
+                'Pages.Workflow.Setup',
+                'flaticon-map',
+                '/app/admin/workflow-setup'
+            ),
+
             // EMPLOYEE SELF SERVICE. Placed first because for most users it is the only section they can
             // see at all: everything below is Pages.* and does not render for someone holding only the
             // Employee role. That permission filtering is what removes the need for a separate ESS
@@ -2553,14 +2564,6 @@ export class AppNavigationService {
                 '',
                 [],
                 [
-                    // First in the section deliberately: it is where setting workflow up starts, and the
-                    // screens below it are where the unusual cases get refined.
-                    new AppMenuItem(
-                        'WorkflowSetup',
-                        'Pages.Workflow.Setup',
-                        'flaticon-map',
-                        '/app/admin/workflow-setup'
-                    ),
                     new AppMenuItem(
                         'WorkflowTransactionTypes',
                         'Pages.Workflow.WorkflowTransactionTypes',

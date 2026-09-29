@@ -7,6 +7,10 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import {
     CreateWorkflowSetupRoleInput,
+    GetAllOrgUnitsInput,
+    OrgUnitDto,
+    OrgUnitsServiceProxy,
+    WorkflowRoleGroup,
     EmployeeDto,
     EmployeesServiceProxy,
     GetAllEmployeesInput,
@@ -46,6 +50,21 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
     readonly nameEn = signal('');
     readonly nameAr = signal('');
 
+
+    private _orgUnitsService = inject(OrgUnitsServiceProxy);
+
+    /** The same scoping the Workflow Roles screen offers, so a role created here is not a lesser one. */
+    readonly roleGroup = signal<WorkflowRoleGroup>(WorkflowRoleGroup.None);
+    readonly orgUnitId = signal<number | undefined>(undefined);
+    readonly orgUnits = signal<OrgUnitDto[]>([]);
+
+    readonly roleGroups = [
+        { value: WorkflowRoleGroup.None, key: 'WorkflowRoleGroupNone' },
+        { value: WorkflowRoleGroup.Company, key: 'WorkflowRoleGroupCompany' },
+        { value: WorkflowRoleGroup.Department, key: 'WorkflowRoleGroupDepartment' },
+        { value: WorkflowRoleGroup.Branch, key: 'WorkflowRoleGroupBranch' },
+        { value: WorkflowRoleGroup.CostCenter, key: 'WorkflowRoleGroupCostCenter' },
+    ];
     readonly employees = signal<EmployeeDto[]>([]);
     readonly selected = signal<Set<number>>(new Set<number>());
     readonly filterText = signal('');
@@ -75,6 +94,12 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
         this.nameAr.set('');
         this.selected.set(new Set<number>());
         this.filterText.set('');
+        this.roleGroup.set(WorkflowRoleGroup.None);
+        this.orgUnitId.set(undefined);
+
+        this._orgUnitsService
+            .getAll(new GetAllOrgUnitsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.orgUnits.set(result.items));
 
         this._employeesService
             .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
@@ -114,6 +139,8 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
         // the entity, and making somebody stop to translate is what turns a two-minute setup into a task
         // for later.
         input.nameAr = this.nameAr()?.trim() || this.nameEn();
+        input.workflowRoleGroup = this.roleGroup();
+        input.workflowRoleOrgId = this.orgUnitId();
         input.employeeIds = Array.from(this.selected());
 
         this.saving.set(true);
