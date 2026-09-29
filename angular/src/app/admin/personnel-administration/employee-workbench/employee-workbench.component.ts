@@ -71,7 +71,10 @@ export class EmployeeWorkbenchComponent extends AppComponentBase implements OnIn
     private readonly _router = inject(Router);
 
     readonly tilesGrid = viewChild<ElementRef<HTMLElement>>('tilesGrid');
-    readonly formHost = viewChild.required('formHost', { read: ViewContainerRef });
+    // The anchor is named differently from this property on purpose: a template reference variable shadows a
+    // component member of the same name, so with both called "formHost" the template read the <ng-container>
+    // element instead of this signal, and "formHost()" would not compile.
+    readonly formHost = viewChild.required('formHostAnchor', { read: ViewContainerRef });
 
     readonly viewModes = VIEW_MODES;
     readonly exEmployeeStatus = EmployeeStatus.Inactive;
