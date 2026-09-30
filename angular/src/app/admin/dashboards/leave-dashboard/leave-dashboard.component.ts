@@ -9,6 +9,7 @@ import { DatePicker } from 'primeng/datepicker';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Popover } from 'primeng/popover';
 import { TableModule } from 'primeng/table';
+import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -227,18 +228,33 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
 
     // ------------------------------------------------------------ loading
 
+    /**
+     * Reloads every tile. The tiles stay on screen and clickable meanwhile, so a second click before the first
+     * answer arrives cancels the first request -- otherwise a slow older answer could land last and win.
+     */
     refresh(): void {
+        this._dashboardRequest?.unsubscribe();
         this.loading.set(true);
-        this._service
+
+        const request = this._service
             .getDashboard(this.buildInput())
-            .pipe(finalize(() => this.loading.set(false)))
+            .pipe(
+                finalize(() => {
+                    if (this._dashboardRequest === request) {
+                        this.loading.set(false);
+                    }
+                })
+            )
             .subscribe((dto) => {
                 this.dashboard.set(dto);
                 if (this.detailIsServer()) {
                     this.reloadServerRows();
                 }
             });
+        this._dashboardRequest = request;
     }
+
+    private _dashboardRequest: Subscription | undefined;
 
     /** First page comes from the paginator's own (onPageChange) wiring below; this reloads the current one. */
     getServerRows(event?: LazyLoadEvent): void {

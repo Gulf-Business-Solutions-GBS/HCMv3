@@ -8,7 +8,7 @@
 
         @if (optionsLoaded()) {
             <!-- ================= Toolbar: what is shown, filter window, export ================= -->
-            <div class="ld-toolbar mb-5">
+            <div class="ld-toolbar mb-5" [class.ld-toolbar-loading]="loading() && !!dashboard()">
                 <div class="ld-toolbar-summary">
                     <span class="ld-period">
                         <i class="la la-calendar"></i>
@@ -70,7 +70,7 @@
                         <i class="fa fa-file-excel" [class.fa-spin]="exporting()"></i>
                     </button>
                     <button type="button" class="btn btn-sm btn-icon btn-light" (click)="refresh()" [disabled]="loading()" [attr.title]="'Refresh' | localize">
-                        <i class="la la-refresh"></i>
+                        <i class="la la-refresh" [class.ld-spin]="loading()"></i>
                     </button>
                 </div>
             </div>
@@ -127,7 +127,8 @@
                 </div>
             </p-popover>
 
-            <div [busyIf]="loading()">
+            <!-- Full spinner only for the first load; after that the tiles stay visible and animate to the new data. -->
+            <div [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
                 @if (dashboard(); as d) {
                     <!-- ================= Tile 1: headline numbers ================= -->
                     <div class="ld-kpis mb-5">
