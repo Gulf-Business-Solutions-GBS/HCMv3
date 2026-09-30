@@ -1,0 +1,221 @@
+{
+  "helpId": "dash.workflow",
+  "lang": "en",
+  "title": "Workflow Requests Dashboard",
+  "entity": null,
+  "overviewHtml": "<p>How the approval workflow is running: the requests raised over a period, how they were decided and how long that took, which open ones are overdue, and whom they are waiting with — by month, request type and department. It opens on this year to date.</p><p>Every figure counts the <strong>requests raised</strong> in the period by the employees you may see, from the first day to the end of the last day. A draft was never submitted, so it is never counted. Each request is counted by where it stands <strong>now</strong>: a request raised in January and approved in March counts as approved in January's bar.</p><p><strong>Withdrawn</strong> is a request the employee took back. <strong>Overdue</strong> uses the <strong>due in days</strong> set on the request's approval chain: an open request older than that is overdue. A chain with no due days never makes a request overdue.</p><p>Click a request type to show every tile for that type only, a month, a status, a waiting band or an approver to list the requests, and a department to see the units inside it. Each choice appears as a chip in the toolbar; remove the chip to go back. A period longer than five years is shortened to the last five.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:WorkflowDashboard_Raised": "dash.workflow.raised",
+    "loc:WorkflowDashboard_OpenRequests": "dash.workflow.open",
+    "loc:WorkflowDashboard_Overdue": "dash.workflow.overdue",
+    "loc:WorkflowDashboard_ApprovedRequests": "dash.workflow.approved",
+    "loc:WorkflowDashboard_RejectedRequests": "dash.workflow.rejected",
+    "loc:WorkflowDashboard_DaysToDecide": "dash.workflow.days-to-decide",
+    "loc:WorkflowDashboard_ByMonth": "dash.workflow.trend",
+    "loc:WorkflowDashboard_ByType": "dash.workflow.by-type",
+    "loc:WorkflowDashboard_WaitingWith": "dash.workflow.waiting-with",
+    "loc:WorkflowDashboard_WaitingBands": "dash.workflow.waiting-bands",
+    "loc:WorkflowDashboard_ByDepartment": "dash.workflow.by-department",
+    "loc:WorkflowDashboard_Requests": "dash.workflow.requests"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The window behind the <strong>Filter</strong> button: the period and the organization unit. Nothing changes until you press <strong>Apply</strong>; <strong>Reset</strong> goes back to the defaults.</p><p><strong>How the period works.</strong></p><ul><li><strong>This year to date</strong> (the default): 1 January of this year up to today.</li><li><strong>This year</strong> and <strong>Last year</strong>: 1 January to 31 December.</li><li><strong>This month</strong>: the first to the last day of the current month.</li><li><strong>Custom</strong>: any From and To dates you choose. A period longer than five years is shortened to the last five.</li></ul><p><strong>Example.</strong> Pick <strong>Last year</strong> to see 2025 while this year's data is still thin.</p><p><strong>Why it matters.</strong> Figures \"as of today\" (who is on leave today, headcount) do not depend on the period; figures \"in the period\" (leave days, joiners, leavers, turnover) do. Choosing an organization unit includes every unit below it. Clicking a bar or a slice on a chart adds another filter, shown as a chip next to <strong>Showing</strong> — remove it with its <strong>×</strong>, or all of them with <strong>Clear filters</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The download icon on the toolbar and on every tile. Clicking it offers three formats.</p><p><strong>What each format contains.</strong></p><ul><li><strong>PDF</strong> and <strong>JPEG</strong>: a picture of the tile exactly as it looks on screen, charts included. From the toolbar, a picture of the whole dashboard.</li><li><strong>XLSX</strong>: the data behind the tile, with the same filters. From the toolbar, a workbook with a <strong>Summary</strong> sheet (whose data, the period, the headline figures) and one sheet per tile.</li></ul><p><strong>Example.</strong> Send the <strong>Leave by type</strong> chart as a JPEG in an email; give payroll the <strong>Not returned from leave</strong> list as XLSX.</p><p><strong>Why it matters.</strong> Whatever you download contains only what you are allowed to see, and exactly what the screen shows for the filters you have applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.raised",
+      "label": "WorkflowDashboard_Raised",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_Raised"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many requests were raised in the period. The line below gives how many were withdrawn or transferred. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Requests raised in the period, drafts left out</code></p><ul><li>Every status is counted, so awaiting approval + approved + rejected + withdrawn + transferred always equals this figure.</li></ul><p><strong>Example.</strong> 412 · 9 withdrawn · 2 transferred.</p><p><strong>Why it matters.</strong> It is the workload the approvers carry.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.open",
+      "label": "WorkflowDashboard_OpenRequests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_OpenRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The requests raised in the period that are still waiting for a decision. The line below gives the longest wait. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Requests with status Open</code>; <strong>longest waiting</strong> = <code>the most days any of them has waited since its last action</code></p><ul><li>The last action is the latest step that moved the request on — raised, approved at a step, sent back, reassigned, escalated. Being read or remarked on does not count.</li></ul><p><strong>Example.</strong> 37 · longest waiting 19.5 days.</p><p><strong>Why it matters.</strong> Employees are waiting on these; the longest wait shows whether something is stuck.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.overdue",
+      "label": "WorkflowDashboard_Overdue",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_Overdue"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Open requests that are past the time their approval chain allows. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Open requests where raised date + due in days &lt; now</code>, with <strong>due in days</strong> from the approval chain the request follows.</p><ul><li>A chain with no due days (0 or blank) never makes a request overdue.</li></ul><p><strong>Example.</strong> 6 overdue.</p><p><strong>Why it matters.</strong> These are the promises already broken; they are the first ones to chase.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.approved",
+      "label": "WorkflowDashboard_ApprovedRequests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ApprovedRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Requests fully approved. The line below gives the approval rate. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Requests with status Approved</code>; <strong>approval rate</strong> = <code>approved ÷ (approved + rejected) × 100</code></p><ul><li>Only decided requests are in the rate, so requests still open do not lower it. Shown as \"—\" when nothing was decided.</li></ul><p><strong>Example.</strong> 340 · 94.4% of decided requests.</p><p><strong>Why it matters.</strong> A falling approval rate usually means unclear rules or incomplete requests.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.rejected",
+      "label": "WorkflowDashboard_RejectedRequests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_RejectedRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Requests rejected at any step. The line below gives the number decided. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Requests with status Rejected</code>; <strong>decided</strong> = <code>approved + rejected</code></p><p><strong>Example.</strong> 20 · of 360 decided.</p><p><strong>Why it matters.</strong> Look at the rejected list by type to see which requests people most often get wrong.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.days-to-decide",
+      "label": "WorkflowDashboard_DaysToDecide",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_DaysToDecide"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How long a request takes on average from being raised to its final decision.</p><p><strong>How it is calculated.</strong> <code>Average of (time of the final approval or rejection in the request log − time raised)</code>, in days, over approved and rejected requests.</p><ul><li>Measured from the request log, to one decimal place: a request decided in 36 hours counts as 1.5 days.</li><li>Shown as \"—\" when nothing was decided.</li></ul><p><strong>Example.</strong> 2.3 days.</p><p><strong>Why it matters.</strong> It is the service level employees actually get.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.trend",
+      "label": "WorkflowDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Requests raised each month, stacked by where they stand now. Click a month to list its requests.</p><p><strong>How it is calculated.</strong> <code>Requests raised per month, split by current status</code></p><ul><li>Every month of the period is shown, including months with no requests.</li></ul><p><strong>Example.</strong> March: 48 approved, 6 awaiting approval, 2 rejected.</p><p><strong>Why it matters.</strong> It shows busy months, and old months that still have open requests.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.by-type",
+      "label": "WorkflowDashboard_ByType",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ByType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Requests per request type, with how many are open, approved, rejected and overdue, and the average days to decide. Click a type to show every tile for that type only.</p><p><strong>How it is calculated.</strong> The rules above, per request type, most requests first.</p><p><strong>Example.</strong> Leave request: 220 raised · 2.1 days to decide.</p><p><strong>Why it matters.</strong> It shows which kinds of request are slow, so that approval chain can be looked at.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.waiting-with",
+      "label": "WorkflowDashboard_WaitingWith",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_WaitingWith"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ten approvers holding the most open requests at their step, with how many are overdue and the oldest wait. Click a name to list the requests.</p><p><strong>How it is calculated.</strong> For each approver: <code>open requests whose current step is assigned to them and not yet approved by them</code>; <strong>oldest</strong> = <code>most days any of them has waited since its last action</code>.</p><ul><li>An approver is named even when they work outside the part of the organisation you see: it is about who holds the request.</li><li>A request assigned to several people at the same step is counted under each of them.</li></ul><p><strong>Example.</strong> Head of Finance: 9 waiting · 3 overdue · oldest 12 days.</p><p><strong>Why it matters.</strong> It turns \"requests are slow\" into a name to follow up with.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.waiting-bands",
+      "label": "WorkflowDashboard_WaitingBands",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_WaitingBands"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Open requests grouped by how long they have waited since their last action. Click a bar to list them.</p><p><strong>How it is calculated.</strong> <code>Whole days since the last action</code>, in bands: 0–2, 3–7, 8–14, 15–30, 31 or more days.</p><ul><li>Each band starts where the one before stops, so every open request falls in exactly one.</li></ul><p><strong>Example.</strong> 0–2 days: 22 · 31+ days: 3.</p><p><strong>Why it matters.</strong> Requests in the last bands have probably been forgotten.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.by-department",
+      "label": "WorkflowDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Requests raised, open and overdue, and the average days to decide, for each department one level below the unit you are looking at. Click a department to see the units inside it.</p><p><strong>How it is calculated.</strong> The rules above, over the requests of employees in that department or any unit below it.</p><ul><li>A request is placed by the department of the employee who raised it, as on the last day of the period.</li><li>People attached directly to the unit you are looking at are shown on their own line.</li></ul><p><strong>Example.</strong> Operations: 180 raised · 14 open · 4 overdue · 2.8 days.</p><p><strong>Why it matters.</strong> It shows where requests pile up and where decisions are slowest.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workflow.requests",
+      "label": "WorkflowDashboard_Requests",
+      "section": null,
+      "aliases": [
+        "loc:WorkflowDashboard_Requests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The list behind a figure: each request with its number, type, employee, department, date raised, status, whom it is waiting with, its days and its due date. Click a row to open the employee.</p><p><strong>How it is calculated.</strong> The same rule as the figure you clicked. <strong>Days</strong> is, for an open request, the days since its last action; for a decided one, the days it took. The due date is shown for open requests whose chain has due days, in red once passed.</p><p><strong>Example.</strong> Click <strong>Overdue</strong>: 6 rows, each with its due date in red.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

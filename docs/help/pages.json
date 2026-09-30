@@ -9979,6 +9979,98 @@
           "loc": "PayrollDashboard_CostCard"
         }
       ]
+    },
+    {
+      "helpId": "dash.workflow",
+      "title": "Workflow Requests Dashboard",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Pages.Dashboards.Workflow"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/dashboards/workflow-dashboard/workflow-dashboard.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "dash.common.filter",
+          "label": "Filter",
+          "loc": "Filter"
+        },
+        {
+          "id": "dash.common.download",
+          "label": "Download",
+          "loc": "Download"
+        },
+        {
+          "id": "dash.workflow.raised",
+          "label": "WorkflowDashboard_Raised",
+          "loc": "WorkflowDashboard_Raised"
+        },
+        {
+          "id": "dash.workflow.open",
+          "label": "WorkflowDashboard_OpenRequests",
+          "loc": "WorkflowDashboard_OpenRequests"
+        },
+        {
+          "id": "dash.workflow.overdue",
+          "label": "WorkflowDashboard_Overdue",
+          "loc": "WorkflowDashboard_Overdue"
+        },
+        {
+          "id": "dash.workflow.approved",
+          "label": "WorkflowDashboard_ApprovedRequests",
+          "loc": "WorkflowDashboard_ApprovedRequests"
+        },
+        {
+          "id": "dash.workflow.rejected",
+          "label": "WorkflowDashboard_RejectedRequests",
+          "loc": "WorkflowDashboard_RejectedRequests"
+        },
+        {
+          "id": "dash.workflow.days-to-decide",
+          "label": "WorkflowDashboard_DaysToDecide",
+          "loc": "WorkflowDashboard_DaysToDecide"
+        },
+        {
+          "id": "dash.workflow.trend",
+          "label": "WorkflowDashboard_ByMonth",
+          "loc": "WorkflowDashboard_ByMonth"
+        },
+        {
+          "id": "dash.workflow.by-type",
+          "label": "WorkflowDashboard_ByType",
+          "loc": "WorkflowDashboard_ByType"
+        },
+        {
+          "id": "dash.workflow.waiting-with",
+          "label": "WorkflowDashboard_WaitingWith",
+          "loc": "WorkflowDashboard_WaitingWith"
+        },
+        {
+          "id": "dash.workflow.waiting-bands",
+          "label": "WorkflowDashboard_WaitingBands",
+          "loc": "WorkflowDashboard_WaitingBands"
+        },
+        {
+          "id": "dash.workflow.by-department",
+          "label": "WorkflowDashboard_ByDepartment",
+          "loc": "WorkflowDashboard_ByDepartment"
+        },
+        {
+          "id": "dash.workflow.requests",
+          "label": "WorkflowDashboard_Requests",
+          "loc": "WorkflowDashboard_Requests"
+        }
+      ]
     }
   ]
 }

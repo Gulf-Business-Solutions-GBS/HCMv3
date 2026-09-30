@@ -2637,6 +2637,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Attendance, L("AttendanceDashboard"), multiTenancySides: MultiTenancySides.Tenant);
         pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Overtime, L("OvertimeDashboard"), multiTenancySides: MultiTenancySides.Tenant);
         pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Payroll, L("PayrollDashboard"), multiTenancySides: MultiTenancySides.Tenant);
+        pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Workflow, L("WorkflowDashboard"), multiTenancySides: MultiTenancySides.Tenant);
 
         //REPORT DISTRIBUTION (scheduling + bursting)
         var reportDistribution = pages.CreateChildPermission(AppPermissions.Pages_Reports_Distribution, L("ReportDistribution"));

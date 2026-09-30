@@ -149,6 +149,7 @@ export class AppNavigationService {
                 new AppMenuItem('AttendanceDashboard', 'Pages.Dashboards.Attendance', 'flaticon-time-3', '/app/admin/attendance-dashboard'),
                 new AppMenuItem('OvertimeDashboard', 'Pages.Dashboards.Overtime', 'flaticon-stopwatch', '/app/admin/overtime-dashboard'),
                 new AppMenuItem('PayrollDashboard', 'Pages.Dashboards.Payroll', 'flaticon-coins', '/app/admin/payroll-dashboard'),
+                new AppMenuItem('WorkflowDashboard', 'Pages.Dashboards.Workflow', 'flaticon-list-3', '/app/admin/workflow-dashboard'),
             ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.

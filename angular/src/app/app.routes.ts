@@ -3701,6 +3701,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Dashboards.Payroll' },
                     },
                     {
+                        path: 'workflow-dashboard',
+                        loadComponent: () =>
+                            import('./admin/dashboards/workflow-dashboard/workflow-dashboard.component').then(
+                                (m) => m.WorkflowDashboardComponent
+                            ),
+                        data: { permission: 'Pages.Dashboards.Workflow' },
+                    },
+                    {
                         path: 'copy-workflow-setup',
                         loadComponent: () =>
                             import('./admin/administration/copy-workflow-setup/copy-workflow-setup.component').then(

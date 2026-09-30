@@ -2782,6 +2782,9 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Dashboards_Payroll = "Pages.Dashboards.Payroll";
 
+    /// <summary>Workflow Requests Dashboard. Only opens the screen; whose requests it shows comes from <c>IDashboardScopeService</c>.</summary>
+    public const string Pages_Dashboards_Workflow = "Pages.Dashboards.Workflow";
+
     /// <summary>
     /// Report Distribution: creating and maintaining report schedules, and viewing their run history.
     /// </summary>

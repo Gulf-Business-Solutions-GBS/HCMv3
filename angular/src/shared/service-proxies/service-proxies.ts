@@ -161396,6 +161396,186 @@ export class WorkFlowApproversServiceProxy {
 }
 
 @Injectable()
+export class WorkflowDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDashboard(body?: WorkflowDashboardInput | undefined): Observable<WorkflowDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowDashboard/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowDashboardDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<WorkflowDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getRequests(body?: GetWorkflowRequestsInput | undefined): Observable<PagedResultDtoOfWorkflowRequestRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowDashboard/GetRequests";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRequests(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRequests(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfWorkflowRequestRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfWorkflowRequestRowDto>;
+        }));
+    }
+
+    protected processGetRequests(response: HttpResponseBase): Observable<PagedResultDtoOfWorkflowRequestRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfWorkflowRequestRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: ExportWorkflowDashboardInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowDashboard/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class WorkflowGroupDetailsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -221858,6 +222038,78 @@ export interface IExportPayrollDashboardInput {
     runType: PayrollRunType;
 }
 
+export class ExportWorkflowDashboardInput implements IExportWorkflowDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    requestType!: string | undefined;
+    part!: WorkflowDashboardExportPart;
+    kind!: WorkflowRequestListKind;
+    status!: RequestStatus;
+    month!: DateTime | undefined;
+    approverId!: number | undefined;
+    band!: number | undefined;
+
+    constructor(data?: IExportWorkflowDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.requestType = _data["requestType"];
+            this.part = _data["part"];
+            this.kind = _data["kind"];
+            this.status = _data["status"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.approverId = _data["approverId"];
+            this.band = _data["band"];
+        }
+    }
+
+    static fromJS(data: any): ExportWorkflowDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportWorkflowDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["requestType"] = this.requestType;
+        data["part"] = this.part;
+        data["kind"] = this.kind;
+        data["status"] = this.status;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["approverId"] = this.approverId;
+        data["band"] = this.band;
+        return data;
+    }
+}
+
+export interface IExportWorkflowDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    requestType: string | undefined;
+    part: WorkflowDashboardExportPart;
+    kind: WorkflowRequestListKind;
+    status: RequestStatus;
+    month: DateTime | undefined;
+    approverId: number | undefined;
+    band: number | undefined;
+}
+
 export class ExportWorkforceDashboardInput implements IExportWorkforceDashboardInput {
     fromDate!: DateTime | undefined;
     toDate!: DateTime | undefined;
@@ -269885,6 +270137,82 @@ export class GetWorkflowRequestLogInput implements IGetWorkflowRequestLogInput {
 
 export interface IGetWorkflowRequestLogInput {
     workflowRequestId: number;
+}
+
+export class GetWorkflowRequestsInput implements IGetWorkflowRequestsInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    requestType!: string | undefined;
+    kind!: WorkflowRequestListKind;
+    status!: RequestStatus;
+    month!: DateTime | undefined;
+    approverId!: number | undefined;
+    band!: number | undefined;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetWorkflowRequestsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.requestType = _data["requestType"];
+            this.kind = _data["kind"];
+            this.status = _data["status"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.approverId = _data["approverId"];
+            this.band = _data["band"];
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkflowRequestsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkflowRequestsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["requestType"] = this.requestType;
+        data["kind"] = this.kind;
+        data["status"] = this.status;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["approverId"] = this.approverId;
+        data["band"] = this.band;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetWorkflowRequestsInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    requestType: string | undefined;
+    kind: WorkflowRequestListKind;
+    status: RequestStatus;
+    month: DateTime | undefined;
+    approverId: number | undefined;
+    band: number | undefined;
+    skipCount: number;
+    maxResultCount: number;
 }
 
 export class GetWorkflowRoleForEditOutput implements IGetWorkflowRoleForEditOutput {
@@ -318147,6 +318475,54 @@ export interface IPagedResultDtoOfWorkflowRequestDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfWorkflowRequestRowDto implements IPagedResultDtoOfWorkflowRequestRowDto {
+    items!: WorkflowRequestRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfWorkflowRequestRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkflowRequestRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfWorkflowRequestRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfWorkflowRequestRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfWorkflowRequestRowDto {
+    items: WorkflowRequestRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfWorkflowRoleDto implements IPagedResultDtoOfWorkflowRoleDto {
     items!: WorkflowRoleDto[] | undefined;
     totalCount!: number;
@@ -349539,6 +349915,66 @@ export enum WorkflowActivityKind {
     FeedbackRequested = 2,
 }
 
+export class WorkflowApproverBucketDto implements IWorkflowApproverBucketDto {
+    approverId!: number;
+    approverCode!: string | undefined;
+    approverNameEn!: string | undefined;
+    approverNameAr!: string | undefined;
+    waiting!: number;
+    overdue!: number;
+    oldestDays!: number;
+
+    constructor(data?: IWorkflowApproverBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.approverId = _data["approverId"];
+            this.approverCode = _data["approverCode"];
+            this.approverNameEn = _data["approverNameEn"];
+            this.approverNameAr = _data["approverNameAr"];
+            this.waiting = _data["waiting"];
+            this.overdue = _data["overdue"];
+            this.oldestDays = _data["oldestDays"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowApproverBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowApproverBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["approverId"] = this.approverId;
+        data["approverCode"] = this.approverCode;
+        data["approverNameEn"] = this.approverNameEn;
+        data["approverNameAr"] = this.approverNameAr;
+        data["waiting"] = this.waiting;
+        data["overdue"] = this.overdue;
+        data["oldestDays"] = this.oldestDays;
+        return data;
+    }
+}
+
+export interface IWorkflowApproverBucketDto {
+    approverId: number;
+    approverCode: string | undefined;
+    approverNameEn: string | undefined;
+    approverNameAr: string | undefined;
+    waiting: number;
+    overdue: number;
+    oldestDays: number;
+}
+
 export class WorkflowApproverEntryDto implements IWorkflowApproverEntryDto {
     person!: WorkflowPersonDto;
     workflowStep!: number;
@@ -349632,6 +350068,208 @@ export enum WorkflowApproverPersonType {
     ManagerLevel5 = 6,
     ManagerLevel6 = 7,
     ManagerLevel7 = 8,
+}
+
+export class WorkflowDashboardDto implements IWorkflowDashboardDto {
+    scope!: DashboardScopeDto;
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    kpis!: WorkflowKpisDto;
+    types!: WorkflowRequestTypeOptionDto[] | undefined;
+    trend!: WorkflowTrendPointDto[] | undefined;
+    byType!: WorkflowTypeBucketDto[] | undefined;
+    byOrgUnit!: WorkflowOrgUnitBucketDto[] | undefined;
+    waiting!: WorkflowApproverBucketDto[] | undefined;
+    waitingBands!: WorkflowWaitingBandDto[] | undefined;
+    orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: IWorkflowDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.kpis = _data["kpis"] ? WorkflowKpisDto.fromJS(_data["kpis"]) : undefined as any;
+            if (Array.isArray(_data["types"])) {
+                this.types = [] as any;
+                for (let item of _data["types"])
+                    this.types!.push(WorkflowRequestTypeOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["trend"])) {
+                this.trend = [] as any;
+                for (let item of _data["trend"])
+                    this.trend!.push(WorkflowTrendPointDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byType"])) {
+                this.byType = [] as any;
+                for (let item of _data["byType"])
+                    this.byType!.push(WorkflowTypeBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byOrgUnit"])) {
+                this.byOrgUnit = [] as any;
+                for (let item of _data["byOrgUnit"])
+                    this.byOrgUnit!.push(WorkflowOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["waiting"])) {
+                this.waiting = [] as any;
+                for (let item of _data["waiting"])
+                    this.waiting!.push(WorkflowApproverBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["waitingBands"])) {
+                this.waitingBands = [] as any;
+                for (let item of _data["waitingBands"])
+                    this.waitingBands!.push(WorkflowWaitingBandDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitPath"])) {
+                this.orgUnitPath = [] as any;
+                for (let item of _data["orgUnitPath"])
+                    this.orgUnitPath!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): WorkflowDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["kpis"] = this.kpis ? this.kpis.toJSON() : undefined as any;
+        if (Array.isArray(this.types)) {
+            data["types"] = [];
+            for (let item of this.types)
+                data["types"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.trend)) {
+            data["trend"] = [];
+            for (let item of this.trend)
+                data["trend"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byType)) {
+            data["byType"] = [];
+            for (let item of this.byType)
+                data["byType"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byOrgUnit)) {
+            data["byOrgUnit"] = [];
+            for (let item of this.byOrgUnit)
+                data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.waiting)) {
+            data["waiting"] = [];
+            for (let item of this.waiting)
+                data["waiting"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.waitingBands)) {
+            data["waitingBands"] = [];
+            for (let item of this.waitingBands)
+                data["waitingBands"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitPath)) {
+            data["orgUnitPath"] = [];
+            for (let item of this.orgUnitPath)
+                data["orgUnitPath"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IWorkflowDashboardDto {
+    scope: DashboardScopeDto;
+    fromDate: DateTime;
+    toDate: DateTime;
+    kpis: WorkflowKpisDto;
+    types: WorkflowRequestTypeOptionDto[] | undefined;
+    trend: WorkflowTrendPointDto[] | undefined;
+    byType: WorkflowTypeBucketDto[] | undefined;
+    byOrgUnit: WorkflowOrgUnitBucketDto[] | undefined;
+    waiting: WorkflowApproverBucketDto[] | undefined;
+    waitingBands: WorkflowWaitingBandDto[] | undefined;
+    orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
+}
+
+export enum WorkflowDashboardExportPart {
+    All = 0,
+    Trend = 1,
+    ByType = 2,
+    ByOrgUnit = 3,
+    Waiting = 4,
+    WaitingBands = 5,
+    Requests = 6,
+}
+
+export class WorkflowDashboardInput implements IWorkflowDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    requestType!: string | undefined;
+
+    constructor(data?: IWorkflowDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.requestType = _data["requestType"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["requestType"] = this.requestType;
+        return data;
+    }
+}
+
+export interface IWorkflowDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    requestType: string | undefined;
 }
 
 export class WorkflowDelegateEntryDto implements IWorkflowDelegateEntryDto {
@@ -349919,6 +350557,142 @@ export interface IWorkflowGroupFieldAccessDto {
     isVisible: boolean;
     isEditable: boolean;
     isRequired: boolean;
+}
+
+export class WorkflowKpisDto implements IWorkflowKpisDto {
+    raised!: number;
+    open!: number;
+    approved!: number;
+    rejected!: number;
+    withdrawn!: number;
+    transferred!: number;
+    approvalRatePercent!: number | undefined;
+    overdue!: number;
+    averageDaysToDecide!: number | undefined;
+    longestWaitDays!: number | undefined;
+
+    constructor(data?: IWorkflowKpisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.raised = _data["raised"];
+            this.open = _data["open"];
+            this.approved = _data["approved"];
+            this.rejected = _data["rejected"];
+            this.withdrawn = _data["withdrawn"];
+            this.transferred = _data["transferred"];
+            this.approvalRatePercent = _data["approvalRatePercent"];
+            this.overdue = _data["overdue"];
+            this.averageDaysToDecide = _data["averageDaysToDecide"];
+            this.longestWaitDays = _data["longestWaitDays"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowKpisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowKpisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["raised"] = this.raised;
+        data["open"] = this.open;
+        data["approved"] = this.approved;
+        data["rejected"] = this.rejected;
+        data["withdrawn"] = this.withdrawn;
+        data["transferred"] = this.transferred;
+        data["approvalRatePercent"] = this.approvalRatePercent;
+        data["overdue"] = this.overdue;
+        data["averageDaysToDecide"] = this.averageDaysToDecide;
+        data["longestWaitDays"] = this.longestWaitDays;
+        return data;
+    }
+}
+
+export interface IWorkflowKpisDto {
+    raised: number;
+    open: number;
+    approved: number;
+    rejected: number;
+    withdrawn: number;
+    transferred: number;
+    approvalRatePercent: number | undefined;
+    overdue: number;
+    averageDaysToDecide: number | undefined;
+    longestWaitDays: number | undefined;
+}
+
+export class WorkflowOrgUnitBucketDto implements IWorkflowOrgUnitBucketDto {
+    organizationUnitId!: number | undefined;
+    name!: string | undefined;
+    isDirectStaff!: boolean;
+    hasChildren!: boolean;
+    raised!: number;
+    open!: number;
+    overdue!: number;
+    averageDaysToDecide!: number | undefined;
+
+    constructor(data?: IWorkflowOrgUnitBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.name = _data["name"];
+            this.isDirectStaff = _data["isDirectStaff"];
+            this.hasChildren = _data["hasChildren"];
+            this.raised = _data["raised"];
+            this.open = _data["open"];
+            this.overdue = _data["overdue"];
+            this.averageDaysToDecide = _data["averageDaysToDecide"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowOrgUnitBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowOrgUnitBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["name"] = this.name;
+        data["isDirectStaff"] = this.isDirectStaff;
+        data["hasChildren"] = this.hasChildren;
+        data["raised"] = this.raised;
+        data["open"] = this.open;
+        data["overdue"] = this.overdue;
+        data["averageDaysToDecide"] = this.averageDaysToDecide;
+        return data;
+    }
+}
+
+export interface IWorkflowOrgUnitBucketDto {
+    organizationUnitId: number | undefined;
+    name: string | undefined;
+    isDirectStaff: boolean;
+    hasChildren: boolean;
+    raised: number;
+    open: number;
+    overdue: number;
+    averageDaysToDecide: number | undefined;
 }
 
 export class WorkflowParticipantProfileDto implements IWorkflowParticipantProfileDto {
@@ -350483,6 +351257,15 @@ export interface IWorkflowRequestDto {
     approvalProcessTime: number;
 }
 
+export enum WorkflowRequestListKind {
+    All = 0,
+    Status = 1,
+    Month = 2,
+    Overdue = 3,
+    Approver = 4,
+    WaitingBand = 5,
+}
+
 export class WorkflowRequestLogEntryDto implements IWorkflowRequestLogEntryDto {
     id!: number;
     actionByEmployeeId!: number | undefined;
@@ -350561,6 +351344,146 @@ export interface IWorkflowRequestLogEntryDto {
     actionDays: number;
     platform: WorkflowPlatform;
     comment: string | undefined;
+}
+
+export class WorkflowRequestRowDto implements IWorkflowRequestRowDto {
+    id!: number;
+    requestNumber!: string | undefined;
+    requestType!: string | undefined;
+    employeeId!: number | undefined;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    creationTime!: DateTime;
+    status!: RequestStatus;
+    workflowStep!: number;
+    waitingWithEn!: string | undefined;
+    waitingWithAr!: string | undefined;
+    days!: number | undefined;
+    dueDate!: DateTime | undefined;
+    isOverdue!: boolean;
+
+    constructor(data?: IWorkflowRequestRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestNumber = _data["requestNumber"];
+            this.requestType = _data["requestType"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.status = _data["status"];
+            this.workflowStep = _data["workflowStep"];
+            this.waitingWithEn = _data["waitingWithEn"];
+            this.waitingWithAr = _data["waitingWithAr"];
+            this.days = _data["days"];
+            this.dueDate = _data["dueDate"] ? DateTime.fromISO(_data["dueDate"].toString()) : undefined as any;
+            this.isOverdue = _data["isOverdue"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowRequestRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowRequestRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestNumber"] = this.requestNumber;
+        data["requestType"] = this.requestType;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["status"] = this.status;
+        data["workflowStep"] = this.workflowStep;
+        data["waitingWithEn"] = this.waitingWithEn;
+        data["waitingWithAr"] = this.waitingWithAr;
+        data["days"] = this.days;
+        data["dueDate"] = this.dueDate ? this.dueDate.toString() : undefined as any;
+        data["isOverdue"] = this.isOverdue;
+        return data;
+    }
+}
+
+export interface IWorkflowRequestRowDto {
+    id: number;
+    requestNumber: string | undefined;
+    requestType: string | undefined;
+    employeeId: number | undefined;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    creationTime: DateTime;
+    status: RequestStatus;
+    workflowStep: number;
+    waitingWithEn: string | undefined;
+    waitingWithAr: string | undefined;
+    days: number | undefined;
+    dueDate: DateTime | undefined;
+    isOverdue: boolean;
+}
+
+export class WorkflowRequestTypeOptionDto implements IWorkflowRequestTypeOptionDto {
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IWorkflowRequestTypeOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowRequestTypeOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowRequestTypeOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IWorkflowRequestTypeOptionDto {
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
 }
 
 export class WorkflowRoleDto implements IWorkflowRoleDto {
@@ -351038,6 +351961,46 @@ export interface IWorkflowSetupStepDto {
     currentHolderCount: number;
 }
 
+export class WorkflowStatusCountDto implements IWorkflowStatusCountDto {
+    status!: RequestStatus;
+    count!: number;
+
+    constructor(data?: IWorkflowStatusCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowStatusCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowStatusCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IWorkflowStatusCountDto {
+    status: RequestStatus;
+    count: number;
+}
+
 export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
     id!: number;
     code!: string | undefined;
@@ -351132,6 +352095,162 @@ export interface IWorkflowTransactionTypeDto {
     displayOrder: number;
     isActive: boolean;
     allowDirectEntry: boolean;
+}
+
+export class WorkflowTrendPointDto implements IWorkflowTrendPointDto {
+    monthStart!: DateTime;
+    counts!: WorkflowStatusCountDto[] | undefined;
+
+    constructor(data?: IWorkflowTrendPointDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.monthStart = _data["monthStart"] ? DateTime.fromISO(_data["monthStart"].toString()) : undefined as any;
+            if (Array.isArray(_data["counts"])) {
+                this.counts = [] as any;
+                for (let item of _data["counts"])
+                    this.counts!.push(WorkflowStatusCountDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): WorkflowTrendPointDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowTrendPointDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["monthStart"] = this.monthStart ? this.monthStart.toString() : undefined as any;
+        if (Array.isArray(this.counts)) {
+            data["counts"] = [];
+            for (let item of this.counts)
+                data["counts"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IWorkflowTrendPointDto {
+    monthStart: DateTime;
+    counts: WorkflowStatusCountDto[] | undefined;
+}
+
+export class WorkflowTypeBucketDto implements IWorkflowTypeBucketDto {
+    requestType!: string | undefined;
+    raised!: number;
+    open!: number;
+    approved!: number;
+    rejected!: number;
+    overdue!: number;
+    averageDaysToDecide!: number | undefined;
+
+    constructor(data?: IWorkflowTypeBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.requestType = _data["requestType"];
+            this.raised = _data["raised"];
+            this.open = _data["open"];
+            this.approved = _data["approved"];
+            this.rejected = _data["rejected"];
+            this.overdue = _data["overdue"];
+            this.averageDaysToDecide = _data["averageDaysToDecide"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowTypeBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowTypeBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["requestType"] = this.requestType;
+        data["raised"] = this.raised;
+        data["open"] = this.open;
+        data["approved"] = this.approved;
+        data["rejected"] = this.rejected;
+        data["overdue"] = this.overdue;
+        data["averageDaysToDecide"] = this.averageDaysToDecide;
+        return data;
+    }
+}
+
+export interface IWorkflowTypeBucketDto {
+    requestType: string | undefined;
+    raised: number;
+    open: number;
+    approved: number;
+    rejected: number;
+    overdue: number;
+    averageDaysToDecide: number | undefined;
+}
+
+export class WorkflowWaitingBandDto implements IWorkflowWaitingBandDto {
+    index!: number;
+    fromDays!: number;
+    toDays!: number | undefined;
+    requests!: number;
+
+    constructor(data?: IWorkflowWaitingBandDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.index = _data["index"];
+            this.fromDays = _data["fromDays"];
+            this.toDays = _data["toDays"];
+            this.requests = _data["requests"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowWaitingBandDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowWaitingBandDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["index"] = this.index;
+        data["fromDays"] = this.fromDays;
+        data["toDays"] = this.toDays;
+        data["requests"] = this.requests;
+        return data;
+    }
+}
+
+export interface IWorkflowWaitingBandDto {
+    index: number;
+    fromDays: number;
+    toDays: number | undefined;
+    requests: number;
 }
 
 export enum WorkforceAgeBand {
