@@ -102948,6 +102948,186 @@ export class OrgUnitWageAccGroupsServiceProxy {
 }
 
 @Injectable()
+export class OvertimeDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDashboard(body?: OvertimeDashboardInput | undefined): Observable<OvertimeDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeDashboard/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OvertimeDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OvertimeDashboardDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<OvertimeDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OvertimeDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEntries(body?: GetOvertimeEntriesInput | undefined): Observable<PagedResultDtoOfOvertimeEntryRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeDashboard/GetEntries";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEntries(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEntries(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfOvertimeEntryRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfOvertimeEntryRowDto>;
+        }));
+    }
+
+    protected processGetEntries(response: HttpResponseBase): Observable<PagedResultDtoOfOvertimeEntryRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfOvertimeEntryRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: ExportOvertimeDashboardInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeDashboard/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class OvertimeTypeDetailsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -221306,6 +221486,70 @@ export interface IExportLeaveDashboardInput {
     day: DateTime | undefined;
 }
 
+export class ExportOvertimeDashboardInput implements IExportOvertimeDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    overtimeTypeId!: number | undefined;
+    employeeId!: number | undefined;
+    part!: OvertimeDashboardExportPart;
+    kind!: OvertimeEntryListKind;
+    month!: DateTime | undefined;
+
+    constructor(data?: IExportOvertimeDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.employeeId = _data["employeeId"];
+            this.part = _data["part"];
+            this.kind = _data["kind"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): ExportOvertimeDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportOvertimeDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["employeeId"] = this.employeeId;
+        data["part"] = this.part;
+        data["kind"] = this.kind;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IExportOvertimeDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    overtimeTypeId: number | undefined;
+    employeeId: number | undefined;
+    part: OvertimeDashboardExportPart;
+    kind: OvertimeEntryListKind;
+    month: DateTime | undefined;
+}
+
 export class ExportWorkforceDashboardInput implements IExportWorkforceDashboardInput {
     fromDate!: DateTime | undefined;
     toDate!: DateTime | undefined;
@@ -258527,6 +258771,74 @@ export interface IGetOrganizationUnitTypeForEditOutput {
     organizationUnitType: CreateOrEditOrganizationUnitTypeDto;
 }
 
+export class GetOvertimeEntriesInput implements IGetOvertimeEntriesInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    overtimeTypeId!: number | undefined;
+    employeeId!: number | undefined;
+    kind!: OvertimeEntryListKind;
+    month!: DateTime | undefined;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetOvertimeEntriesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.employeeId = _data["employeeId"];
+            this.kind = _data["kind"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetOvertimeEntriesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetOvertimeEntriesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["employeeId"] = this.employeeId;
+        data["kind"] = this.kind;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetOvertimeEntriesInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    overtimeTypeId: number | undefined;
+    employeeId: number | undefined;
+    kind: OvertimeEntryListKind;
+    month: DateTime | undefined;
+    skipCount: number;
+    maxResultCount: number;
+}
+
 export class GetOvertimeTypeDetailForEditOutput implements IGetOvertimeTypeDetailForEditOutput {
     overtimeTypeDetail!: CreateOrEditOvertimeTypeDetailDto;
 
@@ -287723,14 +288035,617 @@ export interface IOtherSettingsEditDto {
     isQuickThemeSelectEnabled: boolean;
 }
 
+export class OvertimeDashboardDto implements IOvertimeDashboardDto {
+    scope!: DashboardScopeDto;
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    kpis!: OvertimeKpisDto;
+    types!: OvertimeTypeOptionDto[] | undefined;
+    trend!: OvertimeTrendPointDto[] | undefined;
+    byType!: OvertimeTypeBucketDto[] | undefined;
+    byOrgUnit!: OvertimeOrgUnitBucketDto[] | undefined;
+    topEmployees!: OvertimeTopEmployeeDto[] | undefined;
+    orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: IOvertimeDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.kpis = _data["kpis"] ? OvertimeKpisDto.fromJS(_data["kpis"]) : undefined as any;
+            if (Array.isArray(_data["types"])) {
+                this.types = [] as any;
+                for (let item of _data["types"])
+                    this.types!.push(OvertimeTypeOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["trend"])) {
+                this.trend = [] as any;
+                for (let item of _data["trend"])
+                    this.trend!.push(OvertimeTrendPointDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byType"])) {
+                this.byType = [] as any;
+                for (let item of _data["byType"])
+                    this.byType!.push(OvertimeTypeBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byOrgUnit"])) {
+                this.byOrgUnit = [] as any;
+                for (let item of _data["byOrgUnit"])
+                    this.byOrgUnit!.push(OvertimeOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["topEmployees"])) {
+                this.topEmployees = [] as any;
+                for (let item of _data["topEmployees"])
+                    this.topEmployees!.push(OvertimeTopEmployeeDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitPath"])) {
+                this.orgUnitPath = [] as any;
+                for (let item of _data["orgUnitPath"])
+                    this.orgUnitPath!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): OvertimeDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["kpis"] = this.kpis ? this.kpis.toJSON() : undefined as any;
+        if (Array.isArray(this.types)) {
+            data["types"] = [];
+            for (let item of this.types)
+                data["types"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.trend)) {
+            data["trend"] = [];
+            for (let item of this.trend)
+                data["trend"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byType)) {
+            data["byType"] = [];
+            for (let item of this.byType)
+                data["byType"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byOrgUnit)) {
+            data["byOrgUnit"] = [];
+            for (let item of this.byOrgUnit)
+                data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.topEmployees)) {
+            data["topEmployees"] = [];
+            for (let item of this.topEmployees)
+                data["topEmployees"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitPath)) {
+            data["orgUnitPath"] = [];
+            for (let item of this.orgUnitPath)
+                data["orgUnitPath"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IOvertimeDashboardDto {
+    scope: DashboardScopeDto;
+    fromDate: DateTime;
+    toDate: DateTime;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    kpis: OvertimeKpisDto;
+    types: OvertimeTypeOptionDto[] | undefined;
+    trend: OvertimeTrendPointDto[] | undefined;
+    byType: OvertimeTypeBucketDto[] | undefined;
+    byOrgUnit: OvertimeOrgUnitBucketDto[] | undefined;
+    topEmployees: OvertimeTopEmployeeDto[] | undefined;
+    orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
+}
+
+export enum OvertimeDashboardExportPart {
+    All = 0,
+    Trend = 1,
+    CostTrend = 2,
+    ByType = 3,
+    ByOrgUnit = 4,
+    TopEmployees = 5,
+    Entries = 6,
+}
+
+export class OvertimeDashboardInput implements IOvertimeDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    overtimeTypeId!: number | undefined;
+    employeeId!: number | undefined;
+
+    constructor(data?: IOvertimeDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["employeeId"] = this.employeeId;
+        return data;
+    }
+}
+
+export interface IOvertimeDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    overtimeTypeId: number | undefined;
+    employeeId: number | undefined;
+}
+
+export enum OvertimeEntryListKind {
+    Approved = 0,
+    Pending = 1,
+}
+
+export class OvertimeEntryRowDto implements IOvertimeEntryRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    effectiveDate!: DateTime;
+    overtimeTypeId!: number;
+    claimedHours!: number;
+    actualHours!: number;
+    approvedHours!: number;
+    status!: RequestStatus;
+
+    constructor(data?: IOvertimeEntryRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.claimedHours = _data["claimedHours"];
+            this.actualHours = _data["actualHours"];
+            this.approvedHours = _data["approvedHours"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeEntryRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeEntryRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["claimedHours"] = this.claimedHours;
+        data["actualHours"] = this.actualHours;
+        data["approvedHours"] = this.approvedHours;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IOvertimeEntryRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    effectiveDate: DateTime;
+    overtimeTypeId: number;
+    claimedHours: number;
+    actualHours: number;
+    approvedHours: number;
+    status: RequestStatus;
+}
+
 export enum OvertimeHoursBasis {
     FixedHours = 0,
     DutyHours = 1,
 }
 
+export class OvertimeKpisDto implements IOvertimeKpisDto {
+    approvedHours!: number;
+    claimedHours!: number;
+    approvedOfClaimedPercent!: number | undefined;
+    employees!: number;
+    averageHoursPerEmployee!: number | undefined;
+    cost!: number;
+    pendingEntries!: number;
+    pendingHours!: number;
+
+    constructor(data?: IOvertimeKpisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.approvedHours = _data["approvedHours"];
+            this.claimedHours = _data["claimedHours"];
+            this.approvedOfClaimedPercent = _data["approvedOfClaimedPercent"];
+            this.employees = _data["employees"];
+            this.averageHoursPerEmployee = _data["averageHoursPerEmployee"];
+            this.cost = _data["cost"];
+            this.pendingEntries = _data["pendingEntries"];
+            this.pendingHours = _data["pendingHours"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeKpisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeKpisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["approvedHours"] = this.approvedHours;
+        data["claimedHours"] = this.claimedHours;
+        data["approvedOfClaimedPercent"] = this.approvedOfClaimedPercent;
+        data["employees"] = this.employees;
+        data["averageHoursPerEmployee"] = this.averageHoursPerEmployee;
+        data["cost"] = this.cost;
+        data["pendingEntries"] = this.pendingEntries;
+        data["pendingHours"] = this.pendingHours;
+        return data;
+    }
+}
+
+export interface IOvertimeKpisDto {
+    approvedHours: number;
+    claimedHours: number;
+    approvedOfClaimedPercent: number | undefined;
+    employees: number;
+    averageHoursPerEmployee: number | undefined;
+    cost: number;
+    pendingEntries: number;
+    pendingHours: number;
+}
+
+export class OvertimeOrgUnitBucketDto implements IOvertimeOrgUnitBucketDto {
+    organizationUnitId!: number | undefined;
+    name!: string | undefined;
+    isDirectStaff!: boolean;
+    hasChildren!: boolean;
+    hours!: number;
+    employees!: number;
+    cost!: number;
+
+    constructor(data?: IOvertimeOrgUnitBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.name = _data["name"];
+            this.isDirectStaff = _data["isDirectStaff"];
+            this.hasChildren = _data["hasChildren"];
+            this.hours = _data["hours"];
+            this.employees = _data["employees"];
+            this.cost = _data["cost"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeOrgUnitBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeOrgUnitBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["name"] = this.name;
+        data["isDirectStaff"] = this.isDirectStaff;
+        data["hasChildren"] = this.hasChildren;
+        data["hours"] = this.hours;
+        data["employees"] = this.employees;
+        data["cost"] = this.cost;
+        return data;
+    }
+}
+
+export interface IOvertimeOrgUnitBucketDto {
+    organizationUnitId: number | undefined;
+    name: string | undefined;
+    isDirectStaff: boolean;
+    hasChildren: boolean;
+    hours: number;
+    employees: number;
+    cost: number;
+}
+
 export enum OvertimeRateType {
     Actual = 0,
     Fixed = 1,
+}
+
+export class OvertimeTopEmployeeDto implements IOvertimeTopEmployeeDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    hours!: number;
+    cost!: number;
+
+    constructor(data?: IOvertimeTopEmployeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.hours = _data["hours"];
+            this.cost = _data["cost"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeTopEmployeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeTopEmployeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["hours"] = this.hours;
+        data["cost"] = this.cost;
+        return data;
+    }
+}
+
+export interface IOvertimeTopEmployeeDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    hours: number;
+    cost: number;
+}
+
+export class OvertimeTrendPointDto implements IOvertimeTrendPointDto {
+    monthStart!: DateTime;
+    hours!: OvertimeTrendValueDto[] | undefined;
+    cost!: number;
+
+    constructor(data?: IOvertimeTrendPointDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.monthStart = _data["monthStart"] ? DateTime.fromISO(_data["monthStart"].toString()) : undefined as any;
+            if (Array.isArray(_data["hours"])) {
+                this.hours = [] as any;
+                for (let item of _data["hours"])
+                    this.hours!.push(OvertimeTrendValueDto.fromJS(item));
+            }
+            this.cost = _data["cost"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeTrendPointDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeTrendPointDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["monthStart"] = this.monthStart ? this.monthStart.toString() : undefined as any;
+        if (Array.isArray(this.hours)) {
+            data["hours"] = [];
+            for (let item of this.hours)
+                data["hours"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["cost"] = this.cost;
+        return data;
+    }
+}
+
+export interface IOvertimeTrendPointDto {
+    monthStart: DateTime;
+    hours: OvertimeTrendValueDto[] | undefined;
+    cost: number;
+}
+
+export class OvertimeTrendValueDto implements IOvertimeTrendValueDto {
+    overtimeTypeId!: number;
+    hours!: number;
+
+    constructor(data?: IOvertimeTrendValueDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.hours = _data["hours"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeTrendValueDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeTrendValueDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["hours"] = this.hours;
+        return data;
+    }
+}
+
+export interface IOvertimeTrendValueDto {
+    overtimeTypeId: number;
+    hours: number;
+}
+
+export class OvertimeTypeBucketDto implements IOvertimeTypeBucketDto {
+    overtimeTypeId!: number;
+    hours!: number;
+    employees!: number;
+    cost!: number;
+
+    constructor(data?: IOvertimeTypeBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.hours = _data["hours"];
+            this.employees = _data["employees"];
+            this.cost = _data["cost"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeTypeBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeTypeBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["hours"] = this.hours;
+        data["employees"] = this.employees;
+        data["cost"] = this.cost;
+        return data;
+    }
+}
+
+export interface IOvertimeTypeBucketDto {
+    overtimeTypeId: number;
+    hours: number;
+    employees: number;
+    cost: number;
 }
 
 export class OvertimeTypeDetailDto implements IOvertimeTypeDetailDto {
@@ -287855,6 +288770,54 @@ export interface IOvertimeTypeDto {
     wageTypeId: number | undefined;
     wageTypeCode: string | undefined;
     wageTypeNameEn: string | undefined;
+}
+
+export class OvertimeTypeOptionDto implements IOvertimeTypeOptionDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IOvertimeTypeOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeTypeOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeTypeOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IOvertimeTypeOptionDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
 }
 
 export class PAAnnualYearReviewDto implements IPAAnnualYearReviewDto {
@@ -307393,6 +308356,54 @@ export class PagedResultDtoOfOrganizationUnitUserListDto implements IPagedResult
 
 export interface IPagedResultDtoOfOrganizationUnitUserListDto {
     items: OrganizationUnitUserListDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfOvertimeEntryRowDto implements IPagedResultDtoOfOvertimeEntryRowDto {
+    items!: OvertimeEntryRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfOvertimeEntryRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(OvertimeEntryRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfOvertimeEntryRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfOvertimeEntryRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfOvertimeEntryRowDto {
+    items: OvertimeEntryRowDto[] | undefined;
     totalCount: number;
 }
 

@@ -3685,6 +3685,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Dashboards.Attendance' },
                     },
                     {
+                        path: 'overtime-dashboard',
+                        loadComponent: () =>
+                            import('./admin/dashboards/overtime-dashboard/overtime-dashboard.component').then(
+                                (m) => m.OvertimeDashboardComponent
+                            ),
+                        data: { permission: 'Pages.Dashboards.Overtime' },
+                    },
+                    {
                         path: 'copy-workflow-setup',
                         loadComponent: () =>
                             import('./admin/administration/copy-workflow-setup/copy-workflow-setup.component').then(

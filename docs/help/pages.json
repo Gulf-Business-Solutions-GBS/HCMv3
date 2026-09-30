@@ -9770,6 +9770,98 @@
           "loc": "AttendanceDashboard_Exceptions"
         }
       ]
+    },
+    {
+      "helpId": "dash.overtime",
+      "title": "Overtime Dashboard",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Pages.Dashboards.Overtime"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/dashboards/overtime-dashboard/overtime-dashboard.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "dash.common.filter",
+          "label": "Filter",
+          "loc": "Filter"
+        },
+        {
+          "id": "dash.common.download",
+          "label": "Download",
+          "loc": "Download"
+        },
+        {
+          "id": "dash.overtime.approved-hours",
+          "label": "OvertimeDashboard_ApprovedHours",
+          "loc": "OvertimeDashboard_ApprovedHours"
+        },
+        {
+          "id": "dash.overtime.approved-of-claimed",
+          "label": "OvertimeDashboard_ApprovedOfClaimed",
+          "loc": "OvertimeDashboard_ApprovedOfClaimed"
+        },
+        {
+          "id": "dash.overtime.employees",
+          "label": "OvertimeDashboard_Employees",
+          "loc": "OvertimeDashboard_Employees"
+        },
+        {
+          "id": "dash.overtime.average",
+          "label": "OvertimeDashboard_AveragePerEmployee",
+          "loc": "OvertimeDashboard_AveragePerEmployee"
+        },
+        {
+          "id": "dash.overtime.cost",
+          "label": "OvertimeDashboard_Cost",
+          "loc": "OvertimeDashboard_Cost"
+        },
+        {
+          "id": "dash.overtime.pending",
+          "label": "OvertimeDashboard_Pending",
+          "loc": "OvertimeDashboard_Pending"
+        },
+        {
+          "id": "dash.overtime.trend",
+          "label": "OvertimeDashboard_ByMonth",
+          "loc": "OvertimeDashboard_ByMonth"
+        },
+        {
+          "id": "dash.overtime.by-type",
+          "label": "OvertimeDashboard_ByType",
+          "loc": "OvertimeDashboard_ByType"
+        },
+        {
+          "id": "dash.overtime.cost-trend",
+          "label": "OvertimeDashboard_CostByMonth",
+          "loc": "OvertimeDashboard_CostByMonth"
+        },
+        {
+          "id": "dash.overtime.by-department",
+          "label": "OvertimeDashboard_ByDepartment",
+          "loc": "OvertimeDashboard_ByDepartment"
+        },
+        {
+          "id": "dash.overtime.top-employees",
+          "label": "OvertimeDashboard_TopEmployees",
+          "loc": "OvertimeDashboard_TopEmployees"
+        },
+        {
+          "id": "dash.overtime.entries",
+          "label": "OvertimeDashboard_Entries",
+          "loc": "OvertimeDashboard_Entries"
+        }
+      ]
     }
   ]
 }

@@ -2773,6 +2773,9 @@ public static class AppPermissions
     /// <summary>Time &amp; Attendance Dashboard. Only opens the screen; whose employees it shows comes from <c>IDashboardScopeService</c>.</summary>
     public const string Pages_Dashboards_Attendance = "Pages.Dashboards.Attendance";
 
+    /// <summary>Overtime Dashboard. Only opens the screen; whose employees it shows comes from <c>IDashboardScopeService</c>.</summary>
+    public const string Pages_Dashboards_Overtime = "Pages.Dashboards.Overtime";
+
     /// <summary>
     /// Report Distribution: creating and maintaining report schedules, and viewing their run history.
     /// </summary>

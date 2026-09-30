@@ -595,5 +595,6 @@ public static class ScreenCatalog
         new("app.admin.leave-dashboard", "SDSH001", "Dashboards", "LeaveDashboard", "/app/admin/leave-dashboard", "Pages.Dashboards.Leave"),
         new("app.admin.workforce-dashboard", "SDSH002", "Dashboards", "WorkforceDashboard", "/app/admin/workforce-dashboard", "Pages.Dashboards.Workforce"),
         new("app.admin.attendance-dashboard", "SDSH003", "Dashboards", "AttendanceDashboard", "/app/admin/attendance-dashboard", "Pages.Dashboards.Attendance"),
+        new("app.admin.overtime-dashboard", "SDSH004", "Dashboards", "OvertimeDashboard", "/app/admin/overtime-dashboard", "Pages.Dashboards.Overtime"),
     };
 }

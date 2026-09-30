@@ -226,6 +226,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.LeaveDashboardServiceProxy,
     ApiServiceProxies.WorkforceDashboardServiceProxy,
     ApiServiceProxies.AttendanceDashboardServiceProxy,
+    ApiServiceProxies.OvertimeDashboardServiceProxy,
     ApiServiceProxies.SalaryPivotServiceProxy,
     ApiServiceProxies.CostingFileServiceProxy,
     ApiServiceProxies.PostJvServiceProxy,
