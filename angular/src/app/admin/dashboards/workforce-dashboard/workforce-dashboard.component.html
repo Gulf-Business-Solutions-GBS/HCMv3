@@ -1,4 +1,4 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'dash.workforce'">
     <sub-header [title]="'WorkforceDashboard' | localize" [description]="'Dashboards' | localize"></sub-header>
 
     <div [class]="containerClass">
@@ -20,7 +20,7 @@
                 </span>
                 @if (dashboard(); as d) {
                     <span class="text-muted">·</span>
-                    <span class="ld-scope">
+                    <span data-help-loc="Dashboard_Showing" class="ld-scope">
                         <i class="la la-user-shield"></i>
                         {{ 'Dashboard_Showing' | localize }}:
                         <strong>{{ scopeIsNobody() ? '—' : scopeLabel() }}</strong>
@@ -55,13 +55,11 @@
             </div>
 
             <div class="ld-toolbar-actions">
-                <button type="button" class="btn btn-sm btn-light-primary" (click)="openFilters($event)" [attr.title]="'Filter' | localize">
+                <button data-help-loc="Filter" type="button" class="btn btn-sm btn-light-primary" (click)="openFilters($event)" [attr.title]="'Filter' | localize">
                     <i class="fa fa-filter"></i>
                     {{ 'Filter' | localize }}
                 </button>
-                <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.All)" [disabled]="exporting() || !dashboard()" [attr.title]="'LeaveDashboard_ExportDashboard' | localize">
-                    <i class="fa fa-file-excel"></i>
-                </button>
+                <dashboard-export-menu data-help-loc="Download" [fileName]="'WorkforceDashboard' | localize" [target]="dashboardBody" [disabled]="exporting() || !dashboard()" (xlsx)="exportToExcel(Part.All)" />
                 <button type="button" class="btn btn-sm btn-icon btn-light" (click)="refresh()" [disabled]="loading()" [attr.title]="'Refresh' | localize">
                     <i class="la la-refresh" [class.ld-spin]="loading()"></i>
                 </button>
@@ -113,36 +111,36 @@
         </p-popover>
 
         <!-- Full spinner only for the first load; after that the tiles stay visible and animate to the new data. -->
-        <div [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
+        <div #dashboardBody [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
             @if (dashboard(); as d) {
                 <!-- ================= Headline figures ================= -->
                 <div class="ld-kpis mb-5">
-                    <button type="button" class="ld-kpi" [class.active]="detailKind() === Kind.Headcount" (click)="showList(Kind.Headcount)">
+                    <button data-help-loc="WorkforceDashboard_Headcount" type="button" class="ld-kpi" [class.active]="detailKind() === Kind.Headcount" (click)="showList(Kind.Headcount)">
                         <span class="ld-kpi-value" [countUp]="d.kpis.headcount"></span>
                         <span class="ld-kpi-label">{{ 'WorkforceDashboard_Headcount' | localize }}</span>
                         <span class="ld-kpi-sub">{{ 'WorkforceDashboard_MaleFemale' | localize: malePercent() : femalePercent() }}</span>
                     </button>
-                    <div class="ld-kpi">
+                    <div data-help-loc="WorkforceDashboard_AverageAge" class="ld-kpi">
                         <span class="ld-kpi-value" [countUp]="d.kpis.averageAge" [countUpDecimals]="1"></span>
                         <span class="ld-kpi-label">{{ 'WorkforceDashboard_AverageAge' | localize }}</span>
                         <span class="ld-kpi-sub">{{ 'WorkforceDashboard_AsOf' | localize: (d.asOfDate | luxonFormat: 'dd/MM/yyyy') }}</span>
                     </div>
-                    <div class="ld-kpi">
+                    <div data-help-loc="WorkforceDashboard_AverageService" class="ld-kpi">
                         <span class="ld-kpi-value" [countUp]="d.kpis.averageServiceYears" [countUpDecimals]="1"></span>
                         <span class="ld-kpi-label">{{ 'WorkforceDashboard_AverageService' | localize }}</span>
                         <span class="ld-kpi-sub">{{ 'WorkforceDashboard_Nationalities' | localize }}: {{ d.kpis.nationalities }}</span>
                     </div>
-                    <button type="button" class="ld-kpi" [class.active]="detailKind() === Kind.Joiners" (click)="showList(Kind.Joiners)">
+                    <button data-help-loc="WorkforceDashboard_Joiners" type="button" class="ld-kpi" [class.active]="detailKind() === Kind.Joiners" (click)="showList(Kind.Joiners)">
                         <span class="ld-kpi-value" [countUp]="d.kpis.joiners"></span>
                         <span class="ld-kpi-label">{{ 'WorkforceDashboard_Joiners' | localize }}</span>
                         <span class="ld-kpi-sub">{{ 'WorkforceDashboard_InPeriod' | localize }}</span>
                     </button>
-                    <button type="button" class="ld-kpi" [class.ld-kpi-alert]="d.kpis.leavers > 0" [class.active]="detailKind() === Kind.Leavers" (click)="showList(Kind.Leavers)">
+                    <button data-help-loc="WorkforceDashboard_Leavers" type="button" class="ld-kpi" [class.ld-kpi-alert]="d.kpis.leavers > 0" [class.active]="detailKind() === Kind.Leavers" (click)="showList(Kind.Leavers)">
                         <span class="ld-kpi-value" [countUp]="d.kpis.leavers"></span>
                         <span class="ld-kpi-label">{{ 'WorkforceDashboard_Leavers' | localize }}</span>
                         <span class="ld-kpi-sub">{{ 'WorkforceDashboard_LeaversSplit' | localize: d.kpis.resignations : d.kpis.terminations }}</span>
                     </button>
-                    <div class="ld-kpi">
+                    <div data-help-loc="WorkforceDashboard_Turnover" class="ld-kpi">
                         <span class="ld-kpi-value">
                             @if (d.kpis.turnoverPercent != null) {
                                 <span [countUp]="d.kpis.turnoverPercent" [countUpDecimals]="1"></span>%
@@ -158,16 +156,14 @@
                 <!-- ================= Profile: age, gender, service ================= -->
                 <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 250ms">
                     <div class="col-xl-4">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByAge" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByAge' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Age)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByAge' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Age)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -185,16 +181,14 @@
                         </div>
                     </div>
                     <div class="col-xl-4">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByGender" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByGender' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Gender)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByGender' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Gender)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -217,16 +211,14 @@
                         </div>
                     </div>
                     <div class="col-xl-4">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByService" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByService' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Service)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByService' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Service)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -249,16 +241,14 @@
                 <!-- ================= Nationality and department ================= -->
                 <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 400ms">
                     <div class="col-xl-6">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByNationality" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByNationality' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Nationality)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByNationality' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Nationality)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -282,16 +272,14 @@
                         </div>
                     </div>
                     <div class="col-xl-6">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByDepartment" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByDepartment' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'LeaveDashboard_ByDepartmentHint' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.ByOrgUnit)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByDepartment' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.ByOrgUnit)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -345,16 +333,14 @@
                 <!-- ================= Movement: joiners, leavers, turnover ================= -->
                 <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 550ms">
                     <div class="col-xl-7">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByMonth" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByMonth' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ByMonthHint' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Trend)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByMonth' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Trend)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -378,7 +364,7 @@
                         </div>
                     </div>
                     <div class="col-xl-5">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_TurnoverTrend" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_TurnoverTrend' | localize }}</h3>
@@ -408,16 +394,14 @@
                 <!-- ================= Qualification and job title ================= -->
                 <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 700ms">
                     <div class="col-xl-6">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByQualification" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByQualification' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Qualification)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByQualification' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Qualification)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -441,16 +425,14 @@
                         </div>
                     </div>
                     <div class="col-xl-6">
-                        <div class="card card-custom h-100">
+                        <div data-help-loc="WorkforceDashboard_ByJobTitle" class="card card-custom h-100">
                             <div class="card-header border-0 pt-5">
                                 <div class="card-title flex-column align-items-start">
                                     <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByJobTitle' | localize }}</h3>
                                     <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
                                 </div>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.JobTitle)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                        <i class="fa fa-file-excel"></i>
-                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_ByJobTitle' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.JobTitle)" />
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -479,14 +461,12 @@
 
         <!-- ================= Employees behind a figure ================= -->
         @if (detailKind() !== undefined) {
-            <div class="card card-custom mb-5 ld-rise" #detailPanel>
+            <div data-help-loc="WorkforceDashboard_EmployeesList" class="card card-custom mb-5 ld-rise" #detailPanel>
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title fw-bold">{{ detailTitle() }}</h3>
                     <div class="card-toolbar gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportList()" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                            <i class="fa fa-file-excel"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="closeList()" [attr.aria-label]="'Close' | localize">
+                        <dashboard-export-menu [fileName]="detailTitle()" [disabled]="exporting()" (xlsx)="exportList()" />
+                        <button type="button" class="btn btn-sm btn-icon btn-light ld-no-export" (click)="closeList()" [attr.aria-label]="'Close' | localize">
                             <i class="la la-times"></i>
                         </button>
                     </div>

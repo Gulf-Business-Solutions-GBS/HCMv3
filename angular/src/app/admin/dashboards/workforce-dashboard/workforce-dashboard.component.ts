@@ -35,7 +35,9 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { CountUpDirective } from '../shared/count-up.directive';
+import { DashboardExportMenuComponent } from '../shared/dashboard-export-menu.component';
 import { PERIOD_PRESETS, PeriodPreset, periodOf, presetLabelKey, scopeLabel } from '../shared/dashboard-shared';
 
 interface ChartItem {
@@ -82,6 +84,8 @@ interface AttributeFilter {
         PieChartModule,
         Popover,
         CountUpDirective,
+        DashboardExportMenuComponent,
+        HelpPageDirective,
     ],
 })
 export class WorkforceDashboardComponent extends AppComponentBase implements OnInit {

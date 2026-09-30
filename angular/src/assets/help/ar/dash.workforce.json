@@ -1,0 +1,277 @@
+{
+  "helpId": "dash.workforce",
+  "lang": "ar",
+  "title": "لوحة معلومات القوى العاملة",
+  "entity": null,
+  "overviewHtml": "<p>من يعمل لديكم وكيف يتغير ذلك: عدد الموظفين حسب العمر والجنس والجنسية وسنوات الخدمة والمؤهل العلمي والمسمى الوظيفي والإدارة، إضافة إلى المعينين الجدد والمنتهية خدماتهم ومعدل دوران الموظفين خلال الفترة.</p><p>يُحتسب عدد الموظفين ورسوم التوزيع في يوم واحد هو <strong>تاريخ الاحتساب</strong>: نهاية الفترة، أو اليوم إذا كانت الفترة تنتهي بعده. أما المعينون الجدد والمنتهية خدماتهم ومعدل الدوران فتُحتسب على امتداد الفترة كلها. انقر على أي عمود لحصر كل المربعات في هؤلاء الموظفين؛ وتتراكم عوامل التصفية، فعرض <em>أنثى · 31 - 40 · كويتي</em> يتم بثلاث نقرات.</p><p><strong>من يُعدّ على رأس العمل في يوم ما.</strong> من التحق بالعمل في ذلك اليوم أو قبله ولم تنتهِ خدمته بعد — أي أن آخر يوم عمل له، المسجّل في إنهاء خدمة، هو ذلك اليوم أو بعده. وإذا لم يُسجَّل له إنهاء خدمة فيُعدّ على رأس العمل ما دام نشطاً. أما الموظف غير النشط الذي ليس له إنهاء خدمة مسجّل فلا يُعرف تاريخ انتهاء خدمته، ولذلك يُستبعد من كل الأرقام بدلاً من تخمينه.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:WorkforceDashboard_Headcount": "dash.workforce.headcount",
+    "loc:WorkforceDashboard_AverageAge": "dash.workforce.average-age",
+    "loc:WorkforceDashboard_AverageService": "dash.workforce.average-service",
+    "loc:WorkforceDashboard_Joiners": "dash.workforce.joiners",
+    "loc:WorkforceDashboard_Leavers": "dash.workforce.leavers",
+    "loc:WorkforceDashboard_Turnover": "dash.workforce.turnover",
+    "loc:WorkforceDashboard_ByAge": "dash.workforce.age",
+    "loc:WorkforceDashboard_ByGender": "dash.workforce.gender",
+    "loc:WorkforceDashboard_ByService": "dash.workforce.service",
+    "loc:WorkforceDashboard_ByNationality": "dash.workforce.nationality",
+    "loc:WorkforceDashboard_ByDepartment": "dash.workforce.by-department",
+    "loc:WorkforceDashboard_ByMonth": "dash.workforce.movement",
+    "loc:WorkforceDashboard_TurnoverTrend": "dash.workforce.turnover-trend",
+    "loc:WorkforceDashboard_ByQualification": "dash.workforce.qualification",
+    "loc:WorkforceDashboard_ByJobTitle": "dash.workforce.job-title",
+    "loc:WorkforceDashboard_EmployeesList": "dash.workforce.employee-list"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النافذة التي تفتح من زر <strong>تصفية</strong>: الفترة ووحدة الشركة. ولا يتغير شيء حتى تضغط <strong>تطبيق</strong>؛ ويعيد زر <strong>مسح</strong> القيم الافتراضية.</p><p><strong>كيف تعمل الفترة.</strong></p><ul><li><strong>من بداية السنة حتى اليوم</strong> (الافتراضي): من 1 يناير من السنة الحالية حتى اليوم.</li><li><strong>هذه السنة</strong> و<strong>السنة الماضية</strong>: من 1 يناير إلى 31 ديسمبر.</li><li><strong>هذا الشهر</strong>: من أول يوم في الشهر الحالي إلى آخر يوم فيه.</li><li><strong>مخصص</strong>: أي تاريخي بداية ونهاية تختارهما. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</li></ul><p><strong>مثال.</strong> اختر <strong>السنة الماضية</strong> لعرض سنة 2025 عندما تكون بيانات السنة الحالية قليلة.</p><p><strong>لماذا يهمّ.</strong> الأرقام المحسوبة \"حتى اليوم\" (من في إجازة اليوم، وعدد الموظفين) لا تتأثر بالفترة؛ أما الأرقام المحسوبة \"خلال الفترة\" (أيام الإجازة، والمعينون الجدد، والمنتهية خدماتهم، ومعدل الدوران) فتتأثر بها. واختيار وحدة الشركة يشمل كل وحدة تتبعها. والنقر على عمود أو شريحة في الرسم البياني يضيف عامل تصفية آخر يظهر بجانب <strong>المعروض</strong> — احذفه بعلامة <strong>×</strong> الخاصة به، أو احذفها جميعاً بـ<strong>مسح عوامل التصفية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيقونة التحميل في شريط الأدوات وفي كل مربع. وعند النقر عليها تظهر ثلاث صيغ.</p><p><strong>ما تحتويه كل صيغة.</strong></p><ul><li><strong>PDF</strong> و<strong>JPEG</strong>: صورة للمربع كما يظهر على الشاشة تماماً، بما في ذلك الرسوم البيانية. ومن شريط الأدوات: صورة للوحة كاملة.</li><li><strong>XLSX</strong>: البيانات التي يقوم عليها المربع، بعوامل التصفية نفسها. ومن شريط الأدوات: ملف يضم ورقة <strong>الملخص</strong> (بيانات من، والفترة، والأرقام الرئيسية) وورقة لكل مربع.</li></ul><p><strong>مثال.</strong> أرسل رسم <strong>الإجازات حسب النوع</strong> بصيغة JPEG في بريد إلكتروني؛ وسلّم قسم الرواتب قائمة <strong>لم يباشروا العمل بعد الإجازة</strong> بصيغة XLSX.</p><p><strong>لماذا يهمّ.</strong> كل ما تحمّله لا يحتوي إلا ما يُسمح لك برؤيته، ويطابق تماماً ما تعرضه الشاشة بعوامل التصفية التي طبّقتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.headcount",
+      "label": "WorkforceDashboard_Headcount",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Headcount"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين على رأس العمل في تاريخ الاحتساب، مع نسبة الذكور والإناث. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الموظفون على رأس العمل في تاريخ الاحتساب</code></p><ul><li><strong>نسبة الذكور</strong> = عدد الذكور ÷ عدد الموظفين × 100، وكذلك الإناث، مقرّبة إلى عدد صحيح. والموظفون غير المحدد جنسهم داخلون في العدد وليسوا في أي من النسبتين.</li></ul><p><strong>مثال.</strong> 835 — 62% ذكور · 38% إناث.</p><p><strong>لماذا يهمّ.</strong> كل رقم آخر في اللوحة هو جزء من هذا الرقم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.average-age",
+      "label": "WorkforceDashboard_AverageAge",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_AverageAge"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط أعمار الموظفين في تاريخ الاحتساب.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع السنوات المكتملة من العمر ÷ عدد الموظفين الذين لهم تاريخ ميلاد</code></p><ul><li>السنوات المكتملة: عيد الميلاد الذي يأتي لاحقاً في السنة لم يُحتسب بعد، فمن وُلد في 1 يوليو 1990 عمره 35 سنة في 30 يونيو 2026 لا 36.</li><li>يُستبعد من المتوسط من ليس له تاريخ ميلاد صالح.</li><li>يُقرَّب إلى منزلة عشرية واحدة.</li></ul><p><strong>مثال.</strong> 38.4 سنة.</p><p><strong>لماذا يهمّ.</strong> يبيّن مع <strong>التوزيع حسب العمر</strong> أين ستحتاجون إلى التخطيط للتقاعد والإحلال الوظيفي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.average-service",
+      "label": "WorkforceDashboard_AverageService",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_AverageService"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط مدة خدمة الموظفين في تاريخ الاحتساب، وعدد الجنسيات بينهم.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع السنوات المكتملة منذ تاريخ الالتحاق ÷ عدد الموظفين</code>، مقرّباً إلى منزلة عشرية واحدة.</p><ul><li><strong>الجنسيات</strong> = عدد الجنسيات المختلفة بين الموظفين.</li></ul><p><strong>مثال.</strong> 6.2 سنة · الجنسيات: 24.</p><p><strong>لماذا يهمّ.</strong> طول متوسط الخدمة يعني خبرة يجب الحفاظ عليها؛ وقِصره يعني عبئاً في التهيئة والتدريب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.joiners",
+      "label": "WorkforceDashboard_Joiners",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Joiners"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون الذين التحقوا بالعمل خلال الفترة. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الموظفون الذين يقع تاريخ التحاقهم بين بداية الفترة وتاريخ الاحتساب</code></p><p><strong>مثال.</strong> 41 معيّناً جديداً من بداية السنة حتى اليوم.</p><p><strong>لماذا يهمّ.</strong> بمقارنته مع <strong>المنتهية خدماتهم</strong> يتبيّن هل القوى العاملة تزداد أم تنقص.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.leavers",
+      "label": "WorkforceDashboard_Leavers",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Leavers"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون الذين انتهت خدمتهم خلال الفترة، مقسّمين إلى استقالات وإنهاء خدمات. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الموظفون الذين يقع آخر يوم عمل لهم بين بداية الفترة وتاريخ الاحتساب</code></p><ul><li>لا يُحتسب إلا إنهاء الخدمة المسجّل، ولا يُحتسب إنهاء الخدمة الملغى.</li><li><strong>استقالة</strong> و<strong>إنهاء خدمة</strong> مأخوذان من نوع إنهاء الخدمة.</li></ul><p><strong>مثال.</strong> 18 — 14 استقالة · 4 إنهاء خدمة.</p><p><strong>لماذا يهمّ.</strong> هو البسط في معادلة معدل الدوران. والموظفون الذين جُعلوا غير نشطين دون تسجيل إنهاء خدمة لا يُحتسبون، فسجّلوا إنهاء الخدمة ليبقى هذا الرقم صحيحاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.turnover",
+      "label": "WorkforceDashboard_Turnover",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Turnover"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة القوى العاملة التي انتهت خدمتها خلال الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>المنتهية خدماتهم ÷ متوسط عدد الموظفين × 100</code></p><ul><li><strong>متوسط عدد الموظفين</strong> = (عدد الموظفين في أول يوم من الفترة + عددهم في تاريخ الاحتساب) ÷ 2، ويظهر تحت النسبة.</li><li>يُقرَّب إلى منزلة عشرية واحدة. ويظهر \"—\" إذا كان متوسط عدد الموظفين صفراً.</li></ul><p><strong>مثال.</strong> 18 ÷ ((820 + 835) ÷ 2) × 100 = 18 ÷ 827.5 × 100 = <strong>2.2%</strong>.</p><p><strong>لماذا يهمّ.</strong> هو المقياس المعتمد في الموارد البشرية لعدد من تفقدونهم، ويمكن مقارنته بين الإدارات وبين السنوات أياً كان حجمها.</p>",
+      "adminHtml": "<p>لم يُنتج النظام السابق معدل دوران صحيحاً قط: فصفحة الدوران في الخدمة الذاتية كانت تعمل ببيانات موظفين تجريبية مكتوبة في الصفحة، ولوحة HR Dashboard من DevExpress كانت تعدّ سطور العقود المنتهية استقالات وتقسم أعداداً صحيحة. هذا الرقم جديد؛ ولا يُؤخذ انتهاء الخدمة إلا من سجلات <code>EmployeeSeparation</code> غير الملغاة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.age",
+      "label": "WorkforceDashboard_ByAge",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByAge"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون في فئات عمرية: أقل من 21، و21 - 30، و31 - 40، و41 - 50، وأكثر من 50، إضافة إلى <strong>غير معروف</strong> إذا وُجد من ليس له تاريخ ميلاد.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين في كل فئة</code>، بحسب السنوات المكتملة من العمر في تاريخ الاحتساب.</p><p><strong>مثال.</strong> انقر على <strong>31 - 40</strong> فتعرض كل المربعات الموظفين في الثلاثينيات فقط.</p><p><strong>لماذا يهمّ.</strong> يُظهر التركيبة العمرية بنظرة واحدة — فعمود <strong>أكثر من 50</strong> المرتفع يعني حالات تقاعد قادمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.gender",
+      "label": "WorkforceDashboard_ByGender",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByGender"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> توزيع الموظفين على ذكر وأنثى وغير محدد.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين من كل جنس ÷ عدد الموظفين</code></p><p><strong>مثال.</strong> انقر على <strong>أنثى</strong> لعرض بقية اللوحة للإناث فقط.</p><p><strong>لماذا يهمّ.</strong> يدعم تقارير التنوع وأي نسبة تحددها الجهات الرقابية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.service",
+      "label": "WorkforceDashboard_ByService",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByService"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون في فئات مدة الخدمة: 0 - 4، و5 - 10، و11 - 15، و16 - 19، و20 سنة فأكثر.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين في كل فئة</code>، بحسب السنوات المكتملة منذ تاريخ الالتحاق، في تاريخ الاحتساب.</p><p><strong>مثال.</strong> ارتفاع عمود <strong>0 - 4 سنوات</strong> يعني قوى عاملة حديثة أو تعيينات كثيرة مؤخراً.</p><p><strong>لماذا يهمّ.</strong> فئات الخدمة الطويلة هي التي تحدد مكافأة نهاية الخدمة؛ وفئات الخدمة القصيرة هي التي تحدد حجم التدريب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.nationality",
+      "label": "WorkforceDashboard_ByNationality",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByNationality"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون حسب الجنسية: الجنسيات العشر الأكبر، ثم البقية معاً تحت <strong>أخرون</strong>.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين من كل جنسية</code>، الأكبر أولاً.</p><p><strong>مثال.</strong> انقر على <strong>كويتي</strong> لعرض كل المربعات للموظفين الكويتيين فقط. ولا يمكن النقر على <strong>أخرون</strong> لأنه يضم جنسيات كثيرة معاً.</p><p><strong>لماذا يهمّ.</strong> هو أساس أهداف التكويت وتخطيط تأشيرات العمل والإقامات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.by-department",
+      "label": "WorkforceDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين والمنتهية خدماتهم ومعدل الدوران لكل إدارة، مستوى تنظيمي واحد في كل مرة.</p><p><strong>طريقة الاحتساب.</strong> تطبّق كل وحدة معادلات اللوحة نفسها على موظفيها:</p><ul><li><strong>عدد الموظفين</strong> = على رأس العمل في تاريخ الاحتساب.</li><li><strong>المنتهية خدماتهم</strong> = من انتهت خدمتهم خلال الفترة.</li><li><strong>معدل الدوران %</strong> = <code>المنتهية خدماتهم ÷ ((العدد في أول يوم + العدد في تاريخ الاحتساب) ÷ 2) × 100</code>.</li><li>يتبع الموظف الوحدة الواردة في تعيينه التنظيمي الساري في تاريخ الاحتساب. و\"(موظفو الوحدة نفسها)\" هم المعيّنون مباشرة في الوحدة التي تعرضها.</li></ul><p><strong>مثال.</strong> انقر على <strong>ABC Software</strong> لعرض إداراتها ومعرفة أيها يفقد موظفيه.</p><p><strong>لماذا يهمّ.</strong> قد يبدو معدل الدوران في الشركة جيداً بينما تفقد إدارة واحدة ربع موظفيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.movement",
+      "label": "WorkforceDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عمودان لكل شهر من الفترة: عدد من التحقوا وعدد من انتهت خدمتهم.</p><p><strong>طريقة الاحتساب.</strong> لكل شهر: <code>المعينون الجدد = تواريخ الالتحاق في الشهر</code>، و<code>المنتهية خدماتهم = آخر أيام العمل في الشهر</code>. ويُقتطع الشهر الأول والأخير بحدود الفترة.</p><p><strong>مثال.</strong> ارتفاع مفاجئ في المنتهية خدماتهم في أغسطس بعد الصيف.</p><p><strong>لماذا يهمّ.</strong> يبيّن متى يغادر الموظفون، مما يساعد في توقيت جهود الاحتفاظ بهم والتعيين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.turnover-trend",
+      "label": "WorkforceDashboard_TurnoverTrend",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_TurnoverTrend"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة دوران الموظفين شهراً بشهر.</p><p><strong>طريقة الاحتساب.</strong> لكل شهر: <code>المنتهية خدماتهم في الشهر ÷ ((العدد في أول يوم منه + العدد في آخر يوم منه) ÷ 2) × 100</code></p><p><strong>مثال.</strong> 0.4% في معظم الأشهر، و1.8% في أغسطس.</p><p><strong>لماذا يهمّ.</strong> يبيّن الخط الشهري هل يتحسن معدل الدوران أم يسوء، وهو ما لا يبيّنه رقم الفترة الواحد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.qualification",
+      "label": "WorkforceDashboard_ByQualification",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByQualification"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون حسب أعلى مؤهل مسجّل: المؤهلات العشرة الأكبر، ثم <strong>أخرون</strong>. و<strong>غير مسجل</strong> هم من ليس لهم مؤهل في ملفاتهم.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين لكل مؤهل</code>، الأكبر أولاً.</p><p><strong>مثال.</strong> انقر على <strong>بكالوريوس</strong> لحصر كل المربعات في الخريجين.</p><p><strong>لماذا يهمّ.</strong> يبيّن قاعدة المهارات، ويدل ارتفاع عمود <strong>غير مسجل</strong> على ملفات موظفين تحتاج إلى استكمال.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.job-title",
+      "label": "WorkforceDashboard_ByJobTitle",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByJobTitle"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون حسب المسمى الوظيفي: المسميات العشرة الأكبر، ثم <strong>أخرون</strong>.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين لكل مسمى وظيفي</code>، مأخوذاً من التعيين التنظيمي الساري في تاريخ الاحتساب.</p><p><strong>مثال.</strong> انقر على <strong>محاسب</strong> لمعرفة توزيع المحاسبين حسب العمر والجنسية ومدة الخدمة.</p><p><strong>لماذا يهمّ.</strong> يبيّن أي الوظائف تضم أكبر عدد من الموظفين، وأيها يعتمد على عدد قليل جداً منهم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.employee-list",
+      "label": "WorkforceDashboard_EmployeesList",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_EmployeesList"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها رقم <strong>عدد الموظفين</strong> أو <strong>المعينون الجدد</strong> أو <strong>المنتهية خدماتهم</strong>، بكل عوامل التصفية: الرمز، والاسم، والإدارة، والمسمى الوظيفي، والجنسية، والجنس، والعمر، وسنوات الخدمة، وتاريخ الالتحاق، وآخر يوم عمل للمنتهية خدماتهم. انقر على أي سطر لفتح ملف الموظف.</p><p><strong>طريقة الاحتساب.</strong> القاعدة نفسها التي يقوم عليها الرقم الذي نقرت عليه، فعدد سطور القائمة يطابق دائماً ذلك الرقم.</p><p><strong>مثال.</strong> انقر على <strong>المنتهية خدماتهم</strong> بعد النقر على <strong>أنثى</strong> في رسم الجنس: الموظفات اللواتي انتهت خدمتهن هذه السنة.</p><p><strong>لماذا يهمّ.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تحميلها بصيغة XLSX بعوامل التصفية نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

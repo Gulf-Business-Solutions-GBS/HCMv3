@@ -7069,6 +7069,7 @@
     <text name="Dashboard_ScopeAllAdmin">جميع الموظفين (مسؤول النظام)</text>
     <text name="Dashboard_ScopeYourTeam">فريقك</text>
     <text name="Dashboard_ScopeEmployees">{0} موظف</text>
+    <text name="Dashboard_DownloadFailed">تعذر إنشاء الصورة. يرجى المحاولة مرة أخرى، أو تنزيل ملف XLSX بدلاً من ذلك.</text>
     <text name="Dashboard_ScopeNobody">لا توجد بيانات للعرض. لا توجد وحدات تنظيمية مخصصة لأدوارك في أمان مستوى السجلات، ولا يوجد موظفون يتبعون لك. يرجى الطلب من مسؤول النظام تخصيص وحدات تنظيمية لدورك.</text>
     <text name="WorkforceDashboard">لوحة معلومات القوى العاملة</text>
     <text name="WorkforceDashboard_Headcount">عدد الموظفين</text>

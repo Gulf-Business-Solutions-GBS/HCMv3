@@ -1,0 +1,277 @@
+{
+  "helpId": "dash.workforce",
+  "lang": "en",
+  "title": "Workforce Dashboard",
+  "entity": null,
+  "overviewHtml": "<p>Who works here and how that is changing: headcount by age, gender, nationality, years of service, qualification, job title and department, and the joiners, leavers and turnover of the period.</p><p>Headcount and the profile charts are taken on one day, the <strong>as-of date</strong>: the end of the period, or today if the period ends later. Joiners, leavers and turnover count across the whole period. Click a bar to narrow every tile to those employees; the filters add up, so <em>Female · 31 - 40 · Kuwaiti</em> is three clicks.</p><p><strong>Who counts as employed on a day.</strong> Someone who joined on or before that day and has not left yet — their last day in service, from a recorded separation, is that day or later. With no separation on file they count while active. An inactive employee with no separation has no known leaving date, so they are left out of every figure rather than guessed at.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:WorkforceDashboard_Headcount": "dash.workforce.headcount",
+    "loc:WorkforceDashboard_AverageAge": "dash.workforce.average-age",
+    "loc:WorkforceDashboard_AverageService": "dash.workforce.average-service",
+    "loc:WorkforceDashboard_Joiners": "dash.workforce.joiners",
+    "loc:WorkforceDashboard_Leavers": "dash.workforce.leavers",
+    "loc:WorkforceDashboard_Turnover": "dash.workforce.turnover",
+    "loc:WorkforceDashboard_ByAge": "dash.workforce.age",
+    "loc:WorkforceDashboard_ByGender": "dash.workforce.gender",
+    "loc:WorkforceDashboard_ByService": "dash.workforce.service",
+    "loc:WorkforceDashboard_ByNationality": "dash.workforce.nationality",
+    "loc:WorkforceDashboard_ByDepartment": "dash.workforce.by-department",
+    "loc:WorkforceDashboard_ByMonth": "dash.workforce.movement",
+    "loc:WorkforceDashboard_TurnoverTrend": "dash.workforce.turnover-trend",
+    "loc:WorkforceDashboard_ByQualification": "dash.workforce.qualification",
+    "loc:WorkforceDashboard_ByJobTitle": "dash.workforce.job-title",
+    "loc:WorkforceDashboard_EmployeesList": "dash.workforce.employee-list"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The window behind the <strong>Filter</strong> button: the period and the organization unit. Nothing changes until you press <strong>Apply</strong>; <strong>Reset</strong> goes back to the defaults.</p><p><strong>How the period works.</strong></p><ul><li><strong>This year to date</strong> (the default): 1 January of this year up to today.</li><li><strong>This year</strong> and <strong>Last year</strong>: 1 January to 31 December.</li><li><strong>This month</strong>: the first to the last day of the current month.</li><li><strong>Custom</strong>: any From and To dates you choose. A period longer than five years is shortened to the last five.</li></ul><p><strong>Example.</strong> Pick <strong>Last year</strong> to see 2025 while this year's data is still thin.</p><p><strong>Why it matters.</strong> Figures \"as of today\" (who is on leave today, headcount) do not depend on the period; figures \"in the period\" (leave days, joiners, leavers, turnover) do. Choosing an organization unit includes every unit below it. Clicking a bar or a slice on a chart adds another filter, shown as a chip next to <strong>Showing</strong> — remove it with its <strong>×</strong>, or all of them with <strong>Clear filters</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The download icon on the toolbar and on every tile. Clicking it offers three formats.</p><p><strong>What each format contains.</strong></p><ul><li><strong>PDF</strong> and <strong>JPEG</strong>: a picture of the tile exactly as it looks on screen, charts included. From the toolbar, a picture of the whole dashboard.</li><li><strong>XLSX</strong>: the data behind the tile, with the same filters. From the toolbar, a workbook with a <strong>Summary</strong> sheet (whose data, the period, the headline figures) and one sheet per tile.</li></ul><p><strong>Example.</strong> Send the <strong>Leave by type</strong> chart as a JPEG in an email; give payroll the <strong>Not returned from leave</strong> list as XLSX.</p><p><strong>Why it matters.</strong> Whatever you download contains only what you are allowed to see, and exactly what the screen shows for the filters you have applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.headcount",
+      "label": "WorkforceDashboard_Headcount",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Headcount"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many employees are employed on the as-of date, with the split between men and women. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Employees employed on the as-of date</code></p><ul><li><strong>% male</strong> = men ÷ headcount × 100, and the same for women, rounded to whole numbers. Employees with no gender recorded are in the headcount but in neither percentage.</li></ul><p><strong>Example.</strong> 835 — 62% male · 38% female.</p><p><strong>Why it matters.</strong> Every other figure on the dashboard is a share of this one.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.average-age",
+      "label": "WorkforceDashboard_AverageAge",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_AverageAge"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mean age of the headcount on the as-of date.</p><p><strong>How it is calculated.</strong> <code>Sum of completed years of age ÷ number of employees with a birth date</code></p><ul><li>Completed years: a birthday later in the year has not counted yet, so someone born 1 July 1990 is 35 on 30 June 2026, not 36.</li><li>Employees with no usable birth date are left out of the average.</li><li>Rounded to one decimal.</li></ul><p><strong>Example.</strong> 38.4 years.</p><p><strong>Why it matters.</strong> Together with <strong>Age distribution</strong> it shows where retirements and succession planning will be needed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.average-service",
+      "label": "WorkforceDashboard_AverageService",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_AverageService"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mean length of service of the headcount on the as-of date, and how many nationalities they hold.</p><p><strong>How it is calculated.</strong> <code>Sum of completed years since joining date ÷ headcount</code>, rounded to one decimal.</p><ul><li><strong>Nationalities</strong> = the number of different nationalities in the headcount.</li></ul><p><strong>Example.</strong> 6.2 years · Nationalities: 24.</p><p><strong>Why it matters.</strong> Long average service means experience to keep; short means induction and training load.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.joiners",
+      "label": "WorkforceDashboard_Joiners",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Joiners"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employees who joined during the period. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Employees whose joining date is between the start of the period and the as-of date</code></p><p><strong>Example.</strong> 41 joiners this year to date.</p><p><strong>Why it matters.</strong> Set against <strong>Leavers</strong>, it tells you whether the workforce is growing or shrinking.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.leavers",
+      "label": "WorkforceDashboard_Leavers",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Leavers"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employees who left during the period, split into resignations and terminations. Click it for the list.</p><p><strong>How it is calculated.</strong> <code>Employees whose last day in service is between the start of the period and the as-of date</code></p><ul><li>Only recorded separations count, and a revoked separation does not.</li><li><strong>Resigned</strong> and <strong>terminated</strong> come from the separation type.</li></ul><p><strong>Example.</strong> 18 — 14 resigned · 4 terminated.</p><p><strong>Why it matters.</strong> It is the top half of the turnover formula. Employees made inactive without a separation are not counted, so record separations to keep this true.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.turnover",
+      "label": "WorkforceDashboard_Turnover",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Turnover"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of the workforce that left during the period.</p><p><strong>How it is calculated.</strong> <code>Leavers ÷ average headcount × 100</code></p><ul><li><strong>Average headcount</strong> = (headcount on the first day of the period + headcount on the as-of date) ÷ 2, shown under the percentage.</li><li>Rounded to one decimal. Shown as \"—\" when the average headcount is 0.</li></ul><p><strong>Example.</strong> 18 leavers ÷ ((820 + 835) ÷ 2) × 100 = 18 ÷ 827.5 × 100 = <strong>2.2%</strong>.</p><p><strong>Why it matters.</strong> It is the standard HR measure of how many people you lose, comparable between departments and between years whatever their size.</p>",
+      "adminHtml": "<p>Legacy never produced a correct turnover: the ESS Turnover page ran on hard-coded sample employees, and the DevExpress HR Dashboard counted expired contract rows as resignations and divided integers. This figure is new; exits come only from unrevoked <code>EmployeeSeparation</code> rows.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.age",
+      "label": "WorkforceDashboard_ByAge",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByAge"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The headcount in age groups: Under 21, 21 - 30, 31 - 40, 41 - 50 and Above 50, plus <strong>Unknown</strong> when anyone has no birth date.</p><p><strong>How it is calculated.</strong> <code>Employees in each group</code>, by completed years of age on the as-of date.</p><p><strong>Example.</strong> Click <strong>31 - 40</strong> and every tile shows only employees in their thirties.</p><p><strong>Why it matters.</strong> It shows the age profile at a glance — a heavy <strong>Above 50</strong> bar means retirements coming.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.gender",
+      "label": "WorkforceDashboard_ByGender",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByGender"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The headcount split into male, female and not specified.</p><p><strong>How it is calculated.</strong> <code>Employees of each gender ÷ headcount</code></p><p><strong>Example.</strong> Click <strong>Female</strong> to see the rest of the dashboard for women only.</p><p><strong>Why it matters.</strong> It supports diversity reporting and any quota a regulator sets.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.service",
+      "label": "WorkforceDashboard_ByService",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByService"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The headcount in length-of-service groups: 0 - 4, 5 - 10, 11 - 15, 16 - 19, and 20 years and above.</p><p><strong>How it is calculated.</strong> <code>Employees in each group</code>, by completed years since the joining date, on the as-of date.</p><p><strong>Example.</strong> A tall <strong>0 - 4 years</strong> bar is a young workforce, or a lot of recent hiring.</p><p><strong>Why it matters.</strong> Long-service groups drive end-of-service indemnity; short-service groups drive training.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.nationality",
+      "label": "WorkforceDashboard_ByNationality",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByNationality"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The headcount by nationality: the ten largest, then everyone else together as <strong>Others</strong>.</p><p><strong>How it is calculated.</strong> <code>Employees of each nationality</code>, largest first.</p><p><strong>Example.</strong> Click <strong>Kuwaiti</strong> to see every tile for Kuwaiti employees only. <strong>Others</strong> cannot be clicked, because it is many nationalities together.</p><p><strong>Why it matters.</strong> It is the basis for workforce nationalisation targets and for visa and residency planning.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.by-department",
+      "label": "WorkforceDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Headcount, leavers and turnover per department, one organization level at a time.</p><p><strong>How it is calculated.</strong> Each unit uses the dashboard's own formulas, applied to the employees in it:</p><ul><li><strong>Headcount</strong> = employed on the as-of date.</li><li><strong>Leavers</strong> = left during the period.</li><li><strong>Turnover %</strong> = <code>leavers ÷ ((headcount on the first day + headcount on the as-of date) ÷ 2) × 100</code>.</li><li>An employee belongs to the unit of their organization assignment in force on the as-of date. \"(own staff)\" is people assigned directly to the unit you are in.</li></ul><p><strong>Example.</strong> Click <strong>ABC Software</strong> to see its departments and which one is losing people.</p><p><strong>Why it matters.</strong> Company turnover can look healthy while one department loses a quarter of its staff.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.movement",
+      "label": "WorkforceDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One pair of bars per month of the period: how many joined and how many left.</p><p><strong>How it is calculated.</strong> For each month: <code>joiners = joining dates in the month</code>, <code>leavers = last days in service in the month</code>. The first and last months are cut to the period.</p><p><strong>Example.</strong> A spike of leavers in August after the summer.</p><p><strong>Why it matters.</strong> It shows when people leave, which helps time retention efforts and hiring.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.turnover-trend",
+      "label": "WorkforceDashboard_TurnoverTrend",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_TurnoverTrend"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The turnover percentage month by month.</p><p><strong>How it is calculated.</strong> For each month: <code>leavers in the month ÷ ((headcount on its first day + headcount on its last day) ÷ 2) × 100</code></p><p><strong>Example.</strong> 0.4% most months, 1.8% in August.</p><p><strong>Why it matters.</strong> A monthly line shows whether turnover is getting better or worse, which the period's single figure cannot.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.qualification",
+      "label": "WorkforceDashboard_ByQualification",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByQualification"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The headcount by highest qualification recorded: the ten largest, then <strong>Others</strong>. <strong>Not recorded</strong> is employees with no qualification on file.</p><p><strong>How it is calculated.</strong> <code>Employees with each qualification</code>, largest first.</p><p><strong>Example.</strong> Click <strong>Bachelor</strong> to narrow every tile to graduates.</p><p><strong>Why it matters.</strong> It shows the skills base, and a large <strong>Not recorded</strong> bar shows where employee records need completing.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.job-title",
+      "label": "WorkforceDashboard_ByJobTitle",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_ByJobTitle"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The headcount by job title: the ten largest, then <strong>Others</strong>.</p><p><strong>How it is calculated.</strong> <code>Employees with each job title</code>, taken from their organization assignment in force on the as-of date.</p><p><strong>Example.</strong> Click <strong>Accountant</strong> to see how accountants split by age, nationality and service.</p><p><strong>Why it matters.</strong> It shows which roles hold the most people, and where one role depends on very few.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.employee-list",
+      "label": "WorkforceDashboard_EmployeesList",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_EmployeesList"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The list behind <strong>Headcount</strong>, <strong>Joiners</strong> or <strong>Leavers</strong>, with every filter applied: code, name, department, job title, nationality, gender, age, years of service, joining date, and for leavers the last day in service. Click a row to open the employee.</p><p><strong>How it is calculated.</strong> The same rule as the figure you clicked, so the list always has exactly as many rows as the number said.</p><p><strong>Example.</strong> Click <strong>Leavers</strong> after clicking <strong>Female</strong> on the gender chart: the women who left this year.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

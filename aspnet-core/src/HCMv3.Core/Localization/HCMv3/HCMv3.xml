@@ -7234,6 +7234,7 @@
     <text name="Dashboard_ScopeAllAdmin">All employees (Admin)</text>
     <text name="Dashboard_ScopeYourTeam">your team</text>
     <text name="Dashboard_ScopeEmployees">{0} employees</text>
+    <text name="Dashboard_DownloadFailed">The picture could not be created. Try again, or download XLSX instead.</text>
     <text name="Dashboard_ScopeNobody">Nothing to show. Your roles have no organization units assigned in row-level security and nobody reports to you. Ask your administrator to assign organization units to your role.</text>
     <text name="WorkforceDashboard">Workforce Dashboard</text>
     <text name="WorkforceDashboard_Headcount">Headcount</text>

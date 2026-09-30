@@ -1,0 +1,193 @@
+{
+  "helpId": "dash.leave",
+  "lang": "ar",
+  "title": "لوحة معلومات الإجازات",
+  "entity": null,
+  "overviewHtml": "<p>من في إجازة اليوم، ومن تأخر عن المباشرة، وما القادم خلال الأسبوع، وكيف تتوزع الإجازات على الأشهر والإدارات وأنواع الإجازات.</p><p>الأرقام الستة في الأعلى تخص <strong>اليوم</strong>. والرسوم البيانية في الأسفل تخص <strong>الفترة</strong> التي تختارها من <strong>تصفية</strong> (من بداية السنة حتى اليوم افتراضياً). انقر على أي رقم لعرض الموظفين الذين يقف عليهم؛ وانقر على عمود أو شريحة لحصر اللوحة كلها فيه.</p><p>لا تُحتسب إلا الإجازات بيوم كامل. فالغياب بالساعات استئذان قصير وليس أيام غياب، ولذلك يُستبعد من كل الأرقام. ولا تُحتسب إلا الإجازات المعتمدة، باستثناء <strong>بانتظار الموافقة</strong>.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:LeaveDashboard_OnLeaveToday": "dash.leave.on-leave-today",
+    "loc:LeaveDashboard_NotReturned": "dash.leave.not-returned",
+    "loc:LeaveDashboard_StartingSoon": "dash.leave.starting-soon",
+    "loc:LeaveDashboard_ReturningSoon": "dash.leave.due-back",
+    "loc:LeaveDashboard_PendingApproval": "dash.leave.pending",
+    "loc:LeaveDashboard_LeaveDaysInPeriod": "dash.leave.leave-days",
+    "loc:LeaveDashboard_ByMonth": "dash.leave.trend",
+    "loc:LeaveDashboard_ByDepartment": "dash.leave.by-department",
+    "loc:LeaveDashboard_ByType": "dash.leave.by-type",
+    "loc:LeaveDashboard_LeaveInPeriod": "dash.leave.leave-list"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النافذة التي تفتح من زر <strong>تصفية</strong>: الفترة ووحدة الشركة. ولا يتغير شيء حتى تضغط <strong>تطبيق</strong>؛ ويعيد زر <strong>مسح</strong> القيم الافتراضية.</p><p><strong>كيف تعمل الفترة.</strong></p><ul><li><strong>من بداية السنة حتى اليوم</strong> (الافتراضي): من 1 يناير من السنة الحالية حتى اليوم.</li><li><strong>هذه السنة</strong> و<strong>السنة الماضية</strong>: من 1 يناير إلى 31 ديسمبر.</li><li><strong>هذا الشهر</strong>: من أول يوم في الشهر الحالي إلى آخر يوم فيه.</li><li><strong>مخصص</strong>: أي تاريخي بداية ونهاية تختارهما. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</li></ul><p><strong>مثال.</strong> اختر <strong>السنة الماضية</strong> لعرض سنة 2025 عندما تكون بيانات السنة الحالية قليلة.</p><p><strong>لماذا يهمّ.</strong> الأرقام المحسوبة \"حتى اليوم\" (من في إجازة اليوم، وعدد الموظفين) لا تتأثر بالفترة؛ أما الأرقام المحسوبة \"خلال الفترة\" (أيام الإجازة، والمعينون الجدد، والمنتهية خدماتهم، ومعدل الدوران) فتتأثر بها. واختيار وحدة الشركة يشمل كل وحدة تتبعها. والنقر على عمود أو شريحة في الرسم البياني يضيف عامل تصفية آخر يظهر بجانب <strong>المعروض</strong> — احذفه بعلامة <strong>×</strong> الخاصة به، أو احذفها جميعاً بـ<strong>مسح عوامل التصفية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيقونة التحميل في شريط الأدوات وفي كل مربع. وعند النقر عليها تظهر ثلاث صيغ.</p><p><strong>ما تحتويه كل صيغة.</strong></p><ul><li><strong>PDF</strong> و<strong>JPEG</strong>: صورة للمربع كما يظهر على الشاشة تماماً، بما في ذلك الرسوم البيانية. ومن شريط الأدوات: صورة للوحة كاملة.</li><li><strong>XLSX</strong>: البيانات التي يقوم عليها المربع، بعوامل التصفية نفسها. ومن شريط الأدوات: ملف يضم ورقة <strong>الملخص</strong> (بيانات من، والفترة، والأرقام الرئيسية) وورقة لكل مربع.</li></ul><p><strong>مثال.</strong> أرسل رسم <strong>الإجازات حسب النوع</strong> بصيغة JPEG في بريد إلكتروني؛ وسلّم قسم الرواتب قائمة <strong>لم يباشروا العمل بعد الإجازة</strong> بصيغة XLSX.</p><p><strong>لماذا يهمّ.</strong> كل ما تحمّله لا يحتوي إلا ما يُسمح لك برؤيته، ويطابق تماماً ما تعرضه الشاشة بعوامل التصفية التي طبّقتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.on-leave-today",
+      "label": "LeaveDashboard_OnLeaveToday",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_OnLeaveToday"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين الغائبين اليوم، وقائمتهم مع التاريخ المتوقع لمباشرة كل منهم.</p><p><strong>طريقة الاحتساب.</strong> <code>الموظفون الذين لديهم إجازة يكون فيها تاريخ البداية ≤ اليوم ≤ تاريخ النهاية</code></p><ul><li>يُحتسب الموظف مرة واحدة، حتى لو كان لديه إجازتان في اليوم نفسه.</li><li>الموظفون النشطون فقط، والإجازات التي لم تُسجَّل فيها المباشرة بعد.</li><li><strong>تاريخ المباشرة المتوقع</strong> هو اليوم التالي لتاريخ نهاية الإجازة.</li><li>عبارة \"من أصل N موظف\" تحت الرقم هي عدد الموظفين النشطين في اللوحة.</li></ul><p><strong>مثال.</strong> 12 من أصل 835 موظف — 12 شخصاً في إجازة اليوم.</p><p><strong>لماذا يهمّ.</strong> هو أول جواب عن سؤال \"من الموجود اليوم\"، وتبيّن القائمة موعد عودة كل شخص.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.not-returned",
+      "label": "LeaveDashboard_NotReturned",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_NotReturned"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون الذين انتهت إجازاتهم ولم تُسجَّل مباشرتهم للعمل، مرتبين من الأطول تأخراً.</p><p><strong>طريقة الاحتساب.</strong> <code>إجازات من نوع يتطلب تاريخ مباشرة، يكون فيها تاريخ النهاية &lt; اليوم ولم تُسجَّل المباشرة</code></p><ul><li><strong>أيام التأخير</strong> = اليوم − تاريخ نهاية الإجازة.</li><li>الرقم يعدّ الموظفين؛ وعبارة \"· N إجازة\" تحته تعدّ الإجازات، لأن الشخص الواحد قد يتأخر عن إجازتين.</li><li>لا تُفحص إلا أنواع الإجازات التي فُعّل فيها خيار <strong>تاريخ المباشرة مطلوب</strong>. وهي القاعدة نفسها التي تعتمدها الرواتب لاعتبار الموظف غير مباشر.</li><li>لا تتقيد بالفترة: تبقى الإجازة المتأخرة هنا حتى تُسجَّل المباشرة.</li></ul><p><strong>مثال.</strong> 95 موظف · 155 إجازة.</p><p><strong>لماذا يهمّ.</strong> قد توقف الرواتب صرف راتب الموظف حتى تُسجَّل مباشرته. وهذه القائمة هي ما تعمل عليه الموارد البشرية لتسجيل المباشرة أو متابعة الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.starting-soon",
+      "label": "LeaveDashboard_StartingSoon",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_StartingSoon"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون الذين تبدأ إجازاتهم المعتمدة خلال الأيام السبعة القادمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الإجازات التي يكون فيها الغد ≤ تاريخ البداية ≤ اليوم + 7 أيام</code></p><p><strong>مثال.</strong> 4 — أربعة أشخاص يبدؤون إجازاتهم خلال الأسبوع.</p><p><strong>لماذا يهمّ.</strong> يمنح المديرين مهلة أسبوع لترتيب من يحل محلهم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.due-back",
+      "label": "LeaveDashboard_ReturningSoon",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ReturningSoon"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون في إجازة الذين يقع أول يوم عودتهم خلال الأيام السبعة القادمة.</p><p><strong>طريقة الاحتساب.</strong> <code>الإجازات التي يكون فيها اليوم ≤ تاريخ النهاية ≤ اليوم + 6 أيام</code></p><ul><li>أنواع الإجازات التي تتطلب تاريخ مباشرة فقط، والإجازات التي لم تُسجَّل فيها المباشرة بعد — أي الإجازات نفسها التي ستنتقل إلى <strong>لم يباشروا العمل بعد الإجازة</strong> إن لم تُسجَّل المباشرة.</li></ul><p><strong>مثال.</strong> 3 — ثلاثة أشخاص موعد عودتهم هذا الأسبوع.</p><p><strong>لماذا يهمّ.</strong> ينبّهك إلى من يُنتظر عودته قريباً، فيُلاحظ التأخر عن المباشرة في يومه الأول لا عند احتساب الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.pending",
+      "label": "LeaveDashboard_PendingApproval",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_PendingApproval"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلبات الإجازة المقدَّمة التي لا تزال بانتظار القرار.</p><p><strong>طريقة الاحتساب.</strong> <code>طلبات الإجازة التي حالة موافقتها \"مفتوح\"</code></p><ul><li>يعدّ هذا الرقم الطلبات لا الموظفين، ويشمل الطلبات لأي تاريخ.</li></ul><p><strong>مثال.</strong> 6 طلبات إجازة بانتظار الموافقة.</p><p><strong>لماذا يهمّ.</strong> الطلب المعلّق ليس إجازة بعد: فلا يدخل في أي رقم آخر في هذه اللوحة حتى يُعتمد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.leave-days",
+      "label": "LeaveDashboard_LeaveDaysInPeriod",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_LeaveDaysInPeriod"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموع أيام الإجازة الواقعة داخل الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع: أيام الإجازة × (أيام الإجازة الواقعة داخل الفترة ÷ الأيام التقويمية للإجازة)</code></p><ul><li><strong>أيام الإجازة</strong> هي عدد أيام الإجازة المسجّل فيها، والذي يستبعد أصلاً عطل نهاية الأسبوع والعطل الرسمية وفق نوع الإجازة.</li><li>الإجازة التي تتجاوز بداية الفترة أو نهايتها لا يُحتسب منها إلا الجزء الواقع داخلها.</li><li>الإجازة التي لم يُسجَّل لها عدد أيام تُحتسب بأيامها التقويمية داخل الفترة.</li><li>يُقرَّب الناتج إلى منزلة عشرية واحدة.</li></ul><p><strong>مثال.</strong> إجازة مدتها 10 أيام من 25 مارس إلى 7 أبريل (14 يوماً تقويمياً، 7 في كل شهر) تُحتسب 5 أيام في مارس و5 أيام في أبريل.</p><p><strong>لماذا يهمّ.</strong> هو إجمالي تكلفة الإجازات في الفترة بالأيام، وهو الرقم نفسه الذي تفصّله الرسوم البيانية في الأسفل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.trend",
+      "label": "LeaveDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> توزيع الإجازات على الفترة، عمود لكل شهر، مقسّماً حسب نوع الإجازة. وإذا كانت الفترة شهرين أو أقل صار العرض عموداً لكل يوم.</p><p><strong>طريقة الاحتساب.</strong></p><ul><li><strong>حسب الشهر:</strong> عمود كل شهر = معادلة <strong>أيام الإجازة المستخدمة</strong> مطبّقة على ذلك الشهر.</li><li><strong>حسب اليوم:</strong> عمود كل يوم = <code>عدد الموظفين في إجازة في ذلك اليوم</code>.</li></ul><p><strong>مثال.</strong> انقر على <strong>Mar 2026</strong> فتنحصر اللوحة في شهر مارس وتعرض أيامه؛ ثم انقر على <strong>14 Mar</strong> لعرض من كان غائباً في ذلك اليوم.</p><p><strong>لماذا يهمّ.</strong> يُظهر الأشهر المزدحمة — العطل المدرسية ورمضان ونهاية السنة — ليُخطَّط للإجازات بدلاً من اكتشافها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.by-department",
+      "label": "LeaveDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة وعدد الموظفين في إجازة لكل إدارة، مستوى تنظيمي واحد في كل مرة.</p><p><strong>طريقة الاحتساب.</strong></p><ul><li><strong>الموظفون في إجازة</strong> = الموظفون الذين لديهم إجازة داخل الفترة.</li><li><strong>أيام الإجازة</strong> = معادلة <strong>أيام الإجازة المستخدمة</strong> لهؤلاء الموظفين.</li><li>يُحتسب الموظف في الوحدة المعيّن فيها <strong>اليوم</strong>، لا في الوحدة التي كان فيها عند أخذ الإجازة.</li><li>\"(موظفو الوحدة نفسها)\" هم المعيّنون مباشرة في الوحدة التي تعرضها لا في وحدة تتبعها. و\"بدون إدارة\" هم من ليس لهم تعيين حالي.</li></ul><p><strong>مثال.</strong> انقر على <strong>ABC Software</strong> لعرض إداراتها؛ واستخدم مسار التنقل بجانب <strong>المعروض</strong> للعودة إلى الأعلى.</p><p><strong>لماذا يهمّ.</strong> يحدد أين تتركز الإجازات، حتى مستوى الفريق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.by-type",
+      "label": "LeaveDashboard_ByType",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ByType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كيف تتوزع أيام إجازات الفترة على أنواع الإجازات.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام إجازة كل نوع ÷ جميع أيام الإجازة في الفترة</code>، باستخدام معادلة <strong>أيام الإجازة المستخدمة</strong>.</p><p><strong>مثال.</strong> السنوية 70%، المرضية 8% — انقر على <strong>المرضية</strong> لعرض الإجازات المرضية فقط في كل المربعات.</p><p><strong>لماذا يهمّ.</strong> ارتفاع نسبة الإجازات المرضية أو بدون راتب كثيراً ما يكون أول مؤشر على مشكلة تستحق النقاش.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.leave-list",
+      "label": "LeaveDashboard_LeaveInPeriod",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_LeaveInPeriod"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها رقم <strong>أيام الإجازة المستخدمة</strong>، أو اليوم الذي نقرت عليه في الرسم اليومي: كل إجازة فيها، الأحدث أولاً. انقر على أي سطر لفتح ملف الموظف.</p><p><strong>طريقة الاحتساب.</strong> <code>الإجازات المعتمدة بيوم كامل التي تتقاطع مع الفترة</code> — أو التي تشمل اليوم الذي نقرت عليه.</p><p><strong>مثال.</strong> انقر على <strong>14 Mar</strong> في الرسم اليومي: تعرض القائمة الإجازات التسع التي شملت ذلك اليوم.</p><p><strong>لماذا يهمّ.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تحميلها بصيغة XLSX بعوامل التصفية نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

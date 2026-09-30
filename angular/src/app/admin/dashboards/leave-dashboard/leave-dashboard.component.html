@@ -1,4 +1,4 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'dash.leave'">
     <sub-header [title]="'LeaveDashboard' | localize" [description]="'Dashboards' | localize"></sub-header>
 
     <div [class]="containerClass">
@@ -21,7 +21,7 @@
                     </span>
                     @if (dashboard(); as d) {
                         <span class="text-muted">·</span>
-                        <span class="ld-scope" [attr.title]="'Dashboard_ScopeEmployees' | localize: d.scope.employeesInScope">
+                        <span data-help-loc="Dashboard_Showing" class="ld-scope" [attr.title]="'Dashboard_ScopeEmployees' | localize: d.scope.employeesInScope">
                             <i class="la la-user-shield"></i>
                             {{ 'Dashboard_Showing' | localize }}:
                             <strong>{{ scopeIsNobody() ? '—' : scopeLabel() }}</strong>
@@ -62,13 +62,11 @@
                 </div>
 
                 <div class="ld-toolbar-actions">
-                    <button type="button" class="btn btn-sm btn-light-primary" (click)="openFilters($event)" [attr.title]="'Filter' | localize">
+                    <button data-help-loc="Filter" type="button" class="btn btn-sm btn-light-primary" (click)="openFilters($event)" [attr.title]="'Filter' | localize">
                         <i class="fa fa-filter"></i>
                         {{ 'Filter' | localize }}
                     </button>
-                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.All)" [disabled]="exporting() || !dashboard()" [attr.title]="'LeaveDashboard_ExportDashboard' | localize">
-                        <i class="fa fa-file-excel" [class.fa-spin]="exporting()"></i>
-                    </button>
+                    <dashboard-export-menu data-help-loc="Download" [fileName]="'LeaveDashboard' | localize" [target]="dashboardBody" [disabled]="exporting() || !dashboard()" (xlsx)="exportToExcel(Part.All)" />
                     <button type="button" class="btn btn-sm btn-icon btn-light" (click)="refresh()" [disabled]="loading()" [attr.title]="'Refresh' | localize">
                         <i class="la la-refresh" [class.ld-spin]="loading()"></i>
                     </button>
@@ -128,36 +126,36 @@
             </p-popover>
 
             <!-- Full spinner only for the first load; after that the tiles stay visible and animate to the new data. -->
-            <div [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
+            <div #dashboardBody [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
                 @if (dashboard(); as d) {
                     <!-- ================= Tile 1: headline numbers ================= -->
                     <div class="ld-kpis mb-5">
-                        <button type="button" class="ld-kpi" [class.active]="detailKind() === 'onLeaveToday'" (click)="showDetail('onLeaveToday')">
+                        <button data-help-loc="LeaveDashboard_OnLeaveToday" type="button" class="ld-kpi" [class.active]="detailKind() === 'onLeaveToday'" (click)="showDetail('onLeaveToday')">
                             <span class="ld-kpi-value" [countUp]="d.kpis.onLeaveToday"></span>
                             <span class="ld-kpi-label">{{ 'LeaveDashboard_OnLeaveToday' | localize }}</span>
                             <span class="ld-kpi-sub">{{ 'LeaveDashboard_OfEmployees' | localize: d.kpis.employeesInScope }}</span>
                         </button>
-                        <button type="button" class="ld-kpi" [class.ld-kpi-alert]="d.kpis.notReturned > 0" [class.active]="detailKind() === 'notReturned'" (click)="showDetail('notReturned')">
+                        <button data-help-loc="LeaveDashboard_NotReturned" type="button" class="ld-kpi" [class.ld-kpi-alert]="d.kpis.notReturned > 0" [class.active]="detailKind() === 'notReturned'" (click)="showDetail('notReturned')">
                             <span class="ld-kpi-value" [countUp]="d.kpis.notReturned"></span>
                             <span class="ld-kpi-label">{{ 'LeaveDashboard_NotReturned' | localize }}</span>
                             <span class="ld-kpi-sub">{{ 'LeaveDashboard_EmployeesLeaves' | localize: d.notReturned.length }}</span>
                         </button>
-                        <button type="button" class="ld-kpi" [class.active]="detailKind() === 'startingSoon'" (click)="showDetail('startingSoon')">
+                        <button data-help-loc="LeaveDashboard_StartingSoon" type="button" class="ld-kpi" [class.active]="detailKind() === 'startingSoon'" (click)="showDetail('startingSoon')">
                             <span class="ld-kpi-value" [countUp]="d.kpis.startingSoon"></span>
                             <span class="ld-kpi-label">{{ 'LeaveDashboard_StartingSoon' | localize }}</span>
                             <span class="ld-kpi-sub">{{ 'LeaveDashboard_Next7Days' | localize }}</span>
                         </button>
-                        <button type="button" class="ld-kpi" [class.active]="detailKind() === 'returningSoon'" (click)="showDetail('returningSoon')">
+                        <button data-help-loc="LeaveDashboard_ReturningSoon" type="button" class="ld-kpi" [class.active]="detailKind() === 'returningSoon'" (click)="showDetail('returningSoon')">
                             <span class="ld-kpi-value" [countUp]="d.kpis.returningSoon"></span>
                             <span class="ld-kpi-label">{{ 'LeaveDashboard_ReturningSoon' | localize }}</span>
                             <span class="ld-kpi-sub">{{ 'LeaveDashboard_Next7Days' | localize }}</span>
                         </button>
-                        <button type="button" class="ld-kpi" [class.active]="detailKind() === 'pending'" (click)="showDetail('pending')">
+                        <button data-help-loc="LeaveDashboard_PendingApproval" type="button" class="ld-kpi" [class.active]="detailKind() === 'pending'" (click)="showDetail('pending')">
                             <span class="ld-kpi-value" [countUp]="d.kpis.pendingApproval"></span>
                             <span class="ld-kpi-label">{{ 'LeaveDashboard_PendingApproval' | localize }}</span>
                             <span class="ld-kpi-sub">{{ 'LeaveDashboard_Requests' | localize }}</span>
                         </button>
-                        <button type="button" class="ld-kpi" [class.active]="detailKind() === 'period'" (click)="showDetail('period')">
+                        <button data-help-loc="LeaveDashboard_LeaveDaysInPeriod" type="button" class="ld-kpi" [class.active]="detailKind() === 'period'" (click)="showDetail('period')">
                             <span class="ld-kpi-value" [countUp]="d.kpis.leaveDaysInPeriod" [countUpDecimals]="1"></span>
                             <span class="ld-kpi-label">{{ 'LeaveDashboard_LeaveDaysInPeriod' | localize }}</span>
                             <span class="ld-kpi-sub">{{ d.fromDate | luxonFormat: 'dd/MM/yyyy' }} – {{ d.toDate | luxonFormat: 'dd/MM/yyyy' }}</span>
@@ -165,7 +163,7 @@
                     </div>
 
                     <!-- ================= Tile 2: trend ================= -->
-                    <div class="card card-custom mb-5 ld-rise" style="--ld-delay: 250ms">
+                    <div data-help-loc="LeaveDashboard_ByMonth" class="card card-custom mb-5 ld-rise" style="--ld-delay: 250ms">
                         <div class="card-header border-0 pt-5">
                             <div class="card-title flex-column align-items-start">
                                 <h3 class="fw-bold mb-1">
@@ -176,9 +174,7 @@
                                 </span>
                             </div>
                             <div class="card-toolbar">
-                                <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Trend)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                    <i class="fa fa-file-excel"></i>
-                                </button>
+                                <dashboard-export-menu [fileName]="'LeaveDashboard_ByMonth' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Trend)" />
                             </div>
                         </div>
                         <div class="card-body pt-0">
@@ -206,16 +202,14 @@
                     <!-- ================= Tiles 3 + 4: department and type ================= -->
                     <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 400ms">
                         <div class="col-xl-7">
-                            <div class="card card-custom h-100">
+                            <div data-help-loc="LeaveDashboard_ByDepartment" class="card card-custom h-100">
                                 <div class="card-header border-0 pt-5">
                                     <div class="card-title flex-column align-items-start">
                                         <h3 class="fw-bold mb-1">{{ 'LeaveDashboard_ByDepartment' | localize }}</h3>
                                         <span class="text-muted fs-7">{{ 'LeaveDashboard_ByDepartmentHint' | localize }}</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.ByOrgUnit)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                            <i class="fa fa-file-excel"></i>
-                                        </button>
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_ByDepartment' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.ByOrgUnit)" />
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
@@ -263,16 +257,14 @@
                             </div>
                         </div>
                         <div class="col-xl-5">
-                            <div class="card card-custom h-100">
+                            <div data-help-loc="LeaveDashboard_ByType" class="card card-custom h-100">
                                 <div class="card-header border-0 pt-5">
                                     <div class="card-title flex-column align-items-start">
                                         <h3 class="fw-bold mb-1">{{ 'LeaveDashboard_ByType' | localize }}</h3>
                                         <span class="text-muted fs-7">{{ 'LeaveDashboard_ByTypeHint' | localize }}</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.ByType)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                            <i class="fa fa-file-excel"></i>
-                                        </button>
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_ByType' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.ByType)" />
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
@@ -298,14 +290,12 @@
                     <!-- ================= Tiles 5 + 6: today's lists, below the charts ================= -->
                     <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 550ms">
                         <div class="col-xl-6">
-                            <div class="card card-custom h-100">
+                            <div data-help-loc="LeaveDashboard_OnLeaveToday" class="card card-custom h-100">
                                 <div class="card-header border-0 pt-5">
                                     <h3 class="card-title fw-bold">{{ 'LeaveDashboard_OnLeaveToday' | localize }}</h3>
                                     <div class="card-toolbar gap-2">
                                         <span class="badge badge-light-primary">{{ d.onLeaveToday.length }}</span>
-                                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.OnLeaveToday)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                            <i class="fa fa-file-excel"></i>
-                                        </button>
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_OnLeaveToday' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.OnLeaveToday)" />
                                     </div>
                                 </div>
                                 <div class="card-body pt-2 ld-list">
@@ -338,16 +328,14 @@
                             </div>
                         </div>
                         <div class="col-xl-6">
-                            <div class="card card-custom h-100">
+                            <div data-help-loc="LeaveDashboard_NotReturned" class="card card-custom h-100">
                                 <div class="card-header border-0 pt-5">
                                     <h3 class="card-title fw-bold">{{ 'LeaveDashboard_NotReturned' | localize }}</h3>
                                     <div class="card-toolbar gap-2">
                                         <span class="badge" [class.badge-light-danger]="d.notReturned.length" [class.badge-light-success]="!d.notReturned.length" [attr.title]="'LeaveDashboard_LeavesCount' | localize: d.notReturned.length">
                                             {{ d.notReturned.length }}
                                         </span>
-                                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.NotReturned)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                            <i class="fa fa-file-excel"></i>
-                                        </button>
+                                        <dashboard-export-menu [fileName]="'LeaveDashboard_NotReturned' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.NotReturned)" />
                                     </div>
                                 </div>
                                 <div class="card-body pt-2 ld-list">
@@ -388,14 +376,12 @@
 
             <!-- ================= Drill-down list ================= -->
             @if (detailKind()) {
-                <div class="card card-custom mb-5 ld-rise" #detailPanel>
+                <div data-help-loc="LeaveDashboard_LeaveInPeriod" class="card card-custom mb-5 ld-rise" #detailPanel>
                     <div class="card-header border-0 pt-5">
                         <h3 class="card-title fw-bold">{{ detailTitle() }}</h3>
                         <div class="card-toolbar gap-2">
-                            <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportDetail()" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
-                                <i class="fa fa-file-excel"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-icon btn-light" (click)="closeDetail()" [attr.aria-label]="'Close' | localize">
+                            <dashboard-export-menu [fileName]="detailTitle()" [disabled]="exporting()" (xlsx)="exportDetail()" />
+                            <button type="button" class="btn btn-sm btn-icon btn-light ld-no-export" (click)="closeDetail()" [attr.aria-label]="'Close' | localize">
                                 <i class="la la-times"></i>
                             </button>
                         </div>

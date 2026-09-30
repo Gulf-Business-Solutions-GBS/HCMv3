@@ -9476,6 +9476,200 @@
           "loc": "CurrentUserHasNoEmployeeRecord"
         }
       ]
+    },
+    {
+      "helpId": "dash.leave",
+      "title": "Leave Dashboard",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Pages.Dashboards.Leave"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/dashboards/leave-dashboard/leave-dashboard.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "dash.common.filter",
+          "label": "Filter",
+          "loc": "Filter"
+        },
+        {
+          "id": "dash.common.download",
+          "label": "Download",
+          "loc": "Download"
+        },
+        {
+          "id": "dash.leave.on-leave-today",
+          "label": "LeaveDashboard_OnLeaveToday",
+          "loc": "LeaveDashboard_OnLeaveToday"
+        },
+        {
+          "id": "dash.leave.not-returned",
+          "label": "LeaveDashboard_NotReturned",
+          "loc": "LeaveDashboard_NotReturned"
+        },
+        {
+          "id": "dash.leave.starting-soon",
+          "label": "LeaveDashboard_StartingSoon",
+          "loc": "LeaveDashboard_StartingSoon"
+        },
+        {
+          "id": "dash.leave.due-back",
+          "label": "LeaveDashboard_ReturningSoon",
+          "loc": "LeaveDashboard_ReturningSoon"
+        },
+        {
+          "id": "dash.leave.pending",
+          "label": "LeaveDashboard_PendingApproval",
+          "loc": "LeaveDashboard_PendingApproval"
+        },
+        {
+          "id": "dash.leave.leave-days",
+          "label": "LeaveDashboard_LeaveDaysInPeriod",
+          "loc": "LeaveDashboard_LeaveDaysInPeriod"
+        },
+        {
+          "id": "dash.leave.trend",
+          "label": "LeaveDashboard_ByMonth",
+          "loc": "LeaveDashboard_ByMonth"
+        },
+        {
+          "id": "dash.leave.by-department",
+          "label": "LeaveDashboard_ByDepartment",
+          "loc": "LeaveDashboard_ByDepartment"
+        },
+        {
+          "id": "dash.leave.by-type",
+          "label": "LeaveDashboard_ByType",
+          "loc": "LeaveDashboard_ByType"
+        },
+        {
+          "id": "dash.leave.leave-list",
+          "label": "LeaveDashboard_LeaveInPeriod",
+          "loc": "LeaveDashboard_LeaveInPeriod"
+        }
+      ]
+    },
+    {
+      "helpId": "dash.workforce",
+      "title": "Workforce Dashboard",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Pages.Dashboards.Workforce"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/dashboards/workforce-dashboard/workforce-dashboard.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "dash.common.filter",
+          "label": "Filter",
+          "loc": "Filter"
+        },
+        {
+          "id": "dash.common.download",
+          "label": "Download",
+          "loc": "Download"
+        },
+        {
+          "id": "dash.workforce.headcount",
+          "label": "WorkforceDashboard_Headcount",
+          "loc": "WorkforceDashboard_Headcount"
+        },
+        {
+          "id": "dash.workforce.average-age",
+          "label": "WorkforceDashboard_AverageAge",
+          "loc": "WorkforceDashboard_AverageAge"
+        },
+        {
+          "id": "dash.workforce.average-service",
+          "label": "WorkforceDashboard_AverageService",
+          "loc": "WorkforceDashboard_AverageService"
+        },
+        {
+          "id": "dash.workforce.joiners",
+          "label": "WorkforceDashboard_Joiners",
+          "loc": "WorkforceDashboard_Joiners"
+        },
+        {
+          "id": "dash.workforce.leavers",
+          "label": "WorkforceDashboard_Leavers",
+          "loc": "WorkforceDashboard_Leavers"
+        },
+        {
+          "id": "dash.workforce.turnover",
+          "label": "WorkforceDashboard_Turnover",
+          "loc": "WorkforceDashboard_Turnover"
+        },
+        {
+          "id": "dash.workforce.age",
+          "label": "WorkforceDashboard_ByAge",
+          "loc": "WorkforceDashboard_ByAge"
+        },
+        {
+          "id": "dash.workforce.gender",
+          "label": "WorkforceDashboard_ByGender",
+          "loc": "WorkforceDashboard_ByGender"
+        },
+        {
+          "id": "dash.workforce.service",
+          "label": "WorkforceDashboard_ByService",
+          "loc": "WorkforceDashboard_ByService"
+        },
+        {
+          "id": "dash.workforce.nationality",
+          "label": "WorkforceDashboard_ByNationality",
+          "loc": "WorkforceDashboard_ByNationality"
+        },
+        {
+          "id": "dash.workforce.by-department",
+          "label": "WorkforceDashboard_ByDepartment",
+          "loc": "WorkforceDashboard_ByDepartment"
+        },
+        {
+          "id": "dash.workforce.movement",
+          "label": "WorkforceDashboard_ByMonth",
+          "loc": "WorkforceDashboard_ByMonth"
+        },
+        {
+          "id": "dash.workforce.turnover-trend",
+          "label": "WorkforceDashboard_TurnoverTrend",
+          "loc": "WorkforceDashboard_TurnoverTrend"
+        },
+        {
+          "id": "dash.workforce.qualification",
+          "label": "WorkforceDashboard_ByQualification",
+          "loc": "WorkforceDashboard_ByQualification"
+        },
+        {
+          "id": "dash.workforce.job-title",
+          "label": "WorkforceDashboard_ByJobTitle",
+          "loc": "WorkforceDashboard_ByJobTitle"
+        },
+        {
+          "id": "dash.workforce.employee-list",
+          "label": "WorkforceDashboard_EmployeesList",
+          "loc": "WorkforceDashboard_EmployeesList"
+        }
+      ]
     }
   ]
 }

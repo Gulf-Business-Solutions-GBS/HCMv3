@@ -1,0 +1,193 @@
+{
+  "helpId": "dash.leave",
+  "lang": "en",
+  "title": "Leave Dashboard",
+  "entity": null,
+  "overviewHtml": "<p>Who is on leave today, who is late back, what is coming up in the next week, and how leave is spread over the months, the departments and the leave types.</p><p>The six numbers at the top are about <strong>today</strong>. The charts below are about the <strong>period</strong> you choose in <strong>Filter</strong> (this year to date by default). Click any number to see the people behind it; click a bar or a slice to narrow the whole dashboard to it.</p><p>Only full-day leave counts. Hourly absences are short permissions, not days away, and are left out of every figure. Only approved leave counts, except in <strong>Awaiting approval</strong>.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:LeaveDashboard_OnLeaveToday": "dash.leave.on-leave-today",
+    "loc:LeaveDashboard_NotReturned": "dash.leave.not-returned",
+    "loc:LeaveDashboard_StartingSoon": "dash.leave.starting-soon",
+    "loc:LeaveDashboard_ReturningSoon": "dash.leave.due-back",
+    "loc:LeaveDashboard_PendingApproval": "dash.leave.pending",
+    "loc:LeaveDashboard_LeaveDaysInPeriod": "dash.leave.leave-days",
+    "loc:LeaveDashboard_ByMonth": "dash.leave.trend",
+    "loc:LeaveDashboard_ByDepartment": "dash.leave.by-department",
+    "loc:LeaveDashboard_ByType": "dash.leave.by-type",
+    "loc:LeaveDashboard_LeaveInPeriod": "dash.leave.leave-list"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The line in the toolbar that says whose data the dashboard is built from, and how many employees that is. You never choose it: it follows from who you are.</p><p><strong>How it is worked out.</strong> The employees you see are:</p><ul><li>everyone, if you hold the <strong>Admin</strong> role;</li><li>otherwise the employees in the organization units given to your roles in row-level security, including every unit below them, <strong>plus</strong> your own team — you and everybody below you in the manager hierarchy, at every level;</li><li>nobody, if neither gives anyone. The dashboard then shows nothing, never everything.</li></ul><p><strong>Example.</strong> \"Showing: Finance + Payroll + your team (123 employees)\" — you are an HR officer for Finance and Payroll, and also manage a team of your own.</p><p><strong>Why it matters.</strong> Two people can open the same dashboard and see different numbers, and both are right. Every figure, chart, list and download on the page is limited to these employees — changing a filter can narrow them further but never widen them.</p>",
+      "adminHtml": "<p>Resolved by <code>IDashboardScopeService</code> for every dashboard. The row-level security on/off switch in Security Settings is deliberately not consulted: with nothing assigned the user sees nothing, whatever the switch says. The Admin rule matches the static tenant role name <code>Admin</code>.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The window behind the <strong>Filter</strong> button: the period and the organization unit. Nothing changes until you press <strong>Apply</strong>; <strong>Reset</strong> goes back to the defaults.</p><p><strong>How the period works.</strong></p><ul><li><strong>This year to date</strong> (the default): 1 January of this year up to today.</li><li><strong>This year</strong> and <strong>Last year</strong>: 1 January to 31 December.</li><li><strong>This month</strong>: the first to the last day of the current month.</li><li><strong>Custom</strong>: any From and To dates you choose. A period longer than five years is shortened to the last five.</li></ul><p><strong>Example.</strong> Pick <strong>Last year</strong> to see 2025 while this year's data is still thin.</p><p><strong>Why it matters.</strong> Figures \"as of today\" (who is on leave today, headcount) do not depend on the period; figures \"in the period\" (leave days, joiners, leavers, turnover) do. Choosing an organization unit includes every unit below it. Clicking a bar or a slice on a chart adds another filter, shown as a chip next to <strong>Showing</strong> — remove it with its <strong>×</strong>, or all of them with <strong>Clear filters</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The download icon on the toolbar and on every tile. Clicking it offers three formats.</p><p><strong>What each format contains.</strong></p><ul><li><strong>PDF</strong> and <strong>JPEG</strong>: a picture of the tile exactly as it looks on screen, charts included. From the toolbar, a picture of the whole dashboard.</li><li><strong>XLSX</strong>: the data behind the tile, with the same filters. From the toolbar, a workbook with a <strong>Summary</strong> sheet (whose data, the period, the headline figures) and one sheet per tile.</li></ul><p><strong>Example.</strong> Send the <strong>Leave by type</strong> chart as a JPEG in an email; give payroll the <strong>Not returned from leave</strong> list as XLSX.</p><p><strong>Why it matters.</strong> Whatever you download contains only what you are allowed to see, and exactly what the screen shows for the filters you have applied.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.on-leave-today",
+      "label": "LeaveDashboard_OnLeaveToday",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_OnLeaveToday"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many employees are away today, and the list of them with the date each is expected back.</p><p><strong>How it is calculated.</strong> <code>Employees with a leave where Start date ≤ today ≤ End date</code></p><ul><li>Each employee counts once, even with two leaves on the same day.</li><li>Only active employees, and only leave not already marked as returned.</li><li><strong>Expected back</strong> is the day after the leave's end date.</li><li>\"of N employees\" under the number is the active employees on the dashboard.</li></ul><p><strong>Example.</strong> 12 of 835 employees — 12 people are on leave today.</p><p><strong>Why it matters.</strong> It is the first answer to \"who is in today\", and the list tells you when each person returns.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.not-returned",
+      "label": "LeaveDashboard_NotReturned",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_NotReturned"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employees whose leave has ended but who have not been recorded as back at work, longest overdue first.</p><p><strong>How it is calculated.</strong> <code>Leaves of a type that requires a return date, where End date &lt; today and no return is recorded</code></p><ul><li><strong>Days overdue</strong> = today − the leave's end date.</li><li>The number counts employees; \"· N leaves\" under it counts leaves, because one person can be overdue from two.</li><li>Only leave types with <strong>Return date required</strong> ticked are checked. This is the same rule payroll uses to treat someone as not returned.</li><li>Not limited to the period: an overdue leave stays here until a return is recorded.</li></ul><p><strong>Example.</strong> 95 employees · 155 leaves.</p><p><strong>Why it matters.</strong> Until the return is recorded, payroll may stop paying the employee. The list is what HR works through to record returns or chase people.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.starting-soon",
+      "label": "LeaveDashboard_StartingSoon",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_StartingSoon"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employees whose approved leave begins in the next seven days.</p><p><strong>How it is calculated.</strong> <code>Leaves with tomorrow ≤ Start date ≤ today + 7 days</code></p><p><strong>Example.</strong> 4 — four people start leave within the week.</p><p><strong>Why it matters.</strong> It gives managers a week's notice to arrange cover.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.due-back",
+      "label": "LeaveDashboard_ReturningSoon",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ReturningSoon"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Employees on leave whose first day back is within the next seven days.</p><p><strong>How it is calculated.</strong> <code>Leaves with today ≤ End date ≤ today + 6 days</code></p><ul><li>Only leave types that require a return date, and only leave not yet marked as returned — the same leaves that would move to <strong>Not returned from leave</strong> if the return is not recorded.</li></ul><p><strong>Example.</strong> 3 — three people are due back this week.</p><p><strong>Why it matters.</strong> It warns you who should be back soon, so a missed return is noticed on the first day rather than at payroll.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.pending",
+      "label": "LeaveDashboard_PendingApproval",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_PendingApproval"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Leave requests that have been submitted and are still waiting for a decision.</p><p><strong>How it is calculated.</strong> <code>Leave requests whose approval status is Open</code></p><ul><li>This counts requests, not employees, and includes requests for any dates.</li></ul><p><strong>Example.</strong> 6 leave requests waiting.</p><p><strong>Why it matters.</strong> A pending request is not yet leave: it is not in any other figure on this dashboard until it is approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.leave-days",
+      "label": "LeaveDashboard_LeaveDaysInPeriod",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_LeaveDaysInPeriod"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The total leave days that fall inside the period.</p><p><strong>How it is calculated.</strong> <code>Sum of: Leave days × (days of the leave inside the period ÷ calendar days of the leave)</code></p><ul><li><strong>Leave days</strong> is the leave's own day count, which already leaves out weekends and holidays as its leave type says.</li><li>A leave crossing the start or end of the period counts only the share inside it.</li><li>A leave with no day count recorded counts its calendar days inside the period.</li><li>Rounded to one decimal.</li></ul><p><strong>Example.</strong> A 10-day leave running 25 March to 7 April (14 calendar days, 7 in each month) counts 5 days in March and 5 in April.</p><p><strong>Why it matters.</strong> It is the period's total leave cost in days, and the same figure the charts below break down.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.trend",
+      "label": "LeaveDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Leave spread across the period, one bar per month, split by leave type. For a period of two months or less it becomes one bar per day.</p><p><strong>How it is calculated.</strong></p><ul><li><strong>By month:</strong> each month's bar = the <strong>Leave days taken</strong> formula, applied to that month.</li><li><strong>By day:</strong> each day's bar = <code>employees on leave that day</code>.</li></ul><p><strong>Example.</strong> Click <strong>Mar 2026</strong> and the dashboard narrows to March and shows its days; click <strong>14 Mar</strong> to list who was out that day.</p><p><strong>Why it matters.</strong> It shows the busy months — school holidays, Ramadan, year end — so leave can be planned rather than discovered.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.by-department",
+      "label": "LeaveDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Leave days and employees on leave per department, one organization level at a time.</p><p><strong>How it is calculated.</strong></p><ul><li><strong>Employees on leave</strong> = employees with a leave inside the period.</li><li><strong>Leave days</strong> = the <strong>Leave days taken</strong> formula for those employees.</li><li>An employee counts in the unit they are assigned to <strong>today</strong>, not the one they were in when they took the leave.</li><li>\"(own staff)\" is people assigned directly to the unit you are in rather than to a unit below it. \"No department\" is people with no current assignment.</li></ul><p><strong>Example.</strong> Click <strong>ABC Software</strong> to see its departments; use the breadcrumb next to <strong>Showing</strong> to go back up.</p><p><strong>Why it matters.</strong> It points to where leave is concentrated, down to the team.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.by-type",
+      "label": "LeaveDashboard_ByType",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_ByType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the period's leave days divide between leave types.</p><p><strong>How it is calculated.</strong> <code>Leave days of each type ÷ all leave days in the period</code>, using the <strong>Leave days taken</strong> formula.</p><p><strong>Example.</strong> Annual 70%, Sick 8% — click <strong>Sick</strong> to see only sick leave on every tile.</p><p><strong>Why it matters.</strong> A rising share of sick or unpaid leave is often the first sign of a problem worth a conversation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.leave.leave-list",
+      "label": "LeaveDashboard_LeaveInPeriod",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDashboard_LeaveInPeriod"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The list behind <strong>Leave days taken</strong>, or behind a day you clicked on the daily chart: every leave in it, newest first. Click a row to open the employee.</p><p><strong>How it is calculated.</strong> <code>Approved full-day leaves that overlap the period</code> — or that cover the clicked day.</p><p><strong>Example.</strong> Click <strong>14 Mar</strong> on the daily chart: the list shows the 9 leaves that covered that day.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
