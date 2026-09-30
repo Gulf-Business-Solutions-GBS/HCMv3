@@ -9862,6 +9862,123 @@
           "loc": "OvertimeDashboard_Entries"
         }
       ]
+    },
+    {
+      "helpId": "dash.payroll",
+      "title": "Payroll Dashboard",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Pages.Dashboards.Payroll"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/dashboards/payroll-dashboard/payroll-dashboard.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "dash.common.filter",
+          "label": "Filter",
+          "loc": "Filter"
+        },
+        {
+          "id": "dash.common.download",
+          "label": "Download",
+          "loc": "Download"
+        },
+        {
+          "id": "dash.payroll.employees-paid",
+          "label": "PayrollDashboard_EmployeesPaid",
+          "loc": "PayrollDashboard_EmployeesPaid"
+        },
+        {
+          "id": "dash.payroll.gross",
+          "label": "PayrollDashboard_Gross",
+          "loc": "PayrollDashboard_Gross"
+        },
+        {
+          "id": "dash.payroll.deductions",
+          "label": "PayrollDashboard_Deductions",
+          "loc": "PayrollDashboard_Deductions"
+        },
+        {
+          "id": "dash.payroll.net",
+          "label": "PayrollDashboard_Net",
+          "loc": "PayrollDashboard_Net"
+        },
+        {
+          "id": "dash.payroll.employer-cost",
+          "label": "PayrollDashboard_EmployerCost",
+          "loc": "PayrollDashboard_EmployerCost"
+        },
+        {
+          "id": "dash.payroll.cost-to-company",
+          "label": "PayrollDashboard_CostToCompany",
+          "loc": "PayrollDashboard_CostToCompany"
+        },
+        {
+          "id": "dash.payroll.trend",
+          "label": "PayrollDashboard_ByMonth",
+          "loc": "PayrollDashboard_ByMonth"
+        },
+        {
+          "id": "dash.payroll.cost-mix",
+          "label": "PayrollDashboard_CostMix",
+          "loc": "PayrollDashboard_CostMix"
+        },
+        {
+          "id": "dash.payroll.by-department",
+          "label": "PayrollDashboard_ByDepartment",
+          "loc": "PayrollDashboard_ByDepartment"
+        },
+        {
+          "id": "dash.payroll.basic-bands",
+          "label": "PayrollDashboard_BasicBands",
+          "loc": "PayrollDashboard_BasicBands"
+        },
+        {
+          "id": "dash.payroll.earnings",
+          "label": "PayrollDashboard_Earnings",
+          "loc": "PayrollDashboard_Earnings"
+        },
+        {
+          "id": "dash.payroll.deduction-types",
+          "label": "PayrollDashboard_DeductionTypes",
+          "loc": "PayrollDashboard_DeductionTypes"
+        },
+        {
+          "id": "dash.payroll.payment-methods",
+          "label": "PayrollDashboard_PaymentMethods",
+          "loc": "PayrollDashboard_PaymentMethods"
+        },
+        {
+          "id": "dash.payroll.run-types",
+          "label": "PayrollDashboard_RunTypes",
+          "loc": "PayrollDashboard_RunTypes"
+        },
+        {
+          "id": "dash.payroll.provisions",
+          "label": "PayrollDashboard_Provisions",
+          "loc": "PayrollDashboard_Provisions"
+        },
+        {
+          "id": "dash.payroll.payslips",
+          "label": "PayrollDashboard_Payslips",
+          "loc": "PayrollDashboard_Payslips"
+        },
+        {
+          "id": "dash.payroll.cost-card",
+          "label": "PayrollDashboard_CostCard",
+          "loc": "PayrollDashboard_CostCard"
+        }
+      ]
     }
   ]
 }

@@ -3693,6 +3693,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Dashboards.Overtime' },
                     },
                     {
+                        path: 'payroll-dashboard',
+                        loadComponent: () =>
+                            import('./admin/dashboards/payroll-dashboard/payroll-dashboard.component').then(
+                                (m) => m.PayrollDashboardComponent
+                            ),
+                        data: { permission: 'Pages.Dashboards.Payroll' },
+                    },
+                    {
                         path: 'copy-workflow-setup',
                         loadComponent: () =>
                             import('./admin/administration/copy-workflow-setup/copy-workflow-setup.component').then(

@@ -2777,6 +2777,12 @@ public static class AppPermissions
     public const string Pages_Dashboards_Overtime = "Pages.Dashboards.Overtime";
 
     /// <summary>
+    /// Payroll Dashboard, with each employee's cost card. Shows salaries, so grant it only to payroll and HR roles;
+    /// whose employees it shows comes from <c>IDashboardScopeService</c>.
+    /// </summary>
+    public const string Pages_Dashboards_Payroll = "Pages.Dashboards.Payroll";
+
+    /// <summary>
     /// Report Distribution: creating and maintaining report schedules, and viewing their run history.
     /// </summary>
     public const string Pages_Reports_Distribution = "Pages.Reports.Distribution";

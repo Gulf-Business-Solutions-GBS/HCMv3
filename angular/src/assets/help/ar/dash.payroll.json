@@ -1,0 +1,291 @@
+{
+  "helpId": "dash.payroll",
+  "lang": "ar",
+  "title": "لوحة معلومات الرواتب",
+  "entity": null,
+  "overviewHtml": "<p>ما صرفته الرواتب وما كلّفه الموظفون الشركة خلال فترة: إجمالي الراتب، والاستقطاعات، وصافي الراتب، وحصة صاحب العمل في التأمينات الاجتماعية والمخصصات، والتكلفة على الشركة الناتجة عنها — حسب الشهر والإدارة وبند الراتب وفئة الراتب الأساسي وطريقة الدفع ونوع تشغيل الرواتب. وبالنقر على كشف راتب تُفتح بطاقة تكلفة الموظف. وتُفتح اللوحة على الفترة من بداية السنة حتى تاريخه.</p><p>كل رقم مأخوذ من <strong>نتائج الرواتب</strong>. ولا تُستخدم إلا النتيجة المحتسبة في شهرها نفسه (فترة الاحتساب تساوي فترة الاستحقاق). وإعادة الاحتساب بأثر رجعي لشهر سابق لا تُضاف مرة أخرى، لأن فرقها صُرف فعلاً كفروقات في نتيجة الشهر اللاحق. والرواتب <strong>خارج الدورة</strong> مبالغ مصروفة أيضاً، فتدخل في المجاميع. والشهر الذي لم تُشغَّل له الرواتب ليس له ما يُعرض.</p><p>يتبع <strong>إجمالي الراتب</strong> و<strong>الاستقطاعات</strong> قاعدة صافي الراتب في محرك الرواتب نفسه: يُحتسب كل مستحق أو استقطاع يؤثر في صافي الراتب أياً كان رمزه. و<strong>تكلفة صاحب العمل</strong> هي ما تدفعه الشركة فوق إجمالي الراتب: حصة صاحب العمل في التأمينات الاجتماعية، ومخصصات مكافأة نهاية الخدمة والإجازات والتذاكر للشهر. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</p><p>وعدد من المربعات يمثل صورة عن <strong>آخر شهر صُرفت رواتبه</strong>: آخر شهر في الفترة له نتيجة رواتب اعتيادية، ويبيّن عنوان كل منها هذا الشهر.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:PayrollDashboard_EmployeesPaid": "dash.payroll.employees-paid",
+    "loc:PayrollDashboard_Gross": "dash.payroll.gross",
+    "loc:PayrollDashboard_Deductions": "dash.payroll.deductions",
+    "loc:PayrollDashboard_Net": "dash.payroll.net",
+    "loc:PayrollDashboard_EmployerCost": "dash.payroll.employer-cost",
+    "loc:PayrollDashboard_CostToCompany": "dash.payroll.cost-to-company",
+    "loc:PayrollDashboard_ByMonth": "dash.payroll.trend",
+    "loc:PayrollDashboard_CostMix": "dash.payroll.cost-mix",
+    "loc:PayrollDashboard_ByDepartment": "dash.payroll.by-department",
+    "loc:PayrollDashboard_BasicBands": "dash.payroll.basic-bands",
+    "loc:PayrollDashboard_Earnings": "dash.payroll.earnings",
+    "loc:PayrollDashboard_DeductionTypes": "dash.payroll.deduction-types",
+    "loc:PayrollDashboard_PaymentMethods": "dash.payroll.payment-methods",
+    "loc:PayrollDashboard_RunTypes": "dash.payroll.run-types",
+    "loc:PayrollDashboard_Provisions": "dash.payroll.provisions",
+    "loc:PayrollDashboard_Payslips": "dash.payroll.payslips",
+    "loc:PayrollDashboard_CostCard": "dash.payroll.cost-card"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النافذة التي تفتح من زر <strong>تصفية</strong>: الفترة ووحدة الشركة. ولا يتغير شيء حتى تضغط <strong>تطبيق</strong>؛ ويعيد زر <strong>مسح</strong> القيم الافتراضية.</p><p><strong>كيف تعمل الفترة.</strong></p><ul><li><strong>من بداية السنة حتى اليوم</strong> (الافتراضي): من 1 يناير من السنة الحالية حتى اليوم.</li><li><strong>هذه السنة</strong> و<strong>السنة الماضية</strong>: من 1 يناير إلى 31 ديسمبر.</li><li><strong>هذا الشهر</strong>: من أول يوم في الشهر الحالي إلى آخر يوم فيه.</li><li><strong>مخصص</strong>: أي تاريخي بداية ونهاية تختارهما. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</li></ul><p><strong>مثال.</strong> اختر <strong>السنة الماضية</strong> لعرض سنة 2025 عندما تكون بيانات السنة الحالية قليلة.</p><p><strong>لماذا يهمّ.</strong> الأرقام المحسوبة \"حتى اليوم\" (من في إجازة اليوم، وعدد الموظفين) لا تتأثر بالفترة؛ أما الأرقام المحسوبة \"خلال الفترة\" (أيام الإجازة، والمعينون الجدد، والمنتهية خدماتهم، ومعدل الدوران) فتتأثر بها. واختيار وحدة الشركة يشمل كل وحدة تتبعها. والنقر على عمود أو شريحة في الرسم البياني يضيف عامل تصفية آخر يظهر بجانب <strong>المعروض</strong> — احذفه بعلامة <strong>×</strong> الخاصة به، أو احذفها جميعاً بـ<strong>مسح عوامل التصفية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيقونة التحميل في شريط الأدوات وفي كل مربع. وعند النقر عليها تظهر ثلاث صيغ.</p><p><strong>ما تحتويه كل صيغة.</strong></p><ul><li><strong>PDF</strong> و<strong>JPEG</strong>: صورة للمربع كما يظهر على الشاشة تماماً، بما في ذلك الرسوم البيانية. ومن شريط الأدوات: صورة للوحة كاملة.</li><li><strong>XLSX</strong>: البيانات التي يقوم عليها المربع، بعوامل التصفية نفسها. ومن شريط الأدوات: ملف يضم ورقة <strong>الملخص</strong> (بيانات من، والفترة، والأرقام الرئيسية) وورقة لكل مربع.</li></ul><p><strong>مثال.</strong> أرسل رسم <strong>الإجازات حسب النوع</strong> بصيغة JPEG في بريد إلكتروني؛ وسلّم قسم الرواتب قائمة <strong>لم يباشروا العمل بعد الإجازة</strong> بصيغة XLSX.</p><p><strong>لماذا يهمّ.</strong> كل ما تحمّله لا يحتوي إلا ما يُسمح لك برؤيته، ويطابق تماماً ما تعرضه الشاشة بعوامل التصفية التي طبّقتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.employees-paid",
+      "label": "PayrollDashboard_EmployeesPaid",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_EmployeesPaid"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين الذين صُرفت رواتبهم في آخر شهر صُرفت رواتبه. انقر عليه لعرض كشوف رواتبهم.</p><p><strong>طريقة الاحتساب.</strong> <code>عدد الموظفين المختلفين الذين لهم نتيجة رواتب اعتيادية في آخر شهر صُرفت رواتبه</code></p><ul><li>المدفوعات خارج الدورة وحدها لا تجعل الموظف ضمن من صُرفت رواتبهم.</li></ul><p><strong>مثال.</strong> 742 · في سبتمبر 2026.</p><p><strong>أهميته.</strong> يجب أن يطابق عدد الموظفين على كشف الرواتب؛ ونقصه يعني غالباً أن أحداً سقط من التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.gross",
+      "label": "PayrollDashboard_Gross",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Gross"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما استحقه الموظفون خلال الفترة قبل الاستقطاعات.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع كل مستحق يؤثر في صافي الراتب</code></p><ul><li>صافي الراتب نفسه وأنواع الوقت والمخصصات ليست مستحقات. أما الفروقات والعمل الإضافي والمدفوعات خارج الدورة فهي مستحقات.</li></ul><p><strong>مثال.</strong> 1,284,560.250.</p><p><strong>أهميته.</strong> هو فاتورة الرواتب قبل أي استقطاع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.deductions",
+      "label": "PayrollDashboard_Deductions",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Deductions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما اقتُطع من الرواتب خلال الفترة، ويبيّن السطر أسفله نسبته من إجمالي الراتب.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع كل استقطاع يؤثر في صافي الراتب</code>؛ و<strong>النسبة</strong> = <code>الاستقطاعات ÷ إجمالي الراتب × 100</code></p><ul><li>حصة صاحب العمل في التأمينات الاجتماعية ليست استقطاعاً من الراتب: فهي لا تؤثر في صافي الراتب، وتُحتسب ضمن <strong>تكلفة صاحب العمل</strong>.</li></ul><p><strong>مثال.</strong> 98,410.500 · 7.7% من إجمالي الراتب.</p><p><strong>أهميته.</strong> ارتفاع النسبة يشير إلى قروض أو غياب أو جزاءات جديدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.net",
+      "label": "PayrollDashboard_Net",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Net"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما صُرف للموظفين خلال الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع بند صافي الراتب في كل كشف راتب</code></p><ul><li>الكشف الذي لا يحتوي على بند صافي الراتب (بعض تشغيلات خارج الدورة) يُحتسب له <code>إجمالي الراتب − الاستقطاعات</code>.</li></ul><p><strong>مثال.</strong> 1,186,149.750.</p><p><strong>أهميته.</strong> هو المبلغ الذي يخرج من البنك، ويجب أن يطابق ملفات التحويل البنكي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.employer-cost",
+      "label": "PayrollDashboard_EmployerCost",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_EmployerCost"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تدفعه الشركة فوق إجمالي الراتب.</p><p><strong>طريقة الاحتساب.</strong> <code>حصة صاحب العمل في التأمينات الاجتماعية + مخصص مكافأة نهاية الخدمة + مخصص الإجازات + مخصص التذاكر</code>، بمبالغ كل شهر.</p><ul><li>هذه مبالغ المخصصات الشهرية، لا الأرصدة التراكمية المعروضة في <strong>أرصدة المخصصات</strong>.</li></ul><p><strong>مثال.</strong> 214,300.000.</p><p><strong>أهميته.</strong> هي جزء تكلفة الموظفين الذي لا يظهر في كشف الراتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.cost-to-company",
+      "label": "PayrollDashboard_CostToCompany",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_CostToCompany"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التكلفة الكاملة للموظفين خلال الفترة، ويبيّن السطر أسفلها متوسط تكلفة الموظف الواحد في الشهر.</p><p><strong>طريقة الاحتساب.</strong> <code>إجمالي الراتب + تكلفة صاحب العمل</code>؛ و<strong>لكل موظف شهرياً</strong> = <code>التكلفة على الشركة ÷ عدد كشوف الرواتب الاعتيادية</code></p><ul><li>الموظف الذي صُرف راتبه في 9 أشهر يُحتسب 9 كشوف، فيكون المتوسط رقماً شهرياً حقيقياً.</li><li>تظهر \"—\" إذا لم يُصرف راتب لأحد.</li></ul><p><strong>مثال.</strong> 1,498,860.250 · 673.195 لكل موظف شهرياً.</p><p><strong>أهميته.</strong> هي الرقم المعتمد في الموازنات وقرارات التوظيف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.trend",
+      "label": "PayrollDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صافي الراتب والاستقطاعات وتكلفة صاحب العمل في كل شهر، بعضها فوق بعض. والارتفاع الكامل للعمود هو التكلفة على الشركة في ذلك الشهر. انقر على الشهر لعرض كشوف رواتبه.</p><p><strong>طريقة الاحتساب.</strong> لكل شهر: <code>صافي الراتب</code> و<code>الاستقطاعات</code> و<code>تكلفة صاحب العمل</code> بالقواعد أعلاه؛ و<code>الصافي + الاستقطاعات = الإجمالي</code>، فيكون العمود <code>الإجمالي + تكلفة صاحب العمل</code>.</p><ul><li>تُعرض جميع أشهر الفترة، بما فيها الأشهر التي لم تُشغَّل لها الرواتب.</li></ul><p><strong>مثال.</strong> مارس: 131,200 صافي · 10,900 استقطاعات · 23,800 تكلفة صاحب العمل.</p><p><strong>أهميته.</strong> يُظهر بنظرة واحدة الأشهر التي فيها مكافآت أو فروقات أو موجة تعيينات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.cost-mix",
+      "label": "PayrollDashboard_CostMix",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_CostMix"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مما تتكون التكلفة على الشركة.</p><p><strong>طريقة الاحتساب.</strong> <strong>الراتب الأساسي</strong> = <code>مجموع بند الراتب الأساسي</code>؛ و<strong>البدلات والمستحقات الأخرى</strong> = <code>إجمالي الراتب − الراتب الأساسي</code>؛ ثم حصة صاحب العمل في التأمينات الاجتماعية وكل مخصص. ومجموعها هو التكلفة على الشركة.</p><ul><li>تُستبعد المكونات التي لا مبلغ لها.</li></ul><p><strong>مثال.</strong> الأساسي 62%، والبدلات والمستحقات الأخرى 24%، والتأمينات الاجتماعية 6%، والمخصصات 8%.</p><p><strong>أهميته.</strong> تُحتسب المكافأة والإجازات من الراتب، فزيادة حصة الأساسي تعني مخصصات أكبر لاحقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.by-department",
+      "label": "PayrollDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين والإجمالي والصافي والتكلفة على الشركة لكل إدارة في المستوى الذي يلي الوحدة المعروضة، الأعلى تكلفة أولاً. انقر على الإدارة لعرض الوحدات التابعة لها.</p><p><strong>طريقة الاحتساب.</strong> القواعد أعلاه على كشوف رواتب الموظفين في تلك الإدارة أو في أي وحدة تابعة لها؛ و<strong>الموظفون</strong> = <code>عدد الموظفين المختلفين الذين صُرفت رواتبهم خلال الفترة</code>.</p><ul><li>يُنسب الموظف إلى الإدارة التي كان فيها في آخر يوم من الفترة.</li><li>الموظفون التابعون مباشرة للوحدة المعروضة يظهرون في سطر مستقل.</li></ul><p><strong>مثال.</strong> العمليات: 410 موظفين · 812,300.000 تكلفة على الشركة.</p><p><strong>أهميته.</strong> يُظهر أين تتركز فاتورة الرواتب، ويتيح تتبّعها حتى مستوى الفريق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.basic-bands",
+      "label": "PayrollDashboard_BasicBands",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_BasicBands"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الموظفين في كل فئة من فئات الراتب الأساسي في آخر شهر صُرفت رواتبه. انقر على الفئة لعرض من فيها.</p><p><strong>طريقة الاحتساب.</strong> <code>الراتب الأساسي في كشف الراتب الاعتيادي لكل موظف</code>، موزّعاً على الفئات: أقل من 300، و300 – 500، و500 – 1,000، و1,000 – 1,500، و1,500 – 3,000، و3,000 فأكثر.</p><ul><li>تشمل كل فئة حدها الأدنى وتنتهي قبل حد الفئة التالية مباشرة، فيقع كل راتب في فئة واحدة فقط. ومن ليس له بند راتب أساسي يقع في الفئة الأولى.</li></ul><p><strong>مثال.</strong> 500 – 1,000: 318 موظفاً.</p><p><strong>أهميته.</strong> يُظهر هيكل الرواتب بنظرة واحدة وأين يتركز معظم الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.earnings",
+      "label": "PayrollDashboard_Earnings",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Earnings"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بنود الراتب العشرة الأعلى تكلفة خلال الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع مبالغ كل مستحق</code>، من الأكبر إلى الأصغر، مع عدد الموظفين الذين حصلوا عليه.</p><p><strong>مثال.</strong> بدل السكن (1002): 184,000.000 · 690 موظفاً.</p><p><strong>أهميته.</strong> بعد الراتب الأساسي، يشكّل عدد قليل من البدلات معظم الفاتورة عادةً؛ وهذا المربع يسمّيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.deduction-types",
+      "label": "PayrollDashboard_DeductionTypes",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_DeductionTypes"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاستقطاعات العشرة الأكبر من الرواتب خلال الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع مبالغ كل استقطاع</code>، من الأكبر إلى الأصغر، مع عدد الموظفين الذين اقتُطع منهم.</p><p><strong>مثال.</strong> حصة الموظف في التأمينات الاجتماعية (1): 41,200.000 · 120 موظفاً.</p><p><strong>أهميته.</strong> استقطاعات القروض والغياب والجزاءات التي تتزايد شهراً بعد شهر تظهر هنا أولاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.payment-methods",
+      "label": "PayrollDashboard_PaymentMethods",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_PaymentMethods"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة استلام الموظفين المصروفة رواتبهم في آخر شهر صُرفت رواتبه لرواتبهم. انقر على الطريقة لعرض الموظفين.</p><p><strong>طريقة الاحتساب.</strong> لكل موظف صُرف راتبه في ذلك الشهر: <code>طريقة الدفع في بياناته البنكية السارية في نهاية الشهر</code>، موزّعة على التحويل البنكي والنقد و<strong>غير محددة</strong>.</p><ul><li><strong>غير محددة</strong> تعني عدم وجود بيانات بنكية سارية في ذلك التاريخ: فلا يمكن إدراج هؤلاء في ملف البنك.</li></ul><p><strong>مثال.</strong> تحويل بنكي 721 · نقداً 15 · غير محددة 6.</p><p><strong>أهميته.</strong> كل من يظهر تحت <strong>غير محددة</strong> يحتاج إلى بيانات بنكية قبل تحويل الرواتب القادم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.run-types",
+      "label": "PayrollDashboard_RunTypes",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_RunTypes"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صافي الراتب موزّعاً بين تشغيلات الرواتب الشهرية الاعتيادية والتشغيلات خارج الدورة (التسويات النهائية والسلف والمدفوعات الأخرى لمرة واحدة). انقر على النوع لعرض كشوف رواتبه.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع صافي الراتب لكل نوع تشغيل</code>، مع عدد الكشوف والموظفين.</p><p><strong>مثال.</strong> اعتيادي 1,150,000.000 · خارج الدورة 36,149.750 في 22 دفعة.</p><p><strong>أهميته.</strong> ارتفاع حصة خارج الدورة يعني أن الكثير يُصرف خارج التشغيل الاعتيادي، وهو ما يصعب ضبطه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.provisions",
+      "label": "PayrollDashboard_Provisions",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Provisions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما على الشركة للموظفين في نهاية آخر شهر صُرفت رواتبه من مكافأة نهاية الخدمة والإجازات وتذاكر السفر.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع كل بند رصيد في كشوف الرواتب الاعتيادية لآخر شهر صُرفت رواتبه</code></p><ul><li>هذه أرصدة تراكمية، فتؤخذ من شهر واحد فقط؛ وجمع الأشهر يعني احتساب الالتزام نفسه أكثر من مرة.</li></ul><p><strong>مثال.</strong> المكافأة 2,410,000.000 · الإجازات 380,500.000 · التذاكر 92,000.000.</p><p><strong>أهميته.</strong> هي الالتزام الذي يظهر في الميزانية، وما تُصرف منه التسويات النهائية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.payslips",
+      "label": "PayrollDashboard_Payslips",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_Payslips"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها الرقم: سطر لكل كشف راتب بشهره وموظفه وإدارته ونوع تشغيله والأساسي والإجمالي والاستقطاعات والصافي والتكلفة على الشركة وطريقة الدفع. انقر على السطر لعرض بطاقة تكلفة الموظف.</p><p><strong>طريقة الاحتساب.</strong> القاعدة نفسها للرقم الذي نقرت عليه: الشهر يعرض كشوف ذلك الشهر (بنوعي التشغيل)، والفئة أو طريقة الدفع تعرض كشوف الرواتب الاعتيادية لآخر شهر صُرفت رواتبه، ونوع التشغيل يعرض كشوف ذلك النوع للفترة كلها.</p><p><strong>مثال.</strong> انقر على <strong>الموظفون المصروفة رواتبهم</strong>: جميع كشوف آخر شهر صُرفت رواتبه.</p><p><strong>أهميته.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تنزيلها بصيغة XLSX بالفلاتر نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.payroll.cost-card",
+      "label": "PayrollDashboard_CostCard",
+      "section": null,
+      "aliases": [
+        "loc:PayrollDashboard_CostCard"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تكلفة موظف واحد على الشركة لشهر كشف الراتب الذي نقرت عليه، بنداً بنداً: كل مستحق وكل استقطاع وكل تكلفة على صاحب العمل، مع رصيد مكافأة نهاية الخدمة وعدد الأيام التي يقوم عليها. وزر الفلتر يعرض جميع المربعات لهذا الموظف فقط.</p><p><strong>طريقة الاحتساب.</strong> من كشف الراتب الاعتيادي لذلك الشهر: <strong>التكلفة على الشركة</strong> = <code>إجمالي الراتب + تكلفة صاحب العمل</code>؛ و<strong>سنة كاملة بهذا المعدل</strong> = <code>التكلفة على الشركة × 12</code>.</p><ul><li>عند النقر على سطر خارج الدورة تعرض البطاقة كشف الراتب الاعتيادي للشهر نفسه.</li></ul><p><strong>مثال.</strong> الإجمالي 1,250.000 · تكلفة صاحب العمل 196.500 · التكلفة على الشركة 1,446.500 · سنة كاملة بهذا المعدل 17,358.000.</p><p><strong>أهميته.</strong> تجيب عن سؤال \"كم يكلّفنا هذا الموظف فعلاً\"، وهو ما لا يُظهره كشف الراتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

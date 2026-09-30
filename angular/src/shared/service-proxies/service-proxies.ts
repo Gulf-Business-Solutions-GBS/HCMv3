@@ -110589,6 +110589,242 @@ export class PayrollCTCReportServiceProxy {
 }
 
 @Injectable()
+export class PayrollDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDashboard(body?: PayrollDashboardInput | undefined): Observable<PayrollDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollDashboard/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollDashboardDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<PayrollDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployees(body?: GetPayrollEmployeesInput | undefined): Observable<PagedResultDtoOfPayrollEmployeeRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollDashboard/GetEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployees(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfPayrollEmployeeRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfPayrollEmployeeRowDto>;
+        }));
+    }
+
+    protected processGetEmployees(response: HttpResponseBase): Observable<PagedResultDtoOfPayrollEmployeeRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfPayrollEmployeeRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getCostCard(body?: GetPayrollCostCardInput | undefined): Observable<PayrollCostCardDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollDashboard/GetCostCard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostCard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostCard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollCostCardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollCostCardDto>;
+        }));
+    }
+
+    protected processGetCostCard(response: HttpResponseBase): Observable<PayrollCostCardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollCostCardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: ExportPayrollDashboardInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollDashboard/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class PayrollDriverServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -221550,6 +221786,78 @@ export interface IExportOvertimeDashboardInput {
     month: DateTime | undefined;
 }
 
+export class ExportPayrollDashboardInput implements IExportPayrollDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+    part!: PayrollDashboardExportPart;
+    kind!: PayrollDashboardListKind;
+    month!: DateTime | undefined;
+    band!: number | undefined;
+    paymentType!: PaymentType;
+    runType!: PayrollRunType;
+
+    constructor(data?: IExportPayrollDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+            this.part = _data["part"];
+            this.kind = _data["kind"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.band = _data["band"];
+            this.paymentType = _data["paymentType"];
+            this.runType = _data["runType"];
+        }
+    }
+
+    static fromJS(data: any): ExportPayrollDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportPayrollDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        data["part"] = this.part;
+        data["kind"] = this.kind;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["band"] = this.band;
+        data["paymentType"] = this.paymentType;
+        data["runType"] = this.runType;
+        return data;
+    }
+}
+
+export interface IExportPayrollDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+    part: PayrollDashboardExportPart;
+    kind: PayrollDashboardListKind;
+    month: DateTime | undefined;
+    band: number | undefined;
+    paymentType: PaymentType;
+    runType: PayrollRunType;
+}
+
 export class ExportWorkforceDashboardInput implements IExportWorkforceDashboardInput {
     fromDate!: DateTime | undefined;
     toDate!: DateTime | undefined;
@@ -260163,6 +260471,50 @@ export interface IGetPayrollControlRecordForEditOutput {
     payrollControlRecord: CreateOrEditPayrollControlRecordDto;
 }
 
+export class GetPayrollCostCardInput implements IGetPayrollCostCardInput {
+    employeeId!: number;
+    month!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+
+    constructor(data?: IGetPayrollCostCardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetPayrollCostCardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollCostCardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetPayrollCostCardInput {
+    employeeId: number;
+    month: DateTime | undefined;
+    toDate: DateTime | undefined;
+}
+
 export class GetPayrollDriversInput implements IGetPayrollDriversInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -260209,6 +260561,82 @@ export interface IGetPayrollDriversInput {
     skipCount: number;
     sorting: string | undefined;
     filter: string | undefined;
+}
+
+export class GetPayrollEmployeesInput implements IGetPayrollEmployeesInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+    kind!: PayrollDashboardListKind;
+    month!: DateTime | undefined;
+    band!: number | undefined;
+    paymentType!: PaymentType;
+    runType!: PayrollRunType;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetPayrollEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+            this.kind = _data["kind"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.band = _data["band"];
+            this.paymentType = _data["paymentType"];
+            this.runType = _data["runType"];
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        data["kind"] = this.kind;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["band"] = this.band;
+        data["paymentType"] = this.paymentType;
+        data["runType"] = this.runType;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetPayrollEmployeesInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+    kind: PayrollDashboardListKind;
+    month: DateTime | undefined;
+    band: number | undefined;
+    paymentType: PaymentType;
+    runType: PayrollRunType;
+    skipCount: number;
+    maxResultCount: number;
 }
 
 export class GetPayrollJVCustom016LoanFormatReportInput implements IGetPayrollJVCustom016LoanFormatReportInput {
@@ -309895,6 +310323,54 @@ export interface IPagedResultDtoOfPayrollDriverListDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfPayrollEmployeeRowDto implements IPagedResultDtoOfPayrollEmployeeRowDto {
+    items!: PayrollEmployeeRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfPayrollEmployeeRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollEmployeeRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfPayrollEmployeeRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfPayrollEmployeeRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfPayrollEmployeeRowDto {
+    items: PayrollEmployeeRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfPayrollJVCustom016DetailRowDto implements IPagedResultDtoOfPayrollJVCustom016DetailRowDto {
     items!: PayrollJVCustom016DetailRowDto[] | undefined;
     totalCount!: number;
@@ -318817,6 +319293,54 @@ export interface IPayrollAreaLookupDto {
     isFiConfigured: boolean;
 }
 
+export class PayrollBasicBandDto implements IPayrollBasicBandDto {
+    index!: number;
+    from!: number;
+    to!: number | undefined;
+    employees!: number;
+
+    constructor(data?: IPayrollBasicBandDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.index = _data["index"];
+            this.from = _data["from"];
+            this.to = _data["to"];
+            this.employees = _data["employees"];
+        }
+    }
+
+    static fromJS(data: any): PayrollBasicBandDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollBasicBandDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["index"] = this.index;
+        data["from"] = this.from;
+        data["to"] = this.to;
+        data["employees"] = this.employees;
+        return data;
+    }
+}
+
+export interface IPayrollBasicBandDto {
+    index: number;
+    from: number;
+    to: number | undefined;
+    employees: number;
+}
+
 export class PayrollCTCReportRowDto implements IPayrollCTCReportRowDto {
     id!: number;
     employeeCode!: string | undefined;
@@ -319129,6 +319653,492 @@ export interface IPayrollControlRecordDto {
     stateChangedUserName: string | undefined;
 }
 
+export class PayrollCostCardDto implements IPayrollCostCardDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    joiningDate!: DateTime | undefined;
+    month!: DateTime | undefined;
+    earnings!: PayrollCostLineDto[] | undefined;
+    deductions!: PayrollCostLineDto[] | undefined;
+    employerCosts!: PayrollCostLineDto[] | undefined;
+    gross!: number;
+    totalDeductions!: number;
+    net!: number;
+    employerCost!: number;
+    costToCompany!: number;
+    annualCostToCompany!: number;
+    balances!: PayrollProvisionsDto;
+    indemnityDays!: number | undefined;
+    leaveDays!: number | undefined;
+
+    constructor(data?: IPayrollCostCardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.joiningDate = _data["joiningDate"] ? DateTime.fromISO(_data["joiningDate"].toString()) : undefined as any;
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            if (Array.isArray(_data["earnings"])) {
+                this.earnings = [] as any;
+                for (let item of _data["earnings"])
+                    this.earnings!.push(PayrollCostLineDto.fromJS(item));
+            }
+            if (Array.isArray(_data["deductions"])) {
+                this.deductions = [] as any;
+                for (let item of _data["deductions"])
+                    this.deductions!.push(PayrollCostLineDto.fromJS(item));
+            }
+            if (Array.isArray(_data["employerCosts"])) {
+                this.employerCosts = [] as any;
+                for (let item of _data["employerCosts"])
+                    this.employerCosts!.push(PayrollCostLineDto.fromJS(item));
+            }
+            this.gross = _data["gross"];
+            this.totalDeductions = _data["totalDeductions"];
+            this.net = _data["net"];
+            this.employerCost = _data["employerCost"];
+            this.costToCompany = _data["costToCompany"];
+            this.annualCostToCompany = _data["annualCostToCompany"];
+            this.balances = _data["balances"] ? PayrollProvisionsDto.fromJS(_data["balances"]) : undefined as any;
+            this.indemnityDays = _data["indemnityDays"];
+            this.leaveDays = _data["leaveDays"];
+        }
+    }
+
+    static fromJS(data: any): PayrollCostCardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollCostCardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["joiningDate"] = this.joiningDate ? this.joiningDate.toString() : undefined as any;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        if (Array.isArray(this.earnings)) {
+            data["earnings"] = [];
+            for (let item of this.earnings)
+                data["earnings"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.deductions)) {
+            data["deductions"] = [];
+            for (let item of this.deductions)
+                data["deductions"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.employerCosts)) {
+            data["employerCosts"] = [];
+            for (let item of this.employerCosts)
+                data["employerCosts"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["gross"] = this.gross;
+        data["totalDeductions"] = this.totalDeductions;
+        data["net"] = this.net;
+        data["employerCost"] = this.employerCost;
+        data["costToCompany"] = this.costToCompany;
+        data["annualCostToCompany"] = this.annualCostToCompany;
+        data["balances"] = this.balances ? this.balances.toJSON() : undefined as any;
+        data["indemnityDays"] = this.indemnityDays;
+        data["leaveDays"] = this.leaveDays;
+        return data;
+    }
+}
+
+export interface IPayrollCostCardDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    joiningDate: DateTime | undefined;
+    month: DateTime | undefined;
+    earnings: PayrollCostLineDto[] | undefined;
+    deductions: PayrollCostLineDto[] | undefined;
+    employerCosts: PayrollCostLineDto[] | undefined;
+    gross: number;
+    totalDeductions: number;
+    net: number;
+    employerCost: number;
+    costToCompany: number;
+    annualCostToCompany: number;
+    balances: PayrollProvisionsDto;
+    indemnityDays: number | undefined;
+    leaveDays: number | undefined;
+}
+
+export enum PayrollCostComponent {
+    Basic = 0,
+    OtherEarnings = 1,
+    EmployerSocialSecurity = 2,
+    IndemnityProvision = 3,
+    LeaveProvision = 4,
+    TicketProvision = 5,
+}
+
+export class PayrollCostLineDto implements IPayrollCostLineDto {
+    wageTypeId!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    amount!: number;
+
+    constructor(data?: IPayrollCostLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.wageTypeId = _data["wageTypeId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): PayrollCostLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollCostLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["wageTypeId"] = this.wageTypeId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IPayrollCostLineDto {
+    wageTypeId: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    amount: number;
+}
+
+export class PayrollCostMixDto implements IPayrollCostMixDto {
+    component!: PayrollCostComponent;
+    amount!: number;
+
+    constructor(data?: IPayrollCostMixDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.component = _data["component"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): PayrollCostMixDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollCostMixDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["component"] = this.component;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IPayrollCostMixDto {
+    component: PayrollCostComponent;
+    amount: number;
+}
+
+export class PayrollDashboardDto implements IPayrollDashboardDto {
+    scope!: DashboardScopeDto;
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    latestMonth!: DateTime | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    kpis!: PayrollKpisDto;
+    trend!: PayrollTrendPointDto[] | undefined;
+    costMix!: PayrollCostMixDto[] | undefined;
+    byOrgUnit!: PayrollOrgUnitBucketDto[] | undefined;
+    basicBands!: PayrollBasicBandDto[] | undefined;
+    earnings!: PayrollWageTypeAmountDto[] | undefined;
+    deductions!: PayrollWageTypeAmountDto[] | undefined;
+    paymentMethods!: PayrollPaymentMethodBucketDto[] | undefined;
+    runTypes!: PayrollRunTypeBucketDto[] | undefined;
+    provisions!: PayrollProvisionsDto;
+    orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: IPayrollDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.latestMonth = _data["latestMonth"] ? DateTime.fromISO(_data["latestMonth"].toString()) : undefined as any;
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.kpis = _data["kpis"] ? PayrollKpisDto.fromJS(_data["kpis"]) : undefined as any;
+            if (Array.isArray(_data["trend"])) {
+                this.trend = [] as any;
+                for (let item of _data["trend"])
+                    this.trend!.push(PayrollTrendPointDto.fromJS(item));
+            }
+            if (Array.isArray(_data["costMix"])) {
+                this.costMix = [] as any;
+                for (let item of _data["costMix"])
+                    this.costMix!.push(PayrollCostMixDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byOrgUnit"])) {
+                this.byOrgUnit = [] as any;
+                for (let item of _data["byOrgUnit"])
+                    this.byOrgUnit!.push(PayrollOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["basicBands"])) {
+                this.basicBands = [] as any;
+                for (let item of _data["basicBands"])
+                    this.basicBands!.push(PayrollBasicBandDto.fromJS(item));
+            }
+            if (Array.isArray(_data["earnings"])) {
+                this.earnings = [] as any;
+                for (let item of _data["earnings"])
+                    this.earnings!.push(PayrollWageTypeAmountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["deductions"])) {
+                this.deductions = [] as any;
+                for (let item of _data["deductions"])
+                    this.deductions!.push(PayrollWageTypeAmountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["paymentMethods"])) {
+                this.paymentMethods = [] as any;
+                for (let item of _data["paymentMethods"])
+                    this.paymentMethods!.push(PayrollPaymentMethodBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["runTypes"])) {
+                this.runTypes = [] as any;
+                for (let item of _data["runTypes"])
+                    this.runTypes!.push(PayrollRunTypeBucketDto.fromJS(item));
+            }
+            this.provisions = _data["provisions"] ? PayrollProvisionsDto.fromJS(_data["provisions"]) : undefined as any;
+            if (Array.isArray(_data["orgUnitPath"])) {
+                this.orgUnitPath = [] as any;
+                for (let item of _data["orgUnitPath"])
+                    this.orgUnitPath!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["latestMonth"] = this.latestMonth ? this.latestMonth.toString() : undefined as any;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["kpis"] = this.kpis ? this.kpis.toJSON() : undefined as any;
+        if (Array.isArray(this.trend)) {
+            data["trend"] = [];
+            for (let item of this.trend)
+                data["trend"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.costMix)) {
+            data["costMix"] = [];
+            for (let item of this.costMix)
+                data["costMix"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byOrgUnit)) {
+            data["byOrgUnit"] = [];
+            for (let item of this.byOrgUnit)
+                data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.basicBands)) {
+            data["basicBands"] = [];
+            for (let item of this.basicBands)
+                data["basicBands"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.earnings)) {
+            data["earnings"] = [];
+            for (let item of this.earnings)
+                data["earnings"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.deductions)) {
+            data["deductions"] = [];
+            for (let item of this.deductions)
+                data["deductions"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.paymentMethods)) {
+            data["paymentMethods"] = [];
+            for (let item of this.paymentMethods)
+                data["paymentMethods"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.runTypes)) {
+            data["runTypes"] = [];
+            for (let item of this.runTypes)
+                data["runTypes"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["provisions"] = this.provisions ? this.provisions.toJSON() : undefined as any;
+        if (Array.isArray(this.orgUnitPath)) {
+            data["orgUnitPath"] = [];
+            for (let item of this.orgUnitPath)
+                data["orgUnitPath"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollDashboardDto {
+    scope: DashboardScopeDto;
+    fromDate: DateTime;
+    toDate: DateTime;
+    latestMonth: DateTime | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    kpis: PayrollKpisDto;
+    trend: PayrollTrendPointDto[] | undefined;
+    costMix: PayrollCostMixDto[] | undefined;
+    byOrgUnit: PayrollOrgUnitBucketDto[] | undefined;
+    basicBands: PayrollBasicBandDto[] | undefined;
+    earnings: PayrollWageTypeAmountDto[] | undefined;
+    deductions: PayrollWageTypeAmountDto[] | undefined;
+    paymentMethods: PayrollPaymentMethodBucketDto[] | undefined;
+    runTypes: PayrollRunTypeBucketDto[] | undefined;
+    provisions: PayrollProvisionsDto;
+    orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
+}
+
+export enum PayrollDashboardExportPart {
+    All = 0,
+    Trend = 1,
+    CostMix = 2,
+    ByOrgUnit = 3,
+    BasicBands = 4,
+    Earnings = 5,
+    Deductions = 6,
+    PaymentMethods = 7,
+    RunTypes = 8,
+    Provisions = 9,
+    Employees = 10,
+}
+
+export class PayrollDashboardInput implements IPayrollDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+
+    constructor(data?: IPayrollDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): PayrollDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        return data;
+    }
+}
+
+export interface IPayrollDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+}
+
+export enum PayrollDashboardListKind {
+    Month = 0,
+    BasicBand = 1,
+    PaymentMethod = 2,
+    RunType = 3,
+}
+
 export class PayrollDriverEditDto implements IPayrollDriverEditDto {
     id!: number;
     countryId!: number;
@@ -319219,6 +320229,94 @@ export interface IPayrollDriverListDto {
     countryId: number;
     countryName: string | undefined;
     leaveDeductionStartMonth: boolean;
+}
+
+export class PayrollEmployeeRowDto implements IPayrollEmployeeRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    month!: DateTime;
+    runType!: PayrollRunType;
+    basic!: number;
+    gross!: number;
+    deductions!: number;
+    net!: number;
+    employerCost!: number;
+    costToCompany!: number;
+    paymentType!: PaymentType;
+
+    constructor(data?: IPayrollEmployeeRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.runType = _data["runType"];
+            this.basic = _data["basic"];
+            this.gross = _data["gross"];
+            this.deductions = _data["deductions"];
+            this.net = _data["net"];
+            this.employerCost = _data["employerCost"];
+            this.costToCompany = _data["costToCompany"];
+            this.paymentType = _data["paymentType"];
+        }
+    }
+
+    static fromJS(data: any): PayrollEmployeeRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollEmployeeRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["runType"] = this.runType;
+        data["basic"] = this.basic;
+        data["gross"] = this.gross;
+        data["deductions"] = this.deductions;
+        data["net"] = this.net;
+        data["employerCost"] = this.employerCost;
+        data["costToCompany"] = this.costToCompany;
+        data["paymentType"] = this.paymentType;
+        return data;
+    }
+}
+
+export interface IPayrollEmployeeRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    month: DateTime;
+    runType: PayrollRunType;
+    basic: number;
+    gross: number;
+    deductions: number;
+    net: number;
+    employerCost: number;
+    costToCompany: number;
+    paymentType: PaymentType;
 }
 
 export class PayrollJVCustom016DetailRowDto implements IPayrollJVCustom016DetailRowDto {
@@ -321374,6 +322472,70 @@ export interface IPayrollJVReportColumnDto {
     localize: boolean;
 }
 
+export class PayrollKpisDto implements IPayrollKpisDto {
+    employeesPaid!: number;
+    gross!: number;
+    deductions!: number;
+    net!: number;
+    employerCost!: number;
+    costToCompany!: number;
+    averageMonthlyCostPerEmployee!: number | undefined;
+    offCyclePayments!: number;
+
+    constructor(data?: IPayrollKpisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeesPaid = _data["employeesPaid"];
+            this.gross = _data["gross"];
+            this.deductions = _data["deductions"];
+            this.net = _data["net"];
+            this.employerCost = _data["employerCost"];
+            this.costToCompany = _data["costToCompany"];
+            this.averageMonthlyCostPerEmployee = _data["averageMonthlyCostPerEmployee"];
+            this.offCyclePayments = _data["offCyclePayments"];
+        }
+    }
+
+    static fromJS(data: any): PayrollKpisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollKpisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeesPaid"] = this.employeesPaid;
+        data["gross"] = this.gross;
+        data["deductions"] = this.deductions;
+        data["net"] = this.net;
+        data["employerCost"] = this.employerCost;
+        data["costToCompany"] = this.costToCompany;
+        data["averageMonthlyCostPerEmployee"] = this.averageMonthlyCostPerEmployee;
+        data["offCyclePayments"] = this.offCyclePayments;
+        return data;
+    }
+}
+
+export interface IPayrollKpisDto {
+    employeesPaid: number;
+    gross: number;
+    deductions: number;
+    net: number;
+    employerCost: number;
+    costToCompany: number;
+    averageMonthlyCostPerEmployee: number | undefined;
+    offCyclePayments: number;
+}
+
 export class PayrollLogDto implements IPayrollLogDto {
     id!: number;
     message!: string | undefined;
@@ -321534,6 +322696,114 @@ export interface IPayrollNetPayContractDiffReportRowDto {
     difference: number;
 }
 
+export class PayrollOrgUnitBucketDto implements IPayrollOrgUnitBucketDto {
+    organizationUnitId!: number | undefined;
+    name!: string | undefined;
+    isDirectStaff!: boolean;
+    hasChildren!: boolean;
+    employees!: number;
+    gross!: number;
+    net!: number;
+    costToCompany!: number;
+
+    constructor(data?: IPayrollOrgUnitBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.name = _data["name"];
+            this.isDirectStaff = _data["isDirectStaff"];
+            this.hasChildren = _data["hasChildren"];
+            this.employees = _data["employees"];
+            this.gross = _data["gross"];
+            this.net = _data["net"];
+            this.costToCompany = _data["costToCompany"];
+        }
+    }
+
+    static fromJS(data: any): PayrollOrgUnitBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollOrgUnitBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["name"] = this.name;
+        data["isDirectStaff"] = this.isDirectStaff;
+        data["hasChildren"] = this.hasChildren;
+        data["employees"] = this.employees;
+        data["gross"] = this.gross;
+        data["net"] = this.net;
+        data["costToCompany"] = this.costToCompany;
+        return data;
+    }
+}
+
+export interface IPayrollOrgUnitBucketDto {
+    organizationUnitId: number | undefined;
+    name: string | undefined;
+    isDirectStaff: boolean;
+    hasChildren: boolean;
+    employees: number;
+    gross: number;
+    net: number;
+    costToCompany: number;
+}
+
+export class PayrollPaymentMethodBucketDto implements IPayrollPaymentMethodBucketDto {
+    paymentType!: PaymentType;
+    employees!: number;
+    net!: number;
+
+    constructor(data?: IPayrollPaymentMethodBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.paymentType = _data["paymentType"];
+            this.employees = _data["employees"];
+            this.net = _data["net"];
+        }
+    }
+
+    static fromJS(data: any): PayrollPaymentMethodBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollPaymentMethodBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["paymentType"] = this.paymentType;
+        data["employees"] = this.employees;
+        data["net"] = this.net;
+        return data;
+    }
+}
+
+export interface IPayrollPaymentMethodBucketDto {
+    paymentType: PaymentType;
+    employees: number;
+    net: number;
+}
+
 export class PayrollPeriod implements IPayrollPeriod {
     id!: number;
     creationTime!: DateTime;
@@ -321621,6 +322891,54 @@ export enum PayrollPeriodState {
     Closed = 3,
 }
 
+export class PayrollProvisionsDto implements IPayrollProvisionsDto {
+    indemnity!: number;
+    leave!: number;
+    ticket!: number;
+    total!: number;
+
+    constructor(data?: IPayrollProvisionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.indemnity = _data["indemnity"];
+            this.leave = _data["leave"];
+            this.ticket = _data["ticket"];
+            this.total = _data["total"];
+        }
+    }
+
+    static fromJS(data: any): PayrollProvisionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollProvisionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["indemnity"] = this.indemnity;
+        data["leave"] = this.leave;
+        data["ticket"] = this.ticket;
+        data["total"] = this.total;
+        return data;
+    }
+}
+
+export interface IPayrollProvisionsDto {
+    indemnity: number;
+    leave: number;
+    ticket: number;
+    total: number;
+}
+
 export enum PayrollResultType {
     Current = 0,
     Last = 1,
@@ -321630,6 +322948,54 @@ export enum PayrollResultType {
 export enum PayrollRunType {
     Regular = 0,
     OffCycle = 1,
+}
+
+export class PayrollRunTypeBucketDto implements IPayrollRunTypeBucketDto {
+    runType!: PayrollRunType;
+    payslips!: number;
+    employees!: number;
+    net!: number;
+
+    constructor(data?: IPayrollRunTypeBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.runType = _data["runType"];
+            this.payslips = _data["payslips"];
+            this.employees = _data["employees"];
+            this.net = _data["net"];
+        }
+    }
+
+    static fromJS(data: any): PayrollRunTypeBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollRunTypeBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["runType"] = this.runType;
+        data["payslips"] = this.payslips;
+        data["employees"] = this.employees;
+        data["net"] = this.net;
+        return data;
+    }
+}
+
+export interface IPayrollRunTypeBucketDto {
+    runType: PayrollRunType;
+    payslips: number;
+    employees: number;
+    net: number;
 }
 
 export class PayrollSettingsEditDto implements IPayrollSettingsEditDto {
@@ -322462,6 +323828,122 @@ export interface IPayrollSheetReportRowDto {
     wageAmounts: { [key: string]: number; } | undefined;
     wageDays: { [key: string]: number; } | undefined;
     difference: number;
+}
+
+export class PayrollTrendPointDto implements IPayrollTrendPointDto {
+    monthStart!: DateTime;
+    employees!: number;
+    gross!: number;
+    deductions!: number;
+    net!: number;
+    employerCost!: number;
+    costToCompany!: number;
+
+    constructor(data?: IPayrollTrendPointDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.monthStart = _data["monthStart"] ? DateTime.fromISO(_data["monthStart"].toString()) : undefined as any;
+            this.employees = _data["employees"];
+            this.gross = _data["gross"];
+            this.deductions = _data["deductions"];
+            this.net = _data["net"];
+            this.employerCost = _data["employerCost"];
+            this.costToCompany = _data["costToCompany"];
+        }
+    }
+
+    static fromJS(data: any): PayrollTrendPointDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollTrendPointDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["monthStart"] = this.monthStart ? this.monthStart.toString() : undefined as any;
+        data["employees"] = this.employees;
+        data["gross"] = this.gross;
+        data["deductions"] = this.deductions;
+        data["net"] = this.net;
+        data["employerCost"] = this.employerCost;
+        data["costToCompany"] = this.costToCompany;
+        return data;
+    }
+}
+
+export interface IPayrollTrendPointDto {
+    monthStart: DateTime;
+    employees: number;
+    gross: number;
+    deductions: number;
+    net: number;
+    employerCost: number;
+    costToCompany: number;
+}
+
+export class PayrollWageTypeAmountDto implements IPayrollWageTypeAmountDto {
+    wageTypeId!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    amount!: number;
+    employees!: number;
+
+    constructor(data?: IPayrollWageTypeAmountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.wageTypeId = _data["wageTypeId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.amount = _data["amount"];
+            this.employees = _data["employees"];
+        }
+    }
+
+    static fromJS(data: any): PayrollWageTypeAmountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollWageTypeAmountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["wageTypeId"] = this.wageTypeId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["amount"] = this.amount;
+        data["employees"] = this.employees;
+        return data;
+    }
+}
+
+export interface IPayrollWageTypeAmountDto {
+    wageTypeId: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    amount: number;
+    employees: number;
 }
 
 export class PayslipConfigDto implements IPayslipConfigDto {
