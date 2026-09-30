@@ -3677,6 +3677,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Dashboards.Workforce' },
                     },
                     {
+                        path: 'attendance-dashboard',
+                        loadComponent: () =>
+                            import('./admin/dashboards/attendance-dashboard/attendance-dashboard.component').then(
+                                (m) => m.AttendanceDashboardComponent
+                            ),
+                        data: { permission: 'Pages.Dashboards.Attendance' },
+                    },
+                    {
                         path: 'copy-workflow-setup',
                         loadComponent: () =>
                             import('./admin/administration/copy-workflow-setup/copy-workflow-setup.component').then(

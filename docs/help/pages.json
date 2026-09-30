@@ -9670,6 +9670,103 @@
           "loc": "WorkforceDashboard_EmployeesList"
         }
       ]
+    },
+    {
+      "helpId": "dash.attendance",
+      "title": "Time & Attendance Dashboard",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Pages.Dashboards.Attendance"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/dashboards/attendance-dashboard/attendance-dashboard.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "dash.common.filter",
+          "label": "Filter",
+          "loc": "Filter"
+        },
+        {
+          "id": "dash.common.download",
+          "label": "Download",
+          "loc": "Download"
+        },
+        {
+          "id": "dash.attendance.attendance-rate",
+          "label": "AttendanceDashboard_AttendanceRate",
+          "loc": "AttendanceDashboard_AttendanceRate"
+        },
+        {
+          "id": "dash.attendance.absent",
+          "label": "AttendanceDashboard_AbsentDays",
+          "loc": "AttendanceDashboard_AbsentDays"
+        },
+        {
+          "id": "dash.attendance.late",
+          "label": "AttendanceDashboard_LateArrivals",
+          "loc": "AttendanceDashboard_LateArrivals"
+        },
+        {
+          "id": "dash.attendance.early",
+          "label": "AttendanceDashboard_EarlyDepartures",
+          "loc": "AttendanceDashboard_EarlyDepartures"
+        },
+        {
+          "id": "dash.attendance.missing-punches",
+          "label": "AttendanceDashboard_MissingPunches",
+          "loc": "AttendanceDashboard_MissingPunches"
+        },
+        {
+          "id": "dash.attendance.punch-requests",
+          "label": "AttendanceDashboard_PunchRequests",
+          "loc": "AttendanceDashboard_PunchRequests"
+        },
+        {
+          "id": "dash.attendance.trend",
+          "label": "AttendanceDashboard_ByMonth",
+          "loc": "AttendanceDashboard_ByMonth"
+        },
+        {
+          "id": "dash.attendance.by-department",
+          "label": "AttendanceDashboard_ByDepartment",
+          "loc": "AttendanceDashboard_ByDepartment"
+        },
+        {
+          "id": "dash.attendance.weekday",
+          "label": "AttendanceDashboard_ByWeekday",
+          "loc": "AttendanceDashboard_ByWeekday"
+        },
+        {
+          "id": "dash.attendance.top-absent",
+          "label": "AttendanceDashboard_TopAbsent",
+          "loc": "AttendanceDashboard_TopAbsent"
+        },
+        {
+          "id": "dash.attendance.top-late",
+          "label": "AttendanceDashboard_TopLate",
+          "loc": "AttendanceDashboard_TopLate"
+        },
+        {
+          "id": "dash.attendance.top-early",
+          "label": "AttendanceDashboard_TopEarly",
+          "loc": "AttendanceDashboard_TopEarly"
+        },
+        {
+          "id": "dash.attendance.exceptions",
+          "label": "AttendanceDashboard_Exceptions",
+          "loc": "AttendanceDashboard_Exceptions"
+        }
+      ]
     }
   ]
 }

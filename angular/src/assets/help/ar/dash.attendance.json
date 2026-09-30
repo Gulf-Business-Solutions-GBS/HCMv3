@@ -1,0 +1,235 @@
+{
+  "helpId": "dash.attendance",
+  "lang": "ar",
+  "title": "لوحة معلومات الحضور والانصراف",
+  "entity": null,
+  "overviewHtml": "<p>مدى التزام الموظفين بساعات العمل خلال فترة: نسبة الحضور، والغياب، والتأخير، والانصراف المبكر، والبصمات الناقصة، وطلبات البصمة — حسب الشهر أو اليوم، وحسب الإدارة، وحسب يوم الأسبوع، وحسب الموظف. وتُفتح اللوحة على الشهر الحالي.</p><p>كل رقم مأخوذ من نتائج <strong>محرك الوقت</strong> لكل موظف في كل يوم، وهي النتائج نفسها التي تعتمد عليها الرواتب. والفترة التي لم يُشغَّل لها محرك الوقت ليس لها ما يُعرض، وتبيّن اللوحة ذلك بدلاً من عرض أصفار توحي بحضور كامل.</p><p><strong>يوم العمل</strong> هو يوم كان الموظف مجدولاً للعمل فيه: يوم عمل مخطط لا يكون إجازة ولا عطلة رسمية ولا راحة أسبوعية ولا يوم استراحة. و<strong>الحضور</strong> هو يوم عمل لم يُسجَّل فيه غياب. ولا يُبحث عن التأخير والانصراف المبكر والبصمات الناقصة إلا في أيام الحضور. وتُقصَّر الفترة التي تتجاوز سنتين إلى آخر سنتين.</p>",
+  "aliasIndex": {
+    "loc:Dashboard_Showing": "dash.common.showing",
+    "loc:Filter": "dash.common.filter",
+    "loc:Download": "dash.common.download",
+    "loc:AttendanceDashboard_AttendanceRate": "dash.attendance.attendance-rate",
+    "loc:AttendanceDashboard_AbsentDays": "dash.attendance.absent",
+    "loc:AttendanceDashboard_LateArrivals": "dash.attendance.late",
+    "loc:AttendanceDashboard_EarlyDepartures": "dash.attendance.early",
+    "loc:AttendanceDashboard_MissingPunches": "dash.attendance.missing-punches",
+    "loc:AttendanceDashboard_PunchRequests": "dash.attendance.punch-requests",
+    "loc:AttendanceDashboard_ByMonth": "dash.attendance.trend",
+    "loc:AttendanceDashboard_ByDepartment": "dash.attendance.by-department",
+    "loc:AttendanceDashboard_ByWeekday": "dash.attendance.weekday",
+    "loc:AttendanceDashboard_TopAbsent": "dash.attendance.top-absent",
+    "loc:AttendanceDashboard_TopLate": "dash.attendance.top-late",
+    "loc:AttendanceDashboard_TopEarly": "dash.attendance.top-early",
+    "loc:AttendanceDashboard_Exceptions": "dash.attendance.exceptions"
+  },
+  "fields": [
+    {
+      "id": "dash.common.showing",
+      "label": "Dashboard_Showing",
+      "section": null,
+      "aliases": [
+        "loc:Dashboard_Showing"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السطر في شريط الأدوات الذي يبيّن بيانات من بُنيت عليها اللوحة، وعدد هؤلاء الموظفين. ولا تختاره أنت: فهو يتحدد بحسب هويتك.</p><p><strong>كيف يُحدَّد.</strong> الموظفون الذين تراهم هم:</p><ul><li>جميع الموظفين، إذا كان لديك دور <strong>Admin</strong> (مسؤول النظام)؛</li><li>وإلا فالموظفون في الوحدات التنظيمية المخصصة لأدوارك في أمان مستوى السجلات، بما في ذلك كل وحدة تتبعها، <strong>مضافاً إليهم</strong> فريقك — أنت وكل من يتبعك في التسلسل الإداري، على جميع المستويات؛</li><li>ولا أحد، إذا لم ينتج عن أيٍّ مما سبق أي موظف. وعندئذٍ لا تعرض اللوحة شيئاً، ولا تعرض الجميع أبداً.</li></ul><p><strong>مثال.</strong> \"المعروض: المالية + الرواتب + فريقك (123 موظف)\" — أنت موظف موارد بشرية مسؤول عن المالية والرواتب، ولديك فريق تديره أيضاً.</p><p><strong>لماذا يهمّ.</strong> قد يفتح شخصان اللوحة نفسها فيريان أرقاماً مختلفة، وكلاهما صحيح. فكل رقم ورسم بياني وقائمة وملف تحميل في الصفحة يقتصر على هؤلاء الموظفين — ويمكن لعوامل التصفية أن تضيّق النطاق، لكنها لا توسّعه أبداً.</p>",
+      "adminHtml": "<p>يحدده <code>IDashboardScopeService</code> لكل لوحات المعلومات. ولا يُعتدّ عمداً بمفتاح تشغيل أمان مستوى السجلات في إعدادات الأمان: فمن لم يُخصَّص له شيء لا يرى شيئاً، أياً كانت حالة المفتاح. وتُطابَق قاعدة المسؤول مع اسم الدور الثابت <code>Admin</code> في الجهة.</p>",
+      "stub": false
+    },
+    {
+      "id": "dash.common.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [
+        "loc:Filter"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النافذة التي تفتح من زر <strong>تصفية</strong>: الفترة ووحدة الشركة. ولا يتغير شيء حتى تضغط <strong>تطبيق</strong>؛ ويعيد زر <strong>مسح</strong> القيم الافتراضية.</p><p><strong>كيف تعمل الفترة.</strong></p><ul><li><strong>من بداية السنة حتى اليوم</strong> (الافتراضي): من 1 يناير من السنة الحالية حتى اليوم.</li><li><strong>هذه السنة</strong> و<strong>السنة الماضية</strong>: من 1 يناير إلى 31 ديسمبر.</li><li><strong>هذا الشهر</strong>: من أول يوم في الشهر الحالي إلى آخر يوم فيه.</li><li><strong>مخصص</strong>: أي تاريخي بداية ونهاية تختارهما. وتُقصَّر الفترة التي تتجاوز خمس سنوات إلى آخر خمس سنوات.</li></ul><p><strong>مثال.</strong> اختر <strong>السنة الماضية</strong> لعرض سنة 2025 عندما تكون بيانات السنة الحالية قليلة.</p><p><strong>لماذا يهمّ.</strong> الأرقام المحسوبة \"حتى اليوم\" (من في إجازة اليوم، وعدد الموظفين) لا تتأثر بالفترة؛ أما الأرقام المحسوبة \"خلال الفترة\" (أيام الإجازة، والمعينون الجدد، والمنتهية خدماتهم، ومعدل الدوران) فتتأثر بها. واختيار وحدة الشركة يشمل كل وحدة تتبعها. والنقر على عمود أو شريحة في الرسم البياني يضيف عامل تصفية آخر يظهر بجانب <strong>المعروض</strong> — احذفه بعلامة <strong>×</strong> الخاصة به، أو احذفها جميعاً بـ<strong>مسح عوامل التصفية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.common.download",
+      "label": "Download",
+      "section": null,
+      "aliases": [
+        "loc:Download"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيقونة التحميل في شريط الأدوات وفي كل مربع. وعند النقر عليها تظهر ثلاث صيغ.</p><p><strong>ما تحتويه كل صيغة.</strong></p><ul><li><strong>PDF</strong> و<strong>JPEG</strong>: صورة للمربع كما يظهر على الشاشة تماماً، بما في ذلك الرسوم البيانية. ومن شريط الأدوات: صورة للوحة كاملة.</li><li><strong>XLSX</strong>: البيانات التي يقوم عليها المربع، بعوامل التصفية نفسها. ومن شريط الأدوات: ملف يضم ورقة <strong>الملخص</strong> (بيانات من، والفترة، والأرقام الرئيسية) وورقة لكل مربع.</li></ul><p><strong>مثال.</strong> أرسل رسم <strong>الإجازات حسب النوع</strong> بصيغة JPEG في بريد إلكتروني؛ وسلّم قسم الرواتب قائمة <strong>لم يباشروا العمل بعد الإجازة</strong> بصيغة XLSX.</p><p><strong>لماذا يهمّ.</strong> كل ما تحمّله لا يحتوي إلا ما يُسمح لك برؤيته، ويطابق تماماً ما تعرضه الشاشة بعوامل التصفية التي طبّقتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.attendance-rate",
+      "label": "AttendanceDashboard_AttendanceRate",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_AttendanceRate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة أيام العمل التي حضر فيها الموظفون.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام الحضور ÷ أيام العمل × 100</code></p><ul><li>تُحتسب على جميع الموظفين وجميع أيام الفترة؛ فغياب موظف يوماً واحداً من أصل 20 يوم عمل يعني 95%.</li><li>تُقرَّب إلى منزلة عشرية واحدة. وتظهر \"—\" إذا لم يكن أحد مجدولاً للعمل.</li></ul><p><strong>مثال.</strong> 96.8% — حضور 4,356 من أصل 4,500 يوم عمل.</p><p><strong>لماذا يهمّ.</strong> هو الرقم الواحد الذي تُقارن به الأشهر والإدارات أياً كان حجمها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.absent",
+      "label": "AttendanceDashboard_AbsentDays",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_AbsentDays"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام العمل التي غاب فيها موظف. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام العمل التي سجّل فيها محرك الوقت غياباً</code></p><ul><li>إذا كانت شركتك تعتمد الحضور قبل الرواتب (تفعيل اعتماد سجل الوقت)، يُحتسب الغياب <strong>المعتمد</strong> لا النتيجة الأولى للمحرك — وهي القاعدة نفسها التي تعتمدها الرواتب.</li></ul><p><strong>مثال.</strong> 144 يوم غياب في مارس.</p><p><strong>لماذا يهمّ.</strong> يُخصم الغياب بدون راتب في الرواتب من هذه الأيام نفسها، فهذه القائمة هي ما يجب مراجعته قبل تشغيل الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.late",
+      "label": "AttendanceDashboard_LateArrivals",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_LateArrivals"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات الوصول بعد بداية الدوام، والساعات الضائعة. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام الحضور التي دقائق التأخير فيها &gt; 0</code>؛ و<strong>الساعات</strong> = <code>مجموع دقائق التأخير ÷ 60</code>.</p><ul><li>دقائق التأخير هي التي يحتسبها محرك الوقت، فأي مهلة سماح في سياسة الوقت مطبّقة أصلاً. وموظفو الدوام المرن لا يُحتسب عليهم تأخير.</li></ul><p><strong>مثال.</strong> 212 مرة تأخير · 64.5 ساعة إجمالاً.</p><p><strong>لماذا يهمّ.</strong> يتركز التأخير المتكرر عادة في أشخاص قلائل أو أيام معيّنة؛ وتبيّن الرسوم أدناه ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.early",
+      "label": "AttendanceDashboard_EarlyDepartures",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_EarlyDepartures"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات الانصراف قبل نهاية الدوام، والساعات الضائعة. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام الحضور التي دقائق الانصراف المبكر فيها &gt; 0</code>؛ و<strong>الساعات</strong> = <code>مجموع دقائق الانصراف المبكر ÷ 60</code>.</p><p><strong>مثال.</strong> 58 مرة انصراف مبكر · 21 ساعة إجمالاً.</p><p><strong>لماذا يهمّ.</strong> هو مع التأخير وقت العمل المدفوع الذي لم يُعمل فعلاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.missing-punches",
+      "label": "AttendanceDashboard_MissingPunches",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_MissingPunches"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الحضور التي سجّل فيها الموظف بصمة واحدة فقط. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام الحضور التي فيها بصمة انصراف بلا بصمة حضور، أو بصمة حضور بلا بصمة انصراف</code></p><ul><li>لا تُحتسب بصمة الانصراف الناقصة لليوم الحالي — فقد لا يكون الموظف قد انصرف بعد.</li></ul><p><strong>مثال.</strong> 17 يوماً ببصمة واحدة فقط.</p><p><strong>لماذا يهمّ.</strong> لا يمكن احتساب وقت يوم فيه بصمة واحدة بدقة. ويمكن للموظف طلب البصمة الناقصة عبر الخدمة الذاتية؛ وإلى أن يفعل قد يُعامل اليوم على أنه ناقص أو غياب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.punch-requests",
+      "label": "AttendanceDashboard_PunchRequests",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_PunchRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البصمات التي طلبها الموظفون عبر الخدمة الذاتية لأنهم نسوا البصمة أو تعذّرت عليهم، وعدد ما لا يزال منها بانتظار الموافقة. انقر عليه لعرض القائمة.</p><p><strong>طريقة الاحتساب.</strong> <code>البصمات التي لها طلب موافقة بتاريخ داخل الفترة</code>، أياً كانت حالتها؛ و<strong>بانتظار الموافقة</strong> = ما لا يزال مفتوحاً منها.</p><p><strong>مثال.</strong> 23 طلب بصمة · 5 بانتظار الموافقة.</p><p><strong>لماذا يهمّ.</strong> الطلب المعلّق ليس بصمة بعد، ولذلك لا يستخدمه محرك الوقت حتى يُعتمد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.trend",
+      "label": "AttendanceDashboard_ByMonth",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_ByMonth"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام الغياب ومرات التأخير ومرات الانصراف المبكر جنباً إلى جنب، مجموعة لكل شهر. وإذا كانت الفترة شهرين أو أقل صار العرض مجموعة لكل يوم.</p><p><strong>طريقة الاحتساب.</strong> يستخدم كل عمود معادلة الرقم المقابل له أعلاه، لذلك الشهر أو اليوم.</p><p><strong>مثال.</strong> انقر على <strong>Mar 2026</strong> فتنحصر اللوحة في شهر مارس وتعرض أيامه؛ ثم انقر على <strong>14 Mar</strong> لعرض مخالفات ذلك اليوم.</p><p><strong>لماذا يهمّ.</strong> يبيّن هل يتحسن الحضور وأي الأيام يسوء فيها — اليوم التالي للعطلة، وبداية رمضان.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.by-department",
+      "label": "AttendanceDashboard_ByDepartment",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_ByDepartment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة الحضور في كل إدارة، الأدنى أولاً، مستوى تنظيمي واحد في كل مرة، مع أيام العمل والغياب والتأخير.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام الحضور ÷ أيام العمل × 100</code> لموظفي الإدارة.</p><ul><li>يتبع الموظف الوحدة الواردة في تعيينه التنظيمي الساري في نهاية الفترة.</li></ul><p><strong>مثال.</strong> انقر على <strong>ABC Software</strong> لمعرفة أي إداراتها تخفض النسبة.</p><p><strong>لماذا يهمّ.</strong> قد تخفي نسبة 97% على مستوى الشركة إدارة نسبتها 85%.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.weekday",
+      "label": "AttendanceDashboard_ByWeekday",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_ByWeekday"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مرات التأخير وأيام الغياب في كل يوم من أيام الأسبوع.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام التأخير</code> و<code>أيام الغياب</code> في الفترة، مجمّعة حسب يوم الأسبوع الذي وقعت فيه.</p><p><strong>مثال.</strong> بروز يومي الأحد والخميس.</p><p><strong>لماذا يهمّ.</strong> النمط المرتبط بيوم معيّن يدل على سبب — الازدحام، أو اجتماع أسبوعي، أو عطلات نهاية أسبوع طويلة — يخفيه الرقم الشهري.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.top-absent",
+      "label": "AttendanceDashboard_TopAbsent",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_TopAbsent"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون العشرة الأكثر أيام غياب في الفترة.</p><p><strong>طريقة الاحتساب.</strong> <code>أيام الغياب لكل موظف</code>، الأكثر أولاً.</p><p><strong>مثال.</strong> انقر على الاسم لعرض كل المربعات لهذا الموظف فقط؛ واحذف العلامة للعودة.</p><p><strong>لماذا يهمّ.</strong> منه يبدأ عادة الحديث عن الالتزام بالحضور.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.top-late",
+      "label": "AttendanceDashboard_TopLate",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_TopLate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون العشرة الذين أضاعوا أكثر وقت بسبب التأخير.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع دقائق التأخير ÷ 60 لكل موظف</code>، الأكثر أولاً.</p><p><strong>مثال.</strong> 6.5 ساعة خلال 13 مرة تأخير.</p><p><strong>لماذا يهمّ.</strong> الساعات لا عدد أيام التأخير هي ما يبيّن التكلفة الحقيقية: فعشر دقائق يومياً تتراكم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.top-early",
+      "label": "AttendanceDashboard_TopEarly",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_TopEarly"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون العشرة الذين أضاعوا أكثر وقت بسبب الانصراف المبكر.</p><p><strong>طريقة الاحتساب.</strong> <code>مجموع دقائق الانصراف المبكر ÷ 60 لكل موظف</code>، الأكثر أولاً.</p><p><strong>مثال.</strong> 4 ساعات خلال 3 مرات انصراف مبكر.</p><p><strong>لماذا يهمّ.</strong> يحدد القلة التي يقف عليها معظم الانصراف المبكر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.attendance.exceptions",
+      "label": "AttendanceDashboard_Exceptions",
+      "section": null,
+      "aliases": [
+        "loc:AttendanceDashboard_Exceptions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها رقم أو يوم نقرت عليه: كل يوم لكل موظف مع أوقاته المخططة والفعلية وما حدث فيه. انقر على أي سطر لفتح ملف الموظف. ومن <strong>طلبات البصمة</strong> تعرض القائمة البصمات المطلوبة وحالتها بدلاً من ذلك.</p><p><strong>طريقة الاحتساب.</strong> القاعدة نفسها التي يقوم عليها الرقم الذي نقرت عليه، فعدد سطور القائمة يطابق ذلك الرقم تماماً. واليوم الذي تنقر عليه يعرض كل مخالفة من أي نوع في ذلك اليوم.</p><p><strong>مثال.</strong> انقر على <strong>مرات التأخير</strong>: 212 سطراً، في كل منها وقت الحضور المخطط والفعلي.</p><p><strong>لماذا يهمّ.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تحميلها بصيغة XLSX بعوامل التصفية نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

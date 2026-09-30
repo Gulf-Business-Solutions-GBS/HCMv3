@@ -7371,6 +7371,242 @@ export class AttachmentServiceProxy {
 }
 
 @Injectable()
+export class AttendanceDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDashboard(body?: AttendanceDashboardInput | undefined): Observable<AttendanceDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/AttendanceDashboard/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AttendanceDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AttendanceDashboardDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<AttendanceDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AttendanceDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getExceptions(body?: GetAttendanceExceptionsInput | undefined): Observable<PagedResultDtoOfAttendanceExceptionRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/AttendanceDashboard/GetExceptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExceptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExceptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfAttendanceExceptionRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfAttendanceExceptionRowDto>;
+        }));
+    }
+
+    protected processGetExceptions(response: HttpResponseBase): Observable<PagedResultDtoOfAttendanceExceptionRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAttendanceExceptionRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPunchRequests(body?: GetAttendancePunchRequestsInput | undefined): Observable<PagedResultDtoOfAttendancePunchRequestRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/AttendanceDashboard/GetPunchRequests";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPunchRequests(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPunchRequests(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfAttendancePunchRequestRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfAttendancePunchRequestRowDto>;
+        }));
+    }
+
+    protected processGetPunchRequests(response: HttpResponseBase): Observable<PagedResultDtoOfAttendancePunchRequestRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAttendancePunchRequestRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: ExportAttendanceDashboardInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/AttendanceDashboard/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AttendanceLogReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -168698,6 +168934,411 @@ export interface IAttachmentSettingsDto {
     storageWarning: boolean;
 }
 
+export class AttendanceDashboardDto implements IAttendanceDashboardDto {
+    scope!: DashboardScopeDto;
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    kpis!: AttendanceKpisDto;
+    granularity!: AttendanceDashboardGranularity;
+    trend!: AttendanceTrendPointDto[] | undefined;
+    byOrgUnit!: AttendanceOrgUnitBucketDto[] | undefined;
+    topAbsent!: AttendanceTopEmployeeDto[] | undefined;
+    topLate!: AttendanceTopEmployeeDto[] | undefined;
+    topEarly!: AttendanceTopEmployeeDto[] | undefined;
+    weekdays!: AttendanceWeekdayDto[] | undefined;
+    orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: IAttendanceDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.kpis = _data["kpis"] ? AttendanceKpisDto.fromJS(_data["kpis"]) : undefined as any;
+            this.granularity = _data["granularity"];
+            if (Array.isArray(_data["trend"])) {
+                this.trend = [] as any;
+                for (let item of _data["trend"])
+                    this.trend!.push(AttendanceTrendPointDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byOrgUnit"])) {
+                this.byOrgUnit = [] as any;
+                for (let item of _data["byOrgUnit"])
+                    this.byOrgUnit!.push(AttendanceOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["topAbsent"])) {
+                this.topAbsent = [] as any;
+                for (let item of _data["topAbsent"])
+                    this.topAbsent!.push(AttendanceTopEmployeeDto.fromJS(item));
+            }
+            if (Array.isArray(_data["topLate"])) {
+                this.topLate = [] as any;
+                for (let item of _data["topLate"])
+                    this.topLate!.push(AttendanceTopEmployeeDto.fromJS(item));
+            }
+            if (Array.isArray(_data["topEarly"])) {
+                this.topEarly = [] as any;
+                for (let item of _data["topEarly"])
+                    this.topEarly!.push(AttendanceTopEmployeeDto.fromJS(item));
+            }
+            if (Array.isArray(_data["weekdays"])) {
+                this.weekdays = [] as any;
+                for (let item of _data["weekdays"])
+                    this.weekdays!.push(AttendanceWeekdayDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitPath"])) {
+                this.orgUnitPath = [] as any;
+                for (let item of _data["orgUnitPath"])
+                    this.orgUnitPath!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AttendanceDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["kpis"] = this.kpis ? this.kpis.toJSON() : undefined as any;
+        data["granularity"] = this.granularity;
+        if (Array.isArray(this.trend)) {
+            data["trend"] = [];
+            for (let item of this.trend)
+                data["trend"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byOrgUnit)) {
+            data["byOrgUnit"] = [];
+            for (let item of this.byOrgUnit)
+                data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.topAbsent)) {
+            data["topAbsent"] = [];
+            for (let item of this.topAbsent)
+                data["topAbsent"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.topLate)) {
+            data["topLate"] = [];
+            for (let item of this.topLate)
+                data["topLate"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.topEarly)) {
+            data["topEarly"] = [];
+            for (let item of this.topEarly)
+                data["topEarly"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.weekdays)) {
+            data["weekdays"] = [];
+            for (let item of this.weekdays)
+                data["weekdays"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitPath)) {
+            data["orgUnitPath"] = [];
+            for (let item of this.orgUnitPath)
+                data["orgUnitPath"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IAttendanceDashboardDto {
+    scope: DashboardScopeDto;
+    fromDate: DateTime;
+    toDate: DateTime;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    kpis: AttendanceKpisDto;
+    granularity: AttendanceDashboardGranularity;
+    trend: AttendanceTrendPointDto[] | undefined;
+    byOrgUnit: AttendanceOrgUnitBucketDto[] | undefined;
+    topAbsent: AttendanceTopEmployeeDto[] | undefined;
+    topLate: AttendanceTopEmployeeDto[] | undefined;
+    topEarly: AttendanceTopEmployeeDto[] | undefined;
+    weekdays: AttendanceWeekdayDto[] | undefined;
+    orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
+}
+
+export enum AttendanceDashboardExportPart {
+    All = 0,
+    Trend = 1,
+    ByOrgUnit = 2,
+    TopAbsent = 3,
+    TopLate = 4,
+    TopEarly = 5,
+    Weekday = 6,
+    Exceptions = 7,
+    PunchRequests = 8,
+}
+
+export enum AttendanceDashboardGranularity {
+    Month = 0,
+    Day = 1,
+}
+
+export class AttendanceDashboardInput implements IAttendanceDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+
+    constructor(data?: IAttendanceDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        return data;
+    }
+}
+
+export interface IAttendanceDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+}
+
+export enum AttendanceExceptionKind {
+    Absent = 0,
+    Late = 1,
+    EarlyOut = 2,
+    MissingPunch = 3,
+    Any = 4,
+}
+
+export class AttendanceExceptionRowDto implements IAttendanceExceptionRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    dayDate!: DateTime;
+    plannedIn!: DateTime | undefined;
+    plannedOut!: DateTime | undefined;
+    actualIn!: DateTime | undefined;
+    actualOut!: DateTime | undefined;
+    isAbsent!: boolean;
+    lateMinutes!: number;
+    earlyMinutes!: number;
+    isMissingIn!: boolean;
+    isMissingOut!: boolean;
+
+    constructor(data?: IAttendanceExceptionRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.plannedIn = _data["plannedIn"] ? DateTime.fromISO(_data["plannedIn"].toString()) : undefined as any;
+            this.plannedOut = _data["plannedOut"] ? DateTime.fromISO(_data["plannedOut"].toString()) : undefined as any;
+            this.actualIn = _data["actualIn"] ? DateTime.fromISO(_data["actualIn"].toString()) : undefined as any;
+            this.actualOut = _data["actualOut"] ? DateTime.fromISO(_data["actualOut"].toString()) : undefined as any;
+            this.isAbsent = _data["isAbsent"];
+            this.lateMinutes = _data["lateMinutes"];
+            this.earlyMinutes = _data["earlyMinutes"];
+            this.isMissingIn = _data["isMissingIn"];
+            this.isMissingOut = _data["isMissingOut"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceExceptionRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceExceptionRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["plannedIn"] = this.plannedIn ? this.plannedIn.toString() : undefined as any;
+        data["plannedOut"] = this.plannedOut ? this.plannedOut.toString() : undefined as any;
+        data["actualIn"] = this.actualIn ? this.actualIn.toString() : undefined as any;
+        data["actualOut"] = this.actualOut ? this.actualOut.toString() : undefined as any;
+        data["isAbsent"] = this.isAbsent;
+        data["lateMinutes"] = this.lateMinutes;
+        data["earlyMinutes"] = this.earlyMinutes;
+        data["isMissingIn"] = this.isMissingIn;
+        data["isMissingOut"] = this.isMissingOut;
+        return data;
+    }
+}
+
+export interface IAttendanceExceptionRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    dayDate: DateTime;
+    plannedIn: DateTime | undefined;
+    plannedOut: DateTime | undefined;
+    actualIn: DateTime | undefined;
+    actualOut: DateTime | undefined;
+    isAbsent: boolean;
+    lateMinutes: number;
+    earlyMinutes: number;
+    isMissingIn: boolean;
+    isMissingOut: boolean;
+}
+
+export class AttendanceKpisDto implements IAttendanceKpisDto {
+    workingDays!: number;
+    presentDays!: number;
+    absentDays!: number;
+    attendanceRatePercent!: number | undefined;
+    lateDays!: number;
+    lateHours!: number;
+    earlyDays!: number;
+    earlyHours!: number;
+    missingPunchDays!: number;
+    plannedHours!: number;
+    actualHours!: number;
+    punchRequests!: number;
+    punchRequestsPending!: number;
+
+    constructor(data?: IAttendanceKpisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workingDays = _data["workingDays"];
+            this.presentDays = _data["presentDays"];
+            this.absentDays = _data["absentDays"];
+            this.attendanceRatePercent = _data["attendanceRatePercent"];
+            this.lateDays = _data["lateDays"];
+            this.lateHours = _data["lateHours"];
+            this.earlyDays = _data["earlyDays"];
+            this.earlyHours = _data["earlyHours"];
+            this.missingPunchDays = _data["missingPunchDays"];
+            this.plannedHours = _data["plannedHours"];
+            this.actualHours = _data["actualHours"];
+            this.punchRequests = _data["punchRequests"];
+            this.punchRequestsPending = _data["punchRequestsPending"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceKpisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceKpisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workingDays"] = this.workingDays;
+        data["presentDays"] = this.presentDays;
+        data["absentDays"] = this.absentDays;
+        data["attendanceRatePercent"] = this.attendanceRatePercent;
+        data["lateDays"] = this.lateDays;
+        data["lateHours"] = this.lateHours;
+        data["earlyDays"] = this.earlyDays;
+        data["earlyHours"] = this.earlyHours;
+        data["missingPunchDays"] = this.missingPunchDays;
+        data["plannedHours"] = this.plannedHours;
+        data["actualHours"] = this.actualHours;
+        data["punchRequests"] = this.punchRequests;
+        data["punchRequestsPending"] = this.punchRequestsPending;
+        return data;
+    }
+}
+
+export interface IAttendanceKpisDto {
+    workingDays: number;
+    presentDays: number;
+    absentDays: number;
+    attendanceRatePercent: number | undefined;
+    lateDays: number;
+    lateHours: number;
+    earlyDays: number;
+    earlyHours: number;
+    missingPunchDays: number;
+    plannedHours: number;
+    actualHours: number;
+    punchRequests: number;
+    punchRequestsPending: number;
+}
+
 export class AttendanceLogReportRowDto implements IAttendanceLogReportRowDto {
     id!: number;
     employeeCode!: string | undefined;
@@ -168830,6 +169471,254 @@ export interface IAttendanceLogReportRowDto {
     organizationUnitId: number | undefined;
 }
 
+export class AttendanceOrgUnitBucketDto implements IAttendanceOrgUnitBucketDto {
+    organizationUnitId!: number | undefined;
+    name!: string | undefined;
+    isDirectStaff!: boolean;
+    hasChildren!: boolean;
+    workingDays!: number;
+    absentDays!: number;
+    lateDays!: number;
+    earlyDays!: number;
+    attendanceRatePercent!: number | undefined;
+
+    constructor(data?: IAttendanceOrgUnitBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.name = _data["name"];
+            this.isDirectStaff = _data["isDirectStaff"];
+            this.hasChildren = _data["hasChildren"];
+            this.workingDays = _data["workingDays"];
+            this.absentDays = _data["absentDays"];
+            this.lateDays = _data["lateDays"];
+            this.earlyDays = _data["earlyDays"];
+            this.attendanceRatePercent = _data["attendanceRatePercent"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceOrgUnitBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceOrgUnitBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["name"] = this.name;
+        data["isDirectStaff"] = this.isDirectStaff;
+        data["hasChildren"] = this.hasChildren;
+        data["workingDays"] = this.workingDays;
+        data["absentDays"] = this.absentDays;
+        data["lateDays"] = this.lateDays;
+        data["earlyDays"] = this.earlyDays;
+        data["attendanceRatePercent"] = this.attendanceRatePercent;
+        return data;
+    }
+}
+
+export interface IAttendanceOrgUnitBucketDto {
+    organizationUnitId: number | undefined;
+    name: string | undefined;
+    isDirectStaff: boolean;
+    hasChildren: boolean;
+    workingDays: number;
+    absentDays: number;
+    lateDays: number;
+    earlyDays: number;
+    attendanceRatePercent: number | undefined;
+}
+
+export class AttendancePunchRequestRowDto implements IAttendancePunchRequestRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    punchDate!: DateTime;
+    punchTime!: DateTime;
+    punchTypeNameEn!: string | undefined;
+    punchTypeNameAr!: string | undefined;
+    status!: RequestStatus;
+
+    constructor(data?: IAttendancePunchRequestRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.punchDate = _data["punchDate"] ? DateTime.fromISO(_data["punchDate"].toString()) : undefined as any;
+            this.punchTime = _data["punchTime"] ? DateTime.fromISO(_data["punchTime"].toString()) : undefined as any;
+            this.punchTypeNameEn = _data["punchTypeNameEn"];
+            this.punchTypeNameAr = _data["punchTypeNameAr"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): AttendancePunchRequestRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendancePunchRequestRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["punchDate"] = this.punchDate ? this.punchDate.toString() : undefined as any;
+        data["punchTime"] = this.punchTime ? this.punchTime.toString() : undefined as any;
+        data["punchTypeNameEn"] = this.punchTypeNameEn;
+        data["punchTypeNameAr"] = this.punchTypeNameAr;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IAttendancePunchRequestRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    punchDate: DateTime;
+    punchTime: DateTime;
+    punchTypeNameEn: string | undefined;
+    punchTypeNameAr: string | undefined;
+    status: RequestStatus;
+}
+
+export class AttendanceTopEmployeeDto implements IAttendanceTopEmployeeDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    value!: number;
+    days!: number;
+
+    constructor(data?: IAttendanceTopEmployeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.value = _data["value"];
+            this.days = _data["days"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceTopEmployeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceTopEmployeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["value"] = this.value;
+        data["days"] = this.days;
+        return data;
+    }
+}
+
+export interface IAttendanceTopEmployeeDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    value: number;
+    days: number;
+}
+
+export class AttendanceTrendPointDto implements IAttendanceTrendPointDto {
+    periodStart!: DateTime;
+    workingDays!: number;
+    absentDays!: number;
+    lateDays!: number;
+    earlyDays!: number;
+    attendanceRatePercent!: number | undefined;
+
+    constructor(data?: IAttendanceTrendPointDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.periodStart = _data["periodStart"] ? DateTime.fromISO(_data["periodStart"].toString()) : undefined as any;
+            this.workingDays = _data["workingDays"];
+            this.absentDays = _data["absentDays"];
+            this.lateDays = _data["lateDays"];
+            this.earlyDays = _data["earlyDays"];
+            this.attendanceRatePercent = _data["attendanceRatePercent"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceTrendPointDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceTrendPointDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["periodStart"] = this.periodStart ? this.periodStart.toString() : undefined as any;
+        data["workingDays"] = this.workingDays;
+        data["absentDays"] = this.absentDays;
+        data["lateDays"] = this.lateDays;
+        data["earlyDays"] = this.earlyDays;
+        data["attendanceRatePercent"] = this.attendanceRatePercent;
+        return data;
+    }
+}
+
+export interface IAttendanceTrendPointDto {
+    periodStart: DateTime;
+    workingDays: number;
+    absentDays: number;
+    lateDays: number;
+    earlyDays: number;
+    attendanceRatePercent: number | undefined;
+}
+
 export class AttendanceTypeDto implements IAttendanceTypeDto {
     id!: number;
     code!: string | undefined;
@@ -168926,6 +169815,50 @@ export enum AttendanceUnit {
     Period = 0,
     Day = 1,
     Hours = 2,
+}
+
+export class AttendanceWeekdayDto implements IAttendanceWeekdayDto {
+    dayOfWeek!: number;
+    lateDays!: number;
+    absentDays!: number;
+
+    constructor(data?: IAttendanceWeekdayDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dayOfWeek = _data["dayOfWeek"];
+            this.lateDays = _data["lateDays"];
+            this.absentDays = _data["absentDays"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceWeekdayDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceWeekdayDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dayOfWeek"] = this.dayOfWeek;
+        data["lateDays"] = this.lateDays;
+        data["absentDays"] = this.absentDays;
+        return data;
+    }
+}
+
+export interface IAttendanceWeekdayDto {
+    dayOfWeek: number;
+    lateDays: number;
+    absentDays: number;
 }
 
 export class AuditLogListDto implements IAuditLogListDto {
@@ -220257,6 +221190,66 @@ export interface IExpiringTenant {
     remainingDayCount: number;
 }
 
+export class ExportAttendanceDashboardInput implements IExportAttendanceDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+    part!: AttendanceDashboardExportPart;
+    kind!: AttendanceExceptionKind;
+    day!: DateTime | undefined;
+
+    constructor(data?: IExportAttendanceDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+            this.part = _data["part"];
+            this.kind = _data["kind"];
+            this.day = _data["day"] ? DateTime.fromISO(_data["day"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): ExportAttendanceDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportAttendanceDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        data["part"] = this.part;
+        data["kind"] = this.kind;
+        data["day"] = this.day ? this.day.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IExportAttendanceDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+    part: AttendanceDashboardExportPart;
+    kind: AttendanceExceptionKind;
+    day: DateTime | undefined;
+}
+
 export class ExportLeaveDashboardInput implements IExportLeaveDashboardInput {
     fromDate!: DateTime | undefined;
     toDate!: DateTime | undefined;
@@ -242706,6 +243699,70 @@ export interface IGetAttachmentsOutput {
     canEdit: boolean;
 }
 
+export class GetAttendanceExceptionsInput implements IGetAttendanceExceptionsInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+    kind!: AttendanceExceptionKind;
+    day!: DateTime | undefined;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetAttendanceExceptionsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+            this.kind = _data["kind"];
+            this.day = _data["day"] ? DateTime.fromISO(_data["day"].toString()) : undefined as any;
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetAttendanceExceptionsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAttendanceExceptionsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        data["kind"] = this.kind;
+        data["day"] = this.day ? this.day.toString() : undefined as any;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetAttendanceExceptionsInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+    kind: AttendanceExceptionKind;
+    day: DateTime | undefined;
+    skipCount: number;
+    maxResultCount: number;
+}
+
 export class GetAttendanceLogReportInput implements IGetAttendanceLogReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -242768,6 +243825,62 @@ export interface IGetAttendanceLogReportInput {
     employeeCode: string | undefined;
     employeeStatus: EmployeeStatus;
     payrollAreaCode: string | undefined;
+}
+
+export class GetAttendancePunchRequestsInput implements IGetAttendancePunchRequestsInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    employeeId!: number | undefined;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetAttendancePunchRequestsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.employeeId = _data["employeeId"];
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetAttendancePunchRequestsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAttendancePunchRequestsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["employeeId"] = this.employeeId;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetAttendancePunchRequestsInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    employeeId: number | undefined;
+    skipCount: number;
+    maxResultCount: number;
 }
 
 export class GetAttendanceTypeForEditOutput implements IGetAttendanceTypeForEditOutput {
@@ -289627,6 +290740,54 @@ export interface IPagedResultDtoOfAssetReportRowDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfAttendanceExceptionRowDto implements IPagedResultDtoOfAttendanceExceptionRowDto {
+    items!: AttendanceExceptionRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfAttendanceExceptionRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AttendanceExceptionRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAttendanceExceptionRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAttendanceExceptionRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfAttendanceExceptionRowDto {
+    items: AttendanceExceptionRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfAttendanceLogReportRowDto implements IPagedResultDtoOfAttendanceLogReportRowDto {
     items!: AttendanceLogReportRowDto[] | undefined;
     totalCount!: number;
@@ -289672,6 +290833,54 @@ export class PagedResultDtoOfAttendanceLogReportRowDto implements IPagedResultDt
 
 export interface IPagedResultDtoOfAttendanceLogReportRowDto {
     items: AttendanceLogReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfAttendancePunchRequestRowDto implements IPagedResultDtoOfAttendancePunchRequestRowDto {
+    items!: AttendancePunchRequestRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfAttendancePunchRequestRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AttendancePunchRequestRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAttendancePunchRequestRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAttendancePunchRequestRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfAttendancePunchRequestRowDto {
+    items: AttendancePunchRequestRowDto[] | undefined;
     totalCount: number;
 }
 

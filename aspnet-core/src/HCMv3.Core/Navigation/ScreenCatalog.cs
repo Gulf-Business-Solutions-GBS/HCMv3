@@ -594,5 +594,6 @@ public static class ScreenCatalog
         // Dashboards get their own series: they span modules (leave is Personnel data read by HR and managers).
         new("app.admin.leave-dashboard", "SDSH001", "Dashboards", "LeaveDashboard", "/app/admin/leave-dashboard", "Pages.Dashboards.Leave"),
         new("app.admin.workforce-dashboard", "SDSH002", "Dashboards", "WorkforceDashboard", "/app/admin/workforce-dashboard", "Pages.Dashboards.Workforce"),
+        new("app.admin.attendance-dashboard", "SDSH003", "Dashboards", "AttendanceDashboard", "/app/admin/attendance-dashboard", "Pages.Dashboards.Attendance"),
     };
 }
