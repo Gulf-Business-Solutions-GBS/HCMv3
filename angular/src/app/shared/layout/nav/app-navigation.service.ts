@@ -141,6 +141,11 @@ export class AppNavigationService {
                 // amendment, not that they may no longer look at what is on file.
                 new AppMenuItem('EssMyProfile', 'Ess.MyProfile', 'flaticon-user', '/app/main/ess/my-details'),
             ]),
+            // DASHBOARDS. A group from the start: the Leave Dashboard is the first of several legacy analytic
+            // dashboards (workforce, payroll, overtime...) still to come.
+            new AppMenuItem('Dashboards', '', 'flaticon-analytics', '', [], [
+                new AppMenuItem('LeaveDashboard', 'Pages.Dashboards.Leave', 'flaticon-calendar-3', '/app/admin/leave-dashboard'),
+            ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.
             new AppMenuItem(

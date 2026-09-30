@@ -83285,6 +83285,237 @@ export class LeaveAccrualSummariesServiceProxy {
 }
 
 @Injectable()
+export class LeaveDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getOptions(): Observable<LeaveDashboardOptionsDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveDashboard/GetOptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveDashboardOptionsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveDashboardOptionsDto>;
+        }));
+    }
+
+    protected processGetOptions(response: HttpResponseBase): Observable<LeaveDashboardOptionsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveDashboardOptionsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDashboard(body?: LeaveDashboardInput | undefined): Observable<LeaveDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveDashboard/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveDashboardDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<LeaveDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: ExportLeaveDashboardInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveDashboard/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLeaves(body?: GetLeaveDashboardLeavesInput | undefined): Observable<PagedResultDtoOfLeaveDashboardLeaveRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveDashboard/GetLeaves";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaves(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaves(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLeaveDashboardLeaveRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLeaveDashboardLeaveRowDto>;
+        }));
+    }
+
+    protected processGetLeaves(response: HttpResponseBase): Observable<PagedResultDtoOfLeaveDashboardLeaveRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLeaveDashboardLeaveRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class LeaveProvisionReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -200808,6 +201039,68 @@ export interface IDashboardOutput {
     widgets: WidgetOutput[] | undefined;
 }
 
+export class DashboardScopeDto implements IDashboardScopeDto {
+    reason!: DashboardScopeReason;
+    orgUnitNames!: string[] | undefined;
+    includesOwnTeam!: boolean;
+    employeesInScope!: number;
+
+    constructor(data?: IDashboardScopeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reason = _data["reason"];
+            if (Array.isArray(_data["orgUnitNames"])) {
+                this.orgUnitNames = [] as any;
+                for (let item of _data["orgUnitNames"])
+                    this.orgUnitNames!.push(item);
+            }
+            this.includesOwnTeam = _data["includesOwnTeam"];
+            this.employeesInScope = _data["employeesInScope"];
+        }
+    }
+
+    static fromJS(data: any): DashboardScopeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashboardScopeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reason"] = this.reason;
+        if (Array.isArray(this.orgUnitNames)) {
+            data["orgUnitNames"] = [];
+            for (let item of this.orgUnitNames)
+                data["orgUnitNames"].push(item);
+        }
+        data["includesOwnTeam"] = this.includesOwnTeam;
+        data["employeesInScope"] = this.employeesInScope;
+        return data;
+    }
+}
+
+export interface IDashboardScopeDto {
+    reason: DashboardScopeReason;
+    orgUnitNames: string[] | undefined;
+    includesOwnTeam: boolean;
+    employeesInScope: number;
+}
+
+export enum DashboardScopeReason {
+    Admin = 1,
+    Restricted = 2,
+    Nobody = 3,
+}
+
 export enum DeductionPeriod {
     AfterEntitlement = 0,
     SameAsEntitlement = 1,
@@ -219738,6 +220031,62 @@ export class ExpiringTenant implements IExpiringTenant {
 export interface IExpiringTenant {
     tenantName: string | undefined;
     remainingDayCount: number;
+}
+
+export class ExportLeaveDashboardInput implements IExportLeaveDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    absenceTypeId!: number | undefined;
+    part!: LeaveDashboardExportPart;
+    day!: DateTime | undefined;
+
+    constructor(data?: IExportLeaveDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.part = _data["part"];
+            this.day = _data["day"] ? DateTime.fromISO(_data["day"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): ExportLeaveDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportLeaveDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["part"] = this.part;
+        data["day"] = this.day ? this.day.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IExportLeaveDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    absenceTypeId: number | undefined;
+    part: LeaveDashboardExportPart;
+    day: DateTime | undefined;
 }
 
 export class ExternalAuthenticateModel implements IExternalAuthenticateModel {
@@ -254557,6 +254906,66 @@ export interface IGetLeaveAccrualSummaryForEditOutput {
     leaveAccrualSummary: CreateOrEditLeaveAccrualSummaryDto;
 }
 
+export class GetLeaveDashboardLeavesInput implements IGetLeaveDashboardLeavesInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    absenceTypeId!: number | undefined;
+    day!: DateTime | undefined;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetLeaveDashboardLeavesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.day = _data["day"] ? DateTime.fromISO(_data["day"].toString()) : undefined as any;
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetLeaveDashboardLeavesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLeaveDashboardLeavesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["day"] = this.day ? this.day.toString() : undefined as any;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetLeaveDashboardLeavesInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    absenceTypeId: number | undefined;
+    day: DateTime | undefined;
+    skipCount: number;
+    maxResultCount: number;
+}
+
 export class GetLeaveProvisionReportInput implements IGetLeaveProvisionReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -275630,6 +276039,724 @@ export interface ILeaveAccrualSummaryDto {
 export enum LeaveBasisPeriod {
     CalendarDays = 0,
     FixedDays = 1,
+}
+
+export class LeaveDashboardAbsenceTypeOptionDto implements ILeaveDashboardAbsenceTypeOptionDto {
+    id!: number;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: ILeaveDashboardAbsenceTypeOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardAbsenceTypeOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardAbsenceTypeOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardAbsenceTypeOptionDto {
+    id: number;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+}
+
+export class LeaveDashboardDto implements ILeaveDashboardDto {
+    scope!: DashboardScopeDto;
+    asOfDate!: DateTime;
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    kpis!: LeaveDashboardKpisDto;
+    onLeaveToday!: LeaveDashboardLeaveRowDto[] | undefined;
+    notReturned!: LeaveDashboardLeaveRowDto[] | undefined;
+    startingSoon!: LeaveDashboardLeaveRowDto[] | undefined;
+    returningSoon!: LeaveDashboardLeaveRowDto[] | undefined;
+    pendingApproval!: LeaveDashboardLeaveRowDto[] | undefined;
+    granularity!: LeaveDashboardGranularity;
+    trend!: LeaveDashboardTrendPointDto[] | undefined;
+    byOrgUnit!: LeaveDashboardOrgUnitBucketDto[] | undefined;
+    byType!: LeaveDashboardTypeBucketDto[] | undefined;
+    orgUnitPath!: LeaveDashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: LeaveDashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: ILeaveDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.kpis = _data["kpis"] ? LeaveDashboardKpisDto.fromJS(_data["kpis"]) : undefined as any;
+            if (Array.isArray(_data["onLeaveToday"])) {
+                this.onLeaveToday = [] as any;
+                for (let item of _data["onLeaveToday"])
+                    this.onLeaveToday!.push(LeaveDashboardLeaveRowDto.fromJS(item));
+            }
+            if (Array.isArray(_data["notReturned"])) {
+                this.notReturned = [] as any;
+                for (let item of _data["notReturned"])
+                    this.notReturned!.push(LeaveDashboardLeaveRowDto.fromJS(item));
+            }
+            if (Array.isArray(_data["startingSoon"])) {
+                this.startingSoon = [] as any;
+                for (let item of _data["startingSoon"])
+                    this.startingSoon!.push(LeaveDashboardLeaveRowDto.fromJS(item));
+            }
+            if (Array.isArray(_data["returningSoon"])) {
+                this.returningSoon = [] as any;
+                for (let item of _data["returningSoon"])
+                    this.returningSoon!.push(LeaveDashboardLeaveRowDto.fromJS(item));
+            }
+            if (Array.isArray(_data["pendingApproval"])) {
+                this.pendingApproval = [] as any;
+                for (let item of _data["pendingApproval"])
+                    this.pendingApproval!.push(LeaveDashboardLeaveRowDto.fromJS(item));
+            }
+            this.granularity = _data["granularity"];
+            if (Array.isArray(_data["trend"])) {
+                this.trend = [] as any;
+                for (let item of _data["trend"])
+                    this.trend!.push(LeaveDashboardTrendPointDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byOrgUnit"])) {
+                this.byOrgUnit = [] as any;
+                for (let item of _data["byOrgUnit"])
+                    this.byOrgUnit!.push(LeaveDashboardOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byType"])) {
+                this.byType = [] as any;
+                for (let item of _data["byType"])
+                    this.byType!.push(LeaveDashboardTypeBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitPath"])) {
+                this.orgUnitPath = [] as any;
+                for (let item of _data["orgUnitPath"])
+                    this.orgUnitPath!.push(LeaveDashboardOrgUnitOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(LeaveDashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["kpis"] = this.kpis ? this.kpis.toJSON() : undefined as any;
+        if (Array.isArray(this.onLeaveToday)) {
+            data["onLeaveToday"] = [];
+            for (let item of this.onLeaveToday)
+                data["onLeaveToday"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.notReturned)) {
+            data["notReturned"] = [];
+            for (let item of this.notReturned)
+                data["notReturned"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.startingSoon)) {
+            data["startingSoon"] = [];
+            for (let item of this.startingSoon)
+                data["startingSoon"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.returningSoon)) {
+            data["returningSoon"] = [];
+            for (let item of this.returningSoon)
+                data["returningSoon"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.pendingApproval)) {
+            data["pendingApproval"] = [];
+            for (let item of this.pendingApproval)
+                data["pendingApproval"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["granularity"] = this.granularity;
+        if (Array.isArray(this.trend)) {
+            data["trend"] = [];
+            for (let item of this.trend)
+                data["trend"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byOrgUnit)) {
+            data["byOrgUnit"] = [];
+            for (let item of this.byOrgUnit)
+                data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byType)) {
+            data["byType"] = [];
+            for (let item of this.byType)
+                data["byType"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitPath)) {
+            data["orgUnitPath"] = [];
+            for (let item of this.orgUnitPath)
+                data["orgUnitPath"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ILeaveDashboardDto {
+    scope: DashboardScopeDto;
+    asOfDate: DateTime;
+    fromDate: DateTime;
+    toDate: DateTime;
+    kpis: LeaveDashboardKpisDto;
+    onLeaveToday: LeaveDashboardLeaveRowDto[] | undefined;
+    notReturned: LeaveDashboardLeaveRowDto[] | undefined;
+    startingSoon: LeaveDashboardLeaveRowDto[] | undefined;
+    returningSoon: LeaveDashboardLeaveRowDto[] | undefined;
+    pendingApproval: LeaveDashboardLeaveRowDto[] | undefined;
+    granularity: LeaveDashboardGranularity;
+    trend: LeaveDashboardTrendPointDto[] | undefined;
+    byOrgUnit: LeaveDashboardOrgUnitBucketDto[] | undefined;
+    byType: LeaveDashboardTypeBucketDto[] | undefined;
+    orgUnitPath: LeaveDashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: LeaveDashboardOrgUnitOptionDto[] | undefined;
+}
+
+export enum LeaveDashboardExportPart {
+    All = 0,
+    OnLeaveToday = 1,
+    NotReturned = 2,
+    StartingSoon = 3,
+    ReturningSoon = 4,
+    PendingApproval = 5,
+    Trend = 6,
+    ByOrgUnit = 7,
+    ByType = 8,
+    LeavesInPeriod = 9,
+}
+
+export enum LeaveDashboardGranularity {
+    Month = 0,
+    Day = 1,
+}
+
+export class LeaveDashboardInput implements ILeaveDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    absenceTypeId!: number | undefined;
+
+    constructor(data?: ILeaveDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    absenceTypeId: number | undefined;
+}
+
+export class LeaveDashboardKpisDto implements ILeaveDashboardKpisDto {
+    employeesInScope!: number;
+    onLeaveToday!: number;
+    notReturned!: number;
+    startingSoon!: number;
+    returningSoon!: number;
+    pendingApproval!: number;
+    leaveDaysInPeriod!: number;
+
+    constructor(data?: ILeaveDashboardKpisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeesInScope = _data["employeesInScope"];
+            this.onLeaveToday = _data["onLeaveToday"];
+            this.notReturned = _data["notReturned"];
+            this.startingSoon = _data["startingSoon"];
+            this.returningSoon = _data["returningSoon"];
+            this.pendingApproval = _data["pendingApproval"];
+            this.leaveDaysInPeriod = _data["leaveDaysInPeriod"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardKpisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardKpisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeesInScope"] = this.employeesInScope;
+        data["onLeaveToday"] = this.onLeaveToday;
+        data["notReturned"] = this.notReturned;
+        data["startingSoon"] = this.startingSoon;
+        data["returningSoon"] = this.returningSoon;
+        data["pendingApproval"] = this.pendingApproval;
+        data["leaveDaysInPeriod"] = this.leaveDaysInPeriod;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardKpisDto {
+    employeesInScope: number;
+    onLeaveToday: number;
+    notReturned: number;
+    startingSoon: number;
+    returningSoon: number;
+    pendingApproval: number;
+    leaveDaysInPeriod: number;
+}
+
+export class LeaveDashboardLeaveRowDto implements ILeaveDashboardLeaveRowDto {
+    absenceId!: number;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    absenceTypeId!: number;
+    absenceTypeNameEn!: string | undefined;
+    absenceTypeNameAr!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    totalLeaveDays!: number;
+    daysOverdue!: number;
+    workflowStatus!: RequestStatus;
+
+    constructor(data?: ILeaveDashboardLeaveRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceId = _data["absenceId"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.absenceTypeNameEn = _data["absenceTypeNameEn"];
+            this.absenceTypeNameAr = _data["absenceTypeNameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.totalLeaveDays = _data["totalLeaveDays"];
+            this.daysOverdue = _data["daysOverdue"];
+            this.workflowStatus = _data["workflowStatus"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardLeaveRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardLeaveRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceId"] = this.absenceId;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["absenceTypeNameEn"] = this.absenceTypeNameEn;
+        data["absenceTypeNameAr"] = this.absenceTypeNameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["totalLeaveDays"] = this.totalLeaveDays;
+        data["daysOverdue"] = this.daysOverdue;
+        data["workflowStatus"] = this.workflowStatus;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardLeaveRowDto {
+    absenceId: number;
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    absenceTypeId: number;
+    absenceTypeNameEn: string | undefined;
+    absenceTypeNameAr: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    totalLeaveDays: number;
+    daysOverdue: number;
+    workflowStatus: RequestStatus;
+}
+
+export class LeaveDashboardOptionsDto implements ILeaveDashboardOptionsDto {
+    absenceTypes!: LeaveDashboardAbsenceTypeOptionDto[] | undefined;
+
+    constructor(data?: ILeaveDashboardOptionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["absenceTypes"])) {
+                this.absenceTypes = [] as any;
+                for (let item of _data["absenceTypes"])
+                    this.absenceTypes!.push(LeaveDashboardAbsenceTypeOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardOptionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardOptionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.absenceTypes)) {
+            data["absenceTypes"] = [];
+            for (let item of this.absenceTypes)
+                data["absenceTypes"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ILeaveDashboardOptionsDto {
+    absenceTypes: LeaveDashboardAbsenceTypeOptionDto[] | undefined;
+}
+
+export class LeaveDashboardOrgUnitBucketDto implements ILeaveDashboardOrgUnitBucketDto {
+    organizationUnitId!: number | undefined;
+    name!: string | undefined;
+    isDirectStaff!: boolean;
+    hasChildren!: boolean;
+    employees!: number;
+    leaveDays!: number;
+
+    constructor(data?: ILeaveDashboardOrgUnitBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.name = _data["name"];
+            this.isDirectStaff = _data["isDirectStaff"];
+            this.hasChildren = _data["hasChildren"];
+            this.employees = _data["employees"];
+            this.leaveDays = _data["leaveDays"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardOrgUnitBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardOrgUnitBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["name"] = this.name;
+        data["isDirectStaff"] = this.isDirectStaff;
+        data["hasChildren"] = this.hasChildren;
+        data["employees"] = this.employees;
+        data["leaveDays"] = this.leaveDays;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardOrgUnitBucketDto {
+    organizationUnitId: number | undefined;
+    name: string | undefined;
+    isDirectStaff: boolean;
+    hasChildren: boolean;
+    employees: number;
+    leaveDays: number;
+}
+
+export class LeaveDashboardOrgUnitOptionDto implements ILeaveDashboardOrgUnitOptionDto {
+    id!: number;
+    name!: string | undefined;
+    depth!: number;
+
+    constructor(data?: ILeaveDashboardOrgUnitOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.depth = _data["depth"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardOrgUnitOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardOrgUnitOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["depth"] = this.depth;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardOrgUnitOptionDto {
+    id: number;
+    name: string | undefined;
+    depth: number;
+}
+
+export class LeaveDashboardTrendPointDto implements ILeaveDashboardTrendPointDto {
+    periodStart!: DateTime;
+    values!: LeaveDashboardTrendValueDto[] | undefined;
+
+    constructor(data?: ILeaveDashboardTrendPointDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.periodStart = _data["periodStart"] ? DateTime.fromISO(_data["periodStart"].toString()) : undefined as any;
+            if (Array.isArray(_data["values"])) {
+                this.values = [] as any;
+                for (let item of _data["values"])
+                    this.values!.push(LeaveDashboardTrendValueDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardTrendPointDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardTrendPointDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["periodStart"] = this.periodStart ? this.periodStart.toString() : undefined as any;
+        if (Array.isArray(this.values)) {
+            data["values"] = [];
+            for (let item of this.values)
+                data["values"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ILeaveDashboardTrendPointDto {
+    periodStart: DateTime;
+    values: LeaveDashboardTrendValueDto[] | undefined;
+}
+
+export class LeaveDashboardTrendValueDto implements ILeaveDashboardTrendValueDto {
+    absenceTypeId!: number;
+    value!: number;
+
+    constructor(data?: ILeaveDashboardTrendValueDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardTrendValueDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardTrendValueDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["value"] = this.value;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardTrendValueDto {
+    absenceTypeId: number;
+    value: number;
+}
+
+export class LeaveDashboardTypeBucketDto implements ILeaveDashboardTypeBucketDto {
+    absenceTypeId!: number;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    employees!: number;
+    leaveDays!: number;
+
+    constructor(data?: ILeaveDashboardTypeBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.employees = _data["employees"];
+            this.leaveDays = _data["leaveDays"];
+        }
+    }
+
+    static fromJS(data: any): LeaveDashboardTypeBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveDashboardTypeBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["employees"] = this.employees;
+        data["leaveDays"] = this.leaveDays;
+        return data;
+    }
+}
+
+export interface ILeaveDashboardTypeBucketDto {
+    absenceTypeId: number;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    employees: number;
+    leaveDays: number;
 }
 
 export enum LeaveEntitlement {
@@ -301269,6 +302396,54 @@ export class PagedResultDtoOfLeaveAccrualSummaryDto implements IPagedResultDtoOf
 
 export interface IPagedResultDtoOfLeaveAccrualSummaryDto {
     items: LeaveAccrualSummaryDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLeaveDashboardLeaveRowDto implements IPagedResultDtoOfLeaveDashboardLeaveRowDto {
+    items!: LeaveDashboardLeaveRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLeaveDashboardLeaveRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LeaveDashboardLeaveRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLeaveDashboardLeaveRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLeaveDashboardLeaveRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLeaveDashboardLeaveRowDto {
+    items: LeaveDashboardLeaveRowDto[] | undefined;
     totalCount: number;
 }
 

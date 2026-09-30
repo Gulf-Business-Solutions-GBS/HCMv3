@@ -2631,6 +2631,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         pages.CreateChildPermission(AppPermissions.Pages_Reports_DesignerDevExpress, L("ReportDesignerDevExpress"));
         pages.CreateChildPermission(AppPermissions.Pages_Reports_PrintReports, L("PrintReportsLauncher"));
 
+        //DASHBOARDS
+        pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Leave, L("LeaveDashboard"), multiTenancySides: MultiTenancySides.Tenant);
+
         //REPORT DISTRIBUTION (scheduling + bursting)
         var reportDistribution = pages.CreateChildPermission(AppPermissions.Pages_Reports_Distribution, L("ReportDistribution"));
         reportDistribution.CreateChildPermission(AppPermissions.Pages_Reports_Distribution_Create, L("CreateNewItem"));

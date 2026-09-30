@@ -3661,6 +3661,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PerformanceManagement.PAForms' },
                     },
                     {
+                        path: 'leave-dashboard',
+                        loadComponent: () =>
+                            import('./admin/dashboards/leave-dashboard/leave-dashboard.component').then(
+                                (m) => m.LeaveDashboardComponent
+                            ),
+                        data: { permission: 'Pages.Dashboards.Leave' },
+                    },
+                    {
                         path: 'copy-workflow-setup',
                         loadComponent: () =>
                             import('./admin/administration/copy-workflow-setup/copy-workflow-setup.component').then(

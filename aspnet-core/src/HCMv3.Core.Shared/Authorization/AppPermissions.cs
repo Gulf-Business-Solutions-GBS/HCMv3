@@ -2762,6 +2762,12 @@ public static class AppPermissions
     public const string Pages_Reports_PrintReports = "Pages.Reports.PrintReports";
 
     /// <summary>
+    /// Leave Dashboard. Only opens the screen: whose leave it shows is decided by <c>IDashboardScopeService</c>
+    /// (row-level security, the Admin role, the user's own team), the same for every dashboard.
+    /// </summary>
+    public const string Pages_Dashboards_Leave = "Pages.Dashboards.Leave";
+
+    /// <summary>
     /// Report Distribution: creating and maintaining report schedules, and viewing their run history.
     /// </summary>
     public const string Pages_Reports_Distribution = "Pages.Reports.Distribution";
