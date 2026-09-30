@@ -5913,7 +5913,7 @@
     "RequestDetailParallel_WorkflowRoleId": [
       "wf.request-detail-parallel.edit"
     ],
-    "RequestDetail_RequestMasterId": [
+    "RequestDetail_RequestMasterName": [
       "wf.request-detail.edit"
     ],
     "RequestDetail_Step": [
@@ -5950,6 +5950,27 @@
       "wf.request-detail.edit"
     ],
     "RequestDetail_ReminderDays": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_SubmitNotificationConfigId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_NotificationConfigId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_RejectNotificationConfigId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_SendBackNotificationConfigId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_RemarksNotificationConfigId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_AssignNotificationConfigId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_ReminderNotificationConfigId": [
       "wf.request-detail.edit"
     ],
     "RequestDetail_ShowPayment": [

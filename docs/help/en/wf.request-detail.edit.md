@@ -207,3 +207,80 @@ One step of an approval chain: who approves it, whether one or all of them must,
 **Why it matters.** Anyone who approved an earlier signatory step of the same request is left out here, so one person cannot sign twice. If that leaves nobody, the chain's default approver is used.
 
 **Rules.** Yes or no.
+
+## OnSubmit {#RequestDetail.SubmitNotificationConfigId}
+<!-- alias: loc:OnSubmit, dom:RequestDetail_SubmitNotificationConfigId -->
+
+**What it is.** Who is told when the request arrives at this step.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## OnApprove {#RequestDetail.NotificationConfigId}
+<!-- alias: loc:OnApprove, dom:RequestDetail_NotificationConfigId -->
+
+**What it is.** Who is told when this step approves.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## OnReject {#RequestDetail.RejectNotificationConfigId}
+<!-- alias: loc:OnReject, dom:RequestDetail_RejectNotificationConfigId -->
+
+**What it is.** Who is told when this step rejects.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## OnSendBack {#RequestDetail.SendBackNotificationConfigId}
+<!-- alias: loc:OnSendBack, dom:RequestDetail_SendBackNotificationConfigId -->
+
+**What it is.** Who is told when this step sends the request back.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## OnRemark {#RequestDetail.RemarksNotificationConfigId}
+<!-- alias: loc:OnRemark, dom:RequestDetail_RemarksNotificationConfigId -->
+
+**What it is.** Who is told when somebody comments on the request.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## OnReassign {#RequestDetail.AssignNotificationConfigId}
+<!-- alias: loc:OnReassign, dom:RequestDetail_AssignNotificationConfigId -->
+
+**What it is.** Who is told when the request is handed to somebody else.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## OnReminder {#RequestDetail.ReminderNotificationConfigId}
+<!-- alias: loc:OnReminder, dom:RequestDetail_ReminderNotificationConfigId -->
+
+**What it is.** Who is told while the request is still waiting here.
+
+**Why it matters.** Each action is set separately, so the people told about a rejection need not be the people told about an approval. Left empty, nothing is sent for that action at all.
+
+**What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
+
+**Rules.** Optional. Chosen from Notification Config master data.

@@ -6,7 +6,7 @@
   "overviewHtml": "<p>خطوة واحدة من سلسلة موافقات: من يوافق عليها، وهل يكفي واحد منهم أم يجب أن يوافقوا جميعاً، وما المسموح لهم، ومتى يُذكَّر بالطلب أو يُصعَّد. تُرقّم الخطوات من 1 وينتقل الطلب خطوة واحدة عند كل موافقة، والموافقة على الخطوة الأخيرة هي موافقة على الطلب. ويجب أن تكون أيام التذكير أقل من أيام التصعيد.</p>",
   "aliasIndex": {
     "loc:RequestMaster": "RequestDetail.RequestMasterId",
-    "dom:RequestDetail_RequestMasterId": "RequestDetail.RequestMasterId",
+    "dom:RequestDetail_RequestMasterName": "RequestDetail.RequestMasterId",
     "loc:Step": "RequestDetail.Step",
     "dom:RequestDetail_Step": "RequestDetail.Step",
     "loc:WorkflowRole": "RequestDetail.WorkflowRoleId",
@@ -31,6 +31,20 @@
     "dom:RequestDetail_EscalateWorkflowRoleOrgId": "RequestDetail.EscalateWorkflowRoleOrgId",
     "loc:ReminderDays": "RequestDetail.ReminderDays",
     "dom:RequestDetail_ReminderDays": "RequestDetail.ReminderDays",
+    "loc:OnSubmit": "RequestDetail.SubmitNotificationConfigId",
+    "dom:RequestDetail_SubmitNotificationConfigId": "RequestDetail.SubmitNotificationConfigId",
+    "loc:OnApprove": "RequestDetail.NotificationConfigId",
+    "dom:RequestDetail_NotificationConfigId": "RequestDetail.NotificationConfigId",
+    "loc:OnReject": "RequestDetail.RejectNotificationConfigId",
+    "dom:RequestDetail_RejectNotificationConfigId": "RequestDetail.RejectNotificationConfigId",
+    "loc:OnSendBack": "RequestDetail.SendBackNotificationConfigId",
+    "dom:RequestDetail_SendBackNotificationConfigId": "RequestDetail.SendBackNotificationConfigId",
+    "loc:OnRemark": "RequestDetail.RemarksNotificationConfigId",
+    "dom:RequestDetail_RemarksNotificationConfigId": "RequestDetail.RemarksNotificationConfigId",
+    "loc:OnReassign": "RequestDetail.AssignNotificationConfigId",
+    "dom:RequestDetail_AssignNotificationConfigId": "RequestDetail.AssignNotificationConfigId",
+    "loc:OnReminder": "RequestDetail.ReminderNotificationConfigId",
+    "dom:RequestDetail_ReminderNotificationConfigId": "RequestDetail.ReminderNotificationConfigId",
     "loc:ShowPayment": "RequestDetail.ShowPayment",
     "dom:RequestDetail_ShowPayment": "RequestDetail.ShowPayment",
     "loc:CanSendBack": "RequestDetail.CanSendBack",
@@ -46,21 +60,7 @@
     "loc:IsCommentRequire": "RequestDetail.IsCommentRequire",
     "dom:RequestDetail_IsCommentRequire": "RequestDetail.IsCommentRequire",
     "loc:SignatoryStep": "RequestDetail.SignatoryStep",
-    "dom:RequestDetail_SignatoryStep": "RequestDetail.SignatoryStep",
-    "loc:OnSubmit": "RequestDetail.SubmitNotificationConfigId",
-    "dom:RequestDetail_SubmitNotificationConfigId": "RequestDetail.SubmitNotificationConfigId",
-    "loc:OnApprove": "RequestDetail.NotificationConfigId",
-    "dom:RequestDetail_NotificationConfigId": "RequestDetail.NotificationConfigId",
-    "loc:OnReject": "RequestDetail.RejectNotificationConfigId",
-    "dom:RequestDetail_RejectNotificationConfigId": "RequestDetail.RejectNotificationConfigId",
-    "loc:OnSendBack": "RequestDetail.SendBackNotificationConfigId",
-    "dom:RequestDetail_SendBackNotificationConfigId": "RequestDetail.SendBackNotificationConfigId",
-    "loc:OnRemark": "RequestDetail.RemarksNotificationConfigId",
-    "dom:RequestDetail_RemarksNotificationConfigId": "RequestDetail.RemarksNotificationConfigId",
-    "loc:OnReassign": "RequestDetail.AssignNotificationConfigId",
-    "dom:RequestDetail_AssignNotificationConfigId": "RequestDetail.AssignNotificationConfigId",
-    "loc:OnReminder": "RequestDetail.ReminderNotificationConfigId",
-    "dom:RequestDetail_ReminderNotificationConfigId": "RequestDetail.ReminderNotificationConfigId"
+    "dom:RequestDetail_SignatoryStep": "RequestDetail.SignatoryStep"
   },
   "fields": [
     {
@@ -69,9 +69,9 @@
       "section": "RequestDetails",
       "aliases": [
         "loc:RequestMaster",
-        "dom:RequestDetail_RequestMasterId"
+        "dom:RequestDetail_RequestMasterName"
       ],
-      "rules": "إلزامي. يُختار من قائمة الطلبات الأساسية.",
+      "rules": "اختياري. يُختار من قائمة الطلبات الأساسية.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> سلسلة الموافقات التي تنتمي إليها هذه الخطوة.</p>",
       "adminHtml": "",
@@ -246,6 +246,104 @@
       "stub": false
     },
     {
+      "id": "RequestDetail.SubmitNotificationConfigId",
+      "label": "OnSubmit",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnSubmit",
+        "dom:RequestDetail_SubmitNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند وصول الطلب إلى هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.NotificationConfigId",
+      "label": "OnApprove",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnApprove",
+        "dom:RequestDetail_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند اعتماد هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.RejectNotificationConfigId",
+      "label": "OnReject",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReject",
+        "dom:RequestDetail_RejectNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند رفض هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SendBackNotificationConfigId",
+      "label": "OnSendBack",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnSendBack",
+        "dom:RequestDetail_SendBackNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إعادة الطلب من هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.RemarksNotificationConfigId",
+      "label": "OnRemark",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnRemark",
+        "dom:RequestDetail_RemarksNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إضافة تعليق على الطلب.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.AssignNotificationConfigId",
+      "label": "OnReassign",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReassign",
+        "dom:RequestDetail_AssignNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إعادة إسناد الطلب.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ReminderNotificationConfigId",
+      "label": "OnReminder",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OnReminder",
+        "dom:RequestDetail_ReminderNotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند بقاء الطلب بانتظار الإجراء.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "RequestDetail.ShowPayment",
       "label": "ShowPayment",
       "section": "RequestDetails",
@@ -354,104 +452,6 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه خطوة توقيع تحتاج شخصاً لم يوقّع من قبل.</p><p><strong>لماذا يهم.</strong> يُستبعد هنا كل من وافق على خطوة توقيع سابقة من الطلب نفسه، حتى لا يوقّع شخص واحد مرتين. وإذا لم يبقَ أحد، يُستخدم المعتمد الافتراضي للسلسلة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.SubmitNotificationConfigId",
-      "label": "OnSubmit",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnSubmit",
-        "dom:RequestDetail_SubmitNotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند وصول الطلب إلى هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.NotificationConfigId",
-      "label": "OnApprove",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnApprove",
-        "dom:RequestDetail_NotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند اعتماد هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.RejectNotificationConfigId",
-      "label": "OnReject",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnReject",
-        "dom:RequestDetail_RejectNotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند رفض هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.SendBackNotificationConfigId",
-      "label": "OnSendBack",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnSendBack",
-        "dom:RequestDetail_SendBackNotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إعادة الطلب من هذه الخطوة.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.RemarksNotificationConfigId",
-      "label": "OnRemark",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnRemark",
-        "dom:RequestDetail_RemarksNotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إضافة تعليق على الطلب.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.AssignNotificationConfigId",
-      "label": "OnReassign",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnReassign",
-        "dom:RequestDetail_AssignNotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند إعادة إسناد الطلب.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "RequestDetail.ReminderNotificationConfigId",
-      "label": "OnReminder",
-      "section": "RequestDetails",
-      "aliases": [
-        "loc:OnReminder",
-        "dom:RequestDetail_ReminderNotificationConfigId"
-      ],
-      "rules": "اختياري. يُختار من بيانات إعدادات الإشعارات.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> من يتم إشعاره عند بقاء الطلب بانتظار الإجراء.</p><p><strong>لماذا يهم.</strong> يُضبط كل إجراء على حدة، فمن يُشعَر بالرفض ليس بالضرورة من يُشعَر بالاعتماد. وإذا تُرك فارغاً فلن يُرسل أي إشعار عن ذلك الإجراء.</p><p><strong>ماذا يُرسل.</strong> الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.</p>",
       "adminHtml": "",
       "stub": false
     }

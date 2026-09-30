@@ -535,9 +535,13 @@ function parseEditTemplate(rel, entityName, sectionTitleClass) {
             sectionsAt.push({ at: s.index, key: s[1] });
         }
     }
-    const idRe = new RegExp(`\\[id\\]="'${entityName}_'\\s*\\+\\s*(\\w+)(?:\\.(\\w+))?"`, 'g');
+    // Also `[id]="action.domId"`, where each item carries the whole id -- the request step dialog
+    // does this because its fields are camel-cased and `'RequestDetail_' + action.field` would not match.
+    const idRe = new RegExp(`\\[id\\]="(?:'${entityName}_'\\s*\\+\\s*(\\w+)(?:\\.(\\w+))?|(\\w+)\\.(\\w+))"`, 'g');
     for (const d of html.matchAll(idRe)) {
-        const [, loopVar, member] = d;
+        const wholeId = !!d[3];
+        const loopVar = d[1] ?? d[3];
+        const member = d[2] ?? d[4];
         const loops = [...html.slice(0, d.index).matchAll(new RegExp(`@for\\s*\\(\\s*${loopVar}\\s+of\\s+(\\w+)`, 'g'))];
         const arrayName = loops.at(-1)?.[1];
         const body = arrayName && ts.match(new RegExp(`\\b${arrayName}\\b[^=]*=\\s*\\[([\\s\\S]*?)\\]\\s*;`))?.[1];
@@ -550,6 +554,7 @@ function parseEditTemplate(rel, entityName, sectionTitleClass) {
             : [...body.matchAll(/'([^']+)'/g)].map((x) => ({ value: x[1] }));
         const section = sectionsAt.filter((s) => s.at < d.index).at(-1)?.key ?? null;
         items.forEach((item, i) => {
+            if (wholeId) item.value = item.value?.startsWith(`${entityName}_`) ? item.value.slice(entityName.length + 1) : null;
             if (!item.value) return;
             const pascal = item.value.charAt(0).toUpperCase() + item.value.slice(1);
             out.push({
