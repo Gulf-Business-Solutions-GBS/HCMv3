@@ -163902,6 +163902,118 @@ export class WorkforceDashboardServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    getMovements(body?: GetWorkforceMovementsInput | undefined): Observable<PagedResultDtoOfWorkforceMovementRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkforceDashboard/GetMovements";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMovements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMovements(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfWorkforceMovementRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfWorkforceMovementRowDto>;
+        }));
+    }
+
+    protected processGetMovements(response: HttpResponseBase): Observable<PagedResultDtoOfWorkforceMovementRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfWorkforceMovementRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDocuments(body?: GetWorkforceDocumentsInput | undefined): Observable<PagedResultDtoOfWorkforceDocumentRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkforceDashboard/GetDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDocuments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfWorkforceDocumentRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfWorkforceDocumentRowDto>;
+        }));
+    }
+
+    protected processGetDocuments(response: HttpResponseBase): Observable<PagedResultDtoOfWorkforceDocumentRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfWorkforceDocumentRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     exportToExcel(body?: ExportWorkforceDashboardInput | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/WorkforceDashboard/ExportToExcel";
         url_ = url_.replace(/[?&]$/, "");
@@ -270363,6 +270475,90 @@ export interface IGetWorkflowTransactionTypeForEditOutput {
     workflowTransactionType: CreateOrEditWorkflowTransactionTypeDto;
 }
 
+export class GetWorkforceDocumentsInput implements IGetWorkforceDocumentsInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    gender!: Gender;
+    nationalityId!: number | undefined;
+    ageBand!: WorkforceAgeBand;
+    serviceBand!: WorkforceServiceBand;
+    qualificationId!: number | undefined;
+    jobTitleId!: number | undefined;
+    documentTypeId!: number | undefined;
+    status!: WorkforceDocumentStatus;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetWorkforceDocumentsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.gender = _data["gender"];
+            this.nationalityId = _data["nationalityId"];
+            this.ageBand = _data["ageBand"];
+            this.serviceBand = _data["serviceBand"];
+            this.qualificationId = _data["qualificationId"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.documentTypeId = _data["documentTypeId"];
+            this.status = _data["status"];
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkforceDocumentsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkforceDocumentsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["gender"] = this.gender;
+        data["nationalityId"] = this.nationalityId;
+        data["ageBand"] = this.ageBand;
+        data["serviceBand"] = this.serviceBand;
+        data["qualificationId"] = this.qualificationId;
+        data["jobTitleId"] = this.jobTitleId;
+        data["documentTypeId"] = this.documentTypeId;
+        data["status"] = this.status;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetWorkforceDocumentsInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    gender: Gender;
+    nationalityId: number | undefined;
+    ageBand: WorkforceAgeBand;
+    serviceBand: WorkforceServiceBand;
+    qualificationId: number | undefined;
+    jobTitleId: number | undefined;
+    documentTypeId: number | undefined;
+    status: WorkforceDocumentStatus;
+    skipCount: number;
+    maxResultCount: number;
+}
+
 export class GetWorkforceEmployeesInput implements IGetWorkforceEmployeesInput {
     fromDate!: DateTime | undefined;
     toDate!: DateTime | undefined;
@@ -270439,6 +270635,86 @@ export interface IGetWorkforceEmployeesInput {
     qualificationId: number | undefined;
     jobTitleId: number | undefined;
     kind: WorkforceEmployeeListKind;
+    skipCount: number;
+    maxResultCount: number;
+}
+
+export class GetWorkforceMovementsInput implements IGetWorkforceMovementsInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    gender!: Gender;
+    nationalityId!: number | undefined;
+    ageBand!: WorkforceAgeBand;
+    serviceBand!: WorkforceServiceBand;
+    qualificationId!: number | undefined;
+    jobTitleId!: number | undefined;
+    kind!: WorkforceMovementKind;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetWorkforceMovementsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.gender = _data["gender"];
+            this.nationalityId = _data["nationalityId"];
+            this.ageBand = _data["ageBand"];
+            this.serviceBand = _data["serviceBand"];
+            this.qualificationId = _data["qualificationId"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.kind = _data["kind"];
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkforceMovementsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkforceMovementsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["gender"] = this.gender;
+        data["nationalityId"] = this.nationalityId;
+        data["ageBand"] = this.ageBand;
+        data["serviceBand"] = this.serviceBand;
+        data["qualificationId"] = this.qualificationId;
+        data["jobTitleId"] = this.jobTitleId;
+        data["kind"] = this.kind;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetWorkforceMovementsInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    gender: Gender;
+    nationalityId: number | undefined;
+    ageBand: WorkforceAgeBand;
+    serviceBand: WorkforceServiceBand;
+    qualificationId: number | undefined;
+    jobTitleId: number | undefined;
+    kind: WorkforceMovementKind;
     skipCount: number;
     maxResultCount: number;
 }
@@ -318667,6 +318943,54 @@ export interface IPagedResultDtoOfWorkflowTransactionTypeDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfWorkforceDocumentRowDto implements IPagedResultDtoOfWorkforceDocumentRowDto {
+    items!: WorkforceDocumentRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfWorkforceDocumentRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkforceDocumentRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfWorkforceDocumentRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfWorkforceDocumentRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfWorkforceDocumentRowDto {
+    items: WorkforceDocumentRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfWorkforceEmployeeRowDto implements IPagedResultDtoOfWorkforceEmployeeRowDto {
     items!: WorkforceEmployeeRowDto[] | undefined;
     totalCount!: number;
@@ -318712,6 +319036,54 @@ export class PagedResultDtoOfWorkforceEmployeeRowDto implements IPagedResultDtoO
 
 export interface IPagedResultDtoOfWorkforceEmployeeRowDto {
     items: WorkforceEmployeeRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfWorkforceMovementRowDto implements IPagedResultDtoOfWorkforceMovementRowDto {
+    items!: WorkforceMovementRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfWorkforceMovementRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkforceMovementRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfWorkforceMovementRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfWorkforceMovementRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfWorkforceMovementRowDto {
+    items: WorkforceMovementRowDto[] | undefined;
     totalCount: number;
 }
 
@@ -352316,6 +352688,8 @@ export class WorkforceDashboardDto implements IWorkforceDashboardDto {
     qualifications!: WorkforceNamedCountDto[] | undefined;
     jobTitles!: WorkforceNamedCountDto[] | undefined;
     byOrgUnit!: WorkforceOrgUnitBucketDto[] | undefined;
+    movements!: WorkforceMovementCountDto[] | undefined;
+    documents!: WorkforceDocumentBucketDto[] | undefined;
     orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
     orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
 
@@ -352374,6 +352748,16 @@ export class WorkforceDashboardDto implements IWorkforceDashboardDto {
                 this.byOrgUnit = [] as any;
                 for (let item of _data["byOrgUnit"])
                     this.byOrgUnit!.push(WorkforceOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["movements"])) {
+                this.movements = [] as any;
+                for (let item of _data["movements"])
+                    this.movements!.push(WorkforceMovementCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["documents"])) {
+                this.documents = [] as any;
+                for (let item of _data["documents"])
+                    this.documents!.push(WorkforceDocumentBucketDto.fromJS(item));
             }
             if (Array.isArray(_data["orgUnitPath"])) {
                 this.orgUnitPath = [] as any;
@@ -352442,6 +352826,16 @@ export class WorkforceDashboardDto implements IWorkforceDashboardDto {
             for (let item of this.byOrgUnit)
                 data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
         }
+        if (Array.isArray(this.movements)) {
+            data["movements"] = [];
+            for (let item of this.movements)
+                data["movements"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.documents)) {
+            data["documents"] = [];
+            for (let item of this.documents)
+                data["documents"].push(item ? item.toJSON() : undefined as any);
+        }
         if (Array.isArray(this.orgUnitPath)) {
             data["orgUnitPath"] = [];
             for (let item of this.orgUnitPath)
@@ -352470,6 +352864,8 @@ export interface IWorkforceDashboardDto {
     qualifications: WorkforceNamedCountDto[] | undefined;
     jobTitles: WorkforceNamedCountDto[] | undefined;
     byOrgUnit: WorkforceOrgUnitBucketDto[] | undefined;
+    movements: WorkforceMovementCountDto[] | undefined;
+    documents: WorkforceDocumentBucketDto[] | undefined;
     orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
     orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
 }
@@ -352487,6 +352883,8 @@ export enum WorkforceDashboardExportPart {
     ByOrgUnit = 9,
     Qualification = 10,
     JobTitle = 11,
+    Movements = 12,
+    Documents = 13,
 }
 
 export class WorkforceDashboardInput implements IWorkforceDashboardInput {
@@ -352555,6 +352953,147 @@ export interface IWorkforceDashboardInput {
     serviceBand: WorkforceServiceBand;
     qualificationId: number | undefined;
     jobTitleId: number | undefined;
+}
+
+export class WorkforceDocumentBucketDto implements IWorkforceDocumentBucketDto {
+    documentTypeId!: number;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    notificationDays!: number;
+    expired!: number;
+    expiring!: number;
+
+    constructor(data?: IWorkforceDocumentBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTypeId = _data["documentTypeId"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.notificationDays = _data["notificationDays"];
+            this.expired = _data["expired"];
+            this.expiring = _data["expiring"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceDocumentBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceDocumentBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTypeId"] = this.documentTypeId;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["notificationDays"] = this.notificationDays;
+        data["expired"] = this.expired;
+        data["expiring"] = this.expiring;
+        return data;
+    }
+}
+
+export interface IWorkforceDocumentBucketDto {
+    documentTypeId: number;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    notificationDays: number;
+    expired: number;
+    expiring: number;
+}
+
+export class WorkforceDocumentRowDto implements IWorkforceDocumentRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    documentTypeId!: number;
+    documentTypeNameEn!: string | undefined;
+    documentTypeNameAr!: string | undefined;
+    documentNum!: string | undefined;
+    expiryDate!: DateTime;
+    daysLeft!: number;
+    status!: WorkforceDocumentStatus;
+
+    constructor(data?: IWorkforceDocumentRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.documentTypeId = _data["documentTypeId"];
+            this.documentTypeNameEn = _data["documentTypeNameEn"];
+            this.documentTypeNameAr = _data["documentTypeNameAr"];
+            this.documentNum = _data["documentNum"];
+            this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
+            this.daysLeft = _data["daysLeft"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceDocumentRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceDocumentRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["documentTypeId"] = this.documentTypeId;
+        data["documentTypeNameEn"] = this.documentTypeNameEn;
+        data["documentTypeNameAr"] = this.documentTypeNameAr;
+        data["documentNum"] = this.documentNum;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
+        data["daysLeft"] = this.daysLeft;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IWorkforceDocumentRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    documentTypeId: number;
+    documentTypeNameEn: string | undefined;
+    documentTypeNameAr: string | undefined;
+    documentNum: string | undefined;
+    expiryDate: DateTime;
+    daysLeft: number;
+    status: WorkforceDocumentStatus;
+}
+
+export enum WorkforceDocumentStatus {
+    Expired = 0,
+    Expiring = 1,
 }
 
 export enum WorkforceEmployeeListKind {
@@ -352777,6 +353316,118 @@ export interface IWorkforceKpisDto {
     terminations: number;
     averageHeadcount: number;
     turnoverPercent: number | undefined;
+}
+
+export class WorkforceMovementCountDto implements IWorkforceMovementCountDto {
+    kind!: WorkforceMovementKind;
+    count!: number;
+
+    constructor(data?: IWorkforceMovementCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.kind = _data["kind"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceMovementCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceMovementCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["kind"] = this.kind;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IWorkforceMovementCountDto {
+    kind: WorkforceMovementKind;
+    count: number;
+}
+
+export enum WorkforceMovementKind {
+    OnHold = 0,
+    Rejoined = 1,
+    Separated = 2,
+    Settled = 3,
+    AwaitingSettlement = 4,
+}
+
+export class WorkforceMovementRowDto implements IWorkforceMovementRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    kind!: WorkforceMovementKind;
+    date!: DateTime;
+    endDate!: DateTime | undefined;
+
+    constructor(data?: IWorkforceMovementRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.kind = _data["kind"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): WorkforceMovementRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceMovementRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["kind"] = this.kind;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IWorkforceMovementRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    kind: WorkforceMovementKind;
+    date: DateTime;
+    endDate: DateTime | undefined;
 }
 
 export class WorkforceNamedCountDto implements IWorkforceNamedCountDto {

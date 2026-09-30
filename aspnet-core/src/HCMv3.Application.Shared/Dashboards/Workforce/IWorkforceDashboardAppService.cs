@@ -19,5 +19,11 @@ public interface IWorkforceDashboardAppService : IApplicationService
 
     Task<PagedResultDto<WorkforceEmployeeRowDto>> GetEmployees(GetWorkforceEmployeesInput input);
 
+    /// <summary>The employees behind one of the movement counts.</summary>
+    Task<PagedResultDto<WorkforceMovementRowDto>> GetMovements(GetWorkforceMovementsInput input);
+
+    /// <summary>The documents expired or about to expire, soonest first.</summary>
+    Task<PagedResultDto<WorkforceDocumentRowDto>> GetDocuments(GetWorkforceDocumentsInput input);
+
     Task<FileDto> ExportToExcel(ExportWorkforceDashboardInput input);
 }

@@ -23,7 +23,9 @@
     "loc:WorkforceDashboard_TurnoverTrend": "dash.workforce.turnover-trend",
     "loc:WorkforceDashboard_ByQualification": "dash.workforce.qualification",
     "loc:WorkforceDashboard_ByJobTitle": "dash.workforce.job-title",
-    "loc:WorkforceDashboard_EmployeesList": "dash.workforce.employee-list"
+    "loc:WorkforceDashboard_EmployeesList": "dash.workforce.employee-list",
+    "loc:WorkforceDashboard_Movements": "dash.workforce.movements",
+    "loc:WorkforceDashboard_Documents": "dash.workforce.documents"
   },
   "fields": [
     {
@@ -270,6 +272,32 @@
       "rules": null,
       "when": null,
       "html": "<p><strong>ما هو.</strong> القائمة التي يقوم عليها رقم <strong>عدد الموظفين</strong> أو <strong>المعينون الجدد</strong> أو <strong>المنتهية خدماتهم</strong>، بكل عوامل التصفية: الرمز، والاسم، والإدارة، والمسمى الوظيفي، والجنسية، والجنس، والعمر، وسنوات الخدمة، وتاريخ الالتحاق، وآخر يوم عمل للمنتهية خدماتهم. انقر على أي سطر لفتح ملف الموظف.</p><p><strong>طريقة الاحتساب.</strong> القاعدة نفسها التي يقوم عليها الرقم الذي نقرت عليه، فعدد سطور القائمة يطابق دائماً ذلك الرقم.</p><p><strong>مثال.</strong> انقر على <strong>المنتهية خدماتهم</strong> بعد النقر على <strong>أنثى</strong> في رسم الجنس: الموظفات اللواتي انتهت خدمتهن هذه السنة.</p><p><strong>لماذا يهمّ.</strong> هي الدليل الذي تقوم عليه الأرقام، ويمكن تحميلها بصيغة XLSX بعوامل التصفية نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.movements",
+      "label": "WorkforceDashboard_Movements",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Movements"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خمسة أرقام من شاشة حالة الموظفين في النظام السابق: الرواتب الموقوفة اليوم، ومن عاد إلى العمل، ومن انتهت خدمته، ومن صُرفت له التسوية النهائية، ومن ما زال بانتظارها. انقر على العمود لعرض الموظفين.</p><p><strong>طريقة الاحتساب.</strong></p><ul><li><strong>راتب موقوف</strong> = <code>الموظفون الذين لديهم إيقاف راتب يشمل تاريخ العرض</code>.</li><li><strong>عاد إلى العمل</strong> = <code>الموظفون الذين يقع تاريخ عودتهم ضمن الفترة</code>.</li><li><strong>انتهت خدمته</strong> = <code>الموظفون الذين يقع آخر يوم عمل لهم، في إنهاء خدمة غير ملغى، ضمن الفترة</code> — وهم أنفسهم <strong>المنتهية خدماتهم</strong>.</li><li><strong>صُرفت التسوية النهائية</strong> = <code>الموظفون الذين لهم دفعة تسوية نهائية مؤرخة ضمن الفترة</code>.</li><li><strong>بانتظار التسوية النهائية</strong> = <code>الموظفون الذين مضى آخر يوم عمل لهم، ولم تُصرف لهم تسوية نهائية منذ تقديم إنهاء الخدمة، ولم يعودوا إلى العمل منذ ذلك</code>. وهذا الرقم غير مقيّد بالفترة: فمن انتهت خدمته في السنة الماضية ولم تُسوَّ مستحقاته ما زال يظهر.</li></ul><p>يُحتسب كل شخص مرة واحدة في كل عمود. وتنطبق تصفية الوحدة والأعمدة المنقورة كما في بقية المربعات.</p><p><strong>مثال.</strong> راتب موقوف 3 · عاد إلى العمل 2 · انتهت خدمته 11 · صُرفت التسوية النهائية 8 · بانتظار التسوية النهائية 4.</p><p><strong>لماذا يهمّ.</strong> كل من يظهر تحت <strong>بانتظار التسوية النهائية</strong> له مستحقات؛ والقائمة هي ما يتابعه قسم الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.documents",
+      "label": "WorkforceDashboard_Documents",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Documents"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مستندات الموظفين العاملين اليوم — جوازات السفر والبطاقات المدنية وأذونات الإقامة وغيرها — التي انتهت صلاحيتها أو قاربت على الانتهاء، حسب نوع المستند. انقر على جزء العمود لعرض ذلك النوع وتلك الحالة، أو على مفتاح الرسم لعرض حالة واحدة لجميع الأنواع، أو على <strong>المستندات المنتهية أو التي قاربت على الانتهاء</strong> لعرض القائمة كاملة.</p><p><strong>طريقة الاحتساب.</strong> لكل موظف ونوع مستند، لا يُحتسب إلا <strong>أحدث</strong> مستند (صاحب أبعد تاريخ انتهاء)، فالجواز المجدَّد يحجب القديم.</p><ul><li><strong>منتهي</strong> = <code>تاريخ الانتهاء قبل تاريخ العرض</code>.</li><li><strong>قارب على الانتهاء</strong> = <code>تاريخ الانتهاء من تاريخ العرض حتى مدة التنبيه المحددة للنوع</code>؛ والنوع الذي لم تُحدَّد له مدة تنبيه يُنظر فيه 30 يوماً إلى الأمام.</li></ul><p>لا تُحتسب إلا المستندات المعتمدة، ولا يدخل من انتهت خدمتهم.</p><p><strong>مثال.</strong> البطاقة المدنية: 5 منتهية · 12 قاربت على الانتهاء (30 يوماً).</p><p><strong>لماذا يهمّ.</strong> انتهاء مستند إقامة أو عمل يمثل خطراً قانونياً؛ وهذه قائمة التجديد.</p>",
       "adminHtml": "",
       "stub": false
     }

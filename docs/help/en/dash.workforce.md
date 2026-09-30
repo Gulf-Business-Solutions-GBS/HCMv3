@@ -214,3 +214,36 @@ Legacy never produced a correct turnover: the ESS Turnover page ran on hard-code
 **Example.** Click **Leavers** after clicking **Female** on the gender chart: the women who left this year.
 
 **Why it matters.** It is the evidence under the numbers, and it downloads as XLSX with the same filters.
+
+## Employee movements {#dash.workforce.movements}
+<!-- alias: loc:WorkforceDashboard_Movements -->
+
+**What it is.** Five counts from legacy's Employee Status screen: pay on hold today, and who rejoined, left, was paid a final settlement or is still waiting for one. Click a bar to see who.
+
+**How it is calculated.**
+- **Pay on hold** = `employees with a pay hold whose start and end dates cover the as-of date`.
+- **Rejoined** = `employees with a rejoin date in the period`.
+- **Separated** = `employees whose last day in service, on an unrevoked separation, falls in the period` — the same people as **Leavers**.
+- **Final settlement paid** = `employees with a final-settlement payment dated in the period`.
+- **Awaiting final settlement** = `employees whose last day in service has passed, with no final-settlement payment since their separation was submitted and no rejoin since`. This one is not limited to the period: someone who left last year and was never settled still shows.
+
+Each person counts once per bar. The unit and clicked-bar filters apply as on every other tile.
+
+**Example.** Pay on hold 3 · rejoined 2 · separated 11 · final settlement paid 8 · awaiting final settlement 4.
+
+**Why it matters.** Everyone under **Awaiting final settlement** is owed money; the list is the follow-up for payroll.
+
+## Documents expiring {#dash.workforce.documents}
+<!-- alias: loc:WorkforceDashboard_Documents -->
+
+**What it is.** Documents of the employees working today — passports, civil IDs, residence permits and so on — that have expired or will soon, by document type. Click a bar segment for that type and status, a legend entry for one status across all types, or **Documents expired or expiring** for the whole list.
+
+**How it is calculated.** For each employee and document type, only the **latest** document counts (the one with the latest expiry), so a renewed passport hides the old one.
+- **Expired** = `expiry date before the as-of date`.
+- **Expiring** = `expiry date from the as-of date up to the type's notification period ahead`; a type with no notification period set looks 30 days ahead.
+
+Only approved documents count. People who have left are not included.
+
+**Example.** Civil ID: 5 expired · 12 expiring (30 days).
+
+**Why it matters.** An expired residence or work document is a legal risk; this is the renewal list.

@@ -41,6 +41,15 @@ public class WorkforceDashboardAppService_Tests
     private readonly List<Nationality> _nationalities = new() { new Nationality { Id = Kuwaiti, TenantId = 1, NameEn = "Kuwaiti" } };
     private readonly List<Qualification> _qualifications = new();
     private readonly List<JobTitle> _jobTitles = new();
+    private readonly List<EmployeeOnHold> _holds = new();
+    private readonly List<EmployeeRejoin> _rejoins = new();
+    private readonly List<EmployeeFnFPayment> _settlements = new();
+    private readonly List<EmployeeDocument> _documents = new();
+    private readonly List<DocumentType> _documentTypes = new()
+    {
+        new DocumentType { Id = 1, TenantId = 1, Code = "PP", NameEn = "Passport", NotificationPeriod = 60 },
+        new DocumentType { Id = 2, TenantId = 1, Code = "CID", NameEn = "Civil ID" }
+    };
     private readonly List<OrganizationUnit> _units = new()
     {
         new OrganizationUnit(1, "Company") { Id = 1 },
@@ -108,6 +117,11 @@ public class WorkforceDashboardAppService_Tests
             Fakes.RepoOver(_qualifications),
             Fakes.RepoOver(_jobTitles),
             unitRepository,
+            Fakes.RepoOver(_holds),
+            Fakes.RepoOver(_rejoins),
+            Fakes.RepoOver(_settlements),
+            Fakes.RepoOver(_documents),
+            Fakes.RepoOver(_documentTypes),
             _scopeService,
             exporter);
 
@@ -257,11 +271,93 @@ public class WorkforceDashboardAppService_Tests
             "WorkforceDashboard_ByDepartment",
             "WorkforceDashboard_Headcount",
             "WorkforceDashboard_Joiners",
-            "WorkforceDashboard_Leavers"
+            "WorkforceDashboard_Leavers",
+            "WorkforceDashboard_Movements",
+            "WorkforceDashboard_Documents"
         }, ignoreOrder: false);
 
         book.Worksheet("Summary").Cell(3, 2).GetString().ShouldBe("Dashboard_ScopeAllAdmin");
         book.Worksheet("WorkforceDashboard_Headcount").Cell(4, 1).GetString().ShouldBe("E1");
+    }
+
+    private void AddDocument(int employeeId, int typeId, DateTime expiry) =>
+        _documents.Add(new EmployeeDocument
+        {
+            Id = _documents.Count + 1, TenantId = 1, EmployeeId = employeeId, DocumentTypeId = typeId, DocumentNum = "D" + (_documents.Count + 1),
+            IssueDate = expiry.AddYears(-5), ExpiryDate = expiry
+        });
+
+    [Fact]
+    public async Task GetDashboard_Should_Count_Movements_Of_The_Period()
+    {
+        _holds.Add(new EmployeeOnHold { Id = 1, TenantId = 1, EmployeeId = 1, OnHold = true, StartDate = _today.AddDays(-5), EndDate = _today.AddDays(5) });
+        _holds.Add(new EmployeeOnHold { Id = 2, TenantId = 1, EmployeeId = 2, OnHold = false, StartDate = _today.AddDays(-5), EndDate = _today.AddDays(5) });
+        _rejoins.Add(new EmployeeRejoin { Id = 1, TenantId = 1, EmployeeId = 2, RejoinDate = _today.AddDays(-3) });
+        Separate(3, _today.AddDays(-2));
+        _separations.Single().SubmissionDate = _today.AddDays(-40);
+
+        var result = await CreateService().GetDashboard(new WorkforceDashboardInput { FromDate = _today.AddDays(-30), ToDate = _today });
+
+        int Count(WorkforceMovementKind kind) => result.Movements.Single(m => m.Kind == kind).Count;
+        Count(WorkforceMovementKind.OnHold).ShouldBe(1);
+        Count(WorkforceMovementKind.Rejoined).ShouldBe(1);
+        Count(WorkforceMovementKind.Separated).ShouldBe(1);
+        Count(WorkforceMovementKind.AwaitingSettlement).ShouldBe(1);
+        Count(WorkforceMovementKind.Settled).ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task GetMovements_Should_Stop_Counting_Someone_As_Awaiting_Once_Settled()
+    {
+        Separate(3, _today.AddDays(-2));
+        _separations.Single().SubmissionDate = _today.AddDays(-40);
+        _settlements.Add(new EmployeeFnFPayment { Id = 1, TenantId = 1, EmployeeId = 3, CompensationDate = _today.AddDays(-1) });
+
+        var settled = await CreateService().GetMovements(new GetWorkforceMovementsInput
+        {
+            FromDate = _today.AddDays(-30), ToDate = _today, Kind = WorkforceMovementKind.Settled
+        });
+        var awaiting = await CreateService().GetMovements(new GetWorkforceMovementsInput
+        {
+            FromDate = _today.AddDays(-30), ToDate = _today, Kind = WorkforceMovementKind.AwaitingSettlement
+        });
+
+        settled.Items.Single().EmployeeCode.ShouldBe("E3");
+        awaiting.TotalCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task GetDocuments_Should_Use_Each_Types_Notice_Period_And_Ignore_Renewed_Documents()
+    {
+        AddDocument(1, 1, _today.AddDays(45));   // passport, 60-day notice: expiring
+        AddDocument(2, 2, _today.AddDays(45));   // civil ID, default 30-day notice: not yet
+        AddDocument(3, 2, _today.AddDays(-10));  // civil ID expired...
+        AddDocument(3, 2, _today.AddYears(5));   // ...but renewed
+        AddDocument(2, 1, _today.AddDays(-1));   // passport expired
+
+        var service = CreateService();
+        var dashboard = await service.GetDashboard(new WorkforceDashboardInput());
+        var list = await service.GetDocuments(new GetWorkforceDocumentsInput());
+
+        dashboard.Documents.Single().NameEn.ShouldBe("Passport");
+        dashboard.Documents.Single().Expired.ShouldBe(1);
+        dashboard.Documents.Single().Expiring.ShouldBe(1);
+        list.Items.Select(r => (r.EmployeeCode, r.Status)).ShouldBe(new[]
+        {
+            ("E2", WorkforceDocumentStatus.Expired), ("E1", WorkforceDocumentStatus.Expiring)
+        }, ignoreOrder: false);
+    }
+
+    [Fact]
+    public async Task GetDocuments_Should_Leave_Out_People_Outside_The_Scope()
+    {
+        ScopeIs(DashboardScope.Restricted(new[] { 2 }, new List<string>(), includesOwnTeam: true));
+        AddDocument(1, 1, _today.AddDays(-1));
+        AddDocument(2, 1, _today.AddDays(-1));
+
+        var list = await CreateService().GetDocuments(new GetWorkforceDocumentsInput());
+
+        list.Items.Single().EmployeeCode.ShouldBe("E2");
     }
 
     [Fact]

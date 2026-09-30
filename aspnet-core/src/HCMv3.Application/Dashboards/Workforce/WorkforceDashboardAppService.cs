@@ -45,6 +45,11 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
     private readonly IRepository<Qualification> _qualificationRepository;
     private readonly IRepository<JobTitle> _jobTitleRepository;
     private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
+    private readonly IRepository<EmployeeOnHold> _onHoldRepository;
+    private readonly IRepository<EmployeeRejoin> _rejoinRepository;
+    private readonly IRepository<EmployeeFnFPayment> _settlementRepository;
+    private readonly IRepository<EmployeeDocument> _documentRepository;
+    private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IDashboardScopeService _dashboardScopeService;
     private readonly WorkforceDashboardExcelExporter _excelExporter;
 
@@ -56,6 +61,11 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
         IRepository<Qualification> qualificationRepository,
         IRepository<JobTitle> jobTitleRepository,
         IRepository<OrganizationUnit, long> organizationUnitRepository,
+        IRepository<EmployeeOnHold> onHoldRepository,
+        IRepository<EmployeeRejoin> rejoinRepository,
+        IRepository<EmployeeFnFPayment> settlementRepository,
+        IRepository<EmployeeDocument> documentRepository,
+        IRepository<DocumentType> documentTypeRepository,
         IDashboardScopeService dashboardScopeService,
         WorkforceDashboardExcelExporter excelExporter)
     {
@@ -66,6 +76,11 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
         _qualificationRepository = qualificationRepository;
         _jobTitleRepository = jobTitleRepository;
         _organizationUnitRepository = organizationUnitRepository;
+        _onHoldRepository = onHoldRepository;
+        _rejoinRepository = rejoinRepository;
+        _settlementRepository = settlementRepository;
+        _documentRepository = documentRepository;
+        _documentTypeRepository = documentTypeRepository;
         _dashboardScopeService = dashboardScopeService;
         _excelExporter = excelExporter;
     }
@@ -89,6 +104,37 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
             rows.Skip(input.SkipCount).Take(input.MaxResultCount).ToList());
     }
 
+    /// <summary>The employees behind one of the movement counts, latest first.</summary>
+    [HttpPost]
+    public async Task<PagedResultDto<WorkforceMovementRowDto>> GetMovements(GetWorkforceMovementsInput input)
+    {
+        var context = await BuildContextAsync(input);
+        var rows = MovementRows(context, input.Kind);
+        return new PagedResultDto<WorkforceMovementRowDto>(rows.Count, rows.Skip(input.SkipCount).Take(input.MaxResultCount).ToList());
+    }
+
+    /// <summary>Documents expired or about to expire, soonest first, narrowed to a type and a status when given.</summary>
+    [HttpPost]
+    public async Task<PagedResultDto<WorkforceDocumentRowDto>> GetDocuments(GetWorkforceDocumentsInput input)
+    {
+        var context = await BuildContextAsync(input);
+        var rows = DocumentRows(context, input.DocumentTypeId, input.Status);
+        return new PagedResultDto<WorkforceDocumentRowDto>(rows.Count, rows.Skip(input.SkipCount).Take(input.MaxResultCount).ToList());
+    }
+
+    private static List<WorkforceMovementRowDto> MovementRows(DashboardContext context, WorkforceMovementKind? kind) =>
+        context.Movements
+            .Where(r => kind == null || r.Kind == kind)
+            .OrderBy(r => r.Kind)
+            .ThenByDescending(r => r.Date)
+            .ThenBy(r => r.EmployeeCode)
+            .ToList();
+
+    private static List<WorkforceDocumentRowDto> DocumentRows(DashboardContext context, int? documentTypeId, WorkforceDocumentStatus? status) =>
+        context.Documents
+            .Where(r => (documentTypeId == null || r.DocumentTypeId == documentTypeId) && (status == null || r.Status == status))
+            .ToList();
+
     /// <summary>The whole dashboard or one tile as a workbook, built from exactly what the screen shows.</summary>
     [HttpPost]
     public async Task<FileDto> ExportToExcel(ExportWorkforceDashboardInput input)
@@ -107,6 +153,8 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
             HeadcountRows = Rows(WorkforceDashboardExportPart.Headcount, WorkforceEmployeeListKind.Headcount),
             JoinerRows = Rows(WorkforceDashboardExportPart.Joiners, WorkforceEmployeeListKind.Joiners),
             LeaverRows = Rows(WorkforceDashboardExportPart.Leavers, WorkforceEmployeeListKind.Leavers),
+            MovementRows = all || input.Part == WorkforceDashboardExportPart.Movements ? MovementRows(context, null) : new List<WorkforceMovementRowDto>(),
+            DocumentRows = all || input.Part == WorkforceDashboardExportPart.Documents ? DocumentRows(context, null, null) : new List<WorkforceDocumentRowDto>(),
             ScopeLabel = ScopeLabel(dashboard.Scope),
             UseArabic = CultureInfo.CurrentUICulture.Name.StartsWith("ar", StringComparison.OrdinalIgnoreCase)
         });
@@ -159,6 +207,8 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
             Qualifications = calculator.Qualifications(headcount),
             JobTitles = calculator.JobTitles(headcount),
             ByOrgUnit = calculator.ByOrgUnit(population, input.OrganizationUnitId),
+            Movements = WorkforceActivityCalculator.Counts(context.Movements),
+            Documents = context.ActivityCalculator.DocumentBuckets(context.Documents),
             OrgUnitPath = context.Tree.PathTo(input.OrganizationUnitId),
             OrgUnitOptions = context.Tree.OptionsFor(context.ScopedEmployees.Select(e => e.OrganizationUnitId))
         };
@@ -186,6 +236,14 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
 
         /// <summary>After the unit filter and the clicked-bar filters: what every tile counts.</summary>
         public List<WorkforceEmployee> Population { get; init; }
+
+        public WorkforceActivityCalculator ActivityCalculator { get; init; }
+
+        /// <summary>Movements of the population: on hold, rejoined, separated, settled, awaiting settlement.</summary>
+        public List<WorkforceMovementRowDto> Movements { get; init; }
+
+        /// <summary>Documents of the population expired or about to expire.</summary>
+        public List<WorkforceDocumentRowDto> Documents { get; init; }
     }
 
     private async Task<DashboardContext> BuildContextAsync(WorkforceDashboardInput input)
@@ -263,6 +321,9 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
             population = population.Where(e => e.OrganizationUnitId.HasValue && units.Contains(e.OrganizationUnitId.Value));
         }
 
+        var filtered = calculator.ApplyAttributeFilters(population, input).ToList();
+        var activity = BuildActivity(filtered, from, asOf, tree);
+
         return new DashboardContext
         {
             Scope = scope,
@@ -272,8 +333,69 @@ public class WorkforceDashboardAppService : HCMv3AppServiceBase, IWorkforceDashb
             Tree = tree,
             Calculator = calculator,
             ScopedEmployees = scopedEmployees,
-            Population = calculator.ApplyAttributeFilters(population, input).ToList()
+            Population = filtered,
+            ActivityCalculator = activity.Calculator,
+            Movements = activity.Movements,
+            Documents = activity.Documents
         };
+    }
+
+    /// <summary>
+    /// Holds, rejoins, separations, final settlements and documents of the filtered population, read once per
+    /// request. Only the population's own rows are loaded.
+    /// </summary>
+    private (WorkforceActivityCalculator Calculator, List<WorkforceMovementRowDto> Movements, List<WorkforceDocumentRowDto> Documents) BuildActivity(
+        List<WorkforceEmployee> population, DateTime from, DateTime asOf, DashboardOrgTree tree)
+    {
+        var ids = population.Select(e => e.Id).ToList();
+        var documentTypes = _documentTypeRepository.GetAll()
+            .Select(t => new { t.Id, t.NameEn, t.NameAr, t.NotificationPeriod })
+            .ToList()
+            .Select(t => new WorkforceDocumentType(t.Id, t.NameEn, t.NameAr, t.NotificationPeriod))
+            .ToList();
+        var activity = new WorkforceActivityCalculator(from, asOf, tree, population, documentTypes);
+
+        if (ids.Count == 0)
+        {
+            return (activity, new List<WorkforceMovementRowDto>(), new List<WorkforceDocumentRowDto>());
+        }
+
+        var holds = _onHoldRepository.GetAll()
+            .Where(h => h.OnHold && ids.Contains(h.EmployeeId))
+            .Select(h => new { h.EmployeeId, h.StartDate, h.EndDate })
+            .ToList()
+            .Select(h => new WorkforceHold(h.EmployeeId, h.StartDate, h.EndDate))
+            .ToList();
+        var rejoins = _rejoinRepository.GetAll()
+            .Where(r => ids.Contains(r.EmployeeId))
+            .Select(r => new { r.EmployeeId, r.RejoinDate })
+            .ToList()
+            .Select(r => new WorkforceDatedEvent(r.EmployeeId, r.RejoinDate))
+            .ToList();
+        var separations = _separationRepository.GetAll()
+            .Where(s => s.RevokeDate == null && ids.Contains(s.EmployeeId))
+            .Select(s => new { s.EmployeeId, s.SubmissionDate, s.LastDayInService })
+            .ToList()
+            .Select(s => new WorkforceSeparation(s.EmployeeId, s.SubmissionDate, s.LastDayInService))
+            .ToList();
+        var settlements = _settlementRepository.GetAll()
+            .Where(p => ids.Contains(p.EmployeeId))
+            .Select(p => new { p.EmployeeId, p.CompensationDate })
+            .ToList()
+            .Select(p => new WorkforceDatedEvent(p.EmployeeId, p.CompensationDate))
+            .ToList();
+
+        // Approved documents only: the default ApprovedOnly filter is on. Every document is read, not only those
+        // near expiry: the latest of each type decides, so a renewal must be seen to hide the old expired one.
+        var floor = new DateTime(1900, 1, 1);
+        var documents = _documentRepository.GetAll()
+            .Where(d => ids.Contains(d.EmployeeId) && d.ExpiryDate > floor)
+            .Select(d => new { d.EmployeeId, d.DocumentTypeId, d.DocumentNum, d.ExpiryDate })
+            .ToList()
+            .Select(d => new WorkforceDocument(d.EmployeeId, d.DocumentTypeId, d.DocumentNum, d.ExpiryDate))
+            .ToList();
+
+        return (activity, activity.Movements(holds, rejoins, separations, settlements), activity.Documents(documents));
     }
 
     private static (DateTime From, DateTime To) ResolvePeriod(WorkforceDashboardInput input, DateTime today)

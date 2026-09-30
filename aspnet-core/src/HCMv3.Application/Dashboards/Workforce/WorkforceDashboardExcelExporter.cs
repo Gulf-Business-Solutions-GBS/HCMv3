@@ -29,6 +29,10 @@ public class WorkforceDashboardExportData
 
     public IReadOnlyList<WorkforceEmployeeRowDto> LeaverRows { get; init; } = Array.Empty<WorkforceEmployeeRowDto>();
 
+    public IReadOnlyList<WorkforceMovementRowDto> MovementRows { get; init; } = Array.Empty<WorkforceMovementRowDto>();
+
+    public IReadOnlyList<WorkforceDocumentRowDto> DocumentRows { get; init; } = Array.Empty<WorkforceDocumentRowDto>();
+
     public string ScopeLabel { get; init; }
 
     public bool UseArabic { get; init; }
@@ -119,6 +123,16 @@ public class WorkforceDashboardExcelExporter : AbpServiceBase, ITransientDepende
         if (Wants(WorkforceDashboardExportPart.Leavers))
         {
             AddEmployees(book, L("WorkforceDashboard_Leavers"), data.LeaverRows, data.UseArabic, leavers: true);
+        }
+
+        if (Wants(WorkforceDashboardExportPart.Movements))
+        {
+            AddMovements(book, data.MovementRows, data.UseArabic);
+        }
+
+        if (Wants(WorkforceDashboardExportPart.Documents))
+        {
+            AddDocuments(book, data.DocumentRows, data.UseArabic);
         }
 
         var fileName = $"{L("WorkforceDashboard")} {d.FromDate:yyyy-MM-dd} - {d.ToDate:yyyy-MM-dd}.xlsx";
@@ -289,6 +303,63 @@ public class WorkforceDashboardExcelExporter : AbpServiceBase, ITransientDepende
                 sheet.Cell(r, 11).SetValue(row.SeparationType.HasValue ? L(row.SeparationType.Value.ToString()) : string.Empty);
             }
 
+            r++;
+        }
+
+        Finish(sheet, headers.Count, r - 1);
+    }
+
+    private void AddMovements(XLWorkbook book, IReadOnlyList<WorkforceMovementRowDto> rows, bool arabic)
+    {
+        var title = L("WorkforceDashboard_Movements");
+        var sheet = book.AddWorksheet(Sheet(title, book));
+        Title(sheet, title);
+
+        var headers = new List<string>
+        {
+            L("WorkforceDashboard_Movement"), L("Code"), L("Employee"), L("OrganizationUnit"), L("Date"), L("EndDate")
+        };
+        Header(sheet, HeaderRow, headers);
+
+        var r = HeaderRow + 1;
+        foreach (var row in rows)
+        {
+            sheet.Cell(r, 1).SetValue(L("WorkforceDashboard_Movement_" + row.Kind));
+            sheet.Cell(r, 2).SetValue(row.EmployeeCode);
+            sheet.Cell(r, 3).SetValue(Pick(arabic, row.EmployeeNameEn, row.EmployeeNameAr));
+            sheet.Cell(r, 4).SetValue(row.OrganizationUnitName);
+            SetCell(sheet.Cell(r, 5), row.Date);
+            SetCell(sheet.Cell(r, 6), row.EndDate);
+            r++;
+        }
+
+        Finish(sheet, headers.Count, r - 1);
+    }
+
+    private void AddDocuments(XLWorkbook book, IReadOnlyList<WorkforceDocumentRowDto> rows, bool arabic)
+    {
+        var title = L("WorkforceDashboard_Documents");
+        var sheet = book.AddWorksheet(Sheet(title, book));
+        Title(sheet, title);
+
+        var headers = new List<string>
+        {
+            L("Code"), L("Employee"), L("OrganizationUnit"), L("WorkforceDashboard_DocumentType"), L("WorkforceDashboard_DocumentNumber"),
+            L("WorkforceDashboard_ExpiryDate"), L("WorkforceDashboard_DaysLeft"), L("Status")
+        };
+        Header(sheet, HeaderRow, headers);
+
+        var r = HeaderRow + 1;
+        foreach (var row in rows)
+        {
+            sheet.Cell(r, 1).SetValue(row.EmployeeCode);
+            sheet.Cell(r, 2).SetValue(Pick(arabic, row.EmployeeNameEn, row.EmployeeNameAr));
+            sheet.Cell(r, 3).SetValue(row.OrganizationUnitName);
+            sheet.Cell(r, 4).SetValue(Pick(arabic, row.DocumentTypeNameEn, row.DocumentTypeNameAr));
+            sheet.Cell(r, 5).SetValue(row.DocumentNum);
+            SetCell(sheet.Cell(r, 6), row.ExpiryDate);
+            sheet.Cell(r, 7).SetValue(row.DaysLeft);
+            sheet.Cell(r, 8).SetValue(L("WorkforceDashboard_Document_" + row.Status));
             r++;
         }
 

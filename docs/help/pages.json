@@ -9671,6 +9671,16 @@
           "id": "dash.workforce.employee-list",
           "label": "WorkforceDashboard_EmployeesList",
           "loc": "WorkforceDashboard_EmployeesList"
+        },
+        {
+          "id": "dash.workforce.movements",
+          "label": "WorkforceDashboard_Movements",
+          "loc": "WorkforceDashboard_Movements"
+        },
+        {
+          "id": "dash.workforce.documents",
+          "label": "WorkforceDashboard_Documents",
+          "loc": "WorkforceDashboard_Documents"
         }
       ]
     },

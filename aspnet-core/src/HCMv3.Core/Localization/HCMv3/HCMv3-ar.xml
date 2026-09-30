@@ -7316,5 +7316,25 @@
     <text name="WorkflowDashboard_OverdueList">الطلبات المتأخرة</text>
     <text name="WorkflowDashboard_WaitingWithList">بانتظار {0}</text>
     <text name="WorkflowDashboard_WaitingBandList">الطلبات المفتوحة المنتظرة {0}</text>
+    <text name="WorkforceDashboard_Movements">حركة الموظفين</text>
+    <text name="WorkforceDashboard_MovementsHint">الرواتب الموقوفة اليوم، ومن عاد إلى العمل أو انتهت خدمته أو سُوّيت مستحقاته خلال الفترة. انقر على العمود لعرض الموظفين.</text>
+    <text name="WorkforceDashboard_Movement">الحركة</text>
+    <text name="WorkforceDashboard_Movement_OnHold">راتب موقوف</text>
+    <text name="WorkforceDashboard_Movement_Rejoined">عاد إلى العمل</text>
+    <text name="WorkforceDashboard_Movement_Separated">انتهت خدمته</text>
+    <text name="WorkforceDashboard_Movement_Settled">صُرفت التسوية النهائية</text>
+    <text name="WorkforceDashboard_Movement_AwaitingSettlement">بانتظار التسوية النهائية</text>
+    <text name="WorkforceDashboard_Documents">المستندات المنتهية الصلاحية</text>
+    <text name="WorkforceDashboard_DocumentsHint">المنتهية، أو التي تنتهي خلال مدة التنبيه لكل نوع مستند. انقر على العمود لعرض المستندات.</text>
+    <text name="WorkforceDashboard_DocumentType">نوع المستند</text>
+    <text name="WorkforceDashboard_DocumentNumber">رقم المستند</text>
+    <text name="WorkforceDashboard_ExpiryDate">تاريخ الانتهاء</text>
+    <text name="WorkforceDashboard_DaysLeft">الأيام المتبقية</text>
+    <text name="WorkforceDashboard_Document_Expired">منتهي</text>
+    <text name="WorkforceDashboard_Document_Expiring">قارب على الانتهاء</text>
+    <text name="WorkforceDashboard_DocumentsList">المستندات المنتهية أو التي قاربت على الانتهاء</text>
+    <text name="WorkforceDashboard_DocumentsOfType">{0}: {1}</text>
+    <text name="WorkforceDashboard_NoDocuments">لا توجد مستندات منتهية أو قاربت على الانتهاء.</text>
+    <text name="WorkforceDashboard_NoMovements">لا توجد حركات في هذه الفترة.</text>
   </texts>
 </localizationDictionary>

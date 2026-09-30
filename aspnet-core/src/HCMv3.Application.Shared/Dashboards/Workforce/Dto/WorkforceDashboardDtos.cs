@@ -57,7 +57,9 @@ public enum WorkforceDashboardExportPart
     Service = 8,
     ByOrgUnit = 9,
     Qualification = 10,
-    JobTitle = 11
+    JobTitle = 11,
+    Movements = 12,
+    Documents = 13
 }
 
 /// <summary>
@@ -135,6 +137,12 @@ public class WorkforceDashboardDto
     public List<WorkforceNamedCountDto> JobTitles { get; set; } = new();
 
     public List<WorkforceOrgUnitBucketDto> ByOrgUnit { get; set; } = new();
+
+    /// <summary>On hold, rejoined, separated, settled and awaiting settlement; every kind, in that order.</summary>
+    public List<WorkforceMovementCountDto> Movements { get; set; } = new();
+
+    /// <summary>Document types with documents expired or about to expire, most first.</summary>
+    public List<WorkforceDocumentBucketDto> Documents { get; set; } = new();
 
     public List<DashboardOrgUnitOptionDto> OrgUnitPath { get; set; } = new();
 
@@ -265,4 +273,129 @@ public class WorkforceEmployeeRowDto
     public DateTime? LastDayInService { get; set; }
 
     public SeparationType? SeparationType { get; set; }
+}
+
+/// <summary>The employee movements the Workforce Dashboard counts.</summary>
+public enum WorkforceMovementKind
+{
+    /// <summary>Pay on hold on the as-of date.</summary>
+    OnHold = 0,
+
+    /// <summary>Rejoined during the period.</summary>
+    Rejoined = 1,
+
+    /// <summary>Last day in service during the period (a recorded, unrevoked separation).</summary>
+    Separated = 2,
+
+    /// <summary>Final settlement paid during the period.</summary>
+    Settled = 3,
+
+    /// <summary>Left by the as-of date with no final settlement recorded since their separation.</summary>
+    AwaitingSettlement = 4
+}
+
+public enum WorkforceDocumentStatus
+{
+    Expired = 0,
+
+    /// <summary>Expires within the document type's notification period.</summary>
+    Expiring = 1
+}
+
+public class WorkforceMovementCountDto
+{
+    public WorkforceMovementKind Kind { get; set; }
+
+    public int Count { get; set; }
+}
+
+public class WorkforceDocumentBucketDto
+{
+    public int DocumentTypeId { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
+
+    /// <summary>How many days ahead "expiring" looks for this type.</summary>
+    public int NotificationDays { get; set; }
+
+    public int Expired { get; set; }
+
+    public int Expiring { get; set; }
+}
+
+public class GetWorkforceMovementsInput : WorkforceDashboardInput
+{
+    public WorkforceMovementKind Kind { get; set; }
+
+    [Range(0, int.MaxValue)]
+    public int SkipCount { get; set; }
+
+    [Range(1, 1000)]
+    public int MaxResultCount { get; set; } = 10;
+}
+
+public class GetWorkforceDocumentsInput : WorkforceDashboardInput
+{
+    /// <summary>Empty = every type.</summary>
+    public int? DocumentTypeId { get; set; }
+
+    /// <summary>Empty = expired and expiring.</summary>
+    public WorkforceDocumentStatus? Status { get; set; }
+
+    [Range(0, int.MaxValue)]
+    public int SkipCount { get; set; }
+
+    [Range(1, 1000)]
+    public int MaxResultCount { get; set; } = 10;
+}
+
+public class WorkforceMovementRowDto
+{
+    public int EmployeeId { get; set; }
+
+    public string EmployeeCode { get; set; }
+
+    public string EmployeeNameEn { get; set; }
+
+    public string EmployeeNameAr { get; set; }
+
+    public string OrganizationUnitName { get; set; }
+
+    public WorkforceMovementKind Kind { get; set; }
+
+    /// <summary>On hold: from; rejoined: rejoin date; separated and awaiting: last day in service; settled: payment date.</summary>
+    public DateTime Date { get; set; }
+
+    /// <summary>On hold: until.</summary>
+    public DateTime? EndDate { get; set; }
+}
+
+public class WorkforceDocumentRowDto
+{
+    public int EmployeeId { get; set; }
+
+    public string EmployeeCode { get; set; }
+
+    public string EmployeeNameEn { get; set; }
+
+    public string EmployeeNameAr { get; set; }
+
+    public string OrganizationUnitName { get; set; }
+
+    public int DocumentTypeId { get; set; }
+
+    public string DocumentTypeNameEn { get; set; }
+
+    public string DocumentTypeNameAr { get; set; }
+
+    public string DocumentNum { get; set; }
+
+    public DateTime ExpiryDate { get; set; }
+
+    /// <summary>Negative once expired.</summary>
+    public int DaysLeft { get; set; }
+
+    public WorkforceDocumentStatus Status { get; set; }
 }

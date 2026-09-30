@@ -23,7 +23,9 @@
     "loc:WorkforceDashboard_TurnoverTrend": "dash.workforce.turnover-trend",
     "loc:WorkforceDashboard_ByQualification": "dash.workforce.qualification",
     "loc:WorkforceDashboard_ByJobTitle": "dash.workforce.job-title",
-    "loc:WorkforceDashboard_EmployeesList": "dash.workforce.employee-list"
+    "loc:WorkforceDashboard_EmployeesList": "dash.workforce.employee-list",
+    "loc:WorkforceDashboard_Movements": "dash.workforce.movements",
+    "loc:WorkforceDashboard_Documents": "dash.workforce.documents"
   },
   "fields": [
     {
@@ -270,6 +272,32 @@
       "rules": null,
       "when": null,
       "html": "<p><strong>What it is.</strong> The list behind <strong>Headcount</strong>, <strong>Joiners</strong> or <strong>Leavers</strong>, with every filter applied: code, name, department, job title, nationality, gender, age, years of service, joining date, and for leavers the last day in service. Click a row to open the employee.</p><p><strong>How it is calculated.</strong> The same rule as the figure you clicked, so the list always has exactly as many rows as the number said.</p><p><strong>Example.</strong> Click <strong>Leavers</strong> after clicking <strong>Female</strong> on the gender chart: the women who left this year.</p><p><strong>Why it matters.</strong> It is the evidence under the numbers, and it downloads as XLSX with the same filters.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.movements",
+      "label": "WorkforceDashboard_Movements",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Movements"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Five counts from legacy's Employee Status screen: pay on hold today, and who rejoined, left, was paid a final settlement or is still waiting for one. Click a bar to see who.</p><p><strong>How it is calculated.</strong></p><ul><li><strong>Pay on hold</strong> = <code>employees with a pay hold whose start and end dates cover the as-of date</code>.</li><li><strong>Rejoined</strong> = <code>employees with a rejoin date in the period</code>.</li><li><strong>Separated</strong> = <code>employees whose last day in service, on an unrevoked separation, falls in the period</code> — the same people as <strong>Leavers</strong>.</li><li><strong>Final settlement paid</strong> = <code>employees with a final-settlement payment dated in the period</code>.</li><li><strong>Awaiting final settlement</strong> = <code>employees whose last day in service has passed, with no final-settlement payment since their separation was submitted and no rejoin since</code>. This one is not limited to the period: someone who left last year and was never settled still shows.</li></ul><p>Each person counts once per bar. The unit and clicked-bar filters apply as on every other tile.</p><p><strong>Example.</strong> Pay on hold 3 · rejoined 2 · separated 11 · final settlement paid 8 · awaiting final settlement 4.</p><p><strong>Why it matters.</strong> Everyone under <strong>Awaiting final settlement</strong> is owed money; the list is the follow-up for payroll.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "dash.workforce.documents",
+      "label": "WorkforceDashboard_Documents",
+      "section": null,
+      "aliases": [
+        "loc:WorkforceDashboard_Documents"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Documents of the employees working today — passports, civil IDs, residence permits and so on — that have expired or will soon, by document type. Click a bar segment for that type and status, a legend entry for one status across all types, or <strong>Documents expired or expiring</strong> for the whole list.</p><p><strong>How it is calculated.</strong> For each employee and document type, only the <strong>latest</strong> document counts (the one with the latest expiry), so a renewed passport hides the old one.</p><ul><li><strong>Expired</strong> = <code>expiry date before the as-of date</code>.</li><li><strong>Expiring</strong> = <code>expiry date from the as-of date up to the type's notification period ahead</code>; a type with no notification period set looks 30 days ahead.</li></ul><p>Only approved documents count. People who have left are not included.</p><p><strong>Example.</strong> Civil ID: 5 expired · 12 expiring (30 days).</p><p><strong>Why it matters.</strong> An expired residence or work document is a legal risk; this is the renewal list.</p>",
       "adminHtml": "",
       "stub": false
     }

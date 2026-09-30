@@ -7481,5 +7481,25 @@
     <text name="WorkflowDashboard_OverdueList">Overdue requests</text>
     <text name="WorkflowDashboard_WaitingWithList">Waiting with {0}</text>
     <text name="WorkflowDashboard_WaitingBandList">Open requests waiting {0}</text>
+    <text name="WorkforceDashboard_Movements">Employee movements</text>
+    <text name="WorkforceDashboard_MovementsHint">Pay on hold today, and who rejoined, left and was settled in the period. Click a bar to see who.</text>
+    <text name="WorkforceDashboard_Movement">Movement</text>
+    <text name="WorkforceDashboard_Movement_OnHold">Pay on hold</text>
+    <text name="WorkforceDashboard_Movement_Rejoined">Rejoined</text>
+    <text name="WorkforceDashboard_Movement_Separated">Separated</text>
+    <text name="WorkforceDashboard_Movement_Settled">Final settlement paid</text>
+    <text name="WorkforceDashboard_Movement_AwaitingSettlement">Awaiting final settlement</text>
+    <text name="WorkforceDashboard_Documents">Documents expiring</text>
+    <text name="WorkforceDashboard_DocumentsHint">Expired, or expiring within each document type's notice period. Click a bar to see the documents.</text>
+    <text name="WorkforceDashboard_DocumentType">Document type</text>
+    <text name="WorkforceDashboard_DocumentNumber">Document no.</text>
+    <text name="WorkforceDashboard_ExpiryDate">Expiry date</text>
+    <text name="WorkforceDashboard_DaysLeft">Days left</text>
+    <text name="WorkforceDashboard_Document_Expired">Expired</text>
+    <text name="WorkforceDashboard_Document_Expiring">Expiring</text>
+    <text name="WorkforceDashboard_DocumentsList">Documents expired or expiring</text>
+    <text name="WorkforceDashboard_DocumentsOfType">{0}: {1}</text>
+    <text name="WorkforceDashboard_NoDocuments">No documents expired or expiring.</text>
+    <text name="WorkforceDashboard_NoMovements">No movements in this period.</text>
   </texts>
 </localizationDictionary>

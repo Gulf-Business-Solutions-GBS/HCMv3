@@ -456,6 +456,77 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ================= Movements and documents expiring ================= -->
+                <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 850ms">
+                    <div class="col-xl-5">
+                        <div data-help-loc="WorkforceDashboard_Movements" class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_Movements' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_MovementsHint' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_Movements' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Movements)" />
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (hasMovements()) {
+                                    <div class="ld-chart">
+                                        <ngx-charts-bar-horizontal
+                                            [results]="movementResults()"
+                                            [scheme]="movementColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [showDataLabel]="true"
+                                            [roundDomains]="true"
+                                            [trimYAxisTicks]="true"
+                                            [maxYAxisTickLength]="26"
+                                            (select)="onMovementSelect($event)" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoMovements' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-7">
+                        <div data-help-loc="WorkforceDashboard_Documents" class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_Documents' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_DocumentsHint' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar gap-2">
+                                    <button type="button" class="btn btn-sm btn-light ld-no-export" (click)="showActivity({ type: 'document' })">
+                                        {{ 'WorkforceDashboard_DocumentsList' | localize }}
+                                    </button>
+                                    <dashboard-export-menu [fileName]="'WorkforceDashboard_Documents' | localize" [disabled]="exporting()" (xlsx)="exportToExcel(Part.Documents)" />
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (documentResults().length) {
+                                    <div class="ld-chart" [style.height.px]="90 + documentResults().length * 34">
+                                        <ngx-charts-bar-horizontal-stacked
+                                            [results]="documentResults()"
+                                            [customColors]="documentColours()"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [legend]="true"
+                                            [legendTitle]="''"
+                                            [legendPosition]="legendBelow"
+                                            [roundDomains]="true"
+                                            [trimYAxisTicks]="true"
+                                            [maxYAxisTickLength]="22"
+                                            (select)="onDocumentSelect($event)" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoDocuments' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </div>
 
@@ -520,6 +591,86 @@
                             [showCurrentPageReport]="true"
                             [currentPageReportTemplate]="'TotalRecordsCount' | localize: rowsTotal()"
                             (onPageChange)="getRows($event)" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- ================= Movements or documents behind a figure ================= -->
+        @if (activity(); as list) {
+            <div class="card card-custom mb-5 ld-rise" #activityPanel>
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title fw-bold">{{ activityTitle() }}</h3>
+                    <div class="card-toolbar gap-2">
+                        <dashboard-export-menu [fileName]="activityTitle()" [disabled]="exporting()" (xlsx)="exportActivity()" />
+                        <button type="button" class="btn btn-sm btn-icon btn-light ld-no-export" (click)="closeActivity()" [attr.aria-label]="'Close' | localize">
+                            <i class="la la-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="primeng-datatable-container" [busyIf]="activityLoading()">
+                        @if (list.type === 'movement') {
+                            <p-table [value]="movementRows()" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
+                                <ng-template #header>
+                                    <tr>
+                                        <th>{{ 'Code' | localize }}</th>
+                                        <th>{{ 'Employee' | localize }}</th>
+                                        <th>{{ 'OrganizationUnit' | localize }}</th>
+                                        <th>{{ 'Date' | localize }}</th>
+                                        <th>{{ 'EndDate' | localize }}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template #body let-r>
+                                    <tr class="ld-row" (click)="openEmployee(r)">
+                                        <td>{{ r.employeeCode }}</td>
+                                        <td>{{ pick(r.employeeNameEn, r.employeeNameAr) }}</td>
+                                        <td>{{ r.organizationUnitName }}</td>
+                                        <td>{{ r.date | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                        <td>{{ r.endDate ? (r.endDate | luxonFormat: 'dd/MM/yyyy') : '' }}</td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template #emptymessage>
+                                    <tr><td colspan="5" class="text-muted text-center py-5">{{ 'WorkforceDashboard_NoMovements' | localize }}</td></tr>
+                                </ng-template>
+                            </p-table>
+                        } @else {
+                            <p-table [value]="documentRows()" [scrollable]="true" [tableStyle]="{ 'min-width': '60rem' }">
+                                <ng-template #header>
+                                    <tr>
+                                        <th>{{ 'Code' | localize }}</th>
+                                        <th>{{ 'Employee' | localize }}</th>
+                                        <th>{{ 'OrganizationUnit' | localize }}</th>
+                                        <th>{{ 'WorkforceDashboard_DocumentType' | localize }}</th>
+                                        <th>{{ 'WorkforceDashboard_DocumentNumber' | localize }}</th>
+                                        <th>{{ 'WorkforceDashboard_ExpiryDate' | localize }}</th>
+                                        <th class="text-end">{{ 'WorkforceDashboard_DaysLeft' | localize }}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template #body let-r>
+                                    <tr class="ld-row" (click)="openEmployee(r)">
+                                        <td>{{ r.employeeCode }}</td>
+                                        <td>{{ pick(r.employeeNameEn, r.employeeNameAr) }}</td>
+                                        <td>{{ r.organizationUnitName }}</td>
+                                        <td>{{ pick(r.documentTypeNameEn, r.documentTypeNameAr) }}</td>
+                                        <td>{{ r.documentNum }}</td>
+                                        <td [class.text-danger]="r.status === DocumentStatus.Expired">{{ r.expiryDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                        <td class="text-end" [class.text-danger]="r.status === DocumentStatus.Expired">{{ r.daysLeft }}</td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template #emptymessage>
+                                    <tr><td colspan="7" class="text-muted text-center py-5">{{ 'WorkforceDashboard_NoDocuments' | localize }}</td></tr>
+                                </ng-template>
+                            </p-table>
+                        }
+                        <p-paginator
+                            #activityPaginator
+                            [rows]="10"
+                            [totalRecords]="activityTotal()"
+                            [rowsPerPageOptions]="[10, 25, 50, 100]"
+                            [showCurrentPageReport]="true"
+                            [currentPageReportTemplate]="'TotalRecordsCount' | localize: activityTotal()"
+                            (onPageChange)="getActivityRows($event)" />
                     </div>
                 </div>
             </div>

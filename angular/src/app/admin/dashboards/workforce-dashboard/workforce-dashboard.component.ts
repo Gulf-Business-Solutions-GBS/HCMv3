@@ -19,14 +19,20 @@ import {
     DashboardScopeReason,
     ExportWorkforceDashboardInput,
     Gender,
+    GetWorkforceDocumentsInput,
     GetWorkforceEmployeesInput,
+    GetWorkforceMovementsInput,
     WorkforceAgeBand,
     WorkforceDashboardDto,
     WorkforceDashboardExportPart,
     WorkforceDashboardInput,
     WorkforceDashboardServiceProxy,
+    WorkforceDocumentRowDto,
+    WorkforceDocumentStatus,
     WorkforceEmployeeListKind,
     WorkforceEmployeeRowDto,
+    WorkforceMovementKind,
+    WorkforceMovementRowDto,
     WorkforceNamedCountDto,
     WorkforceOrgUnitBucketDto,
     WorkforceServiceBand,
@@ -55,6 +61,11 @@ interface AttributeFilter {
     jobTitleId?: number;
     label: string;
 }
+
+/** What the movements-and-documents list is showing. */
+type ActivityList =
+    | { type: 'movement'; kind: WorkforceMovementKind }
+    | { type: 'document'; documentTypeId?: number; status?: WorkforceDocumentStatus; typeName?: string };
 
 /**
  * Workforce Dashboard: replaces the legacy ESS Workforce dashboard (age, department, gender, nationality, years of
@@ -95,10 +106,13 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
 
     readonly paginator = viewChild<Paginator>('paginator');
     readonly detailPanel = viewChild<ElementRef<HTMLElement>>('detailPanel');
+    readonly activityPaginator = viewChild<Paginator>('activityPaginator');
+    readonly activityPanel = viewChild<ElementRef<HTMLElement>>('activityPanel');
     readonly filterPanel = viewChild<Popover>('filterPanel');
 
     readonly Part = WorkforceDashboardExportPart;
     readonly Kind = WorkforceEmployeeListKind;
+    readonly DocumentStatus = WorkforceDocumentStatus;
     readonly presets = PERIOD_PRESETS;
     readonly isArabic = abp.localization.currentLanguage.name?.startsWith('ar') ?? false;
     readonly legendBelow = LegendPosition.Below;
@@ -126,6 +140,12 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
     readonly rows = signal<WorkforceEmployeeRowDto[]>([]);
     readonly rowsTotal = signal(0);
     readonly rowsLoading = signal(false);
+
+    readonly activity = signal<ActivityList | undefined>(undefined);
+    readonly movementRows = signal<WorkforceMovementRowDto[]>([]);
+    readonly documentRows = signal<WorkforceDocumentRowDto[]>([]);
+    readonly activityTotal = signal(0);
+    readonly activityLoading = signal(false);
 
     private _dashboardRequest: Subscription | undefined;
 
@@ -159,6 +179,48 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
             series: (this.dashboard()?.trend ?? []).map((p) => ({ name: p.monthStart.toFormat('MMM yyyy'), value: p.turnoverPercent ?? 0 })),
         },
     ]);
+
+    readonly movementColour: Color = {
+        name: 'wfMovement',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#f59e0b', '#10b981', '#ef4444', '#3b82f6', '#8b5cf6'],
+    };
+
+    readonly documentColours = computed(() => [
+        { name: this.l('WorkforceDashboard_Document_Expired'), value: '#ef4444' },
+        { name: this.l('WorkforceDashboard_Document_Expiring'), value: '#f59e0b' },
+    ]);
+
+    readonly movementResults = computed<ChartItem[]>(() =>
+        (this.dashboard()?.movements ?? []).map((m) => ({ name: this.movementLabel(m.kind), value: m.count }))
+    );
+
+    readonly hasMovements = computed(() => (this.dashboard()?.movements ?? []).some((m) => m.count > 0));
+
+    readonly documentResults = computed(() =>
+        (this.dashboard()?.documents ?? []).map((d) => ({
+            name: this.pick(d.nameEn, d.nameAr),
+            series: [
+                { name: this.l('WorkforceDashboard_Document_Expired'), value: d.expired },
+                { name: this.l('WorkforceDashboard_Document_Expiring'), value: d.expiring },
+            ],
+        }))
+    );
+
+    readonly activityTitle = computed(() => {
+        const list = this.activity();
+        if (!list) {
+            return '';
+        }
+        if (list.type === 'movement') {
+            return this.movementLabel(list.kind);
+        }
+        if (list.typeName && list.status !== undefined) {
+            return this.l('WorkforceDashboard_DocumentsOfType', list.typeName, this.documentStatusLabel(list.status));
+        }
+        return this.l('WorkforceDashboard_DocumentsList');
+    });
 
     readonly hasMovement = computed(() => (this.dashboard()?.trend ?? []).some((p) => p.joiners > 0 || p.leavers > 0));
 
@@ -230,6 +292,10 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
                 this.dashboard.set(dto);
                 if (this.detailKind() !== undefined) {
                     this.reloadRows();
+                }
+                if (this.activity()) {
+                    this.activityPaginator()?.changePage(0);
+                    this.getActivityRows({ first: 0, rows: this.activityPaginator()?.rows ?? 10 });
                 }
             });
         this._dashboardRequest = request;
@@ -410,6 +476,87 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
         this.detailKind.set(undefined);
     }
 
+    onMovementSelect(event: { name?: string }): void {
+        const count = (this.dashboard()?.movements ?? []).find((m) => this.movementLabel(m.kind) === event.name);
+        if (count) {
+            this.showActivity({ type: 'movement', kind: count.kind });
+        }
+    }
+
+    /** A bar segment is a type and a status; a legend click is a status across every type. */
+    onDocumentSelect(event: { name?: string; series?: string }): void {
+        const status = [WorkforceDocumentStatus.Expired, WorkforceDocumentStatus.Expiring].find(
+            (s) => this.documentStatusLabel(s) === event.name
+        );
+        const type = (this.dashboard()?.documents ?? []).find((d) => this.pick(d.nameEn, d.nameAr) === event.series);
+        this.showActivity({
+            type: 'document',
+            documentTypeId: type?.documentTypeId,
+            typeName: type ? this.pick(type.nameEn, type.nameAr) : undefined,
+            status,
+        });
+    }
+
+    showActivity(list: ActivityList): void {
+        const wasOpen = this.activity() !== undefined;
+        this.activity.set(list);
+        this.movementRows.set([]);
+        this.documentRows.set([]);
+
+        if (wasOpen) {
+            this.activityPaginator()?.changePage(0);
+        }
+        this.getActivityRows({ first: 0, rows: this.activityPaginator()?.rows ?? 10 });
+
+        setTimeout(() => this.activityPanel()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+
+    getActivityRows(event?: LazyLoadEvent): void {
+        const list = this.activity();
+        if (!list) {
+            return;
+        }
+
+        const skip = event?.first ?? 0;
+        const take = event?.rows ?? this.activityPaginator()?.rows ?? 10;
+        this.activityLoading.set(true);
+
+        if (list.type === 'movement') {
+            const input = this.buildInput(new GetWorkforceMovementsInput());
+            input.kind = list.kind;
+            input.skipCount = skip;
+            input.maxResultCount = take;
+            this._service
+                .getMovements(input)
+                .pipe(finalize(() => this.activityLoading.set(false)))
+                .subscribe((result) => {
+                    this.activityTotal.set(result.totalCount);
+                    this.movementRows.set(result.items);
+                });
+        } else {
+            const input = this.buildInput(new GetWorkforceDocumentsInput());
+            input.documentTypeId = list.documentTypeId;
+            input.status = list.status;
+            input.skipCount = skip;
+            input.maxResultCount = take;
+            this._service
+                .getDocuments(input)
+                .pipe(finalize(() => this.activityLoading.set(false)))
+                .subscribe((result) => {
+                    this.activityTotal.set(result.totalCount);
+                    this.documentRows.set(result.items);
+                });
+        }
+    }
+
+    closeActivity(): void {
+        this.activity.set(undefined);
+    }
+
+    exportActivity(): void {
+        this.exportToExcel(this.activity()?.type === 'document' ? WorkforceDashboardExportPart.Documents : WorkforceDashboardExportPart.Movements);
+    }
+
     exportToExcel(part: WorkforceDashboardExportPart): void {
         const input = this.buildInput(new ExportWorkforceDashboardInput());
         input.part = part;
@@ -432,7 +579,7 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
         }
     }
 
-    openEmployee(row: WorkforceEmployeeRowDto): void {
+    openEmployee(row: { employeeId: number }): void {
         if (this.permission.isGranted('Pages.PersonnelAdministration.Employees')) {
             this._router.navigate(['/app/admin/employees', row.employeeId]);
         }
@@ -442,6 +589,14 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
 
     pick(en?: string, ar?: string): string {
         return (this.isArabic ? ar || en : en || ar) ?? '';
+    }
+
+    movementLabel(kind: WorkforceMovementKind): string {
+        return this.l('WorkforceDashboard_Movement_' + WorkforceMovementKind[kind]);
+    }
+
+    documentStatusLabel(status: WorkforceDocumentStatus): string {
+        return this.l('WorkforceDashboard_Document_' + WorkforceDocumentStatus[status]);
     }
 
     ageLabel(band: WorkforceAgeBand): string {
