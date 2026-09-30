@@ -5616,10 +5616,13 @@
       },
       "surfaces": {
         "edit": {
-          "template": "angular/src/app/admin/workflow/request-details/create-or-edit-request-detail-modal.component.html"
+          "template": "angular/src/app/admin/workflow/request-master-detail/request-master-steps/create-or-edit-request-detail-modal.component.html"
         }
       },
-      "defaultSection": "RequestDetails"
+      "defaultSection": "RequestDetails",
+      "propertyAliases": {
+        "RequestMasterName": "RequestMasterId"
+      }
     },
     {
       "helpId": "wf.request-log.edit",
