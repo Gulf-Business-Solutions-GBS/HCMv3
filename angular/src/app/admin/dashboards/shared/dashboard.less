@@ -1,4 +1,4 @@
-// Leave Dashboard. Theme colours only (--bs-*), so light and dark themes both work.
+// Shared by every dashboard (Leave, Workforce, ...). Theme colours only (--bs-*), so light and dark themes both work.
 
 .ld-toolbar {
     display: flex;
@@ -272,5 +272,16 @@
         line-height: 1;
         padding: 0 0.3rem;
         cursor: pointer;
+    }
+}
+
+// A headline figure with nothing behind it to list: no pointer, no lift.
+div.ld-kpi {
+    cursor: default;
+
+    &:hover {
+        border-color: var(--bs-gray-200);
+        box-shadow: var(--bs-box-shadow-sm);
+        transform: none;
     }
 }

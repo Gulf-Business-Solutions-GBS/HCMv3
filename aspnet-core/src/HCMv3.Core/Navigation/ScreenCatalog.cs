@@ -593,5 +593,6 @@ public static class ScreenCatalog
         new("app.admin.workflow-roles", "SWF010", "Workflow", "WorkflowRoles", "/app/admin/workflow-roles", "Pages.Workflow.WorkflowRoles"),
         // Dashboards get their own series: they span modules (leave is Personnel data read by HR and managers).
         new("app.admin.leave-dashboard", "SDSH001", "Dashboards", "LeaveDashboard", "/app/admin/leave-dashboard", "Pages.Dashboards.Leave"),
+        new("app.admin.workforce-dashboard", "SDSH002", "Dashboards", "WorkforceDashboard", "/app/admin/workforce-dashboard", "Pages.Dashboards.Workforce"),
     };
 }

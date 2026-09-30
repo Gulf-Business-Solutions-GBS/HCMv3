@@ -115,10 +115,10 @@ public class LeaveDashboardDto
     public List<LeaveDashboardTypeBucketDto> ByType { get; set; } = new();
 
     /// <summary>Breadcrumb from the top down to the selected unit. Empty when no unit is selected.</summary>
-    public List<LeaveDashboardOrgUnitOptionDto> OrgUnitPath { get; set; } = new();
+    public List<DashboardOrgUnitOptionDto> OrgUnitPath { get; set; } = new();
 
     /// <summary>Units that hold at least one in-scope employee, plus their ancestors, in tree order.</summary>
-    public List<LeaveDashboardOrgUnitOptionDto> OrgUnitOptions { get; set; } = new();
+    public List<DashboardOrgUnitOptionDto> OrgUnitOptions { get; set; } = new();
 }
 
 public class LeaveDashboardKpisDto
@@ -218,13 +218,4 @@ public class LeaveDashboardTypeBucketDto
     public int Employees { get; set; }
 
     public double LeaveDays { get; set; }
-}
-
-public class LeaveDashboardOrgUnitOptionDto
-{
-    public long Id { get; set; }
-
-    public string Name { get; set; }
-
-    public int Depth { get; set; }
 }

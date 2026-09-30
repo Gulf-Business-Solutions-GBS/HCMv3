@@ -10,6 +10,7 @@ using ClosedXML.Excel;
 using HCMv3.Dashboards.Leave.Dto;
 using HCMv3.Dto;
 using HCMv3.Storage;
+using static HCMv3.Dashboards.DashboardExcel;
 
 namespace HCMv3.Dashboards.Leave;
 
@@ -42,9 +43,7 @@ public class LeaveDashboardExportData
 /// </summary>
 public class LeaveDashboardExcelExporter : AbpServiceBase, ITransientDependency
 {
-    private static readonly XLColor HeaderFill = XLColor.FromHtml("#E9EEF6");
     private static readonly XLColor AlertFont = XLColor.FromHtml("#C0392B");
-    private const string DateFormat = "dd/MM/yyyy";
 
     private readonly ITempFileCacheManager _tempFiles;
 
@@ -288,88 +287,5 @@ public class LeaveDashboardExcelExporter : AbpServiceBase, ITransientDependency
         }
 
         Finish(sheet, headers.Count, r - 1);
-    }
-
-    // ---------------------------------------------------------------- helpers
-
-    private static void Title(IXLWorksheet sheet, string title)
-    {
-        sheet.Cell(1, 1).SetValue(title);
-        sheet.Cell(1, 1).Style.Font.Bold = true;
-        sheet.Cell(1, 1).Style.Font.FontSize = 14;
-    }
-
-    private static void Header(IXLWorksheet sheet, int row, IReadOnlyList<string> headers)
-    {
-        for (var i = 0; i < headers.Count; i++)
-        {
-            sheet.Cell(row, i + 1).SetValue(headers[i]);
-        }
-
-        var range = sheet.Range(row, 1, row, headers.Count);
-        range.Style.Font.Bold = true;
-        range.Style.Fill.BackgroundColor = HeaderFill;
-    }
-
-    private static void Finish(IXLWorksheet sheet, int columns, int lastRow)
-    {
-        if (lastRow >= 3)
-        {
-            sheet.Range(3, 1, lastRow, columns).SetAutoFilter();
-        }
-
-        sheet.SheetView.FreezeRows(3);
-        sheet.Columns(1, columns).AdjustToContents(3, Math.Min(lastRow, 500));
-    }
-
-    private static void SetCell(IXLCell cell, object value)
-    {
-        switch (value)
-        {
-            case null:
-                return;
-            case DateTime date:
-                cell.SetValue(date);
-                cell.Style.DateFormat.Format = DateFormat;
-                return;
-            case int number:
-                cell.SetValue(number);
-                return;
-            case double number:
-                cell.SetValue(number);
-                return;
-            default:
-                cell.SetValue(value.ToString());
-                return;
-        }
-    }
-
-    private static string Pick(bool arabic, string en, string ar) =>
-        arabic ? (string.IsNullOrWhiteSpace(ar) ? en : ar) : (string.IsNullOrWhiteSpace(en) ? ar : en);
-
-    /// <summary>Excel refuses sheet names over 31 characters, repeated names, or any of : \ / ? * [ ].</summary>
-    private static string Sheet(string name, XLWorkbook book = null)
-    {
-        var clean = new string((name ?? "Sheet").Where(c => !":\\/?*[]".Contains(c)).ToArray()).Trim();
-        if (clean.Length == 0)
-        {
-            clean = "Sheet";
-        }
-
-        clean = clean.Length > 31 ? clean[..31] : clean;
-
-        if (book == null)
-        {
-            return clean;
-        }
-
-        var candidate = clean;
-        for (var i = 2; book.Worksheets.Any(w => string.Equals(w.Name, candidate, StringComparison.OrdinalIgnoreCase)); i++)
-        {
-            var suffix = " " + i;
-            candidate = (clean.Length + suffix.Length > 31 ? clean[..(31 - suffix.Length)] : clean) + suffix;
-        }
-
-        return candidate;
     }
 }

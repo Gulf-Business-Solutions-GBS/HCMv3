@@ -33,9 +33,8 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { CountUpDirective } from '../shared/count-up.directive';
+import { PERIOD_PRESETS, PeriodPreset, periodOf, presetLabelKey, scopeLabel } from '../shared/dashboard-shared';
 
-/** Period shortcuts in the filter window. Year to date is the default. */
-type PeriodPreset = 'yearToDate' | 'thisYear' | 'lastYear' | 'thisMonth' | 'custom';
 
 /** Which list the detail panel is showing. */
 type DetailKind = 'onLeaveToday' | 'notReturned' | 'startingSoon' | 'returningSoon' | 'pending' | 'period' | 'day';
@@ -58,7 +57,7 @@ interface ChartItem {
  */
 @Component({
     templateUrl: './leave-dashboard.component.html',
-    styleUrls: ['./leave-dashboard.component.less'],
+    styleUrls: ['../shared/dashboard.less'],
     animations: [appModuleAnimation()],
     imports: [
         SubHeaderComponent,
@@ -86,7 +85,7 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
     readonly filterPanel = viewChild<Popover>('filterPanel');
 
     readonly Part = LeaveDashboardExportPart;
-    readonly presets: PeriodPreset[] = ['yearToDate', 'thisYear', 'lastYear', 'thisMonth', 'custom'];
+    readonly presets = PERIOD_PRESETS;
 
     readonly isArabic = abp.localization.currentLanguage.name?.startsWith('ar') ?? false;
     readonly legendBelow = LegendPosition.Below;
@@ -98,8 +97,8 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
 
     // Applied filters: what the dashboard currently shows.
     readonly preset = signal<PeriodPreset>('yearToDate');
-    readonly fromDate = signal<Date>(LeaveDashboardComponent.periodOf('yearToDate').from);
-    readonly toDate = signal<Date>(LeaveDashboardComponent.periodOf('yearToDate').to);
+    readonly fromDate = signal<Date>(periodOf('yearToDate').from);
+    readonly toDate = signal<Date>(periodOf('yearToDate').to);
     readonly organizationUnitId = signal<number | undefined>(undefined);
     readonly absenceTypeId = signal<number | undefined>(undefined);
 
@@ -297,37 +296,8 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
 
     // ------------------------------------------------------------ filter actions
 
-    /** The dates a preset stands for, worked out on the day it is picked. Custom keeps whatever was there. */
-    static periodOf(preset: PeriodPreset): { from: Date; to: Date } {
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const year = now.getFullYear();
-
-        switch (preset) {
-            case 'thisYear':
-                return { from: new Date(year, 0, 1), to: new Date(year, 11, 31) };
-            case 'lastYear':
-                return { from: new Date(year - 1, 0, 1), to: new Date(year - 1, 11, 31) };
-            case 'thisMonth':
-                return { from: new Date(year, now.getMonth(), 1), to: new Date(year, now.getMonth() + 1, 0) };
-            default:
-                return { from: new Date(year, 0, 1), to: today };
-        }
-    }
-
     presetLabel(preset: PeriodPreset): string {
-        switch (preset) {
-            case 'thisYear':
-                return this.l('LeaveDashboard_ThisYear');
-            case 'lastYear':
-                return this.l('LeaveDashboard_LastYear');
-            case 'thisMonth':
-                return this.l('ThisMonth');
-            case 'custom':
-                return this.l('Custom');
-            default:
-                return this.l('LeaveDashboard_YearToDate');
-        }
+        return this.l(presetLabelKey(preset));
     }
 
     /** Opens the filter window with a copy of what is applied, so closing it without Apply changes nothing. */
@@ -343,7 +313,7 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
     pickPreset(preset: PeriodPreset): void {
         this.draftPreset.set(preset);
         if (preset !== 'custom') {
-            const period = LeaveDashboardComponent.periodOf(preset);
+            const period = periodOf(preset);
             this.draftFrom.set(period.from);
             this.draftTo.set(period.to);
         }
@@ -527,27 +497,8 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
         return this.pick(row.absenceTypeNameEn, row.absenceTypeNameAr);
     }
 
-    /** "All employees (Admin)", "Finance + Payroll + your team", ... -- the server's reason, in words. */
-    readonly scopeLabel = computed(() => {
-        const scope = this.dashboard()?.scope;
-        if (!scope) {
-            return '';
-        }
-
-        switch (scope.reason) {
-            case DashboardScopeReason.Admin:
-                return this.l('Dashboard_ScopeAllAdmin');
-            case DashboardScopeReason.Nobody:
-                return this.l('Dashboard_ScopeNobody');
-            default: {
-                const parts = [...(scope.orgUnitNames ?? [])];
-                if (scope.includesOwnTeam) {
-                    parts.push(this.l('Dashboard_ScopeYourTeam'));
-                }
-                return parts.join(' + ');
-            }
-        }
-    });
+    /** "All employees (Admin)", "Finance + Payroll + your team", ... -- shared wording, see dashboard-shared.ts. */
+    readonly scopeLabel = computed(() => scopeLabel(this.dashboard()?.scope, (key) => this.l(key)));
 
     readonly scopeIsNobody = computed(() => this.dashboard()?.scope?.reason === DashboardScopeReason.Nobody);
 

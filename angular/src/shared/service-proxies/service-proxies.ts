@@ -162944,6 +162944,186 @@ export class WorkflowTransactionTypesServiceProxy {
 }
 
 @Injectable()
+export class WorkforceDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDashboard(body?: WorkforceDashboardInput | undefined): Observable<WorkforceDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkforceDashboard/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkforceDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkforceDashboardDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<WorkforceDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkforceDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployees(body?: GetWorkforceEmployeesInput | undefined): Observable<PagedResultDtoOfWorkforceEmployeeRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkforceDashboard/GetEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployees(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfWorkforceEmployeeRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfWorkforceEmployeeRowDto>;
+        }));
+    }
+
+    protected processGetEmployees(response: HttpResponseBase): Observable<PagedResultDtoOfWorkforceEmployeeRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfWorkforceEmployeeRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: ExportWorkforceDashboardInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkforceDashboard/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class WorkLocationDutyPeriodsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -200991,6 +201171,50 @@ export interface IDashboard {
     pages: Page[] | undefined;
 }
 
+export class DashboardOrgUnitOptionDto implements IDashboardOrgUnitOptionDto {
+    id!: number;
+    name!: string | undefined;
+    depth!: number;
+
+    constructor(data?: IDashboardOrgUnitOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.depth = _data["depth"];
+        }
+    }
+
+    static fromJS(data: any): DashboardOrgUnitOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashboardOrgUnitOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["depth"] = this.depth;
+        return data;
+    }
+}
+
+export interface IDashboardOrgUnitOptionDto {
+    id: number;
+    name: string | undefined;
+    depth: number;
+}
+
 export class DashboardOutput implements IDashboardOutput {
     name!: string | undefined;
     widgets!: WidgetOutput[] | undefined;
@@ -220087,6 +220311,78 @@ export interface IExportLeaveDashboardInput {
     absenceTypeId: number | undefined;
     part: LeaveDashboardExportPart;
     day: DateTime | undefined;
+}
+
+export class ExportWorkforceDashboardInput implements IExportWorkforceDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    gender!: Gender;
+    nationalityId!: number | undefined;
+    ageBand!: WorkforceAgeBand;
+    serviceBand!: WorkforceServiceBand;
+    qualificationId!: number | undefined;
+    jobTitleId!: number | undefined;
+    part!: WorkforceDashboardExportPart;
+
+    constructor(data?: IExportWorkforceDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.gender = _data["gender"];
+            this.nationalityId = _data["nationalityId"];
+            this.ageBand = _data["ageBand"];
+            this.serviceBand = _data["serviceBand"];
+            this.qualificationId = _data["qualificationId"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.part = _data["part"];
+        }
+    }
+
+    static fromJS(data: any): ExportWorkforceDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportWorkforceDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["gender"] = this.gender;
+        data["nationalityId"] = this.nationalityId;
+        data["ageBand"] = this.ageBand;
+        data["serviceBand"] = this.serviceBand;
+        data["qualificationId"] = this.qualificationId;
+        data["jobTitleId"] = this.jobTitleId;
+        data["part"] = this.part;
+        return data;
+    }
+}
+
+export interface IExportWorkforceDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    gender: Gender;
+    nationalityId: number | undefined;
+    ageBand: WorkforceAgeBand;
+    serviceBand: WorkforceServiceBand;
+    qualificationId: number | undefined;
+    jobTitleId: number | undefined;
+    part: WorkforceDashboardExportPart;
 }
 
 export class ExternalAuthenticateModel implements IExternalAuthenticateModel {
@@ -267886,6 +268182,86 @@ export interface IGetWorkflowTransactionTypeForEditOutput {
     workflowTransactionType: CreateOrEditWorkflowTransactionTypeDto;
 }
 
+export class GetWorkforceEmployeesInput implements IGetWorkforceEmployeesInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    gender!: Gender;
+    nationalityId!: number | undefined;
+    ageBand!: WorkforceAgeBand;
+    serviceBand!: WorkforceServiceBand;
+    qualificationId!: number | undefined;
+    jobTitleId!: number | undefined;
+    kind!: WorkforceEmployeeListKind;
+    skipCount!: number;
+    maxResultCount!: number;
+
+    constructor(data?: IGetWorkforceEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.gender = _data["gender"];
+            this.nationalityId = _data["nationalityId"];
+            this.ageBand = _data["ageBand"];
+            this.serviceBand = _data["serviceBand"];
+            this.qualificationId = _data["qualificationId"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.kind = _data["kind"];
+            this.skipCount = _data["skipCount"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkforceEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkforceEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["gender"] = this.gender;
+        data["nationalityId"] = this.nationalityId;
+        data["ageBand"] = this.ageBand;
+        data["serviceBand"] = this.serviceBand;
+        data["qualificationId"] = this.qualificationId;
+        data["jobTitleId"] = this.jobTitleId;
+        data["kind"] = this.kind;
+        data["skipCount"] = this.skipCount;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface IGetWorkforceEmployeesInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    gender: Gender;
+    nationalityId: number | undefined;
+    ageBand: WorkforceAgeBand;
+    serviceBand: WorkforceServiceBand;
+    qualificationId: number | undefined;
+    jobTitleId: number | undefined;
+    kind: WorkforceEmployeeListKind;
+    skipCount: number;
+    maxResultCount: number;
+}
+
 export class GetYearlyLeaveIndemnityDetailReportInput implements IGetYearlyLeaveIndemnityDetailReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -276100,8 +276476,8 @@ export class LeaveDashboardDto implements ILeaveDashboardDto {
     trend!: LeaveDashboardTrendPointDto[] | undefined;
     byOrgUnit!: LeaveDashboardOrgUnitBucketDto[] | undefined;
     byType!: LeaveDashboardTypeBucketDto[] | undefined;
-    orgUnitPath!: LeaveDashboardOrgUnitOptionDto[] | undefined;
-    orgUnitOptions!: LeaveDashboardOrgUnitOptionDto[] | undefined;
+    orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
 
     constructor(data?: ILeaveDashboardDto) {
         if (data) {
@@ -276163,12 +276539,12 @@ export class LeaveDashboardDto implements ILeaveDashboardDto {
             if (Array.isArray(_data["orgUnitPath"])) {
                 this.orgUnitPath = [] as any;
                 for (let item of _data["orgUnitPath"])
-                    this.orgUnitPath!.push(LeaveDashboardOrgUnitOptionDto.fromJS(item));
+                    this.orgUnitPath!.push(DashboardOrgUnitOptionDto.fromJS(item));
             }
             if (Array.isArray(_data["orgUnitOptions"])) {
                 this.orgUnitOptions = [] as any;
                 for (let item of _data["orgUnitOptions"])
-                    this.orgUnitOptions!.push(LeaveDashboardOrgUnitOptionDto.fromJS(item));
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
             }
         }
     }
@@ -276257,8 +276633,8 @@ export interface ILeaveDashboardDto {
     trend: LeaveDashboardTrendPointDto[] | undefined;
     byOrgUnit: LeaveDashboardOrgUnitBucketDto[] | undefined;
     byType: LeaveDashboardTypeBucketDto[] | undefined;
-    orgUnitPath: LeaveDashboardOrgUnitOptionDto[] | undefined;
-    orgUnitOptions: LeaveDashboardOrgUnitOptionDto[] | undefined;
+    orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
 }
 
 export enum LeaveDashboardExportPart {
@@ -276573,50 +276949,6 @@ export interface ILeaveDashboardOrgUnitBucketDto {
     hasChildren: boolean;
     employees: number;
     leaveDays: number;
-}
-
-export class LeaveDashboardOrgUnitOptionDto implements ILeaveDashboardOrgUnitOptionDto {
-    id!: number;
-    name!: string | undefined;
-    depth!: number;
-
-    constructor(data?: ILeaveDashboardOrgUnitOptionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.depth = _data["depth"];
-        }
-    }
-
-    static fromJS(data: any): LeaveDashboardOrgUnitOptionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new LeaveDashboardOrgUnitOptionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["depth"] = this.depth;
-        return data;
-    }
-}
-
-export interface ILeaveDashboardOrgUnitOptionDto {
-    id: number;
-    name: string | undefined;
-    depth: number;
 }
 
 export class LeaveDashboardTrendPointDto implements ILeaveDashboardTrendPointDto {
@@ -315263,6 +315595,54 @@ export interface IPagedResultDtoOfWorkflowTransactionTypeDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfWorkforceEmployeeRowDto implements IPagedResultDtoOfWorkforceEmployeeRowDto {
+    items!: WorkforceEmployeeRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfWorkforceEmployeeRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkforceEmployeeRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfWorkforceEmployeeRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfWorkforceEmployeeRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfWorkforceEmployeeRowDto {
+    items: WorkforceEmployeeRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfYearlyLeaveIndemnityDetailReportRowDto implements IPagedResultDtoOfYearlyLeaveIndemnityDetailReportRowDto {
     items!: YearlyLeaveIndemnityDetailReportRowDto[] | undefined;
     totalCount!: number;
@@ -347050,6 +347430,704 @@ export interface IWorkflowTransactionTypeDto {
     displayOrder: number;
     isActive: boolean;
     allowDirectEntry: boolean;
+}
+
+export enum WorkforceAgeBand {
+    Under21 = 0,
+    From21To30 = 1,
+    From31To40 = 2,
+    From41To50 = 3,
+    Above50 = 4,
+    Unknown = 5,
+}
+
+export class WorkforceBandCountDto implements IWorkforceBandCountDto {
+    band!: number;
+    count!: number;
+
+    constructor(data?: IWorkforceBandCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.band = _data["band"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceBandCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceBandCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["band"] = this.band;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IWorkforceBandCountDto {
+    band: number;
+    count: number;
+}
+
+export class WorkforceDashboardDto implements IWorkforceDashboardDto {
+    scope!: DashboardScopeDto;
+    asOfDate!: DateTime;
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    kpis!: WorkforceKpisDto;
+    trend!: WorkforceTrendPointDto[] | undefined;
+    ageBands!: WorkforceBandCountDto[] | undefined;
+    serviceBands!: WorkforceBandCountDto[] | undefined;
+    genders!: WorkforceGenderCountDto[] | undefined;
+    nationalities!: WorkforceNamedCountDto[] | undefined;
+    qualifications!: WorkforceNamedCountDto[] | undefined;
+    jobTitles!: WorkforceNamedCountDto[] | undefined;
+    byOrgUnit!: WorkforceOrgUnitBucketDto[] | undefined;
+    orgUnitPath!: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: IWorkforceDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.kpis = _data["kpis"] ? WorkforceKpisDto.fromJS(_data["kpis"]) : undefined as any;
+            if (Array.isArray(_data["trend"])) {
+                this.trend = [] as any;
+                for (let item of _data["trend"])
+                    this.trend!.push(WorkforceTrendPointDto.fromJS(item));
+            }
+            if (Array.isArray(_data["ageBands"])) {
+                this.ageBands = [] as any;
+                for (let item of _data["ageBands"])
+                    this.ageBands!.push(WorkforceBandCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceBands"])) {
+                this.serviceBands = [] as any;
+                for (let item of _data["serviceBands"])
+                    this.serviceBands!.push(WorkforceBandCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["genders"])) {
+                this.genders = [] as any;
+                for (let item of _data["genders"])
+                    this.genders!.push(WorkforceGenderCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["nationalities"])) {
+                this.nationalities = [] as any;
+                for (let item of _data["nationalities"])
+                    this.nationalities!.push(WorkforceNamedCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["qualifications"])) {
+                this.qualifications = [] as any;
+                for (let item of _data["qualifications"])
+                    this.qualifications!.push(WorkforceNamedCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["jobTitles"])) {
+                this.jobTitles = [] as any;
+                for (let item of _data["jobTitles"])
+                    this.jobTitles!.push(WorkforceNamedCountDto.fromJS(item));
+            }
+            if (Array.isArray(_data["byOrgUnit"])) {
+                this.byOrgUnit = [] as any;
+                for (let item of _data["byOrgUnit"])
+                    this.byOrgUnit!.push(WorkforceOrgUnitBucketDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitPath"])) {
+                this.orgUnitPath = [] as any;
+                for (let item of _data["orgUnitPath"])
+                    this.orgUnitPath!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): WorkforceDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["kpis"] = this.kpis ? this.kpis.toJSON() : undefined as any;
+        if (Array.isArray(this.trend)) {
+            data["trend"] = [];
+            for (let item of this.trend)
+                data["trend"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.ageBands)) {
+            data["ageBands"] = [];
+            for (let item of this.ageBands)
+                data["ageBands"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.serviceBands)) {
+            data["serviceBands"] = [];
+            for (let item of this.serviceBands)
+                data["serviceBands"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.genders)) {
+            data["genders"] = [];
+            for (let item of this.genders)
+                data["genders"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.nationalities)) {
+            data["nationalities"] = [];
+            for (let item of this.nationalities)
+                data["nationalities"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.qualifications)) {
+            data["qualifications"] = [];
+            for (let item of this.qualifications)
+                data["qualifications"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.jobTitles)) {
+            data["jobTitles"] = [];
+            for (let item of this.jobTitles)
+                data["jobTitles"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.byOrgUnit)) {
+            data["byOrgUnit"] = [];
+            for (let item of this.byOrgUnit)
+                data["byOrgUnit"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitPath)) {
+            data["orgUnitPath"] = [];
+            for (let item of this.orgUnitPath)
+                data["orgUnitPath"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IWorkforceDashboardDto {
+    scope: DashboardScopeDto;
+    asOfDate: DateTime;
+    fromDate: DateTime;
+    toDate: DateTime;
+    kpis: WorkforceKpisDto;
+    trend: WorkforceTrendPointDto[] | undefined;
+    ageBands: WorkforceBandCountDto[] | undefined;
+    serviceBands: WorkforceBandCountDto[] | undefined;
+    genders: WorkforceGenderCountDto[] | undefined;
+    nationalities: WorkforceNamedCountDto[] | undefined;
+    qualifications: WorkforceNamedCountDto[] | undefined;
+    jobTitles: WorkforceNamedCountDto[] | undefined;
+    byOrgUnit: WorkforceOrgUnitBucketDto[] | undefined;
+    orgUnitPath: DashboardOrgUnitOptionDto[] | undefined;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
+}
+
+export enum WorkforceDashboardExportPart {
+    All = 0,
+    Headcount = 1,
+    Joiners = 2,
+    Leavers = 3,
+    Trend = 4,
+    Age = 5,
+    Gender = 6,
+    Nationality = 7,
+    Service = 8,
+    ByOrgUnit = 9,
+    Qualification = 10,
+    JobTitle = 11,
+}
+
+export class WorkforceDashboardInput implements IWorkforceDashboardInput {
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    gender!: Gender;
+    nationalityId!: number | undefined;
+    ageBand!: WorkforceAgeBand;
+    serviceBand!: WorkforceServiceBand;
+    qualificationId!: number | undefined;
+    jobTitleId!: number | undefined;
+
+    constructor(data?: IWorkforceDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.gender = _data["gender"];
+            this.nationalityId = _data["nationalityId"];
+            this.ageBand = _data["ageBand"];
+            this.serviceBand = _data["serviceBand"];
+            this.qualificationId = _data["qualificationId"];
+            this.jobTitleId = _data["jobTitleId"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["gender"] = this.gender;
+        data["nationalityId"] = this.nationalityId;
+        data["ageBand"] = this.ageBand;
+        data["serviceBand"] = this.serviceBand;
+        data["qualificationId"] = this.qualificationId;
+        data["jobTitleId"] = this.jobTitleId;
+        return data;
+    }
+}
+
+export interface IWorkforceDashboardInput {
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    gender: Gender;
+    nationalityId: number | undefined;
+    ageBand: WorkforceAgeBand;
+    serviceBand: WorkforceServiceBand;
+    qualificationId: number | undefined;
+    jobTitleId: number | undefined;
+}
+
+export enum WorkforceEmployeeListKind {
+    Headcount = 0,
+    Joiners = 1,
+    Leavers = 2,
+}
+
+export class WorkforceEmployeeRowDto implements IWorkforceEmployeeRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    organizationUnitName!: string | undefined;
+    jobTitleNameEn!: string | undefined;
+    jobTitleNameAr!: string | undefined;
+    nationalityNameEn!: string | undefined;
+    nationalityNameAr!: string | undefined;
+    gender!: Gender;
+    age!: number | undefined;
+    serviceYears!: number;
+    joiningDate!: DateTime;
+    lastDayInService!: DateTime | undefined;
+    separationType!: SeparationType;
+
+    constructor(data?: IWorkforceEmployeeRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.jobTitleNameEn = _data["jobTitleNameEn"];
+            this.jobTitleNameAr = _data["jobTitleNameAr"];
+            this.nationalityNameEn = _data["nationalityNameEn"];
+            this.nationalityNameAr = _data["nationalityNameAr"];
+            this.gender = _data["gender"];
+            this.age = _data["age"];
+            this.serviceYears = _data["serviceYears"];
+            this.joiningDate = _data["joiningDate"] ? DateTime.fromISO(_data["joiningDate"].toString()) : undefined as any;
+            this.lastDayInService = _data["lastDayInService"] ? DateTime.fromISO(_data["lastDayInService"].toString()) : undefined as any;
+            this.separationType = _data["separationType"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceEmployeeRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceEmployeeRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["jobTitleNameEn"] = this.jobTitleNameEn;
+        data["jobTitleNameAr"] = this.jobTitleNameAr;
+        data["nationalityNameEn"] = this.nationalityNameEn;
+        data["nationalityNameAr"] = this.nationalityNameAr;
+        data["gender"] = this.gender;
+        data["age"] = this.age;
+        data["serviceYears"] = this.serviceYears;
+        data["joiningDate"] = this.joiningDate ? this.joiningDate.toString() : undefined as any;
+        data["lastDayInService"] = this.lastDayInService ? this.lastDayInService.toString() : undefined as any;
+        data["separationType"] = this.separationType;
+        return data;
+    }
+}
+
+export interface IWorkforceEmployeeRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    organizationUnitName: string | undefined;
+    jobTitleNameEn: string | undefined;
+    jobTitleNameAr: string | undefined;
+    nationalityNameEn: string | undefined;
+    nationalityNameAr: string | undefined;
+    gender: Gender;
+    age: number | undefined;
+    serviceYears: number;
+    joiningDate: DateTime;
+    lastDayInService: DateTime | undefined;
+    separationType: SeparationType;
+}
+
+export class WorkforceGenderCountDto implements IWorkforceGenderCountDto {
+    gender!: Gender;
+    count!: number;
+
+    constructor(data?: IWorkforceGenderCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gender = _data["gender"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceGenderCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceGenderCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gender"] = this.gender;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IWorkforceGenderCountDto {
+    gender: Gender;
+    count: number;
+}
+
+export class WorkforceKpisDto implements IWorkforceKpisDto {
+    headcount!: number;
+    male!: number;
+    female!: number;
+    genderNotSpecified!: number;
+    averageAge!: number | undefined;
+    averageServiceYears!: number | undefined;
+    nationalities!: number;
+    joiners!: number;
+    leavers!: number;
+    resignations!: number;
+    terminations!: number;
+    averageHeadcount!: number;
+    turnoverPercent!: number | undefined;
+
+    constructor(data?: IWorkforceKpisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.headcount = _data["headcount"];
+            this.male = _data["male"];
+            this.female = _data["female"];
+            this.genderNotSpecified = _data["genderNotSpecified"];
+            this.averageAge = _data["averageAge"];
+            this.averageServiceYears = _data["averageServiceYears"];
+            this.nationalities = _data["nationalities"];
+            this.joiners = _data["joiners"];
+            this.leavers = _data["leavers"];
+            this.resignations = _data["resignations"];
+            this.terminations = _data["terminations"];
+            this.averageHeadcount = _data["averageHeadcount"];
+            this.turnoverPercent = _data["turnoverPercent"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceKpisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceKpisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["headcount"] = this.headcount;
+        data["male"] = this.male;
+        data["female"] = this.female;
+        data["genderNotSpecified"] = this.genderNotSpecified;
+        data["averageAge"] = this.averageAge;
+        data["averageServiceYears"] = this.averageServiceYears;
+        data["nationalities"] = this.nationalities;
+        data["joiners"] = this.joiners;
+        data["leavers"] = this.leavers;
+        data["resignations"] = this.resignations;
+        data["terminations"] = this.terminations;
+        data["averageHeadcount"] = this.averageHeadcount;
+        data["turnoverPercent"] = this.turnoverPercent;
+        return data;
+    }
+}
+
+export interface IWorkforceKpisDto {
+    headcount: number;
+    male: number;
+    female: number;
+    genderNotSpecified: number;
+    averageAge: number | undefined;
+    averageServiceYears: number | undefined;
+    nationalities: number;
+    joiners: number;
+    leavers: number;
+    resignations: number;
+    terminations: number;
+    averageHeadcount: number;
+    turnoverPercent: number | undefined;
+}
+
+export class WorkforceNamedCountDto implements IWorkforceNamedCountDto {
+    id!: number;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    isOthers!: boolean;
+    count!: number;
+
+    constructor(data?: IWorkforceNamedCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.isOthers = _data["isOthers"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceNamedCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceNamedCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["isOthers"] = this.isOthers;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface IWorkforceNamedCountDto {
+    id: number;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    isOthers: boolean;
+    count: number;
+}
+
+export class WorkforceOrgUnitBucketDto implements IWorkforceOrgUnitBucketDto {
+    organizationUnitId!: number | undefined;
+    name!: string | undefined;
+    isDirectStaff!: boolean;
+    hasChildren!: boolean;
+    headcount!: number;
+    leavers!: number;
+    turnoverPercent!: number | undefined;
+
+    constructor(data?: IWorkforceOrgUnitBucketDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.name = _data["name"];
+            this.isDirectStaff = _data["isDirectStaff"];
+            this.hasChildren = _data["hasChildren"];
+            this.headcount = _data["headcount"];
+            this.leavers = _data["leavers"];
+            this.turnoverPercent = _data["turnoverPercent"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceOrgUnitBucketDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceOrgUnitBucketDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["name"] = this.name;
+        data["isDirectStaff"] = this.isDirectStaff;
+        data["hasChildren"] = this.hasChildren;
+        data["headcount"] = this.headcount;
+        data["leavers"] = this.leavers;
+        data["turnoverPercent"] = this.turnoverPercent;
+        return data;
+    }
+}
+
+export interface IWorkforceOrgUnitBucketDto {
+    organizationUnitId: number | undefined;
+    name: string | undefined;
+    isDirectStaff: boolean;
+    hasChildren: boolean;
+    headcount: number;
+    leavers: number;
+    turnoverPercent: number | undefined;
+}
+
+export enum WorkforceServiceBand {
+    From0To4 = 0,
+    From5To10 = 1,
+    From11To15 = 2,
+    From16To19 = 3,
+    From20 = 4,
+}
+
+export class WorkforceTrendPointDto implements IWorkforceTrendPointDto {
+    monthStart!: DateTime;
+    headcount!: number;
+    joiners!: number;
+    leavers!: number;
+    turnoverPercent!: number | undefined;
+
+    constructor(data?: IWorkforceTrendPointDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.monthStart = _data["monthStart"] ? DateTime.fromISO(_data["monthStart"].toString()) : undefined as any;
+            this.headcount = _data["headcount"];
+            this.joiners = _data["joiners"];
+            this.leavers = _data["leavers"];
+            this.turnoverPercent = _data["turnoverPercent"];
+        }
+    }
+
+    static fromJS(data: any): WorkforceTrendPointDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkforceTrendPointDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["monthStart"] = this.monthStart ? this.monthStart.toString() : undefined as any;
+        data["headcount"] = this.headcount;
+        data["joiners"] = this.joiners;
+        data["leavers"] = this.leavers;
+        data["turnoverPercent"] = this.turnoverPercent;
+        return data;
+    }
+}
+
+export interface IWorkforceTrendPointDto {
+    monthStart: DateTime;
+    headcount: number;
+    joiners: number;
+    leavers: number;
+    turnoverPercent: number | undefined;
 }
 
 export class WsFederationExternalLoginProviderSettings implements IWsFederationExternalLoginProviderSettings {

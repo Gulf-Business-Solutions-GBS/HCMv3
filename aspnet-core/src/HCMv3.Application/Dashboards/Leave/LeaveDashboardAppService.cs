@@ -294,7 +294,7 @@ public class LeaveDashboardAppService : HCMv3AppServiceBase, ILeaveDashboardAppS
             .ToList();
 
         var orgUnits = _organizationUnitRepository.GetAll()
-            .Select(u => new LeaveDashboardOrgUnit(u.Id, u.ParentId, u.DisplayName))
+            .Select(u => new DashboardOrgUnit(u.Id, u.ParentId, u.DisplayName))
             .ToList();
 
         var absenceTypes = _absenceTypeRepository.GetAll()

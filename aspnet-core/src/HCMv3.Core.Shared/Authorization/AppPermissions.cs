@@ -2767,6 +2767,9 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Dashboards_Leave = "Pages.Dashboards.Leave";
 
+    /// <summary>Workforce Dashboard. Only opens the screen; whose employees it shows comes from <c>IDashboardScopeService</c>.</summary>
+    public const string Pages_Dashboards_Workforce = "Pages.Dashboards.Workforce";
+
     /// <summary>
     /// Report Distribution: creating and maintaining report schedules, and viewing their run history.
     /// </summary>

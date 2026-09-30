@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HCMv3.Dashboards;
 using HCMv3.Dashboards.Leave;
 using HCMv3.Dashboards.Leave.Dto;
 using HCMv3.Workflow;
@@ -38,7 +39,7 @@ public class LeaveDashboardCalculator_Tests
         new(6, "E6", "Fahad", "فهد", true, 1)       // sits directly in the company
     };
 
-    private readonly List<LeaveDashboardOrgUnit> _units = new()
+    private readonly List<DashboardOrgUnit> _units = new()
     {
         new(1, null, "Company"),
         new(2, 1, "Finance"),

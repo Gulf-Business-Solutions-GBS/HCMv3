@@ -2633,6 +2633,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         //DASHBOARDS
         pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Leave, L("LeaveDashboard"), multiTenancySides: MultiTenancySides.Tenant);
+        pages.CreateChildPermission(AppPermissions.Pages_Dashboards_Workforce, L("WorkforceDashboard"), multiTenancySides: MultiTenancySides.Tenant);
 
         //REPORT DISTRIBUTION (scheduling + bursting)
         var reportDistribution = pages.CreateChildPermission(AppPermissions.Pages_Reports_Distribution, L("ReportDistribution"));

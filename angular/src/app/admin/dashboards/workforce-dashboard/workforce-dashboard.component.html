@@ -1,0 +1,548 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WorkforceDashboard' | localize" [description]="'Dashboards' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (scopeIsNobody()) {
+            <div class="alert alert-warning">{{ 'Dashboard_ScopeNobody' | localize }}</div>
+        }
+
+        <!-- ================= Toolbar: what is shown, filter window, export ================= -->
+        <div class="ld-toolbar mb-5" [class.ld-toolbar-loading]="loading() && !!dashboard()">
+            <div class="ld-toolbar-summary">
+                <span class="ld-period">
+                    <i class="la la-calendar"></i>
+                    <strong>{{ presetLabel(preset()) }}</strong>
+                    @if (dashboard(); as d) {
+                        <span class="text-muted">
+                            {{ d.fromDate | luxonFormat: 'dd/MM/yyyy' }} – {{ d.toDate | luxonFormat: 'dd/MM/yyyy' }}
+                        </span>
+                    }
+                </span>
+                @if (dashboard(); as d) {
+                    <span class="text-muted">·</span>
+                    <span class="ld-scope">
+                        <i class="la la-user-shield"></i>
+                        {{ 'Dashboard_Showing' | localize }}:
+                        <strong>{{ scopeIsNobody() ? '—' : scopeLabel() }}</strong>
+                        <span class="text-muted">({{ 'Dashboard_ScopeEmployees' | localize: d.scope.employeesInScope }})</span>
+                    </span>
+                }
+
+                <!-- Active drill-downs and clicked-bar filters, each removable -->
+                @if (dashboard()?.orgUnitPath?.length) {
+                    <span class="ld-chip">
+                        <a href="javascript:;" (click)="selectOrgUnit(undefined)">{{ 'LeaveDashboard_AllUnits' | localize }}</a>
+                        @for (p of dashboard()!.orgUnitPath; track p.id; let last = $last) {
+                            <span class="ld-chip-sep">›</span>
+                            @if (last) {
+                                <strong>{{ p.name }}</strong>
+                            } @else {
+                                <a href="javascript:;" (click)="selectOrgUnit(p.id)">{{ p.name }}</a>
+                            }
+                        }
+                        <button type="button" class="ld-chip-x" (click)="selectOrgUnit(undefined)" [attr.aria-label]="'Remove' | localize">×</button>
+                    </span>
+                }
+                @for (f of filters(); track f.label) {
+                    <span class="ld-chip">
+                        {{ f.label }}
+                        <button type="button" class="ld-chip-x" (click)="removeFilter(f)" [attr.aria-label]="'Remove' | localize">×</button>
+                    </span>
+                }
+                @if (dashboard()?.orgUnitPath?.length || filters().length) {
+                    <a href="javascript:;" class="fs-7" (click)="clearAll()">{{ 'ClearFilters' | localize }}</a>
+                }
+            </div>
+
+            <div class="ld-toolbar-actions">
+                <button type="button" class="btn btn-sm btn-light-primary" (click)="openFilters($event)" [attr.title]="'Filter' | localize">
+                    <i class="fa fa-filter"></i>
+                    {{ 'Filter' | localize }}
+                </button>
+                <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.All)" [disabled]="exporting() || !dashboard()" [attr.title]="'LeaveDashboard_ExportDashboard' | localize">
+                    <i class="fa fa-file-excel"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-icon btn-light" (click)="refresh()" [disabled]="loading()" [attr.title]="'Refresh' | localize">
+                    <i class="la la-refresh" [class.ld-spin]="loading()"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= Filter window ================= -->
+        <p-popover #filterPanel appendTo="body" styleClass="ld-filter-popover">
+            <div class="ld-filter">
+                <label class="form-label">{{ 'Period' | localize }}</label>
+                <div class="ld-presets mb-3">
+                    @for (p of presets; track p) {
+                        <button type="button" class="btn btn-sm" [class.btn-primary]="draftPreset() === p" [class.btn-light]="draftPreset() !== p" (click)="pickPreset(p)">
+                            {{ presetLabel(p) }}
+                        </button>
+                    }
+                </div>
+
+                @if (draftPreset() === 'custom') {
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label">{{ 'FromDate' | localize }}</label>
+                            <p-datepicker [ngModel]="draftFrom()" (ngModelChange)="draftFrom.set($event)" dateFormat="dd/mm/yy" [showIcon]="true" styleClass="w-100" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">{{ 'ToDate' | localize }}</label>
+                            <p-datepicker [ngModel]="draftTo()" (ngModelChange)="draftTo.set($event)" dateFormat="dd/mm/yy" [showIcon]="true" styleClass="w-100" />
+                        </div>
+                    </div>
+                } @else {
+                    <div class="text-muted fs-7 mb-3">
+                        {{ draftFrom().toLocaleDateString('en-GB') }} – {{ draftTo().toLocaleDateString('en-GB') }}
+                    </div>
+                }
+
+                <label class="form-label" for="wfUnit">{{ 'OrganizationUnit' | localize }}</label>
+                <select id="wfUnit" class="form-select mb-5" [ngModel]="draftUnitId()" (ngModelChange)="draftUnitId.set($event)">
+                    <option [ngValue]="undefined">{{ 'LeaveDashboard_AllUnits' | localize }}</option>
+                    @for (u of dashboard()?.orgUnitOptions ?? []; track u.id) {
+                        <option [ngValue]="u.id">{{ indent(u.depth) }}{{ u.name }}</option>
+                    }
+                </select>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-sm btn-light" (click)="resetFilters()">{{ 'Reset' | localize }}</button>
+                    <button type="button" class="btn btn-sm btn-primary" (click)="applyFilters()">{{ 'Apply' | localize }}</button>
+                </div>
+            </div>
+        </p-popover>
+
+        <!-- Full spinner only for the first load; after that the tiles stay visible and animate to the new data. -->
+        <div [busyIf]="loading() && !dashboard()" [class.ld-updating]="loading() && !!dashboard()">
+            @if (dashboard(); as d) {
+                <!-- ================= Headline figures ================= -->
+                <div class="ld-kpis mb-5">
+                    <button type="button" class="ld-kpi" [class.active]="detailKind() === Kind.Headcount" (click)="showList(Kind.Headcount)">
+                        <span class="ld-kpi-value" [countUp]="d.kpis.headcount"></span>
+                        <span class="ld-kpi-label">{{ 'WorkforceDashboard_Headcount' | localize }}</span>
+                        <span class="ld-kpi-sub">{{ 'WorkforceDashboard_MaleFemale' | localize: malePercent() : femalePercent() }}</span>
+                    </button>
+                    <div class="ld-kpi">
+                        <span class="ld-kpi-value" [countUp]="d.kpis.averageAge" [countUpDecimals]="1"></span>
+                        <span class="ld-kpi-label">{{ 'WorkforceDashboard_AverageAge' | localize }}</span>
+                        <span class="ld-kpi-sub">{{ 'WorkforceDashboard_AsOf' | localize: (d.asOfDate | luxonFormat: 'dd/MM/yyyy') }}</span>
+                    </div>
+                    <div class="ld-kpi">
+                        <span class="ld-kpi-value" [countUp]="d.kpis.averageServiceYears" [countUpDecimals]="1"></span>
+                        <span class="ld-kpi-label">{{ 'WorkforceDashboard_AverageService' | localize }}</span>
+                        <span class="ld-kpi-sub">{{ 'WorkforceDashboard_Nationalities' | localize }}: {{ d.kpis.nationalities }}</span>
+                    </div>
+                    <button type="button" class="ld-kpi" [class.active]="detailKind() === Kind.Joiners" (click)="showList(Kind.Joiners)">
+                        <span class="ld-kpi-value" [countUp]="d.kpis.joiners"></span>
+                        <span class="ld-kpi-label">{{ 'WorkforceDashboard_Joiners' | localize }}</span>
+                        <span class="ld-kpi-sub">{{ 'WorkforceDashboard_InPeriod' | localize }}</span>
+                    </button>
+                    <button type="button" class="ld-kpi" [class.ld-kpi-alert]="d.kpis.leavers > 0" [class.active]="detailKind() === Kind.Leavers" (click)="showList(Kind.Leavers)">
+                        <span class="ld-kpi-value" [countUp]="d.kpis.leavers"></span>
+                        <span class="ld-kpi-label">{{ 'WorkforceDashboard_Leavers' | localize }}</span>
+                        <span class="ld-kpi-sub">{{ 'WorkforceDashboard_LeaversSplit' | localize: d.kpis.resignations : d.kpis.terminations }}</span>
+                    </button>
+                    <div class="ld-kpi">
+                        <span class="ld-kpi-value">
+                            @if (d.kpis.turnoverPercent != null) {
+                                <span [countUp]="d.kpis.turnoverPercent" [countUpDecimals]="1"></span>%
+                            } @else {
+                                —
+                            }
+                        </span>
+                        <span class="ld-kpi-label">{{ 'WorkforceDashboard_Turnover' | localize }}</span>
+                        <span class="ld-kpi-sub">{{ 'WorkforceDashboard_OfHeadcount' | localize: (d.kpis.averageHeadcount | number: '1.0-1') }}</span>
+                    </div>
+                </div>
+
+                <!-- ================= Profile: age, gender, service ================= -->
+                <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 250ms">
+                    <div class="col-xl-4">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByAge' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Age)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="ld-chart">
+                                    <ngx-charts-bar-vertical
+                                        [results]="ageResults()"
+                                        [scheme]="ageColour"
+                                        [xAxis]="true"
+                                        [yAxis]="true"
+                                        [showDataLabel]="true"
+                                        [roundDomains]="true"
+                                        (select)="onAgeSelect($event)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByGender' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Gender)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (genderResults().length) {
+                                    <div class="ld-chart">
+                                        <ngx-charts-pie-chart
+                                            [results]="genderResults()"
+                                            [customColors]="genderColours()"
+                                            [doughnut]="true"
+                                            [arcWidth]="0.35"
+                                            [legend]="true"
+                                            [legendTitle]="''"
+                                            [legendPosition]="legendBelow"
+                                            (select)="onGenderSelect($event)" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoEmployees' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByService' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Service)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="ld-chart">
+                                    <ngx-charts-bar-vertical
+                                        [results]="serviceResults()"
+                                        [scheme]="serviceColour"
+                                        [xAxis]="true"
+                                        [yAxis]="true"
+                                        [showDataLabel]="true"
+                                        [roundDomains]="true"
+                                        [trimXAxisTicks]="true"
+                                        (select)="onServiceSelect($event)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= Nationality and department ================= -->
+                <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 400ms">
+                    <div class="col-xl-6">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByNationality' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Nationality)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (nationalityResults().length) {
+                                    <div class="ld-chart" [style.height.px]="60 + nationalityResults().length * 30">
+                                        <ngx-charts-bar-horizontal
+                                            [results]="nationalityResults()"
+                                            [scheme]="singleColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [showDataLabel]="true"
+                                            [roundDomains]="true"
+                                            [trimYAxisTicks]="true"
+                                            [maxYAxisTickLength]="22"
+                                            (select)="onNamedSelect('nationality', $event)" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoEmployees' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByDepartment' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'LeaveDashboard_ByDepartmentHint' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.ByOrgUnit)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (orgUnitResults().length) {
+                                    <div class="ld-chart" [style.height.px]="60 + orgUnitResults().length * 30">
+                                        <ngx-charts-bar-horizontal
+                                            [results]="orgUnitResults()"
+                                            [scheme]="singleColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [showDataLabel]="true"
+                                            [roundDomains]="true"
+                                            [trimYAxisTicks]="true"
+                                            [maxYAxisTickLength]="22"
+                                            (select)="onOrgUnitSelect($event)" />
+                                    </div>
+                                    <table class="table table-sm table-row-dashed mt-3 mb-0">
+                                        <thead>
+                                            <tr class="text-muted fw-semibold">
+                                                <th>{{ 'OrganizationUnit' | localize }}</th>
+                                                <th class="text-end">{{ 'WorkforceDashboard_Headcount' | localize }}</th>
+                                                <th class="text-end">{{ 'WorkforceDashboard_Leavers' | localize }}</th>
+                                                <th class="text-end">{{ 'WorkforceDashboard_Turnover' | localize }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (b of d.byOrgUnit; track $index) {
+                                                <tr>
+                                                    <td>
+                                                        @if (b.organizationUnitId != null && !b.isDirectStaff) {
+                                                            <a href="javascript:;" (click)="selectOrgUnit(b.organizationUnitId)">{{ b.name }}</a>
+                                                        } @else {
+                                                            {{ orgUnitLabel(b) }}
+                                                        }
+                                                    </td>
+                                                    <td class="text-end">{{ b.headcount }}</td>
+                                                    <td class="text-end">{{ b.leavers }}</td>
+                                                    <td class="text-end">{{ b.turnoverPercent != null ? (b.turnoverPercent | number: '1.0-1') + '%' : '—' }}</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoEmployees' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= Movement: joiners, leavers, turnover ================= -->
+                <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 550ms">
+                    <div class="col-xl-7">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByMonth' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ByMonthHint' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Trend)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (hasMovement()) {
+                                    <div class="ld-chart">
+                                        <ngx-charts-bar-vertical-2d
+                                            [results]="joinLeaveResults()"
+                                            [scheme]="joinLeaveColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [legend]="true"
+                                            [legendTitle]="''"
+                                            [legendPosition]="legendBelow"
+                                            [roundDomains]="true"
+                                            [trimXAxisTicks]="true" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoLeavers' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_TurnoverTrend' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_TurnoverHint' | localize }}</span>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (d.trend.length) {
+                                    <div class="ld-chart">
+                                        <ngx-charts-line-chart
+                                            [results]="turnoverResults()"
+                                            [scheme]="turnoverColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [autoScale]="false"
+                                            [roundDomains]="true"
+                                            [trimXAxisTicks]="true" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoEmployees' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= Qualification and job title ================= -->
+                <div class="row g-5 mb-5 ld-rise" style="--ld-delay: 700ms">
+                    <div class="col-xl-6">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByQualification' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.Qualification)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (qualificationResults().length) {
+                                    <div class="ld-chart" [style.height.px]="60 + qualificationResults().length * 30">
+                                        <ngx-charts-bar-horizontal
+                                            [results]="qualificationResults()"
+                                            [scheme]="serviceColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [showDataLabel]="true"
+                                            [roundDomains]="true"
+                                            [trimYAxisTicks]="true"
+                                            [maxYAxisTickLength]="22"
+                                            (select)="onNamedSelect('qualification', $event)" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoEmployees' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card card-custom h-100">
+                            <div class="card-header border-0 pt-5">
+                                <div class="card-title flex-column align-items-start">
+                                    <h3 class="fw-bold mb-1">{{ 'WorkforceDashboard_ByJobTitle' | localize }}</h3>
+                                    <span class="text-muted fs-7">{{ 'WorkforceDashboard_ClickToFilter' | localize }}</span>
+                                </div>
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportToExcel(Part.JobTitle)" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                                        <i class="fa fa-file-excel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                @if (jobTitleResults().length) {
+                                    <div class="ld-chart" [style.height.px]="60 + jobTitleResults().length * 30">
+                                        <ngx-charts-bar-horizontal
+                                            [results]="jobTitleResults()"
+                                            [scheme]="ageColour"
+                                            [xAxis]="true"
+                                            [yAxis]="true"
+                                            [showDataLabel]="true"
+                                            [roundDomains]="true"
+                                            [trimYAxisTicks]="true"
+                                            [maxYAxisTickLength]="22"
+                                            (select)="onNamedSelect('jobTitle', $event)" />
+                                    </div>
+                                } @else {
+                                    <div class="text-muted py-10 text-center">{{ 'WorkforceDashboard_NoEmployees' | localize }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- ================= Employees behind a figure ================= -->
+        @if (detailKind() !== undefined) {
+            <div class="card card-custom mb-5 ld-rise" #detailPanel>
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title fw-bold">{{ detailTitle() }}</h3>
+                    <div class="card-toolbar gap-2">
+                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="exportList()" [disabled]="exporting()" [attr.title]="'ExportToExcel' | localize">
+                            <i class="fa fa-file-excel"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-icon btn-light" (click)="closeList()" [attr.aria-label]="'Close' | localize">
+                            <i class="la la-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="primeng-datatable-container" [busyIf]="rowsLoading()">
+                        <p-table [value]="rows()" [scrollable]="true" [tableStyle]="{ 'min-width': '70rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th>{{ 'Code' | localize }}</th>
+                                    <th>{{ 'Employee' | localize }}</th>
+                                    <th>{{ 'OrganizationUnit' | localize }}</th>
+                                    <th>{{ 'JobTitle' | localize }}</th>
+                                    <th>{{ 'Nationality' | localize }}</th>
+                                    <th>{{ 'Gender' | localize }}</th>
+                                    <th class="text-end">{{ 'Age' | localize }}</th>
+                                    <th class="text-end">{{ 'WorkforceDashboard_YearsOfService' | localize }}</th>
+                                    <th>{{ 'JoiningDate' | localize }}</th>
+                                    @if (detailKind() === Kind.Leavers) {
+                                        <th>{{ 'LastDayInService' | localize }}</th>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-r>
+                                <tr class="ld-row" (click)="openEmployee(r)">
+                                    <td>{{ r.employeeCode }}</td>
+                                    <td>{{ pick(r.employeeNameEn, r.employeeNameAr) }}</td>
+                                    <td>{{ r.organizationUnitName }}</td>
+                                    <td>{{ pick(r.jobTitleNameEn, r.jobTitleNameAr) }}</td>
+                                    <td>{{ pick(r.nationalityNameEn, r.nationalityNameAr) }}</td>
+                                    <td>{{ genderLabel(r.gender) }}</td>
+                                    <td class="text-end">{{ r.age ?? '—' }}</td>
+                                    <td class="text-end">{{ r.serviceYears }}</td>
+                                    <td>{{ r.joiningDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    @if (detailKind() === Kind.Leavers) {
+                                        <td>{{ r.lastDayInService | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #emptymessage>
+                                <tr>
+                                    <td colspan="10" class="text-muted text-center py-5">{{ 'WorkforceDashboard_NoEmployees' | localize }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <p-paginator
+                            #paginator
+                            [rows]="10"
+                            [totalRecords]="rowsTotal()"
+                            [rowsPerPageOptions]="[10, 25, 50, 100]"
+                            [showCurrentPageReport]="true"
+                            [currentPageReportTemplate]="'TotalRecordsCount' | localize: rowsTotal()"
+                            (onPageChange)="getRows($event)" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

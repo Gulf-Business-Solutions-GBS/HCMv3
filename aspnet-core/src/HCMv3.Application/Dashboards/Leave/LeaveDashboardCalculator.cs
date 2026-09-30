@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HCMv3.Dashboards.Dto;
 using HCMv3.Dashboards.Leave.Dto;
 using HCMv3.Workflow;
 
@@ -28,8 +29,6 @@ public record LeaveDashboardEmployee(
     bool IsActive,
     long? OrganizationUnitId);
 
-public record LeaveDashboardOrgUnit(long Id, long? ParentId, string Name);
-
 public record LeaveDashboardAbsenceType(int Id, string NameEn, string NameAr);
 
 /// <summary>
@@ -55,8 +54,7 @@ public class LeaveDashboardCalculator
     private readonly DateTime _from;
     private readonly DateTime _to;
     private readonly IReadOnlyDictionary<int, LeaveDashboardEmployee> _employees;
-    private readonly Dictionary<long, LeaveDashboardOrgUnit> _units;
-    private readonly ILookup<long?, LeaveDashboardOrgUnit> _childrenByParent;
+    private readonly DashboardOrgTree _tree;
     private readonly IReadOnlyDictionary<int, LeaveDashboardAbsenceType> _types;
 
     public LeaveDashboardCalculator(
@@ -64,15 +62,14 @@ public class LeaveDashboardCalculator
         DateTime from,
         DateTime to,
         IEnumerable<LeaveDashboardEmployee> employees,
-        IEnumerable<LeaveDashboardOrgUnit> orgUnits,
+        IEnumerable<DashboardOrgUnit> orgUnits,
         IEnumerable<LeaveDashboardAbsenceType> absenceTypes)
     {
         _today = today.Date;
         _from = from.Date;
         _to = to.Date;
         _employees = employees.ToDictionary(e => e.Id);
-        _units = orgUnits.ToDictionary(u => u.Id);
-        _childrenByParent = _units.Values.ToLookup(u => u.ParentId);
+        _tree = new DashboardOrgTree(orgUnits);
         _types = absenceTypes.ToDictionary(t => t.Id);
     }
 
@@ -292,7 +289,7 @@ public class LeaveDashboardCalculator
                 continue;
             }
 
-            var bucket = BucketFor(employee.OrganizationUnitId, selectedUnitId);
+            var bucket = _tree.BucketFor(employee.OrganizationUnitId, selectedUnitId);
             if (bucket == null)
             {
                 continue;
@@ -313,8 +310,8 @@ public class LeaveDashboardCalculator
             {
                 OrganizationUnitId = b.Key.Id,
                 IsDirectStaff = b.Key.Direct,
-                Name = b.Key.Id.HasValue && _units.TryGetValue(b.Key.Id.Value, out var unit) ? unit.Name : null,
-                HasChildren = !b.Key.Direct && b.Key.Id.HasValue && _childrenByParent[b.Key.Id].Any(),
+                Name = b.Key.Id.HasValue ? _tree.NameOf(b.Key.Id.Value) : null,
+                HasChildren = !b.Key.Direct && b.Key.Id.HasValue && _tree.HasChildren(b.Key.Id.Value),
                 Employees = b.Value.Employees.Distinct().Count(),
                 LeaveDays = Round(b.Value.Days)
             })
@@ -324,122 +321,20 @@ public class LeaveDashboardCalculator
             .ToList();
     }
 
-    /// <summary>
-    /// Which bar an employee in <paramref name="unitId"/> belongs to, or null when they fall outside
-    /// <paramref name="selectedUnitId"/>. An employee with no current assignment is only shown at the top
-    /// level, as an "unassigned" bar (null id).
-    /// </summary>
-    private (long? Id, bool Direct)? BucketFor(long? unitId, long? selectedUnitId)
-    {
-        if (!unitId.HasValue || !_units.ContainsKey(unitId.Value))
-        {
-            return selectedUnitId.HasValue ? null : (null, false);
-        }
-
-        if (selectedUnitId.HasValue && unitId.Value == selectedUnitId.Value)
-        {
-            return (selectedUnitId, true);
-        }
-
-        var current = _units[unitId.Value];
-        var guard = 0;
-        while (guard++ < 1000)
-        {
-            if (current.ParentId == selectedUnitId)
-            {
-                return (current.Id, false);
-            }
-
-            if (!current.ParentId.HasValue || !_units.TryGetValue(current.ParentId.Value, out var parent))
-            {
-                return null;
-            }
-
-            current = parent;
-        }
-
-        return null;
-    }
-
-    // ---------------------------------------------------------------- organisation tree
+    // ---------------------------------------------------------------- organisation tree (shared: DashboardOrgTree)
 
     /// <summary>The unit itself and every unit below it.</summary>
-    public HashSet<long> SelfAndDescendants(long unitId)
-    {
-        var result = new HashSet<long>();
-        var queue = new Queue<long>();
-        queue.Enqueue(unitId);
-
-        while (queue.Count > 0)
-        {
-            var id = queue.Dequeue();
-            if (!result.Add(id))
-            {
-                continue;
-            }
-
-            foreach (var child in _childrenByParent[id])
-            {
-                queue.Enqueue(child.Id);
-            }
-        }
-
-        return result;
-    }
+    public HashSet<long> SelfAndDescendants(long unitId) => _tree.SelfAndDescendants(unitId);
 
     /// <summary>Top-down breadcrumb to <paramref name="unitId"/>.</summary>
-    public List<LeaveDashboardOrgUnitOptionDto> PathTo(long? unitId)
-    {
-        var path = new List<LeaveDashboardOrgUnitOptionDto>();
-        var guard = 0;
-
-        while (unitId.HasValue && _units.TryGetValue(unitId.Value, out var unit) && guard++ < 1000)
-        {
-            path.Insert(0, new LeaveDashboardOrgUnitOptionDto { Id = unit.Id, Name = unit.Name });
-            unitId = unit.ParentId;
-        }
-
-        for (var i = 0; i < path.Count; i++)
-        {
-            path[i].Depth = i;
-        }
-
-        return path;
-    }
+    public List<DashboardOrgUnitOptionDto> PathTo(long? unitId) => _tree.PathTo(unitId);
 
     /// <summary>
     /// The units a filter dropdown should offer: those holding at least one of <paramref name="employees"/>,
     /// plus their ancestors so the tree reads properly. A manager is not shown the rest of the company.
     /// </summary>
-    public List<LeaveDashboardOrgUnitOptionDto> OrgUnitOptions(IEnumerable<LeaveDashboardEmployee> employees)
-    {
-        var visible = new HashSet<long>();
-        foreach (var unitId in employees.Where(e => e.OrganizationUnitId.HasValue).Select(e => e.OrganizationUnitId.Value))
-        {
-            foreach (var step in PathTo(unitId))
-            {
-                visible.Add(step.Id);
-            }
-        }
-
-        var options = new List<LeaveDashboardOrgUnitOptionDto>();
-        AddChildren(null, 0, visible, options);
-        return options;
-    }
-
-    private void AddChildren(long? parentId, int depth, HashSet<long> visible, List<LeaveDashboardOrgUnitOptionDto> options)
-    {
-        if (depth > 50)
-        {
-            return;
-        }
-
-        foreach (var child in _childrenByParent[parentId].Where(u => visible.Contains(u.Id)).OrderBy(u => u.Name))
-        {
-            options.Add(new LeaveDashboardOrgUnitOptionDto { Id = child.Id, Name = child.Name, Depth = depth });
-            AddChildren(child.Id, depth + 1, visible, options);
-        }
-    }
+    public List<DashboardOrgUnitOptionDto> OrgUnitOptions(IEnumerable<LeaveDashboardEmployee> employees) =>
+        _tree.OptionsFor(employees.Select(e => e.OrganizationUnitId));
 
     // ---------------------------------------------------------------- rows
 
@@ -448,11 +343,7 @@ public class LeaveDashboardCalculator
         _employees.TryGetValue(leave.EmployeeId, out var employee);
         _types.TryGetValue(leave.AbsenceTypeId, out var type);
 
-        string unitName = null;
-        if (employee?.OrganizationUnitId is long unitId && _units.TryGetValue(unitId, out var unit))
-        {
-            unitName = unit.Name;
-        }
+        var unitName = employee?.OrganizationUnitId is long unitId ? _tree.NameOf(unitId) : null;
 
         return new LeaveDashboardLeaveRowDto
         {

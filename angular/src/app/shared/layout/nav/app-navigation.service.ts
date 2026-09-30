@@ -145,6 +145,7 @@ export class AppNavigationService {
             // dashboards (workforce, payroll, overtime...) still to come.
             new AppMenuItem('Dashboards', '', 'flaticon-analytics', '', [], [
                 new AppMenuItem('LeaveDashboard', 'Pages.Dashboards.Leave', 'flaticon-calendar-3', '/app/admin/leave-dashboard'),
+                new AppMenuItem('WorkforceDashboard', 'Pages.Dashboards.Workforce', 'flaticon-users', '/app/admin/workforce-dashboard'),
             ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.
