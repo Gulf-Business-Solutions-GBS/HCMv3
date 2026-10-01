@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
 using HCMv3.GeneralMasterInfo;
-using HCMv3.PayrollManagement;
-using HCMv3.Releases;
 using HCMv3.SetupChecks;
 using Shouldly;
 using Xunit;
@@ -21,19 +19,18 @@ public class SetupCheckRunner_Tests : TenantSetupCheckTestBase
     {
         LoginAsHostAdmin();
         LocalIocManager.Register<WritingCheck>(DependencyLifeStyle.Transient);
-        LocalIocManager.Register<ThrowingCheck>(DependencyLifeStyle.Transient);
         _runner = Resolve<SetupCheckRunner>();
     }
 
     private static SetupCheckInfo Info<TCheck>(string code) =>
-        new(typeof(TCheck), code, SetupCheckModules.Payroll, HCMv3Releases.V3_0_0, SetupCheckSeverity.Info, "SPY025");
+        new(typeof(TCheck), code, V310, SetupCheckSeverity.Info, "SGM015");
 
     [Fact]
     public async Task Should_Throw_Away_Anything_A_Check_Writes()
     {
         var tenantId = CreateEmptyTenant("readonly");
 
-        var runs = await _runner.RunAsync(tenantId, new[] { Info<WritingCheck>("TST-001") }, DateTime.Today);
+        var runs = await _runner.RunAsync(tenantId, new[] { Info<WritingCheck>("TST-010") }, DateTime.Today);
 
         runs.Single().Finding.Outcome.ShouldBe(SetupCheckOutcome.Ok);
         UsingDbContext(tenantId, context => context.Set<Currency>().Count()).ShouldBe(0);
@@ -44,10 +41,7 @@ public class SetupCheckRunner_Tests : TenantSetupCheckTestBase
     {
         var tenantId = CreateEmptyTenant("failing");
 
-        var runs = await _runner.RunAsync(
-            tenantId,
-            new[] { Info<ThrowingCheck>("TST-002"), Info<PayrollAreaExistsCheck>("PAY-001") },
-            DateTime.Today);
+        var runs = await _runner.RunByCodesAsync(tenantId, new[] { ThrowingCheck.CheckCode, CurrencyExistsCheck.CheckCode }, DateTime.Today);
 
         runs[0].Finding.Outcome.ShouldBe(SetupCheckOutcome.Error);
         runs[0].Finding.Message.ShouldBe("boom");
@@ -57,20 +51,23 @@ public class SetupCheckRunner_Tests : TenantSetupCheckTestBase
     [Fact]
     public async Task Should_Run_Each_Check_Inside_The_Chosen_Tenant()
     {
-        var withArea = CreateEmptyTenant("witharea");
-        CreatePayrollArea(withArea, "MAIN");
-        var withoutArea = CreateEmptyTenant("withoutarea");
-        var check = new[] { Info<PayrollAreaExistsCheck>("PAY-001") };
+        var withCurrency = CreateEmptyTenant("withcurrency");
+        AddCurrency(withCurrency);
+        var withoutCurrency = CreateEmptyTenant("withoutcurrency");
+        var codes = new[] { CurrencyExistsCheck.CheckCode };
 
-        (await _runner.RunAsync(withArea, check, DateTime.Today)).Single().Finding.Outcome.ShouldBe(SetupCheckOutcome.Ok);
-        (await _runner.RunAsync(withoutArea, check, DateTime.Today)).Single().Finding.Outcome.ShouldBe(SetupCheckOutcome.Missing);
+        (await _runner.RunByCodesAsync(withCurrency, codes, DateTime.Today)).Single().Finding.Outcome.ShouldBe(SetupCheckOutcome.Ok);
+        (await _runner.RunByCodesAsync(withoutCurrency, codes, DateTime.Today)).Single().Finding.Outcome.ShouldBe(SetupCheckOutcome.Missing);
     }
 
     [Fact]
-    public void Should_Choose_Checks_By_Release()
+    public async Task Should_Skip_Codes_That_Are_Not_Registered()
     {
-        _runner.GetChecksFor(HCMv3Releases.V3_0_0, onlyThisVersion: true).Count.ShouldBe(SetupCheckCatalog.All.Count);
-        _runner.GetChecksFor(HCMv3Releases.V3_0_0, onlyThisVersion: false).Count.ShouldBe(SetupCheckCatalog.All.Count);
+        var tenantId = CreateEmptyTenant("unknowncodes");
+
+        var runs = await _runner.RunByCodesAsync(tenantId, new[] { "TST-999", CurrencyExistsCheck.CheckCode }, DateTime.Today);
+
+        runs.Select(r => r.Check.Code).ShouldBe(new[] { CurrencyExistsCheck.CheckCode });
     }
 
     /// <summary>A check that misbehaves by writing; the runner must roll it back.</summary>
@@ -83,27 +80,15 @@ public class SetupCheckRunner_Tests : TenantSetupCheckTestBase
             _currencies = currencies;
         }
 
-        public string Code => "TST-001";
-        public string Module => SetupCheckModules.Payroll;
-        public string IntroducedIn => HCMv3Releases.V3_0_0;
+        public string Code => "TST-010";
+        public string IntroducedIn => V310;
         public SetupCheckSeverity Severity => SetupCheckSeverity.Info;
-        public string FixScreenCode => "SPY025";
+        public string FixScreenCode => "SGM015";
 
         public async Task<SetupCheckFinding> RunAsync(SetupCheckContext context)
         {
             await _currencies.InsertAndGetIdAsync(new Currency { Code = "SNEAKY", NameEn = "SNEAKY", NameAr = "SNEAKY" });
             return SetupCheckFinding.Exists(true);
         }
-    }
-
-    public class ThrowingCheck : ISetupCheck
-    {
-        public string Code => "TST-002";
-        public string Module => SetupCheckModules.Payroll;
-        public string IntroducedIn => HCMv3Releases.V3_0_0;
-        public SetupCheckSeverity Severity => SetupCheckSeverity.Info;
-        public string FixScreenCode => "SPY025";
-
-        public Task<SetupCheckFinding> RunAsync(SetupCheckContext context) => throw new InvalidOperationException("boom");
     }
 }

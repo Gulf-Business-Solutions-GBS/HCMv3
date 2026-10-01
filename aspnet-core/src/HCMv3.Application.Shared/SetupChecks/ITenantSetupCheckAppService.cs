@@ -6,17 +6,18 @@ using HCMv3.SetupChecks.Dto;
 namespace HCMv3.SetupChecks;
 
 /// <summary>
-/// Host-only: which setup each HCMv3 release needs, and whether a chosen tenant has it. Reads setup only, stores
-/// nothing, and names employees by code only.
+/// What's New &amp; Setup, for a tenant's own administrators: which release the tenant is on, which it came from, what
+/// the update added, and whether the setup each new feature needs has been done. Setup is only read, never changed;
+/// employees are named by code only.
 /// </summary>
 public interface ITenantSetupCheckAppService : IApplicationService
 {
-    /// <summary>The releases (newest first) and tenants to choose from.</summary>
-    Task<TenantSetupCheckOptionsDto> GetOptions();
+    /// <summary>Records the release the tenant is now on (see <c>ReleaseVersionTracker</c>) and returns what changed.</summary>
+    Task<ReleaseUpdateStatusDto> GetUpdateStatus();
 
-    /// <summary>Runs the checks for one tenant and one release.</summary>
-    Task<TenantSetupCheckReportDto> RunChecks(RunTenantSetupChecksInput input);
+    /// <summary>Any one release, with this tenant's setup status for each of its features.</summary>
+    Task<ReleaseChangesDto> GetRelease(string version);
 
-    /// <summary>Runs the checks and returns them as an Excel workbook.</summary>
-    Task<FileDto> ExportToExcel(RunTenantSetupChecksInput input);
+    /// <summary>A release, or what the latest update brought, as an Excel workbook.</summary>
+    Task<FileDto> ExportToExcel(ExportReleaseChangesInput input);
 }

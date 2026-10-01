@@ -2372,7 +2372,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         administration.CreateChildPermission(AppPermissions.Pages_Administration_HangfireDashboard, L("HangfireDashboard"), multiTenancySides: _isMultiTenancyEnabled ? MultiTenancySides.Host : MultiTenancySides.Tenant);
         administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_Dashboard, L("Dashboard"), multiTenancySides: MultiTenancySides.Host);
         administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_HealthCheck, L("HealthCheck"), multiTenancySides: _isMultiTenancyEnabled ? MultiTenancySides.Host : MultiTenancySides.Tenant);
-        administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_TenantSetupCheck, L("TenantSetupCheck"), multiTenancySides: MultiTenancySides.Host);
+        administration.CreateChildPermission(AppPermissions.Pages_Administration_TenantSetupCheck, L("TenantSetupCheck"), multiTenancySides: MultiTenancySides.Tenant);
 
         var trainingManagement = pages.CreateChildPermission(AppPermissions.Pages_TrainingManagement_TrainingCourses, L("TrainingCourses"));
         trainingManagement.CreateChildPermission(AppPermissions.Pages_TrainingManagement_TrainingCourses_Create, L("CreateNewItem"));

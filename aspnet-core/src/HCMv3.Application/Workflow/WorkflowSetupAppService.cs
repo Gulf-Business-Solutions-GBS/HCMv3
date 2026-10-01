@@ -142,6 +142,12 @@ public class WorkflowSetupAppService : HCMv3AppServiceBase, IWorkflowSetupAppSer
                 ? 0
                 : types.Count(t => t.DefaultRequestMasterId == defaultMaster.Id),
             DefaultChainSteps = defaultSteps.Select(s => ToStepDto(s, roles, holderCounts)).ToList(),
+            DefaultChainNotifyByEmail = defaultSteps.Any(s => s.NotificationConfigId.HasValue),
+            DefaultChainEscalateAfterDays = defaultSteps
+                .Where(s => s.ShouldEscalate)
+                .Select(s => s.EscalateAfterDays)
+                .DefaultIfEmpty(0)
+                .Max(),
             Roles = roles
                 .OrderBy(r => r.NameEn)
                 .Select(r => new WorkflowSetupRoleDto

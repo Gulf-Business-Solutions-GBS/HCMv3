@@ -507,36 +507,6 @@
     "Nationality_NationalityGroupId": [
       "gmi.nationality.edit"
     ],
-    "NotificationConfig_Name": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_SendNotification": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_SendEmail": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_ToEmployee": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_ToRequestCreator": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_ToManager": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_SendToAll": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_SendToAllApproved": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationConfig_SendToApprover": [
-      "gmi.notification-config.edit"
-    ],
-    "NotificationGroup_NotificationConfigId": [
-      "gmi.notification-group.edit"
-    ],
     "NumberSeries_Code": [
       "gmi.number-series.edit"
     ],
@@ -2342,21 +2312,6 @@
     ],
     "AbsenceViolationActionRecord_EntityObjectId": [
       "pay.absence-violation-action-record.edit"
-    ],
-    "AbsenceViolationRuleDetail_AbsenceViolationRuleId": [
-      "pay.absence-violation-rule-detail.edit"
-    ],
-    "AbsenceViolationRuleDetail_Step": [
-      "pay.absence-violation-rule-detail.edit"
-    ],
-    "AbsenceViolationRuleDetail_DayInterval": [
-      "pay.absence-violation-rule-detail.edit"
-    ],
-    "AbsenceViolationRuleDetail_Action": [
-      "pay.absence-violation-rule-detail.edit"
-    ],
-    "AbsenceViolationRuleDetail_ActionTypeId": [
-      "pay.absence-violation-rule-detail.edit"
     ],
     "AbsenceViolationRuleException_AbsenceViolationRuleId": [
       "pay.absence-violation-rule-exception.edit"

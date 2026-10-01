@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Abp;
@@ -12,8 +13,8 @@ using HCMv3.Storage;
 namespace HCMv3.SetupChecks;
 
 /// <summary>
-/// The tenant setup check report as a workbook: a heading block (tenant, release, date) and one row per check, the
-/// result coloured as on screen. Made in memory and handed to the temporary file store the download reads from.
+/// What's New &amp; Setup as a workbook: one row per feature, and one more row per setup check a feature needs, the
+/// setup status coloured as on screen. Made in memory and handed to the temporary file store the download reads from.
 /// </summary>
 public class TenantSetupCheckExcelExporter : AbpServiceBase, ITransientDependency
 {
@@ -21,8 +22,6 @@ public class TenantSetupCheckExcelExporter : AbpServiceBase, ITransientDependenc
     private static readonly XLColor OkFill = XLColor.FromHtml("#DDF0E4");
     private static readonly XLColor MissingFill = XLColor.FromHtml("#F8D7DA");
     private static readonly XLColor OtherFill = XLColor.FromHtml("#FFF3CD");
-
-    private const int FirstTableRow = 6;
 
     private readonly ITempFileCacheManager _tempFiles;
 
@@ -32,7 +31,9 @@ public class TenantSetupCheckExcelExporter : AbpServiceBase, ITransientDependenc
         _tempFiles = tempFiles;
     }
 
-    public FileDto Export(TenantSetupCheckReportDto report)
+    /// <param name="releases">The releases to list.</param>
+    /// <param name="status">When exporting what an update brought: the versions, for the heading. Null for one release.</param>
+    public FileDto Export(IReadOnlyList<ReleaseChangesDto> releases, ReleaseUpdateStatusDto status)
     {
         using var book = new XLWorkbook();
         var sheet = book.AddWorksheet(Sheet(L("TenantSetupCheck")));
@@ -40,69 +41,85 @@ public class TenantSetupCheckExcelExporter : AbpServiceBase, ITransientDependenc
         sheet.Cell(1, 1).Value = L("TenantSetupCheck");
         sheet.Cell(1, 1).Style.Font.Bold = true;
         sheet.Cell(1, 1).Style.Font.FontSize = 14;
-        sheet.Cell(2, 1).Value = L("Tenant");
-        sheet.Cell(2, 2).SetValue(report.TenantName);
-        sheet.Cell(3, 1).Value = L("Version");
-        sheet.Cell(3, 2).SetValue(report.Version + " - " + L(report.OnlyThisVersion ? "SetupCheckOnlyThisVersion" : "SetupCheckUpToThisVersion"));
-        sheet.Cell(4, 1).Value = L("SetupCheckCheckedOn");
-        sheet.Cell(4, 2).Value = report.CheckedOn;
-        sheet.Cell(4, 2).Style.DateFormat.Format = "dd-mm-yyyy";
+        if (status != null)
+        {
+            sheet.Cell(2, 1).Value = L("WhatsNewInstalledVersion");
+            sheet.Cell(2, 2).SetValue(status.CurrentVersion);
+            sheet.Cell(3, 1).Value = L("WhatsNewPreviousVersion");
+            sheet.Cell(3, 2).SetValue(status.PreviousVersion ?? L("WhatsNewNoPreviousVersion"));
+        }
 
+        const int headerRow = 5;
         var headers = new[]
         {
-            L("Code"), L("Module"), L("Version"), L("Severity"), L("SetupCheckWhatIsNeeded"), L("SetupCheckWhy"),
-            L("Result"), L("SetupCheckMissingCount"), L("SetupCheckCheckedCount"), L("SetupCheckExamples"), L("SetupCheckFixOn"),
+            L("SetupCheckRelease"), L("Module"), L("WhatsNewFeature"), L("WhatsNewWhatChanged"), L("WhatsNewSetup"),
+            L("Code"), L("SetupCheckWhatIsNeeded"), L("Result"), L("SetupCheckMissingCount"), L("SetupCheckExamples"),
+            L("SetupCheckFixOn"),
         };
         for (var i = 0; i < headers.Length; i++)
         {
-            sheet.Cell(FirstTableRow, i + 1).Value = headers[i];
+            sheet.Cell(headerRow, i + 1).Value = headers[i];
         }
 
-        var header = sheet.Range(FirstTableRow, 1, FirstTableRow, headers.Length);
+        var header = sheet.Range(headerRow, 1, headerRow, headers.Length);
         header.Style.Font.Bold = true;
         header.Style.Fill.BackgroundColor = HeaderFill;
 
-        var r = FirstTableRow + 1;
-        foreach (var item in report.Items)
+        var r = headerRow + 1;
+        foreach (var release in releases)
         {
-            sheet.Cell(r, 1).SetValue(item.Code);
-            sheet.Cell(r, 2).SetValue(item.ModuleName);
-            sheet.Cell(r, 3).SetValue(item.IntroducedIn);
-            sheet.Cell(r, 4).SetValue(L("SetupCheckSeverity_" + item.Severity));
-            sheet.Cell(r, 5).SetValue(item.Title);
-            sheet.Cell(r, 6).SetValue(item.Why);
-
-            var result = sheet.Cell(r, 7);
-            result.SetValue(L("SetupCheckOutcome_" + item.Outcome) + (item.Message == null ? string.Empty : ": " + item.Message));
-            result.Style.Fill.BackgroundColor = item.Outcome switch
+            foreach (var feature in release.Features)
             {
-                SetupCheckOutcome.Ok => OkFill,
-                SetupCheckOutcome.Missing => MissingFill,
-                _ => OtherFill,
-            };
+                sheet.Cell(r, 1).SetValue(release.Version);
+                sheet.Cell(r, 2).SetValue(feature.ModuleName);
+                sheet.Cell(r, 3).SetValue(feature.Title);
+                sheet.Cell(r, 4).SetValue(feature.Description);
+                var setup = sheet.Cell(r, 5);
+                setup.SetValue(L("FeatureSetupStatus_" + feature.SetupStatus));
+                setup.Style.Fill.BackgroundColor = feature.SetupStatus switch
+                {
+                    FeatureSetupStatus.NeedsSetup => MissingFill,
+                    FeatureSetupStatus.CheckFailed => OtherFill,
+                    _ => OkFill,
+                };
+                r++;
 
-            sheet.Cell(r, 8).Value = item.MissingCount;
-            sheet.Cell(r, 9).Value = item.CheckedCount;
-            sheet.Cell(r, 10).SetValue(string.Join(", ", item.Examples));
-            sheet.Cell(r, 11).SetValue(item.FixScreenName == null ? item.FixScreenCode : $"{item.FixScreenName} ({item.FixScreenCode})");
-            r++;
+                foreach (var item in feature.SetupItems)
+                {
+                    sheet.Cell(r, 6).SetValue(item.Code);
+                    sheet.Cell(r, 7).SetValue(item.Title);
+                    var result = sheet.Cell(r, 8);
+                    result.SetValue(L("SetupCheckOutcome_" + item.Outcome) + (item.Message == null ? string.Empty : ": " + item.Message));
+                    result.Style.Fill.BackgroundColor = item.Outcome switch
+                    {
+                        SetupCheckOutcome.Ok => OkFill,
+                        SetupCheckOutcome.Missing => MissingFill,
+                        _ => OtherFill,
+                    };
+                    sheet.Cell(r, 9).Value = item.MissingCount;
+                    sheet.Cell(r, 10).SetValue(string.Join(", ", item.Examples));
+                    sheet.Cell(r, 11).SetValue(item.FixScreenName == null ? item.FixScreenCode : $"{item.FixScreenName} ({item.FixScreenCode})");
+                    r++;
+                }
+            }
         }
 
-        sheet.SheetView.FreezeRows(FirstTableRow);
-        sheet.Range(FirstTableRow, 1, Math.Max(FirstTableRow, r - 1), headers.Length).SetAutoFilter();
-        sheet.Columns(1, headers.Length).AdjustToContents(FirstTableRow, 200);
+        sheet.SheetView.FreezeRows(headerRow);
+        sheet.Range(headerRow, 1, Math.Max(headerRow, r - 1), headers.Length).SetAutoFilter();
+        sheet.Columns(1, headers.Length).AdjustToContents(headerRow, 200);
         foreach (var column in sheet.Columns(1, headers.Length))
         {
             column.Width = Math.Clamp(column.Width, 10, 60);
         }
 
-        foreach (var wrapped in new[] { 5, 6, 10 })
+        foreach (var wrapped in new[] { 4, 7, 10 })
         {
             sheet.Column(wrapped).Style.Alignment.WrapText = true;
         }
 
-        var fileName = $"{L("TenantSetupCheck")} - {report.TenantName} - {report.Version}.xlsx";
-        var file = new FileDto(fileName, MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet);
+        var version = releases.Count == 1 ? releases[0].Version : status?.CurrentVersion;
+        var file = new FileDto($"{L("TenantSetupCheck")} {version}.xlsx".Replace("&", "and"),
+            MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet);
         using var stream = new MemoryStream();
         book.SaveAs(stream);
         _tempFiles.SetFile(file.FileToken, stream.ToArray());

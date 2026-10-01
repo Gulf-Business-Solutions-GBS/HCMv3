@@ -14,7 +14,11 @@
     "loc:Action": "AbsenceViolationRuleDetail.Action",
     "dom:AbsenceViolationRuleDetail_Action": "AbsenceViolationRuleDetail.Action",
     "loc:ActionType": "AbsenceViolationRuleDetail.ActionTypeId",
-    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId"
+    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId",
+    "loc:NotificationConfig": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "dom:AbsenceViolationRuleDetail_NotificationConfigId": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "loc:HoldTillPunchFoundHint": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+    "dom:AbsenceViolationRuleDetail_HoldTillPunchFound": "AbsenceViolationRuleDetail.HoldTillPunchFound"
   },
   "fields": [
     {
@@ -86,6 +90,34 @@
       "html": "<p><strong>What it is.</strong> The leave type or disciplinary type the action would use, depending on the action.</p><p><strong>Example.</strong> Unpaid Leave</p>",
       "adminHtml": "",
       "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:AbsenceViolationRuleDetail_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+      "label": "HoldTillPunchFoundHint",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:HoldTillPunchFoundHint",
+        "dom:AbsenceViolationRuleDetail_HoldTillPunchFound"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "",
+      "adminHtml": "",
+      "stub": true
     }
   ]
 }

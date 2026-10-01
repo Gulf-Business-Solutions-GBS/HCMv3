@@ -13,9 +13,10 @@ using Xunit;
 namespace HCMv3.Tests.SetupChecks;
 
 /// <summary>
-/// The rules every release must keep: releases in order, every check listed in the catalogue, pointing at a real
-/// release and a real screen, with English and Arabic text. These fail the build when someone cuts a release or adds
-/// a check and forgets a piece.
+/// The rules every release must keep, checked against the REAL release history and check catalogue: releases in
+/// order, feature keys unique, every feature pointing at checks that exist, every check claimed by a feature of the
+/// release it came with, and English and Arabic text for all of it. These fail the build when someone cuts a
+/// release or adds a check and forgets a piece.
 /// </summary>
 // ReSharper disable once InconsistentNaming
 public class SetupCheckCatalog_Tests : AppTestBase
@@ -54,16 +55,32 @@ public class SetupCheckCatalog_Tests : AppTestBase
     public void Should_Make_The_Last_Listed_Release_The_Current_One()
     {
         HCMv3Releases.Current.ShouldBe(HCMv3Releases.All[^1]);
+        Resolve<IReleaseCatalog>().Releases[^1].ShouldBe(HCMv3Releases.Current);
     }
 
     [Fact]
-    public void Should_Have_English_And_Arabic_Text_For_Every_Release()
+    public void Should_Have_English_And_Arabic_Text_For_Every_Release_And_Feature()
     {
         foreach (var release in HCMv3Releases.All)
         {
             ShouldHaveBothLanguages(release.TitleKey);
             ShouldHaveBothLanguages(release.NotesKey);
+
+            foreach (var feature in release.Features)
+            {
+                ShouldHaveBothLanguages(feature.Module);
+                ShouldHaveBothLanguages(feature.TitleKey);
+                ShouldHaveBothLanguages(feature.DescriptionKey);
+            }
         }
+    }
+
+    [Fact]
+    public void Should_Give_Every_Feature_A_Unique_Key()
+    {
+        var keys = HCMv3Releases.All.SelectMany(r => r.Features).Select(f => f.Key).ToList();
+
+        keys.Distinct().Count().ShouldBe(keys.Count);
     }
 
     // ---------------------------------------------------------------- checks
@@ -79,22 +96,34 @@ public class SetupCheckCatalog_Tests : AppTestBase
     }
 
     [Fact]
-    public void Should_Give_Every_Check_A_Unique_Code_Like_PAY_001()
+    public void Should_Point_Every_Feature_At_Checks_That_Exist()
+    {
+        var codes = _runner.GetAllChecks().Select(c => c.Code).ToHashSet();
+
+        foreach (var feature in HCMv3Releases.All.SelectMany(r => r.Features))
+        {
+            feature.SetupCheckCodes.ShouldAllBe(code => codes.Contains(code), feature.Key);
+        }
+    }
+
+    [Fact]
+    public void Should_Have_Every_Check_Claimed_By_A_Feature_Of_The_Release_It_Came_With()
+    {
+        foreach (var check in _runner.GetAllChecks())
+        {
+            var release = HCMv3Releases.Find(check.IntroducedIn);
+            release.ShouldNotBeNull(check.Code);
+            release.Features.ShouldContain(f => f.SetupCheckCodes.Contains(check.Code), check.Code);
+        }
+    }
+
+    [Fact]
+    public void Should_Give_Every_Check_A_Unique_Code_Like_WFL_001()
     {
         var codes = _runner.GetAllChecks().Select(c => c.Code).ToList();
 
         codes.ShouldAllBe(c => Regex.IsMatch(c, @"^[A-Z]{2,5}-\d{3}$"));
         codes.Distinct().Count().ShouldBe(codes.Count);
-    }
-
-    [Fact]
-    public void Should_Point_Every_Check_At_A_Listed_Release_No_Newer_Than_Current()
-    {
-        foreach (var check in _runner.GetAllChecks())
-        {
-            HCMv3Releases.Find(check.IntroducedIn).ShouldNotBeNull(check.Code);
-            check.IntroducedInNumber.ShouldBeLessThanOrEqualTo(HCMv3Releases.Current.Number, check.Code);
-        }
     }
 
     [Fact]
@@ -107,28 +136,32 @@ public class SetupCheckCatalog_Tests : AppTestBase
     }
 
     [Fact]
-    public void Should_Have_English_And_Arabic_Text_For_Every_Check_And_Module()
+    public void Should_Have_English_And_Arabic_Text_For_Every_Check()
     {
         foreach (var check in _runner.GetAllChecks())
         {
             var key = "SetupCheck_" + check.Code.Replace("-", string.Empty);
             ShouldHaveBothLanguages(key + "_Title");
             ShouldHaveBothLanguages(key + "_Why");
-            ShouldHaveBothLanguages(check.Module);
         }
     }
 
     [Fact]
-    public void Should_Have_English_And_Arabic_Text_For_Every_Severity_And_Outcome()
+    public void Should_Have_English_And_Arabic_Text_For_Every_Status()
     {
-        foreach (var severity in Enum.GetNames<SetupCheckSeverity>())
+        foreach (var name in Enum.GetNames<SetupCheckSeverity>())
         {
-            ShouldHaveBothLanguages("SetupCheckSeverity_" + severity);
+            ShouldHaveBothLanguages("SetupCheckSeverity_" + name);
         }
 
-        foreach (var outcome in Enum.GetNames<SetupCheckOutcome>())
+        foreach (var name in Enum.GetNames<SetupCheckOutcome>())
         {
-            ShouldHaveBothLanguages("SetupCheckOutcome_" + outcome);
+            ShouldHaveBothLanguages("SetupCheckOutcome_" + name);
+        }
+
+        foreach (var name in Enum.GetNames<FeatureSetupStatus>())
+        {
+            ShouldHaveBothLanguages("FeatureSetupStatus_" + name);
         }
     }
 

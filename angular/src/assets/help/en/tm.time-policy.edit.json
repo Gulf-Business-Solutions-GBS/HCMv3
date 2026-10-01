@@ -459,7 +459,7 @@
         "loc:TimeEventRule",
         "dom:TimePolicy_TimeEventRule"
       ],
-      "rules": "Required. One of: N/A, First In First Out, First In Last Out, Last In First Out, Last In Last Out.",
+      "rules": "Required. One of: NA, First In First Out, First In Last Out, Last In First Out, Last In Last Out.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Which punch counts when there are several in the window.</p><p><strong>Example.</strong> First In Last Out</p><p><strong>Why it matters.</strong> The first or last clock-in, and the first or last clock-out, as named. <em>N/A</em> takes no punch at all, so every day looks unpunched.</p>",
       "adminHtml": "",
@@ -473,7 +473,7 @@
         "loc:TimeMgmtStatus",
         "dom:TimePolicy_TimeMgmtStatus"
       ],
-      "rules": "Required. One of: N/A, Planned Time, Actual Time, Time Sheet, Flexi Time, Variable Time.",
+      "rules": "Required. One of: NA, Planned Time, Actual Time, Time Sheet, Flexi Time, Variable Time.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How attendance is worked out for employees on this policy.</p><p><strong>Example.</strong> Actual Time</p><p><strong>Why it matters.</strong> See the overview for what each status does.</p>",
       "adminHtml": "",

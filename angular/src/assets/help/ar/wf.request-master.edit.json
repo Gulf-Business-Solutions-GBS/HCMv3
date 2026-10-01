@@ -21,7 +21,7 @@
     "dom:RequestMaster_DueInDays": "RequestMaster.DueInDays",
     "loc:AutoClose": "RequestMaster.AutoClose",
     "dom:RequestMaster_AutoClose": "RequestMaster.AutoClose",
-    "loc:IsCommentRequire": "RequestMaster.IsCommentRequire",
+    "loc:IsCommentRequired": "RequestMaster.IsCommentRequire",
     "dom:RequestMaster_IsCommentRequire": "RequestMaster.IsCommentRequire"
   },
   "fields": [
@@ -139,10 +139,10 @@
     },
     {
       "id": "RequestMaster.IsCommentRequire",
-      "label": "IsCommentRequire",
+      "label": "IsCommentRequired",
       "section": "RequestMasters",
       "aliases": [
-        "loc:IsCommentRequire",
+        "loc:IsCommentRequired",
         "dom:RequestMaster_IsCommentRequire"
       ],
       "rules": "نعم أو لا.",

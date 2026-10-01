@@ -127,6 +127,16 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
 
                 this.defaultSteps.set(defaults);
                 this.defaultUsedByCount.set(result.defaultChainUsedByCount);
+                // Only adopt the stored values once a route actually exists. A route nobody has defined
+                // yet reports email off and no escalation, and letting that overwrite the proposed
+                // starting values would mean the screen suggests something different on a fresh tenant
+                // than it does a second later.
+                const routeExists = (result.defaultChainSteps ?? []).length > 0;
+
+                if (routeExists) {
+                    this.defaultNotifyByEmail.set(result.defaultChainNotifyByEmail);
+                    this.defaultEscalateAfterDays.set(result.defaultChainEscalateAfterDays);
+                }
                 this.defaultDirty.set(false);
 
                 this.rows.set(result.rows);
@@ -332,6 +342,14 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
     readonly defaultSteps = signal<WorkflowSetupStepDto[]>([]);
     readonly defaultUsedByCount = signal(0);
     readonly defaultDirty = signal(false);
+
+    /**
+     * Email and escalation belong to the ROUTE, not the transaction: they are written onto its steps, so
+     * every transaction following the default necessarily shares them. Editing them here rather than
+     * per-row is what makes that honest.
+     */
+    readonly defaultNotifyByEmail = signal(true);
+    readonly defaultEscalateAfterDays = signal(DEFAULT_ESCALATION_DAYS);
     readonly savingDefault = signal(false);
     readonly defaultPanelOpen = signal(false);
 
@@ -349,6 +367,17 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
         this.defaultPanelOpen.set(!this.defaultPanelOpen());
     }
 
+
+    setDefaultNotifyByEmail(value: boolean): void {
+        this.defaultNotifyByEmail.set(value);
+        this.defaultDirty.set(true);
+    }
+
+    setDefaultEscalation(value: any): void {
+        const days = value === '' || value === null || value === undefined ? 0 : +value;
+        this.defaultEscalateAfterDays.set(days < 0 ? 0 : days);
+        this.defaultDirty.set(true);
+    }
     setDefaultApprover(index: number, value: WorkflowApproverPersonType): void {
         const step = this.defaultSteps()[index];
         step.approverPerson = +value;
@@ -382,8 +411,8 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
 
         const input = new SaveWorkflowSetupDefaultChainInput();
         input.steps = this.defaultSteps().filter((s) => this.isConfigured(s));
-        input.notifyByEmail = false;
-        input.escalateAfterDays = 0;
+        input.notifyByEmail = this.defaultNotifyByEmail();
+        input.escalateAfterDays = this.defaultEscalateAfterDays();
 
         this._service
             .saveDefaultChain(input)

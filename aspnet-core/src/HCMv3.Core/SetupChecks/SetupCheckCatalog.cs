@@ -1,33 +1,36 @@
 using System;
 using System.Collections.Generic;
+using Abp.Dependency;
+using HCMv3.Releases;
 
 namespace HCMv3.SetupChecks;
 
 /// <summary>
-/// Every tenant setup check, in the order the screen lists them. Kept as an explicit list rather than discovered,
-/// so a reviewer sees exactly what a release adds; a guard test fails if an <see cref="ISetupCheck"/> is missing here.
+/// Every setup check, as an explicit list so a reviewer sees exactly what a release adds. Each check is named by the
+/// release feature that needs it (<see cref="HCMv3ReleaseFeature.SetupCheckCodes"/>); a guard test fails if an
+/// <see cref="ISetupCheck"/> is missing here or no feature points at it.
 /// </summary>
 public static class SetupCheckCatalog
 {
     public static readonly IReadOnlyList<Type> All = new List<Type>
     {
-        // ---- 3.0.0: payroll
-        typeof(PayrollAreaExistsCheck),
-        typeof(PayrollControlRecordCheck),
-        typeof(PayrollCalendarCurrentMonthCheck),
-        typeof(SystemSettingsRowsCheck),
-        typeof(WageTypeLeaveLinksCheck),
-
-        // ---- 3.0.0: employee profile
-        typeof(EmployeeContractCheck),
-        typeof(EmployeeOrgAssignmentCheck),
-        typeof(EmployeePayrollAreaCheck),
-        typeof(EmployeeGroupAndSubGroupCheck),
-        typeof(EmployeeSalaryRecordCheck),
-        typeof(EmployeePayrollStatusCheck),
-        typeof(EmployeeDutyPeriodCheck),
-        typeof(EmployeeTimePolicyCheck),
-        typeof(EmployeePaymentDetailsCheck),
-        typeof(EmployeeBankAccountCheck),
+        // Add a release's checks here, under a comment naming the release.
     };
+}
+
+/// <summary>The releases and setup checks What's New &amp; Setup works from. A seam so tests can supply their own.</summary>
+public interface IReleaseCatalog
+{
+    /// <summary>Oldest first; the last is the release this code is.</summary>
+    IReadOnlyList<HCMv3Release> Releases { get; }
+
+    IReadOnlyList<Type> SetupCheckTypes { get; }
+}
+
+/// <inheritdoc />
+public class ReleaseCatalog : IReleaseCatalog, ISingletonDependency
+{
+    public IReadOnlyList<HCMv3Release> Releases => HCMv3Releases.All;
+
+    public IReadOnlyList<Type> SetupCheckTypes => SetupCheckCatalog.All;
 }

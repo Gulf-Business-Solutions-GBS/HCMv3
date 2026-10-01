@@ -14,7 +14,11 @@
     "loc:Action": "AbsenceViolationRuleDetail.Action",
     "dom:AbsenceViolationRuleDetail_Action": "AbsenceViolationRuleDetail.Action",
     "loc:ActionType": "AbsenceViolationRuleDetail.ActionTypeId",
-    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId"
+    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId",
+    "loc:NotificationConfig": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "dom:AbsenceViolationRuleDetail_NotificationConfigId": "AbsenceViolationRuleDetail.NotificationConfigId",
+    "loc:HoldTillPunchFoundHint": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+    "dom:AbsenceViolationRuleDetail_HoldTillPunchFound": "AbsenceViolationRuleDetail.HoldTillPunchFound"
   },
   "fields": [
     {
@@ -86,6 +90,34 @@
       "html": "<p><strong>ما هو.</strong> نوع الإجازة أو نوع المخالفة التأديبية الذي يستخدمه الإجراء، بحسب الإجراء.</p><p><strong>مثال.</strong> إجازة غير مدفوعة</p>",
       "adminHtml": "",
       "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:AbsenceViolationRuleDetail_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.HoldTillPunchFound",
+      "label": "HoldTillPunchFoundHint",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:HoldTillPunchFoundHint",
+        "dom:AbsenceViolationRuleDetail_HoldTillPunchFound"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "",
+      "adminHtml": "",
+      "stub": true
     }
   ]
 }

@@ -124,6 +124,43 @@
                                 }
                             </div>
 
+                            <!--
+                                Email and escalation sit HERE rather than on each row, because they are
+                                written onto the route's steps: every transaction following this route
+                                necessarily shares them, and a per-row control would be a promise the
+                                data cannot keep.
+                            -->
+                            <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input
+                                        id="DefaultRoute_Email"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="DefaultRouteEmail"
+                                        [ngModel]="defaultNotifyByEmail()"
+                                        (ngModelChange)="setDefaultNotifyByEmail($event)" />
+                                    <label class="form-check-label ms-2" for="DefaultRoute_Email">
+                                        {{ 'WorkflowSetupNotifyByEmail' | localize }}
+                                    </label>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <label class="form-label mb-0" for="DefaultRoute_Escalate">
+                                        {{ 'WorkflowSetupEscalateAfter' | localize }}
+                                    </label>
+                                    <input
+                                        id="DefaultRoute_Escalate"
+                                        type="number"
+                                        min="0"
+                                        class="form-control form-control-sm"
+                                        style="width: 90px"
+                                        name="DefaultRouteEscalate"
+                                        [ngModel]="defaultEscalateAfterDays()"
+                                        (ngModelChange)="setDefaultEscalation($event)"
+                                        [placeholder]="l('WorkflowSetupNever')" />
+                                </div>
+                            </div>
+
                             @if (defaultUsedByCount() > 0) {
                                 <!-- Said before saving, not after: changing one chain that many transactions
                                      follow is a bigger action than changing one row. -->
@@ -308,12 +345,17 @@
                                                     [name]="row.code + '_direct'"
                                                     (ngModelChange)="setField(row, 'allowDirectEntry', $event)" />
                                             </td>
-
+                                            <!--
+                                                Both are properties of the ROUTE, written onto its steps.
+                                                A row following the default shows what it will actually do,
+                                                disabled, instead of a control that saves nowhere.
+                                            -->
                                             <td class="text-center">
                                                 <input
                                                     type="checkbox"
                                                     class="form-check-input"
-                                                    [ngModel]="row.notifyByEmail"
+                                                    [disabled]="row.usesDefaultChain"
+                                                    [ngModel]="row.usesDefaultChain ? defaultNotifyByEmail() : row.notifyByEmail"
                                                     [name]="row.code + '_email'"
                                                     (ngModelChange)="setField(row, 'notifyByEmail', $event)" />
                                             </td>
@@ -323,7 +365,8 @@
                                                     type="number"
                                                     min="0"
                                                     class="form-control form-control-sm"
-                                                    [ngModel]="row.escalateAfterDays"
+                                                    [disabled]="row.usesDefaultChain"
+                                                    [ngModel]="row.usesDefaultChain ? defaultEscalateAfterDays() : row.escalateAfterDays"
                                                     [name]="row.code + '_escalate'"
                                                     (ngModelChange)="setEscalation(row, $event)"
                                                     [placeholder]="l('WorkflowSetupNever')" />

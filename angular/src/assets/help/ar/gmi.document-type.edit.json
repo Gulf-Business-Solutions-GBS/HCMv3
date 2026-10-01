@@ -129,7 +129,7 @@
         "loc:DocumentBelongsTo",
         "dom:DocumentType_DocumentBelongsTo"
       ],
-      "rules": "إلزامي. إحدى القيم: الكل، الموظف، الشركة.",
+      "rules": "إلزامي. إحدى القيم: ALL، الموظف، الشركة.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> هل وثائق هذا النوع تخص الموظفين أم الشركة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للعلم، ولا يُصفّى به أي شيء حالياً.</p>",
       "adminHtml": "",

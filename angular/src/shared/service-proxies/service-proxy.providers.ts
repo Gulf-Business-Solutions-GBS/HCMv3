@@ -94,6 +94,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.SystemAdminToolsServiceProxy,
     ApiServiceProxies.WorkflowAdminToolsServiceProxy,
     ApiServiceProxies.BulkPasswordServiceProxy,
+    ApiServiceProxies.TenantSetupCheckServiceProxy,
     ApiServiceProxies.ProjectCostEngineServiceProxy,
     ApiServiceProxies.EmployeeWorkbenchServiceProxy,
     ApiServiceProxies.EmployeeWorkbenchPayslipsServiceProxy,

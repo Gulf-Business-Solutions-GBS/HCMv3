@@ -1,21 +1,41 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace HCMv3.SetupChecks.Dto;
 
-public class TenantSetupCheckOptionsDto
+/// <summary>What's New &amp; Setup for the signed-in tenant: which release it is on, which it came from, and what changed.</summary>
+public class ReleaseUpdateStatusDto
 {
-    /// <summary>The release this server runs.</summary>
     public string CurrentVersion { get; set; }
 
-    /// <summary>Newest first.</summary>
-    public List<SetupCheckReleaseDto> Releases { get; set; } = new();
+    public string CurrentTitle { get; set; }
 
-    public List<SetupCheckTenantDto> Tenants { get; set; } = new();
+    /// <summary>The release before the latest update. Null: no update since tracking began, nothing to compare.</summary>
+    public string PreviousVersion { get; set; }
+
+    /// <summary>When the latest update was first noticed.</summary>
+    public DateTime? UpdatedOn { get; set; }
+
+    public bool HasComparison { get; set; }
+
+    /// <summary>The releases the update brought, oldest first. Empty without a comparison.</summary>
+    public List<ReleaseChangesDto> Releases { get; set; } = new();
+
+    /// <summary>Every release, newest first, for looking one up.</summary>
+    public List<ReleaseSummaryDto> AllReleases { get; set; } = new();
 }
 
-public class SetupCheckReleaseDto
+public class ReleaseSummaryDto
+{
+    public string Version { get; set; }
+
+    public DateTime ReleasedOn { get; set; }
+
+    public string Title { get; set; }
+}
+
+/// <summary>One release: what it added, and whether this tenant has done the setup each addition needs.</summary>
+public class ReleaseChangesDto
 {
     public string Version { get; set; }
 
@@ -25,59 +45,30 @@ public class SetupCheckReleaseDto
 
     public string Notes { get; set; }
 
-    /// <summary>How many checks this release introduced.</summary>
-    public int CheckCount { get; set; }
+    public List<ReleaseFeatureDto> Features { get; set; } = new();
 }
 
-public class SetupCheckTenantDto
+public class ReleaseFeatureDto
 {
-    public int Id { get; set; }
-
-    public string TenancyName { get; set; }
-
-    public string Name { get; set; }
-
-    public bool IsActive { get; set; }
-}
-
-public class RunTenantSetupChecksInput
-{
-    [Range(1, int.MaxValue)]
-    public int TenantId { get; set; }
-
-    [Required]
-    [StringLength(20)]
-    public string Version { get; set; }
-
-    /// <summary>True: only what this release added. False: everything up to and including it.</summary>
-    public bool OnlyThisVersion { get; set; }
-}
-
-public class TenantSetupCheckReportDto
-{
-    public int TenantId { get; set; }
-
-    public string TenantName { get; set; }
-
-    public string Version { get; set; }
-
-    public bool OnlyThisVersion { get; set; }
-
-    /// <summary>The day "current" records were judged by (server's local date).</summary>
-    public DateTime CheckedOn { get; set; }
-
-    public List<TenantSetupCheckItemDto> Items { get; set; } = new();
-}
-
-public class TenantSetupCheckItemDto
-{
-    public string Code { get; set; }
+    public string Key { get; set; }
 
     public string Module { get; set; }
 
     public string ModuleName { get; set; }
 
-    public string IntroducedIn { get; set; }
+    public string Title { get; set; }
+
+    public string Description { get; set; }
+
+    public FeatureSetupStatus SetupStatus { get; set; }
+
+    /// <summary>One per setup check the feature names. Empty when it needs no setup.</summary>
+    public List<SetupCheckItemDto> SetupItems { get; set; } = new();
+}
+
+public class SetupCheckItemDto
+{
+    public string Code { get; set; }
 
     public SetupCheckSeverity Severity { get; set; }
 
@@ -99,4 +90,13 @@ public class TenantSetupCheckItemDto
     public string FixScreenCode { get; set; }
 
     public string FixScreenName { get; set; }
+
+    /// <summary>Where that screen opens, e.g. <c>/app/admin/payroll-areas</c>.</summary>
+    public string FixScreenRoute { get; set; }
+}
+
+public class ExportReleaseChangesInput
+{
+    /// <summary>A release to export. Empty: what the latest update brought.</summary>
+    public string Version { get; set; }
 }

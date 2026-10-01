@@ -57,7 +57,7 @@
         "loc:ActionType",
         "dom:RequestLog_ActionType"
       ],
-      "rules": "Required. One of: Created, Approved, Rejected, Escalated, Read, SentBack, Closed, Remarked, Assigned, Transferred, SentBackToCreator.",
+      "rules": "Required. One of: Created, Approved, Rejected, Escalated, Read, SentBack, Closed, Remarked, Assigned, Transferred, SentBackToCreator, RecordedDirectly.",
       "when": null,
       "html": "<p><strong>What it is.</strong> What was done.</p><p><strong>Example.</strong> Approved</p>",
       "adminHtml": "",

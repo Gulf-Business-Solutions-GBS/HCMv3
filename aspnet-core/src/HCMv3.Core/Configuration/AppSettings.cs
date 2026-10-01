@@ -112,6 +112,22 @@ public static class AppSettings
         public const string PayrollRun = "App.GoLive.PayrollRun";
     }
 
+    /// <summary>
+    /// Which HCMv3 release this tenant last saw, so What's New &amp; Setup can say what an update brought. Per
+    /// tenant; written by <c>ReleaseVersionTracker</c> only.
+    /// </summary>
+    public static class Releases
+    {
+        /// <summary>The release the tenant is on, as last recorded. Blank until first recorded.</summary>
+        public const string LastSeenVersion = "App.Releases.LastSeenVersion";
+
+        /// <summary>The release it was on before the latest update. Blank: nothing to compare with.</summary>
+        public const string PreviousVersion = "App.Releases.PreviousVersion";
+
+        /// <summary>When the latest update was first noticed, ISO 8601.</summary>
+        public const string UpdatedOn = "App.Releases.UpdatedOn";
+    }
+
     public static class Navigation
     {
         /// <summary>

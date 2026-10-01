@@ -1,10 +1,9 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
+using Abp.Configuration;
 using Abp.UI;
-using HCMv3.PersonnelAdministration;
-using HCMv3.Releases;
+using HCMv3.Configuration;
 using HCMv3.SetupChecks;
 using HCMv3.SetupChecks.Dto;
 using HCMv3.Storage;
@@ -20,292 +19,177 @@ public class TenantSetupCheckAppService_Tests : TenantSetupCheckTestBase
 
     public TenantSetupCheckAppService_Tests()
     {
-        LoginAsHostAdmin();
         _appService = Resolve<ITenantSetupCheckAppService>();
     }
 
-    private Task<TenantSetupCheckReportDto> Check(int tenantId, string version = HCMv3Releases.V3_0_0, bool onlyThisVersion = false) =>
-        _appService.RunChecks(new RunTenantSetupChecksInput { TenantId = tenantId, Version = version, OnlyThisVersion = onlyThisVersion });
+    /// <summary>A tenant last seen on <paramref name="version"/>, i.e. updated since then to 3.2.0.</summary>
+    private int CreateTenantUpdatedFrom(string tenancyName, string version)
+    {
+        var tenantId = CreateEmptyTenant(tenancyName);
+        Resolve<ISettingManager>().ChangeSettingForTenant(tenantId, AppSettings.Releases.LastSeenVersion, version);
+        return tenantId;
+    }
 
-    private static TenantSetupCheckItemDto Item(TenantSetupCheckReportDto report, string code) => report.Items.Single(i => i.Code == code);
+    private async Task<ReleaseUpdateStatusDto> StatusOf(int tenantId)
+    {
+        LoginAsAdminOf(tenantId);
+        return await _appService.GetUpdateStatus();
+    }
 
-    // ---------------------------------------------------------------- options
+    private static ReleaseFeatureDto Feature(ReleaseUpdateStatusDto status, string key) =>
+        status.Releases.SelectMany(r => r.Features).Single(f => f.Key == key);
+
+    // ---------------------------------------------------------------- versions
 
     [Fact]
-    public async Task Should_Offer_The_Releases_Newest_First_With_Their_Check_Counts()
+    public async Task Should_Show_The_Installed_Version_And_No_Comparison_When_None_Was_Recorded()
     {
-        var options = await _appService.GetOptions();
+        var status = await StatusOf(CreateEmptyTenant("fresh"));
 
-        options.CurrentVersion.ShouldBe(HCMv3Releases.Current.Version);
-        options.Releases.Select(r => r.Version).ShouldBe(HCMv3Releases.All.Reverse().Select(r => r.Version));
-        var baseline = options.Releases.Single(r => r.Version == HCMv3Releases.V3_0_0);
-        baseline.CheckCount.ShouldBe(15);
-        baseline.Title.ShouldBe("HCMv3 3.0.0 - Baseline");
+        status.CurrentVersion.ShouldBe(V320);
+        status.HasComparison.ShouldBeFalse();
+        status.PreviousVersion.ShouldBeNull();
+        status.Releases.ShouldBeEmpty();
     }
 
     [Fact]
-    public async Task Should_Offer_Every_Tenant()
+    public async Task Should_List_Every_Release_Since_The_Previous_Version()
     {
-        var tenantId = CreateEmptyTenant("setupoptions");
+        var status = await StatusOf(CreateTenantUpdatedFrom("from300", V300));
 
-        var options = await _appService.GetOptions();
-
-        options.Tenants.ShouldContain(t => t.Id == tenantId && t.TenancyName == "setupoptions" && t.Name == "setupoptions Co");
-    }
-
-    // ---------------------------------------------------------------- whole tenant
-
-    [Fact]
-    public async Task Should_Report_Every_Check_In_Place_For_A_Fully_Set_Up_Tenant()
-    {
-        var tenantId = CreateEmptyTenant("complete");
-        var areaId = CreateCompletePayrollSetup(tenantId);
-        CreateEmployee(tenantId, "E001", areaId);
-
-        var report = await Check(tenantId);
-
-        report.TenantId.ShouldBe(tenantId);
-        report.TenantName.ShouldBe("complete Co");
-        report.Items.Count.ShouldBe(15);
-        report.Items.Where(i => i.Outcome != SetupCheckOutcome.Ok).Select(i => i.Code).ShouldBeEmpty();
+        status.HasComparison.ShouldBeTrue();
+        status.PreviousVersion.ShouldBe(V300);
+        status.Releases.Select(r => r.Version).ShouldBe(new[] { V310, V320 });
+        status.Releases[0].Features.Select(f => f.Key).ShouldBe(new[] { "310-plain", "310-currency", "310-broken", "310-unregistered" });
     }
 
     [Fact]
-    public async Task Should_Report_Payroll_Missing_And_Employee_Checks_Not_Applicable_For_An_Empty_Tenant()
+    public async Task Should_Leave_Out_Releases_The_Tenant_Already_Had()
     {
-        var tenantId = CreateEmptyTenant("empty");
+        var status = await StatusOf(CreateTenantUpdatedFrom("from310", V310));
 
-        var report = await Check(tenantId);
-
-        Item(report, "PAY-001").Outcome.ShouldBe(SetupCheckOutcome.Missing);
-        Item(report, "PAY-002").Outcome.ShouldBe(SetupCheckOutcome.NotApplicable);
-        Item(report, "PAY-003").Outcome.ShouldBe(SetupCheckOutcome.NotApplicable);
-        Item(report, "PAY-005").Outcome.ShouldBe(SetupCheckOutcome.Missing);
-        report.Items.Where(i => i.Code.StartsWith("EMP-")).ShouldAllBe(i => i.Outcome == SetupCheckOutcome.NotApplicable);
+        status.Releases.Select(r => r.Version).ShouldBe(new[] { V320 });
     }
 
     [Fact]
-    public async Task Should_Name_The_Settings_Screens_Still_To_Be_Saved()
+    public async Task Should_Offer_Every_Release_Newest_First_To_Look_Up()
     {
-        var tenantId = CreateEmptyTenant("settings");
-        CreateSettingsRows(tenantId, time: true, payroll: false, personnel: true, security: false);
+        var status = await StatusOf(CreateEmptyTenant("lookup"));
 
-        var item = Item(await Check(tenantId), "PAY-004");
+        status.AllReleases.Select(r => r.Version).ShouldBe(new[] { V320, V310, V300 });
+    }
 
-        item.Outcome.ShouldBe(SetupCheckOutcome.Missing);
-        item.CheckedCount.ShouldBe(4);
-        item.Examples.ShouldBe(new[] { "SST007", "SST011" });
+    // ---------------------------------------------------------------- setup status
+
+    [Fact]
+    public async Task Should_Say_A_Feature_Needs_No_Setup_When_It_Names_No_Check()
+    {
+        var status = await StatusOf(CreateTenantUpdatedFrom("plain", V300));
+
+        var feature = Feature(status, "310-plain");
+        feature.SetupStatus.ShouldBe(FeatureSetupStatus.NoSetupNeeded);
+        feature.SetupItems.ShouldBeEmpty();
+        feature.ModuleName.ShouldBe("Workflow");
     }
 
     [Fact]
-    public async Task Should_Name_The_Payroll_Areas_Without_A_Control_Record_Or_Calendar()
+    public async Task Should_Say_A_Feature_Needs_Setup_Until_It_Is_Done()
     {
-        var tenantId = CreateEmptyTenant("areas");
-        CreateCompletePayrollSetup(tenantId, "MAIN");
-        CreatePayrollArea(tenantId, "SECOND");
+        var tenantId = CreateTenantUpdatedFrom("currency", V300);
 
-        var report = await Check(tenantId);
+        var before = Feature(await StatusOf(tenantId), "310-currency");
+        AddCurrency(tenantId);
+        var after = Feature(await StatusOf(tenantId), "310-currency");
 
-        foreach (var code in new[] { "PAY-002", "PAY-003" })
-        {
-            var item = Item(report, code);
-            item.Outcome.ShouldBe(SetupCheckOutcome.Missing);
-            item.CheckedCount.ShouldBe(2);
-            item.Examples.ShouldBe(new[] { "SECOND" });
-        }
-    }
-
-    // ---------------------------------------------------------------- one missing piece at a time
-
-    [Theory]
-    [InlineData(TenantSetupCheckTestBase_Parts.Contract, new[] { "EMP-001" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.OrgAssignment, new[] { "EMP-002", "EMP-003", "EMP-004" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.PayrollAreaOnAssignment, new[] { "EMP-003" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.GroupAndSubGroup, new[] { "EMP-004" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.SalaryRecord, new[] { "EMP-005" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.PayrollStatus, new[] { "EMP-006" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.DutyPeriod, new[] { "EMP-007" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.TimePolicy, new[] { "EMP-008" })]
-    [InlineData(TenantSetupCheckTestBase_Parts.BankWithIban, new[] { "EMP-009" })]
-    public async Task Should_Report_Exactly_The_Checks_A_Missing_Employee_Record_Fails(int leftOut, string[] expectedMissing)
-    {
-        var tenantId = CreateEmptyTenant("oneoff");
-        var areaId = CreateCompletePayrollSetup(tenantId);
-        CreateEmployee(tenantId, "E001", areaId);
-        CreateEmployee(tenantId, "E002", areaId, EmployeeParts.All & ~(EmployeeParts)leftOut);
-
-        var report = await Check(tenantId);
-
-        report.Items.Where(i => i.Outcome == SetupCheckOutcome.Missing).Select(i => i.Code).ShouldBe(expectedMissing);
-        foreach (var code in expectedMissing)
-        {
-            var item = Item(report, code);
-            item.CheckedCount.ShouldBe(2);
-            item.MissingCount.ShouldBe(1);
-            item.Examples.ShouldBe(new[] { "E002" });
-        }
+        before.SetupStatus.ShouldBe(FeatureSetupStatus.NeedsSetup);
+        before.SetupItems.Single().Outcome.ShouldBe(SetupCheckOutcome.Missing);
+        before.SetupItems.Single().FixScreenRoute.ShouldBe("/app/admin/currencies");
+        after.SetupStatus.ShouldBe(FeatureSetupStatus.Done);
     }
 
     [Fact]
-    public async Task Should_Find_The_Payroll_Area_Through_The_Organization_Unit_When_The_Assignment_Has_None()
+    public async Task Should_Not_Pass_A_Feature_Whose_Check_Failed_Or_Is_Missing()
     {
-        var tenantId = CreateEmptyTenant("orgunit");
-        var areaId = CreateCompletePayrollSetup(tenantId);
-        var unitId = CreateOrgUnitWithPayrollArea(tenantId, areaId);
-        CreateEmployee(tenantId, "E001", areaId, EmployeeParts.All & ~EmployeeParts.PayrollAreaOnAssignment, organizationUnitId: unitId);
+        var status = await StatusOf(CreateTenantUpdatedFrom("broken", V300));
 
-        Item(await Check(tenantId), "EMP-003").Outcome.ShouldBe(SetupCheckOutcome.Ok);
+        var broken = Feature(status, "310-broken");
+        broken.SetupStatus.ShouldBe(FeatureSetupStatus.CheckFailed);
+        broken.SetupItems.Single().Message.ShouldBe("boom");
+        Feature(status, "310-unregistered").SetupStatus.ShouldBe(FeatureSetupStatus.CheckFailed);
     }
 
     [Fact]
-    public async Task Should_Ignore_Inactive_Employees_And_Those_Not_Yet_Joined()
+    public async Task Should_Check_Only_The_Signed_In_Tenant()
     {
-        var tenantId = CreateEmptyTenant("inactive");
-        var areaId = CreateCompletePayrollSetup(tenantId);
-        CreateEmployee(tenantId, "E001", areaId);
-        CreateEmployee(tenantId, "LEFT", areaId, EmployeeParts.None, status: EmployeeStatus.Inactive);
-        CreateEmployee(tenantId, "NEXT", areaId, EmployeeParts.None, joiningDate: DateTime.Today.AddYears(1));
+        var withCurrency = CreateTenantUpdatedFrom("tenanta", V310);
+        AddCurrency(withCurrency);
+        var without = CreateTenantUpdatedFrom("tenantb", V310);
 
-        var report = await Check(tenantId);
+        Feature(await StatusOf(without), "320-currency").SetupStatus.ShouldBe(FeatureSetupStatus.NeedsSetup);
+        Feature(await StatusOf(withCurrency), "320-currency").SetupStatus.ShouldBe(FeatureSetupStatus.Done);
+    }
 
-        report.Items.Where(i => i.Outcome != SetupCheckOutcome.Ok).Select(i => i.Code).ShouldBeEmpty();
-        Item(report, "EMP-001").CheckedCount.ShouldBe(1);
+    // ---------------------------------------------------------------- looking up one release
+
+    [Fact]
+    public async Task Should_Describe_Any_Release_With_This_Tenants_Setup_Status()
+    {
+        LoginAsAdminOf(CreateEmptyTenant("anyrelease"));
+
+        var release = await _appService.GetRelease(V310);
+
+        release.Version.ShouldBe(V310);
+        release.Features.Count.ShouldBe(4);
+        release.Features.Single(f => f.Key == "310-currency").SetupStatus.ShouldBe(FeatureSetupStatus.NeedsSetup);
     }
 
     [Fact]
-    public async Task Should_Check_Accounts_Only_For_Employees_Paid_By_Bank()
+    public async Task Should_Refuse_A_Release_That_Does_Not_Exist()
     {
-        var tenantId = CreateEmptyTenant("banks");
-        var areaId = CreateCompletePayrollSetup(tenantId);
-        var noAccount = CreateEmployee(tenantId, "NOACC", areaId, EmployeeParts.All & ~EmployeeParts.BankWithIban);
-        AddPaymentDetails(tenantId, noAccount, PaymentType.Bank, iban: " ", accountNumber: null);
-        var accountOnly = CreateEmployee(tenantId, "ACCONLY", areaId, EmployeeParts.All & ~EmployeeParts.BankWithIban);
-        AddPaymentDetails(tenantId, accountOnly, PaymentType.Bank, iban: null, accountNumber: "123");
-        CreateEmployee(tenantId, "CASH", areaId, paymentType: PaymentType.Cash);
+        LoginAsAdminOf(CreateEmptyTenant("unknown"));
 
-        var item = Item(await Check(tenantId), "EMP-010");
+        await Should.ThrowAsync<UserFriendlyException>(() => _appService.GetRelease("2.9.0"));
+    }
 
-        item.Outcome.ShouldBe(SetupCheckOutcome.Missing);
-        item.CheckedCount.ShouldBe(2);
-        item.Examples.ShouldBe(new[] { "NOACC" });
+    // ---------------------------------------------------------------- who may use it
+
+    [Fact]
+    public async Task Should_Not_Be_Available_To_The_Host()
+    {
+        LoginAsHostAdmin();
+
+        await Should.ThrowAsync<AbpAuthorizationException>(() => _appService.GetUpdateStatus());
     }
 
     [Fact]
-    public async Task Should_Show_At_Most_Twenty_Codes_But_Count_Them_All()
+    public async Task Should_Not_Be_Available_To_Tenant_Users_Without_The_Permission()
     {
-        var tenantId = CreateEmptyTenant("many");
-        var areaId = CreateCompletePayrollSetup(tenantId);
-        for (var i = 1; i <= 25; i++)
-        {
-            CreateEmployee(tenantId, $"E{i:000}", areaId, EmployeeParts.All & ~EmployeeParts.SalaryRecord);
-        }
+        LoginAsAdminOf(CreateEmptyTenant("notforyou"), withPermission: false);
 
-        var item = Item(await Check(tenantId), "EMP-005");
-
-        item.MissingCount.ShouldBe(25);
-        item.Examples.Count.ShouldBe(SetupCheckFinding.MaxExamples);
-        item.Examples.First().ShouldBe("E001");
+        await Should.ThrowAsync<AbpAuthorizationException>(() => _appService.GetUpdateStatus());
     }
 
-    // ---------------------------------------------------------------- tenant isolation
+    // ---------------------------------------------------------------- export
 
     [Fact]
-    public async Task Should_Never_Count_Another_Tenants_Setup()
+    public async Task Should_Export_What_The_Update_Brought_To_Excel()
     {
-        var complete = CreateEmptyTenant("tenanta");
-        var areaId = CreateCompletePayrollSetup(complete);
-        CreateEmployee(complete, "A001", areaId);
-        var empty = CreateEmptyTenant("tenantb");
-        CreateEmployee(empty, "B001", 0, EmployeeParts.None);
+        LoginAsAdminOf(CreateTenantUpdatedFrom("exportupdate", V300));
 
-        var emptyReport = await Check(empty);
-        var completeReport = await Check(complete);
-
-        Item(emptyReport, "PAY-001").Outcome.ShouldBe(SetupCheckOutcome.Missing);
-        Item(emptyReport, "EMP-001").Examples.ShouldBe(new[] { "B001" });
-        emptyReport.Items.SelectMany(i => i.Examples).ShouldNotContain("A001");
-        completeReport.Items.Where(i => i.Outcome != SetupCheckOutcome.Ok).Select(i => i.Code).ShouldBeEmpty();
-        Item(completeReport, "EMP-001").CheckedCount.ShouldBe(1);
-    }
-
-    // ---------------------------------------------------------------- version choice and refusals
-
-    [Fact]
-    public async Task Should_Show_The_Same_Checks_Only_For_And_Up_To_The_First_Release()
-    {
-        var tenantId = CreateEmptyTenant("versions");
-
-        var only = await Check(tenantId, onlyThisVersion: true);
-        var upTo = await Check(tenantId, onlyThisVersion: false);
-
-        only.Items.Select(i => i.Code).ShouldBe(upTo.Items.Select(i => i.Code));
-        only.Items.ShouldAllBe(i => i.IntroducedIn == HCMv3Releases.V3_0_0);
-        only.OnlyThisVersion.ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task Should_Refuse_A_Version_Not_In_The_Release_List()
-    {
-        var tenantId = CreateEmptyTenant("badversion");
-
-        await Should.ThrowAsync<UserFriendlyException>(() => Check(tenantId, "2.9.0"));
-    }
-
-    [Fact]
-    public async Task Should_Refuse_A_Tenant_That_Does_Not_Exist()
-    {
-        await Should.ThrowAsync<UserFriendlyException>(() => Check(987654));
-    }
-
-    [Fact]
-    public async Task Should_Not_Be_Available_To_Tenant_Users()
-    {
-        var tenantId = CreateEmptyTenant("notforyou");
-        LoginAsDefaultTenantAdmin();
-
-        await Should.ThrowAsync<AbpAuthorizationException>(() => Check(tenantId));
-    }
-
-    // ---------------------------------------------------------------- texts and export
-
-    [Fact]
-    public async Task Should_Give_Each_Check_Its_Texts_And_Fix_Screen()
-    {
-        var tenantId = CreateEmptyTenant("texts");
-
-        var item = Item(await Check(tenantId), "PAY-002");
-
-        item.Title.ShouldBe("Every payroll area has a payroll control record");
-        item.Why.ShouldContain("Payroll Control Record not found");
-        item.ModuleName.ShouldBe("Payroll");
-        item.Severity.ShouldBe(SetupCheckSeverity.Blocker);
-        item.FixScreenCode.ShouldBe("SPY027");
-        item.FixScreenName.ShouldNotBeNullOrWhiteSpace();
-    }
-
-    [Fact]
-    public async Task Should_Export_The_Report_As_An_Excel_File()
-    {
-        var tenantId = CreateEmptyTenant("export");
-
-        var file = await _appService.ExportToExcel(new RunTenantSetupChecksInput { TenantId = tenantId, Version = HCMv3Releases.V3_0_0 });
+        var file = await _appService.ExportToExcel(new ExportReleaseChangesInput());
 
         file.FileName.ShouldEndWith(".xlsx");
-        file.FileName.ShouldContain("export Co");
         Resolve<ITempFileCacheManager>().GetFile(file.FileToken).ShouldNotBeEmpty();
     }
-}
 
-/// <summary>The fixture's parts as plain ints, which xUnit inline data can carry.</summary>
-internal static class TenantSetupCheckTestBase_Parts
-{
-    public const int Contract = 1;
-    public const int OrgAssignment = 2;
-    public const int PayrollAreaOnAssignment = 4;
-    public const int GroupAndSubGroup = 8;
-    public const int SalaryRecord = 16;
-    public const int PayrollStatus = 32;
-    public const int DutyPeriod = 64;
-    public const int TimePolicy = 128;
-    public const int BankWithIban = 256;
+    [Fact]
+    public async Task Should_Export_One_Release_To_Excel()
+    {
+        LoginAsAdminOf(CreateEmptyTenant("exportone"));
+
+        var file = await _appService.ExportToExcel(new ExportReleaseChangesInput { Version = V310 });
+
+        file.FileName.ShouldContain(V310);
+        Resolve<ITempFileCacheManager>().GetFile(file.FileToken).ShouldNotBeEmpty();
+    }
 }

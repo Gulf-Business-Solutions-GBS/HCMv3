@@ -57,7 +57,7 @@
         "loc:ActionType",
         "dom:RequestLog_ActionType"
       ],
-      "rules": "إلزامي. إحدى القيم: Created، معتمد، مرفوض، Escalated، Read، SentBack، مغلق، Remarked، Assigned، محوّل، SentBackToCreator.",
+      "rules": "إلزامي. إحدى القيم: Created، معتمد، مرفوض، Escalated، Read، SentBack، مغلق، Remarked، Assigned، محوّل، SentBackToCreator، RecordedDirectly.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما الذي تم.</p><p><strong>مثال.</strong> موافق عليه</p>",
       "adminHtml": "",

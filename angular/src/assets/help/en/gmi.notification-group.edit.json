@@ -37,9 +37,9 @@
       ],
       "rules": "Optional. Chosen from Workflow Role master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> A role whose current holders are notified, on top of whoever the configuration already addresses.</p><p><strong>Why it matters.</strong> It follows the role, not a list of names: somebody who takes the role over starts receiving these notifications, and somebody whose assignment has ended stops. Holders are resolved the same way approvers are, so the people told about a step are the people who can act on it.</p>",
+      "html": "",
       "adminHtml": "",
-      "stub": false
+      "stub": true
     },
     {
       "id": "NotificationGroup.WorkflowRoleGroup",
@@ -49,11 +49,11 @@
         "loc:NarrowToRequesterOrgScope",
         "dom:NotificationGroup_WorkflowRoleGroup"
       ],
-      "rules": "One of: none, company, department, branch, cost centre.",
+      "rules": "Required. One of: None, Company, Department, Branch, CostCenter.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Limits the role holders to those in the requester's own part of the organisation.</p><p><strong>Why it matters.</strong> Without it, a request from one department notifies that role everywhere in the company. Company narrows nothing, because a company is already a separate tenant here. If the narrowing leaves nobody, the wider group is notified rather than nobody at all.</p>",
+      "html": "",
       "adminHtml": "",
-      "stub": false
+      "stub": true
     }
   ]
 }

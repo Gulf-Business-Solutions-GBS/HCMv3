@@ -7,6 +7,8 @@
   "aliasIndex": {
     "loc:Name": "NotificationConfig.Name",
     "dom:NotificationConfig_Name": "NotificationConfig.Name",
+    "loc:EmailTemplate": "NotificationConfig.EmailTemplateId",
+    "dom:NotificationConfig_EmailTemplateId": "NotificationConfig.EmailTemplateId",
     "loc:SendNotification": "NotificationConfig.SendNotification",
     "dom:NotificationConfig_SendNotification": "NotificationConfig.SendNotification",
     "loc:SendEmail": "NotificationConfig.SendEmail",
@@ -22,9 +24,7 @@
     "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
     "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
     "loc:SendToApprover": "NotificationConfig.SendToApprover",
-    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover",
-    "loc:EmailTemplate": "NotificationConfig.EmailTemplateId",
-    "dom:NotificationConfig_EmailTemplateId": "NotificationConfig.EmailTemplateId"
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
   },
   "fields": [
     {
@@ -40,6 +40,20 @@
       "html": "<p><strong>ما هو.</strong> اسم تتعرّف به على هذه الإعدادات.</p><p><strong>مثال.</strong> <code>التهنئة بعيد الميلاد</code></p>",
       "adminHtml": "",
       "stub": false
+    },
+    {
+      "id": "NotificationConfig.EmailTemplateId",
+      "label": "EmailTemplate",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:EmailTemplate",
+        "dom:NotificationConfig_EmailTemplateId"
+      ],
+      "rules": "اختياري. يُختار من قائمة قوالب البريد الإلكتروني.",
+      "when": null,
+      "html": "",
+      "adminHtml": "",
+      "stub": true
     },
     {
       "id": "NotificationConfig.SendNotification",
@@ -150,20 +164,6 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> كان المقصود منه مراسلة المعتمِد الحالي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "NotificationConfig.EmailTemplateId",
-      "label": "EmailTemplate",
-      "section": "NotificationConfigs",
-      "aliases": [
-        "loc:EmailTemplate",
-        "dom:NotificationConfig_EmailTemplateId"
-      ],
-      "rules": "اختياري. يُختار من قوالب البريد الإلكتروني.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> رسالة البريد التي يرسلها هذا الإعداد.</p><p><strong>لماذا يهم.</strong> بدون قالب لا يمكن إرسال بريد، فيكتفي الإعداد بالإشعار داخل النظام. وهذه هي طريقة إيقاف البريد لإجراء واحد دون المساس بالبقية.</p>",
       "adminHtml": "",
       "stub": false
     }

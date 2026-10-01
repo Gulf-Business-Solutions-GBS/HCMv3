@@ -29,9 +29,18 @@ public enum SetupCheckOutcome
     Error = 3,
 }
 
-/// <summary>The module names checks are grouped under; each is also a localization key.</summary>
-public static class SetupCheckModules
+/// <summary>Where a release feature stands in one tenant.</summary>
+public enum FeatureSetupStatus
 {
-    public const string Payroll = "Payroll";
-    public const string EmployeeProfile = "SetupCheckModuleEmployeeProfile";
+    /// <summary>The feature works as delivered; nothing to set up.</summary>
+    NoSetupNeeded = 0,
+
+    /// <summary>Every check the feature names found its setup in place.</summary>
+    Done = 1,
+
+    /// <summary>At least one check found setup missing.</summary>
+    NeedsSetup = 2,
+
+    /// <summary>A check could not run; nothing was found missing otherwise.</summary>
+    CheckFailed = 3,
 }

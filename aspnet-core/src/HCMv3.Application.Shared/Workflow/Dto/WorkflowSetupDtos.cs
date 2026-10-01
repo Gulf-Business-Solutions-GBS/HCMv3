@@ -111,6 +111,15 @@ public class GetWorkflowSetupGridOutput
     /// <summary>How many transactions follow the default today, so editing it can say what it will change.</summary>
     public int DefaultChainUsedByCount { get; set; }
 
+    /// <summary>
+    /// Email and escalation as the default route has them. They live on the route's STEPS, so a
+    /// transaction following it cannot have its own -- the grid shows these read-only on those rows
+    /// rather than offering a control that would do nothing.
+    /// </summary>
+    public bool DefaultChainNotifyByEmail { get; set; }
+
+    public int DefaultChainEscalateAfterDays { get; set; }
+
     /// <summary>Every role that can be chosen, so the grid does not fetch them per cell.</summary>
     public List<WorkflowSetupRoleDto> Roles { get; set; } = new List<WorkflowSetupRoleDto>();
 

@@ -2480,7 +2480,7 @@ public static class AppPermissions
     public const string Pages_Administration_Host_Settings = "Pages.Administration.Host.Settings";
     public const string Pages_Administration_Host_Dashboard = "Pages.Administration.Host.Dashboard";
     public const string Pages_Administration_Host_HealthCheck = "Pages.Administration.Host.HealthCheck";
-    public const string Pages_Administration_Host_TenantSetupCheck = "Pages.Administration.Host.TenantSetupCheck";
+    public const string Pages_Administration_TenantSetupCheck = "Pages.Administration.TenantSetupCheck";
 
     public const string Pages_TrainingManagement_TrainingCourses = "Pages.TrainingManagement.TrainingCourses";
     public const string Pages_TrainingManagement_TrainingCourses_Create = "Pages.TrainingManagement.TrainingCourses.Create";

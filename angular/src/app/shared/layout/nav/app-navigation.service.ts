@@ -3549,6 +3549,12 @@ export class AppNavigationService {
                         '/app/admin/bulk-password-reset'
                     ),
                     new AppMenuItem(
+                        'TenantSetupCheck',
+                        'Pages.Administration.TenantSetupCheck',
+                        'flaticon2-checking',
+                        '/app/admin/tenant-setup-check'
+                    ),
+                    new AppMenuItem(
                         'Maintenance',
                         'Pages.Administration.Host.Maintenance',
                         'flaticon-lock',

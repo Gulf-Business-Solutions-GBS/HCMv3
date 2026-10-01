@@ -1,41 +1,36 @@
 using System;
-using Abp.Organizations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Abp.Authorization.Users;
+using Abp.Domain.Repositories;
+using Castle.MicroKernel.Registration;
+using HCMv3.Authorization;
+using HCMv3.Authorization.Users;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.MultiTenancy;
-using HCMv3.OrganizationManagement;
-using HCMv3.PayrollManagement;
-using HCMv3.PersonnelAdministration;
-using HCMv3.SystemSettings;
-using HCMv3.TimeManagement;
+using HCMv3.Releases;
+using HCMv3.SetupChecks;
 
 namespace HCMv3.Tests.SetupChecks;
 
 /// <summary>
-/// Builds tenants for the setup check tests straight in the database: a fresh, empty tenant per test (so nothing the
-/// default tenant was seeded with leaks in), then exactly the setup a test asks for. Dates run "since 2020 to 9999",
-/// so every record covers whatever today is.
+/// What's New &amp; Setup tests run against a made-up release history (<see cref="FakeReleases"/>) instead of the real
+/// one, which starts empty: 3.0.0 lists nothing, 3.1.0 adds a feature needing no setup, one needing a currency, and
+/// one whose check fails, and 3.2.0 adds one more needing a currency. Each test gets fresh, empty tenants.
 /// </summary>
 public abstract class TenantSetupCheckTestBase : AppTestBase
 {
-    protected static readonly DateTime Since = new(2020, 1, 1);
-    protected static readonly DateTime Forever = new(9999, 12, 31);
+    protected const string V300 = "3.0.0";
+    protected const string V310 = "3.1.0";
+    protected const string V320 = "3.2.0";
 
-    /// <summary>The parts of a fully set-up employee, so a test can leave exactly one out.</summary>
-    [Flags]
-    protected enum EmployeeParts
+    protected TenantSetupCheckTestBase()
     {
-        None = 0,
-        Contract = 1,
-        OrgAssignment = 2,
-        PayrollAreaOnAssignment = 4,
-        GroupAndSubGroup = 8,
-        SalaryRecord = 16,
-        PayrollStatus = 32,
-        DutyPeriod = 64,
-        TimePolicy = 128,
-        BankWithIban = 256,
-        All = Contract | OrgAssignment | PayrollAreaOnAssignment | GroupAndSubGroup | SalaryRecord | PayrollStatus
-              | DutyPeriod | TimePolicy | BankWithIban,
+        LocalIocManager.Register<CurrencyExistsCheck>(Abp.Dependency.DependencyLifeStyle.Transient);
+        LocalIocManager.Register<ThrowingCheck>(Abp.Dependency.DependencyLifeStyle.Transient);
+        LocalIocManager.IocContainer.Register(
+            Component.For<IReleaseCatalog>().Instance(new FakeReleases()).IsDefault().Named("FakeReleaseCatalog"));
     }
 
     protected int CreateEmptyTenant(string tenancyName)
@@ -48,204 +43,111 @@ public abstract class TenantSetupCheckTestBase : AppTestBase
         });
     }
 
-    /// <summary>A payroll area with its control record and a calendar row covering today, plus the four settings rows
-    /// and one leave-pay link: every PAY check passes.</summary>
-    protected int CreateCompletePayrollSetup(int tenantId, string areaCode = "MAIN")
-    {
-        var areaId = CreatePayrollArea(tenantId, areaCode);
-        UsingDbContext(tenantId, context =>
-        {
-            context.Set<PayrollControlRecord>().Add(new PayrollControlRecord
-            {
-                TenantId = tenantId, PayrollAreaId = areaId, PayrollMonth = 1, PayrollYear = 2020,
-                CalendarMonthStart = Since, CalendarMonthEnd = new DateTime(2020, 1, 31), PeriodLocked = true,
-            });
-            context.Set<PayrollCalendar>().Add(new PayrollCalendar
-            {
-                TenantId = tenantId, PayrollAreaId = areaId, PayrollMonth = 1, PayrollYear = 2020, StartDate = Since, EndDate = Forever,
-            });
-        });
-        CreateSettingsRows(tenantId);
-        CreateLeavePayLink(tenantId);
-        return areaId;
-    }
-
-    protected int CreatePayrollArea(int tenantId, string code)
-    {
-        return UsingDbContext(tenantId, context =>
-        {
-            var period = context.Set<PayrollPeriod>().Add(new PayrollPeriod { TenantId = tenantId, Code = code, NameEn = code, NameAr = code }).Entity;
-            var currency = context.Set<Currency>().Add(new Currency { TenantId = tenantId, Code = code, NameEn = code, NameAr = code }).Entity;
-            context.SaveChanges();
-            var area = context.Set<PayrollArea>().Add(new PayrollArea
-            {
-                TenantId = tenantId, Code = code, Name = code, PayrollPeriodId = period.Id, CurrencyId = currency.Id, CutOffDay = 31,
-            }).Entity;
-            context.SaveChanges();
-            return area.Id;
-        });
-    }
-
-    protected void CreateSettingsRows(int tenantId, bool time = true, bool payroll = true, bool personnel = true, bool security = true)
+    protected void AddCurrency(int tenantId)
     {
         UsingDbContext(tenantId, context =>
-        {
-            if (time) context.Set<ManageTimeSettings>().Add(new ManageTimeSettings { TenantId = tenantId });
-            if (payroll) context.Set<ManagePayrollSettings>().Add(new ManagePayrollSettings { TenantId = tenantId });
-            if (personnel) context.Set<ManagePersonnelSettings>().Add(new ManagePersonnelSettings { TenantId = tenantId });
-            if (security) context.Set<ManageSecuritySettings>().Add(new ManageSecuritySettings { TenantId = tenantId });
-        });
+            context.Set<Currency>().Add(new Currency { TenantId = tenantId, Code = "KWD", NameEn = "Dinar", NameAr = "Dinar" }));
     }
 
-    protected void CreateLeavePayLink(int tenantId)
+    /// <summary>
+    /// Signs in as an administrator of <paramref name="tenantId"/>, created on first use, who holds the What's New &amp;
+    /// Setup permission (or not, to test refusal). The screen always works on the signed-in tenant.
+    /// </summary>
+    protected void LoginAsAdminOf(int tenantId, bool withPermission = true)
     {
-        UsingDbContext(tenantId, context =>
+        var userId = UsingDbContext(tenantId, context =>
         {
-            var wageType = context.Set<WageType>().Add(new WageType { TenantId = tenantId, Code = "1000", NameEn = "Basic", NameAr = "Basic" }).Entity;
-            var absenceType = context.Set<AbsenceType>().Add(new AbsenceType { TenantId = tenantId, Code = "1", NameEn = "Annual", NameAr = "Annual" }).Entity;
-            context.SaveChanges();
-            context.Set<WageTypeLeave>().Add(new WageTypeLeave { TenantId = tenantId, WageTypeId = wageType.Id, AbsenceTypeId = absenceType.Id });
-        });
-    }
-
-    /// <summary>An active employee joined in 2020 with the given parts; returns the employee id.</summary>
-    protected int CreateEmployee(
-        int tenantId,
-        string code,
-        int payrollAreaId,
-        EmployeeParts parts = EmployeeParts.All,
-        EmployeeStatus status = EmployeeStatus.Active,
-        DateTime? joiningDate = null,
-        PaymentType paymentType = PaymentType.Bank,
-        long? organizationUnitId = null)
-    {
-        return UsingDbContext(tenantId, context =>
-        {
-            var nationality = context.Set<Nationality>().Add(new Nationality { TenantId = tenantId, Code = code, NameEn = code, NameAr = code }).Entity;
-            context.SaveChanges();
-
-            var employee = context.Set<Employee>().Add(new Employee
+            var existing = context.Users.FirstOrDefault(u => u.TenantId == tenantId && u.UserName == "setupadmin");
+            if (existing != null)
             {
-                TenantId = tenantId, Code = code, FirstNameEn = code, LastNameEn = code, FirstNameAr = code, LastNameAr = code,
-                FullNameEn = code, FullNameAr = code, BirthDate = new DateTime(1990, 1, 1), JoiningDate = joiningDate ?? Since,
-                Email = code + "@example.com", Status = status, NationalityId = nationality.Id,
-            }).Entity;
-            context.SaveChanges();
-            var id = employee.Id;
+                return existing.Id;
+            }
 
-            if (parts.HasFlag(EmployeeParts.Contract))
+            var user = new User
             {
-                var contractType = context.Set<ContractType>().Add(new ContractType { TenantId = tenantId, Code = code, NameEn = code, NameAr = code }).Entity;
+                TenantId = tenantId,
+                UserName = "setupadmin",
+                Name = "Setup",
+                Surname = "Admin",
+                EmailAddress = $"setupadmin{tenantId}@example.com",
+                IsEmailConfirmed = true,
+                Password = "AM4OLBpptxBYmM79lGOX9egzZk3vIQU3d/gFCJzaBjAPXzYIK3tQ2N7X4fcrHtElTw==",
+            };
+            user.SetNormalizedNames();
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            if (withPermission)
+            {
+                context.UserPermissions.Add(new UserPermissionSetting
+                {
+                    TenantId = tenantId, UserId = user.Id, Name = AppPermissions.Pages_Administration_TenantSetupCheck, IsGranted = true,
+                });
                 context.SaveChanges();
-                context.Set<EmployeeContract>().Add(new EmployeeContract
-                {
-                    TenantId = tenantId, EmployeeId = id, ContractTypeId = contractType.Id, StartDate = Since, EndDate = Forever,
-                });
             }
 
-            if (parts.HasFlag(EmployeeParts.OrgAssignment))
-            {
-                int? groupId = null, subGroupId = null;
-                if (parts.HasFlag(EmployeeParts.GroupAndSubGroup))
-                {
-                    var group = context.Set<EmployeeGroup>().Add(new EmployeeGroup { TenantId = tenantId, Code = code, NameEn = code, NameAr = code }).Entity;
-                    context.SaveChanges();
-                    var subGroup = context.Set<EmployeeSubGroup>().Add(new EmployeeSubGroup
-                    {
-                        TenantId = tenantId, EmployeeGroupId = group.Id, Code = code, NameEn = code, NameAr = code,
-                    }).Entity;
-                    context.SaveChanges();
-                    groupId = group.Id;
-                    subGroupId = subGroup.Id;
-                }
-
-                context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
-                {
-                    TenantId = tenantId, EmployeeId = id, StartDate = Since, EndDate = Forever,
-                    PayrollAreaId = parts.HasFlag(EmployeeParts.PayrollAreaOnAssignment) ? payrollAreaId : null,
-                    EmployeeGroupId = groupId, EmployeeSubGroupId = subGroupId, OrganizationUnitId = organizationUnitId,
-                });
-            }
-
-            if (parts.HasFlag(EmployeeParts.SalaryRecord))
-            {
-                context.Set<EmployeeBasicPay>().Add(new EmployeeBasicPay { TenantId = tenantId, EmployeeId = id, StartDate = Since, EndDate = Forever, Amount = 1 });
-            }
-
-            if (parts.HasFlag(EmployeeParts.PayrollStatus))
-            {
-                context.Set<EmployeePayrollStatus>().Add(new EmployeePayrollStatus
-                {
-                    TenantId = tenantId, EmployeeId = id, EarliestRetroAccountingDate = Since, NextTimeEvaluationFrom = Since,
-                });
-            }
-
-            if (parts.HasFlag(EmployeeParts.DutyPeriod))
-            {
-                var dutyPeriod = context.Set<DutyPeriod>().Add(new DutyPeriod
-                {
-                    TenantId = tenantId, Code = code, NameEn = code, NameAr = code, StartDate = Since, EndDate = Forever,
-                }).Entity;
-                context.SaveChanges();
-                context.Set<EmployeeDutyPeriod>().Add(new EmployeeDutyPeriod
-                {
-                    TenantId = tenantId, EmployeeId = id, DutyPeriodId = dutyPeriod.Id, StartDate = Since, EndDate = Forever,
-                });
-            }
-
-            if (parts.HasFlag(EmployeeParts.TimePolicy))
-            {
-                var policy = context.Set<TimePolicy>().Add(new TimePolicy { TenantId = tenantId, Code = code, NameEn = code, NameAr = code }).Entity;
-                context.SaveChanges();
-                context.Set<EmployeeTimePolicy>().Add(new EmployeeTimePolicy
-                {
-                    TenantId = tenantId, EmployeeId = id, TimePolicyId = policy.Id, StartDate = Since, EndDate = Forever,
-                });
-            }
-
-            if (parts.HasFlag(EmployeeParts.BankWithIban))
-            {
-                AddPaymentDetails(context, tenantId, id, paymentType, iban: "KW00TEST" + code, accountNumber: null);
-            }
-
-            context.SaveChanges();
-            return id;
+            return user.Id;
         });
+
+        AbpSession.TenantId = tenantId;
+        AbpSession.UserId = userId;
     }
 
-    protected void AddPaymentDetails(int tenantId, int employeeId, PaymentType paymentType, string iban, string accountNumber)
+    /// <summary>The made-up release history the tests run against.</summary>
+    protected class FakeReleases : IReleaseCatalog
     {
-        UsingDbContext(tenantId, context => AddPaymentDetails(context, tenantId, employeeId, paymentType, iban, accountNumber));
-    }
+        private static readonly string[] None = Array.Empty<string>();
 
-    private static void AddPaymentDetails(
-        EntityFrameworkCore.HCMv3DbContext context, int tenantId, int employeeId, PaymentType paymentType, string iban, string accountNumber)
-    {
-        context.Set<EmployeeBank>().Add(new EmployeeBank
+        public IReadOnlyList<HCMv3Release> Releases { get; } = new List<HCMv3Release>
         {
-            TenantId = tenantId, EmployeeId = employeeId, PaymentType = paymentType, StartDate = Since, EndDate = Forever,
-            IBAN = iban, AccountNum = accountNumber,
-        });
+            new(V300, new DateTime(2026, 9, 1), "R300", "R300Notes", Array.Empty<HCMv3ReleaseFeature>()),
+            new(V310, new DateTime(2026, 10, 1), "R310", "R310Notes", new List<HCMv3ReleaseFeature>
+            {
+                new("310-plain", "Workflow", "F310Plain", "F310PlainText", None),
+                new("310-currency", "Payroll", "F310Currency", "F310CurrencyText", new[] { CurrencyExistsCheck.CheckCode }),
+                new("310-broken", "Payroll", "F310Broken", "F310BrokenText", new[] { ThrowingCheck.CheckCode }),
+                new("310-unregistered", "Payroll", "F310Ghost", "F310GhostText", new[] { "TST-999" }),
+            }),
+            new(V320, new DateTime(2026, 11, 1), "R320", "R320Notes", new List<HCMv3ReleaseFeature>
+            {
+                new("320-currency", "Payroll", "F320Currency", "F320CurrencyText", new[] { CurrencyExistsCheck.CheckCode }),
+            }),
+        };
+
+        public IReadOnlyList<Type> SetupCheckTypes { get; } = new[] { typeof(CurrencyExistsCheck), typeof(ThrowingCheck) };
     }
 
-    /// <summary>An organisation unit whose profile carries the payroll area: the engine's fallback route to one.</summary>
-    protected long CreateOrgUnitWithPayrollArea(int tenantId, int payrollAreaId)
+    /// <summary>A stand-in check: the tenant needs at least one currency.</summary>
+    public class CurrencyExistsCheck : ISetupCheck
     {
-        return UsingDbContext(tenantId, context =>
+        public const string CheckCode = "TST-001";
+
+        private readonly IRepository<Currency> _currencies;
+
+        public CurrencyExistsCheck(IRepository<Currency> currencies)
         {
-            var unit = context.OrganizationUnits.Add(new OrganizationUnit(tenantId, "Company") { Code = "00001" }).Entity;
-            var type = context.Set<OrganizationUnitType>().Add(new OrganizationUnitType
-            {
-                TenantId = tenantId, Code = "Level1", NameEn = "Company", NameAr = "Company", AssignPayrollArea = true,
-            }).Entity;
-            context.SaveChanges();
-            context.Set<OrgUnitProfile>().Add(new OrgUnitProfile
-            {
-                TenantId = tenantId, OrganizationUnitId = unit.Id, Code = "CO", NameAr = "CO", OrganizationUnitTypeId = type.Id,
-                PayrollAreaId = payrollAreaId,
-            });
-            context.SaveChanges();
-            return unit.Id;
-        });
+            _currencies = currencies;
+        }
+
+        public string Code => CheckCode;
+        public string IntroducedIn => V310;
+        public SetupCheckSeverity Severity => SetupCheckSeverity.Blocker;
+        public string FixScreenCode => "SGM015";
+
+        public Task<SetupCheckFinding> RunAsync(SetupCheckContext context) =>
+            Task.FromResult(SetupCheckFinding.Exists(_currencies.GetAll().Any()));
+    }
+
+    /// <summary>A stand-in check that always fails to run.</summary>
+    public class ThrowingCheck : ISetupCheck
+    {
+        public const string CheckCode = "TST-002";
+
+        public string Code => CheckCode;
+        public string IntroducedIn => V310;
+        public SetupCheckSeverity Severity => SetupCheckSeverity.Warning;
+        public string FixScreenCode => "SGM015";
+
+        public Task<SetupCheckFinding> RunAsync(SetupCheckContext context) => throw new InvalidOperationException("boom");
     }
 }

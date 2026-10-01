@@ -6,25 +6,22 @@ using System.Threading.Tasks;
 namespace HCMv3.SetupChecks;
 
 /// <summary>
-/// One piece of tenant setup a release needs, and how to tell whether a tenant has it.
+/// One piece of setup a release feature needs, and how to tell whether a tenant has done it.
 ///
 /// <para><b>Read only, one tenant.</b> A check never chooses the tenant: <see cref="SetupCheckRunner"/> has already
 /// narrowed every repository to the tenant being checked before <see cref="RunAsync"/> is called, and it throws away
 /// anything a check might write. A check counts and names by CODE only -- never names, salaries or other personal
 /// details.</para>
 ///
-/// <para><b>Adding one.</b> Implement this, add the type to <see cref="SetupCheckCatalog"/>, set
-/// <see cref="IntroducedIn"/> to the release constant it ships with, and add the keys
+/// <para><b>Adding one.</b> Implement this, add the type to <see cref="SetupCheckCatalog"/>, list its code on the
+/// release feature that needs it, set <see cref="IntroducedIn"/> to that release, and add the keys
 /// <c>SetupCheck_{Code without dash}_Title</c> and <c>..._Why</c> in English and Arabic. The guard tests check all of
 /// that.</para>
 /// </summary>
 public interface ISetupCheck
 {
-    /// <summary>Stable id quoted by support, e.g. <c>PAY-001</c>. Never reused or renumbered.</summary>
+    /// <summary>Stable id quoted by support, e.g. <c>WFL-001</c>. Never reused or renumbered.</summary>
     string Code { get; }
-
-    /// <summary>One of <see cref="SetupCheckModules"/>.</summary>
-    string Module { get; }
 
     /// <summary>The <see cref="Releases.HCMv3Releases"/> version this check came in with.</summary>
     string IntroducedIn { get; }
