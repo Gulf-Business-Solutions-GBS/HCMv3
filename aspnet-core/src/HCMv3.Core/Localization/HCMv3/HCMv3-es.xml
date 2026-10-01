@@ -545,8 +545,6 @@
     <text name="Days">Días</text>
     <text name="PerMonth">Por mes</text>
     <text name="PerYear">Por año</text>
-    <text name="TestCheckFeature">Característica de chequeo de prueba</text>
-    <text name="TestCheckFeature2">Característica 2 de chequeo de prueba</text>
     <text name="Unlimited">Ilimitado</text>
     <text name="LatestPaymentAmount">Cantidad del último pago</text>
     <text name="Payment">Pago</text>

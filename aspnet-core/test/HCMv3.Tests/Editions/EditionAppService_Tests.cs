@@ -52,6 +52,14 @@ public class EditionAppService_Tests : AppTestBase
     }
 
     [MultiTenantFact]
+    public async Task Should_Not_Offer_Sample_Features()
+    {
+        var output = await _editionAppService.GetEditionForEdit(new NullableIdDto(null));
+
+        output.Features.ShouldNotContain(f => f.Name.Contains("Test"));
+    }
+
+    [MultiTenantFact]
     public async Task Should_Create_Edition()
     {
         //Getting edition for edit

@@ -544,8 +544,6 @@
     <text name="Days">Dagen</text>
     <text name="PerMonth">Per maand</text>
     <text name="PerYear">Per jaar</text>
-    <text name="TestCheckFeature">Testcontrole</text>
-    <text name="TestCheckFeature2">Testcontrole 2</text>
     <text name="Unlimited">Onbeperkt</text>
     <text name="LatestPaymentAmount">Laatste betalingsbedrag</text>
     <text name="Payment">Betaling</text>

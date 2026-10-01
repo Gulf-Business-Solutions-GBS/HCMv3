@@ -6,7 +6,6 @@ import { filter as _filter } from 'lodash-es';
 @Component({
     selector: 'language-switch-dropdown',
     templateUrl: './language-switch-dropdown.component.html',
-    styleUrls: ['../../../../account/language-switch.component.css'],
     imports: [],
 })
 export class LanguageSwitchDropdownComponent extends ThemesLayoutBaseComponent implements OnInit {

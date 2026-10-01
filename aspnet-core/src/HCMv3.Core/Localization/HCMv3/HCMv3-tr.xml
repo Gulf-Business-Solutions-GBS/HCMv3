@@ -560,8 +560,6 @@
     <text name="Days">Gün</text>
     <text name="PerMonth">Aylık</text>
     <text name="PerYear">Yıllık</text>
-    <text name="TestCheckFeature">Test check feature</text>
-    <text name="TestCheckFeature2">Test check feature 2</text>
     <text name="Unlimited">Limitsiz</text>
     <text name="LatestPaymentAmount">Son ödenen ücret</text>
     <text name="Payment">Ödeme</text>

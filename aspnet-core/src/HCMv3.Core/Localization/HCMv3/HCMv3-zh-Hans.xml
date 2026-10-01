@@ -564,8 +564,6 @@
     <text name="Days">天</text>
     <text name="PerMonth">每月</text>
     <text name="PerYear">每年</text>
-    <text name="TestCheckFeature">测试功能</text>
-    <text name="TestCheckFeature2">测试功能2</text>
     <text name="Unlimited">无限</text>
     <text name="LatestPaymentAmount">最后付款金额</text>
     <text name="Payment">付款</text>

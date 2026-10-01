@@ -544,8 +544,6 @@
     <text name="Days">Ngày</text>
     <text name="PerMonth">Mỗi tháng</text>
     <text name="PerYear">Mỗi năm</text>
-    <text name="TestCheckFeature">Kiểm tra chức năng kiểm tra</text>
-    <text name="TestCheckFeature2">Kiểm tra chức năng kiểm tra 2</text>
     <text name="Unlimited">Không giới hạn</text>
     <text name="LatestPaymentAmount">Số tiền thanh toán mới nhất</text>
     <text name="Payment">Thanh toán</text>

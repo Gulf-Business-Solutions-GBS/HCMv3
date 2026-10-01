@@ -559,8 +559,6 @@
     <text name="Days">Tage</text>
     <text name="PerMonth">Pro Monat</text>
     <text name="PerYear">Pro Jahr</text>
-    <text name="TestCheckFeature">Test Feature</text>
-    <text name="TestCheckFeature2">Test Feature 2</text>
     <text name="Unlimited">Unbegrenzt</text>
     <text name="LatestPaymentAmount">Letze Zahlung</text>
     <text name="Payment">Zahlung</text>

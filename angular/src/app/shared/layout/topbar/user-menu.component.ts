@@ -63,7 +63,8 @@ export class UserMenuComponent extends ThemesLayoutBaseComponent implements OnIn
 
     setCurrentLoginInformations(): void {
         this.shownLoginName.set(this.appSession.getShownLoginName());
-        this.tenancyName.set(this.appSession.tenancyName);
+        // The host is not a tenant and has no tenancy name, which left a bare "\admin" in the menu.
+        this.tenancyName.set(this.appSession.tenancyName || 'Host');
         this.userName.set(this.appSession.user.userName);
         this.emailAddress.set(this.appSession.user.emailAddress);
     }
