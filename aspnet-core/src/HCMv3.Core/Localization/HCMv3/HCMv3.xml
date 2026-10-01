@@ -5677,7 +5677,7 @@
     <text name="QuestionCardDemoTryConditional">Answer Q2.06 with "Cash only" and Q2.08 disappears, because a bank file question makes no sense.</text>
     <text name="QuestionCardDemoTryNote">Use "Add a note" on any question to capture a rule the options cannot express.</text>
     <text name="QuestionCardDemoTryPhase">Q2.10 is badged "Later" and does not count toward the first-payroll progress figure.</text>
-    <text name="GoLiveSetup">Go-Live Setup</text>
+    <text name="GoLiveSetup">Go-Live Payroll Setup</text>
     <text name="GoLiveIntro">Go live in 3 easy steps</text>
     <text name="GoLiveRunPayroll">Run payroll</text>
     <text name="GoLiveRunPayrollHint">Runs the real payroll engine for this company, now.</text>
@@ -7089,7 +7089,7 @@
     <text name="RequestActionTypeRecordedDirectly">Recorded without approval</text>
     <text name="RecordDirectly">Record without approval</text>
     <text name="RecordDirectlyHint">Saves this as final immediately instead of sending it for approval. Your name is recorded against it.</text>
-    <text name="WorkflowSetup">Go Live Workflow Setup</text>
+    <text name="WorkflowSetup">Go-Live Workflow Setup</text>
     <text name="WorkflowSetupLockedSharedChain">"{0}" is used by {1} transactions, so changing it here would change them all. Edit it in Request Masters.</text>
     <text name="WorkflowSetupLockedChainUsedByGroup">"{0}" is also used by a workflow group, which this screen cannot show. Edit it in Request Masters.</text>
     <text name="WorkflowSetupLockedTooManySteps">This has {0} approvers and this screen shows {1}. Edit it in Request Masters.</text>

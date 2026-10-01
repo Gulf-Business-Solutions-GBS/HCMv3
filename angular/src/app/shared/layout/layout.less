@@ -337,3 +337,36 @@ select.form-select:focus {
     border-color: var(--bs-primary);
     box-shadow: 0 0 0 0.2rem rgba(27, 132, 255, 0.25);
 }
+
+/*
+ * The header, moving in step with the sidebar as it opens and closes.
+ *
+ * The sidebar animates its width over 0.3s; the header is fixed with its left edge pinned to that same width,
+ * and Metronic gives .app-header "transition: none". So the header jumps while the sidebar glides, and for those
+ * three tenths of a second the two do not meet: opening the menu leaves a band up to 190px wide where the page
+ * behind shows through beside the logo, and closing it runs the header over the menu instead. Measured both ways.
+ * Giving the header the sidebar's own timing closes it to nothing.
+ *
+ * Desktop only: below lg the header is pinned to the left edge and the sidebar slides over it as a drawer, so
+ * there is no gap to close and nothing here applies.
+ */
+@media (min-width: 992px) {
+    [data-kt-app-header-fixed='true'][data-kt-app-sidebar-fixed='true'] .app-header {
+        transition: left 0.3s ease;
+    }
+}
+
+/*
+ * The logo in the navigation, larger than the theme's 25px.
+ *
+ * !important because the height comes from Metronic's .h-25px utility, and those are declared !important --
+ * an ordinary rule cannot raise it. The strip is 74px tall, so 40px leaves clear space above and below.
+ */
+.app-sidebar-logo .app-sidebar-logo-default {
+    height: 40px !important;
+}
+
+/* The collapsed menu is only 75px wide, so its mark grows more modestly. */
+.app-sidebar-logo .app-sidebar-logo-minimize {
+    height: 30px !important;
+}

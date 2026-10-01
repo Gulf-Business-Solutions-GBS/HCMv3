@@ -42,7 +42,7 @@ export class AppNavigationService {
                 'GoLiveSetup',
                 'Pages.GoLiveSetup',
                 'flaticon-interface-8',
-                '/app/admin/go-live-setup'
+                '/app/admin/go-live-payroll-setup'
             ),
 
             // Directly below Go-Live Setup, because configuring approvals is part of bringing a company
@@ -53,7 +53,7 @@ export class AppNavigationService {
                 'WorkflowSetup',
                 'Pages.Workflow.Setup',
                 'flaticon-map',
-                '/app/admin/workflow-setup'
+                '/app/admin/go-live-workflow-setup'
             ),
 
             // EMPLOYEE SELF SERVICE. Placed first because for most users it is the only section they can

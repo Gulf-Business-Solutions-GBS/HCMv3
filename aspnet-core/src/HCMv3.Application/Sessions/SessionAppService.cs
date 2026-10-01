@@ -23,6 +23,7 @@ using Abp.Domain.Repositories;
 using Abp.Authorization.Users;
 using Abp.Configuration;
 using HCMv3.Configuration;
+using HCMv3.Releases;
 
 namespace HCMv3.Sessions;
 
@@ -76,6 +77,7 @@ public class SessionAppService : HCMv3AppServiceBase, ISessionAppService
                 Application = new ApplicationInfoDto
                 {
                     Version = AppVersionHelper.Version,
+                    ProductVersion = HCMv3Releases.Current.Version,
                     ReleaseDate = AppVersionHelper.ReleaseDate,
                     Features = new Dictionary<string, bool>(),
                     Currency = HCMv3Consts.Currency,

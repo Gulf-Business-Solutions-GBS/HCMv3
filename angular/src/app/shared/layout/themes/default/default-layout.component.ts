@@ -81,16 +81,38 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
 
         // Crossing into desktop width closes the menu, so rotating a tablet or widening a window never
         // leaves the page locked behind a menu the layout no longer treats as one.
-        const onBreakpointChange = (event: MediaQueryListEvent) => {
-            this.isMobileViewport.set(event.matches);
+        const readBreakpoint = () => {
+            const isMobile = this.mobileQuery.matches;
+            this.isMobileViewport.set(isMobile);
 
-            if (!event.matches) {
+            if (!isMobile) {
                 this.closeMobileSidebar();
             }
         };
 
+        const onBreakpointChange = () => readBreakpoint();
+
         this.mobileQuery.addEventListener('change', onBreakpointChange);
-        inject(DestroyRef).onDestroy(() => this.mobileQuery.removeEventListener('change', onBreakpointChange));
+
+        /*
+         * Resize as well as the media query's own event, because the event alone was not reliable: the query
+         * read "phone" while this flag was still false, so the sidebar kept its desktop markup -- no drawer, a
+         * close button laid out to nothing, and a menu that covered the page with no way to shut it. Seen on a
+         * window that started wide and was narrowed, and on a phone browser reporting its size late.
+         *
+         * Reading matches() on resize costs nothing (the browser has the answer already) and the signal only
+         * notifies when the value actually changes, so a drag across the breakpoint updates once, not per pixel.
+         */
+        window.addEventListener('resize', onBreakpointChange);
+
+        inject(DestroyRef).onDestroy(() => {
+            this.mobileQuery.removeEventListener('change', onBreakpointChange);
+            window.removeEventListener('resize', onBreakpointChange);
+        });
+
+        // The width now, not the width when this object was built: the layout can be created before the
+        // browser has settled on its final size, and that reading is the one that stuck.
+        readBreakpoint();
 
         // Stop the page scrolling underneath an open menu -- otherwise a swipe on the menu scrolls the
         // dashboard behind it instead.

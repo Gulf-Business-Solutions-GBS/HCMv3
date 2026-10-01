@@ -11,7 +11,12 @@
                         {{ appSession.tenant.edition.displayName }}
                     </span>
                 }
-                | API: v{{ appSession.application.version }} | Client: v{{ webAppGuiVersion }} [{{ releaseDate }}]
+                <!--
+                    HCMv3's own release number and nothing else. What stood here -- "API: v15.2.0 | Client:
+                    v15.2.0 [20260929]" -- was the ASP.NET Zero template's version, twice: it moves when the
+                    template is upgraded and tells a customer nothing about the product they are running.
+                -->
+                | v{{ productVersion }}
             </span>
         </div>
         <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1"></ul>

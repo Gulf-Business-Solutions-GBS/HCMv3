@@ -38,3 +38,16 @@ input[type="password"]::-webkit-caps-lock-indicator {
     position: absolute;
     right: 0;
 }
+
+/*
+ * The version, sitting in the space that is already under the button rather than adding a line of its own.
+ *
+ * Laid out in flow it cost 17px, and this page has none to spare: it is sized to the screen, so anything added
+ * puts a scrollbar on windows where it used to fit exactly. Taken out of the flow it prints in the same place --
+ * its static position, which is where it would have been -- and the panel is the height it always was.
+ */
+.login__version {
+    position: absolute;
+    left: 0;
+    right: 0;
+}

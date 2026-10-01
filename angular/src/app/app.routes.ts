@@ -167,15 +167,6 @@ export const appRoutes: Routes = [
                         // employee holding only the Employee role never sees them. The per-transaction
                         // screens (leave, asset, ...) are added here as each is built; the landing page
                         // already lists them from the WorkflowTransactionType catalog.
-                        // Self-service now lives on the main dashboard; there is no separate ESS home.
-                        // REDIRECTED rather than deleted: this path is in people's bookmarks and in the
-                        // links of every request notification already sent, and a dead route would
-                        // strand them on a blank page with no clue where the screen went.
-                        path: 'ess',
-                        redirectTo: '/app/main/home',
-                        pathMatch: 'full',
-                    },
-                    {
                         path: 'ess/leave',
                         loadComponent: () =>
                             import('./main/ess/my-leave/my-leave.component').then((m) => m.MyLeaveComponent),
@@ -757,17 +748,6 @@ export const appRoutes: Routes = [
                             },
                         ],
                     },
-                    // Kept so existing bookmarks and any stored Quick Nav rows still land somewhere real.
-                    {
-                        path: 'company-structure-chart',
-                        redirectTo: 'org-charts/organization',
-                        pathMatch: 'full',
-                    },
-                    {
-                        path: 'org-charts/company',
-                        redirectTo: 'org-charts/organization',
-                        pathMatch: 'full',
-                    },
                     simpleLookupRoute('time-types', 'TimeTypes', 'TimeTypes', TimeTypesServiceProxy, 'TimeManagement'),
                     simpleLookupRoute(
                         'trans-types',
@@ -1215,12 +1195,6 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.EmployeeGroups' },
                     },
                     {
-                        // Sub groups are listed inside their employee group now; old links and bookmarks land there.
-                        path: 'employee-sub-groups',
-                        redirectTo: 'employee-groups',
-                        pathMatch: 'full',
-                    },
-                    {
                         path: 'employee-sub-groups/:id',
                         loadComponent: () =>
                             import('./admin/payroll-management/employee-sub-group-detail/employee-sub-group-detail.component').then(
@@ -1294,16 +1268,6 @@ export const appRoutes: Routes = [
                             ),
                         data: { permission: 'Pages.PayrollManagement.WageTypes' },
                     },
-                    // "Wage Types" became one word, "Wagetypes", and the addresses followed. Anything already
-                    // saved -- a bookmark, a link in an old email, a quick link on somebody's home page -- still
-                    // lands in the right place.
-                    { path: 'wage-types', redirectTo: 'wagetypes', pathMatch: 'full' },
-                    { path: 'wage-types/:id', redirectTo: 'wagetypes/:id' },
-                    { path: 'wage-type-exceptions', redirectTo: 'wagetype-exceptions', pathMatch: 'full' },
-                    { path: 'wage-type-leaves', redirectTo: 'wagetype-leaves', pathMatch: 'full' },
-                    { path: 'wage-type-registers', redirectTo: 'wagetype-registers', pathMatch: 'full' },
-                    { path: 'wage-type-security-roles', redirectTo: 'wagetype-security-roles', pathMatch: 'full' },
-                    { path: 'project-wage-types', redirectTo: 'project-wagetypes', pathMatch: 'full' },
                     {
                         path: 'wagetypes/:id',
                         loadComponent: () =>
@@ -2906,11 +2870,6 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom023' },
                     },
                     {
-                        path: 'employee-org-chart',
-                        redirectTo: 'org-charts/employee',
-                        pathMatch: 'full',
-                    },
-                    {
                         path: 'employees/:id',
                         loadComponent: () =>
                             import('./admin/personnel-administration/employee-detail/employee-detail.component').then(
@@ -3445,7 +3404,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.BusinessRules' },
                     },
                     {
-                        path: 'workflow-setup',
+                        path: 'go-live-workflow-setup',
                         loadComponent: () =>
                             import('./admin/workflow/workflow-setup/workflow-setup.component').then(
                                 (m) => m.WorkflowSetupComponent
@@ -3757,6 +3716,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Tools.BulkPasswordReset' },
                     },
                     {
+                        path: 'tenant-setup-check',
+                        loadComponent: () =>
+                            import('./admin/administration/tenant-setup-check/tenant-setup-check.component').then(
+                                (m) => m.TenantSetupCheckComponent
+                            ),
+                        data: { permission: 'Pages.Administration.TenantSetupCheck' },
+                    },
+                    {
                         path: 'pa-forms/:id',
                         loadComponent: () =>
                             import('./admin/performance-management/pa-form-detail/pa-form-detail.component').then(
@@ -3969,17 +3936,11 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Host.Dashboard' },
                     },
                     {
-                        // Go-Live Setup -- built backwards from Run payroll.
-                        path: 'go-live-setup',
+                        // Go-Live Payroll Setup -- built backwards from Run payroll.
+                        path: 'go-live-payroll-setup',
                         loadComponent: () =>
                             import('./admin/go-live-setup/go-live-setup.component').then((m) => m.GoLiveSetupComponent),
                         data: { permission: 'Pages.GoLiveSetup' },
-                    },
-                    {
-                        // Its address while it was "Go-Live Setup V2", so bookmarks and saved links still land.
-                        path: 'go-live-setup-v2',
-                        redirectTo: 'go-live-setup',
-                        pathMatch: 'full',
                     },
                     {
                         path: 'screen-codes',
@@ -4108,11 +4069,6 @@ export const appRoutes: Routes = [
                                 (m) => m.PositionsComponent
                             ),
                         data: { permission: 'Pages.ManpowerPlanningManagement.Positions' },
-                    },
-                    {
-                        path: 'position-org-chart',
-                        redirectTo: 'org-charts/position',
-                        pathMatch: 'full',
                     },
                     {
                         path: 'position-relationships',

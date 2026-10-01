@@ -34,6 +34,13 @@ export class LoginComponent extends AppComponentBase implements OnInit, AfterVie
 
     loginService = inject(LoginService);
 
+    /**
+     * HCMv3's own release number, which is the one a tenant's installed version is compared against. The
+     * `version` beside it in the same object is the ASP.NET Zero template's number: it moves when the template
+     * is upgraded and says nothing about this product, so it is not the one to show.
+     */
+    productVersion: string = this.appSession.application?.productVersion ?? '';
+
     readonly submitting = signal(false);
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
     readonly capsLockOn = signal(false);

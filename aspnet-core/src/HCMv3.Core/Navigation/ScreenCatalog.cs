@@ -50,6 +50,7 @@ public static class ScreenCatalog
         new("app.admin.copy-workflow-setup", "SAD004", "Administration", "CopyWorkflowSetup", "/app/admin/copy-workflow-setup", "Pages.Administration.Tools.CopyWorkflowSetup"),
         new("app.admin.dynamic-property", "SAD005", "Administration", "DynamicProperties", "/app/admin/dynamic-property", "Pages.Administration.DynamicProperties"),
         new("app.admin.integrations", "SAD026", "Administration", "IntegrationCenter", "/app/admin/integrations", "Pages.Administration.IntegrationCenter"),
+        new("app.admin.tenant-setup-check", "SAD027", "Administration", "TenantSetupCheck", "/app/admin/tenant-setup-check", "Pages.Administration.TenantSetupCheck"),
         new("app.admin.health-check-ui", "SAD006", "Administration", "HealthCheck", "/app/admin/health-check-ui", "Pages.Administration.Host.HealthCheck"),
         new("app.admin.hostdashboard", "SAD007", "Administration", "Dashboard", "/app/admin/hostDashboard", "Pages.Administration.Host.Dashboard"),
         new("app.admin.hostsettings", "SAD008", "Administration", "Settings", "/app/admin/hostSettings", "Pages.Administration.Host.Settings"),
@@ -97,7 +98,10 @@ public static class ScreenCatalog
         new("app.main.ess.ticket", "SGEN010", "General", "EssMyTickets", "/app/main/ess/ticket", "Ess.MyTickets"),
         new("app.main.ess.travel-claim", "SGEN011", "General", "EssMyTravelClaims", "/app/main/ess/travel-claim", "Ess.MyTravelClaims"),
         new("app.notifications", "SGEN012", "General", "Inbox", "/app/notifications", null),
-        new("app.admin.go-live-setup", "SGL001", "GoLiveSetup", "GoLiveSetup", "/app/admin/go-live-setup", "Pages.GoLiveSetup"),
+        new("app.admin.go-live-setup", "SGL001", "GoLiveSetup", "GoLiveSetup", "/app/admin/go-live-payroll-setup", "Pages.GoLiveSetup"),
+        // The other half of bringing a company live, and so in the same SGL series rather than with the
+        // workflow screens: it is used while setting up and revisited whenever approvals are reorganised.
+        new("app.admin.workflow-setup", "SGL002", "GoLiveSetup", "WorkflowSetup", "/app/admin/go-live-workflow-setup", "Pages.Workflow.Setup"),
         new("app.admin.access-units", "SGM001", "GeneralMasterInfo", "AccessUnits", "/app/admin/access-units", "Pages.GeneralMasterInfo.AccessUnits"),
         new("app.admin.asset-types", "SGM002", "GeneralMasterInfo", "AssetTypes", "/app/admin/asset-types", "Pages.GeneralMasterInfo.AssetTypes"),
         new("app.admin.assets", "SGM003", "GeneralMasterInfo", "Assets", "/app/admin/assets", "Pages.GeneralMasterInfo.Assets"),

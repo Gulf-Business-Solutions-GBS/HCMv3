@@ -93,13 +93,22 @@
         </div>
 
         <!--begin::Action-->
-        <div class="pb-lg-0 pb-5">
+        <div class="pb-lg-0 pb-5 position-relative">
             <button
                 type="submit"
                 [disabled]="!loginForm.form.valid"
                 class="btn w-100 btn-primary fw-bolder fs-5 px-8 py-4 my-3 me-3">
                 {{ 'LogIn' | localize }}
             </button>
+
+            <!--
+                The release this server is running, from the code's own release list -- the same number a tenant's
+                installed version is compared against. Inside the panel, under the button, where somebody reporting
+                a problem can read it off without signing in.
+            -->
+            @if (productVersion) {
+                <div class="login__version text-center text-muted small">HCM v{{ productVersion }}</div>
+            }
         </div>
 
         <!--end::Action-->

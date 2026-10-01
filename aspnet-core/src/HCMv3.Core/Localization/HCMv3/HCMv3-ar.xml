@@ -5523,7 +5523,7 @@
     <text name="QuestionCardDemoTryConditional">أجب على Q2.06 بـ "نقداً فقط" فيختفي السؤال Q2.08، لأن سؤال ملف البنك لا معنى له عندئذ.</text>
     <text name="QuestionCardDemoTryNote">استخدم "إضافة ملاحظة" في أي سؤال لتسجيل قاعدة لا تعبّر عنها الخيارات.</text>
     <text name="QuestionCardDemoTryPhase">السؤال Q2.10 موسوم بـ "لاحقاً" ولا يُحتسب ضمن نسبة إنجاز أول رواتب.</text>
-    <text name="GoLiveSetup">إعداد التشغيل</text>
+    <text name="GoLiveSetup">إعداد الرواتب لبدء التشغيل</text>
     <text name="GoLiveIntro">انطلق في 3 خطوات سهلة</text>
     <text name="GoLiveRunPayroll">تشغيل الرواتب</text>
     <text name="GoLiveRunPayrollHint">يشغّل محرك الرواتب الفعلي لهذه الشركة الآن.</text>
