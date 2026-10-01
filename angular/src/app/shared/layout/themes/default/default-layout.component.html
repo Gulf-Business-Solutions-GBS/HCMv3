@@ -147,7 +147,11 @@
               with cursor:auto, which iPhone Safari does not deliver a tap's click to -- so tapping beside the open
               menu did nothing on exactly the phones the menu was hardest to escape on.
             -->
-            @if (isMobileViewport() && isMobileSidebarOpen()) {
+            <!--
+              Shown whenever the menu is open, without asking whether this is a phone: the menu can only be
+              opened from the hamburger, and the hamburger only exists below lg. One less reading to go stale.
+            -->
+            @if (isMobileSidebarOpen()) {
                 <div
                     class="app-sidebar-backdrop"
                     aria-hidden="true"
@@ -161,6 +165,12 @@
               Angular decides when they apply: the data-kt-drawer attributes that let Metronic's script own this
               element are gone, because its instance is sealed inside the bundle where the app cannot reach it,
               and every close path had to fake a click to talk to it. See isMobileSidebarOpen.
+
+              isMobileViewport is watched three ways (see the component): the media query's own event, window
+              resize, and a ResizeObserver. Twice it went stale -- the browser reporting a phone while this
+              layout still believed desktop -- and a stale reading here is not a cosmetic fault: the sidebar
+              covers the page with no drawer, no backdrop and a close button laid out to nothing, which is a
+              menu that cannot be shut.
             -->
             <div
                 id="kt_app_sidebar"

@@ -105,9 +105,21 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
          */
         window.addEventListener('resize', onBreakpointChange);
 
+        /*
+         * And a ResizeObserver on the page element, because on a phone neither of the above is dependable.
+         * A phone browser resizes the page when its address bar slides away, when the keyboard opens, and on
+         * rotation -- and reports those at its own pace, sometimes without a resize event and sometimes before
+         * it has settled on a size. The observer fires on the element actually changing size, which is the one
+         * thing that cannot be missed. Belt and braces, deliberately: this flag being wrong leaves a menu on a
+         * phone that cannot be closed, which was reported from a real handset half a dozen times.
+         */
+        const observer = new ResizeObserver(() => readBreakpoint());
+        observer.observe(this.document.documentElement);
+
         inject(DestroyRef).onDestroy(() => {
             this.mobileQuery.removeEventListener('change', onBreakpointChange);
             window.removeEventListener('resize', onBreakpointChange);
+            observer.disconnect();
         });
 
         // The width now, not the width when this object was built: the layout can be created before the
@@ -117,7 +129,14 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         // Stop the page scrolling underneath an open menu -- otherwise a swipe on the menu scrolls the
         // dashboard behind it instead.
         effect(() => {
-            const locked = this.isMobileViewport() && this.isMobileSidebarOpen();
+            /*
+             * Keyed on the menu being open ALONE, not on this layout also believing it is on a phone. The menu
+             * can only be opened from the hamburger, and the hamburger only exists below lg, so "open" already
+             * means "on a phone" -- while isMobileViewport is a reading that has twice been stale. The stylesheet
+             * hangs the whole off-canvas menu off this class, so a wrong reading can no longer produce a menu
+             * that covers the page with no way out.
+             */
+            const locked = this.isMobileSidebarOpen();
             this.document.body.classList.toggle('hcm-mobile-menu-open', locked);
         });
     }

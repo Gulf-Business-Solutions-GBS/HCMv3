@@ -370,3 +370,54 @@ select.form-select:focus {
 .app-sidebar-logo .app-sidebar-logo-minimize {
     height: 30px !important;
 }
+
+/*
+ * The off-canvas menu, drawn from the one fact that cannot be stale: the menu is open.
+ *
+ * Everything else about the mobile menu used to hang off a signal in the layout that asked the browser "is
+ * this a phone". That reading went stale twice, and the result was not cosmetic: the sidebar sat over the
+ * page with no drawer, no backdrop and a close button laid out to nothing -- a menu that could not be shut,
+ * reported from a real handset half a dozen times.
+ *
+ * So below lg these rules take over whenever body carries .hcm-mobile-menu-open, which the layout sets from
+ * the open state alone. The menu can only be opened by the hamburger, and the hamburger only exists below lg,
+ * so "open" already means "on a phone". Whatever the layout believes about the viewport, this shows the menu,
+ * shows its close button at a size a thumb can hit, and dims the page behind it.
+ */
+@media (max-width: 991.98px) {
+    body.hcm-mobile-menu-open {
+        overflow: hidden;
+    }
+
+    /* The menu itself, over the page and on screen, whether or not the drawer classes were applied. */
+    body.hcm-mobile-menu-open #kt_app_sidebar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 110;
+        transform: none !important;
+        overflow: auto;
+    }
+
+    /* The close button: shown, sized, and above the logo beside it so the tap always lands. */
+    body.hcm-mobile-menu-open #kt_app_sidebar_logo button.d-lg-none {
+        display: flex !important;
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* A tap target a thumb can hit, without changing what is drawn. */
+    body.hcm-mobile-menu-open #kt_app_sidebar_logo button.d-lg-none::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+    }
+}
