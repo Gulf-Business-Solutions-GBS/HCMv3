@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { EssSessionServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PermissionCheckerService } from 'abp-ng2-module';
 import { Observable, of, throwError } from 'rxjs';
 import { EssMenuCatalogService } from './ess-menu-catalog.service';
 
@@ -16,7 +17,7 @@ describe('EssMenuCatalogService', () => {
     let calls: number;
     let response: () => Observable<any>;
 
-    function build(): EssMenuCatalogService {
+    function build(hasSelfService = true): EssMenuCatalogService {
         calls = 0;
         response = () => of({ availableTransactionTypes: [{ code: 'EmployeeAsset' }, { code: 'EmployeeLoan' }] });
 
@@ -32,6 +33,10 @@ describe('EssMenuCatalogService', () => {
                             return response();
                         },
                     },
+                },
+                {
+                    provide: PermissionCheckerService,
+                    useValue: { isGranted: (name: string) => hasSelfService && name === 'Ess' },
                 },
             ],
         });
@@ -82,6 +87,17 @@ describe('EssMenuCatalogService', () => {
         service.ensureLoaded();
 
         expect(calls).toBe(1);
+    });
+
+    // The server refuses the call and the HTTP layer shows that refusal as a dialog, so the host saw
+    // "Required permissions are not granted" on every sign-in.
+    it('does not ask the server for somebody without self service', () => {
+        const service = build(false);
+
+        service.ensureLoaded();
+        service.ensureLoaded();
+
+        expect(calls).toBe(0);
     });
 
     it('asks again after a reset', () => {
