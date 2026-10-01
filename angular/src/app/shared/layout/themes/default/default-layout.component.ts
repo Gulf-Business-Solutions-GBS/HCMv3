@@ -227,9 +227,15 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         }
     }
 
-    toggleMobileSidebar(): void {
-        this.isMobileSidebarOpen.update((open) => !open);
-    }
+    /*
+     * Gone on purpose: the hamburger OPENS, it does not toggle.
+     *
+     * While it toggled, the hamburger had two handlers -- the template's binding and the document-level
+     * listener that was added so a phone could not swallow the tap. On a phone only one of them ran and the
+     * menu opened; on a desktop narrowed to the same width both ran, the second undid the first, and the
+     * hamburger did nothing at all. Two paths to "open" cannot cancel each other; two paths to "toggle" must.
+     * The menu is closed by the X, the backdrop, Escape, or tapping a page in it -- never by this button.
+     */
 
     /**
      * Tapping a page in the open menu closes it, whether or not the page changes.
