@@ -129,12 +129,20 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
          * they work everywhere else, and two paths to the same idempotent close cannot collide.
          */
         const closeFromAnywhere = (event: Event) => {
-            if (!this.isMobileSidebarOpen()) {
+            const target = event.target as HTMLElement | null;
+            if (!target) {
                 return;
             }
 
-            const target = event.target as HTMLElement | null;
-            if (!target) {
+            // Opening is heard here too, so the menu can always be brought back: the stylesheet now hides it
+            // on a phone until it is opened, and if only the close went through this listener a swallowed tap
+            // on the hamburger would leave somebody with no menu at all.
+            if (target.closest?.('#kt_app_sidebar_mobile_toggle')) {
+                this.openMobileSidebar();
+                return;
+            }
+
+            if (!this.isMobileSidebarOpen()) {
                 return;
             }
 
@@ -279,5 +287,17 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         this.document.body.classList.remove('hcm-mobile-menu-open');
         this.document.getElementById('kt_app_sidebar')?.classList.remove('drawer-on');
         this.document.querySelector('.app-sidebar-backdrop')?.remove();
+    }
+
+    /**
+     * Opening, with the same belt and braces as closing: the class goes on by hand as well as through the
+     * signal. The stylesheet hides the menu on a phone until that class is there, so if the redraw were the
+     * thing failing -- which is still not ruled out -- the menu would otherwise never appear at all.
+     */
+    openMobileSidebar(): void {
+        this.isMobileSidebarOpen.set(true);
+
+        this.document.body.classList.add('hcm-mobile-menu-open');
+        this.document.getElementById('kt_app_sidebar')?.classList.add('drawer-on');
     }
 }

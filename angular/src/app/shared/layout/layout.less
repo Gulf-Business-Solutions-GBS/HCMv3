@@ -421,3 +421,31 @@ select.form-select:focus {
         inset: -10px;
     }
 }
+
+/*
+ * On a phone the menu is HIDDEN until it is opened. Nothing else decides this.
+ *
+ * What was reported, and what every earlier fix missed: on a real handset the menu is already covering the
+ * page when the app loads. It was never opened -- so there is no backdrop to tap, and the X closes something
+ * that was never open, which is why it takes the tap, turns blue, and changes nothing. Narrowing a desktop
+ * window hides the fault because the resize corrects the layout on the way; a phone never resizes, so the
+ * wrong reading at load is the one it keeps.
+ *
+ * Below lg the sidebar is therefore display:none unless the body carries the open class. A menu that was not
+ * opened cannot cover the page, whatever the layout believes about the viewport and whether or not any
+ * JavaScript ran.
+ */
+@media (max-width: 991.98px) {
+    #kt_app_sidebar {
+        display: none !important;
+    }
+
+    body.hcm-mobile-menu-open #kt_app_sidebar {
+        display: flex !important;
+    }
+
+    /* And the hamburger always available, so the menu can always be opened again. */
+    #kt_app_sidebar_mobile_toggle {
+        display: inline-flex !important;
+    }
+}
