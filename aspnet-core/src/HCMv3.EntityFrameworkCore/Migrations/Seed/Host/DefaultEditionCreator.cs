@@ -1,9 +1,7 @@
 using System.Linq;
-using Abp.Application.Features;
 using Microsoft.EntityFrameworkCore;
 using HCMv3.Editions;
 using HCMv3.EntityFrameworkCore;
-using HCMv3.Features;
 
 namespace HCMv3.Migrations.Seed.Host;
 
@@ -33,28 +31,9 @@ public class DefaultEditionCreator
             /* Add desired features to the standard edition, if wanted... */
         }
 
-        if (defaultEdition.Id > 0)
-        {
-            CreateFeatureIfNotExists(defaultEdition.Id, AppFeatures.ChatFeature, true);
-            CreateFeatureIfNotExists(defaultEdition.Id, AppFeatures.TenantToTenantChatFeature, true);
-            CreateFeatureIfNotExists(defaultEdition.Id, AppFeatures.TenantToHostChatFeature, true);
-        }
-    }
-
-    private void CreateFeatureIfNotExists(int editionId, string featureName, bool isEnabled)
-    {
-        var defaultEditionChatFeature = _context.EditionFeatureSettings.IgnoreQueryFilters()
-                                                    .FirstOrDefault(ef => ef.EditionId == editionId && ef.Name == featureName);
-
-        if (defaultEditionChatFeature == null)
-        {
-            _context.EditionFeatureSettings.Add(new EditionFeatureSetting
-            {
-                Name = featureName,
-                Value = isEnabled.ToString().ToLower(),
-                EditionId = editionId
-            });
-        }
+        /* Chat is NOT switched on here. The chat features default to off (AppFeatureProvider), so a new
+           database starts without chat, and without one tenant's users being able to message another's.
+           A host administrator turns it on per edition or per tenant under Features. */
     }
 }
 

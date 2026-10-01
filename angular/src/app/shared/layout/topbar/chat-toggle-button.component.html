@@ -1,4 +1,4 @@
-@if ((isHost() || ('App.ChatFeature' | checkFeature)) && !chatConnected()) {
+@if (('App.ChatFeature' | checkFeature) && !chatConnected()) {
     <div id="chat_is_connecting_icon" class="d-flex align-items-center ms-1 ms-lg-3">
         <button [class]="customStyle()">
             @if (!chatConnected()) {
@@ -11,7 +11,7 @@
         </button>
     </div>
 }
-@if ((isHost() || ('App.ChatFeature' | checkFeature)) && chatConnected()) {
+@if (('App.ChatFeature' | checkFeature) && chatConnected()) {
     <div id="kt_drawer_chat_toggle" class="d-flex align-items-center ms-1 ms-lg-3">
         <button [class]="customStyle()" id="chatIconUnRead" class="unread-notification">
             <i [class]="iconStyle()"></i>

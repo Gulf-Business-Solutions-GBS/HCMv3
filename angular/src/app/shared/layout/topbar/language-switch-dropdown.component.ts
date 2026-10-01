@@ -6,6 +6,7 @@ import { filter as _filter } from 'lodash-es';
 @Component({
     selector: 'language-switch-dropdown',
     templateUrl: './language-switch-dropdown.component.html',
+    styleUrls: ['../../../../account/language-switch.component.css'],
     imports: [],
 })
 export class LanguageSwitchDropdownComponent extends ThemesLayoutBaseComponent implements OnInit {
@@ -19,9 +20,26 @@ export class LanguageSwitchDropdownComponent extends ThemesLayoutBaseComponent i
     languages: abp.localization.ILanguageInfo[];
     currentLanguage: abp.localization.ILanguageInfo;
 
+    /** Deduplicated by the code shown, so "en" and "en-GB" do not both render as EN. The current language wins. */
+    switchableLanguages: abp.localization.ILanguageInfo[] = [];
+
     ngOnInit(): void {
         this.languages = _filter(this.localization.languages, (l) => l.isDisabled === false);
         this.currentLanguage = this.localization.currentLanguage;
+
+        const byCode = new Map<string, abp.localization.ILanguageInfo>();
+        for (const language of this.languages) {
+            const code = this.shortCode(language);
+            if (!byCode.has(code) || language.name === this.currentLanguage?.name) {
+                byCode.set(code, language);
+            }
+        }
+        this.switchableLanguages = Array.from(byCode.values());
+    }
+
+    /** "en-GB" -> EN, "ar" -> AR. The part before the dash is the language; the rest is the country. */
+    shortCode(language: abp.localization.ILanguageInfo): string {
+        return (language.name || '').split('-')[0].toUpperCase();
     }
 
     changeLanguage(languageName: string): void {

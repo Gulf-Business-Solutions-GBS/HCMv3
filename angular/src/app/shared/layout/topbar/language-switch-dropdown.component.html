@@ -1,24 +1,17 @@
-@if (languages.length > 1) {
-    <div
-        class="d-flex align-items-center ms-1 ms-lg-3 dropdown-language"
-        data-kt-menu-trigger="click"
-        data-kt-menu-placement="bottom-start">
-        <div [class]="customStyle()">
-            <i [class]="currentLanguage.icon"></i>
-        </div>
+<!-- EN | AR as text, not flags: the same control as the sign-in page (account/language-switch). -->
+@if (switchableLanguages.length > 1) {
+    <div class="d-flex align-items-center ms-1 ms-lg-3 fw-bold fs-6">
+        @for (language of switchableLanguages; track language.name; let last = $last) {
+            <span
+                class="language-switch-code"
+                [class.language-switch-code-active]="language.name === currentLanguage?.name"
+                (click)="changeLanguage(language.name)"
+                [title]="language.displayName">
+                {{ shortCode(language) }}
+            </span>
+            @if (!last) {
+                <span class="language-switch-divider">|</span>
+            }
+        }
     </div>
 }
-<div
-    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4"
-    data-kt-menu="true">
-    @for (language of languages; track language) {
-        <div class="menu-item px-3">
-            <a href="javascript:;" (click)="changeLanguage(language.name)" class="menu-link px-3">
-                <span class="d-flex symbol symbol-20px me-4">
-                    <i [class]="language.icon"></i>
-                </span>
-                {{ language.displayName }}
-            </a>
-        </div>
-    }
-</div>

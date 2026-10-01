@@ -38,6 +38,20 @@ public class EditionAppService_Tests : AppTestBase
     }
 
     [MultiTenantFact]
+    public void Should_Not_Enable_Chat_On_Default_Edition()
+    {
+        UsingDbContext(context =>
+        {
+            var defaultEdition = context.Editions.First(e => e.Name == EditionManager.DefaultEditionName);
+
+            context.EditionFeatureSettings
+                .Where(s => s.EditionId == defaultEdition.Id && s.Name.StartsWith(AppFeatures.ChatFeature))
+                .ToList()
+                .ShouldAllBe(s => s.Value != "true");
+        });
+    }
+
+    [MultiTenantFact]
     public async Task Should_Create_Edition()
     {
         //Getting edition for edit
