@@ -1627,6 +1627,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.Employees' },
                     },
                     {
+                        path: 'employee-workbench',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employee-workbench/employee-workbench.component').then(
+                                (m) => m.EmployeeWorkbenchComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeWorkbench' },
+                    },
+                    {
                         path: 'report-designer-devexpress',
                         loadComponent: () =>
                             import(

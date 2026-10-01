@@ -2329,6 +2329,12 @@ export class AppNavigationService {
                         '/app/admin/employees'
                     ),
                     new AppMenuItem(
+                        'EmployeeWorkbench',
+                        'Pages.PersonnelAdministration.EmployeeWorkbench',
+                        'flaticon-squares',
+                        '/app/admin/employee-workbench'
+                    ),
+                    new AppMenuItem(
                         'EmployeeChart',
                         'Pages.PersonnelAdministration.EmployeeOrgChart',
                         'flaticon-network',

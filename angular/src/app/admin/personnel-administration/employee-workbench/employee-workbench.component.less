@@ -65,7 +65,7 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--bs-light-primary);
+    background: var(--bs-primary-light);
     color: var(--bs-primary);
     display: flex;
     align-items: center;
@@ -125,24 +125,26 @@
         border: 2px solid var(--bs-primary);
     }
 
+    // The icon grows with the tile, so a tall tile on a big monitor does not end up mostly empty space.
+    // Escaped so LESS passes max()/calc() through to the browser instead of trying to evaluate them.
     &__icon {
-        width: 96px;
-        height: 96px;
+        width: ~'max(96px, calc(var(--wb-tile-height, 160px) * 0.45))';
+        height: ~'max(96px, calc(var(--wb-tile-height, 160px) * 0.45))';
         border-radius: 50%;
-        background: var(--bs-light-primary);
+        background: var(--bs-primary-light);
         color: var(--bs-primary);
         display: flex;
         align-items: center;
         justify-content: center;
 
         i {
-            font-size: 3rem;
+            font-size: ~'max(3rem, calc(var(--wb-tile-height, 160px) * 0.24))';
             color: inherit;
         }
     }
 
     &__label {
-        font-size: 1.35rem;
+        font-size: 1.5rem;
         font-weight: 600;
     }
 }
@@ -240,7 +242,7 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: var(--bs-light-primary);
+    background: var(--bs-primary-light);
     color: var(--bs-primary);
     display: flex;
     align-items: center;
