@@ -217,12 +217,32 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
      * was under the finger once the menu had slid away. Mouse and keyboard still close through (click).
      */
     closeMobileSidebarOnTouch(event: TouchEvent): void {
-        event.preventDefault();
+        // In a passive listener this logs a warning instead of working, so the close below must not depend on
+        // it -- and does not.
+        if (event.cancelable) {
+            event.preventDefault();
+        }
+
         this.closeMobileSidebar();
     }
 
-    /** Idempotent: closing a menu that is already closed does nothing, so no two close paths can collide. */
+    /**
+     * Idempotent: closing a menu that is already closed does nothing, so no two close paths can collide.
+     *
+     * The signal is the truth, and on every browser reached from this machine setting it is enough. On real
+     * handsets it was not: the menu stayed over the page with the X reported as tapped, half a dozen times,
+     * on a build whose stylesheet was confirmed current. That leaves the render as the suspect -- the state
+     * changing without the page being redrawn -- which is not something that can be debugged from here.
+     *
+     * So the classes that hold the menu open are also taken off directly. The template still owns them and
+     * will put things right on its next pass; this only means a tap cannot leave somebody trapped while that
+     * is pending. Deliberately boring DOM calls: no framework, nothing to go stale.
+     */
     closeMobileSidebar(): void {
         this.isMobileSidebarOpen.set(false);
+
+        this.document.body.classList.remove('hcm-mobile-menu-open');
+        this.document.getElementById('kt_app_sidebar')?.classList.remove('drawer-on');
+        this.document.querySelector('.app-sidebar-backdrop')?.remove();
     }
 }
