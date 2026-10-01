@@ -116,10 +116,45 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         const observer = new ResizeObserver(() => readBreakpoint());
         observer.observe(this.document.documentElement);
 
+        /*
+         * The close, listened for on the document itself rather than through the template's bindings.
+         *
+         * On a real handset the X took the tap -- it turned its active blue -- and nothing happened, with the
+         * current stylesheet confirmed on the server. The tap reaches the element; the binding attached to it
+         * does not run. Rather than keep guessing why, this listens where nothing can get between: on the
+         * document, in the capture phase, before any handler in between can swallow the event.
+         *
+         * Both events, because a phone may send one or the other: touchend always, click only sometimes.
+         * Closing is idempotent, so getting both costs nothing. The template's own bindings stay as they are --
+         * they work everywhere else, and two paths to the same idempotent close cannot collide.
+         */
+        const closeFromAnywhere = (event: Event) => {
+            if (!this.isMobileSidebarOpen()) {
+                return;
+            }
+
+            const target = event.target as HTMLElement | null;
+            if (!target) {
+                return;
+            }
+
+            const onBackdrop = target.classList?.contains('app-sidebar-backdrop');
+            const onCloseButton = !!target.closest?.('#kt_app_sidebar_logo button');
+
+            if (onBackdrop || onCloseButton) {
+                this.closeMobileSidebar();
+            }
+        };
+
+        this.document.addEventListener('touchend', closeFromAnywhere, true);
+        this.document.addEventListener('click', closeFromAnywhere, true);
+
         inject(DestroyRef).onDestroy(() => {
             this.mobileQuery.removeEventListener('change', onBreakpointChange);
             window.removeEventListener('resize', onBreakpointChange);
             observer.disconnect();
+            this.document.removeEventListener('touchend', closeFromAnywhere, true);
+            this.document.removeEventListener('click', closeFromAnywhere, true);
         });
 
         // The width now, not the width when this object was built: the layout can be created before the
