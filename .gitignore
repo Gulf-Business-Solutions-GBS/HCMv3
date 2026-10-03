@@ -51,3 +51,6 @@ ng-build*.log
 
 # Build output and deploy packages produced locally; artefacts, never source.
 artifacts/
+
+# The build's version and change log, generated from git on every build (tools/release-log).
+aspnet-core/src/HCMv3.Core/Releases/release-log.json

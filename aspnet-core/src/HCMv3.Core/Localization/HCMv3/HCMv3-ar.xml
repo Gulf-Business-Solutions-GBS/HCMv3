@@ -6811,7 +6811,7 @@
     <text name="CannotWithdrawAFeedbackRequestAlreadyAnswered">قدّم هذا الزميل رأيه بالفعل، لذا لا يمكن سحب الطلب</text>
     <text name="WithdrawFeedbackRequest">سحب طلب الرأي</text>
     <text name="FeedbackRequestWithdrawn">تم سحب طلب الرأي</text>
-    <text name="TenantSetupCheck">فحص إعدادات الجهة</text>
+    <text name="TenantVersionCheck">فحص إصدار الجهة</text>
     <text name="SetupCheckDescription">ما تغير بين إصدارين، والإعدادات التي يحتاجها في هذه الشركة</text>
     <text name="SetupCheckUnknownVersion">الإصدار {0} ليس من إصدارات HCMv3 المعروفة.</text>
     <text name="SetupCheckBuiltOn">تاريخ البناء {0}</text>

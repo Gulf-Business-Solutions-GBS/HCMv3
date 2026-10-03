@@ -1,51 +1,48 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Abp.Timing;
 using HCMv3.Configuration;
-using HCMv3.Releases;
 
 namespace HCMv3.SetupChecks;
 
-/// <summary>Which release a tenant is on, and which it was on before the latest update.</summary>
+/// <summary>Which build a tenant is on, and which it was on before the latest update.</summary>
 public record ReleaseVersionState(string CurrentVersion, string PreviousVersion, DateTime? UpdatedOn)
 {
     /// <summary>False until an update has happened since tracking began: there is nothing to compare with.</summary>
-    public bool HasComparison => !string.IsNullOrEmpty(PreviousVersion);
+    public bool HasPrevious => !string.IsNullOrEmpty(PreviousVersion);
 }
 
 /// <summary>
-/// Remembers, per tenant, the last HCMv3 release it saw, so an update can be told apart from an ordinary visit.
+/// Remembers, per tenant, the last HCMv3 build it saw, so an update can be told apart from an ordinary visit.
 ///
 /// <para>Kept in three tenant settings (<see cref="AppSettings.Releases"/>). The first time a tenant is seen the
-/// current release is recorded and there is nothing to compare. When the code's release later differs from the one
-/// recorded, the recorded one becomes the PREVIOUS release and the current one is recorded -- so the comparison
-/// "previous to current" stays on screen until the next update, however many times the page is opened.</para>
+/// current version is recorded and there is nothing to compare. When the running build's version later differs from
+/// the one recorded, the recorded one becomes the PREVIOUS version and the current one is recorded -- so "previous to
+/// current" stays on screen until the next update, however many times the page is opened.</para>
 /// </summary>
 public class ReleaseVersionTracker : HCMv3DomainServiceBase
 {
-    private readonly IReleaseCatalog _catalog;
+    private readonly IReleaseLog _log;
 
-    public ReleaseVersionTracker(IReleaseCatalog catalog)
+    public ReleaseVersionTracker(IReleaseLog log)
     {
-        _catalog = catalog;
+        _log = log;
     }
 
     public async Task<ReleaseVersionState> RecordAsync(int tenantId)
     {
-        var current = _catalog.Releases[^1].Version;
+        var current = _log.Version;
         var lastSeen = await SettingManager.GetSettingValueForTenantAsync(AppSettings.Releases.LastSeenVersion, tenantId);
 
         if (string.IsNullOrWhiteSpace(lastSeen))
         {
-            // First sight: record where tracking starts; no previous release to compare with.
+            // First sight: record where tracking starts; no previous version to compare with.
             await SettingManager.ChangeSettingForTenantAsync(tenantId, AppSettings.Releases.LastSeenVersion, current);
         }
         else if (!string.Equals(lastSeen.Trim(), current, StringComparison.Ordinal))
         {
-            // The code moved on since the tenant was last seen: that is an update.
+            // The build moved on since the tenant was last seen: that is an update.
             await SettingManager.ChangeSettingForTenantAsync(tenantId, AppSettings.Releases.PreviousVersion, lastSeen.Trim());
             await SettingManager.ChangeSettingForTenantAsync(tenantId, AppSettings.Releases.LastSeenVersion, current);
             await SettingManager.ChangeSettingForTenantAsync(
@@ -59,19 +56,5 @@ public class ReleaseVersionTracker : HCMv3DomainServiceBase
             : null;
 
         return new ReleaseVersionState(current, string.IsNullOrWhiteSpace(previous) ? null : previous, updatedOn);
-    }
-
-    /// <summary>
-    /// The releases an update from <paramref name="previousVersion"/> brought: newer than it, up to and including the
-    /// current one, oldest first. Empty when there is no previous release or it cannot be read.
-    /// </summary>
-    public IReadOnlyList<HCMv3Release> ReleasesSince(string previousVersion)
-    {
-        if (!Version.TryParse(previousVersion, out var previous))
-        {
-            return Array.Empty<HCMv3Release>();
-        }
-
-        return _catalog.Releases.Where(r => r.Number > previous).ToList();
     }
 }

@@ -8,7 +8,8 @@ public class ApplicationInfoDto
     public string Version { get; set; }
 
     /// <summary>
-    /// HCMv3's own release number, from <see cref="Releases.HCMv3Releases"/> -- the one a tenant's installed version
+    /// HCMv3's own version, base version plus build number (e.g. 3.0.531), which the build reads from git (see
+    /// <c>ReleaseLog</c>) -- the one a tenant's installed version
     /// is compared against, and the one to show people. <see cref="Version"/> beside it is the ASP.NET Zero template's
     /// number, which moves when the template is upgraded and means nothing to a customer.
     /// </summary>

@@ -49,4 +49,21 @@
   <ItemGroup>
     <ProjectReference Include="..\HCMv3.Core.Shared\HCMv3.Core.Shared.csproj" />
   </ItemGroup>
+
+  <!--
+    The build's own version number and change log, read from git on every build and embedded (see
+    tools/release-log/build-release-log.ps1 and Releases/ReleaseLog.cs). Nobody types a version: the build number is
+    the commit count. If git or PowerShell is missing (e.g. a container build) the step is skipped and the last
+    generated file, if any, is embedded; with none, the app reports its base version and an empty log.
+  -->
+  <PropertyGroup>
+    <HCMv3BaseVersion>3.0</HCMv3BaseVersion>
+    <ReleaseLogFile>$(MSBuildProjectDirectory)\Releases\release-log.json</ReleaseLogFile>
+  </PropertyGroup>
+  <Target Name="GenerateReleaseLog" BeforeTargets="BeforeBuild">
+    <Exec Condition="'$(OS)' == 'Windows_NT'" ContinueOnError="true" StandardOutputImportance="low" Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\..\..\..\tools\release-log\build-release-log.ps1&quot; -RepoRoot &quot;$(MSBuildProjectDirectory)\..\..\..&quot; -OutFile &quot;$(ReleaseLogFile)&quot; -BaseVersion $(HCMv3BaseVersion)" />
+    <ItemGroup>
+      <EmbeddedResource Include="$(ReleaseLogFile)" LogicalName="HCMv3.Releases.release-log.json" Condition="Exists('$(ReleaseLogFile)')" />
+    </ItemGroup>
+  </Target>
 </Project>

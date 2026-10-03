@@ -3716,12 +3716,12 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Tools.BulkPasswordReset' },
                     },
                     {
-                        path: 'tenant-setup-check',
+                        path: 'tenant-version-check',
                         loadComponent: () =>
-                            import('./admin/administration/tenant-setup-check/tenant-setup-check.component').then(
-                                (m) => m.TenantSetupCheckComponent
+                            import('./admin/administration/tenant-version-check/tenant-version-check.component').then(
+                                (m) => m.TenantVersionCheckComponent
                             ),
-                        data: { permission: 'Pages.Administration.TenantSetupCheck' },
+                        data: { permission: 'Pages.Administration.TenantVersionCheck' },
                     },
                     {
                         path: 'pa-forms/:id',

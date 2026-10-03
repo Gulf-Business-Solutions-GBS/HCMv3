@@ -1,46 +1,37 @@
 namespace HCMv3.SetupChecks;
 
-/// <summary>How much a missing piece of setup hurts.</summary>
-public enum SetupCheckSeverity
+/// <summary>What a change added that a tenant may have to set up. The build works these out from what each change
+/// touched (see <c>tools/release-log/build-release-log.ps1</c>).</summary>
+public enum SetupItemKind
 {
-    /// <summary>A run or screen will refuse, or leave people out, until it is set up.</summary>
-    Blocker = 0,
+    /// <summary>A new permission: nobody but the administrator has it until it is granted.</summary>
+    Permission = 0,
 
-    /// <summary>Things still run, but a result will be wrong or incomplete.</summary>
-    Warning = 1,
+    /// <summary>A new screen in the menu.</summary>
+    Screen = 1,
 
-    /// <summary>Worth knowing; nothing breaks.</summary>
-    Info = 2,
+    /// <summary>A new setting, with a default value worth reviewing.</summary>
+    Setting = 2,
+
+    /// <summary>A database change that must have been applied by the update.</summary>
+    Database = 3,
+
+    /// <summary>Setup the developer wrote down by hand, as a <c>Setup:</c> line in the change's description.</summary>
+    Manual = 4,
 }
 
-/// <summary>What one check found in one tenant.</summary>
-public enum SetupCheckOutcome
+/// <summary>Where a setup item stands in one tenant.</summary>
+public enum SetupItemStatus
 {
-    /// <summary>The setup is in place.</summary>
-    Ok = 0,
+    /// <summary>For information; nothing to do.</summary>
+    Info = 0,
 
-    /// <summary>Something is missing; the finding says how much and for whom.</summary>
-    Missing = 1,
-
-    /// <summary>There is nothing for the check to look at (e.g. no active employees).</summary>
-    NotApplicable = 2,
-
-    /// <summary>The check itself failed; its message says why. Other checks still ran.</summary>
-    Error = 3,
-}
-
-/// <summary>Where a release feature stands in one tenant.</summary>
-public enum FeatureSetupStatus
-{
-    /// <summary>The feature works as delivered; nothing to set up.</summary>
-    NoSetupNeeded = 0,
-
-    /// <summary>Every check the feature names found its setup in place.</summary>
+    /// <summary>Checked, and in place.</summary>
     Done = 1,
 
-    /// <summary>At least one check found setup missing.</summary>
-    NeedsSetup = 2,
+    /// <summary>Somebody should look: it cannot be verified automatically, or only the default is in place.</summary>
+    Review = 2,
 
-    /// <summary>A check could not run; nothing was found missing otherwise.</summary>
-    CheckFailed = 3,
+    /// <summary>Checked, and missing: something will fail until it is done.</summary>
+    ActionRequired = 3,
 }

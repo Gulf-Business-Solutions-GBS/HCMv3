@@ -150,6 +150,25 @@ losers linger un-killable until a reboot. Check `netstat`/the process list befor
 - Avoid destructive operations (e.g., deleting folders, resetting git history) unless explicitly requested.
 - If using auto-accept / dangerous permission modes, do so only in an isolated environment.
 
+## Commit messages feed the customer's change log (MANDATORY)
+
+The build reads git and embeds a version (`3.0.<commit count>`) and a change log; the **Tenant Version Check**
+screen shows a tenant what changed since its previous version (`tools/release-log/build-release-log.ps1`,
+`HCMv3.Core/SetupChecks/ReleaseLog.cs`). So:
+
+- **Write the commit subject for a customer's administrator**: one plain sentence saying what changed for them.
+  It is shown on that screen as-is.
+- New permissions, screens (`ScreenCatalog`), settings (`AppSettings`) and EF migrations are detected
+  automatically and listed as setup items. Nothing to do for those.
+- **If a change needs any OTHER setup in a tenant before it works** (create a default record, fill a new
+  required field, choose a new option, re-run something), add a line to the commit BODY, one per step:
+
+      Setup: Create a default workflow chain under Workflow Setup, or new requests cannot be submitted.
+
+  Say what to do, where, and what fails otherwise. No `Setup:` line means "works as delivered".
+- Never type a version number anywhere; `HCMv3BaseVersion` in `HCMv3.Core.csproj` moves only for a new
+  major/minor line.
+
 ## Unit Testing (MANDATORY)
 - **ALWAYS write unit tests for ALL generated/modified code**
 - Test location: `aspnet-core/test/HCMv3.Tests/`

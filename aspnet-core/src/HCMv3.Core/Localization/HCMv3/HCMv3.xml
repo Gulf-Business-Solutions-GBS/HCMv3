@@ -6976,7 +6976,7 @@
     <text name="CannotWithdrawAFeedbackRequestAlreadyAnswered">This colleague has already given their feedback, so the request cannot be withdrawn</text>
     <text name="WithdrawFeedbackRequest">Withdraw this feedback request</text>
     <text name="FeedbackRequestWithdrawn">Feedback request withdrawn</text>
-    <text name="TenantSetupCheck">Tenant Setup Check</text>
+    <text name="TenantVersionCheck">Tenant Version Check</text>
     <text name="SetupCheckDescription">What changed between two versions, and the setup it needs in this company</text>
     <text name="SetupCheckUnknownVersion">Version {0} is not a known HCMv3 build.</text>
     <text name="SetupCheckBuiltOn">Built on {0}</text>

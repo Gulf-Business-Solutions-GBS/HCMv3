@@ -145395,179 +145395,6 @@ export class TenantSettingsServiceProxy {
 }
 
 @Injectable()
-export class TenantSetupCheckServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @return OK
-     */
-    getUpdateStatus(): Observable<ReleaseUpdateStatusDto> {
-        let url_ = this.baseUrl + "/api/services/app/TenantSetupCheck/GetUpdateStatus";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUpdateStatus(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetUpdateStatus(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReleaseUpdateStatusDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReleaseUpdateStatusDto>;
-        }));
-    }
-
-    protected processGetUpdateStatus(response: HttpResponseBase): Observable<ReleaseUpdateStatusDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReleaseUpdateStatusDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param version (optional) 
-     * @return OK
-     */
-    getRelease(version?: string | null | undefined): Observable<ReleaseChangesDto> {
-        let url_ = this.baseUrl + "/api/services/app/TenantSetupCheck/GetRelease?";
-        if (version !== undefined && version !== null)
-            url_ += "version=" + encodeURIComponent("" + version) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetRelease(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetRelease(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReleaseChangesDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReleaseChangesDto>;
-        }));
-    }
-
-    protected processGetRelease(response: HttpResponseBase): Observable<ReleaseChangesDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReleaseChangesDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    exportToExcel(body?: ExportReleaseChangesInput | undefined): Observable<FileDto> {
-        let url_ = this.baseUrl + "/api/services/app/TenantSetupCheck/ExportToExcel";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processExportToExcel(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processExportToExcel(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<FileDto>;
-        }));
-    }
-
-    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
 export class TenantUiSettingsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -145619,6 +145446,181 @@ export class TenantUiSettingsServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = TenantUiSettingsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class TenantVersionCheckServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getStatus(): Observable<TenantVersionCheckStatusDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantVersionCheck/GetStatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TenantVersionCheckStatusDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TenantVersionCheckStatusDto>;
+        }));
+    }
+
+    protected processGetStatus(response: HttpResponseBase): Observable<TenantVersionCheckStatusDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TenantVersionCheckStatusDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    compare(body?: CompareBuildsInput | undefined): Observable<BuildComparisonDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantVersionCheck/Compare";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompare(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompare(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BuildComparisonDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BuildComparisonDto>;
+        }));
+    }
+
+    protected processCompare(response: HttpResponseBase): Observable<BuildComparisonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BuildComparisonDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: CompareBuildsInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantVersionCheck/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -171819,6 +171821,166 @@ export interface IBudgetingGroupRateDetailDto {
     bonusRate: number;
 }
 
+export class BuildChangeDto implements IBuildChangeDto {
+    version!: string | undefined;
+    date!: DateTime;
+    subject!: string | undefined;
+    moduleName!: string | undefined;
+    setupItemCount!: number;
+
+    constructor(data?: IBuildChangeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.version = _data["version"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.subject = _data["subject"];
+            this.moduleName = _data["moduleName"];
+            this.setupItemCount = _data["setupItemCount"];
+        }
+    }
+
+    static fromJS(data: any): BuildChangeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BuildChangeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["version"] = this.version;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["subject"] = this.subject;
+        data["moduleName"] = this.moduleName;
+        data["setupItemCount"] = this.setupItemCount;
+        return data;
+    }
+}
+
+export interface IBuildChangeDto {
+    version: string | undefined;
+    date: DateTime;
+    subject: string | undefined;
+    moduleName: string | undefined;
+    setupItemCount: number;
+}
+
+export class BuildComparisonDto implements IBuildComparisonDto {
+    fromVersion!: string | undefined;
+    toVersion!: string | undefined;
+    setupItems!: SetupItemDto[] | undefined;
+    changes!: BuildChangeDto[] | undefined;
+
+    constructor(data?: IBuildComparisonDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromVersion = _data["fromVersion"];
+            this.toVersion = _data["toVersion"];
+            if (Array.isArray(_data["setupItems"])) {
+                this.setupItems = [] as any;
+                for (let item of _data["setupItems"])
+                    this.setupItems!.push(SetupItemDto.fromJS(item));
+            }
+            if (Array.isArray(_data["changes"])) {
+                this.changes = [] as any;
+                for (let item of _data["changes"])
+                    this.changes!.push(BuildChangeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): BuildComparisonDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BuildComparisonDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromVersion"] = this.fromVersion;
+        data["toVersion"] = this.toVersion;
+        if (Array.isArray(this.setupItems)) {
+            data["setupItems"] = [];
+            for (let item of this.setupItems)
+                data["setupItems"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.changes)) {
+            data["changes"] = [];
+            for (let item of this.changes)
+                data["changes"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IBuildComparisonDto {
+    fromVersion: string | undefined;
+    toVersion: string | undefined;
+    setupItems: SetupItemDto[] | undefined;
+    changes: BuildChangeDto[] | undefined;
+}
+
+export class BuildSummaryDto implements IBuildSummaryDto {
+    version!: string | undefined;
+    date!: DateTime;
+    subject!: string | undefined;
+
+    constructor(data?: IBuildSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.version = _data["version"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.subject = _data["subject"];
+        }
+    }
+
+    static fromJS(data: any): BuildSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BuildSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["version"] = this.version;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["subject"] = this.subject;
+        return data;
+    }
+}
+
+export interface IBuildSummaryDto {
+    version: string | undefined;
+    date: DateTime;
+    subject: string | undefined;
+}
+
 export class BuildingContractDto implements IBuildingContractDto {
     id!: number;
     buildingId!: number;
@@ -175505,6 +175667,42 @@ export interface ICompanyStructureNodeDto {
     focus: OrgChartNodeDto;
     ancestors: OrgChartNodeSummaryDto[] | undefined;
     children: OrgChartNodeDto[] | undefined;
+}
+
+export class CompareBuildsInput implements ICompareBuildsInput {
+    fromVersion!: string;
+
+    constructor(data?: ICompareBuildsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromVersion = _data["fromVersion"];
+        }
+    }
+
+    static fromJS(data: any): CompareBuildsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompareBuildsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromVersion"] = this.fromVersion;
+        return data;
+    }
+}
+
+export interface ICompareBuildsInput {
+    fromVersion: string;
 }
 
 export class CompetencyByJobTitleDetailDto implements ICompetencyByJobTitleDetailDto {
@@ -222152,42 +222350,6 @@ export interface IExportPayrollDashboardInput {
     runType: PayrollRunType;
 }
 
-export class ExportReleaseChangesInput implements IExportReleaseChangesInput {
-    version!: string | undefined;
-
-    constructor(data?: IExportReleaseChangesInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.version = _data["version"];
-        }
-    }
-
-    static fromJS(data: any): ExportReleaseChangesInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new ExportReleaseChangesInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["version"] = this.version;
-        return data;
-    }
-}
-
-export interface IExportReleaseChangesInput {
-    version: string | undefined;
-}
-
 export class ExportWorkflowDashboardInput implements IExportWorkflowDashboardInput {
     fromDate!: DateTime | undefined;
     toDate!: DateTime | undefined;
@@ -222855,13 +223017,6 @@ export interface IFeatureInputTypeDto {
     attributes: { [key: string]: any; } | undefined;
     validator: IValueValidator;
     itemSource: LocalizableComboboxItemSourceDto;
-}
-
-export enum FeatureSetupStatus {
-    NoSetupNeeded = 0,
-    Done = 1,
-    NeedsSetup = 2,
-    CheckFailed = 3,
 }
 
 export class FeedbackCandidateDto implements IFeedbackCandidateDto {
@@ -329059,254 +329214,6 @@ export interface IRejectWorkflowRequestDto {
     remark: string | undefined;
 }
 
-export class ReleaseChangesDto implements IReleaseChangesDto {
-    version!: string | undefined;
-    releasedOn!: DateTime;
-    title!: string | undefined;
-    notes!: string | undefined;
-    features!: ReleaseFeatureDto[] | undefined;
-
-    constructor(data?: IReleaseChangesDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.version = _data["version"];
-            this.releasedOn = _data["releasedOn"] ? DateTime.fromISO(_data["releasedOn"].toString()) : undefined as any;
-            this.title = _data["title"];
-            this.notes = _data["notes"];
-            if (Array.isArray(_data["features"])) {
-                this.features = [] as any;
-                for (let item of _data["features"])
-                    this.features!.push(ReleaseFeatureDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ReleaseChangesDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReleaseChangesDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["version"] = this.version;
-        data["releasedOn"] = this.releasedOn ? this.releasedOn.toString() : undefined as any;
-        data["title"] = this.title;
-        data["notes"] = this.notes;
-        if (Array.isArray(this.features)) {
-            data["features"] = [];
-            for (let item of this.features)
-                data["features"].push(item ? item.toJSON() : undefined as any);
-        }
-        return data;
-    }
-}
-
-export interface IReleaseChangesDto {
-    version: string | undefined;
-    releasedOn: DateTime;
-    title: string | undefined;
-    notes: string | undefined;
-    features: ReleaseFeatureDto[] | undefined;
-}
-
-export class ReleaseFeatureDto implements IReleaseFeatureDto {
-    key!: string | undefined;
-    module!: string | undefined;
-    moduleName!: string | undefined;
-    title!: string | undefined;
-    description!: string | undefined;
-    setupStatus!: FeatureSetupStatus;
-    setupItems!: SetupCheckItemDto[] | undefined;
-
-    constructor(data?: IReleaseFeatureDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.key = _data["key"];
-            this.module = _data["module"];
-            this.moduleName = _data["moduleName"];
-            this.title = _data["title"];
-            this.description = _data["description"];
-            this.setupStatus = _data["setupStatus"];
-            if (Array.isArray(_data["setupItems"])) {
-                this.setupItems = [] as any;
-                for (let item of _data["setupItems"])
-                    this.setupItems!.push(SetupCheckItemDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ReleaseFeatureDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReleaseFeatureDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["key"] = this.key;
-        data["module"] = this.module;
-        data["moduleName"] = this.moduleName;
-        data["title"] = this.title;
-        data["description"] = this.description;
-        data["setupStatus"] = this.setupStatus;
-        if (Array.isArray(this.setupItems)) {
-            data["setupItems"] = [];
-            for (let item of this.setupItems)
-                data["setupItems"].push(item ? item.toJSON() : undefined as any);
-        }
-        return data;
-    }
-}
-
-export interface IReleaseFeatureDto {
-    key: string | undefined;
-    module: string | undefined;
-    moduleName: string | undefined;
-    title: string | undefined;
-    description: string | undefined;
-    setupStatus: FeatureSetupStatus;
-    setupItems: SetupCheckItemDto[] | undefined;
-}
-
-export class ReleaseSummaryDto implements IReleaseSummaryDto {
-    version!: string | undefined;
-    releasedOn!: DateTime;
-    title!: string | undefined;
-
-    constructor(data?: IReleaseSummaryDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.version = _data["version"];
-            this.releasedOn = _data["releasedOn"] ? DateTime.fromISO(_data["releasedOn"].toString()) : undefined as any;
-            this.title = _data["title"];
-        }
-    }
-
-    static fromJS(data: any): ReleaseSummaryDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReleaseSummaryDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["version"] = this.version;
-        data["releasedOn"] = this.releasedOn ? this.releasedOn.toString() : undefined as any;
-        data["title"] = this.title;
-        return data;
-    }
-}
-
-export interface IReleaseSummaryDto {
-    version: string | undefined;
-    releasedOn: DateTime;
-    title: string | undefined;
-}
-
-export class ReleaseUpdateStatusDto implements IReleaseUpdateStatusDto {
-    currentVersion!: string | undefined;
-    currentTitle!: string | undefined;
-    previousVersion!: string | undefined;
-    updatedOn!: DateTime | undefined;
-    hasComparison!: boolean;
-    releases!: ReleaseChangesDto[] | undefined;
-    allReleases!: ReleaseSummaryDto[] | undefined;
-
-    constructor(data?: IReleaseUpdateStatusDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.currentVersion = _data["currentVersion"];
-            this.currentTitle = _data["currentTitle"];
-            this.previousVersion = _data["previousVersion"];
-            this.updatedOn = _data["updatedOn"] ? DateTime.fromISO(_data["updatedOn"].toString()) : undefined as any;
-            this.hasComparison = _data["hasComparison"];
-            if (Array.isArray(_data["releases"])) {
-                this.releases = [] as any;
-                for (let item of _data["releases"])
-                    this.releases!.push(ReleaseChangesDto.fromJS(item));
-            }
-            if (Array.isArray(_data["allReleases"])) {
-                this.allReleases = [] as any;
-                for (let item of _data["allReleases"])
-                    this.allReleases!.push(ReleaseSummaryDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ReleaseUpdateStatusDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReleaseUpdateStatusDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["currentVersion"] = this.currentVersion;
-        data["currentTitle"] = this.currentTitle;
-        data["previousVersion"] = this.previousVersion;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toString() : undefined as any;
-        data["hasComparison"] = this.hasComparison;
-        if (Array.isArray(this.releases)) {
-            data["releases"] = [];
-            for (let item of this.releases)
-                data["releases"].push(item ? item.toJSON() : undefined as any);
-        }
-        if (Array.isArray(this.allReleases)) {
-            data["allReleases"] = [];
-            for (let item of this.allReleases)
-                data["allReleases"].push(item ? item.toJSON() : undefined as any);
-        }
-        return data;
-    }
-}
-
-export interface IReleaseUpdateStatusDto {
-    currentVersion: string | undefined;
-    currentTitle: string | undefined;
-    previousVersion: string | undefined;
-    updatedOn: DateTime | undefined;
-    hasComparison: boolean;
-    releases: ReleaseChangesDto[] | undefined;
-    allReleases: ReleaseSummaryDto[] | undefined;
-}
-
 export class RenamePageInput implements IRenamePageInput {
     dashboardName!: string | undefined;
     id!: string | undefined;
@@ -338301,21 +338208,18 @@ export enum SettingScopes {
     All = 7,
 }
 
-export class SetupCheckItemDto implements ISetupCheckItemDto {
-    code!: string | undefined;
-    severity!: SetupCheckSeverity;
+export class SetupItemDto implements ISetupItemDto {
+    kind!: SetupItemKind;
+    status!: SetupItemStatus;
     title!: string | undefined;
-    why!: string | undefined;
-    outcome!: SetupCheckOutcome;
-    checkedCount!: number;
-    missingCount!: number;
-    examples!: string[] | undefined;
-    message!: string | undefined;
-    fixScreenCode!: string | undefined;
+    detail!: string | undefined;
+    technicalName!: string | undefined;
+    version!: string | undefined;
+    changeSubject!: string | undefined;
     fixScreenName!: string | undefined;
     fixScreenRoute!: string | undefined;
 
-    constructor(data?: ISetupCheckItemDto) {
+    constructor(data?: ISetupItemDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -338326,80 +338230,65 @@ export class SetupCheckItemDto implements ISetupCheckItemDto {
 
     init(_data?: any) {
         if (_data) {
-            this.code = _data["code"];
-            this.severity = _data["severity"];
+            this.kind = _data["kind"];
+            this.status = _data["status"];
             this.title = _data["title"];
-            this.why = _data["why"];
-            this.outcome = _data["outcome"];
-            this.checkedCount = _data["checkedCount"];
-            this.missingCount = _data["missingCount"];
-            if (Array.isArray(_data["examples"])) {
-                this.examples = [] as any;
-                for (let item of _data["examples"])
-                    this.examples!.push(item);
-            }
-            this.message = _data["message"];
-            this.fixScreenCode = _data["fixScreenCode"];
+            this.detail = _data["detail"];
+            this.technicalName = _data["technicalName"];
+            this.version = _data["version"];
+            this.changeSubject = _data["changeSubject"];
             this.fixScreenName = _data["fixScreenName"];
             this.fixScreenRoute = _data["fixScreenRoute"];
         }
     }
 
-    static fromJS(data: any): SetupCheckItemDto {
+    static fromJS(data: any): SetupItemDto {
         data = typeof data === 'object' ? data : {};
-        let result = new SetupCheckItemDto();
+        let result = new SetupItemDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["code"] = this.code;
-        data["severity"] = this.severity;
+        data["kind"] = this.kind;
+        data["status"] = this.status;
         data["title"] = this.title;
-        data["why"] = this.why;
-        data["outcome"] = this.outcome;
-        data["checkedCount"] = this.checkedCount;
-        data["missingCount"] = this.missingCount;
-        if (Array.isArray(this.examples)) {
-            data["examples"] = [];
-            for (let item of this.examples)
-                data["examples"].push(item);
-        }
-        data["message"] = this.message;
-        data["fixScreenCode"] = this.fixScreenCode;
+        data["detail"] = this.detail;
+        data["technicalName"] = this.technicalName;
+        data["version"] = this.version;
+        data["changeSubject"] = this.changeSubject;
         data["fixScreenName"] = this.fixScreenName;
         data["fixScreenRoute"] = this.fixScreenRoute;
         return data;
     }
 }
 
-export interface ISetupCheckItemDto {
-    code: string | undefined;
-    severity: SetupCheckSeverity;
+export interface ISetupItemDto {
+    kind: SetupItemKind;
+    status: SetupItemStatus;
     title: string | undefined;
-    why: string | undefined;
-    outcome: SetupCheckOutcome;
-    checkedCount: number;
-    missingCount: number;
-    examples: string[] | undefined;
-    message: string | undefined;
-    fixScreenCode: string | undefined;
+    detail: string | undefined;
+    technicalName: string | undefined;
+    version: string | undefined;
+    changeSubject: string | undefined;
     fixScreenName: string | undefined;
     fixScreenRoute: string | undefined;
 }
 
-export enum SetupCheckOutcome {
-    Ok = 0,
-    Missing = 1,
-    NotApplicable = 2,
-    Error = 3,
+export enum SetupItemKind {
+    Permission = 0,
+    Screen = 1,
+    Setting = 2,
+    Database = 3,
+    Manual = 4,
 }
 
-export enum SetupCheckSeverity {
-    Blocker = 0,
-    Warning = 1,
-    Info = 2,
+export enum SetupItemStatus {
+    Info = 0,
+    Done = 1,
+    Review = 2,
+    ActionRequired = 3,
 }
 
 export enum Severity {
@@ -343140,6 +343029,70 @@ export interface ITenantUserManagementSettingsEditDto {
     isRestrictedEmailDomainEnabledForApplication: boolean;
     isQrLoginEnabled: boolean;
     isQrLoginEnabledForApplication: boolean;
+}
+
+export class TenantVersionCheckStatusDto implements ITenantVersionCheckStatusDto {
+    currentVersion!: string | undefined;
+    builtOn!: DateTime | undefined;
+    previousVersion!: string | undefined;
+    updatedOn!: DateTime | undefined;
+    canComparePrevious!: boolean;
+    builds!: BuildSummaryDto[] | undefined;
+
+    constructor(data?: ITenantVersionCheckStatusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.currentVersion = _data["currentVersion"];
+            this.builtOn = _data["builtOn"] ? DateTime.fromISO(_data["builtOn"].toString()) : undefined as any;
+            this.previousVersion = _data["previousVersion"];
+            this.updatedOn = _data["updatedOn"] ? DateTime.fromISO(_data["updatedOn"].toString()) : undefined as any;
+            this.canComparePrevious = _data["canComparePrevious"];
+            if (Array.isArray(_data["builds"])) {
+                this.builds = [] as any;
+                for (let item of _data["builds"])
+                    this.builds!.push(BuildSummaryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TenantVersionCheckStatusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantVersionCheckStatusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["currentVersion"] = this.currentVersion;
+        data["builtOn"] = this.builtOn ? this.builtOn.toString() : undefined as any;
+        data["previousVersion"] = this.previousVersion;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toString() : undefined as any;
+        data["canComparePrevious"] = this.canComparePrevious;
+        if (Array.isArray(this.builds)) {
+            data["builds"] = [];
+            for (let item of this.builds)
+                data["builds"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ITenantVersionCheckStatusDto {
+    currentVersion: string | undefined;
+    builtOn: DateTime | undefined;
+    previousVersion: string | undefined;
+    updatedOn: DateTime | undefined;
+    canComparePrevious: boolean;
+    builds: BuildSummaryDto[] | undefined;
 }
 
 export class TestBusinessRuleInput implements ITestBusinessRuleInput {
