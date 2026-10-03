@@ -1,9 +1,8 @@
 <div class="my-5">
     <input
         type="text"
-        (input)="filterPermissions()"
         [ngModel]="filter()"
-        (ngModelChange)="filter.set($event)"
+        (ngModelChange)="onFilterChange($event)"
         class="form-control"
         placeholder="{{ 'SearchWithThreeDot' | localize }}" />
 </div>

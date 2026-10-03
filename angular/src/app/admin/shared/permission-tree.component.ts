@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, effect } from '@angular/core';
+import { Component, inject, input, signal, effect, untracked } from '@angular/core';
 import { PermissionTreeEditModel } from '@app/admin/shared/permission-tree-edit.model';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ArrayToTreeConverterService } from '@shared/utils/array-to-tree-converter.service';
@@ -22,6 +22,10 @@ export class PermissionTreeComponent extends AppComponentBase {
     private _arrayToTreeConverterService = inject(ArrayToTreeConverterService);
     private _treeDataHelperService = inject(TreeDataHelperService);
     private originalPermissions: FlatPermissionDto[] = [];
+    private filterTimer: ReturnType<typeof setTimeout> | undefined;
+
+    /** The tree before any search: every permission, or only the granted ones when that switch is on. */
+    private baseTree: TreeNode[] = [];
 
     readonly singleSelect = input<boolean>(undefined);
     readonly disableCascade = input<boolean>(undefined);
@@ -39,25 +43,19 @@ export class PermissionTreeComponent extends AppComponentBase {
         super();
         effect(() => {
             const val = this.editData();
-            if (val) {
-                this.onlyShowGrantedPermissions.set(false);
-                this.setTreeData(val.permissions);
-
-                let newTreeData: TreeNode[];
-
-                if (this.onlyShowGrantedPermissions()) {
-                    const grantedPermissionNames = val.grantedPermissionNames;
-                    const grantedPermissions = this.originalPermissions.filter((p) =>
-                        grantedPermissionNames.includes(p.name)
-                    );
-                    newTreeData = this.buildTree(grantedPermissions);
-                } else {
-                    newTreeData = this.fullTreeData();
-                }
-
-                this.treeData.set(newTreeData);
-                this.setSelectedNodes(val.grantedPermissionNames);
+            if (!val) {
+                return;
             }
+
+            // Only new edit data may run this. Everything below reads the tree it has just set; left tracked, each
+            // search or tick would re-run it, rebuild the whole tree and throw the search away -- which is exactly
+            // how the tree used to flicker and never stay filtered.
+            untracked(() => {
+                this.onlyShowGrantedPermissions.set(false);
+                this.filter.set('');
+                this.setTreeData(val.permissions);
+                this.setSelectedNodes(val.grantedPermissionNames);
+            });
         });
     }
 
@@ -73,6 +71,7 @@ export class PermissionTreeComponent extends AppComponentBase {
         this.originalPermissions = permissions;
         const builtTree = this.buildTree(permissions);
         this.fullTreeData.set(builtTree);
+        this.baseTree = builtTree;
         this.treeData.set(builtTree);
     }
 
@@ -93,13 +92,8 @@ export class PermissionTreeComponent extends AppComponentBase {
             return [];
         }
 
-        let permissionNames = [];
-
-        for (let i = 0; i < currentSelected.length; i++) {
-            permissionNames.push(currentSelected[i].data.name);
-        }
-
-        return permissionNames;
+        // Once per permission: a node ticked while searching is a copy of the one ticked before the search.
+        return Array.from(new Set(currentSelected.map((node) => node.data.name)));
     }
 
     nodeSelect(event) {
@@ -113,13 +107,13 @@ export class PermissionTreeComponent extends AppComponentBase {
         }
 
         const currentSelected = [...this.selectedPermissions()];
-        let parentNode = this._treeDataHelperService.findParent(this.treeData(), {
+        let parentNode = this._treeDataHelperService.findParent(this.fullTreeData(), {
             data: { name: event.node.data.name },
         });
 
         while (parentNode != null) {
             currentSelected.push(parentNode);
-            parentNode = this._treeDataHelperService.findParent(this.treeData(), {
+            parentNode = this._treeDataHelperService.findParent(this.fullTreeData(), {
                 data: { name: parentNode.data.name },
             });
         }
@@ -131,7 +125,7 @@ export class PermissionTreeComponent extends AppComponentBase {
             return;
         }
 
-        let childrenNodes = this._treeDataHelperService.findChildren(this.treeData(), {
+        let childrenNodes = this._treeDataHelperService.findChildren(this.fullTreeData(), {
             data: { name: event.node.data.name },
         });
         childrenNodes.push(event.node.data.name);
@@ -140,60 +134,55 @@ export class PermissionTreeComponent extends AppComponentBase {
         this.selectedPermissions.set(currentSelected);
     }
 
+    /**
+     * Typing in the search box. Waits until typing pauses, so the tree is filtered once per word rather than once
+     * per letter -- redrawing a couple of thousand nodes on every keystroke is what made the tree flicker.
+     */
+    onFilterChange(value: string): void {
+        this.filter.set(value);
+        clearTimeout(this.filterTimer);
+        this.filterTimer = setTimeout(() => this.filterPermissions(), 250);
+    }
+
+    /**
+     * Shows only the permissions matching the search, with the folders that lead to them opened; an empty search
+     * shows the whole tree again.
+     *
+     * The filtered tree is made of NEW node objects. PrimeNG draws each node OnPush, so it only notices a node that
+     * was replaced: hiding or opening nodes by changing them in place never reaches the screen. Ticks carry over
+     * because PrimeNG matches selected nodes by key.
+     */
     filterPermissions(): void {
-        if (!this.filter() || !this.filter().trim()) {
-            if (this.onlyShowGrantedPermissions()) {
-                const grantedPermissionNames = this.getGrantedPermissionNames();
-                const grantedPermissions = this.originalPermissions.filter((p) =>
-                    grantedPermissionNames.includes(p.name)
-                );
-                this.treeData.set(this.buildTree(grantedPermissions));
-            } else {
-                this.treeData.set(this.buildTree(this.originalPermissions));
-            }
-        } else {
-            const currentTreeData = this.treeData();
-            this.filterPermission(currentTreeData, this.filter());
-            this.treeData.set([...currentTreeData]);
-        }
+        const text = (this.filter() ?? '').trim().toLowerCase();
+        this.treeData.set(text ? this.filteredCopy(this.baseTree, text, false).nodes : this.baseTree);
     }
 
-    filterPermission(nodes, filterText): any {
-        _forEach(nodes, (node) => {
-            const matchesFilter = node.data.displayName.toLowerCase().includes(filterText.toLowerCase());
+    /**
+     * A copy of the nodes that match, lead to a match, or sit under a folder that matches (so a matching folder
+     * shows its contents). A folder is opened only when the match is somewhere below it.
+     */
+    private filteredCopy(
+        nodes: TreeNode[] | undefined,
+        text: string,
+        ancestorMatches: boolean
+    ): { nodes: TreeNode[]; anyMatch: boolean } {
+        const kept: TreeNode[] = [];
+        let anyMatch = false;
 
-            if (matchesFilter) {
-                node.styleClass = '';
-                this.showParentNodes(node);
+        for (const node of nodes ?? []) {
+            const selfMatches =
+                (node.data?.displayName ?? '').toLowerCase().includes(text) ||
+                (node.data?.name ?? '').toLowerCase().includes(text);
+            const below = this.filteredCopy(node.children, text, ancestorMatches || selfMatches);
 
-                if (node.children) {
-                    _forEach(node.children, (child) => {
-                        child.styleClass = '';
-                    });
-                }
-            } else {
-                node.styleClass = 'hidden-tree-node';
-
-                if (node.children) {
-                    const childMatches = this.filterPermission(node.children, filterText);
-
-                    if (childMatches) {
-                        node.styleClass = '';
-                    }
-                }
+            if (selfMatches || below.anyMatch || ancestorMatches) {
+                kept.push({ ...node, children: below.nodes, expanded: below.anyMatch });
             }
-        });
 
-        return nodes.some((n) => !n.styleClass || n.styleClass === '');
-    }
-
-    showParentNodes(node): void {
-        if (!node.parent) {
-            return;
+            anyMatch = anyMatch || selfMatches || below.anyMatch;
         }
 
-        node.parent.styleClass = '';
-        this.showParentNodes(node.parent);
+        return { nodes: kept, anyMatch };
     }
 
     onOnlyShowGrantedPermissionsChange(value: boolean): void {
@@ -213,11 +202,8 @@ export class PermissionTreeComponent extends AppComponentBase {
                 newTreeData = this.buildTree(this.originalPermissions);
             }
 
-            if (this.filter() && this.filter().trim()) {
-                this.filterPermission(newTreeData, this.filter());
-            }
-
-            this.treeData.set(newTreeData);
+            this.baseTree = newTreeData;
+            this.filterPermissions();
             this.isProcessing.set(false);
         });
     }
