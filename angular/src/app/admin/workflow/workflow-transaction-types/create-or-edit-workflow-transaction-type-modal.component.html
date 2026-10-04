@@ -117,9 +117,9 @@
                                         [id]="'WorkflowTransactionType_' + chain.id"
                                         class="form-select"
                                         [name]="chain.id"
-                                        [ngModel]="record()[chain.field]"
-                                        (ngModelChange)="updateField(chain.field, $event)">
-                                        <option [ngValue]="undefined">{{ 'SameAsDefaultChain' | localize }}</option>
+                                        [ngModel]="record()[chain.field] ?? null"
+                                        (ngModelChange)="updateField(chain.field, $event ?? undefined)">
+                                        <option [ngValue]="null">{{ 'SameAsDefaultChain' | localize }}</option>
                                         @for (master of requestMasters(); track master.id) {
                                             <option [ngValue]="master.id">
                                                 {{ master.nameEn }} ({{ master.workflowSteps }} {{ 'Steps' | localize }})

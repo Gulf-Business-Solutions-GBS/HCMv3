@@ -82,9 +82,9 @@
                                     id="WorkflowGroupDetail_RequestAction"
                                     class="form-select"
                                     name="RequestAction"
-                                    [ngModel]="record().requestAction"
-                                    (ngModelChange)="updateField('requestAction', $event)">
-                                    <option [ngValue]="undefined">{{ 'AllActions' | localize }}</option>
+                                    [ngModel]="record().requestAction ?? null"
+                                    (ngModelChange)="updateField('requestAction', $event ?? undefined)">
+                                    <option [ngValue]="null">{{ 'AllActions' | localize }}</option>
                                     @for (action of requestActions; track action.value) {
                                         <option [ngValue]="action.value">{{ 'WorkflowRequestAction_' + action.name | localize }}</option>
                                     }
