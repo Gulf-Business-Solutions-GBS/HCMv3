@@ -130,6 +130,35 @@ export class AttachmentsComponent extends AppComponentBase implements OnInit, On
         this.pending.set([]);
     }
 
+    /**
+     * Uploads the files held in pending mode to the server's temp cache and hands back their tokens, WITHOUT
+     * attaching them. For a record whose server-side save attaches the files itself -- a leave whose type
+     * requires a document has to carry it at the moment it is submitted, not afterwards.
+     */
+    async uploadPendingToTokens(): Promise<string[]> {
+        const tokens: string[] = [];
+        this.uploading.set(true);
+        try {
+            for (const file of this.pending()) {
+                try {
+                    tokens.push(await firstValueFrom(this.uploadToTemp(file)));
+                } catch (error: any) {
+                    const reason = error?.error?.error?.message ?? error?.message ?? '';
+                    this.notify.error(this.l('AttachmentUploadFailed', file.name, reason));
+                }
+            }
+        } finally {
+            this.uploading.set(false);
+        }
+
+        return tokens;
+    }
+
+    clearPending(): void {
+        this.pending.set([]);
+        this.countChange.emit(0);
+    }
+
     download(item: AttachmentDto): void {
         this._service.getAttachmentDownload(item.id).subscribe((file) => this._download.downloadTempFile(file));
     }

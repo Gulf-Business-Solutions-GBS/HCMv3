@@ -75,7 +75,8 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
         int employeeId,
         string amendmentJson,
         int actingEmployeeId,
-        int? requestSubTypeId = null)
+        int? requestSubTypeId = null,
+        WorkflowRequestAction requestAction = WorkflowRequestAction.Amendment)
     {
         if (string.IsNullOrWhiteSpace(requestType))
         {
@@ -110,6 +111,7 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
             RequestStatus = RequestStatus.Draft,
             WorkflowStep = 0,
             IsAmendment = true,
+            RequestAction = requestAction,
             AmendmentJson = amendmentJson
         };
 
@@ -129,6 +131,40 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
         await _approvalService.SubmitAsync(requestId, actingEmployeeId);
 
         return requestId;
+    }
+
+    public async Task ResubmitAsync(int requestId, string amendmentJson, int actingEmployeeId)
+    {
+        var request = await _requestRepository.GetAsync(requestId);
+
+        if (!request.IsAmendment || request.RequestStatus != RequestStatus.Draft)
+        {
+            throw new UserFriendlyException(L("OnlyARequestSentBackToYouCanBeResubmitted"));
+        }
+
+        if (request.EmployeeId != actingEmployeeId)
+        {
+            throw new UserFriendlyException(L("OnlyTheRequesterCanWithdrawThisRequest"));
+        }
+
+        request.AmendmentJson = amendmentJson;
+        await _requestRepository.UpdateAsync(request);
+        await _unitOfWorkManager.Current.SaveChangesAsync();
+
+        // The same door a first submission goes through, so the corrected values are validated, summarised
+        // and routed exactly as new ones would be.
+        await _approvalService.SubmitAsync(requestId, actingEmployeeId);
+    }
+
+    public async Task<WorkflowRequest> GetInFlightAsync(string requestType, int targetEntityId)
+    {
+        return await _requestRepository.GetAll()
+            .Where(r => r.IsAmendment
+                        && r.RequestType == requestType
+                        && r.TargetEntityId == targetEntityId
+                        && (r.RequestStatus == RequestStatus.Open || r.RequestStatus == RequestStatus.Draft))
+            .OrderByDescending(r => r.Id)
+            .FirstOrDefaultAsync();
     }
 
     private async Task<bool> HasAmendmentInFlightAsync(string requestType, int targetEntityId)

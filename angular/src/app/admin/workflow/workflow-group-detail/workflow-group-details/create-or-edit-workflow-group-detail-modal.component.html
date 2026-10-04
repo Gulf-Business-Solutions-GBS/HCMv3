@@ -76,6 +76,20 @@
                                     [ngModel]="record().customSubTypeId"
                                     (ngModelChange)="updateField('customSubTypeId', $event)" />
                             </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WorkflowGroupDetail_RequestAction">{{ 'RequestActionAppliesTo' | localize }}</label>
+                                <select
+                                    id="WorkflowGroupDetail_RequestAction"
+                                    class="form-select"
+                                    name="RequestAction"
+                                    [ngModel]="record().requestAction"
+                                    (ngModelChange)="updateField('requestAction', $event)">
+                                    <option [ngValue]="undefined">{{ 'AllActions' | localize }}</option>
+                                    @for (action of requestActions; track action.value) {
+                                        <option [ngValue]="action.value">{{ 'WorkflowRequestAction_' + action.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

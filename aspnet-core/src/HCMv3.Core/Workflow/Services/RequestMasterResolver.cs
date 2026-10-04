@@ -86,14 +86,16 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
             throw new ArgumentNullException(nameof(request));
         }
 
-        return ResolveAsync(request.RequestType, request.EmployeeId, request.RequestSubTypeId);
+        return ResolveAsync(
+            request.RequestType, request.EmployeeId, request.RequestSubTypeId, requestAction: request.RequestAction);
     }
 
     public async Task<RequestMaster> ResolveAsync(
         string requestType,
         int? employeeId,
         int? requestSubTypeId,
-        int? customSubTypeId = null)
+        int? customSubTypeId = null,
+        WorkflowRequestAction requestAction = WorkflowRequestAction.New)
     {
         var transactionType = await GetTransactionTypeAsync(requestType);
 
@@ -134,16 +136,20 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
             if (workflowGroupId.HasValue)
             {
                 requestMaster = ResolveFromWorkflowGroup(
-                    workflowGroupId.Value, requestType, requestSubTypeId, customSubTypeId);
+                    workflowGroupId.Value, requestType, requestSubTypeId, customSubTypeId, requestAction);
             }
         }
 
         // Falls back to the type's default chain. This is the catalogued replacement for legacy's compiled-in
         // "case \"LeaveRequest\": recCode = \"4\";" switch.
-        if (requestMaster == null && transactionType.DefaultRequestMasterId.HasValue)
+        // An action with a chain of its own on the type uses it; otherwise it follows the default chain, which
+        // is what every type configured before the per-action columns existed still does.
+        var typeChainId = ChainForAction(transactionType, requestAction) ?? transactionType.DefaultRequestMasterId;
+
+        if (requestMaster == null && typeChainId.HasValue)
         {
             requestMaster = _requestMasterRepository.GetAll()
-                .FirstOrDefault(m => m.Id == transactionType.DefaultRequestMasterId.Value);
+                .FirstOrDefault(m => m.Id == typeChainId.Value);
         }
 
         if (requestMaster == null)
@@ -224,6 +230,17 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         return requestMaster;
     }
 
+    private static int? ChainForAction(WorkflowTransactionType transactionType, WorkflowRequestAction requestAction)
+    {
+        return requestAction switch
+        {
+            WorkflowRequestAction.Amendment => transactionType.AmendmentRequestMasterId,
+            WorkflowRequestAction.Cancellation => transactionType.CancellationRequestMasterId,
+            WorkflowRequestAction.Return => transactionType.ReturnRequestMasterId,
+            _ => null
+        };
+    }
+
     /// <summary>
     /// The employee's group as of today, falling back to the tenant's default group. Mirrors legacy: read
     /// the current-dated org assignment, and if it names no group use the one flagged
@@ -265,17 +282,29 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         int workflowGroupId,
         string requestType,
         int? requestSubTypeId,
-        int? customSubTypeId)
+        int? customSubTypeId,
+        WorkflowRequestAction requestAction)
     {
-        var groupDetails = _workflowGroupDetailRepository.GetAll()
+        var allDetails = _workflowGroupDetailRepository.GetAll()
             .Where(d => d.WorkflowGroupId == workflowGroupId && d.RequestTypeName == requestType)
             .Select(d => new
             {
                 d.RequestMasterId,
                 d.RequestSubTypeId,
-                d.CustomSubTypeId
+                d.CustomSubTypeId,
+                d.RequestAction
             })
             .ToList();
+
+        // Lines naming this action win outright; only when the group has none do the lines that name no action
+        // (the ones that apply to every action) get a say. Mixing the two would let a catch-all line for all
+        // actions outrank a line written specifically for this one.
+        var groupDetails = allDetails.Where(d => d.RequestAction == requestAction).ToList();
+
+        if (groupDetails.Count == 0)
+        {
+            groupDetails = allDetails.Where(d => d.RequestAction == null).ToList();
+        }
 
         if (groupDetails.Count == 0)
         {

@@ -217,3 +217,36 @@ public class EmployeePersonalDataChangeAttachmentOwnerPolicy : EmployeeRequestAt
 
     protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_Employees_Edit;
 }
+
+/// <summary>
+/// The leave policy document of an absence type -- the file the "I accept the leave policy" link opens.
+///
+/// <para>
+/// Readable by anyone who can apply for leave or maintain leave types: an employee has to be able to open
+/// the policy they are being asked to accept. Only somebody who may edit leave types can replace it.
+/// </para>
+/// </summary>
+public class AbsenceTypePolicyAttachmentOwnerPolicy : IAttachmentOwnerPolicy, ITransientDependency
+{
+    public const string Type = "AbsenceTypePolicy";
+
+    private readonly IPermissionChecker _permissionChecker;
+
+    public AbsenceTypePolicyAttachmentOwnerPolicy(IPermissionChecker permissionChecker)
+    {
+        _permissionChecker = permissionChecker;
+    }
+
+    public string EntityType => Type;
+
+    public async Task<bool> CanViewAsync(string entityId)
+    {
+        return await _permissionChecker.IsGrantedAsync(AppPermissions.Ess_MyLeave)
+               || await _permissionChecker.IsGrantedAsync(AppPermissions.Pages_PayrollManagement_AbsenceTypes);
+    }
+
+    public Task<bool> CanEditAsync(string entityId)
+    {
+        return _permissionChecker.IsGrantedAsync(AppPermissions.Pages_PayrollManagement_AbsenceTypes_Edit);
+    }
+}

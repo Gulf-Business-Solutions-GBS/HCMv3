@@ -121,6 +121,19 @@ public class WorkflowRequest : FullAuditedEntity, IMustHaveTenant
     public virtual bool IsAmendment { get; set; }
 
     /// <summary>
+    /// What this request asks for: the transaction itself, a change to it, its cancellation, or a return.
+    ///
+    /// <para>
+    /// <see cref="IsAmendment"/> says HOW the request is applied (values held here until approved);
+    /// this says WHICH of the actions it is. It is a column rather than something read out of
+    /// <see cref="AmendmentJson"/> for two reasons: the approval chain may differ by action (see
+    /// <c>IRequestMasterResolver</c>), and a list must be able to say "cancellation pending" without opening
+    /// every request's payload. Existing rows read as <see cref="WorkflowRequestAction.New"/>.
+    /// </para>
+    /// </summary>
+    public virtual WorkflowRequestAction RequestAction { get; set; }
+
+    /// <summary>
     /// The PROPOSED values, as JSON, for an amendment -- what the transaction row should look like if this
     /// is approved. Shape is defined by the type's handler; nothing generic reads it.
     ///

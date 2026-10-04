@@ -302,6 +302,31 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             remark);
     }
 
+    public async Task WithdrawAsync(int requestId, int actingEmployeeId, string remark)
+    {
+        var request = await _workflowRequestRepository.GetAsync(requestId);
+
+        if (request.EmployeeId != actingEmployeeId)
+        {
+            throw new UserFriendlyException(L("OnlyTheRequesterCanWithdrawThisRequest"));
+        }
+
+        if (request.RequestStatus != RequestStatus.Open && request.RequestStatus != RequestStatus.Draft)
+        {
+            throw new UserFriendlyException(L("ThisRequestHasAlreadyBeenDecided"));
+        }
+
+        var stepWithdrawnAt = request.WorkflowStep;
+
+        // Closed, not Rejected: nobody refused it. The inbox lists only Open requests, so the approvers it
+        // was sitting with stop seeing it without their rows being touched -- they stay as history.
+        request.RequestStatus = RequestStatus.Closed;
+
+        await AddLogAsync(request, actingEmployeeId, RequestActionType.Closed, remark, stepWithdrawnAt);
+
+        await _workflowRequestRepository.UpdateAsync(request);
+    }
+
     public async Task SendBackAsync(int requestId, int actingEmployeeId, string remark)
     {
         var request = await _workflowRequestRepository.GetAsync(requestId);

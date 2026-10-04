@@ -30,6 +30,8 @@ public interface IWorkflowAmendmentService
     /// <param name="amendmentJson">The proposed values, in whatever shape the type's handler reads.</param>
     /// <param name="actingEmployeeId">Who is raising the amendment.</param>
     /// <param name="requestSubTypeId">Sub-type for routing, when the type uses one.</param>
+    /// <param name="requestAction">Which action this is -- a change, a cancellation or a return. Recorded on the
+    /// request, and what lets each follow an approval chain of its own.</param>
     /// <returns>Id of the created <see cref="WorkflowRequest"/>.</returns>
     Task<int> CreateAndSubmitAsync(
         string requestType,
@@ -37,7 +39,20 @@ public interface IWorkflowAmendmentService
         int employeeId,
         string amendmentJson,
         int actingEmployeeId,
-        int? requestSubTypeId = null);
+        int? requestSubTypeId = null,
+        WorkflowRequestAction requestAction = WorkflowRequestAction.Amendment);
+
+    /// <summary>
+    /// Sends an amendment that was SENT BACK to its requester round again, with the values they corrected.
+    /// The request keeps its number, its log and its comments; only the proposed values are replaced. The
+    /// before-snapshot is left as taken when the change was first asked for.
+    /// </summary>
+    Task ResubmitAsync(int requestId, string amendmentJson, int actingEmployeeId);
+
+    /// <summary>
+    /// The amendment currently in flight against a row -- awaiting approval or sent back -- or null.
+    /// </summary>
+    Task<WorkflowRequest> GetInFlightAsync(string requestType, int targetEntityId);
 
     /// <summary>
     /// Whether this transaction TYPE can be amended at all: its handler supports amendment and the catalog

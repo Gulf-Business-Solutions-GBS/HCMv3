@@ -40,6 +40,13 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
     readonly record = signal<CreateOrEditWorkflowTransactionTypeDto>(new CreateOrEditWorkflowTransactionTypeDto());
     readonly requestMasters = signal<RequestMasterDto[]>([]);
 
+    /** The per-action chains: a change, a cancellation and a return may each be routed differently. */
+    readonly actionChains: { id: string; field: keyof CreateOrEditWorkflowTransactionTypeDto; labelKey: string }[] = [
+        { id: 'AmendmentRequestMasterId', field: 'amendmentRequestMasterId', labelKey: 'AmendmentChain' },
+        { id: 'CancellationRequestMasterId', field: 'cancellationRequestMasterId', labelKey: 'CancellationChain' },
+        { id: 'ReturnRequestMasterId', field: 'returnRequestMasterId', labelKey: 'ReturnChain' },
+    ];
+
     /**
      * True when this type will be refused at submit time: routing is on, but there is no chain to route to.
      *

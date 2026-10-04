@@ -41,5 +41,12 @@ public class WorkflowGroupDetail : FullAuditedEntity, IMustHaveTenant
 
     public virtual int? CustomSubTypeId { get; set; }
 
+    /// <summary>
+    /// The action this line applies to, or null for every action. A group that wants amendments, cancellations
+    /// or returns to follow a different chain adds a line naming that action; a group with only the null line
+    /// routes all of them the same way, which is what every line created before this column does.
+    /// </summary>
+    public virtual WorkflowRequestAction? RequestAction { get; set; }
+
     public virtual ICollection<WorkflowGroupFieldAccess> WorkflowGroupFieldAccesses { get; set; }
 }

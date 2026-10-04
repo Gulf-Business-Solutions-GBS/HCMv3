@@ -12,6 +12,7 @@ using HCMv3.PayrollManagement.Services;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSecurity;
 using HCMv3.TimeManagement.Services;
+using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
 
@@ -234,6 +235,62 @@ public class PayrollLockGuard_Tests : AppTestBase
     }
 
     // ------------------------------------------------------------------ helpers
+
+    // ------------------------------------------------------------------ requests are not payroll changes
+
+    [Theory]
+    [InlineData(HCMv3.Workflow.RequestStatus.Draft)]
+    [InlineData(HCMv3.Workflow.RequestStatus.Open)]
+    [InlineData(HCMv3.Workflow.RequestStatus.Rejected)]
+    public async Task Should_Let_A_Leave_That_Is_Still_A_Request_Through_While_Locked(HCMv3.Workflow.RequestStatus status)
+    {
+        // Legacy kept the request in its own table, so an employee could always apply; only the approval,
+        // which wrote the leave, met the lock. Payroll cannot see a row in any of these states.
+        AddControlRecord(2026, 8, locked: true);
+
+        await InsertAbsenceAsync(status);
+
+        CountAbsences().ShouldBe(1);
+    }
+
+    [Theory]
+    [InlineData(HCMv3.Workflow.RequestStatus.Approved)]
+    [InlineData(HCMv3.Workflow.RequestStatus.Cancelled)]
+    [InlineData(null)]
+    public async Task Should_Refuse_A_Leave_That_Is_Or_Was_In_Effect_While_Locked(HCMv3.Workflow.RequestStatus? status)
+    {
+        AddControlRecord(2026, 8, locked: true);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => InsertAbsenceAsync(status));
+
+        CountAbsences().ShouldBe(0);
+    }
+
+    private Task InsertAbsenceAsync(HCMv3.Workflow.RequestStatus? status)
+    {
+        var absenceTypeId = UsingDbContext(c =>
+        {
+            var type = c.Set<AbsenceType>().Add(new AbsenceType
+            {
+                TenantId = TenantId, Code = Guid.NewGuid().ToString("N")[..8], NameEn = "Annual", NameAr = "Annual"
+            }).Entity;
+            c.SaveChanges();
+            return type.Id;
+        });
+
+        return InTransactionAsync(() => Resolve<IRepository<EmployeeAbsence>>().InsertAsync(new EmployeeAbsence
+        {
+            TenantId = TenantId,
+            EmployeeId = _employeeId,
+            AbsenceTypeId = absenceTypeId,
+            StartDate = Clock.Now.Date,
+            EndDate = Clock.Now.Date,
+            TotalLeaveDays = 1,
+            WorkflowStatus = status
+        }));
+    }
+
+    private int CountAbsences() => UsingDbContext(c => c.Set<EmployeeAbsence>().IgnoreQueryFilters().Count());
 
     private async Task<int> SeedAsync(PayrollSensitiveObjectSeeder seeder)
     {

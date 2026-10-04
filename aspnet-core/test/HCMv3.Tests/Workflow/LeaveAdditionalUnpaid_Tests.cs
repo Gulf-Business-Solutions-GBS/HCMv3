@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using Abp.UI;
 using HCMv3.Ess.Dto;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Workflow;
 using Shouldly;
 using Xunit;
 
@@ -149,10 +150,11 @@ public class LeaveAdditionalUnpaid_Tests : EssLeaveWorkflowTestBase
         var applied = await ApplyWithSplitAsync(Soon, days: 10);
         await _approvalService.ApproveAsync(applied.WorkflowRequestId!.Value, _approverId, "ok");
 
-        var cancellationId = await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(applied.EmployeeAbsenceId));
+        var cancellationId = await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = applied.EmployeeAbsenceId });
         await _approvalService.ApproveAsync(cancellationId, _approverId, "ok");
 
-        LeaveRowsOf(_meId).ShouldBeEmpty();
+        // Both rows are kept as history and both are out of payroll's sight.
+        LeaveRowsOf(_meId).ShouldAllBe(a => a.WorkflowStatus == RequestStatus.Cancelled);
         QuotaRow(_meId, _annualId).QuotaUsed.ShouldBe(0);
     }
 

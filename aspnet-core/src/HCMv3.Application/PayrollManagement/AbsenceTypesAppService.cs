@@ -161,6 +161,9 @@ public class AbsenceTypesAppService : HCMv3AppServiceBase, IAbsenceTypesAppServi
         entity.AllowInTerminationNoticeOnly = input.AllowInTerminationNoticeOnly;
         entity.IsAttachmentRequired = input.IsAttachmentRequired;
         entity.AllowPartialLeave = input.AllowPartialLeave;
+        entity.LeaveDurationType = input.LeaveDurationType;
+        entity.MaxFutureDays = input.MaxFutureDays;
+        entity.RequirePolicyAcceptance = input.RequirePolicyAcceptance;
         entity.SendNotification = input.SendNotification;
         entity.DontAllowToStartOnSunday = input.DontAllowToStartOnSunday;
         entity.DontAllowToStartOnMonday = input.DontAllowToStartOnMonday;
@@ -283,6 +286,9 @@ public class AbsenceTypesAppService : HCMv3AppServiceBase, IAbsenceTypesAppServi
             AllowInTerminationNoticeOnly = entity.AllowInTerminationNoticeOnly,
             IsAttachmentRequired = entity.IsAttachmentRequired,
             AllowPartialLeave = entity.AllowPartialLeave,
+            LeaveDurationType = entity.LeaveDurationType,
+            MaxFutureDays = entity.MaxFutureDays,
+            RequirePolicyAcceptance = entity.RequirePolicyAcceptance,
             SendNotification = entity.SendNotification,
             DontAllowToStartOnSunday = entity.DontAllowToStartOnSunday,
             DontAllowToStartOnMonday = entity.DontAllowToStartOnMonday,
@@ -350,6 +356,9 @@ public class AbsenceTypesAppService : HCMv3AppServiceBase, IAbsenceTypesAppServi
             AllowInTerminationNoticeOnly = entity.AllowInTerminationNoticeOnly,
             IsAttachmentRequired = entity.IsAttachmentRequired,
             AllowPartialLeave = entity.AllowPartialLeave,
+            LeaveDurationType = entity.LeaveDurationType,
+            MaxFutureDays = entity.MaxFutureDays,
+            RequirePolicyAcceptance = entity.RequirePolicyAcceptance,
             SendNotification = entity.SendNotification,
             DontAllowToStartOnSunday = entity.DontAllowToStartOnSunday,
             DontAllowToStartOnMonday = entity.DontAllowToStartOnMonday,

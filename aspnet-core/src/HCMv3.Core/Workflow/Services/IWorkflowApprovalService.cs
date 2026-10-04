@@ -85,6 +85,20 @@ public interface IWorkflowApprovalService
     Task SendBackAsync(int requestId, int actingEmployeeId, string remark);
 
     /// <summary>
+    /// The requester takes their own request back, whether it is still with an approver
+    /// (<see cref="RequestStatus.Open"/>) or was sent back to them (<see cref="RequestStatus.Draft"/>). The
+    /// request is <see cref="RequestStatus.Closed"/> and a <see cref="RequestActionType.Closed"/> entry is
+    /// logged, so the history says who ended it and that nobody decided it.
+    ///
+    /// <para>
+    /// Deliberately does NOT call the transaction handler. What withdrawing means for the row differs by
+    /// case and the caller already knows which it is: a new request's row is removed, an amendment's row is
+    /// left exactly as approved. Only the person the request is FOR may withdraw it.
+    /// </para>
+    /// </summary>
+    Task WithdrawAsync(int requestId, int actingEmployeeId, string remark);
+
+    /// <summary>
     /// Delegates the current step's pending approval(s) from the acting employee to
     /// <paramref name="newApproverEmployeeId"/>. Ported from legacy <c>recAssign_Execute</c> /
     /// <c>RequestActionService.AssignNewApprover</c>.

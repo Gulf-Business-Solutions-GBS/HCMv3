@@ -6,6 +6,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Timing;
 using Abp.UI;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Services;
 using HCMv3.TimeManagement.Services;
@@ -55,6 +56,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
     private readonly ILeaveBalanceService _leaveBalanceService;
     private readonly IAttachmentManager _attachmentManager;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IRepository<Religion> _religionRepository;
 
     public LeaveRuleValidator(
         IRepository<EmployeeAbsence> absenceRepository,
@@ -73,8 +75,10 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
         IAccrualService accrualService,
         ILeaveBalanceService leaveBalanceService,
         IAttachmentManager attachmentManager,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IRepository<Religion> religionRepository)
     {
+        _religionRepository = religionRepository;
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _employeeRepository = employeeRepository;
@@ -115,6 +119,8 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
+        EnsureLeaveTypeSuitsTheEmployee(employee, absenceType);
+
         var timeSettings = await _settings.GetTimeSettingsAsync();
 
         // Legacy EmployeeAbsenceController: the half-day editor is only enabled when
@@ -150,6 +156,9 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
             }
         }
 
+        EnsureDurationTypeIsRespected(context, absenceType);
+        await EnsureHourlyLimitsAreRespectedAsync(context, absenceType, start);
+
         EnsurePaymentDateIsUsable(context, start);
 
         var days = context.TotalLeaveDays > 0
@@ -159,6 +168,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
 
         await EnsureQuotaRowExistsAsync(context, absenceType);
         EnsureNotTooFarBackDated(context, absenceType, start);
+        EnsureNotTooFarAhead(context, absenceType, start);
         EnsureNotInProbation(employee, absenceType, start);
         await EnsureStartAndEndAreRegularDaysAsync(context, employee, absenceType, start, end);
         EnsureAtLeastOneDay(days);
@@ -173,7 +183,306 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
         EnsureNoTravelInTheSameDays(context, start, end);
         EnsureSeparationRulesAllowIt(employee, absenceType, start, end);
         await EnsureCompanyLeavePolicyAllowsItAsync(context, absenceType, start, days);
+        EnsureDelegatesAreUsable(context, start, end);
+        EnsurePolicyIsAccepted(context, absenceType);
         await EnsureRequiredDocumentIsAttachedAsync(context, absenceType);
+    }
+
+    /// <summary>
+    /// Whether a leave type is open to this employee by gender and religion -- maternity for women, paternity
+    /// for men, a Muslim and a non-Muslim Iddah leave with different lengths.
+    ///
+    /// <para>
+    /// Legacy only filtered the picklist (<c>AbsenceRequest.EmpAbsenceType</c>, 63-116) and never refused on
+    /// save, so a request that reached the server by any other route went through. The same test is applied
+    /// here as a refusal, and <see cref="LeaveTypeSuits"/> is what the ESS list is filtered with, so the two
+    /// cannot disagree. The Muslim test is legacy's: the religion's English name is "muslim" or "islam".
+    /// An employee with no religion recorded is offered every type, as legacy did.
+    /// </para>
+    /// </summary>
+    private void EnsureLeaveTypeSuitsTheEmployee(Employee employee, AbsenceType absenceType)
+    {
+        var religionName = employee.ReligionId.HasValue
+            ? _religionRepository.GetAll().Where(r => r.Id == employee.ReligionId.Value).Select(r => r.NameEn).FirstOrDefault()
+            : null;
+
+        if (!LeaveTypeSuits(absenceType.LeaveGender, absenceType.LeaveReligion, employee.Gender, employee.ReligionId.HasValue, religionName))
+        {
+            throw new UserFriendlyException(L("LeaveTypeNotAvailableForThisEmployee", absenceType.NameEn));
+        }
+    }
+
+    /// <summary>The gender and religion test, shared by the refusal above and by the ESS leave type list.</summary>
+    public static bool LeaveTypeSuits(
+        LeaveGender leaveGender, LeaveReligion leaveReligion, Gender employeeGender, bool hasReligion, string religionNameEn)
+    {
+        if (employeeGender == Gender.Male && leaveGender == LeaveGender.Female)
+        {
+            return false;
+        }
+
+        if (employeeGender == Gender.Female && leaveGender == LeaveGender.Male)
+        {
+            return false;
+        }
+
+        if (!hasReligion || leaveReligion == LeaveReligion.All)
+        {
+            return true;
+        }
+
+        var name = religionNameEn?.Trim().ToLowerInvariant();
+        var isMuslim = name == "muslim" || name == "islam";
+
+        return isMuslim ? leaveReligion == LeaveReligion.Muslim : leaveReligion == LeaveReligion.NonMuslim;
+    }
+
+    /// <summary>
+    /// Legacy <c>LeaveDurationType</c> (<c>AbsenceRequest</c> 1985-1991): a type that is Partial-only needs a
+    /// start and end time. The mirror -- a FullDay-only type refusing them -- is not in legacy, which relied on
+    /// <c>AllowPartialLeave</c> being off for such a type; it is refused here so the two settings cannot
+    /// contradict each other.
+    /// </summary>
+    private void EnsureDurationTypeIsRespected(LeaveRuleContext context, AbsenceType absenceType)
+    {
+        var isPartial = context.AbsenceHours != 0 || context.HalfdayType != HalfdayType.None;
+
+        if (absenceType.LeaveDurationType == LeaveDurationType.Partial && !isPartial)
+        {
+            throw new UserFriendlyException(L("LeaveTypeCanOnlyBeAppliedAsPartialLeave", absenceType.NameEn));
+        }
+
+        if (absenceType.LeaveDurationType == LeaveDurationType.FullDay && isPartial)
+        {
+            throw new UserFriendlyException(L("PartialLeaveNotAllowedForLeaveType", absenceType.NameEn));
+        }
+    }
+
+    /// <summary>
+    /// Legacy "Validation For Hourly Basis Leave" (<c>AbsenceRequest</c> 2093-2180) and
+    /// <c>EmployeeAbsence.ValidateHourlyLeaveAgainstDutyHours</c> (4004-4080): the minutes one hourly leave may
+    /// take, how many such leaves and how many minutes in total the type allows within its reset period, and
+    /// that the day's hourly leave does not exceed the day's duty.
+    ///
+    /// <para>
+    /// Kept as legacy has them, including two things that look wrong and are not corrected here: the limits are
+    /// compared even when they are zero (a type that allows partial leave must have them filled in), and a
+    /// night shift's length is taken as start minus end. A half-day leave skips all of this, as it did in
+    /// legacy, where this block was the <c>else</c> of the half-day one. Earlier leave is counted from the
+    /// approved rows only, which is what legacy's leave table held.
+    /// </para>
+    /// </summary>
+    private async Task EnsureHourlyLimitsAreRespectedAsync(LeaveRuleContext context, AbsenceType absenceType, DateTime start)
+    {
+        if (context.AbsenceHours == 0 || context.HalfdayType != HalfdayType.None)
+        {
+            return;
+        }
+
+        DateTime from;
+        DateTime to;
+
+        switch (absenceType.ResetFrequency)
+        {
+            case ResetFrequency.Weekly:
+                from = start.AddDays(-(int)start.DayOfWeek);
+                to = start.AddDays(6 - (int)start.DayOfWeek);
+                break;
+
+            case ResetFrequency.Monthly:
+                from = new DateTime(start.Year, start.Month, 1);
+                to = new DateTime(start.Year, start.Month, DateTime.DaysInMonth(start.Year, start.Month));
+                break;
+
+            case ResetFrequency.Quarterly:
+                var quarter = (start.Month - 1) / 3 + 1;
+                from = new DateTime(start.Year, 3 * quarter - 2, 1);
+                to = new DateTime(start.Year, 3 * quarter, DateTime.DaysInMonth(start.Year, 3 * quarter));
+                break;
+
+            case ResetFrequency.Annually:
+                from = new DateTime(start.Year, 1, 1);
+                to = new DateTime(start.Year, 12, 31);
+                break;
+
+            default:
+                from = start;
+                to = start;
+                break;
+        }
+
+        var appliedMinutes = context.EndTime.Subtract(context.StartTime).TotalMinutes;
+
+        if (appliedMinutes > absenceType.MaxMinutes)
+        {
+            throw new UserFriendlyException(L(
+                "HourlyLeaveExceedsMaximumMinutes", absenceType.NameEn, $"{absenceType.MaxMinutes}", $"{appliedMinutes:0.##}"));
+        }
+
+        var toExclusive = to.AddDays(1);
+
+        var earlier = _absenceRepository.GetAll()
+            .Where(a => a.EmployeeId == context.EmployeeId
+                        && a.AbsenceTypeId == context.AbsenceTypeId
+                        && a.Id != context.ExcludeEmployeeAbsenceId
+                        && a.StartDate >= from
+                        && a.EndDate < toExclusive
+                        && a.AbsenceHours != 0)
+            .Select(a => new { a.StartTime, a.EndTime })
+            .ToList();
+
+        var count = earlier.Count + 1;
+
+        if (count > absenceType.MaxCount)
+        {
+            throw new UserFriendlyException(L(
+                "HourlyLeaveExceedsMaximumCount", absenceType.NameEn, $"{absenceType.MaxCount}", $"{count}"));
+        }
+
+        var totalMinutes = earlier.Sum(a => a.EndTime.Subtract(a.StartTime).TotalMinutes) + appliedMinutes;
+
+        if (totalMinutes > absenceType.TotalMinutes)
+        {
+            throw new UserFriendlyException(L(
+                "HourlyLeaveExceedsTotalMinutes", absenceType.NameEn, $"{absenceType.TotalMinutes}", $"{totalMinutes:0.##}"));
+        }
+
+        TimeManagement.Duty duty;
+        try
+        {
+            duty = await _calculationService.GetEmployeeDutyAsync(context.EmployeeId, start);
+        }
+        catch (InvalidOperationException)
+        {
+            throw new UserFriendlyException(L("DutyNotFoundForTheDay", start.ToString("dd/MM/yyyy")));
+        }
+
+        var dutyHours = (duty.IsNightShift ? duty.StartTime - duty.EndTime : duty.EndTime - duty.StartTime).TotalHours;
+
+        if (dutyHours <= 0)
+        {
+            throw new UserFriendlyException(L("InvalidDutyHoursForTheDay", start.ToString("dd/MM/yyyy"), duty.NameEn));
+        }
+
+        var dayEnd = start.AddDays(1);
+
+        var alreadyApplied = _absenceRepository.GetAll()
+            .Where(a => a.EmployeeId == context.EmployeeId
+                        && a.Id != context.ExcludeEmployeeAbsenceId
+                        && a.StartDate >= start
+                        && a.StartDate < dayEnd
+                        && a.AbsenceHours != 0)
+            .Select(a => a.AbsenceHours)
+            .ToList()
+            .Sum();
+
+        if (alreadyApplied + context.AbsenceHours > dutyHours)
+        {
+            throw new UserFriendlyException(L(
+                "HourlyLeaveExceedsDutyHours",
+                $"{alreadyApplied + context.AbsenceHours:0.##}",
+                $"{dutyHours:0.##}",
+                start.ToString("dd/MM/yyyy"),
+                $"{Math.Max(0, dutyHours - alreadyApplied):0.##}"));
+        }
+    }
+
+    /// <summary>
+    /// How far ahead a leave may start (<c>AbsenceType.MaxFutureDays</c>; zero is no limit). Not in legacy.
+    /// Applied to a new leave only, like back-dating, so a request does not go stale while it waits.
+    /// </summary>
+    private void EnsureNotTooFarAhead(LeaveRuleContext context, AbsenceType absenceType, DateTime start)
+    {
+        if (!context.IsNew || absenceType.MaxFutureDays <= 0)
+        {
+            return;
+        }
+
+        var latest = (context.CreatedOn?.Date ?? Clock.Now.Date).AddDays(absenceType.MaxFutureDays);
+
+        if (start > latest)
+        {
+            throw new UserFriendlyException(L(
+                "LeaveStartDateCannotBeAfterTheMaximumDate",
+                latest.ToString("dd/MM/yyyy"),
+                $"{absenceType.MaxFutureDays}"));
+        }
+    }
+
+    /// <summary>
+    /// The three delegates on a leave. Legacy checked these in the browser only (<c>LeaveRequest.js</c>
+    /// 127-146, 267-312; <c>UnifiedLeaveRequestController</c> 2995-3062): a secondary delegate cannot be chosen
+    /// before a primary one, nobody delegates to themselves, the pick list holds active employees only, and a
+    /// delegate who is on leave over the same dates is refused ("Delegated is on Leave").
+    ///
+    /// <para>
+    /// Legacy judged "on leave" from the delegate's most recent request, whatever its status. Here it is
+    /// their leave rows that overlap the dates, approved or awaiting approval -- the same question, asked of
+    /// the leave table rather than of the last thing they happened to request.
+    /// </para>
+    /// </summary>
+    private void EnsureDelegatesAreUsable(LeaveRuleContext context, DateTime start, DateTime end)
+    {
+        if (context.SecondaryDelegateId.HasValue && !context.PrimaryDelegateId.HasValue)
+        {
+            throw new UserFriendlyException(L("SelectPrimaryDelegateBeforeSecondary"));
+        }
+
+        if (context.SecondaryDelegateId.HasValue && context.SecondaryDelegateId == context.PrimaryDelegateId)
+        {
+            throw new UserFriendlyException(L("PrimaryAndSecondaryDelegateMustDiffer"));
+        }
+
+        foreach (var delegateId in new[] { context.PrimaryDelegateId, context.SecondaryDelegateId, context.ApproverDelegateId }
+                     .Where(id => id.HasValue)
+                     .Select(id => id.Value)
+                     .Distinct())
+        {
+            if (delegateId == context.EmployeeId)
+            {
+                throw new UserFriendlyException(L("YouCannotDelegateToYourself"));
+            }
+
+            var delegateEmployee = _employeeRepository.GetAll()
+                .Where(e => e.Id == delegateId)
+                .Select(e => new { e.Status, e.FullNameEn })
+                .FirstOrDefault();
+
+            if (delegateEmployee == null || delegateEmployee.Status != EmployeeStatus.Active)
+            {
+                throw new UserFriendlyException(L("DelegateMustBeAnActiveEmployee"));
+            }
+
+            bool onLeave;
+            using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+            {
+                onLeave = _absenceRepository.GetAll().Any(a => a.EmployeeId == delegateId
+                                                               && a.StartDate <= end
+                                                               && a.EndDate >= start
+                                                               && (a.WorkflowStatus == null
+                                                                   || a.WorkflowStatus == RequestStatus.Approved
+                                                                   || a.WorkflowStatus == RequestStatus.Closed
+                                                                   || a.WorkflowStatus == RequestStatus.Open));
+            }
+
+            if (onLeave)
+            {
+                throw new UserFriendlyException(L("DelegateIsOnLeave", delegateEmployee.FullNameEn));
+            }
+        }
+    }
+
+    /// <summary>
+    /// A type flagged <c>RequirePolicyAcceptance</c> cannot be submitted until the employee has accepted the
+    /// leave policy. Legacy had one company-wide tick box checked in the browser only (<c>LeaveRequest.js</c>
+    /// 1394-1410); this is per leave type and enforced here. Skipped when the question was not asked at all.
+    /// </summary>
+    private void EnsurePolicyIsAccepted(LeaveRuleContext context, AbsenceType absenceType)
+    {
+        if (absenceType.RequirePolicyAcceptance && context.PolicyAccepted == false)
+        {
+            throw new UserFriendlyException(L("PleaseAcceptTheLeavePolicy"));
+        }
     }
 
     /// <summary>
@@ -230,7 +539,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
         var breaksMaximum = false;
         if (absenceType.ApplyMaxLeave && absenceType.MaxLimitInDays > 0)
         {
-            var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start);
+            var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start, context.ExcludeWorkflowRequestId);
             var used = balances.FirstOrDefault(b => b.AbsenceTypeId == context.AbsenceTypeId)?.Used ?? 0;
 
             // Legacy compares the quota's USED days (what has been taken this period) plus what is being asked
@@ -565,7 +874,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
     {
         var required = days + context.DeductFromQuota;
 
-        var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start);
+        var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start, context.ExcludeWorkflowRequestId);
         var balance = balances.FirstOrDefault(b => b.AbsenceTypeId == context.AbsenceTypeId);
 
         // A quota row is what makes a type quota-controlled here, rather than the type's HaveQuotaAccrual flag:
@@ -718,7 +1027,7 @@ public class LeaveRuleValidator : HCMv3DomainServiceBase, ILeaveRuleValidator
             return;
         }
 
-        var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start);
+        var balances = await _leaveBalanceService.GetBalancesAsync(context.EmployeeId, start, context.ExcludeWorkflowRequestId);
         var annual = balances.FirstOrDefault(b => b.AbsenceTypeId == annualTypeId.Value);
 
         if (annual != null && annual.Remaining > 0)

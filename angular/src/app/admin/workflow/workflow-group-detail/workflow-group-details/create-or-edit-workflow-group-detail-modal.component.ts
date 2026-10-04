@@ -6,6 +6,7 @@ import {
     RequestMasterDto,
     RequestMastersServiceProxy,
     WorkflowGroupDetailsServiceProxy,
+    WorkflowRequestAction,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -31,6 +32,14 @@ export class CreateOrEditWorkflowGroupDetailModalComponent extends AppComponentB
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditWorkflowGroupDetailDto>(new CreateOrEditWorkflowGroupDetailDto());
     readonly requestMasters = signal<RequestMasterDto[]>([]);
+
+    /** A line may apply to one action only; left empty it applies to every action. */
+    readonly requestActions = [
+        { value: WorkflowRequestAction.New, name: 'New' },
+        { value: WorkflowRequestAction.Amendment, name: 'Amendment' },
+        { value: WorkflowRequestAction.Cancellation, name: 'Cancellation' },
+        { value: WorkflowRequestAction.Return, name: 'Return' },
+    ];
 
     show(workflowGroupId: number, id?: number): void {
         this.active.set(true);

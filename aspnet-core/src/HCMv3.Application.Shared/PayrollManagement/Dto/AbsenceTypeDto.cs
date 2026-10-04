@@ -101,6 +101,12 @@ public class AbsenceTypeDto : EntityDto<int>
 
     public bool AllowPartialLeave { get; set; }
 
+    public LeaveDurationType LeaveDurationType { get; set; }
+
+    public int MaxFutureDays { get; set; }
+
+    public bool RequirePolicyAcceptance { get; set; }
+
     public bool SendNotification { get; set; }
 
     public bool DontAllowToStartOnSunday { get; set; }

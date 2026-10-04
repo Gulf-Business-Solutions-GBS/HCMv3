@@ -154,6 +154,26 @@ public class AbsenceType : FullAuditedEntity, IMustHaveTenant
 
     public virtual bool AllowPartialLeave { get; set; }
 
+    /// <summary>
+    /// Legacy <c>LeaveDurationType</c>: <c>Partial</c> makes the start and end time mandatory, <c>FullDay</c>
+    /// refuses them, <c>All</c> leaves it to <see cref="AllowPartialLeave"/>.
+    /// </summary>
+    public virtual LeaveDurationType LeaveDurationType { get; set; }
+
+    /// <summary>
+    /// How far ahead of today a leave of this type may START, in days. Zero means no limit. Not in legacy,
+    /// which only had the opposite rules (<see cref="CanApplyBeforeDays"/>, <see cref="ApplyLeaveInAdvanceDays"/>:
+    /// minimum notice).
+    /// </summary>
+    public virtual int MaxFutureDays { get; set; }
+
+    /// <summary>
+    /// The employee must tick "I accept the leave policy" before a leave of this type can be submitted. The
+    /// policy document itself is an attachment on the leave type (entity type <c>AbsenceTypePolicy</c>), not a
+    /// column, so the file lives in the tenant's file store like every other document.
+    /// </summary>
+    public virtual bool RequirePolicyAcceptance { get; set; }
+
     public virtual bool SendNotification { get; set; }
 
     public virtual bool DontAllowToStartOnSunday { get; set; }

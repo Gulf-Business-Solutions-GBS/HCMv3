@@ -75,6 +75,25 @@ public class LeaveRuleContext
     /// breaks the advance-notice or maximum-days rule (legacy " Please Add your Comments.").
     /// </summary>
     public string Comments { get; set; }
+
+    /// <summary>Legacy <c>DelegatedTo</c>: who covers the employee's work. Checked when set.</summary>
+    public int? PrimaryDelegateId { get; set; }
+
+    /// <summary>Legacy <c>SecondaryDelegation</c>. Cannot be given without a primary delegate.</summary>
+    public int? SecondaryDelegateId { get; set; }
+
+    /// <summary>Legacy <c>ApproverDelegation</c>: who decides the employee's approvals while they are away.</summary>
+    public int? ApproverDelegateId { get; set; }
+
+    /// <summary>
+    /// Whether the employee ticked the leave-policy acceptance. Null means the question was not asked -- HR
+    /// keying a leave in, or a change to a leave whose policy was accepted when it was first raised -- and the
+    /// rule is skipped; false on a type that requires acceptance refuses the leave.
+    /// </summary>
+    public bool? PolicyAccepted { get; set; }
+
+    /// <summary>The change being validated, so its own pending days are not counted against it.</summary>
+    public int? ExcludeWorkflowRequestId { get; set; }
 }
 
 /// <summary>

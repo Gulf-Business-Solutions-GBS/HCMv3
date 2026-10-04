@@ -107,6 +107,7 @@ public class WorkflowGroupDetailsAppService : HCMv3AppServiceBase, IWorkflowGrou
                            d.RequestTypeName == entity.RequestTypeName &&
                            d.RequestSubTypeId == entity.RequestSubTypeId &&
                            d.CustomSubTypeId == entity.CustomSubTypeId &&
+                           d.RequestAction == entity.RequestAction &&
                            d.RequestMasterId == entity.RequestMasterId);
 
         if (duplicate)
@@ -122,6 +123,7 @@ public class WorkflowGroupDetailsAppService : HCMv3AppServiceBase, IWorkflowGrou
         entity.RequestTypeName = input.RequestTypeName;
         entity.RequestSubTypeId = input.RequestSubTypeId;
         entity.CustomSubTypeId = input.CustomSubTypeId;
+        entity.RequestAction = input.RequestAction;
         return entity;
     }
 
@@ -135,7 +137,8 @@ public class WorkflowGroupDetailsAppService : HCMv3AppServiceBase, IWorkflowGrou
             RequestMasterNameEn = entity.RequestMaster?.NameEn,
             RequestTypeName = entity.RequestTypeName,
             RequestSubTypeId = entity.RequestSubTypeId,
-            CustomSubTypeId = entity.CustomSubTypeId
+            CustomSubTypeId = entity.CustomSubTypeId,
+            RequestAction = entity.RequestAction
         };
     }
 
@@ -148,7 +151,8 @@ public class WorkflowGroupDetailsAppService : HCMv3AppServiceBase, IWorkflowGrou
             RequestMasterId = entity.RequestMasterId,
             RequestTypeName = entity.RequestTypeName,
             RequestSubTypeId = entity.RequestSubTypeId,
-            CustomSubTypeId = entity.CustomSubTypeId
+            CustomSubTypeId = entity.CustomSubTypeId,
+            RequestAction = entity.RequestAction
         };
     }
 }

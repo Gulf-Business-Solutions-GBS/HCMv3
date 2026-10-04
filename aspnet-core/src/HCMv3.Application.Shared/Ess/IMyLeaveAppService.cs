@@ -84,5 +84,44 @@ public interface IMyLeaveAppService : IApplicationService
     /// it immediately.
     /// </summary>
     /// <returns>Id of the cancellation's <c>WorkflowRequest</c>.</returns>
-    Task<int> RequestCancellationOfMyLeave(EntityDto input);
+    Task<int> RequestCancellationOfMyLeave(RequestLeaveCancellationInput input);
+
+    /// <summary>
+    /// The leave types this employee may apply for: active, offered through self-service, and matching their
+    /// gender, religion and salary profile (legacy <c>AbsenceRequest.EmpAbsenceType</c>). Each carries the
+    /// settings that decide which fields the form shows.
+    /// </summary>
+    Task<List<MyLeaveTypeDto>> GetMyLeaveTypes();
+
+    /// <summary>
+    /// The current balance, the bookable balance and the balance after the leave being entered, for a type
+    /// with a quota. Nothing is saved.
+    /// </summary>
+    Task<LeaveBalancePreviewDto> PreviewMyLeaveBalance(PreviewLeaveBalanceInput input);
+
+    /// <summary>
+    /// Sends a NEW leave that an approver sent back round again, with the values the employee corrected. It
+    /// keeps its request number, log and comments.
+    /// </summary>
+    Task<ApplyForLeaveResultDto> ResubmitMyLeave(ResubmitMyLeaveInput input);
+
+    /// <summary>
+    /// Sends a change, cancellation or return that was sent back round again, corrected. The approved leave is
+    /// still untouched.
+    /// </summary>
+    /// <returns>Id of the request that was resubmitted.</returns>
+    Task<int> ResubmitMyLeaveChange(ResubmitMyLeaveChangeInput input);
+
+    /// <summary>
+    /// Takes back a change, cancellation or return that has not been decided yet -- still with an approver, or
+    /// sent back. The approved leave stands exactly as it was and can be acted on again at once.
+    /// </summary>
+    Task WithdrawMyLeaveChange(WithdrawMyLeaveChangeInput input);
+
+    /// <summary>
+    /// Every request raised against one leave, oldest first: the application, and each change, cancellation
+    /// and return since, with what was asked and how it ended -- including the ones that were rejected or
+    /// withdrawn, which leave no trace on the leave itself.
+    /// </summary>
+    Task<List<MyLeaveHistoryItemDto>> GetMyLeaveHistory(EntityDto input);
 }

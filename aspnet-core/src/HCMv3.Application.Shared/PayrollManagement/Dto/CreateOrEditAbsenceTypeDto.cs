@@ -112,6 +112,13 @@ public class CreateOrEditAbsenceTypeDto
 
     public bool AllowPartialLeave { get; set; }
 
+    public LeaveDurationType LeaveDurationType { get; set; }
+
+    [Range(0, 3650)]
+    public int MaxFutureDays { get; set; }
+
+    public bool RequirePolicyAcceptance { get; set; }
+
     public bool SendNotification { get; set; }
 
     public bool DontAllowToStartOnSunday { get; set; }

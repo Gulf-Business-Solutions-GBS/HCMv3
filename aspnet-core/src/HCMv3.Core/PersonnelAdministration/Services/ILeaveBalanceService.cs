@@ -32,5 +32,7 @@ public interface ILeaveBalanceService
 
     /// <summary>Balances for every absence type the employee holds quota for -- what the ESS leave screen
     /// lists.</summary>
-    Task<List<LeaveBalance>> GetBalancesAsync(int employeeId, DateTime? asOf = null);
+    /// <paramref name="excludeWorkflowRequestId"/> leaves one pending change out of the pending figure: the
+    /// change being validated must not count against itself.
+    Task<List<LeaveBalance>> GetBalancesAsync(int employeeId, DateTime? asOf = null, int? excludeWorkflowRequestId = null);
 }

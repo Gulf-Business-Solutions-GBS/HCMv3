@@ -3,6 +3,7 @@ using Abp.Events.Bus.Entities;
 using Abp.Events.Bus.Handlers;
 using Abp.Runtime.Caching;
 using HCMv3.SystemSecurity;
+using HCMv3.Workflow;
 
 namespace HCMv3.PayrollManagement.PayrollLock;
 
@@ -36,8 +37,39 @@ public class PayrollLockEntityHook : IEventHandler<EntityChangingEventData<Entit
     /// </summary>
     public void HandleEvent(EntityChangingEventData<Entity<int>> eventData)
     {
+        if (IsNotYetInEffect(eventData.Entity))
+        {
+            return;
+        }
+
         _guard.EnsureChangeAllowed(eventData.Entity);
         _retroTrigger.RecordChange(eventData.Entity, deleted: eventData.Entity is ISoftDelete { IsDeleted: true });
+    }
+
+    /// <summary>
+    /// A workflow-managed row that is still a REQUEST -- drafted, awaiting approval, or rejected -- is not a
+    /// payroll change, so the lock does not apply to it and it does not move the recalculation date.
+    ///
+    /// <para>
+    /// Legacy got this for free: a request lived in its own table, so an employee could always apply and only
+    /// the approval, which wrote the transaction, met the lock. With one row for both, the same row passes
+    /// through here while it is still invisible to payroll (the <c>ApprovedOnly</c> filter hides it), and
+    /// refusing it meant nobody could even ask for leave while a payroll run was open.
+    /// </para>
+    ///
+    /// <para>
+    /// Judged on the status the row is being saved WITH. Becoming Approved is a payroll change and is checked,
+    /// which keeps "approval is refused while the period is locked" exactly as it was. So is a row saved as
+    /// Cancelled: that only ever happens to one that was approved. A null status is a row that never went
+    /// through workflow and is effective at once.
+    /// </para>
+    /// </summary>
+    private static bool IsNotYetInEffect(object entity)
+    {
+        return entity is IWorkflowEnabledEntity
+        {
+            WorkflowStatus: RequestStatus.Draft or RequestStatus.Open or RequestStatus.Rejected
+        };
     }
 }
 

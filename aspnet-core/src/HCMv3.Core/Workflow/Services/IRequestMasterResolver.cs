@@ -51,7 +51,14 @@ public interface IRequestMasterResolver
     /// showing the employee who will approve their request before they submit it).
     /// <paramref name="employeeId"/> may be null, which skips the workflow-group step.
     /// </summary>
-    Task<RequestMaster> ResolveAsync(string requestType, int? employeeId, int? requestSubTypeId, int? customSubTypeId = null);
+    /// <paramref name="requestAction"/> picks the chain configured for that action (amendment, cancellation, return)
+    /// where one is; with none configured, every action follows the chain a new request would.
+    Task<RequestMaster> ResolveAsync(
+        string requestType,
+        int? employeeId,
+        int? requestSubTypeId,
+        int? customSubTypeId = null,
+        WorkflowRequestAction requestAction = WorkflowRequestAction.New);
 
     /// <summary>The catalog row for <paramref name="code"/>, or null when the type is not registered.</summary>
     Task<WorkflowTransactionType> GetTransactionTypeAsync(string code);

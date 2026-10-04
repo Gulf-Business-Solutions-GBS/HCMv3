@@ -106,6 +106,29 @@
                                 </select>
                             </div>
 
+                            <!-- A chain of its own for a change, a cancellation or a return. Left empty,
+                                 each follows the default chain above. -->
+                            @for (chain of actionChains; track chain.field) {
+                                <div class="mb-5">
+                                    <label class="form-label" [attr.for]="'WorkflowTransactionType_' + chain.id">
+                                        {{ chain.labelKey | localize }}
+                                    </label>
+                                    <select
+                                        [id]="'WorkflowTransactionType_' + chain.id"
+                                        class="form-select"
+                                        [name]="chain.id"
+                                        [ngModel]="record()[chain.field]"
+                                        (ngModelChange)="updateField(chain.field, $event)">
+                                        <option [ngValue]="undefined">{{ 'SameAsDefaultChain' | localize }}</option>
+                                        @for (master of requestMasters(); track master.id) {
+                                            <option [ngValue]="master.id">
+                                                {{ master.nameEn }} ({{ master.workflowSteps }} {{ 'Steps' | localize }})
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+
                             @if (isEnabledWithoutChain()) {
                                 <!-- Warned, not blocked: the two fields are often set in either order, and
                                      refusing the intermediate state makes the form fight the person filling

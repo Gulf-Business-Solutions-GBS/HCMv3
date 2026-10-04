@@ -13204,6 +13204,9 @@ namespace HCMv3.Migrations
                     b.Property<int>("LeaveBasisPeriod")
                         .HasColumnType("int");
 
+                    b.Property<int>("LeaveDurationType")
+                        .HasColumnType("int");
+
                     b.Property<int>("LeaveEntitlement")
                         .HasColumnType("int");
 
@@ -13214,6 +13217,9 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MaxCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxFutureDays")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxLimitInDays")
@@ -13252,6 +13258,9 @@ namespace HCMv3.Migrations
 
                     b.Property<int>("ReInitializeAfter")
                         .HasColumnType("int");
+
+                    b.Property<bool>("RequirePolicyAcceptance")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ResetFrequency")
                         .HasColumnType("int");
@@ -19442,6 +19451,9 @@ namespace HCMv3.Migrations
                     b.Property<bool>("AdvanceLeavePaid")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("ApproverDelegateId")
+                        .HasColumnType("int");
+
                     b.Property<double>("CalendarDays")
                         .HasColumnType("float");
 
@@ -19509,8 +19521,17 @@ namespace HCMv3.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("PolicyAcceptedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PrimaryDelegateId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("SecondaryDelegateId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -34616,6 +34637,9 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("RequestAction")
+                        .HasColumnType("int");
+
                     b.Property<int>("RequestMasterId")
                         .HasColumnType("int");
 
@@ -34806,6 +34830,9 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("RequestAction")
+                        .HasColumnType("int");
+
                     b.Property<string>("RequestNumber")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
@@ -34921,6 +34948,12 @@ namespace HCMv3.Migrations
                     b.Property<bool>("AllowDirectEntry")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("AmendmentRequestMasterId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CancellationRequestMasterId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -34983,6 +35016,9 @@ namespace HCMv3.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("ReturnRequestMasterId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SubTypeSource")
                         .HasMaxLength(128)

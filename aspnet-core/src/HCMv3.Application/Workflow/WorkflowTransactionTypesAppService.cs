@@ -70,6 +70,9 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
                 IsWorkflowEnabled = entity.IsWorkflowEnabled,
                 IsEssEnabled = entity.IsEssEnabled,
                 DefaultRequestMasterId = entity.DefaultRequestMasterId,
+                AmendmentRequestMasterId = entity.AmendmentRequestMasterId,
+                CancellationRequestMasterId = entity.CancellationRequestMasterId,
+                ReturnRequestMasterId = entity.ReturnRequestMasterId,
                 EssRoute = entity.EssRoute,
                 EssPermissionName = entity.EssPermissionName,
                 SubTypeSource = entity.SubTypeSource,
@@ -146,6 +149,18 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
             throw new UserFriendlyException(L("DuplicateCodeFound"));
         }
 
+        // The per-action chains are plain ids with no foreign key, so their existence is checked here.
+        foreach (var chainId in new[]
+                 {
+                     entity.AmendmentRequestMasterId, entity.CancellationRequestMasterId, entity.ReturnRequestMasterId
+                 })
+        {
+            if (chainId.HasValue && !await _requestMasterRepository.GetAll().AnyAsync(m => m.Id == chainId.Value))
+            {
+                throw new UserFriendlyException(L("NoWorkflowConfigurationFoundForRequestType", entity.NameEn));
+            }
+        }
+
         if (entity.DefaultRequestMasterId.HasValue)
         {
             var masterExists = await _requestMasterRepository.GetAll()
@@ -182,6 +197,9 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
         entity.IsWorkflowEnabled = input.IsWorkflowEnabled;
         entity.IsEssEnabled = input.IsEssEnabled;
         entity.DefaultRequestMasterId = input.DefaultRequestMasterId;
+        entity.AmendmentRequestMasterId = input.AmendmentRequestMasterId;
+        entity.CancellationRequestMasterId = input.CancellationRequestMasterId;
+        entity.ReturnRequestMasterId = input.ReturnRequestMasterId;
         entity.EssRoute = input.EssRoute;
         entity.EssPermissionName = input.EssPermissionName;
         entity.SubTypeSource = input.SubTypeSource;
@@ -201,6 +219,9 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
             NameAr = entity.NameAr,
             IsWorkflowEnabled = entity.IsWorkflowEnabled,
             IsEssEnabled = entity.IsEssEnabled,
+            AmendmentRequestMasterId = entity.AmendmentRequestMasterId,
+            CancellationRequestMasterId = entity.CancellationRequestMasterId,
+            ReturnRequestMasterId = entity.ReturnRequestMasterId,
             DefaultRequestMasterId = entity.DefaultRequestMasterId,
             DefaultRequestMasterNameEn = entity.DefaultRequestMaster?.NameEn,
             DefaultRequestMasterSteps = entity.DefaultRequestMaster?.WorkflowSteps,

@@ -15,4 +15,7 @@ public class WorkflowGroupDetailDto : EntityDto<int>
     public int? RequestSubTypeId { get; set; }
 
     public int? CustomSubTypeId { get; set; }
+
+    /// <summary>The action this line applies to (amendment, cancellation, return); empty means every action.</summary>
+    public WorkflowRequestAction? RequestAction { get; set; }
 }

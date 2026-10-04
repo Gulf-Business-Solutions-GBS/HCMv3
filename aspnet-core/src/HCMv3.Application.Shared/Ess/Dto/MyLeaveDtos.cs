@@ -86,6 +86,53 @@ public class MyLeaveDto : EntityDto<int>
 
     /// <summary>True once the return from this leave has been approved.</summary>
     public bool IsReturned { get; set; }
+
+    /// <summary>The day the employee came back, once a return is approved.</summary>
+    public DateTime? ReturnDate { get; set; }
+
+    /// <summary>The end date first approved, when an early return or a change has since moved it.</summary>
+    public DateTime? InitialEndDate { get; set; }
+
+    /// <summary>Hourly leave: the hours taken. Zero for a full-day leave.</summary>
+    public double AbsenceHours { get; set; }
+
+    /// <summary>Hourly leave: "HH:mm". Null for a full-day leave.</summary>
+    public string StartTime { get; set; }
+
+    /// <inheritdoc cref="StartTime"/>
+    public string EndTime { get; set; }
+
+    public HalfdayType HalfdayType { get; set; }
+
+    /// <summary>
+    /// True when this NEW leave was sent back by an approver and is waiting on the employee: they correct it
+    /// and send it again, or withdraw it.
+    /// </summary>
+    public bool IsSentBack { get; set; }
+
+    /// <summary>Which action is in flight against this approved leave: amendment, cancellation or return.</summary>
+    public WorkflowRequestAction? PendingAction { get; set; }
+
+    /// <summary>True when the in-flight action was sent back and is waiting on the employee.</summary>
+    public bool PendingIsSentBack { get; set; }
+
+    /// <summary>
+    /// What the in-flight action would make of the leave. The leave's own dates above stay the approved ones
+    /// until it is granted, so the list shows these beside them rather than in their place.
+    /// </summary>
+    public DateTime? ProposedStartDate { get; set; }
+
+    /// <inheritdoc cref="ProposedStartDate"/>
+    public DateTime? ProposedEndDate { get; set; }
+
+    /// <summary>The rejoining date on an in-flight return.</summary>
+    public DateTime? ProposedReturnDate { get; set; }
+
+    /// <summary>
+    /// The last action against this leave, when it was REJECTED and nothing has been raised since. The leave is
+    /// exactly as it was; this is what lets the list say "amendment rejected" instead of looking untouched.
+    /// </summary>
+    public WorkflowRequestAction? LastRejectedAction { get; set; }
 }
 
 public class GetMyLeavesInput : PagedAndSortedResultRequestDto, IShouldNormalize
@@ -144,6 +191,37 @@ public class ApplyForLeaveInput
     /// document (a sick note, say) be submitted at all.
     /// </summary>
     public List<string> AttachmentFileTokens { get; set; } = new();
+
+    /// <summary>Half-day leave, when the time settings offer it. The times are then taken from the day's duty.</summary>
+    public HalfdayType HalfdayType { get; set; }
+
+    /// <summary>
+    /// Hourly leave: when it starts, as "HH:mm". Only for a one-day leave of a type that allows partial leave;
+    /// leave both times empty for a full-day leave.
+    /// </summary>
+    [RegularExpression(@"^([01]\d|2[0-3]):[0-5]\d$")]
+    public string StartTime { get; set; }
+
+    /// <inheritdoc cref="StartTime"/>
+    [RegularExpression(@"^([01]\d|2[0-3]):[0-5]\d$")]
+    public string EndTime { get; set; }
+
+    public bool IsTravelling { get; set; }
+
+    /// <summary>Legacy "Primary Delegation": the colleague covering the employee's work.</summary>
+    public int? PrimaryDelegateId { get; set; }
+
+    /// <summary>Legacy "Secondary Delegation". Needs a primary delegate.</summary>
+    public int? SecondaryDelegateId { get; set; }
+
+    /// <summary>
+    /// Legacy "Approver Delegation": who decides this employee's approvals while they are away. Becomes a real
+    /// delegation for the leave dates once the leave is approved.
+    /// </summary>
+    public int? ApproverDelegateId { get; set; }
+
+    /// <summary>The employee ticked "I accept the leave policy". Required by types that ask for it.</summary>
+    public bool PolicyAccepted { get; set; }
 }
 
 /// <summary>
@@ -171,6 +249,198 @@ public class LeaveFormSettingsDto
 
     /// <summary>Legacy <c>ManageWorkflowSettings.HideLeavePayDetailsInWorkflow</c>: approvers do not see leave pay amounts.</summary>
     public bool HideLeavePayDetailsInWorkflow { get; set; }
+
+    /// <summary>
+    /// Whether the approver-delegate field is offered: the employee is somebody's manager or holds a workflow
+    /// role today, so there are approvals to hand over (legacy <c>ValidateDelegationVisibility</c>).
+    /// </summary>
+    public bool CanDelegateApprovals { get; set; }
+}
+
+/// <summary>
+/// A leave type the signed-in employee may apply for -- already filtered by their gender, religion and salary
+/// profile -- with the settings the form needs to show the right fields before anything is submitted.
+/// </summary>
+public class MyLeaveTypeDto : EntityDto<int>
+{
+    public string Code { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
+
+    /// <summary>The start and end time fields are offered.</summary>
+    public bool AllowPartialLeave { get; set; }
+
+    /// <summary><c>Partial</c> makes the times mandatory.</summary>
+    public LeaveDurationType LeaveDurationType { get; set; }
+
+    public bool IsAttachmentRequired { get; set; }
+
+    public bool RequirePolicyAcceptance { get; set; }
+
+    /// <summary>The policy document to link to, when one has been uploaded on the leave type.</summary>
+    public int? PolicyAttachmentId { get; set; }
+
+    public string PolicyFileName { get; set; }
+
+    /// <summary>The earliest start date a new leave of this type may have today; null for no limit.</summary>
+    public DateTime? EarliestStartDate { get; set; }
+
+    /// <summary>The latest start date a new leave of this type may have today; null for no limit.</summary>
+    public DateTime? LatestStartDate { get; set; }
+
+    /// <summary>True when the employee holds a quota for this type, so the balance figures mean something.</summary>
+    public bool HasQuota { get; set; }
+}
+
+/// <summary>
+/// The three balance figures the form shows for the leave being entered. Nothing is saved by asking.
+/// </summary>
+public class LeaveBalancePreviewDto
+{
+    /// <summary>False for a type with no quota: there is no balance to show.</summary>
+    public bool HasQuota { get; set; }
+
+    /// <summary>Accrued less everything approved -- the actual balance today.</summary>
+    public double CurrentBalance { get; set; }
+
+    /// <summary>The current balance less what is awaiting approval -- what may still be applied for.</summary>
+    public double Bookable { get; set; }
+
+    /// <summary>Days this request would charge. For a change, the difference from what is already approved.</summary>
+    public double DaysRequested { get; set; }
+
+    /// <summary>Bookable less the days requested.</summary>
+    public double BalanceAfter { get; set; }
+}
+
+public class PreviewLeaveBalanceInput : ApplyForLeaveInput
+{
+    /// <summary>The approved leave being changed, so its own days are credited back. Null for a new leave.</summary>
+    public int? EmployeeAbsenceId { get; set; }
+}
+
+/// <summary>A new leave that was sent back, corrected and sent again.</summary>
+public class ResubmitMyLeaveInput : ApplyForLeaveInput
+{
+    [Range(1, int.MaxValue)]
+    public int EmployeeAbsenceId { get; set; }
+}
+
+/// <summary>
+/// A change, cancellation or return that was sent back, corrected and sent again. Which of the three it is
+/// comes from the request itself; only the fields that action uses are read.
+/// </summary>
+public class ResubmitMyLeaveChangeInput
+{
+    /// <summary>The approved leave the sent-back request is against.</summary>
+    [Range(1, int.MaxValue)]
+    public int EmployeeAbsenceId { get; set; }
+
+    /// <summary>Amendment: the corrected values.</summary>
+    public int? AbsenceTypeId { get; set; }
+
+    /// <inheritdoc cref="AbsenceTypeId"/>
+    public DateTime? StartDate { get; set; }
+
+    /// <inheritdoc cref="AbsenceTypeId"/>
+    public DateTime? EndDate { get; set; }
+
+    [StringLength(2000)]
+    public string Reason { get; set; }
+
+    /// <summary>Return: the corrected rejoining date and, for a late return, the paid and unpaid ranges.</summary>
+    public DateTime? RejoiningDate { get; set; }
+
+    public DateTime? PaidStartDate { get; set; }
+
+    public DateTime? PaidEndDate { get; set; }
+
+    public DateTime? UnpaidStartDate { get; set; }
+
+    public DateTime? UnpaidEndDate { get; set; }
+}
+
+public class WithdrawMyLeaveChangeInput : EntityDto<int>
+{
+    [StringLength(2000)]
+    public string Reason { get; set; }
+}
+
+public class RequestLeaveCancellationInput : EntityDto<int>
+{
+    /// <summary>Why the leave is being cancelled. Shown to the approver.</summary>
+    [StringLength(2000)]
+    public string Reason { get; set; }
+}
+
+/// <summary>How one request against a leave ended, or where it stands.</summary>
+public enum MyLeaveHistoryOutcome
+{
+    AwaitingApproval = 0,
+    Approved = 1,
+    Rejected = 2,
+    SentBack = 3,
+    Withdrawn = 4
+}
+
+/// <summary>
+/// One request raised against a leave -- the application itself, or a later change, cancellation or return --
+/// with what it asked for and how it ended. A leave's history is these in the order they were raised.
+/// </summary>
+public class MyLeaveHistoryItemDto
+{
+    public int WorkflowRequestId { get; set; }
+
+    public string RequestNumber { get; set; }
+
+    public WorkflowRequestAction Action { get; set; }
+
+    public MyLeaveHistoryOutcome Outcome { get; set; }
+
+    public DateTime SubmittedOn { get; set; }
+
+    public DateTime? DecidedOn { get; set; }
+
+    public string DecidedByNameEn { get; set; }
+
+    public string DecidedByNameAr { get; set; }
+
+    /// <summary>The remark given with the decision, or the reason given with a withdrawal.</summary>
+    public string DecisionRemark { get; set; }
+
+    /// <summary>What the employee wrote when raising it.</summary>
+    public string Reason { get; set; }
+
+    /// <summary>The leave as it stood when this was raised. Null on the original application.</summary>
+    public DateTime? BeforeStartDate { get; set; }
+
+    public DateTime? BeforeEndDate { get; set; }
+
+    public double? BeforeDays { get; set; }
+
+    /// <summary>What this request asked the leave to become.</summary>
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
+    public double? Days { get; set; }
+
+    /// <summary>Return only: the day the employee came back.</summary>
+    public DateTime? ReturnDate { get; set; }
+
+    /// <summary>Late return only: the ranges booked as further paid and unpaid leave.</summary>
+    public DateTime? PaidStartDate { get; set; }
+
+    public DateTime? PaidEndDate { get; set; }
+
+    public DateTime? UnpaidStartDate { get; set; }
+
+    public DateTime? UnpaidEndDate { get; set; }
+
+    /// <summary>True when an approver sent it back at least once before it was decided.</summary>
+    public bool WasSentBack { get; set; }
 }
 
 /// <summary>One stretch of a sick leave paid at the same rate, for the breakdown shown before applying.</summary>

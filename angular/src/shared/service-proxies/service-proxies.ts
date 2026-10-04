@@ -92650,6 +92650,120 @@ export class MyLeaveServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getMyLeaveTypes(): Observable<MyLeaveTypeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetMyLeaveTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeaveTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeaveTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyLeaveTypeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyLeaveTypeDto[]>;
+        }));
+    }
+
+    protected processGetMyLeaveTypes(response: HttpResponseBase): Observable<MyLeaveTypeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MyLeaveTypeDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    previewMyLeaveBalance(body?: PreviewLeaveBalanceInput | undefined): Observable<LeaveBalancePreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/PreviewMyLeaveBalance";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreviewMyLeaveBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreviewMyLeaveBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveBalancePreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveBalancePreviewDto>;
+        }));
+    }
+
+    protected processPreviewMyLeaveBalance(response: HttpResponseBase): Observable<LeaveBalancePreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveBalancePreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -92878,7 +92992,7 @@ export class MyLeaveServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    requestCancellationOfMyLeave(body?: EntityDto | undefined): Observable<number> {
+    requestCancellationOfMyLeave(body?: RequestLeaveCancellationInput | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/MyLeave/RequestCancellationOfMyLeave";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -92921,6 +93035,234 @@ export class MyLeaveServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : null as any;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    resubmitMyLeave(body?: ResubmitMyLeaveInput | undefined): Observable<ApplyForLeaveResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/ResubmitMyLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResubmitMyLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResubmitMyLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApplyForLeaveResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApplyForLeaveResultDto>;
+        }));
+    }
+
+    protected processResubmitMyLeave(response: HttpResponseBase): Observable<ApplyForLeaveResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplyForLeaveResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    resubmitMyLeaveChange(body?: ResubmitMyLeaveChangeInput | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/ResubmitMyLeaveChange";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResubmitMyLeaveChange(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResubmitMyLeaveChange(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processResubmitMyLeaveChange(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    withdrawMyLeaveChange(body?: WithdrawMyLeaveChangeInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/WithdrawMyLeaveChange";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processWithdrawMyLeaveChange(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processWithdrawMyLeaveChange(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processWithdrawMyLeaveChange(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyLeaveHistory(id?: number | undefined): Observable<MyLeaveHistoryItemDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetMyLeaveHistory?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeaveHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeaveHistory(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyLeaveHistoryItemDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyLeaveHistoryItemDto[]>;
+        }));
+    }
+
+    protected processGetMyLeaveHistory(response: HttpResponseBase): Observable<MyLeaveHistoryItemDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MyLeaveHistoryItemDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -165726,6 +166068,9 @@ export class AbsenceTypeDto implements IAbsenceTypeDto {
     allowInTerminationNoticeOnly!: boolean;
     isAttachmentRequired!: boolean;
     allowPartialLeave!: boolean;
+    leaveDurationType!: LeaveDurationType;
+    maxFutureDays!: number;
+    requirePolicyAcceptance!: boolean;
     sendNotification!: boolean;
     dontAllowToStartOnSunday!: boolean;
     dontAllowToStartOnMonday!: boolean;
@@ -165798,6 +166143,9 @@ export class AbsenceTypeDto implements IAbsenceTypeDto {
             this.allowInTerminationNoticeOnly = _data["allowInTerminationNoticeOnly"];
             this.isAttachmentRequired = _data["isAttachmentRequired"];
             this.allowPartialLeave = _data["allowPartialLeave"];
+            this.leaveDurationType = _data["leaveDurationType"];
+            this.maxFutureDays = _data["maxFutureDays"];
+            this.requirePolicyAcceptance = _data["requirePolicyAcceptance"];
             this.sendNotification = _data["sendNotification"];
             this.dontAllowToStartOnSunday = _data["dontAllowToStartOnSunday"];
             this.dontAllowToStartOnMonday = _data["dontAllowToStartOnMonday"];
@@ -165870,6 +166218,9 @@ export class AbsenceTypeDto implements IAbsenceTypeDto {
         data["allowInTerminationNoticeOnly"] = this.allowInTerminationNoticeOnly;
         data["isAttachmentRequired"] = this.isAttachmentRequired;
         data["allowPartialLeave"] = this.allowPartialLeave;
+        data["leaveDurationType"] = this.leaveDurationType;
+        data["maxFutureDays"] = this.maxFutureDays;
+        data["requirePolicyAcceptance"] = this.requirePolicyAcceptance;
         data["sendNotification"] = this.sendNotification;
         data["dontAllowToStartOnSunday"] = this.dontAllowToStartOnSunday;
         data["dontAllowToStartOnMonday"] = this.dontAllowToStartOnMonday;
@@ -165935,6 +166286,9 @@ export interface IAbsenceTypeDto {
     allowInTerminationNoticeOnly: boolean;
     isAttachmentRequired: boolean;
     allowPartialLeave: boolean;
+    leaveDurationType: LeaveDurationType;
+    maxFutureDays: number;
+    requirePolicyAcceptance: boolean;
     sendNotification: boolean;
     dontAllowToStartOnSunday: boolean;
     dontAllowToStartOnMonday: boolean;
@@ -168876,6 +169230,14 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
     paymentDate!: DateTime | undefined;
     splitExcessAsUnpaidLeave!: boolean;
     attachmentFileTokens!: string[] | undefined;
+    halfdayType!: HalfdayType;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    isTravelling!: boolean;
+    primaryDelegateId!: number | undefined;
+    secondaryDelegateId!: number | undefined;
+    approverDelegateId!: number | undefined;
+    policyAccepted!: boolean;
 
     constructor(data?: IApplyForLeaveInput) {
         if (data) {
@@ -168900,6 +169262,14 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
                 for (let item of _data["attachmentFileTokens"])
                     this.attachmentFileTokens!.push(item);
             }
+            this.halfdayType = _data["halfdayType"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.isTravelling = _data["isTravelling"];
+            this.primaryDelegateId = _data["primaryDelegateId"];
+            this.secondaryDelegateId = _data["secondaryDelegateId"];
+            this.approverDelegateId = _data["approverDelegateId"];
+            this.policyAccepted = _data["policyAccepted"];
         }
     }
 
@@ -168924,6 +169294,14 @@ export class ApplyForLeaveInput implements IApplyForLeaveInput {
             for (let item of this.attachmentFileTokens)
                 data["attachmentFileTokens"].push(item);
         }
+        data["halfdayType"] = this.halfdayType;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["isTravelling"] = this.isTravelling;
+        data["primaryDelegateId"] = this.primaryDelegateId;
+        data["secondaryDelegateId"] = this.secondaryDelegateId;
+        data["approverDelegateId"] = this.approverDelegateId;
+        data["policyAccepted"] = this.policyAccepted;
         return data;
     }
 }
@@ -168937,6 +169315,14 @@ export interface IApplyForLeaveInput {
     paymentDate: DateTime | undefined;
     splitExcessAsUnpaidLeave: boolean;
     attachmentFileTokens: string[] | undefined;
+    halfdayType: HalfdayType;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    isTravelling: boolean;
+    primaryDelegateId: number | undefined;
+    secondaryDelegateId: number | undefined;
+    approverDelegateId: number | undefined;
+    policyAccepted: boolean;
 }
 
 export class ApplyForLeaveResultDto implements IApplyForLeaveResultDto {
@@ -177306,6 +177692,9 @@ export class CreateOrEditAbsenceTypeDto implements ICreateOrEditAbsenceTypeDto {
     allowInTerminationNoticeOnly!: boolean;
     isAttachmentRequired!: boolean;
     allowPartialLeave!: boolean;
+    leaveDurationType!: LeaveDurationType;
+    maxFutureDays!: number;
+    requirePolicyAcceptance!: boolean;
     sendNotification!: boolean;
     dontAllowToStartOnSunday!: boolean;
     dontAllowToStartOnMonday!: boolean;
@@ -177377,6 +177766,9 @@ export class CreateOrEditAbsenceTypeDto implements ICreateOrEditAbsenceTypeDto {
             this.allowInTerminationNoticeOnly = _data["allowInTerminationNoticeOnly"];
             this.isAttachmentRequired = _data["isAttachmentRequired"];
             this.allowPartialLeave = _data["allowPartialLeave"];
+            this.leaveDurationType = _data["leaveDurationType"];
+            this.maxFutureDays = _data["maxFutureDays"];
+            this.requirePolicyAcceptance = _data["requirePolicyAcceptance"];
             this.sendNotification = _data["sendNotification"];
             this.dontAllowToStartOnSunday = _data["dontAllowToStartOnSunday"];
             this.dontAllowToStartOnMonday = _data["dontAllowToStartOnMonday"];
@@ -177448,6 +177840,9 @@ export class CreateOrEditAbsenceTypeDto implements ICreateOrEditAbsenceTypeDto {
         data["allowInTerminationNoticeOnly"] = this.allowInTerminationNoticeOnly;
         data["isAttachmentRequired"] = this.isAttachmentRequired;
         data["allowPartialLeave"] = this.allowPartialLeave;
+        data["leaveDurationType"] = this.leaveDurationType;
+        data["maxFutureDays"] = this.maxFutureDays;
+        data["requirePolicyAcceptance"] = this.requirePolicyAcceptance;
         data["sendNotification"] = this.sendNotification;
         data["dontAllowToStartOnSunday"] = this.dontAllowToStartOnSunday;
         data["dontAllowToStartOnMonday"] = this.dontAllowToStartOnMonday;
@@ -177512,6 +177907,9 @@ export interface ICreateOrEditAbsenceTypeDto {
     allowInTerminationNoticeOnly: boolean;
     isAttachmentRequired: boolean;
     allowPartialLeave: boolean;
+    leaveDurationType: LeaveDurationType;
+    maxFutureDays: number;
+    requirePolicyAcceptance: boolean;
     sendNotification: boolean;
     dontAllowToStartOnSunday: boolean;
     dontAllowToStartOnMonday: boolean;
@@ -200940,6 +201338,7 @@ export class CreateOrEditWorkflowGroupDetailDto implements ICreateOrEditWorkflow
     requestTypeName!: string;
     requestSubTypeId!: number | undefined;
     customSubTypeId!: number | undefined;
+    requestAction!: WorkflowRequestAction;
 
     constructor(data?: ICreateOrEditWorkflowGroupDetailDto) {
         if (data) {
@@ -200958,6 +201357,7 @@ export class CreateOrEditWorkflowGroupDetailDto implements ICreateOrEditWorkflow
             this.requestTypeName = _data["requestTypeName"];
             this.requestSubTypeId = _data["requestSubTypeId"];
             this.customSubTypeId = _data["customSubTypeId"];
+            this.requestAction = _data["requestAction"];
         }
     }
 
@@ -200976,6 +201376,7 @@ export class CreateOrEditWorkflowGroupDetailDto implements ICreateOrEditWorkflow
         data["requestTypeName"] = this.requestTypeName;
         data["requestSubTypeId"] = this.requestSubTypeId;
         data["customSubTypeId"] = this.customSubTypeId;
+        data["requestAction"] = this.requestAction;
         return data;
     }
 }
@@ -200987,6 +201388,7 @@ export interface ICreateOrEditWorkflowGroupDetailDto {
     requestTypeName: string;
     requestSubTypeId: number | undefined;
     customSubTypeId: number | undefined;
+    requestAction: WorkflowRequestAction;
 }
 
 export class CreateOrEditWorkflowGroupDto implements ICreateOrEditWorkflowGroupDto {
@@ -201273,6 +201675,9 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
     isWorkflowEnabled!: boolean;
     isEssEnabled!: boolean;
     defaultRequestMasterId!: number | undefined;
+    amendmentRequestMasterId!: number | undefined;
+    cancellationRequestMasterId!: number | undefined;
+    returnRequestMasterId!: number | undefined;
     essRoute!: string | undefined;
     essPermissionName!: string | undefined;
     subTypeSource!: string | undefined;
@@ -201299,6 +201704,9 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
             this.isWorkflowEnabled = _data["isWorkflowEnabled"];
             this.isEssEnabled = _data["isEssEnabled"];
             this.defaultRequestMasterId = _data["defaultRequestMasterId"];
+            this.amendmentRequestMasterId = _data["amendmentRequestMasterId"];
+            this.cancellationRequestMasterId = _data["cancellationRequestMasterId"];
+            this.returnRequestMasterId = _data["returnRequestMasterId"];
             this.essRoute = _data["essRoute"];
             this.essPermissionName = _data["essPermissionName"];
             this.subTypeSource = _data["subTypeSource"];
@@ -201325,6 +201733,9 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
         data["isWorkflowEnabled"] = this.isWorkflowEnabled;
         data["isEssEnabled"] = this.isEssEnabled;
         data["defaultRequestMasterId"] = this.defaultRequestMasterId;
+        data["amendmentRequestMasterId"] = this.amendmentRequestMasterId;
+        data["cancellationRequestMasterId"] = this.cancellationRequestMasterId;
+        data["returnRequestMasterId"] = this.returnRequestMasterId;
         data["essRoute"] = this.essRoute;
         data["essPermissionName"] = this.essPermissionName;
         data["subTypeSource"] = this.subTypeSource;
@@ -201344,6 +201755,9 @@ export interface ICreateOrEditWorkflowTransactionTypeDto {
     isWorkflowEnabled: boolean;
     isEssEnabled: boolean;
     defaultRequestMasterId: number | undefined;
+    amendmentRequestMasterId: number | undefined;
+    cancellationRequestMasterId: number | undefined;
+    returnRequestMasterId: number | undefined;
     essRoute: string | undefined;
     essPermissionName: string | undefined;
     subTypeSource: string | undefined;
@@ -279077,6 +279491,58 @@ export interface ILeaveAccrualSummaryDto {
     cumulativeAccruedDays: number;
 }
 
+export class LeaveBalancePreviewDto implements ILeaveBalancePreviewDto {
+    hasQuota!: boolean;
+    currentBalance!: number;
+    bookable!: number;
+    daysRequested!: number;
+    balanceAfter!: number;
+
+    constructor(data?: ILeaveBalancePreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.hasQuota = _data["hasQuota"];
+            this.currentBalance = _data["currentBalance"];
+            this.bookable = _data["bookable"];
+            this.daysRequested = _data["daysRequested"];
+            this.balanceAfter = _data["balanceAfter"];
+        }
+    }
+
+    static fromJS(data: any): LeaveBalancePreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveBalancePreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["hasQuota"] = this.hasQuota;
+        data["currentBalance"] = this.currentBalance;
+        data["bookable"] = this.bookable;
+        data["daysRequested"] = this.daysRequested;
+        data["balanceAfter"] = this.balanceAfter;
+        return data;
+    }
+}
+
+export interface ILeaveBalancePreviewDto {
+    hasQuota: boolean;
+    currentBalance: number;
+    bookable: number;
+    daysRequested: number;
+    balanceAfter: number;
+}
+
 export enum LeaveBasisPeriod {
     CalendarDays = 0,
     FixedDays = 1,
@@ -279756,6 +280222,12 @@ export interface ILeaveDashboardTypeBucketDto {
     leaveDays: number;
 }
 
+export enum LeaveDurationType {
+    All = 0,
+    FullDay = 1,
+    Partial = 2,
+}
+
 export enum LeaveEntitlement {
     Full = 0,
     Prorated = 1,
@@ -279768,6 +280240,7 @@ export class LeaveFormSettingsDto implements ILeaveFormSettingsDto {
     enableIsTravelling!: boolean;
     enableBookingQuotaInLeaveRequest!: boolean;
     hideLeavePayDetailsInWorkflow!: boolean;
+    canDelegateApprovals!: boolean;
 
     constructor(data?: ILeaveFormSettingsDto) {
         if (data) {
@@ -279786,6 +280259,7 @@ export class LeaveFormSettingsDto implements ILeaveFormSettingsDto {
             this.enableIsTravelling = _data["enableIsTravelling"];
             this.enableBookingQuotaInLeaveRequest = _data["enableBookingQuotaInLeaveRequest"];
             this.hideLeavePayDetailsInWorkflow = _data["hideLeavePayDetailsInWorkflow"];
+            this.canDelegateApprovals = _data["canDelegateApprovals"];
         }
     }
 
@@ -279804,6 +280278,7 @@ export class LeaveFormSettingsDto implements ILeaveFormSettingsDto {
         data["enableIsTravelling"] = this.enableIsTravelling;
         data["enableBookingQuotaInLeaveRequest"] = this.enableBookingQuotaInLeaveRequest;
         data["hideLeavePayDetailsInWorkflow"] = this.hideLeavePayDetailsInWorkflow;
+        data["canDelegateApprovals"] = this.canDelegateApprovals;
         return data;
     }
 }
@@ -279815,6 +280290,7 @@ export interface ILeaveFormSettingsDto {
     enableIsTravelling: boolean;
     enableBookingQuotaInLeaveRequest: boolean;
     hideLeavePayDetailsInWorkflow: boolean;
+    canDelegateApprovals: boolean;
 }
 
 export enum LeaveGender {
@@ -285239,6 +285715,19 @@ export class MyLeaveDto implements IMyLeaveDto {
     canRequestCancellation!: boolean;
     canReturn!: boolean;
     isReturned!: boolean;
+    returnDate!: DateTime | undefined;
+    initialEndDate!: DateTime | undefined;
+    absenceHours!: number;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    halfdayType!: HalfdayType;
+    isSentBack!: boolean;
+    pendingAction!: WorkflowRequestAction;
+    pendingIsSentBack!: boolean;
+    proposedStartDate!: DateTime | undefined;
+    proposedEndDate!: DateTime | undefined;
+    proposedReturnDate!: DateTime | undefined;
+    lastRejectedAction!: WorkflowRequestAction;
 
     constructor(data?: IMyLeaveDto) {
         if (data) {
@@ -285268,6 +285757,19 @@ export class MyLeaveDto implements IMyLeaveDto {
             this.canRequestCancellation = _data["canRequestCancellation"];
             this.canReturn = _data["canReturn"];
             this.isReturned = _data["isReturned"];
+            this.returnDate = _data["returnDate"] ? DateTime.fromISO(_data["returnDate"].toString()) : undefined as any;
+            this.initialEndDate = _data["initialEndDate"] ? DateTime.fromISO(_data["initialEndDate"].toString()) : undefined as any;
+            this.absenceHours = _data["absenceHours"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.halfdayType = _data["halfdayType"];
+            this.isSentBack = _data["isSentBack"];
+            this.pendingAction = _data["pendingAction"];
+            this.pendingIsSentBack = _data["pendingIsSentBack"];
+            this.proposedStartDate = _data["proposedStartDate"] ? DateTime.fromISO(_data["proposedStartDate"].toString()) : undefined as any;
+            this.proposedEndDate = _data["proposedEndDate"] ? DateTime.fromISO(_data["proposedEndDate"].toString()) : undefined as any;
+            this.proposedReturnDate = _data["proposedReturnDate"] ? DateTime.fromISO(_data["proposedReturnDate"].toString()) : undefined as any;
+            this.lastRejectedAction = _data["lastRejectedAction"];
         }
     }
 
@@ -285297,6 +285799,19 @@ export class MyLeaveDto implements IMyLeaveDto {
         data["canRequestCancellation"] = this.canRequestCancellation;
         data["canReturn"] = this.canReturn;
         data["isReturned"] = this.isReturned;
+        data["returnDate"] = this.returnDate ? this.returnDate.toString() : undefined as any;
+        data["initialEndDate"] = this.initialEndDate ? this.initialEndDate.toString() : undefined as any;
+        data["absenceHours"] = this.absenceHours;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["halfdayType"] = this.halfdayType;
+        data["isSentBack"] = this.isSentBack;
+        data["pendingAction"] = this.pendingAction;
+        data["pendingIsSentBack"] = this.pendingIsSentBack;
+        data["proposedStartDate"] = this.proposedStartDate ? this.proposedStartDate.toString() : undefined as any;
+        data["proposedEndDate"] = this.proposedEndDate ? this.proposedEndDate.toString() : undefined as any;
+        data["proposedReturnDate"] = this.proposedReturnDate ? this.proposedReturnDate.toString() : undefined as any;
+        data["lastRejectedAction"] = this.lastRejectedAction;
         return data;
     }
 }
@@ -285319,6 +285834,231 @@ export interface IMyLeaveDto {
     canRequestCancellation: boolean;
     canReturn: boolean;
     isReturned: boolean;
+    returnDate: DateTime | undefined;
+    initialEndDate: DateTime | undefined;
+    absenceHours: number;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    halfdayType: HalfdayType;
+    isSentBack: boolean;
+    pendingAction: WorkflowRequestAction;
+    pendingIsSentBack: boolean;
+    proposedStartDate: DateTime | undefined;
+    proposedEndDate: DateTime | undefined;
+    proposedReturnDate: DateTime | undefined;
+    lastRejectedAction: WorkflowRequestAction;
+}
+
+export class MyLeaveHistoryItemDto implements IMyLeaveHistoryItemDto {
+    workflowRequestId!: number;
+    requestNumber!: string | undefined;
+    action!: WorkflowRequestAction;
+    outcome!: MyLeaveHistoryOutcome;
+    submittedOn!: DateTime;
+    decidedOn!: DateTime | undefined;
+    decidedByNameEn!: string | undefined;
+    decidedByNameAr!: string | undefined;
+    decisionRemark!: string | undefined;
+    reason!: string | undefined;
+    beforeStartDate!: DateTime | undefined;
+    beforeEndDate!: DateTime | undefined;
+    beforeDays!: number | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    days!: number | undefined;
+    returnDate!: DateTime | undefined;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
+    wasSentBack!: boolean;
+
+    constructor(data?: IMyLeaveHistoryItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.requestNumber = _data["requestNumber"];
+            this.action = _data["action"];
+            this.outcome = _data["outcome"];
+            this.submittedOn = _data["submittedOn"] ? DateTime.fromISO(_data["submittedOn"].toString()) : undefined as any;
+            this.decidedOn = _data["decidedOn"] ? DateTime.fromISO(_data["decidedOn"].toString()) : undefined as any;
+            this.decidedByNameEn = _data["decidedByNameEn"];
+            this.decidedByNameAr = _data["decidedByNameAr"];
+            this.decisionRemark = _data["decisionRemark"];
+            this.reason = _data["reason"];
+            this.beforeStartDate = _data["beforeStartDate"] ? DateTime.fromISO(_data["beforeStartDate"].toString()) : undefined as any;
+            this.beforeEndDate = _data["beforeEndDate"] ? DateTime.fromISO(_data["beforeEndDate"].toString()) : undefined as any;
+            this.beforeDays = _data["beforeDays"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.days = _data["days"];
+            this.returnDate = _data["returnDate"] ? DateTime.fromISO(_data["returnDate"].toString()) : undefined as any;
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+            this.wasSentBack = _data["wasSentBack"];
+        }
+    }
+
+    static fromJS(data: any): MyLeaveHistoryItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyLeaveHistoryItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["requestNumber"] = this.requestNumber;
+        data["action"] = this.action;
+        data["outcome"] = this.outcome;
+        data["submittedOn"] = this.submittedOn ? this.submittedOn.toString() : undefined as any;
+        data["decidedOn"] = this.decidedOn ? this.decidedOn.toString() : undefined as any;
+        data["decidedByNameEn"] = this.decidedByNameEn;
+        data["decidedByNameAr"] = this.decidedByNameAr;
+        data["decisionRemark"] = this.decisionRemark;
+        data["reason"] = this.reason;
+        data["beforeStartDate"] = this.beforeStartDate ? this.beforeStartDate.toString() : undefined as any;
+        data["beforeEndDate"] = this.beforeEndDate ? this.beforeEndDate.toString() : undefined as any;
+        data["beforeDays"] = this.beforeDays;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["days"] = this.days;
+        data["returnDate"] = this.returnDate ? this.returnDate.toString() : undefined as any;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        data["wasSentBack"] = this.wasSentBack;
+        return data;
+    }
+}
+
+export interface IMyLeaveHistoryItemDto {
+    workflowRequestId: number;
+    requestNumber: string | undefined;
+    action: WorkflowRequestAction;
+    outcome: MyLeaveHistoryOutcome;
+    submittedOn: DateTime;
+    decidedOn: DateTime | undefined;
+    decidedByNameEn: string | undefined;
+    decidedByNameAr: string | undefined;
+    decisionRemark: string | undefined;
+    reason: string | undefined;
+    beforeStartDate: DateTime | undefined;
+    beforeEndDate: DateTime | undefined;
+    beforeDays: number | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    days: number | undefined;
+    returnDate: DateTime | undefined;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
+    wasSentBack: boolean;
+}
+
+export enum MyLeaveHistoryOutcome {
+    AwaitingApproval = 0,
+    Approved = 1,
+    Rejected = 2,
+    SentBack = 3,
+    Withdrawn = 4,
+}
+
+export class MyLeaveTypeDto implements IMyLeaveTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    allowPartialLeave!: boolean;
+    leaveDurationType!: LeaveDurationType;
+    isAttachmentRequired!: boolean;
+    requirePolicyAcceptance!: boolean;
+    policyAttachmentId!: number | undefined;
+    policyFileName!: string | undefined;
+    earliestStartDate!: DateTime | undefined;
+    latestStartDate!: DateTime | undefined;
+    hasQuota!: boolean;
+
+    constructor(data?: IMyLeaveTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.allowPartialLeave = _data["allowPartialLeave"];
+            this.leaveDurationType = _data["leaveDurationType"];
+            this.isAttachmentRequired = _data["isAttachmentRequired"];
+            this.requirePolicyAcceptance = _data["requirePolicyAcceptance"];
+            this.policyAttachmentId = _data["policyAttachmentId"];
+            this.policyFileName = _data["policyFileName"];
+            this.earliestStartDate = _data["earliestStartDate"] ? DateTime.fromISO(_data["earliestStartDate"].toString()) : undefined as any;
+            this.latestStartDate = _data["latestStartDate"] ? DateTime.fromISO(_data["latestStartDate"].toString()) : undefined as any;
+            this.hasQuota = _data["hasQuota"];
+        }
+    }
+
+    static fromJS(data: any): MyLeaveTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyLeaveTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["allowPartialLeave"] = this.allowPartialLeave;
+        data["leaveDurationType"] = this.leaveDurationType;
+        data["isAttachmentRequired"] = this.isAttachmentRequired;
+        data["requirePolicyAcceptance"] = this.requirePolicyAcceptance;
+        data["policyAttachmentId"] = this.policyAttachmentId;
+        data["policyFileName"] = this.policyFileName;
+        data["earliestStartDate"] = this.earliestStartDate ? this.earliestStartDate.toString() : undefined as any;
+        data["latestStartDate"] = this.latestStartDate ? this.latestStartDate.toString() : undefined as any;
+        data["hasQuota"] = this.hasQuota;
+        return data;
+    }
+}
+
+export interface IMyLeaveTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    allowPartialLeave: boolean;
+    leaveDurationType: LeaveDurationType;
+    isAttachmentRequired: boolean;
+    requirePolicyAcceptance: boolean;
+    policyAttachmentId: number | undefined;
+    policyFileName: string | undefined;
+    earliestStartDate: DateTime | undefined;
+    latestStartDate: DateTime | undefined;
+    hasQuota: boolean;
 }
 
 export class MyLetterRequestDto implements IMyLetterRequestDto {
@@ -326528,6 +327268,114 @@ export interface IPrePayrollReportRowDto {
     hasLoanRecovery: boolean;
 }
 
+export class PreviewLeaveBalanceInput implements IPreviewLeaveBalanceInput {
+    absenceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+    leavePaymentType!: LeavePaymentType;
+    paymentDate!: DateTime | undefined;
+    splitExcessAsUnpaidLeave!: boolean;
+    attachmentFileTokens!: string[] | undefined;
+    halfdayType!: HalfdayType;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    isTravelling!: boolean;
+    primaryDelegateId!: number | undefined;
+    secondaryDelegateId!: number | undefined;
+    approverDelegateId!: number | undefined;
+    policyAccepted!: boolean;
+    employeeAbsenceId!: number | undefined;
+
+    constructor(data?: IPreviewLeaveBalanceInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+            this.leavePaymentType = _data["leavePaymentType"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.splitExcessAsUnpaidLeave = _data["splitExcessAsUnpaidLeave"];
+            if (Array.isArray(_data["attachmentFileTokens"])) {
+                this.attachmentFileTokens = [] as any;
+                for (let item of _data["attachmentFileTokens"])
+                    this.attachmentFileTokens!.push(item);
+            }
+            this.halfdayType = _data["halfdayType"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.isTravelling = _data["isTravelling"];
+            this.primaryDelegateId = _data["primaryDelegateId"];
+            this.secondaryDelegateId = _data["secondaryDelegateId"];
+            this.approverDelegateId = _data["approverDelegateId"];
+            this.policyAccepted = _data["policyAccepted"];
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
+        }
+    }
+
+    static fromJS(data: any): PreviewLeaveBalanceInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PreviewLeaveBalanceInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        data["leavePaymentType"] = this.leavePaymentType;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["splitExcessAsUnpaidLeave"] = this.splitExcessAsUnpaidLeave;
+        if (Array.isArray(this.attachmentFileTokens)) {
+            data["attachmentFileTokens"] = [];
+            for (let item of this.attachmentFileTokens)
+                data["attachmentFileTokens"].push(item);
+        }
+        data["halfdayType"] = this.halfdayType;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["isTravelling"] = this.isTravelling;
+        data["primaryDelegateId"] = this.primaryDelegateId;
+        data["secondaryDelegateId"] = this.secondaryDelegateId;
+        data["approverDelegateId"] = this.approverDelegateId;
+        data["policyAccepted"] = this.policyAccepted;
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
+        return data;
+    }
+}
+
+export interface IPreviewLeaveBalanceInput {
+    absenceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+    leavePaymentType: LeavePaymentType;
+    paymentDate: DateTime | undefined;
+    splitExcessAsUnpaidLeave: boolean;
+    attachmentFileTokens: string[] | undefined;
+    halfdayType: HalfdayType;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    isTravelling: boolean;
+    primaryDelegateId: number | undefined;
+    secondaryDelegateId: number | undefined;
+    approverDelegateId: number | undefined;
+    policyAccepted: boolean;
+    employeeAbsenceId: number | undefined;
+}
+
 export class PrintReportDto implements IPrintReportDto {
     id!: number;
     code!: string | undefined;
@@ -331161,6 +332009,46 @@ export interface IRequestHealthReimburseInput {
     comments: string | undefined;
 }
 
+export class RequestLeaveCancellationInput implements IRequestLeaveCancellationInput {
+    id!: number;
+    reason!: string | undefined;
+
+    constructor(data?: IRequestLeaveCancellationInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): RequestLeaveCancellationInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestLeaveCancellationInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["reason"] = this.reason;
+        return data;
+    }
+}
+
+export interface IRequestLeaveCancellationInput {
+    id: number;
+    reason: string | undefined;
+}
+
 export class RequestLetterInput implements IRequestLetterInput {
     documentTypeId!: number;
     effectiveDate!: DateTime;
@@ -331816,6 +332704,7 @@ export enum RequestStatus {
     Closed = 3,
     Draft = 4,
     Transferred = 5,
+    Cancelled = 6,
 }
 
 export class RequestTicketInput implements IRequestTicketInput {
@@ -332293,6 +333182,186 @@ export interface IResolveTenantIdInput {
 export enum RestrictType {
     Warning = 0,
     Error = 1,
+}
+
+export class ResubmitMyLeaveChangeInput implements IResubmitMyLeaveChangeInput {
+    employeeAbsenceId!: number;
+    absenceTypeId!: number | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    reason!: string | undefined;
+    rejoiningDate!: DateTime | undefined;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
+
+    constructor(data?: IResubmitMyLeaveChangeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.reason = _data["reason"];
+            this.rejoiningDate = _data["rejoiningDate"] ? DateTime.fromISO(_data["rejoiningDate"].toString()) : undefined as any;
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): ResubmitMyLeaveChangeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResubmitMyLeaveChangeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["reason"] = this.reason;
+        data["rejoiningDate"] = this.rejoiningDate ? this.rejoiningDate.toString() : undefined as any;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IResubmitMyLeaveChangeInput {
+    employeeAbsenceId: number;
+    absenceTypeId: number | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    reason: string | undefined;
+    rejoiningDate: DateTime | undefined;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
+}
+
+export class ResubmitMyLeaveInput implements IResubmitMyLeaveInput {
+    absenceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+    leavePaymentType!: LeavePaymentType;
+    paymentDate!: DateTime | undefined;
+    splitExcessAsUnpaidLeave!: boolean;
+    attachmentFileTokens!: string[] | undefined;
+    halfdayType!: HalfdayType;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    isTravelling!: boolean;
+    primaryDelegateId!: number | undefined;
+    secondaryDelegateId!: number | undefined;
+    approverDelegateId!: number | undefined;
+    policyAccepted!: boolean;
+    employeeAbsenceId!: number;
+
+    constructor(data?: IResubmitMyLeaveInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+            this.leavePaymentType = _data["leavePaymentType"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.splitExcessAsUnpaidLeave = _data["splitExcessAsUnpaidLeave"];
+            if (Array.isArray(_data["attachmentFileTokens"])) {
+                this.attachmentFileTokens = [] as any;
+                for (let item of _data["attachmentFileTokens"])
+                    this.attachmentFileTokens!.push(item);
+            }
+            this.halfdayType = _data["halfdayType"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.isTravelling = _data["isTravelling"];
+            this.primaryDelegateId = _data["primaryDelegateId"];
+            this.secondaryDelegateId = _data["secondaryDelegateId"];
+            this.approverDelegateId = _data["approverDelegateId"];
+            this.policyAccepted = _data["policyAccepted"];
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
+        }
+    }
+
+    static fromJS(data: any): ResubmitMyLeaveInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResubmitMyLeaveInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        data["leavePaymentType"] = this.leavePaymentType;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["splitExcessAsUnpaidLeave"] = this.splitExcessAsUnpaidLeave;
+        if (Array.isArray(this.attachmentFileTokens)) {
+            data["attachmentFileTokens"] = [];
+            for (let item of this.attachmentFileTokens)
+                data["attachmentFileTokens"].push(item);
+        }
+        data["halfdayType"] = this.halfdayType;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["isTravelling"] = this.isTravelling;
+        data["primaryDelegateId"] = this.primaryDelegateId;
+        data["secondaryDelegateId"] = this.secondaryDelegateId;
+        data["approverDelegateId"] = this.approverDelegateId;
+        data["policyAccepted"] = this.policyAccepted;
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
+        return data;
+    }
+}
+
+export interface IResubmitMyLeaveInput {
+    absenceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+    leavePaymentType: LeavePaymentType;
+    paymentDate: DateTime | undefined;
+    splitExcessAsUnpaidLeave: boolean;
+    attachmentFileTokens: string[] | undefined;
+    halfdayType: HalfdayType;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    isTravelling: boolean;
+    primaryDelegateId: number | undefined;
+    secondaryDelegateId: number | undefined;
+    approverDelegateId: number | undefined;
+    policyAccepted: boolean;
+    employeeAbsenceId: number;
 }
 
 export class RetroReasonLogDto implements IRetroReasonLogDto {
@@ -349735,6 +350804,46 @@ export interface IWidgetOutput {
     filters: WidgetFilterOutput[] | undefined;
 }
 
+export class WithdrawMyLeaveChangeInput implements IWithdrawMyLeaveChangeInput {
+    id!: number;
+    reason!: string | undefined;
+
+    constructor(data?: IWithdrawMyLeaveChangeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): WithdrawMyLeaveChangeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new WithdrawMyLeaveChangeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["reason"] = this.reason;
+        return data;
+    }
+}
+
+export interface IWithdrawMyLeaveChangeInput {
+    id: number;
+    reason: string | undefined;
+}
+
 export class WorkFlowApproverDto implements IWorkFlowApproverDto {
     id!: number;
     workflowRequestId!: number;
@@ -350745,6 +351854,7 @@ export class WorkflowGroupDetailDto implements IWorkflowGroupDetailDto {
     requestTypeName!: string | undefined;
     requestSubTypeId!: number | undefined;
     customSubTypeId!: number | undefined;
+    requestAction!: WorkflowRequestAction;
 
     constructor(data?: IWorkflowGroupDetailDto) {
         if (data) {
@@ -350764,6 +351874,7 @@ export class WorkflowGroupDetailDto implements IWorkflowGroupDetailDto {
             this.requestTypeName = _data["requestTypeName"];
             this.requestSubTypeId = _data["requestSubTypeId"];
             this.customSubTypeId = _data["customSubTypeId"];
+            this.requestAction = _data["requestAction"];
         }
     }
 
@@ -350783,6 +351894,7 @@ export class WorkflowGroupDetailDto implements IWorkflowGroupDetailDto {
         data["requestTypeName"] = this.requestTypeName;
         data["requestSubTypeId"] = this.requestSubTypeId;
         data["customSubTypeId"] = this.customSubTypeId;
+        data["requestAction"] = this.requestAction;
         return data;
     }
 }
@@ -350795,6 +351907,7 @@ export interface IWorkflowGroupDetailDto {
     requestTypeName: string | undefined;
     requestSubTypeId: number | undefined;
     customSubTypeId: number | undefined;
+    requestAction: WorkflowRequestAction;
 }
 
 export class WorkflowGroupDto implements IWorkflowGroupDto {
@@ -351389,6 +352502,13 @@ export interface IWorkflowRemarkDto {
     workflowRequestId: number;
     ccReceiverId: number | undefined;
     ccReceiverNameEn: string | undefined;
+}
+
+export enum WorkflowRequestAction {
+    New = 0,
+    Amendment = 1,
+    Cancellation = 2,
+    Return = 3,
 }
 
 export class WorkflowRequestDetailDto implements IWorkflowRequestDetailDto {
@@ -352359,6 +353479,9 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
     isWorkflowEnabled!: boolean;
     isEssEnabled!: boolean;
     defaultRequestMasterId!: number | undefined;
+    amendmentRequestMasterId!: number | undefined;
+    cancellationRequestMasterId!: number | undefined;
+    returnRequestMasterId!: number | undefined;
     defaultRequestMasterNameEn!: string | undefined;
     defaultRequestMasterSteps!: number | undefined;
     essRoute!: string | undefined;
@@ -352387,6 +353510,9 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
             this.isWorkflowEnabled = _data["isWorkflowEnabled"];
             this.isEssEnabled = _data["isEssEnabled"];
             this.defaultRequestMasterId = _data["defaultRequestMasterId"];
+            this.amendmentRequestMasterId = _data["amendmentRequestMasterId"];
+            this.cancellationRequestMasterId = _data["cancellationRequestMasterId"];
+            this.returnRequestMasterId = _data["returnRequestMasterId"];
             this.defaultRequestMasterNameEn = _data["defaultRequestMasterNameEn"];
             this.defaultRequestMasterSteps = _data["defaultRequestMasterSteps"];
             this.essRoute = _data["essRoute"];
@@ -352415,6 +353541,9 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
         data["isWorkflowEnabled"] = this.isWorkflowEnabled;
         data["isEssEnabled"] = this.isEssEnabled;
         data["defaultRequestMasterId"] = this.defaultRequestMasterId;
+        data["amendmentRequestMasterId"] = this.amendmentRequestMasterId;
+        data["cancellationRequestMasterId"] = this.cancellationRequestMasterId;
+        data["returnRequestMasterId"] = this.returnRequestMasterId;
         data["defaultRequestMasterNameEn"] = this.defaultRequestMasterNameEn;
         data["defaultRequestMasterSteps"] = this.defaultRequestMasterSteps;
         data["essRoute"] = this.essRoute;
@@ -352436,6 +353565,9 @@ export interface IWorkflowTransactionTypeDto {
     isWorkflowEnabled: boolean;
     isEssEnabled: boolean;
     defaultRequestMasterId: number | undefined;
+    amendmentRequestMasterId: number | undefined;
+    cancellationRequestMasterId: number | undefined;
+    returnRequestMasterId: number | undefined;
     defaultRequestMasterNameEn: string | undefined;
     defaultRequestMasterSteps: number | undefined;
     essRoute: string | undefined;

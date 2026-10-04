@@ -67,6 +67,20 @@ public class WorkflowTransactionType : FullAuditedEntity, IMustHaveTenant
 
     public virtual RequestMaster DefaultRequestMaster { get; set; }
 
+    /// <summary>
+    /// The chain for a CHANGE to an approved transaction, when it should differ from
+    /// <see cref="DefaultRequestMasterId"/>. Null means "the same chain as a new request". A plain id with no
+    /// navigation: three more required paths into <c>RequestMaster</c> would buy nothing but cascade-path
+    /// trouble, and the resolver reads the chain by id anyway.
+    /// </summary>
+    public virtual int? AmendmentRequestMasterId { get; set; }
+
+    /// <summary>The chain for a CANCELLATION of an approved transaction. Null means the default chain.</summary>
+    public virtual int? CancellationRequestMasterId { get; set; }
+
+    /// <summary>The chain for a RETURN (leave). Null means the default chain.</summary>
+    public virtual int? ReturnRequestMasterId { get; set; }
+
     /// <summary>Angular route for the ESS screen, e.g. "/app/main/ess/leave".</summary>
     [StringLength(256)]
     public virtual string EssRoute { get; set; }

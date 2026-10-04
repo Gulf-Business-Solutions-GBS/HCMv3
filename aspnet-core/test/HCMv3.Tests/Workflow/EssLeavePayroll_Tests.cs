@@ -209,7 +209,7 @@ public class EssLeavePayroll_Tests : EssLeaveWorkflowTestBase
 
         var leaveId = await ApplyAndApproveAsync(new DateTime(2026, 9, 13), new DateTime(2026, 9, 17), approverId);
 
-        var cancellationId = await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId));
+        var cancellationId = await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
 
         // Still approved while the cancellation waits: payroll pays it as leave.
         await RunPayrollAsync();

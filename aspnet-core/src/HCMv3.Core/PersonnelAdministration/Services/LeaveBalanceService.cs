@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Threading;
+using System.Text.Json;
 using HCMv3.PayrollManagement;
+using HCMv3.PersonnelAdministration.Workflow;
 using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
 
@@ -25,14 +27,17 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<WorkflowRequest> _requestRepository;
 
     public LeaveBalanceService(
         IRepository<EmployeeAbsenceQuota> quotaRepository,
         IRepository<EmployeeAbsence> absenceRepository,
         IRepository<AbsenceType> absenceTypeRepository,
         IUnitOfWorkManager unitOfWorkManager,
-        ISysSettingsAccessor sysSettingsAccessor)
+        ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<WorkflowRequest> requestRepository)
     {
+        _requestRepository = requestRepository;
         _quotaRepository = quotaRepository;
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
@@ -48,7 +53,7 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
                ?? new LeaveBalance { AbsenceTypeId = absenceTypeId };
     }
 
-    public Task<List<LeaveBalance>> GetBalancesAsync(int employeeId, DateTime? asOf = null)
+    public Task<List<LeaveBalance>> GetBalancesAsync(int employeeId, DateTime? asOf = null, int? excludeWorkflowRequestId = null)
     {
         var effectiveDate = (asOf ?? DateTime.Today).Date;
 
@@ -73,7 +78,7 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
             return Task.FromResult(new List<LeaveBalance>());
         }
 
-        var pendingByType = GetPendingDaysByAbsenceType(employeeId);
+        var pendingByType = GetPendingDaysByAbsenceType(employeeId, excludeWorkflowRequestId);
 
         var absenceTypeIds = quotas.Select(q => q.AbsenceTypeId).Distinct().ToList();
         var absenceTypes = _absenceTypeRepository.GetAll()
@@ -122,7 +127,7 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
     /// Approved days are already in <c>QuotaUsed</c> and would be double-counted here.
     /// </para>
     /// </summary>
-    private Dictionary<int, double> GetPendingDaysByAbsenceType(int employeeId)
+    private Dictionary<int, double> GetPendingDaysByAbsenceType(int employeeId, int? excludeWorkflowRequestId)
     {
         // Legacy EmployeeAbsenceController "Get Booked Quota": pending requests reduce the balance only when
         // ManageTimeSettings.EnableBookingQuotaInLeaveRequest is on. Off, a pending request of the same type
@@ -135,12 +140,71 @@ public class LeaveBalanceService : HCMv3DomainServiceBase, ILeaveBalanceService
 
         using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
-            return _absenceRepository.GetAll()
+            var pending = _absenceRepository.GetAll()
                 .Where(a => a.EmployeeId == employeeId && a.WorkflowStatus == RequestStatus.Open)
                 .GroupBy(a => a.AbsenceTypeId)
                 .Select(g => new { AbsenceTypeId = g.Key, Days = g.Sum(a => a.TotalLeaveDays) })
                 .ToList()
                 .ToDictionary(x => x.AbsenceTypeId, x => x.Days);
+
+            AddPendingChanges(employeeId, pending, excludeWorkflowRequestId);
+
+            return pending;
         }
+    }
+
+    /// <summary>
+    /// Changes to APPROVED leave that are still awaiting approval, as legacy counted them
+    /// (<c>UnifiedLeaveRequestController</c> 2265-2394): an amendment counts for the difference it would make,
+    /// a cancellation for the days it would hand back, and a return is left out.
+    ///
+    /// <para>
+    /// The leave row cannot say any of this -- it still holds the approved values, so it is not Open and the
+    /// query above never sees it. The proposed values are on the request, and that is where they are read
+    /// from. Without this an employee extending a leave by five days kept a bookable balance five days too
+    /// high until the change was decided.
+    /// </para>
+    /// </summary>
+    private void AddPendingChanges(int employeeId, Dictionary<int, double> pending, int? excludeWorkflowRequestId)
+    {
+        var changes = _requestRepository.GetAll()
+            .Where(r => r.EmployeeId == employeeId
+                        && r.IsAmendment
+                        && r.RequestType == LeaveWorkflowTransactionHandler.LeaveRequestType
+                        && r.RequestStatus == RequestStatus.Open
+                        && r.Id != excludeWorkflowRequestId
+                        && r.RequestAction != WorkflowRequestAction.Return)
+            .Select(r => new { r.AmendmentJson, r.SnapshotJson })
+            .ToList();
+
+        foreach (var change in changes)
+        {
+            if (string.IsNullOrWhiteSpace(change.AmendmentJson) || string.IsNullOrWhiteSpace(change.SnapshotJson))
+            {
+                continue;
+            }
+
+            var proposed = JsonSerializer.Deserialize<LeaveAmendment>(change.AmendmentJson);
+            var before = JsonSerializer.Deserialize<LeaveAmendment>(change.SnapshotJson);
+
+            // A return raised before the action column existed carries no action; its payload still says so.
+            if (proposed.IsReturned)
+            {
+                continue;
+            }
+
+            Add(pending, before.AbsenceTypeId, -before.TotalLeaveDays);
+
+            if (!proposed.IsCancellation)
+            {
+                Add(pending, proposed.AbsenceTypeId, proposed.TotalLeaveDays);
+            }
+        }
+    }
+
+    private static void Add(Dictionary<int, double> pending, int absenceTypeId, double days)
+    {
+        pending.TryGetValue(absenceTypeId, out var current);
+        pending[absenceTypeId] = current + days;
     }
 }

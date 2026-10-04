@@ -94,6 +94,30 @@ public class EmployeeAbsence : FullAuditedEntity, IMustHaveTenant, IHasEmployeeI
 
     public virtual double? ExtTotalLeaveDays { get; set; }
 
+    /// <summary>
+    /// Legacy <c>AbsenceRequest.DelegatedTo</c> ("Primary Delegation"): the colleague covering the employee's
+    /// WORK while they are away. Informational -- they are told on submit, and nothing is rerouted to them.
+    /// A plain id with no navigation, like the two below: three more paths into <c>Employee</c> from one table
+    /// would each need a cascade exception and nothing here ever loads the row through them.
+    /// </summary>
+    public virtual int? PrimaryDelegateId { get; set; }
+
+    /// <summary>Legacy <c>AbsenceRequest.SecondaryDelegation</c>: the fallback for the primary delegate.</summary>
+    public virtual int? SecondaryDelegateId { get; set; }
+
+    /// <summary>
+    /// Legacy <c>AbsenceRequest.ApproverDelegation</c>: who decides the employee's APPROVALS while they are
+    /// away. Unlike legacy, which only stored the name, approving the leave creates an
+    /// <see cref="EmployeeDelegation"/> for the leave dates, so the delegate really does receive them.
+    /// </summary>
+    public virtual int? ApproverDelegateId { get; set; }
+
+    /// <summary>
+    /// When the employee accepted the leave policy for this request, for a type that requires it
+    /// (<c>AbsenceType.RequirePolicyAcceptance</c>). Legacy checked the box in the browser and stored nothing.
+    /// </summary>
+    public virtual DateTime? PolicyAcceptedOn { get; set; }
+
     /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
     public virtual int? WorkflowRequestId { get; set; }
 

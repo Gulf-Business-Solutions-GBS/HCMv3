@@ -19,6 +19,15 @@ public class WorkflowTransactionTypeDto : EntityDto<int>
 
     public int? DefaultRequestMasterId { get; set; }
 
+    /// <summary>Chain for a change to an approved transaction; empty means the default chain.</summary>
+    public int? AmendmentRequestMasterId { get; set; }
+
+    /// <summary>Chain for a cancellation; empty means the default chain.</summary>
+    public int? CancellationRequestMasterId { get; set; }
+
+    /// <summary>Chain for a return from leave; empty means the default chain.</summary>
+    public int? ReturnRequestMasterId { get; set; }
+
     public string DefaultRequestMasterNameEn { get; set; }
 
     /// <summary>Number of approval steps on the default chain -- shown so an admin can see at a glance
@@ -69,6 +78,15 @@ public class CreateOrEditWorkflowTransactionTypeDto
     public bool IsEssEnabled { get; set; }
 
     public int? DefaultRequestMasterId { get; set; }
+
+    /// <summary>Chain for a change to an approved transaction; empty means the default chain.</summary>
+    public int? AmendmentRequestMasterId { get; set; }
+
+    /// <summary>Chain for a cancellation; empty means the default chain.</summary>
+    public int? CancellationRequestMasterId { get; set; }
+
+    /// <summary>Chain for a return from leave; empty means the default chain.</summary>
+    public int? ReturnRequestMasterId { get; set; }
 
     [StringLength(256)]
     public string EssRoute { get; set; }

@@ -9,6 +9,7 @@ import {
     GetAllSimpleLookupsInput,
     GetAllWageTypesInput,
     LeaveBasisPeriod,
+    LeaveDurationType,
     LeaveEntitlement,
     LeaveGender,
     LeaveReligion,
@@ -21,6 +22,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { ValidationMessagesComponent } from '../../../../shared/utils/validation-messages.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 
 /**
  * The absence type's own fields, shared by the Create/Edit modal and the absence type detail page.
@@ -33,7 +35,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
     selector: 'absenceTypeForm',
     templateUrl: './absence-type-form.component.html',
     viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-    imports: [FormsModule, ValidationMessagesComponent, LocalizePipe],
+    imports: [FormsModule, ValidationMessagesComponent, LocalizePipe, AttachmentsComponent],
 })
 export class AbsenceTypeFormComponent extends AppComponentBase implements OnInit {
     private _wageTypesService = inject(WageTypesServiceProxy);
@@ -87,6 +89,12 @@ export class AbsenceTypeFormComponent extends AppComponentBase implements OnInit
     readonly restrictTypes = [
         { value: RestrictType.Warning, name: 'Warning' },
         { value: RestrictType.Error, name: 'Error' },
+    ];
+
+    readonly leaveDurationTypes = [
+        { value: LeaveDurationType.All, name: 'All' },
+        { value: LeaveDurationType.FullDay, name: 'FullDay' },
+        { value: LeaveDurationType.Partial, name: 'Partial' },
     ];
 
     readonly leaveGenders = [

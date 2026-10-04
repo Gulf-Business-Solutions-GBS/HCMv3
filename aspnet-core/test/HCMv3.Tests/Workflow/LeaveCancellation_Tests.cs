@@ -34,7 +34,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
 
         var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
 
-        await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId));
+        await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
 
         var leave = LeaveRow(leaveId);
         leave.IsDeleted.ShouldBeFalse();
@@ -46,7 +46,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
     }
 
     [Fact]
-    public async Task An_Approved_Cancellation_Should_Delete_The_Leave_And_Refund_The_Quota()
+    public async Task An_Approved_Cancellation_Should_Mark_The_Leave_Cancelled_And_Refund_The_Quota()
     {
         var meId = CreateCurrentUserEmployee("CAN110");
         var approverId = EnableLeaveWorkflowWithApprover("CAN110APP");
@@ -55,11 +55,24 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
 
         var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
 
-        var requestId = await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId));
+        var requestId = await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
         await _approvalService.ApproveAsync(requestId, approverId, "ok");
 
-        // Soft-deleted, so the approved history can still be audited; payroll no longer sees it.
-        LeaveRow(leaveId).IsDeleted.ShouldBeTrue();
+        // Marked, not deleted, so it stays in the employee history...
+        var leave = LeaveRow(leaveId);
+        leave.IsDeleted.ShouldBeFalse();
+        leave.WorkflowStatus.ShouldBe(RequestStatus.Cancelled);
+
+        // ...while payroll -- the ApprovedOnly filter left ON -- no longer sees it.
+        // Read through a repository inside a unit of work: the filter is ABP's, and a bare DbContext has none.
+        var unitOfWorkManager = Resolve<Abp.Domain.Uow.IUnitOfWorkManager>();
+        using (var uow = unitOfWorkManager.Begin())
+        {
+            Resolve<Abp.Domain.Repositories.IRepository<EmployeeAbsence>>()
+                .GetAll().Any(a => a.Id == leaveId).ShouldBeFalse();
+
+            await uow.CompleteAsync();
+        }
         QuotaRow(meId, typeId).QuotaUsed.ShouldBe(0);
     }
 
@@ -73,7 +86,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
 
         var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
 
-        var requestId = await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId));
+        var requestId = await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
         await _approvalService.RejectAsync(requestId, approverId, "Needed on those days");
 
         var leave = LeaveRow(leaveId);
@@ -98,7 +111,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
         });
 
         await Assert.ThrowsAsync<UserFriendlyException>(() =>
-            _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(applied.EmployeeAbsenceId)));
+            _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = applied.EmployeeAbsenceId }));
     }
 
     [Fact]
@@ -114,7 +127,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
         var start = DateTime.Today.AddDays(30);
         var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
 
-        await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId));
+        await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
 
         await Assert.ThrowsAsync<UserFriendlyException>(() =>
             _myLeaveAppService.ReturnFromMyLeave(new ReturnFromLeaveInput
@@ -149,7 +162,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
         });
 
         await Assert.ThrowsAsync<Abp.Authorization.AbpAuthorizationException>(() =>
-            _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId)));
+            _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId }));
     }
 
     [Fact]
@@ -169,7 +182,7 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
         dto.CanReturn.ShouldBeTrue();
         dto.CanCancel.ShouldBeFalse();
 
-        await _myLeaveAppService.RequestCancellationOfMyLeave(new EntityDto(leaveId));
+        await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
 
         dto = (await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput())).Items.Single(l => l.Id == leaveId);
         dto.HasPendingAmendment.ShouldBeTrue();

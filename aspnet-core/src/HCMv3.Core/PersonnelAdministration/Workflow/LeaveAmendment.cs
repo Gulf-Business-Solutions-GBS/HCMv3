@@ -29,6 +29,12 @@ public class LeaveAmendment
     public string Comments { get; set; }
 
     /// <summary>
+    /// Why the employee is asking for this change, cancellation or return. Kept apart from
+    /// <see cref="Comments"/>, which is the leave's own comment and is written to the row.
+    /// </summary>
+    public string Reason { get; set; }
+
+    /// <summary>
     /// The day the employee actually rejoined, when this amendment is a RETURN FROM LEAVE.
     ///
     /// <para>

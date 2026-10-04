@@ -599,6 +599,52 @@
                 (ngModelChange)="updateField('sendNotification', $event)" />
             <label class="form-check-label" for="AbsenceType_SendNotification">{{ 'SendNotification' | localize }}</label>
         </div>
+        <div class="col-md-3 mb-3 form-check">
+            <input
+                type="checkbox"
+                class="form-check-input"
+                id="AbsenceType_RequirePolicyAcceptance"
+                name="RequirePolicyAcceptance"
+                [ngModel]="absenceType().requirePolicyAcceptance"
+                (ngModelChange)="updateField('requirePolicyAcceptance', $event)" />
+            <label class="form-check-label" for="AbsenceType_RequirePolicyAcceptance">{{ 'RequirePolicyAcceptance' | localize }}</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 mb-5">
+            <label class="form-label" for="AbsenceType_LeaveDurationType">{{ 'LeaveDurationType' | localize }}</label>
+            <select
+                id="AbsenceType_LeaveDurationType"
+                class="form-select"
+                name="LeaveDurationType"
+                [ngModel]="absenceType().leaveDurationType"
+                (ngModelChange)="updateField('leaveDurationType', $event)">
+                @for (duration of leaveDurationTypes; track duration.value) {
+                    <option [ngValue]="duration.value">{{ 'LeaveDurationType_' + duration.name | localize }}</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 mb-5">
+            <label class="form-label" for="AbsenceType_MaxFutureDays">{{ 'MaxFutureDays' | localize }}</label>
+            <input
+                id="AbsenceType_MaxFutureDays"
+                class="form-control"
+                type="number"
+                min="0"
+                name="MaxFutureDays"
+                [ngModel]="absenceType().maxFutureDays"
+                (ngModelChange)="updateField('maxFutureDays', $event)" />
+        </div>
+
+        <!-- The file the employee's "I accept the leave policy" link opens. It hangs off the saved leave
+             type, so it is offered once the type exists. -->
+        @if (absenceType().id) {
+            <div class="col-md-6 mb-5">
+                <label class="form-label" id="AbsenceType_LeavePolicyDocument">{{ 'LeavePolicyDocument' | localize }}</label>
+                <app-attachments entityType="AbsenceTypePolicy" [entityId]="absenceType().id" />
+            </div>
+        }
     </div>
 
     <hr />

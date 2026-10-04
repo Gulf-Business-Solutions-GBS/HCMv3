@@ -57,8 +57,38 @@ public class ProxyMyLeaveAppService : ProxyAppServiceBase, IMyLeaveAppService
         return await ApiClient.PostAsync<ReturnFromLeavePreviewDto>(GetEndpoint(nameof(PreviewReturnFromMyLeave)), input);
     }
 
-    public async Task<int> RequestCancellationOfMyLeave(EntityDto input)
+    public async Task<int> RequestCancellationOfMyLeave(RequestLeaveCancellationInput input)
     {
         return await ApiClient.PostAsync<int>(GetEndpoint(nameof(RequestCancellationOfMyLeave)), input);
+    }
+
+    public async Task<List<MyLeaveTypeDto>> GetMyLeaveTypes()
+    {
+        return await ApiClient.GetAsync<List<MyLeaveTypeDto>>(GetEndpoint(nameof(GetMyLeaveTypes)));
+    }
+
+    public async Task<LeaveBalancePreviewDto> PreviewMyLeaveBalance(PreviewLeaveBalanceInput input)
+    {
+        return await ApiClient.PostAsync<LeaveBalancePreviewDto>(GetEndpoint(nameof(PreviewMyLeaveBalance)), input);
+    }
+
+    public async Task<ApplyForLeaveResultDto> ResubmitMyLeave(ResubmitMyLeaveInput input)
+    {
+        return await ApiClient.PostAsync<ApplyForLeaveResultDto>(GetEndpoint(nameof(ResubmitMyLeave)), input);
+    }
+
+    public async Task<int> ResubmitMyLeaveChange(ResubmitMyLeaveChangeInput input)
+    {
+        return await ApiClient.PostAsync<int>(GetEndpoint(nameof(ResubmitMyLeaveChange)), input);
+    }
+
+    public async Task WithdrawMyLeaveChange(WithdrawMyLeaveChangeInput input)
+    {
+        await ApiClient.PostAsync(GetEndpoint(nameof(WithdrawMyLeaveChange)), input);
+    }
+
+    public async Task<List<MyLeaveHistoryItemDto>> GetMyLeaveHistory(EntityDto input)
+    {
+        return await ApiClient.GetAsync<List<MyLeaveHistoryItemDto>>(GetEndpoint(nameof(GetMyLeaveHistory)), new { id = input.Id });
     }
 }

@@ -54,6 +54,7 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     private readonly ILeaveReturnProcessor _returnProcessor;
     private readonly IProbationEndDateService _probation;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<EmployeeDelegation> _delegationRepository;
 
     /// <summary>Legacy hard-codes these absence type codes: "1" annual (paid late days are measured against
     /// it), "2" unpaid (late days beyond the balance are booked as it).</summary>
@@ -72,9 +73,11 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         ILeaveQuotaLedger quotaLedger,
         ILeaveReturnProcessor returnProcessor,
         IProbationEndDateService probation,
-        ISysSettingsAccessor sysSettingsAccessor)
+        ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<EmployeeDelegation> delegationRepository)
         : base(repository, unitOfWorkManager)
     {
+        _delegationRepository = delegationRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
         _leaveBalanceService = leaveBalanceService;
@@ -148,7 +151,15 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             isNewRequest: !context.IsAmendment,
             leavePaymentType: leave.LeavePaymentType,
             paymentDate: leave.PaymentDate,
-            comments: proposed?.Comments ?? leave.Comments);
+            comments: proposed?.Comments ?? leave.Comments,
+            row: leave,
+
+            // Asked only of the employee applying for their own leave. HR recording a leave on somebody's behalf
+            // is not the person the policy is addressed to, and a change does not ask again.
+            policyAccepted: !context.IsAmendment && context.ActingEmployeeId == leave.EmployeeId
+                ? leave.PolicyAcceptedOn.HasValue
+                : (bool?)null,
+            requestId: context.Request?.Id);
 
         if (proposed?.IsLateReturn == true)
         {
@@ -329,7 +340,9 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             proposed.TotalLeaveDays,
             excludeLeaveId: leave.Id,
             daysAlreadyCounted: daysAlreadyCounted,
-            isNewRequest: false);
+            isNewRequest: false,
+            row: leave,
+            requestId: context.Request?.Id);
 
         leave.AbsenceTypeId = proposed.AbsenceTypeId;
         leave.StartDate = proposed.StartDate;
@@ -373,19 +386,22 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         // absence type moves days between two different quota rows, and a single delta cannot express that.
         await ReleaseQuotaAsync(leave.EmployeeId, previousAbsenceTypeId, previousDays, leave.StartDate);
         await ConsumeQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, proposed.TotalLeaveDays, leave.StartDate);
+
+        await SyncApproverDelegationAsync(leave);
     }
 
     /// <summary>
     /// Legacy <c>AbsenceRequest</c> approval, <c>ActionType.Cancellation</c> (lines 1822-1884) plus
-    /// <c>EmployeeAbsence.OnDeleting</c> (lines 1321-1419): the leave is deleted and its days go back to the
-    /// quota. Soft delete, so the approved history is still there to audit.
+    /// <c>EmployeeAbsence.OnDeleting</c> (lines 1321-1419): the leave stops counting and its days go back
+    /// to the quota. Legacy deleted the row; here it is marked <see cref="RequestStatus.Cancelled"/>, which the
+    /// <c>ApprovedOnly</c> filter hides from payroll just the same while keeping it in the employee's history.
     ///
     /// <para>
     /// Rows a late return generated earlier are NOT removed with it -- legacy left them too, and they are
     /// separate leave in their own right that HR can remove on their own.
     /// </para>
     /// <para>
-    /// Payroll needs no call from here: deleting the row goes through the payroll lock guard and the retro
+    /// Payroll needs no call from here: changing the row goes through the payroll lock guard and the retro
     /// trigger like any other change to a payroll-sensitive entity, which is what legacy's
     /// <c>ValidateRetroCalculation</c> / <c>EarliestMasterDataChange</c> did in <c>OnDeleting</c>.
     /// </para>
@@ -396,7 +412,11 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
 
         using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
-            await Repository.DeleteAsync(leave);
+            // Marked, not deleted. The ApprovedOnly filter hides a Cancelled row from payroll, quota and every
+            // report exactly as a delete would, while the employee and HR can still see that the leave existed
+            // and that its cancellation was approved.
+            leave.WorkflowStatus = RequestStatus.Cancelled;
+            await Repository.UpdateAsync(leave);
 
             // The additional unpaid leave goes with it: legacy deleted that row too (AbsenceRequest 1846-1870),
             // because the two were one application.
@@ -412,7 +432,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
 
                 if (unpaid != null)
                 {
-                    await Repository.DeleteAsync(unpaid);
+                    unpaid.WorkflowStatus = RequestStatus.Cancelled;
+                    await Repository.UpdateAsync(unpaid);
                     await ReleaseQuotaAsync(unpaid.EmployeeId, unpaid.AbsenceTypeId, unpaid.TotalLeaveDays, unpaid.StartDate);
                 }
             }
@@ -420,7 +441,73 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
 
         await ReleaseQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, days, leave.StartDate);
 
+        await _unitOfWorkManager.Current.SaveChangesAsync();
+
         await _probation.RecalculateAfterLeaveChangeAsync(leave.EmployeeId, leave.AbsenceTypeId);
+
+        await SyncApproverDelegationAsync(leave);
+    }
+
+    /// <summary>
+    /// Keeps the approver delegation in step with the leave it was raised with.
+    ///
+    /// <para>
+    /// Legacy stored <c>ApproverDelegation</c> on the request and did nothing with it. Here an approved leave
+    /// that names one gets a real <see cref="EmployeeDelegation"/> for the leave's dates, born approved and
+    /// linked to the leave's own request, so the delegate receives the employee's approvals while they are
+    /// away. It follows the leave afterwards: new dates move it, an early return shortens it, and a cancelled
+    /// leave removes it. The match is on the leave's request id, so a delegation the employee raised
+    /// separately is never touched.
+    /// </para>
+    /// </summary>
+    private async Task SyncApproverDelegationAsync(EmployeeAbsence leave)
+    {
+        if (leave.WorkflowRequestId == null)
+        {
+            return;
+        }
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var existing = _delegationRepository.GetAll()
+                .FirstOrDefault(d => d.EmployeeId == leave.EmployeeId && d.WorkflowRequestId == leave.WorkflowRequestId);
+
+            var wanted = leave.ApproverDelegateId.HasValue
+                         && leave.WorkflowStatus == RequestStatus.Approved
+                         && !leave.IsDeleted;
+
+            if (!wanted)
+            {
+                if (existing != null)
+                {
+                    await _delegationRepository.DeleteAsync(existing);
+                }
+
+                return;
+            }
+
+            if (existing == null)
+            {
+                await _delegationRepository.InsertAsync(new EmployeeDelegation
+                {
+                    TenantId = leave.TenantId,
+                    EmployeeId = leave.EmployeeId,
+                    DelegateToId = leave.ApproverDelegateId.Value,
+                    StartDate = leave.StartDate.Date,
+                    EndDate = leave.EndDate.Date,
+                    Comments = leave.Comments?.Length > 1000 ? leave.Comments.Substring(0, 1000) : leave.Comments,
+                    WorkflowStatus = RequestStatus.Approved,
+                    WorkflowRequestId = leave.WorkflowRequestId
+                });
+
+                return;
+            }
+
+            existing.DelegateToId = leave.ApproverDelegateId.Value;
+            existing.StartDate = leave.StartDate.Date;
+            existing.EndDate = leave.EndDate.Date;
+            await _delegationRepository.UpdateAsync(existing);
+        }
     }
 
 
@@ -497,7 +584,10 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         bool isNewRequest,
         LeavePaymentType leavePaymentType = LeavePaymentType.None,
         DateTime paymentDate = default,
-        string comments = null)
+        string comments = null,
+        EmployeeAbsence row = null,
+        bool? policyAccepted = null,
+        int? requestId = null)
     {
         if (endDate.Date < startDate.Date)
         {
@@ -567,6 +657,21 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             LeavePaymentType = leavePaymentType,
             PaymentDate = paymentDate,
             Comments = comments,
+
+            // The hourly fields always come from the row: an amendment changes type and dates, never the times.
+            AbsenceHours = row?.AbsenceHours ?? 0,
+            StartTime = row?.StartTime ?? default,
+            EndTime = row?.EndTime ?? default,
+            HalfdayType = row?.HalfdayType ?? HalfdayType.None,
+            CreatedOn = isNewRequest ? row?.CreationTime : null,
+
+            // Delegates and the policy tick belong to the application itself. A change to an approved leave
+            // does not ask for them again, so they are judged once, when the leave is first raised.
+            PrimaryDelegateId = isNewRequest ? row?.PrimaryDelegateId : null,
+            SecondaryDelegateId = isNewRequest ? row?.SecondaryDelegateId : null,
+            ApproverDelegateId = isNewRequest ? row?.ApproverDelegateId : null,
+            PolicyAccepted = policyAccepted,
+            ExcludeWorkflowRequestId = requestId,
         });
     }
 
@@ -606,6 +711,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         await ConsumeQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, days, leave.StartDate);
 
         await SaveAdditionalUnpaidLeaveAsync(context, leave);
+
+        await SyncApproverDelegationAsync(leave);
 
         // Unpaid leave during probation pushes its end date out (legacy Employee.GetProbationEndDate).
         await _probation.RecalculateAfterLeaveChangeAsync(leave.EmployeeId, leave.AbsenceTypeId);
