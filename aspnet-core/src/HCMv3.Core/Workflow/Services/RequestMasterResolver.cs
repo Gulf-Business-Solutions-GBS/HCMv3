@@ -116,7 +116,28 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
 
         RequestMaster requestMaster = null;
 
-        // FIRST: ask the business rules. A tenant may have configured "if the applier is a manager, use the
+        var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
+        var workflowGroupId = workflowSettings != null && workflowSettings.EnableWorkflowGroup
+            ? ResolveWorkflowGroupId(employeeId)
+            : null;
+
+        // BEFORE the rules, for a change, a cancellation or a return only: a chain configured for exactly that
+        // action. A routing rule says how this TYPE of request is routed and knows nothing of the action, so
+        // left on top it would send a cancellation down the chain meant for a new request and the chain an
+        // administrator set for cancellations would never be used. A new request has no such chain and goes
+        // to the rules first, exactly as before.
+        if (requestAction != WorkflowRequestAction.New)
+        {
+            requestMaster = ResolveActionSpecific(
+                transactionType, workflowGroupId, requestType, requestSubTypeId, customSubTypeId, requestAction);
+
+            if (requestMaster != null)
+            {
+                return requestMaster;
+            }
+        }
+
+        // THEN: ask the business rules. A tenant may have configured "if the applier is a manager, use the
         // senior chain" without a code change, and that decision has to outrank the ordinary group lookup
         // or it could never express an exception to it. A rule that matches nothing returns null here and
         // the original behaviour continues untouched, which is what makes arming one safe.
@@ -128,16 +149,10 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
             return requestMaster;
         }
 
-        var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
-        if (workflowSettings != null && workflowSettings.EnableWorkflowGroup)
+        if (workflowGroupId.HasValue)
         {
-            var workflowGroupId = ResolveWorkflowGroupId(employeeId);
-
-            if (workflowGroupId.HasValue)
-            {
-                requestMaster = ResolveFromWorkflowGroup(
-                    workflowGroupId.Value, requestType, requestSubTypeId, customSubTypeId, requestAction);
-            }
+            requestMaster = ResolveFromWorkflowGroup(
+                workflowGroupId.Value, requestType, requestSubTypeId, customSubTypeId, requestAction);
         }
 
         // Falls back to the type's default chain. This is the catalogued replacement for legacy's compiled-in
@@ -230,6 +245,38 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         return requestMaster;
     }
 
+    /// <summary>
+    /// The chain configured for exactly this action: a workflow group line that names it, else the chain set
+    /// for it on the transaction type. Null when neither exists, which sends the request on to the rules and
+    /// the ordinary lookup.
+    /// </summary>
+    private RequestMaster ResolveActionSpecific(
+        WorkflowTransactionType transactionType,
+        int? workflowGroupId,
+        string requestType,
+        int? requestSubTypeId,
+        int? customSubTypeId,
+        WorkflowRequestAction requestAction)
+    {
+        if (workflowGroupId.HasValue)
+        {
+            var fromGroup = ResolveFromWorkflowGroup(
+                workflowGroupId.Value, requestType, requestSubTypeId, customSubTypeId, requestAction,
+                actionSpecificOnly: true);
+
+            if (fromGroup != null)
+            {
+                return fromGroup;
+            }
+        }
+
+        var chainId = ChainForAction(transactionType, requestAction);
+
+        return chainId.HasValue
+            ? _requestMasterRepository.GetAll().FirstOrDefault(m => m.Id == chainId.Value)
+            : null;
+    }
+
     private static int? ChainForAction(WorkflowTransactionType transactionType, WorkflowRequestAction requestAction)
     {
         return requestAction switch
@@ -283,7 +330,8 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         string requestType,
         int? requestSubTypeId,
         int? customSubTypeId,
-        WorkflowRequestAction requestAction)
+        WorkflowRequestAction requestAction,
+        bool actionSpecificOnly = false)
     {
         var allDetails = _workflowGroupDetailRepository.GetAll()
             .Where(d => d.WorkflowGroupId == workflowGroupId && d.RequestTypeName == requestType)
@@ -303,6 +351,11 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
 
         if (groupDetails.Count == 0)
         {
+            if (actionSpecificOnly)
+            {
+                return null;
+            }
+
             groupDetails = allDetails.Where(d => d.RequestAction == null).ToList();
         }
 

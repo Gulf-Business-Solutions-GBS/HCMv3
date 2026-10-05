@@ -222,22 +222,40 @@
                             <div class="row">
                                 <div class="form-group col-md-4 mb-4">
                                     <label data-help-loc="PrimaryDelegate">{{ 'PrimaryDelegate' | localize }}</label>
-                                    <select class="form-control" [(ngModel)]="form.primaryDelegateId" (ngModelChange)="onPrimaryDelegateChanged()">
-                                        <option [ngValue]="null">--</option>
-                                        @for (colleague of colleagues(); track colleague.id) {
-                                            <option [ngValue]="colleague.id">{{ colleagueName(colleague) }}</option>
-                                        }
-                                    </select>
+                                    <!-- Type a staff number or a name: the list is hundreds long, so it is searched
+                                         rather than scrolled. -->
+                                    <p-autoComplete
+                                        inputId="LeavePrimaryDelegate"
+                                        [(ngModel)]="form.primaryDelegate"
+                                        (ngModelChange)="onPrimaryDelegateChanged()"
+                                        [suggestions]="delegateSuggestions()"
+                                        (completeMethod)="searchDelegates($event)"
+                                        optionLabel="label"
+                                        [forceSelection]="true"
+                                        [completeOnFocus]="true"
+                                        [showClear]="true"
+                                        [delay]="150"
+                                        [placeholder]="'TypeToSearchEmployee' | localize"
+                                        styleClass="w-100"
+                                        inputStyleClass="form-control" />
                                 </div>
                                 <div class="form-group col-md-4 mb-4">
                                     <label data-help-loc="SecondaryDelegate">{{ 'SecondaryDelegate' | localize }}</label>
                                     <!-- Legacy: a secondary delegate cannot be chosen before a primary one. -->
-                                    <select class="form-control" [(ngModel)]="form.secondaryDelegateId" [disabled]="!form.primaryDelegateId">
-                                        <option [ngValue]="null">--</option>
-                                        @for (colleague of secondaryCandidates(); track colleague.id) {
-                                            <option [ngValue]="colleague.id">{{ colleagueName(colleague) }}</option>
-                                        }
-                                    </select>
+                                    <p-autoComplete
+                                        inputId="LeaveSecondaryDelegate"
+                                        [(ngModel)]="form.secondaryDelegate"
+                                        [disabled]="!form.primaryDelegate"
+                                        [suggestions]="delegateSuggestions()"
+                                        (completeMethod)="searchDelegates($event, true)"
+                                        optionLabel="label"
+                                        [forceSelection]="true"
+                                        [completeOnFocus]="true"
+                                        [showClear]="true"
+                                        [delay]="150"
+                                        [placeholder]="'TypeToSearchEmployee' | localize"
+                                        styleClass="w-100"
+                                        inputStyleClass="form-control" />
                                 </div>
 
                                 <!-- Only for somebody who has approvals to hand over: a manager or a workflow
@@ -245,12 +263,19 @@
                                 @if (settings()?.canDelegateApprovals) {
                                     <div class="form-group col-md-4 mb-4">
                                         <label data-help-loc="ApproverDelegate">{{ 'ApproverDelegate' | localize }}</label>
-                                        <select class="form-control" [(ngModel)]="form.approverDelegateId">
-                                            <option [ngValue]="null">--</option>
-                                            @for (colleague of colleagues(); track colleague.id) {
-                                                <option [ngValue]="colleague.id">{{ colleagueName(colleague) }}</option>
-                                            }
-                                        </select>
+                                        <p-autoComplete
+                                            inputId="LeaveApproverDelegate"
+                                            [(ngModel)]="form.approverDelegate"
+                                            [suggestions]="delegateSuggestions()"
+                                            (completeMethod)="searchDelegates($event)"
+                                            optionLabel="label"
+                                            [forceSelection]="true"
+                                            [completeOnFocus]="true"
+                                            [showClear]="true"
+                                            [delay]="150"
+                                            [placeholder]="'TypeToSearchEmployee' | localize"
+                                            styleClass="w-100"
+                                            inputStyleClass="form-control" />
                                         <div class="small text-muted">{{ 'ApproverDelegateHint' | localize }}</div>
                                     </div>
                                 }

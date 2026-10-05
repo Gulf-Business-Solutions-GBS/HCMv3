@@ -413,4 +413,66 @@ public class RequestMasterResolver_Tests : AppTestBase
 
         resolved.Id.ShouldBe(sickMasterId);
     }
+
+    // ------------------------------------------------------------------ a chain per action
+
+    [Fact]
+    public async Task An_Action_Should_Use_Its_Own_Chain_On_The_Type_And_Others_The_Default()
+    {
+        SetWorkflowGroupEnabled(false);
+
+        var defaultId = CreateRequestMaster("STD-LEAVE");
+        var cancelId = CreateRequestMaster("CANCEL-LEAVE");
+        var typeId = CreateTransactionType("EmployeeAbsence", defaultId);
+        UsingDbContext(context => context.Set<WorkflowTransactionType>().Single(t => t.Id == typeId).CancellationRequestMasterId = cancelId);
+
+        var employeeId = CreateEmployee("RMR800");
+
+        async Task<int> ChainFor(WorkflowRequestAction action) =>
+            (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, null, null, action)).Id;
+
+        (await ChainFor(WorkflowRequestAction.Cancellation)).ShouldBe(cancelId);
+
+        // Nothing configured for these, so they follow the chain a new request would.
+        (await ChainFor(WorkflowRequestAction.New)).ShouldBe(defaultId);
+        (await ChainFor(WorkflowRequestAction.Amendment)).ShouldBe(defaultId);
+        (await ChainFor(WorkflowRequestAction.Return)).ShouldBe(defaultId);
+    }
+
+    [Fact]
+    public async Task A_Group_Line_Naming_The_Action_Should_Win_Over_The_Group_Catch_All_And_The_Type()
+    {
+        SetWorkflowGroupEnabled(true);
+
+        var typeDefaultId = CreateRequestMaster("STD-LEAVE");
+        var typeReturnId = CreateRequestMaster("TYPE-RETURN");
+        var groupAllId = CreateRequestMaster("GROUP-ALL");
+        var groupReturnId = CreateRequestMaster("GROUP-RETURN");
+
+        var typeId = CreateTransactionType("EmployeeAbsence", typeDefaultId);
+        UsingDbContext(context => context.Set<WorkflowTransactionType>().Single(t => t.Id == typeId).ReturnRequestMasterId = typeReturnId);
+
+        var groupId = CreateWorkflowGroup(isDefault: true);
+        CreateGroupDetail(groupId, groupAllId, "EmployeeAbsence");
+        UsingDbContext(context => context.Set<WorkflowGroupDetail>().Add(new WorkflowGroupDetail
+        {
+            TenantId = TenantId,
+            WorkflowGroupId = groupId,
+            RequestMasterId = groupReturnId,
+            RequestTypeName = "EmployeeAbsence",
+            RequestAction = WorkflowRequestAction.Return
+        }));
+
+        var employeeId = CreateEmployee("RMR810");
+
+        async Task<int> ChainFor(WorkflowRequestAction action) =>
+            (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, null, null, action)).Id;
+
+        // The group's own line for a return beats both its catch-all line and the type's return chain.
+        (await ChainFor(WorkflowRequestAction.Return)).ShouldBe(groupReturnId);
+
+        // An amendment has no line of its own anywhere, so the group's catch-all applies.
+        (await ChainFor(WorkflowRequestAction.Amendment)).ShouldBe(groupAllId);
+        (await ChainFor(WorkflowRequestAction.New)).ShouldBe(groupAllId);
+    }
 }

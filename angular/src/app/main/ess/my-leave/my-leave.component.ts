@@ -48,6 +48,13 @@ import { AttachmentsComponent } from '../../../shared/common/attachments/attachm
 import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+
+/** A colleague as the delegate search boxes show one: the id that is sent, and "1042 - Name". */
+interface DelegateOption {
+    id: number;
+    label: string;
+}
 
 /** Which of the four things the one form is doing. */
 type LeaveFormMode = 'new' | 'amend' | 'cancel' | 'return';
@@ -75,6 +82,7 @@ type LeaveFormMode = 'new' | 'amend' | 'cancel' | 'return';
         EssRequestDetailModalComponent,
         AttachmentsComponent,
         HelpPageDirective,
+        AutoCompleteModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -102,6 +110,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     readonly leaveTypes = signal<MyLeaveTypeDto[]>([]);
     readonly colleagues = signal<EssColleagueLookupDto[]>([]);
     readonly settings = signal<LeaveFormSettingsDto | undefined>(undefined);
+
+    /** What the delegate search box currently offers. Shared: only one box is being typed in at a time. */
+    readonly delegateSuggestions = signal<DelegateOption[]>([]);
 
     /** What the form is doing, or undefined when it is closed. */
     readonly mode = signal<LeaveFormMode | undefined>(undefined);
@@ -159,9 +170,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             leavePaymentType: LeavePaymentType.PayWithPayroll,
             paymentDate: '',
             isTravelling: false,
-            primaryDelegateId: null as number | null,
-            secondaryDelegateId: null as number | null,
-            approverDelegateId: null as number | null,
+            primaryDelegate: null as DelegateOption | null,
+            secondaryDelegate: null as DelegateOption | null,
+            approverDelegate: null as DelegateOption | null,
             policyAccepted: false,
             rejoiningDate: '',
             paidStartDate: '',
@@ -351,21 +362,46 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         return this.showTimes() && !!this.settings()?.enableAutoHalfDayLeave;
     }
 
-    /** Colleagues offered as secondary delegate: everybody but the primary one. */
-    secondaryCandidates(): EssColleagueLookupDto[] {
-        return this.colleagues().filter((c) => c.id !== this.form.primaryDelegateId);
-    }
-
     colleagueName(colleague: EssColleagueLookupDto): string {
         const name = this.isRtl ? colleague.fullNameAr || colleague.fullNameEn : colleague.fullNameEn;
         return [colleague.code, name].filter((p) => !!p).join(' - ');
     }
 
+    /**
+     * Type-to-search over the colleague list, by staff number or name. A company has hundreds of colleagues,
+     * which a plain drop-down cannot usefully show; legacy's picker searched by name and offered the first
+     * twenty, and this does the same. The employee already chosen as primary delegate is left out of the
+     * secondary delegate's suggestions.
+     */
+    searchDelegates(event: { query: string }, forSecondary = false): void {
+        const query = (event.query ?? '').trim().toLowerCase();
+        const excludedId = forSecondary ? this.form.primaryDelegate?.id : undefined;
+
+        const matches: DelegateOption[] = [];
+        for (const colleague of this.colleagues()) {
+            if (colleague.id === excludedId) {
+                continue;
+            }
+
+            const label = this.colleagueName(colleague);
+            if (!query || label.toLowerCase().includes(query)) {
+                matches.push({ id: colleague.id, label });
+                if (matches.length === 20) {
+                    break;
+                }
+            }
+        }
+
+        this.delegateSuggestions.set(matches);
+    }
+
     onPrimaryDelegateChanged(): void {
         // Legacy: a secondary delegate cannot stand without a primary one, nor be the same person.
-        if (!this.form.primaryDelegateId || this.form.secondaryDelegateId === this.form.primaryDelegateId) {
-            this.form.secondaryDelegateId = null;
+        if (!this.form.primaryDelegate || this.form.secondaryDelegate?.id === this.form.primaryDelegate.id) {
+            this.form.secondaryDelegate = null;
         }
+
+        this.formVersion.update((v) => v + 1);
     }
 
     onDatesChanged(): void {
@@ -573,9 +609,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             input.startTime = this.showTimes() && this.timesEnabled() ? this.form.startTime || undefined : undefined;
             input.endTime = this.showTimes() && this.timesEnabled() ? this.form.endTime || undefined : undefined;
             input.isTravelling = this.form.isTravelling;
-            input.primaryDelegateId = this.form.primaryDelegateId ?? undefined;
-            input.secondaryDelegateId = this.form.secondaryDelegateId ?? undefined;
-            input.approverDelegateId = this.form.approverDelegateId ?? undefined;
+            input.primaryDelegateId = this.form.primaryDelegate?.id;
+            input.secondaryDelegateId = this.form.secondaryDelegate?.id;
+            input.approverDelegateId = this.form.approverDelegate?.id;
             input.policyAccepted = this.form.policyAccepted;
             input.attachmentFileTokens = tokens;
 

@@ -7412,5 +7412,6 @@
     <text name="WorkflowRequestAction_Return">العودة من الإجازة</text>
     <text name="Reason">السبب</text>
     <text name="ShowPastLeave">عرض الإجازات السابقة</text>
+    <text name="TypeToSearchEmployee">اكتب الرقم الوظيفي أو الاسم</text>
   </texts>
 </localizationDictionary>

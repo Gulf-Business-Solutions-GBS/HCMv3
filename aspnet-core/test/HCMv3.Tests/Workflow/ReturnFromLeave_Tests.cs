@@ -378,7 +378,9 @@ public class ReturnFromLeave_Tests : EssLeaveWorkflowTestBase
         paid.EndDate.ShouldBe(start.AddDays(5).Date);
 
         // The rejoining date belongs to the LAST generated row -- the one the employee actually came back from.
-        paid.IsReturned.ShouldBeFalse();
+        // ...but the row is marked returned like every row of this leave, so it offers no further actions.
+        paid.IsReturned.ShouldBeTrue();
+        paid.ReturnDate.ShouldBe(default(DateTime));
 
         var unpaid = rows.Single(r => r.AbsenceTypeId == unpaidTypeId);
         unpaid.StartDate.ShouldBe(start.AddDays(6).Date);

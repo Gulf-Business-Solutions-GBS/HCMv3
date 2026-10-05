@@ -274,10 +274,15 @@ public class LeaveReturnProcessor : HCMv3DomainServiceBase, ILeaveReturnProcesso
             WorkflowRequestId = instruction.WorkflowRequestId
         };
 
+        // Every generated row is marked returned, as the original leave is: the employee is back, so none of
+        // these can be amended, cancelled or returned from again. Legacy flagged only the LAST row, which left
+        // a paid row in the middle looking like a leave still in progress. The rejoining date itself goes on
+        // the last row only, where legacy put it.
+        generated.IsReturned = true;
+
         if (stampReturn)
         {
             generated.ReturnDate = returnDate;
-            generated.IsReturned = true;
         }
 
         await _absences.InsertAsync(generated);

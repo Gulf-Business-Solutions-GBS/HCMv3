@@ -7577,5 +7577,6 @@
     <text name="WorkflowRequestAction_Return">Return from leave</text>
     <text name="Reason">Reason</text>
     <text name="ShowPastLeave">Show past leave</text>
+    <text name="TypeToSearchEmployee">Type a staff number or name</text>
   </texts>
 </localizationDictionary>
