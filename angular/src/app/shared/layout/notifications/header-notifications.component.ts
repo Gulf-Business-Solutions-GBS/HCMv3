@@ -86,7 +86,7 @@ export class HeaderNotificationsComponent extends AppComponentBase implements On
             return;
         }
 
-        this._notificationService.getUserNotifications(undefined, undefined, undefined, 3, 0).subscribe((result) => {
+        this._notificationService.getUserNotifications(undefined, undefined, undefined, 10, 0).subscribe((result) => {
             this.unreadNotificationCount.set(result.unreadCount);
             const formattedNotifications: IFormattedUserNotification[] = [];
             _forEach(result.items, (item: UserNotification) => {

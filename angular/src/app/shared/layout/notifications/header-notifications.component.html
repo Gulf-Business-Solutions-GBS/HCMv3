@@ -51,7 +51,7 @@
             data-scroll="true"
             data-height="300"
             data-mobile-height="200"
-            style="height: 300px; overflow: hidden">
+            style="max-height: 300px; overflow-y: auto">
             @for (notification of notifications(); track notification.userNotificationId) {
                 <div
                     class="d-flex align-items-sm-center mb-7 user-notification-item-clickable user-notification-item-unread"
