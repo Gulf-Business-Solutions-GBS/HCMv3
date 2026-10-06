@@ -55,6 +55,7 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     private readonly IProbationEndDateService _probation;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRepository<EmployeeDelegation> _delegationRepository;
+    private readonly IRepository<Employee> _employeeRepository;
 
     /// <summary>Legacy hard-codes these absence type codes: "1" annual (paid late days are measured against
     /// it), "2" unpaid (late days beyond the balance are booked as it).</summary>
@@ -74,9 +75,11 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         ILeaveReturnProcessor returnProcessor,
         IProbationEndDateService probation,
         ISysSettingsAccessor sysSettingsAccessor,
-        IRepository<EmployeeDelegation> delegationRepository)
+        IRepository<EmployeeDelegation> delegationRepository,
+        IRepository<Employee> employeeRepository)
         : base(repository, unitOfWorkManager)
     {
+        _employeeRepository = employeeRepository;
         _delegationRepository = delegationRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
@@ -804,6 +807,156 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         {
             await Repository.UpdateAsync(leave);
         }
+    }
+
+    /// <summary>
+    /// The leave as its own form shows it, field by field, for the Details view and the approver.
+    ///
+    /// <para>
+    /// The field names are the ones the Angular leave form reads, so an approver sees the same form the
+    /// employee filled in, read-only. For an amendment, cancellation or return the leave dates are the
+    /// PROPOSED ones -- that is what is being decided -- and the dates on file today travel beside them as
+    /// <c>Current*</c>, so "05/11 becomes 10/11" is visible rather than only "10/11".
+    /// </para>
+    ///
+    /// <para>
+    /// The balance figures are the REQUESTER's, worked out here because the approver's own session cannot
+    /// ask for somebody else's balance and should not have to.
+    /// </para>
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var leave = await GetTargetAsync(context);
+        if (leave == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var proposed = context.IsAmendment && !string.IsNullOrWhiteSpace(context.AmendmentJson)
+            ? ReadAmendment(context)
+            : null;
+
+        var action = !context.IsAmendment
+            ? WorkflowRequestAction.New
+            : proposed?.IsCancellation == true
+                ? WorkflowRequestAction.Cancellation
+                : proposed?.IsReturned == true ? WorkflowRequestAction.Return : WorkflowRequestAction.Amendment;
+
+        var typeId = proposed?.AbsenceTypeId ?? leave.AbsenceTypeId;
+        var startDate = proposed?.StartDate ?? leave.StartDate;
+        var endDate = proposed?.EndDate ?? leave.EndDate;
+        var days = proposed?.TotalLeaveDays ?? leave.TotalLeaveDays;
+        var isHourly = leave.AbsenceHours != 0;
+
+        var detail = new WorkflowRequestDetail
+        {
+            SubmissionComment = proposed?.Reason ?? leave.Comments
+        };
+
+        detail
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text("RequestAction", L("RequestActionAppliesTo"), action.ToString()))
+            .Add(WorkflowDetailField.Text("LeaveType", L("LeaveType"), TypeName(typeId)))
+            .Add(WorkflowDetailField.Date("StartDate", L("StartDate"), startDate))
+            .Add(WorkflowDetailField.Date("EndDate", L("EndDate"), endDate))
+            .Add(WorkflowDetailField.Number("CalendarDays", L("CalendarDays"), (decimal)((endDate.Date - startDate.Date).TotalDays + 1)))
+            .Add(WorkflowDetailField.Number("LeaveDays", L("LeaveDays"), (decimal)Math.Round(days, 3)))
+            .Add(WorkflowDetailField.Text("HalfdayType", L("HalfdayType"), leave.HalfdayType == HalfdayType.None ? null : L("HalfdayType_" + leave.HalfdayType)))
+            .Add(WorkflowDetailField.Text("StartTime", L("StartTime"), isHourly ? leave.StartTime.ToString("HH:mm") : null))
+            .Add(WorkflowDetailField.Text("EndTime", L("EndTime"), isHourly ? leave.EndTime.ToString("HH:mm") : null))
+            .Add(WorkflowDetailField.Text("LeavePaymentType", L("LeavePaymentType"), leave.LeavePaymentType == LeavePaymentType.None ? null : L("LeavePaymentType_" + leave.LeavePaymentType)))
+            .Add(WorkflowDetailField.Date("PaymentDate", L("PaymentDate"), leave.LeavePaymentType == LeavePaymentType.PayInAdvance ? leave.PaymentDate : (DateTime?)null))
+            .Add(WorkflowDetailField.Boolean("IsTravelling", L("AreYouTravelling"), leave.IsTravelling))
+            .Add(WorkflowDetailField.Text("PrimaryDelegation", L("PrimaryDelegate"), EmployeeDisplay(leave.PrimaryDelegateId)))
+            .Add(WorkflowDetailField.Text("SecondaryDelegation", L("SecondaryDelegate"), EmployeeDisplay(leave.SecondaryDelegateId)))
+            .Add(WorkflowDetailField.Text("ApproverDelegation", L("ApproverDelegate"), EmployeeDisplay(leave.ApproverDelegateId)))
+            .Add(WorkflowDetailField.LongText("Comments", L("Comments"), leave.Comments));
+
+        if (proposed != null)
+        {
+            detail
+                .Add(WorkflowDetailField.Text("CurrentLeaveType", L("CurrentApprovedLeave"), TypeName(leave.AbsenceTypeId)))
+                .Add(WorkflowDetailField.Date("CurrentStartDate", L("StartDate"), leave.StartDate))
+                .Add(WorkflowDetailField.Date("CurrentEndDate", L("EndDate"), leave.EndDate))
+                .Add(WorkflowDetailField.Number("CurrentLeaveDays", L("LeaveDays"), (decimal)Math.Round(leave.TotalLeaveDays, 3)))
+                .Add(WorkflowDetailField.LongText("Reason", L("Reason"), proposed.Reason));
+        }
+
+        if (action == WorkflowRequestAction.Return)
+        {
+            detail
+                .Add(WorkflowDetailField.Date("ReturnDate", L("ReturnDate"), proposed.ReturnDate))
+                .Add(WorkflowDetailField.Date("PaidLeaveStartDate", L("PaidLeaveStartDate"), proposed.PaidStartDate))
+                .Add(WorkflowDetailField.Date("PaidLeaveEndDate", L("PaidLeaveEndDate"), proposed.PaidEndDate))
+                .Add(WorkflowDetailField.Date("UnpaidLeaveStartDate", L("UnpaidLeaveStartDate"), proposed.UnpaidStartDate))
+                .Add(WorkflowDetailField.Date("UnpaidLeaveEndDate", L("UnpaidLeaveEndDate"), proposed.UnpaidEndDate));
+        }
+
+        // Only a type with a quota has a balance to show. Asked as of the leave's start, like the form does.
+        var balance = (await _leaveBalanceService.GetBalancesAsync(leave.EmployeeId, startDate.Date, context.Request?.Id))
+            .FirstOrDefault(b => b.AbsenceTypeId == typeId);
+
+        if (balance != null)
+        {
+            // What this request would still take from the balance: nothing once it is approved (it is already
+            // in Used), the difference for a change to an approved leave, the whole of a new one.
+            var stillToCharge = context.Request?.RequestStatus == RequestStatus.Approved
+                ? 0
+                : action == WorkflowRequestAction.New
+                    ? days
+                    : action == WorkflowRequestAction.Amendment && typeId == leave.AbsenceTypeId
+                        ? days - leave.TotalLeaveDays
+                        : action == WorkflowRequestAction.Cancellation ? -leave.TotalLeaveDays : 0;
+
+            detail
+                .Add(WorkflowDetailField.Number("CurrentBalance", L("CurrentBalance"), (decimal)Math.Round(balance.Remaining, 2)))
+                .Add(WorkflowDetailField.Number("BookableBalance", L("BookableBalance"), (decimal)Math.Round(balance.Bookable, 2)))
+                .Add(WorkflowDetailField.Number("UpdatedBalance", L("UpdatedBalance"), (decimal)Math.Round(balance.Bookable - stillToCharge, 2)));
+        }
+
+        return detail;
+    }
+
+    private string TypeName(int absenceTypeId)
+    {
+        var type = _absenceTypeRepository.GetAll()
+            .Where(t => t.Id == absenceTypeId)
+            .Select(t => new { t.NameEn, t.NameAr })
+            .FirstOrDefault();
+
+        if (type == null)
+        {
+            return null;
+        }
+
+        return System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" && !string.IsNullOrWhiteSpace(type.NameAr)
+            ? type.NameAr
+            : type.NameEn;
+    }
+
+    /// <summary>"1042 - Ahmad Al Sayed", or null when nobody was chosen.</summary>
+    private string EmployeeDisplay(int? employeeId)
+    {
+        if (!employeeId.HasValue)
+        {
+            return null;
+        }
+
+        var employee = _employeeRepository.GetAll()
+            .Where(e => e.Id == employeeId.Value)
+            .Select(e => new { e.Code, e.FullNameEn, e.FullNameAr })
+            .FirstOrDefault();
+
+        if (employee == null)
+        {
+            return null;
+        }
+
+        var name = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" && !string.IsNullOrWhiteSpace(employee.FullNameAr)
+            ? employee.FullNameAr
+            : employee.FullNameEn;
+
+        return employee.Code + " - " + name;
     }
 
     /// <summary>

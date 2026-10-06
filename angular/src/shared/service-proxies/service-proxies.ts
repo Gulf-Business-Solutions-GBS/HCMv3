@@ -62761,6 +62761,74 @@ export class EssInboxServiceProxy {
 }
 
 @Injectable()
+export class EssListExportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportToExcel(body?: EssListExportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/EssListExport/ExportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EssLookupServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -92823,6 +92891,62 @@ export class MyLeaveServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    getMyLeavesToExcel(body?: ExportMyLeavesInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetMyLeavesToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeavesToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeavesToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetMyLeavesToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     amendMyLeave(body?: AmendMyLeaveInput | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/MyLeave/AmendMyLeave";
         url_ = url_.replace(/[?&]$/, "");
@@ -93148,6 +93272,231 @@ export class MyLeaveServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : null as any;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveMyLeaveChangeDraft(body?: SaveMyLeaveChangeDraftInput | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/SaveMyLeaveChangeDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyLeaveChangeDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyLeaveChangeDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processSaveMyLeaveChangeDraft(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveMyLeaveDraft(body?: SaveMyLeaveDraftInput | undefined): Observable<ApplyForLeaveResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/SaveMyLeaveDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyLeaveDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyLeaveDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApplyForLeaveResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApplyForLeaveResultDto>;
+        }));
+    }
+
+    protected processSaveMyLeaveDraft(response: HttpResponseBase): Observable<ApplyForLeaveResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplyForLeaveResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyLeaveDraft(body?: EntityDto | undefined): Observable<ApplyForLeaveResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/SubmitMyLeaveDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyLeaveDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyLeaveDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApplyForLeaveResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApplyForLeaveResultDto>;
+        }));
+    }
+
+    protected processSubmitMyLeaveDraft(response: HttpResponseBase): Observable<ApplyForLeaveResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplyForLeaveResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyLeaveForEdit(id?: number | undefined): Observable<MyLeaveDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetMyLeaveForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeaveForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeaveForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyLeaveDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyLeaveDto>;
+        }));
+    }
+
+    protected processGetMyLeaveForEdit(response: HttpResponseBase): Observable<MyLeaveDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyLeaveDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -222144,6 +222493,116 @@ export enum EssInboxTab {
     Approved = 3,
 }
 
+export class EssListExportColumnDto implements IEssListExportColumnDto {
+    header!: string;
+    type!: EssListExportColumnType;
+
+    constructor(data?: IEssListExportColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.header = _data["header"];
+            this.type = _data["type"];
+        }
+    }
+
+    static fromJS(data: any): EssListExportColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssListExportColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["header"] = this.header;
+        data["type"] = this.type;
+        return data;
+    }
+}
+
+export interface IEssListExportColumnDto {
+    header: string;
+    type: EssListExportColumnType;
+}
+
+export enum EssListExportColumnType {
+    Text = 0,
+    Number = 1,
+    Date = 2,
+}
+
+export class EssListExportInput implements IEssListExportInput {
+    title!: string;
+    columns!: EssListExportColumnDto[];
+    rows!: string[][];
+
+    constructor(data?: IEssListExportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+        if (!data) {
+            this.columns = [];
+            this.rows = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(EssListExportColumnDto.fromJS(item));
+            }
+            if (Array.isArray(_data["rows"])) {
+                this.rows = [] as any;
+                for (let item of _data["rows"])
+                    this.rows!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): EssListExportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssListExportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.rows)) {
+            data["rows"] = [];
+            for (let item of this.rows)
+                data["rows"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IEssListExportInput {
+    title: string;
+    columns: EssListExportColumnDto[];
+    rows: string[][];
+}
+
 export class EssRecentRequestDto implements IEssRecentRequestDto {
     id!: number;
     requestType!: string | undefined;
@@ -222626,6 +223085,50 @@ export interface IExportLeaveDashboardInput {
     absenceTypeId: number | undefined;
     part: LeaveDashboardExportPart;
     day: DateTime | undefined;
+}
+
+export class ExportMyLeavesInput implements IExportMyLeavesInput {
+    leaveIds!: number[] | undefined;
+
+    constructor(data?: IExportMyLeavesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["leaveIds"])) {
+                this.leaveIds = [] as any;
+                for (let item of _data["leaveIds"])
+                    this.leaveIds!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ExportMyLeavesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExportMyLeavesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.leaveIds)) {
+            data["leaveIds"] = [];
+            for (let item of this.leaveIds)
+                data["leaveIds"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IExportMyLeavesInput {
+    leaveIds: number[] | undefined;
 }
 
 export class ExportOvertimeDashboardInput implements IExportOvertimeDashboardInput {
@@ -285728,6 +286231,29 @@ export class MyLeaveDto implements IMyLeaveDto {
     proposedEndDate!: DateTime | undefined;
     proposedReturnDate!: DateTime | undefined;
     lastRejectedAction!: WorkflowRequestAction;
+    requestAction!: WorkflowRequestAction;
+    displayStatus!: MyLeaveRequestStatus;
+    requestNumber!: string | undefined;
+    requests!: MyLeaveHistoryItemDto[] | undefined;
+    isDraft!: boolean;
+    pendingIsDraft!: boolean;
+    pendingReason!: string | undefined;
+    proposedAbsenceTypeId!: number | undefined;
+    proposedPaidStartDate!: DateTime | undefined;
+    proposedPaidEndDate!: DateTime | undefined;
+    proposedUnpaidStartDate!: DateTime | undefined;
+    proposedUnpaidEndDate!: DateTime | undefined;
+    calendarDays!: number;
+    leavePaymentType!: LeavePaymentType;
+    paymentDate!: DateTime | undefined;
+    isTravelling!: boolean;
+    primaryDelegateId!: number | undefined;
+    primaryDelegateName!: string | undefined;
+    secondaryDelegateId!: number | undefined;
+    secondaryDelegateName!: string | undefined;
+    approverDelegateId!: number | undefined;
+    approverDelegateName!: string | undefined;
+    policyAccepted!: boolean;
 
     constructor(data?: IMyLeaveDto) {
         if (data) {
@@ -285770,6 +286296,33 @@ export class MyLeaveDto implements IMyLeaveDto {
             this.proposedEndDate = _data["proposedEndDate"] ? DateTime.fromISO(_data["proposedEndDate"].toString()) : undefined as any;
             this.proposedReturnDate = _data["proposedReturnDate"] ? DateTime.fromISO(_data["proposedReturnDate"].toString()) : undefined as any;
             this.lastRejectedAction = _data["lastRejectedAction"];
+            this.requestAction = _data["requestAction"];
+            this.displayStatus = _data["displayStatus"];
+            this.requestNumber = _data["requestNumber"];
+            if (Array.isArray(_data["requests"])) {
+                this.requests = [] as any;
+                for (let item of _data["requests"])
+                    this.requests!.push(MyLeaveHistoryItemDto.fromJS(item));
+            }
+            this.isDraft = _data["isDraft"];
+            this.pendingIsDraft = _data["pendingIsDraft"];
+            this.pendingReason = _data["pendingReason"];
+            this.proposedAbsenceTypeId = _data["proposedAbsenceTypeId"];
+            this.proposedPaidStartDate = _data["proposedPaidStartDate"] ? DateTime.fromISO(_data["proposedPaidStartDate"].toString()) : undefined as any;
+            this.proposedPaidEndDate = _data["proposedPaidEndDate"] ? DateTime.fromISO(_data["proposedPaidEndDate"].toString()) : undefined as any;
+            this.proposedUnpaidStartDate = _data["proposedUnpaidStartDate"] ? DateTime.fromISO(_data["proposedUnpaidStartDate"].toString()) : undefined as any;
+            this.proposedUnpaidEndDate = _data["proposedUnpaidEndDate"] ? DateTime.fromISO(_data["proposedUnpaidEndDate"].toString()) : undefined as any;
+            this.calendarDays = _data["calendarDays"];
+            this.leavePaymentType = _data["leavePaymentType"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.isTravelling = _data["isTravelling"];
+            this.primaryDelegateId = _data["primaryDelegateId"];
+            this.primaryDelegateName = _data["primaryDelegateName"];
+            this.secondaryDelegateId = _data["secondaryDelegateId"];
+            this.secondaryDelegateName = _data["secondaryDelegateName"];
+            this.approverDelegateId = _data["approverDelegateId"];
+            this.approverDelegateName = _data["approverDelegateName"];
+            this.policyAccepted = _data["policyAccepted"];
         }
     }
 
@@ -285812,6 +286365,33 @@ export class MyLeaveDto implements IMyLeaveDto {
         data["proposedEndDate"] = this.proposedEndDate ? this.proposedEndDate.toString() : undefined as any;
         data["proposedReturnDate"] = this.proposedReturnDate ? this.proposedReturnDate.toString() : undefined as any;
         data["lastRejectedAction"] = this.lastRejectedAction;
+        data["requestAction"] = this.requestAction;
+        data["displayStatus"] = this.displayStatus;
+        data["requestNumber"] = this.requestNumber;
+        if (Array.isArray(this.requests)) {
+            data["requests"] = [];
+            for (let item of this.requests)
+                data["requests"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["isDraft"] = this.isDraft;
+        data["pendingIsDraft"] = this.pendingIsDraft;
+        data["pendingReason"] = this.pendingReason;
+        data["proposedAbsenceTypeId"] = this.proposedAbsenceTypeId;
+        data["proposedPaidStartDate"] = this.proposedPaidStartDate ? this.proposedPaidStartDate.toString() : undefined as any;
+        data["proposedPaidEndDate"] = this.proposedPaidEndDate ? this.proposedPaidEndDate.toString() : undefined as any;
+        data["proposedUnpaidStartDate"] = this.proposedUnpaidStartDate ? this.proposedUnpaidStartDate.toString() : undefined as any;
+        data["proposedUnpaidEndDate"] = this.proposedUnpaidEndDate ? this.proposedUnpaidEndDate.toString() : undefined as any;
+        data["calendarDays"] = this.calendarDays;
+        data["leavePaymentType"] = this.leavePaymentType;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["isTravelling"] = this.isTravelling;
+        data["primaryDelegateId"] = this.primaryDelegateId;
+        data["primaryDelegateName"] = this.primaryDelegateName;
+        data["secondaryDelegateId"] = this.secondaryDelegateId;
+        data["secondaryDelegateName"] = this.secondaryDelegateName;
+        data["approverDelegateId"] = this.approverDelegateId;
+        data["approverDelegateName"] = this.approverDelegateName;
+        data["policyAccepted"] = this.policyAccepted;
         return data;
     }
 }
@@ -285847,6 +286427,29 @@ export interface IMyLeaveDto {
     proposedEndDate: DateTime | undefined;
     proposedReturnDate: DateTime | undefined;
     lastRejectedAction: WorkflowRequestAction;
+    requestAction: WorkflowRequestAction;
+    displayStatus: MyLeaveRequestStatus;
+    requestNumber: string | undefined;
+    requests: MyLeaveHistoryItemDto[] | undefined;
+    isDraft: boolean;
+    pendingIsDraft: boolean;
+    pendingReason: string | undefined;
+    proposedAbsenceTypeId: number | undefined;
+    proposedPaidStartDate: DateTime | undefined;
+    proposedPaidEndDate: DateTime | undefined;
+    proposedUnpaidStartDate: DateTime | undefined;
+    proposedUnpaidEndDate: DateTime | undefined;
+    calendarDays: number;
+    leavePaymentType: LeavePaymentType;
+    paymentDate: DateTime | undefined;
+    isTravelling: boolean;
+    primaryDelegateId: number | undefined;
+    primaryDelegateName: string | undefined;
+    secondaryDelegateId: number | undefined;
+    secondaryDelegateName: string | undefined;
+    approverDelegateId: number | undefined;
+    approverDelegateName: string | undefined;
+    policyAccepted: boolean;
 }
 
 export class MyLeaveHistoryItemDto implements IMyLeaveHistoryItemDto {
@@ -285975,6 +286578,16 @@ export enum MyLeaveHistoryOutcome {
     Rejected = 2,
     SentBack = 3,
     Withdrawn = 4,
+    Draft = 5,
+}
+
+export enum MyLeaveRequestStatus {
+    Draft = 0,
+    Open = 1,
+    Approved = 2,
+    Rejected = 3,
+    SentBack = 4,
+    Withdrawn = 5,
 }
 
 export class MyLeaveTypeDto implements IMyLeaveTypeDto {
@@ -337315,6 +337928,190 @@ export class SaveIntegrationSettingsInput implements ISaveIntegrationSettingsInp
 export interface ISaveIntegrationSettingsInput {
     key: string;
     values: { [key: string]: string; } | undefined;
+}
+
+export class SaveMyLeaveChangeDraftInput implements ISaveMyLeaveChangeDraftInput {
+    employeeAbsenceId!: number;
+    absenceTypeId!: number | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    reason!: string | undefined;
+    rejoiningDate!: DateTime | undefined;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
+    action!: WorkflowRequestAction;
+
+    constructor(data?: ISaveMyLeaveChangeDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.reason = _data["reason"];
+            this.rejoiningDate = _data["rejoiningDate"] ? DateTime.fromISO(_data["rejoiningDate"].toString()) : undefined as any;
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+            this.action = _data["action"];
+        }
+    }
+
+    static fromJS(data: any): SaveMyLeaveChangeDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveMyLeaveChangeDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["reason"] = this.reason;
+        data["rejoiningDate"] = this.rejoiningDate ? this.rejoiningDate.toString() : undefined as any;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        data["action"] = this.action;
+        return data;
+    }
+}
+
+export interface ISaveMyLeaveChangeDraftInput {
+    employeeAbsenceId: number;
+    absenceTypeId: number | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    reason: string | undefined;
+    rejoiningDate: DateTime | undefined;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
+    action: WorkflowRequestAction;
+}
+
+export class SaveMyLeaveDraftInput implements ISaveMyLeaveDraftInput {
+    absenceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+    leavePaymentType!: LeavePaymentType;
+    paymentDate!: DateTime | undefined;
+    splitExcessAsUnpaidLeave!: boolean;
+    attachmentFileTokens!: string[] | undefined;
+    halfdayType!: HalfdayType;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    isTravelling!: boolean;
+    primaryDelegateId!: number | undefined;
+    secondaryDelegateId!: number | undefined;
+    approverDelegateId!: number | undefined;
+    policyAccepted!: boolean;
+    id!: number | undefined;
+
+    constructor(data?: ISaveMyLeaveDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+            this.leavePaymentType = _data["leavePaymentType"];
+            this.paymentDate = _data["paymentDate"] ? DateTime.fromISO(_data["paymentDate"].toString()) : undefined as any;
+            this.splitExcessAsUnpaidLeave = _data["splitExcessAsUnpaidLeave"];
+            if (Array.isArray(_data["attachmentFileTokens"])) {
+                this.attachmentFileTokens = [] as any;
+                for (let item of _data["attachmentFileTokens"])
+                    this.attachmentFileTokens!.push(item);
+            }
+            this.halfdayType = _data["halfdayType"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.isTravelling = _data["isTravelling"];
+            this.primaryDelegateId = _data["primaryDelegateId"];
+            this.secondaryDelegateId = _data["secondaryDelegateId"];
+            this.approverDelegateId = _data["approverDelegateId"];
+            this.policyAccepted = _data["policyAccepted"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): SaveMyLeaveDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveMyLeaveDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        data["leavePaymentType"] = this.leavePaymentType;
+        data["paymentDate"] = this.paymentDate ? this.paymentDate.toString() : undefined as any;
+        data["splitExcessAsUnpaidLeave"] = this.splitExcessAsUnpaidLeave;
+        if (Array.isArray(this.attachmentFileTokens)) {
+            data["attachmentFileTokens"] = [];
+            for (let item of this.attachmentFileTokens)
+                data["attachmentFileTokens"].push(item);
+        }
+        data["halfdayType"] = this.halfdayType;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["isTravelling"] = this.isTravelling;
+        data["primaryDelegateId"] = this.primaryDelegateId;
+        data["secondaryDelegateId"] = this.secondaryDelegateId;
+        data["approverDelegateId"] = this.approverDelegateId;
+        data["policyAccepted"] = this.policyAccepted;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface ISaveMyLeaveDraftInput {
+    absenceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+    leavePaymentType: LeavePaymentType;
+    paymentDate: DateTime | undefined;
+    splitExcessAsUnpaidLeave: boolean;
+    attachmentFileTokens: string[] | undefined;
+    halfdayType: HalfdayType;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    isTravelling: boolean;
+    primaryDelegateId: number | undefined;
+    secondaryDelegateId: number | undefined;
+    approverDelegateId: number | undefined;
+    policyAccepted: boolean;
+    id: number | undefined;
 }
 
 export class SavePageInput implements ISavePageInput {

@@ -91,4 +91,29 @@ public class ProxyMyLeaveAppService : ProxyAppServiceBase, IMyLeaveAppService
     {
         return await ApiClient.GetAsync<List<MyLeaveHistoryItemDto>>(GetEndpoint(nameof(GetMyLeaveHistory)), new { id = input.Id });
     }
+
+    public async Task<HCMv3.Dto.FileDto> GetMyLeavesToExcel(ExportMyLeavesInput input)
+    {
+        return await ApiClient.PostAsync<HCMv3.Dto.FileDto>(GetEndpoint(nameof(GetMyLeavesToExcel)), input);
+    }
+
+    public async Task<ApplyForLeaveResultDto> SaveMyLeaveDraft(SaveMyLeaveDraftInput input)
+    {
+        return await ApiClient.PostAsync<ApplyForLeaveResultDto>(GetEndpoint(nameof(SaveMyLeaveDraft)), input);
+    }
+
+    public async Task<ApplyForLeaveResultDto> SubmitMyLeaveDraft(EntityDto input)
+    {
+        return await ApiClient.PostAsync<ApplyForLeaveResultDto>(GetEndpoint(nameof(SubmitMyLeaveDraft)), input);
+    }
+
+    public async Task<MyLeaveDto> GetMyLeaveForEdit(EntityDto input)
+    {
+        return await ApiClient.GetAsync<MyLeaveDto>(GetEndpoint(nameof(GetMyLeaveForEdit)), new { id = input.Id });
+    }
+
+    public async Task<int> SaveMyLeaveChangeDraft(SaveMyLeaveChangeDraftInput input)
+    {
+        return await ApiClient.PostAsync<int>(GetEndpoint(nameof(SaveMyLeaveChangeDraft)), input);
+    }
 }

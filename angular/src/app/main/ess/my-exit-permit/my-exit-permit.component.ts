@@ -20,6 +20,9 @@ import { finalize, switchMap } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { ExitPermitFormComponent, ExitPermitFormValue } from './exit-permit-form.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -39,6 +42,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         ExitPermitFormComponent,
         HelpPageDirective,
     ],
@@ -46,6 +51,15 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 })
 export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDto> implements OnInit {
     private readonly _service = inject(MyExitPermitServiceProxy);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyExitPermitDto>(this.rows, () => [
+        { key: 'number', label: 'ExitPermitNumber', text: (row) => row.externalRequestNumber },
+        { key: 'travelReason', label: 'TravelReason', text: (row) => this.travelReasonLabel(row.travelReason), filter: 'select' },
+        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
+        { key: 'exitDate', label: 'ExitDate', text: (row) => this.detailDate(row.exitDate), sort: (row) => row.exitDate?.toMillis() },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     /** The create form's data, owned here and written into by the form component through ngModel. */
     form: ExitPermitFormValue = MyExitPermitComponent.emptyForm();

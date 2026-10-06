@@ -19,6 +19,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -34,6 +37,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,6 +48,14 @@ export class MyTicketComponent extends MyRequestComponentBase<MyTicketRequestDto
     private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly ticketTypes = signal<SimpleLookupDto[]>([]);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyTicketRequestDto>(this.rows, () => [
+        { key: 'ticketType', label: 'TicketType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'ticketDate', label: 'TicketDate', text: (row) => this.detailDate(row.ticketDate), sort: (row) => row.ticketDate?.toMillis() },
+        { key: 'amount', label: 'Amount', text: (row) => row.amount },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     form = { ticketTypeId: null as number | null, ticketDate: '', amount: null as number | null, comments: '' };
 

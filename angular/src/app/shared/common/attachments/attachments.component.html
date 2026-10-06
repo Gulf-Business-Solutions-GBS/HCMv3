@@ -15,7 +15,7 @@
         }
     </div>
 
-    @if (canEdit() && limitsHint) {
+    @if (canEdit() && limitsHint && showLimitsHint()) {
         <small class="form-text text-muted d-block mb-2">{{ limitsHint }}</small>
     }
 

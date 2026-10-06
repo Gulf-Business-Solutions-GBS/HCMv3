@@ -20,6 +20,9 @@ import { finalize } from 'rxjs/operators';
 import { signal } from '@angular/core';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -35,6 +38,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +47,14 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 export class MyAssetComponent extends MyRequestComponentBase<MyAssetRequestDto> implements OnInit {
     private readonly _service = inject(MyAssetServiceProxy);
     private readonly _lookups = inject(EssLookupServiceProxy);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyAssetRequestDto>(this.rows, () => [
+        { key: 'asset', label: 'Asset', text: (row) => this.assetName(row), filter: 'select' },
+        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
+        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     readonly assets = signal<SimpleLookupDto[]>([]);
 

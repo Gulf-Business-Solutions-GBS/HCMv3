@@ -285,6 +285,41 @@ public class ReturnFromLeave_Tests : EssLeaveWorkflowTestBase
     }
 
     [Fact]
+    public async Task My_Leaves_Should_Show_A_Late_Return_As_One_Row_With_The_Extra_Days_Folded_In()
+    {
+        var meId = CreateCurrentUserEmployee("RET158");
+        var approverId = EnableLeaveWorkflowWithApprover("RET158APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var start = DateTime.Today.AddDays(30);
+        var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
+
+        var result = await _myLeaveAppService.ReturnFromMyLeave(new ReturnFromLeaveInput
+        {
+            EmployeeAbsenceId = leaveId,
+            RejoiningDate = start.AddDays(8),
+            Reason = "Flight delayed"
+        });
+        await _approvalService.ApproveAsync(result.WorkflowRequestId, approverId, "ok");
+
+        // Payroll has two records, the leave and the three late days...
+        LeaveRowsOf(meId).Count.ShouldBe(2);
+
+        // ...the employee has one leave: the one they took, as long as it turned out to be.
+        var list = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true });
+        list.TotalCount.ShouldBe(1);
+
+        var row = list.Items.Single();
+        row.Id.ShouldBe(leaveId);
+        row.StartDate.ShouldBe(start.Date);
+        row.EndDate.ShouldBe(start.AddDays(7).Date);
+        row.TotalLeaveDays.ShouldBe(8);
+        row.RequestAction.ShouldBe(WorkflowRequestAction.Return);
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Approved);
+    }
+
+    [Fact]
     public async Task Late_Return_With_Enough_Balance_Should_Book_The_Gap_As_Paid_Leave_Of_The_Same_Type()
     {
         var meId = CreateCurrentUserEmployee("RET151");

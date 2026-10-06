@@ -42,6 +42,10 @@ export class AttachmentsComponent extends AppComponentBase implements OnInit, On
     /** Forces read-only even when the server would allow changes (e.g. a view-only dialog). */
     readonly readonly = input(false);
 
+    /** Whether the "allowed types, up to N MB" line is shown. A crowded form can leave it out: the picker
+     *  itself only offers allowed types, and a file that breaks a limit is still refused with the reason. */
+    readonly showLimitsHint = input(true);
+
     /** Emits the number of files attached (or pending) whenever it changes. */
     readonly countChange = output<number>();
 

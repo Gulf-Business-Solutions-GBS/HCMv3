@@ -19,6 +19,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -39,6 +42,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +51,14 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 export class MyHRServiceComponent extends MyRequestComponentBase<MyHRServiceRequestDto> implements OnInit {
     private readonly _service = inject(MyHRServiceServiceProxy);
     private readonly _lookups = inject(EssLookupServiceProxy);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyHRServiceRequestDto>(this.rows, () => [
+        { key: 'type', label: 'HRServiceType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'serviceDate', label: 'ServiceDate', text: (row) => this.detailDate(row.serviceDate), sort: (row) => row.serviceDate?.toMillis() },
+        { key: 'amount', label: 'Amount', text: (row) => row.amount },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     readonly serviceTypes = signal<SimpleLookupDto[]>([]);
 

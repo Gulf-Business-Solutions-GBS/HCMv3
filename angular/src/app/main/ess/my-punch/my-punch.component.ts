@@ -19,6 +19,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -40,6 +43,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,6 +54,19 @@ export class MyPunchComponent extends MyRequestComponentBase<MyPunchRequestDto> 
     private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly punchTypes = signal<SimpleLookupDto[]>([]);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyPunchRequestDto>(this.rows, () => [
+        { key: 'punchType', label: 'PunchType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'punchDate', label: 'PunchDate', text: (row) => this.detailDate(row.transDate), sort: (row) => row.transDate?.toMillis() },
+        {
+            key: 'punchTime',
+            label: 'PunchTime',
+            text: (row) => (row.transTime ? row.transTime.toFormat('HH:mm') : this.l('PunchTimeFromDuty')),
+            sort: (row) => row.transTime?.toFormat('HH:mm'),
+        },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     /** Time is a string because it is optional: an employee who forgot to badge in rarely knows the minute. */
     form = { transTypeId: null as number | null, transDate: '', transTime: '' };

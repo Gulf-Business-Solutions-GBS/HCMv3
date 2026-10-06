@@ -69,18 +69,9 @@
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>{{ 'Bank' | localize }}</th>
-                                        <th>{{ 'AccountNumber' | localize }}</th>
-                                        <th>IBAN</th>
-                                        <th>{{ 'StartDate' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
                                 <tbody>
-                                    @for (row of rows(); track row.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
                                             <td>{{ bankName(row) }}</td>
                                             <!-- Masked server-side: the full number is never sent to a list. -->
@@ -116,6 +107,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

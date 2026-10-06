@@ -18,6 +18,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
@@ -63,6 +66,8 @@ interface PersonalDataSection {
         SubHeaderComponent,
         LocalizePipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         AttachmentsComponent,
         HelpPageDirective,
     ],
@@ -76,6 +81,20 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
 
     /** The row whose attachments are expanded in the list, if any. */
     readonly expandedId = signal<number | null>(null);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyPersonalDataChangeDto>(this.rows, () => [
+        {
+            key: 'changes',
+            label: 'Changes',
+            text: (row) =>
+                this.proposedFields(row)
+                    .map((change) => `${this.l(change.label)}: ${change.value}`)
+                    .join(' ') || this.l('NoData'),
+        },
+        { key: 'comments', label: 'Comments', text: (row) => row.comments },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     /**
      * The fields the employee may propose changes to.

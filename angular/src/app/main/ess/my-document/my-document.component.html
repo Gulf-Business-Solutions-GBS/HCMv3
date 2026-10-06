@@ -71,18 +71,9 @@
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>{{ 'DocumentType' | localize }}</th>
-                                        <th>{{ 'DocumentNumber' | localize }}</th>
-                                        <th>{{ 'IssueDate' | localize }}</th>
-                                        <th>{{ 'ExpiryDate' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
                                 <tbody>
-                                    @for (row of rows(); track row.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.documentNum }}</td>
@@ -127,6 +118,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

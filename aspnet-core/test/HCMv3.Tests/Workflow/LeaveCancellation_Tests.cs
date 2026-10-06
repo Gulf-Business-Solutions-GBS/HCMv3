@@ -96,6 +96,135 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
     }
 
     [Fact]
+    public async Task The_List_Should_Show_A_Granted_Cancellation_As_Cancel_Leave_Approved()
+    {
+        var meId = CreateCurrentUserEmployee("CAN170");
+        var approverId = EnableLeaveWorkflowWithApprover("CAN170APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
+
+        var row = await ListRowAsync(leaveId);
+        row.RequestAction.ShouldBe(WorkflowRequestAction.New);
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Approved);
+        var leaveNumber = row.RequestNumber;
+        leaveNumber.ShouldNotBeNullOrWhiteSpace();
+
+        var requestId = await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
+
+        row = await ListRowAsync(leaveId);
+
+        // The row keeps the number the leave was applied for under; the cancellation has its own, underneath.
+        row.RequestNumber.ShouldBe(leaveNumber);
+        row.Requests.Count.ShouldBe(2);
+        row.Requests[0].RequestNumber.ShouldBe(leaveNumber);
+        row.Requests[0].Action.ShouldBe(WorkflowRequestAction.New);
+        row.Requests[1].RequestNumber.ShouldNotBe(leaveNumber);
+        row.Requests[1].Action.ShouldBe(WorkflowRequestAction.Cancellation);
+        row.Requests[1].Outcome.ShouldBe(MyLeaveHistoryOutcome.AwaitingApproval);
+        row.RequestAction.ShouldBe(WorkflowRequestAction.Cancellation);
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Open);
+
+        await _approvalService.ApproveAsync(requestId, approverId, "ok");
+
+        // One of the standard statuses, never a status of its own: the request type says what was approved.
+        row = await ListRowAsync(leaveId);
+        row.RequestAction.ShouldBe(WorkflowRequestAction.Cancellation);
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Approved);
+        row.CanAmend.ShouldBeFalse();
+        row.CanRequestCancellation.ShouldBeFalse();
+        row.CanReturn.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task The_List_Should_Show_A_Rejected_Cancellation_As_Cancel_Leave_Rejected()
+    {
+        var meId = CreateCurrentUserEmployee("CAN180");
+        var approverId = EnableLeaveWorkflowWithApprover("CAN180APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
+
+        var requestId = await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
+        await _approvalService.RejectAsync(requestId, approverId, "Needed on those days");
+
+        var row = await ListRowAsync(leaveId);
+        row.RequestAction.ShouldBe(WorkflowRequestAction.Cancellation);
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Rejected);
+
+        // The leave itself stands, so it can be changed again.
+        row.CanRequestCancellation.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task The_List_Should_Go_Back_To_The_Leave_When_A_Cancellation_Is_Withdrawn()
+    {
+        var meId = CreateCurrentUserEmployee("CAN190");
+        var approverId = EnableLeaveWorkflowWithApprover("CAN190APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
+
+        await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
+        await _myLeaveAppService.WithdrawMyLeaveChange(new WithdrawMyLeaveChangeInput { Id = leaveId });
+
+        var row = await ListRowAsync(leaveId);
+        row.RequestAction.ShouldBe(WorkflowRequestAction.New);
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Approved);
+    }
+
+    [Fact]
+    public async Task Exporting_My_Leaves_Should_Produce_A_Workbook_With_A_Line_Per_Request()
+    {
+        var meId = CreateCurrentUserEmployee("CAN195");
+        var approverId = EnableLeaveWorkflowWithApprover("CAN195APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
+        await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });
+
+        var file = await _myLeaveAppService.GetMyLeavesToExcel(new ExportMyLeavesInput());
+
+        file.FileName.ShouldEndWith(".xlsx");
+
+        var bytes = Resolve<HCMv3.Storage.ITempFileCacheManager>().GetFile(file.FileToken);
+        using var book = new ClosedXML.Excel.XLWorkbook(new System.IO.MemoryStream(bytes));
+
+        // Title, blank, headings, then the leave and its cancellation.
+        book.Worksheets.Single().LastRowUsed().RowNumber().ShouldBe(5);
+    }
+
+    [Fact]
+    public async Task Exporting_My_Leaves_Should_Keep_To_The_Leaves_The_Screen_Is_Showing()
+    {
+        var meId = CreateCurrentUserEmployee("CAN196");
+        var approverId = EnableLeaveWorkflowWithApprover("CAN196APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var first = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 2, approverId);
+        await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(40), days: 2, approverId);
+
+        var file = await _myLeaveAppService.GetMyLeavesToExcel(new ExportMyLeavesInput { LeaveIds = new System.Collections.Generic.List<int> { first } });
+
+        var bytes = Resolve<HCMv3.Storage.ITempFileCacheManager>().GetFile(file.FileToken);
+        using var book = new ClosedXML.Excel.XLWorkbook(new System.IO.MemoryStream(bytes));
+
+        book.Worksheets.Single().LastRowUsed().RowNumber().ShouldBe(4);
+    }
+
+    private async Task<MyLeaveDto> ListRowAsync(int leaveId)
+    {
+        var list = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true });
+
+        return list.Items.Single(l => l.Id == leaveId);
+    }
+
+    [Fact]
     public async Task A_Pending_Leave_Should_Be_Withdrawn_Not_Cancelled_Through_Approval()
     {
         var meId = CreateCurrentUserEmployee("CAN130");
@@ -179,7 +308,8 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
         var dto = list.Items.Single(l => l.Id == leaveId);
 
         dto.CanRequestCancellation.ShouldBeTrue();
-        dto.CanReturn.ShouldBeTrue();
+        // Not yet: this leave starts a month from now, and a return is only offered once a leave has begun.
+        dto.CanReturn.ShouldBeFalse();
         dto.CanCancel.ShouldBeFalse();
 
         await _myLeaveAppService.RequestCancellationOfMyLeave(new RequestLeaveCancellationInput { Id = leaveId });

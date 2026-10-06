@@ -12,7 +12,9 @@ using Abp.Linq.Extensions;
 using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.Dto;
 using HCMv3.Ess.Dto;
+using HCMv3.Ess.Exporting;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.Storage;
 using HCMv3.Storage.Dto;
@@ -54,6 +56,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
     private readonly IRepository<EmployeeWorkflowRole> _employeeWorkflowRoleRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
+    private readonly HCMv3.Storage.ITempFileCacheManager _tempFileCacheManager;
 
     public MyLeaveAppService(
         IRepository<EmployeeAbsence> absenceRepository,
@@ -77,7 +80,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         IRepository<EmployeeSubGroupAbsenceType> subGroupAbsenceTypeRepository,
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
-        IRepository<RequestLog> requestLogRepository)
+        IRepository<RequestLog> requestLogRepository,
+        HCMv3.Storage.ITempFileCacheManager tempFileCacheManager)
     {
         _attachmentManager = attachmentManager;
         _employeeRepository = employeeRepository;
@@ -87,6 +91,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         _employeeManagerRepository = employeeManagerRepository;
         _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
         _requestLogRepository = requestLogRepository;
+        _tempFileCacheManager = tempFileCacheManager;
         _requestNumberGenerator = requestNumberGenerator;
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
@@ -381,6 +386,13 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             var query = _absenceRepository.GetAll()
                 .Include(a => a.AbsenceType)
                 .Where(a => a.EmployeeId == employeeId)
+
+                // One row per leave. Days that were added to a leave are rows of their own for payroll -- the
+                // paid and unpaid days a late return books, or the unpaid tail of a leave applied for beyond
+                // the balance -- but to the employee they are part of the leave they asked for, not more leave.
+                .Where(a => !_requestRepository.GetAll().Any(r => r.Id == a.WorkflowRequestId && r.IsAmendment))
+                .Where(a => a.WorkflowRequestId == null
+                            || !_absenceRepository.GetAll().Any(b => b.WorkflowRequestId == a.WorkflowRequestId && b.Id < a.Id))
                 // Besides what is current or waiting: a leave sent back to the employee, and (legacy's "Return"
                 // tab) an approved leave of a type that needs a return date and has none yet -- a return is
                 // reported AFTER the leave has ended, which is exactly when it would otherwise drop off the list.
@@ -402,8 +414,46 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
 
             await FillAmendmentStateAsync(dtos);
 
+            // Every request raised against each leave, for the lines under its row.
+            var requests = await BuildHistoryAsync(items);
+            foreach (var dto in dtos)
+            {
+                dto.Requests = requests[dto.Id];
+            }
+
             return new PagedResultDto<MyLeaveDto>(totalCount, dtos);
         }
+    }
+
+    /// <summary>
+    /// The leave list as a workbook: one line per request, the leave repeated on each. Built from the same
+    /// rows the list shows, so a row that is collapsed or on another page of the screen is still in it.
+    /// </summary>
+    [HttpPost]
+    public async Task<FileDto> GetMyLeavesToExcel(ExportMyLeavesInput input)
+    {
+        var all = await GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true, MaxResultCount = int.MaxValue });
+
+        // In the order the screen had them, when it says which ones it is showing.
+        var leaves = input?.LeaveIds == null
+            ? all.Items.ToList()
+            : input.LeaveIds
+                .Select(id => all.Items.FirstOrDefault(l => l.Id == id))
+                .Where(l => l != null)
+                .ToList();
+
+        var arabic = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+
+        using var book = EssListExcel.BuildLeaves(leaves, key => L(key), arabic);
+        using var stream = new System.IO.MemoryStream();
+        book.SaveAs(stream);
+
+        var file = new FileDto(
+            EssListExportAppService.FileNameOf(L("EssMyLeave")),
+            Abp.AspNetZeroCore.Net.MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet);
+        _tempFileCacheManager.SetFile(file.FileToken, stream.ToArray());
+
+        return file;
     }
 
     /// <summary>
@@ -417,8 +467,34 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     /// </summary>
     private async Task FillAmendmentStateAsync(List<MyLeaveDto> leaves)
     {
-        var approved = leaves.Where(l => l.WorkflowStatus == RequestStatus.Approved).ToList();
-        if (approved.Count == 0)
+        var ownRequestIds = leaves.Where(l => l.WorkflowRequestId.HasValue).Select(l => l.WorkflowRequestId.Value).ToList();
+
+        var ownRequests = ownRequestIds.Count == 0
+            ? new Dictionary<int, WorkflowRequest>()
+            : await _requestRepository.GetAll()
+                .Where(r => ownRequestIds.Contains(r.Id))
+                .ToDictionaryAsync(r => r.Id);
+
+        // Until a change says otherwise, the row shows the leave's own request.
+        foreach (var leave in leaves)
+        {
+            leave.RequestAction = leave.WorkflowStatus == RequestStatus.Cancelled
+                ? WorkflowRequestAction.Cancellation
+                : WorkflowRequestAction.New;
+            leave.DisplayStatus = OwnStatusOf(leave);
+
+            // A draft that was never sent has no request, and so no number yet.
+            if (leave.WorkflowRequestId.HasValue && ownRequests.TryGetValue(leave.WorkflowRequestId.Value, out var own))
+            {
+                leave.RequestNumber = own.RequestNumber;
+            }
+        }
+
+        // A cancelled leave is read too: its row shows the cancellation that was granted.
+        var decided = leaves
+            .Where(l => l.WorkflowStatus == RequestStatus.Approved || l.WorkflowStatus == RequestStatus.Cancelled)
+            .ToList();
+        if (decided.Count == 0)
         {
             return;
         }
@@ -426,11 +502,11 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         var amendable = await _workflowAmendmentService.IsAmendmentEnabledAsync(
             LeaveWorkflowTransactionHandler.LeaveRequestType);
 
-        var leaveIds = approved.Select(l => l.Id).ToList();
+        var leaveIds = decided.Select(l => l.Id).ToList();
 
         // Every change ever raised against these leaves, newest first: the newest one decides what the row
         // shows -- something in flight, a rejection nobody has followed up, or nothing.
-        var changes = (await _requestRepository.GetAll()
+        var allChanges = (await _requestRepository.GetAll()
             .Where(r => r.IsAmendment
                         && r.RequestType == LeaveWorkflowTransactionHandler.LeaveRequestType
                         && r.TargetEntityId.HasValue
@@ -438,10 +514,75 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             .OrderByDescending(r => r.Id)
             .ToListAsync())
             .GroupBy(r => r.TargetEntityId.Value)
-            .ToDictionary(g => g.Key, g => g.First());
+            .ToDictionary(g => g.Key, g => g.ToList());
 
-        foreach (var leave in approved)
+        var changes = allChanges.ToDictionary(g => g.Key, g => g.Value.First());
+
+        // A Draft request is either the employee's own unsent draft or one an approver sent back; only the
+        // log can tell them apart, and the screen words the two differently.
+        var draftIds = changes.Values.Where(r => r.RequestStatus == RequestStatus.Draft).Select(r => r.Id).ToList();
+
+        var sentBackIds = draftIds.Count == 0
+            ? new HashSet<int>()
+            : (await _requestLogRepository.GetAll()
+                .Where(l => draftIds.Contains(l.WorkflowRequestId)
+                            && (l.ActionType == RequestActionType.SentBack || l.ActionType == RequestActionType.SentBackToCreator))
+                .Select(l => l.WorkflowRequestId)
+                .Distinct()
+                .ToListAsync()).ToHashSet();
+
+        // The days a late return added, by the return that added them: shown on the leave's own row.
+        var returnIds = allChanges.Values
+            .SelectMany(raised => raised)
+            .Where(r => r.RequestStatus == RequestStatus.Approved)
+            .Select(r => r.Id)
+            .ToList();
+
+        var addedDays = returnIds.Count == 0
+            ? new List<EmployeeAbsence>()
+            : await _absenceRepository.GetAll()
+                .Where(a => a.WorkflowRequestId.HasValue && returnIds.Contains(a.WorkflowRequestId.Value))
+                .ToListAsync();
+
+        foreach (var leave in decided)
         {
+            if (allChanges.TryGetValue(leave.Id, out var mine))
+            {
+                var mineIds = mine.Select(r => r.Id).ToHashSet();
+
+                foreach (var added in addedDays.Where(a => a.Id != leave.Id && mineIds.Contains(a.WorkflowRequestId.Value)))
+                {
+                    leave.EndDate = added.EndDate > leave.EndDate ? added.EndDate : leave.EndDate;
+                    leave.TotalLeaveDays += added.TotalLeaveDays;
+                }
+            }
+
+            // What the row shows: the newest change the employee did not withdraw. A withdrawn one changed
+            // nothing, so the row goes back to what it showed before; it is still in the leave's history.
+            var shown = allChanges.TryGetValue(leave.Id, out var raised)
+                ? raised.FirstOrDefault(r => r.RequestStatus != RequestStatus.Closed)
+                : null;
+
+            if (shown != null)
+            {
+                leave.RequestAction = ActionOf(shown);
+                leave.DisplayStatus = shown.RequestStatus switch
+                {
+                    RequestStatus.Open => MyLeaveRequestStatus.Open,
+                    RequestStatus.Rejected => MyLeaveRequestStatus.Rejected,
+                    RequestStatus.Draft => sentBackIds.Contains(shown.Id)
+                        ? MyLeaveRequestStatus.SentBack
+                        : MyLeaveRequestStatus.Draft,
+                    _ => MyLeaveRequestStatus.Approved
+                };
+            }
+
+            // A cancelled leave is finished with: nothing further can be raised against it.
+            if (leave.WorkflowStatus == RequestStatus.Cancelled)
+            {
+                continue;
+            }
+
             changes.TryGetValue(leave.Id, out var latest);
 
             if (latest != null && (latest.RequestStatus == RequestStatus.Open || latest.RequestStatus == RequestStatus.Draft))
@@ -449,7 +590,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
                 leave.HasPendingAmendment = true;
                 leave.PendingAmendmentRequestId = latest.Id;
                 leave.PendingAction = ActionOf(latest);
-                leave.PendingIsSentBack = latest.RequestStatus == RequestStatus.Draft;
+                leave.PendingIsDraft = latest.RequestStatus == RequestStatus.Draft && !sentBackIds.Contains(latest.Id);
+                leave.PendingIsSentBack = latest.RequestStatus == RequestStatus.Draft && !leave.PendingIsDraft;
 
                 if (!string.IsNullOrWhiteSpace(latest.AmendmentJson))
                 {
@@ -457,6 +599,12 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
                     leave.ProposedStartDate = proposed.StartDate;
                     leave.ProposedEndDate = proposed.EndDate;
                     leave.ProposedReturnDate = proposed.ReturnDate;
+                    leave.ProposedAbsenceTypeId = proposed.AbsenceTypeId;
+                    leave.ProposedPaidStartDate = proposed.PaidStartDate;
+                    leave.ProposedPaidEndDate = proposed.PaidEndDate;
+                    leave.ProposedUnpaidStartDate = proposed.UnpaidStartDate;
+                    leave.ProposedUnpaidEndDate = proposed.UnpaidEndDate;
+                    leave.PendingReason = proposed.Reason;
                 }
 
                 continue;
@@ -471,7 +619,11 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             // return. Anything further is HR's to correct on the leave itself.
             leave.CanAmend = amendable && !leave.IsReturned;
             leave.CanRequestCancellation = amendable && !leave.IsReturned;
-            leave.CanReturn = amendable && !leave.IsReturned;
+
+            // A return can only be reported for a leave that has begun (legacy's Return tab listed leave whose
+            // start date had passed). Offering it earlier only leads to "the return date cannot be in the
+            // future".
+            leave.CanReturn = amendable && !leave.IsReturned && leave.StartDate.Date <= Clock.Now.Date;
         }
     }
 
@@ -938,41 +1090,254 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         }
 
         var previous = JsonSerializer.Deserialize<LeaveAmendment>(request.AmendmentJson);
+        var corrected = await BuildChangeAsync(leave, ActionOf(request), previous, input);
 
-        LeaveAmendment corrected;
-
-        if (previous.IsCancellation)
+        if (!corrected.IsCancellation && !corrected.IsReturned)
         {
-            corrected = BuildCancellation(leave, input.Reason ?? previous.Reason);
-        }
-        else if (previous.IsReturned)
-        {
-            (corrected, _) = await BuildReturnAmendmentAsync(leave, new ReturnFromLeaveInput
-            {
-                EmployeeAbsenceId = leave.Id,
-                RejoiningDate = input.RejoiningDate ?? previous.ReturnDate ?? default,
-                Reason = input.Reason ?? previous.Reason,
-                PaidStartDate = input.PaidStartDate,
-                PaidEndDate = input.PaidEndDate,
-                UnpaidStartDate = input.UnpaidStartDate,
-                UnpaidEndDate = input.UnpaidEndDate
-            });
-        }
-        else
-        {
-            corrected = await BuildAmendmentAsync(
-                leave,
-                input.AbsenceTypeId ?? previous.AbsenceTypeId,
-                input.StartDate ?? previous.StartDate,
-                input.EndDate ?? previous.EndDate,
-                input.Reason ?? previous.Reason);
-
             request.RequestSubTypeId = corrected.AbsenceTypeId;
         }
 
         await _workflowAmendmentService.ResubmitAsync(request.Id, JsonSerializer.Serialize(corrected), employeeId);
 
         return request.Id;
+    }
+
+    /// <summary>
+    /// The proposed values for an amendment, cancellation or return, from what the form sent. Anything the
+    /// form left out falls back to what the request already held, so a draft reopened and saved untouched
+    /// stays as it was.
+    /// </summary>
+    private async Task<LeaveAmendment> BuildChangeAsync(
+        EmployeeAbsence leave, WorkflowRequestAction action, LeaveAmendment previous, ResubmitMyLeaveChangeInput input)
+    {
+        switch (action)
+        {
+            case WorkflowRequestAction.Cancellation:
+                return BuildCancellation(leave, input.Reason ?? previous?.Reason);
+
+            case WorkflowRequestAction.Return:
+                var (returned, _) = await BuildReturnAmendmentAsync(leave, new ReturnFromLeaveInput
+                {
+                    EmployeeAbsenceId = leave.Id,
+                    RejoiningDate = input.RejoiningDate ?? previous?.ReturnDate ?? default,
+                    Reason = input.Reason ?? previous?.Reason,
+                    PaidStartDate = input.PaidStartDate,
+                    PaidEndDate = input.PaidEndDate,
+                    UnpaidStartDate = input.UnpaidStartDate,
+                    UnpaidEndDate = input.UnpaidEndDate
+                });
+
+                return returned;
+
+            default:
+                return await BuildAmendmentAsync(
+                    leave,
+                    input.AbsenceTypeId ?? previous?.AbsenceTypeId ?? leave.AbsenceTypeId,
+                    input.StartDate ?? previous?.StartDate ?? leave.StartDate,
+                    input.EndDate ?? previous?.EndDate ?? leave.EndDate,
+                    input.Reason ?? previous?.Reason);
+        }
+    }
+
+    public async Task<int> SaveMyLeaveChangeDraft(SaveMyLeaveChangeDraftInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        EmployeeAbsence leave;
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            leave = await _absenceRepository.FirstOrDefaultAsync(a => a.Id == input.EmployeeAbsenceId);
+        }
+
+        if (leave == null)
+        {
+            throw new UserFriendlyException(L("LeaveRequestNotFound"));
+        }
+
+        if (leave.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
+        }
+
+        if (leave.WorkflowStatus != RequestStatus.Approved)
+        {
+            throw new UserFriendlyException(L("OnlyAnApprovedLeaveCanBeAmended"));
+        }
+
+        EnsureNotReturned(leave);
+
+        var existing = await _workflowAmendmentService.GetInFlightAsync(
+            LeaveWorkflowTransactionHandler.LeaveRequestType, leave.Id);
+
+        if (existing != null)
+        {
+            // Already drafted (or sent back): the same request is saved again, whatever action it was for.
+            if (existing.RequestStatus != RequestStatus.Draft)
+            {
+                throw new UserFriendlyException(L("AnAmendmentIsAlreadyAwaitingApprovalForThisRecord"));
+            }
+
+            var previous = JsonSerializer.Deserialize<LeaveAmendment>(existing.AmendmentJson);
+            var saved = await BuildChangeAsync(leave, ActionOf(existing), previous, input);
+
+            await _workflowAmendmentService.UpdateDraftAsync(
+                existing.Id, JsonSerializer.Serialize(saved), employeeId,
+                saved.IsCancellation || saved.IsReturned ? null : saved.AbsenceTypeId);
+
+            return existing.Id;
+        }
+
+        var change = await BuildChangeAsync(leave, input.Action, null, input);
+
+        return await _workflowAmendmentService.CreateDraftAsync(
+            LeaveWorkflowTransactionHandler.LeaveRequestType,
+            leave.Id,
+            leave.EmployeeId,
+            JsonSerializer.Serialize(change),
+            employeeId,
+            change.AbsenceTypeId,
+            input.Action);
+    }
+
+    public async Task<ApplyForLeaveResultDto> SaveMyLeaveDraft(SaveMyLeaveDraftInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        if (input.EndDate.Date < input.StartDate.Date)
+        {
+            throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
+        }
+
+        EmployeeAbsence leave;
+
+        if (input.Id.HasValue)
+        {
+            leave = await GetMyUnsentLeaveAsync(input.Id.Value, employeeId);
+        }
+        else
+        {
+            // Draft, with no request yet: invisible to payroll and to every approver, and not a claim on the
+            // balance or on the dates. The leave rules are applied when it is submitted, not here -- a draft
+            // is what somebody saves precisely because it is not ready.
+            leave = new EmployeeAbsence { WorkflowStatus = RequestStatus.Draft };
+        }
+
+        await FillLeaveAsync(leave, input, employeeId);
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            if (leave.Id == 0)
+            {
+                await _absenceRepository.InsertAndGetIdAsync(leave);
+            }
+            else
+            {
+                await _absenceRepository.UpdateAsync(leave);
+            }
+        }
+
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await AttachUploadedFilesAsync(leave.Id, input.AttachmentFileTokens);
+
+        return new ApplyForLeaveResultDto
+        {
+            EmployeeAbsenceId = leave.Id,
+            WorkflowRequestId = leave.WorkflowRequestId,
+            SubmittedForApproval = false
+        };
+    }
+
+    public async Task<ApplyForLeaveResultDto> SubmitMyLeaveDraft(EntityDto input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+        var leave = await GetMyUnsentLeaveAsync(input.Id, employeeId);
+
+        return await SendForApprovalAsync(leave, employeeId);
+    }
+
+    public async Task<MyLeaveDto> GetMyLeaveForEdit(EntityDto input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        EmployeeAbsence leave;
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            leave = await _absenceRepository.GetAll()
+                .Include(a => a.AbsenceType)
+                .FirstOrDefaultAsync(a => a.Id == input.Id);
+        }
+
+        if (leave == null)
+        {
+            throw new UserFriendlyException(L("LeaveRequestNotFound"));
+        }
+
+        if (leave.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
+        }
+
+        var dto = ToDto(leave);
+        await FillAmendmentStateAsync(new List<MyLeaveDto> { dto });
+        await FillDelegateNamesAsync(dto);
+
+        return dto;
+    }
+
+    /// <summary>The employee's own leave that has not been sent yet, or was sent back: the only kind they may edit.</summary>
+    private async Task<EmployeeAbsence> GetMyUnsentLeaveAsync(int leaveId, int employeeId)
+    {
+        EmployeeAbsence leave;
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            leave = await _absenceRepository.FirstOrDefaultAsync(a => a.Id == leaveId);
+        }
+
+        if (leave == null)
+        {
+            throw new UserFriendlyException(L("LeaveRequestNotFound"));
+        }
+
+        if (leave.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
+        }
+
+        if (leave.WorkflowStatus != RequestStatus.Draft)
+        {
+            throw new UserFriendlyException(L("OnlyARequestSentBackToYouCanBeResubmitted"));
+        }
+
+        return leave;
+    }
+
+    private async Task FillDelegateNamesAsync(MyLeaveDto dto)
+    {
+        var ids = new[] { dto.PrimaryDelegateId, dto.SecondaryDelegateId, dto.ApproverDelegateId }
+            .Where(id => id.HasValue)
+            .Select(id => id.Value)
+            .Distinct()
+            .ToList();
+
+        if (ids.Count == 0)
+        {
+            return;
+        }
+
+        var names = (await _employeeRepository.GetAll()
+                .Where(e => ids.Contains(e.Id))
+                .Select(e => new { e.Id, e.Code, e.FullNameEn })
+                .ToListAsync())
+            .ToDictionary(e => e.Id, e => e.Code + " - " + e.FullNameEn);
+
+        string NameOf(int? id) => id.HasValue && names.TryGetValue(id.Value, out var name) ? name : null;
+
+        dto.PrimaryDelegateName = NameOf(dto.PrimaryDelegateId);
+        dto.SecondaryDelegateName = NameOf(dto.SecondaryDelegateId);
+        dto.ApproverDelegateName = NameOf(dto.ApproverDelegateId);
     }
 
     public async Task WithdrawMyLeaveChange(WithdrawMyLeaveChangeInput input)
@@ -1036,13 +1401,26 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
         }
 
-        var requests = await _requestRepository.GetAll()
+        return (await BuildHistoryAsync(new[] { leave }))[leave.Id];
+    }
+
+    /// <summary>
+    /// Every request raised against each of these leaves -- the application itself and each later amendment,
+    /// cancellation or return -- oldest first, with what it asked for and how it ended. Read for many leaves
+    /// at once because the list shows them under every row.
+    /// </summary>
+    private async Task<Dictionary<int, List<MyLeaveHistoryItemDto>>> BuildHistoryAsync(IReadOnlyCollection<EmployeeAbsence> leaves)
+    {
+        var leaveIds = leaves.Select(l => l.Id).ToList();
+
+        var allRequests = await _requestRepository.GetAll()
             .Where(r => r.RequestType == LeaveWorkflowTransactionHandler.LeaveRequestType
-                        && r.TargetEntityId == leave.Id)
+                        && r.TargetEntityId.HasValue
+                        && leaveIds.Contains(r.TargetEntityId.Value))
             .OrderBy(r => r.Id)
             .ToListAsync();
 
-        var requestIds = requests.Select(r => r.Id).ToList();
+        var requestIds = allRequests.Select(r => r.Id).ToList();
 
         var logs = await _requestLogRepository.GetAll()
             .Where(l => requestIds.Contains(l.WorkflowRequestId))
@@ -1058,93 +1436,101 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             })
             .ToListAsync();
 
-        var history = new List<MyLeaveHistoryItemDto>();
+        var result = new Dictionary<int, List<MyLeaveHistoryItemDto>>();
 
-        foreach (var request in requests)
+        foreach (var leave in leaves)
         {
-            var requestLogs = logs.Where(l => l.WorkflowRequestId == request.Id).ToList();
-            var created = requestLogs.FirstOrDefault(l => l.ActionType == RequestActionType.Created);
+            var requests = allRequests.Where(r => r.TargetEntityId == leave.Id).ToList();
+            var history = new List<MyLeaveHistoryItemDto>();
+            result[leave.Id] = history;
 
-            var item = new MyLeaveHistoryItemDto
+            foreach (var request in requests)
             {
-                WorkflowRequestId = request.Id,
-                RequestNumber = request.RequestNumber,
-                Action = ActionOf(request),
-                SubmittedOn = created?.ActionDateTime ?? request.CreationTime,
-                Reason = created?.RequestActionComment,
-                WasSentBack = requestLogs.Any(l => l.ActionType == RequestActionType.SentBack
-                                                   || l.ActionType == RequestActionType.SentBackToCreator)
-            };
+                var requestLogs = logs.Where(l => l.WorkflowRequestId == request.Id).ToList();
+                var created = requestLogs.FirstOrDefault(l => l.ActionType == RequestActionType.Created);
 
-            // The entry that ended it, when it has ended: the last approval, the rejection, or the withdrawal.
-            var deciding = request.RequestStatus switch
-            {
-                RequestStatus.Approved => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.Approved),
-                RequestStatus.Rejected => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.Rejected),
-                RequestStatus.Closed => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.Closed),
-                RequestStatus.Draft => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.SentBack
-                                                                      || l.ActionType == RequestActionType.SentBackToCreator),
-                _ => null
-            };
-
-            item.Outcome = request.RequestStatus switch
-            {
-                RequestStatus.Approved => MyLeaveHistoryOutcome.Approved,
-                RequestStatus.Rejected => MyLeaveHistoryOutcome.Rejected,
-                RequestStatus.Closed => MyLeaveHistoryOutcome.Withdrawn,
-                RequestStatus.Draft => MyLeaveHistoryOutcome.SentBack,
-                _ => MyLeaveHistoryOutcome.AwaitingApproval
-            };
-
-            if (deciding != null)
-            {
-                item.DecidedOn = deciding.ActionDateTime;
-                item.DecidedByNameEn = deciding.ActionByNameEn;
-                item.DecidedByNameAr = deciding.ActionByNameAr;
-                item.DecisionRemark = deciding.RequestActionComment;
-            }
-
-            if (request.IsAmendment && !string.IsNullOrWhiteSpace(request.AmendmentJson))
-            {
-                var proposed = JsonSerializer.Deserialize<LeaveAmendment>(request.AmendmentJson);
-
-                item.StartDate = proposed.StartDate;
-                item.EndDate = proposed.EndDate;
-                item.Days = proposed.TotalLeaveDays;
-                item.ReturnDate = proposed.ReturnDate;
-                item.PaidStartDate = proposed.PaidStartDate;
-                item.PaidEndDate = proposed.PaidEndDate;
-                item.UnpaidStartDate = proposed.UnpaidStartDate;
-                item.UnpaidEndDate = proposed.UnpaidEndDate;
-                item.Reason = proposed.Reason ?? item.Reason;
-
-                if (!string.IsNullOrWhiteSpace(request.SnapshotJson))
+                var item = new MyLeaveHistoryItemDto
                 {
-                    var before = JsonSerializer.Deserialize<LeaveAmendment>(request.SnapshotJson);
-                    item.BeforeStartDate = before.StartDate;
-                    item.BeforeEndDate = before.EndDate;
-                    item.BeforeDays = before.TotalLeaveDays;
+                    WorkflowRequestId = request.Id,
+                    RequestNumber = request.RequestNumber,
+                    Action = ActionOf(request),
+                    SubmittedOn = created?.ActionDateTime ?? request.CreationTime,
+                    Reason = created?.RequestActionComment,
+                    WasSentBack = requestLogs.Any(l => l.ActionType == RequestActionType.SentBack
+                                                       || l.ActionType == RequestActionType.SentBackToCreator)
+                };
+
+                // The entry that ended it, when it has ended: the last approval, the rejection, or the withdrawal.
+                var deciding = request.RequestStatus switch
+                {
+                    RequestStatus.Approved => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.Approved),
+                    RequestStatus.Rejected => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.Rejected),
+                    RequestStatus.Closed => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.Closed),
+                    RequestStatus.Draft => requestLogs.LastOrDefault(l => l.ActionType == RequestActionType.SentBack
+                                                                          || l.ActionType == RequestActionType.SentBackToCreator),
+                    _ => null
+                };
+
+                item.Outcome = request.RequestStatus switch
+                {
+                    RequestStatus.Approved => MyLeaveHistoryOutcome.Approved,
+                    RequestStatus.Rejected => MyLeaveHistoryOutcome.Rejected,
+                    RequestStatus.Closed => MyLeaveHistoryOutcome.Withdrawn,
+                    // A Draft request with no send-back in its log is one the employee saved and has not sent.
+                    RequestStatus.Draft => item.WasSentBack ? MyLeaveHistoryOutcome.SentBack : MyLeaveHistoryOutcome.Draft,
+                    _ => MyLeaveHistoryOutcome.AwaitingApproval
+                };
+
+                if (deciding != null)
+                {
+                    item.DecidedOn = deciding.ActionDateTime;
+                    item.DecidedByNameEn = deciding.ActionByNameEn;
+                    item.DecidedByNameAr = deciding.ActionByNameAr;
+                    item.DecisionRemark = deciding.RequestActionComment;
                 }
-            }
-            else
-            {
-                // The application itself. Its values were written straight to the row, so what it ASKED for is
-                // the earliest "before" any later change recorded -- or the row as it stands, if nothing has
-                // changed it since.
-                var firstChange = requests
-                    .Where(r => r.IsAmendment && r.Id > request.Id && !string.IsNullOrWhiteSpace(r.SnapshotJson))
-                    .Select(r => JsonSerializer.Deserialize<LeaveAmendment>(r.SnapshotJson))
-                    .FirstOrDefault();
 
-                item.StartDate = firstChange?.StartDate ?? leave.StartDate;
-                item.EndDate = firstChange?.EndDate ?? leave.EndDate;
-                item.Days = firstChange?.TotalLeaveDays ?? leave.TotalLeaveDays;
-            }
+                if (request.IsAmendment && !string.IsNullOrWhiteSpace(request.AmendmentJson))
+                {
+                    var proposed = JsonSerializer.Deserialize<LeaveAmendment>(request.AmendmentJson);
 
-            history.Add(item);
+                    item.StartDate = proposed.StartDate;
+                    item.EndDate = proposed.EndDate;
+                    item.Days = proposed.TotalLeaveDays;
+                    item.ReturnDate = proposed.ReturnDate;
+                    item.PaidStartDate = proposed.PaidStartDate;
+                    item.PaidEndDate = proposed.PaidEndDate;
+                    item.UnpaidStartDate = proposed.UnpaidStartDate;
+                    item.UnpaidEndDate = proposed.UnpaidEndDate;
+                    item.Reason = proposed.Reason ?? item.Reason;
+
+                    if (!string.IsNullOrWhiteSpace(request.SnapshotJson))
+                    {
+                        var before = JsonSerializer.Deserialize<LeaveAmendment>(request.SnapshotJson);
+                        item.BeforeStartDate = before.StartDate;
+                        item.BeforeEndDate = before.EndDate;
+                        item.BeforeDays = before.TotalLeaveDays;
+                    }
+                }
+                else
+                {
+                    // The application itself. Its values were written straight to the row, so what it ASKED for is
+                    // the earliest "before" any later change recorded -- or the row as it stands, if nothing has
+                    // changed it since.
+                    var firstChange = requests
+                        .Where(r => r.IsAmendment && r.Id > request.Id && !string.IsNullOrWhiteSpace(r.SnapshotJson))
+                        .Select(r => JsonSerializer.Deserialize<LeaveAmendment>(r.SnapshotJson))
+                        .FirstOrDefault();
+
+                    item.StartDate = firstChange?.StartDate ?? leave.StartDate;
+                    item.EndDate = firstChange?.EndDate ?? leave.EndDate;
+                    item.Days = firstChange?.TotalLeaveDays ?? leave.TotalLeaveDays;
+                }
+
+                history.Add(item);
+            }
         }
 
-        return history;
+        return result;
     }
 
     /// <summary>
@@ -1229,61 +1615,89 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             throw new UserFriendlyException(L("AbsenceTypeNotFound"));
         }
 
-        var leave = new EmployeeAbsence();
+        // Draft from the first write, so the row is invisible to payroll and reports from the moment it exists.
+        var leave = new EmployeeAbsence { WorkflowStatus = RequestStatus.Draft };
         await FillLeaveAsync(leave, input, employeeId);
 
+        await _absenceRepository.InsertAndGetIdAsync(leave);
+        await CurrentUnitOfWork.SaveChangesAsync();
+
+        // Files first: an absence type that REQUIRES a document is refused at submit without one, so the
+        // employee's upload has to be on the leave before it goes for approval.
+        await AttachUploadedFilesAsync(leave.Id, input.AttachmentFileTokens);
+
+        // Created and submitted in one step. Validation inside the handler (overlap, bookable balance) throws
+        // from here, and because it is one unit of work the half-created leave rolls back with it.
+        return await SendForApprovalAsync(leave, employeeId);
+    }
+
+    /// <summary>
+    /// Sends a leave row that is still the employee's own -- just created, a saved draft, or one sent back --
+    /// into the approval chain. Shared by applying in one step and by submitting a draft, so the two cannot
+    /// route differently.
+    ///
+    /// <para>
+    /// With workflow off for leave there is nobody to send it to: the row is made effective at once (status
+    /// cleared), which is the pre-workflow behaviour and what makes switching workflow off a real option.
+    /// </para>
+    /// </summary>
+    private async Task<ApplyForLeaveResultDto> SendForApprovalAsync(EmployeeAbsence leave, int employeeId)
+    {
         var workflowEnabled = await _requestMasterResolver.IsWorkflowEnabledAsync(LeaveWorkflowTransactionHandler.LeaveRequestType);
-
-        // Draft while workflow-managed, so the row is invisible to payroll and reports from the moment it
-        // exists. With workflow off it is left null, i.e. immediately effective -- the pre-workflow
-        // behaviour, and the reason turning workflow off for a type is a real option rather than a
-        // half-working one.
-        leave.WorkflowStatus = workflowEnabled ? RequestStatus.Draft : (RequestStatus?)null;
-
-        var leaveId = await _absenceRepository.InsertAndGetIdAsync(leave);
 
         if (!workflowEnabled)
         {
+            leave.WorkflowStatus = null;
+
+            using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+            {
+                await _absenceRepository.UpdateAsync(leave);
+            }
+
             return new ApplyForLeaveResultDto
             {
-                EmployeeAbsenceId = leaveId,
+                EmployeeAbsenceId = leave.Id,
                 SubmittedForApproval = false
             };
         }
 
-        var request = new WorkflowRequest
-        {
-            TenantId = AbpSession.TenantId ?? 0,
-            EmployeeId = employeeId,
-            RequestType = LeaveWorkflowTransactionHandler.LeaveRequestType,
-            TargetEntityId = leaveId,
-            RequestSubTypeId = input.AbsenceTypeId,
-            // One central counter for every request type, with no prefix: the number identifies the
-            // request, and the type is a column on it. A per-type scheme meant leave raised here and
-            // leave recorded by HR carried different-looking numbers for the same transaction.
-            RequestNumber = await _requestNumberGenerator.NextAsync("LV"),
-            RequestStatus = RequestStatus.Draft,
-            WorkflowStep = 0
-        };
+        int requestId;
 
-        var requestId = await _requestRepository.InsertAndGetIdAsync(request);
+        if (leave.WorkflowRequestId.HasValue)
+        {
+            // Sent back earlier: the same request goes round again, with its number, log and comments.
+            var existing = await _requestRepository.GetAsync(leave.WorkflowRequestId.Value);
+            existing.RequestSubTypeId = leave.AbsenceTypeId;
+            await _requestRepository.UpdateAsync(existing);
+            requestId = existing.Id;
+        }
+        else
+        {
+            requestId = await _requestRepository.InsertAndGetIdAsync(new WorkflowRequest
+            {
+                TenantId = AbpSession.TenantId ?? 0,
+                EmployeeId = employeeId,
+                RequestType = LeaveWorkflowTransactionHandler.LeaveRequestType,
+                TargetEntityId = leave.Id,
+                RequestSubTypeId = leave.AbsenceTypeId,
+                // One central counter for every request type, with no prefix: the number identifies the
+                // request, and the type is a column on it. A per-type scheme meant leave raised here and
+                // leave recorded by HR carried different-looking numbers for the same transaction.
+                RequestNumber = await _requestNumberGenerator.NextAsync("LV"),
+                RequestStatus = RequestStatus.Draft,
+                WorkflowStep = 0
+            });
+        }
 
         // Saved before submitting so the engine's own lookups and the handler's status stamp both see rows
         // that actually exist.
         await CurrentUnitOfWork.SaveChangesAsync();
 
-        // Files first: an absence type that REQUIRES a document is refused at submit without one, so the
-        // employee's upload has to be on the leave before it goes for approval.
-        await AttachUploadedFilesAsync(leaveId, input.AttachmentFileTokens);
-
-        // Created and submitted in one step: an employee should never be left holding a draft they have to
-        // remember to send. Validation inside the handler (overlap, bookable balance) throws from here, and
-        // because it is one unit of work the half-created leave rolls back with it.
         await _workflowApprovalService.SubmitAsync(requestId, employeeId);
 
         return new ApplyForLeaveResultDto
         {
-            EmployeeAbsenceId = leaveId,
+            EmployeeAbsenceId = leave.Id,
             WorkflowRequestId = requestId,
             SubmittedForApproval = true
         };
@@ -1578,6 +1992,21 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         return leave.WorkflowStatus == RequestStatus.Draft || leave.WorkflowStatus == RequestStatus.Open;
     }
 
+    /// <summary>
+    /// The leave's own request in the standard set of statuses. A leave HR entered has no request and is in
+    /// effect, so it reads as approved.
+    /// </summary>
+    private static MyLeaveRequestStatus OwnStatusOf(MyLeaveDto leave)
+    {
+        return leave.WorkflowStatus switch
+        {
+            RequestStatus.Draft => leave.IsSentBack ? MyLeaveRequestStatus.SentBack : MyLeaveRequestStatus.Draft,
+            RequestStatus.Open or RequestStatus.Transferred => MyLeaveRequestStatus.Open,
+            RequestStatus.Rejected => MyLeaveRequestStatus.Rejected,
+            _ => MyLeaveRequestStatus.Approved
+        };
+    }
+
     private static MyLeaveDto ToDto(EmployeeAbsence entity)
     {
         return new MyLeaveDto
@@ -1607,7 +2036,18 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
 
             // Applying creates and submits in one step, so a Draft row that has a request is one an approver
             // sent back.
-            IsSentBack = entity.WorkflowStatus == RequestStatus.Draft && entity.WorkflowRequestId.HasValue
+            IsSentBack = entity.WorkflowStatus == RequestStatus.Draft && entity.WorkflowRequestId.HasValue,
+
+            // ...and one with no request yet is a draft the employee saved and has not sent.
+            IsDraft = entity.WorkflowStatus == RequestStatus.Draft && !entity.WorkflowRequestId.HasValue,
+            CalendarDays = entity.CalendarDays,
+            LeavePaymentType = entity.LeavePaymentType,
+            PaymentDate = entity.PaymentDate == default ? null : entity.PaymentDate,
+            IsTravelling = entity.IsTravelling,
+            PrimaryDelegateId = entity.PrimaryDelegateId,
+            SecondaryDelegateId = entity.SecondaryDelegateId,
+            ApproverDelegateId = entity.ApproverDelegateId,
+            PolicyAccepted = entity.PolicyAcceptedOn.HasValue
         };
     }
 }

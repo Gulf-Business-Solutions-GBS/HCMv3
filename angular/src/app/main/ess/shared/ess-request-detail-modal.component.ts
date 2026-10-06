@@ -61,6 +61,19 @@ export interface EssRequestDecision {
  * have would be a regression. What changed is that a request with a workflow id also asks the server for its
  * own handler's projection, which is the only way the approver's side can see fields nobody passed it.</p>
  */
+/** One line of the "requests on this record" list in the dialog. */
+export interface EssRelatedRequest {
+    workflowRequestId: number;
+    requestNumber: string;
+    typeLabel: string;
+
+    /** What it asked for, in a few words: the dates, or the day of return. */
+    askedFor: string;
+    statusLabel: string;
+    statusClass: string;
+    decidedBy: string;
+}
+
 export interface EssRequestDetailConfig {
     title: string;
 
@@ -102,6 +115,16 @@ export interface EssRequestDetailConfig {
 
     /** What the asker wanted looked at, if they said.  */
     feedbackNote?: string;
+
+    /**
+     * The other requests raised against the same record, this one among them, oldest first -- a leave's
+     * application and the amendments, cancellations and returns that followed. Listed under the form, each
+     * opening in this same dialog.
+     */
+    relatedRequests?: EssRelatedRequest[];
+
+    /** The heading over that list. */
+    relatedTitle?: string;
 }
 
 /**
@@ -492,6 +515,21 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
         if (config.workflowRequestId) {
             this.loadDetail(config.workflowRequestId);
         }
+    }
+
+    /** Switches the dialog to another request against the same record, keeping the list to come back by. */
+    openRelated(related: EssRelatedRequest): void {
+        const current = this.config();
+        if (!current) {
+            return;
+        }
+
+        this.show({
+            ...current,
+            workflowRequestId: related.workflowRequestId,
+            statusLabel: related.statusLabel,
+            statusClass: related.statusClass,
+        });
     }
 
     close(): void {

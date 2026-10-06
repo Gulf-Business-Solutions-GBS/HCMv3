@@ -43,6 +43,23 @@ public interface IWorkflowAmendmentService
         WorkflowRequestAction requestAction = WorkflowRequestAction.Amendment);
 
     /// <summary>
+    /// Creates the amendment WITHOUT sending it: the requester's own draft, which only they can see and which
+    /// they later submit (<see cref="ResubmitAsync"/>) or withdraw. It still counts as the one request in
+    /// flight against the row, so a second cannot be raised beside it.
+    /// </summary>
+    Task<int> CreateDraftAsync(
+        string requestType,
+        int targetEntityId,
+        int employeeId,
+        string amendmentJson,
+        int actingEmployeeId,
+        int? requestSubTypeId = null,
+        WorkflowRequestAction requestAction = WorkflowRequestAction.Amendment);
+
+    /// <summary>Replaces the proposed values on a draft (or sent-back) amendment without submitting it.</summary>
+    Task UpdateDraftAsync(int requestId, string amendmentJson, int actingEmployeeId, int? requestSubTypeId = null);
+
+    /// <summary>
     /// Sends an amendment that was SENT BACK to its requester round again, with the values they corrected.
     /// The request keeps its number, its log and its comments; only the proposed values are replaced. The
     /// before-snapshot is left as taken when the change was first asked for.

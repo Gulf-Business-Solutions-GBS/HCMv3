@@ -146,16 +146,9 @@
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th data-help-loc="Changes">{{ 'Changes' | localize }}</th>
-                                        <th>{{ 'Comments' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
                                 <tbody>
-                                    @for (row of rows(); track row.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
                                             <td>
                                                 @for (change of proposedFields(row); track change.label) {
@@ -207,6 +200,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

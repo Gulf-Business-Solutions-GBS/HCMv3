@@ -20,6 +20,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -35,6 +38,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +51,16 @@ export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeReques
     readonly overtimeTypes = signal<SimpleLookupDto[]>([]);
 
     readonly Status = RequestStatus;
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyOvertimeRequestDto>(this.rows, () => [
+        { key: 'overtimeType', label: 'OvertimeType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'effectiveDate', label: 'EffectiveDate', text: (row) => this.detailDate(row.effectiveDate), sort: (row) => row.effectiveDate?.toMillis() },
+        { key: 'hours', label: 'Hours', text: (row) => row.overtimeHours },
+        // Blank until decided, as the cell is: the dash it shows there is not something to filter or sort by.
+        { key: 'approvedHours', label: 'ApprovedHours', text: (row) => (this.showsApprovedHours(row) ? row.approvedOvertimeHours : undefined) },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     form = {
         overtimeTypeId: null as number | null,

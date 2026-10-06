@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, computed, inject, signal } from '@angular/core';
+import { CommonModule, formatNumber } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -17,6 +17,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
@@ -40,12 +43,15 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemptionDto> implements OnInit {
     private readonly _service = inject(MyLoanExemptionServiceProxy);
+    private readonly _locale = inject(LOCALE_ID);
 
     readonly loans = signal<MyLoanForExemptionDto[]>([]);
 
@@ -55,6 +61,16 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
     readonly selectedLoan = computed(
         () => this.loans().find((loan) => loan.employeeLoanId === this.selectedLoanId()) ?? null
     );
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyLoanExemptionDto>(this.rows, () => [
+        { key: 'loanType', label: 'LoanType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'month', label: 'ExemptionMonth', text: (row) => row.exemptionDate?.toFormat('yyyy-MM') ?? '', sort: (row) => row.exemptionDate?.toMillis() },
+        { key: 'instalment', label: 'InstallmentAmount', text: (row) => this.amount(row.instalmentAmount), sort: (row) => row.instalmentAmount, align: 'end' },
+        { key: 'loanEndDate', label: 'LoanEndDate', text: (row) => this.detailDate(row.loanEndDate), sort: (row) => row.loanEndDate?.toMillis() },
+        { key: 'comments', label: 'Comments', text: (row) => row.comments },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     /** 'yyyy-MM' from an <input type="month">; the month is the unit an exemption is granted in. */
     form = { exemptionMonth: '', comments: '' };
@@ -127,6 +143,11 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
             .requestLoanExemption(input)
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
+    }
+
+    /** An amount as the list shows it: the number pipe's '1.3-3', in the same locale the pipe uses. */
+    private amount(value: number | undefined): string {
+        return value === undefined || value === null ? '' : formatNumber(value, this._locale, '1.3-3');
     }
 
     loanLabel(loan: MyLoanForExemptionDto): string {

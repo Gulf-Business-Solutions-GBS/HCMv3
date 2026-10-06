@@ -1,0 +1,390 @@
+<!-- Request Detail on the left, Leave Info on the right, as the legacy leave form has them. The same markup
+     serves the requester filling it in and an approver reading it: read-only means every input is disabled
+     where it stands, never a second layout. -->
+<div class="row g-5">
+    <div [ngClass]="info() ? 'col-12 col-md-8 col-xl-9' : 'col-12'">
+        <div class="card card-custom gutter-b mb-5">
+            <div class="card-body">
+                <h5 class="card-title" data-help-loc="RequestDetail">
+                    {{ 'RequestDetail' | localize }}
+                    @if (!isNew()) {
+                        <span class="badge badge-light-primary ms-2">
+                            {{ (isAmendment() ? 'AmendLeave' : isCancellation() ? 'CancelLeave' : 'ReturnFromLeave') | localize }}
+                        </span>
+                    }
+                </h5>
+
+                @if (!isNew() && value().currentLeave) {
+                    <!-- Said before the fields rather than after sending: the leave itself does not change
+                         when an amendment, cancellation or return is requested, only when it is approved. -->
+                    <div class="alert alert-light-primary py-3">
+                        <span class="text-muted">{{ 'CurrentApprovedLeave' | localize }}:</span>&nbsp;<strong>{{ value().currentLeave }}</strong>
+                        @if (!readOnly()) {
+                            <div class="small text-muted">{{ 'LeaveStaysAsApprovedUntilDecided' | localize }}</div>
+                        }
+                    </div>
+                }
+
+                <div class="row g-4">
+                    <div class="col-12 col-sm-6 col-xl-4">
+                        <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                        <input type="text" class="form-control" [value]="value().employeeDisplay" readonly disabled />
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-xl-4">
+                        <label class="form-label" data-help-loc="LeaveType">{{ 'LeaveType' | localize }}{{ datesEditable() ? ' *' : '' }}</label>
+                        @if (datesEditable()) {
+                            <select class="form-select" [(ngModel)]="value().absenceTypeId" (ngModelChange)="onTypeOrDatesChanged()">
+                                <option [ngValue]="null">--</option>
+                                @for (type of leaveTypes(); track type.id) {
+                                    <option [ngValue]="type.id">{{ typeNameOf(type) }}</option>
+                                }
+                            </select>
+                        } @else {
+                            <select class="form-select" disabled>
+                                <option>{{ value().leaveTypeLabel || typeNameOf(selectedType()) }}</option>
+                            </select>
+                        }
+                    </div>
+
+                    @if (showHalfDay()) {
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="HalfdayType">{{ 'HalfdayType' | localize }}</label>
+                            @if (readOnly()) {
+                                <select class="form-select" disabled>
+                                    <option>{{ value().halfdayLabel }}</option>
+                                </select>
+                            } @else {
+                                <select
+                                    class="form-select"
+                                    [(ngModel)]="value().halfdayType"
+                                    [disabled]="value().startDate !== value().endDate"
+                                    (ngModelChange)="onHalfdayChanged()">
+                                    <option [ngValue]="Halfday.None">{{ 'HalfdayType_None' | localize }}</option>
+                                    <option [ngValue]="Halfday.StartOfDuty">{{ 'HalfdayType_StartOfDuty' | localize }}</option>
+                                    <option [ngValue]="Halfday.EndOfDuty">{{ 'HalfdayType_EndOfDuty' | localize }}</option>
+                                </select>
+                            }
+                        </div>
+                    }
+
+                    @if (isNew()) {
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="LeavePaymentType">{{ 'LeavePaymentType' | localize }}</label>
+                            @if (readOnly()) {
+                                <select class="form-select" disabled>
+                                    <option>{{ value().leavePaymentLabel }}</option>
+                                </select>
+                            } @else {
+                                <select class="form-select" [(ngModel)]="value().leavePaymentType" (ngModelChange)="refresh()">
+                                    <option [ngValue]="PaymentType.PayWithPayroll">{{ 'LeavePaymentType_PayWithPayroll' | localize }}</option>
+                                    <option [ngValue]="PaymentType.PayInAdvance">{{ 'LeavePaymentType_PayInAdvance' | localize }}</option>
+                                </select>
+                            }
+                        </div>
+                    }
+
+                    <div class="col-12 col-sm-6 col-xl-4">
+                        <label class="form-label" data-help-loc="StartDate">{{ 'StartDate' | localize }}{{ datesEditable() ? ' *' : '' }}</label>
+                        @if (datesEditable()) {
+                            <input
+                                type="date"
+                                class="form-control"
+                                [(ngModel)]="value().startDate"
+                                [min]="isNew() ? (selectedType()?.earliestStartDate?.toISODate() ?? null) : null"
+                                [max]="isNew() ? (selectedType()?.latestStartDate?.toISODate() ?? null) : null"
+                                (ngModelChange)="onTypeOrDatesChanged()" />
+                        } @else {
+                            <input type="text" class="form-control" [value]="asDayMonthYear(value().startDate)" readonly disabled />
+                        }
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-xl-4">
+                        <label class="form-label" data-help-loc="EndDate">{{ 'EndDate' | localize }}{{ datesEditable() ? ' *' : '' }}</label>
+                        @if (datesEditable()) {
+                            <input type="date" class="form-control" [(ngModel)]="value().endDate" (ngModelChange)="onTypeOrDatesChanged()" />
+                        } @else {
+                            <input type="text" class="form-control" [value]="asDayMonthYear(value().endDate)" readonly disabled />
+                        }
+                    </div>
+
+                    @if (showTimes()) {
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="StartTime">{{ 'StartTime' | localize }}{{ !readOnly() && timesRequired() ? ' *' : '' }}</label>
+                            <input
+                                type="time"
+                                class="form-control"
+                                [(ngModel)]="value().startTime"
+                                [disabled]="readOnly() || !timesEnabled()"
+                                (ngModelChange)="refresh()" />
+                        </div>
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="EndTime">{{ 'EndTime' | localize }}{{ !readOnly() && timesRequired() ? ' *' : '' }}</label>
+                            <input
+                                type="time"
+                                class="form-control"
+                                [(ngModel)]="value().endTime"
+                                [disabled]="readOnly() || !timesEnabled()"
+                                (ngModelChange)="refresh()" />
+                        </div>
+                    }
+
+                    @if (isNew() && showPaymentDate()) {
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="PaymentDate">{{ 'PaymentDate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="asDayMonthYear(value().paymentDate)" readonly disabled />
+                            } @else {
+                                <input type="date" class="form-control" [(ngModel)]="value().paymentDate" />
+                            }
+                        </div>
+                    }
+
+                    @if (isNew() && showTravelling()) {
+                        <div class="col-12 col-sm-6 col-xl-4 d-flex align-items-end">
+                            <label class="form-check form-check-custom form-check-solid mb-3">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="value().isTravelling" [disabled]="readOnly()" />
+                                <span class="form-check-label" data-help-loc="AreYouTravelling">{{ 'AreYouTravelling' | localize }}</span>
+                            </label>
+                        </div>
+                    }
+
+                    @if (isNew()) {
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="PrimaryDelegate">{{ 'PrimaryDelegate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="value().primaryDelegate?.label ?? ''" readonly disabled />
+                            } @else {
+                                <p-autoComplete
+                                    inputId="LeavePrimaryDelegate"
+                                    [(ngModel)]="value().primaryDelegate"
+                                    (ngModelChange)="onPrimaryDelegateChanged()"
+                                    [suggestions]="delegateSuggestions()"
+                                    (completeMethod)="searchDelegates($event)"
+                                    optionLabel="label"
+                                    [forceSelection]="true"
+                                    [showClear]="true"
+                                    [delay]="150"
+                                    [placeholder]="'TypeToSearchEmployee' | localize"
+                                    styleClass="w-100"
+                                    inputStyleClass="form-control" />
+                            }
+                        </div>
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="SecondaryDelegate">{{ 'SecondaryDelegate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="value().secondaryDelegate?.label ?? ''" readonly disabled />
+                            } @else {
+                                <!-- Legacy: a secondary delegation cannot be chosen before a primary one. -->
+                                <p-autoComplete
+                                    inputId="LeaveSecondaryDelegate"
+                                    [(ngModel)]="value().secondaryDelegate"
+                                    [disabled]="!value().primaryDelegate"
+                                    [suggestions]="delegateSuggestions()"
+                                    (completeMethod)="searchDelegates($event, true)"
+                                    optionLabel="label"
+                                    [forceSelection]="true"
+                                    [showClear]="true"
+                                    [delay]="150"
+                                    [placeholder]="'TypeToSearchEmployee' | localize"
+                                    styleClass="w-100"
+                                    inputStyleClass="form-control" />
+                            }
+                        </div>
+
+                        <!-- Only for somebody who has approvals to hand over: a manager or a workflow role holder. -->
+                        @if (showApproverDelegation()) {
+                            <div class="col-12 col-sm-6 col-xl-4">
+                                <label class="form-label" data-help-loc="ApproverDelegate">{{ 'ApproverDelegate' | localize }}</label>
+                                @if (readOnly()) {
+                                    <input type="text" class="form-control" [value]="value().approverDelegate?.label ?? ''" readonly disabled />
+                                } @else {
+                                    <p-autoComplete
+                                        inputId="LeaveApproverDelegate"
+                                        [(ngModel)]="value().approverDelegate"
+                                        [suggestions]="delegateSuggestions()"
+                                        (completeMethod)="searchDelegates($event)"
+                                        optionLabel="label"
+                                        [forceSelection]="true"
+                                        [showClear]="true"
+                                        [delay]="150"
+                                        [placeholder]="'TypeToSearchEmployee' | localize"
+                                        styleClass="w-100"
+                                        inputStyleClass="form-control" />
+                                }
+                            </div>
+                        }
+                    }
+
+                    @if (isReturn()) {
+                        <div class="col-12 col-sm-6 col-xl-4">
+                            <label class="form-label" data-help-loc="ReturnDate">{{ 'ReturnDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="asDayMonthYear(value().returnDate)" readonly disabled />
+                            } @else {
+                                <input type="date" class="form-control" [(ngModel)]="value().returnDate" (ngModelChange)="previewReturn()" />
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (isReturn() && !readOnly() && returnPreview(); as preview) {
+                    <div class="alert mt-4 mb-0" [ngClass]="preview.kind === ReturnKind.Late ? 'alert-warning' : 'alert-info'">
+                        {{ returnKindMessage(preview) }}
+                    </div>
+                }
+
+                <!-- Late return only: the dates that fill the gap between the end of the leave and the return.
+                     Proposed by the server; the employee may adjust them before sending. -->
+                @if (isReturn() && isLateReturn()) {
+                    <div class="row g-4 mt-0">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <label class="form-label" data-help-loc="PaidLeaveStartDate">{{ 'PaidLeaveStartDate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="asDayMonthYear(value().paidStartDate)" readonly disabled />
+                            } @else {
+                                <input type="date" class="form-control" [(ngModel)]="value().paidStartDate" />
+                            }
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <label class="form-label" data-help-loc="PaidLeaveEndDate">{{ 'PaidLeaveEndDate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="asDayMonthYear(value().paidEndDate)" readonly disabled />
+                            } @else {
+                                <input type="date" class="form-control" [(ngModel)]="value().paidEndDate" />
+                            }
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <label class="form-label" data-help-loc="UnpaidLeaveStartDate">{{ 'UnpaidLeaveStartDate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="asDayMonthYear(value().unpaidStartDate)" readonly disabled />
+                            } @else {
+                                <input type="date" class="form-control" [(ngModel)]="value().unpaidStartDate" />
+                            }
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <label class="form-label" data-help-loc="UnpaidLeaveEndDate">{{ 'UnpaidLeaveEndDate' | localize }}</label>
+                            @if (readOnly()) {
+                                <input type="text" class="form-control" [value]="asDayMonthYear(value().unpaidEndDate)" readonly disabled />
+                            } @else {
+                                <input type="date" class="form-control" [(ngModel)]="value().unpaidEndDate" />
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Sick leave only: how it will be paid, shown before applying because the rate depends on
+                     how much sick leave has already been taken this year. -->
+                @if (!readOnly() && sickLeaveSegments().length) {
+                    <div class="alert alert-light-warning mt-4 mb-0">
+                        <h6 class="mb-2" data-help-loc="SickLeaveDeductionBreakdown">{{ 'SickLeaveDeductionBreakdown' | localize }}</h6>
+                        <ul class="mb-0 ps-4">
+                            @for (segment of sickLeaveSegments(); track segment.fromDate) {
+                                <li>
+                                    {{
+                                        (segment.deductionUnit === DeductionUnitPercentage ? 'SickLeaveDeductionSegment' : 'SickLeaveDeductionSegmentDays')
+                                            | localize: segment.fromDate?.toFormat('dd/MM/yyyy') : segment.toDate?.toFormat('dd/MM/yyyy') : segment.deductionNumber
+                                    }}
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (isNew() && !readOnly()) {
+                    @if (selectedType()?.requirePolicyAcceptance) {
+                        <div class="mt-4">
+                            <label class="form-check form-check-custom form-check-solid">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="value().policyAccepted" />
+                                <span class="form-check-label" data-help-loc="LeavePolicy">
+                                    {{ 'IHaveReadAndAcceptThe' | localize }}
+                                    @if (selectedType()?.policyAttachmentId) {
+                                        <a href="javascript:;" (click)="openPolicy(); $event.preventDefault()">{{ 'LeavePolicy' | localize }}</a>
+                                    } @else {
+                                        {{ 'LeavePolicy' | localize }}
+                                    }
+                                    *
+                                </span>
+                            </label>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        @if (selectedType()?.isAttachmentRequired) {
+                            <span class="badge badge-light-warning mb-2" data-help-loc="Attachments">{{ 'RequiredForThisLeaveType' | localize }}</span>
+                        }
+
+                        <!-- Held on the form and sent WITH the leave, so a required document is there at the
+                             moment of submitting. -->
+                        <app-attachments #formAttachments entityType="EmployeeAbsence" [entityId]="null" [showLimitsHint]="false" />
+
+                        <!-- A draft or a leave being resent keeps what was attached before. -->
+                        @if (value().leaveId) {
+                            <app-attachments entityType="EmployeeAbsence" [entityId]="value().leaveId" [showLimitsHint]="false" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Leave Info: the figures on the right, re-asked of the server whenever the leave type or a date changes. -->
+    @if (info(); as figures) {
+        <div class="col-12 col-md-4 col-xl-3">
+            <div class="card card-custom gutter-b mb-5">
+                <div class="card-body">
+                    <h5 class="card-title" data-help-loc="LeaveInfo">{{ 'LeaveInfo' | localize }}</h5>
+
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted" data-help-loc="CalendarDays">{{ 'CalendarDays' | localize }}</span>
+                        <span class="fw-bold">{{ figures.calendarDays || '–' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted" data-help-loc="LeaveDays">{{ 'LeaveDays' | localize }}</span>
+                        <span class="fw-bold">{{ figures.leaveDays || '–' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted" data-help-loc="CurrentBalance">{{ 'CurrentBalance' | localize }}</span>
+                        <span class="fw-bold">{{ figures.current || '–' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted" data-help-loc="BookableBalance">{{ 'BookableBalance' | localize }}</span>
+                        <span class="fw-bold">{{ figures.bookable || '–' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2">
+                        <span class="text-muted" data-help-loc="UpdatedBalance">{{ 'UpdatedBalance' | localize }}</span>
+                        <span class="fw-bold" [class.text-danger]="figures.updated.startsWith('-')">{{ figures.updated || '–' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Request Comment is its own card, as on the exit permit: what the requester says to the approver. Shown
+     only while it is being written; once sent, the same words open the conversation in the detail view. -->
+@if (!readOnly()) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            <h5 class="card-title" data-help-loc="RequestComment">{{ requestCommentLabel() }}{{ isAmendment() || isCancellation() ? ' *' : '' }}</h5>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <textarea class="form-control" rows="3" maxlength="2000" [(ngModel)]="value().comments"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <!-- The standard three, in the standard order: Save files a draft only the requester can see,
+                     Submit sends it into the approval chain, Cancel drops what is on screen. -->
+                <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saved.emit()" data-help-loc="Save">
+                    {{ 'Save' | localize }}
+                </button>
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()" data-help-loc="Submit">
+                    {{ 'Submit' | localize }}
+                </button>
+                <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
+            </div>
+        </div>
+    </div>
+}

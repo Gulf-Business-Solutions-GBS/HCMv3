@@ -22,6 +22,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -43,6 +46,8 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,6 +66,22 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
     /** The row whose return is being recorded, if any. Null means the return form is closed. */
     readonly returningRow = signal<MyPassportWithdrawalDto | null>(null);
     readonly returning = signal(false);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyPassportWithdrawalDto>(this.rows, () => [
+        { key: 'documentType', label: 'DocumentType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'documentNumber', label: 'DocumentNumber', text: (row) => row.documentNum },
+        { key: 'withdrawDate', label: 'WithdrawDate', text: (row) => this.detailDate(row.withdrawDate), sort: (row) => row.withdrawDate?.toMillis() },
+        { key: 'returnDate', label: 'ReturnDate', text: (row) => this.detailDate(row.returnDate), sort: (row) => row.returnDate?.toMillis() },
+        {
+            key: 'actualReturnDate',
+            label: 'ActualReturnDate',
+            text: (row) => (row.actualReturnDate ? this.detailDate(row.actualReturnDate) : this.l('StillOut')),
+            sort: (row) => row.actualReturnDate?.toMillis(),
+        },
+        { key: 'guarantor', label: 'Guarantor', text: (row) => this.guarantorName(row) },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     form = {
         employeeDocumentId: null as number | null,

@@ -133,6 +133,91 @@ public class MyLeaveDto : EntityDto<int>
     /// exactly as it was; this is what lets the list say "amendment rejected" instead of looking untouched.
     /// </summary>
     public WorkflowRequestAction? LastRejectedAction { get; set; }
+
+    /// <summary>
+    /// The request the row is showing: the leave itself, or the latest amendment, cancellation or return raised
+    /// against it. A request the employee withdrew is passed over -- it changed nothing -- and stays in the
+    /// leave's history.
+    /// </summary>
+    public WorkflowRequestAction RequestAction { get; set; }
+
+    /// <summary>
+    /// The status of <see cref="RequestAction"/>, from the one set every self-service request uses. A leave
+    /// whose cancellation was granted therefore reads "Cancel Leave / Approved".
+    /// </summary>
+    public MyLeaveRequestStatus DisplayStatus { get; set; }
+
+    /// <summary>
+    /// The leave's own number -- the one it was applied for under -- which it keeps for life. Later requests
+    /// against it have numbers of their own, in <see cref="Requests"/>. Empty for a draft not yet sent.
+    /// </summary>
+    public string RequestNumber { get; set; }
+
+    /// <summary>
+    /// Every request raised against this leave, oldest first: the application itself, then each amendment,
+    /// cancellation or return, with its own number. The list shows them under the leave's row.
+    /// </summary>
+    public List<MyLeaveHistoryItemDto> Requests { get; set; } = new();
+
+    /// <summary>
+    /// True for a leave the employee SAVED and has not sent yet: a draft only they can see. Different from
+    /// <see cref="IsSentBack"/>, which is a leave an approver returned to them.
+    /// </summary>
+    public bool IsDraft { get; set; }
+
+    /// <summary>True when the in-flight action is the employee's own unsent draft rather than one sent back.</summary>
+    public bool PendingIsDraft { get; set; }
+
+    /// <summary>What the employee wrote on the in-flight action, so reopening it shows the same words.</summary>
+    public string PendingReason { get; set; }
+
+    public int? ProposedAbsenceTypeId { get; set; }
+
+    public DateTime? ProposedPaidStartDate { get; set; }
+
+    public DateTime? ProposedPaidEndDate { get; set; }
+
+    public DateTime? ProposedUnpaidStartDate { get; set; }
+
+    public DateTime? ProposedUnpaidEndDate { get; set; }
+
+    public double CalendarDays { get; set; }
+
+    public LeavePaymentType LeavePaymentType { get; set; }
+
+    public DateTime? PaymentDate { get; set; }
+
+    public bool IsTravelling { get; set; }
+
+    public int? PrimaryDelegateId { get; set; }
+
+    public string PrimaryDelegateName { get; set; }
+
+    public int? SecondaryDelegateId { get; set; }
+
+    public string SecondaryDelegateName { get; set; }
+
+    public int? ApproverDelegateId { get; set; }
+
+    public string ApproverDelegateName { get; set; }
+
+    public bool PolicyAccepted { get; set; }
+}
+
+/// <summary>A leave saved without sending it. <c>Id</c> is the draft being saved again, or empty for a new one.</summary>
+public class SaveMyLeaveDraftInput : ApplyForLeaveInput
+{
+    public int? Id { get; set; }
+}
+
+/// <summary>
+/// An amendment, cancellation or return saved without sending it. The approved leave is untouched; the draft
+/// is the one request in flight against it until it is submitted or withdrawn.
+/// </summary>
+public class SaveMyLeaveChangeDraftInput : ResubmitMyLeaveChangeInput
+{
+    /// <summary>Which action is being drafted. Ignored when a draft already exists for the leave.</summary>
+    public WorkflowRequestAction Action { get; set; } = WorkflowRequestAction.Amendment;
 }
 
 public class GetMyLeavesInput : PagedAndSortedResultRequestDto, IShouldNormalize
@@ -376,13 +461,29 @@ public class RequestLeaveCancellationInput : EntityDto<int>
 }
 
 /// <summary>How one request against a leave ended, or where it stands.</summary>
+/// <summary>
+/// The statuses a self-service request is shown with -- the same words for every kind of request.
+/// </summary>
+public enum MyLeaveRequestStatus
+{
+    Draft = 0,
+    Open = 1,
+    Approved = 2,
+    Rejected = 3,
+    SentBack = 4,
+    Withdrawn = 5
+}
+
 public enum MyLeaveHistoryOutcome
 {
     AwaitingApproval = 0,
     Approved = 1,
     Rejected = 2,
     SentBack = 3,
-    Withdrawn = 4
+    Withdrawn = 4,
+
+    /// <summary>Saved by the employee and not sent yet.</summary>
+    Draft = 5
 }
 
 /// <summary>

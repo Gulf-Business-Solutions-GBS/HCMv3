@@ -88,19 +88,9 @@
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>{{ 'LoanType' | localize }}</th>
-                                        <th>{{ 'ExemptionMonth' | localize }}</th>
-                                        <th class="text-end">{{ 'InstallmentAmount' | localize }}</th>
-                                        <th>{{ 'LoanEndDate' | localize }}</th>
-                                        <th>{{ 'Comments' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
                                 <tbody>
-                                    @for (row of rows(); track row.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.exemptionDate | luxonFormat: 'yyyy-MM' }}</td>
@@ -136,6 +126,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

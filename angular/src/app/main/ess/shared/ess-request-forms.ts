@@ -4,7 +4,8 @@ import {
     ExitPermitFormComponent,
     ExitPermitFormValue,
 } from '../my-exit-permit/exit-permit-form.component';
-import { TravelReason } from '@shared/service-proxies/service-proxies';
+import { HalfdayType, LeavePaymentType, TravelReason, WorkflowRequestAction } from '@shared/service-proxies/service-proxies';
+import { LeaveFormValue, LeaveRequestFormComponent } from '../my-leave/leave-request-form.component';
 
 /**
  * What the modal knows about the request while it builds the form's value: the projected fields, keyed by
@@ -40,6 +41,59 @@ export interface EssRequestFormRegistration {
  * <c>WorkflowRequest.RequestType</c> holds.</p>
  */
 export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
+    EmployeeAbsence: {
+        component: LeaveRequestFormComponent,
+        toValue: (context): LeaveFormValue => {
+            const v = context.values;
+            const dmy = (iso: string | undefined) => {
+                const [year, month, day] = (iso ?? '').split('-');
+                return year && month && day ? `${day.substring(0, 2)}/${month}/${year}` : '';
+            };
+            const person = (name: string | undefined) => (name ? { id: 0, label: name } : null);
+
+            // What is being asked for: the leave itself, or an amendment, cancellation or return against it.
+            const action =
+                WorkflowRequestAction[(v['RequestAction'] ?? 'New') as keyof typeof WorkflowRequestAction] ?? WorkflowRequestAction.New;
+
+            return {
+                action,
+                employeeDisplay: context.employeeDisplay,
+                absenceTypeId: null,
+                leaveTypeLabel: v['LeaveType'] ?? '',
+
+                // Already ISO yyyy-MM-dd from the projection. For an amendment these are the PROPOSED dates;
+                // the dates on file today are in currentLeave below.
+                startDate: v['StartDate'] ?? '',
+                endDate: v['EndDate'] ?? '',
+                halfdayType: HalfdayType.None,
+                halfdayLabel: v['HalfdayType'] ?? '',
+                startTime: v['StartTime'] ?? '',
+                endTime: v['EndTime'] ?? '',
+                leavePaymentType: LeavePaymentType.PayWithPayroll,
+                leavePaymentLabel: v['LeavePaymentType'] ?? '',
+                paymentDate: v['PaymentDate'] ?? '',
+                isTravelling: v['IsTravelling'] === 'true',
+                primaryDelegate: person(v['PrimaryDelegation']),
+                secondaryDelegate: person(v['SecondaryDelegation']),
+                approverDelegate: person(v['ApproverDelegation']),
+                policyAccepted: false,
+                comments: v['Reason'] ?? v['Comments'] ?? '',
+                returnDate: v['ReturnDate'] ?? '',
+                paidStartDate: v['PaidLeaveStartDate'] ?? '',
+                paidEndDate: v['PaidLeaveEndDate'] ?? '',
+                unpaidStartDate: v['UnpaidLeaveStartDate'] ?? '',
+                unpaidEndDate: v['UnpaidLeaveEndDate'] ?? '',
+                currentLeave: v['CurrentStartDate']
+                    ? `${v['CurrentLeaveType'] ?? ''} · ${dmy(v['CurrentStartDate'])} – ${dmy(v['CurrentEndDate'])} · ${v['CurrentLeaveDays'] ?? ''}`
+                    : undefined,
+                calendarDays: v['CalendarDays'] ?? '',
+                leaveDays: v['LeaveDays'] ?? '',
+                currentBalance: v['CurrentBalance'] ?? '',
+                bookableBalance: v['BookableBalance'] ?? '',
+                updatedBalance: v['UpdatedBalance'] ?? '',
+            };
+        },
+    },
     EmployeeExitPermit: {
         component: ExitPermitFormComponent,
         toValue: (context): ExitPermitFormValue => ({

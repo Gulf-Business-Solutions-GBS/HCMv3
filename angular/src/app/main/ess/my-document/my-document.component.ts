@@ -17,6 +17,9 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
@@ -34,6 +37,8 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         AttachmentsComponent,
         HelpPageDirective,
     ],
@@ -42,6 +47,15 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentRequestDto> implements OnInit {
     private readonly _service = inject(MyDocumentServiceProxy);
     private readonly _lookups = inject(EssLookupServiceProxy);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyDocumentRequestDto>(this.rows, () => [
+        { key: 'type', label: 'DocumentType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'number', label: 'DocumentNumber', text: (row) => row.documentNum },
+        { key: 'issueDate', label: 'IssueDate', text: (row) => this.detailDate(row.issueDate), sort: (row) => row.issueDate?.toMillis() },
+        { key: 'expiryDate', label: 'ExpiryDate', text: (row) => this.detailDate(row.expiryDate), sort: (row) => row.expiryDate?.toMillis() },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     readonly documentTypes = signal<SimpleLookupDto[]>([]);
 

@@ -328,20 +328,9 @@
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 40px"></th>
-                                        <th>{{ 'TravelType' | localize }}</th>
-                                        <th>{{ 'StartDate' | localize }}</th>
-                                        <th>{{ 'EndDate' | localize }}</th>
-                                        <th>{{ 'TravelPurpose' | localize }}</th>
-                                        <th class="text-end">{{ 'TotalTravelCost' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
                                 <tbody>
-                                    @for (row of rows(); track row.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
                                             <td>
                                                 <button class="btn btn-sm btn-link p-0" (click)="toggleRow(row)">
@@ -435,6 +424,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

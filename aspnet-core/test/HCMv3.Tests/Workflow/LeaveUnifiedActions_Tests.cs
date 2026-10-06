@@ -122,7 +122,8 @@ public class LeaveUnifiedActions_Tests : EssLeaveWorkflowTestBase
         dto.HasPendingAmendment.ShouldBeFalse();
         dto.CanAmend.ShouldBeTrue();
         dto.CanRequestCancellation.ShouldBeTrue();
-        dto.CanReturn.ShouldBeTrue();
+        // Not yet: this leave starts a month from now, and a return is only offered once a leave has begun.
+        dto.CanReturn.ShouldBeFalse();
     }
 
     [Fact]
@@ -216,6 +217,119 @@ public class LeaveUnifiedActions_Tests : EssLeaveWorkflowTestBase
         // Still with the approver: there is nothing to correct yet.
         await Assert.ThrowsAsync<UserFriendlyException>(() =>
             _myLeaveAppService.ResubmitMyLeaveChange(new ResubmitMyLeaveChangeInput { EmployeeAbsenceId = leaveId }));
+    }
+
+    // ------------------------------------------------------------------ Save (draft), then Submit
+
+    [Fact]
+    public async Task A_Saved_Leave_Should_Be_A_Draft_Nobody_Else_Sees_Until_It_Is_Submitted()
+    {
+        var meId = CreateCurrentUserEmployee("UNI150");
+        var approverId = EnableLeaveWorkflowWithApprover("UNI150APP");
+        var typeId = AllDaysCountType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var saved = await _myLeaveAppService.SaveMyLeaveDraft(new SaveMyLeaveDraftInput
+        {
+            AbsenceTypeId = typeId,
+            StartDate = Soon,
+            EndDate = Soon.AddDays(4),
+            Comments = "Thinking about it"
+        });
+
+        saved.SubmittedForApproval.ShouldBeFalse();
+        saved.WorkflowRequestId.ShouldBeNull();
+
+        var dto = await MyLeaveAsync(saved.EmployeeAbsenceId);
+        dto.IsDraft.ShouldBeTrue();
+        dto.IsSentBack.ShouldBeFalse();
+        dto.CanCancel.ShouldBeTrue();
+
+        // A draft is not a claim on the balance, and no request exists for anybody to approve.
+        (await _myLeaveAppService.GetMyBalances()).Single(b => b.AbsenceTypeId == typeId).Bookable.ShouldBe(30);
+        UsingDbContext(context => context.Set<WorkflowRequest>().Any(r => r.TargetEntityId == saved.EmployeeAbsenceId)).ShouldBeFalse();
+
+        // Saved again with other dates: the same row, still a draft.
+        await _myLeaveAppService.SaveMyLeaveDraft(new SaveMyLeaveDraftInput
+        {
+            Id = saved.EmployeeAbsenceId,
+            AbsenceTypeId = typeId,
+            StartDate = Soon,
+            EndDate = Soon.AddDays(2)
+        });
+
+        var edit = await _myLeaveAppService.GetMyLeaveForEdit(new EntityDto(saved.EmployeeAbsenceId));
+        edit.EndDate.ShouldBe(Soon.AddDays(2));
+        edit.TotalLeaveDays.ShouldBe(3);
+
+        var submitted = await _myLeaveAppService.SubmitMyLeaveDraft(new EntityDto(saved.EmployeeAbsenceId));
+        submitted.SubmittedForApproval.ShouldBeTrue();
+
+        LeaveRow(saved.EmployeeAbsenceId).WorkflowStatus.ShouldBe(RequestStatus.Open);
+
+        await _approvalService.ApproveAsync(submitted.WorkflowRequestId.Value, approverId, "ok");
+        QuotaRow(meId, typeId).QuotaUsed.ShouldBe(3);
+    }
+
+    [Fact]
+    public async Task A_Saved_Amendment_Should_Wait_As_A_Draft_And_Then_Be_Submitted_Or_Discarded()
+    {
+        var meId = CreateCurrentUserEmployee("UNI160");
+        var approverId = EnableLeaveWorkflowWithApprover("UNI160APP");
+        var typeId = AllDaysCountType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var leaveId = await CreateApprovedLeaveAsync(typeId, Soon, days: 5, approverId);
+
+        var draftId = await _myLeaveAppService.SaveMyLeaveChangeDraft(new SaveMyLeaveChangeDraftInput
+        {
+            EmployeeAbsenceId = leaveId,
+            Action = WorkflowRequestAction.Amendment,
+            EndDate = Soon.AddDays(8),
+            Reason = "Maybe longer"
+        });
+
+        // Nobody has it to approve, and the leave is untouched.
+        RequestRow(draftId).RequestStatus.ShouldBe(RequestStatus.Draft);
+        UsingDbContext(context => context.Set<WorkFlowApprover>().Any(a => a.WorkflowRequestId == draftId)).ShouldBeFalse();
+
+        var dto = await MyLeaveAsync(leaveId);
+        dto.HasPendingAmendment.ShouldBeTrue();
+        dto.PendingIsDraft.ShouldBeTrue();
+        dto.PendingIsSentBack.ShouldBeFalse();
+        dto.ProposedEndDate.ShouldBe(Soon.AddDays(8));
+        dto.PendingReason.ShouldBe("Maybe longer");
+
+        // Saved again: the same draft, new dates.
+        var again = await _myLeaveAppService.SaveMyLeaveChangeDraft(new SaveMyLeaveChangeDraftInput
+        {
+            EmployeeAbsenceId = leaveId,
+            EndDate = Soon.AddDays(6)
+        });
+        again.ShouldBe(draftId);
+
+        await _myLeaveAppService.ResubmitMyLeaveChange(new ResubmitMyLeaveChangeInput { EmployeeAbsenceId = leaveId });
+        RequestRow(draftId).RequestStatus.ShouldBe(RequestStatus.Open);
+
+        await _approvalService.ApproveAsync(draftId, approverId, "ok");
+        LeaveRow(leaveId).EndDate.ShouldBe(Soon.AddDays(6));
+
+        // A second draft, this time a cancellation, discarded: the leave stays and can be acted on again.
+        await _myLeaveAppService.SaveMyLeaveChangeDraft(new SaveMyLeaveChangeDraftInput
+        {
+            EmployeeAbsenceId = leaveId,
+            Action = WorkflowRequestAction.Cancellation,
+            Reason = "Not sure"
+        });
+
+        (await MyLeaveAsync(leaveId)).PendingAction.ShouldBe(WorkflowRequestAction.Cancellation);
+
+        await _myLeaveAppService.WithdrawMyLeaveChange(new WithdrawMyLeaveChangeInput { Id = leaveId });
+
+        var after = await MyLeaveAsync(leaveId);
+        after.HasPendingAmendment.ShouldBeFalse();
+        after.WorkflowStatus.ShouldBe(RequestStatus.Approved);
+        after.CanAmend.ShouldBeTrue();
     }
 
     // ------------------------------------------------------------------ what the list and the history say

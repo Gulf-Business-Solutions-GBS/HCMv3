@@ -16,6 +16,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
@@ -32,12 +35,22 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyTravelClaimComponent extends MyRequestComponentBase<MyTravelClaimDto> implements OnInit {
     private readonly _service = inject(MyTravelClaimServiceProxy);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyTravelClaimDto>(this.rows, () => [
+        { key: 'claimDate', label: 'ClaimDate', text: (row) => this.detailDate(row.claimDate), sort: (row) => row.claimDate?.toMillis() },
+        { key: 'amount', label: 'ClaimAmount', text: (row) => row.claimAmount },
+        { key: 'comments', label: 'Comments', text: (row) => row.comments },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     form = { claimDate: '', claimAmount: null as number | null, comments: '' };
 

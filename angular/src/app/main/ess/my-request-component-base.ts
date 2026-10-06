@@ -173,7 +173,7 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     reload(): void {
         this.loading.set(true);
 
-        this.fetch(new GetMyRequestsInput({ includeHistory: false, maxResultCount: 50, skipCount: 0, sorting: undefined }))
+        this.fetch(new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined }))
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
                 next: (result) => this.rows.set(result.items),

@@ -1,6 +1,6 @@
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, computed, inject, signal } from '@angular/core';
+import { CommonModule, formatNumber } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -23,6 +23,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
+import { EssList } from '../shared/ess-list';
+import { EssListHeadComponent } from '../shared/ess-list-head.component';
+import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
@@ -80,12 +83,15 @@ interface TravelLegForm {
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
+        EssListHeadComponent,
+        EssListPagerComponent,
         HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> implements OnInit {
     private readonly _service = inject(MyTravelServiceProxy);
+    private readonly _locale = inject(LOCALE_ID);
     private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly travelTypes = signal<TravelTypeLookupDto[]>([]);
@@ -104,6 +110,18 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
 
     /** The row whose legs are expanded in the list, if any. */
     readonly expandedRowId = signal<number | null>(null);
+
+    /** The list's columns, for the shared heading (sorting), filter row and pager. */
+    readonly list = new EssList<MyTravelDto>(this.rows, () => [
+        // The untitled first column holds the button that opens the row's legs: nothing to filter or sort by.
+        { key: 'expand', label: '', text: () => '', filter: 'none' },
+        { key: 'travelType', label: 'TravelType', text: (row) => this.typeName(row), filter: 'select' },
+        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
+        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        { key: 'purpose', label: 'TravelPurpose', text: (row) => row.travelPurpose },
+        { key: 'totalCost', label: 'TotalTravelCost', text: (row) => this.amount(row.totalTravelCost), sort: (row) => row.totalTravelCost, align: 'end' },
+        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+    ]);
 
     header = { travelTypeId: null as number | null, startDate: '', endDate: '', travelPurpose: '', comments: '' };
 
@@ -362,6 +380,11 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
         });
 
         return input;
+    }
+
+    /** An amount as the list shows it: the number pipe's '1.3-3', in the same locale the pipe uses. */
+    private amount(value: number | undefined): string {
+        return value === undefined || value === null ? '' : formatNumber(value, this._locale, '1.3-3');
     }
 
     private round3(value: number): number {

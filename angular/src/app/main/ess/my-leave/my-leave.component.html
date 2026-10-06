@@ -2,7 +2,7 @@
     <sub-header [title]="'EssMyLeave' | localize">
         <div role="actions">
             @if (!notLinked()) {
-                <button class="btn btn-primary" data-help-loc="ApplyForLeave" (click)="openNew()">
+                <button class="btn btn-primary" data-help-loc="ApplyForLeave" (click)="openForm()">
                     <i class="fa fa-plus"></i> {{ 'NewLeave' | localize }}
                 </button>
             }
@@ -11,617 +11,152 @@
 
     <div [class]="containerClass">
         @if (notLinked()) {
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom gutter-b mb-5">
                 <div class="card-body">
-                    <div class="alert alert-warning mb-0">
-                        {{ 'CurrentUserHasNoEmployeeRecord' | localize }}
-                    </div>
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
                 </div>
             </div>
         } @else {
-            <div class="row">
-                @for (balance of balances(); track balance.absenceTypeId) {
-                    <div class="col-xl-3 col-lg-4 col-md-6">
-                        <div class="card card-custom gutter-b">
-                            <div class="card-body">
-                                <div class="text-muted">{{ typeName(balance) }}</div>
+            <div id="leaveFormAnchor"></div>
 
-                                <!-- Bookable is the headline: it is the number an application is checked
-                                     against. The current balance is shown beneath so the difference is visible. -->
-                                <div class="d-flex align-items-baseline">
-                                    <span class="h2 mb-0 me-2">{{ balance.bookable | number: '1.0-2' }}</span>
-                                    <span class="text-muted" data-help-loc="BookableBalance">{{ 'BookableBalance' | localize }}</span>
-                                </div>
-
-                                <div class="mt-2 small text-muted">
-                                    <div>{{ 'CurrentBalance' | localize }}: {{ balance.remaining | number: '1.0-2' }}</div>
-                                    @if (balance.pending) {
-                                        <!-- Shown only when non-zero, and it is the reason bookable is lower
-                                             than the balance the employee expects. -->
-                                        <div class="text-warning">
-                                            {{ 'PendingApproval' | localize }}: {{ balance.pending | number: '1.0-2' }}
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                } @empty {
-                    <div class="col-12">
-                        <div class="card card-custom gutter-b">
-                            <div class="card-body text-muted">{{ 'NoLeaveQuotaConfigured' | localize }}</div>
-                        </div>
-                    </div>
-                }
-            </div>
-
-            <!-- ONE form for the four actions. New leave is opened from the button above; amend, cancel and
-                 return are opened from the row of the approved leave they act on. -->
-            @if (mode(); as currentMode) {
-                <div class="card card-custom gutter-b border-primary" id="leaveForm">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            {{ formTitle() }}
-                            @if (resending()) {
-                                <span class="badge badge-light-info ms-2">{{ 'ReturnedToYou' | localize }}</span>
-                            }
-                        </h5>
-
-                        @if (target(); as leave) {
-                            @if (currentMode !== 'new') {
-                                <!--
-                                    Said before the form rather than after sending: the leave row does not
-                                    change when an action is requested, so without this the employee fills the
-                                    form in, sees their leave exactly as it was, and assumes it failed.
-                                -->
-                                <div class="alert alert-light-primary">
-                                    <div>
-                                        <span class="text-muted">{{ 'CurrentApprovedLeave' | localize }}:</span>
-                                        <strong>
-                                            {{ leaveTypeName(leave) }} · {{ fmt(leave.startDate) }} – {{ fmt(leave.endDate) }} ·
-                                            {{ leave.totalLeaveDays }} {{ 'Days' | localize }}
-                                        </strong>
-                                    </div>
-                                    <div class="small text-muted">{{ 'LeaveStaysAsApprovedUntilDecided' | localize }}</div>
-                                </div>
-                            }
-                        }
-
-                        @if (currentMode === 'new' || currentMode === 'amend') {
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="AbsenceType">{{ 'AbsenceType' | localize }} *</label>
-                                    <select class="form-control" [(ngModel)]="form.absenceTypeId" (ngModelChange)="onLeaveDetailsChanged()">
-                                        <option [ngValue]="null">--</option>
-                                        @for (type of leaveTypes(); track type.id) {
-                                            <option [ngValue]="type.id">{{ typeNameOf(type) }}</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="StartDate">{{ 'StartDate' | localize }} *</label>
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        [(ngModel)]="form.startDate"
-                                        [min]="currentMode === 'new' ? (selectedType()?.earliestStartDate | luxonFormat: 'yyyy-MM-dd') : null"
-                                        [max]="currentMode === 'new' ? (selectedType()?.latestStartDate | luxonFormat: 'yyyy-MM-dd') : null"
-                                        (ngModelChange)="onDatesChanged()"
-                                    />
-                                </div>
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="EndDate">{{ 'EndDate' | localize }} *</label>
-                                    <input type="date" class="form-control" [(ngModel)]="form.endDate" (ngModelChange)="onDatesChanged()" />
-                                </div>
-                            </div>
-
-                            <!-- The three figures: what there is, what may still be booked, and what is left
-                                 after this request. Only for a type with a quota. -->
-                            @if (balancePreview(); as preview) {
-                                @if (preview.hasQuota) {
-                                    <div class="row mb-4">
-                                        <div class="col-md-4">
-                                            <div class="bg-light rounded p-3 h-100">
-                                                <div class="text-muted" data-help-loc="CurrentBalance">{{ 'CurrentBalance' | localize }}</div>
-                                                <div class="h3 mb-0">{{ preview.currentBalance | number: '1.0-2' }}</div>
-                                                <div class="small text-muted">{{ 'CurrentBalanceHint' | localize }}</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="bg-light rounded p-3 h-100">
-                                                <div class="text-muted" data-help-loc="BookableBalance">{{ 'BookableBalance' | localize }}</div>
-                                                <div class="h3 mb-0">{{ preview.bookable | number: '1.0-2' }}</div>
-                                                <div class="small text-muted">{{ 'BookableBalanceHint' | localize }}</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="rounded p-3 h-100" [ngClass]="preview.balanceAfter < 0 ? 'bg-light-danger' : 'bg-light-primary'">
-                                                <div class="text-muted" data-help-loc="BalanceAfterThisRequest">{{ 'BalanceAfterThisRequest' | localize }}</div>
-                                                <div class="h3 mb-0">{{ preview.balanceAfter | number: '1.0-2' }}</div>
-                                                <div class="small text-muted">{{ 'ThisRequestUsesDays' | localize: preview.daysRequested }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        }
-
-                        @if (currentMode === 'new') {
-                            @if (showTimes()) {
-                                <div class="row">
-                                    @if (showHalfDay()) {
-                                        <div class="form-group col-md-4 mb-4">
-                                            <label data-help-loc="HalfdayType">{{ 'HalfdayType' | localize }}</label>
-                                            <select
-                                                class="form-control"
-                                                [(ngModel)]="form.halfdayType"
-                                                [disabled]="form.startDate !== form.endDate"
-                                                (ngModelChange)="onHalfdayChanged()"
-                                            >
-                                                <option [ngValue]="Halfday.None">{{ 'HalfdayType_None' | localize }}</option>
-                                                <option [ngValue]="Halfday.StartOfDuty">{{ 'HalfdayType_StartOfDuty' | localize }}</option>
-                                                <option [ngValue]="Halfday.EndOfDuty">{{ 'HalfdayType_EndOfDuty' | localize }}</option>
-                                            </select>
-                                        </div>
-                                    }
-                                    <div class="form-group col-md-4 mb-4">
-                                        <label data-help-loc="StartTime">{{ 'StartTime' | localize }} @if (timesRequired()) { * }</label>
-                                        <input
-                                            type="time"
-                                            class="form-control"
-                                            [(ngModel)]="form.startTime"
-                                            [disabled]="!timesEnabled()"
-                                            (ngModelChange)="onLeaveDetailsChanged()"
-                                        />
-                                    </div>
-                                    <div class="form-group col-md-4 mb-4">
-                                        <label data-help-loc="EndTime">{{ 'EndTime' | localize }} @if (timesRequired()) { * }</label>
-                                        <input
-                                            type="time"
-                                            class="form-control"
-                                            [(ngModel)]="form.endTime"
-                                            [disabled]="!timesEnabled()"
-                                            (ngModelChange)="onLeaveDetailsChanged()"
-                                        />
-                                        <div class="small text-muted">{{ 'PartialLeaveTimesHint' | localize }}</div>
-                                    </div>
-                                </div>
-                            }
-
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="LeavePaymentTypeLabel">{{ 'LeavePaymentTypeLabel' | localize }}</label>
-                                    <select class="form-control" [(ngModel)]="form.leavePaymentType">
-                                        <option [ngValue]="PaymentType.PayWithPayroll">
-                                            {{ 'LeavePaymentType_PayWithPayroll' | localize }}
-                                        </option>
-                                        <option [ngValue]="PaymentType.PayInAdvance">
-                                            {{ 'LeavePaymentType_PayInAdvance' | localize }}
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <!-- Only an advance needs a date; left empty the server fills in the usual one. -->
-                                @if (form.leavePaymentType === PaymentType.PayInAdvance) {
-                                    <div class="form-group col-md-4 mb-4">
-                                        <label data-help-loc="PaymentDateLabel">{{ 'PaymentDateLabel' | localize }}</label>
-                                        <input type="date" class="form-control" [(ngModel)]="form.paymentDate" />
-                                    </div>
-                                }
-
-                                @if (settings()?.enableIsTravelling) {
-                                    <div class="form-group col-md-4 mb-4 d-flex align-items-end">
-                                        <label class="form-check form-check-custom form-check-solid mb-2">
-                                            <input type="checkbox" class="form-check-input" [(ngModel)]="form.isTravelling" />
-                                            <span class="form-check-label" data-help-loc="IsTravelling">{{ 'IsTravelling' | localize }}</span>
-                                        </label>
-                                    </div>
-                                }
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="PrimaryDelegate">{{ 'PrimaryDelegate' | localize }}</label>
-                                    <!-- Type a staff number or a name: the list is hundreds long, so it is searched
-                                         rather than scrolled. -->
-                                    <p-autoComplete
-                                        inputId="LeavePrimaryDelegate"
-                                        [(ngModel)]="form.primaryDelegate"
-                                        (ngModelChange)="onPrimaryDelegateChanged()"
-                                        [suggestions]="delegateSuggestions()"
-                                        (completeMethod)="searchDelegates($event)"
-                                        optionLabel="label"
-                                        [forceSelection]="true"
-                                        [completeOnFocus]="true"
-                                        [showClear]="true"
-                                        [delay]="150"
-                                        [placeholder]="'TypeToSearchEmployee' | localize"
-                                        styleClass="w-100"
-                                        inputStyleClass="form-control" />
-                                </div>
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="SecondaryDelegate">{{ 'SecondaryDelegate' | localize }}</label>
-                                    <!-- Legacy: a secondary delegate cannot be chosen before a primary one. -->
-                                    <p-autoComplete
-                                        inputId="LeaveSecondaryDelegate"
-                                        [(ngModel)]="form.secondaryDelegate"
-                                        [disabled]="!form.primaryDelegate"
-                                        [suggestions]="delegateSuggestions()"
-                                        (completeMethod)="searchDelegates($event, true)"
-                                        optionLabel="label"
-                                        [forceSelection]="true"
-                                        [completeOnFocus]="true"
-                                        [showClear]="true"
-                                        [delay]="150"
-                                        [placeholder]="'TypeToSearchEmployee' | localize"
-                                        styleClass="w-100"
-                                        inputStyleClass="form-control" />
-                                </div>
-
-                                <!-- Only for somebody who has approvals to hand over: a manager or a workflow
-                                     role holder. -->
-                                @if (settings()?.canDelegateApprovals) {
-                                    <div class="form-group col-md-4 mb-4">
-                                        <label data-help-loc="ApproverDelegate">{{ 'ApproverDelegate' | localize }}</label>
-                                        <p-autoComplete
-                                            inputId="LeaveApproverDelegate"
-                                            [(ngModel)]="form.approverDelegate"
-                                            [suggestions]="delegateSuggestions()"
-                                            (completeMethod)="searchDelegates($event)"
-                                            optionLabel="label"
-                                            [forceSelection]="true"
-                                            [completeOnFocus]="true"
-                                            [showClear]="true"
-                                            [delay]="150"
-                                            [placeholder]="'TypeToSearchEmployee' | localize"
-                                            styleClass="w-100"
-                                            inputStyleClass="form-control" />
-                                        <div class="small text-muted">{{ 'ApproverDelegateHint' | localize }}</div>
-                                    </div>
-                                }
-                            </div>
-
-                            <div class="form-group mb-4">
-                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
-                                <input type="text" class="form-control" [(ngModel)]="form.comments" />
-                            </div>
-
-                            <!--
-                                Sick leave only, and only once a rule is configured. Shown before applying
-                                because the rate depends on how much sick leave has already been taken this
-                                year, so the same fortnight costs two employees different amounts.
-                            -->
-                            @if (sickLeaveSegments().length) {
-                                <div class="alert alert-light-warning mb-4">
-                                    <h6 class="mb-2" data-help-loc="SickLeaveDeductionBreakdown">{{ 'SickLeaveDeductionBreakdown' | localize }}</h6>
-                                    <ul class="mb-0 ps-4">
-                                        @for (segment of sickLeaveSegments(); track segment.fromDate) {
-                                            <li>
-                                                @if (segment.deductionUnit === DeductionUnitPercentage) {
-                                                    {{
-                                                        'SickLeaveDeductionSegment'
-                                                            | localize
-                                                                : (segment.fromDate | luxonFormat: 'dd/MM/yyyy')
-                                                                : (segment.toDate | luxonFormat: 'dd/MM/yyyy')
-                                                                : segment.deductionNumber
-                                                    }}
-                                                } @else {
-                                                    {{
-                                                        'SickLeaveDeductionSegmentDays'
-                                                            | localize
-                                                                : (segment.fromDate | luxonFormat: 'dd/MM/yyyy')
-                                                                : (segment.toDate | luxonFormat: 'dd/MM/yyyy')
-                                                                : segment.deductionNumber
-                                                    }}
-                                                }
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                            }
-
-                            <div class="mb-4">
-                                @if (selectedType()?.isAttachmentRequired) {
-                                    <div class="mb-2" data-help-loc="Attachments">
-                                        <span class="badge badge-light-warning">{{ 'RequiredForThisLeaveType' | localize }}</span>
-                                    </div>
-                                }
-
-                                <!-- Held on the form and sent WITH the leave, so a required document is
-                                     there at the moment of submitting. -->
-                                <app-attachments #formAttachments entityType="EmployeeAbsence" [entityId]="null" />
-
-                                <!-- A leave being resent keeps what was attached the first time. -->
-                                @if (resending() && target(); as leave) {
-                                    <app-attachments entityType="EmployeeAbsence" [entityId]="leave.id" [readonly]="true" />
-                                }
-                            </div>
-
-                            @if (selectedType()?.requirePolicyAcceptance) {
-                                <div class="mb-4">
-                                    <label class="form-check form-check-custom form-check-solid">
-                                        <input type="checkbox" class="form-check-input" [(ngModel)]="form.policyAccepted" />
-                                        <span class="form-check-label" data-help-loc="LeavePolicy">
-                                            {{ 'IHaveReadAndAcceptThe' | localize }}
-                                            @if (selectedType()?.policyAttachmentId) {
-                                                <a href="javascript:;" (click)="openPolicy(); $event.preventDefault()">{{ 'LeavePolicy' | localize }}</a>
-                                            } @else {
-                                                {{ 'LeavePolicy' | localize }}
-                                            }
-                                            *
-                                        </span>
-                                    </label>
-                                </div>
-                            }
-                        }
-
-                        @if (currentMode === 'return') {
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-4">
-                                    <label data-help-loc="RejoiningDate">{{ 'RejoiningDate' | localize }} *</label>
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        [(ngModel)]="form.rejoiningDate"
-                                        (ngModelChange)="previewReturn()"
-                                    />
-                                </div>
-                            </div>
-
-                            @if (returnPreview(); as preview) {
-                                <div class="alert" [ngClass]="preview.kind === ReturnKind.Late ? 'alert-warning' : 'alert-info'">
-                                    {{ returnKindMessage(preview) }}
-                                </div>
-
-                                <!-- Late only: the proposed split, which the employee may adjust before sending. -->
-                                @if (preview.kind === ReturnKind.Late) {
-                                    <div class="row">
-                                        <div class="form-group col-md-3 mb-4">
-                                            <label data-help-loc="PaidLeaveDates">{{ 'PaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
-                                            <input type="date" class="form-control" [(ngModel)]="form.paidStartDate" />
-                                        </div>
-                                        <div class="form-group col-md-3 mb-4">
-                                            <label data-help-loc="PaidLeaveDates">{{ 'PaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
-                                            <input type="date" class="form-control" [(ngModel)]="form.paidEndDate" />
-                                        </div>
-                                        <div class="form-group col-md-3 mb-4">
-                                            <label data-help-loc="UnpaidLeaveDates">{{ 'UnpaidLeaveDates' | localize }} – {{ 'StartDate' | localize }}</label>
-                                            <input type="date" class="form-control" [(ngModel)]="form.unpaidStartDate" />
-                                        </div>
-                                        <div class="form-group col-md-3 mb-4">
-                                            <label data-help-loc="UnpaidLeaveDates">{{ 'UnpaidLeaveDates' | localize }} – {{ 'EndDate' | localize }}</label>
-                                            <input type="date" class="form-control" [(ngModel)]="form.unpaidEndDate" />
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        }
-
-                        @if (currentMode !== 'new') {
-                            <div class="form-group mb-4">
-                                <label [attr.data-help-loc]="currentMode === 'cancel' ? 'ReasonForCancellation' : currentMode === 'return' ? 'ReturnReason' : 'ReasonForTheChange'">
-                                    @switch (currentMode) {
-                                        @case ('cancel') {
-                                            {{ 'ReasonForCancellation' | localize }} *
-                                        }
-                                        @case ('return') {
-                                            {{ 'ReturnReason' | localize }}
-                                        }
-                                        @default {
-                                            {{ 'ReasonForTheChange' | localize }} *
-                                        }
-                                    }
-                                </label>
-                                <input type="text" class="form-control" [(ngModel)]="form.reason" />
-                            </div>
-                        }
-
-                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
-                            {{ submitLabel() }}
-                        </button>
-                        <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
-                    </div>
-                </div>
+            @if (showForm()) {
+                <!-- The form is its own component, as the exit permit's is, so that the Details view and an
+                     approver are shown THIS form read-only rather than a list of label/value rows. It serves a
+                     new leave and, opened from a leave's Actions menu, an amendment, cancellation or return. -->
+                <leave-request-form
+                    #leaveForm
+                    mode="create"
+                    [value]="form"
+                    [saving]="saving()"
+                    (saved)="save()"
+                    (submitted)="submit()"
+                    (cancelled)="closeForm()" />
             }
 
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom gutter-b mb-5">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
+                    <h5 class="card-title mb-3" data-help-loc="EssMyRequests">{{ 'EssMyRequests' | localize }}</h5>
 
-                        <!-- Leave that is over and returned from drops off the list; this brings it back. -->
-                        <label class="form-check form-check-custom form-check-solid form-check-sm">
-                            <input type="checkbox" class="form-check-input" [ngModel]="showPast()" (ngModelChange)="togglePast($event)" />
-                            <span class="form-check-label" data-help-loc="ShowPastLeave">{{ 'ShowPastLeave' | localize }}</span>
-                        </label>
-                    </div>
+                    <!-- One menu for the whole table, filled for whichever row's Actions button is pressed. -->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
 
                     @if (loading()) {
                         <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>{{ 'AbsenceType' | localize }}</th>
-                                        <th>{{ 'StartDate' | localize }} – {{ 'EndDate' | localize }}</th>
-                                        <th data-help-loc="Days">{{ 'Days' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list"></thead>
                                 <tbody>
-                                    @for (leave of leaves(); track leave.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
-                                            <td>{{ leaveTypeName(leave) }}</td>
-                                            <td>
-                                                <!--
-                                                    The dates in this row are always the APPROVED ones -- an
-                                                    action does not touch the leave until it is granted. What a
-                                                    waiting request proposes goes on a second line, never in
-                                                    their place.
-                                                -->
-                                                <div [class.text-muted]="isCancelled(leave)" [class.text-decoration-line-through]="isCancelled(leave)">
-                                                    {{ fmt(leave.startDate) }} – {{ fmt(leave.endDate) }}
-                                                    @if (leave.startTime) {
-                                                        <span class="text-muted">({{ leave.startTime }} – {{ leave.endTime }})</span>
-                                                    }
-                                                </div>
-                                                @if (proposedLine(leave); as proposed) {
-                                                    <div class="small text-primary">{{ proposed }}</div>
+                                            <td class="text-nowrap">
+                                                <!-- The number the leave was applied for under, which it
+                                                     keeps for life. The arrow opens the requests raised
+                                                     against it. -->
+                                                @if (row.requests?.length) {
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-icon btn-sm btn-light me-1"
+                                                        data-help-loc="ShowRequests"
+                                                        [attr.aria-label]="'RequestsOnThisLeave' | localize"
+                                                        [attr.aria-expanded]="isExpanded(row)"
+                                                        (click)="toggleExpanded(row)">
+                                                        <i class="fa" [ngClass]="isExpanded(row) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                                                    </button>
                                                 }
-                                                @if (leave.initialEndDate) {
-                                                    <div class="small text-muted">{{ 'OriginallyTo' | localize: fmt(leave.initialEndDate) }}</div>
+                                                {{ row.requestNumber }}
+                                            </td>
+                                            <td>{{ leaveTypeName(row) }}</td>
+                                            <td>{{ requestTypeLabel(row) }}</td>
+                                            <td>
+                                                {{ fmt(row.startDate) }}
+                                                @if (row.startTime) {
+                                                    <span class="text-muted small">{{ row.startTime }}</span>
                                                 }
                                             </td>
-                                            <td>{{ leave.totalLeaveDays }}</td>
                                             <td>
-                                                <span class="badge" [ngClass]="statusClass(leave)">
-                                                    {{ statusLabel(leave) }}
-                                                </span>
-
-                                                @if (leave.hasPendingAmendment) {
-                                                    <span class="badge ms-1" [ngClass]="leave.pendingIsSentBack ? 'badge-light-info' : 'badge-light-warning'">
-                                                        {{ pendingLabel(leave) }}
-                                                    </span>
-                                                }
-                                                @if (leave.lastRejectedAction !== undefined && leave.lastRejectedAction !== null) {
-                                                    <!-- The leave is exactly as it was; this is the only trace on
-                                                         the row that something was asked and refused. -->
-                                                    <span class="badge badge-light-danger ms-1">{{ rejectedLabel(leave) }}</span>
-                                                }
-                                                @if (leave.isReturned) {
-                                                    <span class="badge badge-light-success ms-1">
-                                                        {{ 'LeaveReturned' | localize }}
-                                                        @if (leave.returnDate) {
-                                                            {{ fmt(leave.returnDate) }}
-                                                        }
-                                                    </span>
+                                                {{ fmt(row.endDate) }}
+                                                @if (row.endTime) {
+                                                    <span class="text-muted small">{{ row.endTime }}</span>
                                                 }
                                             </td>
-                                            <td class="text-end">
-                                                <!-- A new leave an approver sent back: correct it or take it back. -->
-                                                @if (leave.isSentBack) {
-                                                    <button class="btn btn-light-primary btn-sm me-1" data-help-loc="CorrectAndResend" (click)="openResendNew(leave)">
-                                                        {{ 'CorrectAndResend' | localize }}
+                                            <td>{{ row.totalLeaveDays }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
+                                            </td>
+                                            <td class="text-end text-nowrap">
+                                                <!-- Two controls per row, whatever its state: Details opens
+                                                     the leave; Actions holds everything else that can be
+                                                     done to it. -->
+                                                @if (row.isDraft) {
+                                                    <button class="btn btn-primary btn-sm" (click)="continueLeave(row)" data-help-loc="ContinueDraft">
+                                                        {{ 'ContinueDraft' | localize }}
+                                                    </button>
+                                                } @else {
+                                                    <button class="btn btn-light-primary btn-sm" (click)="openDetail(row)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
                                                     </button>
                                                 }
-
-                                                <!-- An action waiting on an approved leave: open it, or -- when
-                                                     it was sent back -- correct it; either way it can be withdrawn. -->
-                                                @if (leave.hasPendingAmendment) {
-                                                    @if (leave.pendingIsSentBack) {
-                                                        <button class="btn btn-light-primary btn-sm me-1" data-help-loc="CorrectAndResend" (click)="openResendChange(leave)">
-                                                            {{ 'CorrectAndResend' | localize }}
-                                                        </button>
-                                                    } @else {
-                                                        <button class="btn btn-light-primary btn-sm me-1" (click)="openDetail(leave, leave.pendingAmendmentRequestId)">
-                                                            {{ openChangeLabel(leave) }}
-                                                        </button>
-                                                    }
-                                                    <button class="btn btn-light-danger btn-sm me-1" data-help-loc="WithdrawRequest" (click)="withdrawChange(leave)">
-                                                        {{ withdrawChangeLabel(leave) }}
-                                                    </button>
-                                                }
-
-                                                <!-- The three actions, on an approved leave with nothing waiting. -->
-                                                @if (leave.canAmend) {
-                                                    <button class="btn btn-light-primary btn-sm me-1" data-help-loc="AmendLeave" (click)="openAmend(leave)">
-                                                        {{ 'AmendLeave' | localize }}
-                                                    </button>
-                                                }
-                                                @if (leave.canRequestCancellation) {
-                                                    <button class="btn btn-light-danger btn-sm me-1" data-help-loc="CancelLeave" (click)="openCancel(leave)">
-                                                        {{ 'CancelLeave' | localize }}
-                                                    </button>
-                                                }
-                                                @if (leave.canReturn) {
-                                                    <button class="btn btn-light-success btn-sm me-1" data-help-loc="ReturnFromLeave" (click)="openReturn(leave)">
-                                                        {{ 'ReturnFromLeave' | localize }}
-                                                    </button>
-                                                }
-
-                                                @if (leave.canCancel) {
-                                                    <button class="btn btn-light-danger btn-sm me-1" data-help-loc="Withdraw" (click)="withdrawLeave(leave)">
-                                                        {{ 'Withdraw' | localize }}
-                                                    </button>
-                                                }
-
                                                 <button
-                                                    class="btn btn-light btn-sm"
-                                                    data-help-loc="LeaveHistory"
-                                                    [attr.title]="'LeaveHistory' | localize"
-                                                    [attr.aria-label]="'LeaveHistory' | localize"
-                                                    (click)="toggleHistory(leave)"
-                                                >
-                                                    <i class="fa fa-history"></i>
+                                                    type="button"
+                                                    class="btn btn-light btn-sm dropdown-toggle ms-2"
+                                                    data-help-loc="Actions"
+                                                    (click)="showMenu($event, row, actionsMenu)">
+                                                    {{ 'Actions' | localize }}
                                                 </button>
                                             </td>
                                         </tr>
 
-                                        @if (historyOf() === leave.id) {
-                                            <tr>
-                                                <td colspan="5" class="bg-light">
-                                                    <h6 class="mb-3">{{ 'LeaveHistory' | localize }}</h6>
-
-                                                    @if (historyLoading()) {
-                                                        <div class="text-center p-2"><i class="fa fa-spinner fa-spin"></i></div>
-                                                    } @else {
-                                                        <!-- One line per request raised against this leave, oldest
-                                                             first -- including the rejected and withdrawn ones,
-                                                             which leave no trace on the leave itself. -->
-                                                        @for (item of history(); track item.workflowRequestId) {
-                                                            <div class="d-flex mb-3">
-                                                                <div class="me-3"><i [class]="historyIcon(item)"></i></div>
-                                                                <div class="flex-grow-1">
-                                                                    <div>
-                                                                        {{ historyTitle(item) }}
-                                                                        · <span [ngClass]="historyOutcomeClass(item)">{{ historyOutcome(item) }}</span>
-                                                                    </div>
-                                                                    @if (historyPaidUnpaid(item); as split) {
-                                                                        <div class="small">{{ split }}</div>
-                                                                    }
-                                                                    <div class="small text-muted">
-                                                                        {{ 'LeaveHistory_RequestLine' | localize: item.requestNumber : fmt(item.submittedOn) }}
-                                                                        @if (item.decidedOn && historyDecidedBy(item) && item.outcome !== Outcome.Withdrawn) {
-                                                                            · {{ historyDecidedBy(item) }}, {{ fmt(item.decidedOn) }}
-                                                                        }
-                                                                        @if (item.wasSentBack && item.outcome !== Outcome.SentBack) {
-                                                                            · {{ 'WasSentBackOnce' | localize }}
-                                                                        }
-                                                                    </div>
-                                                                    @if (item.reason) {
-                                                                        <div class="small text-muted">{{ 'Reason' | localize }}: {{ item.reason }}</div>
-                                                                    }
-                                                                    @if (item.decisionRemark) {
-                                                                        <div class="small text-muted">"{{ item.decisionRemark }}"</div>
-                                                                    }
-                                                                </div>
-                                                                <div>
-                                                                    <!-- The engine's own view of that request: log,
-                                                                         read log, comments, approvers, attachments. -->
-                                                                    <button class="btn btn-light-primary btn-sm" (click)="openDetail(leave, item.workflowRequestId)">
-                                                                        {{ 'Details' | localize }}
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        } @empty {
-                                                            <div class="text-muted">{{ 'NoData' | localize }}</div>
-                                                        }
-
-                                                        <app-attachments entityType="EmployeeAbsence" [entityId]="leave.id" [readonly]="true" />
-                                                    }
+                                        @if (isExpanded(row)) {
+                                            <!-- Every request raised against this leave, oldest first, each
+                                                 with its own number: the application, then any amendment,
+                                                 cancellation or return. The row above always shows the
+                                                 leave as it stands today; what each request asked for is
+                                                 here. -->
+                                            <tr class="leave-requests">
+                                                <td colspan="8">
+                                                    <table class="table table-sm align-middle mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{ 'RequestLineNumber' | localize }}</th>
+                                                                <th>{{ 'RequestType' | localize }}</th>
+                                                                <th>{{ 'AskedFor' | localize }}</th>
+                                                                <th>{{ 'Status' | localize }}</th>
+                                                                <th>{{ 'DecidedBy' | localize }}</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @for (item of row.requests; track item.workflowRequestId) {
+                                                                <tr>
+                                                                    <td>{{ item.requestNumber }}</td>
+                                                                    <td>{{ actionLabel(item.action) }}</td>
+                                                                    <td>{{ askedFor(item) }}</td>
+                                                                    <td>
+                                                                        <span class="badge" [ngClass]="outcomeClass(item)">{{ outcomeLabel(item) }}</span>
+                                                                    </td>
+                                                                    <td class="text-muted">{{ decidedBy(item) }}</td>
+                                                                    <td class="text-end">
+                                                                        <button class="btn btn-light-primary btn-sm" (click)="openDetail(row, item.workflowRequestId)">
+                                                                            {{ 'Details' | localize }}
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         }
                                     } @empty {
                                         <tr>
-                                            <td colspan="5" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                            <td colspan="8" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

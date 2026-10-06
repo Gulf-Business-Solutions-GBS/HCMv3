@@ -78,6 +78,23 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
         int? requestSubTypeId = null,
         WorkflowRequestAction requestAction = WorkflowRequestAction.Amendment)
     {
+        var requestId = await CreateDraftAsync(
+            requestType, targetEntityId, employeeId, amendmentJson, actingEmployeeId, requestSubTypeId, requestAction);
+
+        await _approvalService.SubmitAsync(requestId, actingEmployeeId);
+
+        return requestId;
+    }
+
+    public async Task<int> CreateDraftAsync(
+        string requestType,
+        int targetEntityId,
+        int employeeId,
+        string amendmentJson,
+        int actingEmployeeId,
+        int? requestSubTypeId = null,
+        WorkflowRequestAction requestAction = WorkflowRequestAction.Amendment)
+    {
         if (string.IsNullOrWhiteSpace(requestType))
         {
             throw new ArgumentException("A request type is required.", nameof(requestType));
@@ -128,9 +145,31 @@ public class WorkflowAmendmentService : HCMv3DomainServiceBase, IWorkflowAmendme
         await _requestRepository.UpdateAsync(request);
         await _unitOfWorkManager.Current.SaveChangesAsync();
 
-        await _approvalService.SubmitAsync(requestId, actingEmployeeId);
-
         return requestId;
+    }
+
+    public async Task UpdateDraftAsync(int requestId, string amendmentJson, int actingEmployeeId, int? requestSubTypeId = null)
+    {
+        var request = await _requestRepository.GetAsync(requestId);
+
+        if (!request.IsAmendment || request.RequestStatus != RequestStatus.Draft)
+        {
+            throw new UserFriendlyException(L("OnlyARequestSentBackToYouCanBeResubmitted"));
+        }
+
+        if (request.EmployeeId != actingEmployeeId)
+        {
+            throw new UserFriendlyException(L("OnlyTheRequesterCanWithdrawThisRequest"));
+        }
+
+        request.AmendmentJson = amendmentJson;
+
+        if (requestSubTypeId.HasValue)
+        {
+            request.RequestSubTypeId = requestSubTypeId;
+        }
+
+        await _requestRepository.UpdateAsync(request);
     }
 
     public async Task ResubmitAsync(int requestId, string amendmentJson, int actingEmployeeId)

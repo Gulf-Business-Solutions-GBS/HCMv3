@@ -125,6 +125,49 @@
                                 </div>
                             }
 
+                            @if (config()?.relatedRequests?.length) {
+                                <!-- Everything raised against the same record -- a leave's application and
+                                     each amendment, cancellation or return after it -- so the one being read
+                                     is seen in its place. Each opens in this same dialog. -->
+                                <div class="card card-custom gutter-b mb-5" data-help-loc="RelatedRequests">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ config()?.relatedTitle }}</h5>
+                                        <div class="table-responsive">
+                                            <table class="table align-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{{ 'RequestLineNumber' | localize }}</th>
+                                                        <th>{{ 'RequestType' | localize }}</th>
+                                                        <th>{{ 'AskedFor' | localize }}</th>
+                                                        <th>{{ 'Status' | localize }}</th>
+                                                        <th>{{ 'DecidedBy' | localize }}</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (related of config()?.relatedRequests; track related.workflowRequestId) {
+                                                        <tr [class.fw-bold]="related.workflowRequestId === config()?.workflowRequestId">
+                                                            <td>{{ related.requestNumber }}</td>
+                                                            <td>{{ related.typeLabel }}</td>
+                                                            <td>{{ related.askedFor }}</td>
+                                                            <td><span class="badge" [ngClass]="related.statusClass">{{ related.statusLabel }}</span></td>
+                                                            <td class="text-muted">{{ related.decidedBy }}</td>
+                                                            <td class="text-end">
+                                                                @if (related.workflowRequestId !== config()?.workflowRequestId) {
+                                                                    <button type="button" class="btn btn-light-primary btn-sm" (click)="openRelated(related)">
+                                                                        {{ 'Details' | localize }}
+                                                                    </button>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
                             @if (isFeedbackMode()) {
                                 <!-- One box and one button. No Approve, no Reject, no Send back: this
                                      person was asked what they think, and the decision stays with the

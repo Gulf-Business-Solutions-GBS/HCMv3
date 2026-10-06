@@ -63,18 +63,9 @@
                     } @else {
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>{{ 'OvertimeType' | localize }}</th>
-                                        <th>{{ 'EffectiveDate' | localize }}</th>
-                                        <th>{{ 'Hours' | localize }}</th>
-                                        <th data-help-loc="ApprovedHours">{{ 'ApprovedHours' | localize }}</th>
-                                        <th data-help-loc="Status">{{ 'Status' | localize }}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <thead [essListHead]="list" [exportTitle]="detailTitle()"></thead>
                                 <tbody>
-                                    @for (row of rows(); track row.id) {
+                                    @for (row of list.view(); track row.id) {
                                         <tr>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.effectiveDate | luxonFormat: 'yyyy-MM-dd' }}</td>
@@ -117,6 +108,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ess-list-pager [list]="list" />
                     }
                 </div>
             </div>

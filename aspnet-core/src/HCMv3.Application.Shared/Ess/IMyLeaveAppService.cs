@@ -124,4 +124,32 @@ public interface IMyLeaveAppService : IApplicationService
     /// withdrawn, which leave no trace on the leave itself.
     /// </summary>
     Task<List<MyLeaveHistoryItemDto>> GetMyLeaveHistory(EntityDto input);
+
+    /// <summary>
+    /// The leave list as an Excel workbook: one line per request, with the leave it belongs to repeated on
+    /// every line so the sheet still makes sense once it is sorted or filtered.
+    /// </summary>
+    Task<HCMv3.Dto.FileDto> GetMyLeavesToExcel(ExportMyLeavesInput input);
+
+    /// <summary>
+    /// Save: files a new leave as a draft only the employee can see, without sending it. Nothing is checked
+    /// against the leave rules; that happens when it is submitted.
+    /// </summary>
+    Task<ApplyForLeaveResultDto> SaveMyLeaveDraft(SaveMyLeaveDraftInput input);
+
+    /// <summary>Sends a saved draft for approval, exactly as applying in one step would.</summary>
+    Task<ApplyForLeaveResultDto> SubmitMyLeaveDraft(EntityDto input);
+
+    /// <summary>
+    /// One of the employee's own leaves with everything the form shows, for reopening a draft or a request
+    /// that was sent back.
+    /// </summary>
+    Task<MyLeaveDto> GetMyLeaveForEdit(EntityDto input);
+
+    /// <summary>
+    /// Save: files an amendment, cancellation or return as a draft without sending it. Submitting it later is
+    /// <see cref="ResubmitMyLeaveChange"/>; dropping it is <see cref="WithdrawMyLeaveChange"/>.
+    /// </summary>
+    /// <returns>Id of the draft request.</returns>
+    Task<int> SaveMyLeaveChangeDraft(SaveMyLeaveChangeDraftInput input);
 }
