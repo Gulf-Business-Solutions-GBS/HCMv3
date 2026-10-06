@@ -7584,6 +7584,8 @@
     <text name="UnpaidLeaveStartDate">Unpaid Leave Start Date</text>
     <text name="UnpaidLeaveEndDate">Unpaid Leave End Date</text>
     <text name="LeaveAndDatesNeededToSave">Choose the leave type and both dates before saving.</text>
+    <text name="EnterBothDatesInFull">Enter the start date and the end date in full: day, month and year.</text>
+    <text name="EnterTheReturnDateInFull">Enter the return date in full: day, month and year.</text>
     <text name="LeaveActions">Actions</text>
     <text name="WorkflowRequestStatus_SentBack">Sent Back</text>
     <text name="LeaveHistoryOutcome_Draft">Draft</text>

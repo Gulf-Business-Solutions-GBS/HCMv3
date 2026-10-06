@@ -130,6 +130,17 @@ describe('DateInputDirective', () => {
         expect(host.value()).toBeNull();
     });
 
+    // What [min]="null" in a template leaves behind: the attribute holding the word "null". On the leave screen's
+    // Amend form that refused every date typed, and the server then said it could not read a date.
+    it('takes no notice of an earliest or latest date that is not a date', async () => {
+        input.setAttribute('min', 'null');
+        input.setAttribute('max', 'undefined');
+
+        await type('01/10/2026');
+
+        expect(host.value()).toBe('2026-10-01');
+    });
+
     // The 22nd month, typed on the exit permit screen by somebody expecting mm/dd/yyyy. It used to sit in the field
     // looking like a date while nothing was handed over, so the form said the date was missing.
     it('will not let a month past December be typed', async () => {

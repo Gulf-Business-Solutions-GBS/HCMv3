@@ -7419,6 +7419,8 @@
     <text name="UnpaidLeaveStartDate">تاريخ بداية الإجازة غير المدفوعة</text>
     <text name="UnpaidLeaveEndDate">تاريخ نهاية الإجازة غير المدفوعة</text>
     <text name="LeaveAndDatesNeededToSave">اختر نوع الإجازة والتاريخين قبل الحفظ.</text>
+    <text name="EnterBothDatesInFull">أدخل تاريخ البداية وتاريخ النهاية كاملين: اليوم والشهر والسنة.</text>
+    <text name="EnterTheReturnDateInFull">أدخل تاريخ العودة كاملاً: اليوم والشهر والسنة.</text>
     <text name="LeaveActions">الإجراءات</text>
     <text name="WorkflowRequestStatus_SentBack">مُعاد</text>
     <text name="LeaveHistoryOutcome_Draft">مسودة</text>

@@ -100,7 +100,11 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
             // Typing the number of an amendment, cancellation or return finds the leave it is under.
             text: (row) => [row.requestNumber, ...(row.requests ?? []).map((item) => item.requestNumber)].join(' '),
-            sort: (row) => Number(row.requestNumber) || row.requestNumber,
+
+            // Two kinds of leave have no number. A draft not yet sent sorts as the newest, so it stays at the
+            // top of the default order, where the thing still waiting on the employee belongs. A leave HR
+            // entered was never requested; it sorts below everything that was.
+            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : row.isDraft ? Number.MAX_SAFE_INTEGER : 0),
         },
         { key: 'leaveType', label: 'LeaveType', text: (row) => this.leaveTypeName(row), filter: 'select' },
         { key: 'requestType', label: 'RequestType', text: (row) => this.requestTypeLabel(row), filter: 'select' },
@@ -127,6 +131,10 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     ngOnInit(): void {
         this.list.exporter = () => this.exportLeaves();
+
+        // Newest request first, by number, until the employee sorts by something else.
+        this.list.sortKey.set('number');
+        this.list.sortDescending.set(true);
         this.reload();
 
         // Failure is silent on purpose: the name is decoration, and an unlinked account is already explained
@@ -353,8 +361,23 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             return;
         }
 
+        // A date box left half-filled -- day and month typed, no year -- holds nothing at all. Sent like that
+        // the server can only answer that it could not read a date, which tells the employee nothing.
         if (action === WorkflowRequestAction.Return && !this.form.returnDate) {
+            this.message.warn(this.l('EnterTheReturnDateInFull'));
             return;
+        }
+
+        if (action === WorkflowRequestAction.Amendment) {
+            if (!this.form.startDate || !this.form.endDate) {
+                this.message.warn(this.l('EnterBothDatesInFull'));
+                return;
+            }
+
+            if (this.form.endDate < this.form.startDate) {
+                this.message.warn(this.l('EndDateCannotBeEarlierThanStartDate'));
+                return;
+            }
         }
 
         let call: Observable<unknown>;

@@ -428,8 +428,16 @@ function withinMinMax(iso: string | null, element: HTMLInputElement): boolean {
         return true;
     }
 
-    const min = element.getAttribute('min');
-    const max = element.getAttribute('max');
+    const min = bound(element.getAttribute('min'));
+    const max = bound(element.getAttribute('max'));
 
     return (!min || iso >= min) && (!max || iso <= max);
+}
+
+/**
+ * A min or max worth holding a date to: one that is itself a date. A screen that binds <c>[min]="nothing"</c> leaves
+ * the attribute holding the word "null", and comparing against that refused every date typed into the field.
+ */
+function bound(value: string | null): string | null {
+    return value && /^\d{4}-\d{2}/.test(value) ? value : null;
 }
