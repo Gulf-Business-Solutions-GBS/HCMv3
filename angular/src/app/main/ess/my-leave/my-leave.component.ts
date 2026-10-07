@@ -159,7 +159,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         this.loading.set(true);
 
         this._myLeaveService
-            .getMyLeaves(new GetMyLeavesInput({ includeHistory: true, maxResultCount: 200, skipCount: 0, sorting: undefined }))
+            .getMyLeaves(new GetMyLeavesInput({ includeHistory: true, includeWithdrawn: true, maxResultCount: 200, skipCount: 0, sorting: undefined }))
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
                 next: (result) => {

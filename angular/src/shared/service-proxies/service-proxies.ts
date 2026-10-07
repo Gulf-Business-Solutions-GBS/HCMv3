@@ -259405,6 +259405,7 @@ export class GetMyLeavesInput implements IGetMyLeavesInput {
     skipCount!: number;
     sorting!: string | undefined;
     includeHistory!: boolean;
+    includeWithdrawn!: boolean;
 
     constructor(data?: IGetMyLeavesInput) {
         if (data) {
@@ -259421,6 +259422,7 @@ export class GetMyLeavesInput implements IGetMyLeavesInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.includeHistory = _data["includeHistory"];
+            this.includeWithdrawn = _data["includeWithdrawn"];
         }
     }
 
@@ -259437,6 +259439,7 @@ export class GetMyLeavesInput implements IGetMyLeavesInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["includeHistory"] = this.includeHistory;
+        data["includeWithdrawn"] = this.includeWithdrawn;
         return data;
     }
 }
@@ -259446,6 +259449,7 @@ export interface IGetMyLeavesInput {
     skipCount: number;
     sorting: string | undefined;
     includeHistory: boolean;
+    includeWithdrawn: boolean;
 }
 
 export class GetMyRequestListInput implements IGetMyRequestListInput {
@@ -286233,6 +286237,7 @@ export class MyLeaveDto implements IMyLeaveDto {
     lastRejectedAction!: WorkflowRequestAction;
     requestAction!: WorkflowRequestAction;
     displayStatus!: MyLeaveRequestStatus;
+    isWithdrawn!: boolean;
     requestNumber!: string | undefined;
     requests!: MyLeaveHistoryItemDto[] | undefined;
     isDraft!: boolean;
@@ -286298,6 +286303,7 @@ export class MyLeaveDto implements IMyLeaveDto {
             this.lastRejectedAction = _data["lastRejectedAction"];
             this.requestAction = _data["requestAction"];
             this.displayStatus = _data["displayStatus"];
+            this.isWithdrawn = _data["isWithdrawn"];
             this.requestNumber = _data["requestNumber"];
             if (Array.isArray(_data["requests"])) {
                 this.requests = [] as any;
@@ -286367,6 +286373,7 @@ export class MyLeaveDto implements IMyLeaveDto {
         data["lastRejectedAction"] = this.lastRejectedAction;
         data["requestAction"] = this.requestAction;
         data["displayStatus"] = this.displayStatus;
+        data["isWithdrawn"] = this.isWithdrawn;
         data["requestNumber"] = this.requestNumber;
         if (Array.isArray(this.requests)) {
             data["requests"] = [];
@@ -286429,6 +286436,7 @@ export interface IMyLeaveDto {
     lastRejectedAction: WorkflowRequestAction;
     requestAction: WorkflowRequestAction;
     displayStatus: MyLeaveRequestStatus;
+    isWithdrawn: boolean;
     requestNumber: string | undefined;
     requests: MyLeaveHistoryItemDto[] | undefined;
     isDraft: boolean;

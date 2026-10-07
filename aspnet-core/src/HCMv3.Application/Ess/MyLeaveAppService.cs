@@ -379,20 +379,30 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
 
         // The employee must see their OWN in-flight requests -- that is the main reason they come here at
         // all -- so the ApprovedOnly filter is off. It stays scoped to them by employee id regardless.
+        // A leave withdrawn before it was approved is removed as far as payroll, balances and every report are
+        // concerned -- which is right -- but to the employee it is still something they applied for. The list
+        // can therefore ask for removed leave too, and then keeps only what was SENT and withdrawn: a draft
+        // discarded before anybody saw it stays gone, and so does anything HR deleted.
         using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        using (input.IncludeWithdrawn ? CurrentUnitOfWork.DisableFilter(AbpDataFilters.SoftDelete) : null)
         {
             var today = DateTime.Today;
 
             var query = _absenceRepository.GetAll()
                 .Include(a => a.AbsenceType)
                 .Where(a => a.EmployeeId == employeeId)
+                .Where(a => !a.IsDeleted
+                            || _requestRepository.GetAll().Any(r => r.Id == a.WorkflowRequestId
+                                                                    && !r.IsDeleted
+                                                                    && !r.IsAmendment
+                                                                    && r.RequestStatus == RequestStatus.Closed))
 
                 // One row per leave. Days that were added to a leave are rows of their own for payroll -- the
                 // paid and unpaid days a late return books, or the unpaid tail of a leave applied for beyond
                 // the balance -- but to the employee they are part of the leave they asked for, not more leave.
                 .Where(a => !_requestRepository.GetAll().Any(r => r.Id == a.WorkflowRequestId && r.IsAmendment))
                 .Where(a => a.WorkflowRequestId == null
-                            || !_absenceRepository.GetAll().Any(b => b.WorkflowRequestId == a.WorkflowRequestId && b.Id < a.Id))
+                            || !_absenceRepository.GetAll().Any(b => b.WorkflowRequestId == a.WorkflowRequestId && b.Id < a.Id && !b.IsDeleted))
                 // Besides what is current or waiting: a leave sent back to the employee, and (legacy's "Return"
                 // tab) an approved leave of a type that needs a return date and has none yet -- a return is
                 // reported AFTER the leave has ended, which is exactly when it would otherwise drop off the list.
@@ -432,7 +442,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     [HttpPost]
     public async Task<FileDto> GetMyLeavesToExcel(ExportMyLeavesInput input)
     {
-        var all = await GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true, MaxResultCount = int.MaxValue });
+        var all = await GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true, IncludeWithdrawn = true, MaxResultCount = int.MaxValue });
 
         // In the order the screen had them, when it says which ones it is showing.
         var leaves = input?.LeaveIds == null
@@ -1998,6 +2008,11 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     /// </summary>
     private static MyLeaveRequestStatus OwnStatusOf(MyLeaveDto leave)
     {
+        if (leave.IsWithdrawn)
+        {
+            return MyLeaveRequestStatus.Withdrawn;
+        }
+
         return leave.WorkflowStatus switch
         {
             RequestStatus.Draft => leave.IsSentBack ? MyLeaveRequestStatus.SentBack : MyLeaveRequestStatus.Draft,
@@ -2021,7 +2036,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             Comments = entity.Comments,
             WorkflowStatus = entity.WorkflowStatus,
             WorkflowRequestId = entity.WorkflowRequestId,
-            CanCancel = CanCancel(entity),
+            IsWithdrawn = entity.IsDeleted,
+            CanCancel = !entity.IsDeleted && CanCancel(entity),
             IsReturned = entity.IsReturned,
             ReturnDate = entity.ReturnDate == default ? null : entity.ReturnDate,
 
@@ -2036,10 +2052,10 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
 
             // Applying creates and submits in one step, so a Draft row that has a request is one an approver
             // sent back.
-            IsSentBack = entity.WorkflowStatus == RequestStatus.Draft && entity.WorkflowRequestId.HasValue,
+            IsSentBack = !entity.IsDeleted && entity.WorkflowStatus == RequestStatus.Draft && entity.WorkflowRequestId.HasValue,
 
             // ...and one with no request yet is a draft the employee saved and has not sent.
-            IsDraft = entity.WorkflowStatus == RequestStatus.Draft && !entity.WorkflowRequestId.HasValue,
+            IsDraft = !entity.IsDeleted && entity.WorkflowStatus == RequestStatus.Draft && !entity.WorkflowRequestId.HasValue,
             CalendarDays = entity.CalendarDays,
             LeavePaymentType = entity.LeavePaymentType,
             PaymentDate = entity.PaymentDate == default ? null : entity.PaymentDate,

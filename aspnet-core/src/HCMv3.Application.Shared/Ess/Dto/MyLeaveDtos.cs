@@ -148,6 +148,12 @@ public class MyLeaveDto : EntityDto<int>
     public MyLeaveRequestStatus DisplayStatus { get; set; }
 
     /// <summary>
+    /// True for a leave that was applied for and withdrawn before it was approved. It is in the list as a
+    /// record of the request only: nothing can be done to it, and payroll does not see it.
+    /// </summary>
+    public bool IsWithdrawn { get; set; }
+
+    /// <summary>
     /// The leave's own number -- the one it was applied for under -- which it keeps for life. Later requests
     /// against it have numbers of their own, in <see cref="Requests"/>. Empty for a draft not yet sent.
     /// </summary>
@@ -225,6 +231,13 @@ public class GetMyLeavesInput : PagedAndSortedResultRequestDto, IShouldNormalize
     /// <summary>When false (the default) only in-flight and future leave is listed, which is what an
     /// employee usually wants; true includes their full history.</summary>
     public bool IncludeHistory { get; set; }
+
+    /// <summary>
+    /// Also lists leave the employee applied for and then withdrew before it was approved. Off unless asked
+    /// for: such a leave is removed as far as everything else is concerned, and only the employee's own list
+    /// of what they have requested has a reason to show it.
+    /// </summary>
+    public bool IncludeWithdrawn { get; set; }
 
     public void Normalize()
     {

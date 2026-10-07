@@ -217,6 +217,90 @@ public class LeaveCancellation_Tests : EssLeaveWorkflowTestBase
         book.Worksheets.Single().LastRowUsed().RowNumber().ShouldBe(4);
     }
 
+    [Fact]
+    public async Task A_Leave_Withdrawn_Before_Approval_Should_Stay_In_My_List_As_Withdrawn()
+    {
+        var meId = CreateCurrentUserEmployee("CAN200");
+        EnableLeaveWorkflowWithApprover("CAN200APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var applied = await _myLeaveAppService.ApplyForLeave(new ApplyForLeaveInput
+        {
+            AbsenceTypeId = typeId,
+            StartDate = DateTime.Today.AddDays(30),
+            EndDate = DateTime.Today.AddDays(34)
+        });
+
+        await _myLeaveAppService.CancelMyLeave(new Abp.Application.Services.Dto.EntityDto(applied.EmployeeAbsenceId));
+
+        var list = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true, IncludeWithdrawn = true });
+        var row = list.Items.Single(l => l.Id == applied.EmployeeAbsenceId);
+
+        // Still there as a record of what was asked for, under its number...
+        row.IsWithdrawn.ShouldBeTrue();
+        row.DisplayStatus.ShouldBe(MyLeaveRequestStatus.Withdrawn);
+        row.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+        row.Requests.Single().Outcome.ShouldBe(MyLeaveHistoryOutcome.Withdrawn);
+
+        // ...and finished with: nothing can be done to it.
+        row.CanCancel.ShouldBeFalse();
+        row.CanAmend.ShouldBeFalse();
+        row.CanRequestCancellation.ShouldBeFalse();
+        row.CanReturn.ShouldBeFalse();
+        row.IsDraft.ShouldBeFalse();
+        row.IsSentBack.ShouldBeFalse();
+
+        // It holds no days: the balance is as if it had never been applied for.
+        QuotaRow(meId, typeId).QuotaUsed.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task A_Withdrawn_Leave_Should_Not_Be_Listed_Unless_Asked_For()
+    {
+        // Everything else that reads this list -- the assistant, the mobile app -- means leave that exists.
+        var meId = CreateCurrentUserEmployee("CAN201");
+        EnableLeaveWorkflowWithApprover("CAN201APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var applied = await _myLeaveAppService.ApplyForLeave(new ApplyForLeaveInput
+        {
+            AbsenceTypeId = typeId,
+            StartDate = DateTime.Today.AddDays(30),
+            EndDate = DateTime.Today.AddDays(34)
+        });
+
+        await _myLeaveAppService.CancelMyLeave(new Abp.Application.Services.Dto.EntityDto(applied.EmployeeAbsenceId));
+
+        var list = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true });
+
+        list.Items.ShouldNotContain(l => l.Id == applied.EmployeeAbsenceId);
+    }
+
+    [Fact]
+    public async Task A_Draft_Discarded_Before_It_Was_Sent_Should_Not_Come_Back_As_Withdrawn()
+    {
+        // Nobody else ever saw it; it was never a request.
+        var meId = CreateCurrentUserEmployee("CAN202");
+        EnableLeaveWorkflowWithApprover("CAN202APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var draft = await _myLeaveAppService.SaveMyLeaveDraft(new SaveMyLeaveDraftInput
+        {
+            AbsenceTypeId = typeId,
+            StartDate = DateTime.Today.AddDays(30),
+            EndDate = DateTime.Today.AddDays(34)
+        });
+
+        await _myLeaveAppService.CancelMyLeave(new Abp.Application.Services.Dto.EntityDto(draft.EmployeeAbsenceId));
+
+        var list = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true, IncludeWithdrawn = true });
+
+        list.Items.ShouldNotContain(l => l.Id == draft.EmployeeAbsenceId);
+    }
+
     private async Task<MyLeaveDto> ListRowAsync(int leaveId)
     {
         var list = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput { IncludeHistory = true });
