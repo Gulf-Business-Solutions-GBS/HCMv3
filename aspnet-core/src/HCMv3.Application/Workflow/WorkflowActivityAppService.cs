@@ -441,6 +441,20 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     };
 
     /// <summary>
+    /// Whether a rejection or a send-back is still the last word on the request, rather than something it has
+    /// moved on from.
+    /// </summary>
+    private static bool StillStands(WorkflowRequest request, RequestActionType decision)
+    {
+        return decision switch
+        {
+            RequestActionType.Rejected => request.RequestStatus == RequestStatus.Rejected,
+            RequestActionType.SentBack or RequestActionType.SentBackToCreator => request.RequestStatus == RequestStatus.Draft,
+            _ => false
+        };
+    }
+
+    /// <summary>
     /// Everyone entitled to act, across every step the request has passed through.
     ///
     /// <para>
@@ -502,16 +516,27 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             // Any stored origin counts, not just CurrentStep: past steps now have real rows too, and
             // testing only for CurrentStep would list every past approver twice -- once from the table and
             // once from the log.
-            var alreadyLive = entries.Any(e => e.Origin != WorkflowApproverOrigin.ReconstructedFromLog
-                                               && e.WorkflowStep == step
-                                               && e.Person.EmployeeId == employeeId);
-
-            if (alreadyLive)
-            {
-                continue;
-            }
+            var stored = entries.FirstOrDefault(e => e.Origin != WorkflowApproverOrigin.ReconstructedFromLog
+                                                     && e.WorkflowStep == step
+                                                     && e.Person.EmployeeId == employeeId);
 
             var last = group.OrderByDescending(d => d.ActionDateTime).First();
+
+            if (stored != null)
+            {
+                // The stored row knows approved or not, and nothing else: an approver who REJECTED the request,
+                // or sent it back, is "not approved" there and used to read as Pending -- still being waited
+                // on, when they are the one who ended it. The log knows what they did. It is only taken while
+                // that decision is how the request stands: a request sent back and since resubmitted is
+                // waiting on this approver again.
+                if (!stored.IsApproved && StillStands(request, last.ActionType))
+                {
+                    stored.ActionType = last.ActionType;
+                    stored.ActedAt = last.ActionDateTime;
+                }
+
+                continue;
+            }
 
             entries.Add(new WorkflowApproverEntryDto
             {

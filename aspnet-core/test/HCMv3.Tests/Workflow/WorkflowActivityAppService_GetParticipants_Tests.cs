@@ -440,6 +440,58 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Say_Rejected_Against_A_Stored_Approver_Who_Rejected()
+    {
+        // The usual case, and the one that used to read "Pending": the approver's row is still there, it
+        // only knows "not approved", and the rejection is in the log.
+        var meId = CreateCurrentUserEmployee("PART905ME");
+        var rejecterId = CreateEmployee("PART905REJECTER");
+
+        var requestId = CreateRequest(meId, step: 1, status: RequestStatus.Rejected);
+        AddApprover(requestId, rejecterId, isApproved: false, step: 1);
+        AddLog(requestId, rejecterId, RequestActionType.Rejected, step: 1, at: new DateTime(2026, 3, 1, 9, 0, 0));
+
+        var result = await GetParticipants(requestId);
+
+        var entry = result.Approvers.Single(a => a.Person.EmployeeId == rejecterId);
+        entry.IsApproved.ShouldBeFalse();
+        entry.ActionType.ShouldBe(RequestActionType.Rejected);
+        entry.ActedAt.ShouldBe(new DateTime(2026, 3, 1, 9, 0, 0));
+    }
+
+    [Fact]
+    public async Task Should_Say_Sent_Back_Against_A_Stored_Approver_While_The_Request_Is_Back_With_Its_Creator()
+    {
+        var meId = CreateCurrentUserEmployee("PART906ME");
+        var approverId = CreateEmployee("PART906APPROVER");
+
+        var requestId = CreateRequest(meId, step: 1, status: RequestStatus.Draft);
+        AddApprover(requestId, approverId, isApproved: false, step: 1);
+        AddLog(requestId, approverId, RequestActionType.SentBack, step: 1, at: new DateTime(2026, 3, 1, 9, 0, 0));
+
+        var result = await GetParticipants(requestId);
+
+        result.Approvers.Single(a => a.Person.EmployeeId == approverId).ActionType.ShouldBe(RequestActionType.SentBack);
+    }
+
+    [Fact]
+    public async Task Should_Go_Back_To_Waiting_On_An_Approver_Once_A_Sent_Back_Request_Is_Resubmitted()
+    {
+        // They sent it back, the requester corrected it and sent it again: it is with them once more, and an
+        // old "sent back" against their name would say they had nothing left to do.
+        var meId = CreateCurrentUserEmployee("PART907ME");
+        var approverId = CreateEmployee("PART907APPROVER");
+
+        var requestId = CreateRequest(meId, step: 1, status: RequestStatus.Open);
+        AddApprover(requestId, approverId, isApproved: false, step: 1);
+        AddLog(requestId, approverId, RequestActionType.SentBack, step: 1, at: new DateTime(2026, 3, 1, 9, 0, 0));
+
+        var result = await GetParticipants(requestId);
+
+        result.Approvers.Single(a => a.Person.EmployeeId == approverId).ActionType.ShouldBeNull();
+    }
+
+    [Fact]
     public async Task Should_Not_Count_The_Requester_Or_A_Commenter_As_An_Approver()
     {
         // Created belongs to the requester and Remarked to whoever spoke; neither is an exercise of
