@@ -286,7 +286,8 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
 
     openOwnScreen(record: MyRequestListItemDto): void {
         if (record.essRoute) {
-            this._router.navigate([record.essRoute]);
+            // With the request named, so the screen opens on it instead of leaving them to find it again.
+            this._router.navigate([record.essRoute], { queryParams: { requestId: record.id } });
         }
     }
 

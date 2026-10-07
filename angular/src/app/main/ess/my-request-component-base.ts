@@ -7,6 +7,7 @@ import {
     GetMyRequestsInput,
     RequestStatus,
 } from '@shared/service-proxies/service-proxies';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from './shared/ess-request-detail-modal.component';
@@ -41,6 +42,13 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     readonly rows = signal<TDto[]>([]);
 
     protected readonly _essSessionService = inject(EssSessionServiceProxy);
+
+    /**
+     * A request named in the address -- the Requests screen's "open on its own screen" link puts it there --
+     * waiting for the list to arrive so it can be opened. Used once: reloading the list after a withdrawal
+     * must not pop the same dialog open again.
+     */
+    private requestToOpen: number | undefined = Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
 
     /**
      * Declared here rather than on each screen so every list opens the same dialog. The query resolves
@@ -176,12 +184,43 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
         this.fetch(new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined }))
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
-                next: (result) => this.rows.set(result.items),
+                next: (result) => {
+                    this.rows.set(result.items);
+                    this.openRequestFromAddress();
+                },
                 // An unlinked account is a setup gap for HR to close, not a fault of theirs, so the page
                 // explains it rather than showing an empty table or an error toast. Admin accounts always
                 // land here: they are deliberately never linked to an employee.
                 error: () => this.notLinked.set(true),
             });
+    }
+
+    /**
+     * Opens the request the address names. On its row when the list has it; straight from the request
+     * otherwise -- a past record this list no longer shows is still a request somebody followed a link to.
+     */
+    private openRequestFromAddress(): void {
+        const requestId = this.requestToOpen;
+        if (!requestId) {
+            return;
+        }
+
+        this.requestToOpen = undefined;
+
+        const row = this.rows().find((item) => (item as TDto & { workflowRequestId?: number }).workflowRequestId === requestId);
+
+        if (row) {
+            this.openDetail(row);
+            return;
+        }
+
+        this.detail()?.show({
+            title: this.detailTitle(),
+            requesterName: this.employeeDisplay(),
+            workflowRequestId: requestId,
+            statusLabel: '',
+            statusClass: '',
+        });
     }
 
     openForm(): void {

@@ -37,6 +37,7 @@ import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header
 import { EssRelatedRequest, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { EssList } from '../shared/ess-list';
 import { FileDownloadService } from '@shared/utils/file-download.service';
+import { ActivatedRoute } from '@angular/router';
 import { EssListHeadComponent } from '../shared/ess-list-head.component';
 import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
@@ -78,6 +79,12 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     private readonly _myLeaveService = inject(MyLeaveServiceProxy);
     private readonly _essSessionService = inject(EssSessionServiceProxy);
     private readonly _fileDownloadService = inject(FileDownloadService);
+
+    /**
+     * A request named in the address -- the Requests screen's "open on its own screen" link puts it there --
+     * waiting for the list to arrive so it can be opened. Used once.
+     */
+    private requestToOpen: number | undefined = Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
 
     readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
     private readonly leaveForm = viewChild<LeaveRequestFormComponent>('leaveForm');
@@ -155,11 +162,54 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             .getMyLeaves(new GetMyLeavesInput({ includeHistory: true, maxResultCount: 200, skipCount: 0, sorting: undefined }))
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
-                next: (result) => this.rows.set(result.items),
+                next: (result) => {
+                    this.rows.set(result.items);
+                    this.openRequestFromAddress();
+                },
 
                 // An unlinked account is a setup gap, not a fault of theirs -- the page explains it.
                 error: () => this.notLinked.set(true),
             });
+    }
+
+    /**
+     * Opens the request the address names: narrows the list to the leave it belongs to, shows the requests
+     * under it, and opens that request's details -- so nobody arriving from the Requests screen has to look
+     * for it again.
+     */
+    private openRequestFromAddress(): void {
+        const requestId = this.requestToOpen;
+        if (!requestId) {
+            return;
+        }
+
+        this.requestToOpen = undefined;
+
+        const row = this.rows().find(
+            (leave) => leave.workflowRequestId === requestId || (leave.requests ?? []).some((item) => item.workflowRequestId === requestId)
+        );
+
+        if (!row) {
+            // A leave withdrawn before it was approved is no longer a row; its request is still there to read.
+            this.detail()?.show({
+                title: this.l('EssMyLeave'),
+                requesterName: this.employeeDisplay(),
+                workflowRequestId: requestId,
+                statusLabel: '',
+                statusClass: '',
+            });
+
+            return;
+        }
+
+        const number =(row.requests ?? []).find((item) => item.workflowRequestId === requestId)?.requestNumber ?? row.requestNumber;
+        this.list.setFilter('number', number ?? '');
+
+        if (!this.isExpanded(row)) {
+            this.toggleExpanded(row);
+        }
+
+        this.openDetail(row, requestId);
     }
 
     // ------------------------------------------------------------------ opening the form
