@@ -39,6 +39,7 @@
     <text name="UsersHeaderInfo">إدارة المستخدمين و الإذونات</text>
     <text name="CreateNewUser">إنشاء مستخدم جديد</text>
     <text name="UserName">اسم المستخدم</text>
+    <text name="Username">اسم المستخدم</text>
     <text name="Name">الإسـم</text>
     <text name="Surname">الإسم الأخير</text>
     <text name="EmailAddress">البريد الإلكتروني</text>
@@ -189,11 +190,13 @@
     <text name="OtherSettings">إعدادات اخرى</text>
     <text name="AuditLogs">سجلات التدقيق</text>
     <text name="Success">نجاح</text>
+    <text name="SUCCESS">نجاح</text>
     <text name="Time">وقت</text>
     <text name="Service">خدمة</text>
     <text name="Action">إجراء</text>
     <text name="Duration">المدة</text>
     <text name="IpAddress">عنوان IP</text>
+    <text name="IPAddress">عنوان IP</text>
     <text name="Client">زائر</text>
     <text name="Browser">المتصفح</text>
     <text name="Xms">{0} جزء ث.</text>
@@ -201,6 +204,7 @@
     <text name="Refresh">تحديث</text>
     <text name="ErrorState">حالة خطأ</text>
     <text name="All">الجميع</text>
+    <text name="ALL">الكل</text>
     <text name="HasError">يوجد خطأ</text>
     <text name="ShowAdvancedFilters">إظهار الفلاتر المتقدمة</text>
     <text name="HideAdvancedFilters">إخفاء الفلاتر المتقدمة</text>
@@ -365,6 +369,7 @@
     <text name="NewTenantRegisteredNotificationMessage">تم إشتراك عميل جديد بالنظام. إسم العميل : {tenancyName}.</text>
     <text name="LoginAttempts">محاولات الدخول</text>
     <text name="Failed">فشل</text>
+    <text name="FAILED">فشل</text>
     <text name="NewTenant">إشتراك العملاء</text>
     <text name="ResizedProfilePicture_Warn_SizeLimit">حجم الصورة بعد التصغير يجب أن يكون أقل من {0} كيلوبايت. قم بتصغير الصورة وحاول مرة اخرى.</text>
     <text name="RegisterFormUserNameInvalidMessage">من فضلك لاتدخل بريد إلكتروني كإسم مستخدم.</text>
@@ -676,6 +681,7 @@
     <text name="Invoice">فاتورة</text>
     <text name="TotalAmount">المبلغ الإجمالي</text>
     <text name="Print">طباعة</text>
+    <text name="PRINT">طباعة</text>
     <text name="ShowInvoice">عرض الفاتورة</text>
     <text name="InvoiceInformation">معلومات الفاتورة</text>
     <text name="InvoiceNo">رقم الفاتورة</text>
@@ -2205,6 +2211,7 @@
     <text name="PaymentBankId">بنك الدفع</text>
     <text name="AccountNumber">رقم الحساب</text>
     <text name="Iban">رقم الآيبان</text>
+    <text name="IBAN">رقم الآيبان</text>
     <text name="NonCompany">خارج الشركة</text>
     <text name="HealthReimbursment">استرداد المصاريف الصحية</text>
     <text name="EmployeeBanks">بنوك الموظف</text>
@@ -2267,6 +2274,7 @@
     <text name="MonitoringUnit">وحدة المراقبة</text>
     <text name="Cash">نقداً</text>
     <text name="Na">لا ينطبق</text>
+    <text name="NA">لا ينطبق</text>
     <text name="AboveAllowance">ما يزيد عن البدل</text>
     <text name="Hour">ساعة</text>
     <text name="Low">منخفض</text>
@@ -2306,6 +2314,7 @@
     <text name="BlockNumber">رقم القطعة</text>
     <text name="LaneNumber">رقم الجادة</text>
     <text name="PaciNumber">رقم الهيئة العامة للمعلومات المدنية</text>
+    <text name="PACINumber">رقم الهيئة العامة للمعلومات المدنية</text>
     <text name="ZipCode">الرمز البريدي</text>
     <text name="Governorate">المحافظة</text>
     <text name="Country">البلد</text>
@@ -2321,8 +2330,10 @@
     <text name="Qualification">المؤهل</text>
     <text name="BloodGroup">فصيلة الدم</text>
     <text name="CivilID">البطاقة المدنية</text>
+    <text name="CivilId">البطاقة المدنية</text>
     <text name="LoginID">رمز الدخول</text>
     <text name="AccessID">معرّف الوصول</text>
+    <text name="AccessId">معرّف الوصول</text>
     <text name="AlternateEmail">بريد إلكتروني بديل</text>
     <text name="BirthPlace">مكان الميلاد</text>
     <text name="PreviousEmpCode">رقم الموظف السابق</text>
@@ -3094,6 +3105,7 @@
     <text name="EmployeeId">الموظف</text>
     <text name="ForPeriod">للفترة</text>
     <text name="InPeriod">في الفترة</text>
+    <text name="Inperiod">في الفترة</text>
     <text name="MaxNumber">الحد الأقصى للعدد</text>
     <text name="MaxUnit">وحدة الحد الأقصى</text>
     <text name="MaxPayPercentage">النسبة القصوى من الأجر</text>
@@ -3179,6 +3191,7 @@
     <text name="GovtJobCategory">فئة الوظيفة الحكومية</text>
     <text name="GovtJobTitle">المسمى الوظيفي الحكومي</text>
     <text name="NoofPosition">عدد الوظائف</text>
+    <text name="NoOfPosition">عدد الوظائف</text>
     <text name="CitizenPercent">نسبة المواطنين</text>
     <text name="CitizenQuotaAccrued">حصة المواطنين المتراكمة</text>
     <text name="CitizenQuotaUsed">حصة المواطنين المستخدمة</text>
@@ -3254,6 +3267,7 @@
     <text name="TravelPerDiemAlreadyExists">يوجد بدل يومي مسجل مسبقاً لهذه الوجهة (من/إلى) ولمجموعة الموظفين أو المجموعة الفرعية نفسها.</text>
     <text name="DeleteTravelDetailCostsFirst">الرجاء حذف تكاليف تفاصيل السفر أولاً، ثم حذف هذا السجل.</text>
     <text name="VIEW">عرض</text>
+    <text name="View">عرض</text>
     <text name="Travel">السفر</text>
     <text name="TravelDetail">تفاصيل السفر</text>
     <text name="TravelType">نوع السفر</text>

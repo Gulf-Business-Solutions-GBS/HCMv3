@@ -12,6 +12,7 @@
     <text name="NameEn">Name (English)</text>
     <text name="NameAr">Name (Arabic)</text>
     <text name="IPAddress">IP Address</text>
+    <text name="IpAddress">IP address</text>
     <text name="Locked">Locked</text>
     <text name="DuplicateCodeFound">Duplicate code found.</text>
     <text name="NameAlreadyInUse">Name already in use. Please try again.</text>
@@ -157,6 +158,7 @@
     <text name="DocumentBelongsTo">Document Belongs To</text>
     <text name="Once">Once</text>
     <text name="ALL">All</text>
+    <text name="All">All</text>
     <text name="Employee">Employee</text>
     <text name="Organization">Organization</text>
     <text name="CreatingNewDocumentType">Creating new document type</text>
@@ -342,6 +344,7 @@
     <text name="UsersHeaderInfo">Manage users and permissions.</text>
     <text name="CreateNewUser">Create new user</text>
     <text name="UserName">User name</text>
+    <text name="Username">Username</text>
     <text name="Name">Name</text>
     <text name="Surname">Surname</text>
     <text name="EmailAddress">Email address</text>
@@ -500,6 +503,7 @@
     <text name="OtherSettings">Other Settings</text>
     <text name="AuditLogs">Audit Logs</text>
     <text name="Success">Success</text>
+    <text name="SUCCESS">Success</text>
     <text name="Time">Time</text>
     <text name="Service">Service</text>
     <text name="Action">Action</text>
@@ -678,6 +682,7 @@
     <text name="NewTenantRegisteredNotificationMessage">A new tenant registered to the application. Tenancy name: {tenancyName}.</text>
     <text name="LoginAttempts">Login attempts</text>
     <text name="Failed">Failed</text>
+    <text name="FAILED">Failed</text>
     <text name="NewTenant">New tenant</text>
     <text name="ResizedProfilePicture_Warn_SizeLimit">Resized picture size must be smaller than {0}MB. Please resize down and try again.</text>
     <text name="RegisterFormUserNameInvalidMessage">Please do not enter an email address for username.</text>
@@ -1003,6 +1008,7 @@
     <text name="Invoice">Invoice</text>
     <text name="TotalAmount">Total Amount</text>
     <text name="Print">Print</text>
+    <text name="PRINT">Print</text>
     <text name="ShowInvoice">Show Invoice</text>
     <text name="InvoiceInformation">Invoice Information</text>
     <text name="InvoiceNo">Invoice No</text>
@@ -2227,6 +2233,7 @@
     <text name="PaymentBankId">Payment Bank</text>
     <text name="AccountNumber">Account Number</text>
     <text name="Iban">IBAN</text>
+    <text name="IBAN">IBAN</text>
     <text name="NonCompany">Non Company</text>
     <text name="HealthReimbursment">Health Reimbursement</text>
 
@@ -2291,6 +2298,7 @@
     <text name="MonitoringUnit">Monitoring Unit</text>
     <text name="Cash">Cash</text>
     <text name="Na">N/A</text>
+    <text name="NA">N/A</text>
     <text name="AboveAllowance">Above Allowance</text>
     <text name="Hour">Hour</text>
     <text name="Low">Low</text>
@@ -2331,6 +2339,7 @@
     <text name="BlockNumber">Block Number</text>
     <text name="LaneNumber">Lane Number</text>
     <text name="PaciNumber">Paci Number</text>
+    <text name="PACINumber">PACI Number</text>
     <text name="ZipCode">Zip Code</text>
     <text name="Governorate">Governorate</text>
     <text name="Country">Country</text>
@@ -2346,8 +2355,10 @@
     <text name="Qualification">Qualification</text>
     <text name="BloodGroup">Blood Group</text>
     <text name="CivilID">Civil ID</text>
+    <text name="CivilId">Civil ID</text>
     <text name="LoginID">Login ID</text>
     <text name="AccessID">Access ID</text>
+    <text name="AccessId">Access Id</text>
     <text name="AlternateEmail">Alternate Email</text>
     <text name="BirthPlace">Birth Place</text>
     <text name="PreviousEmpCode">Previous Employee Code</text>
@@ -3140,6 +3151,7 @@
     <text name="EmployeeId">Employee</text>
     <text name="ForPeriod">For Period</text>
     <text name="InPeriod">In Period</text>
+    <text name="Inperiod">In Period</text>
     <text name="MaxNumber">Max Number</text>
     <text name="MaxUnit">Max Unit</text>
     <text name="MaxPayPercentage">Max Pay Percentage</text>
@@ -3225,6 +3237,7 @@
     <text name="GovtJobCategory">Govt Job Category</text>
     <text name="GovtJobTitle">Govt Job Title</text>
     <text name="NoofPosition">No. of Positions</text>
+    <text name="NoOfPosition">No Of Position</text>
     <text name="CitizenPercent">Citizen Percent</text>
     <text name="CitizenQuotaAccrued">Citizen Quota Accrued</text>
     <text name="CitizenQuotaUsed">Citizen Quota Used</text>
@@ -4260,6 +4273,7 @@
     <text name="RUN">Run</text>
     <text name="GENERATE">Generate</text>
     <text name="VIEW">View</text>
+    <text name="View">View</text>
     <text name="EXPORT">Export</text>
     <text name="TimeEngine">Time Engine</text>
     <text name="RunTimeEngine">Run Time Engine</text>
