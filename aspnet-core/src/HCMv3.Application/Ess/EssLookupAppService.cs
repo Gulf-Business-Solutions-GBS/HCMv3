@@ -65,6 +65,8 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRepository<HCMv3.OrganizationManagement.OrganizationUnitType> _organizationUnitTypeRepository;
     private readonly HCMv3.OrganizationManagement.Services.IOrgHierarchyService _orgHierarchyService;
+    private readonly IRepository<EmployeeDocument> _employeeDocumentRepository;
+    private readonly IWithdrawableDocumentTypeResolver _withdrawableDocumentTypeResolver;
 
     public EssLookupAppService(
         IRepository<AbsenceType> absenceTypeRepository,
@@ -86,8 +88,12 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
         IEmployeeSessionService employeeSessionService,
         HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
         IRepository<HCMv3.OrganizationManagement.OrganizationUnitType> organizationUnitTypeRepository,
-        HCMv3.OrganizationManagement.Services.IOrgHierarchyService orgHierarchyService)
+        HCMv3.OrganizationManagement.Services.IOrgHierarchyService orgHierarchyService,
+        IRepository<EmployeeDocument> employeeDocumentRepository,
+        IWithdrawableDocumentTypeResolver withdrawableDocumentTypeResolver)
     {
+        _employeeDocumentRepository = employeeDocumentRepository;
+        _withdrawableDocumentTypeResolver = withdrawableDocumentTypeResolver;
         _sysSettingsAccessor = sysSettingsAccessor;
         _organizationUnitTypeRepository = organizationUnitTypeRepository;
         _orgHierarchyService = orgHierarchyService;
@@ -386,6 +392,62 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
         }
 
         return sameUnit;
+    }
+
+    // ------------------------------------------------------------------ the employee's own documents
+
+    /// <remarks>
+    /// <para>
+    /// Not reference data like the lists above: these are the caller's own rows, scoped by employee id here
+    /// and again on the write in <c>MyPassportWithdrawalAppService</c>. A filtered dropdown is a convenience,
+    /// not the rule.
+    /// </para>
+    ///
+    /// <para>
+    /// The type restriction is the one the request enforces, from the same resolver: when the tenant has no
+    /// document type carrying the configured code, nothing is restricted, exactly as the request then
+    /// accepts any document. The <c>ApprovedOnly</c> filter is left on, so a document that is itself still
+    /// awaiting approval is not offered for withdrawal.
+    /// </para>
+    ///
+    /// <para>
+    /// A user with no employee record gets an empty list rather than an error, as the colleague picker
+    /// does; the request path refuses them on its own.
+    /// </para>
+    /// </remarks>
+    [AbpAuthorize(AppPermissions.Ess_MyPassportWithdrawals)]
+    public async Task<List<EssWithdrawableDocumentDto>> GetMyWithdrawableDocuments()
+    {
+        var myEmployeeId = await _employeeSessionService.GetCurrentEmployeeIdAsync();
+        if (!myEmployeeId.HasValue)
+        {
+            return new List<EssWithdrawableDocumentDto>();
+        }
+
+        var withdrawableTypeId = await _withdrawableDocumentTypeResolver.ResolveDocumentTypeIdAsync();
+
+        var query = _employeeDocumentRepository.GetAll()
+            .Where(d => d.EmployeeId == myEmployeeId.Value);
+
+        if (withdrawableTypeId.HasValue)
+        {
+            query = query.Where(d => d.DocumentTypeId == withdrawableTypeId.Value);
+        }
+
+        return await query
+            .OrderBy(d => d.DocumentType.NameEn)
+            .ThenBy(d => d.DocumentNum)
+            .Select(d => new EssWithdrawableDocumentDto
+            {
+                Id = d.Id,
+                DocumentNum = d.DocumentNum,
+                DocumentTypeId = d.DocumentTypeId,
+                DocumentTypeNameEn = d.DocumentType.NameEn,
+                DocumentTypeNameAr = d.DocumentType.NameAr,
+                IssueDate = d.IssueDate,
+                ExpiryDate = d.ExpiryDate
+            })
+            .ToListAsync();
     }
 
     // ------------------------------------------------------------------ plumbing

@@ -9,6 +9,7 @@ using Abp.Timing;
 using HCMv3.BackgroundJobs;
 using HCMv3.MultiTenancy;
 using HCMv3.PayrollManagement.Services;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.SystemSecurity.Services;
 
 namespace HCMv3.Notifications;
@@ -44,15 +45,18 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
     private readonly IRepository<Tenant> _tenantRepository;
     private readonly INotificationDispatchService _notificationDispatchService;
     private readonly IAbsenceViolationService _absenceViolationService;
+    private readonly IDocumentOverdueReminderService _documentOverdueReminderService;
 
     public DailyNotificationWorker(
         AbpTimer timer,
         IUnitOfWorkManager unitOfWorkManager,
         IRepository<Tenant> tenantRepository,
         INotificationDispatchService notificationDispatchService,
-        IAbsenceViolationService absenceViolationService)
+        IAbsenceViolationService absenceViolationService,
+        IDocumentOverdueReminderService documentOverdueReminderService)
         : base(timer)
     {
+        _documentOverdueReminderService = documentOverdueReminderService;
         _unitOfWorkManager = unitOfWorkManager;
         _tenantRepository = tenantRepository;
         _notificationDispatchService = notificationDispatchService;
@@ -95,6 +99,11 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
         // because every step taken is logged against its day or leave and is never taken twice.
         Run(tenantId, "leave not returned violation", () => _absenceViolationService.SendNotReturnViolationNotificationsAsync(Clock.Now.Date));
         Run(tenantId, "absence violation", () => _absenceViolationService.SendAbsentViolationNotificationsAsync(Clock.Now.Date));
+
+        // A document out of custody past its due date: the holder and the guarantor are told once a day.
+        // Safe at this period for the same reason as the two above -- each movement is stamped with the day
+        // it was last reminded.
+        Run(tenantId, "document overdue", () => _documentOverdueReminderService.SendOverdueRemindersAsync(Clock.Now.Date));
     }
 
     private void Run(int tenantId, string what, Func<System.Threading.Tasks.Task> send)

@@ -37577,6 +37577,110 @@ export class EmployeeDocumentMvmtsServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    recordHandOver(body?: RecordDocumentHandOverInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeDocumentMvmts/RecordHandOver";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRecordHandOver(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRecordHandOver(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRecordHandOver(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    recordReturn(body?: RecordDocumentReturnInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeDocumentMvmts/RecordReturn";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRecordReturn(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRecordReturn(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRecordReturn(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -63811,6 +63915,64 @@ export class EssLookupServiceProxy {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(EssColleagueLookupDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getMyWithdrawableDocuments(): Observable<EssWithdrawableDocumentDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/EssLookup/GetMyWithdrawableDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyWithdrawableDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyWithdrawableDocuments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EssWithdrawableDocumentDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EssWithdrawableDocumentDto[]>;
+        }));
+    }
+
+    protected processGetMyWithdrawableDocuments(response: HttpResponseBase): Observable<EssWithdrawableDocumentDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(EssWithdrawableDocumentDto.fromJS(item));
             }
             else {
                 result200 = null as any;
@@ -204365,6 +204527,58 @@ export enum DocumentBelongsTo {
     Organization = 2,
 }
 
+export class DocumentMovementExtensionDto implements IDocumentMovementExtensionDto {
+    id!: number;
+    withdrawDate!: DateTime;
+    returnDate!: DateTime;
+    requestNumber!: string | undefined;
+    supersededOn!: DateTime | undefined;
+
+    constructor(data?: IDocumentMovementExtensionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.withdrawDate = _data["withdrawDate"] ? DateTime.fromISO(_data["withdrawDate"].toString()) : undefined as any;
+            this.returnDate = _data["returnDate"] ? DateTime.fromISO(_data["returnDate"].toString()) : undefined as any;
+            this.requestNumber = _data["requestNumber"];
+            this.supersededOn = _data["supersededOn"] ? DateTime.fromISO(_data["supersededOn"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): DocumentMovementExtensionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentMovementExtensionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["withdrawDate"] = this.withdrawDate ? this.withdrawDate.toString() : undefined as any;
+        data["returnDate"] = this.returnDate ? this.returnDate.toString() : undefined as any;
+        data["requestNumber"] = this.requestNumber;
+        data["supersededOn"] = this.supersededOn ? this.supersededOn.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IDocumentMovementExtensionDto {
+    id: number;
+    withdrawDate: DateTime;
+    returnDate: DateTime;
+    requestNumber: string | undefined;
+    supersededOn: DateTime | undefined;
+}
+
 export enum DocumentMvmtStatus {
     IN = 0,
     OUT = 1,
@@ -210913,6 +211127,16 @@ export class EmployeeDocumentMvmtDto implements IEmployeeDocumentMvmtDto {
     withdrawalReason!: string | undefined;
     comments!: string | undefined;
     workflowStatus!: RequestStatus;
+    guarantorNameEn!: string | undefined;
+    guarantorNameAr!: string | undefined;
+    actualWithdrawDate!: DateTime | undefined;
+    handedOverByUserName!: string | undefined;
+    receivedByUserName!: string | undefined;
+    returnRemarks!: string | undefined;
+    isOverdue!: boolean;
+    daysOverdue!: number;
+    extendsMovementId!: number | undefined;
+    extensions!: DocumentMovementExtensionDto[] | undefined;
 
     constructor(data?: IEmployeeDocumentMvmtDto) {
         if (data) {
@@ -210936,6 +211160,20 @@ export class EmployeeDocumentMvmtDto implements IEmployeeDocumentMvmtDto {
             this.withdrawalReason = _data["withdrawalReason"];
             this.comments = _data["comments"];
             this.workflowStatus = _data["workflowStatus"];
+            this.guarantorNameEn = _data["guarantorNameEn"];
+            this.guarantorNameAr = _data["guarantorNameAr"];
+            this.actualWithdrawDate = _data["actualWithdrawDate"] ? DateTime.fromISO(_data["actualWithdrawDate"].toString()) : undefined as any;
+            this.handedOverByUserName = _data["handedOverByUserName"];
+            this.receivedByUserName = _data["receivedByUserName"];
+            this.returnRemarks = _data["returnRemarks"];
+            this.isOverdue = _data["isOverdue"];
+            this.daysOverdue = _data["daysOverdue"];
+            this.extendsMovementId = _data["extendsMovementId"];
+            if (Array.isArray(_data["extensions"])) {
+                this.extensions = [] as any;
+                for (let item of _data["extensions"])
+                    this.extensions!.push(DocumentMovementExtensionDto.fromJS(item));
+            }
         }
     }
 
@@ -210959,6 +211197,20 @@ export class EmployeeDocumentMvmtDto implements IEmployeeDocumentMvmtDto {
         data["withdrawalReason"] = this.withdrawalReason;
         data["comments"] = this.comments;
         data["workflowStatus"] = this.workflowStatus;
+        data["guarantorNameEn"] = this.guarantorNameEn;
+        data["guarantorNameAr"] = this.guarantorNameAr;
+        data["actualWithdrawDate"] = this.actualWithdrawDate ? this.actualWithdrawDate.toString() : undefined as any;
+        data["handedOverByUserName"] = this.handedOverByUserName;
+        data["receivedByUserName"] = this.receivedByUserName;
+        data["returnRemarks"] = this.returnRemarks;
+        data["isOverdue"] = this.isOverdue;
+        data["daysOverdue"] = this.daysOverdue;
+        data["extendsMovementId"] = this.extendsMovementId;
+        if (Array.isArray(this.extensions)) {
+            data["extensions"] = [];
+            for (let item of this.extensions)
+                data["extensions"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -210975,6 +211227,16 @@ export interface IEmployeeDocumentMvmtDto {
     withdrawalReason: string | undefined;
     comments: string | undefined;
     workflowStatus: RequestStatus;
+    guarantorNameEn: string | undefined;
+    guarantorNameAr: string | undefined;
+    actualWithdrawDate: DateTime | undefined;
+    handedOverByUserName: string | undefined;
+    receivedByUserName: string | undefined;
+    returnRemarks: string | undefined;
+    isOverdue: boolean;
+    daysOverdue: number;
+    extendsMovementId: number | undefined;
+    extensions: DocumentMovementExtensionDto[] | undefined;
 }
 
 export class EmployeeDocumentReportRowDto implements IEmployeeDocumentReportRowDto {
@@ -222733,6 +222995,66 @@ export interface IEssTransactionTypeDto {
     iconClass: string | undefined;
     displayOrder: number;
     isWorkflowEnabled: boolean;
+}
+
+export class EssWithdrawableDocumentDto implements IEssWithdrawableDocumentDto {
+    id!: number;
+    documentNum!: string | undefined;
+    documentTypeId!: number;
+    documentTypeNameEn!: string | undefined;
+    documentTypeNameAr!: string | undefined;
+    issueDate!: DateTime;
+    expiryDate!: DateTime;
+
+    constructor(data?: IEssWithdrawableDocumentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.documentNum = _data["documentNum"];
+            this.documentTypeId = _data["documentTypeId"];
+            this.documentTypeNameEn = _data["documentTypeNameEn"];
+            this.documentTypeNameAr = _data["documentTypeNameAr"];
+            this.issueDate = _data["issueDate"] ? DateTime.fromISO(_data["issueDate"].toString()) : undefined as any;
+            this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): EssWithdrawableDocumentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssWithdrawableDocumentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["documentNum"] = this.documentNum;
+        data["documentTypeId"] = this.documentTypeId;
+        data["documentTypeNameEn"] = this.documentTypeNameEn;
+        data["documentTypeNameAr"] = this.documentTypeNameAr;
+        data["issueDate"] = this.issueDate ? this.issueDate.toString() : undefined as any;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IEssWithdrawableDocumentDto {
+    id: number;
+    documentNum: string | undefined;
+    documentTypeId: number;
+    documentTypeNameEn: string | undefined;
+    documentTypeNameAr: string | undefined;
+    issueDate: DateTime;
+    expiryDate: DateTime;
 }
 
 export enum ExceptionBenefitType {
@@ -250810,6 +251132,7 @@ export interface IGetEmployeeDocumentForEditOutput {
 
 export class GetEmployeeDocumentMvmtForEditOutput implements IGetEmployeeDocumentMvmtForEditOutput {
     employeeDocumentMvmt!: CreateOrEditEmployeeDocumentMvmtDto;
+    details!: EmployeeDocumentMvmtDto;
 
     constructor(data?: IGetEmployeeDocumentMvmtForEditOutput) {
         if (data) {
@@ -250823,6 +251146,7 @@ export class GetEmployeeDocumentMvmtForEditOutput implements IGetEmployeeDocumen
     init(_data?: any) {
         if (_data) {
             this.employeeDocumentMvmt = _data["employeeDocumentMvmt"] ? CreateOrEditEmployeeDocumentMvmtDto.fromJS(_data["employeeDocumentMvmt"]) : undefined as any;
+            this.details = _data["details"] ? EmployeeDocumentMvmtDto.fromJS(_data["details"]) : undefined as any;
         }
     }
 
@@ -250836,12 +251160,14 @@ export class GetEmployeeDocumentMvmtForEditOutput implements IGetEmployeeDocumen
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeDocumentMvmt"] = this.employeeDocumentMvmt ? this.employeeDocumentMvmt.toJSON() : undefined as any;
+        data["details"] = this.details ? this.details.toJSON() : undefined as any;
         return data;
     }
 }
 
 export interface IGetEmployeeDocumentMvmtForEditOutput {
     employeeDocumentMvmt: CreateOrEditEmployeeDocumentMvmtDto;
+    details: EmployeeDocumentMvmtDto;
 }
 
 export class GetEmployeeDocumentReportInput implements IGetEmployeeDocumentReportInput {
@@ -287199,6 +287525,16 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
     withdrawalReason!: string | undefined;
     comments!: string | undefined;
     canReturn!: boolean;
+    requestNumber!: string | undefined;
+    actualWithdrawDate!: DateTime | undefined;
+    returnRemarks!: string | undefined;
+    issueDate!: DateTime | undefined;
+    expiryDate!: DateTime | undefined;
+    isOverdue!: boolean;
+    hasPendingReturn!: boolean;
+    pendingReturnRequestId!: number | undefined;
+    extendsMovementId!: number | undefined;
+    extensions!: DocumentMovementExtensionDto[] | undefined;
 
     constructor(data?: IMyPassportWithdrawalDto) {
         if (data) {
@@ -287231,6 +287567,20 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
             this.withdrawalReason = _data["withdrawalReason"];
             this.comments = _data["comments"];
             this.canReturn = _data["canReturn"];
+            this.requestNumber = _data["requestNumber"];
+            this.actualWithdrawDate = _data["actualWithdrawDate"] ? DateTime.fromISO(_data["actualWithdrawDate"].toString()) : undefined as any;
+            this.returnRemarks = _data["returnRemarks"];
+            this.issueDate = _data["issueDate"] ? DateTime.fromISO(_data["issueDate"].toString()) : undefined as any;
+            this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
+            this.isOverdue = _data["isOverdue"];
+            this.hasPendingReturn = _data["hasPendingReturn"];
+            this.pendingReturnRequestId = _data["pendingReturnRequestId"];
+            this.extendsMovementId = _data["extendsMovementId"];
+            if (Array.isArray(_data["extensions"])) {
+                this.extensions = [] as any;
+                for (let item of _data["extensions"])
+                    this.extensions!.push(DocumentMovementExtensionDto.fromJS(item));
+            }
         }
     }
 
@@ -287263,6 +287613,20 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
         data["withdrawalReason"] = this.withdrawalReason;
         data["comments"] = this.comments;
         data["canReturn"] = this.canReturn;
+        data["requestNumber"] = this.requestNumber;
+        data["actualWithdrawDate"] = this.actualWithdrawDate ? this.actualWithdrawDate.toString() : undefined as any;
+        data["returnRemarks"] = this.returnRemarks;
+        data["issueDate"] = this.issueDate ? this.issueDate.toString() : undefined as any;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
+        data["isOverdue"] = this.isOverdue;
+        data["hasPendingReturn"] = this.hasPendingReturn;
+        data["pendingReturnRequestId"] = this.pendingReturnRequestId;
+        data["extendsMovementId"] = this.extendsMovementId;
+        if (Array.isArray(this.extensions)) {
+            data["extensions"] = [];
+            for (let item of this.extensions)
+                data["extensions"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -287288,6 +287652,16 @@ export interface IMyPassportWithdrawalDto {
     withdrawalReason: string | undefined;
     comments: string | undefined;
     canReturn: boolean;
+    requestNumber: string | undefined;
+    actualWithdrawDate: DateTime | undefined;
+    returnRemarks: string | undefined;
+    issueDate: DateTime | undefined;
+    expiryDate: DateTime | undefined;
+    isOverdue: boolean;
+    hasPendingReturn: boolean;
+    pendingReturnRequestId: number | undefined;
+    extendsMovementId: number | undefined;
+    extensions: DocumentMovementExtensionDto[] | undefined;
 }
 
 export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
@@ -330111,6 +330485,90 @@ export interface IRecentTenant {
     creationTime: DateTime;
 }
 
+export class RecordDocumentHandOverInput implements IRecordDocumentHandOverInput {
+    id!: number;
+    actualWithdrawDate!: DateTime;
+
+    constructor(data?: IRecordDocumentHandOverInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.actualWithdrawDate = _data["actualWithdrawDate"] ? DateTime.fromISO(_data["actualWithdrawDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): RecordDocumentHandOverInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordDocumentHandOverInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["actualWithdrawDate"] = this.actualWithdrawDate ? this.actualWithdrawDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IRecordDocumentHandOverInput {
+    id: number;
+    actualWithdrawDate: DateTime;
+}
+
+export class RecordDocumentReturnInput implements IRecordDocumentReturnInput {
+    id!: number;
+    actualReturnDate!: DateTime;
+    returnRemarks!: string | undefined;
+
+    constructor(data?: IRecordDocumentReturnInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.actualReturnDate = _data["actualReturnDate"] ? DateTime.fromISO(_data["actualReturnDate"].toString()) : undefined as any;
+            this.returnRemarks = _data["returnRemarks"];
+        }
+    }
+
+    static fromJS(data: any): RecordDocumentReturnInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordDocumentReturnInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["actualReturnDate"] = this.actualReturnDate ? this.actualReturnDate.toString() : undefined as any;
+        data["returnRemarks"] = this.returnRemarks;
+        return data;
+    }
+}
+
+export interface IRecordDocumentReturnInput {
+    id: number;
+    actualReturnDate: DateTime;
+    returnRemarks: string | undefined;
+}
+
 export class RecordMyGeoPunchInput implements IRecordMyGeoPunchInput {
     transTypeCode!: string;
     latitude!: number;
@@ -334052,6 +334510,7 @@ export interface IRetroReasonLogDto {
 export class ReturnDocumentInput implements IReturnDocumentInput {
     employeeDocumentMvmtId!: number;
     actualReturnDate!: DateTime;
+    returnRemarks!: string | undefined;
 
     constructor(data?: IReturnDocumentInput) {
         if (data) {
@@ -334066,6 +334525,7 @@ export class ReturnDocumentInput implements IReturnDocumentInput {
         if (_data) {
             this.employeeDocumentMvmtId = _data["employeeDocumentMvmtId"];
             this.actualReturnDate = _data["actualReturnDate"] ? DateTime.fromISO(_data["actualReturnDate"].toString()) : undefined as any;
+            this.returnRemarks = _data["returnRemarks"];
         }
     }
 
@@ -334080,6 +334540,7 @@ export class ReturnDocumentInput implements IReturnDocumentInput {
         data = typeof data === 'object' ? data : {};
         data["employeeDocumentMvmtId"] = this.employeeDocumentMvmtId;
         data["actualReturnDate"] = this.actualReturnDate ? this.actualReturnDate.toString() : undefined as any;
+        data["returnRemarks"] = this.returnRemarks;
         return data;
     }
 }
@@ -334087,6 +334548,7 @@ export class ReturnDocumentInput implements IReturnDocumentInput {
 export interface IReturnDocumentInput {
     employeeDocumentMvmtId: number;
     actualReturnDate: DateTime;
+    returnRemarks: string | undefined;
 }
 
 export class ReturnDocumentResultDto implements IReturnDocumentResultDto {

@@ -238,14 +238,26 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
 
         allowed.TransactionId.ShouldBeGreaterThan(0);
 
-        // On.
+        // On. Switched on the tenant's one settings row, which the first request above created with its
+        // defaults -- the settings are read as "the first row", so a second row added here would never be
+        // looked at. (This used to add one, and the refusal asserted below came from the "already out" rule
+        // instead; with that rule gone the test has to exercise the reason rule for real.)
         UsingDbContext(context =>
         {
-            context.Set<ManageSelfServiceSettings>().Add(new ManageSelfServiceSettings
+            var settings = context.Set<ManageSelfServiceSettings>().FirstOrDefault(s => s.TenantId == TenantId);
+
+            if (settings == null)
             {
-                TenantId = TenantId,
-                IsWithdrawalReasonMandatory = true
-            });
+                context.Set<ManageSelfServiceSettings>().Add(new ManageSelfServiceSettings
+                {
+                    TenantId = TenantId,
+                    IsWithdrawalReasonMandatory = true
+                });
+            }
+            else
+            {
+                settings.IsWithdrawalReasonMandatory = true;
+            }
         });
 
         await Assert.ThrowsAsync<UserFriendlyException>(() =>
@@ -491,9 +503,12 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task A_Document_That_Is_Already_Out_Should_Not_Be_Withdrawn_Again()
+    public async Task A_Document_That_Is_Already_Out_Can_Be_Requested_Again_As_An_Extension()
     {
-        // Legacy: "The passport is already out" -- refused unless an extension is in flight.
+        // This test used to assert a refusal. Legacy's "The passport is already out" block is commented out
+        // (PassportWithdrawalRequestController ~264-277): asking again for a document that is out is an
+        // extension, allowed whether or not another request is open. What its approval then does is covered
+        // in MyPassportWithdrawalExtension_Tests.
         var meId = CreateCurrentUserEmployee("PPW820");
         var approverId = EnableWorkflow("PPW820APP");
         var documentId = CreatePassportFor(meId);
@@ -501,8 +516,10 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
         var first = await _withdrawals.RequestPassportWithdrawal(Input(documentId));
         await Resolve<IWorkflowApprovalService>().ApproveAsync(first.WorkflowRequestId.Value, approverId, "ok");
 
-        await Should.ThrowAsync<UserFriendlyException>(() =>
-            _withdrawals.RequestPassportWithdrawal(Input(documentId, 2, 20)));
+        var extension = await _withdrawals.RequestPassportWithdrawal(Input(documentId, 2, 20));
+
+        extension.SubmittedForApproval.ShouldBeTrue();
+        extension.TransactionId.ShouldNotBe(first.TransactionId);
     }
 
     [Fact]
@@ -589,13 +606,15 @@ public class MyPassportWithdrawalAppService_Tests : AppTestBase
         var firstDocumentId = CreatePassportFor(meId);
         var secondDocumentId = CreatePassportFor(meId);
 
-        var withdrawal = await _withdrawals.RequestPassportWithdrawal(Input(firstDocumentId));
+        // Out three days ago and handed back today: a return date still to come is now refused, so the
+        // fixture uses one that has happened.
+        var withdrawal = await _withdrawals.RequestPassportWithdrawal(Input(firstDocumentId, -3, 14));
         await Resolve<IWorkflowApprovalService>().ApproveAsync(withdrawal.WorkflowRequestId.Value, approverId, "ok");
 
         var returnRequest = await _withdrawals.ReturnMyDocument(new ReturnDocumentInput
         {
             EmployeeDocumentMvmtId = withdrawal.TransactionId,
-            ActualReturnDate = DateTime.Today.AddDays(2)
+            ActualReturnDate = DateTime.Today
         });
 
         var other = await _withdrawals.RequestPassportWithdrawal(Input(secondDocumentId));

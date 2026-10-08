@@ -68,6 +68,68 @@ public class EmployeeDocumentMvmt : FullAuditedEntity, IMustHaveTenant, IHasEmpl
     [StringLength(500)]
     public virtual string Comments { get; set; }
 
+    // ------------------------------------------------------------------ the custody trail
+    //
+    // Who physically held the document and when. All nullable: a movement recorded before these existed, or
+    // one whose hand-over nobody has recorded yet, simply has no trail rather than an invented one.
+
+    /// <summary>
+    /// The day the document was physically handed to the employee. May differ from the requested
+    /// <see cref="WithdrawDate"/>: the request says when the employee asked for it, this says when it left
+    /// the safe.
+    /// </summary>
+    public virtual DateTime? ActualWithdrawDate { get; set; }
+
+    /// <summary>The user who recorded the hand-over.</summary>
+    public virtual long? HandedOverByUserId { get; set; }
+
+    /// <summary>
+    /// The user who took the document back: HR recording the return, or the approver who approved the
+    /// employee's own return request.
+    /// </summary>
+    public virtual long? ReceivedByUserId { get; set; }
+
+    /// <summary>Remarks or condition noted when the document came back.</summary>
+    [StringLength(MaxReturnRemarksLength)]
+    public virtual string ReturnRemarks { get; set; }
+
+    /// <summary>
+    /// The last day an overdue reminder went out for this movement, so the reminder run sends at most one a
+    /// day however often it polls.
+    /// </summary>
+    public virtual DateTime? OverdueReminderSentOn { get; set; }
+
+    /// <summary>
+    /// The movement this one extended: the document was already out on that movement when this one was
+    /// approved, so this row replaced it. The replaced row is soft-deleted and stays reachable through this
+    /// column, which is how the earlier due dates remain readable. Null for an ordinary withdrawal.
+    /// </summary>
+    public virtual int? ExtendsMovementId { get; set; }
+
+    public const int MaxReturnRemarksLength = 500;
+
+    /// <summary>
+    /// Whether the movement counts: recorded by HR (no workflow status), approved, or closed. The same three
+    /// states the <c>ApprovedOnly</c> filter lets through, spelled out for code that has to switch that
+    /// filter off to see pending rows as well.
+    /// </summary>
+    public virtual bool IsInEffect()
+    {
+        return WorkflowStatus is null or RequestStatus.Approved or RequestStatus.Closed;
+    }
+
+    /// <summary>Still out: <see cref="ActualReturnDate"/> has not been stamped.</summary>
+    public virtual bool IsReturned()
+    {
+        return ActualReturnDate != default;
+    }
+
+    /// <summary>In effect, not returned, and past the date it was due back.</summary>
+    public virtual bool IsOverdueOn(DateTime today)
+    {
+        return IsInEffect() && !IsReturned() && ReturnDate.Date < today.Date;
+    }
+
     /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
     public virtual int? WorkflowRequestId { get; set; }
 

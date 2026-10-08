@@ -21145,6 +21145,9 @@ namespace HCMv3.Migrations
                     b.Property<DateTime>("ActualReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("ActualWithdrawDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Comments")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -21167,8 +21170,14 @@ namespace HCMv3.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ExtendsMovementId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("GuarantorId")
                         .HasColumnType("int");
+
+                    b.Property<long?>("HandedOverByUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -21179,8 +21188,18 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("OverdueReminderSentOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("ReceivedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ReturnRemarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -21203,6 +21222,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("EmployeeDocumentId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ExtendsMovementId");
 
                     b.HasIndex("GuarantorId");
 
@@ -39165,6 +39186,11 @@ namespace HCMv3.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeDocumentMvmt", null)
+                        .WithMany()
+                        .HasForeignKey("ExtendsMovementId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HCMv3.PersonnelAdministration.Employee", "Guarantor")
                         .WithMany()

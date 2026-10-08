@@ -1977,6 +1977,13 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .HasForeignKey(e => e.GuarantorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // An extension points at the movement it replaced. Never cascading: the replaced row is the
+            // record of the earlier due date, and SQL Server refuses a cascading self-reference anyway.
+            b.HasOne<EmployeeDocumentMvmt>()
+                .WithMany()
+                .HasForeignKey(e => e.ExtendsMovementId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
             // WorkflowStatus on the same pass.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });

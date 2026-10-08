@@ -286,6 +286,18 @@
                                         [ngModel]="record().passportWithdrawalSubmissionStep"
                                         (ngModelChange)="updateNumberField('passportWithdrawalSubmissionStep', $event)" />
                                 </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SelfServiceSettings_IsWithdrawalReasonMandatory"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="IsWithdrawalReasonMandatory"
+                                            [ngModel]="record().isWithdrawalReasonMandatory"
+                                            (ngModelChange)="updateField('isWithdrawalReasonMandatory', $event)" />
+                                        <label class="form-check-label" for="SelfServiceSettings_IsWithdrawalReasonMandatory">{{ 'IsWithdrawalReasonMandatory' | localize }}</label>
+                                    </div>
+                                </div>
                             </div>
                         </fieldset>
                     </div>

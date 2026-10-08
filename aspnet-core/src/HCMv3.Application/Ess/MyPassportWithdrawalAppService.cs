@@ -9,7 +9,9 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.Timing;
 using Abp.UI;
+using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.Authorization;
 using HCMv3.Ess.Dto;
 using HCMv3.GeneralMasterInfo;
@@ -45,10 +47,10 @@ namespace HCMv3.Ess;
 public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<EmployeeDocumentMvmt>, IMyPassportWithdrawalAppService
 {
     /// <summary>Tenant config key for the document type employees may withdraw (legacy's JSON setting).</summary>
-    public const string WithdrawableDocumentTypeCodeKey = "PassportWithdrawalDocumentTypeCode";
+    public const string WithdrawableDocumentTypeCodeKey = WithdrawableDocumentTypeResolver.DocumentTypeCodeKey;
 
     /// <summary>Legacy's default: document type code "2", the passport.</summary>
-    public const string DefaultWithdrawableDocumentTypeCode = "2";
+    public const string DefaultWithdrawableDocumentTypeCode = WithdrawableDocumentTypeResolver.DefaultDocumentTypeCode;
 
     private readonly IRepository<EmployeeDocument> _documentRepository;
     private readonly IRepository<DocumentType> _documentTypeRepository;
@@ -57,6 +59,8 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     private readonly INotificationDispatchService _notificationDispatchService;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IWorkflowAmendmentService _workflowAmendmentService;
+    private readonly IWithdrawableDocumentTypeResolver _withdrawableDocumentTypeResolver;
+    private readonly IDocumentMovementExtensionReader _extensionReader;
 
     public MyPassportWithdrawalAppService(
         IRepository<EmployeeDocumentMvmt> repository,
@@ -69,9 +73,13 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         IRepository<Employee> employeeRepository,
         INotificationDispatchService notificationDispatchService,
         ISysSettingsAccessor sysSettingsAccessor,
-        IWorkflowAmendmentService workflowAmendmentService)
+        IWorkflowAmendmentService workflowAmendmentService,
+        IWithdrawableDocumentTypeResolver withdrawableDocumentTypeResolver,
+        IDocumentMovementExtensionReader extensionReader)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
+        _withdrawableDocumentTypeResolver = withdrawableDocumentTypeResolver;
+        _extensionReader = extensionReader;
         _documentRepository = documentRepository;
         _documentTypeRepository = documentTypeRepository;
         _employeeRepository = employeeRepository;
@@ -121,14 +129,61 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
                 .Distinct()
                 .ToList();
 
-            var requestStatuses = await _requestRepository.GetAll()
+            var ownRequests = await _requestRepository.GetAll()
                 .Where(r => requestIds.Contains(r.Id))
-                .Select(r => new { r.Id, r.RequestStatus })
-                .ToDictionaryAsync(r => r.Id, r => r.RequestStatus);
+                .Select(r => new { r.Id, r.RequestStatus, r.RequestNumber })
+                .ToListAsync();
 
-            return new PagedResultDto<MyPassportWithdrawalDto>(
-                totalCount,
-                items.Select(m => ToDto(m, requestStatuses)).ToList());
+            var requestStatuses = ownRequests.ToDictionary(r => r.Id, r => r.RequestStatus);
+            var requestNumbers = ownRequests.ToDictionary(r => r.Id, r => r.RequestNumber);
+
+            // A return leaves the movement row exactly as it was until it is approved, so nothing on the row
+            // says one is waiting. Without this the screen goes on offering "Return" and the second attempt
+            // is only refused on submit. One read for the page, the same test the amendment service applies.
+            var movementIds = items.Select(m => m.Id).ToList();
+
+            var pendingReturns = (await _requestRepository.GetAll()
+                    .Where(r => r.IsAmendment
+                                && r.RequestType == RequestType
+                                && r.TargetEntityId.HasValue
+                                && movementIds.Contains(r.TargetEntityId.Value)
+                                && (r.RequestStatus == RequestStatus.Open || r.RequestStatus == RequestStatus.Draft))
+                    .Select(r => new { r.Id, MovementId = r.TargetEntityId.Value })
+                    .ToListAsync())
+                .GroupBy(r => r.MovementId)
+                .ToDictionary(g => g.Key, g => g.Max(r => r.Id));
+
+            var chains = await _extensionReader.GetChainsAsync(items);
+
+            var dtos = items.Select(m =>
+            {
+                var dto = ToDto(m, requestStatuses);
+
+                dto.RequestNumber = m.WorkflowRequestId.HasValue && requestNumbers.TryGetValue(m.WorkflowRequestId.Value, out var number)
+                    ? number
+                    : null;
+                dto.IsOverdue = m.IsOverdueOn(today);
+
+                if (pendingReturns.TryGetValue(m.Id, out var pendingReturnId))
+                {
+                    dto.HasPendingReturn = true;
+                    dto.PendingReturnRequestId = pendingReturnId;
+                    dto.CanReturn = false;
+                }
+
+                dto.Extensions = chains[m.Id].Select(x => new DocumentMovementExtensionDto
+                {
+                    Id = x.Id,
+                    WithdrawDate = x.WithdrawDate,
+                    ReturnDate = x.ReturnDate,
+                    RequestNumber = x.RequestNumber,
+                    SupersededOn = x.SupersededOn
+                }).ToList();
+
+                return dto;
+            }).ToList();
+
+            return new PagedResultDto<MyPassportWithdrawalDto>(totalCount, dtos);
         }
     }
 
@@ -196,28 +251,11 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             }
         }
 
-        // Legacy's "The passport is already out" check, with its extension exception
-        // (PassportWithdrawalRequestController, and IsExtensionAvailable in its repository): a document that
-        // is out cannot be withdrawn again UNLESS the employee has exactly one withdrawal request still
-        // open. That one is the extension in flight -- the employee who needs the document a week longer --
-        // and approving it supersedes the earlier period instead of adding a second one.
-        var alreadyOut = await Repository.GetAll()
-            .AnyAsync(m => m.EmployeeDocumentId == document.Id && m.ActualReturnDate == default);
-
-        if (alreadyOut)
-        {
-            var openRequests = await _requestRepository.GetAll()
-                .CountAsync(r => r.RequestType == RequestType
-                                 && r.EmployeeId == employeeId
-                                 && r.RequestStatus == RequestStatus.Open
-                                 // A return rides the same request type and is not a withdrawal.
-                                 && !r.IsAmendment);
-
-            if (openRequests != 1)
-            {
-                throw new UserFriendlyException(L("DocumentIsAlreadyOut"));
-            }
-        }
+        // Deliberately NO "the document is already out" refusal. Legacy's block for it
+        // (PassportWithdrawalRequestController, ~264-277) is commented out: a request for a document that is
+        // already out is an EXTENSION -- the employee who needs it a week longer -- and on its final approval
+        // it replaces the open movement's dates and closes the employee's other open withdrawal requests
+        // (see PassportWithdrawalWorkflowTransactionHandler.OnApprovedAsync).
 
         var submission = await CreateAndSubmitAsync(
             meId => new EmployeeDocumentMvmt
@@ -273,18 +311,11 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     /// <c>PassportWithdrawalDocumentTypeCode</c>, defaulting to legacy's "2". Null when no type carries that
     /// code, which leaves any document withdrawable rather than none.
     /// </summary>
-    private async Task<int?> ResolveWithdrawableDocumentTypeIdAsync()
+    private Task<int?> ResolveWithdrawableDocumentTypeIdAsync()
     {
-        var code = await _sysSettingsAccessor.GetSysTenantConfigAsync(WithdrawableDocumentTypeCodeKey);
-        if (code.IsNullOrWhiteSpace())
-        {
-            code = DefaultWithdrawableDocumentTypeCode;
-        }
-
-        return await _documentTypeRepository.GetAll()
-            .Where(t => t.Code == code)
-            .Select(t => (int?)t.Id)
-            .FirstOrDefaultAsync();
+        // One resolver for this check and for the dropdown that offers the documents, so the two cannot
+        // disagree about which type is withdrawable.
+        return _withdrawableDocumentTypeResolver.ResolveDocumentTypeIdAsync();
     }
 
     /// <summary>
@@ -335,6 +366,13 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
 
         var actualReturnDate = input.ActualReturnDate.Date;
 
+        // A return reports something that has happened. A date still to come is a promise, and the movement
+        // log would record the document as back in the safe on a day that has not arrived.
+        if (actualReturnDate > Clock.Now.Date)
+        {
+            throw new UserFriendlyException(L("ActualReturnDateCannotBeInTheFuture"));
+        }
+
         if (actualReturnDate < movement.WithdrawDate.Date)
         {
             throw new UserFriendlyException(L("ActualReturnDateCannotBeEarlierThanWithdrawDate"));
@@ -347,7 +385,8 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
 
         var amendment = new DocumentMvmtAmendment
         {
-            ActualReturnDate = actualReturnDate
+            ActualReturnDate = actualReturnDate,
+            ReturnRemarks = input.ReturnRemarks.IsNullOrWhiteSpace() ? null : input.ReturnRemarks.Trim()
         };
 
         var requestId = await _workflowAmendmentService.CreateAndSubmitAsync(
@@ -358,7 +397,11 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             employeeId,
             // Routed by document type, as the withdrawal was, so a return of a passport can follow the same
             // chain the withdrawal of that passport followed.
-            documentTypeId);
+            documentTypeId,
+            // Labelled as what it is, as a return from leave is, so a list can say "return" without opening
+            // the request and a chain can differ by action. Returns stored under the generic amendment label
+            // still apply: the handler reads the payload, not the label.
+            WorkflowRequestAction.Return);
 
         return new ReturnDocumentResultDto
         {
@@ -397,6 +440,11 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             GuarantorNameAr = entity.Guarantor?.FullNameAr,
             WithdrawalReason = entity.WithdrawalReason,
             Comments = entity.Comments,
+            ActualWithdrawDate = entity.ActualWithdrawDate,
+            ReturnRemarks = entity.ReturnRemarks,
+            IssueDate = entity.EmployeeDocument?.IssueDate,
+            ExpiryDate = entity.EmployeeDocument?.ExpiryDate,
+            ExtendsMovementId = entity.ExtendsMovementId,
             WorkflowStatus = entity.WorkflowStatus,
             WorkflowRequestId = entity.WorkflowRequestId,
             CanCancel = CanCancel(entity) && requestStillOpen,

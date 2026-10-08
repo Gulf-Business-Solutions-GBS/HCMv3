@@ -44,6 +44,11 @@ public class ProxyEssLookupAppService : ProxyAppServiceBase, IEssLookupAppServic
         return await ApiClient.GetAsync<List<EssColleagueLookupDto>>(GetEndpoint(nameof(GetDelegationCandidates)));
     }
 
+    public async Task<List<EssWithdrawableDocumentDto>> GetMyWithdrawableDocuments()
+    {
+        return await ApiClient.GetAsync<List<EssWithdrawableDocumentDto>>(GetEndpoint(nameof(GetMyWithdrawableDocuments)));
+    }
+
     private async Task<List<SimpleLookupDto>> GetLookup(string methodName)
     {
         return await ApiClient.GetAsync<List<SimpleLookupDto>>(GetEndpoint(methodName));

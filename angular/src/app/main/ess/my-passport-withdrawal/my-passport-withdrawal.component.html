@@ -22,6 +22,10 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ 'RequestPassportWithdrawal' | localize }}</h5>
 
+                        @if (selectedDocumentIsOut()) {
+                            <div class="text-muted mb-3">{{ 'DocumentAlreadyOutRequestWillExtend' | localize }}</div>
+                        }
+
                         @if (myDocuments().length === 0) {
                             <div class="alert alert-warning">{{ 'NoDocumentsAvailableToWithdraw' | localize }}</div>
                         }
@@ -36,6 +40,20 @@
                                     }
                                 </select>
                             </div>
+                            @if (selectedDocument(); as chosen) {
+                                <div class="form-group col-md-4">
+                                    <label data-help-loc="DocumentNumber">{{ 'DocumentNumber' | localize }}</label>
+                                    <input type="text" class="form-control" readonly disabled [value]="chosen.documentNum || ''" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label data-help-loc="IssueDate">{{ 'IssueDate' | localize }}</label>
+                                    <input type="text" class="form-control" readonly disabled [value]="formDate(chosen.issueDate)" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label data-help-loc="ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
+                                    <input type="text" class="form-control" readonly disabled [value]="formDate(chosen.expiryDate)" />
+                                </div>
+                            }
                             <div class="form-group col-md-2">
                                 <label data-help-loc="WithdrawDate">{{ 'WithdrawDate' | localize }} *</label>
                                 <input type="date" class="form-control" [(ngModel)]="form.withdrawDate" />
@@ -83,7 +101,11 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label data-help-loc="ActualReturnDate">{{ 'ActualReturnDate' | localize }} *</label>
-                                <input type="date" class="form-control" [(ngModel)]="returnForm.actualReturnDate" />
+                                <input type="date" class="form-control" [attr.max]="todayIso()" [(ngModel)]="returnForm.actualReturnDate" />
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label data-help-loc="ReturnRemarks">{{ 'ReturnRemarks' | localize }}</label>
+                                <textarea class="form-control" rows="2" maxlength="500" [(ngModel)]="returnForm.returnRemarks"></textarea>
                             </div>
                         </div>
 
@@ -108,13 +130,17 @@
                                 <tbody>
                                     @for (row of list.view(); track row.id) {
                                         <tr>
+                                            <td>{{ row.requestNumber }}</td>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.documentNum }}</td>
                                             <td>{{ row.withdrawDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>{{ row.actualWithdrawDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                                             <td>{{ row.returnDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                                             <td>
                                                 @if (row.actualReturnDate) {
                                                     {{ row.actualReturnDate | luxonFormat: 'yyyy-MM-dd' }}
+                                                } @else if (row.isOverdue) {
+                                                    <span class="text-danger" data-help-loc="Overdue">{{ 'Overdue' | localize }}</span>
                                                 } @else {
                                                     <span class="text-muted" data-help-loc="StillOut">{{ 'StillOut' | localize }}</span>
                                                 }
@@ -150,7 +176,7 @@
                                         </tr>
                                     } @empty {
                                         <tr>
-                                            <td colspan="8" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                            <td colspan="10" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
                                         </tr>
                                     }
                                 </tbody>

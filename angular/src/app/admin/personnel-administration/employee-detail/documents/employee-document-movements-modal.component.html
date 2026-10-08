@@ -5,50 +5,192 @@
     tabindex="-1"
     role="dialog"
     aria-hidden="true"
-    [config]="{ backdrop: 'static', keyboard: !saving() }">
-    <div class="modal-dialog modal-lg">
+    [config]="{ backdrop: 'static', keyboard: !saving() && !recording() }">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             @if (active()) {
                 <div class="modal-header">
                     <h4 class="modal-title">{{ 'DocumentMovements' | localize }}</h4>
-                    <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    <button type="button" class="btn-close" (click)="close()" [disabled]="saving() || recording()"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>{{ 'WithdrawDate' | localize }}</th>
-                                <th>{{ 'ReturnDate' | localize }}</th>
-                                <th>{{ 'ActualReturnDate' | localize }}</th>
-                                <th>{{ 'Comments' | localize }}</th>
-                                @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Delete' | permission) {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap">{{ 'Status' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'WithdrawDate' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'HandedOverOn' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'HandedOverBy' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'ReturnDate' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'ActualReturnDate' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'ReceivedBy' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'DaysOverdue' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'Guarantor' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'WithdrawalReason' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'ReturnRemarks' | localize }}</th>
+                                    <th class="text-nowrap">{{ 'Comments' | localize }}</th>
                                     <th></th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (item of movements(); track item.id) {
-                                <tr>
-                                    <td>{{ item.withdrawDate | luxonFormat: 'DD' }}</td>
-                                    <td>{{ item.returnDate | luxonFormat: 'DD' }}</td>
-                                    <td>{{ item.actualReturnDate | luxonFormat: 'DD' }}</td>
-                                    <td>{{ item.comments }}</td>
-                                    @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Delete' | permission) {
-                                        <td>
-                                            <button class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm" (click)="deleteMovement(item)">
-                                                <i class="fa fa-times"></i>
-                                            </button>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (item of movements(); track item.id) {
+                                    <tr>
+                                        <td class="text-nowrap">{{ statusLabel(item) }}</td>
+                                        <td class="text-nowrap">{{ item.withdrawDate | luxonFormat: 'DD' }}</td>
+                                        <td class="text-nowrap">{{ item.actualWithdrawDate | luxonFormat: 'DD' }}</td>
+                                        <td class="text-nowrap">{{ item.handedOverByUserName }}</td>
+                                        <td class="text-nowrap">{{ item.returnDate | luxonFormat: 'DD' }}</td>
+                                        <td class="text-nowrap">{{ item.actualReturnDate | luxonFormat: 'DD' }}</td>
+                                        <td class="text-nowrap">{{ item.receivedByUserName }}</td>
+                                        <td class="text-nowrap">
+                                            @if (item.isOverdue) {
+                                                <span class="text-danger">{{ item.daysOverdue }}</span>
+                                            }
                                         </td>
+                                        <td class="text-nowrap">{{ guarantorName(item) }}</td>
+                                        <td>{{ item.withdrawalReason }}</td>
+                                        <td>{{ item.returnRemarks }}</td>
+                                        <td>{{ item.comments }}</td>
+                                        <td class="text-nowrap text-end">
+                                            @if (canRecord(item)) {
+                                                <button type="button" class="btn btn-light-primary btn-sm me-1" [disabled]="recording()" (click)="openHandOver(item)">
+                                                    {{ (item.actualWithdrawDate ? 'CorrectHandOver' : 'RecordHandOver') | localize }}
+                                                </button>
+                                                <button type="button" class="btn btn-light-primary btn-sm me-1" [disabled]="recording()" (click)="openReturn(item)">
+                                                    {{ 'RecordDocumentReturn' | localize }}
+                                                </button>
+                                            }
+                                            @if (item.extensions?.length) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-light btn-sm me-1"
+                                                    [attr.aria-expanded]="expandedId() === item.id"
+                                                    (click)="toggleExtensions(item)">
+                                                    {{ 'ExtensionHistory' | localize }}
+                                                </button>
+                                            }
+                                            @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Delete' | permission) {
+                                                <button type="button" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm" (click)="deleteMovement(item)">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                    @if (expandedId() === item.id && item.extensions?.length) {
+                                        <tr>
+                                            <td colspan="13" class="bg-light">
+                                                <div class="fw-bold mb-2">{{ 'ExtensionHistory' | localize }}</div>
+                                                <table class="table table-sm mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-nowrap">{{ 'WithdrawDate' | localize }}</th>
+                                                            <th class="text-nowrap">{{ 'DueDate' | localize }}</th>
+                                                            <th class="text-nowrap">{{ 'RequestNumber' | localize }}</th>
+                                                            <th class="text-nowrap">{{ 'SupersededOn' | localize }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @for (extension of item.extensions; track extension.id) {
+                                                            <tr>
+                                                                <td class="text-nowrap">{{ extension.withdrawDate | luxonFormat: 'DD' }}</td>
+                                                                <td class="text-nowrap">{{ extension.returnDate | luxonFormat: 'DD' }}</td>
+                                                                <td class="text-nowrap">{{ extension.requestNumber }}</td>
+                                                                <td class="text-nowrap">{{ extension.supersededOn | luxonFormat: 'DD' }}</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
                                     }
-                                </tr>
-                            }
-                            @if (movements().length === 0) {
-                                <tr>
-                                    <td colspan="5">{{ 'NoData' | localize }}</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                }
+                                @if (movements().length === 0) {
+                                    <tr>
+                                        <td colspan="13">{{ 'NoData' | localize }}</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (handOverRow(); as row) {
+                        <form #handOverForm="ngForm" (ngSubmit)="submitHandOver()" class="row align-items-end">
+                            <div class="col-12 mb-3 fw-bold">
+                                {{ (row.actualWithdrawDate ? 'CorrectHandOver' : 'RecordHandOver') | localize }}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label required" for="Mvmt_HandOverDate">{{ 'HandedOverOn' | localize }}</label>
+                                <input
+                                    id="Mvmt_HandOverDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="HandOverDate"
+                                    [attr.max]="todayIso()"
+                                    [ngModel]="handOverDate()"
+                                    (ngModelChange)="handOverDate.set($event)"
+                                    required />
+                            </div>
+                            <div class="col-12 mb-5">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-sm me-2"
+                                    [disabled]="!handOverForm.form.valid"
+                                    [buttonBusy]="recording()"
+                                    [busyText]="l('SavingWithThreeDot')">
+                                    <i class="fa fa-save"></i>
+                                    {{ 'Save' | localize }}
+                                </button>
+                                <button type="button" class="btn btn-light btn-sm" [disabled]="recording()" (click)="closeRecordForms()">
+                                    {{ 'Cancel' | localize }}
+                                </button>
+                            </div>
+                        </form>
+                    }
+
+                    @if (returnRow(); as row) {
+                        <form #returnForm="ngForm" (ngSubmit)="submitReturn()" class="row align-items-end">
+                            <div class="col-12 mb-3 fw-bold">{{ 'RecordDocumentReturn' | localize }}</div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label required" for="Mvmt_RecordReturnDate">{{ 'ActualReturnDate' | localize }}</label>
+                                <input
+                                    id="Mvmt_RecordReturnDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="RecordReturnDate"
+                                    [attr.min]="returnMinIso(row)"
+                                    [attr.max]="todayIso()"
+                                    [ngModel]="returnDate()"
+                                    (ngModelChange)="returnDate.set($event)"
+                                    required />
+                            </div>
+                            <div class="col-md-9 mb-3">
+                                <label class="form-label" for="Mvmt_ReturnRemarks">{{ 'ReturnRemarks' | localize }}</label>
+                                <textarea
+                                    id="Mvmt_ReturnRemarks"
+                                    class="form-control"
+                                    rows="2"
+                                    maxlength="500"
+                                    name="ReturnRemarks"
+                                    [ngModel]="returnRemarks()"
+                                    (ngModelChange)="returnRemarks.set($event)"></textarea>
+                            </div>
+                            <div class="col-12 mb-5">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-sm me-2"
+                                    [disabled]="!returnForm.form.valid"
+                                    [buttonBusy]="recording()"
+                                    [busyText]="l('SavingWithThreeDot')">
+                                    <i class="fa fa-save"></i>
+                                    {{ 'Save' | localize }}
+                                </button>
+                                <button type="button" class="btn btn-light btn-sm" [disabled]="recording()" (click)="closeRecordForms()">
+                                    {{ 'Cancel' | localize }}
+                                </button>
+                            </div>
+                        </form>
+                    }
 
                     @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Create' | permission) {
                         <form #mvmtForm="ngForm" (ngSubmit)="addMovement()" class="row align-items-end">

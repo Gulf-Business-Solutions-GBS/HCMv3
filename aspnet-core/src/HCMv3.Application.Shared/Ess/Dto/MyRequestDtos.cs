@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Extensions;
 using Abp.Runtime.Validation;
 using HCMv3.GovtRelationsManagement;
+using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.Workflow;
 
 namespace HCMv3.Ess.Dto;
@@ -492,6 +494,61 @@ public class MyPassportWithdrawalDto : MyRequestDtoBase
     /// custody record ends up with two different return dates for one movement.
     /// </summary>
     public bool CanReturn { get; set; }
+
+    /// <summary>The number of the withdrawal's own request. Null for a movement HR recorded directly.</summary>
+    public string RequestNumber { get; set; }
+
+    /// <summary>The day the document was physically handed over, which may differ from the day asked for.</summary>
+    public DateTime? ActualWithdrawDate { get; set; }
+
+    /// <summary>What was noted when the document came back.</summary>
+    public string ReturnRemarks { get; set; }
+
+    /// <summary>Issue date of the document itself.</summary>
+    public DateTime? IssueDate { get; set; }
+
+    /// <summary>Expiry date of the document itself.</summary>
+    public DateTime? ExpiryDate { get; set; }
+
+    /// <summary>In effect, not returned, and due back before today.</summary>
+    public bool IsOverdue { get; set; }
+
+    /// <summary>
+    /// A return the employee has raised for this movement is still awaiting approval. While it is,
+    /// <see cref="CanReturn"/> is false: a second return would only be refused on submit.
+    /// </summary>
+    public bool HasPendingReturn { get; set; }
+
+    /// <summary>The workflow request of the pending return, so the screen can open or withdraw it.</summary>
+    public int? PendingReturnRequestId { get; set; }
+
+    /// <summary>The movement this one extended, when the document was already out when it was approved.</summary>
+    public int? ExtendsMovementId { get; set; }
+
+    /// <summary>
+    /// The earlier movements this one replaced, oldest first -- each with the date the document was due
+    /// back before the extension moved it. Empty for a withdrawal that was never extended.
+    /// </summary>
+    public List<DocumentMovementExtensionDto> Extensions { get; set; } = new List<DocumentMovementExtensionDto>();
+}
+
+/// <summary>
+/// One of the employee's own documents that may be withdrawn, with what the form shows read-only beside the
+/// dropdown.
+/// </summary>
+public class EssWithdrawableDocumentDto : EntityDto<int>
+{
+    public string DocumentNum { get; set; }
+
+    public int DocumentTypeId { get; set; }
+
+    public string DocumentTypeNameEn { get; set; }
+
+    public string DocumentTypeNameAr { get; set; }
+
+    public DateTime IssueDate { get; set; }
+
+    public DateTime ExpiryDate { get; set; }
 }
 
 public class RequestPassportWithdrawalInput

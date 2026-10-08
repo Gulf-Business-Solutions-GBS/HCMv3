@@ -36,4 +36,10 @@ public class DocumentMvmtAmendment
     /// </para>
     /// </summary>
     public DateTime? ActualReturnDate { get; set; }
+
+    /// <summary>
+    /// What the employee noted when handing the document back. Null on a return raised before this field
+    /// existed, which deserializes cleanly and stamps no remarks.
+    /// </summary>
+    public string ReturnRemarks { get; set; }
 }

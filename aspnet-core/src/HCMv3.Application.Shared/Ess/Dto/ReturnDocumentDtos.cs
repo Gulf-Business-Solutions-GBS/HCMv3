@@ -27,6 +27,10 @@ public class ReturnDocumentInput
     /// out, which would be a custody window running backwards.
     /// </summary>
     public DateTime ActualReturnDate { get; set; }
+
+    /// <summary>Anything worth noting about the hand-back -- the document's condition, who took it.</summary>
+    [StringLength(500)]
+    public string ReturnRemarks { get; set; }
 }
 
 /// <summary>What the return produced, so the screen can say what happens next without asking again.</summary>

@@ -108,6 +108,7 @@ public class EmployeeDocMovementReportAppService_Tests : AppTestBase
             context.Set<EmployeeDocumentMvmt>().Add(new EmployeeDocumentMvmt
             {
                 TenantId = TenantId,
+                EmployeeId = document.EmployeeId,
                 EmployeeDocumentId = document.Id,
                 WithdrawDate = withdraw,
                 ReturnDate = withdraw,

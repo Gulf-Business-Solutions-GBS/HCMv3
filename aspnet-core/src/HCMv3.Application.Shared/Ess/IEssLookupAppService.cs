@@ -90,4 +90,12 @@ public interface IEssLookupAppService : IApplicationService
     /// minus themselves.
     /// </summary>
     Task<List<EssColleagueLookupDto>> GetDelegationCandidates();
+
+    /// <summary>
+    /// The signed-in employee's own documents that may be withdrawn from company custody: only those of the
+    /// tenant's withdrawable document type (the rule the withdrawal request itself enforces), each with its
+    /// number, issue date and expiry date. A dedicated list rather than the employee's full document list,
+    /// which other screens share and which must go on showing every type.
+    /// </summary>
+    Task<List<EssWithdrawableDocumentDto>> GetMyWithdrawableDocuments();
 }

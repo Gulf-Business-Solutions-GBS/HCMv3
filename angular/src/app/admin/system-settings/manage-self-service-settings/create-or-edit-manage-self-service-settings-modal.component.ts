@@ -55,6 +55,7 @@ export class CreateOrEditManageSelfServiceSettingsModalComponent extends AppComp
             record.enablePayInAdvance = false;
             record.isPassportWithdrawalRequired = false;
             record.passportWithdrawalSubmissionStep = 0;
+            record.isWithdrawalReasonMandatory = false;
             this.record.set(record);
             this.modal().show();
         } else {
