@@ -6,6 +6,12 @@ import {
 } from '../my-exit-permit/exit-permit-form.component';
 import { HalfdayType, LeavePaymentType, TravelReason, WorkflowRequestAction } from '@shared/service-proxies/service-proxies';
 import { LeaveFormValue, LeaveRequestFormComponent } from '../my-leave/leave-request-form.component';
+import { DocumentRequestFormComponent, DocumentRequestFormValue } from '../my-document/document-request-form.component';
+import { LetterRequestFormComponent, LetterRequestFormValue } from '../my-letter/letter-request-form.component';
+import {
+    PassportWithdrawalFormComponent,
+    PassportWithdrawalFormValue,
+} from '../my-passport-withdrawal/passport-withdrawal-form.component';
 
 /**
  * What the modal knows about the request while it builds the form's value: the projected fields, keyed by
@@ -110,6 +116,73 @@ export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
             startDate: context.values['StartDate'] ?? '',
             exitDate: context.values['ExitDate'] ?? '',
             comments: context.values['Comments'] ?? '',
+        }),
+    },
+    EmployeeDocumentMvmt: {
+        component: PassportWithdrawalFormComponent,
+        toValue: (context): PassportWithdrawalFormValue => {
+            const v = context.values;
+
+            return {
+                // Which of the two requests this is: the withdrawal itself, or the document handed back.
+                action: v['RequestAction'] === 'Return' ? WorkflowRequestAction.Return : WorkflowRequestAction.New,
+                employeeDisplay: v['Employee'] || context.employeeDisplay,
+
+                // The pickers are disabled in every mode this registry serves, so the ids are never read --
+                // the names the server already put in the reader's language are what gets shown.
+                employeeDocumentId: null,
+                documentLabel: v['DocumentType'] ?? '',
+                documentNumber: v['DocumentNumber'] ?? '',
+
+                // Already ISO yyyy-MM-dd from the projection.
+                issueDate: v['IssueDate'] ?? '',
+                expiryDate: v['ExpiryDate'] ?? '',
+                withdrawDate: v['WithdrawDate'] ?? '',
+                returnDate: v['ReturnDate'] ?? '',
+                guarantorId: null,
+                guarantorLabel: v['Guarantor'] ?? '',
+                withdrawalReason: v['WithdrawalReason'] ?? '',
+                comments: v['Comments'] ?? '',
+
+                // Sent only once they exist: the hand-over when it has happened, the return on a return
+                // request or once the document has come back.
+                handedOverOn: v['HandedOverOn'] ?? '',
+                actualReturnDate: v['ActualReturnDate'] ?? '',
+                returnRemarks: v['ReturnRemarks'] ?? '',
+            };
+        },
+    },
+    EmployeeLetterRequest: {
+        component: LetterRequestFormComponent,
+        toValue: (context): LetterRequestFormValue => ({
+            employeeDisplay: context.values['Employee'] || context.employeeDisplay,
+
+            // The picker is disabled in every mode this registry serves, so the id is never read.
+            documentTypeId: null,
+            documentTypeLabel: context.values['DocumentType'] ?? '',
+
+            // Already ISO yyyy-MM-dd from the projection.
+            effectiveDate: context.values['EffectiveDate'] ?? '',
+            addressToEn: context.values['AddressToEn'] ?? '',
+            addressToAr: context.values['AddressToAr'] ?? '',
+            comments: context.values['Comments'] ?? '',
+        }),
+    },
+    EmployeeDocument: {
+        component: DocumentRequestFormComponent,
+        toValue: (context): DocumentRequestFormValue => ({
+            employeeDisplay: context.values['Employee'] || context.employeeDisplay,
+
+            // The picker is disabled in every mode this registry serves, so the id is never read.
+            documentTypeId: null,
+            documentTypeLabel: context.values['DocumentType'] ?? '',
+            documentNum: context.values['DocumentNumber'] ?? '',
+
+            // Already ISO yyyy-MM-dd from the projection.
+            issueDate: context.values['IssueDate'] ?? '',
+            expiryDate: context.values['ExpiryDate'] ?? '',
+            comments: context.values['Comments'] ?? '',
+            description: context.values['Description'] ?? '',
         }),
     },
 };

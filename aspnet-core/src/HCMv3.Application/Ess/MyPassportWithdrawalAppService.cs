@@ -191,78 +191,19 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     {
         // Checked here as well as in the handler. The handler is the rule -- it applies to HR-raised rows
         // too -- but failing here means the employee is told before a row is created and rolled back.
-        if (input.WithdrawDate == default)
-        {
-            throw new UserFriendlyException(L("WithdrawDateIsRequired"));
-        }
-
-        if (input.ReturnDate == default)
-        {
-            throw new UserFriendlyException(L("ReturnDateIsRequired"));
-        }
-
-        if (input.ReturnDate.Date < input.WithdrawDate.Date)
-        {
-            throw new UserFriendlyException(L("ReturnDateCannotBeEarlierThanWithdrawDate"));
-        }
+        EnsureDates(input.WithdrawDate, input.ReturnDate);
 
         var employeeId = await GetMyEmployeeIdAsync();
 
-        // Scoped to the caller, not merely looked up. A document id belonging to another employee must read
-        // as "not found" rather than as a valid target -- this endpoint hands over original documents.
-        var document = await _documentRepository.GetAll()
-            .Where(d => d.Id == input.EmployeeDocumentId && d.EmployeeId == employeeId)
-            .Select(d => new { d.Id, d.DocumentTypeId })
-            .FirstOrDefaultAsync();
-
-        if (document == null)
-        {
-            throw new UserFriendlyException(L("EmployeeDocumentNotFound"));
-        }
-
-        // Legacy only ever offered the passport: it resolved one document type by code (its setting
-        // defaulted to "2") and took the employee's active document of that type. The code is a tenant
-        // config value here; with none configured the default stands, and if no such type exists the
-        // restriction is not applied rather than blocking every request.
-        var withdrawableTypeId = await ResolveWithdrawableDocumentTypeIdAsync();
-        if (withdrawableTypeId.HasValue && document.DocumentTypeId != withdrawableTypeId.Value)
-        {
-            throw new UserFriendlyException(L("OnlyTheWithdrawableDocumentTypeCanBeWithdrawn"));
-        }
-
-        if (input.WithdrawalReason.IsNullOrWhiteSpace())
-        {
-            var settings = await _sysSettingsAccessor.GetSelfServiceSettingsAsync();
-
-            if (settings != null && settings.IsWithdrawalReasonMandatory)
-            {
-                throw new UserFriendlyException(L("WithdrawalReasonIsRequired"));
-            }
-        }
-
-        if (input.GuarantorId.HasValue)
-        {
-            var guarantorExists = await _employeeRepository.GetAll()
-                .AnyAsync(e => e.Id == input.GuarantorId.Value);
-
-            if (!guarantorExists)
-            {
-                throw new UserFriendlyException(L("EmployeeNotFound"));
-            }
-        }
-
-        // Deliberately NO "the document is already out" refusal. Legacy's block for it
-        // (PassportWithdrawalRequestController, ~264-277) is commented out: a request for a document that is
-        // already out is an EXTENSION -- the employee who needs it a week longer -- and on its final approval
-        // it replaces the open movement's dates and closes the employee's other open withdrawal requests
-        // (see PassportWithdrawalWorkflowTransactionHandler.OnApprovedAsync).
+        var documentTypeId = await EnsureWithdrawableAsync(
+            employeeId, input.EmployeeDocumentId, input.WithdrawalReason, input.GuarantorId);
 
         var submission = await CreateAndSubmitAsync(
             meId => new EmployeeDocumentMvmt
             {
                 TenantId = AbpSession.TenantId ?? 0,
                 EmployeeId = meId,
-                EmployeeDocumentId = document.Id,
+                EmployeeDocumentId = input.EmployeeDocumentId,
                 WithdrawDate = input.WithdrawDate.Date,
                 ReturnDate = input.ReturnDate.Date,
 
@@ -276,35 +217,255 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
                 Comments = input.Comments
             },
             // Routing by document type, so a passport can need a longer chain than a certificate.
-            document.DocumentTypeId);
+            documentTypeId);
 
-        if (input.GuarantorId.HasValue)
+        await NotifyGuarantorAsync(input.GuarantorId, employeeId, submission);
+
+        return submission;
+    }
+
+    public async Task<MyRequestSubmissionDto> SaveMyPassportWithdrawalDraft(SavePassportWithdrawalDraftInput input)
+    {
+        var employeeId = await GetMyEmployeeIdAsync();
+
+        // What a draft is held to is what it takes to store the row honestly, and no more. The document must
+        // be the employee's own even now: a draft is still a row saying whose passport is being asked for,
+        // and this endpoint must never hold one against somebody else's document. A guarantor has to be a
+        // real employee or the row cannot be saved. The dates, the reason and the withdrawable-type rule are
+        // what a draft is allowed to be missing or wrong about; they are applied at submit.
+        await GetMyDocumentTypeIdAsync(employeeId, input.EmployeeDocumentId);
+        await EnsureGuarantorExistsAsync(input.GuarantorId);
+
+        // The guarantor is deliberately NOT notified here. They are told when the request is submitted --
+        // being asked to vouch for something its owner has not decided to send would be noise at best.
+        if (input.Id.HasValue)
         {
-            // Legacy mailed the guarantor as the request was raised. Deliberately after the request exists
-            // and never allowed to fail it: a mail server that is down must not cost the employee their
-            // request, and the guarantor is told again by the approval chain regardless.
-            try
-            {
-                var requestNumber = submission.WorkflowRequestId.HasValue
-                    ? await _requestRepository.GetAll()
-                        .Where(r => r.Id == submission.WorkflowRequestId.Value)
-                        .Select(r => r.RequestNumber)
-                        .FirstOrDefaultAsync()
-                    : null;
+            await UpdateEditableAsync(input.Id.Value, movement => Apply(input, movement));
 
-                await _notificationDispatchService.SendPassportGuarantorNotificationAsync(
-                    input.GuarantorId.Value, employeeId, requestNumber);
-            }
-            catch (Exception ex)
+            return new MyRequestSubmissionDto
             {
-                Logger.Warn($"Could not notify the guarantor of passport withdrawal {submission.TransactionId}.", ex);
-            }
+                TransactionId = input.Id.Value,
+                SubmittedForApproval = false,
+                SavedAsDraft = true
+            };
         }
+
+        return await SaveDraftAsync(meId =>
+        {
+            var movement = new EmployeeDocumentMvmt
+            {
+                TenantId = AbpSession.TenantId ?? 0,
+                EmployeeId = meId,
+
+                // Left at default: the document has not come back yet (see RequestPassportWithdrawal).
+                ActualReturnDate = default
+            };
+
+            Apply(input, movement);
+
+            return movement;
+        });
+    }
+
+    public async Task<MyPassportWithdrawalDto> GetMyPassportWithdrawalDraftForEdit(EntityDto input)
+    {
+        // Ownership and state first, by the shared check; the display names are read only once the row has
+        // been proved to be the caller's.
+        var movement = await GetMyEditableAsync(input.Id);
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            movement = await Repository.GetAll()
+                .Include(m => m.EmployeeDocument)
+                .ThenInclude(d => d.DocumentType)
+                .Include(m => m.Guarantor)
+                .FirstAsync(m => m.Id == movement.Id);
+        }
+
+        var requests = await GetOwnRequestsAsync(new[] { movement });
+
+        var dto = ToDto(movement, requests.ToDictionary(r => r.Key, r => r.Value.RequestStatus));
+
+        dto.RequestNumber = RequestNumberOf(movement, requests);
+
+        return dto;
+    }
+
+    public async Task<MyRequestSubmissionDto> SubmitMyPassportWithdrawalDraft(EntityDto input)
+    {
+        var employeeId = await GetMyEmployeeIdAsync();
+        int? guarantorId = null;
+
+        var submission = await SubmitEditableAsync(input.Id, async movement =>
+        {
+            // Everything the one-step request checks, against what the row now holds. Nothing was checked
+            // when it was saved beyond what it took to store it, so this is the first and only gate.
+            EnsureDates(movement.WithdrawDate, movement.ReturnDate);
+
+            var documentTypeId = await EnsureWithdrawableAsync(
+                movement.EmployeeId, movement.EmployeeDocumentId, movement.WithdrawalReason, movement.GuarantorId);
+
+            guarantorId = movement.GuarantorId;
+
+            // Routing by document type, as a one-step request is.
+            return documentTypeId;
+        });
+
+        // Now, and not when the draft was saved: this is the moment the request is actually raised. A
+        // request sent again after being sent back tells the guarantor again -- the correction may be the
+        // guarantor, and one told twice is better off than one never told.
+        await NotifyGuarantorAsync(guarantorId, employeeId, submission);
 
         return submission;
     }
 
     public Task CancelMyPassportWithdrawal(EntityDto input) => CancelAsync(input.Id);
+
+    private void EnsureDates(DateTime withdrawDate, DateTime returnDate)
+    {
+        if (withdrawDate == default)
+        {
+            throw new UserFriendlyException(L("WithdrawDateIsRequired"));
+        }
+
+        if (returnDate == default)
+        {
+            throw new UserFriendlyException(L("ReturnDateIsRequired"));
+        }
+
+        if (returnDate.Date < withdrawDate.Date)
+        {
+            throw new UserFriendlyException(L("ReturnDateCannotBeEarlierThanWithdrawDate"));
+        }
+    }
+
+    /// <summary>
+    /// The employee's own document's type, or a refusal. Scoped to the caller, not merely looked up: a
+    /// document id belonging to another employee must read as "not found" rather than as a valid target --
+    /// this endpoint hands over original documents.
+    /// </summary>
+    private async Task<int> GetMyDocumentTypeIdAsync(int employeeId, int employeeDocumentId)
+    {
+        int? documentTypeId;
+
+        // Only a document in effect can be withdrawn. Enabled explicitly because the draft paths reach this
+        // with the filter switched off to see the draft itself, and a document still awaiting approval must
+        // not become withdrawable by going through a draft.
+        using (CurrentUnitOfWork.EnableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            documentTypeId = await _documentRepository.GetAll()
+                .Where(d => d.Id == employeeDocumentId && d.EmployeeId == employeeId)
+                .Select(d => (int?)d.DocumentTypeId)
+                .FirstOrDefaultAsync();
+        }
+
+        if (!documentTypeId.HasValue)
+        {
+            throw new UserFriendlyException(L("EmployeeDocumentNotFound"));
+        }
+
+        return documentTypeId.Value;
+    }
+
+    private async Task EnsureGuarantorExistsAsync(int? guarantorId)
+    {
+        if (!guarantorId.HasValue)
+        {
+            return;
+        }
+
+        var guarantorExists = await _employeeRepository.GetAll()
+            .AnyAsync(e => e.Id == guarantorId.Value);
+
+        if (!guarantorExists)
+        {
+            throw new UserFriendlyException(L("EmployeeNotFound"));
+        }
+    }
+
+    /// <summary>
+    /// The rules a withdrawal must pass before it is sent, shared by the one-step request and the submission
+    /// of a draft so the two cannot drift. Returns the document's type, which is what the request routes by.
+    /// </summary>
+    private async Task<int> EnsureWithdrawableAsync(int employeeId, int employeeDocumentId, string withdrawalReason, int? guarantorId)
+    {
+        var documentTypeId = await GetMyDocumentTypeIdAsync(employeeId, employeeDocumentId);
+
+        // Legacy only ever offered the passport: it resolved one document type by code (its setting
+        // defaulted to "2") and took the employee's active document of that type. The code is a tenant
+        // config value here; with none configured the default stands, and if no such type exists the
+        // restriction is not applied rather than blocking every request.
+        var withdrawableTypeId = await ResolveWithdrawableDocumentTypeIdAsync();
+        if (withdrawableTypeId.HasValue && documentTypeId != withdrawableTypeId.Value)
+        {
+            throw new UserFriendlyException(L("OnlyTheWithdrawableDocumentTypeCanBeWithdrawn"));
+        }
+
+        if (withdrawalReason.IsNullOrWhiteSpace())
+        {
+            var settings = await _sysSettingsAccessor.GetSelfServiceSettingsAsync();
+
+            if (settings != null && settings.IsWithdrawalReasonMandatory)
+            {
+                throw new UserFriendlyException(L("WithdrawalReasonIsRequired"));
+            }
+        }
+
+        await EnsureGuarantorExistsAsync(guarantorId);
+
+        // Deliberately NO "the document is already out" refusal. Legacy's block for it
+        // (PassportWithdrawalRequestController, ~264-277) is commented out: a request for a document that is
+        // already out is an EXTENSION -- the employee who needs it a week longer -- and on its final approval
+        // it replaces the open movement's dates and closes the employee's other open withdrawal requests
+        // (see PassportWithdrawalWorkflowTransactionHandler.OnApprovedAsync).
+
+        return documentTypeId;
+    }
+
+    /// <summary>
+    /// Tells the guarantor a request naming them has been raised. Legacy mailed the guarantor as the request
+    /// was raised. Deliberately after the request exists and never allowed to fail it: a mail server that is
+    /// down must not cost the employee their request, and the guarantor is told again by the approval chain
+    /// regardless.
+    /// </summary>
+    private async Task NotifyGuarantorAsync(int? guarantorId, int employeeId, MyRequestSubmissionDto submission)
+    {
+        if (!guarantorId.HasValue)
+        {
+            return;
+        }
+
+        try
+        {
+            var requestNumber = submission.WorkflowRequestId.HasValue
+                ? await _requestRepository.GetAll()
+                    .Where(r => r.Id == submission.WorkflowRequestId.Value)
+                    .Select(r => r.RequestNumber)
+                    .FirstOrDefaultAsync()
+                : null;
+
+            await _notificationDispatchService.SendPassportGuarantorNotificationAsync(
+                guarantorId.Value, employeeId, requestNumber);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn($"Could not notify the guarantor of passport withdrawal {submission.TransactionId}.", ex);
+        }
+    }
+
+    /// <summary>
+    /// Copies the form onto the movement. Missing dates stay unset rather than becoming today's, which is the
+    /// state the submit-time check refuses.
+    /// </summary>
+    private static void Apply(SavePassportWithdrawalDraftInput input, EmployeeDocumentMvmt movement)
+    {
+        movement.EmployeeDocumentId = input.EmployeeDocumentId;
+        movement.WithdrawDate = input.WithdrawDate?.Date ?? default;
+        movement.ReturnDate = input.ReturnDate?.Date ?? default;
+        movement.GuarantorId = input.GuarantorId;
+        movement.WithdrawalReason = input.WithdrawalReason?.Trim();
+        movement.Comments = input.Comments;
+    }
 
     /// <summary>
     /// The document type employees may ask to withdraw: the type whose code matches the tenant config
@@ -424,6 +585,15 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
                                || requestStatus == RequestStatus.Draft
                                || requestStatus == RequestStatus.Open;
 
+        var isDraft = IsDraft(entity);
+
+        // Draft under a request that is itself back in Draft. A row left Draft under a request closed since
+        // is not waiting on the employee.
+        var isSentBack = IsSentBack(entity)
+                         && (requestStatuses == null
+                             || !requestStatuses.TryGetValue(entity.WorkflowRequestId.Value, out var ownRequestStatus)
+                             || ownRequestStatus == RequestStatus.Draft);
+
         return new MyPassportWithdrawalDto
         {
             Id = entity.Id,
@@ -448,6 +618,9 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             WorkflowStatus = entity.WorkflowStatus,
             WorkflowRequestId = entity.WorkflowRequestId,
             CanCancel = CanCancel(entity) && requestStillOpen,
+            IsDraft = isDraft,
+            IsSentBack = isSentBack,
+            CanEdit = isDraft || isSentBack,
 
             // Only an approved withdrawal that has not already been handed back. Anything else and the
             // button would either be offering to return a document that was never released, or inviting a

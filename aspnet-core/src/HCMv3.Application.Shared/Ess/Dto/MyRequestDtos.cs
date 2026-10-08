@@ -131,6 +131,17 @@ public class MyDocumentRequestDto : MyRequestDtoBase
     public DateTime ExpiryDate { get; set; }
 
     public string Comments { get; set; }
+
+    /// <summary>The number of the document's own request. Empty for a draft that has not been sent, and
+    /// for a document HR recorded directly.</summary>
+    public string RequestNumber { get; set; }
+
+    /// <summary>
+    /// An approver sent this request back and it is waiting on the employee: they correct it and send it
+    /// again, or withdraw it. Different from <see cref="MyRequestDtoBase.IsDraft"/>, which is a request
+    /// that was never sent. Either one sets <see cref="MyRequestDtoBase.CanEdit"/>.
+    /// </summary>
+    public bool IsSentBack { get; set; }
 }
 
 public class RequestDocumentInput
@@ -497,6 +508,13 @@ public class MyPassportWithdrawalDto : MyRequestDtoBase
 
     /// <summary>The number of the withdrawal's own request. Null for a movement HR recorded directly.</summary>
     public string RequestNumber { get; set; }
+
+    /// <summary>
+    /// An approver sent this withdrawal back and it is waiting on the employee: they correct it and send it
+    /// again, or withdraw it. Different from <see cref="MyRequestDtoBase.IsDraft"/>, which is a request
+    /// that was never sent. Either one sets <see cref="MyRequestDtoBase.CanEdit"/>.
+    /// </summary>
+    public bool IsSentBack { get; set; }
 
     /// <summary>The day the document was physically handed over, which may differ from the day asked for.</summary>
     public DateTime? ActualWithdrawDate { get; set; }

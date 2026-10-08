@@ -43,14 +43,17 @@ public class LetterRequestWorkflowTransactionHandler : WorkflowTransactionHandle
     public const string LetterRequestType = "EmployeeLetterRequest";
 
     private readonly IRepository<DocumentType> _documentTypeRepository;
+    private readonly IRepository<Employee> _employeeRepository;
 
     public LetterRequestWorkflowTransactionHandler(
         IRepository<EmployeeLetterRequest> repository,
         IRepository<DocumentType> documentTypeRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IRepository<Employee> employeeRepository)
         : base(repository, unitOfWorkManager)
     {
         _documentTypeRepository = documentTypeRepository;
+        _employeeRepository = employeeRepository;
     }
 
     public override string RequestType => LetterRequestType;
@@ -133,5 +136,43 @@ public class LetterRequestWorkflowTransactionHandler : WorkflowTransactionHandle
         }
 
         return new WorkflowSummary(en, ar);
+    }
+
+    /// <summary>
+    /// Every field the letter form captures, in the order it captures them, under the names the Angular
+    /// letter form binds by -- so the approver and the Details view read the form itself, read-only. The
+    /// kind of letter and the employee are sent as the words the form shows, in the reader's language.
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var letter = await GetTargetAsync(context);
+        if (letter == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var documentType = _documentTypeRepository.GetAll()
+            .Where(t => t.Id == letter.DocumentTypeId)
+            .Select(t => new { t.NameEn, t.NameAr })
+            .FirstOrDefault();
+
+        var employee = _employeeRepository.GetAll()
+            .Where(e => e.Id == letter.EmployeeId)
+            .Select(e => new { e.Code, e.FullNameEn, e.FullNameAr })
+            .FirstOrDefault();
+
+        var detail = new WorkflowRequestDetail
+        {
+            SubmissionComment = letter.Comments
+        };
+
+        return detail
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text("Employee", L("Employee"), employee == null ? null : WorkflowDetailDisplay.Employee(employee.Code, employee.FullNameEn, employee.FullNameAr)))
+            .Add(WorkflowDetailField.Text("DocumentType", L("DocumentType"), WorkflowDetailDisplay.Name(documentType?.NameEn, documentType?.NameAr)))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeLetterRequest.EffectiveDate), L("EffectiveDate"), letter.EffectiveDate))
+            .Add(WorkflowDetailField.Text(nameof(EmployeeLetterRequest.AddressToEn), L("AddressToEn"), letter.AddressToEn))
+            .Add(WorkflowDetailField.Text(nameof(EmployeeLetterRequest.AddressToAr), L("AddressToAr"), letter.AddressToAr))
+            .Add(WorkflowDetailField.LongText(nameof(EmployeeLetterRequest.Comments), L("Comments"), letter.Comments));
     }
 }

@@ -18,103 +18,17 @@
             </div>
         } @else {
             @if (showForm()) {
-                <div class="card card-custom gutter-b">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ 'RequestPassportWithdrawal' | localize }}</h5>
-
-                        @if (selectedDocumentIsOut()) {
-                            <div class="text-muted mb-3">{{ 'DocumentAlreadyOutRequestWillExtend' | localize }}</div>
-                        }
-
-                        @if (myDocuments().length === 0) {
-                            <div class="alert alert-warning">{{ 'NoDocumentsAvailableToWithdraw' | localize }}</div>
-                        }
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label data-help-loc="Document">{{ 'Document' | localize }} *</label>
-                                <select class="form-control" [(ngModel)]="form.employeeDocumentId">
-                                    <option [ngValue]="null">--</option>
-                                    @for (document of myDocuments(); track document.id) {
-                                        <option [ngValue]="document.id">{{ documentLabel(document) }}</option>
-                                    }
-                                </select>
-                            </div>
-                            @if (selectedDocument(); as chosen) {
-                                <div class="form-group col-md-4">
-                                    <label data-help-loc="DocumentNumber">{{ 'DocumentNumber' | localize }}</label>
-                                    <input type="text" class="form-control" readonly disabled [value]="chosen.documentNum || ''" />
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label data-help-loc="IssueDate">{{ 'IssueDate' | localize }}</label>
-                                    <input type="text" class="form-control" readonly disabled [value]="formDate(chosen.issueDate)" />
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label data-help-loc="ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
-                                    <input type="text" class="form-control" readonly disabled [value]="formDate(chosen.expiryDate)" />
-                                </div>
-                            }
-                            <div class="form-group col-md-2">
-                                <label data-help-loc="WithdrawDate">{{ 'WithdrawDate' | localize }} *</label>
-                                <input type="date" class="form-control" [(ngModel)]="form.withdrawDate" />
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label data-help-loc="ReturnDate">{{ 'ReturnDate' | localize }} *</label>
-                                <input type="date" class="form-control" [(ngModel)]="form.returnDate" />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label data-help-loc="WithdrawalReason">{{ 'WithdrawalReason' | localize }}</label>
-                                <input type="text" maxlength="500" class="form-control" [(ngModel)]="form.withdrawalReason" />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label data-help-loc="Guarantor">{{ 'Guarantor' | localize }}</label>
-                                <select class="form-control" [(ngModel)]="form.guarantorId">
-                                    <option [ngValue]="null">--</option>
-                                    @for (colleague of guarantorCandidates(); track colleague.id) {
-                                        <option [ngValue]="colleague.id">{{ colleagueName(colleague) }}</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="form-group col-md-8">
-                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
-                                <input type="text" maxlength="500" class="form-control" [(ngModel)]="form.comments" />
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
-                            {{ submitLabel() }}
-                        </button>
-                        <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
-                    </div>
-                </div>
-            }
-
-            @if (returningRow(); as row) {
-                <div class="card card-custom gutter-b">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ 'ReturnMyDocument' | localize }}</h5>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label data-help-loc="Document">{{ 'Document' | localize }}</label>
-                                <input type="text" class="form-control" readonly [value]="typeName(row) + ' ' + (row.documentNum || '')" />
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label data-help-loc="ActualReturnDate">{{ 'ActualReturnDate' | localize }} *</label>
-                                <input type="date" class="form-control" [attr.max]="todayIso()" [(ngModel)]="returnForm.actualReturnDate" />
-                            </div>
-                            <div class="form-group col-md-5">
-                                <label data-help-loc="ReturnRemarks">{{ 'ReturnRemarks' | localize }}</label>
-                                <textarea class="form-control" rows="2" maxlength="500" [(ngModel)]="returnForm.returnRemarks"></textarea>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary me-2" [disabled]="returning()" (click)="submitReturn()">
-                            {{ submitLabel() }}
-                        </button>
-                        <button class="btn btn-light" (click)="closeReturnForm()">{{ 'Cancel' | localize }}</button>
-                    </div>
-                </div>
+                <!-- The form is its own component, as the exit permit's is, so that the Details view and an
+                     approver are shown THIS form read-only rather than a list of label/value rows. It serves a
+                     withdrawal and, opened from a row's Return button, reporting the document handed back. -->
+                <passport-withdrawal-form
+                    mode="create"
+                    [value]="form"
+                    [saving]="saving()"
+                    [documentsOut]="documentsOut()"
+                    (saved)="save()"
+                    (submitted)="submit()"
+                    (cancelled)="closeForm()" />
             }
 
             <div class="card card-custom gutter-b">
@@ -133,15 +47,18 @@
                                             <td>{{ row.requestNumber }}</td>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.documentNum }}</td>
-                                            <td>{{ row.withdrawDate | luxonFormat: 'yyyy-MM-dd' }}</td>
-                                            <td>{{ row.actualWithdrawDate | luxonFormat: 'yyyy-MM-dd' }}</td>
-                                            <td>{{ row.returnDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>{{ listDate(row.withdrawDate) }}</td>
+                                            <td>{{ listDate(row.actualWithdrawDate) }}</td>
+                                            <td>{{ listDate(row.returnDate) }}</td>
                                             <td>
-                                                @if (row.actualReturnDate) {
-                                                    {{ row.actualReturnDate | luxonFormat: 'yyyy-MM-dd' }}
-                                                } @else if (row.isOverdue) {
+                                                <!-- "Still out" and "Overdue" are facts about a document that
+                                                     has left: a draft or a request still awaiting approval has
+                                                     not, so the cell stays empty. -->
+                                                @if (listDate(row.actualReturnDate)) {
+                                                    {{ listDate(row.actualReturnDate) }}
+                                                } @else if (isOut(row) && row.isOverdue) {
                                                     <span class="text-danger" data-help-loc="Overdue">{{ 'Overdue' | localize }}</span>
-                                                } @else {
+                                                } @else if (isOut(row)) {
                                                     <span class="text-muted" data-help-loc="StillOut">{{ 'StillOut' | localize }}</span>
                                                 }
                                             </td>
@@ -150,26 +67,31 @@
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
                                             <td class="text-end">
-                                                <!-- Opening the request is the primary action: until this
-                                                     existed the requester could see a status badge but never
-                                                     what they had submitted, nor who was sitting on it.
-                                                     Replaces the old Workflow History button, whose trail
-                                                     the detail view now contains. Shown for every row, not
-                                                     only ones with a workflow request: a row recorded while
-                                                     workflow is off still has fields worth reading. -->
-                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
-                                                    {{ 'Details' | localize }}
-                                                </button>
+                                                <!-- A draft, or a request an approver sent back, is picked up
+                                                     where it was left. Anything else opens read-only in the
+                                                     detail view -- every such row, not only ones with a
+                                                     workflow request: a row recorded while workflow is off
+                                                     still has fields worth reading. -->
+                                                @if (row.canEdit) {
+                                                    <button class="btn btn-primary" (click)="continueDraft(row)" data-help-loc="ContinueDraft">
+                                                        {{ 'ContinueDraft' | localize }}
+                                                    </button>
+                                                } @else {
+                                                    <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
+                                                    </button>
+                                                }
                                                 @if (row.canReturn) {
-                                                    <button class="btn btn-light-primary" data-help-loc="ReturnMyDocument" (click)="openReturnForm(row)">
+                                                    <button class="btn btn-light-primary ms-2" data-help-loc="ReturnMyDocument" (click)="openReturnForm(row)">
                                                         {{ 'ReturnMyDocument' | localize }}
                                                     </button>
                                                 }
                                                 @if (row.canCancel) {
                                                     <!-- "Withdraw" alone would read as withdrawing the passport, which is what
-                                                         this screen is FOR. Named for the request on this one screen. -->
+                                                         this screen is FOR. Named for the request on this one screen. A draft
+                                                         was never sent to anybody, so it is discarded rather than withdrawn. -->
                                                     <button class="btn btn-light-danger ms-2" data-help-loc="WithdrawRequest" (click)="cancel(row)">
-                                                        {{ 'WithdrawRequest' | localize }}
+                                                        {{ (row.isDraft ? 'DiscardDraft' : 'WithdrawRequest') | localize }}
                                                     </button>
                                                 }
                                             </td>

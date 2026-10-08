@@ -174,8 +174,14 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     }
 
     /** A date as the lists and the dialog both show it. Empty rather than "Invalid DateTime" when unset. */
-    protected detailDate(value: { toFormat(format: string): string } | undefined): string {
-        return value?.toFormat('yyyy-MM-dd') ?? '';
+    protected detailDate(value: { toFormat(format: string): string; year?: number } | undefined): string {
+        // A date the server never had comes back as the year 1 rather than as nothing: a draft saved before
+        // its dates were filled in. That is "no date", not the first of January in the year 1.
+        if (!value || (value.year !== undefined && value.year <= 1)) {
+            return '';
+        }
+
+        return value.toFormat('yyyy-MM-dd');
     }
 
     reload(): void {

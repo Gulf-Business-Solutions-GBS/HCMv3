@@ -1,0 +1,173 @@
+<!-- Request Detail: the transaction fields, as on the exit permit form. The same markup serves the requester
+     filling it in and an approver reading it: read-only means every input is disabled where it stands, never a
+     second layout. Bootstrap 5, so the columns need a real .row parent and a picker must be .form-select. -->
+<div class="card card-custom gutter-b mb-5">
+    <div class="card-body">
+        <h5 class="card-title" data-help-loc="RequestDetail">
+            {{ 'RequestDetail' | localize }}
+            @if (isReturn()) {
+                <span class="badge badge-light-primary ms-2">{{ 'ReturnMyDocument' | localize }}</span>
+            }
+        </h5>
+
+        @if (documentIsOut()) {
+            <div class="text-muted mb-3">{{ 'DocumentAlreadyOutRequestWillExtend' | localize }}</div>
+        }
+
+        @if (editable() && documentsLoaded() && documents().length === 0) {
+            <div class="alert alert-warning">{{ 'NoDocumentsAvailableToWithdraw' | localize }}</div>
+        }
+
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                <!-- Shown, not chosen: the requester is always the signed-in employee and the server takes it
+                     from the session. For an approver it is whose document this is. -->
+                <input type="text" class="form-control" [value]="value().employeeDisplay" readonly disabled />
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" data-help-loc="Document">{{ 'Document' | localize }}{{ editable() ? ' *' : '' }}</label>
+                @if (editable()) {
+                    <select class="form-select" [(ngModel)]="value().employeeDocumentId">
+                        <option [ngValue]="null">--</option>
+                        @if (unlistedDocumentLabel(); as unlisted) {
+                            <option [ngValue]="value().employeeDocumentId">{{ unlisted }}</option>
+                        }
+                        @for (document of documents(); track document.id) {
+                            <option [ngValue]="document.id">{{ documentLabel(document) }}</option>
+                        }
+                    </select>
+                } @else {
+                    <select class="form-select" disabled>
+                        <option>{{ value().documentLabel }}</option>
+                    </select>
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="DocumentNumber">{{ 'DocumentNumber' | localize }}</label>
+                <input type="text" class="form-control" [value]="documentNumber()" readonly disabled />
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="IssueDate">{{ 'IssueDate' | localize }}</label>
+                <input type="text" class="form-control" [value]="issueDate()" readonly disabled />
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
+                <input type="text" class="form-control" [value]="expiryDate()" readonly disabled />
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="WithdrawDate">{{ 'WithdrawDate' | localize }}{{ editable() ? ' *' : '' }}</label>
+                @if (editable()) {
+                    <input type="date" class="form-control" [(ngModel)]="value().withdrawDate" />
+                } @else {
+                    <input type="text" class="form-control" [value]="asDayMonthYear(value().withdrawDate)" readonly disabled />
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" data-help-loc="ReturnDate">{{ 'ReturnDate' | localize }}{{ editable() ? ' *' : '' }}</label>
+                @if (editable()) {
+                    <input type="date" class="form-control" [(ngModel)]="value().returnDate" />
+                } @else {
+                    <input type="text" class="form-control" [value]="asDayMonthYear(value().returnDate)" readonly disabled />
+                }
+            </div>
+
+            @if (!editable() && value().handedOverOn) {
+                <div class="col-12 col-md-6 col-xl-2">
+                    <label class="form-label" data-help-loc="HandedOverOn">{{ 'HandedOverOn' | localize }}</label>
+                    <input type="text" class="form-control" [value]="asDayMonthYear(value().handedOverOn)" readonly disabled />
+                </div>
+            }
+
+            <!-- Always on a return, where it is the whole of what is being asked; otherwise only once the
+                 document has come back. -->
+            @if (isReturn() || (readOnly() && value().actualReturnDate)) {
+                <div class="col-12 col-md-6 col-xl-2">
+                    <label class="form-label" data-help-loc="ActualReturnDate">{{ 'ActualReturnDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                    @if (readOnly()) {
+                        <input type="text" class="form-control" [value]="asDayMonthYear(value().actualReturnDate)" readonly disabled />
+                    } @else {
+                        <input type="date" class="form-control" [attr.max]="todayIso()" [(ngModel)]="value().actualReturnDate" />
+                    }
+                </div>
+            }
+
+            <div class="col-12 col-md-6 col-xl-4">
+                <label class="form-label" data-help-loc="WithdrawalReason">{{ 'WithdrawalReason' | localize }}</label>
+                @if (editable()) {
+                    <input type="text" maxlength="500" class="form-control" [(ngModel)]="value().withdrawalReason" />
+                } @else {
+                    <input type="text" class="form-control" [value]="value().withdrawalReason" readonly disabled />
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-4">
+                <label class="form-label" data-help-loc="Guarantor">{{ 'Guarantor' | localize }}</label>
+                @if (editable()) {
+                    <select class="form-select" [(ngModel)]="value().guarantorId">
+                        <option [ngValue]="null">--</option>
+                        @if (unlistedGuarantorLabel(); as unlisted) {
+                            <option [ngValue]="value().guarantorId">{{ unlisted }}</option>
+                        }
+                        @for (colleague of guarantorCandidates(); track colleague.id) {
+                            <option [ngValue]="colleague.id">{{ colleagueName(colleague) }}</option>
+                        }
+                    </select>
+                } @else {
+                    <select class="form-select" disabled>
+                        <option>{{ value().guarantorLabel }}</option>
+                    </select>
+                }
+            </div>
+
+            <!-- On a withdrawal that has since come back. On a return request itself the remarks are what the
+                 requester said, so they open the conversation instead of being shown twice. -->
+            @if (readOnly() && !isReturn() && value().returnRemarks) {
+                <div class="col-12 col-xl-4">
+                    <label class="form-label" data-help-loc="ReturnRemarks">{{ 'ReturnRemarks' | localize }}</label>
+                    <textarea class="form-control" rows="2" [value]="value().returnRemarks" readonly disabled></textarea>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Request Comment is its own card, as on the exit permit: what the requester says to the approver. Shown
+     only while it is being written; once sent, the same words open the conversation in the detail view. On a
+     return it holds the return remarks, which are that request's comment. -->
+@if (!readOnly()) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            @if (isReturn()) {
+                <h5 class="card-title" data-help-loc="ReturnRemarks">{{ 'ReturnRemarks' | localize }}</h5>
+            } @else {
+                <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
+            }
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    @if (isReturn()) {
+                        <textarea class="form-control" rows="3" maxlength="500" [(ngModel)]="value().returnRemarks"></textarea>
+                    } @else {
+                        <textarea class="form-control" rows="3" maxlength="500" [(ngModel)]="value().comments"></textarea>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <!-- The standard three, in the standard order: Save files a draft only the requester can see,
+                     Submit sends it into the approval chain, Cancel drops what is on screen. A return has no
+                     draft, so it has no Save. -->
+                @if (!isReturn()) {
+                    <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saved.emit()" data-help-loc="Save">
+                        {{ 'Save' | localize }}
+                    </button>
+                }
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()" data-help-loc="Submit">
+                    {{ 'Submit' | localize }}
+                </button>
+                <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
+            </div>
+        </div>
+    </div>
+}

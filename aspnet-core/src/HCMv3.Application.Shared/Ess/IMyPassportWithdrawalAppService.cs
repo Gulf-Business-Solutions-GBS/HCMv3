@@ -23,7 +23,21 @@ public interface IMyPassportWithdrawalAppService : IApplicationService
     /// <summary>Creates the record and, when the type is workflow-enabled, submits it in one step.</summary>
     Task<MyRequestSubmissionDto> RequestPassportWithdrawal(RequestPassportWithdrawalInput input);
 
-    /// <summary>Withdraws the request while it is still theirs to withdraw.</summary>
+    /// <summary>
+    /// Files the withdrawal as a draft, or updates one already filed -- or a request an approver sent back.
+    /// Nothing is sent and nobody is notified, the guarantor included.
+    /// </summary>
+    Task<MyRequestSubmissionDto> SaveMyPassportWithdrawalDraft(SavePassportWithdrawalDraftInput input);
+
+    /// <summary>Reopens one of the requester's own drafts, or a request sent back to them, in the form.
+    /// Refuses anything that is not theirs or is no longer theirs to change.</summary>
+    Task<MyPassportWithdrawalDto> GetMyPassportWithdrawalDraftForEdit(EntityDto input);
+
+    /// <summary>Sends a saved draft for approval, or sends a sent-back request again, after applying the
+    /// rules a one-step request is held to. This is when the guarantor is told.</summary>
+    Task<MyRequestSubmissionDto> SubmitMyPassportWithdrawalDraft(EntityDto input);
+
+    /// <summary>Withdraws the request while it is still theirs to withdraw. Discards a draft, too.</summary>
     Task CancelMyPassportWithdrawal(EntityDto input);
 
     /// <summary>
