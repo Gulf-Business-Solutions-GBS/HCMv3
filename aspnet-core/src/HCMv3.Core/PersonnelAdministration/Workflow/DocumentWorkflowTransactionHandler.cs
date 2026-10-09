@@ -29,16 +29,19 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
 
     private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IEmployeeDocumentDuplicateCheck _duplicateCheck;
+    private readonly IRepository<Employee> _employeeRepository;
 
     public DocumentWorkflowTransactionHandler(
         IRepository<EmployeeDocument> repository,
         IRepository<DocumentType> documentTypeRepository,
         IUnitOfWorkManager unitOfWorkManager,
-        IEmployeeDocumentDuplicateCheck duplicateCheck)
+        IEmployeeDocumentDuplicateCheck duplicateCheck,
+        IRepository<Employee> employeeRepository)
         : base(repository, unitOfWorkManager)
     {
         _documentTypeRepository = documentTypeRepository;
         _duplicateCheck = duplicateCheck;
+        _employeeRepository = employeeRepository;
     }
 
     public override string RequestType => DocumentRequestType;
@@ -80,5 +83,49 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
         return new WorkflowSummary(
             $"{documentType?.NameEn ?? "Document"} {document.DocumentNum}, expires {expiry}",
             $"{documentType?.NameAr ?? "مستند"} {document.DocumentNum}، ينتهي {expiry}");
+    }
+
+    /// <summary>
+    /// Every field the document form captures, in the order it captures them, under the names the Angular
+    /// document form binds by -- so the approver and the Details view read the form itself, read-only. The
+    /// document type and the employee are sent as the words the form shows, in the reader's language.
+    ///
+    /// <para>
+    /// <see cref="EmployeeDocument.Description"/> is not on the self-service form; it travels last because
+    /// a document HR recorded may carry one, and the same projection serves that row.
+    /// </para>
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var document = await GetTargetAsync(context);
+        if (document == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var documentType = _documentTypeRepository.GetAll()
+            .Where(t => t.Id == document.DocumentTypeId)
+            .Select(t => new { t.NameEn, t.NameAr })
+            .FirstOrDefault();
+
+        var employee = _employeeRepository.GetAll()
+            .Where(e => e.Id == document.EmployeeId)
+            .Select(e => new { e.Code, e.FullNameEn, e.FullNameAr })
+            .FirstOrDefault();
+
+        var detail = new WorkflowRequestDetail
+        {
+            SubmissionComment = document.Comments
+        };
+
+        return detail
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text("Employee", L("Employee"), employee == null ? null : WorkflowDetailDisplay.Employee(employee.Code, employee.FullNameEn, employee.FullNameAr)))
+            .Add(WorkflowDetailField.Text("DocumentType", L("DocumentType"), WorkflowDetailDisplay.Name(documentType?.NameEn, documentType?.NameAr)))
+            .Add(WorkflowDetailField.Text("DocumentNumber", L("DocumentNumber"), document.DocumentNum))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeDocument.IssueDate), L("IssueDate"), document.IssueDate))
+            .Add(WorkflowDetailField.Date(nameof(EmployeeDocument.ExpiryDate), L("ExpiryDate"), document.ExpiryDate))
+            .Add(WorkflowDetailField.LongText(nameof(EmployeeDocument.Comments), L("Comments"), document.Comments))
+            .Add(WorkflowDetailField.LongText(nameof(EmployeeDocument.Description), L("Description"), document.Description));
     }
 }

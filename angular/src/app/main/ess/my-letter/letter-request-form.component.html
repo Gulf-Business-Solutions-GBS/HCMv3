@@ -1,0 +1,89 @@
+<!-- Request Detail: the transaction fields, as on the exit permit form. The same markup serves the requester
+     filling it in and an approver reading it: read-only means every input is disabled where it stands, never a
+     second layout. Bootstrap 5, so the columns need a real .row parent and a picker must be .form-select. -->
+<div class="card card-custom gutter-b mb-5">
+    <div class="card-body">
+        <h5 class="card-title" data-help-loc="RequestDetail">{{ 'RequestDetail' | localize }}</h5>
+
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-xl-4">
+                <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                <!-- Shown, not chosen: the requester is always the signed-in employee and the server takes it
+                     from the session. For an approver it is whose letter this is. -->
+                <input type="text" class="form-control" [value]="value().employeeDisplay" readonly disabled />
+            </div>
+            <div class="col-12 col-md-6 col-xl-5">
+                <label class="form-label" data-help-loc="DocumentType">{{ 'DocumentType' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <select class="form-select" disabled>
+                        <option>{{ value().documentTypeLabel }}</option>
+                    </select>
+                } @else {
+                    <select class="form-select" [(ngModel)]="value().documentTypeId">
+                        <option [ngValue]="null">--</option>
+                        @if (unlistedTypeLabel(); as unlisted) {
+                            <option [ngValue]="value().documentTypeId">{{ unlisted }}</option>
+                        }
+                        @for (type of letterTypes(); track type.id) {
+                            <option [ngValue]="type.id">{{ letterTypeName(type) }}</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" data-help-loc="EffectiveDate">{{ 'EffectiveDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <input type="text" class="form-control" [value]="asDayMonthYear(value().effectiveDate)" readonly disabled />
+                } @else {
+                    <input type="date" class="form-control" [(ngModel)]="value().effectiveDate" />
+                }
+            </div>
+
+            <!-- Multi-line, as legacy had them: an addressee is often a name and a department over two lines. -->
+            <div class="col-12 col-md-6">
+                <label class="form-label" data-help-loc="AddressToEn">{{ 'AddressToEn' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <textarea class="form-control" rows="3" [value]="value().addressToEn" readonly disabled></textarea>
+                } @else {
+                    <textarea class="form-control" rows="3" maxlength="500" [(ngModel)]="value().addressToEn"></textarea>
+                }
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" data-help-loc="AddressToAr">{{ 'AddressToAr' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                @if (readOnly()) {
+                    <textarea class="form-control" rows="3" [value]="value().addressToAr" readonly disabled></textarea>
+                } @else {
+                    <textarea class="form-control" rows="3" maxlength="500" [(ngModel)]="value().addressToAr"></textarea>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Request Comment is its own card, as on the exit permit: what the requester says to the approver. Shown
+     only while it is being written; once sent, the same words open the conversation in the detail view. -->
+@if (!readOnly()) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <textarea class="form-control" rows="3" [(ngModel)]="value().comments"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <!-- The standard three, in the standard order: Save files a draft only the requester can see,
+                     Submit sends it into the approval chain, Cancel drops what is on screen. -->
+                <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saved.emit()" data-help-loc="Save">
+                    {{ 'Save' | localize }}
+                </button>
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()" data-help-loc="Submit">
+                    {{ 'Submit' | localize }}
+                </button>
+                <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
+            </div>
+        </div>
+    </div>
+}

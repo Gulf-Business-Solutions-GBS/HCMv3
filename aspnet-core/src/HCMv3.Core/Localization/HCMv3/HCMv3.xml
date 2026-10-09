@@ -2041,6 +2041,8 @@
     <text name="AssetIsAlreadyIssuedForThisPeriod">This asset is already issued to someone over these dates.</text>
     <text name="ExpiryDateCannotBeEarlierThanIssueDate">Expiry date cannot be earlier than the issue date.</text>
     <text name="DocumentNumberIsRequired">Document number is required.</text>
+    <text name="IssueDateIsRequired">Enter the issue date.</text>
+    <text name="ExpiryDateIsRequired">Enter the expiry date.</text>
     <text name="LoanAmountMustBeGreaterThanZero">Loan amount must be greater than zero.</text>
     <text name="RecoveryStartDateCannotBeEarlierThanLoanStartDate">Recovery cannot start before the loan itself starts.</text>
     <text name="AnOutstandingLoanOfThisTypeAlreadyExists">There is already an outstanding loan of this type.</text>
@@ -5882,6 +5884,7 @@
     <text name="AddressToArIsRequired">Say who the letter should be addressed to, in Arabic.</text>
     <text name="ALetterCanOnlyBePrintedOnceApproved">This letter cannot be printed until it has been approved.</text>
     <text name="ThatDocumentTypeIsNotIssuedAsALetter">That document type is not one the company issues as a letter.</text>
+    <text name="DocumentTypeNotFound">That document type could not be found.</text>
     <text name="ReferenceDataPackNotFound">Reference data pack "{0}" was not found.</text>
     <text name="ReferenceDataUnknownLookup">Reference data pack refers to an unknown lookup "{0}".</text>
     <text name="EssMyHealthReimburses">Health Reimbursement</text>

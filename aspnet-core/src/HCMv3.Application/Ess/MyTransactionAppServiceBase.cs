@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
@@ -326,6 +327,230 @@ public abstract class MyTransactionAppServiceBase<TEntity> : HCMv3AppServiceBase
     protected static bool IsDraft(IWorkflowEnabledEntity entity)
     {
         return entity.WorkflowStatus == RequestStatus.Draft && entity.WorkflowRequestId == null;
+    }
+
+    // ------------------------------------------------------------------ drafts AND sent-back rows
+    //
+    // The helpers above know one editable state: saved and never sent. The ones below know two, for the
+    // types whose screen also reopens a request an approver SENT BACK. They are separate methods rather
+    // than a change to the ones above on purpose: the services already built on those keep exactly the
+    // behaviour they were tested with, and a type opts in to the wider rule by calling these instead.
+
+    /// <summary>
+    /// A request an approver sent back: Draft again, but still carrying the workflow request it was raised
+    /// under. That pair is what tells it from a saved draft, which has no request at all -- a one-step
+    /// submission creates and sends in a single unit of work, so nothing else ever rests in this state.
+    /// </summary>
+    protected static bool IsSentBack(IWorkflowEnabledEntity entity)
+    {
+        return entity.WorkflowStatus == RequestStatus.Draft && entity.WorkflowRequestId != null;
+    }
+
+    /// <summary>Whether the form may be reopened on the row: a saved draft, or a request sent back.</summary>
+    protected static bool IsEditable(IWorkflowEnabledEntity entity)
+    {
+        return IsDraft(entity) || IsSentBack(entity);
+    }
+
+    /// <summary>
+    /// Fetches one of the employee's own rows that is still theirs to change -- a saved draft or one an
+    /// approver sent back -- with the same existence, ownership and state checks every draft operation makes.
+    /// </summary>
+    protected async Task<TEntity> GetMyEditableAsync(int id)
+    {
+        var employeeId = await GetMyEmployeeIdAsync();
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            return await LoadOwnEditableAsync(id, employeeId);
+        }
+    }
+
+    /// <summary>
+    /// Applies the form's changes to a saved draft or a sent-back request. Nothing is sent: the row stays
+    /// Draft, and it keeps whatever workflow request it had -- none for a draft, the original one for a
+    /// request that was sent back, which is what lets the resubmission continue that request's history
+    /// rather than start a second one.
+    /// </summary>
+    protected async Task UpdateEditableAsync(int id, Action<TEntity> apply)
+    {
+        var employeeId = await GetMyEmployeeIdAsync();
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var entity = await LoadOwnEditableAsync(id, employeeId);
+            var requestId = entity.WorkflowRequestId;
+
+            apply(entity);
+
+            // Re-stamped after the caller's changes, for the reason UpdateDraftAsync gives: the form must not
+            // be able to promote its own row, nor to point it at somebody else's request.
+            entity.WorkflowStatus = RequestStatus.Draft;
+            entity.WorkflowRequestId = requestId;
+
+            await _repository.UpdateAsync(entity);
+        }
+    }
+
+    /// <summary>
+    /// Sends a saved draft, or sends a sent-back request again.
+    ///
+    /// <para>
+    /// <paramref name="validate"/> runs after the row has been proved to be the employee's own and still
+    /// editable, and before anything is routed. It is where a service applies the rules its one-step submit
+    /// applies, against what the row now holds; it returns the sub-type the routing rules match against.
+    /// </para>
+    ///
+    /// <para>
+    /// A sent-back request is resubmitted under the request it already has -- same number, same history --
+    /// instead of raising a new one. A draft takes the path <see cref="SubmitDraftAsync"/> takes.
+    /// </para>
+    /// </summary>
+    protected async Task<MyRequestSubmissionDto> SubmitEditableAsync(int id, Func<TEntity, Task<int?>> validate)
+    {
+        var employeeId = await GetMyEmployeeIdAsync();
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var entity = await LoadOwnEditableAsync(id, employeeId);
+
+            var subTypeId = await validate(entity);
+
+            if (IsSentBack(entity))
+            {
+                var request = await _requestRepository.FirstOrDefaultAsync(r => r.Id == entity.WorkflowRequestId.Value);
+
+                // The row says "sent back"; the request has to agree. One that was withdrawn or closed since
+                // is not waiting on the employee any more, and an amendment is never resubmitted through the
+                // transaction's own form.
+                if (request == null
+                    || request.EmployeeId != employeeId
+                    || request.IsAmendment
+                    || request.RequestStatus != RequestStatus.Draft)
+                {
+                    throw new UserFriendlyException(L("OnlyARequestSentBackToYouCanBeResubmitted"));
+                }
+
+                // The correction may have changed what the routing rules match on.
+                request.RequestSubTypeId = subTypeId;
+                await _requestRepository.UpdateAsync(request);
+
+                await CurrentUnitOfWork.SaveChangesAsync();
+
+                await _workflowApprovalService.SubmitAsync(request.Id, employeeId);
+
+                return new MyRequestSubmissionDto
+                {
+                    TransactionId = entity.Id,
+                    WorkflowRequestId = request.Id,
+                    SubmittedForApproval = true
+                };
+            }
+
+            var workflowEnabled = await _requestMasterResolver.IsWorkflowEnabledAsync(RequestType);
+
+            if (!workflowEnabled)
+            {
+                // Nobody to send it to: submitting makes it effective, as in SubmitDraftAsync.
+                entity.WorkflowStatus = null;
+                await _repository.UpdateAsync(entity);
+
+                return new MyRequestSubmissionDto
+                {
+                    TransactionId = entity.Id,
+                    SubmittedForApproval = false
+                };
+            }
+
+            return await RaiseAndSubmitAsync(entity, entity.Id, employeeId, subTypeId);
+        }
+    }
+
+    /// <summary>
+    /// The number and status of the workflow request each row was raised under, in one read for the page.
+    /// A row with no request -- an unsent draft, or one HR recorded -- has no entry.
+    /// </summary>
+    protected async Task<Dictionary<int, WorkflowRequestInfo>> GetOwnRequestsAsync(IEnumerable<TEntity> rows)
+    {
+        var requestIds = rows
+            .Where(r => r.WorkflowRequestId.HasValue)
+            .Select(r => r.WorkflowRequestId.Value)
+            .Distinct()
+            .ToList();
+
+        if (requestIds.Count == 0)
+        {
+            return new Dictionary<int, WorkflowRequestInfo>();
+        }
+
+        return (await _requestRepository.GetAll()
+                .Where(r => requestIds.Contains(r.Id))
+                .Select(r => new { r.Id, r.RequestNumber, r.RequestStatus })
+                .ToListAsync())
+            .ToDictionary(r => r.Id, r => new WorkflowRequestInfo(r.RequestNumber, r.RequestStatus));
+    }
+
+    /// <summary>
+    /// <see cref="IsSentBack(IWorkflowEnabledEntity)"/>, cross-checked against the request itself where a
+    /// list has already read it: a row left Draft under a request that has since been closed is not waiting
+    /// on the employee, and offering Edit on it would only be refused at submit.
+    /// </summary>
+    protected static bool IsSentBack(IWorkflowEnabledEntity entity, IReadOnlyDictionary<int, WorkflowRequestInfo> requests)
+    {
+        if (!IsSentBack(entity))
+        {
+            return false;
+        }
+
+        return requests == null
+               || !requests.TryGetValue(entity.WorkflowRequestId.Value, out var request)
+               || request.RequestStatus == RequestStatus.Draft;
+    }
+
+    /// <summary>The row's own request number, or null when it has no request.</summary>
+    protected static string RequestNumberOf(IWorkflowEnabledEntity entity, IReadOnlyDictionary<int, WorkflowRequestInfo> requests)
+    {
+        return entity.WorkflowRequestId.HasValue
+               && requests != null
+               && requests.TryGetValue(entity.WorkflowRequestId.Value, out var request)
+            ? request.RequestNumber
+            : null;
+    }
+
+    /// <summary>What a list needs from a row's own workflow request.</summary>
+    protected sealed class WorkflowRequestInfo
+    {
+        public WorkflowRequestInfo(string requestNumber, RequestStatus requestStatus)
+        {
+            RequestNumber = requestNumber;
+            RequestStatus = requestStatus;
+        }
+
+        public string RequestNumber { get; }
+
+        public RequestStatus RequestStatus { get; }
+    }
+
+    private async Task<TEntity> LoadOwnEditableAsync(int id, int employeeId)
+    {
+        var entity = await _repository.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (entity == null)
+        {
+            throw new UserFriendlyException(L("RequestNotFound"));
+        }
+
+        if (entity.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyEditYourOwnRequests"));
+        }
+
+        if (!IsEditable(entity))
+        {
+            throw new UserFriendlyException(L("ThisRequestIsNoLongerADraft"));
+        }
+
+        return entity;
     }
 
     /// <summary>

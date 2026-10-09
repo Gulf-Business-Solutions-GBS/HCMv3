@@ -91727,6 +91727,174 @@ export class MyDocumentServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    saveMyDocumentDraft(body?: SaveDocumentDraftInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyDocument/SaveMyDocumentDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyDocumentDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyDocumentDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSaveMyDocumentDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyDocumentDraftForEdit(id?: number | undefined): Observable<MyDocumentRequestDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyDocument/GetMyDocumentDraftForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyDocumentDraftForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyDocumentDraftForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyDocumentRequestDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyDocumentRequestDto>;
+        }));
+    }
+
+    protected processGetMyDocumentDraftForEdit(response: HttpResponseBase): Observable<MyDocumentRequestDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyDocumentRequestDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyDocumentDraft(body?: EntityDto | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyDocument/SubmitMyDocumentDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyDocumentDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyDocumentDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSubmitMyDocumentDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     cancelMyDocument(body?: EntityDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/MyDocument/CancelMyDocument";
         url_ = url_.replace(/[?&]$/, "");
@@ -94139,6 +94307,174 @@ export class MyLetterRequestServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    saveMyLetterRequestDraft(body?: SaveLetterDraftInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLetterRequest/SaveMyLetterRequestDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyLetterRequestDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyLetterRequestDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSaveMyLetterRequestDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyLetterRequestDraftForEdit(id?: number | undefined): Observable<MyLetterRequestDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLetterRequest/GetMyLetterRequestDraftForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLetterRequestDraftForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLetterRequestDraftForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyLetterRequestDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyLetterRequestDto>;
+        }));
+    }
+
+    protected processGetMyLetterRequestDraftForEdit(response: HttpResponseBase): Observable<MyLetterRequestDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyLetterRequestDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyLetterRequestDraft(body?: EntityDto | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLetterRequest/SubmitMyLetterRequestDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyLetterRequestDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyLetterRequestDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSubmitMyLetterRequestDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     cancelMyLetterRequest(body?: EntityDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/MyLetterRequest/CancelMyLetterRequest";
         url_ = url_.replace(/[?&]$/, "");
@@ -95052,6 +95388,174 @@ export class MyPassportWithdrawalServiceProxy {
     }
 
     protected processRequestPassportWithdrawal(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveMyPassportWithdrawalDraft(body?: SavePassportWithdrawalDraftInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPassportWithdrawal/SaveMyPassportWithdrawalDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyPassportWithdrawalDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyPassportWithdrawalDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSaveMyPassportWithdrawalDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyPassportWithdrawalDraftForEdit(id?: number | undefined): Observable<MyPassportWithdrawalDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPassportWithdrawal/GetMyPassportWithdrawalDraftForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyPassportWithdrawalDraftForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyPassportWithdrawalDraftForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyPassportWithdrawalDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyPassportWithdrawalDto>;
+        }));
+    }
+
+    protected processGetMyPassportWithdrawalDraftForEdit(response: HttpResponseBase): Observable<MyPassportWithdrawalDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyPassportWithdrawalDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyPassportWithdrawalDraft(body?: EntityDto | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPassportWithdrawal/SubmitMyPassportWithdrawalDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyPassportWithdrawalDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyPassportWithdrawalDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSubmitMyPassportWithdrawalDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -285700,6 +286204,8 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
     issueDate!: DateTime;
     expiryDate!: DateTime;
     comments!: string | undefined;
+    requestNumber!: string | undefined;
+    isSentBack!: boolean;
 
     constructor(data?: IMyDocumentRequestDto) {
         if (data) {
@@ -285725,6 +286231,8 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
             this.issueDate = _data["issueDate"] ? DateTime.fromISO(_data["issueDate"].toString()) : undefined as any;
             this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
             this.comments = _data["comments"];
+            this.requestNumber = _data["requestNumber"];
+            this.isSentBack = _data["isSentBack"];
         }
     }
 
@@ -285750,6 +286258,8 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
         data["issueDate"] = this.issueDate ? this.issueDate.toString() : undefined as any;
         data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
         data["comments"] = this.comments;
+        data["requestNumber"] = this.requestNumber;
+        data["isSentBack"] = this.isSentBack;
         return data;
     }
 }
@@ -285768,6 +286278,8 @@ export interface IMyDocumentRequestDto {
     issueDate: DateTime;
     expiryDate: DateTime;
     comments: string | undefined;
+    requestNumber: string | undefined;
+    isSentBack: boolean;
 }
 
 export class MyExitPermitDto implements IMyExitPermitDto {
@@ -287023,6 +287535,8 @@ export class MyLetterRequestDto implements IMyLetterRequestDto {
     addressToAr!: string | undefined;
     comments!: string | undefined;
     canPrint!: boolean;
+    requestNumber!: string | undefined;
+    isSentBack!: boolean;
 
     constructor(data?: IMyLetterRequestDto) {
         if (data) {
@@ -287049,6 +287563,8 @@ export class MyLetterRequestDto implements IMyLetterRequestDto {
             this.addressToAr = _data["addressToAr"];
             this.comments = _data["comments"];
             this.canPrint = _data["canPrint"];
+            this.requestNumber = _data["requestNumber"];
+            this.isSentBack = _data["isSentBack"];
         }
     }
 
@@ -287075,6 +287591,8 @@ export class MyLetterRequestDto implements IMyLetterRequestDto {
         data["addressToAr"] = this.addressToAr;
         data["comments"] = this.comments;
         data["canPrint"] = this.canPrint;
+        data["requestNumber"] = this.requestNumber;
+        data["isSentBack"] = this.isSentBack;
         return data;
     }
 }
@@ -287094,6 +287612,8 @@ export interface IMyLetterRequestDto {
     addressToAr: string | undefined;
     comments: string | undefined;
     canPrint: boolean;
+    requestNumber: string | undefined;
+    isSentBack: boolean;
 }
 
 export class MyLoanExemptionDto implements IMyLoanExemptionDto {
@@ -287526,6 +288046,7 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
     comments!: string | undefined;
     canReturn!: boolean;
     requestNumber!: string | undefined;
+    isSentBack!: boolean;
     actualWithdrawDate!: DateTime | undefined;
     returnRemarks!: string | undefined;
     issueDate!: DateTime | undefined;
@@ -287568,6 +288089,7 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
             this.comments = _data["comments"];
             this.canReturn = _data["canReturn"];
             this.requestNumber = _data["requestNumber"];
+            this.isSentBack = _data["isSentBack"];
             this.actualWithdrawDate = _data["actualWithdrawDate"] ? DateTime.fromISO(_data["actualWithdrawDate"].toString()) : undefined as any;
             this.returnRemarks = _data["returnRemarks"];
             this.issueDate = _data["issueDate"] ? DateTime.fromISO(_data["issueDate"].toString()) : undefined as any;
@@ -287614,6 +288136,7 @@ export class MyPassportWithdrawalDto implements IMyPassportWithdrawalDto {
         data["comments"] = this.comments;
         data["canReturn"] = this.canReturn;
         data["requestNumber"] = this.requestNumber;
+        data["isSentBack"] = this.isSentBack;
         data["actualWithdrawDate"] = this.actualWithdrawDate ? this.actualWithdrawDate.toString() : undefined as any;
         data["returnRemarks"] = this.returnRemarks;
         data["issueDate"] = this.issueDate ? this.issueDate.toString() : undefined as any;
@@ -287653,6 +288176,7 @@ export interface IMyPassportWithdrawalDto {
     comments: string | undefined;
     canReturn: boolean;
     requestNumber: string | undefined;
+    isSentBack: boolean;
     actualWithdrawDate: DateTime | undefined;
     returnRemarks: string | undefined;
     issueDate: DateTime | undefined;
@@ -338292,6 +338816,62 @@ export interface ISaveClearanceChecklistInput {
     answers: ClearanceChecklistAnswerInput[] | undefined;
 }
 
+export class SaveDocumentDraftInput implements ISaveDocumentDraftInput {
+    id!: number | undefined;
+    documentTypeId!: number;
+    documentNum!: string | undefined;
+    issueDate!: DateTime | undefined;
+    expiryDate!: DateTime | undefined;
+    comments!: string | undefined;
+
+    constructor(data?: ISaveDocumentDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.documentTypeId = _data["documentTypeId"];
+            this.documentNum = _data["documentNum"];
+            this.issueDate = _data["issueDate"] ? DateTime.fromISO(_data["issueDate"].toString()) : undefined as any;
+            this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): SaveDocumentDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveDocumentDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["documentTypeId"] = this.documentTypeId;
+        data["documentNum"] = this.documentNum;
+        data["issueDate"] = this.issueDate ? this.issueDate.toString() : undefined as any;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ISaveDocumentDraftInput {
+    id: number | undefined;
+    documentTypeId: number;
+    documentNum: string | undefined;
+    issueDate: DateTime | undefined;
+    expiryDate: DateTime | undefined;
+    comments: string | undefined;
+}
+
 export class SaveExitPermitDraftInput implements ISaveExitPermitDraftInput {
     id!: number | undefined;
     externalRequestNumber!: string | undefined;
@@ -338398,6 +338978,62 @@ export class SaveIntegrationSettingsInput implements ISaveIntegrationSettingsInp
 export interface ISaveIntegrationSettingsInput {
     key: string;
     values: { [key: string]: string; } | undefined;
+}
+
+export class SaveLetterDraftInput implements ISaveLetterDraftInput {
+    id!: number | undefined;
+    documentTypeId!: number;
+    effectiveDate!: DateTime | undefined;
+    addressToEn!: string | undefined;
+    addressToAr!: string | undefined;
+    comments!: string | undefined;
+
+    constructor(data?: ISaveLetterDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.documentTypeId = _data["documentTypeId"];
+            this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
+            this.addressToEn = _data["addressToEn"];
+            this.addressToAr = _data["addressToAr"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): SaveLetterDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveLetterDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["documentTypeId"] = this.documentTypeId;
+        data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
+        data["addressToEn"] = this.addressToEn;
+        data["addressToAr"] = this.addressToAr;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ISaveLetterDraftInput {
+    id: number | undefined;
+    documentTypeId: number;
+    effectiveDate: DateTime | undefined;
+    addressToEn: string | undefined;
+    addressToAr: string | undefined;
+    comments: string | undefined;
 }
 
 export class SaveMyLeaveChangeDraftInput implements ISaveMyLeaveChangeDraftInput {
@@ -338634,6 +339270,66 @@ export interface ISavePageInput {
     dashboardName: string | undefined;
     application: string | undefined;
     pages: Page[] | undefined;
+}
+
+export class SavePassportWithdrawalDraftInput implements ISavePassportWithdrawalDraftInput {
+    id!: number | undefined;
+    employeeDocumentId!: number;
+    withdrawDate!: DateTime | undefined;
+    returnDate!: DateTime | undefined;
+    guarantorId!: number | undefined;
+    withdrawalReason!: string | undefined;
+    comments!: string | undefined;
+
+    constructor(data?: ISavePassportWithdrawalDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeDocumentId = _data["employeeDocumentId"];
+            this.withdrawDate = _data["withdrawDate"] ? DateTime.fromISO(_data["withdrawDate"].toString()) : undefined as any;
+            this.returnDate = _data["returnDate"] ? DateTime.fromISO(_data["returnDate"].toString()) : undefined as any;
+            this.guarantorId = _data["guarantorId"];
+            this.withdrawalReason = _data["withdrawalReason"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): SavePassportWithdrawalDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SavePassportWithdrawalDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeDocumentId"] = this.employeeDocumentId;
+        data["withdrawDate"] = this.withdrawDate ? this.withdrawDate.toString() : undefined as any;
+        data["returnDate"] = this.returnDate ? this.returnDate.toString() : undefined as any;
+        data["guarantorId"] = this.guarantorId;
+        data["withdrawalReason"] = this.withdrawalReason;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ISavePassportWithdrawalDraftInput {
+    id: number | undefined;
+    employeeDocumentId: number;
+    withdrawDate: DateTime | undefined;
+    returnDate: DateTime | undefined;
+    guarantorId: number | undefined;
+    withdrawalReason: string | undefined;
+    comments: string | undefined;
 }
 
 export class SaveWorkflowSetupDefaultChainInput implements ISaveWorkflowSetupDefaultChainInput {

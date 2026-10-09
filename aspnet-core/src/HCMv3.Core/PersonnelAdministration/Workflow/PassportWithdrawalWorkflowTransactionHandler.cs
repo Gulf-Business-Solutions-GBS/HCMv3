@@ -341,6 +341,137 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
     }
 
     /// <summary>
+    /// The withdrawal as its own form shows it, field by field, for the Details view and the approver.
+    ///
+    /// <para>
+    /// The names are the ones the Angular passport form binds by, so an approver reads the form the employee
+    /// filled in, read-only. Lookups are sent as the words the form would show -- the document type's name
+    /// and the people's code and name, in the reader's language -- not as ids.
+    /// </para>
+    ///
+    /// <para>
+    /// A RETURN is an amendment against a movement that is already approved, so its projection is the
+    /// movement it is against plus what the return proposes: the day the document came back and what was
+    /// noted. Those two are the PROPOSED values while the return is undecided -- that is what is being
+    /// approved -- and <c>RequestAction</c> says which of the two requests this is, as it does for leave.
+    /// Any amendment of this type is a return, whether it carries the <c>Return</c> label or the generic
+    /// one older returns were stored under.
+    /// </para>
+    ///
+    /// <para>
+    /// The custody facts -- handed over on, actually returned, return remarks -- appear only once there is
+    /// one to show. A withdrawal nobody has handed over yet has no hand-over date, and an empty row for it
+    /// on the approver's card would read as a field somebody forgot.
+    /// </para>
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetTargetAsync(context);
+        if (movement == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var isReturn = context.IsAmendment;
+
+        var proposed = isReturn && !context.AmendmentJson.IsNullOrWhiteSpace()
+            ? ReadAmendment(context)
+            : null;
+
+        string documentNum = null;
+        int? documentTypeId = null;
+        DateTime? issueDate = null;
+        DateTime? expiryDate = null;
+
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var document = _documentRepository.GetAll()
+                .Where(d => d.Id == movement.EmployeeDocumentId)
+                .Select(d => new { d.DocumentNum, d.DocumentTypeId, d.IssueDate, d.ExpiryDate })
+                .FirstOrDefault();
+
+            if (document != null)
+            {
+                documentNum = document.DocumentNum;
+                documentTypeId = document.DocumentTypeId;
+                issueDate = document.IssueDate;
+                expiryDate = document.ExpiryDate;
+            }
+        }
+
+        var documentType = documentTypeId.HasValue
+            ? _documentTypeRepository.GetAll()
+                .Where(t => t.Id == documentTypeId.Value)
+                .Select(t => new { t.NameEn, t.NameAr })
+                .FirstOrDefault()
+            : null;
+
+        var actualReturnDate = proposed?.ActualReturnDate
+                               ?? (movement.ActualReturnDate == default ? (DateTime?)null : movement.ActualReturnDate);
+
+        var returnRemarks = proposed != null && !proposed.ReturnRemarks.IsNullOrWhiteSpace()
+            ? proposed.ReturnRemarks.Trim()
+            : movement.ReturnRemarks;
+
+        var detail = new WorkflowRequestDetail
+        {
+            // What the requester said about THIS request: the note on the withdrawal, or what they noted
+            // when handing the document back.
+            SubmissionComment = isReturn ? proposed?.ReturnRemarks : movement.Comments
+        };
+
+        detail
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text("RequestAction", L("RequestActionAppliesTo"), (isReturn ? WorkflowRequestAction.Return : WorkflowRequestAction.New).ToString()))
+            .Add(WorkflowDetailField.Text("Employee", L("Employee"), EmployeeDisplay(movement.EmployeeId)))
+            .Add(WorkflowDetailField.Text("DocumentType", L("DocumentType"), WorkflowDetailDisplay.Name(documentType?.NameEn, documentType?.NameAr)))
+            .Add(WorkflowDetailField.Text("DocumentNumber", L("DocumentNumber"), documentNum))
+            .Add(WorkflowDetailField.Date("IssueDate", L("IssueDate"), issueDate))
+            .Add(WorkflowDetailField.Date("ExpiryDate", L("ExpiryDate"), expiryDate))
+            .Add(WorkflowDetailField.Date("WithdrawDate", L("WithdrawDate"), movement.WithdrawDate))
+            .Add(WorkflowDetailField.Date("ReturnDate", L("ReturnDate"), movement.ReturnDate))
+            .Add(WorkflowDetailField.Text("Guarantor", L("Guarantor"), EmployeeDisplay(movement.GuarantorId)))
+            .Add(WorkflowDetailField.LongText("WithdrawalReason", L("WithdrawalReason"), movement.WithdrawalReason))
+            .Add(WorkflowDetailField.LongText("Comments", L("Comments"), movement.Comments));
+
+        if (movement.ActualWithdrawDate.HasValue)
+        {
+            detail.Add(WorkflowDetailField.Date("HandedOverOn", L("HandedOverOn"), movement.ActualWithdrawDate));
+        }
+
+        // Always on a return, where they are the whole of what is being asked; otherwise only once stamped.
+        if (isReturn || actualReturnDate.HasValue)
+        {
+            detail.Add(WorkflowDetailField.Date("ActualReturnDate", L("ActualReturnDate"), actualReturnDate));
+        }
+
+        if (isReturn || !returnRemarks.IsNullOrWhiteSpace())
+        {
+            detail.Add(WorkflowDetailField.LongText("ReturnRemarks", L("ReturnRemarks"), returnRemarks));
+        }
+
+        return detail;
+    }
+
+    /// <summary>"1042 - Ahmad Al Sayed" in the reader's language, or null when nobody was named.</summary>
+    private string EmployeeDisplay(int? employeeId)
+    {
+        if (!employeeId.HasValue)
+        {
+            return null;
+        }
+
+        var employee = _employeeRepository.GetAll()
+            .Where(e => e.Id == employeeId.Value)
+            .Select(e => new { e.Code, e.FullNameEn, e.FullNameAr })
+            .FirstOrDefault();
+
+        return employee == null
+            ? null
+            : WorkflowDetailDisplay.Employee(employee.Code, employee.FullNameEn, employee.FullNameAr);
+    }
+
+    /// <summary>
     /// On approval, closes any other still-open withdrawal request the same employee has.
     ///
     /// <para>

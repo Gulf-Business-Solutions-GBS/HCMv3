@@ -2026,6 +2026,8 @@
     <text name="AssetIsAlreadyIssuedForThisPeriod">هذه العهدة مخصصة لشخص آخر خلال هذه الفترة.</text>
     <text name="ExpiryDateCannotBeEarlierThanIssueDate">لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ الإصدار.</text>
     <text name="DocumentNumberIsRequired">رقم الوثيقة مطلوب.</text>
+    <text name="IssueDateIsRequired">أدخل تاريخ الإصدار.</text>
+    <text name="ExpiryDateIsRequired">أدخل تاريخ الانتهاء.</text>
     <text name="LoanAmountMustBeGreaterThanZero">يجب أن يكون مبلغ القرض أكبر من صفر.</text>
     <text name="RecoveryStartDateCannotBeEarlierThanLoanStartDate">لا يمكن أن يبدأ الاسترداد قبل بداية القرض نفسه.</text>
     <text name="AnOutstandingLoanOfThisTypeAlreadyExists">يوجد قرض قائم من هذا النوع مسبقاً.</text>
@@ -5728,6 +5730,7 @@
     <text name="AddressToArIsRequired">اذكر الجهة الموجهة إليها الشهادة بالعربية.</text>
     <text name="ALetterCanOnlyBePrintedOnceApproved">لا يمكن طباعة هذه الشهادة قبل اعتمادها.</text>
     <text name="ThatDocumentTypeIsNotIssuedAsALetter">نوع الوثيقة هذا ليس مما تصدره الشركة كشهادة.</text>
+    <text name="DocumentTypeNotFound">تعذر العثور على نوع الوثيقة هذا.</text>
     <text name="ReferenceDataPackNotFound">لم يتم العثور على حزمة البيانات المرجعية "{0}".</text>
     <text name="ReferenceDataUnknownLookup">تشير حزمة البيانات المرجعية إلى قائمة غير معروفة "{0}".</text>
     <text name="EssMyHealthReimburses">استرداد المصاريف الصحية</text>

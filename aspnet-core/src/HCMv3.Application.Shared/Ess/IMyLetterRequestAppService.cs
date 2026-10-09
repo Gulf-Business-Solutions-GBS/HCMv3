@@ -30,6 +30,20 @@ public interface IMyLetterRequestAppService : IApplicationService
     /// <summary>Creates the request and, when the type is workflow-enabled, submits it in one step.</summary>
     Task<MyRequestSubmissionDto> RequestLetter(RequestLetterInput input);
 
-    /// <summary>Withdraws the request while it is still theirs to withdraw.</summary>
+    /// <summary>
+    /// Files the request as a draft, or updates one already filed -- or a request an approver sent back.
+    /// Nothing is sent. The kind of letter must already be a letter type; the rest is checked at submit.
+    /// </summary>
+    Task<MyRequestSubmissionDto> SaveMyLetterRequestDraft(SaveLetterDraftInput input);
+
+    /// <summary>Reopens one of the requester's own drafts, or a request sent back to them, in the form.
+    /// Refuses anything that is not theirs or is no longer theirs to change.</summary>
+    Task<MyLetterRequestDto> GetMyLetterRequestDraftForEdit(EntityDto input);
+
+    /// <summary>Sends a saved draft for approval, or sends a sent-back request again, after applying the
+    /// rules a one-step request is held to.</summary>
+    Task<MyRequestSubmissionDto> SubmitMyLetterRequestDraft(EntityDto input);
+
+    /// <summary>Withdraws the request while it is still theirs to withdraw. Discards a draft, too.</summary>
     Task CancelMyLetterRequest(EntityDto input);
 }

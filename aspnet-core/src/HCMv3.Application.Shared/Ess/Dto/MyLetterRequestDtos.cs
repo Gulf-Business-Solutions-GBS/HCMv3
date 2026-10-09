@@ -49,6 +49,49 @@ public class MyLetterRequestDto : MyRequestDtoBase
     /// </para>
     /// </summary>
     public bool CanPrint { get; set; }
+
+    /// <summary>The number of the letter's own request. Empty for a draft that has not been sent, and for
+    /// a letter HR recorded directly.</summary>
+    public string RequestNumber { get; set; }
+
+    /// <summary>
+    /// An approver sent this request back and it is waiting on the employee: they correct it and send it
+    /// again, or withdraw it. Different from <see cref="MyRequestDtoBase.IsDraft"/>, which is a request
+    /// that was never sent. Either one sets <see cref="MyRequestDtoBase.CanEdit"/>.
+    /// </summary>
+    public bool IsSentBack { get; set; }
+}
+
+/// <summary>
+/// A letter request being filed as a draft rather than submitted.
+///
+/// <para>
+/// Separate from <see cref="RequestLetterInput"/> because that one marks the date and both addressees
+/// <c>[Required]</c>, and a draft is what somebody saves precisely because they do not have those yet. The
+/// kind of letter is the one thing a draft cannot do without -- the row cannot be stored without it -- and it
+/// must be a letter type here exactly as it must at submit. Everything else is checked when it is sent.
+/// </para>
+/// </summary>
+public class SaveLetterDraftInput
+{
+    /// <summary>Null to file a new draft; the row's own id to change a draft already filed, or a request
+    /// that was sent back.</summary>
+    public int? Id { get; set; }
+
+    /// <summary>Which letter. Must be a <c>DocumentType</c> flagged <c>IsLetterType</c>, at save as at submit.</summary>
+    public int DocumentTypeId { get; set; }
+
+    /// <summary>Null while the employee has not settled on a date; refused at submit.</summary>
+    public DateTime? EffectiveDate { get; set; }
+
+    [StringLength(EmployeeLetterRequestConsts.MaxTextLength)]
+    public string AddressToEn { get; set; }
+
+    [StringLength(EmployeeLetterRequestConsts.MaxTextLength)]
+    public string AddressToAr { get; set; }
+
+    [StringLength(EmployeeLetterRequestConsts.MaxTextLength)]
+    public string Comments { get; set; }
 }
 
 /// <summary>What the employee fills in to ask for a letter.</summary>

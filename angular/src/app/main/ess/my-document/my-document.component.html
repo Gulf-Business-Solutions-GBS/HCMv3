@@ -18,48 +18,17 @@
             </div>
         } @else {
             @if (showForm()) {
-                <div class="card card-custom gutter-b">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ 'RequestDocument' | localize }}</h5>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label data-help-loc="DocumentType">{{ 'DocumentType' | localize }}</label>
-                                <select class="form-control" [(ngModel)]="form.documentTypeId">
-                                    <option [ngValue]="null">--</option>
-                                    @for (type of documentTypes(); track type.id) {
-                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label data-help-loc="DocumentNumber">{{ 'DocumentNumber' | localize }} *</label>
-                                <input type="text" class="form-control" [(ngModel)]="form.documentNum" />
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label data-help-loc="IssueDate">{{ 'IssueDate' | localize }}</label>
-                                <input type="date" class="form-control" [(ngModel)]="form.issueDate" />
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label data-help-loc="ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
-                                <input type="date" class="form-control" [(ngModel)]="form.expiryDate" />
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label data-help-loc="Comments">{{ 'Comments' | localize }}</label>
-                                <input type="text" class="form-control" [(ngModel)]="form.comments" />
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <app-attachments #formAttachments entityType="EmployeeDocument" [entityId]="null" />
-                        </div>
-
-                        <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submit()">
-                            {{ submitLabel() }}
-                        </button>
-                        <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
-                    </div>
-                </div>
+                <!-- The form is its own component, as the exit permit's is, so that the Details view and an
+                     approver are shown THIS form read-only rather than a list of label/value rows. Named so
+                     the files chosen on it can be attached once the request has been saved. -->
+                <document-request-form
+                    #documentForm
+                    mode="create"
+                    [value]="form"
+                    [saving]="saving()"
+                    (saved)="save()"
+                    (submitted)="submit()"
+                    (cancelled)="closeForm()" />
             }
 
             <div class="card card-custom gutter-b">
@@ -75,10 +44,11 @@
                                 <tbody>
                                     @for (row of list.view(); track row.id) {
                                         <tr>
+                                            <td>{{ row.requestNumber }}</td>
                                             <td>{{ typeName(row) }}</td>
                                             <td>{{ row.documentNum }}</td>
-                                            <td>{{ row.issueDate | luxonFormat: 'yyyy-MM-dd' }}</td>
-                                            <td>{{ row.expiryDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>{{ detailDate(row.issueDate) }}</td>
+                                            <td>{{ detailDate(row.expiryDate) }}</td>
                                             <td>
                                                 <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
                                             </td>
@@ -86,33 +56,39 @@
                                                 <button class="btn btn-light-primary" data-help-loc="Attachments" (click)="toggleAttachments(row)">
                                                     <i class="fa fa-paperclip"></i> {{ 'Attachments' | localize }}
                                                 </button>
-                                                <!-- Opening the request is the primary action: until this
-                                                     existed the requester could see a status badge but never
-                                                     what they had submitted, nor who was sitting on it.
-                                                     Replaces the old Workflow History button, whose trail
-                                                     the detail view now contains. Shown for every row, not
-                                                     only ones with a workflow request: a row recorded while
-                                                     workflow is off still has fields worth reading. -->
-                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
-                                                    {{ 'Details' | localize }}
-                                                </button>
+                                                <!-- A draft, or a request an approver sent back, is picked up
+                                                     where it was left. Anything else opens read-only in the
+                                                     detail view -- every such row, not only ones with a
+                                                     workflow request: a row recorded while workflow is off
+                                                     still has fields worth reading. -->
+                                                @if (row.canEdit) {
+                                                    <button class="btn btn-primary ms-2" (click)="continueDraft(row)" data-help-loc="ContinueDraft">
+                                                        {{ 'ContinueDraft' | localize }}
+                                                    </button>
+                                                } @else {
+                                                    <button class="btn btn-light-primary ms-2" (click)="openDetail(row)" data-help-loc="Details">
+                                                        {{ 'Details' | localize }}
+                                                    </button>
+                                                }
                                                 @if (row.canCancel) {
+                                                    <!-- A draft was never sent to anybody, so it is discarded
+                                                         rather than withdrawn. -->
                                                     <button class="btn btn-light-danger ms-2" (click)="cancel(row)" data-help-loc="Withdraw">
-                                                        {{ 'Withdraw' | localize }}
+                                                        {{ (row.isDraft ? 'DiscardDraft' : 'Withdraw') | localize }}
                                                     </button>
                                                 }
                                             </td>
                                         </tr>
                                         @if (expandedId() === row.id) {
                                             <tr>
-                                                <td colspan="6" class="bg-light">
+                                                <td colspan="7" class="bg-light">
                                                     <app-attachments entityType="EmployeeDocument" [entityId]="row.id" />
                                                 </td>
                                             </tr>
                                         }
                                     } @empty {
                                         <tr>
-                                            <td colspan="6" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                            <td colspan="7" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
                                         </tr>
                                     }
                                 </tbody>
