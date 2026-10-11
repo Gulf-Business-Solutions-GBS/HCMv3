@@ -133,6 +133,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         if (handler != null)
         {
             await handler.OnSubmittedAsync(context);
+
+            // The step the request was raised AT -- the creator row -- or 0 where the chain has none.
+            await NotifyStepActionAsync(
+                handler,
+                context,
+                WorkflowStepAction.Submitted,
+                _stepSequence.GetCreatorStep(requestMaster)?.Step ?? 0);
         }
 
         // Flush before dispatching, and this is load-bearing rather than tidiness.
@@ -197,6 +204,15 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             remark,
             currentStep,
             ResolveDelegatedFrom(request, requestMaster, requestDetail, actingEmployeeId));
+
+        // Every approval at the step, whether or not it completes the step or the chain: the rules tied to a
+        // step number in legacy fired on the approver's click, not on the step's outcome. Advisory -- see
+        // NotifyStepActionAsync.
+        await NotifyStepActionAsync(
+            _handlerResolver.Resolve(request.RequestType),
+            new WorkflowTransactionContext(request, actingEmployeeId, remark),
+            WorkflowStepAction.Approved,
+            currentStep);
 
         if (!stepApproved)
         {
@@ -673,6 +689,39 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
                 ex);
 
             return null;
+        }
+    }
+
+    /// <summary>
+    /// Tells the type's handler that somebody acted at a step, and never lets the answer matter.
+    ///
+    /// <para>
+    /// Swallows everything, on purpose. What hangs off this is a side effect of the action -- a passport
+    /// withdrawal raised because a leave reached a step -- and losing a leave approval to protect a
+    /// convenience would be the wrong way round. Handlers are told the same thing from their side: observe
+    /// and defer, do not write here.
+    /// </para>
+    /// </summary>
+    private async Task NotifyStepActionAsync(
+        IWorkflowTransactionHandler handler,
+        WorkflowTransactionContext context,
+        WorkflowStepAction action,
+        int step)
+    {
+        if (handler == null)
+        {
+            return;
+        }
+
+        try
+        {
+            await handler.OnStepActionAsync(context, action, step);
+        }
+        catch (Exception exception)
+        {
+            Logger.Warn(
+                $"The step observer for workflow request {context.Request?.Id} of type {context.RequestType} failed at step {step} ({action}); the action itself was not affected.",
+                exception);
         }
     }
 

@@ -108,7 +108,7 @@
 
                             <!-- A chain of its own for a change, a cancellation or a return. Left empty,
                                  each follows the default chain above. -->
-                            @for (chain of actionChains; track chain.field) {
+                            @for (chain of actionChains(); track chain.field) {
                                 <div class="mb-5">
                                     <label class="form-label" [attr.for]="'WorkflowTransactionType_' + chain.id">
                                         {{ chain.labelKey | localize }}

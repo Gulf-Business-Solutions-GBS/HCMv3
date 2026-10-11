@@ -1833,6 +1833,8 @@
     <text name="DocumentOverdueReminderForEmployee">كان موعد إعادة {0} في {1} وقد تأخرت {2} يوماً. الرجاء إعادتها.</text>
     <text name="DocumentOverdueReminderForGuarantor">{0} التي كفلتها للموظف {1} كان موعد إعادتها في {2} وقد تأخرت {3} يوماً.</text>
     <text name="ClosedDueToExtension">أُغلق بسبب التمديد. رقم طلب التمديد: {0}</text>
+    <text name="PassportWithdrawalRaisedAutomaticallyFromLeaveRequest">تم إنشاؤه تلقائياً من طلب الإجازة {0}</text>
+    <text name="RaisedFromLeaveRequest">ناتج عن طلب الإجازة</text>
     <text name="HandedOverOn">تاريخ التسليم</text>
     <text name="HandedOverBy">تم التسليم بواسطة</text>
     <text name="ReceivedBy">تم الاستلام بواسطة</text>
@@ -7441,7 +7443,7 @@
     <text name="LeavePolicyDocument">مستند سياسة الإجازات</text>
     <text name="AmendmentChain">سلسلة الاعتماد للتعديلات</text>
     <text name="CancellationChain">سلسلة الاعتماد للإلغاء</text>
-    <text name="ReturnChain">سلسلة الاعتماد للعودة من الإجازة</text>
+    <text name="ReturnChain">سلسلة الاعتماد لطلبات العودة والإرجاع</text>
     <text name="SameAsDefaultChain">نفس السلسلة الافتراضية</text>
     <text name="RequestActionAppliesTo">ينطبق على الإجراء</text>
     <text name="WorkflowRequestAction_New">طلب جديد</text>

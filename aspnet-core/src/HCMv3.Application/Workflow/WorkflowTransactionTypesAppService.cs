@@ -10,6 +10,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Workflow.Dto;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,13 +22,16 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
 {
     private readonly IRepository<WorkflowTransactionType> _repository;
     private readonly IRepository<RequestMaster> _requestMasterRepository;
+    private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
 
     public WorkflowTransactionTypesAppService(
         IRepository<WorkflowTransactionType> repository,
-        IRepository<RequestMaster> requestMasterRepository)
+        IRepository<RequestMaster> requestMasterRepository,
+        IWorkflowTransactionHandlerResolver handlerResolver)
     {
         _repository = repository;
         _requestMasterRepository = requestMasterRepository;
+        _handlerResolver = handlerResolver;
     }
 
     [HttpPost]
@@ -61,6 +65,10 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
 
         return new GetWorkflowTransactionTypeForEditOutput
         {
+            // What can be raised against an approved transaction of this type, so the dialog offers a chain
+            // "for cancellations" or "for returns" only where there is such a thing. Most types have none.
+            SupportedChangeActions = (_handlerResolver.Resolve(entity.Code)?.SupportedChangeActions
+                                      ?? System.Array.Empty<WorkflowRequestAction>()).ToList(),
             WorkflowTransactionType = new CreateOrEditWorkflowTransactionTypeDto
             {
                 Id = entity.Id,

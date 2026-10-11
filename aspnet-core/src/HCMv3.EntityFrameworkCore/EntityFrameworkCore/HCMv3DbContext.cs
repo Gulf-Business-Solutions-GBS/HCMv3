@@ -1987,6 +1987,10 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
             // WorkflowStatus on the same pass.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+
+            // "Has a withdrawal already been raised from this leave?" is asked on every leave action at the
+            // configured step. Not unique and not a foreign key: see EmployeeDocumentMvmt.SourceEmployeeAbsenceId.
+            b.HasIndex(e => e.SourceEmployeeAbsenceId);
         });
 
         modelBuilder.Entity<TimeLogApproval>(b =>

@@ -1,10 +1,11 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditWorkflowTransactionTypeDto,
     GetAllRequestMastersInput,
     RequestMasterDto,
     RequestMastersServiceProxy,
+    WorkflowRequestAction,
     WorkflowTransactionTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -40,12 +41,29 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
     readonly record = signal<CreateOrEditWorkflowTransactionTypeDto>(new CreateOrEditWorkflowTransactionTypeDto());
     readonly requestMasters = signal<RequestMasterDto[]>([]);
 
+    /**
+     * Which changes can be raised against an approved transaction of the type being edited, as the server
+     * reports it. Empty for most types, and for a type that is being created.
+     */
+    readonly supportedChangeActions = signal<WorkflowRequestAction[]>([]);
+
     /** The per-action chains: a change, a cancellation and a return may each be routed differently. */
-    readonly actionChains: { id: string; field: keyof CreateOrEditWorkflowTransactionTypeDto; labelKey: string }[] = [
-        { id: 'AmendmentRequestMasterId', field: 'amendmentRequestMasterId', labelKey: 'AmendmentChain' },
-        { id: 'CancellationRequestMasterId', field: 'cancellationRequestMasterId', labelKey: 'CancellationChain' },
-        { id: 'ReturnRequestMasterId', field: 'returnRequestMasterId', labelKey: 'ReturnChain' },
+    private readonly allActionChains: {
+        id: string;
+        field: keyof CreateOrEditWorkflowTransactionTypeDto;
+        labelKey: string;
+        action: WorkflowRequestAction;
+    }[] = [
+        { id: 'AmendmentRequestMasterId', field: 'amendmentRequestMasterId', labelKey: 'AmendmentChain', action: WorkflowRequestAction.Amendment },
+        { id: 'CancellationRequestMasterId', field: 'cancellationRequestMasterId', labelKey: 'CancellationChain', action: WorkflowRequestAction.Cancellation },
+        { id: 'ReturnRequestMasterId', field: 'returnRequestMasterId', labelKey: 'ReturnChain', action: WorkflowRequestAction.Return },
     ];
+
+    /**
+     * The chains this type can use. Leave has all three; a passport withdrawal only a return; an asset
+     * request none -- and a field for something the type cannot do would only invite a wrong setup.
+     */
+    readonly actionChains = computed(() => this.allActionChains.filter((chain) => this.supportedChangeActions().includes(chain.action)));
 
     /**
      * True when this type will be refused at submit time: routing is on, but there is no chain to route to.
@@ -83,11 +101,13 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
                     displayOrder: 0,
                 } as any)
             );
+            this.supportedChangeActions.set([]);
             this.refreshWarning();
             this.modal().show();
         } else {
             this._service.getWorkflowTransactionTypeForEdit(id).subscribe((result) => {
                 this.record.set(result.workflowTransactionType);
+                this.supportedChangeActions.set(result.supportedChangeActions ?? []);
                 this.refreshWarning();
                 this.modal().show();
             });

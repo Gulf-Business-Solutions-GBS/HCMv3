@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -188,6 +189,13 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
     public override bool SupportsAmendment => true;
 
     /// <summary>
+    /// The only change to an approved withdrawal is the document coming back. It travels as an amendment,
+    /// which is why <see cref="SupportsAmendment"/> is on, but there is no "amend" or "cancel" to route.
+    /// </summary>
+    public override System.Collections.Generic.IReadOnlyCollection<WorkflowRequestAction> SupportedChangeActions { get; } =
+        new[] { WorkflowRequestAction.Return };
+
+    /// <summary>
     /// Captures what the movement said before the return was asked for.
     ///
     /// <para>
@@ -335,9 +343,46 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
                 $"إرجاع {labelAr} بتاريخ {handedBack} (الاستلام {withdrawn})");
         }
 
-        return new WorkflowSummary(
-            $"{labelEn}, out {withdrawn}, back {returned}",
-            $"{labelAr}، الاستلام {withdrawn}، الإرجاع {returned}");
+        var summaryEn = $"{labelEn}, out {withdrawn}, back {returned}";
+        var summaryAr = $"{labelAr}، الاستلام {withdrawn}، الإرجاع {returned}";
+
+        // Nobody filled in a form for this one, so the line the approver reads says where it came from --
+        // in both languages, whichever the person who triggered it happened to be using.
+        var sourceLeaveNumber = SourceLeaveRequestNumber(movement);
+        if (sourceLeaveNumber != null)
+        {
+            summaryEn += " -- " + L(RaisedFromLeaveNoteKey, new CultureInfo("en"), sourceLeaveNumber);
+            summaryAr += " -- " + L(RaisedFromLeaveNoteKey, new CultureInfo("ar"), sourceLeaveNumber);
+        }
+
+        return new WorkflowSummary(summaryEn.Truncate(512), summaryAr.Truncate(512));
+    }
+
+    /// <summary>The note on a withdrawal raised from a leave; {0} is the leave's request number.</summary>
+    private const string RaisedFromLeaveNoteKey = "PassportWithdrawalRaisedAutomaticallyFromLeaveRequest";
+
+    /// <summary>
+    /// The request number of the leave this withdrawal was raised from, or null for one somebody asked for
+    /// themselves. Falls back to the leave's id when the leave was never routed and so never numbered.
+    /// </summary>
+    private string SourceLeaveRequestNumber(EmployeeDocumentMvmt movement)
+    {
+        if (movement?.SourceEmployeeAbsenceId == null)
+        {
+            return null;
+        }
+
+        var leaveId = movement.SourceEmployeeAbsenceId.Value;
+
+        var number = _requestRepository.GetAll()
+            .Where(r => r.RequestType == LeaveWorkflowTransactionHandler.LeaveRequestType
+                        && r.TargetEntityId == leaveId
+                        && !r.IsAmendment)
+            .OrderBy(r => r.Id)
+            .Select(r => r.RequestNumber)
+            .FirstOrDefault();
+
+        return number.IsNullOrWhiteSpace() ? "#" + leaveId : number;
     }
 
     /// <summary>
@@ -433,6 +478,13 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
             .Add(WorkflowDetailField.Text("Guarantor", L("Guarantor"), EmployeeDisplay(movement.GuarantorId)))
             .Add(WorkflowDetailField.LongText("WithdrawalReason", L("WithdrawalReason"), movement.WithdrawalReason))
             .Add(WorkflowDetailField.LongText("Comments", L("Comments"), movement.Comments));
+
+        // Only on a withdrawal raised from a leave, where it is the answer to "who asked for this?".
+        var sourceLeaveNumber = SourceLeaveRequestNumber(movement);
+        if (sourceLeaveNumber != null)
+        {
+            detail.Add(WorkflowDetailField.Text("SourceLeaveRequest", L("RaisedFromLeaveRequest"), sourceLeaveNumber));
+        }
 
         if (movement.ActualWithdrawDate.HasValue)
         {

@@ -114,6 +114,12 @@ public class CreateOrEditWorkflowTransactionTypeDto
 public class GetWorkflowTransactionTypeForEditOutput
 {
     public CreateOrEditWorkflowTransactionTypeDto WorkflowTransactionType { get; set; }
+
+    /// <summary>
+    /// Which changes can be raised against an approved transaction of this type. The dialog shows a chain
+    /// for an action only when it is listed here; an asset request, which has none, shows none.
+    /// </summary>
+    public System.Collections.Generic.List<WorkflowRequestAction> SupportedChangeActions { get; set; } = new();
 }
 
 public class GetAllWorkflowTransactionTypesInput : PagedAndSortedResultRequestDto, IShouldNormalize

@@ -21210,6 +21210,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("SourceEmployeeAbsenceId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
@@ -21235,6 +21238,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("ExtendsMovementId");
 
                     b.HasIndex("GuarantorId");
+
+                    b.HasIndex("SourceEmployeeAbsenceId");
 
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 

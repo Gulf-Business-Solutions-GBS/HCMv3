@@ -95,6 +95,30 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     public override string RequestType => LeaveRequestType;
 
     /// <summary>
+    /// Raises a passport withdrawal from a leave at the configured step. A property rather than a
+    /// constructor argument: it is optional to everything else this handler does, and nothing here may fail
+    /// for want of it.
+    /// </summary>
+    public ILeavePassportWithdrawalService PassportWithdrawalFromLeave { get; set; }
+
+    /// <summary>
+    /// Legacy's "submit a passport withdrawal when the leave is at step N". Only asks whether this is that
+    /// moment; the raise itself waits until this action has committed, so it cannot fail or undo it.
+    /// </summary>
+    public override async Task OnStepActionAsync(WorkflowTransactionContext context, WorkflowStepAction action, int step)
+    {
+        if (PassportWithdrawalFromLeave == null || context?.Request == null)
+        {
+            return;
+        }
+
+        if (await PassportWithdrawalFromLeave.IsTriggerPointAsync(context.Request, action, step))
+        {
+            PassportWithdrawalFromLeave.RaiseAfterCommit(context.Request.Id, action, step);
+        }
+    }
+
+    /// <summary>
     /// Refuses a leave that overlaps one the employee already has.
     ///
     /// <para>
@@ -269,6 +293,10 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
 
     /// <inheritdoc/>
     public override bool SupportsAmendment => true;
+
+    /// <summary>An approved leave can be amended, cancelled, or returned from; each may have a chain of its own.</summary>
+    public override System.Collections.Generic.IReadOnlyCollection<WorkflowRequestAction> SupportedChangeActions { get; } =
+        new[] { WorkflowRequestAction.Amendment, WorkflowRequestAction.Cancellation, WorkflowRequestAction.Return };
 
     /// <inheritdoc/>
     public override async Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)

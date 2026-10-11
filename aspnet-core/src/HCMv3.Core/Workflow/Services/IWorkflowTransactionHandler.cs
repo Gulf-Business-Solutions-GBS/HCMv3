@@ -97,6 +97,34 @@ public interface IWorkflowTransactionHandler : IDomainService
     Task OnSubmittedAsync(WorkflowTransactionContext context);
 
     /// <summary>
+    /// Somebody acted on the request at a step: the requester submitted it, or an approver approved it.
+    ///
+    /// <para>
+    /// The per-step counterpart to <see cref="OnApprovedAsync"/>, which runs only on the FINAL approval. It
+    /// exists for the rare rule that is tied to a step number rather than to the outcome -- legacy's
+    /// "raise a passport withdrawal when the leave request is at step N" is the one that needed it.
+    /// </para>
+    ///
+    /// <para>
+    /// <b>Advisory, and it must stay that way.</b> The engine calls this after the action has been recorded
+    /// and swallows anything it throws: a step observer can never refuse or roll back the action it is
+    /// observing. For the same reason an implementation must not write through the current unit of work --
+    /// a write that fails there would poison the approval it is riding on. Read, decide, and defer any
+    /// writing until the action has committed. <see cref="WorkflowTransactionHandlerBase{TEntity}"/> supplies
+    /// a no-op, so a handler with no such rule does nothing.
+    /// </para>
+    /// </summary>
+    /// <param name="context">The request and who acted.</param>
+    /// <param name="action">Whether this was a submission or an approval.</param>
+    /// <param name="step">
+    /// The step the action was taken AT, i.e. the step being left. For an approval it is the step the
+    /// request sat at when the approver approved, whether or not that approval completed the step or the
+    /// chain. For a submission it is the chain's creator step (the row naming who may raise the request), or
+    /// 0 when the chain has none.
+    /// </param>
+    Task OnStepActionAsync(WorkflowTransactionContext context, WorkflowStepAction action, int step);
+
+    /// <summary>
     /// Whether this transaction type can be CHANGED through workflow after it has already been approved.
     ///
     /// <para>
@@ -107,6 +135,14 @@ public interface IWorkflowTransactionHandler : IDomainService
     /// </para>
     /// </summary>
     bool SupportsAmendment { get; }
+
+    /// <summary>
+    /// Which changes can be raised against an approved transaction of this type: an amendment, a
+    /// cancellation, a return. Most types support none, and a few only one -- a passport withdrawal can be
+    /// returned but not amended or cancelled. Setup screens read this so that a chain "for returns" is only
+    /// offered on a type that has returns.
+    /// </summary>
+    System.Collections.Generic.IReadOnlyCollection<WorkflowRequestAction> SupportedChangeActions { get; }
 
     /// <summary>
     /// Captures the transaction row as it currently stands, for the approver to compare against what is
@@ -123,4 +159,14 @@ public interface IWorkflowTransactionHandler : IDomainService
     /// </para>
     /// </summary>
     Task ApplyAmendmentAsync(WorkflowTransactionContext context);
+}
+
+/// <summary>What was done at a step, for <see cref="IWorkflowTransactionHandler.OnStepActionAsync"/>.</summary>
+public enum WorkflowStepAction
+{
+    /// <summary>The requester submitted (or resubmitted) the request.</summary>
+    Submitted = 0,
+
+    /// <summary>An approver approved at the step.</summary>
+    Approved = 1
 }

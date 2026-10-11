@@ -114,6 +114,12 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
     public virtual bool SupportsAmendment => false;
 
     /// <inheritdoc/>
+    public virtual System.Collections.Generic.IReadOnlyCollection<WorkflowRequestAction> SupportedChangeActions =>
+        SupportsAmendment
+            ? new[] { WorkflowRequestAction.Amendment }
+            : System.Array.Empty<WorkflowRequestAction>();
+
+    /// <inheritdoc/>
     public virtual Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)
     {
         return Task.FromResult<string>(null);
@@ -135,6 +141,13 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
         return context.IsAmendment
             ? Task.CompletedTask
             : SetWorkflowStatusAsync(context, RequestStatus.Open);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task OnStepActionAsync(WorkflowTransactionContext context, WorkflowStepAction action, int step)
+    {
+        // Nothing is tied to a step number for most types.
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc/>

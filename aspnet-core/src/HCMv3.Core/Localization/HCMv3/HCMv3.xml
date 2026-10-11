@@ -1848,6 +1848,8 @@
     <text name="DocumentOverdueReminderForEmployee">{0} was due back on {1} and is {2} day(s) overdue. Please return it.</text>
     <text name="DocumentOverdueReminderForGuarantor">{0}, which you guaranteed for {1}, was due back on {2} and is {3} day(s) overdue.</text>
     <text name="ClosedDueToExtension">Closed due to extension. Extension request number: {0}</text>
+    <text name="PassportWithdrawalRaisedAutomaticallyFromLeaveRequest">Raised automatically from leave request {0}</text>
+    <text name="RaisedFromLeaveRequest">Raised from leave request</text>
     <text name="HandedOverOn">Handed Over On</text>
     <text name="HandedOverBy">Handed Over By</text>
     <text name="ReceivedBy">Received By</text>
@@ -7606,7 +7608,7 @@
     <text name="LeavePolicyDocument">Leave policy document</text>
     <text name="AmendmentChain">Approval chain for amendments</text>
     <text name="CancellationChain">Approval chain for cancellations</text>
-    <text name="ReturnChain">Approval chain for returns from leave</text>
+    <text name="ReturnChain">Approval chain for returns</text>
     <text name="SameAsDefaultChain">Same as the default chain</text>
     <text name="RequestActionAppliesTo">Applies to action</text>
     <text name="WorkflowRequestAction_New">New request</text>

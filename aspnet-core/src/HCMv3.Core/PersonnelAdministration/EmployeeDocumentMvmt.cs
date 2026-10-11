@@ -106,7 +106,25 @@ public class EmployeeDocumentMvmt : FullAuditedEntity, IMustHaveTenant, IHasEmpl
     /// </summary>
     public virtual int? ExtendsMovementId { get; set; }
 
+    /// <summary>
+    /// The leave (<see cref="EmployeeAbsence"/>) this withdrawal was raised from automatically, when the
+    /// tenant has passport withdrawal switched on for leave (<c>ManageSelfServiceSettings.IsPassportWithdrawalRequired</c>).
+    /// Null for a withdrawal somebody asked for themselves.
+    ///
+    /// <para>
+    /// A plain id with no navigation and no foreign key, deliberately. It is what makes the automatic raise
+    /// happen at most once per leave -- including after a send-back and a second approval at the same step,
+    /// and after the employee has withdrawn the request, whose row is then soft-deleted but still counted --
+    /// and a cascade from the leave must never be able to remove a record of who holds whose passport.
+    /// </para>
+    /// </summary>
+    public virtual int? SourceEmployeeAbsenceId { get; set; }
+
     public const int MaxReturnRemarksLength = 500;
+
+    public const int MaxWithdrawalReasonLength = 500;
+
+    public const int MaxCommentsLength = 500;
 
     /// <summary>
     /// Whether the movement counts: recorded by HR (no workflow status), approved, or closed. The same three
