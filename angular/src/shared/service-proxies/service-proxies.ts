@@ -43418,6 +43418,62 @@ export class EmployeeLetterRequestsServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    printLetter(body?: EntityDto | undefined): Observable<PrintedLetterDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeLetterRequests/PrintLetter";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPrintLetter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPrintLetter(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PrintedLetterDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PrintedLetterDto>;
+        }));
+    }
+
+    protected processPrintLetter(response: HttpResponseBase): Observable<PrintedLetterDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PrintedLetterDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     getAll(body?: GetAllEmployeeLetterRequestsInput | undefined): Observable<PagedResultDtoOfEmployeeLetterRequestDto> {
         let url_ = this.baseUrl + "/api/services/app/EmployeeLetterRequests/GetAll";
         url_ = url_.replace(/[?&]$/, "");
@@ -214534,6 +214590,7 @@ export class EmployeeLetterRequestDto implements IEmployeeLetterRequestDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canPrint!: boolean;
+    requestNumber!: string | undefined;
 
     constructor(data?: IEmployeeLetterRequestDto) {
         if (data) {
@@ -214560,6 +214617,7 @@ export class EmployeeLetterRequestDto implements IEmployeeLetterRequestDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canPrint = _data["canPrint"];
+            this.requestNumber = _data["requestNumber"];
         }
     }
 
@@ -214586,6 +214644,7 @@ export class EmployeeLetterRequestDto implements IEmployeeLetterRequestDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canPrint"] = this.canPrint;
+        data["requestNumber"] = this.requestNumber;
         return data;
     }
 }
@@ -214605,6 +214664,7 @@ export interface IEmployeeLetterRequestDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canPrint: boolean;
+    requestNumber: string | undefined;
 }
 
 export class EmployeeLoanDto implements IEmployeeLoanDto {
@@ -329113,6 +329173,54 @@ export interface IPrintReportPermissionDto {
     code: string | undefined;
     roleId: number;
     roleName: string | undefined;
+}
+
+export class PrintedLetterDto implements IPrintedLetterDto {
+    fileName!: string | undefined;
+    base64Content!: string | undefined;
+    savedOnRequest!: boolean;
+    notSavedReason!: string | undefined;
+
+    constructor(data?: IPrintedLetterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileName = _data["fileName"];
+            this.base64Content = _data["base64Content"];
+            this.savedOnRequest = _data["savedOnRequest"];
+            this.notSavedReason = _data["notSavedReason"];
+        }
+    }
+
+    static fromJS(data: any): PrintedLetterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PrintedLetterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fileName"] = this.fileName;
+        data["base64Content"] = this.base64Content;
+        data["savedOnRequest"] = this.savedOnRequest;
+        data["notSavedReason"] = this.notSavedReason;
+        return data;
+    }
+}
+
+export interface IPrintedLetterDto {
+    fileName: string | undefined;
+    base64Content: string | undefined;
+    savedOnRequest: boolean;
+    notSavedReason: string | undefined;
 }
 
 export enum ProbationDaysCalculation {

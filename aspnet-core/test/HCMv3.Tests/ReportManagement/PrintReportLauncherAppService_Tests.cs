@@ -9,6 +9,7 @@ using Xunit;
 namespace HCMv3.Tests.ReportManagement;
 
 // ReSharper disable once InconsistentNaming
+[Xunit.Collection(HCMv3.Tests.PortedReportCatalogCollection.Name)]
 public class PrintReportLauncherAppService_Tests : ReportManagementAppServiceTestBase
 {
     /// <summary>

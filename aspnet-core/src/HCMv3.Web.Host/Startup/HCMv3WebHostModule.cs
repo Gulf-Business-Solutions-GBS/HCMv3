@@ -63,6 +63,11 @@ public class HCMv3WebHostModule : AbpModule
         // the contributor returns null for every request and resolution behaves exactly as it does today.
         // See CareersTenantResolveContributor for the full blast-radius note.
         Configuration.MultiTenancy.Resolvers.Insert(0, typeof(CareersTenantResolveContributor));
+
+        // Only this host references the report classes, so it supplies the renderer the lower layers ask
+        // for by contract (a letter request printing its certificate, for one).
+        Configuration.ReplaceService<HCMv3.ReportManagement.Services.IPrintReportPdfRenderer, HCMv3.Web.Reporting.HcmPrintReportPdfRenderer>(
+            Abp.Dependency.DependencyLifeStyle.Transient);
     }
 
     public override void Initialize()

@@ -25,6 +25,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.MyExitPermitServiceProxy,
     ApiServiceProxies.MyHRServiceServiceProxy,
     ApiServiceProxies.MyLetterRequestServiceProxy,
+    ApiServiceProxies.EmployeeLetterRequestsServiceProxy,
     ApiServiceProxies.MyLoanServiceProxy,
     ApiServiceProxies.MyOvertimeServiceProxy,
     ApiServiceProxies.MyTicketServiceProxy,

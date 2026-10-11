@@ -1,0 +1,107 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeLetterRequests' | localize" [description]="'PersonnelAdministration' | localize">
+        <div role="actions">
+            <button (click)="reloadPage()" class="btn btn-light float-end">
+                <i class="fa fa-sync btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Refresh' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getLetterRequests($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 130px">{{ 'Actions' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'RequestNumber' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'EmployeeCode' | localize }}</th>
+                                    <th style="min-width: 220px">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'DocumentType' | localize }}</th>
+                                    <th style="min-width: 140px" pSortableColumn="effectiveDate">
+                                        {{ 'EffectiveDate' | localize }}
+                                        <p-sortIcon field="effectiveDate" />
+                                    </th>
+                                    <th style="min-width: 220px">{{ 'AddressToEn' | localize }}</th>
+                                    <th style="min-width: 220px">{{ 'AddressToAr' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Status' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 130px">{{ record.requestNumber }}</td>
+                                    <td style="min-width: 130px">{{ record.employeeCode }}</td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.employeeFullNameEn }}" class="hide-overflown">{{ record.employeeFullNameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ typeName(record) }}</td>
+                                    <td style="min-width: 140px">{{ date(record.effectiveDate) }}</td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.addressToEn }}" class="hide-overflown">{{ record.addressToEn }}</span>
+                                    </td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.addressToAr }}" class="hide-overflown">{{ record.addressToAr }}</span>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span [class]="'badge ' + statusClass(record)">{{ statusLabel(record) }}</span>
+                                    </td>
+                                </tr>
+                                @if (expandedId() === record.id) {
+                                    <!-- The printed letter is kept here, with anything else attached to the request. -->
+                                    <tr>
+                                        <td colspan="9" class="bg-light">
+                                            <app-attachments entityType="EmployeeLetterRequest" [entityId]="record.id" [showLimitsHint]="false" />
+                                        </td>
+                                    </tr>
+                                }
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getLetterRequests($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

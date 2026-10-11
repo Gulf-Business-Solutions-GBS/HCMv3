@@ -19,4 +19,10 @@ public interface IEmployeeLetterRequestsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditEmployeeLetterRequestDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>
+    /// Prints the letter an approved request asked for and keeps the PDF on the request. HR's action, as in
+    /// legacy: the employee is told it is ready and collects the paper.
+    /// </summary>
+    Task<PrintedLetterDto> PrintLetter(EntityDto input);
 }

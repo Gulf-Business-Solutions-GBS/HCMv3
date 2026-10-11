@@ -2359,6 +2359,12 @@ export class AppNavigationService {
                         '/app/admin/employee-loan-recoveries'
                     ),
                     new AppMenuItem(
+                        'EmployeeLetterRequests',
+                        'Pages.PersonnelAdministration.EmployeeLetterRequests',
+                        'flaticon-mail-1',
+                        '/app/admin/employee-letter-requests'
+                    ),
+                    new AppMenuItem(
                         'LoanInstallments',
                         'Pages.PersonnelAdministration.LoanInstallments',
                         'flaticon-list-3',

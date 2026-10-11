@@ -7652,5 +7652,12 @@
     <text name="DocumentStatus">Document Status</text>
     <text name="ThatDocumentTypeCannotBeRecordedByAnEmployee">That document type cannot be recorded through self service.</text>
     <text name="IsLetterType">Issued As Letter</text>
+    <text name="PrintLetter">Print Letter</text>
+    <text name="LetterPrintedAndSavedOnRequest">Letter printed. A copy was saved on the request.</text>
+    <text name="LetterPrintedButNotSavedOnRequest">Letter printed, but the copy could not be saved on the request</text>
+    <text name="RequestIsNotApprovedYouCannotPrint">Request is not approved. You can&apos;t print.</text>
+    <text name="DocumentTypeIsNotDefined">Document Type is not defined.</text>
+    <text name="NoReportFoundForDocumentType">No report found for Document Type : {0}</text>
+    <text name="PrintReportIsNotAvailable">The report {0} is not available.</text>
   </texts>
 </localizationDictionary>

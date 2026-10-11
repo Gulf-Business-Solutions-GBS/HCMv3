@@ -7487,5 +7487,12 @@
     <text name="DocumentStatus">حالة الوثيقة</text>
     <text name="ThatDocumentTypeCannotBeRecordedByAnEmployee">لا يمكن تسجيل هذا النوع من الوثائق عبر الخدمة الذاتية.</text>
     <text name="IsLetterType">تصدر كخطاب</text>
+    <text name="PrintLetter">طباعة الخطاب</text>
+    <text name="LetterPrintedAndSavedOnRequest">تمت طباعة الخطاب وحُفظت نسخة منه في الطلب.</text>
+    <text name="LetterPrintedButNotSavedOnRequest">تمت طباعة الخطاب، لكن تعذّر حفظ النسخة في الطلب</text>
+    <text name="RequestIsNotApprovedYouCannotPrint">الطلب غير معتمد. لا يمكنك الطباعة.</text>
+    <text name="DocumentTypeIsNotDefined">نوع الوثيقة غير محدد.</text>
+    <text name="NoReportFoundForDocumentType">لم يُعثر على تقرير لنوع الوثيقة: {0}</text>
+    <text name="PrintReportIsNotAvailable">التقرير {0} غير متاح.</text>
   </texts>
 </localizationDictionary>

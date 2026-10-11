@@ -10,6 +10,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,12 +40,32 @@ public class EmployeeLetterRequestsAppService : HCMv3AppServiceBase, IEmployeeLe
 {
     private readonly IRepository<EmployeeLetterRequest> _repository;
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
+    private readonly ILetterRequestPrintService _letterRequestPrintService;
+    private readonly IRepository<WorkflowRequest> _workflowRequestRepository;
 
     public EmployeeLetterRequestsAppService(IRepository<EmployeeLetterRequest> repository,
-        IAdminTransactionSubmitter transactionSubmitter)
+        IAdminTransactionSubmitter transactionSubmitter,
+        ILetterRequestPrintService letterRequestPrintService,
+        IRepository<WorkflowRequest> workflowRequestRepository)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
+        _letterRequestPrintService = letterRequestPrintService;
+        _workflowRequestRepository = workflowRequestRepository;
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Print)]
+    public async Task<PrintedLetterDto> PrintLetter(EntityDto input)
+    {
+        var printed = await _letterRequestPrintService.PrintAsync(input.Id);
+
+        return new PrintedLetterDto
+        {
+            FileName = printed.FileName,
+            Base64Content = System.Convert.ToBase64String(printed.Content),
+            SavedOnRequest = printed.SavedOnRequest,
+            NotSavedReason = printed.NotSavedReason
+        };
     }
 
     [HttpPost]
@@ -71,7 +92,23 @@ public class EmployeeLetterRequestsAppService : HCMv3AppServiceBase, IEmployeeLe
                 .PageBy(input)
                 .ToListAsync();
 
-            return new PagedResultDto<EmployeeLetterRequestDto>(totalCount, items.Select(ToDto).ToList());
+            var dtos = items.Select(ToDto).ToList();
+
+            // One read for the page: the number each request was raised under.
+            var requestIds = dtos.Where(d => d.WorkflowRequestId.HasValue).Select(d => d.WorkflowRequestId.Value).ToList();
+
+            var numbers = await _workflowRequestRepository.GetAll()
+                .Where(r => requestIds.Contains(r.Id))
+                .Select(r => new { r.Id, r.RequestNumber })
+                .ToDictionaryAsync(r => r.Id, r => r.RequestNumber);
+
+            foreach (var dto in dtos.Where(d => d.WorkflowRequestId.HasValue))
+            {
+                numbers.TryGetValue(dto.WorkflowRequestId.Value, out var number);
+                dto.RequestNumber = number;
+            }
+
+            return new PagedResultDto<EmployeeLetterRequestDto>(totalCount, dtos);
         }
     }
 

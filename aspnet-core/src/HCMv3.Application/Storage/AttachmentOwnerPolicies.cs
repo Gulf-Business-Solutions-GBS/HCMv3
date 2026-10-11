@@ -173,6 +173,32 @@ public class EmployeeDocumentAttachmentOwnerPolicy : EmployeeRequestAttachmentOw
 /// The document a leave requires (legacy <c>EmployeeAbsence.DocAttachment</c>): a sick note, a bereavement
 /// certificate, whatever the absence type's <c>IsAttachmentRequired</c> asks for.
 /// </summary>
+/// <summary>
+/// Files on a letter request -- above all the printed letter HR keeps on it. Readable by HR, by the employee
+/// the letter is for, and by its approvers.
+/// </summary>
+public class EmployeeLetterRequestAttachmentOwnerPolicy : EmployeeRequestAttachmentOwnerPolicy<EmployeeLetterRequest>
+{
+    public const string Type = "EmployeeLetterRequest";
+
+    public EmployeeLetterRequestAttachmentOwnerPolicy(
+        IRepository<EmployeeLetterRequest> repository,
+        IRepository<WorkFlowApprover> approverRepository,
+        IEmployeeScopeProvider employeeScopeProvider,
+        IPermissionChecker permissionChecker,
+        IUnitOfWorkManager unitOfWorkManager,
+        IAbpSession session)
+        : base(repository, approverRepository, employeeScopeProvider, permissionChecker, unitOfWorkManager, session)
+    {
+    }
+
+    public override string EntityType => Type;
+
+    protected override string ViewPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests;
+
+    protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Edit;
+}
+
 public class EmployeeAbsenceAttachmentOwnerPolicy : EmployeeRequestAttachmentOwnerPolicy<EmployeeAbsence>
 {
     public const string Type = "EmployeeAbsence";

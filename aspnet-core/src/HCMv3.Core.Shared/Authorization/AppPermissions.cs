@@ -589,6 +589,7 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Create = "Pages.PersonnelAdministration.EmployeeLetterRequests.Create";
     public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Edit = "Pages.PersonnelAdministration.EmployeeLetterRequests.Edit";
     public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Delete = "Pages.PersonnelAdministration.EmployeeLetterRequests.Delete";
+    public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Print = "Pages.PersonnelAdministration.EmployeeLetterRequests.Print";
 
     public const string Pages_PersonnelAdministration_EmployeeITServices = "Pages.PersonnelAdministration.EmployeeITServices";
     public const string Pages_PersonnelAdministration_EmployeeITServices_Create = "Pages.PersonnelAdministration.EmployeeITServices.Create";

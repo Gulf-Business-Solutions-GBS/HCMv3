@@ -41,6 +41,23 @@ public class EmployeeLetterRequestDto : EntityDto<int>
     /// <summary>Approved and nothing else -- the same rule the ESS screen applies. Stated here too so the
     /// admin grid and the employee's list cannot disagree about whether a letter is issuable.</summary>
     public bool CanPrint { get; set; }
+
+    /// <summary>The request's own number. Empty for a letter HR recorded directly.</summary>
+    public string RequestNumber { get; set; }
+}
+
+/// <summary>The printed letter, sent whole in the reply (the ReportPdfOutput convention) so the browser can open it.</summary>
+public class PrintedLetterDto
+{
+    public string FileName { get; set; }
+
+    public string Base64Content { get; set; }
+
+    /// <summary>False when the tenant's document settings refused the copy; the letter is still returned.</summary>
+    public bool SavedOnRequest { get; set; }
+
+    /// <summary>Why the copy was not kept on the request. Null when it was.</summary>
+    public string NotSavedReason { get; set; }
 }
 
 public class CreateOrEditEmployeeLetterRequestDto

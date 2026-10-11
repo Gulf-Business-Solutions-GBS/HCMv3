@@ -680,6 +680,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Create, L("CreateNewItem"));
         employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Edit, L("EditItem"));
         employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Delete, L("DeleteItem"));
+        employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Print, L("PrintLetter"));
 
         var employeeITServices = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices, L("EmployeeITServices"));
         employeeITServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices_Create, L("CreateNewItem"));

@@ -2910,6 +2910,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.EmployeeLoanRecoveries' },
                     },
                     {
+                        path: 'employee-letter-requests',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-letter-requests/employee-letter-requests.component'
+                            ).then((m) => m.EmployeeLetterRequestsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeLetterRequests' },
+                    },
+                    {
                         path: 'loan-installments',
                         loadComponent: () =>
                             import('./admin/personnel-administration/loan-installments/loan-installments.component').then(
