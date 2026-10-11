@@ -30,6 +30,9 @@ public partial class TimeEngineService
         public bool LeaveQuotaFound { get; set; }
     }
 
+    /// <summary>Legacy's open-ended deduction window: <c>new DateTime(9999, 12, 31)</c>.</summary>
+    private static readonly DateTime QuotaDeductionWindowEnd = new DateTime(9999, 12, 31);
+
     /// <summary>
     /// Ported from legacy <c>Program.CreateTimeRegister</c>'s "Employee Leave Quota Record" block
     /// (legacy <c>Program.cs</c> lines ~567-620).
@@ -81,7 +84,13 @@ public partial class TimeEngineService
             EmployeeId = context.Employee.Id,
             AbsenceTypeId = context.MasterData.AnnualLeaveTypeId,
             EntitlementFrom = entitlementFrom,
-            EntitlementTo = entitlementTo
+            EntitlementTo = entitlementTo,
+
+            // Legacy Program.cs 596-597: annual leave can be taken from the entitlement date plus the
+            // tenant's "leave deduction start month", and the window never closes. Left unset, the quota
+            // exists but no leave can ever be booked against it -- "No leave quota covering these dates".
+            DeductionFrom = entitlementFrom.AddMonths(context.Settings.LeaveDeductionStartMonth),
+            DeductionTo = QuotaDeductionWindowEnd
         };
 
         quota.Id = await _employeeAbsenceQuotaRepository.InsertAndGetIdAsync(quota);
@@ -134,7 +143,12 @@ public partial class TimeEngineService
                 EmployeeId = context.Employee.Id,
                 AbsenceTypeId = absenceType.Id,
                 EntitlementFrom = entitlementFrom,
-                EntitlementTo = entitlementTo
+                EntitlementTo = entitlementTo,
+
+                // Legacy Program.cs 696-697: every other accrual leave is deductible from its entitlement
+                // date, with no delay and no end.
+                DeductionFrom = entitlementFrom,
+                DeductionTo = QuotaDeductionWindowEnd
             };
 
             quota.Id = await _employeeAbsenceQuotaRepository.InsertAndGetIdAsync(quota);
@@ -171,7 +185,11 @@ public partial class TimeEngineService
             TenantId = context.Employee.TenantId,
             EmployeeId = context.Employee.Id,
             EntitlementFrom = entitlementFrom,
-            EntitlementTo = entitlementTo
+            EntitlementTo = entitlementTo,
+
+            // Legacy Program.cs 1124-1125.
+            DeductionFrom = entitlementFrom,
+            DeductionTo = QuotaDeductionWindowEnd
         };
 
         quota.Id = await _employeeGratuityQuotaRepository.InsertAndGetIdAsync(quota);
