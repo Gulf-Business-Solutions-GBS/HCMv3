@@ -7477,6 +7477,13 @@
     <text name="BackOn">العودة في {0}</text>
     <text name="CancelWholeLeave">إلغاء الإجازة كاملة</text>
     <text name="WorkflowRequestStatus_Withdrawn">مسحوب</text>
+    <text name="LockForPayrollProcessing">قفل لمعالجة الرواتب</text>
+    <text name="ExitPayroll">إنهاء الرواتب</text>
+    <text name="PayrollStatus">حالة الرواتب</text>
+    <text name="PayrollStatusOpen">يمكنك إدخال بيانات الرواتب الآن.</text>
+    <text name="PayrollStatusRegular">{0} (عادي)</text>
+    <text name="PayrollStatusOffCycle">{0} (خارج الدورة)</text>
+    <text name="LockStartsNextMonthWarning">تم إنهاء هذه الفترة. قفلها يبدأ {0}. هل تريد المتابعة؟</text>
     <text name="IsWithdrawable">يمكن للموظف سحبها</text>
     <text name="IsHiddenFromEmployee">مخفي عن الموظف</text>
     <text name="DocumentTypeSelfService">الخدمة الذاتية</text>

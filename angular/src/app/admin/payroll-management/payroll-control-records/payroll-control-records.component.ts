@@ -47,6 +47,9 @@ import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
 export class PayrollControlRecordsComponent extends AppComponentBase implements OnInit {
     private _payrollControlRecordsService = inject(PayrollControlRecordsServiceProxy);
 
+    /** For the template, which cannot reach an imported enum on its own. */
+    readonly PayrollPeriodState = PayrollPeriodState;
+
     readonly createOrEditModal = viewChild<CreateOrEditPayrollControlRecordModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
@@ -123,6 +126,65 @@ export class PayrollControlRecordsComponent extends AppComponentBase implements 
         }
     }
 
+    /**
+     * Which of the three buttons a period can use, exactly as legacy enabled them.
+     *
+     * A period not started, or reopened to correct data, can only be locked. A locked period can be released
+     * back for correction or exited. A period already exited can only be locked again -- which starts the next
+     * month. Nothing else is offered: legacy had no "reopen a closed period" and neither has this.
+     */
+    canLockForPayroll(record: PayrollControlRecordDto): boolean {
+        return record.periodState !== PayrollPeriodState.ReleasedForPayroll;
+    }
+
+    canReleaseForCorrection(record: PayrollControlRecordDto): boolean {
+        return record.periodState === PayrollPeriodState.ReleasedForPayroll;
+    }
+
+    canExitPayroll(record: PayrollControlRecordDto): boolean {
+        return record.periodState === PayrollPeriodState.ReleasedForPayroll;
+    }
+
+    get canChangeState(): boolean {
+        return this.permission.isGranted('Pages.PayrollManagement.PayrollControlRecords.SetState');
+    }
+
+    /**
+     * The sentence legacy showed beside the record: what the period allows right now, and which month and run
+     * type it is sitting on. Built here rather than on the server so the month name follows the user's language.
+     */
+    payrollStatus(record: PayrollControlRecordDto): string {
+        const month = record.calendarMonthStart;
+
+        if (record.periodState === PayrollPeriodState.ReleasedForPayroll) {
+            return this.l('PayrollStatusRegular', month ? month.toFormat('LLLL-yyyy') : '');
+        }
+
+        if (record.periodState === PayrollPeriodState.Closed) {
+            // Exited: what runs next is an off-cycle, and it belongs to the month after this one.
+            const next = month ? month.plus({ months: 1 }) : undefined;
+            return this.l('PayrollStatusOffCycle', next ? next.toFormat('LLLL-yyyy') : '');
+        }
+
+        return this.l('PayrollStatusOpen');
+    }
+
+    /** Locking a closed period starts the next month, so that one is confirmed before it happens. */
+    lockForPayroll(record: PayrollControlRecordDto): void {
+        if (record.periodState !== PayrollPeriodState.Closed) {
+            this.setState(record, PayrollPeriodState.ReleasedForPayroll);
+            return;
+        }
+
+        const nextMonth = record.calendarMonthStart?.plus({ months: 1 })?.toFormat('LLLL yyyy') ?? '';
+
+        this.message.confirm(this.l('LockStartsNextMonthWarning', nextMonth), this.l('AreYouSure'), (isConfirmed) => {
+            if (isConfirmed) {
+                this.setState(record, PayrollPeriodState.ReleasedForPayroll);
+            }
+        });
+    }
+
     setState(record: PayrollControlRecordDto, state: PayrollPeriodState): void {
         this._payrollControlRecordsService
             .setState(new SetPayrollPeriodStateInput({ id: record.id, state }))
@@ -134,40 +196,6 @@ export class PayrollControlRecordsComponent extends AppComponentBase implements 
 
     getMenuItems(record: PayrollControlRecordDto): MenuItem[] {
         const items: MenuItem[] = [];
-
-        if (this.permission.isGranted('Pages.PayrollManagement.PayrollControlRecords.SetState')) {
-            if (record.periodState !== PayrollPeriodState.ReleasedForPayroll) {
-                items.push({
-                    label: this.l('ReleaseForPayroll'),
-                    icon: 'pi pi-lock',
-                    command: () => this.setState(record, PayrollPeriodState.ReleasedForPayroll),
-                });
-            }
-
-            if (record.periodState !== PayrollPeriodState.ReleasedForCorrection) {
-                items.push({
-                    label: this.l('ReleaseForCorrection'),
-                    icon: 'pi pi-lock-open',
-                    command: () => this.setState(record, PayrollPeriodState.ReleasedForCorrection),
-                });
-            }
-
-            if (record.periodState !== PayrollPeriodState.Closed) {
-                items.push({
-                    label: this.l('ClosePayrollPeriod'),
-                    icon: 'pi pi-check-square',
-                    command: () => this.setState(record, PayrollPeriodState.Closed),
-                });
-            }
-
-            if (record.periodState !== PayrollPeriodState.Open) {
-                items.push({
-                    label: this.l('ReopenPayrollPeriod'),
-                    icon: 'pi pi-replay',
-                    command: () => this.setState(record, PayrollPeriodState.Open),
-                });
-            }
-        }
 
         if (this.permission.isGranted('Pages.PayrollManagement.PayrollControlRecords.Edit')) {
             items.push({

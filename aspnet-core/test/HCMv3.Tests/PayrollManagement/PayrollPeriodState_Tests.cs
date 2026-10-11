@@ -72,6 +72,79 @@ public class PayrollPeriodState_Tests : AppTestBase
         record.PeriodLocked.ShouldBeFalse();
     }
 
+    /*
+     * Locking a CLOSED period starts the next month. This is the only thing that moves a control record
+     * forward in time, and legacy did it on exactly this transition -- see PayrollControlRecord.ApplyState.
+     */
+
+    [Fact]
+    public async Task Should_Start_The_Next_Month_When_An_Exited_Period_Is_Locked_Again()
+    {
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.Closed });
+
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.ReleasedForPayroll });
+
+        var record = Record();
+        record.PayrollMonth.ShouldBe(9);
+        record.PayrollYear.ShouldBe(2026);
+        record.CalendarMonthStart.ShouldBe(new DateTime(2026, 9, 1));
+        record.CalendarMonthEnd.ShouldBe(new DateTime(2026, 9, 30));
+        record.PeriodLocked.ShouldBeTrue();
+        record.PeriodClosed.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Should_Roll_Into_January_Of_The_Next_Year()
+    {
+        UsingDbContext(c =>
+        {
+            var row = c.Set<PayrollControlRecord>().Single(r => r.Id == _recordId);
+            row.PayrollMonth = 12;
+            row.PayrollYear = 2026;
+            row.CalendarMonthStart = new DateTime(2026, 12, 1);
+            row.CalendarMonthEnd = new DateTime(2026, 12, 31);
+        });
+
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.Closed });
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.ReleasedForPayroll });
+
+        var record = Record();
+        record.PayrollMonth.ShouldBe(1);
+        record.PayrollYear.ShouldBe(2027);
+        record.CalendarMonthStart.ShouldBe(new DateTime(2027, 1, 1));
+        record.CalendarMonthEnd.ShouldBe(new DateTime(2027, 1, 31));
+    }
+
+    [Fact]
+    public async Task Should_Keep_A_Window_That_Does_Not_Start_On_The_First()
+    {
+        // A payroll area paid 26th to 25th: the window moves a month and keeps its shape.
+        UsingDbContext(c =>
+        {
+            var row = c.Set<PayrollControlRecord>().Single(r => r.Id == _recordId);
+            row.CalendarMonthStart = new DateTime(2026, 8, 26);
+            row.CalendarMonthEnd = new DateTime(2026, 9, 25);
+        });
+
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.Closed });
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.ReleasedForPayroll });
+
+        var record = Record();
+        record.CalendarMonthStart.ShouldBe(new DateTime(2026, 9, 26));
+        record.CalendarMonthEnd.ShouldBe(new DateTime(2026, 10, 25));
+    }
+
+    [Fact]
+    public async Task Should_Not_Move_The_Month_When_Locking_A_Period_That_Was_Never_Exited()
+    {
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.ReleasedForCorrection });
+
+        await _service.SetState(new SetPayrollPeriodStateInput { Id = _recordId, State = PayrollPeriodState.ReleasedForPayroll });
+
+        var record = Record();
+        record.PayrollMonth.ShouldBe(8);
+        record.CalendarMonthStart.ShouldBe(new DateTime(2026, 8, 1));
+    }
     [Fact]
     public async Task Should_Record_Who_Changed_The_State_And_When()
     {

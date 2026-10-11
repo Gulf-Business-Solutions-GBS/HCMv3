@@ -72,11 +72,38 @@ public class PayrollControlRecord : FullAuditedEntity, IMustHaveTenant
     /// </summary>
     public virtual void ApplyState(PayrollPeriodState state, long? userId, DateTime now)
     {
+        // Locking a period that was CLOSED starts the next month -- legacy's "Lock for Payroll Processing" on an
+        // exited period. This is the only thing that moves a control record forward in time: without it a company
+        // that exits September is still on September when it locks again, and runs that month a second time.
+        if (state == PayrollPeriodState.ReleasedForPayroll && PeriodClosed)
+        {
+            AdvanceToNextMonth();
+        }
+
         PeriodState = state;
         PeriodLocked = state == PayrollPeriodState.ReleasedForPayroll;
         PeriodClosed = state == PayrollPeriodState.Closed;
         StateChangedTime = now;
         StateChangedUserId = userId;
+    }
+
+    /// <summary>
+    /// The next payroll month: the number rolls 12 -> 1 with the year behind it, and the calendar window moves on a
+    /// month. The end is the day before the next start, so a window that ran 26 Aug - 25 Sep becomes 26 Sep - 25 Oct
+    /// and a calendar month keeps its own length -- legacy took the same two steps, in the same order.
+    /// </summary>
+    private void AdvanceToNextMonth()
+    {
+        PayrollMonth++;
+
+        if (PayrollMonth > 12)
+        {
+            PayrollMonth = 1;
+            PayrollYear++;
+        }
+
+        CalendarMonthStart = CalendarMonthStart.AddMonths(1);
+        CalendarMonthEnd = CalendarMonthStart.AddMonths(1).AddDays(-1);
     }
 
     /// <summary>

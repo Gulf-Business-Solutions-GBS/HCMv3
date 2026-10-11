@@ -7642,6 +7642,13 @@
     <text name="BackOn">Back on {0}</text>
     <text name="CancelWholeLeave">Cancel the whole leave</text>
     <text name="WorkflowRequestStatus_Withdrawn">Withdrawn</text>
+    <text name="LockForPayrollProcessing">Lock for Payroll Processing</text>
+    <text name="ExitPayroll">Exit Payroll</text>
+    <text name="PayrollStatus">Payroll Status</text>
+    <text name="PayrollStatusOpen">You can do payroll related entries now.</text>
+    <text name="PayrollStatusRegular">{0} (Regular)</text>
+    <text name="PayrollStatusOffCycle">{0} (OffCycle)</text>
+    <text name="LockStartsNextMonthWarning">This period has been exited. Locking it starts {0}. Continue?</text>
     <text name="IsWithdrawable">Employees Can Withdraw</text>
     <text name="IsHiddenFromEmployee">Hidden From Employee</text>
     <text name="DocumentTypeSelfService">Self Service</text>
