@@ -1,0 +1,86 @@
+<div [@routerTransition] [helpPage]="helpId()">
+    <sub-header [title]="'EssMyDocuments' | localize">
+        <div role="actions">
+            @if (!notLinked() && !formOpenIn() && (showDocuments() || showWithdrawals() || showLetters())) {
+                <button class="btn btn-primary" data-help-loc="NewRequest" (click)="openChooser()">
+                    <i class="fa fa-plus"></i> {{ 'NewRequest' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                </div>
+            </div>
+        } @else {
+            @if (choosing() && !formOpenIn()) {
+                <!-- What is needed decides which form opens: a document to record, a letter to be issued,
+                     or a document to take out. The types offered are the ones each document type's own
+                     switches allow. -->
+                <div class="card card-custom gutter-b mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title" data-help-loc="NewRequest">{{ 'NewRequest' | localize }}</h5>
+
+                        <div class="row g-4">
+                            <div class="col-12 col-md-6 col-xl-5">
+                                <label class="form-label" data-help-loc="DocumentType">{{ 'DocumentType' | localize }} *</label>
+                                <select class="form-select" [(ngModel)]="choice" [compareWith]="sameChoice">
+                                    <option [ngValue]="null">--</option>
+                                    @if (showDocuments() && documentTypes().length) {
+                                        <optgroup [label]="'RecordADocument' | localize">
+                                            @for (type of documentTypes(); track type.id) {
+                                                <option [ngValue]="documentChoice(type)">{{ typeName(type) }}</option>
+                                            }
+                                        </optgroup>
+                                    }
+                                    @if (showLetters() && letterTypes().length) {
+                                        <optgroup [label]="'RequestLetter' | localize">
+                                            @for (type of letterTypes(); track type.id) {
+                                                <option [ngValue]="letterChoice(type)">{{ typeName(type) }}</option>
+                                            }
+                                        </optgroup>
+                                    }
+                                    @if (showWithdrawals()) {
+                                        <optgroup [label]="'DocumentWithdrawals' | localize">
+                                            <option [ngValue]="withdrawalChoice">{{ 'WithdrawDocument' | localize }}</option>
+                                        </optgroup>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="btn btn-primary me-2" (click)="start()" data-help-loc="Continue">{{ 'Continue' | localize }}</button>
+                            <button class="btn btn-light" (click)="closeChooser()">{{ 'Cancel' | localize }}</button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- The three lists stay on the page whatever is open, so each keeps what it has loaded; while a
+                 form is open the other two step aside. Each is the same list-and-form every request screen
+                 has, and each request is its own workflow request. -->
+            @if (showDocuments()) {
+                <div [hidden]="!!formOpenIn() && formOpenIn() !== 'documents'">
+                    <ess-documents [canRaiseWithdrawals]="showWithdrawals()" (withdrawRequested)="withdraw($event)" />
+                </div>
+            }
+            @if (showWithdrawals()) {
+                <div [hidden]="!!formOpenIn() && formOpenIn() !== 'withdrawals'">
+                    <ess-document-withdrawals />
+                </div>
+            }
+            @if (showLetters()) {
+                <div [hidden]="!!formOpenIn() && formOpenIn() !== 'letters'">
+                    <ess-letter-requests />
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<essRequestDetailModal #detail />

@@ -6499,10 +6499,19 @@ namespace HCMv3.Migrations
                     b.Property<int>("DocumentBelongsTo")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IncludeInWorkflow")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsHiddenFromEmployee")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsLetterType")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWithdrawable")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModificationTime")

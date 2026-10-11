@@ -59,3 +59,39 @@ The reminder settings on this form are stored, but no process reads them at pres
 **Why it matters.** Recorded for information; nothing filters document types by it at present.
 
 **Rules.** Required. One of: All, Employee, Organization.
+
+## IncludeInWorkflow {#DocumentType.IncludeInWorkflow}
+<!-- alias: loc:IncludeInWorkflow, dom:DocumentType_IncludeInWorkflow -->
+
+**What it is.** Whether employees are offered this type when they raise a request in self service.
+
+**Example.** Ticked for Passport and Salary Certificate; unticked for a type only HR records.
+
+**Why it matters.** Untick it and the type disappears from the New Request list on the employee's Documents screen, and a request for it is refused. HR can still record documents of the type.
+
+## IsLetterType {#DocumentType.IsLetterType}
+<!-- alias: loc:IsLetterType, dom:DocumentType_IsLetterType -->
+
+**What it is.** Whether this type is a letter the company issues to the employee, such as a salary certificate, and not a document the employee holds.
+
+**Example.** Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.
+
+**Why it matters.** A ticked type is offered under "Request a letter" and asks who the letter is addressed to. An unticked type is offered under "Record a document" and asks for a number and dates. A type cannot be both.
+
+## IsWithdrawable {#DocumentType.IsWithdrawable}
+<!-- alias: loc:IsWithdrawable, dom:DocumentType_IsWithdrawable -->
+
+**What it is.** Whether employees may ask to take a document of this type out of company custody and hand it back.
+
+**Example.** Ticked for Passport.
+
+**Why it matters.** Only ticked types offer Withdraw Document to the employee. More than one type may be ticked. If no type at all is ticked, the system falls back to the single type named by the older passport setting (code 2 unless changed).
+
+## IsHiddenFromEmployee {#DocumentType.IsHiddenFromEmployee}
+<!-- alias: loc:IsHiddenFromEmployee, dom:DocumentType_IsHiddenFromEmployee -->
+
+**What it is.** Keeps documents of this type out of the employee's own Documents screen.
+
+**Example.** Ticked for a document HR holds about the employee and not for them.
+
+**Why it matters.** The employee neither sees these documents nor can record one. HR's own screens are not affected.

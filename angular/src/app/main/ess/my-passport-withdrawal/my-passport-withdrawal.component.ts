@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
@@ -17,13 +16,11 @@ import {
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
-import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { EssList } from '../shared/ess-list';
 import { EssListHeadComponent } from '../shared/ess-list-head.component';
 import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
-import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import {
     PassportWithdrawalFormComponent,
     PassportWithdrawalFormValue,
@@ -37,25 +34,29 @@ import {
  * the movement that is already live -- the return date is not known when the request is raised. Both are
  * filled in on the one form component (<c>passport-withdrawal-form</c>), which is also what the Details view
  * and an approver are shown, read-only.</p>
+ *
+ * <p>A section of the one Documents screen (<c>my-document-center</c>), which owns the page heading and the
+ * New Request button and opens this form for a document through <c>openFormForDocument</c>.</p>
  */
 @Component({
+    selector: 'ess-document-withdrawals',
     templateUrl: './my-passport-withdrawal.component.html',
-    animations: [appModuleAnimation()],
     imports: [
         CommonModule,
-        SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
         EssListHeadComponent,
         EssListPagerComponent,
         PassportWithdrawalFormComponent,
-        HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPassportWithdrawalDto> implements OnInit {
     private readonly _service = inject(MyPassportWithdrawalServiceProxy);
+
+    /** Hosted beside the other document lists; the host opens a request named in the address. */
+    protected override readonly opensRequestFromAddress = false;
 
     /** The withdrawal whose return is being reported, if the form is open on one. */
     readonly returningRow = signal<MyPassportWithdrawalDto | null>(null);
@@ -157,6 +158,12 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
 
         this.form = form;
         this.returningRow.set(null);
+    }
+
+    /** Opens the form for a new withdrawal with the document already chosen, as Withdraw on a document does. */
+    openFormForDocument(employeeDocumentId: number, label: string): void {
+        this.openForm();
+        this.form = { ...this.form, employeeDocumentId, documentLabel: label };
     }
 
     /** Cancel on the form, whichever of the two requests it was open on. */
@@ -397,7 +404,7 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
     }
 
     protected detailTitle(): string {
-        return this.l('EssMyPassportWithdrawals');
+        return this.l('DocumentWithdrawals');
     }
 
     protected detailFields(row: MyPassportWithdrawalDto): EssRequestDetailField[] {

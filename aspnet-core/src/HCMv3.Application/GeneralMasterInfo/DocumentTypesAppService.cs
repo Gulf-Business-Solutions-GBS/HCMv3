@@ -92,6 +92,9 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             NotificationCountLimit = input.NotificationCountLimit,
             DocumentBelongsTo = input.DocumentBelongsTo,
             IsLetterType = input.IsLetterType,
+            IsWithdrawable = input.IsWithdrawable,
+            IncludeInWorkflow = input.IncludeInWorkflow,
+            IsHiddenFromEmployee = input.IsHiddenFromEmployee,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -115,6 +118,9 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
         entity.NotificationCountLimit = input.NotificationCountLimit;
         entity.DocumentBelongsTo = input.DocumentBelongsTo;
         entity.IsLetterType = input.IsLetterType;
+        entity.IsWithdrawable = input.IsWithdrawable;
+        entity.IncludeInWorkflow = input.IncludeInWorkflow;
+        entity.IsHiddenFromEmployee = input.IsHiddenFromEmployee;
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateUniquenessAsync(entity);
@@ -180,7 +186,10 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             NotificationFrequency = entity.NotificationFrequency,
             NotificationCountLimit = entity.NotificationCountLimit,
             DocumentBelongsTo = entity.DocumentBelongsTo,
-            IsLetterType = entity.IsLetterType
+            IsLetterType = entity.IsLetterType,
+            IsWithdrawable = entity.IsWithdrawable,
+            IncludeInWorkflow = entity.IncludeInWorkflow,
+            IsHiddenFromEmployee = entity.IsHiddenFromEmployee
         };
     }
 
@@ -197,7 +206,10 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             NotificationFrequency = entity.NotificationFrequency,
             NotificationCountLimit = entity.NotificationCountLimit,
             DocumentBelongsTo = entity.DocumentBelongsTo,
-            IsLetterType = entity.IsLetterType
+            IsLetterType = entity.IsLetterType,
+            IsWithdrawable = entity.IsWithdrawable,
+            IncludeInWorkflow = entity.IncludeInWorkflow,
+            IsHiddenFromEmployee = entity.IsHiddenFromEmployee
         };
     }
 }

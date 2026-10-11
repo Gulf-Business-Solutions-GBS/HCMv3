@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
@@ -14,13 +13,11 @@ import {
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
-import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { EssList } from '../shared/ess-list';
 import { EssListHeadComponent } from '../shared/ess-list-head.component';
 import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
-import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { LetterRequestFormComponent, LetterRequestFormValue, emptyLetterRequestForm } from './letter-request-form.component';
 
 /**
@@ -29,25 +26,29 @@ import { LetterRequestFormComponent, LetterRequestFormValue, emptyLetterRequestF
  * <p>Laid out like every other self-service request (the exit permit is the model): the list, a Details view
  * in the shared dialog, and the form as its own component (<c>letter-request-form</c>) with Save, Submit and
  * Cancel, so the Details view and an approver are shown the very same form read-only.</p>
+ *
+ * <p>A section of the one Documents screen (<c>my-document-center</c>), which owns the page heading and the
+ * New Request button and opens this form for a letter type through <c>openFormForType</c>.</p>
  */
 @Component({
+    selector: 'ess-letter-requests',
     templateUrl: './my-letter.component.html',
-    animations: [appModuleAnimation()],
     imports: [
         CommonModule,
-        SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
         EssListHeadComponent,
         EssListPagerComponent,
         LetterRequestFormComponent,
-        HelpPageDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto> implements OnInit {
     private readonly _service = inject(MyLetterRequestServiceProxy);
+
+    /** Hosted beside the other document lists; the host opens a request named in the address. */
+    protected override readonly opensRequestFromAddress = false;
 
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyLetterRequestDto>(this.rows, () => [
@@ -106,6 +107,12 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
         form.effectiveDate = DateTime.local().toFormat('yyyy-MM-dd');
 
         this.form = form;
+    }
+
+    /** Opens the form for a new request with the letter type already chosen, as the host's New Request does. */
+    openFormForType(documentTypeId: number, label: string): void {
+        this.openForm();
+        this.form = { ...this.form, documentTypeId, documentTypeLabel: label };
     }
 
     /**

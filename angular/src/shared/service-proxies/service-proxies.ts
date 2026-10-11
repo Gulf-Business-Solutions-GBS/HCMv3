@@ -182249,6 +182249,9 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
     notificationCountLimit!: number;
     documentBelongsTo!: DocumentBelongsTo;
     isLetterType!: boolean;
+    isWithdrawable!: boolean;
+    includeInWorkflow!: boolean;
+    isHiddenFromEmployee!: boolean;
 
     constructor(data?: ICreateOrEditDocumentTypeDto) {
         if (data) {
@@ -182271,6 +182274,9 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
             this.notificationCountLimit = _data["notificationCountLimit"];
             this.documentBelongsTo = _data["documentBelongsTo"];
             this.isLetterType = _data["isLetterType"];
+            this.isWithdrawable = _data["isWithdrawable"];
+            this.includeInWorkflow = _data["includeInWorkflow"];
+            this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
         }
     }
 
@@ -182293,6 +182299,9 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
         data["notificationCountLimit"] = this.notificationCountLimit;
         data["documentBelongsTo"] = this.documentBelongsTo;
         data["isLetterType"] = this.isLetterType;
+        data["isWithdrawable"] = this.isWithdrawable;
+        data["includeInWorkflow"] = this.includeInWorkflow;
+        data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
         return data;
     }
 }
@@ -182308,6 +182317,9 @@ export interface ICreateOrEditDocumentTypeDto {
     notificationCountLimit: number;
     documentBelongsTo: DocumentBelongsTo;
     isLetterType: boolean;
+    isWithdrawable: boolean;
+    includeInWorkflow: boolean;
+    isHiddenFromEmployee: boolean;
 }
 
 export class CreateOrEditDomainTypeDto implements ICreateOrEditDomainTypeDto {
@@ -205298,6 +205310,9 @@ export class DocumentTypeDto implements IDocumentTypeDto {
     notificationCountLimit!: number;
     documentBelongsTo!: DocumentBelongsTo;
     isLetterType!: boolean;
+    isWithdrawable!: boolean;
+    includeInWorkflow!: boolean;
+    isHiddenFromEmployee!: boolean;
 
     constructor(data?: IDocumentTypeDto) {
         if (data) {
@@ -205321,6 +205336,9 @@ export class DocumentTypeDto implements IDocumentTypeDto {
             this.notificationCountLimit = _data["notificationCountLimit"];
             this.documentBelongsTo = _data["documentBelongsTo"];
             this.isLetterType = _data["isLetterType"];
+            this.isWithdrawable = _data["isWithdrawable"];
+            this.includeInWorkflow = _data["includeInWorkflow"];
+            this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
         }
     }
 
@@ -205344,6 +205362,9 @@ export class DocumentTypeDto implements IDocumentTypeDto {
         data["notificationCountLimit"] = this.notificationCountLimit;
         data["documentBelongsTo"] = this.documentBelongsTo;
         data["isLetterType"] = this.isLetterType;
+        data["isWithdrawable"] = this.isWithdrawable;
+        data["includeInWorkflow"] = this.includeInWorkflow;
+        data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
         return data;
     }
 }
@@ -205360,6 +205381,9 @@ export interface IDocumentTypeDto {
     notificationCountLimit: number;
     documentBelongsTo: DocumentBelongsTo;
     isLetterType: boolean;
+    isWithdrawable: boolean;
+    includeInWorkflow: boolean;
+    isHiddenFromEmployee: boolean;
 }
 
 export class DomainTypeDto implements IDomainTypeDto {
@@ -272400,6 +272424,7 @@ export interface IGetWorkflowSetupGridOutput {
 
 export class GetWorkflowTransactionTypeForEditOutput implements IGetWorkflowTransactionTypeForEditOutput {
     workflowTransactionType!: CreateOrEditWorkflowTransactionTypeDto;
+    supportedChangeActions!: WorkflowRequestAction[] | undefined;
 
     constructor(data?: IGetWorkflowTransactionTypeForEditOutput) {
         if (data) {
@@ -272413,6 +272438,11 @@ export class GetWorkflowTransactionTypeForEditOutput implements IGetWorkflowTran
     init(_data?: any) {
         if (_data) {
             this.workflowTransactionType = _data["workflowTransactionType"] ? CreateOrEditWorkflowTransactionTypeDto.fromJS(_data["workflowTransactionType"]) : undefined as any;
+            if (Array.isArray(_data["supportedChangeActions"])) {
+                this.supportedChangeActions = [] as any;
+                for (let item of _data["supportedChangeActions"])
+                    this.supportedChangeActions!.push(item);
+            }
         }
     }
 
@@ -272426,12 +272456,18 @@ export class GetWorkflowTransactionTypeForEditOutput implements IGetWorkflowTran
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["workflowTransactionType"] = this.workflowTransactionType ? this.workflowTransactionType.toJSON() : undefined as any;
+        if (Array.isArray(this.supportedChangeActions)) {
+            data["supportedChangeActions"] = [];
+            for (let item of this.supportedChangeActions)
+                data["supportedChangeActions"].push(item);
+        }
         return data;
     }
 }
 
 export interface IGetWorkflowTransactionTypeForEditOutput {
     workflowTransactionType: CreateOrEditWorkflowTransactionTypeDto;
+    supportedChangeActions: WorkflowRequestAction[] | undefined;
 }
 
 export class GetWorkforceDocumentsInput implements IGetWorkforceDocumentsInput {
@@ -286206,6 +286242,10 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
     comments!: string | undefined;
     requestNumber!: string | undefined;
     isSentBack!: boolean;
+    documentStatus!: DocumentStatus;
+    isOut!: boolean;
+    canWithdraw!: boolean;
+    canRenew!: boolean;
 
     constructor(data?: IMyDocumentRequestDto) {
         if (data) {
@@ -286233,6 +286273,10 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
             this.comments = _data["comments"];
             this.requestNumber = _data["requestNumber"];
             this.isSentBack = _data["isSentBack"];
+            this.documentStatus = _data["documentStatus"];
+            this.isOut = _data["isOut"];
+            this.canWithdraw = _data["canWithdraw"];
+            this.canRenew = _data["canRenew"];
         }
     }
 
@@ -286260,6 +286304,10 @@ export class MyDocumentRequestDto implements IMyDocumentRequestDto {
         data["comments"] = this.comments;
         data["requestNumber"] = this.requestNumber;
         data["isSentBack"] = this.isSentBack;
+        data["documentStatus"] = this.documentStatus;
+        data["isOut"] = this.isOut;
+        data["canWithdraw"] = this.canWithdraw;
+        data["canRenew"] = this.canRenew;
         return data;
     }
 }
@@ -286280,6 +286328,10 @@ export interface IMyDocumentRequestDto {
     comments: string | undefined;
     requestNumber: string | undefined;
     isSentBack: boolean;
+    documentStatus: DocumentStatus;
+    isOut: boolean;
+    canWithdraw: boolean;
+    canRenew: boolean;
 }
 
 export class MyExitPermitDto implements IMyExitPermitDto {

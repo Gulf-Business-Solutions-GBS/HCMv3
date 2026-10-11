@@ -85,13 +85,14 @@ export class AppNavigationService {
                 // redundancy the user kept pointing at.
                 new AppMenuItem('Workflow', '', 'flaticon-interface-8', '', [], [
                     new AppMenuItem('General', '', 'flaticon-folder-1', '', [], [
-                        new AppMenuItem('EssMyDocuments', 'Ess.MyDocuments', 'flaticon-file-2', '/app/main/ess/document').governedBy('EmployeeDocument'),
-                        new AppMenuItem(
-                            'EssMyPassportWithdrawals',
-                            'Ess.MyPassportWithdrawals',
-                            'flaticon-suitcase',
-                            '/app/main/ess/passport-withdrawal'
-                        ).governedBy('EmployeeDocumentMvmt'),
+                        // One entry for the three document requests -- a new document, a withdrawal, a
+                        // letter -- which share one screen. Shown while any of the three is switched on;
+                        // the screen itself shows only the ones this employee may use.
+                        new AppMenuItem('EssMyDocuments', 'Ess', 'flaticon-file-2', '/app/main/ess/document').governedBy(
+                            'EmployeeDocument',
+                            'EmployeeDocumentMvmt',
+                            'EmployeeLetterRequest'
+                        ),
                         new AppMenuItem('EssMyHRServices', 'Ess.MyHRServices', 'flaticon-notepad', '/app/main/ess/hr-service').governedBy('EmployeeHRService'),
                         new AppMenuItem('EssMyExitPermits', 'Ess.MyExitPermits', 'flaticon-paper-plane', '/app/main/ess/exit-permit').governedBy('EmployeeExitPermit'),
                         new AppMenuItem('EssMyClearances', 'Ess.MyClearances', 'flaticon-list-3', '/app/main/ess/clearance').governedBy('EmployeeClearance'),
@@ -102,7 +103,6 @@ export class AppNavigationService {
                             'flaticon-coins',
                             '/app/main/ess/loan-exemption'
                         ).governedBy('EmployeeLoanExemption'),
-                        new AppMenuItem('EssMyLetterRequests', 'Ess.MyLetterRequests', 'flaticon-mail-1', '/app/main/ess/letter').governedBy('EmployeeLetterRequest'),
                         new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket').governedBy('EmployeeTicket'),
                         new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset').governedBy('EmployeeAsset'),
                         new AppMenuItem('EssMyDelegations', 'Ess.MyDelegations', 'flaticon-user-ok', '/app/main/ess/delegation').governedBy('EmployeeDelegation'),
@@ -3721,7 +3721,7 @@ export class AppNavigationService {
         // A self-service entry whose transaction this tenant has switched off. Hidden rather than left
         // pointing at a screen that no longer applies -- the tile already disappears, and a menu entry
         // that survives it reads as a broken link rather than a setting.
-        if (menuItem.transactionType && !this._essMenuCatalog.isEnabled(menuItem.transactionType)) {
+        if (menuItem.transactionTypes.length && !menuItem.transactionTypes.some((type) => this._essMenuCatalog.isEnabled(type))) {
             hideMenuItem = true;
         }
 

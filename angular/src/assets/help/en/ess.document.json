@@ -10,6 +10,11 @@
     "loc:IssueDate": "ess.document.issue-date",
     "loc:ExpiryDate": "ess.document.expiry-date",
     "loc:Attachments": "ess.document.attachments",
+    "loc:NewRequest": "ess.document.new-request",
+    "loc:DocumentStatus": "ess.document.document-status",
+    "loc:DocumentMvmtStatus": "ess.document.movement-status",
+    "loc:WithdrawDocument": "ess.document.withdraw-document",
+    "loc:RenewDocument": "ess.document.renew-document",
     "loc:Comments": "ess.common.comments",
     "loc:EssMyRequests": "ess.common.my-requests",
     "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
@@ -81,6 +86,71 @@
       "rules": null,
       "when": null,
       "html": "<p><strong>What it is.</strong> The scan or photograph of the document itself, attached to the record.</p><p><strong>Example.</strong> A clear photo of the passport's photograph page.</p><p><strong>Why it matters.</strong> Without it HR has your word for the number and nothing to check it against, and they will ask you for a copy the first time somebody needs one. A legible scan now saves that. Attachments are kept in your company's file store, not in the database, and only people who may see your record may open them.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.new-request",
+      "label": "NewRequest",
+      "section": null,
+      "aliases": [
+        "loc:NewRequest"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The one button for everything you can ask for on this screen. Choose what you need and the right form opens: a document to record, a letter for the company to issue, or a document to take out of company custody.</p><p><strong>Example.</strong> Choose Passport under \"Record a document\" to add a renewed passport; choose Salary Certificate under \"Request a letter\"; choose Withdraw Document to take your passport out.</p><p><strong>Why it matters.</strong> What is offered depends on how your company has set up each document type, so the list may be shorter than a colleague's in another company. Each request is sent for approval on its own and appears in its own list below.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.document-status",
+      "label": "DocumentStatus",
+      "section": null,
+      "aliases": [
+        "loc:DocumentStatus"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the document stands today: Active, Expired, or Inactive.</p><p><strong>Example.</strong> A passport renewed last month is Active; the passport it replaced shows Inactive.</p><p><strong>Why it matters.</strong> Nobody sets this. A document becomes Inactive by itself as soon as a newer one of the same type is on your file, and Expired once its expiry date has passed. Only the Active one can be withdrawn. A document still waiting for approval shows nothing here, because it is not on your file yet.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.movement-status",
+      "label": "DocumentMvmtStatus",
+      "section": null,
+      "aliases": [
+        "loc:DocumentMvmtStatus"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the document is in the company's custody (In) or with you (Out).</p><p><strong>Example.</strong> Out, from the day an approved withdrawal starts until the document is recorded as returned.</p><p><strong>Why it matters.</strong> It is what HR sees when they look for the document. If it shows Out and you have handed it back, report the return from the Document Withdrawals list so the record matches.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.withdraw-document",
+      "label": "WithdrawDocument",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Asks to take this document out of company custody. The withdrawal form opens with the document already chosen.</p><p><strong>Example.</strong> Withdrawing your passport for a visa appointment.</p><p><strong>Why it matters.</strong> Available only for document types your company lets employees withdraw, and only for the Active document. If it is already out, asking again extends the date it is due back.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.renew-document",
+      "label": "RenewDocument",
+      "section": null,
+      "aliases": [
+        "loc:RenewDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Records a newer document of the same type. The form opens with the type already chosen.</p><p><strong>Example.</strong> Adding your new passport after a renewal, with its new number and dates.</p><p><strong>Why it matters.</strong> The old record is never overwritten. Once the new one is approved, the old one shows Inactive and stays on your file as history.</p>",
       "adminHtml": "",
       "stub": false
     },

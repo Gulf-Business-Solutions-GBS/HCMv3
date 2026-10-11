@@ -40,7 +40,10 @@ public interface IEssLookupAppService : IApplicationService
     /// <summary>Currencies, for travel cost lines.</summary>
     Task<List<SimpleLookupDto>> GetCurrencies();
 
-    /// <summary>Every document type, for the "issue me a copy of X" request.</summary>
+    /// <summary>
+    /// The document types an employee may record a document of: offered in self-service, not hidden from
+    /// employees, and not a letter.
+    /// </summary>
     Task<List<SimpleLookupDto>> GetDocumentTypes();
 
     /// <summary>

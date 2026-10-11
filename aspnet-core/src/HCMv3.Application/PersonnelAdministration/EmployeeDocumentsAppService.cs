@@ -157,22 +157,9 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
                         && d.EmployeeId == entity.EmployeeId
                         && d.DocumentTypeId == entity.DocumentTypeId)
             .Select(d => (DateTime?)d.IssueDate)
-            .MaxAsync() ?? default;
+            .MaxAsync();
 
-        DocumentStatus isActive;
-        if (maxIssueDate != default && maxIssueDate > entity.IssueDate)
-        {
-            isActive = DocumentStatus.Inactive;
-        }
-        else if (entity.ExpiryDate == default ||
-                 (entity.IssueDate <= today && entity.ExpiryDate >= today))
-        {
-            isActive = DocumentStatus.Active;
-        }
-        else
-        {
-            isActive = DocumentStatus.Expired;
-        }
+        var isActive = DocumentStatusCalculator.Calculate(entity.IssueDate, entity.ExpiryDate, maxIssueDate, today);
 
         var hasOpenMovement = await _movementRepository.GetAll()
             .AnyAsync(m => m.EmployeeDocumentId == entity.Id && m.ActualReturnDate == default);

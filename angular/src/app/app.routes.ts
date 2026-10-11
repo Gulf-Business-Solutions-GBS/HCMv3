@@ -195,19 +195,25 @@ export const appRoutes: Routes = [
                             import('./main/ess/my-asset/my-asset.component').then((m) => m.MyAssetComponent),
                         data: { permission: 'Ess.MyAssets' },
                     },
+                    // Document, withdrawal and letter requests share one screen. The three paths all open
+                    // it -- not redirects, so a link carrying ?requestId= keeps it -- because the catalog
+                    // (and every notification already sent) still names each type's own path. The screen
+                    // shows only the requests this employee may use, so the parent permission is enough.
                     {
                         path: 'ess/document',
                         loadComponent: () =>
-                            import('./main/ess/my-document/my-document.component').then((m) => m.MyDocumentComponent),
-                        data: { permission: 'Ess.MyDocuments' },
+                            import('./main/ess/my-document-center/my-document-center.component').then(
+                                (m) => m.MyDocumentCenterComponent
+                            ),
+                        data: { permission: 'Ess' },
                     },
                     {
                         path: 'ess/passport-withdrawal',
                         loadComponent: () =>
-                            import('./main/ess/my-passport-withdrawal/my-passport-withdrawal.component').then(
-                                (m) => m.MyPassportWithdrawalComponent
+                            import('./main/ess/my-document-center/my-document-center.component').then(
+                                (m) => m.MyDocumentCenterComponent
                             ),
-                        data: { permission: 'Ess.MyPassportWithdrawals' },
+                        data: { permission: 'Ess' },
                     },
                     {
                         path: 'ess/exit-permit',
@@ -224,8 +230,10 @@ export const appRoutes: Routes = [
                     {
                         path: 'ess/letter',
                         loadComponent: () =>
-                            import('./main/ess/my-letter/my-letter.component').then((m) => m.MyLetterComponent),
-                        data: { permission: 'Ess.MyLetterRequests' },
+                            import('./main/ess/my-document-center/my-document-center.component').then(
+                                (m) => m.MyDocumentCenterComponent
+                            ),
+                        data: { permission: 'Ess' },
                     },
                     {
                         path: 'ess/loan',

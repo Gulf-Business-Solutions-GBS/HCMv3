@@ -8943,6 +8943,26 @@
           "loc": "Attachments"
         },
         {
+          "id": "ess.document.new-request",
+          "loc": "NewRequest"
+        },
+        {
+          "id": "ess.document.document-status",
+          "loc": "DocumentStatus"
+        },
+        {
+          "id": "ess.document.movement-status",
+          "loc": "DocumentMvmtStatus"
+        },
+        {
+          "id": "ess.document.withdraw-document",
+          "loc": "WithdrawDocument"
+        },
+        {
+          "id": "ess.document.renew-document",
+          "loc": "RenewDocument"
+        },
+        {
           "id": "ess.common.comments",
           "loc": "Comments"
         },

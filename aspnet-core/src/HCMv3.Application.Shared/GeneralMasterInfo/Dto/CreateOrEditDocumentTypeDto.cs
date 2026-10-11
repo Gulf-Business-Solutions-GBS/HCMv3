@@ -38,4 +38,13 @@ public class CreateOrEditDocumentTypeDto
     /// type is not silently requestable as a letter until somebody says it is.
     /// </summary>
     public bool IsLetterType { get; set; }
+
+    /// <summary>Tick to let employees ask to take a document of this type out of custody and return it.</summary>
+    public bool IsWithdrawable { get; set; }
+
+    /// <summary>Whether the type is offered to employees raising a request. Defaults to true.</summary>
+    public bool IncludeInWorkflow { get; set; } = true;
+
+    /// <summary>Tick to keep documents of this type out of the employee's own view in self-service.</summary>
+    public bool IsHiddenFromEmployee { get; set; }
 }

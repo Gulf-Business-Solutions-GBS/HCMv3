@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
+    DocumentStatus,
     EntityDto,
     GetMyRequestsInput,
     MyDocumentRequestDto,
@@ -11,16 +11,16 @@ import {
     RequestDocumentInput,
     SaveDocumentDraftInput,
 } from '@shared/service-proxies/service-proxies';
+import { MenuItem } from 'primeng/api';
+import { TieredMenu } from 'primeng/tieredmenu';
 import { DateTime } from 'luxon';
 import { Observable, firstValueFrom } from 'rxjs';
-import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { EssRequestDetailField, EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 import { EssList } from '../shared/ess-list';
 import { EssListHeadComponent } from '../shared/ess-list-head.component';
 import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
-import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { DocumentRequestFormComponent, DocumentRequestFormValue, emptyDocumentRequestForm } from './document-request-form.component';
 
 /**
@@ -29,13 +29,16 @@ import { DocumentRequestFormComponent, DocumentRequestFormValue, emptyDocumentRe
  * <p>Laid out like every other self-service request (the exit permit is the model): the list, a Details view
  * in the shared dialog, and the form as its own component (<c>document-request-form</c>) with Save, Submit and
  * Cancel, so the Details view and an approver are shown the very same form read-only.</p>
+ *
+ * <p>A section of the one Documents screen (<c>my-document-center</c>), which owns the page heading and the
+ * New Request button. Each row says what the document is today -- active, expired or superseded, in the safe
+ * or out -- and its Actions menu is where a withdrawal or a renewal starts.</p>
  */
 @Component({
+    selector: 'ess-documents',
     templateUrl: './my-document.component.html',
-    animations: [appModuleAnimation()],
     imports: [
         CommonModule,
-        SubHeaderComponent,
         LocalizePipe,
         LuxonFormatPipe,
         EssRequestDetailModalComponent,
@@ -43,12 +46,27 @@ import { DocumentRequestFormComponent, DocumentRequestFormValue, emptyDocumentRe
         EssListPagerComponent,
         AttachmentsComponent,
         DocumentRequestFormComponent,
-        HelpPageDirective,
+        TieredMenu,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentRequestDto> implements OnInit {
     private readonly _service = inject(MyDocumentServiceProxy);
+
+    /** Hosted beside the other document lists; the host opens a request named in the address. */
+    protected override readonly opensRequestFromAddress = false;
+
+    /**
+     * Withdraw was chosen on a document. Raised to the host rather than handled here: the withdrawal is its
+     * own request, with its own form and list, in the section beside this one.
+     */
+    readonly withdrawRequested = output<MyDocumentRequestDto>();
+
+    /** False when withdrawal requests are switched off for this employee, so Withdraw is greyed out. */
+    readonly canRaiseWithdrawals = input(true);
+
+    /** The Actions menu's entries, for whichever row's button was pressed last. */
+    readonly activeMenuItems = signal<MenuItem[]>([]);
 
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyDocumentRequestDto>(this.rows, () => [
@@ -65,6 +83,8 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         { key: 'number', label: 'DocumentNumber', text: (row) => row.documentNum },
         { key: 'issueDate', label: 'IssueDate', text: (row) => this.detailDate(row.issueDate), sort: (row) => row.issueDate?.toMillis() },
         { key: 'expiryDate', label: 'ExpiryDate', text: (row) => this.detailDate(row.expiryDate), sort: (row) => row.expiryDate?.toMillis() },
+        { key: 'documentStatus', label: 'DocumentStatus', text: (row) => this.documentStatusLabel(row), filter: 'select' },
+        { key: 'custody', label: 'DocumentMvmtStatus', text: (row) => this.custodyLabel(row), filter: 'select' },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 
@@ -107,6 +127,51 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         this.documentForm()?.clearAttachments();
 
         this.form = emptyDocumentRequestForm(this.employeeDisplay());
+    }
+
+    /**
+     * Opens the form for a new document with its type already chosen: the host's New Request, and Renew on a
+     * row, where the new document is recorded beside the old one and supersedes it.
+     */
+    openFormForType(documentTypeId: number, label: string): void {
+        this.openForm();
+        this.form = { ...this.form, documentTypeId, documentTypeLabel: label };
+    }
+
+    /** Active, Expired or Inactive. Empty for a document not in effect yet, which has no standing to report. */
+    documentStatusLabel(row: MyDocumentRequestDto): string {
+        return row.documentStatus === undefined || row.documentStatus === null ? '' : this.l(DocumentStatus[row.documentStatus]);
+    }
+
+    /** In the safe or out with the employee. Empty for a document not in effect yet. */
+    custodyLabel(row: MyDocumentRequestDto): string {
+        if (row.documentStatus === undefined || row.documentStatus === null) {
+            return '';
+        }
+
+        return this.l(row.isOut ? 'DocumentMvmtStatusOUT' : 'DocumentMvmtStatusIN');
+    }
+
+    showMenu(event: Event, row: MyDocumentRequestDto, menu: TieredMenu): void {
+        this.activeMenuItems.set(this.menuItems(row));
+        menu.toggle(event);
+    }
+
+    /**
+     * Every action, on every row, in the same order: the ones that do not apply to the row are greyed out
+     * rather than left out, so the menu always looks the same.
+     */
+    private menuItems(row: MyDocumentRequestDto): MenuItem[] {
+        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({ label: this.l(key), disabled: !enabled, command });
+
+        return [
+            item('WithdrawDocument', !!row.canWithdraw && this.canRaiseWithdrawals(), () => this.withdrawRequested.emit(row)),
+            item('RenewDocument', !!row.canRenew, () => this.openFormForType(row.documentTypeId, this.typeName(row))),
+            item('Attachments', true, () => this.toggleAttachments(row)),
+
+            // A draft was never sent to anybody, so it is discarded rather than withdrawn.
+            item(row.isDraft ? 'DiscardDraft' : 'WithdrawRequest', !!row.canCancel, () => this.cancel(row)),
+        ];
     }
 
     /**

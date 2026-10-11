@@ -10,6 +10,11 @@
     "loc:IssueDate": "ess.document.issue-date",
     "loc:ExpiryDate": "ess.document.expiry-date",
     "loc:Attachments": "ess.document.attachments",
+    "loc:NewRequest": "ess.document.new-request",
+    "loc:DocumentStatus": "ess.document.document-status",
+    "loc:DocumentMvmtStatus": "ess.document.movement-status",
+    "loc:WithdrawDocument": "ess.document.withdraw-document",
+    "loc:RenewDocument": "ess.document.renew-document",
     "loc:Comments": "ess.common.comments",
     "loc:EssMyRequests": "ess.common.my-requests",
     "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
@@ -81,6 +86,71 @@
       "rules": null,
       "when": null,
       "html": "<p><strong>ما هو.</strong> صورة المستند نفسه، مرفقةً بالسجلّ.</p><p><strong>مثال.</strong> صورة واضحة لصفحة الصورة في جواز السفر.</p><p><strong>لماذا يهمّ.</strong> بدونها ليس لدى الموارد البشرية إلا قولك في الرقم ولا شيء يقابلونه به، وسيطلبون منك نسخة أول مرة يحتاجها أحد. وصورة واضحة الآن تغني عن ذلك. وتُحفظ المرفقات في مخزن ملفات شركتك لا في قاعدة البيانات، ولا يفتحها إلا من يحقّ له الاطلاع على سجلّك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.new-request",
+      "label": "NewRequest",
+      "section": null,
+      "aliases": [
+        "loc:NewRequest"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزر الواحد لكل ما يمكنك طلبه في هذه الشاشة. اختر ما تحتاجه فيُفتح النموذج المناسب: مستند تسجّله، أو خطاب تصدره الشركة، أو مستند تسحبه من عهدة الشركة.</p><p><strong>مثال.</strong> اختر «جواز سفر» تحت «تسجيل وثيقة» لإضافة جواز مجدَّد، أو «شهادة راتب» تحت طلب الخطابات، أو «سحب الوثيقة» لسحب جواز سفرك.</p><p><strong>لماذا يهمّ.</strong> ما يُعرض عليك يتوقف على إعداد شركتك لكل نوع من المستندات، فقد تكون القائمة أقصر مما لدى غيرك. ويُرسل كل طلب للاعتماد على حدة ويظهر في قائمته أدناه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.document-status",
+      "label": "DocumentStatus",
+      "section": null,
+      "aliases": [
+        "loc:DocumentStatus"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وضع المستند اليوم: مفعّل، أو منتهي الصلاحية، أو غير مفعّل.</p><p><strong>مثال.</strong> الجواز المجدَّد الشهر الماضي مفعّل، والجواز الذي حلّ محلّه يظهر غير مفعّل.</p><p><strong>لماذا يهمّ.</strong> لا يحدّد أحدٌ هذه الحالة. يصبح المستند غير مفعّل تلقائياً متى وُجد في ملفك مستند أحدث من النوع نفسه، ومنتهي الصلاحية متى مضى تاريخ انتهائه. ولا يُسحب إلا المستند المفعّل. والمستند الذي ما زال بانتظار الاعتماد لا يظهر له شيء هنا لأنه لم يدخل ملفك بعد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.movement-status",
+      "label": "DocumentMvmtStatus",
+      "section": null,
+      "aliases": [
+        "loc:DocumentMvmtStatus"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل المستند في عهدة الشركة أم معك.</p><p><strong>مثال.</strong> يظهر خارجاً من يوم بدء السحب المعتمد إلى أن يُسجَّل إرجاع المستند.</p><p><strong>لماذا يهمّ.</strong> هذا ما تراه الموارد البشرية عند البحث عن المستند. فإن ظهر خارجاً وقد سلّمته، فسجّل الإرجاع من قائمة طلبات سحب الوثائق ليطابق السجلّ الواقع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.withdraw-document",
+      "label": "WithdrawDocument",
+      "section": null,
+      "aliases": [
+        "loc:WithdrawDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب سحب هذا المستند من عهدة الشركة. يُفتح نموذج السحب والمستند مختار فيه.</p><p><strong>مثال.</strong> سحب جواز سفرك لموعد تأشيرة.</p><p><strong>لماذا يهمّ.</strong> متاح فقط لأنواع المستندات التي تسمح شركتك للموظفين بسحبها، وللمستند المفعّل دون غيره. وإن كان المستند خارجاً أصلاً فإن طلبه مرة أخرى يمدّد تاريخ إعادته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.document.renew-document",
+      "label": "RenewDocument",
+      "section": null,
+      "aliases": [
+        "loc:RenewDocument"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تسجيل مستند أحدث من النوع نفسه. يُفتح النموذج والنوع مختار فيه.</p><p><strong>مثال.</strong> إضافة جواز سفرك الجديد بعد التجديد برقمه وتواريخه الجديدة.</p><p><strong>لماذا يهمّ.</strong> لا يُستبدل السجلّ القديم أبداً. فمتى اعتُمد الجديد ظهر القديم غير مفعّل وبقي في ملفك سجلاً تاريخياً.</p>",
       "adminHtml": "",
       "stub": false
     },

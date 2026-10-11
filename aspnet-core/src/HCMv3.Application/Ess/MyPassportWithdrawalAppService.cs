@@ -391,12 +391,11 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     {
         var documentTypeId = await GetMyDocumentTypeIdAsync(employeeId, employeeDocumentId);
 
-        // Legacy only ever offered the passport: it resolved one document type by code (its setting
-        // defaulted to "2") and took the employee's active document of that type. The code is a tenant
-        // config value here; with none configured the default stands, and if no such type exists the
-        // restriction is not applied rather than blocking every request.
-        var withdrawableTypeId = await ResolveWithdrawableDocumentTypeIdAsync();
-        if (withdrawableTypeId.HasValue && documentTypeId != withdrawableTypeId.Value)
+        // Only a type ticked as withdrawable. Legacy only ever offered the passport, resolved by code (its
+        // setting defaulted to "2"); a tenant with nothing ticked still follows that, and if no such type
+        // exists the restriction is not applied rather than blocking every request.
+        var withdrawableTypeIds = await ResolveWithdrawableDocumentTypeIdsAsync();
+        if (withdrawableTypeIds != null && !withdrawableTypeIds.Contains(documentTypeId))
         {
             throw new UserFriendlyException(L("OnlyTheWithdrawableDocumentTypeCanBeWithdrawn"));
         }
@@ -468,15 +467,16 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     }
 
     /// <summary>
-    /// The document type employees may ask to withdraw: the type whose code matches the tenant config
-    /// <c>PassportWithdrawalDocumentTypeCode</c>, defaulting to legacy's "2". Null when no type carries that
-    /// code, which leaves any document withdrawable rather than none.
+    /// The document types employees may ask to withdraw: those ticked as withdrawable, or -- with none
+    /// ticked -- the type whose code matches the tenant config <c>PassportWithdrawalDocumentTypeCode</c>,
+    /// defaulting to legacy's "2". Null when that names no type either, which leaves any document
+    /// withdrawable rather than none.
     /// </summary>
-    private Task<int?> ResolveWithdrawableDocumentTypeIdAsync()
+    private Task<IReadOnlyList<int>> ResolveWithdrawableDocumentTypeIdsAsync()
     {
         // One resolver for this check and for the dropdown that offers the documents, so the two cannot
-        // disagree about which type is withdrawable.
-        return _withdrawableDocumentTypeResolver.ResolveDocumentTypeIdAsync();
+        // disagree about which types are withdrawable.
+        return _withdrawableDocumentTypeResolver.ResolveDocumentTypeIdsAsync();
     }
 
     /// <summary>

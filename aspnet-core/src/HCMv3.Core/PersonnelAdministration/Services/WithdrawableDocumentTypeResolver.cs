@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
@@ -10,20 +11,28 @@ using Microsoft.EntityFrameworkCore;
 namespace HCMv3.PersonnelAdministration.Services;
 
 /// <summary>
-/// Which document type employees may ask to withdraw from company custody.
+/// Which document types employees may ask to withdraw from company custody.
 ///
 /// <para>
-/// One answer for the two places that ask: the self-service request, which refuses any other type, and the
-/// dropdown that offers the documents in the first place. Were they to resolve it separately, the dropdown
-/// could offer a document the request then refuses.
+/// One answer for every place that asks: the self-service request, which refuses any other type; the
+/// dropdown that offers the documents in the first place; and the document list, which offers Withdraw on a
+/// row. Were they to resolve it separately, one could offer a document another then refuses.
 /// </para>
 /// </summary>
 public interface IWithdrawableDocumentTypeResolver : IDomainService
 {
     /// <summary>
-    /// The type whose code matches the tenant config <c>PassportWithdrawalDocumentTypeCode</c>, defaulting to
-    /// legacy's "2". Null when no type carries that code, which leaves any document withdrawable rather than
-    /// none.
+    /// The types employees may withdraw: every type ticked <see cref="DocumentType.IsWithdrawable"/>. A
+    /// tenant with none ticked falls back to the legacy rule -- the one type
+    /// <see cref="ResolveDocumentTypeIdAsync"/> names. Null when that names no type either, which leaves any
+    /// document withdrawable rather than none.
+    /// </summary>
+    Task<IReadOnlyList<int>> ResolveDocumentTypeIdsAsync();
+
+    /// <summary>
+    /// The single type whose code matches the tenant config <c>PassportWithdrawalDocumentTypeCode</c>,
+    /// defaulting to legacy's "2". Null when no type carries that code. For the one caller that needs THE
+    /// passport rather than "a withdrawable document": the request raised automatically from a leave.
     /// </summary>
     Task<int?> ResolveDocumentTypeIdAsync();
 }
@@ -46,6 +55,25 @@ public class WithdrawableDocumentTypeResolver : HCMv3DomainServiceBase, IWithdra
     {
         _documentTypeRepository = documentTypeRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
+    }
+
+    [UnitOfWork]
+    public virtual async Task<IReadOnlyList<int>> ResolveDocumentTypeIdsAsync()
+    {
+        var ticked = await _documentTypeRepository.GetAll()
+            .Where(t => t.IsWithdrawable)
+            .Select(t => t.Id)
+            .ToListAsync();
+
+        if (ticked.Count > 0)
+        {
+            return ticked;
+        }
+
+        // Nothing ticked: a tenant set up before the switch existed. It behaves as it always did.
+        var legacyTypeId = await ResolveDocumentTypeIdAsync();
+
+        return legacyTypeId.HasValue ? new[] { legacyTypeId.Value } : null;
     }
 
     [UnitOfWork]

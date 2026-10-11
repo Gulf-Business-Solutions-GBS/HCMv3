@@ -479,17 +479,18 @@ public class EssLookupAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task The_Document_Type_List_Should_Not_Be_Narrowed_To_Letters()
+    public async Task The_Document_Type_List_Should_Hold_Documents_And_Not_Letters()
     {
-        // The counterpart to the test above -- the two lists are different questions, and the document
-        // screen must still see everything.
+        // The counterpart to the test above -- the two lists are different questions. A document is
+        // something the employee holds and records; a letter is asked for and never recorded (legacy
+        // AllowUpdate), so it must not be offered as a document.
         var letter = CreateDocumentType("Salary certificate", isLetterType: true);
         var passport = CreateDocumentType("Passport", isLetterType: false);
 
-        var all = (await _lookups.GetDocumentTypes()).Select(t => t.Id).ToList();
+        var documents = (await _lookups.GetDocumentTypes()).Select(t => t.Id).ToList();
 
-        all.ShouldContain(letter);
-        all.ShouldContain(passport);
+        documents.ShouldContain(passport);
+        documents.ShouldNotContain(letter, "A salary certificate was offered as a document to record.");
     }
 
     [Fact]

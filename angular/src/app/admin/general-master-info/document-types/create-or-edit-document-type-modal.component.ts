@@ -48,7 +48,12 @@ export class CreateOrEditDocumentTypeModalComponent extends AppComponentBase {
             });
 
         if (!documentTypeId) {
-            this.documentType.set(new CreateOrEditDocumentTypeDto());
+            const documentType = new CreateOrEditDocumentTypeDto();
+
+            // Offered to employees unless somebody says otherwise, as every existing type is.
+            documentType.includeInWorkflow = true;
+
+            this.documentType.set(documentType);
             this.modal().show();
         } else {
             this._documentTypeService.getDocumentTypeForEdit(documentTypeId).subscribe((result) => {

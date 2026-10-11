@@ -7640,5 +7640,17 @@
     <text name="BackOn">Back on {0}</text>
     <text name="CancelWholeLeave">Cancel the whole leave</text>
     <text name="WorkflowRequestStatus_Withdrawn">Withdrawn</text>
+    <text name="IsWithdrawable">Employees Can Withdraw</text>
+    <text name="IsHiddenFromEmployee">Hidden From Employee</text>
+    <text name="DocumentTypeSelfService">Self Service</text>
+    <text name="NewRequest">New Request</text>
+    <text name="NewRequestTypeIsRequired">Select what you need.</text>
+    <text name="RecordADocument">Record a document</text>
+    <text name="DocumentWithdrawals">Document Withdrawals</text>
+    <text name="WithdrawDocument">Withdraw Document</text>
+    <text name="RenewDocument">Renew Document</text>
+    <text name="DocumentStatus">Document Status</text>
+    <text name="ThatDocumentTypeCannotBeRecordedByAnEmployee">That document type cannot be recorded through self service.</text>
+    <text name="IsLetterType">Issued As Letter</text>
   </texts>
 </localizationDictionary>

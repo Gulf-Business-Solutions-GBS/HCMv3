@@ -31,4 +31,13 @@ public class DocumentTypeDto : EntityDto<int>
     /// See <see cref="DocumentType.IsLetterType"/> for why this is the inverse of legacy's AllowUpdate.
     /// </summary>
     public bool IsLetterType { get; set; }
+
+    /// <summary>Employees may ask to take a document of this type out of custody. See <see cref="DocumentType.IsWithdrawable"/>.</summary>
+    public bool IsWithdrawable { get; set; }
+
+    /// <summary>Offered to employees raising a request. See <see cref="DocumentType.IncludeInWorkflow"/>.</summary>
+    public bool IncludeInWorkflow { get; set; }
+
+    /// <summary>Kept out of the employee's own view. See <see cref="DocumentType.IsHiddenFromEmployee"/>.</summary>
+    public bool IsHiddenFromEmployee { get; set; }
 }

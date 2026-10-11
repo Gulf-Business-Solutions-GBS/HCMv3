@@ -185,8 +185,10 @@ public class MyLetterRequestAppService : MyTransactionAppServiceBase<EmployeeLet
 
     private async Task EnsureLetterTypeAsync(int documentTypeId)
     {
+        // The rule the dropdown is filled by, so what is offered and what is accepted cannot differ.
         var isLetterType = await _documentTypeRepository.GetAll()
-            .AnyAsync(t => t.Id == documentTypeId && t.IsLetterType);
+            .Where(DocumentTypeEssRules.CanBeRequestedAsLetter)
+            .AnyAsync(t => t.Id == documentTypeId);
 
         if (!isLetterType)
         {

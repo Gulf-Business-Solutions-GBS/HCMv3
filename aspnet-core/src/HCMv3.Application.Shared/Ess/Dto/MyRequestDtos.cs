@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using Abp.Extensions;
 using Abp.Runtime.Validation;
 using HCMv3.GovtRelationsManagement;
+using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.Workflow;
 
@@ -142,6 +143,25 @@ public class MyDocumentRequestDto : MyRequestDtoBase
     /// that was never sent. Either one sets <see cref="MyRequestDtoBase.CanEdit"/>.
     /// </summary>
     public bool IsSentBack { get; set; }
+
+    /// <summary>
+    /// Active, Expired or Inactive (a newer document of the same type exists), worked out as HR's screen
+    /// works it out. Null for a document that is not in effect yet -- a draft, or one awaiting approval --
+    /// which has no standing to report.
+    /// </summary>
+    public DocumentStatus? DocumentStatus { get; set; }
+
+    /// <summary>The document is out of company custody: a withdrawal in effect has not been handed back.</summary>
+    public bool IsOut { get; set; }
+
+    /// <summary>
+    /// The employee may ask to withdraw this document: it is in effect, it is the active one of its type, and
+    /// its type is withdrawable. True while it is already out as well -- asking again is an extension.
+    /// </summary>
+    public bool CanWithdraw { get; set; }
+
+    /// <summary>The employee may record a newer document of this type, which then supersedes this one.</summary>
+    public bool CanRenew { get; set; }
 }
 
 public class RequestDocumentInput

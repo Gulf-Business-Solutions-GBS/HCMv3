@@ -177,6 +177,11 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
             NameAr = e.NameAr
         });
 
+    /// <remarks>
+    /// The types an employee may record a document of: offered in self-service, not hidden from employees,
+    /// and not a letter -- a letter is asked for, never recorded (legacy <c>AllowUpdate</c>). The rule is
+    /// <see cref="DocumentTypeEssRules.CanBeRecordedByEmployee"/>, which the request itself enforces.
+    /// </remarks>
     public Task<List<SimpleLookupDto>> GetDocumentTypes() =>
         ListAsync(_documentTypeRepository, e => new SimpleLookupDto
         {
@@ -184,12 +189,13 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
             Code = e.Code,
             NameEn = e.NameEn,
             NameAr = e.NameAr
-        });
+        },
+        DocumentTypeEssRules.CanBeRecordedByEmployee);
 
     /// <remarks>
-    /// The same rule <c>DocumentTypesAppService.GetAll</c> applies when its <c>OnlyLetterTypes</c> flag is
-    /// set. A passport or a residency permit is a document HR holds, not something that can be "requested as
-    /// a letter", so it must never reach the letter form's dropdown.
+    /// A passport or a residency permit is a document HR holds, not something that can be "requested as a
+    /// letter", so it must never reach the letter form's dropdown. The rule is
+    /// <see cref="DocumentTypeEssRules.CanBeRequestedAsLetter"/>, which the request itself enforces.
     /// </remarks>
     public Task<List<SimpleLookupDto>> GetLetterTypes() =>
         ListAsync(_documentTypeRepository, e => new SimpleLookupDto
@@ -199,7 +205,7 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
             NameEn = e.NameEn,
             NameAr = e.NameAr
         },
-        e => e.IsLetterType);
+        DocumentTypeEssRules.CanBeRequestedAsLetter);
 
     public Task<List<SimpleLookupDto>> GetExpenseTypes() =>
         ListAsync(_expenseTypeRepository, e => new SimpleLookupDto
@@ -424,14 +430,14 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
             return new List<EssWithdrawableDocumentDto>();
         }
 
-        var withdrawableTypeId = await _withdrawableDocumentTypeResolver.ResolveDocumentTypeIdAsync();
+        var withdrawableTypeIds = await _withdrawableDocumentTypeResolver.ResolveDocumentTypeIdsAsync();
 
         var query = _employeeDocumentRepository.GetAll()
             .Where(d => d.EmployeeId == myEmployeeId.Value);
 
-        if (withdrawableTypeId.HasValue)
+        if (withdrawableTypeIds != null)
         {
-            query = query.Where(d => d.DocumentTypeId == withdrawableTypeId.Value);
+            query = query.Where(d => withdrawableTypeIds.Contains(d.DocumentTypeId));
         }
 
         return await query

@@ -57,11 +57,18 @@ export class AppMenuItem {
     transactionType?: string;
 
     /**
+     * Every catalog type this entry opens, for a screen that serves more than one -- the Documents screen
+     * holds document, withdrawal and letter requests. The entry stays while ANY of them is switched on.
+     */
+    transactionTypes: string[] = [];
+
+    /**
      * Marks this entry as governed by a catalog type, fluently, so the menu definition stays one readable
      * line per item rather than growing an eleventh positional constructor argument.
      */
-    governedBy(transactionType: string): AppMenuItem {
+    governedBy(transactionType: string, ...alsoServes: string[]): AppMenuItem {
         this.transactionType = transactionType;
+        this.transactionTypes = [transactionType, ...alsoServes];
 
         return this;
     }

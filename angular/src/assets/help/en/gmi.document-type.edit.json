@@ -20,7 +20,15 @@
     "loc:NotificationCountLimit": "DocumentType.NotificationCountLimit",
     "dom:DocumentType_NotificationCountLimit": "DocumentType.NotificationCountLimit",
     "loc:DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
-    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo"
+    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "loc:IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "dom:DocumentType_IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "loc:IsLetterType": "DocumentType.IsLetterType",
+    "dom:DocumentType_IsLetterType": "DocumentType.IsLetterType",
+    "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
+    "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
+    "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee"
   },
   "fields": [
     {
@@ -132,6 +140,62 @@
       "rules": "Required. One of: All, Employee, Organization.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether documents of this type belong to employees or to the organisation.</p><p><strong>Why it matters.</strong> Recorded for information; nothing filters document types by it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:DocumentType_IncludeInWorkflow"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees are offered this type when they raise a request in self service.</p><p><strong>Example.</strong> Ticked for Passport and Salary Certificate; unticked for a type only HR records.</p><p><strong>Why it matters.</strong> Untick it and the type disappears from the New Request list on the employee's Documents screen, and a request for it is refused. HR can still record documents of the type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsLetterType",
+      "label": "IsLetterType",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsLetterType",
+        "dom:DocumentType_IsLetterType"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this type is a letter the company issues to the employee, such as a salary certificate, and not a document the employee holds.</p><p><strong>Example.</strong> Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.</p><p><strong>Why it matters.</strong> A ticked type is offered under \"Request a letter\" and asks who the letter is addressed to. An unticked type is offered under \"Record a document\" and asks for a number and dates. A type cannot be both.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsWithdrawable",
+      "label": "IsWithdrawable",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsWithdrawable",
+        "dom:DocumentType_IsWithdrawable"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees may ask to take a document of this type out of company custody and hand it back.</p><p><strong>Example.</strong> Ticked for Passport.</p><p><strong>Why it matters.</strong> Only ticked types offer Withdraw Document to the employee. More than one type may be ticked. If no type at all is ticked, the system falls back to the single type named by the older passport setting (code 2 unless changed).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsHiddenFromEmployee",
+      "label": "IsHiddenFromEmployee",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsHiddenFromEmployee",
+        "dom:DocumentType_IsHiddenFromEmployee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Keeps documents of this type out of the employee's own Documents screen.</p><p><strong>Example.</strong> Ticked for a document HR holds about the employee and not for them.</p><p><strong>Why it matters.</strong> The employee neither sees these documents nor can record one. HR's own screens are not affected.</p>",
       "adminHtml": "",
       "stub": false
     }

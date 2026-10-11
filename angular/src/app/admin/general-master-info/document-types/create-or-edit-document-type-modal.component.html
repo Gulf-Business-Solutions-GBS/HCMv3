@@ -145,6 +145,52 @@
                                 <option [ngValue]="2">{{ 'Organization' | localize }}</option>
                             </select>
                         </div>
+
+                        <!-- What an employee may do with this type in self-service. These switches, not the
+                             type's name or code, decide where it is offered. -->
+                        <div class="mb-5">
+                            <label class="form-label">{{ 'DocumentTypeSelfService' | localize }}</label>
+                            <div class="form-check form-check-custom form-check-solid mb-3">
+                                <input
+                                    id="DocumentType_IncludeInWorkflow"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IncludeInWorkflow"
+                                    [ngModel]="documentType().includeInWorkflow"
+                                    (ngModelChange)="updateField('includeInWorkflow', $event)" />
+                                <label class="form-check-label" for="DocumentType_IncludeInWorkflow">{{ 'IncludeInWorkflow' | localize }}</label>
+                            </div>
+                            <div class="form-check form-check-custom form-check-solid mb-3">
+                                <input
+                                    id="DocumentType_IsLetterType"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsLetterType"
+                                    [ngModel]="documentType().isLetterType"
+                                    (ngModelChange)="updateField('isLetterType', $event)" />
+                                <label class="form-check-label" for="DocumentType_IsLetterType">{{ 'IsLetterType' | localize }}</label>
+                            </div>
+                            <div class="form-check form-check-custom form-check-solid mb-3">
+                                <input
+                                    id="DocumentType_IsWithdrawable"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsWithdrawable"
+                                    [ngModel]="documentType().isWithdrawable"
+                                    (ngModelChange)="updateField('isWithdrawable', $event)" />
+                                <label class="form-check-label" for="DocumentType_IsWithdrawable">{{ 'IsWithdrawable' | localize }}</label>
+                            </div>
+                            <div class="form-check form-check-custom form-check-solid mb-3">
+                                <input
+                                    id="DocumentType_IsHiddenFromEmployee"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsHiddenFromEmployee"
+                                    [ngModel]="documentType().isHiddenFromEmployee"
+                                    (ngModelChange)="updateField('isHiddenFromEmployee', $event)" />
+                                <label class="form-check-label" for="DocumentType_IsHiddenFromEmployee">{{ 'IsHiddenFromEmployee' | localize }}</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

@@ -59,4 +59,29 @@ public class DocumentType : FullAuditedEntity, IMustHaveTenant
     /// </para>
     /// </summary>
     public virtual bool IsLetterType { get; set; }
+
+    /// <summary>
+    /// Whether employees may ask to take a document of this type out of company custody and hand it back --
+    /// the passport, in most tenants. Legacy named one type by its code (a setting defaulting to "2"); here
+    /// it is a switch on the type, so any type can be made withdrawable and more than one can be.
+    ///
+    /// <para>
+    /// A tenant with no type ticked falls back to that legacy code, so data from before this column existed
+    /// behaves as it did. See <c>WithdrawableDocumentTypeResolver</c>.
+    /// </para>
+    /// </summary>
+    public virtual bool IsWithdrawable { get; set; }
+
+    /// <summary>
+    /// Whether this type is offered to employees when they raise a request in self-service (legacy
+    /// <c>IncludeInWorkflow</c>). Defaults to true: a type from before this column existed was offered, and
+    /// goes on being offered.
+    /// </summary>
+    public virtual bool IncludeInWorkflow { get; set; } = true;
+
+    /// <summary>
+    /// Whether documents of this type are kept out of the employee's own view in self-service (legacy
+    /// <c>IsHiddenFromEmployee</c>) -- something HR records about an employee rather than for them.
+    /// </summary>
+    public virtual bool IsHiddenFromEmployee { get; set; }
 }

@@ -447,6 +447,18 @@
     "DocumentType_DocumentBelongsTo": [
       "gmi.document-type.edit"
     ],
+    "DocumentType_IncludeInWorkflow": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_IsLetterType": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_IsWithdrawable": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_IsHiddenFromEmployee": [
+      "gmi.document-type.edit"
+    ],
     "Institution_Code": [
       "gmi.institution.edit"
     ],

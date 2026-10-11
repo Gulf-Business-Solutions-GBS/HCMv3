@@ -41,6 +41,17 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
 
     readonly rows = signal<TDto[]>([]);
 
+    /** True once the list has arrived at least once, so a host waiting on several lists knows when to look. */
+    readonly loaded = signal(false);
+
+    /**
+     * Whether this list opens the request named in the address by itself. A list shown on its own screen
+     * does. One hosted alongside others on a single screen does not: each would try, and a request only one
+     * of them holds would be opened once by its owner and again, blind, by every other. The host asks each
+     * in turn through <c>openRequest</c> instead.
+     */
+    protected readonly opensRequestFromAddress: boolean = true;
+
     protected readonly _essSessionService = inject(EssSessionServiceProxy);
 
     /**
@@ -192,7 +203,11 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
             .subscribe({
                 next: (result) => {
                     this.rows.set(result.items);
-                    this.openRequestFromAddress();
+                    this.loaded.set(true);
+
+                    if (this.opensRequestFromAddress) {
+                        this.openRequestFromAddress();
+                    }
                 },
                 // An unlinked account is a setup gap for HR to close, not a fault of theirs, so the page
                 // explains it rather than showing an empty table or an error toast. Admin accounts always
@@ -227,6 +242,22 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
             statusLabel: '',
             statusClass: '',
         });
+    }
+
+    /**
+     * Opens the request with this workflow id on its row, if this list holds it. False when it does not, so
+     * a screen hosting several lists can try the next one.
+     */
+    openRequest(requestId: number): boolean {
+        const row = this.rows().find((item) => (item as TDto & { workflowRequestId?: number }).workflowRequestId === requestId);
+
+        if (!row) {
+            return false;
+        }
+
+        this.openDetail(row);
+
+        return true;
     }
 
     openForm(): void {

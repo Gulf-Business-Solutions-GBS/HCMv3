@@ -20,7 +20,15 @@
     "loc:NotificationCountLimit": "DocumentType.NotificationCountLimit",
     "dom:DocumentType_NotificationCountLimit": "DocumentType.NotificationCountLimit",
     "loc:DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
-    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo"
+    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "loc:IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "dom:DocumentType_IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
+    "loc:IsLetterType": "DocumentType.IsLetterType",
+    "dom:DocumentType_IsLetterType": "DocumentType.IsLetterType",
+    "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
+    "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
+    "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee"
   },
   "fields": [
     {
@@ -129,9 +137,65 @@
         "loc:DocumentBelongsTo",
         "dom:DocumentType_DocumentBelongsTo"
       ],
-      "rules": "إلزامي. إحدى القيم: ALL، الموظف، الشركة.",
+      "rules": "إلزامي. إحدى القيم: الكل، الموظف، الشركة.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> هل وثائق هذا النوع تخص الموظفين أم الشركة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للعلم، ولا يُصفّى به أي شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:DocumentType_IncludeInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُعرض هذا النوع على الموظفين عند تقديم طلب في الخدمة الذاتية.</p><p><strong>مثال.</strong> مفعّل لجواز السفر وشهادة الراتب، وغير مفعّل لنوع لا يسجّله إلا الموارد البشرية.</p><p><strong>لماذا يهم.</strong> عند إلغاء التفعيل يختفي النوع من قائمة «طلب جديد» في شاشة وثائق الموظف ويُرفض أي طلب له. وتبقى الموارد البشرية قادرة على تسجيل وثائق هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsLetterType",
+      "label": "IsLetterType",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsLetterType",
+        "dom:DocumentType_IsLetterType"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل هذا النوع خطاب تصدره الشركة للموظف، كشهادة الراتب، وليس وثيقة يحملها الموظف.</p><p><strong>مثال.</strong> مفعّل لشهادة الراتب وشهادة الخبرة، وغير مفعّل لجواز السفر والبطاقة المدنية.</p><p><strong>لماذا يهم.</strong> النوع المفعّل يُعرض ضمن طلب الخطابات ويُسأل فيه عن الجهة الموجَّه إليها الخطاب. والنوع غير المفعّل يُعرض ضمن «تسجيل وثيقة» ويُسأل فيه عن الرقم والتواريخ. ولا يكون النوع الواحد كليهما.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsWithdrawable",
+      "label": "IsWithdrawable",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsWithdrawable",
+        "dom:DocumentType_IsWithdrawable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يجوز للموظفين طلب سحب وثيقة من هذا النوع من عهدة الشركة ثم إعادتها.</p><p><strong>مثال.</strong> مفعّل لجواز السفر.</p><p><strong>لماذا يهم.</strong> لا يُعرض «سحب الوثيقة» على الموظف إلا للأنواع المفعّلة. ويجوز تفعيل أكثر من نوع. وإن لم يُفعَّل أي نوع رجع النظام إلى النوع الواحد المحدَّد في إعداد جواز السفر السابق (الرمز 2 ما لم يُغيَّر).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsHiddenFromEmployee",
+      "label": "IsHiddenFromEmployee",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsHiddenFromEmployee",
+        "dom:DocumentType_IsHiddenFromEmployee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يُبقي وثائق هذا النوع خارج شاشة الوثائق الخاصة بالموظف.</p><p><strong>مثال.</strong> مفعّل لوثيقة تحتفظ بها الموارد البشرية عن الموظف لا له.</p><p><strong>لماذا يهم.</strong> لا يرى الموظف هذه الوثائق ولا يستطيع تسجيل واحدة منها. ولا تتأثر شاشات الموارد البشرية.</p>",
       "adminHtml": "",
       "stub": false
     }

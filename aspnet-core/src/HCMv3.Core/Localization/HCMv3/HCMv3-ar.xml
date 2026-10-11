@@ -7475,5 +7475,17 @@
     <text name="BackOn">العودة في {0}</text>
     <text name="CancelWholeLeave">إلغاء الإجازة كاملة</text>
     <text name="WorkflowRequestStatus_Withdrawn">مسحوب</text>
+    <text name="IsWithdrawable">يمكن للموظف سحبها</text>
+    <text name="IsHiddenFromEmployee">مخفي عن الموظف</text>
+    <text name="DocumentTypeSelfService">الخدمة الذاتية</text>
+    <text name="NewRequest">طلب جديد</text>
+    <text name="NewRequestTypeIsRequired">يرجى اختيار ما تحتاجه.</text>
+    <text name="RecordADocument">تسجيل وثيقة</text>
+    <text name="DocumentWithdrawals">طلبات سحب الوثائق</text>
+    <text name="WithdrawDocument">سحب الوثيقة</text>
+    <text name="RenewDocument">تجديد الوثيقة</text>
+    <text name="DocumentStatus">حالة الوثيقة</text>
+    <text name="ThatDocumentTypeCannotBeRecordedByAnEmployee">لا يمكن تسجيل هذا النوع من الوثائق عبر الخدمة الذاتية.</text>
+    <text name="IsLetterType">تصدر كخطاب</text>
   </texts>
 </localizationDictionary>

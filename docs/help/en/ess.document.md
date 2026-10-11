@@ -58,3 +58,48 @@ Recording a document is what lets the system warn you before it expires, and wha
 **Example.** A clear photo of the passport's photograph page.
 
 **Why it matters.** Without it HR has your word for the number and nothing to check it against, and they will ask you for a copy the first time somebody needs one. A legible scan now saves that. Attachments are kept in your company's file store, not in the database, and only people who may see your record may open them.
+
+## New Request {#ess.document.new-request}
+<!-- alias: loc:NewRequest -->
+
+**What it is.** The one button for everything you can ask for on this screen. Choose what you need and the right form opens: a document to record, a letter for the company to issue, or a document to take out of company custody.
+
+**Example.** Choose Passport under "Record a document" to add a renewed passport; choose Salary Certificate under "Request a letter"; choose Withdraw Document to take your passport out.
+
+**Why it matters.** What is offered depends on how your company has set up each document type, so the list may be shorter than a colleague's in another company. Each request is sent for approval on its own and appears in its own list below.
+
+## Document Status {#ess.document.document-status}
+<!-- alias: loc:DocumentStatus -->
+
+**What it is.** Where the document stands today: Active, Expired, or Inactive.
+
+**Example.** A passport renewed last month is Active; the passport it replaced shows Inactive.
+
+**Why it matters.** Nobody sets this. A document becomes Inactive by itself as soon as a newer one of the same type is on your file, and Expired once its expiry date has passed. Only the Active one can be withdrawn. A document still waiting for approval shows nothing here, because it is not on your file yet.
+
+## Doc. Movement Status {#ess.document.movement-status}
+<!-- alias: loc:DocumentMvmtStatus -->
+
+**What it is.** Whether the document is in the company's custody (In) or with you (Out).
+
+**Example.** Out, from the day an approved withdrawal starts until the document is recorded as returned.
+
+**Why it matters.** It is what HR sees when they look for the document. If it shows Out and you have handed it back, report the return from the Document Withdrawals list so the record matches.
+
+## Withdraw Document {#ess.document.withdraw-document}
+<!-- alias: loc:WithdrawDocument -->
+
+**What it is.** Asks to take this document out of company custody. The withdrawal form opens with the document already chosen.
+
+**Example.** Withdrawing your passport for a visa appointment.
+
+**Why it matters.** Available only for document types your company lets employees withdraw, and only for the Active document. If it is already out, asking again extends the date it is due back.
+
+## Renew Document {#ess.document.renew-document}
+<!-- alias: loc:RenewDocument -->
+
+**What it is.** Records a newer document of the same type. The form opens with the type already chosen.
+
+**Example.** Adding your new passport after a renewal, with its new number and dates.
+
+**Why it matters.** The old record is never overwritten. Once the new one is approved, the old one shows Inactive and stays on your file as history.
