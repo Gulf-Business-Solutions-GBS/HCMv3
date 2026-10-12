@@ -54,7 +54,38 @@ export class EssHomeComponent extends AppComponentBase implements OnInit {
 
     readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
 
-    readonly tiles = computed(() => this.context()?.availableTransactionTypes ?? []);
+    /**
+     * The transactions that share the one Documents screen: recording a document, withdrawing one, and
+     * asking for a letter. The same three the Documents menu entry stands for.
+     */
+    private static readonly documentScreenTypes = ['EmployeeDocument', 'EmployeeDocumentMvmt', 'EmployeeLetterRequest'];
+
+    /**
+     * One tile per screen. The catalog lists a transaction per row, but the three document transactions open
+     * the same screen, and three tiles leading to one place read as three different things. They are shown
+     * as a single Documents tile, where the first of them would have stood.
+     */
+    readonly tiles = computed(() => {
+        const types = this.context()?.availableTransactionTypes ?? [];
+        const documents = types.filter((type) => EssHomeComponent.documentScreenTypes.includes(type.code ?? ''));
+
+        if (documents.length < 2) {
+            return types;
+        }
+
+        const merged = new EssTransactionTypeDto();
+        merged.code = documents[0].code;
+        merged.nameEn = this.l('EssMyDocuments');
+        merged.nameAr = this.l('EssMyDocuments');
+        merged.essRoute = '/app/main/ess/document';
+        merged.iconClass = documents[0].iconClass;
+        merged.displayOrder = documents[0].displayOrder;
+
+        // "No approval needed" only when none of the three goes to an approver.
+        merged.isWorkflowEnabled = documents.some((type) => type.isWorkflowEnabled);
+
+        return types.filter((type) => type === documents[0] || !documents.includes(type)).map((type) => (type === documents[0] ? merged : type));
+    });
     readonly recent = computed(() => this.context()?.recentRequests ?? []);
 
     ngOnInit(): void {
