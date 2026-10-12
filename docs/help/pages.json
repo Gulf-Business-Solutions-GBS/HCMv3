@@ -8599,10 +8599,6 @@
           "loc": "Status"
         },
         {
-          "id": "ess.letter.ready-to-collect",
-          "loc": "ReadyToCollect"
-        },
-        {
           "id": "ess.common.new-request",
           "label": "RequestLetter",
           "loc": "RequestLetter"
@@ -8948,11 +8944,7 @@
         },
         {
           "id": "ess.document.document-status",
-          "loc": "DocumentStatus"
-        },
-        {
-          "id": "ess.document.movement-status",
-          "loc": "DocumentMvmtStatus"
+          "loc": "Status"
         },
         {
           "id": "ess.document.withdraw-document",
@@ -8973,10 +8965,6 @@
         {
           "id": "ess.common.not-linked",
           "loc": "CurrentUserHasNoEmployeeRecord"
-        },
-        {
-          "id": "ess.common.status",
-          "loc": "Status"
         },
         {
           "id": "ess.common.new-request",

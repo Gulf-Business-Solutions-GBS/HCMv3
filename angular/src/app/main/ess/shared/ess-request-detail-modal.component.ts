@@ -289,6 +289,7 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
                 value: registration.toValue({
                     values: this.fieldValues(),
                     employeeDisplay: this.employeeDisplay(),
+                    targetEntityId: served.targetEntityId,
                 }),
             } as Record<string, unknown>,
         };

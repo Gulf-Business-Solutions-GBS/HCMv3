@@ -7657,6 +7657,7 @@
     <text name="RecordADocument">Record a document</text>
     <text name="DocumentWithdrawals">Document Withdrawals</text>
     <text name="WithdrawDocument">Withdraw Document</text>
+    <text name="NewDocument">New Document</text>
     <text name="RenewDocument">Renew Document</text>
     <text name="DocumentStatus">Document Status</text>
     <text name="ThatDocumentTypeCannotBeRecordedByAnEmployee">That document type cannot be recorded through self service.</text>

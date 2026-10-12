@@ -57,34 +57,25 @@ Recording a document is what lets the system warn you before it expires, and wha
 
 **Example.** A clear photo of the passport's photograph page.
 
-**Why it matters.** Without it HR has your word for the number and nothing to check it against, and they will ask you for a copy the first time somebody needs one. A legible scan now saves that. Attachments are kept in your company's file store, not in the database, and only people who may see your record may open them.
+**Why it matters.** Without it HR has your word for the number and nothing to check it against, and they will ask you for a copy the first time somebody needs one. A legible scan now saves that. Attachments are kept in your company's file store, not in the database, and only people who may see your record may open them. To see them again later, open **Details** on the request, or choose Attachments from the row's Actions.
 
 ## New Request {#ess.document.new-request}
 <!-- alias: loc:NewRequest -->
 
-**What it is.** The one button for everything you can ask for on this screen. Choose what you need and the right form opens: a document to record, a letter for the company to issue, or a document to take out of company custody.
+**What it is.** The one button for everything you can ask for on this screen. Choose the request type — New Document, Withdraw Document or Print Letter — and press **Create**; the form for that request opens, and the document type is chosen on the form.
 
-**Example.** Choose Passport under "Record a document" to add a renewed passport; choose Salary Certificate under "Request a letter"; choose Withdraw Document to take your passport out.
+**Example.** Choose New Document to add a renewed passport; Print Letter to ask for a salary certificate; Withdraw Document to take your passport out.
 
-**Why it matters.** What is offered depends on how your company has set up each document type, so the list may be shorter than a colleague's in another company. Each request is sent for approval on its own and appears in its own list below.
+**Why it matters.** A request type your company has not switched on for you is not offered, so the list may be shorter than a colleague's in another company. Each request is sent for approval on its own and appears in its own list below.
 
-## Document Status {#ess.document.document-status}
-<!-- alias: loc:DocumentStatus -->
+## Status {#ess.document.document-status}
+<!-- alias: loc:Status -->
 
-**What it is.** Where the document stands today: Active, Expired, or Inactive.
+**What it is.** In the Documents list, where the document stands today: Active, Inactive or Expired. In the Document Withdrawals and Letters lists, where the request has got to: Draft, Open, Approved, Rejected or Withdrawn.
 
 **Example.** A passport renewed last month is Active; the passport it replaced shows Inactive.
 
-**Why it matters.** Nobody sets this. A document becomes Inactive by itself as soon as a newer one of the same type is on your file, and Expired once its expiry date has passed. Only the Active one can be withdrawn. A document still waiting for approval shows nothing here, because it is not on your file yet.
-
-## Doc. Movement Status {#ess.document.movement-status}
-<!-- alias: loc:DocumentMvmtStatus -->
-
-**What it is.** Whether the document is in the company's custody (In) or with you (Out).
-
-**Example.** Out, from the day an approved withdrawal starts until the document is recorded as returned.
-
-**Why it matters.** It is what HR sees when they look for the document. If it shows Out and you have handed it back, report the return from the Document Withdrawals list so the record matches.
+**Why it matters.** Nobody sets a document's status. It becomes Inactive by itself as soon as a newer one of the same type is on your file, and Expired once its expiry date has passed. Only the Active one can be withdrawn. A document you have asked for that is not on your file yet shows where the request is instead — Draft, Open or Rejected — until it is approved.
 
 ## Withdraw Document {#ess.document.withdraw-document}
 <!-- alias: loc:WithdrawDocument -->

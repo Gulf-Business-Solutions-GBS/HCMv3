@@ -68,7 +68,12 @@
                 <!-- With no saved record yet the chosen files wait here and are attached once the request has
                      been saved; a draft being continued lists the files it already has and adds to them at
                      once. One control either way: which of the two it does follows from the id. -->
-                <app-attachments #formAttachments entityType="EmployeeDocument" [entityId]="value().id ?? null" />
+                <app-attachments #formAttachments entityType="EmployeeDocument" [entityId]="value().id ?? null" [showLimitsHint]="false" />
+            </div>
+        } @else if (value().id) {
+            <div class="mt-4">
+                <!-- What was attached to the request, for whoever is reading it. -->
+                <app-attachments entityType="EmployeeDocument" [entityId]="value().id" [readonly]="true" [showLimitsHint]="false" />
             </div>
         }
     </div>

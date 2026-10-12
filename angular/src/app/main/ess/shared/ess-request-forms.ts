@@ -23,6 +23,9 @@ export interface EssRequestFormContext {
 
     /** "1042 - Ahmad Al Sayed", from the request's requester rather than from the transaction. */
     employeeDisplay: string;
+
+    /** The transaction row the request governs, which is what its files are attached to. */
+    targetEntityId?: number;
 }
 
 /** One transaction type's own form, and how to fill it from a request's projection. */
@@ -155,6 +158,7 @@ export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
     EmployeeLetterRequest: {
         component: LetterRequestFormComponent,
         toValue: (context): LetterRequestFormValue => ({
+            id: context.targetEntityId,
             employeeDisplay: context.values['Employee'] || context.employeeDisplay,
 
             // The picker is disabled in every mode this registry serves, so the id is never read.
@@ -171,6 +175,7 @@ export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
     EmployeeDocument: {
         component: DocumentRequestFormComponent,
         toValue: (context): DocumentRequestFormValue => ({
+            id: context.targetEntityId,
             employeeDisplay: context.values['Employee'] || context.employeeDisplay,
 
             // The picker is disabled in every mode this registry serves, so the id is never read.

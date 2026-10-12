@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "My Letter Requests",
   "entity": null,
-  "overviewHtml": "<p>Ask HR for a letter — a salary certificate, an employment letter, a no-objection letter for a visa or a driving licence — and follow it until it is ready to collect.</p><p>The letter is produced from your own record, so nothing is typed by hand and the figures on it are the ones the system holds. What you supply is who it is addressed to.</p>",
+  "overviewHtml": "<p>Ask HR for a letter — a salary certificate, an employment letter, a no-objection letter for a visa or a driving licence — and follow it until it is approved.</p><p>The letter is produced from your own record, so nothing is typed by hand and the figures on it are the ones the system holds. What you supply is who it is addressed to.</p><p>Once HR has printed the letter, the printed copy is kept on the request: open <strong>Details</strong> and it is listed under Attachments. Until HR prints it, nothing is listed there.</p>",
   "aliasIndex": {
     "loc:DocumentType": "ess.letter.document-type",
     "loc:EffectiveDate": "ess.letter.effective-date",
@@ -13,7 +13,6 @@
     "loc:EssMyRequests": "ess.common.my-requests",
     "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked",
     "loc:Status": "ess.common.status",
-    "loc:ReadyToCollect": "ess.letter.ready-to-collect",
     "loc:RequestLetter": "ess.common.new-request",
     "loc:WorkflowHistory": "ess.common.workflow-history",
     "loc:Withdraw": "ess.common.withdraw"
@@ -120,19 +119,6 @@
       "rules": null,
       "when": null,
       "html": "<p><strong>What it is.</strong> Where a request has got to. <strong>Draft</strong> is not submitted, <strong>Pending</strong> is waiting for somebody, <strong>Approved</strong> has been agreed and acted on, <strong>Rejected</strong> was turned down, and <strong>Withdrawn</strong> is one you took back yourself.</p><p><strong>Example.</strong> Pending — sitting with your line manager.</p><p><strong>Why it matters.</strong> Only an approved request changes anything: your balance, your pay or your record. A pending one has done nothing yet, whatever the form said when you filled it in.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "ess.letter.ready-to-collect",
-      "label": "ReadyToCollect",
-      "section": null,
-      "aliases": [
-        "loc:ReadyToCollect"
-      ],
-      "rules": null,
-      "when": null,
-      "html": "<p><strong>What it is.</strong> A mark on an approved request saying HR has produced the letter and it is waiting for you.</p><p><strong>Example.</strong> Approved on Sunday, ready to collect on Monday.</p><p><strong>Why it matters.</strong> Approved and ready are not the same thing. Approved means HR agreed to write it; this mark means it exists — which is when going to fetch it is worth the walk.</p>",
       "adminHtml": "",
       "stub": false
     },

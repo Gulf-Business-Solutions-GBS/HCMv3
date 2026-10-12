@@ -16,7 +16,7 @@ export interface DocumentRequestFormValue {
     /** "1042 - Ahmad Al Sayed". Shown, never chosen. */
     employeeDisplay: string;
 
-    /** The saved record when a draft is being continued. Its files are attached to it, so they are shown. */
+    /** The saved record: a draft being continued, or a request being read. Its files are attached to it, so they are shown. */
     id?: number;
 
     documentTypeId: number | null;

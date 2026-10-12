@@ -29,10 +29,6 @@
                                 <td>{{ addressee(row) }}</td>
                                 <td>
                                     <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
-                                    <!-- Approved and not yet collected: the one thing the employee is waiting to be told. -->
-                                    @if (row.canPrint) {
-                                        <span class="badge badge-info ms-1" data-help-loc="ReadyToCollect">{{ 'ReadyToCollect' | localize }}</span>
-                                    }
                                 </td>
                                 <td class="text-end">
                                     <!-- A draft, or a request an approver sent back, is picked up

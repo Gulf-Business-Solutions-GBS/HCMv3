@@ -5,6 +5,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EssLookupServiceProxy, SimpleLookupDto } from '@shared/service-proxies/service-proxies';
+import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 import { EssRequestFormMode } from '../my-exit-permit/exit-permit-form.component';
 
 /**
@@ -14,6 +15,9 @@ import { EssRequestFormMode } from '../my-exit-permit/exit-permit-form.component
 export interface LetterRequestFormValue {
     /** "1042 - Ahmad Al Sayed". Shown, never chosen. */
     employeeDisplay: string;
+
+    /** The saved request, when it is being read: the printed letter is kept on it as a file. */
+    id?: number;
 
     documentTypeId: number | null;
 
@@ -53,7 +57,7 @@ export function emptyLetterRequestForm(employeeDisplay = ''): LetterRequestFormV
 @Component({
     selector: 'letter-request-form',
     templateUrl: './letter-request-form.component.html',
-    imports: [DateInputDirective, CommonModule, FormsModule, LocalizePipe],
+    imports: [DateInputDirective, CommonModule, FormsModule, LocalizePipe, AttachmentsComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LetterRequestFormComponent extends AppComponentBase implements OnInit {

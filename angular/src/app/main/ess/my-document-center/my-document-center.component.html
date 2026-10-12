@@ -18,43 +18,32 @@
             </div>
         } @else {
             @if (choosing() && !formOpenIn()) {
-                <!-- What is needed decides which form opens: a document to record, a letter to be issued,
-                     or a document to take out. The types offered are the ones each document type's own
-                     switches allow. -->
+                <!-- Only what kind of request it is. The document type is chosen on the form that opens,
+                     where each form offers the types its own switches allow. -->
                 <div class="card card-custom gutter-b mb-5">
                     <div class="card-body">
                         <h5 class="card-title" data-help-loc="NewRequest">{{ 'NewRequest' | localize }}</h5>
 
                         <div class="row g-4">
-                            <div class="col-12 col-md-6 col-xl-5">
-                                <label class="form-label" data-help-loc="DocumentType">{{ 'DocumentType' | localize }} *</label>
-                                <select class="form-select" [(ngModel)]="choice" [compareWith]="sameChoice">
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <label class="form-label" data-help-loc="RequestType">{{ 'RequestType' | localize }} *</label>
+                                <select class="form-select" [(ngModel)]="choice">
                                     <option [ngValue]="null">--</option>
-                                    @if (showDocuments() && documentTypes().length) {
-                                        <optgroup [label]="'RecordADocument' | localize">
-                                            @for (type of documentTypes(); track type.id) {
-                                                <option [ngValue]="documentChoice(type)">{{ typeName(type) }}</option>
-                                            }
-                                        </optgroup>
-                                    }
-                                    @if (showLetters() && letterTypes().length) {
-                                        <optgroup [label]="'RequestLetter' | localize">
-                                            @for (type of letterTypes(); track type.id) {
-                                                <option [ngValue]="letterChoice(type)">{{ typeName(type) }}</option>
-                                            }
-                                        </optgroup>
+                                    @if (showDocuments()) {
+                                        <option ngValue="document">{{ 'NewDocument' | localize }}</option>
                                     }
                                     @if (showWithdrawals()) {
-                                        <optgroup [label]="'DocumentWithdrawals' | localize">
-                                            <option [ngValue]="withdrawalChoice">{{ 'WithdrawDocument' | localize }}</option>
-                                        </optgroup>
+                                        <option ngValue="withdrawal">{{ 'WithdrawDocument' | localize }}</option>
+                                    }
+                                    @if (showLetters()) {
+                                        <option ngValue="letter">{{ 'PrintLetter' | localize }}</option>
                                     }
                                 </select>
                             </div>
                         </div>
 
                         <div class="mt-4">
-                            <button class="btn btn-primary me-2" (click)="start()" data-help-loc="Continue">{{ 'Continue' | localize }}</button>
+                            <button class="btn btn-primary me-2" (click)="start()" data-help-loc="Create">{{ 'Create' | localize }}</button>
                             <button class="btn btn-light" (click)="closeChooser()">{{ 'Cancel' | localize }}</button>
                         </div>
                     </div>

@@ -57,6 +57,13 @@
                 }
             </div>
         </div>
+
+        @if (readOnly() && value().id) {
+            <div class="mt-4">
+                <!-- The printed letter, once HR has printed it. Read, never changed, from here. -->
+                <app-attachments entityType="EmployeeLetterRequest" [entityId]="value().id" [readonly]="true" [showLimitsHint]="false" />
+            </div>
+        }
     </div>
 </div>
 

@@ -5,13 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import {
-    EssContextDto,
-    EssLookupServiceProxy,
-    EssSessionServiceProxy,
-    MyDocumentRequestDto,
-    SimpleLookupDto,
-} from '@shared/service-proxies/service-proxies';
+import { EssContextDto, EssSessionServiceProxy, MyDocumentRequestDto } from '@shared/service-proxies/service-proxies';
 import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { MyDocumentComponent } from '../my-document/my-document.component';
@@ -19,12 +13,8 @@ import { MyLetterComponent } from '../my-letter/my-letter.component';
 import { MyPassportWithdrawalComponent } from '../my-passport-withdrawal/my-passport-withdrawal.component';
 import { EssRequestDetailModalComponent } from '../shared/ess-request-detail-modal.component';
 
-/** What New Request was asked for: a document or a letter of a given type, or a withdrawal. */
-interface NewRequestChoice {
-    kind: 'document' | 'letter' | 'withdrawal';
-    typeId?: number;
-    label: string;
-}
+/** What New Request was asked for. The document type is chosen on the form that opens. */
+type NewRequestChoice = 'document' | 'withdrawal' | 'letter';
 
 /**
  * The one self-service screen for everything an employee does with documents: recording a new or renewed
@@ -34,7 +24,7 @@ interface NewRequestChoice {
  * transaction with its own workflow request -- a document (<c>EmployeeDocument</c>), a movement
  * (<c>EmployeeDocumentMvmt</c>), a letter (<c>EmployeeLetterRequest</c>) -- so the approval chain, the log,
  * the comments and the notifications are the engine's, exactly as for any other type. What this screen adds
- * is only the front door: one New Request button, where the document type chosen decides which form opens,
+ * is only the front door: one New Request button, where the request type chosen decides which form opens,
  * and the three lists side by side so a document and what has been asked of it are read together.</p>
  *
  * <p>Nothing here knows about passports or salary certificates. Which types can be recorded, withdrawn or
@@ -61,7 +51,6 @@ interface NewRequestChoice {
 })
 export class MyDocumentCenterComponent extends AppComponentBase implements OnInit {
     private readonly _essSessionService = inject(EssSessionServiceProxy);
-    private readonly _lookups = inject(EssLookupServiceProxy);
 
     /** A request named in the address, waiting for the lists to arrive so it can be opened. Used once. */
     private requestToOpen: number | undefined = Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
@@ -83,11 +72,6 @@ export class MyDocumentCenterComponent extends AppComponentBase implements OnIni
 
     /** The New Request chooser is open. */
     readonly choosing = signal(false);
-
-    /** What the chooser offers, by group. Fetched once, the first time it is opened. */
-    readonly documentTypes = signal<SimpleLookupDto[]>([]);
-    readonly letterTypes = signal<SimpleLookupDto[]>([]);
-    private choicesLoaded = false;
 
     /** The chooser's current pick; reset each time it opens. */
     choice: NewRequestChoice | null = null;
@@ -177,49 +161,14 @@ export class MyDocumentCenterComponent extends AppComponentBase implements OnIni
         return !!this.context()?.availableTransactionTypes?.some((type) => type.code === code);
     }
 
-    /** New Request: asks what is needed, then opens the form that request is made on. */
+    /** New Request: asks which kind of request it is, then opens the form that request is made on. */
     openChooser(): void {
         this.choice = null;
         this.choosing.set(true);
-
-        if (this.choicesLoaded) {
-            return;
-        }
-
-        this.choicesLoaded = true;
-
-        if (this.showDocuments()) {
-            this._lookups.getDocumentTypes().subscribe({
-                next: (result) => this.documentTypes.set(result ?? []),
-                error: () => this.documentTypes.set([]),
-            });
-        }
-
-        if (this.showLetters()) {
-            this._lookups.getLetterTypes().subscribe({
-                next: (result) => this.letterTypes.set(result ?? []),
-                error: () => this.letterTypes.set([]),
-            });
-        }
     }
 
     closeChooser(): void {
         this.choosing.set(false);
-    }
-
-    documentChoice(type: SimpleLookupDto): NewRequestChoice {
-        return { kind: 'document', typeId: type.id, label: this.typeName(type) };
-    }
-
-    letterChoice(type: SimpleLookupDto): NewRequestChoice {
-        return { kind: 'letter', typeId: type.id, label: this.typeName(type) };
-    }
-
-    readonly withdrawalChoice: NewRequestChoice = { kind: 'withdrawal', label: '' };
-
-    /** The same choice object each time, so the picker can tell which option is selected. */
-    sameChoice(a: NewRequestChoice | null, b: NewRequestChoice | null): boolean {
-        return !!a && !!b && a.kind === b.kind && a.typeId === b.typeId;
     }
 
     /** Opens the form the chosen request is made on, in the section that owns it. */
@@ -233,12 +182,12 @@ export class MyDocumentCenterComponent extends AppComponentBase implements OnIni
 
         this.choosing.set(false);
 
-        switch (choice.kind) {
+        switch (choice) {
             case 'document':
-                this.documents()?.openFormForType(choice.typeId as number, choice.label);
+                this.documents()?.openForm();
                 break;
             case 'letter':
-                this.letters()?.openFormForType(choice.typeId as number, choice.label);
+                this.letters()?.openForm();
                 break;
             default:
                 this.withdrawals()?.openForm();
@@ -250,10 +199,6 @@ export class MyDocumentCenterComponent extends AppComponentBase implements OnIni
         const type = this.isRtl ? row.documentTypeNameAr || row.documentTypeNameEn || '' : row.documentTypeNameEn || '';
 
         this.withdrawals()?.openFormForDocument(row.id, row.documentNum ? type + ' - ' + row.documentNum : type);
-    }
-
-    typeName(type: SimpleLookupDto): string {
-        return this.isRtl ? type.nameAr || type.nameEn || '' : type.nameEn || '';
     }
 
     private get isRtl(): boolean {

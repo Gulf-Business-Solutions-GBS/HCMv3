@@ -28,7 +28,7 @@ import { LetterRequestFormComponent, LetterRequestFormValue, emptyLetterRequestF
  * Cancel, so the Details view and an approver are shown the very same form read-only.</p>
  *
  * <p>A section of the one Documents screen (<c>my-document-center</c>), which owns the page heading and the
- * New Request button and opens this form for a letter type through <c>openFormForType</c>.</p>
+ * New Request button and opens this form through <c>openForm</c>.</p>
  */
 @Component({
     selector: 'ess-letter-requests',
@@ -107,12 +107,6 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
         form.effectiveDate = DateTime.local().toFormat('yyyy-MM-dd');
 
         this.form = form;
-    }
-
-    /** Opens the form for a new request with the letter type already chosen, as the host's New Request does. */
-    openFormForType(documentTypeId: number, label: string): void {
-        this.openForm();
-        this.form = { ...this.form, documentTypeId, documentTypeLabel: label };
     }
 
     /**

@@ -10,9 +10,11 @@ permissions: [Ess.MyLetterRequests]
 
 ## Overview
 
-Ask HR for a letter — a salary certificate, an employment letter, a no-objection letter for a visa or a driving licence — and follow it until it is ready to collect.
+Ask HR for a letter — a salary certificate, an employment letter, a no-objection letter for a visa or a driving licence — and follow it until it is approved.
 
 The letter is produced from your own record, so nothing is typed by hand and the figures on it are the ones the system holds. What you supply is who it is addressed to.
+
+Once HR has printed the letter, the printed copy is kept on the request: open **Details** and it is listed under Attachments. Until HR prints it, nothing is listed there.
 
 ## Letter type {#ess.letter.document-type}
 <!-- alias: loc:DocumentType -->
@@ -49,12 +51,3 @@ The letter is produced from your own record, so nothing is typed by hand and the
 **Example.** بنك الخليج — فرع السالمية
 
 **Why it matters.** Government bodies and most local banks want the Arabic letter, and they want their own name as they write it. Copy it from something they issued rather than translating it yourself.
-
-## Ready to collect {#ess.letter.ready-to-collect}
-<!-- alias: loc:ReadyToCollect -->
-
-**What it is.** A mark on an approved request saying HR has produced the letter and it is waiting for you.
-
-**Example.** Approved on Sunday, ready to collect on Monday.
-
-**Why it matters.** Approved and ready are not the same thing. Approved means HR agreed to write it; this mark means it exists — which is when going to fetch it is worth the walk.

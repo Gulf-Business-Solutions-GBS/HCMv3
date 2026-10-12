@@ -31,8 +31,8 @@ import { DocumentRequestFormComponent, DocumentRequestFormValue, emptyDocumentRe
  * Cancel, so the Details view and an approver are shown the very same form read-only.</p>
  *
  * <p>A section of the one Documents screen (<c>my-document-center</c>), which owns the page heading and the
- * New Request button. Each row says what the document is today -- active, expired or superseded, in the safe
- * or out -- and its Actions menu is where a withdrawal or a renewal starts.</p>
+ * New Request button. Each row says what the document is today -- active, inactive or expired -- and its
+ * Actions menu is where a withdrawal or a renewal starts.</p>
  */
 @Component({
     selector: 'ess-documents',
@@ -83,9 +83,7 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         { key: 'number', label: 'DocumentNumber', text: (row) => row.documentNum },
         { key: 'issueDate', label: 'IssueDate', text: (row) => this.detailDate(row.issueDate), sort: (row) => row.issueDate?.toMillis() },
         { key: 'expiryDate', label: 'ExpiryDate', text: (row) => this.detailDate(row.expiryDate), sort: (row) => row.expiryDate?.toMillis() },
-        { key: 'documentStatus', label: 'DocumentStatus', text: (row) => this.documentStatusLabel(row), filter: 'select' },
-        { key: 'custody', label: 'DocumentMvmtStatus', text: (row) => this.custodyLabel(row), filter: 'select' },
-        { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
+        { key: 'status', label: 'Status', text: (row) => this.rowStatusLabel(row), filter: 'select' },
     ]);
 
     /** The form component, which holds the files chosen on it until the request exists to attach them to. */
@@ -138,18 +136,32 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         this.form = { ...this.form, documentTypeId, documentTypeLabel: label };
     }
 
-    /** Active, Expired or Inactive. Empty for a document not in effect yet, which has no standing to report. */
-    documentStatusLabel(row: MyDocumentRequestDto): string {
-        return row.documentStatus === undefined || row.documentStatus === null ? '' : this.l(DocumentStatus[row.documentStatus]);
+    /**
+     * The one status a row shows: Active, Inactive or Expired once the document is in effect. A request
+     * still on its way -- a draft, one awaiting approval, one rejected -- has no such standing yet, so it
+     * shows where the request is instead.
+     */
+    rowStatusLabel(row: MyDocumentRequestDto): string {
+        return this.isInEffect(row) ? this.l(DocumentStatus[row.documentStatus]) : this.statusLabel(row);
     }
 
-    /** In the safe or out with the employee. Empty for a document not in effect yet. */
-    custodyLabel(row: MyDocumentRequestDto): string {
-        if (row.documentStatus === undefined || row.documentStatus === null) {
-            return '';
+    rowStatusClass(row: MyDocumentRequestDto): string {
+        if (!this.isInEffect(row)) {
+            return this.statusClass(row);
         }
 
-        return this.l(row.isOut ? 'DocumentMvmtStatusOUT' : 'DocumentMvmtStatusIN');
+        switch (row.documentStatus) {
+            case DocumentStatus.Active:
+                return 'badge-success';
+            case DocumentStatus.Expired:
+                return 'badge-danger';
+            default:
+                return 'badge-secondary';
+        }
+    }
+
+    private isInEffect(row: MyDocumentRequestDto): boolean {
+        return row.documentStatus !== undefined && row.documentStatus !== null;
     }
 
     showMenu(event: Event, row: MyDocumentRequestDto, menu: TieredMenu): void {

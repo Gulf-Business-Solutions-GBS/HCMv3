@@ -7492,6 +7492,7 @@
     <text name="RecordADocument">تسجيل وثيقة</text>
     <text name="DocumentWithdrawals">طلبات سحب الوثائق</text>
     <text name="WithdrawDocument">سحب الوثيقة</text>
+    <text name="NewDocument">وثيقة جديدة</text>
     <text name="RenewDocument">تجديد الوثيقة</text>
     <text name="DocumentStatus">حالة الوثيقة</text>
     <text name="ThatDocumentTypeCannotBeRecordedByAnEmployee">لا يمكن تسجيل هذا النوع من الوثائق عبر الخدمة الذاتية.</text>
