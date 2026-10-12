@@ -29,6 +29,7 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
 
     private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IEmployeeDocumentDuplicateCheck _duplicateCheck;
+    private readonly IEmployeeDocumentDateRules _dateRules;
     private readonly IRepository<Employee> _employeeRepository;
 
     public DocumentWorkflowTransactionHandler(
@@ -36,11 +37,13 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
         IRepository<DocumentType> documentTypeRepository,
         IUnitOfWorkManager unitOfWorkManager,
         IEmployeeDocumentDuplicateCheck duplicateCheck,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        IEmployeeDocumentDateRules dateRules)
         : base(repository, unitOfWorkManager)
     {
         _documentTypeRepository = documentTypeRepository;
         _duplicateCheck = duplicateCheck;
+        _dateRules = dateRules;
         _employeeRepository = employeeRepository;
     }
 
@@ -54,10 +57,9 @@ public class DocumentWorkflowTransactionHandler : WorkflowTransactionHandlerBase
             return;
         }
 
-        if (document.ExpiryDate.Date < document.IssueDate.Date)
-        {
-            throw new UserFriendlyException(L("ExpiryDateCannotBeEarlierThanIssueDate"));
-        }
+        // Legacy's date rules: required expiry, issue before expiry, no overlapping documents of the type.
+        await _dateRules.EnsureValidAsync(
+            document.EmployeeId, document.DocumentTypeId, document.IssueDate, document.ExpiryDate, document.Id);
 
         if (document.DocumentNum.IsNullOrWhiteSpace())
         {

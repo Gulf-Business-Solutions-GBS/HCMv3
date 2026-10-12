@@ -174,7 +174,11 @@ public class RequestDocumentInput
 
     public DateTime IssueDate { get; set; }
 
-    public DateTime ExpiryDate { get; set; }
+    /// <summary>
+    /// Left out for a document with no expiry date. Whether one must be given is a switch on the document
+    /// type (<c>IsExpiryDateRequired</c>), so the server decides rather than the form.
+    /// </summary>
+    public DateTime? ExpiryDate { get; set; }
 
     public string Comments { get; set; }
 }

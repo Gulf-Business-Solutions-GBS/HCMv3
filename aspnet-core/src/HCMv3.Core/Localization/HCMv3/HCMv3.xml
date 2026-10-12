@@ -7668,5 +7668,9 @@
     <text name="DocumentTypeIsNotDefined">Document Type is not defined.</text>
     <text name="NoReportFoundForDocumentType">No report found for Document Type : {0}</text>
     <text name="PrintReportIsNotAvailable">The report {0} is not available.</text>
+    <text name="IsExpiryDateRequired">Expiry Date Required</text>
+    <text name="AllowDateOverlap">Allow Date Overlap</text>
+    <text name="DocumentDatesOverlap">Issue or expiry date overlaps a {0} already on file ({1} to {2}).</text>
+    <text name="DocumentIssueDateAlreadyOnFile">A {0} with issue date {1} is already on file.</text>
   </texts>
 </localizationDictionary>

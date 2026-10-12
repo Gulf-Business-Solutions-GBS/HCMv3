@@ -18,10 +18,9 @@ namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
 /// Application service for <see cref="EmployeeDocument"/> (ported from legacy XAF EmployeeDocument
-/// business object). Legacy <c>PerformValidation</c>'s overlap check depends on
-/// <c>DocumentType.AllowDateOverlap</c>/<c>DocumentType.IsExpiryDateRequired</c>, neither of which exist
-/// on the already-ported <see cref="HCMv3.GeneralMasterInfo.DocumentType"/> entity -- that overlap check
-/// is therefore NOT ported (deliberate Wave A deferral). The computed <c>IsActive</c> and
+/// business object). Legacy <c>PerformValidation</c>'s date rules -- required expiry, issue before expiry,
+/// no overlapping documents of a type -- are applied through <c>IEmployeeDocumentDateRules</c>, the same
+/// rules the employee's own request and the approval handler apply. The computed <c>IsActive</c> and
 /// <c>DocumentMvmtStatus</c>/<c>DaysLeft</c> legacy properties are computed here at the DTO level, not
 /// stored columns. The <c>DocAttachment</c> child is skipped entirely (see Wave A deferral notes).
 /// </summary>
@@ -31,12 +30,15 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
     private readonly IRepository<EmployeeDocument> _repository;
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly IRepository<EmployeeDocumentMvmt> _movementRepository;
+    private readonly HCMv3.PersonnelAdministration.Services.IEmployeeDocumentDateRules _dateRules;
 
     public EmployeeDocumentsAppService(
         IRepository<EmployeeDocument> repository,
         IRepository<EmployeeDocumentMvmt> movementRepository,
-        IAdminTransactionSubmitter transactionSubmitter)
+        IAdminTransactionSubmitter transactionSubmitter,
+        HCMv3.PersonnelAdministration.Services.IEmployeeDocumentDateRules dateRules)
     {
+        _dateRules = dateRules;
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _movementRepository = movementRepository;
@@ -103,6 +105,9 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDocuments_Create)]
     protected virtual async Task CreateAsync(CreateOrEditEmployeeDocumentDto input)
     {
+        // Against what was typed, before a blank expiry date becomes "never expires".
+        await _dateRules.EnsureValidAsync(input.EmployeeId, input.DocumentTypeId, input.IssueDate, input.ExpiryDate, null);
+
         var entity = MapToEntity(input, new EmployeeDocument());
         entity.TenantId = AbpSession.TenantId ?? 0;
         // Routed for approval when the catalog says so, and simply filed when it does not -- the same
@@ -120,6 +125,8 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDocuments_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeDocumentDto input)
     {
+        await _dateRules.EnsureValidAsync(input.EmployeeId, input.DocumentTypeId, input.IssueDate, input.ExpiryDate, input.Id);
+
         var entity = await _repository.GetAsync(input.Id.Value);
         MapToEntity(input, entity);
         await _repository.UpdateAsync(entity);
@@ -131,7 +138,7 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
         await _repository.DeleteAsync(input.Id);
     }
 
-    private static readonly DateTime InfiniteExpiryDate = new DateTime(9999, 12, 31);
+    private static readonly DateTime InfiniteExpiryDate = EmployeeDocument.NoExpiryDate;
 
     private static EmployeeDocument MapToEntity(CreateOrEditEmployeeDocumentDto input, EmployeeDocument entity)
     {

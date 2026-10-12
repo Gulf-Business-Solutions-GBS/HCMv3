@@ -28,7 +28,11 @@
     "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
     "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
     "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
-    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee"
+    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "loc:IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "dom:DocumentType_IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "loc:AllowDateOverlap": "DocumentType.AllowDateOverlap",
+    "dom:DocumentType_AllowDateOverlap": "DocumentType.AllowDateOverlap"
   },
   "fields": [
     {
@@ -196,6 +200,34 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Keeps documents of this type out of the employee's own Documents screen.</p><p><strong>Example.</strong> Ticked for a document HR holds about the employee and not for them.</p><p><strong>Why it matters.</strong> The employee neither sees these documents nor can record one. HR's own screens are not affected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsExpiryDateRequired",
+      "label": "IsExpiryDateRequired",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsExpiryDateRequired",
+        "dom:DocumentType_IsExpiryDateRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a document of this type must carry an expiry date.</p><p><strong>Example.</strong> Ticked for Passport and Civil ID; unticked for a qualification certificate, which does not expire.</p><p><strong>Why it matters.</strong> When ticked, a document saved without an expiry date is refused, on HR's screen and on the employee's own request. When unticked, the expiry date may be left blank and the document is treated as never expiring. It also changes how Allow Date Overlap compares two documents.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.AllowDateOverlap",
+      "label": "AllowDateOverlap",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:AllowDateOverlap",
+        "dom:DocumentType_AllowDateOverlap"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether an employee may hold two documents of this type whose dates overlap.</p><p><strong>Example.</strong> Unticked for Passport: a second passport dated inside the first one's validity is refused.</p><p><strong>Why it matters.</strong> When unticked, a new document of the type is refused if its issue-to-expiry period overlaps one already on the employee's file. For a type with no required expiry date, only two documents issued on the same day clash. <strong>A renewal entered before the old document runs out counts as an overlap</strong>, so tick this for types that are renewed early. Document types that existed before this switch was added were ticked automatically, so nothing that was accepted before is refused now.</p>",
       "adminHtml": "",
       "stub": false
     }

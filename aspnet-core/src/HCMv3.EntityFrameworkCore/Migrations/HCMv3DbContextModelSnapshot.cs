@@ -6480,6 +6480,9 @@ namespace HCMv3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("AllowDateOverlap")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Code")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -6503,6 +6506,9 @@ namespace HCMv3.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsExpiryDateRequired")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsHiddenFromEmployee")

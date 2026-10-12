@@ -40,4 +40,10 @@ public class DocumentTypeDto : EntityDto<int>
 
     /// <summary>Kept out of the employee's own view. See <see cref="DocumentType.IsHiddenFromEmployee"/>.</summary>
     public bool IsHiddenFromEmployee { get; set; }
+
+    /// <summary>A document of this type must carry an expiry date. See <see cref="DocumentType.IsExpiryDateRequired"/>.</summary>
+    public bool IsExpiryDateRequired { get; set; }
+
+    /// <summary>An employee may hold two documents of this type whose dates overlap. See <see cref="DocumentType.AllowDateOverlap"/>.</summary>
+    public bool AllowDateOverlap { get; set; }
 }

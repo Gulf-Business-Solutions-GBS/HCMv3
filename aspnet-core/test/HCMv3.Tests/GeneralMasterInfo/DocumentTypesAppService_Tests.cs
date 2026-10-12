@@ -93,6 +93,37 @@ public class DocumentTypesAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Save_And_Change_The_Date_Switches()
+    {
+        await _documentTypes.CreateOrEdit(new CreateOrEditDocumentTypeDto
+        {
+            NameEn = "Switch test dates",
+            NameAr = "Switch test dates ar",
+            IsExpiryDateRequired = true
+        });
+
+        var stored = Stored("Switch test dates");
+
+        stored.IsExpiryDateRequired.ShouldBeTrue();
+
+        // As legacy defaults it: a new type does not allow overlapping documents until somebody says so.
+        stored.AllowDateOverlap.ShouldBeFalse();
+
+        var edit = (await _documentTypes.GetDocumentTypeForEdit(new EntityDto(stored.Id))).DocumentType;
+        edit.IsExpiryDateRequired.ShouldBeTrue();
+
+        edit.IsExpiryDateRequired = false;
+        edit.AllowDateOverlap = true;
+
+        await _documentTypes.CreateOrEdit(edit);
+
+        stored = Stored("Switch test dates");
+
+        stored.IsExpiryDateRequired.ShouldBeFalse();
+        stored.AllowDateOverlap.ShouldBeTrue();
+    }
+
+    [Fact]
     public async Task Should_Return_The_Switches_In_The_List()
     {
         await _documentTypes.CreateOrEdit(new CreateOrEditDocumentTypeDto

@@ -84,4 +84,18 @@ public class DocumentType : FullAuditedEntity, IMustHaveTenant
     /// <c>IsHiddenFromEmployee</c>) -- something HR records about an employee rather than for them.
     /// </summary>
     public virtual bool IsHiddenFromEmployee { get; set; }
+
+    /// <summary>
+    /// Whether a document of this type must carry an expiry date (legacy <c>IsExpiryDateRequired</c>). It also
+    /// decides how two documents of the type are compared when <see cref="AllowDateOverlap"/> is off: by
+    /// their whole periods when an expiry is required, by issue date alone when it is not.
+    /// </summary>
+    public virtual bool IsExpiryDateRequired { get; set; }
+
+    /// <summary>
+    /// Whether an employee may hold two documents of this type whose dates overlap (legacy
+    /// <c>AllowDateOverlap</c>). Off, as legacy defaults it, a renewal entered before the old document has
+    /// run out is refused. See <c>EmployeeDocumentDateRules</c>.
+    /// </summary>
+    public virtual bool AllowDateOverlap { get; set; }
 }

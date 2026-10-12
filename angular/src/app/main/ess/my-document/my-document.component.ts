@@ -228,10 +228,7 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
             return;
         }
 
-        if (!this.form.expiryDate) {
-            this.message.warn(this.l('ExpiryDateIsRequired'));
-            return;
-        }
+        // Whether an expiry date must be given is a switch on the document type, so the server decides.
 
         const draftId = this.editingId();
 
@@ -254,7 +251,7 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
         input.documentTypeId = this.form.documentTypeId;
         input.documentNum = this.form.documentNum.trim();
         input.issueDate = DateTime.fromISO(this.form.issueDate);
-        input.expiryDate = DateTime.fromISO(this.form.expiryDate);
+        input.expiryDate = this.form.expiryDate ? DateTime.fromISO(this.form.expiryDate) : undefined;
         input.comments = this.form.comments;
 
         void this.run(async () => {

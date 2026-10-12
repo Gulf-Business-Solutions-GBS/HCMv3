@@ -95,3 +95,21 @@ The reminder settings on this form are stored, but no process reads them at pres
 **Example.** Ticked for a document HR holds about the employee and not for them.
 
 **Why it matters.** The employee neither sees these documents nor can record one. HR's own screens are not affected.
+
+## IsExpiryDateRequired {#DocumentType.IsExpiryDateRequired}
+<!-- alias: loc:IsExpiryDateRequired, dom:DocumentType_IsExpiryDateRequired -->
+
+**What it is.** Whether a document of this type must carry an expiry date.
+
+**Example.** Ticked for Passport and Civil ID; unticked for a qualification certificate, which does not expire.
+
+**Why it matters.** When ticked, a document saved without an expiry date is refused, on HR's screen and on the employee's own request. When unticked, the expiry date may be left blank and the document is treated as never expiring. It also changes how Allow Date Overlap compares two documents.
+
+## AllowDateOverlap {#DocumentType.AllowDateOverlap}
+<!-- alias: loc:AllowDateOverlap, dom:DocumentType_AllowDateOverlap -->
+
+**What it is.** Whether an employee may hold two documents of this type whose dates overlap.
+
+**Example.** Unticked for Passport: a second passport dated inside the first one's validity is refused.
+
+**Why it matters.** When unticked, a new document of the type is refused if its issue-to-expiry period overlaps one already on the employee's file. For a type with no required expiry date, only two documents issued on the same day clash. **A renewal entered before the old document runs out counts as an overlap**, so tick this for types that are renewed early. Document types that existed before this switch was added were ticked automatically, so nothing that was accepted before is refused now.

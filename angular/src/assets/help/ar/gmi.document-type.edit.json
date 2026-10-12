@@ -28,7 +28,11 @@
     "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
     "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
     "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
-    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee"
+    "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "loc:IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "dom:DocumentType_IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
+    "loc:AllowDateOverlap": "DocumentType.AllowDateOverlap",
+    "dom:DocumentType_AllowDateOverlap": "DocumentType.AllowDateOverlap"
   },
   "fields": [
     {
@@ -196,6 +200,34 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> يُبقي وثائق هذا النوع خارج شاشة الوثائق الخاصة بالموظف.</p><p><strong>مثال.</strong> مفعّل لوثيقة تحتفظ بها الموارد البشرية عن الموظف لا له.</p><p><strong>لماذا يهم.</strong> لا يرى الموظف هذه الوثائق ولا يستطيع تسجيل واحدة منها. ولا تتأثر شاشات الموارد البشرية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.IsExpiryDateRequired",
+      "label": "IsExpiryDateRequired",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:IsExpiryDateRequired",
+        "dom:DocumentType_IsExpiryDateRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يجب أن تحمل وثيقة هذا النوع تاريخ انتهاء.</p><p><strong>مثال.</strong> مفعّل لجواز السفر والبطاقة المدنية، وغير مفعّل لشهادة مؤهل لا تنتهي صلاحيتها.</p><p><strong>لماذا يهم.</strong> عند التفعيل تُرفض الوثيقة المحفوظة دون تاريخ انتهاء، في شاشة الموارد البشرية وفي طلب الموظف نفسه. وعند عدم التفعيل يجوز ترك تاريخ الانتهاء فارغاً وتُعدّ الوثيقة غير منتهية أبداً. ويغيّر كذلك طريقة مقارنة الوثيقتين في خيار السماح بتداخل التواريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.AllowDateOverlap",
+      "label": "AllowDateOverlap",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:AllowDateOverlap",
+        "dom:DocumentType_AllowDateOverlap"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يجوز أن يحمل الموظف وثيقتين من هذا النوع تتداخل تواريخهما.</p><p><strong>مثال.</strong> غير مفعّل لجواز السفر: يُرفض جواز ثانٍ يقع تاريخه ضمن مدة صلاحية الأول.</p><p><strong>لماذا يهم.</strong> عند عدم التفعيل تُرفض الوثيقة الجديدة إذا تداخلت مدتها من الإصدار إلى الانتهاء مع وثيقة مسجّلة في ملف الموظف. وللنوع الذي لا يُشترط له تاريخ انتهاء لا تتعارض إلا وثيقتان صادرتان في اليوم نفسه. <strong>والتجديد المُدخل قبل انتهاء الوثيقة القديمة يُعدّ تداخلاً</strong>، ففعّل هذا الخيار للأنواع التي تُجدَّد مبكراً. وأنواع الوثائق الموجودة قبل إضافة هذا الخيار فُعّل لها تلقائياً، فلا يُرفض الآن ما كان مقبولاً من قبل.</p>",
       "adminHtml": "",
       "stub": false
     }

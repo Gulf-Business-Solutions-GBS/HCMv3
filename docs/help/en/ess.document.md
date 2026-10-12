@@ -48,7 +48,7 @@ Recording a document is what lets the system warn you before it expires, and wha
 
 **Example.** 2 March 2034.
 
-**Why it matters.** This is the date the system watches. Reminders go out ahead of it, and an expired passport or civil ID stops residency renewals and travel — so it is the one field here worth checking twice.
+**Why it matters.** This is the date the system watches. Reminders go out ahead of it, and an expired passport or civil ID stops residency renewals and travel — so it is the one field here worth checking twice. Whether it must be filled in depends on the document type: for a type that does not expire you may leave it blank. For some types the dates also may not overlap a document of the same type already on your file; if the request is refused for that reason, ask HR.
 
 ## Attachments {#ess.document.attachments}
 <!-- alias: loc:Attachments -->

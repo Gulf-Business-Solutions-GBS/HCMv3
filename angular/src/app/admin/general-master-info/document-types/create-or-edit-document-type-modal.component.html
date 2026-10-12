@@ -190,6 +190,26 @@
                                     (ngModelChange)="updateField('isHiddenFromEmployee', $event)" />
                                 <label class="form-check-label" for="DocumentType_IsHiddenFromEmployee">{{ 'IsHiddenFromEmployee' | localize }}</label>
                             </div>
+                            <div class="form-check form-check-custom form-check-solid mb-3">
+                                <input
+                                    id="DocumentType_IsExpiryDateRequired"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsExpiryDateRequired"
+                                    [ngModel]="documentType().isExpiryDateRequired"
+                                    (ngModelChange)="updateField('isExpiryDateRequired', $event)" />
+                                <label class="form-check-label" for="DocumentType_IsExpiryDateRequired">{{ 'IsExpiryDateRequired' | localize }}</label>
+                            </div>
+                            <div class="form-check form-check-custom form-check-solid mb-3">
+                                <input
+                                    id="DocumentType_AllowDateOverlap"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="AllowDateOverlap"
+                                    [ngModel]="documentType().allowDateOverlap"
+                                    (ngModelChange)="updateField('allowDateOverlap', $event)" />
+                                <label class="form-check-label" for="DocumentType_AllowDateOverlap">{{ 'AllowDateOverlap' | localize }}</label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

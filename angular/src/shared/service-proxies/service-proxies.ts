@@ -182308,6 +182308,8 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
     isWithdrawable!: boolean;
     includeInWorkflow!: boolean;
     isHiddenFromEmployee!: boolean;
+    isExpiryDateRequired!: boolean;
+    allowDateOverlap!: boolean;
 
     constructor(data?: ICreateOrEditDocumentTypeDto) {
         if (data) {
@@ -182333,6 +182335,8 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
             this.isWithdrawable = _data["isWithdrawable"];
             this.includeInWorkflow = _data["includeInWorkflow"];
             this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
+            this.isExpiryDateRequired = _data["isExpiryDateRequired"];
+            this.allowDateOverlap = _data["allowDateOverlap"];
         }
     }
 
@@ -182358,6 +182362,8 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
         data["isWithdrawable"] = this.isWithdrawable;
         data["includeInWorkflow"] = this.includeInWorkflow;
         data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
+        data["isExpiryDateRequired"] = this.isExpiryDateRequired;
+        data["allowDateOverlap"] = this.allowDateOverlap;
         return data;
     }
 }
@@ -182376,6 +182382,8 @@ export interface ICreateOrEditDocumentTypeDto {
     isWithdrawable: boolean;
     includeInWorkflow: boolean;
     isHiddenFromEmployee: boolean;
+    isExpiryDateRequired: boolean;
+    allowDateOverlap: boolean;
 }
 
 export class CreateOrEditDomainTypeDto implements ICreateOrEditDomainTypeDto {
@@ -205369,6 +205377,8 @@ export class DocumentTypeDto implements IDocumentTypeDto {
     isWithdrawable!: boolean;
     includeInWorkflow!: boolean;
     isHiddenFromEmployee!: boolean;
+    isExpiryDateRequired!: boolean;
+    allowDateOverlap!: boolean;
 
     constructor(data?: IDocumentTypeDto) {
         if (data) {
@@ -205395,6 +205405,8 @@ export class DocumentTypeDto implements IDocumentTypeDto {
             this.isWithdrawable = _data["isWithdrawable"];
             this.includeInWorkflow = _data["includeInWorkflow"];
             this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
+            this.isExpiryDateRequired = _data["isExpiryDateRequired"];
+            this.allowDateOverlap = _data["allowDateOverlap"];
         }
     }
 
@@ -205421,6 +205433,8 @@ export class DocumentTypeDto implements IDocumentTypeDto {
         data["isWithdrawable"] = this.isWithdrawable;
         data["includeInWorkflow"] = this.includeInWorkflow;
         data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
+        data["isExpiryDateRequired"] = this.isExpiryDateRequired;
+        data["allowDateOverlap"] = this.allowDateOverlap;
         return data;
     }
 }
@@ -205440,6 +205454,8 @@ export interface IDocumentTypeDto {
     isWithdrawable: boolean;
     includeInWorkflow: boolean;
     isHiddenFromEmployee: boolean;
+    isExpiryDateRequired: boolean;
+    allowDateOverlap: boolean;
 }
 
 export class DomainTypeDto implements IDomainTypeDto {
@@ -333525,7 +333541,7 @@ export class RequestDocumentInput implements IRequestDocumentInput {
     documentTypeId!: number;
     documentNum!: string | undefined;
     issueDate!: DateTime;
-    expiryDate!: DateTime;
+    expiryDate!: DateTime | undefined;
     comments!: string | undefined;
 
     constructor(data?: IRequestDocumentInput) {
@@ -333569,7 +333585,7 @@ export interface IRequestDocumentInput {
     documentTypeId: number;
     documentNum: string | undefined;
     issueDate: DateTime;
-    expiryDate: DateTime;
+    expiryDate: DateTime | undefined;
     comments: string | undefined;
 }
 

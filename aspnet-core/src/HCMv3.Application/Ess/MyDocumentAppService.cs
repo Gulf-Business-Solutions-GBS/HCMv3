@@ -29,6 +29,7 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
     private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IRepository<EmployeeDocumentMvmt> _movementRepository;
     private readonly IWithdrawableDocumentTypeResolver _withdrawableDocumentTypeResolver;
+    private readonly IEmployeeDocumentDateRules _dateRules;
 
     public MyDocumentAppService(
         IRepository<EmployeeDocument> repository,
@@ -39,13 +40,15 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
         IEmployeeDocumentDuplicateCheck duplicateCheck,
         IRepository<DocumentType> documentTypeRepository,
         IRepository<EmployeeDocumentMvmt> movementRepository,
-        IWithdrawableDocumentTypeResolver withdrawableDocumentTypeResolver)
+        IWithdrawableDocumentTypeResolver withdrawableDocumentTypeResolver,
+        IEmployeeDocumentDateRules dateRules)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
         _duplicateCheck = duplicateCheck;
         _documentTypeRepository = documentTypeRepository;
         _movementRepository = movementRepository;
         _withdrawableDocumentTypeResolver = withdrawableDocumentTypeResolver;
+        _dateRules = dateRules;
     }
 
     protected override string RequestType => DocumentWorkflowTransactionHandler.DocumentRequestType;
@@ -206,8 +209,13 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
         }
 
         // Checked here too because with workflow off for documents no handler runs.
-        await _duplicateCheck.EnsureNotDuplicateAsync(
-            await GetMyEmployeeIdAsync(), input.DocumentTypeId, input.DocumentNum, null);
+        var myEmployeeId = await GetMyEmployeeIdAsync();
+
+        await _duplicateCheck.EnsureNotDuplicateAsync(myEmployeeId, input.DocumentTypeId, input.DocumentNum, null);
+
+        // Legacy's date rules, the document type deciding whether an expiry date must be given and whether
+        // this document may overlap one already on file.
+        await _dateRules.EnsureValidAsync(myEmployeeId, input.DocumentTypeId, input.IssueDate, input.ExpiryDate, null);
 
         return await CreateAndSubmitAsync(
             employeeId => new EmployeeDocument
@@ -217,7 +225,9 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
                 DocumentTypeId = input.DocumentTypeId,
                 DocumentNum = input.DocumentNum,
                 IssueDate = input.IssueDate.Date,
-                ExpiryDate = input.ExpiryDate.Date,
+
+                // No expiry date given, and none required: on file until the end of time, as HR records it.
+                ExpiryDate = input.ExpiryDate?.Date ?? EmployeeDocument.NoExpiryDate,
                 Comments = input.Comments
             },
             input.DocumentTypeId);
@@ -290,6 +300,16 @@ public class MyDocumentAppService : MyTransactionAppServiceBase<EmployeeDocument
             // Excluding the row itself: it is the document being submitted, not a duplicate of it.
             await _duplicateCheck.EnsureNotDuplicateAsync(
                 document.EmployeeId, document.DocumentTypeId, document.DocumentNum, document.Id);
+
+            await _dateRules.EnsureValidAsync(
+                document.EmployeeId, document.DocumentTypeId, document.IssueDate, document.ExpiryDate, document.Id);
+
+            // A draft filed without an expiry date, for a type that does not need one: sent as a document
+            // that never expires rather than one that expired in the year 1.
+            if (document.ExpiryDate == default)
+            {
+                document.ExpiryDate = EmployeeDocument.NoExpiryDate;
+            }
 
             return document.DocumentTypeId;
         });

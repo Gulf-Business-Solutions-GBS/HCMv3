@@ -19,6 +19,13 @@ namespace HCMv3.PersonnelAdministration;
 /// </summary>
 public class EmployeeDocument : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
+    /// <summary>
+    /// What <see cref="ExpiryDate"/> holds for a document with no expiry date, as legacy's
+    /// <c>AfterConstruction</c> set it: the document is on file until the end of time, and never reads as
+    /// expired.
+    /// </summary>
+    public static readonly DateTime NoExpiryDate = new DateTime(9999, 12, 31);
+
     public int TenantId { get; set; }
 
     public virtual int EmployeeId { get; set; }

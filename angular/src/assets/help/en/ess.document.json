@@ -72,7 +72,7 @@
       ],
       "rules": null,
       "when": null,
-      "html": "<p><strong>What it is.</strong> When the document runs out.</p><p><strong>Example.</strong> 2 March 2034.</p><p><strong>Why it matters.</strong> This is the date the system watches. Reminders go out ahead of it, and an expired passport or civil ID stops residency renewals and travel — so it is the one field here worth checking twice.</p>",
+      "html": "<p><strong>What it is.</strong> When the document runs out.</p><p><strong>Example.</strong> 2 March 2034.</p><p><strong>Why it matters.</strong> This is the date the system watches. Reminders go out ahead of it, and an expired passport or civil ID stops residency renewals and travel — so it is the one field here worth checking twice. Whether it must be filled in depends on the document type: for a type that does not expire you may leave it blank. For some types the dates also may not overlap a document of the same type already on your file; if the request is refused for that reason, ask HR.</p>",
       "adminHtml": "",
       "stub": false
     },

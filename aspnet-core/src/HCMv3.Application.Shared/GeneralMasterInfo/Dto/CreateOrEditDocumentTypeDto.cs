@@ -47,4 +47,10 @@ public class CreateOrEditDocumentTypeDto
 
     /// <summary>Tick to keep documents of this type out of the employee's own view in self-service.</summary>
     public bool IsHiddenFromEmployee { get; set; }
+
+    /// <summary>A document of this type must carry an expiry date. See <see cref="DocumentType.IsExpiryDateRequired"/>.</summary>
+    public bool IsExpiryDateRequired { get; set; }
+
+    /// <summary>An employee may hold two documents of this type whose dates overlap. See <see cref="DocumentType.AllowDateOverlap"/>.</summary>
+    public bool AllowDateOverlap { get; set; }
 }

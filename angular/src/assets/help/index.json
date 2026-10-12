@@ -459,6 +459,12 @@
     "DocumentType_IsHiddenFromEmployee": [
       "gmi.document-type.edit"
     ],
+    "DocumentType_IsExpiryDateRequired": [
+      "gmi.document-type.edit"
+    ],
+    "DocumentType_AllowDateOverlap": [
+      "gmi.document-type.edit"
+    ],
     "Institution_Code": [
       "gmi.institution.edit"
     ],
