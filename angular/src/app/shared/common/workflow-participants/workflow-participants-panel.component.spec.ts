@@ -39,6 +39,15 @@ describe('WorkflowParticipantsPanelComponent delegations', () => {
         currentApprovalRequire: ApprovalRequire.Single,
         approvers: [
             {
+                person: { employeeId: 1001, code: '1001', nameEn: 'Dummy Adam Carter' },
+                workflowStep: 1,
+                isApproved: false,
+                origin: WorkflowApproverOrigin.CreatorStep,
+                isNotRequired: false,
+                actedAt: '2026-03-01T09:05:00',
+                delegations: [],
+            },
+            {
                 person: { employeeId: 1005, code: '1005', nameEn: 'Dummy Amir Hassan' },
                 workflowStep: 3,
                 isApproved: false,
@@ -114,6 +123,20 @@ describe('WorkflowParticipantsPanelComponent delegations', () => {
         expect(text).toContain('2026');
         expect(text).toMatch(/Sep|09/);
         expect(text).toMatch(/Oct|10/);
+    });
+
+    it('shows when a step was acted on, under its status', () => {
+        const rows = Array.from(fixture.nativeElement.querySelectorAll('.wf-parts__row')) as HTMLElement[];
+        const submitted = rows.find((r) => (r.textContent || '').includes('Dummy Adam Carter'));
+
+        expect(submitted?.querySelector('.wf-parts__status .wf-parts__when')?.textContent).toContain('01 Mar 2026 09:05');
+    });
+
+    it('shows no date against an approver who has not acted yet', () => {
+        const rows = Array.from(fixture.nativeElement.querySelectorAll('.wf-parts__row')) as HTMLElement[];
+        const pending = rows.find((r) => (r.textContent || '').includes('Dummy Amir Hassan'));
+
+        expect(pending?.querySelector('.wf-parts__status .wf-parts__when')).toBeNull();
     });
 
     it('offers no separate Delegates tab', () => {

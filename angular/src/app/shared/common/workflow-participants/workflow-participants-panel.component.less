@@ -202,6 +202,15 @@
         white-space: nowrap;
     }
 
+    // The status word with its date and time beneath it, both held against the trailing edge of the row.
+    &__status {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.15rem;
+    }
+
     // Status pills are tinted rather than solid. A solid green badge per approver would out-shout the
     // Approve button, which is the one thing on this screen that must stay loudest.
     &__pill {

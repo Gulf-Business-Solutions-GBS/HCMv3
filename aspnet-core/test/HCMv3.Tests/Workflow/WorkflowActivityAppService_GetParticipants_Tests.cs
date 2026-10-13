@@ -384,6 +384,44 @@ public class WorkflowActivityAppService_GetParticipants_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Say_When_A_Stored_Approver_Approved()
+    {
+        // The approver row knows that they approved and nothing about when; the moment lives in the log.
+        var meId = CreateCurrentUserEmployee("PART710ME");
+        var doneId = CreateEmployee("PART710DONE");
+        var waitingId = CreateEmployee("PART710WAITING");
+
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, doneId, isApproved: true);
+        AddApprover(requestId, waitingId, isApproved: false);
+        AddLog(requestId, doneId, RequestActionType.Approved, step: 1, at: new DateTime(2026, 3, 2, 14, 30, 0));
+
+        var result = await GetParticipants(requestId);
+
+        result.Approvers.Single(a => a.Person.EmployeeId == doneId).ActedAt
+            .ShouldBe(new DateTime(2026, 3, 2, 14, 30, 0));
+        result.Approvers.Single(a => a.Person.EmployeeId == waitingId).ActedAt.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Date_An_Approval_By_The_Approval_Not_By_An_Earlier_Send_Back()
+    {
+        // Sent back, resubmitted, then approved by the same person: the date under "Approved" is the approval's.
+        var meId = CreateCurrentUserEmployee("PART720ME");
+        var approverId = CreateEmployee("PART720APPROVER");
+
+        var requestId = CreateRequest(meId);
+        AddApprover(requestId, approverId, isApproved: true);
+        AddLog(requestId, approverId, RequestActionType.SentBack, step: 1, at: new DateTime(2026, 3, 1, 9, 0, 0));
+        AddLog(requestId, approverId, RequestActionType.Approved, step: 1, at: new DateTime(2026, 3, 3, 11, 0, 0));
+
+        var result = await GetParticipants(requestId);
+
+        result.Approvers.Single(a => a.Person.EmployeeId == approverId).ActedAt
+            .ShouldBe(new DateTime(2026, 3, 3, 11, 0, 0));
+    }
+
+    [Fact]
     public async Task Should_Reconstruct_Earlier_Steps_Whose_Approver_Rows_Have_Been_Deleted()
     {
         // The defect this endpoint has to work around. AssignApproversForStepAsync deletes EVERY

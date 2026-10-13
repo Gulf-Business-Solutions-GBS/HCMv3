@@ -101,8 +101,15 @@
                                     </span>
 
                                     @if (approverStatusLabel(entry); as status) {
-                                        <span class="wf-parts__pill" [ngClass]="approverStatusClass(entry)">
-                                            {{ status }}
+                                        <!-- When it happened, under the word that says what happened. Absent
+                                             for a row still waiting: nothing has happened to date yet. -->
+                                        <span class="wf-parts__status">
+                                            <span class="wf-parts__pill" [ngClass]="approverStatusClass(entry)">
+                                                {{ status }}
+                                            </span>
+                                            @if (entry.actedAt) {
+                                                <span class="wf-parts__when">{{ dateTime(entry.actedAt) }}</span>
+                                            }
                                         </span>
                                     }
                                 </div>

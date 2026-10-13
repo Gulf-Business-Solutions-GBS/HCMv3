@@ -534,6 +534,17 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
                     stored.ActionType = last.ActionType;
                     stored.ActedAt = last.ActionDateTime;
                 }
+                else if (stored.IsApproved)
+                {
+                    // The row says they approved but not when; only the log holds the moment. Their latest
+                    // APPROVAL specifically, not their latest action: on a request sent back and approved
+                    // again, an older send-back by the same person is not when they approved.
+                    stored.ActedAt = group
+                        .Where(d => d.ActionType == RequestActionType.Approved)
+                        .OrderByDescending(d => d.ActionDateTime)
+                        .Select(d => (DateTime?)d.ActionDateTime)
+                        .FirstOrDefault();
+                }
 
                 continue;
             }
