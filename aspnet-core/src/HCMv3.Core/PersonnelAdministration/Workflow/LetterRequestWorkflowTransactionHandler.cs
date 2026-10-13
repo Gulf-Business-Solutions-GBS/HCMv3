@@ -1,10 +1,13 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -21,15 +24,20 @@ namespace HCMv3.PersonnelAdministration.Workflow;
 /// </para>
 ///
 /// <para>
-/// <b>There is no <c>OnApprovedAsync</c> override, and that is the point of this type.</b> Approving a
-/// letter request writes nothing anywhere else; what it does is UNLOCK PRINTING. Legacy's print action
-/// (<c>PrintLetterFormController</c>) refused outright with "Request is not approved. You can't print."
-/// unless the request was Approved, and that is the whole consequence of approval. The base class already
-/// stamps <c>WorkflowStatus = Approved</c> on the row, which is exactly what the ESS list reads to decide
-/// whether to offer the print button. Adding a side effect here would invent behaviour legacy never had.
-/// (Legacy does carry an <c>if (RequestStatus == Approved)</c> block, but it is commented out and is
-/// copy-pasted from the passport-withdrawal request -- it reads <c>EmployeeDocument</c> and writes an
-/// <c>EmployeeDocumentMvmt</c>. It is not this type's behaviour and is not ported.)
+/// Approving a letter request writes nothing to any other record; what it does is UNLOCK PRINTING. Legacy's
+/// print action (<c>PrintLetterFormController</c>) refused outright with "Request is not approved. You
+/// can't print." unless the request was Approved. (Legacy does carry an <c>if (RequestStatus == Approved)</c>
+/// block, but it is commented out and is copy-pasted from the passport-withdrawal request -- it reads
+/// <c>EmployeeDocument</c> and writes an <c>EmployeeDocumentMvmt</c>. It is not this type's behaviour and
+/// is not ported.)
+/// </para>
+///
+/// <para>
+/// <b>One thing beyond legacy, asked for by the product owner (2026-10-13):</b> the letter is produced and
+/// kept on the request at the moment of approval, so the employee finds it under Attachments without
+/// waiting for HR to press Print Letter. HR's Print Letter still works and replaces that copy. A letter
+/// that cannot be produced -- no report for the type, the report engine absent -- never undoes the
+/// approval: it is logged, and HR prints it once the cause is fixed.
 /// </para>
 ///
 /// <para>
@@ -44,16 +52,54 @@ public class LetterRequestWorkflowTransactionHandler : WorkflowTransactionHandle
 
     private readonly IRepository<DocumentType> _documentTypeRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly ILetterRequestPrintService _printService;
+    private readonly IUnitOfWorkManager _unitOfWorkManager;
+
+    public ILogger Logger { get; set; } = NullLogger.Instance;
 
     public LetterRequestWorkflowTransactionHandler(
         IRepository<EmployeeLetterRequest> repository,
         IRepository<DocumentType> documentTypeRepository,
         IUnitOfWorkManager unitOfWorkManager,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        ILetterRequestPrintService printService)
         : base(repository, unitOfWorkManager)
     {
         _documentTypeRepository = documentTypeRepository;
         _employeeRepository = employeeRepository;
+        _printService = printService;
+        _unitOfWorkManager = unitOfWorkManager;
+    }
+
+    /// <summary>
+    /// Approves the request, then produces the letter and keeps it on the request. See the class remarks:
+    /// a letter that cannot be produced is logged and left for HR's Print Letter, never a failed approval.
+    /// </summary>
+    public override async Task OnApprovedAsync(WorkflowTransactionContext context)
+    {
+        await base.OnApprovedAsync(context);
+
+        if (context.IsAmendment || !context.TargetEntityId.HasValue)
+        {
+            return;
+        }
+
+        try
+        {
+            // Stored first: the print reads the request back and prints only an approved one.
+            await _unitOfWorkManager.Current.SaveChangesAsync();
+
+            var printed = await _printService.PrintAsync(context.TargetEntityId.Value);
+
+            if (!printed.SavedOnRequest)
+            {
+                Logger.Warn($"Letter request {context.TargetEntityId} was approved but its letter was not kept on it: {printed.NotSavedReason}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn($"Letter request {context.TargetEntityId} was approved but its letter could not be produced: {ex.Message}", ex);
+        }
     }
 
     public override string RequestType => LetterRequestType;

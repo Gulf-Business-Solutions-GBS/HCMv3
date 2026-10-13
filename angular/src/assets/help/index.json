@@ -453,6 +453,9 @@
     "DocumentType_IsLetterType": [
       "gmi.document-type.edit"
     ],
+    "DocumentType_PrintReportId": [
+      "gmi.document-type.edit"
+    ],
     "DocumentType_IsWithdrawable": [
       "gmi.document-type.edit"
     ],

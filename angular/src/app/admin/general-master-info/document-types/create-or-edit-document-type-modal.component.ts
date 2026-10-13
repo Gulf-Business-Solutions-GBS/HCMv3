@@ -6,6 +6,7 @@ import {
     NotificationConfigDto,
     GetAllNotificationConfigsInput,
     NotificationConfigsServiceProxy,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -38,6 +39,9 @@ export class CreateOrEditDocumentTypeModalComponent extends AppComponentBase {
     readonly documentType = signal<CreateOrEditDocumentTypeDto>(new CreateOrEditDocumentTypeDto());
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
 
+    /** The reports a letter type can be given to print as. */
+    readonly printReports = signal<SimpleLookupDto[]>([]);
+
     show(documentTypeId?: number): void {
         this.active.set(true);
 
@@ -46,6 +50,10 @@ export class CreateOrEditDocumentTypeModalComponent extends AppComponentBase {
             .subscribe((result) => {
                 this.notificationConfigs.set(result.items);
             });
+
+        this._documentTypeService.getPrintReportsForLookup().subscribe((result) => {
+            this.printReports.set(result.items ?? []);
+        });
 
         if (!documentTypeId) {
             const documentType = new CreateOrEditDocumentTypeDto();
@@ -67,10 +75,24 @@ export class CreateOrEditDocumentTypeModalComponent extends AppComponentBase {
         document.getElementById('DocumentType_NameEn')?.focus();
     }
 
+    reportName(report: SimpleLookupDto): string {
+        const rtl = document?.documentElement?.getAttribute('dir') === 'rtl';
+
+        return rtl ? report.nameAr || report.nameEn || '' : report.nameEn || '';
+    }
+
     save(): void {
         this.saving.set(true);
+
+        const documentType = this.documentType();
+
+        // A report is only meaningful on a type issued as a letter; unticking that drops the choice with it.
+        if (!documentType.isLetterType) {
+            documentType.printReportId = undefined;
+        }
+
         this._documentTypeService
-            .createOrEdit(this.documentType())
+            .createOrEdit(documentType)
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

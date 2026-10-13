@@ -14,7 +14,7 @@ Ask HR for a letter — a salary certificate, an employment letter, a no-objecti
 
 The letter is produced from your own record, so nothing is typed by hand and the figures on it are the ones the system holds. What you supply is who it is addressed to.
 
-Once HR has printed the letter, the printed copy is kept on the request: open **Details** and it is listed under Attachments. Until HR prints it, nothing is listed there.
+As soon as the request is approved, the letter is produced and kept on the request: open **Details** and it is listed under Attachments, ready to download. If nothing is listed after approval, the letter could not be produced — ask HR, who can print it from their side.
 
 ## Letter type {#ess.letter.document-type}
 <!-- alias: loc:DocumentType -->

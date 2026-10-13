@@ -8,6 +8,7 @@ using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.Timing;
 using Abp.UI;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.ReportManagement;
 using HCMv3.ReportManagement.Services;
 using HCMv3.Storage;
@@ -60,6 +61,13 @@ public interface ILetterRequestPrintService : IDomainService
     /// "no report" before anybody presses Print.
     /// </summary>
     Task<PrintReport> FindReportAsync(string documentTypeNameEn);
+
+    /// <summary>
+    /// The report a document type prints as: the one chosen on the type when there is one, otherwise the one
+    /// its name finds. Null when the chosen report can no longer be printed -- it is never quietly replaced
+    /// by a different one.
+    /// </summary>
+    Task<PrintReport> FindReportAsync(DocumentType documentType);
 }
 
 /// <inheritdoc cref="ILetterRequestPrintService"/>
@@ -120,7 +128,7 @@ public class LetterRequestPrintService : HCMv3DomainServiceBase, ILetterRequestP
             throw new UserFriendlyException(L("DocumentTypeIsNotDefined"));
         }
 
-        var report = await FindReportAsync(letter.DocumentType.NameEn);
+        var report = await FindReportAsync(letter.DocumentType);
         if (report == null)
         {
             throw new UserFriendlyException(L("NoReportFoundForDocumentType", letter.DocumentType.NameEn));
@@ -141,6 +149,30 @@ public class LetterRequestPrintService : HCMv3DomainServiceBase, ILetterRequestP
         await KeepCopyAsync(letter.Id, printed);
 
         return printed;
+    }
+
+    [UnitOfWork]
+    public virtual async Task<PrintReport> FindReportAsync(DocumentType documentType)
+    {
+        if (documentType == null)
+        {
+            return null;
+        }
+
+        if (!documentType.PrintReportId.HasValue)
+        {
+            return await FindReportAsync(documentType.NameEn);
+        }
+
+        // The report HR chose for the type. One that has since been switched off, deleted or is not ported
+        // prints nothing rather than falling back to the name: HR picked a report, and a different one
+        // coming out of the printer would be worse than being told.
+        var chosen = await _printReportRepository.GetAll()
+            .FirstOrDefaultAsync(r => r.Id == documentType.PrintReportId.Value && r.IsActive);
+
+        return chosen != null && PortedReportCatalog.Names.Contains(chosen.ReportName, StringComparer.OrdinalIgnoreCase)
+            ? chosen
+            : null;
     }
 
     [UnitOfWork]

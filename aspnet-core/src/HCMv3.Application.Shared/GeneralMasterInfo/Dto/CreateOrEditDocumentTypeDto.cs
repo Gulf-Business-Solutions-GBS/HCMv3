@@ -39,6 +39,12 @@ public class CreateOrEditDocumentTypeDto
     /// </summary>
     public bool IsLetterType { get; set; }
 
+    /// <summary>
+    /// The report a letter of this type prints as. Empty leaves it to the report named after the type.
+    /// See <see cref="DocumentType.PrintReportId"/>.
+    /// </summary>
+    public int? PrintReportId { get; set; }
+
     /// <summary>Tick to let employees ask to take a document of this type out of custody and return it.</summary>
     public bool IsWithdrawable { get; set; }
 

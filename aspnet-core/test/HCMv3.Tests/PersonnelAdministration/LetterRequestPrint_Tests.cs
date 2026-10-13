@@ -265,6 +265,120 @@ public class LetterRequestPrint_Tests : EssRequestDraftTestBase, IDisposable
         _renderer.Calls.ShouldBe(0);
     }
 
+    // ---------------------------------------------------------------- the report chosen on the document type
+
+    /// <summary>A letter type with a report picked for it on the Document Type screen.</summary>
+    private int CreateDocumentTypePrintingAs(string nameEn, string reportName)
+    {
+        var typeId = CreateDocumentType(nameEn, isLetterType: true);
+
+        UsingDbContext(context =>
+        {
+            var reportId = context.Set<PrintReport>().Single(r => r.ReportName == reportName).Id;
+            context.DocumentTypes.Single(t => t.Id == typeId).PrintReportId = reportId;
+        });
+
+        return typeId;
+    }
+
+    [Fact]
+    public async Task Should_Print_The_Report_Chosen_On_The_Document_Type_Whatever_Its_Name()
+    {
+        // The name rule would find ZedPickedCertEn; HR chose a report with an unrelated name.
+        AddReport("ZR310", "ZedPickedCertEn");
+        AddReport("ZR320", "ZedExperienceLetter");
+        PortedReportCatalog.SetPortedReportNames(new[] { "ZedPickedCertEn", "ZedExperienceLetter" });
+
+        var employeeId = CreateEmployee("LP310");
+        var typeId = CreateDocumentTypePrintingAs("Zed Picked Cert", "ZedExperienceLetter");
+        var letterId = InsertLetter(employeeId, typeId, RequestStatus.Approved);
+
+        await _letterRequests.PrintLetter(new EntityDto(letterId));
+
+        _renderer.ReportName.ShouldBe("ZedExperienceLetter");
+    }
+
+    [Fact]
+    public async Task Should_Refuse_Rather_Than_Fall_Back_To_The_Name_When_The_Chosen_Report_Is_Inactive()
+    {
+        AddReport("ZR330", "ZedSwitchedCertEn");
+        AddReport("ZR340", "ZedSwitchedOff", isActive: false);
+        PortedReportCatalog.SetPortedReportNames(new[] { "ZedSwitchedCertEn", "ZedSwitchedOff" });
+
+        var employeeId = CreateEmployee("LP320");
+        var typeId = CreateDocumentTypePrintingAs("Zed Switched Cert", "ZedSwitchedOff");
+        var letterId = InsertLetter(employeeId, typeId, RequestStatus.Approved);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _letterRequests.PrintLetter(new EntityDto(letterId)));
+
+        _renderer.Calls.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task Should_Refuse_When_The_Chosen_Report_Is_Not_In_This_Build()
+    {
+        AddReport("ZR350", "ZedNotPorted");
+        PortedReportCatalog.SetPortedReportNames(new string[0]);
+
+        var employeeId = CreateEmployee("LP330");
+        var typeId = CreateDocumentTypePrintingAs("Zed Missing Cert", "ZedNotPorted");
+        var letterId = InsertLetter(employeeId, typeId, RequestStatus.Approved);
+
+        await Should.ThrowAsync<UserFriendlyException>(() => _letterRequests.PrintLetter(new EntityDto(letterId)));
+
+        _renderer.Calls.ShouldBe(0);
+    }
+
+    // ---------------------------------------------------------------- produced at approval
+
+    private async Task<(int LetterId, int WorkflowRequestId, int ApproverId)> GivenALetterAwaitingApprovalAsync(
+        string employeeCode, string typeName)
+    {
+        CreateCurrentUserEmployee(employeeCode);
+        var approverId = EnableWorkflowFor("EmployeeLetterRequest", employeeCode + "APP");
+        var typeId = CreateDocumentType(typeName, isLetterType: true);
+
+        var result = await Resolve<HCMv3.Ess.IMyLetterRequestAppService>().RequestLetter(new HCMv3.Ess.Dto.RequestLetterInput
+        {
+            DocumentTypeId = typeId,
+            EffectiveDate = DateTime.Today,
+            AddressToEn = "National Bank of Kuwait",
+            AddressToAr = "بنك الكويت الوطني"
+        });
+
+        return (result.TransactionId, result.WorkflowRequestId.Value, approverId);
+    }
+
+    [Fact]
+    public async Task Approving_A_Letter_Request_Should_Produce_The_Letter_And_Keep_It_On_The_Request()
+    {
+        AddReport("ZR600", "ZedAutoCertEn");
+        PortedReportCatalog.SetPortedReportNames(new[] { "ZedAutoCertEn" });
+        var letter = await GivenALetterAwaitingApprovalAsync("LP600", "Zed Auto Cert");
+
+        (await KeptOnAsync(letter.LetterId)).ShouldBeEmpty();
+
+        await Resolve<HCMv3.Workflow.Services.IWorkflowApprovalService>()
+            .ApproveAsync(letter.WorkflowRequestId, letter.ApproverId, "ok");
+
+        _renderer.ReportName.ShouldBe("ZedAutoCertEn");
+        (await KeptOnAsync(letter.LetterId)).Count.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Approval_Should_Still_Go_Through_When_The_Letter_Cannot_Be_Produced()
+    {
+        // No report is named for the type, so there is nothing to print.
+        var letter = await GivenALetterAwaitingApprovalAsync("LP610", "Zed Reportless Letter");
+
+        await Resolve<HCMv3.Workflow.Services.IWorkflowApprovalService>()
+            .ApproveAsync(letter.WorkflowRequestId, letter.ApproverId, "ok");
+
+        RequestRow(letter.WorkflowRequestId).RequestStatus.ShouldBe(RequestStatus.Approved);
+        _renderer.Calls.ShouldBe(0);
+        (await KeptOnAsync(letter.LetterId)).ShouldBeEmpty();
+    }
+
     // ---------------------------------------------------------------- the copy kept on the request
 
     [Fact]

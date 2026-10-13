@@ -7503,6 +7503,8 @@
     <text name="RequestIsNotApprovedYouCannotPrint">الطلب غير معتمد. لا يمكنك الطباعة.</text>
     <text name="DocumentTypeIsNotDefined">نوع الوثيقة غير محدد.</text>
     <text name="NoReportFoundForDocumentType">لم يُعثر على تقرير لنوع الوثيقة: {0}</text>
+    <text name="PrintReportNotFound">تقرير الطباعة المحدد غير موجود.</text>
+    <text name="PrintReportByDocumentTypeName">تلقائي (التقرير المسمّى باسم نوع الوثيقة)</text>
     <text name="PrintReportIsNotAvailable">التقرير {0} غير متاح.</text>
     <text name="IsExpiryDateRequired">تاريخ الانتهاء إلزامي</text>
     <text name="AllowDateOverlap">السماح بتداخل التواريخ</text>

@@ -25,6 +25,8 @@
     "dom:DocumentType_IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
     "loc:IsLetterType": "DocumentType.IsLetterType",
     "dom:DocumentType_IsLetterType": "DocumentType.IsLetterType",
+    "loc:PrintReport": "DocumentType.PrintReportId",
+    "dom:DocumentType_PrintReportId": "DocumentType.PrintReportId",
     "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
     "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
     "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
@@ -171,7 +173,21 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether this type is a letter the company issues to the employee, such as a salary certificate, and not a document the employee holds.</p><p><strong>Example.</strong> Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.</p><p><strong>Why it matters.</strong> A ticked type is offered under \"Request a letter\" and asks who the letter is addressed to. An unticked type is offered under \"Record a document\" and asks for a number and dates. A type cannot be both.</p>",
+      "html": "<p><strong>What it is.</strong> Whether this type is a letter the company issues to the employee, such as a salary certificate, and not a document the employee holds.</p><p><strong>Example.</strong> Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.</p><p><strong>Why it matters.</strong> A ticked type is offered when the employee chooses Print Letter, and asks who the letter is addressed to. An unticked type is offered when the employee chooses New Document, and asks for a number and dates. A type cannot be both.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.PrintReportId",
+      "label": "PrintReport",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:PrintReport",
+        "dom:DocumentType_PrintReportId"
+      ],
+      "rules": "Optional. Chosen from Print Report master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The report a letter of this type is produced from: automatically when a request is approved, and again whenever HR presses Print Letter. Shown only when Issued As Letter is ticked.</p><p><strong>Example.</strong> Salary Certificate English for the Salary Certificate type; Experience Certificate for an Employment Certificate type.</p><p><strong>Why it matters.</strong> Without a choice here, the report is found from the type's English name with the spaces removed — \"Salary Certificate\" prints the first report whose name starts with SalaryCertificate — and a type whose name matches no report cannot be printed at all. Choosing the report removes the guesswork and lets a type print a report with a different name, such as the Arabic certificate.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -25,6 +25,8 @@
     "dom:DocumentType_IncludeInWorkflow": "DocumentType.IncludeInWorkflow",
     "loc:IsLetterType": "DocumentType.IsLetterType",
     "dom:DocumentType_IsLetterType": "DocumentType.IsLetterType",
+    "loc:PrintReport": "DocumentType.PrintReportId",
+    "dom:DocumentType_PrintReportId": "DocumentType.PrintReportId",
     "loc:IsWithdrawable": "DocumentType.IsWithdrawable",
     "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
     "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
@@ -171,7 +173,21 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> هل هذا النوع خطاب تصدره الشركة للموظف، كشهادة الراتب، وليس وثيقة يحملها الموظف.</p><p><strong>مثال.</strong> مفعّل لشهادة الراتب وشهادة الخبرة، وغير مفعّل لجواز السفر والبطاقة المدنية.</p><p><strong>لماذا يهم.</strong> النوع المفعّل يُعرض ضمن طلب الخطابات ويُسأل فيه عن الجهة الموجَّه إليها الخطاب. والنوع غير المفعّل يُعرض ضمن «تسجيل وثيقة» ويُسأل فيه عن الرقم والتواريخ. ولا يكون النوع الواحد كليهما.</p>",
+      "html": "<p><strong>ما هو.</strong> هل هذا النوع خطاب تصدره الشركة للموظف، كشهادة الراتب، وليس وثيقة يحملها الموظف.</p><p><strong>مثال.</strong> مفعّل لشهادة الراتب وشهادة الخبرة، وغير مفعّل لجواز السفر والبطاقة المدنية.</p><p><strong>لماذا يهم.</strong> النوع المفعّل يُعرض عند اختيار الموظف «طباعة الخطاب» ويُسأل فيه عن الجهة الموجَّه إليها الخطاب. والنوع غير المفعّل يُعرض عند اختيار «وثيقة جديدة» ويُسأل فيه عن الرقم والتواريخ. ولا يكون النوع الواحد كليهما.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.PrintReportId",
+      "label": "PrintReport",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:PrintReport",
+        "dom:DocumentType_PrintReportId"
+      ],
+      "rules": "اختياري. يُختار من قائمة طباعة التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقرير الذي يُصدر منه خطاب هذا النوع: تلقائياً عند اعتماد الطلب، ثم كلما ضغطت الموارد البشرية «طباعة الخطاب». يظهر فقط عند تفعيل «تصدر كخطاب».</p><p><strong>مثال.</strong> «شهادة راتب - إنجليزي» لنوع شهادة الراتب، و«شهادة خبرة» لنوع شهادة العمل.</p><p><strong>لماذا يهم.</strong> بدون اختيار هنا يُحدَّد التقرير من الاسم الإنجليزي للنوع بعد حذف المسافات، فيطبع \"Salary Certificate\" أول تقرير يبدأ اسمه بـ SalaryCertificate، والنوع الذي لا يطابق اسمه أي تقرير لا يُطبع إطلاقاً. واختيار التقرير يزيل التخمين ويتيح للنوع طباعة تقرير باسم مختلف، كالشهادة العربية.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -32,6 +32,13 @@ public class DocumentTypeDto : EntityDto<int>
     /// </summary>
     public bool IsLetterType { get; set; }
 
+    /// <summary>The report a letter of this type prints as, when one was chosen. See <see cref="DocumentType.PrintReportId"/>.</summary>
+    public int? PrintReportId { get; set; }
+
+    public string PrintReportNameEn { get; set; }
+
+    public string PrintReportNameAr { get; set; }
+
     /// <summary>Employees may ask to take a document of this type out of custody. See <see cref="DocumentType.IsWithdrawable"/>.</summary>
     public bool IsWithdrawable { get; set; }
 

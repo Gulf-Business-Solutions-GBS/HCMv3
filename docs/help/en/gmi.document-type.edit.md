@@ -76,7 +76,18 @@ The reminder settings on this form are stored, but no process reads them at pres
 
 **Example.** Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.
 
-**Why it matters.** A ticked type is offered under "Request a letter" and asks who the letter is addressed to. An unticked type is offered under "Record a document" and asks for a number and dates. A type cannot be both.
+**Why it matters.** A ticked type is offered when the employee chooses Print Letter, and asks who the letter is addressed to. An unticked type is offered when the employee chooses New Document, and asks for a number and dates. A type cannot be both.
+
+## PrintReport {#DocumentType.PrintReportId}
+<!-- alias: loc:PrintReport, dom:DocumentType_PrintReportId -->
+
+**What it is.** The report a letter of this type is produced from: automatically when a request is approved, and again whenever HR presses Print Letter. Shown only when Issued As Letter is ticked.
+
+**Example.** Salary Certificate English for the Salary Certificate type; Experience Certificate for an Employment Certificate type.
+
+**Why it matters.** Without a choice here, the report is found from the type's English name with the spaces removed — "Salary Certificate" prints the first report whose name starts with SalaryCertificate — and a type whose name matches no report cannot be printed at all. Choosing the report removes the guesswork and lets a type print a report with a different name, such as the Arabic certificate.
+
+**Rules.** Optional. Chosen from the active print reports. If the chosen report is later switched off, printing is refused until another is chosen; a different report is never printed in its place.
 
 ## IsWithdrawable {#DocumentType.IsWithdrawable}
 <!-- alias: loc:IsWithdrawable, dom:DocumentType_IsWithdrawable -->

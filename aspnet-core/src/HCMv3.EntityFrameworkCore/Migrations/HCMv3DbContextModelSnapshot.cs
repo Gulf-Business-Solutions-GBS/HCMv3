@@ -6548,12 +6548,17 @@ namespace HCMv3.Migrations
                     b.Property<int>("NotificationPeriod")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PrintReportId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NotificationConfigId");
+
+                    b.HasIndex("PrintReportId");
 
                     b.ToTable("DocumentTypes");
                 });
@@ -35988,7 +35993,13 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("NotificationConfigId");
 
+                    b.HasOne("HCMv3.ReportManagement.PrintReport", "PrintReport")
+                        .WithMany()
+                        .HasForeignKey("PrintReportId");
+
                     b.Navigation("NotificationConfig");
+
+                    b.Navigation("PrintReport");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Institution", b =>

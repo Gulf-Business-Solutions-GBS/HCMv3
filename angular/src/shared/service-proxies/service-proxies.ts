@@ -25177,6 +25177,57 @@ export class DocumentTypesServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return OK
+     */
+    getPrintReportsForLookup(): Observable<ListResultDtoOfSimpleLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/DocumentTypes/GetPrintReportsForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPrintReportsForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPrintReportsForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSimpleLookupDto>;
+        }));
+    }
+
+    protected processGetPrintReportsForLookup(response: HttpResponseBase): Observable<ListResultDtoOfSimpleLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -182305,6 +182356,7 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
     notificationCountLimit!: number;
     documentBelongsTo!: DocumentBelongsTo;
     isLetterType!: boolean;
+    printReportId!: number | undefined;
     isWithdrawable!: boolean;
     includeInWorkflow!: boolean;
     isHiddenFromEmployee!: boolean;
@@ -182332,6 +182384,7 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
             this.notificationCountLimit = _data["notificationCountLimit"];
             this.documentBelongsTo = _data["documentBelongsTo"];
             this.isLetterType = _data["isLetterType"];
+            this.printReportId = _data["printReportId"];
             this.isWithdrawable = _data["isWithdrawable"];
             this.includeInWorkflow = _data["includeInWorkflow"];
             this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
@@ -182359,6 +182412,7 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
         data["notificationCountLimit"] = this.notificationCountLimit;
         data["documentBelongsTo"] = this.documentBelongsTo;
         data["isLetterType"] = this.isLetterType;
+        data["printReportId"] = this.printReportId;
         data["isWithdrawable"] = this.isWithdrawable;
         data["includeInWorkflow"] = this.includeInWorkflow;
         data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
@@ -182379,6 +182433,7 @@ export interface ICreateOrEditDocumentTypeDto {
     notificationCountLimit: number;
     documentBelongsTo: DocumentBelongsTo;
     isLetterType: boolean;
+    printReportId: number | undefined;
     isWithdrawable: boolean;
     includeInWorkflow: boolean;
     isHiddenFromEmployee: boolean;
@@ -205374,6 +205429,9 @@ export class DocumentTypeDto implements IDocumentTypeDto {
     notificationCountLimit!: number;
     documentBelongsTo!: DocumentBelongsTo;
     isLetterType!: boolean;
+    printReportId!: number | undefined;
+    printReportNameEn!: string | undefined;
+    printReportNameAr!: string | undefined;
     isWithdrawable!: boolean;
     includeInWorkflow!: boolean;
     isHiddenFromEmployee!: boolean;
@@ -205402,6 +205460,9 @@ export class DocumentTypeDto implements IDocumentTypeDto {
             this.notificationCountLimit = _data["notificationCountLimit"];
             this.documentBelongsTo = _data["documentBelongsTo"];
             this.isLetterType = _data["isLetterType"];
+            this.printReportId = _data["printReportId"];
+            this.printReportNameEn = _data["printReportNameEn"];
+            this.printReportNameAr = _data["printReportNameAr"];
             this.isWithdrawable = _data["isWithdrawable"];
             this.includeInWorkflow = _data["includeInWorkflow"];
             this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
@@ -205430,6 +205491,9 @@ export class DocumentTypeDto implements IDocumentTypeDto {
         data["notificationCountLimit"] = this.notificationCountLimit;
         data["documentBelongsTo"] = this.documentBelongsTo;
         data["isLetterType"] = this.isLetterType;
+        data["printReportId"] = this.printReportId;
+        data["printReportNameEn"] = this.printReportNameEn;
+        data["printReportNameAr"] = this.printReportNameAr;
         data["isWithdrawable"] = this.isWithdrawable;
         data["includeInWorkflow"] = this.includeInWorkflow;
         data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
@@ -205451,6 +205515,9 @@ export interface IDocumentTypeDto {
     notificationCountLimit: number;
     documentBelongsTo: DocumentBelongsTo;
     isLetterType: boolean;
+    printReportId: number | undefined;
+    printReportNameEn: string | undefined;
+    printReportNameAr: string | undefined;
     isWithdrawable: boolean;
     includeInWorkflow: boolean;
     isHiddenFromEmployee: boolean;
@@ -283549,6 +283616,50 @@ export class ListResultDtoOfSchedulableReportDto implements IListResultDtoOfSche
 
 export interface IListResultDtoOfSchedulableReportDto {
     items: SchedulableReportDto[] | undefined;
+}
+
+export class ListResultDtoOfSimpleLookupDto implements IListResultDtoOfSimpleLookupDto {
+    items!: SimpleLookupDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfSimpleLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(SimpleLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfSimpleLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfSimpleLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfSimpleLookupDto {
+    items: SimpleLookupDto[] | undefined;
 }
 
 export class ListResultDtoOfString implements IListResultDtoOfString {

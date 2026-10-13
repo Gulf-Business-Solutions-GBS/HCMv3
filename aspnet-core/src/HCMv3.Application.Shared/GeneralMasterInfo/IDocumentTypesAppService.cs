@@ -14,4 +14,7 @@ public interface IDocumentTypesAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditDocumentTypeDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>The reports a document type can be given to print as: active, and present in this build.</summary>
+    Task<ListResultDto<SimpleLookupDto>> GetPrintReportsForLookup();
 }

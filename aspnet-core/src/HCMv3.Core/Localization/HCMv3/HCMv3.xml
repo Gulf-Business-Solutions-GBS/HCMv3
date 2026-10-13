@@ -7668,6 +7668,8 @@
     <text name="RequestIsNotApprovedYouCannotPrint">Request is not approved. You can&apos;t print.</text>
     <text name="DocumentTypeIsNotDefined">Document Type is not defined.</text>
     <text name="NoReportFoundForDocumentType">No report found for Document Type : {0}</text>
+    <text name="PrintReportNotFound">The selected print report was not found.</text>
+    <text name="PrintReportByDocumentTypeName">Automatic (report named after the document type)</text>
     <text name="PrintReportIsNotAvailable">The report {0} is not available.</text>
     <text name="IsExpiryDateRequired">Expiry Date Required</text>
     <text name="AllowDateOverlap">Allow Date Overlap</text>

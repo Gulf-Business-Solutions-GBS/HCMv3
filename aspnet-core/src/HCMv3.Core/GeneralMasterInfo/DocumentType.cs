@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using HCMv3.ReportManagement;
 
 namespace HCMv3.GeneralMasterInfo;
 
@@ -59,6 +60,15 @@ public class DocumentType : FullAuditedEntity, IMustHaveTenant
     /// </para>
     /// </summary>
     public virtual bool IsLetterType { get; set; }
+
+    /// <summary>
+    /// The report a letter of this type prints as, chosen by HR. Empty leaves it to the legacy rule: the
+    /// report named after the type's English name with the spaces taken out. See
+    /// <c>LetterRequestPrintService</c>.
+    /// </summary>
+    public virtual int? PrintReportId { get; set; }
+
+    public virtual PrintReport PrintReport { get; set; }
 
     /// <summary>
     /// Whether employees may ask to take a document of this type out of company custody and hand it back --

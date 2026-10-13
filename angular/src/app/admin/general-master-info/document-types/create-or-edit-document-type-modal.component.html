@@ -170,6 +170,24 @@
                                     (ngModelChange)="updateField('isLetterType', $event)" />
                                 <label class="form-check-label" for="DocumentType_IsLetterType">{{ 'IsLetterType' | localize }}</label>
                             </div>
+                            @if (documentType().isLetterType) {
+                                <!-- Which report a letter of this type prints as. Left on the first option,
+                                     the report is found from the type's English name, as legacy did. -->
+                                <div class="mb-3 ms-9">
+                                    <label class="form-label" for="DocumentType_PrintReportId">{{ 'PrintReport' | localize }}</label>
+                                    <select
+                                        id="DocumentType_PrintReportId"
+                                        class="form-select"
+                                        name="PrintReportId"
+                                        [ngModel]="documentType().printReportId"
+                                        (ngModelChange)="updateField('printReportId', $event)">
+                                        <option [ngValue]="undefined">{{ 'PrintReportByDocumentTypeName' | localize }}</option>
+                                        @for (report of printReports(); track report.id) {
+                                            <option [ngValue]="report.id">{{ report.code }} - {{ reportName(report) }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
                             <div class="form-check form-check-custom form-check-solid mb-3">
                                 <input
                                     id="DocumentType_IsWithdrawable"
