@@ -1,5 +1,6 @@
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
-import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -70,6 +71,10 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
      */
     private pendingRequestId: number | null = null;
 
+    /** Whether the grid has loaded at least once, so a later ?requestId= knows it must fetch again. */
+    private firstLoadDone = false;
+    private readonly _destroyRef = inject(DestroyRef);
+
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
     readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
@@ -106,8 +111,23 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
         // calling it here as well would run the query twice on every visit.
         this.loadFilterLookups();
 
-        const requestId = Number(this._activatedRoute.snapshot.queryParamMap.get('requestId'));
-        this.pendingRequestId = Number.isFinite(requestId) && requestId > 0 ? requestId : null;
+        // Watched rather than read once from the snapshot. A notification clicked while this screen is
+        // already open changes only the query string, and the router answers that by reusing the component
+        // -- so a one-off read saw the first request and ignored every one after it.
+        this._activatedRoute.queryParamMap.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((params) => {
+            const requestId = Number(params.get('requestId'));
+            if (!Number.isFinite(requestId) || requestId <= 0) {
+                return;
+            }
+
+            this.pendingRequestId = requestId;
+
+            // Before the first fetch the table's lazy load is about to run and opens the request when it
+            // lands. Afterwards the page in hand predates the notification, so it is fetched again.
+            if (this.firstLoadDone) {
+                this.reloadPage();
+            }
+        });
     }
 
     getMyRequests(event?: LazyLoadEvent): void {
@@ -136,6 +156,7 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
                 this.primengTableHelper.totalRecordsCount.set(result.totalCount);
                 this.primengTableHelper.records.set(result.items);
                 this.primengTableHelper.hideLoadingIndicator();
+                this.firstLoadDone = true;
                 this.openPendingRequest(result.items);
             });
     }
@@ -151,6 +172,17 @@ export class MyRequestsComponent extends AppComponentBase implements OnInit {
     private openPendingRequest(items: MyRequestListItemDto[]): void {
         if (this.pendingRequestId == null) {
             return;
+        }
+
+        // Taken back out of the address once acted on: left in place, clicking the same notification
+        // again asks the router for the address it is already at, which it ignores.
+        if (this._activatedRoute.snapshot.queryParamMap.has('requestId')) {
+            this._router.navigate([], {
+                relativeTo: this._activatedRoute,
+                queryParams: { requestId: null },
+                queryParamsHandling: 'merge',
+                replaceUrl: true,
+            });
         }
 
         const match = items.find((item) => item.id === this.pendingRequestId);

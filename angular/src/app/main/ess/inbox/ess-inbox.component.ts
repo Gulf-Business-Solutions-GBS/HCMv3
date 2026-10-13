@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -117,14 +118,38 @@ export class EssInboxComponent extends AppComponentBase {
 
     private readonly _inboxService = inject(EssInboxServiceProxy);
     private readonly _activatedRoute = inject(ActivatedRoute);
+    private readonly _router = inject(Router);
 
     /**
      * A request this screen was asked to open, from ?requestId= -- how a notification lands the approver on
-     * the request it is about rather than merely on the inbox containing it. Read once at construction
-     * because the fetch is driven by the table, not by ngOnInit, and cleared the moment it is honoured so a
-     * later refresh does not re-open the dialog over whatever the approver has moved on to.
+     * the request it is about rather than merely on the inbox containing it. Cleared the moment it is
+     * honoured so a later refresh does not re-open the dialog over whatever the approver has moved on to.
      */
-    private pendingRequestId: number | null = this.readPendingRequestId();
+    private pendingRequestId: number | null = null;
+
+    constructor() {
+        super();
+
+        // Watched rather than read once from the snapshot. A notification clicked while this screen is
+        // already open changes only the query string, and the router answers that by reusing the component
+        // -- so a one-off read saw the first request and ignored every one after it.
+        this._activatedRoute.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
+            const id = Number(params.get('requestId'));
+            if (!Number.isFinite(id) || id <= 0) {
+                return;
+            }
+
+            this.pendingRequestId = id;
+
+            // Before the first fetch there is nothing to do: the table's lazy load is about to run and
+            // opens the request when it lands. Afterwards the list in hand predates the notification and
+            // may be showing another tab, so it is fetched again.
+            if (this.loaded) {
+                this.tab.set(EssInboxTab.AwaitingMe);
+                this.reloadFromServer();
+            }
+        });
+    }
 
     /** Whether the fetched set is still in hand, so a page or sort event need not go back to the server. */
     private loaded = false;
@@ -414,10 +439,23 @@ export class EssInboxComponent extends AppComponentBase {
         this.detail()?.show({ ...common, actions: actions });
     }
 
-    /** The ?requestId= this screen was opened with, or null when it was opened normally. */
-    private readPendingRequestId(): number | null {
-        const id = Number(this._activatedRoute.snapshot.queryParamMap.get('requestId'));
-        return Number.isFinite(id) && id > 0 ? id : null;
+    /**
+     * Takes ?requestId= back out of the address once it has been acted on.
+     *
+     * <p>Left in place, clicking the same notification a second time asks the router for the address it is
+     * already at, which it ignores -- so the request opened once and never again.</p>
+     */
+    private clearRequestIdFromUrl(): void {
+        if (!this._activatedRoute.snapshot.queryParamMap.has('requestId')) {
+            return;
+        }
+
+        this._router.navigate([], {
+            relativeTo: this._activatedRoute,
+            queryParams: { requestId: null },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+        });
     }
 
     /**
@@ -431,6 +469,8 @@ export class EssInboxComponent extends AppComponentBase {
         if (this.pendingRequestId == null) {
             return;
         }
+
+        this.clearRequestIdFromUrl();
 
         const match = this.allRows().find((row) => row.id === this.pendingRequestId);
         if (!match) {
