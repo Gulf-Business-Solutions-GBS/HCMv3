@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.UI;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -44,14 +47,35 @@ public class PersonalDataChangeWorkflowTransactionHandler : WorkflowTransactionH
     public const string PersonalDataChangeRequestType = "EmployeePersonalDataChange";
 
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<Title> _titleRepository;
+    private readonly IRepository<Nationality> _nationalityRepository;
+    private readonly IRepository<Religion> _religionRepository;
+    private readonly IRepository<MaritalStatus> _maritalStatusRepository;
+    private readonly IRepository<City> _cityRepository;
+    private readonly IRepository<Governorate> _governorateRepository;
+    private readonly IRepository<Country> _countryRepository;
 
     public PersonalDataChangeWorkflowTransactionHandler(
         IRepository<EmployeePersonalDataChange> repository,
         IRepository<Employee> employeeRepository,
+        IRepository<Title> titleRepository,
+        IRepository<Nationality> nationalityRepository,
+        IRepository<Religion> religionRepository,
+        IRepository<MaritalStatus> maritalStatusRepository,
+        IRepository<City> cityRepository,
+        IRepository<Governorate> governorateRepository,
+        IRepository<Country> countryRepository,
         IUnitOfWorkManager unitOfWorkManager)
         : base(repository, unitOfWorkManager)
     {
         _employeeRepository = employeeRepository;
+        _titleRepository = titleRepository;
+        _nationalityRepository = nationalityRepository;
+        _religionRepository = religionRepository;
+        _maritalStatusRepository = maritalStatusRepository;
+        _cityRepository = cityRepository;
+        _governorateRepository = governorateRepository;
+        _countryRepository = countryRepository;
     }
 
     public override string RequestType => PersonalDataChangeRequestType;
@@ -141,7 +165,9 @@ public class PersonalDataChangeWorkflowTransactionHandler : WorkflowTransactionH
 
         var employee = await GetEmployeeAsync(change.EmployeeId);
 
-        var changed = DescribeChangedFields(change, employee);
+        var changed = PersonalDataChangeFields.Changes(change, PreviousValues(change, employee))
+            .Select(c => c.Field)
+            .ToList();
 
         if (changed.Count == 0)
         {
@@ -164,6 +190,58 @@ public class PersonalDataChangeWorkflowTransactionHandler : WorkflowTransactionH
         return new WorkflowSummary(
             $"Profile update: {listedEn}",
             $"تحديث البيانات: {listedAr}");
+    }
+
+    /// <summary>
+    /// What an approver decides on: each field the request changes, with what it held before beside what is
+    /// proposed. Only the changed fields -- the other thirty-odd are what the file already says, and listing
+    /// them would bury the two or three the approver is being asked about.
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var change = await GetTargetAsync(context);
+        if (change == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var employee = await GetEmployeeAsync(change.EmployeeId);
+
+        var detail = new WorkflowRequestDetail
+        {
+            SubmissionComment = change.Comments
+        };
+
+        foreach (var changed in PersonalDataChangeFields.Changes(change, PreviousValues(change, employee)))
+        {
+            detail.Add(WorkflowDetailField.Change(
+                changed.Field.Name,
+                L(changed.Field.LabelKey),
+                await DisplayAsync(changed.Field, changed.Previous),
+                await DisplayAsync(changed.Field, changed.Proposed),
+                changed.Field.Type == PersonalDataFieldType.Date ? WorkflowDetailFieldKind.Date : WorkflowDetailFieldKind.Text));
+        }
+
+        return detail;
+    }
+
+    /// <summary>
+    /// Keeps what the personnel file says at the moment the request is sent, so the request can go on
+    /// showing old beside new after approval has replaced the old. Refreshed on every submission: a request
+    /// sent back and corrected is compared against the file as it stands when it is sent again.
+    /// </summary>
+    public override async Task OnSubmittedAsync(WorkflowTransactionContext context)
+    {
+        if (!context.IsAmendment)
+        {
+            var change = await GetTargetAsync(context);
+            if (change != null)
+            {
+                change.PreviousValuesJson = PersonalDataChangeFields.Serialize(await GetEmployeeAsync(change.EmployeeId));
+            }
+        }
+
+        await base.OnSubmittedAsync(context);
     }
 
     /// <summary>
@@ -297,97 +375,70 @@ public class PersonalDataChangeWorkflowTransactionHandler : WorkflowTransactionH
     }
 
     /// <summary>
-    /// Which of the forty fields actually differ from what the master record says today.
+    /// What the request is compared against to say what it changes.
     ///
     /// <para>
-    /// A field the employee left as it came back from the pre-filled form is not a change and does not
-    /// belong in the approver's inbox line. Null and empty compare equal for the same reason: a text box
-    /// that was empty and stayed empty has not changed, whichever of the two the client sent.
+    /// While the proposal is still the employee's own -- a draft, or one sent back to them -- that is the
+    /// personnel file as it stands, because they can still edit it and the comparison has to follow. Once
+    /// it has been submitted it is the values kept at that moment, which is what keeps the comparison
+    /// meaningful after approval has overwritten the master record with the proposed values.
     /// </para>
     /// </summary>
-    private static List<(string LabelEn, string LabelAr)> DescribeChangedFields(
-        EmployeePersonalDataChange change,
-        Employee employee)
+    private static IReadOnlyDictionary<string, string> PreviousValues(EmployeePersonalDataChange change, Employee employee)
     {
-        var changed = new List<(string, string)>();
-
-        void Text(string proposed, string current, string labelEn, string labelAr)
+        if (change.WorkflowStatus != RequestStatus.Draft)
         {
-            if (proposed == null)
+            var kept = PersonalDataChangeFields.Deserialize(change.PreviousValuesJson);
+            if (kept != null)
             {
-                return;
-            }
-
-            var same = string.IsNullOrEmpty(proposed) && string.IsNullOrEmpty(current)
-                       || string.Equals(proposed, current, StringComparison.Ordinal);
-
-            if (!same)
-            {
-                changed.Add((labelEn, labelAr));
+                return kept;
             }
         }
 
-        void Value<T>(T? proposed, T current, string labelEn, string labelAr) where T : struct
+        return PersonalDataChangeFields.Read(employee);
+    }
+
+    /// <summary>
+    /// A stored value in the reader's words: a lookup's name in their language, the gender as a word, a
+    /// date left as ISO for the client to format. Null when there is nothing to show.
+    /// </summary>
+    private async Task<string> DisplayAsync(PersonalDataField field, string stored)
+    {
+        if (string.IsNullOrEmpty(stored))
         {
-            if (proposed.HasValue && !Equals(proposed.Value, current))
-            {
-                changed.Add((labelEn, labelAr));
-            }
+            return null;
         }
 
-        void Lookup(int? proposed, int? current, string labelEn, string labelAr)
+        switch (field.Type)
         {
-            if (proposed.HasValue && proposed != current)
-            {
-                changed.Add((labelEn, labelAr));
-            }
+            case PersonalDataFieldType.Title: return await LookupNameAsync(_titleRepository, stored);
+            case PersonalDataFieldType.Nationality: return await LookupNameAsync(_nationalityRepository, stored);
+            case PersonalDataFieldType.Religion: return await LookupNameAsync(_religionRepository, stored);
+            case PersonalDataFieldType.MaritalStatus: return await LookupNameAsync(_maritalStatusRepository, stored);
+            case PersonalDataFieldType.City: return await LookupNameAsync(_cityRepository, stored);
+            case PersonalDataFieldType.Governorate: return await LookupNameAsync(_governorateRepository, stored);
+            case PersonalDataFieldType.Country: return await LookupNameAsync(_countryRepository, stored);
+            case PersonalDataFieldType.Gender: return L(stored);
+
+            // The personnel file stores "no number" as zero; shown as empty rather than as a number 0.
+            case PersonalDataFieldType.Number: return stored == "0" ? null : stored;
+            default: return stored;
+        }
+    }
+
+    private static async Task<string> LookupNameAsync<TLookup>(IRepository<TLookup> repository, string storedId)
+        where TLookup : class, IEntity<int>, IBilingualLookup
+    {
+        if (!int.TryParse(storedId, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id))
+        {
+            return null;
         }
 
-        Text(change.FirstNameEn, employee?.FirstNameEn, "First Name (En)", "الاسم الأول (إنجليزي)");
-        Text(change.SecondNameEn, employee?.SecondNameEn, "Second Name (En)", "الاسم الثاني (إنجليزي)");
-        Text(change.ThirdNameEn, employee?.ThirdNameEn, "Third Name (En)", "الاسم الثالث (إنجليزي)");
-        Text(change.LastNameEn, employee?.LastNameEn, "Last Name (En)", "اسم العائلة (إنجليزي)");
-        Text(change.FirstNameAr, employee?.FirstNameAr, "First Name (Ar)", "الاسم الأول (عربي)");
-        Text(change.SecondNameAr, employee?.SecondNameAr, "Second Name (Ar)", "الاسم الثاني (عربي)");
-        Text(change.ThirdNameAr, employee?.ThirdNameAr, "Third Name (Ar)", "الاسم الثالث (عربي)");
-        Text(change.LastNameAr, employee?.LastNameAr, "Last Name (Ar)", "اسم العائلة (عربي)");
+        var row = await repository.FirstOrDefaultAsync(id);
 
-        Lookup(change.TitleId, employee?.TitleId, "Title", "اللقب");
-        Value(change.BirthDate?.Date, employee?.BirthDate.Date ?? default, "Birth Date", "تاريخ الميلاد");
-        Lookup(change.NationalityId, employee?.NationalityId, "Nationality", "الجنسية");
-        Lookup(change.ReligionId, employee?.ReligionId, "Religion", "الديانة");
-        Value(change.Gender, employee?.Gender ?? default, "Gender", "الجنس");
-        Lookup(change.MaritalStatusId, employee?.MaritalStatusId, "Marital Status", "الحالة الاجتماعية");
-
-        Text(change.FlatNumn, employee?.FlatNumn, "Flat No.", "رقم الشقة");
-        Text(change.FloorNum, employee?.FloorNum, "Floor No.", "رقم الطابق");
-        Text(change.BuildingNum, employee?.BuildingNum, "Building No.", "رقم المبنى");
-        Text(change.StreetNum, employee?.StreetNum, "Street No.", "رقم الشارع");
-        Text(change.BlockNum, employee?.BlockNum, "Block No.", "رقم القطعة");
-        Text(change.ZipCode, employee?.ZipCode, "Zip Code", "الرمز البريدي");
-        Text(change.City, employee?.City, "City", "المدينة");
-        Lookup(change.GovernorateId, employee?.GovernorateId, "Governorate", "المحافظة");
-        Lookup(change.CountryId, employee?.CountryId, "Country", "الدولة");
-        Value(change.Telephone, employee?.Telephone ?? default, "Telephone", "الهاتف");
-        Value(change.Mobile, employee?.Mobile ?? default, "Mobile", "الهاتف النقال");
-        Text(change.CurrentAddress, employee?.CurrentAddress, "Current Address", "العنوان الحالي");
-        Text(change.PermanentAddress, employee?.PermanentAddress, "Permanent Address", "العنوان الدائم");
-
-        Text(change.FatherNameEn, employee?.FatherNameEn, "Father's Name (En)", "اسم الأب (إنجليزي)");
-        Text(change.FatherNameAr, employee?.FatherNameAr, "Father's Name (Ar)", "اسم الأب (عربي)");
-        Text(change.MotherNameEn, employee?.MotherNameEn, "Mother's Name (En)", "اسم الأم (إنجليزي)");
-        Text(change.MotherNameAr, employee?.MotherNameAr, "Mother's Name (Ar)", "اسم الأم (عربي)");
-
-        Text(change.BloodGroup, employee?.BloodGroup, "Blood Group", "فصيلة الدم");
-        Text(change.Email, employee?.Email, "Email", "البريد الإلكتروني");
-        Text(change.PACINumber, employee?.PACINumber, "PACI Number", "الرقم الآلي");
-        Text(change.EmergencyContact, employee?.EmergencyContact, "Emergency Contact", "جهة الاتصال للطوارئ");
-        Text(change.CriticalIllness, employee?.CriticalIllness, "Critical Illness", "الأمراض المزمنة");
-        Text(change.AlternateEmail, employee?.AlternateEmail, "Alternate Email", "بريد إلكتروني بديل");
-        Text(change.EmergencyNumber, employee?.EmergencyNumber, "Emergency Number", "رقم الطوارئ");
-        Text(change.EmergencyRelation, employee?.EmergencyRelation, "Emergency Relation", "صلة القرابة");
-        Lookup(change.BirthPlaceId, employee?.BirthPlaceId, "Birth Place", "مكان الميلاد");
-
-        return changed;
+        // A row deleted since still has to read as something: the id beats an empty cell that would make
+        // the change look like a field being cleared.
+        return row == null ? storedId : WorkflowDetailDisplay.Name(row.NameEn, row.NameAr);
     }
 }
+

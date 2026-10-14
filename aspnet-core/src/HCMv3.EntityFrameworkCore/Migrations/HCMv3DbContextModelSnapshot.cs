@@ -23078,6 +23078,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("PreviousValuesJson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ReligionId")
                         .HasColumnType("int");
 

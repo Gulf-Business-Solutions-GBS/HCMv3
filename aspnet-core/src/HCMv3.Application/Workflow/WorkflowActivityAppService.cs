@@ -965,7 +965,15 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
         result.SubmissionComment = detail.SubmissionComment;
         result.Fields = detail.Fields
-            .Select(f => new WorkflowDetailFieldDto { Name = f.Name, Label = f.Label, Value = f.Value, Kind = f.Kind })
+            .Select(f => new WorkflowDetailFieldDto
+            {
+                Name = f.Name,
+                Label = f.Label,
+                Value = f.Value,
+                Kind = f.Kind,
+                PreviousValue = f.PreviousValue,
+                IsChange = f.IsChange
+            })
             .ToList();
     }
 

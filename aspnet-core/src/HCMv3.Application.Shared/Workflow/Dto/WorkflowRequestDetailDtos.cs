@@ -30,6 +30,13 @@ public class WorkflowDetailFieldDto
     public string Value { get; set; }
 
     public WorkflowDetailFieldKind Kind { get; set; }
+
+    /// <summary>What the field held before this request, in the same transport form as
+    /// <see cref="Value"/>. Read only when <see cref="IsChange"/> is true; null there means it was empty.</summary>
+    public string PreviousValue { get; set; }
+
+    /// <summary>True when the row is a change to an existing value, to be shown as old beside new.</summary>
+    public bool IsChange { get; set; }
 }
 
 /// <summary>

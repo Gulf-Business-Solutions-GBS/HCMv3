@@ -1901,6 +1901,12 @@
     <text name="LastNameEnIsRequired">لا يمكن ترك الاسم الأخير بالإنجليزية فارغاً.</text>
     <text name="LastNameArIsRequired">لا يمكن ترك الاسم الأخير بالعربية فارغاً.</text>
     <text name="RequestPersonalDataChange">تعديل بياناتي الشخصية</text>
+    <text name="PersonalDetail">البيانات الشخصية</text>
+    <text name="ContactInformation">معلومات الاتصال</text>
+    <text name="OtherInformation">معلومات أخرى</text>
+    <text name="EmergencyContactInformation">معلومات الاتصال في حالات الطوارئ</text>
+    <text name="NoPersonalDataChanged">لم يتم تغيير أي شيء بعد.</text>
+    <text name="PersonalDataUpdateNeedsApproval">يجب اعتماد تحديثات البيانات الشخصية، والاعتماد غير مفعّل لهذا الطلب. يرجى الطلب من الموارد البشرية تفعيله من إعدادات سير العمل.</text>
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">تتطلب هذه الخطوة إضافة ملاحظة قبل الاعتماد.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">تم التصعيد تلقائياً لعدم اتخاذ إجراء.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) بانتظار اعتمادك منذ {2} يوم.</text>

@@ -1916,6 +1916,12 @@
     <text name="LastNameEnIsRequired">Last name (English) cannot be left blank.</text>
     <text name="LastNameArIsRequired">Last name (Arabic) cannot be left blank.</text>
     <text name="RequestPersonalDataChange">Update my personal details</text>
+    <text name="PersonalDetail">Personal Detail</text>
+    <text name="ContactInformation">Contact Information</text>
+    <text name="OtherInformation">Other Information</text>
+    <text name="EmergencyContactInformation">Emergency Contact Information</text>
+    <text name="NoPersonalDataChanged">Nothing has been changed yet.</text>
+    <text name="PersonalDataUpdateNeedsApproval">Personal data updates must be approved, and approval is switched off for this request. Ask HR to switch it on under Workflow Setup.</text>
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">This step needs a comment before you can approve.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">Escalated automatically after no action.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) has been waiting for your approval for {2} day(s).</text>

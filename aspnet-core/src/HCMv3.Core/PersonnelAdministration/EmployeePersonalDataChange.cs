@@ -212,6 +212,18 @@ public class EmployeePersonalDataChange : FullAuditedEntity, IMustHaveTenant, IH
     [StringLength(1000)]
     public virtual string Comments { get; set; }
 
+    /// <summary>
+    /// What the employee's personnel file held when this proposal was submitted: the forty fields, keyed by
+    /// property name, as JSON. Written by the workflow handler at submit and never read by anything but the
+    /// request's own detail view.
+    ///
+    /// <para>
+    /// Kept because approval overwrites the master record. Without it the old value exists only until the
+    /// approver presses Approve, and a decided request could no longer say what it changed.
+    /// </para>
+    /// </summary>
+    public virtual string PreviousValuesJson { get; set; }
+
     /// <summary>The approval request that governs this proposal.</summary>
     public virtual int? WorkflowRequestId { get; set; }
 

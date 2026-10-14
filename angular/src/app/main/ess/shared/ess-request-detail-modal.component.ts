@@ -290,6 +290,7 @@ export class EssRequestDetailModalComponent extends AppComponentBase {
                     values: this.fieldValues(),
                     employeeDisplay: this.employeeDisplay(),
                     targetEntityId: served.targetEntityId,
+                    fields: served.fields ?? [],
                 }),
             } as Record<string, unknown>,
         };

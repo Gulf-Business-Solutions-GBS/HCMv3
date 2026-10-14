@@ -95912,6 +95912,57 @@ export class MyPersonalDataChangeServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getMyPersonalDataLookups(): Observable<PersonalDataLookupsDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPersonalDataChange/GetMyPersonalDataLookups";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyPersonalDataLookups(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyPersonalDataLookups(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PersonalDataLookupsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PersonalDataLookupsDto>;
+        }));
+    }
+
+    protected processGetMyPersonalDataLookups(response: HttpResponseBase): Observable<PersonalDataLookupsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PersonalDataLookupsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -95946,6 +95997,174 @@ export class MyPersonalDataChangeServiceProxy {
     }
 
     protected processRequestPersonalDataChange(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveMyPersonalDataChangeDraft(body?: SavePersonalDataChangeDraftInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPersonalDataChange/SaveMyPersonalDataChangeDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyPersonalDataChangeDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyPersonalDataChangeDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSaveMyPersonalDataChangeDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyPersonalDataChangeDraftForEdit(id?: number | undefined): Observable<MyPersonalDataChangeDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPersonalDataChange/GetMyPersonalDataChangeDraftForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyPersonalDataChangeDraftForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyPersonalDataChangeDraftForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyPersonalDataChangeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyPersonalDataChangeDto>;
+        }));
+    }
+
+    protected processGetMyPersonalDataChangeDraftForEdit(response: HttpResponseBase): Observable<MyPersonalDataChangeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyPersonalDataChangeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyPersonalDataChangeDraft(body?: EntityDto | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyPersonalDataChange/SubmitMyPersonalDataChangeDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyPersonalDataChangeDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyPersonalDataChangeDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSubmitMyPersonalDataChangeDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -288436,6 +288655,8 @@ export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
     canEdit!: boolean;
     proposed!: PersonalDataChangeValuesDto;
     comments!: string | undefined;
+    requestNumber!: string | undefined;
+    isSentBack!: boolean;
 
     constructor(data?: IMyPersonalDataChangeDto) {
         if (data) {
@@ -288456,6 +288677,8 @@ export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
             this.canEdit = _data["canEdit"];
             this.proposed = _data["proposed"] ? PersonalDataChangeValuesDto.fromJS(_data["proposed"]) : undefined as any;
             this.comments = _data["comments"];
+            this.requestNumber = _data["requestNumber"];
+            this.isSentBack = _data["isSentBack"];
         }
     }
 
@@ -288476,6 +288699,8 @@ export class MyPersonalDataChangeDto implements IMyPersonalDataChangeDto {
         data["canEdit"] = this.canEdit;
         data["proposed"] = this.proposed ? this.proposed.toJSON() : undefined as any;
         data["comments"] = this.comments;
+        data["requestNumber"] = this.requestNumber;
+        data["isSentBack"] = this.isSentBack;
         return data;
     }
 }
@@ -288489,6 +288714,8 @@ export interface IMyPersonalDataChangeDto {
     canEdit: boolean;
     proposed: PersonalDataChangeValuesDto;
     comments: string | undefined;
+    requestNumber: string | undefined;
+    isSentBack: boolean;
 }
 
 export class MyPersonalDataForEditDto implements IMyPersonalDataForEditDto {
@@ -328269,6 +328496,122 @@ export interface IPersonalDataChangeValuesDto {
     emergencyRelation: string | undefined;
 }
 
+export class PersonalDataLookupsDto implements IPersonalDataLookupsDto {
+    titles!: SimpleLookupDto[] | undefined;
+    nationalities!: SimpleLookupDto[] | undefined;
+    religions!: SimpleLookupDto[] | undefined;
+    maritalStatuses!: SimpleLookupDto[] | undefined;
+    cities!: SimpleLookupDto[] | undefined;
+    governorates!: SimpleLookupDto[] | undefined;
+    countries!: SimpleLookupDto[] | undefined;
+
+    constructor(data?: IPersonalDataLookupsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["titles"])) {
+                this.titles = [] as any;
+                for (let item of _data["titles"])
+                    this.titles!.push(SimpleLookupDto.fromJS(item));
+            }
+            if (Array.isArray(_data["nationalities"])) {
+                this.nationalities = [] as any;
+                for (let item of _data["nationalities"])
+                    this.nationalities!.push(SimpleLookupDto.fromJS(item));
+            }
+            if (Array.isArray(_data["religions"])) {
+                this.religions = [] as any;
+                for (let item of _data["religions"])
+                    this.religions!.push(SimpleLookupDto.fromJS(item));
+            }
+            if (Array.isArray(_data["maritalStatuses"])) {
+                this.maritalStatuses = [] as any;
+                for (let item of _data["maritalStatuses"])
+                    this.maritalStatuses!.push(SimpleLookupDto.fromJS(item));
+            }
+            if (Array.isArray(_data["cities"])) {
+                this.cities = [] as any;
+                for (let item of _data["cities"])
+                    this.cities!.push(SimpleLookupDto.fromJS(item));
+            }
+            if (Array.isArray(_data["governorates"])) {
+                this.governorates = [] as any;
+                for (let item of _data["governorates"])
+                    this.governorates!.push(SimpleLookupDto.fromJS(item));
+            }
+            if (Array.isArray(_data["countries"])) {
+                this.countries = [] as any;
+                for (let item of _data["countries"])
+                    this.countries!.push(SimpleLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PersonalDataLookupsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PersonalDataLookupsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.titles)) {
+            data["titles"] = [];
+            for (let item of this.titles)
+                data["titles"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.nationalities)) {
+            data["nationalities"] = [];
+            for (let item of this.nationalities)
+                data["nationalities"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.religions)) {
+            data["religions"] = [];
+            for (let item of this.religions)
+                data["religions"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.maritalStatuses)) {
+            data["maritalStatuses"] = [];
+            for (let item of this.maritalStatuses)
+                data["maritalStatuses"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.cities)) {
+            data["cities"] = [];
+            for (let item of this.cities)
+                data["cities"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.governorates)) {
+            data["governorates"] = [];
+            for (let item of this.governorates)
+                data["governorates"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.countries)) {
+            data["countries"] = [];
+            for (let item of this.countries)
+                data["countries"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPersonalDataLookupsDto {
+    titles: SimpleLookupDto[] | undefined;
+    nationalities: SimpleLookupDto[] | undefined;
+    religions: SimpleLookupDto[] | undefined;
+    maritalStatuses: SimpleLookupDto[] | undefined;
+    cities: SimpleLookupDto[] | undefined;
+    governorates: SimpleLookupDto[] | undefined;
+    countries: SimpleLookupDto[] | undefined;
+}
+
 export class PersonnelSettingsEditDto implements IPersonnelSettingsEditDto {
     id!: number;
     enableSponsorGovtJobTitleQuota!: boolean;
@@ -339617,6 +339960,206 @@ export interface ISavePassportWithdrawalDraftInput {
     guarantorId: number | undefined;
     withdrawalReason: string | undefined;
     comments: string | undefined;
+}
+
+export class SavePersonalDataChangeDraftInput implements ISavePersonalDataChangeDraftInput {
+    firstNameEn!: string | undefined;
+    secondNameEn!: string | undefined;
+    thirdNameEn!: string | undefined;
+    lastNameEn!: string | undefined;
+    firstNameAr!: string | undefined;
+    secondNameAr!: string | undefined;
+    thirdNameAr!: string | undefined;
+    lastNameAr!: string | undefined;
+    titleId!: number | undefined;
+    birthDate!: DateTime | undefined;
+    nationalityId!: number | undefined;
+    religionId!: number | undefined;
+    gender!: Gender;
+    maritalStatusId!: number | undefined;
+    birthPlaceId!: number | undefined;
+    flatNumn!: string | undefined;
+    floorNum!: string | undefined;
+    buildingNum!: string | undefined;
+    streetNum!: string | undefined;
+    blockNum!: string | undefined;
+    zipCode!: string | undefined;
+    paciNumber!: string | undefined;
+    city!: string | undefined;
+    governorateId!: number | undefined;
+    countryId!: number | undefined;
+    currentAddress!: string | undefined;
+    permanentAddress!: string | undefined;
+    telephone!: number | undefined;
+    mobile!: number | undefined;
+    email!: string | undefined;
+    alternateEmail!: string | undefined;
+    fatherNameEn!: string | undefined;
+    fatherNameAr!: string | undefined;
+    motherNameEn!: string | undefined;
+    motherNameAr!: string | undefined;
+    bloodGroup!: string | undefined;
+    criticalIllness!: string | undefined;
+    emergencyContact!: string | undefined;
+    emergencyNumber!: string | undefined;
+    emergencyRelation!: string | undefined;
+    comments!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISavePersonalDataChangeDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.firstNameEn = _data["firstNameEn"];
+            this.secondNameEn = _data["secondNameEn"];
+            this.thirdNameEn = _data["thirdNameEn"];
+            this.lastNameEn = _data["lastNameEn"];
+            this.firstNameAr = _data["firstNameAr"];
+            this.secondNameAr = _data["secondNameAr"];
+            this.thirdNameAr = _data["thirdNameAr"];
+            this.lastNameAr = _data["lastNameAr"];
+            this.titleId = _data["titleId"];
+            this.birthDate = _data["birthDate"] ? DateTime.fromISO(_data["birthDate"].toString()) : undefined as any;
+            this.nationalityId = _data["nationalityId"];
+            this.religionId = _data["religionId"];
+            this.gender = _data["gender"];
+            this.maritalStatusId = _data["maritalStatusId"];
+            this.birthPlaceId = _data["birthPlaceId"];
+            this.flatNumn = _data["flatNumn"];
+            this.floorNum = _data["floorNum"];
+            this.buildingNum = _data["buildingNum"];
+            this.streetNum = _data["streetNum"];
+            this.blockNum = _data["blockNum"];
+            this.zipCode = _data["zipCode"];
+            this.paciNumber = _data["paciNumber"];
+            this.city = _data["city"];
+            this.governorateId = _data["governorateId"];
+            this.countryId = _data["countryId"];
+            this.currentAddress = _data["currentAddress"];
+            this.permanentAddress = _data["permanentAddress"];
+            this.telephone = _data["telephone"];
+            this.mobile = _data["mobile"];
+            this.email = _data["email"];
+            this.alternateEmail = _data["alternateEmail"];
+            this.fatherNameEn = _data["fatherNameEn"];
+            this.fatherNameAr = _data["fatherNameAr"];
+            this.motherNameEn = _data["motherNameEn"];
+            this.motherNameAr = _data["motherNameAr"];
+            this.bloodGroup = _data["bloodGroup"];
+            this.criticalIllness = _data["criticalIllness"];
+            this.emergencyContact = _data["emergencyContact"];
+            this.emergencyNumber = _data["emergencyNumber"];
+            this.emergencyRelation = _data["emergencyRelation"];
+            this.comments = _data["comments"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): SavePersonalDataChangeDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SavePersonalDataChangeDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstNameEn"] = this.firstNameEn;
+        data["secondNameEn"] = this.secondNameEn;
+        data["thirdNameEn"] = this.thirdNameEn;
+        data["lastNameEn"] = this.lastNameEn;
+        data["firstNameAr"] = this.firstNameAr;
+        data["secondNameAr"] = this.secondNameAr;
+        data["thirdNameAr"] = this.thirdNameAr;
+        data["lastNameAr"] = this.lastNameAr;
+        data["titleId"] = this.titleId;
+        data["birthDate"] = this.birthDate ? this.birthDate.toString() : undefined as any;
+        data["nationalityId"] = this.nationalityId;
+        data["religionId"] = this.religionId;
+        data["gender"] = this.gender;
+        data["maritalStatusId"] = this.maritalStatusId;
+        data["birthPlaceId"] = this.birthPlaceId;
+        data["flatNumn"] = this.flatNumn;
+        data["floorNum"] = this.floorNum;
+        data["buildingNum"] = this.buildingNum;
+        data["streetNum"] = this.streetNum;
+        data["blockNum"] = this.blockNum;
+        data["zipCode"] = this.zipCode;
+        data["paciNumber"] = this.paciNumber;
+        data["city"] = this.city;
+        data["governorateId"] = this.governorateId;
+        data["countryId"] = this.countryId;
+        data["currentAddress"] = this.currentAddress;
+        data["permanentAddress"] = this.permanentAddress;
+        data["telephone"] = this.telephone;
+        data["mobile"] = this.mobile;
+        data["email"] = this.email;
+        data["alternateEmail"] = this.alternateEmail;
+        data["fatherNameEn"] = this.fatherNameEn;
+        data["fatherNameAr"] = this.fatherNameAr;
+        data["motherNameEn"] = this.motherNameEn;
+        data["motherNameAr"] = this.motherNameAr;
+        data["bloodGroup"] = this.bloodGroup;
+        data["criticalIllness"] = this.criticalIllness;
+        data["emergencyContact"] = this.emergencyContact;
+        data["emergencyNumber"] = this.emergencyNumber;
+        data["emergencyRelation"] = this.emergencyRelation;
+        data["comments"] = this.comments;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface ISavePersonalDataChangeDraftInput {
+    firstNameEn: string | undefined;
+    secondNameEn: string | undefined;
+    thirdNameEn: string | undefined;
+    lastNameEn: string | undefined;
+    firstNameAr: string | undefined;
+    secondNameAr: string | undefined;
+    thirdNameAr: string | undefined;
+    lastNameAr: string | undefined;
+    titleId: number | undefined;
+    birthDate: DateTime | undefined;
+    nationalityId: number | undefined;
+    religionId: number | undefined;
+    gender: Gender;
+    maritalStatusId: number | undefined;
+    birthPlaceId: number | undefined;
+    flatNumn: string | undefined;
+    floorNum: string | undefined;
+    buildingNum: string | undefined;
+    streetNum: string | undefined;
+    blockNum: string | undefined;
+    zipCode: string | undefined;
+    paciNumber: string | undefined;
+    city: string | undefined;
+    governorateId: number | undefined;
+    countryId: number | undefined;
+    currentAddress: string | undefined;
+    permanentAddress: string | undefined;
+    telephone: number | undefined;
+    mobile: number | undefined;
+    email: string | undefined;
+    alternateEmail: string | undefined;
+    fatherNameEn: string | undefined;
+    fatherNameAr: string | undefined;
+    motherNameEn: string | undefined;
+    motherNameAr: string | undefined;
+    bloodGroup: string | undefined;
+    criticalIllness: string | undefined;
+    emergencyContact: string | undefined;
+    emergencyNumber: string | undefined;
+    emergencyRelation: string | undefined;
+    comments: string | undefined;
+    id: number | undefined;
 }
 
 export class SaveWorkflowSetupDefaultChainInput implements ISaveWorkflowSetupDefaultChainInput {
@@ -354043,6 +354586,8 @@ export class WorkflowDetailFieldDto implements IWorkflowDetailFieldDto {
     label!: string | undefined;
     value!: string | undefined;
     kind!: WorkflowDetailFieldKind;
+    previousValue!: string | undefined;
+    isChange!: boolean;
 
     constructor(data?: IWorkflowDetailFieldDto) {
         if (data) {
@@ -354059,6 +354604,8 @@ export class WorkflowDetailFieldDto implements IWorkflowDetailFieldDto {
             this.label = _data["label"];
             this.value = _data["value"];
             this.kind = _data["kind"];
+            this.previousValue = _data["previousValue"];
+            this.isChange = _data["isChange"];
         }
     }
 
@@ -354075,6 +354622,8 @@ export class WorkflowDetailFieldDto implements IWorkflowDetailFieldDto {
         data["label"] = this.label;
         data["value"] = this.value;
         data["kind"] = this.kind;
+        data["previousValue"] = this.previousValue;
+        data["isChange"] = this.isChange;
         return data;
     }
 }
@@ -354084,6 +354633,8 @@ export interface IWorkflowDetailFieldDto {
     label: string | undefined;
     value: string | undefined;
     kind: WorkflowDetailFieldKind;
+    previousValue: string | undefined;
+    isChange: boolean;
 }
 
 export enum WorkflowDetailFieldKind {

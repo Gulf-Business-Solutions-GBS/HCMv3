@@ -42,6 +42,34 @@ public class WorkflowDetailField
 
     public WorkflowDetailFieldKind Kind { get; }
 
+    /// <summary>
+    /// What the field held before this request, in the same transport form as <see cref="Value"/>. Only
+    /// meaningful when <see cref="IsChange"/> is true; null there means the field was empty before.
+    /// </summary>
+    public string PreviousValue { get; private set; }
+
+    /// <summary>
+    /// True when this row describes a change to an existing value rather than a value being supplied, so
+    /// the reader is shown old beside new. Separate from <see cref="PreviousValue"/> because "it was empty
+    /// before" is a real answer, and a null alone could not tell that from "no comparison offered".
+    /// </summary>
+    public bool IsChange { get; private set; }
+
+    /// <summary>A field whose value this request proposes to change, carrying what it held before.</summary>
+    public static WorkflowDetailField Change(
+        string name,
+        string label,
+        string previousValue,
+        string value,
+        WorkflowDetailFieldKind kind = WorkflowDetailFieldKind.Text)
+    {
+        return new WorkflowDetailField(name, label, value, kind)
+        {
+            PreviousValue = previousValue,
+            IsChange = true
+        };
+    }
+
     /// <summary>A date field, or null when the date is unset -- an empty row is more honest than 01/01/0001.</summary>
     public static WorkflowDetailField Date(string name, string label, DateTime? value)
     {

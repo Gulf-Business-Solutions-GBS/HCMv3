@@ -30,6 +30,22 @@ public interface IMyPersonalDataChangeAppService : IApplicationService
     /// <summary>Creates the proposal and, when the type is workflow-enabled, submits it in one step.</summary>
     Task<MyRequestSubmissionDto> RequestPersonalDataChange(RequestPersonalDataChangeInput input);
 
+    /// <summary>The choices behind the form's pickers: title, nationality, religion, marital status, birth
+    /// place, governorate and country.</summary>
+    Task<PersonalDataLookupsDto> GetMyPersonalDataLookups();
+
+    /// <summary>
+    /// Save: files the form as a draft only the employee can see, or changes a draft (or a request an
+    /// approver sent back) already filed. Nothing is sent to anybody.
+    /// </summary>
+    Task<MyRequestSubmissionDto> SaveMyPersonalDataChangeDraft(SavePersonalDataChangeDraftInput input);
+
+    /// <summary>One of the employee's own drafts, or a request sent back to them, to reopen the form on.</summary>
+    Task<MyPersonalDataChangeDto> GetMyPersonalDataChangeDraftForEdit(EntityDto input);
+
+    /// <summary>Sends a saved draft for approval, or sends a request that was sent back again.</summary>
+    Task<MyRequestSubmissionDto> SubmitMyPersonalDataChangeDraft(EntityDto input);
+
     /// <summary>Withdraws a proposal while it is still theirs to withdraw.</summary>
     Task CancelMyPersonalDataChange(EntityDto input);
 }

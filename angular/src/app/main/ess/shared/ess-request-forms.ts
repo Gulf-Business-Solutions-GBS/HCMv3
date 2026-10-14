@@ -4,7 +4,15 @@ import {
     ExitPermitFormComponent,
     ExitPermitFormValue,
 } from '../my-exit-permit/exit-permit-form.component';
-import { HalfdayType, LeavePaymentType, TravelReason, WorkflowRequestAction } from '@shared/service-proxies/service-proxies';
+import {
+    HalfdayType,
+    LeavePaymentType,
+    TravelReason,
+    WorkflowDetailFieldDto,
+    WorkflowDetailFieldKind,
+    WorkflowRequestAction,
+} from '@shared/service-proxies/service-proxies';
+import { PersonalDataChangesComponent, PersonalDataChangesValue } from '../my-personal-data/personal-data-changes.component';
 import { LeaveFormValue, LeaveRequestFormComponent } from '../my-leave/leave-request-form.component';
 import { DocumentRequestFormComponent, DocumentRequestFormValue } from '../my-document/document-request-form.component';
 import { LetterRequestFormComponent, LetterRequestFormValue } from '../my-letter/letter-request-form.component';
@@ -26,6 +34,27 @@ export interface EssRequestFormContext {
 
     /** The transaction row the request governs, which is what its files are attached to. */
     targetEntityId?: number;
+
+    /**
+     * The projected fields themselves, in the handler's order, for a form that needs more of a field than
+     * its value: its label, and what it held before the request.
+     */
+    fields?: WorkflowDetailFieldDto[];
+}
+
+/** A projected value as a reader sees it: a date as dd/MM/yyyy, anything else as sent. */
+function displayValue(raw: string | undefined, kind: WorkflowDetailFieldKind | undefined): string {
+    if (!raw) {
+        return '';
+    }
+
+    if (kind === WorkflowDetailFieldKind.Date) {
+        const [year, month, day] = raw.split('-');
+
+        return year && month && day ? `${day.substring(0, 2)}/${month}/${year}` : raw;
+    }
+
+    return raw;
 }
 
 /** One transaction type's own form, and how to fill it from a request's projection. */
@@ -188,6 +217,22 @@ export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
             expiryDate: context.values['ExpiryDate'] ?? '',
             comments: context.values['Comments'] ?? '',
             description: context.values['Description'] ?? '',
+        }),
+    },
+    EmployeePersonalDataChange: {
+        // Not the form the requester filled in, on purpose: that has forty fields and a request changes a
+        // few. The approver is shown those few, what each held before beside what is proposed.
+        component: PersonalDataChangesComponent,
+        toValue: (context): PersonalDataChangesValue => ({
+            id: context.targetEntityId,
+            employeeDisplay: context.employeeDisplay,
+            changes: (context.fields ?? [])
+                .filter((field) => field.isChange)
+                .map((field) => ({
+                    label: field.label ?? '',
+                    oldValue: displayValue(field.previousValue, field.kind),
+                    newValue: displayValue(field.value, field.kind),
+                })),
         }),
     },
 };

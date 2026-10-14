@@ -448,6 +448,7 @@ public class MyPersonalDataChangeAppService_Tests : AppTestBase
             nameof(EmployeePersonalDataChange.EmployeeId),
             nameof(EmployeePersonalDataChange.Employee),
             nameof(EmployeePersonalDataChange.Comments),
+            nameof(EmployeePersonalDataChange.PreviousValuesJson),
             nameof(EmployeePersonalDataChange.WorkflowRequestId),
             nameof(EmployeePersonalDataChange.WorkflowStatus),
             nameof(EmployeePersonalDataChange.Title),
@@ -845,6 +846,353 @@ public class MyPersonalDataChangeAppService_Tests : AppTestBase
 
         await Assert.ThrowsAnyAsync<Exception>(() =>
             _changes.CancelMyPersonalDataChange(new EntityDto(theirs.Id)));
+    }
+
+    #endregion
+
+    #region Old value beside new value -- what the approver decides on
+
+    /// <summary>The handler's own projection of a request, read inside a unit of work as the engine reads it.</summary>
+    private async Task<WorkflowRequestDetail> BuildDetailAsync(int requestId, int actingEmployeeId)
+    {
+        using (var unitOfWork = Resolve<IUnitOfWorkManager>().Begin())
+        {
+            var request = await Resolve<IRepository<WorkflowRequest>>().GetAsync(requestId);
+            var handler = Resolve<IWorkflowTransactionHandlerResolver>().Resolve(request.RequestType);
+
+            var detail = await handler.BuildDetailAsync(new WorkflowTransactionContext(request, actingEmployeeId));
+
+            await unitOfWork.CompleteAsync();
+
+            return detail;
+        }
+    }
+
+    [Fact]
+    public async Task Should_Show_The_Approver_Only_The_Changed_Fields_With_Old_And_New_Values()
+    {
+        var meId = CreateFullyPopulatedEmployee("PDU700", AbpSession.UserId);
+        var approverId = EnableWorkflow("PDU700APP");
+
+        // The four names go on every request, unchanged. They must not be reported as changes.
+        var input = MinimalInput(ReloadEmployee(meId));
+        input.Mobile = 66660000;
+        input.Email = "after@example.com";
+        input.Comments = "New number.";
+
+        var result = await _changes.RequestPersonalDataChange(input);
+
+        var detail = await BuildDetailAsync(result.WorkflowRequestId.Value, approverId);
+
+        detail.SubmissionComment.ShouldBe("New number.");
+        detail.Fields.Select(f => f.Name).ShouldBe(new[]
+        {
+            nameof(EmployeePersonalDataChange.Mobile),
+            nameof(EmployeePersonalDataChange.Email)
+        });
+        detail.Fields.ShouldAllBe(f => f.IsChange);
+
+        var mobile = detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.Mobile));
+        mobile.PreviousValue.ShouldBe("55550000");
+        mobile.Value.ShouldBe("66660000");
+
+        var email = detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.Email));
+        email.PreviousValue.ShouldBe("before@example.com");
+        email.Value.ShouldBe("after@example.com");
+    }
+
+    [Fact]
+    public async Task Should_Show_A_Changed_Lookup_By_Name_And_A_Changed_Date_As_A_Date()
+    {
+        // An approver shown "Nationality: 14 -> 22" has been shown nothing.
+        var meId = CreateFullyPopulatedEmployee("PDU710", AbpSession.UserId);
+        var approverId = EnableWorkflow("PDU710APP");
+
+        var input = MinimalInput(ReloadEmployee(meId));
+        input.NationalityId = CreateLookup<Nationality>("After nationality");
+        input.BirthPlaceId = CreateCity("After birthplace");
+        input.Gender = Gender.Female;
+        input.BirthDate = new DateTime(1985, 6, 15);
+
+        var result = await _changes.RequestPersonalDataChange(input);
+
+        var detail = await BuildDetailAsync(result.WorkflowRequestId.Value, approverId);
+
+        var nationality = detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.NationalityId));
+        nationality.PreviousValue.ShouldBe("Before nationality");
+        nationality.Value.ShouldBe("After nationality");
+
+        var birthPlace = detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.BirthPlaceId));
+        birthPlace.PreviousValue.ShouldBe("Before birthplace");
+        birthPlace.Value.ShouldBe("After birthplace");
+
+        var gender = detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.Gender));
+        gender.PreviousValue.ShouldBe("Male");
+        gender.Value.ShouldBe("Female");
+
+        var birthDate = detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.BirthDate));
+        birthDate.Kind.ShouldBe(WorkflowDetailFieldKind.Date);
+        birthDate.PreviousValue.ShouldBe("1980-03-02");
+        birthDate.Value.ShouldBe("1985-06-15");
+    }
+
+    [Fact]
+    public async Task Should_Still_Show_The_Old_Value_After_The_Request_Is_Approved()
+    {
+        // Approval overwrites the personnel file with the proposed values. Compared against the file, an
+        // approved request would then report that it changed nothing.
+        var meId = CreateFullyPopulatedEmployee("PDU720", AbpSession.UserId);
+        var approverId = EnableWorkflow("PDU720APP");
+
+        var input = MinimalInput(ReloadEmployee(meId));
+        input.Mobile = 66660000;
+
+        var result = await _changes.RequestPersonalDataChange(input);
+
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(result.WorkflowRequestId.Value, approverId, "ok");
+
+        ReloadEmployee(meId).Mobile.ShouldBe(66660000);
+
+        var detail = await BuildDetailAsync(result.WorkflowRequestId.Value, approverId);
+
+        var mobile = detail.Fields.Single();
+        mobile.Name.ShouldBe(nameof(EmployeePersonalDataChange.Mobile));
+        mobile.PreviousValue.ShouldBe("55550000");
+        mobile.Value.ShouldBe("66660000");
+    }
+
+    [Fact]
+    public async Task Should_Show_A_Field_That_Was_Empty_Before_As_A_Change_From_Nothing()
+    {
+        var meId = CreateBareEmployee("PDU730");
+        UsingDbContext(context =>
+        {
+            context.Set<Employee>().IgnoreQueryFilters().Single(e => e.Id == meId).UserId = AbpSession.UserId;
+        });
+        var approverId = EnableWorkflow("PDU730APP");
+
+        var input = MinimalInput(ReloadEmployee(meId));
+        input.Mobile = 66660000;
+        input.EmergencyContact = "Somebody";
+
+        var result = await _changes.RequestPersonalDataChange(input);
+
+        var detail = await BuildDetailAsync(result.WorkflowRequestId.Value, approverId);
+
+        // No mobile number is stored as zero; the approver is shown an empty old value, not "0".
+        detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.Mobile)).PreviousValue.ShouldBeNull();
+        detail.Fields.Single(f => f.Name == nameof(EmployeePersonalDataChange.EmergencyContact)).PreviousValue.ShouldBeNull();
+        detail.Fields.ShouldAllBe(f => f.IsChange);
+    }
+
+    #endregion
+
+    #region Drafts, and requests sent back
+
+    [Fact]
+    public async Task Save_Should_File_A_Draft_Without_Sending_It_To_Anybody()
+    {
+        var meId = CreateFullyPopulatedEmployee("PDU800", AbpSession.UserId);
+        EnableWorkflow("PDU800APP");
+
+        var result = await _changes.SaveMyPersonalDataChangeDraft(new SavePersonalDataChangeDraftInput { Mobile = 66660000 });
+
+        result.SavedAsDraft.ShouldBeTrue();
+        result.SubmittedForApproval.ShouldBeFalse();
+        result.WorkflowRequestId.ShouldBeNull();
+
+        UsingDbContext(context => context.Set<WorkflowRequest>().IgnoreQueryFilters()
+            .Any(r => r.TargetEntityId == result.TransactionId && r.RequestType == "EmployeePersonalDataChange")
+            .ShouldBeFalse("A draft raised a workflow request."));
+
+        var row = (await _changes.GetMyPersonalDataChanges(ListInput())).Items.Single(i => i.Id == result.TransactionId);
+        row.IsDraft.ShouldBeTrue();
+        row.CanEdit.ShouldBeTrue();
+        row.RequestNumber.ShouldBeNull();
+
+        ReloadEmployee(meId).Mobile.ShouldBe(55550000);
+    }
+
+    [Fact]
+    public async Task Saving_A_Draft_Again_Should_Take_Out_A_Change_The_Form_No_Longer_Proposes()
+    {
+        CreateFullyPopulatedEmployee("PDU810", AbpSession.UserId);
+
+        var saved = await _changes.SaveMyPersonalDataChangeDraft(
+            new SavePersonalDataChangeDraftInput { Mobile = 66660000, Email = "first@example.com" });
+
+        await _changes.SaveMyPersonalDataChangeDraft(
+            new SavePersonalDataChangeDraftInput { Id = saved.TransactionId, Email = "second@example.com", Comments = "Changed my mind." });
+
+        var draft = await _changes.GetMyPersonalDataChangeDraftForEdit(new EntityDto(saved.TransactionId));
+
+        draft.Proposed.Mobile.ShouldBeNull();
+        draft.Proposed.Email.ShouldBe("second@example.com");
+        draft.Comments.ShouldBe("Changed my mind.");
+        draft.IsDraft.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task Submitting_A_Draft_Should_Send_It_For_Approval_And_Approval_Should_Apply_It()
+    {
+        var meId = CreateFullyPopulatedEmployee("PDU820", AbpSession.UserId);
+        var approverId = EnableWorkflow("PDU820APP");
+
+        var input = new SavePersonalDataChangeDraftInput { Mobile = 66660000 };
+        var names = MinimalInput(ReloadEmployee(meId));
+        input.FirstNameEn = names.FirstNameEn;
+        input.LastNameEn = names.LastNameEn;
+        input.FirstNameAr = names.FirstNameAr;
+        input.LastNameAr = names.LastNameAr;
+
+        var saved = await _changes.SaveMyPersonalDataChangeDraft(input);
+
+        var submitted = await _changes.SubmitMyPersonalDataChangeDraft(new EntityDto(saved.TransactionId));
+
+        submitted.SubmittedForApproval.ShouldBeTrue();
+        submitted.WorkflowRequestId.ShouldNotBeNull();
+
+        var row = (await _changes.GetMyPersonalDataChanges(ListInput())).Items.Single(i => i.Id == saved.TransactionId);
+        row.IsDraft.ShouldBeFalse();
+        row.CanEdit.ShouldBeFalse();
+        row.RequestNumber.ShouldNotBeNullOrWhiteSpace();
+
+        await Resolve<IWorkflowApprovalService>().ApproveAsync(submitted.WorkflowRequestId.Value, approverId, "ok");
+
+        ReloadEmployee(meId).Mobile.ShouldBe(66660000);
+    }
+
+    [Fact]
+    public async Task Submitting_A_Draft_Should_Apply_The_Same_Rules_As_A_New_Request()
+    {
+        CreateFullyPopulatedEmployee("PDU830", AbpSession.UserId);
+        EnableWorkflow("PDU830APP");
+
+        // Saved without the names: allowed for a draft, refused when it is sent.
+        var saved = await _changes.SaveMyPersonalDataChangeDraft(new SavePersonalDataChangeDraftInput { Mobile = 66660000 });
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() =>
+            _changes.SubmitMyPersonalDataChangeDraft(new EntityDto(saved.TransactionId)));
+    }
+
+    [Fact]
+    public async Task Should_Refuse_To_Send_A_Request_While_Approval_Is_Switched_Off_For_This_Type()
+    {
+        // With no approver the proposal would be filed as "recorded" and never reach the personnel file,
+        // because the copy onto the employee happens on approval. Legacy refused a request with no chain.
+        var meId = CreateFullyPopulatedEmployee("PDU835", AbpSession.UserId);
+
+        var input = MinimalInput(ReloadEmployee(meId));
+        input.Mobile = 66660000;
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() => _changes.RequestPersonalDataChange(input));
+
+        // A draft can still be saved -- it is sent to nobody -- but not submitted.
+        var saved = await _changes.SaveMyPersonalDataChangeDraft(new SavePersonalDataChangeDraftInput
+        {
+            FirstNameEn = input.FirstNameEn,
+            LastNameEn = input.LastNameEn,
+            FirstNameAr = input.FirstNameAr,
+            LastNameAr = input.LastNameAr,
+            Mobile = 66660000
+        });
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() =>
+            _changes.SubmitMyPersonalDataChangeDraft(new EntityDto(saved.TransactionId)));
+
+        UsingDbContext(context => context.Set<EmployeePersonalDataChange>().IgnoreQueryFilters()
+            .Single(c => c.Id == saved.TransactionId).WorkflowStatus
+            .ShouldBe(RequestStatus.Draft));
+
+        ReloadEmployee(meId).Mobile.ShouldBe(55550000);
+    }
+
+    [Fact]
+    public async Task A_Request_Sent_Back_Should_Be_Corrected_And_Sent_Again_Under_The_Same_Request()
+    {
+        var meId = CreateFullyPopulatedEmployee("PDU840", AbpSession.UserId);
+        var approverId = EnableWorkflow("PDU840APP");
+
+        var input = MinimalInput(ReloadEmployee(meId));
+        input.Mobile = 66660000;
+
+        var result = await _changes.RequestPersonalDataChange(input);
+
+        await Resolve<IWorkflowApprovalService>().SendBackAsync(result.WorkflowRequestId.Value, approverId, "Wrong number.");
+
+        var row = (await _changes.GetMyPersonalDataChanges(ListInput())).Items.Single(i => i.Id == result.TransactionId);
+        row.IsSentBack.ShouldBeTrue();
+        row.CanEdit.ShouldBeTrue();
+
+        var corrected = new SavePersonalDataChangeDraftInput
+        {
+            Id = result.TransactionId,
+            FirstNameEn = input.FirstNameEn,
+            LastNameEn = input.LastNameEn,
+            FirstNameAr = input.FirstNameAr,
+            LastNameAr = input.LastNameAr,
+            Mobile = 77770000
+        };
+
+        await _changes.SaveMyPersonalDataChangeDraft(corrected);
+
+        var resubmitted = await _changes.SubmitMyPersonalDataChangeDraft(new EntityDto(result.TransactionId));
+
+        resubmitted.WorkflowRequestId.ShouldBe(result.WorkflowRequestId);
+
+        var detail = await BuildDetailAsync(result.WorkflowRequestId.Value, approverId);
+        var mobile = detail.Fields.Single();
+        mobile.PreviousValue.ShouldBe("55550000");
+        mobile.Value.ShouldBe("77770000");
+    }
+
+    [Fact]
+    public async Task Should_Refuse_To_Open_Or_Change_Somebody_Elses_Draft()
+    {
+        var otherId = CreateFullyPopulatedEmployee("PDU850OTHER", null);
+        CreateFullyPopulatedEmployee("PDU850", AbpSession.UserId);
+
+        EmployeePersonalDataChange theirs = null;
+        UsingDbContext(context =>
+        {
+            theirs = context.Set<EmployeePersonalDataChange>().Add(new EmployeePersonalDataChange
+            {
+                TenantId = TenantId,
+                EmployeeId = otherId,
+                Mobile = 11110000,
+                WorkflowStatus = RequestStatus.Draft
+            }).Entity;
+        });
+
+        await Assert.ThrowsAnyAsync<Exception>(() =>
+            _changes.GetMyPersonalDataChangeDraftForEdit(new EntityDto(theirs.Id)));
+
+        await Assert.ThrowsAnyAsync<Exception>(() =>
+            _changes.SaveMyPersonalDataChangeDraft(new SavePersonalDataChangeDraftInput { Id = theirs.Id, Mobile = 99990000 }));
+
+        await Assert.ThrowsAnyAsync<Exception>(() =>
+            _changes.SubmitMyPersonalDataChangeDraft(new EntityDto(theirs.Id)));
+    }
+
+    #endregion
+
+    #region The form's pickers
+
+    [Fact]
+    public async Task Lookups_Should_Offer_The_Choices_For_All_Seven_Pickers()
+    {
+        // The fixture creates one row in each of the seven tables.
+        CreateFullyPopulatedEmployee("PDU900", AbpSession.UserId);
+
+        var lookups = await _changes.GetMyPersonalDataLookups();
+
+        lookups.Titles.Select(l => l.NameEn).ShouldContain("Before title");
+        lookups.Nationalities.Select(l => l.NameEn).ShouldContain("Before nationality");
+        lookups.Religions.Select(l => l.NameEn).ShouldContain("Before religion");
+        lookups.MaritalStatuses.Select(l => l.NameEn).ShouldContain("Before marital");
+        lookups.Cities.Select(l => l.NameEn).ShouldContain("Before birthplace");
+        lookups.Governorates.Select(l => l.NameEn).ShouldContain("Before governorate");
+        lookups.Countries.Select(l => l.NameEn).ShouldContain("Before country");
     }
 
     #endregion

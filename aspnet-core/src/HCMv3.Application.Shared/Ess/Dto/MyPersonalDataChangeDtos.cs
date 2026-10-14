@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.GeneralMasterInfo.Dto;
 
 namespace HCMv3.Ess.Dto;
 
@@ -149,6 +151,16 @@ public class MyPersonalDataChangeDto : MyRequestDtoBase
     public PersonalDataChangeValuesDto Proposed { get; set; }
 
     public string Comments { get; set; }
+
+    /// <summary>The number of the request. Empty for a draft that has not been sent.</summary>
+    public string RequestNumber { get; set; }
+
+    /// <summary>
+    /// An approver sent this request back and it is waiting on the employee: they correct it and send it
+    /// again, or withdraw it. Either this or <see cref="MyRequestDtoBase.IsDraft"/> sets
+    /// <see cref="MyRequestDtoBase.CanEdit"/>.
+    /// </summary>
+    public bool IsSentBack { get; set; }
 }
 
 /// <summary>A concrete carrier for the forty fields, used inside the list and edit DTOs.</summary>
@@ -184,4 +196,32 @@ public class RequestPersonalDataChangeInput : PersonalDataFieldsDtoBase
 {
     [StringLength(1000)]
     public string Comments { get; set; }
+}
+
+/// <summary>
+/// The form saved without being sent: the same forty fields, filed as the employee's own draft.
+/// </summary>
+public class SavePersonalDataChangeDraftInput : RequestPersonalDataChangeInput
+{
+    /// <summary>Null to file a new draft; the id of a draft, or of a request sent back, to change it.</summary>
+    public int? Id { get; set; }
+}
+
+/// <summary>The choices behind the form's seven pickers, in one read.</summary>
+public class PersonalDataLookupsDto
+{
+    public List<SimpleLookupDto> Titles { get; set; } = new List<SimpleLookupDto>();
+
+    public List<SimpleLookupDto> Nationalities { get; set; } = new List<SimpleLookupDto>();
+
+    public List<SimpleLookupDto> Religions { get; set; } = new List<SimpleLookupDto>();
+
+    public List<SimpleLookupDto> MaritalStatuses { get; set; } = new List<SimpleLookupDto>();
+
+    /// <summary>The city master, which is what Birth Place is chosen from.</summary>
+    public List<SimpleLookupDto> Cities { get; set; } = new List<SimpleLookupDto>();
+
+    public List<SimpleLookupDto> Governorates { get; set; } = new List<SimpleLookupDto>();
+
+    public List<SimpleLookupDto> Countries { get; set; } = new List<SimpleLookupDto>();
 }
