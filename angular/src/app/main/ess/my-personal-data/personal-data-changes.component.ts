@@ -53,7 +53,7 @@ export interface PersonalDataChangesValue {
                             <div class="pdc-value">
                                 <div class="fw-bold text-success">{{ change.newValue || '–' }}</div>
                                 @if (change.oldValue) {
-                                    <div class="text-muted text-decoration-line-through small">{{ change.oldValue }}</div>
+                                    <div class="pdc-old">{{ change.oldValue }}</div>
                                 }
                             </div>
                         </div>
@@ -87,6 +87,13 @@ export interface PersonalDataChangesValue {
 
             .pdc-row:last-child {
                 border-bottom: 0;
+            }
+
+            .pdc-old {
+                color: var(--bs-gray-700);
+                font-size: 0.95em;
+                text-decoration: line-through;
+                text-decoration-thickness: 1px;
             }
 
             .pdc-value {
