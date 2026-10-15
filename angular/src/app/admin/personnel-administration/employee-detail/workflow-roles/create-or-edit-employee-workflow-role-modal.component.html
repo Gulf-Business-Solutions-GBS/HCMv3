@@ -24,6 +24,39 @@
 
                     <div class="modal-body">
                         <div class="row">
+                            <!-- Effective date first, as on every dated record. -->
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeWorkflowRole_StartDate">
+                                    {{ 'EffectiveDate' | localize }}
+                                </label>
+                                <input
+                                    id="EmployeeWorkflowRole_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeWorkflowRole_EndDate">
+                                    {{ 'EndDate' | localize }}
+                                </label>
+                                <input
+                                    id="EmployeeWorkflowRole_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+
                             <!-- Shown, not chosen. The section belongs to one employee, and a dropdown
                                  here would invite filing the assignment against somebody else. -->
                             <div class="col-md-6 mb-5">
@@ -56,38 +89,6 @@
                                     }
                                 </select>
                                 <validation-messages [formCtrl]="workflowRoleIdInput" />
-                            </div>
-
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeWorkflowRole_StartDate">
-                                    {{ 'StartDate' | localize }}
-                                </label>
-                                <input
-                                    id="EmployeeWorkflowRole_StartDate"
-                                    #startDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="StartDate"
-                                    [ngModel]="record().startDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('startDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="startDateInput" />
-                            </div>
-
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeWorkflowRole_EndDate">
-                                    {{ 'EndDate' | localize }}
-                                </label>
-                                <input
-                                    id="EmployeeWorkflowRole_EndDate"
-                                    #endDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="EndDate"
-                                    [ngModel]="record().endDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('endDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="endDateInput" />
                             </div>
 
                             @if (isNotActiveToday()) {

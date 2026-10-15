@@ -67,6 +67,9 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
 
     /** True when another step in this chain is already the creator step. */
     readonly creatorStepTaken = signal<boolean>(false);
+
+    /** True while the form holds a copy of the creator step, whose approver has been cleared. */
+    readonly copiedCreatorStep = signal<boolean>(false);
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
     readonly orgUnits = signal<OrgUnitDto[]>([]);
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
@@ -113,10 +116,26 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
      * sits mid-chain and is never asked to act.</p>
      */
     readonly availableApproverPersonTypes = computed(() =>
-        this.creatorStepTaken()
+        this.creatorStepTaken() && !this.record().workflowRoleId
             ? this.approverPersonTypes.filter((t) => t.value !== WorkflowApproverPersonType.None)
             : this.approverPersonTypes
     );
+
+    /**
+     * True when this step names nobody although the chain already has its creator step.
+     *
+     * <p>A Workflow Role on its own is enough -- the step then goes to everyone holding the role -- so the
+     * approver type is only demanded when no role is chosen either.</p>
+     */
+    readonly needsApprover = computed(() => {
+        const record = this.record();
+        const noApproverType =
+            record.approverPerson === undefined ||
+            record.approverPerson === null ||
+            record.approverPerson === WorkflowApproverPersonType.None;
+
+        return this.creatorStepTaken() && noApproverType && !record.workflowRoleId;
+    });
 
     /**
      * One notification setting per action, in the order a request meets them: it arrives, somebody acts on it,
@@ -144,6 +163,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
      */
     show(requestMasterId: number, id?: number): void {
         this.active.set(true);
+        this.copiedCreatorStep.set(false);
 
         this._requestMastersService
             .getAll(new GetAllRequestMastersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
@@ -188,6 +208,8 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
                     person: WorkflowPersonScope.None,
                     approverPerson: WorkflowApproverPersonType.None,
                     approvalRequire: ApprovalRequire.Single,
+                    escalateAfterDays: 0,
+                    reminderDays: 0,
                 } as any)
             );
             this.modal().show();
@@ -199,15 +221,44 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         }
     }
 
+    /**
+     * Opens a NEW step pre-filled from the creator step, with its approver cleared.
+     *
+     * <p>A chain has exactly one creator step, so a straight copy of it would be refused. Everything else
+     * on it -- escalation, reminders, notifications, the switches -- is still worth carrying over, so the copy
+     * is made here, unsaved, and the person is asked to choose who approves it before saving.</p>
+     */
+    showCopyOfCreatorStep(requestMasterId: number, sourceId: number): void {
+        this.show(requestMasterId);
+        this.copiedCreatorStep.set(true);
+
+        this._service.getRequestDetailForEdit(sourceId).subscribe((result) => {
+            const copy = new CreateOrEditRequestDetailDto();
+            Object.assign(copy, result.requestDetail);
+            copy.id = undefined;
+            copy.approverPerson = undefined;
+            copy.workflowRoleId = undefined;
+            this.record.set(copy);
+        });
+    }
+
     onShown(): void {
         // The chain field is read-only now, so focus goes to the first thing worth typing into.
         document.getElementById('RequestDetail_Step')?.focus();
     }
 
     save(): void {
+        // Escalate After Days and Reminder Days are optional: blank means "never", which the server
+        // stores as 0.
+        const record = new CreateOrEditRequestDetailDto();
+        Object.assign(record, this.record());
+        record.escalateAfterDays = record.escalateAfterDays ?? 0;
+        record.reminderDays = record.reminderDays ?? 0;
+        record.approverPerson = record.approverPerson ?? WorkflowApproverPersonType.None;
+
         this.saving.set(true);
         this._service
-            .createOrEdit(this.record())
+            .createOrEdit(record)
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

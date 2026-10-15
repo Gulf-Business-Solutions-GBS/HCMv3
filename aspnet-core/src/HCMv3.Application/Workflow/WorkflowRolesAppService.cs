@@ -6,6 +6,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Workflow.Dto;
@@ -23,10 +24,14 @@ namespace HCMv3.Workflow;
 public class WorkflowRolesAppService : HCMv3AppServiceBase, IWorkflowRolesAppService
 {
     private readonly IRepository<WorkflowRole> _repository;
+    private readonly IRepository<EmployeeWorkflowRole> _employeeWorkflowRoleRepository;
 
-    public WorkflowRolesAppService(IRepository<WorkflowRole> repository)
+    public WorkflowRolesAppService(
+        IRepository<WorkflowRole> repository,
+        IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository)
     {
         _repository = repository;
+        _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
     }
 
     [HttpPost]
@@ -48,7 +53,25 @@ public class WorkflowRolesAppService : HCMv3AppServiceBase, IWorkflowRolesAppSer
             .PageBy(input)
             .ToListAsync();
 
-        return new PagedResultDto<WorkflowRoleDto>(totalCount, items.Select(ToDto).ToList());
+        // Who holds each role on the page today, in one grouped query rather than one per row. Distinct
+        // employees, so a person with two overlapping assignments to the same role is still one approver.
+        var today = Clock.Now.Date;
+        var roleIds = items.Select(r => r.Id).ToList();
+        var holderCounts = await _employeeWorkflowRoleRepository.GetAll()
+            .Where(a => roleIds.Contains(a.WorkflowRoleId) && a.StartDate <= today && a.EndDate >= today)
+            .Select(a => new { a.WorkflowRoleId, a.EmployeeId })
+            .Distinct()
+            .GroupBy(a => a.WorkflowRoleId)
+            .Select(g => new { WorkflowRoleId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(g => g.WorkflowRoleId, g => g.Count);
+
+        var dtos = items.Select(ToDto).ToList();
+        foreach (var dto in dtos)
+        {
+            dto.EmployeeCount = holderCounts.TryGetValue(dto.Id, out var count) ? count : 0;
+        }
+
+        return new PagedResultDto<WorkflowRoleDto>(totalCount, dtos);
     }
 
     public async Task<GetWorkflowRoleForEditOutput> GetWorkflowRoleForEdit(EntityDto input)

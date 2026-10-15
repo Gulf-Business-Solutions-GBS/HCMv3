@@ -68,6 +68,8 @@ export class CreateOrEditEmployeeManagerModalComponent extends AppComponentBase 
         if (!id) {
             const record = new CreateOrEditEmployeeManagerDto();
             record.employeeId = employeeId;
+            // Today by default, as on every effective-dated record: most changes take effect now.
+            record.startDate = DateTime.now().startOf('day');
             this.record.set(record);
             this.modal().show();
         } else {
@@ -79,7 +81,7 @@ export class CreateOrEditEmployeeManagerModalComponent extends AppComponentBase 
     }
 
     onShown(): void {
-        document.getElementById('EmployeeManager_ManagerId')?.focus();
+        document.getElementById('EmployeeManager_StartDate')?.focus();
     }
 
     save(): void {

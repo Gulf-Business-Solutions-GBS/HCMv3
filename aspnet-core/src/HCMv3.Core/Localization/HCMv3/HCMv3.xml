@@ -3593,7 +3593,7 @@
     <text name="WorkflowPersonScopeSelfSubordinates">Self Subordinates</text>
     <text name="WorkflowPersonScopeAll">All</text>
     <text name="WorkflowApproverPersonTypeNone">None</text>
-    <text name="WorkflowApproverPersonTypePerson">Person</text>
+    <text name="WorkflowApproverPersonTypePerson">Workflow Role holders</text>
     <text name="WorkflowApproverPersonTypePersonManager">Person Manager</text>
     <text name="WorkflowApproverPersonTypeManagerLevel2">Manager Level 2</text>
     <text name="WorkflowApproverPersonTypeManagerLevel3">Manager Level 3</text>
@@ -3601,7 +3601,7 @@
     <text name="WorkflowApproverPersonTypeManagerLevel5">Manager Level 5</text>
     <text name="WorkflowApproverPersonTypeManagerLevel6">Manager Level 6</text>
     <text name="WorkflowApproverPersonTypeManagerLevel7">Manager Level 7</text>
-    <text name="ApprovalRequire">Approval Require</text>
+    <text name="ApprovalRequire">Approval Required</text>
     <text name="ApprovalRequireSingle">Single</text>
     <text name="ApprovalRequireAll">All</text>
     <text name="ApprovalRequireParallel">Parallel</text>
@@ -7104,6 +7104,13 @@
     <text name="SelectedCount">{0} selected</text>
     <text name="ApprovalStepsChangedReloadAndTryAgain">The steps have changed since this screen loaded. Refresh and try again.</text>
     <text name="StepCopied">Step copied. Edit the copy to change what differs.</text>
+    <text name="CreatorStepCopiedSelectApprover">You have copied the creator step. A chain can have only one creator step, so the Approver field has been cleared. Kindly select the correct approver.</text>
+    <text name="SelectWorkflowRoleOrApproverPerson">This chain already has its creator step. Select a Workflow Role, an Approver Person, or both.</text>
+    <text name="ApproverPersonHint">A Workflow Role alone sends this step to every employee holding that role. An Approver Person alone sends it to that manager. Choose both to send it to both. Leave both empty only on the creator step.</text>
+    <text name="CopyRequestMasterConfirmation">Copy "{0}" with all its approval steps?</text>
+    <text name="RequestMasterCopied">Request copied with all its approval steps. Rename it and change what differs.</text>
+    <text name="EmployeesHoldingWorkflowRole">Employees holding {0} today</text>
+    <text name="NoEmployeeHoldsThisWorkflowRole">No employee holds this workflow role today, so a step using it will go to the request&apos;s default approver.</text>
     <text name="ReorderSteps">Drag a row to change the order</text>
     <text name="StepsReordered">Steps renumbered.</text>
     <text name="AChainCanHaveOnlyOneCreatorStep">A chain can have only one creator step. A step with no approver is the requester's own, so a second one would stall every request that reached it.</text>

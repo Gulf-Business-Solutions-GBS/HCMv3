@@ -44,6 +44,16 @@ public static class FakeRepository
             return entity;
         });
 
+        // Unstubbed, NSubstitute answers 0, and the child rows a service inserts against that id then fail
+        // their foreign key.
+        repository.InsertAndGetIdAsync(Arg.Any<TEntity>()).Returns(async call =>
+        {
+            var entity = call.Arg<TEntity>();
+            set.Add(entity);
+            await context.SaveChangesAsync();
+            return entity.Id;
+        });
+
         repository.UpdateAsync(Arg.Any<TEntity>()).Returns(async call =>
         {
             var entity = call.Arg<TEntity>();

@@ -3542,7 +3542,7 @@
     <text name="WorkflowPersonScopeSelfSubordinates">مرؤوسوه</text>
     <text name="WorkflowPersonScopeAll">الجميع</text>
     <text name="WorkflowApproverPersonTypeNone">بلا</text>
-    <text name="WorkflowApproverPersonTypePerson">شخص</text>
+    <text name="WorkflowApproverPersonTypePerson">حاملو دور سير العمل</text>
     <text name="WorkflowApproverPersonTypePersonManager">مدير الشخص</text>
     <text name="WorkflowApproverPersonTypeManagerLevel2">المدير من المستوى 2</text>
     <text name="WorkflowApproverPersonTypeManagerLevel3">المدير من المستوى 3</text>
@@ -6939,6 +6939,13 @@
     <text name="SelectedCount">{0} محدد</text>
     <text name="ApprovalStepsChangedReloadAndTryAgain">تغيرت الخطوات منذ فتح هذه الشاشة. حدّث الصفحة وأعد المحاولة.</text>
     <text name="StepCopied">تم نسخ الخطوة. عدّل النسخة لتغيير ما يختلف.</text>
+    <text name="CreatorStepCopiedSelectApprover">لقد نسخت خطوة مُنشئ الطلب. لا يمكن أن تحتوي الدورة إلا على خطوة واحدة لمُنشئ الطلب، لذلك تم مسح حقل المعتمد. يرجى اختيار المعتمد الصحيح.</text>
+    <text name="SelectWorkflowRoleOrApproverPerson">تحتوي هذه الدورة على خطوة مُنشئ الطلب بالفعل. اختر دور سير العمل أو الشخص المعتمِد أو كليهما.</text>
+    <text name="ApproverPersonHint">اختيار دور سير العمل وحده يرسل هذه الخطوة إلى كل موظف يحمل هذا الدور، واختيار الشخص المعتمِد وحده يرسلها إلى ذلك المدير، واختيارهما معًا يرسلها إلى كليهما. اتركهما فارغين في خطوة مُنشئ الطلب فقط.</text>
+    <text name="CopyRequestMasterConfirmation">هل تريد نسخ "{0}" مع جميع خطوات الاعتماد؟</text>
+    <text name="RequestMasterCopied">تم نسخ الطلب مع جميع خطوات الاعتماد. غيّر اسمه وعدّل ما يختلف.</text>
+    <text name="EmployeesHoldingWorkflowRole">الموظفون الحاملون لدور {0} اليوم</text>
+    <text name="NoEmployeeHoldsThisWorkflowRole">لا يحمل أي موظف دور سير العمل هذا اليوم، لذلك ستذهب أي خطوة تستخدمه إلى المعتمد الافتراضي للطلب.</text>
     <text name="ReorderSteps">اسحب الصف لتغيير الترتيب</text>
     <text name="StepsReordered">تمت إعادة ترقيم الخطوات.</text>
     <text name="AChainCanHaveOnlyOneCreatorStep">لا يمكن أن تحتوي الدورة على أكثر من خطوة واحدة لمُنشئ الطلب. الخطوة التي ليس لها معتمد هي خطوة مقدّم الطلب نفسه، ووجود خطوة ثانية يوقف كل طلب يصل إليها.</text>

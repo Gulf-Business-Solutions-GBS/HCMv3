@@ -31,16 +31,15 @@
                         [hidden]="!(['Pages.Workflow.EmployeeWorkflowRoles.Edit', 'Pages.Workflow.EmployeeWorkflowRoles.Delete'] | permissionAny)">
                         {{ 'Actions' | localize }}
                     </th>
-                    <th style="min-width: 200px">{{ 'WorkflowRole' | localize }}</th>
                     <th style="min-width: 130px" pSortableColumn="startDate">
-                        {{ 'StartDate' | localize }}
+                        {{ 'EffectiveDate' | localize }}
                         <p-sortIcon field="startDate" />
                     </th>
+                    <th style="min-width: 200px">{{ 'WorkflowRole' | localize }}</th>
                     <th style="min-width: 130px" pSortableColumn="endDate">
                         {{ 'EndDate' | localize }}
                         <p-sortIcon field="endDate" />
                     </th>
-                    <th style="min-width: 140px">{{ 'ActiveToday' | localize }}</th>
                 </tr>
             </ng-template>
             <ng-template #body let-record="$implicit">
@@ -56,20 +55,9 @@
                             {{ 'Actions' | localize }}
                         </button>
                     </td>
-                    <td style="min-width: 200px">{{ record.workflowRoleNameEn }}</td>
                     <td style="min-width: 130px">{{ record.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                    <td style="min-width: 200px">{{ record.workflowRoleNameEn }}</td>
                     <td style="min-width: 130px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
-
-                    <!-- Red rather than grey for an expired row: it is not a neutral state. A chain step
-                         pointing at this role will find nobody. -->
-                    <td style="min-width: 140px">
-                        <span
-                            class="badge"
-                            [class.badge-light-success]="record.isActiveToday"
-                            [class.badge-light-danger]="!record.isActiveToday">
-                            {{ (record.isActiveToday ? 'Yes' : 'Expired') | localize }}
-                        </span>
-                    </td>
                 </tr>
             </ng-template>
         </p-table>

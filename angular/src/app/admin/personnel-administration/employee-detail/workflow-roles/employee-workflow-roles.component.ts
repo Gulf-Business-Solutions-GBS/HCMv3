@@ -24,9 +24,8 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
  * about a person, like their manager or their bank details, and the question it answers -- "why did nobody
  * get the request?" -- is asked while looking at somebody.</p>
  *
- * <p>Each row says whether the assignment is in force today. That is the difficulty with these: approver
- * resolution only sees an assignment inside its date range, so a row dated in the past is a chain that
- * reaches nobody while still reading correctly in a list.</p>
+ * <p>Effective date and end date only, as in legacy. An "in force today" column was tried and removed at the
+ * customer's request; the end date already says it, and the modal warns when the dates exclude today.</p>
  */
 @Component({
     selector: 'employee-workflow-roles',

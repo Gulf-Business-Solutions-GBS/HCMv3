@@ -76,13 +76,13 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
             .subscribe((result) => this.workflowRoles.set(result.items));
 
         if (!id) {
-            // Starts today and runs to the end of 2099 rather than opening empty. An assignment is almost
+            // Starts today and runs to 31-Dec-9999 (open-ended, as legacy dates are) rather than opening empty. An assignment is almost
             // always "from now until somebody says otherwise", and an open-ended default is what makes the
             // common case one field instead of three.
             const record = new CreateOrEditEmployeeWorkflowRoleDto();
             record.employeeId = employeeId;
             record.startDate = DateTime.now().startOf('day');
-            record.endDate = DateTime.fromISO('2099-12-31');
+            record.endDate = DateTime.fromISO('9999-12-31');
             this.record.set(record);
             this.refreshWarning();
             this.modal().show();

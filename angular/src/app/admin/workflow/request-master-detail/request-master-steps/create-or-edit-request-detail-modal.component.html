@@ -22,6 +22,9 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        @if (copiedCreatorStep()) {
+                            <div class="alert alert-warning mb-5">{{ 'CreatorStepCopiedSelectApprover' | localize }}</div>
+                        }
                         <div class="row">
                             <!-- The chain is shown, not chosen. A step reached from a chain belongs to that
                                  chain; offering a dropdown here only invites moving a step into a different
@@ -128,20 +131,29 @@
                                 <validation-messages [formCtrl]="personInput" />
                             </div>
                             <div class="col-md-2 mb-5">
-                                <label class="form-label required" for="RequestDetail_ApproverPerson">{{ 'ApproverPerson' | localize }}</label>
+                                <label class="form-label" for="RequestDetail_ApproverPerson">{{ 'ApproverPerson' | localize }}</label>
                                 <select
                                     id="RequestDetail_ApproverPerson"
-                                    #approverPersonInput="ngModel"
                                     class="form-select"
+                                    [class.is-invalid]="needsApprover()"
                                     name="ApproverPerson"
                                     [ngModel]="record().approverPerson"
-                                    (ngModelChange)="updateField('approverPerson', $event)"
-                                    required>
+                                    (ngModelChange)="updateField('approverPerson', $event)">
                                     @for (item of availableApproverPersonTypes(); track item.value) {
                                         <option [ngValue]="item.value">{{ item.key | localize }}</option>
                                     }
                                 </select>
-                                <validation-messages [formCtrl]="approverPersonInput" />
+                            </div>
+                        </div>
+                        <!-- Either is enough: a role alone goes to its holders; a manager level alone goes to that
+                             manager; both together go to both. -->
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                @if (needsApprover()) {
+                                    <div class="text-danger fs-7">{{ 'SelectWorkflowRoleOrApproverPerson' | localize }}</div>
+                                } @else {
+                                    <div class="text-muted fs-7">{{ 'ApproverPersonHint' | localize }}</div>
+                                }
                             </div>
                         </div>
 
@@ -149,17 +161,15 @@
                         <h6>{{ 'Escalate' | localize }}</h6>
                         <div class="row">
                             <div class="col-md-3 mb-5">
-                                <label class="form-label required" for="RequestDetail_EscalateAfterDays">{{ 'EscalateAfterDays' | localize }}</label>
+                                <label class="form-label" for="RequestDetail_EscalateAfterDays">{{ 'EscalateAfterDays' | localize }}</label>
                                 <input
                                     id="RequestDetail_EscalateAfterDays"
-                                    #escalateAfterDaysInput="ngModel"
                                     type="number"
+                                    min="0"
                                     class="form-control"
                                     name="EscalateAfterDays"
                                     [ngModel]="record().escalateAfterDays"
-                                    (ngModelChange)="updateField('escalateAfterDays', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="escalateAfterDaysInput" />
+                                    (ngModelChange)="updateField('escalateAfterDays', $event)" />
                             </div>
                             <div class="col-md-3 mb-5">
                                 <label class="form-label" for="RequestDetail_EscalateWorkflowRoleId">{{ 'EscalateWorkflowRole' | localize }}</label>
@@ -210,17 +220,15 @@
                         <hr />
                         <div class="row">
                             <div class="col-md-2 mb-5">
-                                <label class="form-label required" for="RequestDetail_ReminderDays">{{ 'ReminderDays' | localize }}</label>
+                                <label class="form-label" for="RequestDetail_ReminderDays">{{ 'ReminderDays' | localize }}</label>
                                 <input
                                     id="RequestDetail_ReminderDays"
-                                    #reminderDaysInput="ngModel"
                                     type="number"
+                                    min="0"
                                     class="form-control"
                                     name="ReminderDays"
                                     [ngModel]="record().reminderDays"
-                                    (ngModelChange)="updateField('reminderDays', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="reminderDaysInput" />
+                                    (ngModelChange)="updateField('reminderDays', $event)" />
                             </div>
                         </div>
 
@@ -354,7 +362,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary fw-bold"
-                            [disabled]="!recordForm.form.valid"
+                            [disabled]="!recordForm.form.valid || needsApprover()"
                             [buttonBusy]="saving()"
                             [busyText]="l('SavingWithThreeDot')">
                             <i class="fa fa-save"></i>

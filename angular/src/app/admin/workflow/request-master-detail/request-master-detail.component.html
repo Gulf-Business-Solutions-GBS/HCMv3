@@ -50,6 +50,11 @@
             @if (tabs.length > 0) {
                 <div class="card card-custom">
                     <div class="card-body">
+                        <!-- A lone tab is a heading, not a button: drawn as a filled pill it looked
+                             clickable and did nothing. The strip comes back once there is a second tab. -->
+                        @if (tabs.length === 1) {
+                            <h3 class="card-title fw-bold mb-5">{{ tabs[0].labelKey | localize }}</h3>
+                        } @else {
                         <ul class="nav rm-detail-tabs mb-5" role="tablist">
                             @for (tab of tabs; track tab.id) {
                                 <li class="nav-item" role="presentation">
@@ -65,6 +70,7 @@
                                 </li>
                             }
                         </ul>
+                        }
 
                         <div role="tabpanel">
                             @switch (activeTabId()) {

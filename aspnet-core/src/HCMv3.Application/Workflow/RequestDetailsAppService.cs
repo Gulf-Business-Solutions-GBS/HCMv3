@@ -376,7 +376,7 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         // and defaulting to off left every chain with an empty read log.
         entity.EnableReadLog = input.EnableReadLog ?? true;
         entity.Person = input.Person;
-        entity.ApproverPerson = input.ApproverPerson;
+        entity.ApproverPerson = NormalizeApproverPerson(input.ApproverPerson, input.WorkflowRoleId);
         entity.WorkflowRoleGroup = input.WorkflowRoleGroup;
         entity.WorkflowRoleOrgId = input.WorkflowRoleOrgId;
         entity.ApprovalRequire = input.ApprovalRequire;
@@ -394,6 +394,26 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
         ApplyDefaultNotificationConfigs(entity);
 
         return entity;
+    }
+
+    /// <summary>
+    /// A step that names a workflow role and no approver type goes to the role's holders.
+    ///
+    /// <para>
+    /// This is legacy's own rule: there, <c>ApproverPerson = None</c> on an approval step meant "whoever holds
+    /// the step's workflow role" (<c>WorkFlowServices.GetApprover</c>). HCMv3 stores that as
+    /// <see cref="WorkflowApproverPersonType.Person"/> and keeps <c>None</c> for the creator step, so an
+    /// administrator who picks only a role -- the natural way to say "send it to HR" -- would otherwise have
+    /// made a second creator step and been refused. Choosing the role is enough; the approver type is only
+    /// needed to ALSO send the step to a manager.
+    /// </para>
+    /// </summary>
+    private static WorkflowApproverPersonType NormalizeApproverPerson(
+        WorkflowApproverPersonType approverPerson, int? workflowRoleId)
+    {
+        return approverPerson == WorkflowApproverPersonType.None && workflowRoleId.HasValue
+            ? WorkflowApproverPersonType.Person
+            : approverPerson;
     }
 
     /// <summary>

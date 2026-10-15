@@ -73,6 +73,7 @@
                                     </th>
                                     <th style="min-width: 160px">{{ 'WorkflowRoleGroup' | localize }}</th>
                                     <th style="min-width: 180px">{{ 'OrganizationUnit' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Employees' | localize }}</th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -95,6 +96,16 @@
                                     <td style="min-width: 180px">{{ record.nameAr }}</td>
                                     <td style="min-width: 160px">{{ workflowRoleGroupLabel(record.workflowRoleGroup) }}</td>
                                     <td style="min-width: 180px">{{ record.workflowRoleOrgNameEn }}</td>
+                                    <!-- Holders in force today: the people a step on this role would reach. -->
+                                    <td style="min-width: 120px">
+                                        @if (canViewHolders) {
+                                            <a href="javascript:;" class="fw-bold" [class.text-danger]="!record.employeeCount" (click)="showHolders(record)">
+                                                {{ record.employeeCount }}
+                                            </a>
+                                        } @else {
+                                            <span [class.text-danger]="!record.employeeCount">{{ record.employeeCount }}</span>
+                                        }
+                                    </td>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -121,4 +132,5 @@
     </div>
 
     <createOrEditWorkflowRoleModal #createOrEditModal (modalSave)="reloadPage()" />
+    <workflowRoleHoldersModal #holdersModal />
 </div>

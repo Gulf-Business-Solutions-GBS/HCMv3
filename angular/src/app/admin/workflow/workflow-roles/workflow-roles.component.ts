@@ -9,6 +9,7 @@ import { TieredMenu } from 'primeng/tieredmenu';
 import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+import { WorkflowRoleHoldersModalComponent } from './workflow-role-holders-modal.component';
 import { CreateOrEditWorkflowRoleModalComponent } from './create-or-edit-workflow-role-modal.component';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
@@ -28,6 +29,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         TieredMenu,
         Tooltip,
         CreateOrEditWorkflowRoleModalComponent,
+        WorkflowRoleHoldersModalComponent,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
@@ -37,6 +39,14 @@ export class WorkflowRolesComponent extends AppComponentBase implements OnInit {
     private _service = inject(WorkflowRolesServiceProxy);
 
     readonly createOrEditModal = viewChild<CreateOrEditWorkflowRoleModalComponent>('createOrEditModal');
+    readonly holdersModal = viewChild<WorkflowRoleHoldersModalComponent>('holdersModal');
+
+    /** The holder list reads role assignments, which has its own permission. */
+    readonly canViewHolders = this.permission.isGranted('Pages.Workflow.EmployeeWorkflowRoles');
+
+    showHolders(record: WorkflowRoleDto): void {
+        this.holdersModal().show(record);
+    }
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 

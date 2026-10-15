@@ -223,6 +223,8 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
                 request.EmployeeId, holders, requestDetail.WorkflowRoleGroup, requestDetail.WorkflowRoleOrgId);
         }
 
+        var candidates = new List<int>();
+
         var level = ManagerLevelOf(requestDetail.ApproverPerson);
         if (level > 0 && request.EmployeeId.HasValue)
         {
@@ -230,11 +232,26 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
             if (managerId.HasValue)
             {
-                return new List<int> { managerId.Value };
+                candidates.Add(managerId.Value);
             }
         }
 
-        return new List<int>();
+        // A manager step that ALSO names a workflow role goes to both: the requester's manager and whoever
+        // holds the role. The step's Approval Required setting then decides whether one of them is enough
+        // (Single) or both must sign (All). Before this the role was silently ignored on a manager step,
+        // although the screen showed it as set.
+        if (level > 0 && requestDetail.WorkflowRoleId.HasValue)
+        {
+            var holders = NarrowToRequesterScope(
+                request.EmployeeId,
+                RoleHolders(requestDetail.WorkflowRoleId.Value),
+                requestDetail.WorkflowRoleGroup,
+                requestDetail.WorkflowRoleOrgId);
+
+            candidates.AddRange(holders.Where(id => !candidates.Contains(id)));
+        }
+
+        return candidates;
     }
 
     /// <summary>

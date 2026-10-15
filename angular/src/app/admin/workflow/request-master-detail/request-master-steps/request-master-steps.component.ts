@@ -155,6 +155,14 @@ export class RequestMasterStepsComponent extends AppComponentBase {
      * changing what differs is the difference between building a chain in a minute and in ten.</p>
      */
     copyRecord(record: RequestDetailDto): void {
+        // The creator step cannot be copied as it is -- a chain has only one -- so its copy opens unsaved,
+        // with the approver cleared, and the person is told why before choosing one.
+        if (!this.hasApprover(record)) {
+            this.message.warn(this.l('CreatorStepCopiedSelectApprover'));
+            this.createOrEditModal().showCopyOfCreatorStep(this.requestMasterId(), record.id);
+            return;
+        }
+
         this._service.copyStep(new EntityDto({ id: record.id })).subscribe((created) => {
             this.notify.success(this.l('StepCopied'));
             this.reloadPage();

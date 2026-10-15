@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    EntityDto,
     RequestMasterDto,
     RequestMastersServiceProxy,
     GetAllRequestMastersInput,
@@ -129,6 +130,14 @@ export class RequestMastersComponent extends AppComponentBase implements OnInit 
             });
         }
 
+        if (this.permission.isGranted('Pages.Workflow.RequestMasters.Create')) {
+            items.push({
+                label: this.l('Copy'),
+                icon: 'pi pi-copy',
+                command: () => this.copyRecord(record),
+            });
+        }
+
         if (this.permission.isGranted('Pages.Workflow.RequestMasters.Delete')) {
             items.push({
                 label: this.l('Delete'),
@@ -138,6 +147,25 @@ export class RequestMastersComponent extends AppComponentBase implements OnInit 
         }
 
         return items;
+    }
+
+    /**
+     * Copies the whole chain -- header, every step and their parallel approvers -- and opens the copy,
+     * which arrives with "-COPY" / "(Copy)" names to be renamed.
+     */
+    copyRecord(record: RequestMasterDto): void {
+        this.message.confirm(this.l('CopyRequestMasterConfirmation', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
+            if (!isConfirmed) {
+                return;
+            }
+
+            this._service.copy(new EntityDto({ id: record.id })).subscribe((created) => {
+                this.notify.success(this.l('RequestMasterCopied'));
+
+                const canEdit = this.permission.isGranted('Pages.Workflow.RequestMasters.Edit');
+                this._router.navigate(['/app/admin/request-masters', created.id], canEdit ? { queryParams: { edit: true } } : {});
+            });
+        });
     }
 
     deleteRecord(record: RequestMasterDto): void {

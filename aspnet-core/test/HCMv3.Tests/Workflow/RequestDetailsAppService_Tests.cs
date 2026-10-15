@@ -440,4 +440,53 @@ public class RequestDetailsAppService_Tests : WorkflowAppServiceTestBase
 
         await Should.ThrowAsync<UserFriendlyException>(() => service.CopyStep(new EntityDto(saved.Id)));
     }
+
+    // ------------------------------------------------------------------ a workflow role is enough
+
+    private int CreateWorkflowRole()
+    {
+        var role = new WorkflowRole { TenantId = AbpSession.TenantId ?? 1, Code = "HR", NameEn = "HR", NameAr = "HR" };
+        Context.WorkflowRoles.Add(role);
+        Context.SaveChanges();
+        return role.Id;
+    }
+
+    /// <summary>
+    /// Legacy's own rule: an approval step with only a workflow role goes to the role's holders. It must not
+    /// be mistaken for a second creator step just because no approver type was picked.
+    /// </summary>
+    [Fact]
+    public async Task Should_Save_A_Role_Only_Step_As_A_Role_Holder_Step()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var creator = NewStep(requestMasterId, 1);
+        creator.ApproverPerson = WorkflowApproverPersonType.None;
+        await service.CreateOrEdit(creator);
+
+        var roleOnly = NewStep(requestMasterId, 2);
+        roleOnly.ApproverPerson = WorkflowApproverPersonType.None;
+        roleOnly.WorkflowRoleId = CreateWorkflowRole();
+        await service.CreateOrEdit(roleOnly);
+
+        Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId && d.Step == 2)
+            .ApproverPerson.ShouldBe(WorkflowApproverPersonType.Person);
+    }
+
+    [Fact]
+    public async Task Should_Keep_The_Manager_Level_When_A_Step_Names_Both_A_Manager_And_A_Role()
+    {
+        var requestMasterId = CreateRequestMaster();
+        var service = CreateAppService();
+
+        var both = NewStep(requestMasterId, 1);
+        both.ApproverPerson = WorkflowApproverPersonType.PersonManager;
+        both.WorkflowRoleId = CreateWorkflowRole();
+        await service.CreateOrEdit(both);
+
+        var saved = Context.RequestDetails.Single(d => d.RequestMasterId == requestMasterId);
+        saved.ApproverPerson.ShouldBe(WorkflowApproverPersonType.PersonManager);
+        saved.WorkflowRoleId.ShouldNotBeNull();
+    }
 }
