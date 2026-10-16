@@ -79,30 +79,26 @@
             </select>
         </div>
         <div class="col-md-3 mb-5">
-            <label class="form-label required" for="RequestMaster_AutoCloseInDays">{{ 'AutoCloseInDays' | localize }}</label>
+            <label class="form-label" for="RequestMaster_AutoCloseInDays">{{ 'AutoCloseInDays' | localize }}</label>
             <input
                 id="RequestMaster_AutoCloseInDays"
-                #autoCloseInDaysInput="ngModel"
                 type="number"
+                min="0"
                 class="form-control"
                 name="AutoCloseInDays"
                 [ngModel]="requestMaster().autoCloseInDays"
-                (ngModelChange)="updateField('autoCloseInDays', $event)"
-                required />
-            <validation-messages [formCtrl]="autoCloseInDaysInput" />
+                (ngModelChange)="updateField('autoCloseInDays', $event)" />
         </div>
         <div class="col-md-3 mb-5">
-            <label class="form-label required" for="RequestMaster_DueInDays">{{ 'DueInDays' | localize }}</label>
+            <label class="form-label" for="RequestMaster_DueInDays">{{ 'DueInDays' | localize }}</label>
             <input
                 id="RequestMaster_DueInDays"
-                #dueInDaysInput="ngModel"
                 type="number"
+                min="0"
                 class="form-control"
                 name="DueInDays"
                 [ngModel]="requestMaster().dueInDays"
-                (ngModelChange)="updateField('dueInDays', $event)"
-                required />
-            <validation-messages [formCtrl]="dueInDaysInput" />
+                (ngModelChange)="updateField('dueInDays', $event)" />
         </div>
     </div>
     <div class="row">

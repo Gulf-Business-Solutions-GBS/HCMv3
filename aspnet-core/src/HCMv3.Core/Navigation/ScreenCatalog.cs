@@ -98,6 +98,19 @@ public static class ScreenCatalog
         new("app.main.ess.ticket", "SGEN010", "General", "EssMyTickets", "/app/main/ess/ticket", "Ess.MyTickets"),
         new("app.main.ess.travel-claim", "SGEN011", "General", "EssMyTravelClaims", "/app/main/ess/travel-claim", "Ess.MyTravelClaims"),
         new("app.notifications", "SGEN012", "General", "Inbox", "/app/notifications", null),
+        // Self-service screens added after the initial assignment, numbered on from SGEN012.
+        new("app.main.ess.clearance", "SGEN013", "General", "EssMyClearances", "/app/main/ess/clearance", "Ess.MyClearances"),
+        new("app.main.ess.delegation", "SGEN014", "General", "EssMyDelegations", "/app/main/ess/delegation", "Ess.MyDelegations"),
+        new("app.main.ess.exit-permit", "SGEN015", "General", "EssMyExitPermits", "/app/main/ess/exit-permit", "Ess.MyExitPermits"),
+        new("app.main.ess.geo-punch", "SGEN016", "General", "EssGeoPunch", "/app/main/ess/geo-punch", "Ess.GeoPunch"),
+        new("app.main.ess.health-reimburse", "SGEN017", "General", "EssMyHealthReimburses", "/app/main/ess/health-reimburse", "Ess.MyHealthReimburses"),
+        new("app.main.ess.hr-service", "SGEN018", "General", "EssMyHRServices", "/app/main/ess/hr-service", "Ess.MyHRServices"),
+        new("app.main.ess.loan-exemption", "SGEN019", "General", "EssMyLoanExemptions", "/app/main/ess/loan-exemption", "Ess.MyLoanExemptions"),
+        new("app.main.ess.my-details", "SGEN020", "General", "EssMyProfile", "/app/main/ess/my-details", "Ess.MyProfile"),
+        new("app.main.ess.punch", "SGEN021", "General", "EssMyPunches", "/app/main/ess/punch", "Ess.MyPunches"),
+        new("app.main.ess.requests", "SGEN022", "General", "EssMyRequests", "/app/main/ess/requests", "Ess.MyRequests"),
+        new("app.main.ess.travel", "SGEN023", "General", "EssMyTravel", "/app/main/ess/travel", "Ess.MyTravel"),
+        new("app.main.ai-assistant", "SGEN024", "General", "EssAiAgent", "/app/main/ai-assistant", "Ess.AiAgent"),
         new("app.admin.go-live-setup", "SGL001", "GoLiveSetup", "GoLiveSetup", "/app/admin/go-live-payroll-setup", "Pages.GoLiveSetup"),
         // The other half of bringing a company live, and so in the same SGL series rather than with the
         // workflow screens: it is used while setting up and revisited whenever approvals are reorganised.
@@ -596,6 +609,7 @@ public static class ScreenCatalog
         new("app.admin.workflow-remarks", "SWF008", "Workflow", "WorkflowRemarks", "/app/admin/workflow-remarks", "Pages.Workflow.WorkflowRemarks"),
         new("app.admin.workflow-requests", "SWF009", "Workflow", "WorkflowRequests", "/app/admin/workflow-requests", "Pages.Workflow.WorkflowRequests"),
         new("app.admin.workflow-roles", "SWF010", "Workflow", "WorkflowRoles", "/app/admin/workflow-roles", "Pages.Workflow.WorkflowRoles"),
+        new("app.admin.workflow-transaction-types", "SWF011", "Workflow", "WorkflowTransactionTypes", "/app/admin/workflow-transaction-types", "Pages.Workflow.WorkflowTransactionTypes"),
         // Dashboards get their own series: they span modules (leave is Personnel data read by HR and managers).
         new("app.admin.leave-dashboard", "SDSH001", "Dashboards", "LeaveDashboard", "/app/admin/leave-dashboard", "Pages.Dashboards.Leave"),
         new("app.admin.workforce-dashboard", "SDSH002", "Dashboards", "WorkforceDashboard", "/app/admin/workforce-dashboard", "Pages.Dashboards.Workforce"),

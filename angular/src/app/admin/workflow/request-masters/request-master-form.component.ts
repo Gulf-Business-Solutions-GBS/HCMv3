@@ -54,7 +54,9 @@ export class RequestMasterFormComponent extends AppComponentBase implements OnIn
         // the host reading stale values.
         const next = new CreateOrEditRequestMasterDto();
         Object.assign(next, this.requestMaster());
-        (next as any)[field] = value;
+        // Auto Close In Days and Due In Days are optional: cleared means 0, which the server reads as "not set".
+        const optionalDays = field === 'autoCloseInDays' || field === 'dueInDays';
+        (next as any)[field] = optionalDays && (value === null || value === undefined || value === '') ? 0 : value;
         this.requestMaster.set(next);
     }
 }
