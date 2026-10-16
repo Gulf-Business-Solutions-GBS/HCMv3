@@ -165404,6 +165404,125 @@ export class WorkflowTransactionTypesServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getSubTypeSources(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/GetSubTypeSources";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubTypeSources(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubTypeSources(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetSubTypeSources(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param source (optional) 
+     * @return OK
+     */
+    getSubTypeOptions(source?: string | null | undefined): Observable<WorkflowSubTypeOptionDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/GetSubTypeOptions?";
+        if (source !== undefined && source !== null)
+            url_ += "source=" + encodeURIComponent("" + source) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubTypeOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubTypeOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowSubTypeOptionDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowSubTypeOptionDto[]>;
+        }));
+    }
+
+    protected processGetSubTypeOptions(response: HttpResponseBase): Observable<WorkflowSubTypeOptionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(WorkflowSubTypeOptionDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return OK
      */
@@ -203096,9 +203215,6 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
     isWorkflowEnabled!: boolean;
     isEssEnabled!: boolean;
     defaultRequestMasterId!: number | undefined;
-    amendmentRequestMasterId!: number | undefined;
-    cancellationRequestMasterId!: number | undefined;
-    returnRequestMasterId!: number | undefined;
     essRoute!: string | undefined;
     essPermissionName!: string | undefined;
     subTypeSource!: string | undefined;
@@ -203106,6 +203222,7 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
     displayOrder!: number;
     isActive!: boolean;
     allowDirectEntry!: boolean;
+    rules!: WorkflowTransactionTypeRuleDto[] | undefined;
 
     constructor(data?: ICreateOrEditWorkflowTransactionTypeDto) {
         if (data) {
@@ -203125,9 +203242,6 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
             this.isWorkflowEnabled = _data["isWorkflowEnabled"];
             this.isEssEnabled = _data["isEssEnabled"];
             this.defaultRequestMasterId = _data["defaultRequestMasterId"];
-            this.amendmentRequestMasterId = _data["amendmentRequestMasterId"];
-            this.cancellationRequestMasterId = _data["cancellationRequestMasterId"];
-            this.returnRequestMasterId = _data["returnRequestMasterId"];
             this.essRoute = _data["essRoute"];
             this.essPermissionName = _data["essPermissionName"];
             this.subTypeSource = _data["subTypeSource"];
@@ -203135,6 +203249,11 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
             this.displayOrder = _data["displayOrder"];
             this.isActive = _data["isActive"];
             this.allowDirectEntry = _data["allowDirectEntry"];
+            if (Array.isArray(_data["rules"])) {
+                this.rules = [] as any;
+                for (let item of _data["rules"])
+                    this.rules!.push(WorkflowTransactionTypeRuleDto.fromJS(item));
+            }
         }
     }
 
@@ -203154,9 +203273,6 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
         data["isWorkflowEnabled"] = this.isWorkflowEnabled;
         data["isEssEnabled"] = this.isEssEnabled;
         data["defaultRequestMasterId"] = this.defaultRequestMasterId;
-        data["amendmentRequestMasterId"] = this.amendmentRequestMasterId;
-        data["cancellationRequestMasterId"] = this.cancellationRequestMasterId;
-        data["returnRequestMasterId"] = this.returnRequestMasterId;
         data["essRoute"] = this.essRoute;
         data["essPermissionName"] = this.essPermissionName;
         data["subTypeSource"] = this.subTypeSource;
@@ -203164,6 +203280,11 @@ export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWork
         data["displayOrder"] = this.displayOrder;
         data["isActive"] = this.isActive;
         data["allowDirectEntry"] = this.allowDirectEntry;
+        if (Array.isArray(this.rules)) {
+            data["rules"] = [];
+            for (let item of this.rules)
+                data["rules"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -203176,9 +203297,6 @@ export interface ICreateOrEditWorkflowTransactionTypeDto {
     isWorkflowEnabled: boolean;
     isEssEnabled: boolean;
     defaultRequestMasterId: number | undefined;
-    amendmentRequestMasterId: number | undefined;
-    cancellationRequestMasterId: number | undefined;
-    returnRequestMasterId: number | undefined;
     essRoute: string | undefined;
     essPermissionName: string | undefined;
     subTypeSource: string | undefined;
@@ -203186,6 +203304,7 @@ export interface ICreateOrEditWorkflowTransactionTypeDto {
     displayOrder: number;
     isActive: boolean;
     allowDirectEntry: boolean;
+    rules: WorkflowTransactionTypeRuleDto[] | undefined;
 }
 
 export class CreateOrEditYearlyTimeRegisterDetailDto implements ICreateOrEditYearlyTimeRegisterDetailDto {
@@ -356332,6 +356451,54 @@ export interface IWorkflowStatusCountDto {
     count: number;
 }
 
+export class WorkflowSubTypeOptionDto implements IWorkflowSubTypeOptionDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IWorkflowSubTypeOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowSubTypeOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowSubTypeOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IWorkflowSubTypeOptionDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+}
+
 export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
     id!: number;
     code!: string | undefined;
@@ -356340,9 +356507,6 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
     isWorkflowEnabled!: boolean;
     isEssEnabled!: boolean;
     defaultRequestMasterId!: number | undefined;
-    amendmentRequestMasterId!: number | undefined;
-    cancellationRequestMasterId!: number | undefined;
-    returnRequestMasterId!: number | undefined;
     defaultRequestMasterNameEn!: string | undefined;
     defaultRequestMasterSteps!: number | undefined;
     essRoute!: string | undefined;
@@ -356371,9 +356535,6 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
             this.isWorkflowEnabled = _data["isWorkflowEnabled"];
             this.isEssEnabled = _data["isEssEnabled"];
             this.defaultRequestMasterId = _data["defaultRequestMasterId"];
-            this.amendmentRequestMasterId = _data["amendmentRequestMasterId"];
-            this.cancellationRequestMasterId = _data["cancellationRequestMasterId"];
-            this.returnRequestMasterId = _data["returnRequestMasterId"];
             this.defaultRequestMasterNameEn = _data["defaultRequestMasterNameEn"];
             this.defaultRequestMasterSteps = _data["defaultRequestMasterSteps"];
             this.essRoute = _data["essRoute"];
@@ -356402,9 +356563,6 @@ export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
         data["isWorkflowEnabled"] = this.isWorkflowEnabled;
         data["isEssEnabled"] = this.isEssEnabled;
         data["defaultRequestMasterId"] = this.defaultRequestMasterId;
-        data["amendmentRequestMasterId"] = this.amendmentRequestMasterId;
-        data["cancellationRequestMasterId"] = this.cancellationRequestMasterId;
-        data["returnRequestMasterId"] = this.returnRequestMasterId;
         data["defaultRequestMasterNameEn"] = this.defaultRequestMasterNameEn;
         data["defaultRequestMasterSteps"] = this.defaultRequestMasterSteps;
         data["essRoute"] = this.essRoute;
@@ -356426,9 +356584,6 @@ export interface IWorkflowTransactionTypeDto {
     isWorkflowEnabled: boolean;
     isEssEnabled: boolean;
     defaultRequestMasterId: number | undefined;
-    amendmentRequestMasterId: number | undefined;
-    cancellationRequestMasterId: number | undefined;
-    returnRequestMasterId: number | undefined;
     defaultRequestMasterNameEn: string | undefined;
     defaultRequestMasterSteps: number | undefined;
     essRoute: string | undefined;
@@ -356438,6 +356593,50 @@ export interface IWorkflowTransactionTypeDto {
     displayOrder: number;
     isActive: boolean;
     allowDirectEntry: boolean;
+}
+
+export class WorkflowTransactionTypeRuleDto implements IWorkflowTransactionTypeRuleDto {
+    requestSubTypeId!: number | undefined;
+    requestAction!: WorkflowRequestAction;
+    requestMasterId!: number;
+
+    constructor(data?: IWorkflowTransactionTypeRuleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.requestSubTypeId = _data["requestSubTypeId"];
+            this.requestAction = _data["requestAction"];
+            this.requestMasterId = _data["requestMasterId"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowTransactionTypeRuleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowTransactionTypeRuleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["requestSubTypeId"] = this.requestSubTypeId;
+        data["requestAction"] = this.requestAction;
+        data["requestMasterId"] = this.requestMasterId;
+        return data;
+    }
+}
+
+export interface IWorkflowTransactionTypeRuleDto {
+    requestSubTypeId: number | undefined;
+    requestAction: WorkflowRequestAction;
+    requestMasterId: number;
 }
 
 export class WorkflowTrendPointDto implements IWorkflowTrendPointDto {

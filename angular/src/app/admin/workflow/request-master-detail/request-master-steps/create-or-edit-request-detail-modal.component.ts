@@ -74,6 +74,13 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     readonly orgUnits = signal<OrgUnitDto[]>([]);
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
 
+    /**
+     * Whether the seven per-action notification settings are open. Closed by default: almost every step uses
+     * the standard ones (approver told on arrival and reminded; requester told of each decision), which the
+     * server fills in for any left blank. Opened automatically for a step that already differs.
+     */
+    readonly showNotificationDetails = signal<boolean>(false);
+
     readonly workflowRoleGroups = [
         { value: WorkflowRoleGroup.None, key: 'WorkflowRoleGroupNone' },
         { value: WorkflowRoleGroup.Company, key: 'WorkflowRoleGroupCompany' },
@@ -163,6 +170,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
      */
     show(requestMasterId: number, id?: number): void {
         this.active.set(true);
+        this.showNotificationDetails.set(false);
         this.copiedCreatorStep.set(false);
 
         this._requestMastersService
@@ -197,7 +205,10 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
             .subscribe((result) => this.orgUnits.set(result.items));
         this._notificationConfigsService
             .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.notificationConfigs.set(result.items));
+            .subscribe((result) => {
+                this.notificationConfigs.set(result.items);
+                this.openNotificationsIfCustomised();
+            });
 
         if (!id) {
             this.record.set(
@@ -216,6 +227,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         } else {
             this._service.getRequestDetailForEdit(id).subscribe((result) => {
                 this.record.set(result.requestDetail);
+                this.openNotificationsIfCustomised();
                 this.modal().show();
             });
         }
@@ -240,6 +252,37 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
             copy.workflowRoleId = undefined;
             this.record.set(copy);
         });
+    }
+
+    /**
+     * Opens the notification settings when this step uses anything but the standard ones, so a customised
+     * step never hides its differences behind the one-line summary.
+     */
+    private openNotificationsIfCustomised(): void {
+        const configs = this.notificationConfigs();
+        if (configs.length === 0) {
+            return;
+        }
+
+        const idOf = (name: string) => configs.find((c) => c.name === name)?.id;
+        const toApprover = idOf('Workflow - Notify Approver');
+        const toRequester = idOf('Workflow - Notify Requester');
+        const approverFields: NotificationConfigField[] = [
+            'submitNotificationConfigId',
+            'assignNotificationConfigId',
+            'reminderNotificationConfigId',
+        ];
+
+        const record = this.record();
+        const customised = this.notificationActions.some(({ field }) => {
+            const value = record[field];
+            const standard = approverFields.includes(field) ? toApprover : toRequester;
+            return value !== undefined && value !== null && value !== standard;
+        });
+
+        if (customised) {
+            this.showNotificationDetails.set(true);
+        }
     }
 
     onShown(): void {

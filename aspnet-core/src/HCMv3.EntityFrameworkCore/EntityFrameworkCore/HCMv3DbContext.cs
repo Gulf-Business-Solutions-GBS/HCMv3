@@ -792,6 +792,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<WorkflowTransactionType> WorkflowTransactionTypes { get; set; }
 
+    public virtual DbSet<WorkflowTransactionTypeRule> WorkflowTransactionTypeRules { get; set; }
+
     public virtual DbSet<WorkflowComment> WorkflowComments { get; set; }
 
     // AI assistant (feat/ai-agent) -- see AiAgent/ROLLBACK.md before removing.
@@ -1549,6 +1551,23 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.DefaultRequestMaster)
                 .WithMany()
                 .HasForeignKey(e => e.DefaultRequestMasterId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<WorkflowTransactionTypeRule>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.WorkflowTransactionTypeId });
+
+            // The rules belong to the type and go with it.
+            b.HasOne(e => e.WorkflowTransactionType)
+                .WithMany(t => t.Rules)
+                .HasForeignKey(e => e.WorkflowTransactionTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Restrict, as for the default chain: deleting a chain must not silently drop routing.
+            b.HasOne(e => e.RequestMaster)
+                .WithMany()
+                .HasForeignKey(e => e.RequestMasterId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 

@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Dependency;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
@@ -21,17 +25,23 @@ namespace HCMv3.Workflow;
 public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflowTransactionTypesAppService
 {
     private readonly IRepository<WorkflowTransactionType> _repository;
+    private readonly IRepository<WorkflowTransactionTypeRule> _ruleRepository;
     private readonly IRepository<RequestMaster> _requestMasterRepository;
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
+    private readonly IIocResolver _iocResolver;
 
     public WorkflowTransactionTypesAppService(
         IRepository<WorkflowTransactionType> repository,
+        IRepository<WorkflowTransactionTypeRule> ruleRepository,
         IRepository<RequestMaster> requestMasterRepository,
-        IWorkflowTransactionHandlerResolver handlerResolver)
+        IWorkflowTransactionHandlerResolver handlerResolver,
+        IIocResolver iocResolver)
     {
         _repository = repository;
+        _ruleRepository = ruleRepository;
         _requestMasterRepository = requestMasterRepository;
         _handlerResolver = handlerResolver;
+        _iocResolver = iocResolver;
     }
 
     [HttpPost]
@@ -63,6 +73,17 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
     {
         var entity = await _repository.GetAsync(input.Id);
 
+        var rules = await _ruleRepository.GetAll()
+            .Where(r => r.WorkflowTransactionTypeId == entity.Id)
+            .OrderBy(r => r.Id)
+            .Select(r => new WorkflowTransactionTypeRuleDto
+            {
+                RequestSubTypeId = r.RequestSubTypeId,
+                RequestAction = r.RequestAction,
+                RequestMasterId = r.RequestMasterId
+            })
+            .ToListAsync();
+
         return new GetWorkflowTransactionTypeForEditOutput
         {
             // What can be raised against an approved transaction of this type, so the dialog offers a chain
@@ -78,16 +99,14 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
                 IsWorkflowEnabled = entity.IsWorkflowEnabled,
                 IsEssEnabled = entity.IsEssEnabled,
                 DefaultRequestMasterId = entity.DefaultRequestMasterId,
-                AmendmentRequestMasterId = entity.AmendmentRequestMasterId,
-                CancellationRequestMasterId = entity.CancellationRequestMasterId,
-                ReturnRequestMasterId = entity.ReturnRequestMasterId,
                 EssRoute = entity.EssRoute,
                 EssPermissionName = entity.EssPermissionName,
                 SubTypeSource = entity.SubTypeSource,
                 IconClass = entity.IconClass,
                 DisplayOrder = entity.DisplayOrder,
                 IsActive = entity.IsActive,
-                AllowDirectEntry = entity.AllowDirectEntry
+                AllowDirectEntry = entity.AllowDirectEntry,
+                Rules = rules
             }
         };
     }
@@ -111,8 +130,10 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
 
         MapToEntity(input, entity);
         await ValidateAsync(entity);
+        await ValidateRulesAsync(entity, input.Rules);
 
-        await _repository.InsertAsync(entity);
+        var id = await _repository.InsertAndGetIdAsync(entity);
+        await ReplaceRulesAsync(id, entity.TenantId, input.Rules);
     }
 
     [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Edit)]
@@ -122,8 +143,118 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
 
         MapToEntity(input, entity);
         await ValidateAsync(entity);
+        await ValidateRulesAsync(entity, input.Rules);
 
         await _repository.UpdateAsync(entity);
+        await ReplaceRulesAsync(entity.Id, entity.TenantId, input.Rules);
+    }
+
+    /// <summary>The tables a sub type can come from, for the Sub Type Source dropdown.</summary>
+    public List<string> GetSubTypeSources()
+    {
+        return WorkflowSubTypeSources.All.ToList();
+    }
+
+    /// <summary>
+    /// The rows of one sub type source -- the absence types for leave, the document types for documents --
+    /// so a routing rule can name "Sick Leave" instead of an id. Empty for an unknown or empty source.
+    /// </summary>
+    public async Task<List<WorkflowSubTypeOptionDto>> GetSubTypeOptions(string source)
+    {
+        return source switch
+        {
+            WorkflowSubTypeSources.AbsenceType => await OptionsOf<HCMv3.PayrollManagement.AbsenceType>(),
+            WorkflowSubTypeSources.AttendanceType => await OptionsOf<HCMv3.PayrollManagement.AttendanceType>(),
+            WorkflowSubTypeSources.ClearanceRequestType => await OptionsOf<HCMv3.GeneralMasterInfo.ClearanceRequestType>(),
+            WorkflowSubTypeSources.DisciplinaryType => await OptionsOf<HCMv3.GeneralMasterInfo.DisciplinaryType>(),
+            WorkflowSubTypeSources.DocumentType => await OptionsOf<HCMv3.GeneralMasterInfo.DocumentType>(),
+            WorkflowSubTypeSources.Duty => await OptionsOf<HCMv3.TimeManagement.Duty>(),
+            WorkflowSubTypeSources.FormType => await OptionsOf<HCMv3.PerformanceManagement.FormType>(),
+            WorkflowSubTypeSources.HRServiceType => await OptionsOf<HCMv3.GeneralMasterInfo.HRServiceType>(),
+            WorkflowSubTypeSources.ITServiceType => await OptionsOf<HCMv3.GeneralMasterInfo.ITServiceType>(),
+            WorkflowSubTypeSources.LoanType => await OptionsOf<HCMv3.GeneralMasterInfo.LoanType>(),
+            WorkflowSubTypeSources.PersonalAction => await OptionsOf<HCMv3.GeneralMasterInfo.PersonalAction>(),
+            WorkflowSubTypeSources.TransType => await OptionsOf<HCMv3.TimeManagement.TransType>(),
+            WorkflowSubTypeSources.TravelType => await OptionsOf<HCMv3.TravelManagement.TravelType>(),
+            _ => new List<WorkflowSubTypeOptionDto>()
+        };
+    }
+
+    /// <summary>
+    /// Id, Code and names of any sub type table. Every source has those columns but they share no
+    /// interface, so the projection is built from the property names instead of being written thirteen times.
+    /// </summary>
+    private async Task<List<WorkflowSubTypeOptionDto>> OptionsOf<T>() where T : class, IEntity<int>
+    {
+        var repository = _iocResolver.Resolve<IRepository<T>>();
+
+        try
+        {
+            var row = Expression.Parameter(typeof(T), "row");
+            var dto = typeof(WorkflowSubTypeOptionDto);
+            var projection = Expression.Lambda<Func<T, WorkflowSubTypeOptionDto>>(
+                Expression.MemberInit(
+                    Expression.New(dto),
+                    Expression.Bind(dto.GetProperty(nameof(WorkflowSubTypeOptionDto.Id))!, Expression.Property(row, "Id")),
+                    Expression.Bind(dto.GetProperty(nameof(WorkflowSubTypeOptionDto.Code))!, Expression.Property(row, "Code")),
+                    Expression.Bind(dto.GetProperty(nameof(WorkflowSubTypeOptionDto.NameEn))!, Expression.Property(row, "NameEn")),
+                    Expression.Bind(dto.GetProperty(nameof(WorkflowSubTypeOptionDto.NameAr))!, Expression.Property(row, "NameAr"))),
+                row);
+
+            return await repository.GetAll()
+                .Select(projection)
+                .OrderBy(o => o.NameEn)
+                .ToListAsync();
+        }
+        finally
+        {
+            _iocResolver.Release(repository);
+        }
+    }
+
+    /// <summary>
+    /// Every rule must name a chain that exists, may name a sub type only when the type has a sub type
+    /// source, and no two rules may cover the same sub type and action -- which of them won would be an
+    /// accident of row order.
+    /// </summary>
+    private async Task ValidateRulesAsync(WorkflowTransactionType entity, List<WorkflowTransactionTypeRuleDto> rules)
+    {
+        rules ??= new List<WorkflowTransactionTypeRuleDto>();
+
+        if (rules.GroupBy(r => new { r.RequestSubTypeId, r.RequestAction }).Any(g => g.Count() > 1))
+        {
+            throw new UserFriendlyException(L("WorkflowTransactionTypeRuleDuplicate"));
+        }
+
+        if (entity.SubTypeSource.IsNullOrWhiteSpace() && rules.Any(r => r.RequestSubTypeId.HasValue))
+        {
+            throw new UserFriendlyException(L("WorkflowTransactionTypeRuleNeedsSubTypeSource"));
+        }
+
+        var chainIds = rules.Select(r => r.RequestMasterId).Distinct().ToList();
+        var found = await _requestMasterRepository.GetAll().CountAsync(m => chainIds.Contains(m.Id));
+        if (found != chainIds.Count)
+        {
+            throw new UserFriendlyException(L("NoWorkflowConfigurationFoundForRequestType", entity.NameEn));
+        }
+    }
+
+    /// <summary>The list sent replaces the rules the type had.</summary>
+    private async Task ReplaceRulesAsync(int transactionTypeId, int tenantId, List<WorkflowTransactionTypeRuleDto> rules)
+    {
+        await _ruleRepository.DeleteAsync(r => r.WorkflowTransactionTypeId == transactionTypeId);
+
+        foreach (var rule in rules ?? new List<WorkflowTransactionTypeRuleDto>())
+        {
+            await _ruleRepository.InsertAsync(new WorkflowTransactionTypeRule
+            {
+                TenantId = tenantId,
+                WorkflowTransactionTypeId = transactionTypeId,
+                RequestSubTypeId = rule.RequestSubTypeId,
+                RequestAction = rule.RequestAction,
+                RequestMasterId = rule.RequestMasterId
+            });
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Delete)]
@@ -155,18 +286,6 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
         if (duplicate)
         {
             throw new UserFriendlyException(L("DuplicateCodeFound"));
-        }
-
-        // The per-action chains are plain ids with no foreign key, so their existence is checked here.
-        foreach (var chainId in new[]
-                 {
-                     entity.AmendmentRequestMasterId, entity.CancellationRequestMasterId, entity.ReturnRequestMasterId
-                 })
-        {
-            if (chainId.HasValue && !await _requestMasterRepository.GetAll().AnyAsync(m => m.Id == chainId.Value))
-            {
-                throw new UserFriendlyException(L("NoWorkflowConfigurationFoundForRequestType", entity.NameEn));
-            }
         }
 
         if (entity.DefaultRequestMasterId.HasValue)
@@ -205,9 +324,6 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
         entity.IsWorkflowEnabled = input.IsWorkflowEnabled;
         entity.IsEssEnabled = input.IsEssEnabled;
         entity.DefaultRequestMasterId = input.DefaultRequestMasterId;
-        entity.AmendmentRequestMasterId = input.AmendmentRequestMasterId;
-        entity.CancellationRequestMasterId = input.CancellationRequestMasterId;
-        entity.ReturnRequestMasterId = input.ReturnRequestMasterId;
         entity.EssRoute = input.EssRoute;
         entity.EssPermissionName = input.EssPermissionName;
         entity.SubTypeSource = input.SubTypeSource;
@@ -227,9 +343,6 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
             NameAr = entity.NameAr,
             IsWorkflowEnabled = entity.IsWorkflowEnabled,
             IsEssEnabled = entity.IsEssEnabled,
-            AmendmentRequestMasterId = entity.AmendmentRequestMasterId,
-            CancellationRequestMasterId = entity.CancellationRequestMasterId,
-            ReturnRequestMasterId = entity.ReturnRequestMasterId,
             DefaultRequestMasterId = entity.DefaultRequestMasterId,
             DefaultRequestMasterNameEn = entity.DefaultRequestMaster?.NameEn,
             DefaultRequestMasterSteps = entity.DefaultRequestMaster?.WorkflowSteps,

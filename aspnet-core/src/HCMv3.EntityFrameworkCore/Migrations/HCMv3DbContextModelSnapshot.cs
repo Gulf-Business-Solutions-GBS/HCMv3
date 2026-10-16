@@ -34997,12 +34997,6 @@ namespace HCMv3.Migrations
                     b.Property<bool>("AllowDirectEntry")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("AmendmentRequestMasterId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CancellationRequestMasterId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -35066,9 +35060,6 @@ namespace HCMv3.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("ReturnRequestMasterId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SubTypeSource")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
@@ -35085,6 +35076,61 @@ namespace HCMv3.Migrations
                         .HasFilter("[IsDeleted] = 0");
 
                     b.ToTable("WorkflowTransactionTypes");
+                });
+
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowTransactionTypeRule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("RequestAction")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestMasterId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RequestSubTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkflowTransactionTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestMasterId");
+
+                    b.HasIndex("WorkflowTransactionTypeId");
+
+                    b.HasIndex("TenantId", "WorkflowTransactionTypeId");
+
+                    b.ToTable("WorkflowTransactionTypeRules");
                 });
 
             modelBuilder.Entity("HCMv3.Editions.SubscribableEdition", b =>
@@ -42252,6 +42298,25 @@ namespace HCMv3.Migrations
                     b.Navigation("DefaultRequestMaster");
                 });
 
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowTransactionTypeRule", b =>
+                {
+                    b.HasOne("HCMv3.Workflow.RequestMaster", "RequestMaster")
+                        .WithMany()
+                        .HasForeignKey("RequestMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.Workflow.WorkflowTransactionType", "WorkflowTransactionType")
+                        .WithMany("Rules")
+                        .HasForeignKey("WorkflowTransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RequestMaster");
+
+                    b.Navigation("WorkflowTransactionType");
+                });
+
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>
                 {
                     b.HasOne("Abp.Application.Editions.Edition", "Edition")
@@ -42425,6 +42490,11 @@ namespace HCMv3.Migrations
                     b.Navigation("WorkFlowApprovers");
 
                     b.Navigation("WorkflowRemarks");
+                });
+
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowTransactionType", b =>
+                {
+                    b.Navigation("Rules");
                 });
 #pragma warning restore 612, 618
         }

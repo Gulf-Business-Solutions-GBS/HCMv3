@@ -6,6 +6,8 @@ import {
     RequestMasterDto,
     RequestMastersServiceProxy,
     WorkflowRequestAction,
+    WorkflowSubTypeOptionDto,
+    WorkflowTransactionTypeRuleDto,
     WorkflowTransactionTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -47,23 +49,31 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
      */
     readonly supportedChangeActions = signal<WorkflowRequestAction[]>([]);
 
-    /** The per-action chains: a change, a cancellation and a return may each be routed differently. */
-    private readonly allActionChains: {
-        id: string;
-        field: keyof CreateOrEditWorkflowTransactionTypeDto;
-        labelKey: string;
-        action: WorkflowRequestAction;
-    }[] = [
-        { id: 'AmendmentRequestMasterId', field: 'amendmentRequestMasterId', labelKey: 'AmendmentChain', action: WorkflowRequestAction.Amendment },
-        { id: 'CancellationRequestMasterId', field: 'cancellationRequestMasterId', labelKey: 'CancellationChain', action: WorkflowRequestAction.Cancellation },
-        { id: 'ReturnRequestMasterId', field: 'returnRequestMasterId', labelKey: 'ReturnChain', action: WorkflowRequestAction.Return },
-    ];
+    /** The tables a sub type can come from (absence types, document types ...), for the dropdown. */
+    readonly subTypeSources = signal<string[]>([]);
+
+    /** The rows of the chosen sub type source, so a rule can name "Sick Leave" rather than an id. */
+    readonly subTypeOptions = signal<WorkflowSubTypeOptionDto[]>([]);
 
     /**
-     * The chains this type can use. Leave has all three; a passport withdrawal only a return; an asset
-     * request none -- and a field for something the type cannot do would only invite a wrong setup.
+     * The actions a rule may name: a new request always, plus whatever the type allows to be raised against
+     * an approved transaction -- leave has amendment, cancellation and return; most types have none.
      */
-    readonly actionChains = computed(() => this.allActionChains.filter((chain) => this.supportedChangeActions().includes(chain.action)));
+    readonly actionOptions = computed(() => {
+        const all = [
+            { value: WorkflowRequestAction.New, key: 'WorkflowRequestActionNew' },
+            { value: WorkflowRequestAction.Amendment, key: 'WorkflowRequestActionAmendment' },
+            { value: WorkflowRequestAction.Cancellation, key: 'WorkflowRequestActionCancellation' },
+            { value: WorkflowRequestAction.Return, key: 'WorkflowRequestActionReturn' },
+        ];
+
+        return all.filter((o) => o.value === WorkflowRequestAction.New || this.supportedChangeActions().includes(o.value));
+    });
+
+    /** "AbsenceType" -> "Absence Type", for the source dropdown. */
+    sourceLabel(source: string): string {
+        return source.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
+    }
 
     /**
      * True when this type will be refused at submit time: routing is on, but there is no chain to route to.
@@ -88,6 +98,8 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
             )
             .subscribe((result) => this.requestMasters.set(result.items));
 
+        this._service.getSubTypeSources().subscribe((sources) => this.subTypeSources.set(sources));
+
         if (!id) {
             // Active by default; workflow and ESS off. Registering a type must not start routing live
             // transactions through approval the moment it is saved -- the same reasoning the seeder uses.
@@ -99,8 +111,10 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
                     isWorkflowEnabled: false,
                     isEssEnabled: false,
                     displayOrder: 0,
+                    rules: [],
                 } as any)
             );
+            this.subTypeOptions.set([]);
             this.supportedChangeActions.set([]);
             this.refreshWarning();
             this.modal().show();
@@ -108,6 +122,7 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
             this._service.getWorkflowTransactionTypeForEdit(id).subscribe((result) => {
                 this.record.set(result.workflowTransactionType);
                 this.supportedChangeActions.set(result.supportedChangeActions ?? []);
+                this.loadSubTypeOptions(result.workflowTransactionType.subTypeSource);
                 this.refreshWarning();
                 this.modal().show();
             });
@@ -146,6 +161,53 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
         this.record.set(next);
 
         this.refreshWarning();
+    }
+
+    /** A new source means different sub types: reload them, and clear rule sub types that no longer apply. */
+    changeSubTypeSource(source: string): void {
+        const rules = (this.record().rules ?? []).map((rule) => {
+            const copy = new WorkflowTransactionTypeRuleDto();
+            Object.assign(copy, rule);
+            copy.requestSubTypeId = undefined;
+            return copy;
+        });
+
+        this.updateField('subTypeSource', source || undefined);
+        this.updateField('rules', rules);
+        this.loadSubTypeOptions(source);
+    }
+
+    addRule(): void {
+        this.updateField('rules', [...(this.record().rules ?? []), new WorkflowTransactionTypeRuleDto()]);
+    }
+
+    removeRule(index: number): void {
+        const rules = [...(this.record().rules ?? [])];
+        rules.splice(index, 1);
+        this.updateField('rules', rules);
+    }
+
+    updateRule(index: number, field: keyof WorkflowTransactionTypeRuleDto, value: any): void {
+        const rules = [...(this.record().rules ?? [])];
+        const rule = new WorkflowTransactionTypeRuleDto();
+        Object.assign(rule, rules[index]);
+        (rule as any)[field] = value ?? undefined;
+        rules[index] = rule;
+        this.updateField('rules', rules);
+    }
+
+    /** True when every rule names a chain -- the one thing a rule cannot do without. */
+    rulesComplete(): boolean {
+        return (this.record().rules ?? []).every((rule) => !!rule.requestMasterId);
+    }
+
+    private loadSubTypeOptions(source: string | undefined): void {
+        if (!source) {
+            this.subTypeOptions.set([]);
+            return;
+        }
+
+        this._service.getSubTypeOptions(source).subscribe((options) => this.subTypeOptions.set(options));
     }
 
     private refreshWarning(): void {

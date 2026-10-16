@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
@@ -68,18 +69,11 @@ public class WorkflowTransactionType : FullAuditedEntity, IMustHaveTenant
     public virtual RequestMaster DefaultRequestMaster { get; set; }
 
     /// <summary>
-    /// The chain for a CHANGE to an approved transaction, when it should differ from
-    /// <see cref="DefaultRequestMasterId"/>. Null means "the same chain as a new request". A plain id with no
-    /// navigation: three more required paths into <c>RequestMaster</c> would buy nothing but cascade-path
-    /// trouble, and the resolver reads the chain by id anyway.
+    /// Chains for particular sub types and/or actions (sick leave, cancellations ...), the same for every
+    /// type. Replaced the leave-only Amendment/Cancellation/Return chain columns on 2026-10-17; the migration
+    /// moved their values into rows here.
     /// </summary>
-    public virtual int? AmendmentRequestMasterId { get; set; }
-
-    /// <summary>The chain for a CANCELLATION of an approved transaction. Null means the default chain.</summary>
-    public virtual int? CancellationRequestMasterId { get; set; }
-
-    /// <summary>The chain for a RETURN (leave). Null means the default chain.</summary>
-    public virtual int? ReturnRequestMasterId { get; set; }
+    public virtual ICollection<WorkflowTransactionTypeRule> Rules { get; set; }
 
     /// <summary>Angular route for the ESS screen, e.g. "/app/main/ess/leave".</summary>
     [StringLength(256)]
@@ -90,11 +84,11 @@ public class WorkflowTransactionType : FullAuditedEntity, IMustHaveTenant
     public virtual string EssPermissionName { get; set; }
 
     /// <summary>
-    /// Documents what <see cref="WorkflowRequest.RequestSubTypeId"/> refers to for this type -- "AbsenceType"
-    /// for leave, "DocumentType" for documents. Descriptive only: nothing resolves it at runtime, because
-    /// the type's own handler sets the sub-type id when it creates the request. Legacy instead recovered
-    /// this by reflecting over each concrete request subclass looking for an "AbsenceType"/"DocumentType"
-    /// property, which is why it needed ~50 compiled subclasses to work at all.
+    /// What <see cref="WorkflowRequest.RequestSubTypeId"/> refers to for this type -- "AbsenceType" for leave,
+    /// "DocumentType" for documents; one of <see cref="WorkflowSubTypeSources"/>. The type's own handler sets
+    /// the sub-type id when it creates the request; this column is what lets the setup screen list the sub
+    /// types by name when a routing rule is written for one. Legacy recovered the same thing by reflecting
+    /// over each concrete request subclass looking for an "AbsenceType"/"DocumentType" property.
     /// </summary>
     [StringLength(128)]
     public virtual string SubTypeSource { get; set; }

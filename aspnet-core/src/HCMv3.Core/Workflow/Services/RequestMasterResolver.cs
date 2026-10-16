@@ -25,6 +25,7 @@ namespace HCMv3.Workflow.Services;
 public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResolver
 {
     private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
+    private readonly IRepository<WorkflowTransactionTypeRule> _transactionTypeRuleRepository;
     private readonly IRepository<WorkflowGroup> _workflowGroupRepository;
     private readonly IRepository<WorkflowGroupDetail> _workflowGroupDetailRepository;
     private readonly IRepository<RequestMaster> _requestMasterRepository;
@@ -37,6 +38,7 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
 
     public RequestMasterResolver(
         IRepository<WorkflowTransactionType> transactionTypeRepository,
+        IRepository<WorkflowTransactionTypeRule> transactionTypeRuleRepository,
         IRepository<WorkflowGroup> workflowGroupRepository,
         IRepository<WorkflowGroupDetail> workflowGroupDetailRepository,
         IRepository<RequestMaster> requestMasterRepository,
@@ -48,6 +50,7 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         IAbpSession abpSession)
     {
         _transactionTypeRepository = transactionTypeRepository;
+        _transactionTypeRuleRepository = transactionTypeRuleRepository;
         _workflowGroupRepository = workflowGroupRepository;
         _workflowGroupDetailRepository = workflowGroupDetailRepository;
         _requestMasterRepository = requestMasterRepository;
@@ -155,11 +158,12 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
                 workflowGroupId.Value, requestType, requestSubTypeId, customSubTypeId, requestAction);
         }
 
-        // Falls back to the type's default chain. This is the catalogued replacement for legacy's compiled-in
-        // "case \"LeaveRequest\": recCode = \"4\";" switch.
-        // An action with a chain of its own on the type uses it; otherwise it follows the default chain, which
-        // is what every type configured before the per-action columns existed still does.
-        var typeChainId = ChainForAction(transactionType, requestAction) ?? transactionType.DefaultRequestMasterId;
+        // Then the type's own routing rules (sub type and/or action), and last its default chain. This is the
+        // catalogued replacement for legacy's compiled-in "case \"LeaveRequest\": recCode = \"4\";" switch.
+        requestMaster ??= ResolveFromTypeRules(
+            transactionType.Id, requestSubTypeId, requestAction, actionSpecificOnly: false);
+
+        var typeChainId = transactionType.DefaultRequestMasterId;
 
         if (requestMaster == null && typeChainId.HasValue)
         {
@@ -270,22 +274,38 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
             }
         }
 
-        var chainId = ChainForAction(transactionType, requestAction);
-
-        return chainId.HasValue
-            ? _requestMasterRepository.GetAll().FirstOrDefault(m => m.Id == chainId.Value)
-            : null;
+        return ResolveFromTypeRules(transactionType.Id, requestSubTypeId, requestAction, actionSpecificOnly: true);
     }
 
-    private static int? ChainForAction(WorkflowTransactionType transactionType, WorkflowRequestAction requestAction)
+    /// <summary>
+    /// The type's own routing rule for this request, most specific first: sub type AND action, then action
+    /// alone, then sub type alone, then a rule naming neither. With <paramref name="actionSpecificOnly"/> only
+    /// the first two are considered -- rules that name this action -- so a change, cancellation or return
+    /// configured for exactly that action is found before the business rules and the group lookup run.
+    /// Null when no rule matches.
+    /// </summary>
+    private RequestMaster ResolveFromTypeRules(
+        int transactionTypeId,
+        int? requestSubTypeId,
+        WorkflowRequestAction requestAction,
+        bool actionSpecificOnly)
     {
-        return requestAction switch
-        {
-            WorkflowRequestAction.Amendment => transactionType.AmendmentRequestMasterId,
-            WorkflowRequestAction.Cancellation => transactionType.CancellationRequestMasterId,
-            WorkflowRequestAction.Return => transactionType.ReturnRequestMasterId,
-            _ => null
-        };
+        var rules = _transactionTypeRuleRepository.GetAll()
+            .Where(r => r.WorkflowTransactionTypeId == transactionTypeId
+                        && (r.RequestAction == requestAction || r.RequestAction == null)
+                        && (r.RequestSubTypeId == requestSubTypeId || r.RequestSubTypeId == null))
+            .ToList();
+
+        var best = rules
+            .Where(r => !actionSpecificOnly || r.RequestAction == requestAction)
+            .OrderByDescending(r => r.RequestAction.HasValue)
+            .ThenByDescending(r => r.RequestSubTypeId.HasValue)
+            .ThenBy(r => r.Id)
+            .FirstOrDefault();
+
+        return best == null
+            ? null
+            : _requestMasterRepository.GetAll().FirstOrDefault(m => m.Id == best.RequestMasterId);
     }
 
     /// <summary>

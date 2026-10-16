@@ -603,7 +603,14 @@ public class LeaveUnifiedActions_Tests : EssLeaveWorkflowTestBase
                 EndDate = DateTime.Today.AddYears(2)
             });
 
-            context.Set<WorkflowTransactionType>().First(t => t.Code == "EmployeeAbsence").CancellationRequestMasterId = master.Id;
+            var leaveType = context.Set<WorkflowTransactionType>().First(t => t.Code == "EmployeeAbsence");
+            context.Set<WorkflowTransactionTypeRule>().Add(new WorkflowTransactionTypeRule
+            {
+                TenantId = TenantId,
+                WorkflowTransactionTypeId = leaveType.Id,
+                RequestAction = WorkflowRequestAction.Cancellation,
+                RequestMasterId = master.Id
+            });
         });
 
         var leaveId = await CreateApprovedLeaveAsync(typeId, Soon, days: 5, approverId);

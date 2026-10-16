@@ -27,4 +27,8 @@ public interface IWorkflowTransactionTypesAppService : IApplicationService
     /// rather than a menu code change.
     /// </summary>
     Task<List<WorkflowTransactionTypeDto>> GetEssEnabledTypes();
+
+    List<string> GetSubTypeSources();
+
+    Task<List<WorkflowSubTypeOptionDto>> GetSubTypeOptions(string source);
 }

@@ -233,8 +233,18 @@
                         </div>
 
                         <hr />
-                        <h6>{{ 'WhoToNotify' | localize }}</h6>
-                        <p class="text-muted fs-7 mb-4">{{ 'EachActionCanNotifyADifferentGroup' | localize }}</p>
+                        <!-- One line unless someone wants more. A blank setting is filled with the standard one
+                             on save, so the seven dropdowns only matter when a step should differ. -->
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">{{ 'WhoToNotify' | localize }}</h6>
+                            <button type="button" class="btn btn-sm btn-link p-0" (click)="showNotificationDetails.set(!showNotificationDetails())">
+                                {{ (showNotificationDetails() ? 'HideNotificationSettings' : 'CustomiseNotifications') | localize }}
+                            </button>
+                        </div>
+                        @if (!showNotificationDetails()) {
+                            <p class="text-muted fs-7 mb-4">{{ 'StandardNotificationsSummary' | localize }}</p>
+                        } @else {
+                        <p class="text-muted fs-7 mb-4">{{ 'BlankNotificationUsesStandard' | localize }}</p>
                         <div class="row">
                             @for (action of notificationActions; track action.field) {
                                 <div class="col-md-4 mb-5">
@@ -245,7 +255,7 @@
                                         [name]="action.field"
                                         [ngModel]="record()[action.field]"
                                         (ngModelChange)="updateField(action.field, $event)">
-                                        <option [ngValue]="undefined">{{ 'NotifyNobody' | localize }}</option>
+                                        <option [ngValue]="undefined">{{ 'StandardNotification' | localize }}</option>
                                         @for (config of notificationConfigs(); track config.id) {
                                             <option [ngValue]="config.id">{{ config.name }}</option>
                                         }
@@ -253,6 +263,7 @@
                                 </div>
                             }
                         </div>
+                        }
 
                         <div class="row">
                             <div class="col-md-3 mb-3">

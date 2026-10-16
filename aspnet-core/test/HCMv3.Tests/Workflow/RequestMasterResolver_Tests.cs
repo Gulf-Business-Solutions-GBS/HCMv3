@@ -424,7 +424,7 @@ public class RequestMasterResolver_Tests : AppTestBase
         var defaultId = CreateRequestMaster("STD-LEAVE");
         var cancelId = CreateRequestMaster("CANCEL-LEAVE");
         var typeId = CreateTransactionType("EmployeeAbsence", defaultId);
-        UsingDbContext(context => context.Set<WorkflowTransactionType>().Single(t => t.Id == typeId).CancellationRequestMasterId = cancelId);
+        AddTypeRule(typeId, cancelId, WorkflowRequestAction.Cancellation);
 
         var employeeId = CreateEmployee("RMR800");
 
@@ -450,7 +450,7 @@ public class RequestMasterResolver_Tests : AppTestBase
         var groupReturnId = CreateRequestMaster("GROUP-RETURN");
 
         var typeId = CreateTransactionType("EmployeeAbsence", typeDefaultId);
-        UsingDbContext(context => context.Set<WorkflowTransactionType>().Single(t => t.Id == typeId).ReturnRequestMasterId = typeReturnId);
+        AddTypeRule(typeId, typeReturnId, WorkflowRequestAction.Return);
 
         var groupId = CreateWorkflowGroup(isDefault: true);
         CreateGroupDetail(groupId, groupAllId, "EmployeeAbsence");
@@ -474,5 +474,76 @@ public class RequestMasterResolver_Tests : AppTestBase
         // An amendment has no line of its own anywhere, so the group's catch-all applies.
         (await ChainFor(WorkflowRequestAction.Amendment)).ShouldBe(groupAllId);
         (await ChainFor(WorkflowRequestAction.New)).ShouldBe(groupAllId);
+    }
+
+    // ------------------------------------------------------------------ the type's routing rules
+
+    private void AddTypeRule(int typeId, int masterId, WorkflowRequestAction? action = null, int? subTypeId = null)
+    {
+        UsingDbContext(context => context.Set<WorkflowTransactionTypeRule>().Add(new WorkflowTransactionTypeRule
+        {
+            TenantId = TenantId,
+            WorkflowTransactionTypeId = typeId,
+            RequestAction = action,
+            RequestSubTypeId = subTypeId,
+            RequestMasterId = masterId
+        }));
+    }
+
+    [Fact]
+    public async Task A_Rule_For_A_Sub_Type_Should_Route_That_Sub_Type_Only()
+    {
+        SetWorkflowGroupEnabled(false);
+
+        var defaultId = CreateRequestMaster("STD-LEAVE");
+        var sickId = CreateRequestMaster("SICK-LEAVE");
+        var typeId = CreateTransactionType("EmployeeAbsence", defaultId);
+        AddTypeRule(typeId, sickId, subTypeId: 42);
+
+        var employeeId = CreateEmployee("RMR900");
+
+        (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, 42)).Id.ShouldBe(sickId);
+        (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, 7)).Id.ShouldBe(defaultId);
+        (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, null)).Id.ShouldBe(defaultId);
+    }
+
+    [Fact]
+    public async Task A_Rule_For_A_Sub_Type_And_An_Action_Should_Beat_One_For_The_Action_Alone()
+    {
+        SetWorkflowGroupEnabled(false);
+
+        var defaultId = CreateRequestMaster("STD-LEAVE");
+        var cancelId = CreateRequestMaster("CANCEL-LEAVE");
+        var sickCancelId = CreateRequestMaster("SICK-CANCEL");
+        var typeId = CreateTransactionType("EmployeeAbsence", defaultId);
+        AddTypeRule(typeId, cancelId, WorkflowRequestAction.Cancellation);
+        AddTypeRule(typeId, sickCancelId, WorkflowRequestAction.Cancellation, subTypeId: 42);
+
+        var employeeId = CreateEmployee("RMR910");
+
+        async Task<int> ChainFor(int? subType, WorkflowRequestAction action) =>
+            (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, subType, null, action)).Id;
+
+        (await ChainFor(42, WorkflowRequestAction.Cancellation)).ShouldBe(sickCancelId);
+        (await ChainFor(7, WorkflowRequestAction.Cancellation)).ShouldBe(cancelId);
+        (await ChainFor(42, WorkflowRequestAction.New)).ShouldBe(defaultId);
+    }
+
+    [Fact]
+    public async Task A_Rule_Naming_The_Action_Should_Beat_One_Naming_Only_The_Sub_Type()
+    {
+        SetWorkflowGroupEnabled(false);
+
+        var defaultId = CreateRequestMaster("STD-LEAVE");
+        var sickId = CreateRequestMaster("SICK-LEAVE");
+        var returnId = CreateRequestMaster("RETURN-LEAVE");
+        var typeId = CreateTransactionType("EmployeeAbsence", defaultId);
+        AddTypeRule(typeId, sickId, subTypeId: 42);
+        AddTypeRule(typeId, returnId, WorkflowRequestAction.Return);
+
+        var employeeId = CreateEmployee("RMR920");
+
+        (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, 42, null, WorkflowRequestAction.Return)).Id.ShouldBe(returnId);
+        (await _resolver.ResolveAsync("EmployeeAbsence", employeeId, 42, null, WorkflowRequestAction.Amendment)).Id.ShouldBe(sickId);
     }
 }

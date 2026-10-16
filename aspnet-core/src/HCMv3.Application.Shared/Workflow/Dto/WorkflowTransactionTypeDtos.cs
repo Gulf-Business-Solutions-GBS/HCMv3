@@ -19,14 +19,7 @@ public class WorkflowTransactionTypeDto : EntityDto<int>
 
     public int? DefaultRequestMasterId { get; set; }
 
-    /// <summary>Chain for a change to an approved transaction; empty means the default chain.</summary>
-    public int? AmendmentRequestMasterId { get; set; }
 
-    /// <summary>Chain for a cancellation; empty means the default chain.</summary>
-    public int? CancellationRequestMasterId { get; set; }
-
-    /// <summary>Chain for a return from leave; empty means the default chain.</summary>
-    public int? ReturnRequestMasterId { get; set; }
 
     public string DefaultRequestMasterNameEn { get; set; }
 
@@ -79,14 +72,7 @@ public class CreateOrEditWorkflowTransactionTypeDto
 
     public int? DefaultRequestMasterId { get; set; }
 
-    /// <summary>Chain for a change to an approved transaction; empty means the default chain.</summary>
-    public int? AmendmentRequestMasterId { get; set; }
 
-    /// <summary>Chain for a cancellation; empty means the default chain.</summary>
-    public int? CancellationRequestMasterId { get; set; }
-
-    /// <summary>Chain for a return from leave; empty means the default chain.</summary>
-    public int? ReturnRequestMasterId { get; set; }
 
     [StringLength(256)]
     public string EssRoute { get; set; }
@@ -109,6 +95,35 @@ public class CreateOrEditWorkflowTransactionTypeDto
     /// employee as final instead of routing it. Off by default; see the entity for why both gates exist.
     /// </summary>
     public bool AllowDirectEntry { get; set; }
+
+    /// <summary>
+    /// The type's routing rules: chains for a sub type and/or an action. Saved as a whole -- the list sent
+    /// replaces the rules the type had.
+    /// </summary>
+    public System.Collections.Generic.List<WorkflowTransactionTypeRuleDto> Rules { get; set; } = new();
+}
+
+/// <summary>One routing rule of a transaction type. Empty sub type or action means "any".</summary>
+public class WorkflowTransactionTypeRuleDto
+{
+    public int? RequestSubTypeId { get; set; }
+
+    public WorkflowRequestAction? RequestAction { get; set; }
+
+    [Required]
+    public int RequestMasterId { get; set; }
+}
+
+/// <summary>A row of a sub type source (an absence type, a document type ...), for picking one by name.</summary>
+public class WorkflowSubTypeOptionDto
+{
+    public int Id { get; set; }
+
+    public string Code { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
 }
 
 public class GetWorkflowTransactionTypeForEditOutput
