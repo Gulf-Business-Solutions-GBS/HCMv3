@@ -25,6 +25,19 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeAbsQuotaForfeit_EffectiveDate">{{ 'EffectiveDate' | localize }}</label>
+                                <input
+                                    id="EmployeeAbsQuotaForfeit_EffectiveDate"
+                                    #effectiveDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EffectiveDate"
+                                    [ngModel]="record().effectiveDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('effectiveDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="effectiveDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeAbsQuotaForfeit_AbsenceTypeId">{{ 'AbsenceTypeId' | localize }}</label>
                                 <select
                                     id="EmployeeAbsQuotaForfeit_AbsenceTypeId"
@@ -40,19 +53,6 @@
                                     }
                                 </select>
                                 <validation-messages [formCtrl]="absenceTypeIdInput" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeAbsQuotaForfeit_EffectiveDate">{{ 'EffectiveDate' | localize }}</label>
-                                <input
-                                    id="EmployeeAbsQuotaForfeit_EffectiveDate"
-                                    #effectiveDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="EffectiveDate"
-                                    [ngModel]="record().effectiveDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('effectiveDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="effectiveDateInput" />
                             </div>
                         </div>
                         <div class="row">

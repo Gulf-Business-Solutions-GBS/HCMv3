@@ -25,23 +25,6 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeAbsence_AbsenceTypeId">{{ 'AbsenceTypeId' | localize }}</label>
-                                <select
-                                    id="EmployeeAbsence_AbsenceTypeId"
-                                    #absenceTypeIdInput="ngModel"
-                                    class="form-select"
-                                    name="AbsenceTypeId"
-                                    [ngModel]="record().absenceTypeId"
-                                    (ngModelChange)="updateField('absenceTypeId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (type of absenceTypes(); track type.id) {
-                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="absenceTypeIdInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="EmployeeAbsence_StartDate">{{ 'StartDate' | localize }}</label>
                                 <input
                                     id="EmployeeAbsence_StartDate"
@@ -66,6 +49,23 @@
                                     (ngModelChange)="updateDateField('endDate', $event)"
                                     required />
                                 <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeAbsence_AbsenceTypeId">{{ 'AbsenceTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeAbsence_AbsenceTypeId"
+                                    #absenceTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="AbsenceTypeId"
+                                    [ngModel]="record().absenceTypeId"
+                                    (ngModelChange)="updateField('absenceTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of absenceTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="absenceTypeIdInput" />
                             </div>
                         </div>
                         <div class="row">

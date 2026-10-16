@@ -25,23 +25,6 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeExtdWorkLocation_WorkLocationId">{{ 'WorkLocationId' | localize }}</label>
-                                <select
-                                    id="EmployeeExtdWorkLocation_WorkLocationId"
-                                    #workLocationIdInput="ngModel"
-                                    class="form-select"
-                                    name="WorkLocationId"
-                                    [ngModel]="record().workLocationId"
-                                    (ngModelChange)="updateField('workLocationId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (location of workLocations(); track location.id) {
-                                        <option [ngValue]="location.id">{{ location.nameEn }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="workLocationIdInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="EmployeeExtdWorkLocation_StartDate">{{ 'StartDate' | localize }}</label>
                                 <input
                                     id="EmployeeExtdWorkLocation_StartDate"
@@ -66,6 +49,23 @@
                                     (ngModelChange)="updateDateField('endDate', $event)"
                                     required />
                                 <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeExtdWorkLocation_WorkLocationId">{{ 'WorkLocationId' | localize }}</label>
+                                <select
+                                    id="EmployeeExtdWorkLocation_WorkLocationId"
+                                    #workLocationIdInput="ngModel"
+                                    class="form-select"
+                                    name="WorkLocationId"
+                                    [ngModel]="record().workLocationId"
+                                    (ngModelChange)="updateField('workLocationId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (location of workLocations(); track location.id) {
+                                        <option [ngValue]="location.id">{{ location.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workLocationIdInput" />
                             </div>
                         </div>
                     </div>

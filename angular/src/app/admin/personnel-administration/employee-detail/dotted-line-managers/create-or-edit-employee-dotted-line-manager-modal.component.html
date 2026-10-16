@@ -23,23 +23,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-5">
-                            <label class="form-label required" for="EmployeeDottedLineManager_ManagerId">{{ 'Manager' | localize }}</label>
-                            <select
-                                id="EmployeeDottedLineManager_ManagerId"
-                                #managerInput="ngModel"
-                                class="form-select"
-                                name="ManagerId"
-                                [ngModel]="record().managerId"
-                                (ngModelChange)="updateField('managerId', $event)"
-                                required>
-                                <option [ngValue]="undefined"></option>
-                                @for (item of employees(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.fullNameEn }} ({{ item.code }})</option>
-                                }
-                            </select>
-                            <validation-messages [formCtrl]="managerInput" />
-                        </div>
-                        <div class="mb-5">
                             <label class="form-label required" for="EmployeeDottedLineManager_StartDate">{{ 'StartDate' | localize }}</label>
                             <input
                                 id="EmployeeDottedLineManager_StartDate"
@@ -64,6 +47,23 @@
                                 (ngModelChange)="updateDateField('endDate', $event)"
                                 required />
                             <validation-messages [formCtrl]="endDateInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeDottedLineManager_ManagerId">{{ 'Manager' | localize }}</label>
+                            <select
+                                id="EmployeeDottedLineManager_ManagerId"
+                                #managerInput="ngModel"
+                                class="form-select"
+                                name="ManagerId"
+                                [ngModel]="record().managerId"
+                                (ngModelChange)="updateField('managerId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of employees(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.fullNameEn }} ({{ item.code }})</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="managerInput" />
                         </div>
                     </div>
                     <div class="modal-footer">

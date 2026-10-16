@@ -25,6 +25,19 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeWageAccount_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeWageAccount_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateStartDate($event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="EmployeeWageAccount_WageTypeId">{{ 'WageTypeId' | localize }}</label>
                                 <select
                                     id="EmployeeWageAccount_WageTypeId"
@@ -40,19 +53,6 @@
                                     }
                                 </select>
                                 <validation-messages [formCtrl]="wageTypeIdInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeWageAccount_StartDate">{{ 'StartDate' | localize }}</label>
-                                <input
-                                    id="EmployeeWageAccount_StartDate"
-                                    #startDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="StartDate"
-                                    [ngModel]="record().startDate?.toISODate()"
-                                    (ngModelChange)="updateStartDate($event)"
-                                    required />
-                                <validation-messages [formCtrl]="startDateInput" />
                             </div>
                             <div class="col-md-4 mb-5">
                                 <label class="form-label" for="EmployeeWageAccount_CostPercentage">{{ 'CostPercentage' | localize }}</label>

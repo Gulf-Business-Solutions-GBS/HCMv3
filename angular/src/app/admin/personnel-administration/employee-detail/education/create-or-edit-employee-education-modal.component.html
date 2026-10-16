@@ -24,6 +24,29 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeEducation_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeEducation_StartDate"
+                                    #startDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeEducation_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeEducation_EndDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeEducation_EducationId">{{ 'Education' | localize }}</label>
                                 <select
                                     id="EmployeeEducation_EducationId"
@@ -138,29 +161,6 @@
                                     name="YearOfPassing"
                                     [ngModel]="record().yearOfPassing"
                                     (ngModelChange)="updateField('yearOfPassing', $event)" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeEducation_StartDate">{{ 'StartDate' | localize }}</label>
-                                <input
-                                    id="EmployeeEducation_StartDate"
-                                    #startDateInput="ngModel"
-                                    class="form-control"
-                                    type="date"
-                                    name="StartDate"
-                                    [ngModel]="record().startDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('startDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="startDateInput" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label" for="EmployeeEducation_EndDate">{{ 'EndDate' | localize }}</label>
-                                <input
-                                    id="EmployeeEducation_EndDate"
-                                    class="form-control"
-                                    type="date"
-                                    name="EndDate"
-                                    [ngModel]="record().endDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('endDate', $event)" />
                             </div>
                         </div>
                     </div>

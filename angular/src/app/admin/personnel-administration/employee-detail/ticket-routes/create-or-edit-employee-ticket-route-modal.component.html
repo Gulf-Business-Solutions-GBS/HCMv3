@@ -24,25 +24,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12 mb-5">
-                                <label class="form-label required" for="EmployeeTicketRoute_TicketRouteId">{{ 'TicketRouteId' | localize }}</label>
-                                <select
-                                    id="EmployeeTicketRoute_TicketRouteId"
-                                    #ticketRouteIdInput="ngModel"
-                                    class="form-select"
-                                    name="TicketRouteId"
-                                    [ngModel]="record().ticketRouteId"
-                                    (ngModelChange)="updateField('ticketRouteId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (route of ticketRoutes(); track route.id) {
-                                        <option [ngValue]="route.id">{{ route.nameEn }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="ticketRouteIdInput" />
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeTicketRoute_StartDate">{{ 'StartDate' | localize }}</label>
                                 <input
@@ -69,6 +50,25 @@
                                     required />
                                 <validation-messages [formCtrl]="endDateInput" />
                             </div>
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="EmployeeTicketRoute_TicketRouteId">{{ 'TicketRouteId' | localize }}</label>
+                                <select
+                                    id="EmployeeTicketRoute_TicketRouteId"
+                                    #ticketRouteIdInput="ngModel"
+                                    class="form-select"
+                                    name="TicketRouteId"
+                                    [ngModel]="record().ticketRouteId"
+                                    (ngModelChange)="updateField('ticketRouteId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (route of ticketRoutes(); track route.id) {
+                                        <option [ngValue]="route.id">{{ route.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="ticketRouteIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
                         </div>
                     </div>
                     <div class="modal-footer">

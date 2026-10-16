@@ -25,6 +25,32 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeBenefitException_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeBenefitException_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeBenefitException_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeBenefitException_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeBenefitException_ExceptionBenefitType">{{ 'ExceptionBenefitType' | localize }}</label>
                                 <select
                                     id="EmployeeBenefitException_ExceptionBenefitType"
@@ -51,32 +77,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeBenefitException_StartDate">{{ 'StartDate' | localize }}</label>
-                                <input
-                                    id="EmployeeBenefitException_StartDate"
-                                    #startDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="StartDate"
-                                    [ngModel]="record().startDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('startDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="startDateInput" />
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeBenefitException_EndDate">{{ 'EndDate' | localize }}</label>
-                                <input
-                                    id="EmployeeBenefitException_EndDate"
-                                    #endDateInput="ngModel"
-                                    type="date"
-                                    class="form-control"
-                                    name="EndDate"
-                                    [ngModel]="record().endDate?.toISODate()"
-                                    (ngModelChange)="updateDateField('endDate', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="endDateInput" />
-                            </div>
                         </div>
                         <div class="mb-5">
                             <label class="form-label" for="EmployeeBenefitException_Comments">{{ 'Comments' | localize }}</label>

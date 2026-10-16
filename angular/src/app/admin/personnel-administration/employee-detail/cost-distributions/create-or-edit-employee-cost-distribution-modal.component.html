@@ -24,22 +24,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12 mb-5">
-                                <label class="form-label" for="EmployeeCostDistribution_OrganizationUnitId">{{ 'OrganizationUnitId' | localize }}</label>
-                                <select
-                                    id="EmployeeCostDistribution_OrganizationUnitId"
-                                    class="form-select"
-                                    name="OrganizationUnitId"
-                                    [ngModel]="record().organizationUnitId"
-                                    (ngModelChange)="updateField('organizationUnitId', $event)">
-                                    <option [ngValue]="undefined"></option>
-                                    @for (unit of organizationUnits(); track unit.id) {
-                                        <option [ngValue]="unit.id">{{ unit.displayName }}</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="EmployeeCostDistribution_StartDate">{{ 'StartDate' | localize }}</label>
                                 <input
@@ -66,6 +50,22 @@
                                     required />
                                 <validation-messages [formCtrl]="endDateInput" />
                             </div>
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="EmployeeCostDistribution_OrganizationUnitId">{{ 'OrganizationUnitId' | localize }}</label>
+                                <select
+                                    id="EmployeeCostDistribution_OrganizationUnitId"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [ngModel]="record().organizationUnitId"
+                                    (ngModelChange)="updateField('organizationUnitId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (unit of organizationUnits(); track unit.id) {
+                                        <option [ngValue]="unit.id">{{ unit.displayName }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-5">
