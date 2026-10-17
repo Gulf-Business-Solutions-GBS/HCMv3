@@ -251,28 +251,40 @@ public class EssSessionAppService_Tests : AppTestBase
             {
                 TenantId = TenantId,
                 RequestType = "EmployeeAbsence",
-                RequestStatus = RequestStatus.Open
+                RequestStatus = RequestStatus.Open,
+                WorkflowStep = 1
             }).Entity;
 
             var alreadyApproved = context.Set<WorkflowRequest>().Add(new WorkflowRequest
             {
                 TenantId = TenantId,
                 RequestType = "EmployeeAbsence",
-                RequestStatus = RequestStatus.Open
+                RequestStatus = RequestStatus.Open,
+                WorkflowStep = 1
             }).Entity;
 
             var closedRequest = context.Set<WorkflowRequest>().Add(new WorkflowRequest
             {
                 TenantId = TenantId,
                 RequestType = "EmployeeAbsence",
-                RequestStatus = RequestStatus.Approved
+                RequestStatus = RequestStatus.Approved,
+                WorkflowStep = 1
+            }).Entity;
+
+            var laterStepOfMine = context.Set<WorkflowRequest>().Add(new WorkflowRequest
+            {
+                TenantId = TenantId,
+                RequestType = "EmployeeAbsence",
+                RequestStatus = RequestStatus.Open,
+                WorkflowStep = 1
             }).Entity;
 
             var waitingOnSomeoneElse = context.Set<WorkflowRequest>().Add(new WorkflowRequest
             {
                 TenantId = TenantId,
                 RequestType = "EmployeeAbsence",
-                RequestStatus = RequestStatus.Open
+                RequestStatus = RequestStatus.Open,
+                WorkflowStep = 1
             }).Entity;
 
             context.SaveChanges();
@@ -281,12 +293,14 @@ public class EssSessionAppService_Tests : AppTestBase
                 new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = waitingOnMe.Id, ApproverId = meId, IsApproved = false, WorkflowStep = 1 },
                 new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = alreadyApproved.Id, ApproverId = meId, IsApproved = true, WorkflowStep = 1 },
                 new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = closedRequest.Id, ApproverId = meId, IsApproved = false, WorkflowStep = 1 },
+                // Mine, but on step 2 while the request is still at step 1: not waiting on me yet.
+                new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = laterStepOfMine.Id, ApproverId = meId, IsApproved = false, WorkflowStep = 2 },
                 new WorkFlowApprover { TenantId = TenantId, WorkflowRequestId = waitingOnSomeoneElse.Id, ApproverId = otherApproverId, IsApproved = false, WorkflowStep = 1 });
         });
 
         var essContext = await _essSessionAppService.GetEssContext();
 
-        // Only the first: mine, not yet approved, on a request still Open.
+        // Only the first: mine, not yet approved, at the request's current step, on a request still Open.
         essContext.PendingApprovalCount.ShouldBe(1);
     }
 

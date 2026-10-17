@@ -51,7 +51,11 @@ public class PayrollJVCustom016LoanFormatMybReportAppService_Tests : AppTestBase
     {
         var mybArea = _data.CreatePayrollArea("MYB01-" + employeeCode, mybAreaName);
         var employee = _data.CreateEmployee(employeeCode);
-        _data.CreateOrgAssignment(employee, mybArea, new DateTime(2024, 1, 1), new DateTime(2024, 12, 31));
+        // Legacy lines 1141-1168 drop a line whose cost centre is blank, before this format replaces the
+        // cost centre with "0000"; the org assignment supplies one.
+        var costCenter = _data.CreateCostCenter("CC-" + employeeCode);
+        _data.CreateOrgAssignment(
+            employee, mybArea, new DateTime(2024, 1, 1), new DateTime(2024, 12, 31), costCenter: costCenter);
 
         var wageType = _data.CreateWageType(wageTypeCode, billingType);
         var account = _data.CreateAccount("71001", "Loan Account");

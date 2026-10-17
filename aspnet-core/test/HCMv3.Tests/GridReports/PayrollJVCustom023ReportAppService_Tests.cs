@@ -186,7 +186,9 @@ public class PayrollJVCustom023ReportAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Filter_By_Payroll_Area_Through_The_Org_Assignment()
     {
-        var wageType = _data.CreateWageType("1000");
+        // Not about Net Pay: a wage type that does not impact net pay keeps the legacy balancing line
+        // (lines 817-843, pinned by the Salary Due to be Adjusted tests) out of this fixture.
+        var wageType = _data.CreateWageType("1000", dontImpactNetPay: true);
         var inArea = _data.CreatePayrollArea("PA-IN-23", "In Area");
         var outArea = _data.CreatePayrollArea("PA-OUT-23", "Out Area");
 
@@ -439,7 +441,9 @@ public class PayrollJVCustom023ReportAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Number_Rows_Continuously_And_Page_Them()
     {
-        var wageType = _data.CreateWageType("1000");
+        // Not about Net Pay: a wage type that does not impact net pay keeps the legacy balancing line
+        // (lines 817-843, pinned by the Salary Due to be Adjusted tests) out of this fixture.
+        var wageType = _data.CreateWageType("1000", dontImpactNetPay: true);
 
         foreach (var (code, glCode) in new[]
                  {
@@ -461,7 +465,9 @@ public class PayrollJVCustom023ReportAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Export_All_Matching_Rows_Not_Just_The_Current_Page()
     {
-        var wageType = _data.CreateWageType("1000");
+        // Not about Net Pay: a wage type that does not impact net pay keeps the legacy balancing line
+        // (lines 817-843, pinned by the Salary Due to be Adjusted tests) out of this fixture.
+        var wageType = _data.CreateWageType("1000", dontImpactNetPay: true);
 
         foreach (var (code, glCode) in new[]
                  {
