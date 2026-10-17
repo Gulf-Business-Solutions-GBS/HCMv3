@@ -7,6 +7,7 @@ using Abp.UI;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.ManpowerPlanningManagement;
 using HCMv3.OrganizationManagement;
+using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.SystemSettings;
@@ -277,5 +278,46 @@ public class PositionOccupancy_Tests : AppTestBase
         withoutCurrent.Items.Select(p => p.Id).ShouldContain(vacant.Id);
         withoutCurrent.Items.Select(p => p.Id).ShouldNotContain(held.Id);
         withCurrent.Items.Select(p => p.Id).ShouldContain(held.Id);
+    }
+
+    /// <summary>
+    /// A new assignment copies the previous group and sub group, then a position that moves the employee to
+    /// another group without naming a sub group overrides the group. The old group's sub group must not stay
+    /// behind, or the save fails as a sub group from another group.
+    /// </summary>
+    [Fact]
+    public async Task A_Position_Moving_The_Group_Without_A_Sub_Group_Should_Clear_The_Copied_Sub_Group()
+    {
+        SetEnablePosition(false);
+        var employee = _data.CreateEmployee("POS900");
+        int oldGroupId = 0, oldSubGroupId = 0, newGroupId = 0;
+        UsingDbContext(context =>
+        {
+            var oldGroup = context.EmployeeGroups.Add(new EmployeeGroup { TenantId = TenantId, Code = "G1", NameEn = "Staff", NameAr = "موظفين" }).Entity;
+            var newGroup = context.EmployeeGroups.Add(new EmployeeGroup { TenantId = TenantId, Code = "G2", NameEn = "Managers", NameAr = "مدراء" }).Entity;
+            context.SaveChanges();
+            var oldSubGroup = context.EmployeeSubGroups.Add(new EmployeeSubGroup
+            {
+                TenantId = TenantId, EmployeeGroupId = oldGroup.Id, Code = "S1", NameEn = "Grade 1", NameAr = "درجة 1"
+            }).Entity;
+            context.SaveChanges();
+            (oldGroupId, oldSubGroupId, newGroupId) = (oldGroup.Id, oldSubGroup.Id, newGroup.Id);
+        });
+        var position = CreatePosition("P900");
+        UsingDbContext(context => context.Set<Position>().Single(p => p.Id == position.Id).EmployeeGroupId = newGroupId);
+
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeOrgAssignmentDto
+        {
+            EmployeeId = employee.Id,
+            StartDate = Today.AddDays(-10),
+            EmployeeGroupId = oldGroupId,
+            EmployeeSubGroupId = oldSubGroupId
+        });
+        await AssignAsync(employee.Id, Today.AddDays(-5), position.Id);
+
+        var latest = UsingDbContext(context => context.Set<EmployeeOrgAssignment>()
+            .Single(a => a.EmployeeId == employee.Id && a.StartDate == Today.AddDays(-5)));
+        latest.EmployeeGroupId.ShouldBe(newGroupId);
+        latest.EmployeeSubGroupId.ShouldBeNull();
     }
 }

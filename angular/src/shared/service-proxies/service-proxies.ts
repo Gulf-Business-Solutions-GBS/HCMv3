@@ -16470,6 +16470,57 @@ export class ClearanceRequestTypesServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getIdsIncludedInWorkflow(): Observable<ListResultDtoOfInt32> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceRequestTypes/GetIdsIncludedInWorkflow";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetIdsIncludedInWorkflow(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetIdsIncludedInWorkflow(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfInt32>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfInt32>;
+        }));
+    }
+
+    protected processGetIdsIncludedInWorkflow(response: HttpResponseBase): Observable<ListResultDtoOfInt32> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfInt32.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -84925,6 +84976,60 @@ export class LoanTypesServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getDeductionWageTypes(id?: number | null | undefined): Observable<ListResultDtoOfLoanDeductionWageTypeDto> {
+        let url_ = this.baseUrl + "/api/services/app/LoanTypes/GetDeductionWageTypes?";
+        if (id !== undefined && id !== null)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDeductionWageTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDeductionWageTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfLoanDeductionWageTypeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfLoanDeductionWageTypeDto>;
+        }));
+    }
+
+    protected processGetDeductionWageTypes(response: HttpResponseBase): Observable<ListResultDtoOfLoanDeductionWageTypeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfLoanDeductionWageTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -187238,6 +187343,10 @@ export class CreateOrEditEmployeeOrgAssignmentDto implements ICreateOrEditEmploy
     budgetingGroupId!: number | undefined;
     organizationUnitId!: number | undefined;
     positionId!: number | undefined;
+    employeeGroupId!: number | undefined;
+    employeeSubGroupId!: number | undefined;
+    payrollAreaId!: number | undefined;
+    workflowGroupId!: number | undefined;
 
     constructor(data?: ICreateOrEditEmployeeOrgAssignmentDto) {
         if (data) {
@@ -187260,6 +187369,10 @@ export class CreateOrEditEmployeeOrgAssignmentDto implements ICreateOrEditEmploy
             this.budgetingGroupId = _data["budgetingGroupId"];
             this.organizationUnitId = _data["organizationUnitId"];
             this.positionId = _data["positionId"];
+            this.employeeGroupId = _data["employeeGroupId"];
+            this.employeeSubGroupId = _data["employeeSubGroupId"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.workflowGroupId = _data["workflowGroupId"];
         }
     }
 
@@ -187282,6 +187395,10 @@ export class CreateOrEditEmployeeOrgAssignmentDto implements ICreateOrEditEmploy
         data["budgetingGroupId"] = this.budgetingGroupId;
         data["organizationUnitId"] = this.organizationUnitId;
         data["positionId"] = this.positionId;
+        data["employeeGroupId"] = this.employeeGroupId;
+        data["employeeSubGroupId"] = this.employeeSubGroupId;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["workflowGroupId"] = this.workflowGroupId;
         return data;
     }
 }
@@ -187297,6 +187414,10 @@ export interface ICreateOrEditEmployeeOrgAssignmentDto {
     budgetingGroupId: number | undefined;
     organizationUnitId: number | undefined;
     positionId: number | undefined;
+    employeeGroupId: number | undefined;
+    employeeSubGroupId: number | undefined;
+    payrollAreaId: number | undefined;
+    workflowGroupId: number | undefined;
 }
 
 export class CreateOrEditEmployeeOvertimeDto implements ICreateOrEditEmployeeOvertimeDto {
@@ -192686,6 +192807,7 @@ export interface ICreateOrEditLoanInstallmentDto {
 export class CreateOrEditLoanTypeDetailDto implements ICreateOrEditLoanTypeDetailDto {
     id!: number | undefined;
     loanTypeId!: number | undefined;
+    wageTypeId!: number | undefined;
     percent!: number;
 
     constructor(data?: ICreateOrEditLoanTypeDetailDto) {
@@ -192701,6 +192823,7 @@ export class CreateOrEditLoanTypeDetailDto implements ICreateOrEditLoanTypeDetai
         if (_data) {
             this.id = _data["id"];
             this.loanTypeId = _data["loanTypeId"];
+            this.wageTypeId = _data["wageTypeId"];
             this.percent = _data["percent"];
         }
     }
@@ -192716,6 +192839,7 @@ export class CreateOrEditLoanTypeDetailDto implements ICreateOrEditLoanTypeDetai
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["loanTypeId"] = this.loanTypeId;
+        data["wageTypeId"] = this.wageTypeId;
         data["percent"] = this.percent;
         return data;
     }
@@ -192724,6 +192848,7 @@ export class CreateOrEditLoanTypeDetailDto implements ICreateOrEditLoanTypeDetai
 export interface ICreateOrEditLoanTypeDetailDto {
     id: number | undefined;
     loanTypeId: number | undefined;
+    wageTypeId: number | undefined;
     percent: number;
 }
 
@@ -193483,6 +193608,7 @@ export class CreateOrEditNotificationConfigDto implements ICreateOrEditNotificat
     sendToAllApproved!: boolean;
     sendToApprover!: boolean;
     emailTemplateId!: number | undefined;
+    groups!: NotificationConfigGroupDto[] | undefined;
 
     constructor(data?: ICreateOrEditNotificationConfigDto) {
         if (data) {
@@ -193506,6 +193632,11 @@ export class CreateOrEditNotificationConfigDto implements ICreateOrEditNotificat
             this.sendToAllApproved = _data["sendToAllApproved"];
             this.sendToApprover = _data["sendToApprover"];
             this.emailTemplateId = _data["emailTemplateId"];
+            if (Array.isArray(_data["groups"])) {
+                this.groups = [] as any;
+                for (let item of _data["groups"])
+                    this.groups!.push(NotificationConfigGroupDto.fromJS(item));
+            }
         }
     }
 
@@ -193529,6 +193660,11 @@ export class CreateOrEditNotificationConfigDto implements ICreateOrEditNotificat
         data["sendToAllApproved"] = this.sendToAllApproved;
         data["sendToApprover"] = this.sendToApprover;
         data["emailTemplateId"] = this.emailTemplateId;
+        if (Array.isArray(this.groups)) {
+            data["groups"] = [];
+            for (let item of this.groups)
+                data["groups"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -193545,6 +193681,7 @@ export interface ICreateOrEditNotificationConfigDto {
     sendToAllApproved: boolean;
     sendToApprover: boolean;
     emailTemplateId: number | undefined;
+    groups: NotificationConfigGroupDto[] | undefined;
 }
 
 export class CreateOrEditNotificationGroupDto implements ICreateOrEditNotificationGroupDto {
@@ -216249,6 +216386,14 @@ export class EmployeeOrgAssignmentDto implements IEmployeeOrgAssignmentDto {
     organizationUnitName!: string | undefined;
     positionId!: number | undefined;
     positionName!: string | undefined;
+    employeeGroupId!: number | undefined;
+    employeeGroupName!: string | undefined;
+    employeeSubGroupId!: number | undefined;
+    employeeSubGroupName!: string | undefined;
+    payrollAreaId!: number | undefined;
+    payrollAreaName!: string | undefined;
+    workflowGroupId!: number | undefined;
+    workflowGroupName!: string | undefined;
 
     constructor(data?: IEmployeeOrgAssignmentDto) {
         if (data) {
@@ -216281,6 +216426,14 @@ export class EmployeeOrgAssignmentDto implements IEmployeeOrgAssignmentDto {
             this.organizationUnitName = _data["organizationUnitName"];
             this.positionId = _data["positionId"];
             this.positionName = _data["positionName"];
+            this.employeeGroupId = _data["employeeGroupId"];
+            this.employeeGroupName = _data["employeeGroupName"];
+            this.employeeSubGroupId = _data["employeeSubGroupId"];
+            this.employeeSubGroupName = _data["employeeSubGroupName"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.workflowGroupId = _data["workflowGroupId"];
+            this.workflowGroupName = _data["workflowGroupName"];
         }
     }
 
@@ -216313,6 +216466,14 @@ export class EmployeeOrgAssignmentDto implements IEmployeeOrgAssignmentDto {
         data["organizationUnitName"] = this.organizationUnitName;
         data["positionId"] = this.positionId;
         data["positionName"] = this.positionName;
+        data["employeeGroupId"] = this.employeeGroupId;
+        data["employeeGroupName"] = this.employeeGroupName;
+        data["employeeSubGroupId"] = this.employeeSubGroupId;
+        data["employeeSubGroupName"] = this.employeeSubGroupName;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["workflowGroupId"] = this.workflowGroupId;
+        data["workflowGroupName"] = this.workflowGroupName;
         return data;
     }
 }
@@ -216338,6 +216499,14 @@ export interface IEmployeeOrgAssignmentDto {
     organizationUnitName: string | undefined;
     positionId: number | undefined;
     positionName: string | undefined;
+    employeeGroupId: number | undefined;
+    employeeGroupName: string | undefined;
+    employeeSubGroupId: number | undefined;
+    employeeSubGroupName: string | undefined;
+    payrollAreaId: number | undefined;
+    payrollAreaName: string | undefined;
+    workflowGroupId: number | undefined;
+    workflowGroupName: string | undefined;
 }
 
 export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
@@ -283660,6 +283829,50 @@ export interface IListResultDtoOfHealthCheckItemDto {
     items: HealthCheckItemDto[] | undefined;
 }
 
+export class ListResultDtoOfInt32 implements IListResultDtoOfInt32 {
+    items!: number[] | undefined;
+
+    constructor(data?: IListResultDtoOfInt32) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfInt32 {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfInt32();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfInt32 {
+    items: number[] | undefined;
+}
+
 export class ListResultDtoOfIntegrationTileDto implements IListResultDtoOfIntegrationTileDto {
     items!: IntegrationTileDto[] | undefined;
 
@@ -283746,6 +283959,50 @@ export class ListResultDtoOfLinkedUserDto implements IListResultDtoOfLinkedUserD
 
 export interface IListResultDtoOfLinkedUserDto {
     items: LinkedUserDto[] | undefined;
+}
+
+export class ListResultDtoOfLoanDeductionWageTypeDto implements IListResultDtoOfLoanDeductionWageTypeDto {
+    items!: LoanDeductionWageTypeDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfLoanDeductionWageTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LoanDeductionWageTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfLoanDeductionWageTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfLoanDeductionWageTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfLoanDeductionWageTypeDto {
+    items: LoanDeductionWageTypeDto[] | undefined;
 }
 
 export class ListResultDtoOfNameValueDto implements IListResultDtoOfNameValueDto {
@@ -284325,6 +284582,54 @@ export enum LoanDeductionType {
     Variable = 1,
 }
 
+export class LoanDeductionWageTypeDto implements ILoanDeductionWageTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: ILoanDeductionWageTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): LoanDeductionWageTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoanDeductionWageTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface ILoanDeductionWageTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+}
+
 export class LoanInstallmentDto implements ILoanInstallmentDto {
     id!: number;
     employeeLoanId!: number;
@@ -284389,6 +284694,8 @@ export class LoanTypeDetailDto implements ILoanTypeDetailDto {
     id!: number;
     loanTypeId!: number | undefined;
     loanTypeName!: string | undefined;
+    wageTypeId!: number | undefined;
+    wageTypeName!: string | undefined;
     percent!: number;
 
     constructor(data?: ILoanTypeDetailDto) {
@@ -284405,6 +284712,8 @@ export class LoanTypeDetailDto implements ILoanTypeDetailDto {
             this.id = _data["id"];
             this.loanTypeId = _data["loanTypeId"];
             this.loanTypeName = _data["loanTypeName"];
+            this.wageTypeId = _data["wageTypeId"];
+            this.wageTypeName = _data["wageTypeName"];
             this.percent = _data["percent"];
         }
     }
@@ -284421,6 +284730,8 @@ export class LoanTypeDetailDto implements ILoanTypeDetailDto {
         data["id"] = this.id;
         data["loanTypeId"] = this.loanTypeId;
         data["loanTypeName"] = this.loanTypeName;
+        data["wageTypeId"] = this.wageTypeId;
+        data["wageTypeName"] = this.wageTypeName;
         data["percent"] = this.percent;
         return data;
     }
@@ -284430,6 +284741,8 @@ export interface ILoanTypeDetailDto {
     id: number;
     loanTypeId: number | undefined;
     loanTypeName: string | undefined;
+    wageTypeId: number | undefined;
+    wageTypeName: string | undefined;
     percent: number;
 }
 
@@ -290243,6 +290556,50 @@ export interface INotificationConfigDto {
     sendToAllApproved: boolean;
     sendToApprover: boolean;
     emailTemplateId: number | undefined;
+}
+
+export class NotificationConfigGroupDto implements INotificationConfigGroupDto {
+    workflowRoleId!: number;
+    workflowRoleGroup!: WorkflowRoleGroup;
+    workflowRoleOrgId!: number | undefined;
+
+    constructor(data?: INotificationConfigGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.workflowRoleGroup = _data["workflowRoleGroup"];
+            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
+        }
+    }
+
+    static fromJS(data: any): NotificationConfigGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationConfigGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["workflowRoleGroup"] = this.workflowRoleGroup;
+        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
+        return data;
+    }
+}
+
+export interface INotificationConfigGroupDto {
+    workflowRoleId: number;
+    workflowRoleGroup: WorkflowRoleGroup;
+    workflowRoleOrgId: number | undefined;
 }
 
 export class NotificationData implements INotificationData {

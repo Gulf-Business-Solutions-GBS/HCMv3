@@ -27,4 +27,17 @@ export interface SimpleLookupRouteData {
     /** Localization key for the page title / entity display name, e.g. "Countries". */
     titleKey: string;
     serviceProxyType: Type<ISimpleLookupServiceProxy>;
+    /** Optional yes/no column the user ticks straight in the list, e.g. Include in Workflow. */
+    flag?: SimpleLookupFlag;
+}
+
+/**
+ * A per-row yes/no setting kept outside the shared code/name DTO. The page reads which rows have it set and
+ * writes one row at a time, both through the screen's own service proxy.
+ */
+export interface SimpleLookupFlag {
+    /** Localization key for the column header. */
+    labelKey: string;
+    loadIds(service: any): Observable<{ items?: number[] }>;
+    set(service: any, id: number, value: boolean): Observable<void>;
 }

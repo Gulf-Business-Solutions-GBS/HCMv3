@@ -16,7 +16,7 @@ import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
-import { ISimpleLookupServiceProxy, SimpleLookupRouteData } from './simple-lookup.types';
+import { ISimpleLookupServiceProxy, SimpleLookupFlag, SimpleLookupRouteData } from './simple-lookup.types';
 
 @Component({
     templateUrl: './simple-lookup.component.html',
@@ -50,6 +50,9 @@ export class SimpleLookupComponent extends AppComponentBase implements OnInit {
     editPermission = '';
     deletePermission = '';
 
+    flag: SimpleLookupFlag | undefined;
+    readonly flaggedIds = signal<ReadonlySet<number>>(new Set());
+
     readonly filterText = signal<string>('');
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
@@ -64,6 +67,7 @@ export class SimpleLookupComponent extends AppComponentBase implements OnInit {
         this.editPermission = data.editPermission;
         this.deletePermission = data.deletePermission;
         this._service = this._injector.get(data.serviceProxyType);
+        this.flag = data.flag;
     }
 
     getRecords(event?: LazyLoadEvent): void {
@@ -89,6 +93,36 @@ export class SimpleLookupComponent extends AppComponentBase implements OnInit {
                 this.primengTableHelper.records.set(result.items);
                 this.primengTableHelper.hideLoadingIndicator();
             });
+
+        this.loadFlaggedIds();
+    }
+
+    isFlagged(record: SimpleLookupDto): boolean {
+        return this.flaggedIds().has(record.id);
+    }
+
+    setFlag(record: SimpleLookupDto, value: boolean): void {
+        this.flag.set(this._service, record.id, value).subscribe({
+            next: () => {
+                const ids = new Set(this.flaggedIds());
+                if (value) {
+                    ids.add(record.id);
+                } else {
+                    ids.delete(record.id);
+                }
+                this.flaggedIds.set(ids);
+                this.notify.success(this.l('SavedSuccessfully'));
+            },
+            error: () => this.loadFlaggedIds(),
+        });
+    }
+
+    private loadFlaggedIds(): void {
+        if (!this.flag) {
+            return;
+        }
+
+        this.flag.loadIds(this._service).subscribe((result) => this.flaggedIds.set(new Set(result.items ?? [])));
     }
 
     reloadPage(): void {

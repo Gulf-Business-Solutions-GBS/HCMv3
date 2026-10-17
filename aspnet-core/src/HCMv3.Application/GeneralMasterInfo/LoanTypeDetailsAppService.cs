@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.GeneralMasterInfo.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,8 @@ namespace HCMv3.GeneralMasterInfo;
 
 /// <summary>
 /// Application service for the LoanTypeDetail detail record (ported from legacy XAF LoanTypeDetail).
-/// Pure detail record (no Code/NameEn/NameAr): plain CRUD without auto-code or duplicate validation.
-/// The legacy <c>WageType</c> FK is not ported (Payroll module out of scope).
+/// Pure detail record (no Code/NameEn/NameAr). Ports legacy <c>PerformValidation</c>: a wage type is required,
+/// a loan type may list a wage type only once, and the percent must be above 0 and at most 100.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_LoanTypeDetails)]
 public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAppService
@@ -33,7 +34,8 @@ public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAp
         input.Normalize();
 
         var query = _repository.GetAll()
-            .Include(d => d.LoanType);
+            .Include(d => d.LoanType)
+            .Include(d => d.WageType);
 
         var totalCount = await query.CountAsync();
 
@@ -75,10 +77,12 @@ public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAp
         var entity = new LoanTypeDetail
         {
             LoanTypeId = input.LoanTypeId,
+            WageTypeId = input.WageTypeId,
             Percent = input.Percent,
             TenantId = AbpSession.TenantId ?? 0
         };
 
+        await ValidateAsync(entity);
         await _repository.InsertAsync(entity);
     }
 
@@ -88,8 +92,10 @@ public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAp
         var entity = await _repository.GetAsync(input.Id.Value);
 
         entity.LoanTypeId = input.LoanTypeId;
+        entity.WageTypeId = input.WageTypeId;
         entity.Percent = input.Percent;
 
+        await ValidateAsync(entity);
         await _repository.UpdateAsync(entity);
     }
 
@@ -99,6 +105,29 @@ public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAp
         await _repository.DeleteAsync(input.Id);
     }
 
+    /// <summary>Legacy <c>LoanTypeDetail.PerformValidation</c>, in legacy's order.</summary>
+    private async Task ValidateAsync(LoanTypeDetail entity)
+    {
+        if (!entity.WageTypeId.HasValue)
+        {
+            throw new UserFriendlyException(L("LoanTypeDetailWageTypeRequired"));
+        }
+
+        var duplicate = await _repository.GetAll()
+            .AnyAsync(d => d.Id != entity.Id
+                           && d.LoanTypeId == entity.LoanTypeId
+                           && d.WageTypeId == entity.WageTypeId);
+        if (duplicate)
+        {
+            throw new UserFriendlyException(L("LoanTypeDetailWageTypeAlreadyListed"));
+        }
+
+        if (entity.Percent <= 0 || entity.Percent > 100)
+        {
+            throw new UserFriendlyException(L("LoanTypeDetailPercentOutOfRange"));
+        }
+    }
+
     private static LoanTypeDetailDto ToDto(LoanTypeDetail entity)
     {
         return new LoanTypeDetailDto
@@ -106,6 +135,8 @@ public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAp
             Id = entity.Id,
             LoanTypeId = entity.LoanTypeId,
             LoanTypeName = entity.LoanType?.NameEn,
+            WageTypeId = entity.WageTypeId,
+            WageTypeName = entity.WageType == null ? null : entity.WageType.Code + " - " + entity.WageType.NameEn,
             Percent = entity.Percent
         };
     }
@@ -116,6 +147,7 @@ public class LoanTypeDetailsAppService : HCMv3AppServiceBase, ILoanTypeDetailsAp
         {
             Id = entity.Id,
             LoanTypeId = entity.LoanTypeId,
+            WageTypeId = entity.WageTypeId,
             Percent = entity.Percent
         };
     }

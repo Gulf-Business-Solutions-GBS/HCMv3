@@ -9,5 +9,8 @@ public class CreateOrEditLoanTypeDetailDto
 
     public int? LoanTypeId { get; set; }
 
+    /// <summary>The register line the percentage is taken of. Required; checked in the app service.</summary>
+    public int? WageTypeId { get; set; }
+
     public double Percent { get; set; }
 }

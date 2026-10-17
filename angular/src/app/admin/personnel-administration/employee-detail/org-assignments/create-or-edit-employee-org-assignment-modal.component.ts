@@ -1,19 +1,31 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     BudgetingGroupsServiceProxy,
     CostCenterDto,
     CostCentersServiceProxy,
     CreateOrEditEmployeeOrgAssignmentDto,
+    EmployeeGroupDto,
+    EmployeeGroupsServiceProxy,
     EmployeeOrgAssignmentsServiceProxy,
+    EmployeeSubGroupDto,
+    EmployeeSubGroupsServiceProxy,
     GetAllCostCentersInput,
+    GetAllEmployeeGroupsInput,
+    GetAllEmployeeSubGroupsInput,
+    GetAllPayrollAreasInput,
     GetAllSimpleLookupsInput,
+    GetAllWorkflowGroupsInput,
     GetAllWorkLocationsInput,
     JobTitlesServiceProxy,
     OrganizationUnitDto,
     OrganizationUnitServiceProxy,
+    PayrollAreaDto,
+    PayrollAreasServiceProxy,
     PostingGroupsServiceProxy,
     SimpleLookupDto,
+    WorkflowGroupDto,
+    WorkflowGroupsServiceProxy,
     WorkLocationDto,
     WorkLocationsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
@@ -48,6 +60,10 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
     private _postingGroupsService = inject(PostingGroupsServiceProxy);
     private _budgetingGroupsService = inject(BudgetingGroupsServiceProxy);
     private _organizationUnitService = inject(OrganizationUnitServiceProxy);
+    private _employeeGroupsService = inject(EmployeeGroupsServiceProxy);
+    private _employeeSubGroupsService = inject(EmployeeSubGroupsServiceProxy);
+    private _payrollAreasService = inject(PayrollAreasServiceProxy);
+    private _workflowGroupsService = inject(WorkflowGroupsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -77,6 +93,17 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
     readonly postingGroups = signal<SimpleLookupDto[]>([]);
     readonly budgetingGroups = signal<SimpleLookupDto[]>([]);
     readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
+    readonly employeeGroups = signal<EmployeeGroupDto[]>([]);
+    readonly employeeSubGroups = signal<EmployeeSubGroupDto[]>([]);
+    readonly payrollAreas = signal<PayrollAreaDto[]>([]);
+    readonly workflowGroups = signal<WorkflowGroupDto[]>([]);
+
+    /** Only the chosen group's sub groups; the server rejects a sub group from another group. */
+    readonly filteredEmployeeSubGroups = computed(() => {
+        const groupId = this.record().employeeGroupId;
+        const all = this.employeeSubGroups();
+        return groupId ? all.filter((item) => item.employeeGroupId === groupId) : all;
+    });
 
     show(employeeId: number, id?: number): void {
         this.isNew.set(!id);
@@ -119,6 +146,30 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
             .subscribe((result) => this.budgetingGroups.set(result.items));
 
         this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));
+
+        this._employeeGroupsService
+            .getAll(new GetAllEmployeeGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.employeeGroups.set(result.items));
+
+        this._employeeSubGroupsService
+            .getAll(
+                new GetAllEmployeeSubGroupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeGroupId: undefined,
+                    filter: undefined,
+                }),
+            )
+            .subscribe((result) => this.employeeSubGroups.set(result.items));
+
+        this._payrollAreasService
+            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.payrollAreas.set(result.items));
+
+        this._workflowGroupsService
+            .getAll(new GetAllWorkflowGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.workflowGroups.set(result.items));
     }
 
     onShown(): void {
@@ -148,6 +199,15 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
         const next = new CreateOrEditEmployeeOrgAssignmentDto();
         Object.assign(next, current);
         this.record.set(next);
+    }
+
+    /** Changing the group clears a sub group that belongs to a different group. */
+    updateEmployeeGroup(value: number | undefined): void {
+        const subGroup = this.employeeSubGroups().find((item) => item.id === this.record().employeeSubGroupId);
+        this.updateField('employeeGroupId', value);
+        if (value && subGroup && subGroup.employeeGroupId !== value) {
+            this.updateField('employeeSubGroupId', undefined);
+        }
     }
 
     updateStartDate(value: string): void {

@@ -1,8 +1,11 @@
+using System.Linq;
 using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using HCMv3.Authorization;
 using HCMv3.GeneralMasterInfo.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.GeneralMasterInfo;
 
@@ -26,5 +29,16 @@ public class ClearanceRequestTypesAppService : SimpleLookupAppServiceBase<Cleara
         entity.IncludeInWorkflow = input.IncludeInWorkflow;
 
         await Repository.UpdateAsync(entity);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ListResultDto<int>> GetIdsIncludedInWorkflow()
+    {
+        var ids = await Repository.GetAll()
+            .Where(t => t.IncludeInWorkflow)
+            .Select(t => t.Id)
+            .ToListAsync();
+
+        return new ListResultDto<int>(ids);
     }
 }

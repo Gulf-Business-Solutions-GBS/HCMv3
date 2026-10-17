@@ -4,14 +4,14 @@ import {
     ApprovalRequire,
     CreateOrEditRequestDetailDto,
     GetAllNotificationConfigsInput,
-    GetAllOrgUnitsInput,
+    GetAllOrganizationUnitTypesInput,
     GetAllRequestDetailsInput,
     GetAllRequestMastersInput,
     GetAllWorkflowRolesInput,
     NotificationConfigDto,
     NotificationConfigsServiceProxy,
-    OrgUnitDto,
-    OrgUnitsServiceProxy,
+    OrganizationUnitTypeDto,
+    OrganizationUnitTypesServiceProxy,
     RequestDetailsServiceProxy,
     RequestMasterDto,
     RequestMastersServiceProxy,
@@ -51,7 +51,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     private _service = inject(RequestDetailsServiceProxy);
     private _requestMastersService = inject(RequestMastersServiceProxy);
     private _workflowRolesService = inject(WorkflowRolesServiceProxy);
-    private _orgUnitsService = inject(OrgUnitsServiceProxy);
+    private _orgLevelsService = inject(OrganizationUnitTypesServiceProxy);
     private _notificationConfigsService = inject(NotificationConfigsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
@@ -71,7 +71,7 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
     /** True while the form holds a copy of the creator step, whose approver has been cleared. */
     readonly copiedCreatorStep = signal<boolean>(false);
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
-    readonly orgUnits = signal<OrgUnitDto[]>([]);
+    readonly orgLevels = signal<OrganizationUnitTypeDto[]>([]);
     readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
 
     /**
@@ -200,9 +200,9 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         this._workflowRolesService
             .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.workflowRoles.set(result.items));
-        this._orgUnitsService
-            .getAll(new GetAllOrgUnitsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.orgUnits.set(result.items));
+        this._orgLevelsService
+            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.orgLevels.set(result.items));
         this._notificationConfigsService
             .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => {

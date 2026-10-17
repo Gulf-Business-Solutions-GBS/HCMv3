@@ -292,18 +292,22 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
 
         public MutableRepo<EmployeeLoanExemption> Exemptions { get; }
 
+        public MutableRepo<LoanTypeDetail> Details { get; }
+
         public LoanRecoveryDeductionWageTypeCalculator Calculator { get; }
 
         public Harness(
             IEnumerable<LoanType> loanTypes,
             IEnumerable<EmployeeLoan> loans,
             IEnumerable<EmployeeLoanRecovery> recoveries,
-            IEnumerable<EmployeeLoanExemption> exemptions = null)
+            IEnumerable<EmployeeLoanExemption> exemptions = null,
+            IEnumerable<LoanTypeDetail> details = null)
         {
             LoanTypes = new MutableRepo<LoanType>(loanTypes);
             Loans = new MutableRepo<EmployeeLoan>(loans);
             Recoveries = new MutableRepo<EmployeeLoanRecovery>(recoveries);
             Exemptions = new MutableRepo<EmployeeLoanExemption>(exemptions);
+            Details = new MutableRepo<LoanTypeDetail>(details);
 
             Calculator = new LoanRecoveryDeductionWageTypeCalculator(
                 Store,
@@ -312,7 +316,8 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
                 LoanTypes.Repository,
                 Loans.Repository,
                 Recoveries.Repository,
-                Exemptions.Repository);
+                Exemptions.Repository,
+                Details.Repository);
         }
 
         public double? PostedAmount =>
@@ -527,4 +532,94 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
 
         harness.Calculator.ClaimsWageType(LoanRecoveryWageTypeId).ShouldBeFalse();
     }
+
+    #region << Variable (percentage) loan types >>
+
+    private const int BasicWageTypeId = 10;
+    private const int HousingWageTypeId = 11;
+
+    private static LoanType VariableLoanType()
+    {
+        var loanType = ResidenceExpensesLoanType();
+        loanType.LoanDeductionType = LoanDeductionType.Variable;
+        return loanType;
+    }
+
+    private static EmployeeLoan VariableLoan(double balance)
+    {
+        var loan = Loan3400();
+        loan.BalanceDueAmount = balance;
+        loan.DueAmount = balance;
+        loan.FixedAmount = 0;
+        loan.EndDate = new DateTime(2025, 6, 30);
+        return loan;
+    }
+
+    private static Harness VariableHarness(double balance, params LoanTypeDetail[] details)
+    {
+        var harness = new Harness(
+            new[] { VariableLoanType() }, new[] { VariableLoan(balance) }, new EmployeeLoanRecovery[0], null, details);
+
+        harness.Store.Lines.Add(new PayrollRegisterLine { Id = 900, WageTypeId = BasicWageTypeId, WageCode = "1000", Amount = 500 });
+        harness.Store.Lines.Add(new PayrollRegisterLine { Id = 901, WageTypeId = HousingWageTypeId, WageCode = "1010", Amount = 200 });
+        return harness;
+    }
+
+    private static LoanTypeDetail Detail(int id, int? wageTypeId, double percent) => new LoanTypeDetail
+    {
+        Id = id,
+        LoanTypeId = 2,
+        WageTypeId = wageTypeId,
+        Percent = percent
+    };
+
+    /// <summary>
+    /// Legacy lines 1628-1639: 10% of Basic 500 plus 5% of Housing 200 = 60.000, summed over the detail rows.
+    /// </summary>
+    [Fact]
+    public async Task Variable_LoanType_Should_Deduct_The_Percentages_Of_Its_WageType_Lines()
+    {
+        var harness = VariableHarness(1000, Detail(1, BasicWageTypeId, 10), Detail(2, HousingWageTypeId, 5));
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(60.00);
+    }
+
+    /// <summary>Legacy line 1634: a wage type with no line in the register adds nothing.</summary>
+    [Fact]
+    public async Task Variable_Detail_Whose_WageType_Has_No_Line_Should_Add_Nothing()
+    {
+        var harness = VariableHarness(1000, Detail(1, BasicWageTypeId, 10), Detail(2, 999, 50));
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(50.00);
+    }
+
+    /// <summary>Legacy lines 1644-1647 apply to the percentage too: never more than the balance owing.</summary>
+    [Fact]
+    public async Task Variable_Installment_Should_Be_Clamped_To_The_Remaining_Balance()
+    {
+        var harness = VariableHarness(30, Detail(1, BasicWageTypeId, 10));
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(30.00);
+    }
+
+    /// <summary>
+    /// A detail row saved before the wage type was ported has none; it is skipped rather than failing the run.
+    /// </summary>
+    [Fact]
+    public async Task Variable_Detail_Without_A_WageType_Should_Be_Skipped()
+    {
+        var harness = VariableHarness(1000, Detail(1, null, 10), Detail(2, HousingWageTypeId, 10));
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(20.00);
+    }
+
+    #endregion
 }

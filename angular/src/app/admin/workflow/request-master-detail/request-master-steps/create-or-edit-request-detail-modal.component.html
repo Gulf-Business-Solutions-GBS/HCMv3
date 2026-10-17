@@ -101,7 +101,7 @@
                                 <validation-messages [formCtrl]="workflowRoleGroupInput" />
                             </div>
                             <div class="col-md-4 mb-5">
-                                <label class="form-label" for="RequestDetail_WorkflowRoleOrgId">{{ 'OrganizationUnit' | localize }}</label>
+                                <label class="form-label" for="RequestDetail_WorkflowRoleOrgId">{{ 'OrgLevel' | localize }}</label>
                                 <select
                                     id="RequestDetail_WorkflowRoleOrgId"
                                     class="form-select"
@@ -109,8 +109,8 @@
                                     [ngModel]="record().workflowRoleOrgId"
                                     (ngModelChange)="updateField('workflowRoleOrgId', $event)">
                                     <option [ngValue]="undefined"></option>
-                                    @for (orgUnit of orgUnits(); track orgUnit.id) {
-                                        <option [ngValue]="orgUnit.id">{{ orgUnit.nameEn }}</option>
+                                    @for (orgLevel of orgLevels(); track orgLevel.id) {
+                                        <option [ngValue]="orgLevel.id">{{ orgLevel.nameEn }}</option>
                                     }
                                 </select>
                             </div>
@@ -210,8 +210,8 @@
                                     [ngModel]="record().escalateWorkflowRoleOrgId"
                                     (ngModelChange)="updateField('escalateWorkflowRoleOrgId', $event)">
                                     <option [ngValue]="undefined"></option>
-                                    @for (orgUnit of orgUnits(); track orgUnit.id) {
-                                        <option [ngValue]="orgUnit.id">{{ orgUnit.nameEn }}</option>
+                                    @for (orgLevel of orgLevels(); track orgLevel.id) {
+                                        <option [ngValue]="orgLevel.id">{{ orgLevel.nameEn }}</option>
                                     }
                                 </select>
                             </div>

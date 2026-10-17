@@ -11,6 +11,8 @@ using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.Authorization;
 using HCMv3.ManpowerPlanningManagement;
 using HCMv3.ManpowerPlanningManagement.Services;
+using HCMv3.OrganizationManagement;
+using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +22,12 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Application service for <see cref="EmployeeOrgAssignment"/> (ported from legacy XAF
 /// EmployeeOrgAssignment business object, Wave B). Ports the legacy EndDate auto-chaining
-/// (<c>SetEndDate</c>), the no-duplicate-StartDate validation, and <c>PrefillFromPrevious</c>
-/// (prefills JobTitle/CostCenter/WorkLocation/PostingGroup/BudgetingGroup/OrganizationUnit from the
+/// (<c>SetEndDate</c>), the no-duplicate-StartDate validation, the "sub group must belong to the group"
+/// validation, and <c>PrefillFromPrevious</c> (prefills JobTitle/CostCenter/WorkLocation/PostingGroup/
+/// BudgetingGroup/OrganizationUnit/EmployeeGroup/EmployeeSubGroup/PayrollArea/WorkflowGroup from the
 /// employee's most recent prior org assignment when creating a new record). See the entity class remarks
-/// for the full list of dropped legacy behaviors (Position, EmployeeGroup/SubGroup, PayrollArea,
-/// WorkflowGroup, wage-account/basic-salary side effects, position-vacancy tracking).
+/// for the dropped legacy behaviors (Position, wage-account/basic-salary side effects, position-vacancy
+/// tracking).
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgAssignments)]
 public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOrgAssignmentsAppService
@@ -32,6 +35,8 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
     private static readonly DateTime InfiniteEndDate = new DateTime(9999, 12, 31);
 
     private readonly IRepository<EmployeeOrgAssignment> _repository;
+    private readonly IRepository<EmployeeSubGroup> _employeeSubGroupRepository;
+    private readonly IRepository<OrgUnitProfile> _orgUnitProfileRepository;
 
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> _employeeWageAccountRepository;
@@ -47,6 +52,8 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
 
     public EmployeeOrgAssignmentsAppService(
         IRepository<EmployeeOrgAssignment> repository,
+        IRepository<EmployeeSubGroup> employeeSubGroupRepository,
+        IRepository<OrgUnitProfile> orgUnitProfileRepository,
         HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
         IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> employeeWageAccountRepository,
         IRepository<HCMv3.OrganizationManagement.CostElementType> costElementTypeRepository,
@@ -54,6 +61,8 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         IRepository<HCMv3.OrganizationManagement.CostCenter> costCenterRepository)
     {
         _repository = repository;
+        _employeeSubGroupRepository = employeeSubGroupRepository;
+        _orgUnitProfileRepository = orgUnitProfileRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
         _employeeWageAccountRepository = employeeWageAccountRepository;
         _costElementTypeRepository = costElementTypeRepository;
@@ -75,6 +84,10 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             .Include(a => a.BudgetingGroup)
             .Include(a => a.OrganizationUnit)
             .Include(a => a.Position)
+            .Include(a => a.EmployeeGroup)
+            .Include(a => a.EmployeeSubGroup)
+            .Include(a => a.PayrollArea)
+            .Include(a => a.WorkflowGroup)
             .WhereIf(input.EmployeeId.HasValue, a => a.EmployeeId == input.EmployeeId.Value);
 
         var totalCount = await query.CountAsync();
@@ -104,7 +117,11 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
                 PostingGroupId = entity.PostingGroupId,
                 BudgetingGroupId = entity.BudgetingGroupId,
                 OrganizationUnitId = entity.OrganizationUnitId,
-                PositionId = entity.PositionId
+                PositionId = entity.PositionId,
+                EmployeeGroupId = entity.EmployeeGroupId,
+                EmployeeSubGroupId = entity.EmployeeSubGroupId,
+                PayrollAreaId = entity.PayrollAreaId,
+                WorkflowGroupId = entity.WorkflowGroupId
             }
         };
     }
@@ -136,12 +153,18 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             PostingGroupId = input.PostingGroupId,
             BudgetingGroupId = input.BudgetingGroupId,
             OrganizationUnitId = input.OrganizationUnitId,
-            PositionId = input.PositionId
+            PositionId = input.PositionId,
+            EmployeeGroupId = input.EmployeeGroupId,
+            EmployeeSubGroupId = input.EmployeeSubGroupId,
+            PayrollAreaId = input.PayrollAreaId,
+            WorkflowGroupId = input.WorkflowGroupId
         };
 
         await PrefillFromPreviousAsync(entity);
         await ApplyPositionDefaultsAsync(entity);
+        await DefaultPayrollAreaFromOrganizationUnitAsync(entity);
         await ValidateAsync(entity);
+        await ValidateEmployeeSubGroupAsync(entity);
         await MarkStopRetroEffectIfNothingPayRelevantChangedAsync(entity);
 
         var previousCostCenterId = await _repository.GetAll()
@@ -254,6 +277,10 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         entity.PostingGroupId = input.PostingGroupId;
         entity.BudgetingGroupId = input.BudgetingGroupId;
         entity.OrganizationUnitId = input.OrganizationUnitId;
+        entity.EmployeeGroupId = input.EmployeeGroupId;
+        entity.EmployeeSubGroupId = input.EmployeeSubGroupId;
+        entity.PayrollAreaId = input.PayrollAreaId;
+        entity.WorkflowGroupId = input.WorkflowGroupId;
         entity.PositionId = input.PositionId;
 
         if (entity.PositionId != previousPositionId)
@@ -262,6 +289,7 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         }
 
         await ValidateAsync(entity);
+        await ValidateEmployeeSubGroupAsync(entity);
         await _repository.UpdateAsync(entity);
         await CurrentUnitOfWork.SaveChangesAsync();
 
@@ -339,6 +367,15 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         }
 
         entity.JobTitleId = position.JobTitleId ?? entity.JobTitleId;
+
+        // A position that moves the employee to another group without naming a sub group must not keep the old
+        // group's sub group: ValidateEmployeeSubGroupAsync would reject the pair.
+        if (position.EmployeeGroupId.HasValue && position.EmployeeGroupId != entity.EmployeeGroupId
+            && !position.EmployeeSubGroupId.HasValue)
+        {
+            entity.EmployeeSubGroupId = null;
+        }
+
         entity.EmployeeGroupId = position.EmployeeGroupId ?? entity.EmployeeGroupId;
         entity.EmployeeSubGroupId = position.EmployeeSubGroupId ?? entity.EmployeeSubGroupId;
         entity.PayrollAreaId = position.PayrollAreaId ?? entity.PayrollAreaId;
@@ -382,10 +419,58 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
     }
 
     /// <summary>
+    /// Legacy <c>PerformValidation</c> parity: a sub group must belong to the assignment's group. Unlike
+    /// legacy, a blank group is filled from the sub group rather than rejected -- there is only one right
+    /// answer, and the Time Engine and payroll read the two independently.
+    /// </summary>
+    private async Task ValidateEmployeeSubGroupAsync(EmployeeOrgAssignment entity)
+    {
+        if (!entity.EmployeeSubGroupId.HasValue)
+        {
+            return;
+        }
+
+        var subGroup = await _employeeSubGroupRepository.GetAll()
+            .Include(s => s.EmployeeGroup)
+            .FirstAsync(s => s.Id == entity.EmployeeSubGroupId.Value);
+
+        if (!entity.EmployeeGroupId.HasValue)
+        {
+            entity.EmployeeGroupId = subGroup.EmployeeGroupId;
+            return;
+        }
+
+        if (subGroup.EmployeeGroupId != entity.EmployeeGroupId.Value)
+        {
+            throw new UserFriendlyException(L("EmployeeSubGroupNotInEmployeeGroup", subGroup.NameEn, subGroup.EmployeeGroup?.NameEn));
+        }
+    }
+
+    /// <summary>
+    /// Applied after <see cref="PrefillFromPreviousAsync"/>, so only a first assignment (or one whose
+    /// predecessor had no payroll area) reaches it: takes the payroll area configured on the chosen
+    /// organization unit's <see cref="OrgUnitProfile"/> -- the same chain <c>CurrencyService.RoundAsync</c>
+    /// and <c>EmployeePayrollAreaResolver</c> use. Reports filter on the assignment's own column with no
+    /// such fallback, so leaving it null would drop the employee from them.
+    /// </summary>
+    private async Task DefaultPayrollAreaFromOrganizationUnitAsync(EmployeeOrgAssignment entity)
+    {
+        if (entity.PayrollAreaId.HasValue || !entity.OrganizationUnitId.HasValue)
+        {
+            return;
+        }
+
+        entity.PayrollAreaId = await _orgUnitProfileRepository.GetAll()
+            .Where(p => p.OrganizationUnitId == entity.OrganizationUnitId.Value && p.PayrollAreaId != null)
+            .Select(p => p.PayrollAreaId)
+            .FirstOrDefaultAsync();
+    }
+
+    /// <summary>
     /// Legacy <c>PrefillFromPrevious</c> parity: only applies to new (not-yet-persisted) records; pulls
-    /// JobTitle/CostCenter/WorkLocation/PostingGroup/BudgetingGroup/OrganizationUnit from the employee's
-    /// most recent prior org assignment (StartDate &lt; this record's StartDate), when the caller left
-    /// those fields unset.
+    /// JobTitle/CostCenter/WorkLocation/PostingGroup/BudgetingGroup/OrganizationUnit/PayrollArea/
+    /// WorkflowGroup/EmployeeGroup/EmployeeSubGroup from the employee's most recent prior org assignment
+    /// (StartDate &lt; this record's StartDate), when the caller left those fields unset.
     /// </summary>
     private async Task PrefillFromPreviousAsync(EmployeeOrgAssignment entity)
     {
@@ -406,6 +491,26 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         entity.BudgetingGroupId ??= previous.BudgetingGroupId;
         entity.OrganizationUnitId ??= previous.OrganizationUnitId;
         entity.PositionId ??= previous.PositionId;
+        entity.PayrollAreaId ??= previous.PayrollAreaId;
+        entity.WorkflowGroupId ??= previous.WorkflowGroupId;
+
+        // Group and sub group travel as a pair: copying the old sub group under a newly chosen group would
+        // save a combination ValidateEmployeeSubGroupAsync rejects. A sub group chosen on its own brings
+        // its group with it there, so it is left alone here.
+        if (entity.EmployeeSubGroupId.HasValue)
+        {
+            return;
+        }
+
+        if (!entity.EmployeeGroupId.HasValue)
+        {
+            entity.EmployeeGroupId = previous.EmployeeGroupId;
+            entity.EmployeeSubGroupId = previous.EmployeeSubGroupId;
+        }
+        else if (entity.EmployeeGroupId == previous.EmployeeGroupId)
+        {
+            entity.EmployeeSubGroupId = previous.EmployeeSubGroupId;
+        }
     }
 
     /// <summary>
@@ -488,7 +593,15 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             OrganizationUnitId = entity.OrganizationUnitId,
             OrganizationUnitName = entity.OrganizationUnit?.DisplayName,
             PositionId = entity.PositionId,
-            PositionName = entity.Position?.NameEn
+            PositionName = entity.Position?.NameEn,
+            EmployeeGroupId = entity.EmployeeGroupId,
+            EmployeeGroupName = entity.EmployeeGroup?.NameEn,
+            EmployeeSubGroupId = entity.EmployeeSubGroupId,
+            EmployeeSubGroupName = entity.EmployeeSubGroup?.NameEn,
+            PayrollAreaId = entity.PayrollAreaId,
+            PayrollAreaName = entity.PayrollArea?.Name,
+            WorkflowGroupId = entity.WorkflowGroupId,
+            WorkflowGroupName = entity.WorkflowGroup?.NameEn
         };
     }
 }

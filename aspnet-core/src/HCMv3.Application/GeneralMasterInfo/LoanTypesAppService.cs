@@ -9,6 +9,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.GeneralMasterInfo.Dto;
+using HCMv3.PayrollManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,11 +24,61 @@ namespace HCMv3.GeneralMasterInfo;
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_LoanTypes)]
 public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
 {
-    private readonly IRepository<LoanType> _repository;
+    /// <summary>Net Pay: never a deduction a loan recovers through (legacy <c>r.Code != "9000"</c>).</summary>
+    private const string NetPayWageTypeCode = "9000";
 
-    public LoanTypesAppService(IRepository<LoanType> repository)
+    private readonly IRepository<LoanType> _repository;
+    private readonly IRepository<WageType> _wageTypeRepository;
+    private readonly IRepository<AbsenceType> _absenceTypeRepository;
+    private readonly IRepository<OvertimeType> _overtimeTypeRepository;
+
+    public LoanTypesAppService(
+        IRepository<LoanType> repository,
+        IRepository<WageType> wageTypeRepository,
+        IRepository<AbsenceType> absenceTypeRepository,
+        IRepository<OvertimeType> overtimeTypeRepository)
     {
         _repository = repository;
+        _wageTypeRepository = wageTypeRepository;
+        _absenceTypeRepository = absenceTypeRepository;
+        _overtimeTypeRepository = overtimeTypeRepository;
+    }
+
+    /// <summary>
+    /// Legacy <c>LoanType.LoanDedWageType</c>: active deduction wage types that are not part of basic, calculated
+    /// or arrear pay, not Net Pay, and not already used by a leave or overtime type. Legacy also excluded
+    /// violation wage types; <see cref="DisciplinaryType"/> has no wage type yet, so there is nothing to exclude.
+    /// </summary>
+    public async Task<ListResultDto<LoanDeductionWageTypeDto>> GetDeductionWageTypes(NullableIdDto input)
+    {
+        var leaveWageTypeIds = _absenceTypeRepository.GetAll()
+            .Where(t => t.WageTypeId != null)
+            .Select(t => t.WageTypeId.Value);
+        var overtimeWageTypeIds = _overtimeTypeRepository.GetAll()
+            .Where(t => t.WageTypeId != null)
+            .Select(t => t.WageTypeId.Value);
+
+        var items = await _wageTypeRepository.GetAll()
+            .Where(w => w.Id == input.Id
+                        || (w.Status
+                            && w.BillingType == BillingType.Deduction
+                            && !w.IncludeInBasicPay
+                            && !w.IncludeInCalculatedPay
+                            && !w.IncludeInArrearPay
+                            && w.Code != NetPayWageTypeCode
+                            && !leaveWageTypeIds.Contains(w.Id)
+                            && !overtimeWageTypeIds.Contains(w.Id)))
+            .OrderBy(w => w.Code)
+            .Select(w => new LoanDeductionWageTypeDto
+            {
+                Id = w.Id,
+                Code = w.Code,
+                NameEn = w.NameEn,
+                NameAr = w.NameAr
+            })
+            .ToListAsync();
+
+        return new ListResultDto<LoanDeductionWageTypeDto>(items);
     }
 
     [HttpPost]

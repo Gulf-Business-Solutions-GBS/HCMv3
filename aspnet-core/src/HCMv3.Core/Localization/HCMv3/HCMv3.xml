@@ -97,6 +97,9 @@
     <text name="DocumentPrintForms">Document Print Forms</text>
     <text name="LoanTypes">Loan Types</text>
     <text name="LoanTypeDetails">Loan Type Details</text>
+    <text name="LoanTypeDetailWageTypeRequired">Choose the wage type the percentage is taken of.</text>
+    <text name="LoanTypeDetailWageTypeAlreadyListed">This loan type already lists that wage type. Choose another wage type.</text>
+    <text name="LoanTypeDetailPercentOutOfRange">The percent must be more than 0 and no more than 100.</text>
     <text name="OvertimeTypes">Overtime Types</text>
     <text name="OvertimeTypeDetails">Overtime Type Details</text>
     <!-- General Master Info / Wave-B bespoke entities -->
@@ -2060,6 +2063,8 @@
     <text name="TicketAmountCannotBeNegative">Ticket amount cannot be negative.</text>
     <text name="ATicketOfThisTypeHasAlreadyBeenTakenThisYear">A ticket of this type has already been taken this year.</text>
     <text name="StartDateAlreadyExists">A record with start date '{0}' already exists.</text>
+    <text name="EmployeeSubGroupNotInEmployeeGroup">Employee sub group '{0}' does not belong to employee group '{1}'.</text>
+    <text name="WorkflowGroup">Workflow Group</text>
     <text name="OverlapConflictFound">Record already exists. Please check that start date / end date do not overlap for this employee.</text>
     <text name="EmployeeNotFound">Employee not found.</text>
     <!-- Personnel Administration (Wave B) -->
@@ -3583,7 +3588,7 @@
     <text name="EscalateNextLevel">Escalate Next Level</text>
     <text name="EscalateWorkflowRole">Escalate Workflow Role</text>
     <text name="EscalateWorkflowRoleGroup">Escalate Workflow Role Group</text>
-    <text name="EscalateWorkflowRoleOrg">Escalate Workflow Role Organization Unit</text>
+    <text name="EscalateWorkflowRoleOrg">Escalate Workflow Role Org Level</text>
     <text name="EnableReadLog">Enable Read Log</text>
     <text name="Person">Person</text>
     <text name="ApproverPerson">Approver Person</text>
@@ -6663,6 +6668,7 @@
     <text name="GoLiveCompareRateDiffers">Same salary record and days, different rate: legacy {0}, HCMv3 {1}. HCMv3 works the rate out differently.</text>
     <text name="GoLiveCompareFormula">Same salary record, rate and days, different amount: HCMv3 calculates it differently.</text>
     <text name="GoLiveCompareEmployeeNotLoaded">The employee is not loaded in HCMv3.</text>
+    <text name="EmployeeSectionLoadFailed">This section could not be opened. Check your connection, then reload the page.</text>
     <text name="GoLiveCompareWageTypeMissing">Wagetype {0} does not exist in HCMv3.</text>
     <text name="GoLiveCompareNotOnHcmv3Record">Not on the employee's HCMv3 salary record. If the legacy payroll pays it as fixed pay, add it to the salary record.</text>
     <text name="GoLiveCompareNoHcmv3Register">HCMv3 has no salary register for this employee this month: payroll did not run for them.</text>

@@ -1245,6 +1245,9 @@
     <text name="DocumentPrintForms">نماذج طباعة الوثائق</text>
     <text name="LoanTypes">أنواع القروض</text>
     <text name="LoanTypeDetails">تفاصيل أنواع القروض</text>
+    <text name="LoanTypeDetailWageTypeRequired">اختر نوع الأجر الذي تُحتسب منه النسبة.</text>
+    <text name="LoanTypeDetailWageTypeAlreadyListed">نوع القرض هذا يتضمن نوع الأجر هذا مسبقاً. اختر نوع أجر آخر.</text>
+    <text name="LoanTypeDetailPercentOutOfRange">يجب أن تكون النسبة أكبر من 0 ولا تزيد على 100.</text>
     <text name="OvertimeTypes">أنواع العمل الإضافي</text>
     <text name="OvertimeTypeDetails">تفاصيل أنواع العمل الإضافي</text>
     <text name="Bank">البنك</text>
@@ -2045,6 +2048,8 @@
     <text name="TicketAmountCannotBeNegative">لا يمكن أن يكون مبلغ التذكرة سالباً.</text>
     <text name="ATicketOfThisTypeHasAlreadyBeenTakenThisYear">تم أخذ تذكرة من هذا النوع خلال هذه السنة مسبقاً.</text>
     <text name="StartDateAlreadyExists">يوجد سجل بتاريخ بداية '{0}' مسبقاً.</text>
+    <text name="EmployeeSubGroupNotInEmployeeGroup">المجموعة الفرعية للموظفين '{0}' لا تتبع مجموعة الموظفين '{1}'.</text>
+    <text name="WorkflowGroup">مجموعة سير العمل</text>
     <text name="OverlapConflictFound">السجل موجود مسبقاً. الرجاء التأكد من عدم تداخل تاريخ البداية / تاريخ النهاية لهذا الموظف.</text>
     <text name="EmployeeNotFound">لم يتم العثور على الموظف.</text>
     <text name="EmployeeOrgAssignments">التعيينات التنظيمية للموظف</text>
@@ -3532,7 +3537,7 @@
     <text name="EscalateNextLevel">التصعيد للمستوى التالي</text>
     <text name="EscalateWorkflowRole">دور سير العمل للتصعيد</text>
     <text name="EscalateWorkflowRoleGroup">مجموعة أدوار سير العمل للتصعيد</text>
-    <text name="EscalateWorkflowRoleOrg">وحدة الشركة لدور التصعيد</text>
+    <text name="EscalateWorkflowRoleOrg">المستوى التنظيمي لدور التصعيد</text>
     <text name="EnableReadLog">تفعيل سجل القراءة</text>
     <text name="Person">الشخص</text>
     <text name="ApproverPerson">الشخص المعتمِد</text>
@@ -6499,6 +6504,7 @@
     <text name="GoLiveCompareRateDiffers">سجل الراتب والأيام نفسها والمعدل مختلف: النظام السابق {0}، HCMv3 {1}. يحسب HCMv3 المعدل بطريقة مختلفة.</text>
     <text name="GoLiveCompareFormula">سجل الراتب والمعدل والأيام نفسها والمبلغ مختلف: يحسبه HCMv3 بطريقة مختلفة.</text>
     <text name="GoLiveCompareEmployeeNotLoaded">الموظف غير محمّل في HCMv3.</text>
+    <text name="EmployeeSectionLoadFailed">تعذّر فتح هذا القسم. تحقّق من الاتصال، ثم أعد تحميل الصفحة.</text>
     <text name="GoLiveCompareWageTypeMissing">نوع الأجر {0} غير موجود في HCMv3.</text>
     <text name="GoLiveCompareNotOnHcmv3Record">غير موجود في سجل راتب الموظف في HCMv3. إذا كان النظام السابق يدفعه كأجر ثابت، فأضفه إلى سجل الراتب.</text>
     <text name="GoLiveCompareNoHcmv3Register">لا يوجد سجل رواتب لهذا الموظف في HCMv3 لهذا الشهر: لم يتم تشغيل الرواتب له.</text>

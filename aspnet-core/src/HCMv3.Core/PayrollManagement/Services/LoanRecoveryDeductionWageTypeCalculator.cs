@@ -41,13 +41,11 @@ namespace HCMv3.PayrollManagement.Services;
 /// 1684), plus <c>SysCreator</c>/<c>SysModifier</c> (lines 1677-1678, 1687-1688). Neither ported entity
 /// carries an <c>IsSystemGenerated</c> column; ABP's <c>FullAuditedEntity</c> covers the Sys* pair. The
 /// flag is business data (the UI uses it to bar manual edits) and remains a gap.</description></item>
-/// <item><description><c>LoanDeductionType.Variable</c> (legacy lines 1626-1636) reads
-/// <c>LoanType.LoanTypeDetail[].WageType</c> to take a percentage of another register line. This port's
-/// <see cref="LoanTypeDetail"/> has no <c>WageTypeId</c> column (it was dropped as "Payroll module out of
-/// scope"), so the percentage cannot be attributed to a wage type. The branch throws rather than silently
-/// computing 0 -- a silent 0 here is money quietly not deducted. All four loan types in the reference
-/// database are <see cref="LoanDeductionType.Fixed"/>, so nothing exercises it today.</description></item>
 /// </list>
+///
+/// <para><b><see cref="LoanDeductionType.Variable"/></b> (legacy lines 1628-1639): the installment is the sum,
+/// over the loan type's <see cref="LoanTypeDetail"/> rows, of <c>Percent</c> of the employee's register line for
+/// that row's wage type, as it stands when this rule runs. A row whose wage type has no line adds nothing.</para>
 /// </summary>
 public class LoanRecoveryDeductionWageTypeCalculator
     : HCMv3DomainServiceBase, IMasterDataDispatchedWageTypeCalculator, ITransientDependency
@@ -59,6 +57,7 @@ public class LoanRecoveryDeductionWageTypeCalculator
     private readonly IRepository<EmployeeLoan> _employeeLoanRepository;
     private readonly IRepository<EmployeeLoanRecovery> _employeeLoanRecoveryRepository;
     private readonly IRepository<EmployeeLoanExemption> _employeeLoanExemptionRepository;
+    private readonly IRepository<LoanTypeDetail> _loanTypeDetailRepository;
 
     public LoanRecoveryDeductionWageTypeCalculator(
         IPayrollRegisterStore registerStore,
@@ -67,7 +66,8 @@ public class LoanRecoveryDeductionWageTypeCalculator
         IRepository<LoanType> loanTypeRepository,
         IRepository<EmployeeLoan> employeeLoanRepository,
         IRepository<EmployeeLoanRecovery> employeeLoanRecoveryRepository,
-        IRepository<EmployeeLoanExemption> employeeLoanExemptionRepository)
+        IRepository<EmployeeLoanExemption> employeeLoanExemptionRepository,
+        IRepository<LoanTypeDetail> loanTypeDetailRepository)
     {
         _registerStore = registerStore;
         _advancePaymentService = advancePaymentService;
@@ -76,6 +76,7 @@ public class LoanRecoveryDeductionWageTypeCalculator
         _employeeLoanRepository = employeeLoanRepository;
         _employeeLoanRecoveryRepository = employeeLoanRecoveryRepository;
         _employeeLoanExemptionRepository = employeeLoanExemptionRepository;
+        _loanTypeDetailRepository = loanTypeDetailRepository;
     }
 
     /// <summary>
@@ -252,15 +253,10 @@ public class LoanRecoveryDeductionWageTypeCalculator
                 // Legacy line 1626.
                 recoveryAmount = employeeLoan.FixedAmount;
             }
-            else
+            else if (loanType.LoanDeductionType == LoanDeductionType.Variable)
             {
-                // Legacy lines 1628-1639 -- see the class remarks: LoanTypeDetail.WageTypeId is not ported,
-                // so this cannot be computed. Fail loudly rather than deduct 0.
-                throw new NotSupportedException(
-                    $"LoanType '{loanType.Code}' uses LoanDeductionType.Variable, which legacy computes from "
-                    + "LoanTypeDetail.WageType percentages (HCM10.PayrollEngine/EmployeeCalculatedPayService.cs "
-                    + "lines 1628-1639). HCMv3's LoanTypeDetail has no WageTypeId column, so wage code 2001 "
-                    + "cannot be calculated for it. Port LoanTypeDetail.WageTypeId before using this option.");
+                // Legacy lines 1628-1639.
+                recoveryAmount = await GetVariableInstallmentAsync(context, loanType);
             }
 
             // Legacy line 1641: a plain 3-digit round, NOT the currency rounding used elsewhere here.
@@ -325,6 +321,31 @@ public class LoanRecoveryDeductionWageTypeCalculator
         }
 
         return totalLoanRecoveryDed;
+    }
+
+    /// <summary>
+    /// Legacy lines 1631-1638: <c>Percent</c> of each detail row's wage type line in the register being
+    /// calculated. Legacy reads <c>WageType.Oid</c> unguarded (its validation forbids a blank one); rows saved
+    /// before the wage type was ported have none and are skipped.
+    /// </summary>
+    private async Task<double> GetVariableInstallmentAsync(PayrollCalculationContext context, LoanType loanType)
+    {
+        var details = _loanTypeDetailRepository.GetAll()
+            .Where(d => d.LoanTypeId == loanType.Id && d.WageTypeId != null)
+            .OrderBy(d => d.Id)
+            .ToList();
+
+        double amount = 0;
+        foreach (var detail in details)
+        {
+            var line = await _registerStore.GetLineByWageTypeIdAsync(context.Register, detail.WageTypeId.Value);
+            if (line != null)
+            {
+                amount += (line.Amount * detail.Percent) / 100;
+            }
+        }
+
+        return amount;
     }
 
     /// <summary>

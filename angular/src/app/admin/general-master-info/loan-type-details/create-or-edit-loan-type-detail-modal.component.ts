@@ -6,6 +6,9 @@ import {
     LoanTypeDto,
     GetAllLoanTypesInput,
     LoanTypesServiceProxy,
+    GetAllWageTypesInput,
+    WageTypeDto,
+    WageTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -29,6 +32,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditLoanTypeDetailModalComponent extends AppComponentBase {
     private _loanTypeDetailService = inject(LoanTypeDetailsServiceProxy);
     private _loanTypesService = inject(LoanTypesServiceProxy);
+    private _wageTypesService = inject(WageTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -37,6 +41,7 @@ export class CreateOrEditLoanTypeDetailModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly loanTypeDetail = signal<CreateOrEditLoanTypeDetailDto>(new CreateOrEditLoanTypeDetailDto());
     readonly loanTypes = signal<LoanTypeDto[]>([]);
+    readonly wageTypes = signal<WageTypeDto[]>([]);
 
     show(loanTypeDetailId?: number): void {
         this.active.set(true);
@@ -46,6 +51,11 @@ export class CreateOrEditLoanTypeDetailModalComponent extends AppComponentBase {
             .subscribe((result) => {
                 this.loanTypes.set(result.items);
             });
+
+        // The register line the percentage is taken of; legacy offered every wage type here.
+        this._wageTypesService
+            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined }))
+            .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!loanTypeDetailId) {
             this.loanTypeDetail.set(new CreateOrEditLoanTypeDetailDto());

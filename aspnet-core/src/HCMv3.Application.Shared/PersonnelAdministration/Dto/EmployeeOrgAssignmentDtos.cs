@@ -27,6 +27,15 @@ public class EmployeeOrgAssignmentDto : EntityDto<int>
     public string OrganizationUnitName { get; set; }
     public int? PositionId { get; set; }
     public string PositionName { get; set; }
+
+    public int? EmployeeGroupId { get; set; }
+    public string EmployeeGroupName { get; set; }
+    public int? EmployeeSubGroupId { get; set; }
+    public string EmployeeSubGroupName { get; set; }
+    public int? PayrollAreaId { get; set; }
+    public string PayrollAreaName { get; set; }
+    public int? WorkflowGroupId { get; set; }
+    public string WorkflowGroupName { get; set; }
 }
 
 public class CreateOrEditEmployeeOrgAssignmentDto
@@ -57,6 +66,14 @@ public class CreateOrEditEmployeeOrgAssignmentDto
     /// from it, as legacy did.
     /// </summary>
     public int? PositionId { get; set; }
+
+    public int? EmployeeGroupId { get; set; }
+
+    public int? EmployeeSubGroupId { get; set; }
+
+    public int? PayrollAreaId { get; set; }
+
+    public int? WorkflowGroupId { get; set; }
 }
 
 public class GetEmployeeOrgAssignmentForEditOutput

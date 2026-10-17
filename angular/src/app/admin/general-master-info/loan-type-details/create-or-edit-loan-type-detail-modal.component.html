@@ -42,6 +42,23 @@
                                 }
                             </select>
                         </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="LoanTypeDetail_WageTypeId">{{ 'WageType' | localize }}</label>
+                            <select
+                                id="LoanTypeDetail_WageTypeId"
+                                #wageTypeInput="ngModel"
+                                class="form-select"
+                                name="WageTypeId"
+                                required
+                                [ngModel]="loanTypeDetail().wageTypeId"
+                                (ngModelChange)="updateField('wageTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (wageType of wageTypes(); track wageType.id) {
+                                    <option [ngValue]="wageType.id">{{ wageType.code }} - {{ wageType.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="wageTypeInput" />
+                        </div>
 
                         <div class="mb-5">
                             <label class="form-label required" for="LoanTypeDetail_Percent">{{ 'Percent' | localize }}</label>

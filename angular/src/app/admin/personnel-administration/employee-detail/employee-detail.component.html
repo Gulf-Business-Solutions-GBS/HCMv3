@@ -142,6 +142,10 @@
                             <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                             {{ 'LoadingWithThreeDot' | localize }}
                         </div>
+                    } @else if (sectionLoadFailed()) {
+                        <div class="alert alert-warning" role="alert">
+                            {{ 'EmployeeSectionLoadFailed' | localize }}
+                        </div>
                     }
                 </div>
             </main>

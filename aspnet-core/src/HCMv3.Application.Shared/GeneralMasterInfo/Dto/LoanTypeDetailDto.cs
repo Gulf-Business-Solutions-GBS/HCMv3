@@ -11,5 +11,9 @@ public class LoanTypeDetailDto : EntityDto<int>
 
     public string LoanTypeName { get; set; }
 
+    public int? WageTypeId { get; set; }
+
+    public string WageTypeName { get; set; }
+
     public double Percent { get; set; }
 }

@@ -6,6 +6,9 @@ import {
     ClearanceRequestFieldDto,
     GetAllClearanceRequestFieldsInput,
     ClearanceRequestFieldsServiceProxy,
+    GetAllWorkflowRolesInput,
+    WorkflowRoleDto,
+    WorkflowRolesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -29,6 +32,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppComponentBase {
     private _clearanceRequestFieldDetailService = inject(ClearanceRequestFieldDetailsServiceProxy);
     private _clearanceRequestFieldsService = inject(ClearanceRequestFieldsServiceProxy);
+    private _workflowRolesService = inject(WorkflowRolesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -37,6 +41,7 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
     readonly saving = signal<boolean>(false);
     readonly clearanceRequestFieldDetail = signal<CreateOrEditClearanceRequestFieldDetailDto>(new CreateOrEditClearanceRequestFieldDetailDto());
     readonly clearanceRequestFields = signal<ClearanceRequestFieldDto[]>([]);
+    readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
 
     show(clearanceRequestFieldDetailId?: number): void {
         this.active.set(true);
@@ -46,6 +51,11 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
             .subscribe((result) => {
                 this.clearanceRequestFields.set(result.items);
             });
+
+        // The role that has to answer this checklist line; the server requires it.
+        this._workflowRolesService
+            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.workflowRoles.set(result.items));
 
         if (!clearanceRequestFieldDetailId) {
             this.clearanceRequestFieldDetail.set(new CreateOrEditClearanceRequestFieldDetailDto());

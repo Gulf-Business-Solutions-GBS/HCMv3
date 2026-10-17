@@ -55,6 +55,7 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
 
     readonly activeSectionId = signal<string>(DEFAULT_EMPLOYEE_SECTION_ID);
     readonly activeComponent = signal<Type<unknown> | undefined>(undefined);
+    readonly sectionLoadFailed = signal<boolean>(false);
     readonly isSectionLoading = signal<boolean>(false);
 
     readonly searchTerm = signal<string>('');
@@ -164,6 +165,10 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
         }
 
         this.activeSectionId.set(section.id);
+        // Drop the previous section straight away. Kept on screen until the next one arrived, it sat under
+        // the new section's title -- and stayed there for good if that load failed.
+        this.activeComponent.set(undefined);
+        this.sectionLoadFailed.set(false);
         this.isSectionLoading.set(true);
 
         section
@@ -173,6 +178,11 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
                 // two sections quickly can leave the second one selected and the first one rendered.
                 if (this.activeSectionId() === section.id) {
                     this.activeComponent.set(component);
+                }
+            })
+            .catch(() => {
+                if (this.activeSectionId() === section.id) {
+                    this.sectionLoadFailed.set(true);
                 }
             })
             .finally(() => {

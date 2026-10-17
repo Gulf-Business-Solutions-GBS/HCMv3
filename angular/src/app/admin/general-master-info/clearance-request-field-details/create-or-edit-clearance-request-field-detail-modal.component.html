@@ -42,6 +42,23 @@
                                 }
                             </select>
                         </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="ClearanceRequestFieldDetail_WorkflowRoleId">{{ 'WorkflowRole' | localize }}</label>
+                            <select
+                                id="ClearanceRequestFieldDetail_WorkflowRoleId"
+                                #workflowRoleInput="ngModel"
+                                class="form-select"
+                                name="WorkflowRoleId"
+                                required
+                                [ngModel]="clearanceRequestFieldDetail().workflowRoleId || undefined"
+                                (ngModelChange)="updateField('workflowRoleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (workflowRole of workflowRoles(); track workflowRole.id) {
+                                    <option [ngValue]="workflowRole.id">{{ workflowRole.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="workflowRoleInput" />
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

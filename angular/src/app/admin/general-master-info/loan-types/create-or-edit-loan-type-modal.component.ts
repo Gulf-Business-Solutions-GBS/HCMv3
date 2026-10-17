@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     LoanTypesServiceProxy,
     CreateOrEditLoanTypeDto,
+    LoanDeductionWageTypeDto,
 
 
 
@@ -35,19 +36,29 @@ export class CreateOrEditLoanTypeModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly loanType = signal<CreateOrEditLoanTypeDto>(new CreateOrEditLoanTypeDto());
+    readonly wageTypes = signal<LoanDeductionWageTypeDto[]>([]);
 
     show(loanTypeId?: number): void {
         this.active.set(true);
 
         if (!loanTypeId) {
             this.loanType.set(new CreateOrEditLoanTypeDto());
+            this.loadWageTypes(undefined);
             this.modal().show();
         } else {
             this._loanTypeService.getLoanTypeForEdit(loanTypeId).subscribe((result) => {
                 this.loanType.set(result.loanType);
+                this.loadWageTypes(result.loanType.wageTypeId);
                 this.modal().show();
             });
         }
+    }
+
+    /** The deduction wage types legacy offered; the loan type's current one is always listed. */
+    private loadWageTypes(currentWageTypeId: number | undefined): void {
+        this._loanTypeService
+            .getDeductionWageTypes(currentWageTypeId)
+            .subscribe((result) => this.wageTypes.set(result.items));
     }
 
     onShown(): void {

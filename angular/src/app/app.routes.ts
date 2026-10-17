@@ -2,13 +2,14 @@ import { Routes, Route } from '@angular/router';
 import { Type } from '@angular/core';
 import { AppRouteGuard } from './shared/common/auth/auth-route-guard';
 import { startupDashboardGuard } from './shared/common/auth/startup-dashboard.guard';
-import { ISimpleLookupServiceProxy } from './admin/general-master-info/shared/simple-lookup.types';
+import { ISimpleLookupServiceProxy, SimpleLookupFlag } from './admin/general-master-info/shared/simple-lookup.types';
 import {
     AssetTypesServiceProxy,
     CountriesServiceProxy,
     BankFilesServiceProxy,
     BudgetingGroupsServiceProxy,
     ClearanceRequestTypesServiceProxy,
+    SetClearanceRequestTypeIncludeInWorkflowInput,
     BenefitTypesServiceProxy,
     ContractTypesServiceProxy,
     DateTypesServiceProxy,
@@ -103,7 +104,8 @@ function simpleLookupRoute(
     permissionSuffix: string,
     titleKey: string,
     serviceProxyType: Type<ISimpleLookupServiceProxy>,
-    modulePrefix: string = 'GeneralMasterInfo'
+    modulePrefix: string = 'GeneralMasterInfo',
+    flag?: SimpleLookupFlag
 ): Route {
     const base = `Pages.${modulePrefix}.${permissionSuffix}`;
     return {
@@ -117,6 +119,7 @@ function simpleLookupRoute(
             deletePermission: `${base}.Delete`,
             titleKey,
             serviceProxyType,
+            flag,
         },
     };
 }
@@ -578,7 +581,16 @@ export const appRoutes: Routes = [
                         'clearance-request-types',
                         'ClearanceRequestTypes',
                         'ClearanceRequestTypes',
-                        ClearanceRequestTypesServiceProxy
+                        ClearanceRequestTypesServiceProxy,
+                        'GeneralMasterInfo',
+                        {
+                            labelKey: 'IncludeInWorkflow',
+                            loadIds: (service: ClearanceRequestTypesServiceProxy) => service.getIdsIncludedInWorkflow(),
+                            set: (service: ClearanceRequestTypesServiceProxy, id: number, value: boolean) =>
+                                service.setIncludeInWorkflow(
+                                    new SetClearanceRequestTypeIncludeInWorkflowInput({ id, includeInWorkflow: value })
+                                ),
+                        }
                     ),
                     simpleLookupRoute('bank-files', 'BankFiles', 'BankFiles', BankFilesServiceProxy),
                     simpleLookupRoute('benefit-types', 'BenefitTypes', 'BenefitTypes', BenefitTypesServiceProxy),

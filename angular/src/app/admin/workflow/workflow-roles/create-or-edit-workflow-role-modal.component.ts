@@ -2,9 +2,9 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditWorkflowRoleDto,
-    OrgUnitDto,
-    OrgUnitsServiceProxy,
-    GetAllOrgUnitsInput,
+    OrganizationUnitTypeDto,
+    OrganizationUnitTypesServiceProxy,
+    GetAllOrganizationUnitTypesInput,
     WorkflowRoleGroup,
     WorkflowRolesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
@@ -23,7 +23,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 })
 export class CreateOrEditWorkflowRoleModalComponent extends AppComponentBase {
     private _service = inject(WorkflowRolesServiceProxy);
-    private _orgUnitsService = inject(OrgUnitsServiceProxy);
+    private _orgLevelsService = inject(OrganizationUnitTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -31,7 +31,7 @@ export class CreateOrEditWorkflowRoleModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditWorkflowRoleDto>(new CreateOrEditWorkflowRoleDto());
-    readonly orgUnits = signal<OrgUnitDto[]>([]);
+    readonly orgLevels = signal<OrganizationUnitTypeDto[]>([]);
 
     readonly workflowRoleGroups = [
         { value: WorkflowRoleGroup.None, key: 'WorkflowRoleGroupNone' },
@@ -44,9 +44,9 @@ export class CreateOrEditWorkflowRoleModalComponent extends AppComponentBase {
     show(id?: number): void {
         this.active.set(true);
 
-        this._orgUnitsService
-            .getAll(new GetAllOrgUnitsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.orgUnits.set(result.items));
+        this._orgLevelsService
+            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.orgLevels.set(result.items));
 
         if (!id) {
             this.record.set(new CreateOrEditWorkflowRoleDto({ workflowRoleGroup: WorkflowRoleGroup.None } as any));

@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="WorkflowRole_OrgUnit">{{ 'OrganizationUnit' | localize }}</label>
+                                <label class="form-label" for="WorkflowRole_OrgUnit">{{ 'OrgLevel' | localize }}</label>
                                 <select
                                     id="WorkflowRole_OrgUnit"
                                     class="form-select"
@@ -85,8 +85,8 @@
                                     [ngModel]="orgUnitId()"
                                     (ngModelChange)="orgUnitId.set($event)">
                                     <option [ngValue]="undefined"></option>
-                                    @for (orgUnit of orgUnits(); track orgUnit.id) {
-                                        <option [ngValue]="orgUnit.id">{{ orgUnit.nameEn }}</option>
+                                    @for (orgLevel of orgLevels(); track orgLevel.id) {
+                                        <option [ngValue]="orgLevel.id">{{ orgLevel.nameEn }}</option>
                                     }
                                 </select>
                             </div>

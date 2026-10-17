@@ -7,9 +7,9 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import {
     CreateWorkflowSetupRoleInput,
-    GetAllOrgUnitsInput,
-    OrgUnitDto,
-    OrgUnitsServiceProxy,
+    GetAllOrganizationUnitTypesInput,
+    OrganizationUnitTypeDto,
+    OrganizationUnitTypesServiceProxy,
     WorkflowRoleGroup,
     EmployeeDto,
     EmployeesServiceProxy,
@@ -51,12 +51,12 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
     readonly nameAr = signal('');
 
 
-    private _orgUnitsService = inject(OrgUnitsServiceProxy);
+    private _orgLevelsService = inject(OrganizationUnitTypesServiceProxy);
 
     /** The same scoping the Workflow Roles screen offers, so a role created here is not a lesser one. */
     readonly roleGroup = signal<WorkflowRoleGroup>(WorkflowRoleGroup.None);
     readonly orgUnitId = signal<number | undefined>(undefined);
-    readonly orgUnits = signal<OrgUnitDto[]>([]);
+    readonly orgLevels = signal<OrganizationUnitTypeDto[]>([]);
 
     readonly roleGroups = [
         { value: WorkflowRoleGroup.None, key: 'WorkflowRoleGroupNone' },
@@ -97,9 +97,9 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
         this.roleGroup.set(WorkflowRoleGroup.None);
         this.orgUnitId.set(undefined);
 
-        this._orgUnitsService
-            .getAll(new GetAllOrgUnitsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.orgUnits.set(result.items));
+        this._orgLevelsService
+            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.orgLevels.set(result.items));
 
         this._employeesService
             .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
