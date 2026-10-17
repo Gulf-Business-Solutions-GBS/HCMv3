@@ -70,6 +70,12 @@
                                         {{ 'Name' | localize }}
                                         <p-sortIcon field="name" />
                                     </th>
+                                    <th style="min-width: 110px">{{ 'SendNotification' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'SendEmail' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'ToEmployee' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'ToManager' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'SendToApprover' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'SendToAll' | localize }}</th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -94,6 +100,24 @@
                                     </td>
                                     <td style="min-width: 250px">
                                         <span pTooltip="{{ record.name }}" class="hide-overflown">{{ record.name }}</span>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [class.fa-check]="record.sendNotification" [class.text-success]="record.sendNotification" [class.fa-times]="!record.sendNotification" [class.text-muted]="!record.sendNotification"></i>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [class.fa-check]="record.sendEmail" [class.text-success]="record.sendEmail" [class.fa-times]="!record.sendEmail" [class.text-muted]="!record.sendEmail"></i>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [class.fa-check]="record.toEmployee" [class.text-success]="record.toEmployee" [class.fa-times]="!record.toEmployee" [class.text-muted]="!record.toEmployee"></i>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [class.fa-check]="record.toManager" [class.text-success]="record.toManager" [class.fa-times]="!record.toManager" [class.text-muted]="!record.toManager"></i>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [class.fa-check]="record.sendToApprover" [class.text-success]="record.sendToApprover" [class.fa-times]="!record.sendToApprover" [class.text-muted]="!record.sendToApprover"></i>
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [class.fa-check]="record.sendToAll" [class.text-success]="record.sendToAll" [class.fa-times]="!record.sendToAll" [class.text-muted]="!record.sendToAll"></i>
                                     </td>
                                 </tr>
                             </ng-template>

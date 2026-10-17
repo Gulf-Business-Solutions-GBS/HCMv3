@@ -8,7 +8,7 @@
     aria-labelledby="createOrEditModal"
     aria-hidden="true"
     [config]="{ backdrop: 'static', keyboard: !saving() }">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             @if (active()) {
                 <form #notificationConfigForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -28,123 +28,206 @@
                             [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-5">
-                            <label class="form-label required" for="NotificationConfig_Name">{{ 'Name' | localize }}</label>
-                            <input
-                                id="NotificationConfig_Name"
-                                #nameInput="ngModel"
-                                class="form-control"
-                                type="text"
-                                name="Name"
-                                [ngModel]="notificationConfig().name"
-                                (ngModelChange)="updateField('name', $event)"
-                                required
-                                maxlength="200" />
-                            <validation-messages [formCtrl]="nameInput" />
-                        </div>
+                        <!-- Laid out as legacy: what is sent on the left, who it goes to on the right, and the
+                             role groups underneath, all on one screen. -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-5">
+                                    <label class="form-label required" for="NotificationConfig_Name">{{ 'Name' | localize }}</label>
+                                    <input
+                                        id="NotificationConfig_Name"
+                                        #nameInput="ngModel"
+                                        class="form-control"
+                                        type="text"
+                                        name="Name"
+                                        [ngModel]="notificationConfig().name"
+                                        (ngModelChange)="updateField('name', $event)"
+                                        required
+                                        maxlength="256" />
+                                    <validation-messages [formCtrl]="nameInput" />
+                                </div>
 
-                        <div class="mb-5">
-                            <label class="form-label" for="NotificationConfig_EmailTemplateId">{{ 'EmailTemplate' | localize }}</label>
-                            <select
-                                id="NotificationConfig_EmailTemplateId"
-                                class="form-select"
-                                name="EmailTemplateId"
-                                [ngModel]="notificationConfig().emailTemplateId"
-                                (ngModelChange)="updateField('emailTemplateId', $event)">
-                                <option [ngValue]="undefined">{{ 'NoEmailTemplate' | localize }}</option>
-                                @for (template of emailTemplates(); track template.id) {
-                                    <option [ngValue]="template.id">{{ template.nameEn }}</option>
+                                <div class="mb-5">
+                                    <label class="form-label" for="NotificationConfig_EmailTemplateId">{{ 'EmailTemplate' | localize }}</label>
+                                    <select
+                                        id="NotificationConfig_EmailTemplateId"
+                                        class="form-select"
+                                        name="EmailTemplateId"
+                                        [ngModel]="notificationConfig().emailTemplateId"
+                                        (ngModelChange)="updateField('emailTemplateId', $event)">
+                                        <option [ngValue]="undefined">{{ 'NoEmailTemplate' | localize }}</option>
+                                        @for (template of emailTemplates(); track template.id) {
+                                            <option [ngValue]="template.id">{{ template.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="row">
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_SendNotification"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="SendNotification"
+                                        [ngModel]="notificationConfig().sendNotification"
+                                        (ngModelChange)="updateField('sendNotification', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_SendNotification">{{ 'SendNotification' | localize }}</label>
+                                </div>
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_SendEmail"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="SendEmail"
+                                        [ngModel]="notificationConfig().sendEmail"
+                                        (ngModelChange)="updateField('sendEmail', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_SendEmail">{{ 'SendEmail' | localize }}</label>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">{{ 'SendTo' | localize }}</label>
+                                <div class="row">
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_ToEmployee"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="ToEmployee"
+                                        [ngModel]="notificationConfig().toEmployee"
+                                        (ngModelChange)="updateField('toEmployee', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_ToEmployee">{{ 'ToEmployee' | localize }}</label>
+                                </div>
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_ToRequestCreator"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="ToRequestCreator"
+                                        [ngModel]="notificationConfig().toRequestCreator"
+                                        (ngModelChange)="updateField('toRequestCreator', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_ToRequestCreator">{{ 'ToRequestCreator' | localize }}</label>
+                                </div>
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_ToManager"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="ToManager"
+                                        [ngModel]="notificationConfig().toManager"
+                                        (ngModelChange)="updateField('toManager', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_ToManager">{{ 'ToManager' | localize }}</label>
+                                </div>
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_SendToApprover"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="SendToApprover"
+                                        [ngModel]="notificationConfig().sendToApprover"
+                                        (ngModelChange)="updateField('sendToApprover', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_SendToApprover">{{ 'SendToApprover' | localize }}</label>
+                                </div>
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_SendToAll"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="SendToAll"
+                                        [ngModel]="notificationConfig().sendToAll"
+                                        (ngModelChange)="updateField('sendToAll', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_SendToAll">{{ 'SendToAll' | localize }}</label>
+                                </div>
+                                <div class="col-6 mb-4 form-check">
+                                    <input
+                                        id="NotificationConfig_SendToAllApproved"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="SendToAllApproved"
+                                        [ngModel]="notificationConfig().sendToAllApproved"
+                                        (ngModelChange)="updateField('sendToAllApproved', $event)" />
+                                    <label class="form-check-label" for="NotificationConfig_SendToAllApproved">{{ 'SendToAllApproved' | localize }}</label>
+                                </div>
+                                </div>
+                                @if (notificationConfig().sendToApprover) {
+                                    <div class="form-text mb-2">{{ 'SendToApproverOnlyHint' | localize }}</div>
                                 }
-                            </select>
+                                @if (sendToAllConflict()) {
+                                    <div class="text-danger fs-7 mb-2">{{ 'UncheckSendToAllToSetOtherRecipients' | localize }}</div>
+                                }
+                            </div>
                         </div>
 
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_SendNotification"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="SendNotification"
-                                [ngModel]="notificationConfig().sendNotification"
-                                (ngModelChange)="updateField('sendNotification', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_SendNotification">{{ 'SendNotification' | localize }}</label>
+                        <hr />
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">{{ 'NotificationGroups' | localize }}</h6>
+                            <button type="button" class="btn btn-sm btn-light-primary" (click)="addGroup()">
+                                <i class="fa fa-plus"></i>
+                                {{ 'AddGroup' | localize }}
+                            </button>
                         </div>
+                        <div class="form-text mb-4">{{ 'NotificationGroupsHint' | localize }}</div>
 
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_SendEmail"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="SendEmail"
-                                [ngModel]="notificationConfig().sendEmail"
-                                (ngModelChange)="updateField('sendEmail', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_SendEmail">{{ 'SendEmail' | localize }}</label>
-                        </div>
-
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_ToEmployee"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="ToEmployee"
-                                [ngModel]="notificationConfig().toEmployee"
-                                (ngModelChange)="updateField('toEmployee', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_ToEmployee">{{ 'ToEmployee' | localize }}</label>
-                        </div>
-
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_ToRequestCreator"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="ToRequestCreator"
-                                [ngModel]="notificationConfig().toRequestCreator"
-                                (ngModelChange)="updateField('toRequestCreator', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_ToRequestCreator">{{ 'ToRequestCreator' | localize }}</label>
-                        </div>
-
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_ToManager"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="ToManager"
-                                [ngModel]="notificationConfig().toManager"
-                                (ngModelChange)="updateField('toManager', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_ToManager">{{ 'ToManager' | localize }}</label>
-                        </div>
-
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_SendToAll"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="SendToAll"
-                                [ngModel]="notificationConfig().sendToAll"
-                                (ngModelChange)="updateField('sendToAll', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_SendToAll">{{ 'SendToAll' | localize }}</label>
-                        </div>
-
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_SendToAllApproved"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="SendToAllApproved"
-                                [ngModel]="notificationConfig().sendToAllApproved"
-                                (ngModelChange)="updateField('sendToAllApproved', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_SendToAllApproved">{{ 'SendToAllApproved' | localize }}</label>
-                        </div>
-
-                        <div class="mb-5 form-check">
-                            <input
-                                id="NotificationConfig_SendToApprover"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="SendToApprover"
-                                [ngModel]="notificationConfig().sendToApprover"
-                                (ngModelChange)="updateField('sendToApprover', $event)" />
-                            <label class="form-check-label" for="NotificationConfig_SendToApprover">{{ 'SendToApprover' | localize }}</label>
-                        </div>
+                        @if ((notificationConfig().groups ?? []).length > 0) {
+                            <table class="table table-row-dashed align-middle mb-0">
+                                <thead>
+                                    <tr class="fw-bold text-muted">
+                                        <th>{{ 'WorkflowRole' | localize }}</th>
+                                        <th>{{ 'WorkflowRoleGroup' | localize }}</th>
+                                        <th>{{ 'OrgLevel' | localize }}</th>
+                                        <th style="width: 50px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (group of notificationConfig().groups; track $index; let i = $index) {
+                                        <tr>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [class.is-invalid]="!group.workflowRoleId"
+                                                    [name]="'GroupRole' + i"
+                                                    [ngModel]="group.workflowRoleId ?? null"
+                                                    (ngModelChange)="updateGroup(i, 'workflowRoleId', $event)">
+                                                    <option [ngValue]="null"></option>
+                                                    @for (role of workflowRoles(); track role.id) {
+                                                        <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [name]="'GroupRoleGroup' + i"
+                                                    [ngModel]="group.workflowRoleGroup"
+                                                    (ngModelChange)="updateGroup(i, 'workflowRoleGroup', $event)">
+                                                    @for (item of roleGroups; track item.value) {
+                                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select
+                                                    class="form-select form-select-sm"
+                                                    [name]="'GroupOrgLevel' + i"
+                                                    [ngModel]="group.workflowRoleOrgId ?? null"
+                                                    (ngModelChange)="updateGroup(i, 'workflowRoleOrgId', $event)">
+                                                    <option [ngValue]="null">{{ 'Any' | localize }}</option>
+                                                    @for (type of orgUnitTypes(); track type.id) {
+                                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button" class="btn btn-sm btn-icon btn-light-danger" (click)="removeGroup(i)" [attr.title]="l('Delete')">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button
@@ -157,7 +240,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary fw-bold"
-                            [disabled]="!notificationConfigForm.form.valid"
+                            [disabled]="!notificationConfigForm.form.valid || sendToAllConflict() || !groupsComplete()"
                             [buttonBusy]="saving()"
                             [busyText]="l('SavingWithThreeDot')">
                             <i class="fa fa-save"></i>

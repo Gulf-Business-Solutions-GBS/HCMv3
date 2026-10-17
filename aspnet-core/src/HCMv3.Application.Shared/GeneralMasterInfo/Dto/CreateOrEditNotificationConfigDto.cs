@@ -33,4 +33,26 @@ public class CreateOrEditNotificationConfigDto
     /// The template this configuration sends. Optional -- without one it notifies in the app only.
     /// </summary>
     public int? EmailTemplateId { get; set; }
+
+    /// <summary>
+    /// Who else to tell: everyone holding a workflow role, optionally only in the requester's own part of the
+    /// organisation. Edited inside the configuration, as legacy did; the list sent replaces the one saved.
+    /// </summary>
+    public System.Collections.Generic.List<NotificationConfigGroupDto> Groups { get; set; } = new();
+}
+
+/// <summary>One notification group line, edited inside its configuration.</summary>
+public class NotificationConfigGroupDto
+{
+    [Required]
+    public int? WorkflowRoleId { get; set; }
+
+    /// <summary>Narrows the role holders to the requester's company, branch, department or cost centre.</summary>
+    public HCMv3.Workflow.WorkflowRoleGroup WorkflowRoleGroup { get; set; }
+
+    /// <summary>
+    /// Narrows the role holders to the requester's organisation unit at this level (legacy WorkflowRoleOrg).
+    /// Applied when "Enable org unit type in workflow" is on in the workflow settings.
+    /// </summary>
+    public int? WorkflowRoleOrgId { get; set; }
 }

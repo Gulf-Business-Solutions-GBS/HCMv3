@@ -6969,6 +6969,12 @@
     <text name="StandardNotificationsSummary">الإشعارات القياسية: يُبلَّغ المعتمد عند وصول الطلب إلى هذه الخطوة ويُذكَّر أثناء انتظاره، ويُبلَّغ مقدم الطلب عند اعتماده أو رفضه أو إعادته أو إضافة ملاحظة عليه.</text>
     <text name="BlankNotificationUsesStandard">الإعداد المتروك على &quot;قياسي&quot; يستخدم الإشعار القياسي لذلك الإجراء.</text>
     <text name="StandardNotification">قياسي</text>
+    <text name="SendTo">إرسال إلى</text>
+    <text name="SendToApproverOnlyHint">عند تحديد &quot;إرسال إلى المعتمد&quot; يُبلَّغ فقط المعتمدون الذين ينتظر الطلب إجراءهم، ولا يُستخدم باقي المستلمين والمجموعات.</text>
+    <text name="UncheckSendToAllToSetOtherRecipients">يرجى إلغاء تحديد &quot;إرسال للكل&quot; لتحديد الموظف أو منشئ الطلب أو المدير أو مجموعات الإخطار.</text>
+    <text name="AddGroup">إضافة مجموعة</text>
+    <text name="NotificationGroupsHint">إبلاغ كل من يحمل دور سير عمل معيّن أيضًا. تحصر &quot;مجموعة دور سير العمل&quot; و&quot;المستوى التنظيمي&quot; المستلمين في الجزء الخاص بمقدم الطلب من المؤسسة، ويُطبَّق المستوى التنظيمي عند تفعيل نوع الوحدة التنظيمية في إعدادات سير العمل.</text>
+    <text name="NameCannotBeBlank">لا يمكن ترك الاسم فارغًا.</text>
     <text name="ReorderSteps">اسحب الصف لتغيير الترتيب</text>
     <text name="StepsReordered">تمت إعادة ترقيم الخطوات.</text>
     <text name="AChainCanHaveOnlyOneCreatorStep">لا يمكن أن تحتوي الدورة على أكثر من خطوة واحدة لمُنشئ الطلب. الخطوة التي ليس لها معتمد هي خطوة مقدّم الطلب نفسه، ووجود خطوة ثانية يوقف كل طلب يصل إليها.</text>

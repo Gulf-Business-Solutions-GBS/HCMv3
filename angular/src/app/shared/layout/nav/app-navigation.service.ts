@@ -1450,12 +1450,8 @@ export class AppNavigationService {
                         'flaticon-list-3',
                         '/app/admin/notification-configs'
                     ),
-                    new AppMenuItem(
-                        'NotificationGroups',
-                        'Pages.GeneralMasterInfo.NotificationGroups',
-                        'flaticon-list-3',
-                        '/app/admin/notification-groups'
-                    ),
+                    // Notification Groups are edited inside Notification Configs (as legacy did), so the
+                    // separate screen is no longer in the menu. Its route still resolves for old bookmarks.
                     new AppMenuItem(
                         'DocumentTypes',
                         'Pages.GeneralMasterInfo.DocumentTypes',

@@ -6,6 +6,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.GeneralMasterInfo.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -16,16 +17,21 @@ namespace HCMv3.GeneralMasterInfo;
 /// <summary>
 /// Application service for the NotificationConfig master (ported from legacy XAF NotificationConfig).
 /// No Code/NameEn/NameAr per legacy (just Name): no auto-code or duplicate Code/Name validation.
-/// The legacy <c>EmailTemplate</c> FK is not ported (module out of scope).
+/// The notification groups (role holders to tell) are saved with the configuration, as legacy edited them
+/// inside it; the separate Notification Groups screen is no longer in the menu.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs)]
 public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationConfigsAppService
 {
     private readonly IRepository<NotificationConfig> _repository;
+    private readonly IRepository<NotificationGroup> _groupRepository;
 
-    public NotificationConfigsAppService(IRepository<NotificationConfig> repository)
+    public NotificationConfigsAppService(
+        IRepository<NotificationConfig> repository,
+        IRepository<NotificationGroup> groupRepository)
     {
         _repository = repository;
+        _groupRepository = groupRepository;
     }
 
     [HttpPost]
@@ -52,9 +58,21 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
     {
         var entity = await _repository.GetAsync(input.Id);
 
+        var output = ToCreateOrEditDto(entity);
+        output.Groups = await _groupRepository.GetAll()
+            .Where(g => g.NotificationConfigId == entity.Id)
+            .OrderBy(g => g.Id)
+            .Select(g => new NotificationConfigGroupDto
+            {
+                WorkflowRoleId = g.WorkflowRoleId,
+                WorkflowRoleGroup = g.WorkflowRoleGroup,
+                WorkflowRoleOrgId = g.WorkflowRoleOrgId
+            })
+            .ToListAsync();
+
         return new GetNotificationConfigForEditOutput
         {
-            NotificationConfig = ToCreateOrEditDto(entity)
+            NotificationConfig = output
         };
     }
 
@@ -88,7 +106,10 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
             TenantId = AbpSession.TenantId ?? 0
         };
 
-        await _repository.InsertAsync(entity);
+        Validate(input);
+
+        var id = await _repository.InsertAndGetIdAsync(entity);
+        await ReplaceGroupsAsync(id, entity.TenantId, input.Groups);
     }
 
     [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs_Edit)]
@@ -107,7 +128,47 @@ public class NotificationConfigsAppService : HCMv3AppServiceBase, INotificationC
         entity.SendToApprover = input.SendToApprover;
         entity.EmailTemplateId = input.EmailTemplateId;
 
+        Validate(input);
+
         await _repository.UpdateAsync(entity);
+        await ReplaceGroupsAsync(entity.Id, entity.TenantId, input.Groups);
+    }
+
+    /// <summary>
+    /// Legacy <c>NotificationConfig.PerformValidation</c>: a name is required, and Send To All (every active
+    /// employee) cannot be combined with Employee, Request Creator, Manager or notification groups -- those
+    /// would only send the same people the notice twice.
+    /// </summary>
+    private void Validate(CreateOrEditNotificationConfigDto input)
+    {
+        if (input.Name.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException(L("NameCannotBeBlank"));
+        }
+
+        if (input.SendToAll &&
+            (input.ToEmployee || input.ToRequestCreator || input.ToManager || (input.Groups?.Count ?? 0) > 0))
+        {
+            throw new UserFriendlyException(L("UncheckSendToAllToSetOtherRecipients"));
+        }
+    }
+
+    /// <summary>The groups sent replace the ones the configuration had.</summary>
+    private async Task ReplaceGroupsAsync(int notificationConfigId, int tenantId, System.Collections.Generic.List<NotificationConfigGroupDto> groups)
+    {
+        await _groupRepository.DeleteAsync(g => g.NotificationConfigId == notificationConfigId);
+
+        foreach (var group in groups ?? new System.Collections.Generic.List<NotificationConfigGroupDto>())
+        {
+            await _groupRepository.InsertAsync(new NotificationGroup
+            {
+                TenantId = tenantId,
+                NotificationConfigId = notificationConfigId,
+                WorkflowRoleId = group.WorkflowRoleId,
+                WorkflowRoleGroup = group.WorkflowRoleGroup,
+                WorkflowRoleOrgId = group.WorkflowRoleOrgId
+            });
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs_Delete)]

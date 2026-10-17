@@ -98,6 +98,30 @@ public class WorkflowNotifications_Tests : EssLeaveWorkflowTestBase
     }
 
     [Fact]
+    public void SendToApprover_Should_Reach_Only_The_Approvers_Whatever_Else_Is_Ticked()
+    {
+        // Legacy: Send To Approver replaced the rest of the configuration with the approver list.
+        var employeeId = GivenAnActiveEmployee("NTF125");
+        var managerId = GivenAnActiveEmployee("NTF126");
+        var waitingId = GivenAnActiveEmployee("NTF127");
+        var holderId = GivenAnActiveEmployee("NTF128");
+        GivenAManager(employeeId, managerId, from: DateTime.Today.AddYears(-1), to: DateTime.Today.AddYears(1));
+
+        var request = GivenARequestFor(employeeId);
+        GivenAnApprover(request.Id, waitingId, approved: false);
+
+        var config = GivenAConfig(c =>
+        {
+            c.SendToApprover = true;
+            c.ToEmployee = true;
+            c.ToManager = true;
+        });
+        GivenAGroup(config.Id, GivenARoleHeldBy(holderId));
+
+        Resolve(config, request).ShouldBe(new[] { waitingId });
+    }
+
+    [Fact]
     public void SendToAllApproved_Should_Reach_Everyone_Who_Already_Signed()
     {
         var employeeId = GivenAnActiveEmployee("NTF130");

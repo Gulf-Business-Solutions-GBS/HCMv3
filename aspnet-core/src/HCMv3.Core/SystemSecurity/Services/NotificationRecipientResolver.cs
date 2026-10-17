@@ -81,6 +81,19 @@ public class NotificationRecipientResolver : HCMv3DomainServiceBase, INotificati
             }
         }
 
+        // Legacy: Send To Approver switched the send to the approver list ALONE -- the other tick-boxes and
+        // the groups were not read (RequestProcessApproval / WorkFlowServices pass the approvers as the only
+        // recipients when it is set). Approvers' delegates are still copied in, as for everyone here.
+        if (notificationConfig.SendToApprover && workflowRequest != null)
+        {
+            foreach (var approverId in PendingApproverIds(workflowRequest.Id))
+            {
+                Take(approverId);
+            }
+
+            return recipients;
+        }
+
         if (notificationConfig.ToEmployee)
         {
             Take(subject?.Id);
@@ -94,14 +107,6 @@ public class NotificationRecipientResolver : HCMv3DomainServiceBase, INotificati
         if (notificationConfig.ToManager && subject != null)
         {
             Take(CurrentManagerId(subject.Id));
-        }
-
-        if (notificationConfig.SendToApprover && workflowRequest != null)
-        {
-            foreach (var approverId in PendingApproverIds(workflowRequest.Id))
-            {
-                Take(approverId);
-            }
         }
 
         if (notificationConfig.SendToAllApproved && workflowRequest != null)
@@ -234,7 +239,7 @@ public class NotificationRecipientResolver : HCMv3DomainServiceBase, INotificati
     {
         var groups = _notificationGroupRepository.GetAll()
             .Where(g => g.NotificationConfigId == notificationConfigId && g.WorkflowRoleId != null)
-            .Select(g => new { RoleId = g.WorkflowRoleId.Value, g.WorkflowRoleGroup })
+            .Select(g => new { RoleId = g.WorkflowRoleId.Value, g.WorkflowRoleGroup, g.WorkflowRoleOrgId })
             .ToList();
 
         var memberIds = new List<int>();
@@ -244,7 +249,8 @@ public class NotificationRecipientResolver : HCMv3DomainServiceBase, INotificati
             memberIds.AddRange(_approverResolver.ResolveRoleHolders(
                 group.RoleId,
                 group.WorkflowRoleGroup,
-                subjectEmployeeId));
+                subjectEmployeeId,
+                group.WorkflowRoleOrgId));
         }
 
         return memberIds.Distinct().ToList();

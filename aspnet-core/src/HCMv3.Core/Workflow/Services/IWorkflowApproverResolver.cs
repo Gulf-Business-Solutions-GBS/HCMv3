@@ -58,7 +58,8 @@ public interface IWorkflowApproverResolver
     /// support call waiting to happen, so both read this one method.
     /// </para>
     /// </summary>
-    List<int> ResolveRoleHolders(int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId);
+    List<int> ResolveRoleHolders(
+        int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId, int? workflowRoleOrgId = null);
 
     int? ResolveDelegatedFrom(
         WorkflowRequest request,

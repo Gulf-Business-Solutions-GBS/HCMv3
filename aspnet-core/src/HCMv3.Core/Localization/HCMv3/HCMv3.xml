@@ -7134,6 +7134,12 @@
     <text name="StandardNotificationsSummary">Standard notifications: the approver is told when a request arrives here and reminded while it waits; the requester is told when it is approved, rejected, sent back or commented on.</text>
     <text name="BlankNotificationUsesStandard">A setting left as Standard uses the standard notification for that action.</text>
     <text name="StandardNotification">Standard</text>
+    <text name="SendTo">Send to</text>
+    <text name="SendToApproverOnlyHint">With Send To Approver ticked, only the approvers the request is waiting on are told; the other recipients and groups are not used.</text>
+    <text name="UncheckSendToAllToSetOtherRecipients">Please uncheck Send To All to set Employee, Request Creator, Manager or Notification Groups.</text>
+    <text name="AddGroup">Add group</text>
+    <text name="NotificationGroupsHint">Also tell everyone holding a workflow role. Workflow Role Group and Org Level narrow them to the requester’s own part of the organisation; Org Level applies when org unit type is enabled in the workflow settings.</text>
+    <text name="NameCannotBeBlank">Name cannot be blank.</text>
     <text name="ReorderSteps">Drag a row to change the order</text>
     <text name="StepsReordered">Steps renumbered.</text>
     <text name="AChainCanHaveOnlyOneCreatorStep">A chain can have only one creator step. A step with no approver is the requester's own, so a second one would stall every request that reached it.</text>

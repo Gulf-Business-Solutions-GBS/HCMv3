@@ -316,11 +316,12 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         return currentId;
     }
 
-    public List<int> ResolveRoleHolders(int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId)
+    public List<int> ResolveRoleHolders(
+        int workflowRoleId, WorkflowRoleGroup roleGroup, int? requesterEmployeeId, int? workflowRoleOrgId = null)
     {
-        // No step here, so no org-unit level to narrow by: with the org-unit-type setting on, legacy let a
-        // null level through unnarrowed, which is what a null id does below.
-        return NarrowToRequesterScope(requesterEmployeeId, RoleHolders(workflowRoleId), roleGroup, null);
+        // The org-unit level is a notification group's Org Unit Level (legacy NotificationGroup.WorkflowRoleOrg).
+        // A null level narrows nothing when the org-unit-type setting is on, exactly as legacy.
+        return NarrowToRequesterScope(requesterEmployeeId, RoleHolders(workflowRoleId), roleGroup, workflowRoleOrgId);
     }
 
     private List<int> RoleHolders(int workflowRoleId)
