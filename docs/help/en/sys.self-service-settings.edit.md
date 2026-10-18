@@ -196,3 +196,12 @@ There is one settings record per company; it cannot be deleted.
 **Why it matters.** Not read at present -- changing it has no effect.
 
 **Rules.** Optional. Whole number.
+
+## IsWithdrawalReasonMandatory {#ManageSelfServiceSettings.IsWithdrawalReasonMandatory}
+<!-- alias: loc:IsWithdrawalReasonMandatory, dom:SelfServiceSettings_IsWithdrawalReasonMandatory -->
+
+**What it is.** Whether employees must give a reason when they ask to withdraw a document such as their passport.
+
+**Why it matters.** Ticked, a self-service document withdrawal request without a reason is refused. Until the settings are saved for the first time, the reason is optional.
+
+**Rules.** Yes or no.

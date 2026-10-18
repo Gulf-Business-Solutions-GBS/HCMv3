@@ -29,7 +29,7 @@
         "loc:WageTypeId",
         "dom:EmployeePayment_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The pay element being paid.</p><p><strong>Example.</strong> Performance Bonus</p>",
       "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",

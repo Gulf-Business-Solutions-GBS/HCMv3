@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Absence Quotas — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsenceQuota",
-  "overviewHtml": "<p>The employee's leave entitlement for one leave type over an entitlement period: how much accrued, and how much was used, adjusted or forfeited.</p><p>The self-service leave balance is built from the quota whose entitlement period covers the date. For annual leave, the time engine adds each day's accrual to Quota Accrued as it runs.</p>",
+  "overviewHtml": "<p>The employee's leave entitlement for one leave type over an entitlement period: how much accrued, and how much was used, adjusted or forfeited.</p><p>The self-service leave balance is built from the quota whose entitlement period covers the date. For annual leave, the time engine adds each day's accrual to Quota Accrued as it runs.</p><p>When an existing quota is opened, <strong>Quota Balance</strong> shows what is left of it, as on the list: accrued, less used, adjusted and forfeited. It is calculated and cannot be typed in.</p>",
   "aliasIndex": {
     "loc:AbsenceTypeId": "EmployeeAbsenceQuota.AbsenceTypeId",
     "dom:EmployeeAbsenceQuota_AbsenceTypeId": "EmployeeAbsenceQuota.AbsenceTypeId",
@@ -35,10 +35,10 @@
         "loc:AbsenceTypeId",
         "dom:EmployeeAbsenceQuota_AbsenceTypeId"
       ],
-      "rules": "Required. Chosen from Absence Type master data.",
+      "rules": "Required. Chosen from Leave Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The leave type this quota is for.</p><p><strong>Example.</strong> Annual Leave</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Absence Types.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Leave Types.</p>",
       "stub": false
     },
     {

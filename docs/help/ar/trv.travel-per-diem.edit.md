@@ -34,14 +34,14 @@ permissions: [Pages.TravelManagement.TravelPerDiems.Create]
 ## EmployeeGroup {#TravelPerDiem.EmployeeGroupId}
 <!-- alias: loc:EmployeeGroup, dom:TravelPerDiem_EmployeeGroupId -->
 
-**ما هو.** مجموعة الموظفين.
+**ما هو.** ملف الراتب.
 
 **القواعد.** إلزامي. يُختار من قائمة.
 
 ## EmployeeSubGroup {#TravelPerDiem.EmployeeSubGroupId}
 <!-- alias: loc:EmployeeSubGroup, dom:TravelPerDiem_EmployeeSubGroupId -->
 
-**ما هو.** المجموعة الفرعية للموظفين.
+**ما هو.** الدرجة.
 
 **القواعد.** إلزامي. يُختار من قائمة.
 

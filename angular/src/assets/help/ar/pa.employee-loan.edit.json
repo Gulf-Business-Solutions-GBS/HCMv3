@@ -5,14 +5,14 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeLoan",
   "overviewHtml": "<p>قرض للموظف وطريقة استرداده. تسترده الرواتب اعتباراً من تاريخ بدء الاسترداد وفق نوع القرض؛ ويُسجَّل كل قسط تقتطعه استرداداً للقرض فينقص الرصيد المستحق.</p><p>لا يجوز أن يقل المبلغ الفعلي عن المبلغ المستحق، ولا أن يسبق تاريخ بدء الاسترداد أو تاريخ الانتهاء تاريخَ البداية.</p>",
   "aliasIndex": {
+    "loc:LoanPaymentDate": "EmployeeLoan.StartDate",
+    "dom:EmployeeLoan_StartDate": "EmployeeLoan.StartDate",
+    "loc:RecoveryEndDate": "EmployeeLoan.EndDate",
+    "dom:EmployeeLoan_EndDate": "EmployeeLoan.EndDate",
     "loc:LoanTypeId": "EmployeeLoan.LoanTypeId",
     "dom:EmployeeLoan_LoanTypeId": "EmployeeLoan.LoanTypeId",
-    "loc:StartDate": "EmployeeLoan.StartDate",
-    "dom:EmployeeLoan_StartDate": "EmployeeLoan.StartDate",
     "loc:RecoveryStartDate": "EmployeeLoan.RecoveryStartDate",
     "dom:EmployeeLoan_RecoveryStartDate": "EmployeeLoan.RecoveryStartDate",
-    "loc:EndDate": "EmployeeLoan.EndDate",
-    "dom:EmployeeLoan_EndDate": "EmployeeLoan.EndDate",
     "loc:ActualAmount": "EmployeeLoan.ActualAmount",
     "dom:EmployeeLoan_ActualAmount": "EmployeeLoan.ActualAmount",
     "loc:DueAmount": "EmployeeLoan.DueAmount",
@@ -21,12 +21,40 @@
     "dom:EmployeeLoan_FixedAmount": "EmployeeLoan.FixedAmount",
     "loc:RecoverFracInLastTrans": "EmployeeLoan.RecoverFracInLastTrans",
     "dom:EmployeeLoan_RecoverFracInLastTrans": "EmployeeLoan.RecoverFracInLastTrans",
-    "loc:IncludeInLoanPay": "EmployeeLoan.IncludeInLoanPay",
+    "loc:IncludeLoanPaymentInPayroll": "EmployeeLoan.IncludeInLoanPay",
     "dom:EmployeeLoan_IncludeInLoanPay": "EmployeeLoan.IncludeInLoanPay",
     "loc:Comments": "EmployeeLoan.Comments",
     "dom:EmployeeLoan_Comments": "EmployeeLoan.Comments"
   },
   "fields": [
+    {
+      "id": "EmployeeLoan.StartDate",
+      "label": "LoanPaymentDate",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:LoanPaymentDate",
+        "dom:EmployeeLoan_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoan.EndDate",
+      "label": "RecoveryEndDate",
+      "section": "EmployeeLoans",
+      "aliases": [
+        "loc:RecoveryEndDate",
+        "dom:EmployeeLoan_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeLoan.LoanTypeId",
       "label": "LoanTypeId",
@@ -42,20 +70,6 @@
       "stub": false
     },
     {
-      "id": "EmployeeLoan.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeLoans",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeLoan_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
       "id": "EmployeeLoan.RecoveryStartDate",
       "label": "RecoveryStartDate",
       "section": "EmployeeLoans",
@@ -66,20 +80,6 @@
       "rules": "إلزامي. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> التاريخ الذي تبدأ فيه الرواتب استرداد القرض.</p><p><strong>مثال.</strong> 1 أكتوبر 2026</p><p><strong>لماذا يهم.</strong> تسترد الرواتب اعتباراً من أول مسيرة تنتهي في هذا التاريخ أو بعده. ويجب أن تقع الإعفاءات بين هذا التاريخ وتاريخ انتهاء القرض.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeLoan.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeLoans",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeLoan_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -141,10 +141,10 @@
     },
     {
       "id": "EmployeeLoan.IncludeInLoanPay",
-      "label": "IncludeInLoanPay",
+      "label": "IncludeLoanPaymentInPayroll",
       "section": "EmployeeLoans",
       "aliases": [
-        "loc:IncludeInLoanPay",
+        "loc:IncludeLoanPaymentInPayroll",
         "dom:EmployeeLoan_IncludeInLoanPay"
       ],
       "rules": "نعم أو لا.",

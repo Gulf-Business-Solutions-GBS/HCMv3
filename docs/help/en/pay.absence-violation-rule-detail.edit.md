@@ -56,8 +56,28 @@ Not run at present: no process escalates absences using these rules. They are sa
 ## ActionType {#AbsenceViolationRuleDetail.ActionTypeId}
 <!-- alias: loc:ActionType, dom:AbsenceViolationRuleDetail_ActionTypeId -->
 
-**What it is.** The leave type or disciplinary type the action would use, depending on the action.
+**What it is.** The leave type or violation type the action would use, depending on the action.
 
 **Example.** Unpaid Leave
 
 **Rules.** Optional. Chosen from a list.
+
+## NotificationConfig {#AbsenceViolationRuleDetail.NotificationConfigId}
+<!-- alias: loc:NotificationConfig, dom:AbsenceViolationRuleDetail_NotificationConfigId -->
+
+**What it is.** The notification configuration used to tell people when this step is reached.
+
+**Example.** Absence escalation – notify HR and Line Manager
+
+**Why it matters.** Its recipients get an in-app notification, and an email if the configuration has a template. Left empty, the step acts without telling anybody. A failed notification does not undo the step.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## HoldTillPunchFoundHint {#AbsenceViolationRuleDetail.HoldTillPunchFound}
+<!-- alias: loc:HoldTillPunchFoundHint, dom:AbsenceViolationRuleDetail_HoldTillPunchFound -->
+
+**What it is.** Whether this step waits until the employee punches again.
+
+**Why it matters.** Ticked, the step's action -- a deduction leave or a violation record -- is applied only once the employee is back and has an approved punch, so someone still away is not penalised early.
+
+**Rules.** Yes or no.

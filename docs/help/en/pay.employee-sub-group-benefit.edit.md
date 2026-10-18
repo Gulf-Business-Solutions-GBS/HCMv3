@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBenefits.Create]
 
 ## Overview
 
-A benefit type the sub group is entitled to, with a maximum amount.
+A benefit type the grade is entitled to, with a maximum amount.
 
 Not read at present: payroll does not use this list, and it is kept for reference only.
 

@@ -11,44 +11,44 @@
     "dom:Sponsor_NameEn": "Sponsor.NameEn",
     "loc:NameAr": "Sponsor.NameAr",
     "dom:Sponsor_NameAr": "Sponsor.NameAr",
-    "loc:Email": "Sponsor.Email",
-    "dom:Sponsor_Email": "Sponsor.Email",
+    "loc:BusinessOwnerNameEn": "Sponsor.BusinessOwnerNameEn",
+    "dom:Sponsor_BusinessOwnerNameEn": "Sponsor.BusinessOwnerNameEn",
+    "loc:BusinessOwnerNameAr": "Sponsor.BusinessOwnerNameAr",
+    "dom:Sponsor_BusinessOwnerNameAr": "Sponsor.BusinessOwnerNameAr",
     "loc:Gender": "Sponsor.Gender",
     "dom:Sponsor_Gender": "Sponsor.Gender",
+    "loc:Nationality": "Sponsor.NationalityId",
+    "dom:Sponsor_NationalityId": "Sponsor.NationalityId",
+    "loc:BusinessType": "Sponsor.BusinessTypeId",
+    "dom:Sponsor_BusinessTypeId": "Sponsor.BusinessTypeId",
+    "loc:Governorate": "Sponsor.GovernorateId",
+    "dom:Sponsor_GovernorateId": "Sponsor.GovernorateId",
     "loc:Profession": "Sponsor.Profession",
     "dom:Sponsor_Profession": "Sponsor.Profession",
+    "loc:MOSALID": "Sponsor.MOSALID",
+    "dom:Sponsor_MOSALID": "Sponsor.MOSALID",
+    "loc:UnifiedNum": "Sponsor.UnifiedNum",
+    "dom:Sponsor_UnifiedNum": "Sponsor.UnifiedNum",
+    "loc:OrganizationUnit": "Sponsor.OrganizationUnitId",
+    "dom:Sponsor_OrganizationUnitId": "Sponsor.OrganizationUnitId",
     "loc:Building": "Sponsor.Building",
     "dom:Sponsor_Building": "Sponsor.Building",
     "loc:Street": "Sponsor.Street",
     "dom:Sponsor_Street": "Sponsor.Street",
     "loc:Area": "Sponsor.Area",
     "dom:Sponsor_Area": "Sponsor.Area",
-    "loc:Block": "Sponsor.Block",
-    "dom:Sponsor_Block": "Sponsor.Block",
+    "loc:Email": "Sponsor.Email",
+    "dom:Sponsor_Email": "Sponsor.Email",
     "loc:Telephone": "Sponsor.Telephone",
     "dom:Sponsor_Telephone": "Sponsor.Telephone",
+    "loc:Block": "Sponsor.Block",
+    "dom:Sponsor_Block": "Sponsor.Block",
+    "loc:SocialSecurityNum": "Sponsor.SocialSecurityNum",
+    "dom:Sponsor_SocialSecurityNum": "Sponsor.SocialSecurityNum",
     "loc:Fax": "Sponsor.Fax",
     "dom:Sponsor_Fax": "Sponsor.Fax",
     "loc:POBox": "Sponsor.POBox",
-    "dom:Sponsor_POBox": "Sponsor.POBox",
-    "loc:Nationality": "Sponsor.NationalityId",
-    "dom:Sponsor_NationalityId": "Sponsor.NationalityId",
-    "loc:BusinessType": "Sponsor.BusinessTypeId",
-    "dom:Sponsor_BusinessTypeId": "Sponsor.BusinessTypeId",
-    "loc:OrganizationUnit": "Sponsor.OrganizationUnitId",
-    "dom:Sponsor_OrganizationUnitId": "Sponsor.OrganizationUnitId",
-    "loc:Governorate": "Sponsor.GovernorateId",
-    "dom:Sponsor_GovernorateId": "Sponsor.GovernorateId",
-    "loc:UnifiedNum": "Sponsor.UnifiedNum",
-    "dom:Sponsor_UnifiedNum": "Sponsor.UnifiedNum",
-    "loc:SocialSecurityNum": "Sponsor.SocialSecurityNum",
-    "dom:Sponsor_SocialSecurityNum": "Sponsor.SocialSecurityNum",
-    "loc:MOSALID": "Sponsor.MOSALID",
-    "dom:Sponsor_MOSALID": "Sponsor.MOSALID",
-    "loc:BusinessOwnerNameEn": "Sponsor.BusinessOwnerNameEn",
-    "dom:Sponsor_BusinessOwnerNameEn": "Sponsor.BusinessOwnerNameEn",
-    "loc:BusinessOwnerNameAr": "Sponsor.BusinessOwnerNameAr",
-    "dom:Sponsor_BusinessOwnerNameAr": "Sponsor.BusinessOwnerNameAr"
+    "dom:Sponsor_POBox": "Sponsor.POBox"
   },
   "fields": [
     {
@@ -94,16 +94,30 @@
       "stub": false
     },
     {
-      "id": "Sponsor.Email",
-      "label": "Email",
+      "id": "Sponsor.BusinessOwnerNameEn",
+      "label": "BusinessOwnerNameEn",
       "section": "Sponsors",
       "aliases": [
-        "loc:Email",
-        "dom:Sponsor_Email"
+        "loc:BusinessOwnerNameEn",
+        "dom:Sponsor_BusinessOwnerNameEn"
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The sponsor's email address.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "html": "<p><strong>What it is.</strong> The business owner's name in English.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.BusinessOwnerNameAr",
+      "label": "BusinessOwnerNameAr",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:BusinessOwnerNameAr",
+        "dom:Sponsor_BusinessOwnerNameAr"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The business owner's name in Arabic.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -122,6 +136,48 @@
       "stub": false
     },
     {
+      "id": "Sponsor.NationalityId",
+      "label": "Nationality",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Sponsor_NationalityId"
+      ],
+      "rules": "Required. Chosen from Nationality master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The owner's nationality.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.BusinessTypeId",
+      "label": "BusinessType",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:BusinessType",
+        "dom:Sponsor_BusinessTypeId"
+      ],
+      "rules": "Required. Chosen from Business Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of business.</p><p><strong>Example.</strong> Trading</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.GovernorateId",
+      "label": "Governorate",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Governorate",
+        "dom:Sponsor_GovernorateId"
+      ],
+      "rules": "Required. Chosen from Governorate master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The governorate of the address.</p><p><strong>Example.</strong> Capital</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "Sponsor.Profession",
       "label": "Profession",
       "section": "Sponsors",
@@ -132,6 +188,48 @@
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The owner's profession.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.MOSALID",
+      "label": "MOSALID",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:MOSALID",
+        "dom:Sponsor_MOSALID"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sponsor's file number with the Ministry of Social Affairs and Labour.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report and on the payroll sheet reports.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.UnifiedNum",
+      "label": "UnifiedNum",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:UnifiedNum",
+        "dom:Sponsor_UnifiedNum"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sponsor's unified number with the authorities.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:Sponsor_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The part of the organisation the sponsor belongs to.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -178,16 +276,16 @@
       "stub": false
     },
     {
-      "id": "Sponsor.Block",
-      "label": "Block",
+      "id": "Sponsor.Email",
+      "label": "Email",
       "section": "Sponsors",
       "aliases": [
-        "loc:Block",
-        "dom:Sponsor_Block"
+        "loc:Email",
+        "dom:Sponsor_Email"
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The block.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "html": "<p><strong>What it is.</strong> The sponsor's email address.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -202,6 +300,34 @@
       "rules": "Required. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The telephone number.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.Block",
+      "label": "Block",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:Block",
+        "dom:Sponsor_Block"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The block.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Sponsor.SocialSecurityNum",
+      "label": "SocialSecurityNum",
+      "section": "Sponsors",
+      "aliases": [
+        "loc:SocialSecurityNum",
+        "dom:Sponsor_SocialSecurityNum"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sponsor's social security registration number.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -230,132 +356,6 @@
       "rules": "Optional. Maximum 50 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The post office box.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.NationalityId",
-      "label": "Nationality",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:Nationality",
-        "dom:Sponsor_NationalityId"
-      ],
-      "rules": "Required. Chosen from Nationality master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The owner's nationality.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.BusinessTypeId",
-      "label": "BusinessType",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:BusinessType",
-        "dom:Sponsor_BusinessTypeId"
-      ],
-      "rules": "Required. Chosen from Business Type master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The kind of business.</p><p><strong>Example.</strong> Trading</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.OrganizationUnitId",
-      "label": "OrganizationUnit",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:OrganizationUnit",
-        "dom:Sponsor_OrganizationUnitId"
-      ],
-      "rules": "Required. Chosen from Organization Unit master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The part of the organisation the sponsor belongs to.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.GovernorateId",
-      "label": "Governorate",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:Governorate",
-        "dom:Sponsor_GovernorateId"
-      ],
-      "rules": "Required. Chosen from Governorate master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The governorate of the address.</p><p><strong>Example.</strong> Capital</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.UnifiedNum",
-      "label": "UnifiedNum",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:UnifiedNum",
-        "dom:Sponsor_UnifiedNum"
-      ],
-      "rules": "Required. Whole number.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The sponsor's unified number with the authorities.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.SocialSecurityNum",
-      "label": "SocialSecurityNum",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:SocialSecurityNum",
-        "dom:Sponsor_SocialSecurityNum"
-      ],
-      "rules": "Required. Whole number.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The sponsor's social security registration number.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.MOSALID",
-      "label": "MOSALID",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:MOSALID",
-        "dom:Sponsor_MOSALID"
-      ],
-      "rules": "Required. Whole number.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The sponsor's file number with the Ministry of Social Affairs and Labour.</p><p><strong>Why it matters.</strong> Shown on the Sponsor Report and on the payroll sheet reports.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.BusinessOwnerNameEn",
-      "label": "BusinessOwnerNameEn",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:BusinessOwnerNameEn",
-        "dom:Sponsor_BusinessOwnerNameEn"
-      ],
-      "rules": "Optional. Maximum 256 characters.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The business owner's name in English.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "Sponsor.BusinessOwnerNameAr",
-      "label": "BusinessOwnerNameAr",
-      "section": "Sponsors",
-      "aliases": [
-        "loc:BusinessOwnerNameAr",
-        "dom:Sponsor_BusinessOwnerNameAr"
-      ],
-      "rules": "Optional. Maximum 256 characters.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The business owner's name in Arabic.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
       "stub": false
     }

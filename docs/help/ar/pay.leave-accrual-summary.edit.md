@@ -29,7 +29,7 @@ permissions: [Pages.PayrollManagement.LeaveAccrualSummaries.Create]
 
 **مثال.** الإجازة السنوية
 
-**القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
+**القواعد.** إلزامي. يُختار من قائمة أنواع الإجازات.
 
 ## Year {#LeaveAccrualSummary.Year}
 <!-- alias: loc:Year, dom:LeaveAccrualSummary_Year -->

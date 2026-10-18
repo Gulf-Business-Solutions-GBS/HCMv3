@@ -75,7 +75,7 @@ One working day's pattern: when the shift starts and ends, its break, and whethe
 
 **Example.** Normal Overtime
 
-**Why it matters.** Overtime found on a day of this duty is recorded under this type. For a sub group that pays overtime, a day with overtime and no overtime type makes the time engine raise an error.
+**Why it matters.** Overtime found on a day of this duty is recorded under this type. For a grade that pays overtime, a day with overtime and no overtime type makes the time engine raise an error.
 
 **Rules.** Optional. Chosen from Overtime Type master data.
 

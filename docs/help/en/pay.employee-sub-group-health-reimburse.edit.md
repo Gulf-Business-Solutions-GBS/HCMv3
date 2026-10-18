@@ -11,9 +11,9 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupHealthReimburses.Create]
 
 ## Overview
 
-The sub group's health reimbursement entitlement per person, by dependant type -- one row for the employee and one for each kind of dependant.
+The grade's health reimbursement entitlement per person, by dependant type -- one row for the employee and one for each kind of dependant.
 
-The employee's eligible amount adds up the employee's own row and the rows for their dependants, up to the sub group's maximum number of dependants. The yearly cap and the insurance year are set on the sub group itself.
+The employee's eligible amount adds up the employee's own row and the rows for their dependants, up to the grade's maximum number of dependants. The yearly cap and the insurance year are set on the grade itself.
 
 ## DependantType {#EmployeeSubGroupHealthReimburse.DependantTypeId}
 <!-- alias: loc:DependantType, dom:EmployeeSubGroupHealthReimburse_DependantTypeId -->

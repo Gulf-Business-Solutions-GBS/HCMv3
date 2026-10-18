@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeBenefitExceptions.Create]
 
 Overrides the employee's own ticket or health reimbursement entitlement for a period.
 
-For health reimbursement, the amount replaces the employee's share from their sub group's entitlement. For tickets, the time engine uses the amount when accruing the employee's own ticket; an amount of zero means not entitled.
+For health reimbursement, the amount replaces the employee's share from their grade's entitlement. For tickets, the time engine uses the amount when accruing the employee's own ticket; an amount of zero means not entitled.
 
 ## ExceptionBenefitType {#EmployeeBenefitException.ExceptionBenefitType}
 <!-- alias: loc:ExceptionBenefitType, dom:EmployeeBenefitException_ExceptionBenefitType -->

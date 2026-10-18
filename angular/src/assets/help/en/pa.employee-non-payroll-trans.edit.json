@@ -33,7 +33,7 @@
         "loc:WageTypeId",
         "dom:EmployeeNonPayrollTran_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The pay element the payment is recorded against.</p><p><strong>Example.</strong> Annual Bonus</p>",
       "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",

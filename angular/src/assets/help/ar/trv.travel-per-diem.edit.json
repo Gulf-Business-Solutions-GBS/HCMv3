@@ -55,7 +55,7 @@
       ],
       "rules": "إلزامي. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> مجموعة الموظفين.</p>",
+      "html": "<p><strong>ما هو.</strong> ملف الراتب.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -69,7 +69,7 @@
       ],
       "rules": "إلزامي. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> المجموعة الفرعية للموظفين.</p>",
+      "html": "<p><strong>ما هو.</strong> الدرجة.</p>",
       "adminHtml": "",
       "stub": false
     },

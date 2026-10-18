@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeTickets.Create]
 
 An air ticket entitlement taken or paid for the employee or a dependant.
 
-When the employee's sub group pays air tickets automatically, the time engine creates these records itself on the day each ticket's accrual period starts. Payroll's average ticket calculation reads the tickets on the latest payment date. HCMv3 payroll does not currently calculate an air ticket payment from these records.
+When the employee's grade pays air tickets automatically, the time engine creates these records itself on the day each ticket's accrual period starts. Payroll's average ticket calculation reads the tickets on the latest payment date. HCMv3 payroll does not currently calculate an air ticket payment from these records.
 
 ## TicketTypeId {#EmployeeTicket.TicketTypeId}
 <!-- alias: loc:TicketTypeId, dom:EmployeeTicket_TicketTypeId -->

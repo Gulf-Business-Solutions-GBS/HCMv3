@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Commissions — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupCommission",
-  "overviewHtml": "<p>The commission wagetypes of a sub group. The average-commission wagetype pays one twelfth of what the employee earned on these wagetypes over the twelve months up to the pay date.</p>",
+  "overviewHtml": "<p>The commission wagetypes of a grade. The average-commission wagetype pays one twelfth of what the employee earned on these wagetypes over the twelve months up to the pay date.</p>",
   "aliasIndex": {
     "loc:WageType": "EmployeeSubGroupCommission.WageTypeId",
     "dom:EmployeeSubGroupCommission_WageTypeId": "EmployeeSubGroupCommission.WageTypeId"
@@ -19,7 +19,7 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> A wagetype that counts as commission.</p><p><strong>Example.</strong> Sales Commission</p><p><strong>Why it matters.</strong> Each wagetype can be listed once per sub group.</p>",
+      "html": "<p><strong>What it is.</strong> A wagetype that counts as commission.</p><p><strong>Example.</strong> Sales Commission</p><p><strong>Why it matters.</strong> Each wagetype can be listed once per grade.</p>",
       "adminHtml": "",
       "stub": false
     }

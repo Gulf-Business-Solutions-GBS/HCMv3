@@ -17,139 +17,27 @@ Employees get a time policy on their own time policy records. The **Time Managem
 
 The punch-location and punch-notification settings at the end of the form are not read at present.
 
-## ShouldSignIn {#TimePolicy.ShouldSignIn}
-<!-- alias: loc:ShouldSignIn, dom:TimePolicy_ShouldSignIn -->
+## TimeMgmtStatus {#TimePolicy.TimeMgmtStatus}
+<!-- alias: loc:TimeMgmtStatus, dom:TimePolicy_TimeMgmtStatus -->
 
-**What it is.** Whether employees on this policy must punch in at the start of the shift.
+**What it is.** How attendance is worked out for employees on this policy.
 
-**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
+**Example.** Actual Time
 
-**Rules.** Yes or no.
+**Why it matters.** See the overview for what each status does.
 
-## ShouldSignOut {#TimePolicy.ShouldSignOut}
-<!-- alias: loc:ShouldSignOut, dom:TimePolicy_ShouldSignOut -->
+**Rules.** Required. One of: N/A, Planned Time, Actual Time, Time Sheet, Flexi Time, Variable Time.
 
-**What it is.** Whether employees on this policy must punch out at the end of the shift.
+## TimeEventRule {#TimePolicy.TimeEventRule}
+<!-- alias: loc:TimeEventRule, dom:TimePolicy_TimeEventRule -->
 
-**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
+**What it is.** Which punch counts when there are several in the window.
 
-**Rules.** Yes or no.
+**Example.** First In Last Out
 
-## ShouldBreakSignIn {#TimePolicy.ShouldBreakSignIn}
-<!-- alias: loc:ShouldBreakSignIn, dom:TimePolicy_ShouldBreakSignIn -->
+**Why it matters.** The first or last clock-in, and the first or last clock-out, as named. *N/A* takes no punch at all, so every day looks unpunched.
 
-**What it is.** Whether employees on this policy must punch back in after the break.
-
-**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
-
-**Rules.** Yes or no.
-
-## ShouldBreakSignOut {#TimePolicy.ShouldBreakSignOut}
-<!-- alias: loc:ShouldBreakSignOut, dom:TimePolicy_ShouldBreakSignOut -->
-
-**What it is.** Whether employees on this policy must punch out for the break.
-
-**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
-
-**Rules.** Yes or no.
-
-## MarkWeekoffOnHoliday {#TimePolicy.MarkWeekoffOnHoliday}
-<!-- alias: loc:MarkWeekoffOnHoliday, dom:TimePolicy_MarkWeekoffOnHoliday -->
-
-**What it is.** Whether a public holiday that falls on a weekly off counts as a weekly off.
-
-**Why it matters.** Ticked, and only when basic pay (wagetype `1000`) is on *Fixed Days Per Month*, such a day is treated as a weekly off rather than a public holiday.
-
-**Rules.** Yes or no.
-
-## IsFaceRequired {#TimePolicy.IsFaceRequired}
-<!-- alias: loc:IsFaceRequired, dom:TimePolicy_IsFaceRequired -->
-
-**What it is.** Whether face recognition is required when punching.
-
-**Why it matters.** Read by the self-service Geo Punch screen, together with the self-service setting Allow Geolocation Selfie: a selfie is required with each geo punch only when both are on.
-
-**Rules.** Yes or no.
-
-## CalcLateInAfterTolerance {#TimePolicy.CalcLateInAfterTolerance}
-<!-- alias: loc:CalcLateInAfterTolerance, dom:TimePolicy_CalcLateInAfterTolerance -->
-
-**What it is.** Whether lateness beyond the tolerance is deducted only for the minutes above it.
-
-**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
-
-**Rules.** Yes or no.
-
-## LateInTolerance {#TimePolicy.LateInTolerance}
-<!-- alias: loc:LateInTolerance, dom:TimePolicy_LateInTolerance -->
-
-**What it is.** The minutes of lateness allowed before anything is deducted.
-
-**Example.** `10`
-
-**Why it matters.** Lateness up to this many minutes is not deducted. Beyond it, the whole lateness is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
-
-**Rules.** Optional. Number.
-
-## CalcEarlyOutAfterTolerance {#TimePolicy.CalcEarlyOutAfterTolerance}
-<!-- alias: loc:CalcEarlyOutAfterTolerance, dom:TimePolicy_CalcEarlyOutAfterTolerance -->
-
-**What it is.** Whether early leaving beyond the tolerance is deducted only for the minutes above it.
-
-**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
-
-**Rules.** Yes or no.
-
-## EarlyOutTolerance {#TimePolicy.EarlyOutTolerance}
-<!-- alias: loc:EarlyOutTolerance, dom:TimePolicy_EarlyOutTolerance -->
-
-**What it is.** The minutes of early leaving allowed before anything is deducted.
-
-**Example.** `10`
-
-**Why it matters.** Early leaving up to this many minutes is not deducted. Beyond it, the whole early leaving is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
-
-**Rules.** Optional. Number.
-
-## CalcBreakLateInAfterTolerance {#TimePolicy.CalcBreakLateInAfterTolerance}
-<!-- alias: loc:CalcBreakLateInAfterTolerance, dom:TimePolicy_CalcBreakLateInAfterTolerance -->
-
-**What it is.** Whether lateness back from the break beyond the tolerance is deducted only for the minutes above it.
-
-**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
-
-**Rules.** Yes or no.
-
-## BreakLateInTolerance {#TimePolicy.BreakLateInTolerance}
-<!-- alias: loc:BreakLateInTolerance, dom:TimePolicy_BreakLateInTolerance -->
-
-**What it is.** The minutes of lateness back from the break allowed before anything is deducted.
-
-**Example.** `5`
-
-**Why it matters.** Lateness back from the break up to this many minutes is not deducted. Beyond it, the whole lateness back from the break is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
-
-**Rules.** Optional. Number.
-
-## CalcBreakEarlyOutAfterTolerance {#TimePolicy.CalcBreakEarlyOutAfterTolerance}
-<!-- alias: loc:CalcBreakEarlyOutAfterTolerance, dom:TimePolicy_CalcBreakEarlyOutAfterTolerance -->
-
-**What it is.** Whether leaving early for the break beyond the tolerance is deducted only for the minutes above it.
-
-**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
-
-**Rules.** Yes or no.
-
-## BreakEarlyOutTolerance {#TimePolicy.BreakEarlyOutTolerance}
-<!-- alias: loc:BreakEarlyOutTolerance, dom:TimePolicy_BreakEarlyOutTolerance -->
-
-**What it is.** The minutes of leaving early for the break allowed before anything is deducted.
-
-**Example.** `5`
-
-**Why it matters.** Leaving early for the break up to this many minutes is not deducted. Beyond it, the whole leaving early for the break is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
-
-**Rules.** Optional. Number.
+**Rules.** Required. One of: N/A, First In First Out, First In Last Out, Last In First Out, Last In Last Out.
 
 ## MonthlyToleranceType {#TimePolicy.MonthlyToleranceType}
 <!-- alias: loc:MonthlyToleranceType, dom:TimePolicy_MonthlyToleranceType -->
@@ -173,64 +61,6 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **Rules.** Optional. Number.
 
-## MonthlyLateInTolerance {#TimePolicy.MonthlyLateInTolerance}
-<!-- alias: loc:MonthlyLateInTolerance, dom:TimePolicy_MonthlyLateInTolerance -->
-
-**What it is.** Monthly minutes of lateness allowed.
-
-**Why it matters.** Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.
-
-**Rules.** Optional. Number.
-
-## MonthlyEarlyOutTolerance {#TimePolicy.MonthlyEarlyOutTolerance}
-<!-- alias: loc:MonthlyEarlyOutTolerance, dom:TimePolicy_MonthlyEarlyOutTolerance -->
-
-**What it is.** Monthly minutes of early leaving allowed.
-
-**Why it matters.** Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.
-
-**Rules.** Optional. Number.
-
-## ClockInLimit {#TimePolicy.ClockInLimit}
-<!-- alias: loc:ClockInLimit, dom:TimePolicy_ClockInLimit -->
-
-**What it is.** How many minutes either side of the shift start the time engine looks for that punch.
-
-**Example.** `120`
-
-**Why it matters.** Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.
-
-**Rules.** Optional. Number.
-
-## ClockOutLimit {#TimePolicy.ClockOutLimit}
-<!-- alias: loc:ClockOutLimit, dom:TimePolicy_ClockOutLimit -->
-
-**What it is.** How many minutes either side of the shift end the time engine looks for that punch.
-
-**Example.** `240`
-
-**Why it matters.** Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.
-
-**Rules.** Optional. Number.
-
-## BreakInLimit {#TimePolicy.BreakInLimit}
-<!-- alias: loc:BreakInLimit, dom:TimePolicy_BreakInLimit -->
-
-**What it is.** How many minutes either side of the break end the time engine looks for the back-from-break punch.
-
-**Example.** `30`
-
-**Rules.** Optional. Number.
-
-## BreakOutLimit {#TimePolicy.BreakOutLimit}
-<!-- alias: loc:BreakOutLimit, dom:TimePolicy_BreakOutLimit -->
-
-**What it is.** How many minutes either side of the break start the time engine looks for the out-for-break punch.
-
-**Example.** `30`
-
-**Rules.** Optional. Number.
-
 ## OtMinLimit {#TimePolicy.OTMinLimit}
 <!-- alias: loc:OtMinLimit, dom:TimePolicy_OtMinLimit -->
 
@@ -242,27 +72,14 @@ The punch-location and punch-notification settings at the end of the form are no
 
 **Rules.** Optional. Number.
 
-## TimeEventRule {#TimePolicy.TimeEventRule}
-<!-- alias: loc:TimeEventRule, dom:TimePolicy_TimeEventRule -->
+## MarkWeekoffOnHoliday {#TimePolicy.MarkWeekoffOnHoliday}
+<!-- alias: loc:MarkWeekoffOnHoliday, dom:TimePolicy_MarkWeekoffOnHoliday -->
 
-**What it is.** Which punch counts when there are several in the window.
+**What it is.** Whether a public holiday that falls on a weekly off counts as a weekly off.
 
-**Example.** First In Last Out
+**Why it matters.** Ticked, and only when basic pay (wagetype `1000`) is on *Fixed Days Per Month*, such a day is treated as a weekly off rather than a public holiday.
 
-**Why it matters.** The first or last clock-in, and the first or last clock-out, as named. *N/A* takes no punch at all, so every day looks unpunched.
-
-**Rules.** Required. One of: N/A, First In First Out, First In Last Out, Last In First Out, Last In Last Out.
-
-## TimeMgmtStatus {#TimePolicy.TimeMgmtStatus}
-<!-- alias: loc:TimeMgmtStatus, dom:TimePolicy_TimeMgmtStatus -->
-
-**What it is.** How attendance is worked out for employees on this policy.
-
-**Example.** Actual Time
-
-**Why it matters.** See the overview for what each status does.
-
-**Rules.** Required. One of: N/A, Planned Time, Actual Time, Time Sheet, Flexi Time, Variable Time.
+**Rules.** Yes or no.
 
 ## AllowPunchInFromWorkLocationOnly {#TimePolicy.AllowPunchInFromWorkLocationOnly}
 <!-- alias: loc:AllowPunchInFromWorkLocationOnly, dom:TimePolicy_AllowPunchInFromWorkLocationOnly -->
@@ -299,6 +116,113 @@ The punch-location and punch-notification settings at the end of the form are no
 **Why it matters.** Read by the self-service Geo Punch screen. When it is on, the employee's extended work locations that are valid today (including their last day) are offered for clock-out, and the punch is checked against the chosen location's range.
 
 **Rules.** Yes or no.
+
+## IsFaceRequired {#TimePolicy.IsFaceRequired}
+<!-- alias: loc:IsFaceRequired, dom:TimePolicy_IsFaceRequired -->
+
+**What it is.** Whether face recognition is required when punching.
+
+**Why it matters.** Read by the self-service Geo Punch screen, together with the self-service setting Allow Geolocation Selfie: a selfie is required with each geo punch only when both are on.
+
+**Rules.** Yes or no.
+
+## ShouldSignIn {#TimePolicy.ShouldSignIn}
+<!-- alias: loc:ShouldSignIn, dom:TimePolicy_ShouldSignIn -->
+
+**What it is.** Whether employees on this policy must punch in at the start of the shift.
+
+**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
+
+**Rules.** Yes or no.
+
+## ShouldSignOut {#TimePolicy.ShouldSignOut}
+<!-- alias: loc:ShouldSignOut, dom:TimePolicy_ShouldSignOut -->
+
+**What it is.** Whether employees on this policy must punch out at the end of the shift.
+
+**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
+
+**Rules.** Yes or no.
+
+## CalcLateInAfterTolerance {#TimePolicy.CalcLateInAfterTolerance}
+<!-- alias: loc:CalcLateInAfterTolerance, dom:TimePolicy_CalcLateInAfterTolerance -->
+
+**What it is.** Whether lateness beyond the tolerance is deducted only for the minutes above it.
+
+**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
+
+**Rules.** Yes or no.
+
+## CalcEarlyOutAfterTolerance {#TimePolicy.CalcEarlyOutAfterTolerance}
+<!-- alias: loc:CalcEarlyOutAfterTolerance, dom:TimePolicy_CalcEarlyOutAfterTolerance -->
+
+**What it is.** Whether early leaving beyond the tolerance is deducted only for the minutes above it.
+
+**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
+
+**Rules.** Yes or no.
+
+## ClockInLimit {#TimePolicy.ClockInLimit}
+<!-- alias: loc:ClockInLimit, dom:TimePolicy_ClockInLimit -->
+
+**What it is.** How many minutes either side of the shift start the time engine looks for that punch.
+
+**Example.** `120`
+
+**Why it matters.** Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.
+
+**Rules.** Optional. Number.
+
+## ClockOutLimit {#TimePolicy.ClockOutLimit}
+<!-- alias: loc:ClockOutLimit, dom:TimePolicy_ClockOutLimit -->
+
+**What it is.** How many minutes either side of the shift end the time engine looks for that punch.
+
+**Example.** `240`
+
+**Why it matters.** Punches outside the window are not taken as that punch. On public holidays, weekly offs and rest days the whole day is searched instead.
+
+**Rules.** Optional. Number.
+
+## LateInTolerance {#TimePolicy.LateInTolerance}
+<!-- alias: loc:LateInTolerance, dom:TimePolicy_LateInTolerance -->
+
+**What it is.** The minutes of lateness allowed before anything is deducted.
+
+**Example.** `10`
+
+**Why it matters.** Lateness up to this many minutes is not deducted. Beyond it, the whole lateness is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
+
+**Rules.** Optional. Number.
+
+## EarlyOutTolerance {#TimePolicy.EarlyOutTolerance}
+<!-- alias: loc:EarlyOutTolerance, dom:TimePolicy_EarlyOutTolerance -->
+
+**What it is.** The minutes of early leaving allowed before anything is deducted.
+
+**Example.** `10`
+
+**Why it matters.** Early leaving up to this many minutes is not deducted. Beyond it, the whole early leaving is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
+
+**Rules.** Optional. Number.
+
+## MonthlyLateInTolerance {#TimePolicy.MonthlyLateInTolerance}
+<!-- alias: loc:MonthlyLateInTolerance, dom:TimePolicy_MonthlyLateInTolerance -->
+
+**What it is.** Monthly minutes of lateness allowed.
+
+**Why it matters.** Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.
+
+**Rules.** Optional. Number.
+
+## MonthlyEarlyOutTolerance {#TimePolicy.MonthlyEarlyOutTolerance}
+<!-- alias: loc:MonthlyEarlyOutTolerance, dom:TimePolicy_MonthlyEarlyOutTolerance -->
+
+**What it is.** Monthly minutes of early leaving allowed.
+
+**Why it matters.** Used only by the custom monthly attendance with tolerance report (019); the time engine does not read it.
+
+**Rules.** Optional. Number.
 
 ## IsMissedPunchInNotiEnabled {#TimePolicy.IsMissedPunchInNotiEnabled}
 <!-- alias: loc:IsMissedPunchInNotiEnabled, dom:TimePolicy_IsMissedPunchInNotiEnabled -->
@@ -369,5 +293,81 @@ The punch-location and punch-notification settings at the end of the form are no
 **What it is.** Minutes of early leaving before it is notified.
 
 **Why it matters.** Not read at present.
+
+**Rules.** Optional. Number.
+
+## ShouldBreakSignIn {#TimePolicy.ShouldBreakSignIn}
+<!-- alias: loc:ShouldBreakSignIn, dom:TimePolicy_ShouldBreakSignIn -->
+
+**What it is.** Whether employees on this policy must punch back in after the break.
+
+**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
+
+**Rules.** Yes or no.
+
+## BreakInLimit {#TimePolicy.BreakInLimit}
+<!-- alias: loc:BreakInLimit, dom:TimePolicy_BreakInLimit -->
+
+**What it is.** How many minutes either side of the break end the time engine looks for the back-from-break punch.
+
+**Example.** `30`
+
+**Rules.** Optional. Number.
+
+## ShouldBreakSignOut {#TimePolicy.ShouldBreakSignOut}
+<!-- alias: loc:ShouldBreakSignOut, dom:TimePolicy_ShouldBreakSignOut -->
+
+**What it is.** Whether employees on this policy must punch out for the break.
+
+**Why it matters.** Ticked, a working day with this punch missing counts as absent for the planned working time, and lateness or early leaving is measured only when the punch exists. Unticked, the punch is not expected.
+
+**Rules.** Yes or no.
+
+## BreakOutLimit {#TimePolicy.BreakOutLimit}
+<!-- alias: loc:BreakOutLimit, dom:TimePolicy_BreakOutLimit -->
+
+**What it is.** How many minutes either side of the break start the time engine looks for the out-for-break punch.
+
+**Example.** `30`
+
+**Rules.** Optional. Number.
+
+## CalcBreakLateInAfterTolerance {#TimePolicy.CalcBreakLateInAfterTolerance}
+<!-- alias: loc:CalcBreakLateInAfterTolerance, dom:TimePolicy_CalcBreakLateInAfterTolerance -->
+
+**What it is.** Whether lateness back from the break beyond the tolerance is deducted only for the minutes above it.
+
+**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
+
+**Rules.** Yes or no.
+
+## BreakLateInTolerance {#TimePolicy.BreakLateInTolerance}
+<!-- alias: loc:BreakLateInTolerance, dom:TimePolicy_BreakLateInTolerance -->
+
+**What it is.** The minutes of lateness back from the break allowed before anything is deducted.
+
+**Example.** `5`
+
+**Why it matters.** Lateness back from the break up to this many minutes is not deducted. Beyond it, the whole lateness back from the break is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
+
+**Rules.** Optional. Number.
+
+## CalcBreakEarlyOutAfterTolerance {#TimePolicy.CalcBreakEarlyOutAfterTolerance}
+<!-- alias: loc:CalcBreakEarlyOutAfterTolerance, dom:TimePolicy_CalcBreakEarlyOutAfterTolerance -->
+
+**What it is.** Whether leaving early for the break beyond the tolerance is deducted only for the minutes above it.
+
+**Why it matters.** Ticked, a 15-minute late arrival with a 10-minute tolerance deducts 5 minutes. Unticked, it deducts all 15.
+
+**Rules.** Yes or no.
+
+## BreakEarlyOutTolerance {#TimePolicy.BreakEarlyOutTolerance}
+<!-- alias: loc:BreakEarlyOutTolerance, dom:TimePolicy_BreakEarlyOutTolerance -->
+
+**What it is.** The minutes of leaving early for the break allowed before anything is deducted.
+
+**Example.** `5`
+
+**Why it matters.** Leaving early for the break up to this many minutes is not deducted. Beyond it, the whole leaving early for the break is deducted -- or only the part above the tolerance, if the matching **after tolerance** box is ticked.
 
 **Rules.** Optional. Number.

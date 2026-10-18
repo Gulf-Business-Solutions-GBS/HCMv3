@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "مدفوعات المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupPayment",
-  "overviewHtml": "<p>دفعة دائمة لكل من في المجموعة الفرعية، تُصرف عبر نوع أجر.</p><p>ولا يُستخدم إلا فاصلان للدفع: فالأسطر <em>سنوية</em> تُصرف مرة في السنة في <strong>شهر الدفع</strong> الخاص بها، والأسطر <em>نهاية الخدمة</em> تُصرف في تشغيل نهاية خدمة الموظف. أما الأسطر ذات الفواصل الأخرى فلا تُصرف.</p>",
+  "overviewHtml": "<p>دفعة دائمة لكل من في الدرجة، تُصرف عبر نوع أجر.</p><p>ولا يُستخدم إلا فاصلان للدفع: فالأسطر <em>سنوية</em> تُصرف مرة في السنة في <strong>شهر الدفع</strong> الخاص بها، والأسطر <em>نهاية الخدمة</em> تُصرف في تشغيل نهاية خدمة الموظف. أما الأسطر ذات الفواصل الأخرى فلا تُصرف.</p>",
   "aliasIndex": {
     "loc:WageType": "EmployeeSubGroupPayment.WageTypeId",
     "dom:EmployeeSubGroupPayment_WageTypeId": "EmployeeSubGroupPayment.WageTypeId",

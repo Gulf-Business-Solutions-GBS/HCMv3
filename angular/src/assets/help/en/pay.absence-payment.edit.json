@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Payments — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsencePayment",
-  "overviewHtml": "<p>Which wagetype pays a type of absence. Not read at present: leave is paid under the wagetype set on the absence type itself, and nothing reads this list.</p>",
+  "overviewHtml": "<p>Which wagetype pays a type of absence. Not read at present: leave is paid under the wagetype set on the leave type itself, and nothing reads this list.</p>",
   "aliasIndex": {
     "loc:AbsenceTypes": "AbsencePayment.AbsenceTypeId",
     "dom:AbsencePayment_AbsenceTypeId": "AbsencePayment.AbsenceTypeId",
@@ -19,9 +19,9 @@
         "loc:AbsenceTypes",
         "dom:AbsencePayment_AbsenceTypeId"
       ],
-      "rules": "Required. Chosen from Absence Type master data.",
+      "rules": "Required. Chosen from Leave Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The absence type.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "html": "<p><strong>What it is.</strong> The leave type.</p><p><strong>Example.</strong> Annual Leave</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -33,7 +33,7 @@
         "loc:WageTypes",
         "dom:AbsencePayment_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype it would be paid under.</p><p><strong>Example.</strong> Annual Leave Pay</p>",
       "adminHtml": "",

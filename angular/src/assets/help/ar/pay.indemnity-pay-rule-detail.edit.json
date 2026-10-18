@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل قواعد صرف مكافأة نهاية الخدمة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.IndemnityPayRuleDetail",
-  "overviewHtml": "<p>خطوة واحدة من قاعدة دفع المكافأة، بحسب سنوات الخدمة — مثل الاستقالة بعد ثلاث إلى خمس سنوات تُصرف بالنصف.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>مجموعة الموظفين</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
+  "overviewHtml": "<p>خطوة واحدة من قاعدة دفع المكافأة، بحسب سنوات الخدمة — مثل الاستقالة بعد ثلاث إلى خمس سنوات تُصرف بالنصف.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>ملف الراتب</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
   "aliasIndex": {
     "loc:IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",
     "dom:IndemnityPayRuleDetail_IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",

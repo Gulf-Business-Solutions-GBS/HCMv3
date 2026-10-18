@@ -23,7 +23,7 @@ permissions: [Pages.Workflow.WorkflowRoles.Create]
 **القواعد.** إلزامي. إحدى القيم: لا شيء، الشركة، الإدارة، الفرع، مركز التكلفة.
 
 ## OrganizationUnit {#WorkflowRole.WorkflowRoleOrgId}
-<!-- alias: loc:OrganizationUnit, dom:WorkflowRole_WorkflowRoleOrgId -->
+<!-- alias: loc:OrgLevel, dom:WorkflowRole_WorkflowRoleOrgId -->
 
 **ما هو.** مستوى وحدة تنظيمية للدور.
 

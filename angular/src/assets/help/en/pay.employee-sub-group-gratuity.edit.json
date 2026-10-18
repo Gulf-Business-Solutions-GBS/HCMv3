@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Gratuities — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupGratuity",
-  "overviewHtml": "<p>The sub group's end-of-service indemnity scale: how many days' pay each year of service earns, in slabs by years of service.</p><p>Service is split across the slabs in order of <strong>Change Year</strong>. Kuwait's law, for example, is two slabs: 15 days a year up to year 5, and 30 days a year after that.</p>",
+  "overviewHtml": "<p>The grade's end-of-service indemnity scale: how many days' pay each year of service earns, in slabs by years of service.</p><p>Service is split across the slabs in order of <strong>Change Year</strong>. Kuwait's law, for example, is two slabs: 15 days a year up to year 5, and 30 days a year after that.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupGratuity.StartDate",
     "dom:EmployeeSubGroupGratuity_StartDate": "EmployeeSubGroupGratuity.StartDate",

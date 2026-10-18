@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Benefits — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefit",
-  "overviewHtml": "<p>A benefit type the sub group is entitled to, with a maximum amount.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
+  "overviewHtml": "<p>A benefit type the grade is entitled to, with a maximum amount.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
   "aliasIndex": {
     "loc:BenefitType": "EmployeeSubGroupBenefit.BenefitTypeId",
     "dom:EmployeeSubGroupBenefit_BenefitTypeId": "EmployeeSubGroupBenefit.BenefitTypeId",

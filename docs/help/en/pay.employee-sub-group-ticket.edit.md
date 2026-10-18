@@ -11,9 +11,9 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupTickets.Create]
 
 ## Overview
 
-The sub group's air ticket entitlement for one ticket type -- the employee's own ticket or a dependant's: how many tickets, over what period, and how each ticket is valued.
+The grade's air ticket entitlement for one ticket type -- the employee's own ticket or a dependant's: how many tickets, over what period, and how each ticket is valued.
 
-How a ticket is valued is chosen on the sub group itself (**Air Ticket Pay Type**); this row supplies the amounts that choice uses.
+How a ticket is valued is chosen on the grade itself (**Air Ticket Pay Type**); this row supplies the amounts that choice uses.
 
 ## TicketType {#EmployeeSubGroupTicket.TicketTypeId}
 <!-- alias: loc:TicketType, dom:EmployeeSubGroupTicket_TicketTypeId -->

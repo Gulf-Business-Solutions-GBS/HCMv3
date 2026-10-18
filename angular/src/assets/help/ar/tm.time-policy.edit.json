@@ -11,56 +11,18 @@
     "dom:TimePolicy_NameEn": "TimePolicy.NameEn",
     "loc:NameAr": "TimePolicy.NameAr",
     "dom:TimePolicy_NameAr": "TimePolicy.NameAr",
-    "loc:ShouldSignIn": "TimePolicy.ShouldSignIn",
-    "dom:TimePolicy_ShouldSignIn": "TimePolicy.ShouldSignIn",
-    "loc:ShouldSignOut": "TimePolicy.ShouldSignOut",
-    "dom:TimePolicy_ShouldSignOut": "TimePolicy.ShouldSignOut",
-    "loc:ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
-    "dom:TimePolicy_ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
-    "loc:ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
-    "dom:TimePolicy_ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
-    "loc:MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
-    "dom:TimePolicy_MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
-    "loc:IsFaceRequired": "TimePolicy.IsFaceRequired",
-    "dom:TimePolicy_IsFaceRequired": "TimePolicy.IsFaceRequired",
-    "loc:CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
-    "dom:TimePolicy_CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
-    "loc:LateInTolerance": "TimePolicy.LateInTolerance",
-    "dom:TimePolicy_LateInTolerance": "TimePolicy.LateInTolerance",
-    "loc:CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
-    "dom:TimePolicy_CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
-    "loc:EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
-    "dom:TimePolicy_EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
-    "loc:CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
-    "dom:TimePolicy_CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
-    "loc:BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
-    "dom:TimePolicy_BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
-    "loc:CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
-    "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
-    "loc:BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance",
-    "dom:TimePolicy_BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance",
+    "loc:TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "dom:TimePolicy_TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "loc:TimeEventRule": "TimePolicy.TimeEventRule",
+    "dom:TimePolicy_TimeEventRule": "TimePolicy.TimeEventRule",
     "loc:MonthlyToleranceType": "TimePolicy.MonthlyToleranceType",
     "dom:TimePolicy_MonthlyToleranceType": "TimePolicy.MonthlyToleranceType",
     "loc:MonthlyAfterTolerance": "TimePolicy.MonthlyAfterTolerance",
     "dom:TimePolicy_MonthlyAfterTolerance": "TimePolicy.MonthlyAfterTolerance",
-    "loc:MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
-    "dom:TimePolicy_MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
-    "loc:MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
-    "dom:TimePolicy_MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
-    "loc:ClockInLimit": "TimePolicy.ClockInLimit",
-    "dom:TimePolicy_ClockInLimit": "TimePolicy.ClockInLimit",
-    "loc:ClockOutLimit": "TimePolicy.ClockOutLimit",
-    "dom:TimePolicy_ClockOutLimit": "TimePolicy.ClockOutLimit",
-    "loc:BreakInLimit": "TimePolicy.BreakInLimit",
-    "dom:TimePolicy_BreakInLimit": "TimePolicy.BreakInLimit",
-    "loc:BreakOutLimit": "TimePolicy.BreakOutLimit",
-    "dom:TimePolicy_BreakOutLimit": "TimePolicy.BreakOutLimit",
     "loc:OtMinLimit": "TimePolicy.OTMinLimit",
     "dom:TimePolicy_OtMinLimit": "TimePolicy.OTMinLimit",
-    "loc:TimeEventRule": "TimePolicy.TimeEventRule",
-    "dom:TimePolicy_TimeEventRule": "TimePolicy.TimeEventRule",
-    "loc:TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
-    "dom:TimePolicy_TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "loc:MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
+    "dom:TimePolicy_MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
     "loc:AllowPunchInFromWorkLocationOnly": "TimePolicy.AllowPunchInFromWorkLocationOnly",
     "dom:TimePolicy_AllowPunchInFromWorkLocationOnly": "TimePolicy.AllowPunchInFromWorkLocationOnly",
     "loc:AllowPunchOutFromWorkLocationOnly": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
@@ -69,6 +31,28 @@
     "dom:TimePolicy_AllowPunchInFromExtWorklocation": "TimePolicy.AllowPunchInFromExtWorklocation",
     "loc:AllowPunchOutFromExtWorklocation": "TimePolicy.AllowPunchOutFromExtWorklocation",
     "dom:TimePolicy_AllowPunchOutFromExtWorklocation": "TimePolicy.AllowPunchOutFromExtWorklocation",
+    "loc:IsFaceRequired": "TimePolicy.IsFaceRequired",
+    "dom:TimePolicy_IsFaceRequired": "TimePolicy.IsFaceRequired",
+    "loc:ShouldSignIn": "TimePolicy.ShouldSignIn",
+    "dom:TimePolicy_ShouldSignIn": "TimePolicy.ShouldSignIn",
+    "loc:ShouldSignOut": "TimePolicy.ShouldSignOut",
+    "dom:TimePolicy_ShouldSignOut": "TimePolicy.ShouldSignOut",
+    "loc:CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
+    "dom:TimePolicy_CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
+    "loc:CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
+    "dom:TimePolicy_CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
+    "loc:ClockInLimit": "TimePolicy.ClockInLimit",
+    "dom:TimePolicy_ClockInLimit": "TimePolicy.ClockInLimit",
+    "loc:ClockOutLimit": "TimePolicy.ClockOutLimit",
+    "dom:TimePolicy_ClockOutLimit": "TimePolicy.ClockOutLimit",
+    "loc:LateInTolerance": "TimePolicy.LateInTolerance",
+    "dom:TimePolicy_LateInTolerance": "TimePolicy.LateInTolerance",
+    "loc:EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
+    "dom:TimePolicy_EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
+    "loc:MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
+    "dom:TimePolicy_MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
+    "loc:MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
+    "dom:TimePolicy_MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
     "loc:IsMissedPunchInNotiEnabled": "TimePolicy.IsMissedPunchInNotiEnabled",
     "dom:TimePolicy_IsMissedPunchInNotiEnabled": "TimePolicy.IsMissedPunchInNotiEnabled",
     "loc:MissedPunchInNotiTimeLimit": "TimePolicy.MissedPunchInNotiTimeLimit",
@@ -84,7 +68,23 @@
     "loc:IsEarlyPunchOutNotiEnabled": "TimePolicy.IsEarlyPunchOutNotiEnabled",
     "dom:TimePolicy_IsEarlyPunchOutNotiEnabled": "TimePolicy.IsEarlyPunchOutNotiEnabled",
     "loc:EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit",
-    "dom:TimePolicy_EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit"
+    "dom:TimePolicy_EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit",
+    "loc:ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
+    "dom:TimePolicy_ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
+    "loc:BreakInLimit": "TimePolicy.BreakInLimit",
+    "dom:TimePolicy_BreakInLimit": "TimePolicy.BreakInLimit",
+    "loc:ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
+    "dom:TimePolicy_ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
+    "loc:BreakOutLimit": "TimePolicy.BreakOutLimit",
+    "dom:TimePolicy_BreakOutLimit": "TimePolicy.BreakOutLimit",
+    "loc:CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
+    "dom:TimePolicy_CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
+    "loc:BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
+    "dom:TimePolicy_BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
+    "loc:CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+    "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+    "loc:BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance",
+    "dom:TimePolicy_BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance"
   },
   "fields": [
     {
@@ -130,198 +130,30 @@
       "stub": false
     },
     {
-      "id": "TimePolicy.ShouldSignIn",
-      "label": "ShouldSignIn",
+      "id": "TimePolicy.TimeMgmtStatus",
+      "label": "TimeMgmtStatus",
       "section": "TimePolicies",
       "aliases": [
-        "loc:ShouldSignIn",
-        "dom:TimePolicy_ShouldSignIn"
+        "loc:TimeMgmtStatus",
+        "dom:TimePolicy_TimeMgmtStatus"
       ],
-      "rules": "نعم أو لا.",
+      "rules": "إلزامي. إحدى القيم: لا ينطبق، الوقت المخطط، الوقت الفعلي، كشف الدوام، الوقت المرن، الوقت المتغير.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الدخول في بداية المناوبة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
+      "html": "<p><strong>ما هو.</strong> طريقة احتساب الحضور لموظفي هذه السياسة.</p><p><strong>مثال.</strong> الوقت الفعلي</p><p><strong>لماذا يهم.</strong> انظر النظرة العامة لما تفعله كل حالة.</p>",
       "adminHtml": "",
       "stub": false
     },
     {
-      "id": "TimePolicy.ShouldSignOut",
-      "label": "ShouldSignOut",
+      "id": "TimePolicy.TimeEventRule",
+      "label": "TimeEventRule",
       "section": "TimePolicies",
       "aliases": [
-        "loc:ShouldSignOut",
-        "dom:TimePolicy_ShouldSignOut"
+        "loc:TimeEventRule",
+        "dom:TimePolicy_TimeEventRule"
       ],
-      "rules": "نعم أو لا.",
+      "rules": "إلزامي. إحدى القيم: لا ينطبق، أول دخول وأول خروج، أول دخول وآخر خروج، آخر دخول وأول خروج، آخر دخول وآخر خروج.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج في نهاية المناوبة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.ShouldBreakSignIn",
-      "label": "ShouldBreakSignIn",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:ShouldBreakSignIn",
-        "dom:TimePolicy_ShouldBreakSignIn"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة العودة من الاستراحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.ShouldBreakSignOut",
-      "label": "ShouldBreakSignOut",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:ShouldBreakSignOut",
-        "dom:TimePolicy_ShouldBreakSignOut"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج إلى الاستراحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.MarkWeekoffOnHoliday",
-      "label": "MarkWeekoffOnHoliday",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:MarkWeekoffOnHoliday",
-        "dom:TimePolicy_MarkWeekoffOnHoliday"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت العطلة الرسمية الواقعة في يوم راحة أسبوعية تُعدّ راحة أسبوعية.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، وفقط إذا كان الراتب الأساسي (نوع الأجر <code>1000</code>) على <em>أيام ثابتة شهرياً</em>، يُعامل هذا اليوم راحةً أسبوعية لا عطلة رسمية.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.IsFaceRequired",
-      "label": "IsFaceRequired",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:IsFaceRequired",
-        "dom:TimePolicy_IsFaceRequired"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان التعرف على الوجه مطلوباً عند البصمة.</p><p><strong>لماذا يهم.</strong> تقرأه شاشة البصمة الجغرافية في الخدمة الذاتية مع إعداد الخدمة الذاتية الخاص بالسماح بالصورة الشخصية: تُطلب صورة شخصية مع كل بصمة جغرافية فقط عند تفعيل الإعدادين معاً.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.CalcLateInAfterTolerance",
-      "label": "CalcLateInAfterTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:CalcLateInAfterTolerance",
-        "dom:TimePolicy_CalcLateInAfterTolerance"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخير الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.LateInTolerance",
-      "label": "LateInTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:LateInTolerance",
-        "dom:TimePolicy_LateInTolerance"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> دقائق التأخير المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُخصم التأخير حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخير كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.CalcEarlyOutAfterTolerance",
-      "label": "CalcEarlyOutAfterTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:CalcEarlyOutAfterTolerance",
-        "dom:TimePolicy_CalcEarlyOutAfterTolerance"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان الانصراف المبكر الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.EarlyOutTolerance",
-      "label": "EarlyOutTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:EarlyOutTolerance",
-        "dom:TimePolicy_EarlyOutTolerance"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُخصم الانصراف المبكر حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الانصراف المبكر كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.CalcBreakLateInAfterTolerance",
-      "label": "CalcBreakLateInAfterTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:CalcBreakLateInAfterTolerance",
-        "dom:TimePolicy_CalcBreakLateInAfterTolerance"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخر في العودة من الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.BreakLateInTolerance",
-      "label": "BreakLateInTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:BreakLateInTolerance",
-        "dom:TimePolicy_BreakLateInTolerance"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُخصم التأخر في العودة من الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخر في العودة من الاستراحة كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
-      "label": "CalcBreakEarlyOutAfterTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:CalcBreakEarlyOutAfterTolerance",
-        "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان الخروج المبكر إلى الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.BreakEarlyOutTolerance",
-      "label": "BreakEarlyOutTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:BreakEarlyOutTolerance",
-        "dom:TimePolicy_BreakEarlyOutTolerance"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُخصم الخروج المبكر إلى الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الخروج المبكر إلى الاستراحة كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
+      "html": "<p><strong>ما هو.</strong> أي بصمة تُحتسب عند وجود عدة بصمات في النافذة.</p><p><strong>مثال.</strong> أول دخول وآخر خروج</p><p><strong>لماذا يهم.</strong> أول دخول أو آخره، وأول خروج أو آخره، بحسب الاسم. أما <em>غير منطبق</em> فلا يأخذ أي بصمة، فيبدو كل يوم بلا بصمات.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -354,90 +186,6 @@
       "stub": false
     },
     {
-      "id": "TimePolicy.MonthlyLateInTolerance",
-      "label": "MonthlyLateInTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:MonthlyLateInTolerance",
-        "dom:TimePolicy_MonthlyLateInTolerance"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> دقائق التأخير المسموح بها شهرياً.</p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.MonthlyEarlyOutTolerance",
-      "label": "MonthlyEarlyOutTolerance",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:MonthlyEarlyOutTolerance",
-        "dom:TimePolicy_MonthlyEarlyOutTolerance"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المسموح بها شهرياً.</p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.ClockInLimit",
-      "label": "ClockInLimit",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:ClockInLimit",
-        "dom:TimePolicy_ClockInLimit"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل بداية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.</p><p><strong>مثال.</strong> <code>120</code></p><p><strong>لماذا يهم.</strong> البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.ClockOutLimit",
-      "label": "ClockOutLimit",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:ClockOutLimit",
-        "dom:TimePolicy_ClockOutLimit"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل نهاية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.</p><p><strong>مثال.</strong> <code>240</code></p><p><strong>لماذا يهم.</strong> البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.BreakInLimit",
-      "label": "BreakInLimit",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:BreakInLimit",
-        "dom:TimePolicy_BreakInLimit"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل نهاية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة العودة من الاستراحة.</p><p><strong>مثال.</strong> <code>30</code></p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.BreakOutLimit",
-      "label": "BreakOutLimit",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:BreakOutLimit",
-        "dom:TimePolicy_BreakOutLimit"
-      ],
-      "rules": "اختياري. رقم.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل بداية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة الخروج إلى الاستراحة.</p><p><strong>مثال.</strong> <code>30</code></p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
       "id": "TimePolicy.OTMinLimit",
       "label": "OtMinLimit",
       "section": "TimePolicies",
@@ -452,30 +200,16 @@
       "stub": false
     },
     {
-      "id": "TimePolicy.TimeEventRule",
-      "label": "TimeEventRule",
+      "id": "TimePolicy.MarkWeekoffOnHoliday",
+      "label": "MarkWeekoffOnHoliday",
       "section": "TimePolicies",
       "aliases": [
-        "loc:TimeEventRule",
-        "dom:TimePolicy_TimeEventRule"
+        "loc:MarkWeekoffOnHoliday",
+        "dom:TimePolicy_MarkWeekoffOnHoliday"
       ],
-      "rules": "إلزامي. إحدى القيم: NA، أول دخول وأول خروج، أول دخول وآخر خروج، آخر دخول وأول خروج، آخر دخول وآخر خروج.",
+      "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> أي بصمة تُحتسب عند وجود عدة بصمات في النافذة.</p><p><strong>مثال.</strong> أول دخول وآخر خروج</p><p><strong>لماذا يهم.</strong> أول دخول أو آخره، وأول خروج أو آخره، بحسب الاسم. أما <em>غير منطبق</em> فلا يأخذ أي بصمة، فيبدو كل يوم بلا بصمات.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "TimePolicy.TimeMgmtStatus",
-      "label": "TimeMgmtStatus",
-      "section": "TimePolicies",
-      "aliases": [
-        "loc:TimeMgmtStatus",
-        "dom:TimePolicy_TimeMgmtStatus"
-      ],
-      "rules": "إلزامي. إحدى القيم: NA، الوقت المخطط، الوقت الفعلي، كشف الدوام، الوقت المرن، الوقت المتغير.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> طريقة احتساب الحضور لموظفي هذه السياسة.</p><p><strong>مثال.</strong> الوقت الفعلي</p><p><strong>لماذا يهم.</strong> انظر النظرة العامة لما تفعله كل حالة.</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت العطلة الرسمية الواقعة في يوم راحة أسبوعية تُعدّ راحة أسبوعية.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، وفقط إذا كان الراتب الأساسي (نوع الأجر <code>1000</code>) على <em>أيام ثابتة شهرياً</em>، يُعامل هذا اليوم راحةً أسبوعية لا عطلة رسمية.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -532,6 +266,160 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما إذا كان تسجيل الخروج مسموحاً من موقع عمل خارجي.</p><p><strong>لماذا يهم.</strong> تقرأه شاشة البصمة الجغرافية في الخدمة الذاتية. عند تفعيله تُعرض مواقع العمل الإضافية للموظف السارية اليوم (بما في ذلك يومها الأخير) لبصمة الانصراف، ويُتحقق من البصمة وفق نطاق الموقع المختار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.IsFaceRequired",
+      "label": "IsFaceRequired",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsFaceRequired",
+        "dom:TimePolicy_IsFaceRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التعرف على الوجه مطلوباً عند البصمة.</p><p><strong>لماذا يهم.</strong> تقرأه شاشة البصمة الجغرافية في الخدمة الذاتية مع إعداد الخدمة الذاتية الخاص بالسماح بالصورة الشخصية: تُطلب صورة شخصية مع كل بصمة جغرافية فقط عند تفعيل الإعدادين معاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldSignIn",
+      "label": "ShouldSignIn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldSignIn",
+        "dom:TimePolicy_ShouldSignIn"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الدخول في بداية المناوبة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldSignOut",
+      "label": "ShouldSignOut",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldSignOut",
+        "dom:TimePolicy_ShouldSignOut"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج في نهاية المناوبة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcLateInAfterTolerance",
+      "label": "CalcLateInAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcLateInAfterTolerance",
+        "dom:TimePolicy_CalcLateInAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخير الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcEarlyOutAfterTolerance",
+      "label": "CalcEarlyOutAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcEarlyOutAfterTolerance",
+        "dom:TimePolicy_CalcEarlyOutAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الانصراف المبكر الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ClockInLimit",
+      "label": "ClockInLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ClockInLimit",
+        "dom:TimePolicy_ClockInLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل بداية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.</p><p><strong>مثال.</strong> <code>120</code></p><p><strong>لماذا يهم.</strong> البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ClockOutLimit",
+      "label": "ClockOutLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ClockOutLimit",
+        "dom:TimePolicy_ClockOutLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل نهاية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.</p><p><strong>مثال.</strong> <code>240</code></p><p><strong>لماذا يهم.</strong> البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.LateInTolerance",
+      "label": "LateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:LateInTolerance",
+        "dom:TimePolicy_LateInTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُخصم التأخير حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخير كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.EarlyOutTolerance",
+      "label": "EarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:EarlyOutTolerance",
+        "dom:TimePolicy_EarlyOutTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>10</code></p><p><strong>لماذا يهم.</strong> لا يُخصم الانصراف المبكر حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الانصراف المبكر كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MonthlyLateInTolerance",
+      "label": "MonthlyLateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyLateInTolerance",
+        "dom:TimePolicy_MonthlyLateInTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخير المسموح بها شهرياً.</p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.MonthlyEarlyOutTolerance",
+      "label": "MonthlyEarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyEarlyOutTolerance",
+        "dom:TimePolicy_MonthlyEarlyOutTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر المسموح بها شهرياً.</p><p><strong>لماذا يهم.</strong> لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -644,6 +532,118 @@
       "rules": "اختياري. رقم.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> دقائق الانصراف المبكر قبل الإشعار به.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldBreakSignIn",
+      "label": "ShouldBreakSignIn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldBreakSignIn",
+        "dom:TimePolicy_ShouldBreakSignIn"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة العودة من الاستراحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakInLimit",
+      "label": "BreakInLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakInLimit",
+        "dom:TimePolicy_BreakInLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل نهاية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة العودة من الاستراحة.</p><p><strong>مثال.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldBreakSignOut",
+      "label": "ShouldBreakSignOut",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldBreakSignOut",
+        "dom:TimePolicy_ShouldBreakSignOut"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج إلى الاستراحة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakOutLimit",
+      "label": "BreakOutLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakOutLimit",
+        "dom:TimePolicy_BreakOutLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الدقائق قبل بداية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة الخروج إلى الاستراحة.</p><p><strong>مثال.</strong> <code>30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcBreakLateInAfterTolerance",
+      "label": "CalcBreakLateInAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcBreakLateInAfterTolerance",
+        "dom:TimePolicy_CalcBreakLateInAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التأخر في العودة من الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakLateInTolerance",
+      "label": "BreakLateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakLateInTolerance",
+        "dom:TimePolicy_BreakLateInTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق التأخر في العودة من الاستراحة المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُخصم التأخر في العودة من الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخر في العودة من الاستراحة كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+      "label": "CalcBreakEarlyOutAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcBreakEarlyOutAfterTolerance",
+        "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الخروج المبكر إلى الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.BreakEarlyOutTolerance",
+      "label": "BreakEarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakEarlyOutTolerance",
+        "dom:TimePolicy_BreakEarlyOutTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> دقائق الخروج المبكر إلى الاستراحة المسموح بها قبل أي خصم.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> لا يُخصم الخروج المبكر إلى الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الخروج المبكر إلى الاستراحة كله — أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة <strong>بعد السماح</strong> المقابلة.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -183,7 +183,7 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> مجموعة الموظفين للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "html": "<p><strong>ما هو.</strong> ملف الراتب للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -197,7 +197,7 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> المجموعة الفرعية للموظفين للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "html": "<p><strong>ما هو.</strong> الدرجة للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
       "stub": false
     },

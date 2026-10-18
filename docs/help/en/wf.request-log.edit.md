@@ -34,7 +34,7 @@ One action taken on a request -- created, approved, rejected, sent back, escalat
 
 **Example.** Approved
 
-**Rules.** Required. One of: Created, Approved, Rejected, Escalated, Read, SentBack, Closed, Remarked, Assigned, Transferred, SentBackToCreator.
+**Rules.** Required. One of: Created, Approved, Rejected, Escalated, Read, SentBack, Closed, Remarked, Assigned, Transferred, SentBackToCreator, RecordedDirectly.
 
 ## WorkflowStep {#RequestLog.WorkflowStep}
 <!-- alias: loc:WorkflowStep, dom:RequestLog_WorkflowStep -->

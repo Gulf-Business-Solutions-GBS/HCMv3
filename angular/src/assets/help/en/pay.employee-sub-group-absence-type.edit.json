@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Absence Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAbsenceType",
-  "overviewHtml": "<p>Absence types listed against an employee sub group. Not read at present: entitlements come from the sub group's leave rules, and nothing reads this list.</p>",
+  "overviewHtml": "<p>Leave types listed against a grade. Not read at present: entitlements come from the grade's leave rules, and nothing reads this list.</p>",
   "aliasIndex": {
     "loc:AbsenceType": "EmployeeSubGroupAbsenceType.AbsenceTypeId",
     "dom:EmployeeSubGroupAbsenceType_AbsenceTypeId": "EmployeeSubGroupAbsenceType.AbsenceTypeId"
@@ -17,9 +17,9 @@
         "loc:AbsenceType",
         "dom:EmployeeSubGroupAbsenceType_AbsenceTypeId"
       ],
-      "rules": "Optional. Chosen from Absence Type master data.",
+      "rules": "Optional. Chosen from Leave Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> An absence type listed for the sub group.</p><p><strong>Example.</strong> Hajj Leave</p><p><strong>Why it matters.</strong> Each type can be listed once per sub group.</p>",
+      "html": "<p><strong>What it is.</strong> A leave type listed for the grade.</p><p><strong>Example.</strong> Hajj Leave</p><p><strong>Why it matters.</strong> Each type can be listed once per grade.</p>",
       "adminHtml": "",
       "stub": false
     }

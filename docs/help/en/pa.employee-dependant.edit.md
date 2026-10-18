@@ -38,7 +38,7 @@ Dependants feed health reimbursement entitlement, dependant air tickets, and the
 
 **Example.** Daughter
 
-**Why it matters.** Health reimbursement entitlement is set per dependant type on the employee's sub group.
+**Why it matters.** Health reimbursement entitlement is set per dependant type on the employee's grade.
 
 **Rules.** Required. Chosen from Dependant Type master data.
 

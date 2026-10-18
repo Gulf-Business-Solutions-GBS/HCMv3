@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Travel Per Diems — Create / Edit",
   "entity": "HCMv3.TravelManagement.TravelPerDiem",
-  "overviewHtml": "<p>The daily allowance for a route and an employee group and sub group. Only one rate can exist for each combination. It is used only to show an expected per diem on a trip leg.</p>",
+  "overviewHtml": "<p>The daily allowance for a route and a salary profile and grade. Only one rate can exist for each combination. It is used only to show an expected per diem on a trip leg.</p>",
   "aliasIndex": {
     "loc:FromDestination": "TravelPerDiem.FromDestinationId",
     "dom:TravelPerDiem_FromDestinationId": "TravelPerDiem.FromDestinationId",
@@ -55,7 +55,7 @@
       ],
       "rules": "Required. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The employee group.</p>",
+      "html": "<p><strong>What it is.</strong> The salary profile.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -69,7 +69,7 @@
       ],
       "rules": "Required. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The employee sub group.</p>",
+      "html": "<p><strong>What it is.</strong> The grade.</p>",
       "adminHtml": "",
       "stub": false
     },

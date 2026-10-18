@@ -74,7 +74,17 @@
     "loc:IsAgency": "Applicant.IsAgency",
     "dom:Applicant_IsAgency": "Applicant.IsAgency",
     "loc:Comments": "Applicant.Comments",
-    "dom:Applicant_Comments": "Applicant.Comments"
+    "dom:Applicant_Comments": "Applicant.Comments",
+    "loc:CompletionPoints": "Applicant.CompletionPoints",
+    "dom:Applicant_CompletionPoints": "Applicant.CompletionPoints",
+    "loc:IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "dom:Applicant_IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "loc:IsOnbdInit": "Applicant.IsOnbdInit",
+    "dom:Applicant_IsOnbdInit": "Applicant.IsOnbdInit",
+    "loc:OnbCoordinator": "Applicant.OnbCoordinatorId",
+    "dom:Applicant_OnbCoordinatorId": "Applicant.OnbCoordinatorId",
+    "loc:OnbBuddy": "Applicant.OnbBuddyId",
+    "dom:Applicant_OnbBuddyId": "Applicant.OnbBuddyId"
   },
   "fields": [
     {
@@ -564,6 +574,76 @@
       "rules": "Optional.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CompletionPoints",
+      "label": "CompletionPoints",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CompletionPoints",
+        "dom:Applicant_CompletionPoints"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How complete the candidate's careers profile is, out of 60 points. Calculated, not typed in.</p><p><strong>Example.</strong> 35</p><p><strong>Why it matters.</strong> 5 points each for a photo, Civil ID, nationality, permanent address, birth date, email and mobile, and 25 for at least one CV. Stored when the candidate saves their profile; for information only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdStarted",
+      "label": "IsOnbdStarted",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdStarted",
+        "dom:Applicant_IsOnbdStarted"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether onboarding may start for this applicant.</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdInit",
+      "label": "IsOnbdInit",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdInit",
+        "dom:Applicant_IsOnbdInit"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether onboarding has been initiated for this applicant.</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbCoordinatorId",
+      "label": "OnbCoordinator",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbCoordinator",
+        "dom:Applicant_OnbCoordinatorId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who coordinates this applicant's onboarding.</p><p><strong>Example.</strong> Fatima Al-Sabah (HR)</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbBuddyId",
+      "label": "OnbBuddy",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbBuddy",
+        "dom:Applicant_OnbBuddyId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee who looks after the new joiner during onboarding.</p><p><strong>Example.</strong> Ahmed Khan</p><p><strong>Why it matters.</strong> Recorded only. Nothing reads it at present.</p>",
       "adminHtml": "",
       "stub": false
     }

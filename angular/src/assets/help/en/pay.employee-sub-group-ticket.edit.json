@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Tickets — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupTicket",
-  "overviewHtml": "<p>The sub group's air ticket entitlement for one ticket type — the employee's own ticket or a dependant's: how many tickets, over what period, and how each ticket is valued.</p><p>How a ticket is valued is chosen on the sub group itself (<strong>Air Ticket Pay Type</strong>); this row supplies the amounts that choice uses.</p>",
+  "overviewHtml": "<p>The grade's air ticket entitlement for one ticket type — the employee's own ticket or a dependant's: how many tickets, over what period, and how each ticket is valued.</p><p>How a ticket is valued is chosen on the grade itself (<strong>Air Ticket Pay Type</strong>); this row supplies the amounts that choice uses.</p>",
   "aliasIndex": {
     "loc:TicketType": "EmployeeSubGroupTicket.TicketTypeId",
     "dom:EmployeeSubGroupTicket_TicketTypeId": "EmployeeSubGroupTicket.TicketTypeId",

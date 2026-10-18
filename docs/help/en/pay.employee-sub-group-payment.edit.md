@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupPayments.Create]
 
 ## Overview
 
-A standing payment for everyone in the sub group, paid through a wagetype.
+A standing payment for everyone in the grade, paid through a wagetype.
 
 Only two pay intervals are used. *Yearly* rows are paid once a year, in their **Pay Month**. *End Of Service* rows are paid in the employee's end-of-service run. Rows with any other interval are not paid.
 

@@ -9,6 +9,8 @@
     "dom:PAForm_PAPeriodId": "PAForm.PAPeriodId",
     "loc:Employee": "PAForm.EmployeeId",
     "dom:PAForm_EmployeeId": "PAForm.EmployeeId",
+    "loc:OverallScore": "PAForm.OverallScore",
+    "dom:PAForm_OverallScore": "PAForm.OverallScore",
     "loc:ModeratedScore": "PAForm.ModeratedScore",
     "dom:PAForm_ModeratedScore": "PAForm.ModeratedScore",
     "loc:PlanSubmitByAppraiser": "PAForm.PlanSubmitByAppraiser",
@@ -74,6 +76,20 @@
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الموظف المُقيَّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.OverallScore",
+      "label": "OverallScore",
+      "section": "PAForms",
+      "aliases": [
+        "loc:OverallScore",
+        "dom:PAForm_OverallScore"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجة الإجمالية للتقييم. تُحتسب ولا تُدخل يدوياً.</p><p><strong>مثال.</strong> 3.60 (مؤشر أ بوزن 60 وتقدير 4، ومؤشر ب بوزن 40 وتقدير 3)</p><p><strong>لماذا يهم.</strong> يُعاد احتسابها كلما حُفظ سطر من مراجعة مؤشرات الأداء أو حُذف: تقدير المقيِّم في كل سطر مضروباً في وزن السطر ومقسوماً على 100، ثم تُجمع. ولا يُستخدم التقييم الذاتي للموظف.</p>",
       "adminHtml": "",
       "stub": false
     },

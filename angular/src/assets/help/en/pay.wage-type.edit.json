@@ -247,7 +247,7 @@
         "loc:ArrearSourceWageTypeId",
         "dom:WageType_ArrearSourceWageTypeId"
       ],
-      "rules": "Optional. Chosen from Wagetype master data.",
+      "rules": "Optional. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> For an arrear wagetype, the wagetype whose back pay it carries.</p><p><strong>Example.</strong> Basic Salary (for \"Basic Salary Arrears\")</p><p><strong>Why it matters.</strong> The arrear calculation takes the difference for this source wagetype, and costing posts the arrear to the source wagetype's accounts. An arrear wagetype with no source is left out of costing.</p>",
       "adminHtml": "",
@@ -291,7 +291,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the wagetype is paid during leave.</p><p><strong>Why it matters.</strong> Not read at present. Which wagetypes make up leave pay is set per absence type in the <strong>Wagetype Leaves</strong> list.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the wagetype is paid during leave.</p><p><strong>Why it matters.</strong> Not read at present. Which wagetypes make up leave pay is set per leave type in the <strong>Wagetype Leaves</strong> list.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -487,7 +487,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for the fund deduction.</p><p><strong>Why it matters.</strong> The sum of these wagetypes decides which of the sub group's fund bands applies.</p>",
+      "html": "<p><strong>What it is.</strong> Whether this wagetype's monthly amount counts in the base for the fund deduction.</p><p><strong>Why it matters.</strong> The sum of these wagetypes decides which of the grade's fund bands applies.</p>",
       "adminHtml": "",
       "stub": false
     },

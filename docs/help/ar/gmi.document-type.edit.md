@@ -69,6 +69,8 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 
 **لماذا يهم.** عند إلغاء التفعيل يختفي النوع من قائمة «طلب جديد» في شاشة وثائق الموظف ويُرفض أي طلب له. وتبقى الموارد البشرية قادرة على تسجيل وثائق هذا النوع.
 
+**القواعد.** نعم أو لا.
+
 ## IsLetterType {#DocumentType.IsLetterType}
 <!-- alias: loc:IsLetterType, dom:DocumentType_IsLetterType -->
 
@@ -77,6 +79,8 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 **مثال.** مفعّل لشهادة الراتب وشهادة الخبرة، وغير مفعّل لجواز السفر والبطاقة المدنية.
 
 **لماذا يهم.** النوع المفعّل يُعرض عند اختيار الموظف «طباعة الخطاب» ويُسأل فيه عن الجهة الموجَّه إليها الخطاب. والنوع غير المفعّل يُعرض عند اختيار «وثيقة جديدة» ويُسأل فيه عن الرقم والتواريخ. ولا يكون النوع الواحد كليهما.
+
+**القواعد.** نعم أو لا.
 
 ## PrintReport {#DocumentType.PrintReportId}
 <!-- alias: loc:PrintReport, dom:DocumentType_PrintReportId -->
@@ -87,7 +91,7 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 
 **لماذا يهم.** بدون اختيار هنا يُحدَّد التقرير من الاسم الإنجليزي للنوع بعد حذف المسافات، فيطبع "Salary Certificate" أول تقرير يبدأ اسمه بـ SalaryCertificate، والنوع الذي لا يطابق اسمه أي تقرير لا يُطبع إطلاقاً. واختيار التقرير يزيل التخمين ويتيح للنوع طباعة تقرير باسم مختلف، كالشهادة العربية.
 
-**القواعد.** اختياري. يُختار من تقارير الطباعة المفعّلة. وإذا أُوقف التقرير المختار لاحقاً رُفضت الطباعة إلى أن يُختار غيره، ولا يُطبع تقرير آخر مكانه.
+**القواعد.** اختياري. يُختار من قائمة طباعة التقارير.
 
 ## IsWithdrawable {#DocumentType.IsWithdrawable}
 <!-- alias: loc:IsWithdrawable, dom:DocumentType_IsWithdrawable -->
@@ -98,6 +102,8 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 
 **لماذا يهم.** لا يُعرض «سحب الوثيقة» على الموظف إلا للأنواع المفعّلة. ويجوز تفعيل أكثر من نوع. وإن لم يُفعَّل أي نوع رجع النظام إلى النوع الواحد المحدَّد في إعداد جواز السفر السابق (الرمز 2 ما لم يُغيَّر).
 
+**القواعد.** نعم أو لا.
+
 ## IsHiddenFromEmployee {#DocumentType.IsHiddenFromEmployee}
 <!-- alias: loc:IsHiddenFromEmployee, dom:DocumentType_IsHiddenFromEmployee -->
 
@@ -106,6 +112,8 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 **مثال.** مفعّل لوثيقة تحتفظ بها الموارد البشرية عن الموظف لا له.
 
 **لماذا يهم.** لا يرى الموظف هذه الوثائق ولا يستطيع تسجيل واحدة منها. ولا تتأثر شاشات الموارد البشرية.
+
+**القواعد.** نعم أو لا.
 
 ## IsExpiryDateRequired {#DocumentType.IsExpiryDateRequired}
 <!-- alias: loc:IsExpiryDateRequired, dom:DocumentType_IsExpiryDateRequired -->
@@ -116,6 +124,8 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 
 **لماذا يهم.** عند التفعيل تُرفض الوثيقة المحفوظة دون تاريخ انتهاء، في شاشة الموارد البشرية وفي طلب الموظف نفسه. وعند عدم التفعيل يجوز ترك تاريخ الانتهاء فارغاً وتُعدّ الوثيقة غير منتهية أبداً. ويغيّر كذلك طريقة مقارنة الوثيقتين في خيار السماح بتداخل التواريخ.
 
+**القواعد.** نعم أو لا.
+
 ## AllowDateOverlap {#DocumentType.AllowDateOverlap}
 <!-- alias: loc:AllowDateOverlap, dom:DocumentType_AllowDateOverlap -->
 
@@ -124,3 +134,5 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 **مثال.** غير مفعّل لجواز السفر: يُرفض جواز ثانٍ يقع تاريخه ضمن مدة صلاحية الأول.
 
 **لماذا يهم.** عند عدم التفعيل تُرفض الوثيقة الجديدة إذا تداخلت مدتها من الإصدار إلى الانتهاء مع وثيقة مسجّلة في ملف الموظف. وللنوع الذي لا يُشترط له تاريخ انتهاء لا تتعارض إلا وثيقتان صادرتان في اليوم نفسه. **والتجديد المُدخل قبل انتهاء الوثيقة القديمة يُعدّ تداخلاً**، ففعّل هذا الخيار للأنواع التي تُجدَّد مبكراً. وأنواع الوثائق الموجودة قبل إضافة هذا الخيار فُعّل لها تلقائياً، فلا يُرفض الآن ما كان مقبولاً من قبل.
+
+**القواعد.** نعم أو لا.

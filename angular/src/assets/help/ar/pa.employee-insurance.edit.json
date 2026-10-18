@@ -5,16 +5,16 @@
   "entity": "HCMv3.BenefitsManagement.EmployeeInsurance",
   "overviewHtml": "<p>اشتراك تأمين للموظف أو أحد المعالين، وكيفية تقاسم تكلفته واستردادها.</p><p>تصرف الرواتب اشتراكي الموظف والشركة في شهر الرواتب الذي يبدأ فيه التأمين، ثم تستردهما على أقساط اعتباراً من تاريخ بدء الأقساط حتى يُسدَّد كل رصيد. ويجب أن يساوي مبلغ التأمين اشتراك الموظف مضافاً إليه اشتراك الشركة.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeInsurance.StartDate",
+    "dom:EmployeeInsurance_StartDate": "EmployeeInsurance.StartDate",
+    "loc:EndDate": "EmployeeInsurance.EndDate",
+    "dom:EmployeeInsurance_EndDate": "EmployeeInsurance.EndDate",
     "loc:InsurancePlanId": "EmployeeInsurance.InsurancePlanId",
     "dom:EmployeeInsurance_InsurancePlanId": "EmployeeInsurance.InsurancePlanId",
     "loc:InsuranceProviderId": "EmployeeInsurance.InsuranceProviderId",
     "dom:EmployeeInsurance_InsuranceProviderId": "EmployeeInsurance.InsuranceProviderId",
     "loc:DependantId": "EmployeeInsurance.DependantId",
     "dom:EmployeeInsurance_DependantId": "EmployeeInsurance.DependantId",
-    "loc:StartDate": "EmployeeInsurance.StartDate",
-    "dom:EmployeeInsurance_StartDate": "EmployeeInsurance.StartDate",
-    "loc:EndDate": "EmployeeInsurance.EndDate",
-    "dom:EmployeeInsurance_EndDate": "EmployeeInsurance.EndDate",
     "loc:InstallmentStartDate": "EmployeeInsurance.InstallmentStartDate",
     "dom:EmployeeInsurance_InstallmentStartDate": "EmployeeInsurance.InstallmentStartDate",
     "loc:InsuranceAmount": "EmployeeInsurance.InsuranceAmount",
@@ -27,14 +27,46 @@
     "dom:EmployeeInsurance_CompanyContribution": "EmployeeInsurance.CompanyContribution",
     "loc:InstallmentCompanyDedAmount": "EmployeeInsurance.InstallmentCompanyDedAmount",
     "dom:EmployeeInsurance_InstallmentCompanyDedAmount": "EmployeeInsurance.InstallmentCompanyDedAmount",
+    "loc:BalanceCompanyContribution": "EmployeeInsurance.BalanceCompanyContribution",
+    "dom:EmployeeInsurance_BalanceCompanyContribution": "EmployeeInsurance.BalanceCompanyContribution",
     "loc:EmployeeInterval": "EmployeeInsurance.EmployeeInterval",
     "dom:EmployeeInsurance_EmployeeInterval": "EmployeeInsurance.EmployeeInterval",
     "loc:EmployeeContribution": "EmployeeInsurance.EmployeeContribution",
     "dom:EmployeeInsurance_EmployeeContribution": "EmployeeInsurance.EmployeeContribution",
     "loc:InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount",
-    "dom:EmployeeInsurance_InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount"
+    "dom:EmployeeInsurance_InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount",
+    "loc:BalanceEmployeeContribution": "EmployeeInsurance.BalanceEmployeeContribution",
+    "dom:EmployeeInsurance_BalanceEmployeeContribution": "EmployeeInsurance.BalanceEmployeeContribution"
   },
   "fields": [
+    {
+      "id": "EmployeeInsurance.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeInsurance_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeInsurance_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeInsurance.InsurancePlanId",
       "label": "InsurancePlanId",
@@ -74,34 +106,6 @@
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> المعال المشمول، عندما لا يكون التأمين للموظف.</p><p><strong>مثال.</strong> سارة المطيري (ابنة)</p><p><strong>لماذا يهم.</strong> يُصرف تأمين المعال ويُسترد بالطريقة نفسها التي يُصرف بها تأمين الموظف.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeInsurance.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeInsurances",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeInsurance_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeInsurance.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeInsurances",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeInsurance_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -190,6 +194,20 @@
       "stub": false
     },
     {
+      "id": "EmployeeInsurance.BalanceCompanyContribution",
+      "label": "BalanceCompanyContribution",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:BalanceCompanyContribution",
+        "dom:EmployeeInsurance_BalanceCompanyContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المتبقي من اشتراك الشركة الذي لم يُسترد بعد. يُحتسب ولا يُدخل يدوياً.</p><p><strong>مثال.</strong> 360.000 من اشتراك قدره 600.000، بعد أربعة أقساط قيمة كل منها 60.000</p><p><strong>لماذا يهم.</strong> يبدأ بكامل الاشتراك وينقص كلما سُجِّل قسط أو خُصم في الرواتب. ولا تخصم الرواتب التأمين إلا ما دام هناك رصيد، ولا يتجاوزه آخر خصم أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "EmployeeInsurance.EmployeeInterval",
       "label": "EmployeeInterval",
       "section": "EmployeeInsurances",
@@ -228,6 +246,20 @@
       "rules": "اختياري. رقم.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> القسط الشهري لاسترداد اشتراك الموظف.</p><p><strong>مثال.</strong> 16.667</p><p><strong>لماذا يهم.</strong> لا تسترد الرواتب أكثر من الرصيد المتبقي، ولا أكثر مما يسمح به صافي راتب الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.BalanceEmployeeContribution",
+      "label": "BalanceEmployeeContribution",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:BalanceEmployeeContribution",
+        "dom:EmployeeInsurance_BalanceEmployeeContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المتبقي من اشتراك الموظف الذي لم يُسترد بعد. يُحتسب ولا يُدخل يدوياً.</p><p><strong>مثال.</strong> 120.000</p><p><strong>لماذا يهم.</strong> يعمل بالطريقة نفسها التي يعمل بها رصيد اشتراك الشركة، لحصة الموظف.</p>",
       "adminHtml": "",
       "stub": false
     }

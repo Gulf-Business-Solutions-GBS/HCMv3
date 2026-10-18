@@ -288,7 +288,7 @@
       "rules": "Required. One of: Male, Female, Not specified.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The gender recorded on the Civil ID.</p><p><strong>Example.</strong> <code>Female</code></p><p><strong>Why it matters.</strong> Used by the social security (PIFSS) calculations in payroll. Business rules can also test it; the sample maternity-leave rule uses it to refuse maternity leave for male employees, where that rule is switched on. Employees can ask for a change through self-service.</p>",
-      "adminHtml": "<p>Absence types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.</p>",
+      "adminHtml": "<p>Leave types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.</p>",
       "stub": false
     },
     {
@@ -330,7 +330,7 @@
       "rules": "Optional. Chosen from Religion master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Religion, where the organisation records it.</p><p><strong>Example.</strong> <code>Muslim</code></p><p><strong>Why it matters.</strong> Recorded for information and printed on the work-visa request form; no calculation uses it. Leave it blank if your organisation does not track it.</p>",
-      "adminHtml": "<p>Maintained under General Master Info → Religions. Absence types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Religions. Leave types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.</p>",
       "stub": false
     },
     {

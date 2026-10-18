@@ -765,7 +765,10 @@
           "template": "angular/src/app/admin/personnel-administration/employee-detail/absence-quotas/create-or-edit-employee-absence-quota-modal.component.html"
         }
       },
-      "defaultSection": "EmployeeAbsenceQuotas"
+      "defaultSection": "EmployeeAbsenceQuotas",
+      "ignoreInputs": [
+        "EmployeeAbsenceQuota_QuotaBalance"
+      ]
     },
     {
       "helpId": "pa.employee-absence.edit",
@@ -1248,7 +1251,10 @@
           "template": "angular/src/app/admin/personnel-administration/employee-detail/fnf-payments/create-or-edit-employee-fnf-payment-modal.component.html"
         }
       },
-      "defaultSection": "EmployeeFnFPayments"
+      "defaultSection": "EmployeeFnFPayments",
+      "ignoreInputs": [
+        "EmployeeFnFPayment_SettleLoanInEndOfService"
+      ]
     },
     {
       "helpId": "pa.employee-fund.edit",
@@ -2179,7 +2185,13 @@
       },
       "service": "EmployeeDocumentMvmtsAppService",
       "domPrefix": "Mvmt",
-      "defaultSection": "DocumentMovements"
+      "defaultSection": "DocumentMovements",
+      "propertyAliases": {
+        "HandOverDate": "ActualWithdrawDate"
+      },
+      "ignoreInputs": [
+        "Mvmt_RecordReturnDate"
+      ]
     },
     {
       "helpId": "pa.employee-non-payroll-trans.edit",

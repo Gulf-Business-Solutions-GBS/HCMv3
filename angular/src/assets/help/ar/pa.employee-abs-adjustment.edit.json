@@ -5,10 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsAdjustment",
   "overviewHtml": "<p>تغيير يدوي على إجازات الموظف — أيام مصروفة نقداً أو معدَّلة أو مقرَّبة.</p><p>تصرف الرواتب صرف الإجازة السنوية نقداً وتعديلات الكسور الواقعة في فترة الدفع على أنها بدل إجازة. ويحتسب رصيد الإجازة حتى التاريخ الذي تستخدمه الرواتب كل تعديل عدا ما حُدد بأنه بلا أثر على الحصة.</p><p>لا يؤدي حفظ التعديل إلى تحديث سجل حصة إجازات الموظف، فلا يتغير الرصيد في الخدمة الذاتية.</p>",
   "aliasIndex": {
-    "loc:AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
-    "dom:EmployeeAbsAdjustment_AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
     "loc:EffectiveDate": "EmployeeAbsAdjustment.EffectiveDate",
     "dom:EmployeeAbsAdjustment_EffectiveDate": "EmployeeAbsAdjustment.EffectiveDate",
+    "loc:AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
+    "dom:EmployeeAbsAdjustment_AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
     "loc:AdjustmentType": "EmployeeAbsAdjustment.AdjustmentType",
     "dom:EmployeeAbsAdjustment_AdjustmentType": "EmployeeAbsAdjustment.AdjustmentType",
     "loc:AdjustmentPaymentType": "EmployeeAbsAdjustment.AdjustmentPaymentType",
@@ -19,20 +19,6 @@
     "dom:EmployeeAbsAdjustment_Comments": "EmployeeAbsAdjustment.Comments"
   },
   "fields": [
-    {
-      "id": "EmployeeAbsAdjustment.AbsenceTypeId",
-      "label": "AbsenceTypeId",
-      "section": "EmployeeAbsAdjustments",
-      "aliases": [
-        "loc:AbsenceTypeId",
-        "dom:EmployeeAbsAdjustment_AbsenceTypeId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> نوع الإجازة المعدَّل.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
-      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الغياب.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeAbsAdjustment.EffectiveDate",
       "label": "EffectiveDate",
@@ -45,6 +31,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> تاريخ سريان التعديل.</p><p><strong>مثال.</strong> 30 يونيو 2026</p><p><strong>لماذا يهم.</strong> تصرف الرواتب النقد الذي يقع تاريخ سريانه في فترة الدفع، ويحتسب رصيد الحصة حتى التاريخ التعديلاتِ حتى التاريخ المطلوب.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsAdjustment_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة المعدَّل.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الإجازات.</p>",
       "stub": false
     },
     {

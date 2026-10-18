@@ -34,7 +34,7 @@ permissions: [Pages.Workflow.RequestLogs.Create]
 
 **مثال.** موافق عليه
 
-**القواعد.** إلزامي. إحدى القيم: Created، معتمد، مرفوض، Escalated، Read، SentBack، مغلق، Remarked، Assigned، محوّل، SentBackToCreator.
+**القواعد.** إلزامي. إحدى القيم: Created، معتمد، مرفوض، Escalated، Read، SentBack، مغلق، Remarked، Assigned، محوّل، SentBackToCreator، RecordedDirectly.
 
 ## WorkflowStep {#RequestLog.WorkflowStep}
 <!-- alias: loc:WorkflowStep, dom:RequestLog_WorkflowStep -->

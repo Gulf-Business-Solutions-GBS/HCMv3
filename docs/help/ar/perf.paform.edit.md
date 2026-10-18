@@ -31,6 +31,17 @@ permissions: [Pages.PerformanceManagement.PAForms.Create]
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
+## OverallScore {#PAForm.OverallScore}
+<!-- alias: loc:OverallScore, dom:PAForm_OverallScore -->
+
+**ما هو.** الدرجة الإجمالية للتقييم. تُحتسب ولا تُدخل يدوياً.
+
+**مثال.** 3.60 (مؤشر أ بوزن 60 وتقدير 4، ومؤشر ب بوزن 40 وتقدير 3)
+
+**لماذا يهم.** يُعاد احتسابها كلما حُفظ سطر من مراجعة مؤشرات الأداء أو حُذف: تقدير المقيِّم في كل سطر مضروباً في وزن السطر ومقسوماً على 100، ثم تُجمع. ولا يُستخدم التقييم الذاتي للموظف.
+
+**القواعد.** اختياري. رقم.
+
 ## ModeratedScore {#PAForm.ModeratedScore}
 <!-- alias: loc:ModeratedScore, dom:PAForm_ModeratedScore -->
 

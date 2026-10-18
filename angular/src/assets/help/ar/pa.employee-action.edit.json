@@ -5,18 +5,32 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAction",
   "overviewHtml": "<p>إجراء شخصي للموظف — ترقية أو نقل أو إعادة تصنيف أو إنهاء خدمة — مع سببه وتاريخه.</p><p>يمكن توجيه الإجراءات الشخصية للاعتماد؛ ويُنشئها قسم الموارد البشرية لا الموظف. ولا يجوز تسجيل الإجراء نفسه مرتين في اليوم نفسه للموظف نفسه.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeAction.StartDate",
+    "dom:EmployeeAction_StartDate": "EmployeeAction.StartDate",
     "loc:PersonalAction": "EmployeeAction.PersonalActionId",
     "dom:EmployeeAction_PersonalActionId": "EmployeeAction.PersonalActionId",
     "loc:ActionReason": "EmployeeAction.ActionReasonId",
     "dom:EmployeeAction_ActionReasonId": "EmployeeAction.ActionReasonId",
-    "loc:StartDate": "EmployeeAction.StartDate",
-    "dom:EmployeeAction_StartDate": "EmployeeAction.StartDate",
     "loc:RecommendedBy": "EmployeeAction.RecommendedBy",
     "dom:EmployeeAction_RecommendedBy": "EmployeeAction.RecommendedBy",
     "loc:Comments": "EmployeeAction.Comments",
     "dom:EmployeeAction_Comments": "EmployeeAction.Comments"
   },
   "fields": [
+    {
+      "id": "EmployeeAction.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeActions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAction_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه والإجراء الشخصي نفسه في التاريخ نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeAction.PersonalActionId",
       "label": "PersonalAction",
@@ -43,20 +57,6 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> سبب اتخاذ الإجراء.</p><p><strong>مثال.</strong> تقييم الأداء السنوي</p>",
       "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أسباب الإجراءات الشخصية.</p>",
-      "stub": false
-    },
-    {
-      "id": "EmployeeAction.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeActions",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeAction_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه والإجراء الشخصي نفسه في التاريخ نفسه.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
       "stub": false
     },
     {

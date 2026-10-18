@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Ticket Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.TicketType",
-  "overviewHtml": "<p>A kind of air ticket — the employee's own, or one for a kind of dependant — and how its entitlement builds up and lapses. Ticket type <code>1</code> is the employee's own ticket; the others are dependant tickets. How many tickets and their value are set per sub group.</p>",
+  "overviewHtml": "<p>A kind of air ticket — the employee's own, or one for a kind of dependant — and how its entitlement builds up and lapses. Ticket type <code>1</code> is the employee's own ticket; the others are dependant tickets. How many tickets and their value are set per grade.</p>",
   "aliasIndex": {
     "loc:Code": "TicketType.Code",
     "dom:TicketType_Code": "TicketType.Code",
@@ -193,7 +193,7 @@
         "loc:WageTypeId",
         "dom:TicketType_WageTypeId"
       ],
-      "rules": "Optional. Chosen from Wagetype master data.",
+      "rules": "Optional. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype for this ticket type.</p><p><strong>Example.</strong> Air Ticket</p><p><strong>Why it matters.</strong> It must be filled in to save, but nothing reads it at present.</p>",
       "adminHtml": "",

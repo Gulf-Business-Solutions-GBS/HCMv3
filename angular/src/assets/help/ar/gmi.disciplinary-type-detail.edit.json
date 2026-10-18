@@ -49,7 +49,7 @@
         "loc:DisciplinaryDeductionType",
         "dom:DisciplinaryTypeDetail_DisciplinaryDeductionTypeId"
       ],
-      "rules": "اختياري. يُختار من قائمة أنواع الخصم بسبب إجراء تأديبي.",
+      "rules": "اختياري. يُختار من قائمة أنواع خصم المخالفات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الخصم الذي ينطبق من هذه المخالفة فصاعداً.</p>",
       "adminHtml": "",

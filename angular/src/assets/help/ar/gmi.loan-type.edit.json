@@ -15,6 +15,8 @@
     "dom:LoanType_LoanDeductionType": "LoanType.LoanDeductionType",
     "loc:RecoveryOption": "LoanType.RecoveryOption",
     "dom:LoanType_RecoveryOption": "LoanType.RecoveryOption",
+    "loc:WageType": "LoanType.WageTypeId",
+    "dom:LoanType_WageTypeId": "LoanType.WageTypeId",
     "loc:EligiblePeriod": "LoanType.EligiblePeriod",
     "dom:LoanType_EligiblePeriod": "LoanType.EligiblePeriod",
     "loc:EligibleCountPerYear": "LoanType.EligibleCountPerYear",
@@ -94,6 +96,20 @@
       "rules": "إلزامي. إحدى القيم: الجميع، عن طريق الرواتب، عن طريق جهة خارجية.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> طريقة سداد القرض.</p><p><strong>لماذا يهم.</strong> يسترد احتساب الرواتب القروض التي نوعها «عن طريق الرواتب» أو «الجميع». أما مع «عن طريق جهة خارجية» فلا يخصمها احتساب الرواتب، ويجري السداد خارج HCMv3.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.WageTypeId",
+      "label": "WageType",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:LoanType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر الخصم الذي تسترد عليه الرواتب أقساط القروض من هذا النوع.</p><p><strong>مثال.</strong> 2001 - خصم استرداد القرض</p><p><strong>لماذا يهم.</strong> لا تسترد الرواتب القرض إلا عن طريق نوع الأجر هذا: ففي كل شهر تُضاف الأقساط المستحقة على قروض الموظف من هذا النوع إلى هذا السطر من كشف الراتب. وإذا تُرك فارغاً فلا تُخصم قروض هذا النوع أبداً. ويجوز أن تشترك عدة أنواع قروض في نوع أجر واحد، فتُجمع أقساطها معاً. ولا تعرض القائمة إلا أنواع أجور الخصم الفعّالة التي ليست من الراتب الأساسي أو الأجور المحتسبة أو الفروقات، وغير المستخدمة لنوع إجازة أو عمل إضافي.</p>",
       "adminHtml": "",
       "stub": false
     },

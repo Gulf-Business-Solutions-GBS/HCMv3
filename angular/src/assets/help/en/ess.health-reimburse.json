@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "My Health Reimbursements",
   "entity": null,
-  "overviewHtml": "<p>Claim back medical costs your company covers — a consultation, medicine, a dental visit — against the health allowance your employee sub group gives you.</p><p>The panel at the top shows what you have to spend and what is left of it. If it says you have no entitlement, your sub group has not been given one, and that is a question for HR rather than something to fix here.</p>",
+  "overviewHtml": "<p>Claim back medical costs your company covers — a consultation, medicine, a dental visit — against the health allowance your grade gives you.</p><p>The panel at the top shows what you have to spend and what is left of it. If it says you have no entitlement, your grade has not been given one, and that is a question for HR rather than something to fix here.</p>",
   "aliasIndex": {
     "loc:PaymentDate": "ess.health-reimburse.payment-date",
     "loc:Amount": "ess.health-reimburse.amount",

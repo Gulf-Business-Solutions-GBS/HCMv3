@@ -22,7 +22,7 @@ Not read at present: payroll does not use this list, and it is kept for referenc
 
 **Example.** Car Allowance
 
-**Why it matters.** Each wagetype can be listed once per sub group.
+**Why it matters.** Each wagetype can be listed once per grade.
 
 **Rules.** Optional. Chosen from a list.
 

@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupAbsences.Create]
 
 ## Overview
 
-A sub group's entitlement to one type of leave, from a given date: how many days a year, the most that can be carried, and -- for sick leave -- the deduction rule.
+A grade's entitlement to one type of leave, from a given date: how many days a year, the most that can be carried, and -- for sick leave -- the deduction rule.
 
 Several rows for the same leave type can step the entitlement up with service. Each row applies while the employee's service is below its **Change Year**; the row with the lowest Change Year above the employee's service wins.
 
@@ -22,7 +22,7 @@ Several rows for the same leave type can step the entitlement up with service. E
 
 **Example.** Annual Leave
 
-**Rules.** Optional. Chosen from Absence Type master data.
+**Rules.** Optional. Chosen from Leave Type master data.
 
 ## AbsenceDeductionRule {#EmployeeSubGroupAbsence.AbsenceDeductionRuleId}
 <!-- alias: loc:AbsenceDeductionRule, dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId -->
@@ -31,7 +31,7 @@ Several rows for the same leave type can step the entitlement up with service. E
 
 **Example.** Kuwait Sick Leave Scale
 
-**Why it matters.** Read only on the sub group's sick leave row -- the type with code 3, or quota type Sick Leave. Left blank, sick leave is paid in full.
+**Why it matters.** Read only on the grade's sick leave row -- the type with code 3, or quota type Sick Leave. Left blank, sick leave is paid in full.
 
 **Rules.** Optional. Chosen from Absence Deduction Rule master data.
 
@@ -53,7 +53,7 @@ Several rows for the same leave type can step the entitlement up with service. E
 
 **Example.** `30`
 
-**Why it matters.** Annual leave accrues day by day at this many days a year. Sick leave gives this many days per cycle. It replaces the absence type's own **Total Days Allowed** for employees in this sub group.
+**Why it matters.** Annual leave accrues day by day at this many days a year. Sick leave gives this many days per cycle. It replaces the leave type's own **Total Days Allowed** for employees in this grade.
 
 **Rules.** Optional. Whole number.
 

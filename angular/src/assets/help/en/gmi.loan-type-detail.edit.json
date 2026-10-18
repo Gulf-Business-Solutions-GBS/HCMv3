@@ -7,6 +7,8 @@
   "aliasIndex": {
     "loc:LoanType": "LoanTypeDetail.LoanTypeId",
     "dom:LoanTypeDetail_LoanTypeId": "LoanTypeDetail.LoanTypeId",
+    "loc:WageType": "LoanTypeDetail.WageTypeId",
+    "dom:LoanTypeDetail_WageTypeId": "LoanTypeDetail.WageTypeId",
     "loc:Percent": "LoanTypeDetail.Percent",
     "dom:LoanTypeDetail_Percent": "LoanTypeDetail.Percent"
   },
@@ -22,6 +24,20 @@
       "rules": "Optional. Chosen from Loan Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The loan type the percentage belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanTypeDetail.WageTypeId",
+      "label": "WageType",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:WageType",
+        "dom:LoanTypeDetail_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A pay item that the percentage on this row is taken of, for loans whose deduction type is Variable.</p><p><strong>Example.</strong> 1001 - Basic Salary, with Percent 25</p><p><strong>Why it matters.</strong> For a Variable loan, the monthly instalment is the sum, over all rows, of this wage type's amount on the employee's payslip times the row's percent, never more than the balance still owed. A wage type the employee is not paid that month adds nothing. Each wage type can be listed only once per loan type, and the percent must be more than 0 and no more than 100.</p>",
       "adminHtml": "",
       "stub": false
     },

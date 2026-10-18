@@ -65,7 +65,7 @@
         "loc:Action",
         "dom:ExecutionLog_Action"
       ],
-      "rules": "إلزامي. إحدى القيم: تشغيل، إنشاء، عرض، تصدير، PRINT.",
+      "rules": "إلزامي. إحدى القيم: تشغيل، إنشاء، عرض، تصدير، طباعة.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما الذي نُفِّذ.</p><p><strong>مثال.</strong> تشغيل</p>",
       "adminHtml": "",
@@ -121,7 +121,7 @@
         "loc:ExecutionStatus",
         "dom:ExecutionLog_ExecutionStatus"
       ],
-      "rules": "إلزامي. إحدى القيم: قيد التنفيذ، SUCCESS، FAILED، جزئي، متوقف.",
+      "rules": "إلزامي. إحدى القيم: قيد التنفيذ، نجاح، فشل، جزئي، متوقف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> كيف انتهى.</p><p><strong>مثال.</strong> نجاح</p>",
       "adminHtml": "",

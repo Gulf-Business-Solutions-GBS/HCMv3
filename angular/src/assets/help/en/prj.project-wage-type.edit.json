@@ -33,7 +33,7 @@
         "loc:WageType",
         "dom:ProjectWageType_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype.</p><p><strong>Example.</strong> Basic Salary</p>",
       "adminHtml": "",

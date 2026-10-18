@@ -18,7 +18,15 @@
     "loc:BudgetingGroup": "EmployeeOrgAssignment.BudgetingGroupId",
     "dom:EmployeeOrgAssignment_BudgetingGroupId": "EmployeeOrgAssignment.BudgetingGroupId",
     "loc:OrganizationUnit": "EmployeeOrgAssignment.OrganizationUnitId",
-    "dom:EmployeeOrgAssignment_OrganizationUnitId": "EmployeeOrgAssignment.OrganizationUnitId"
+    "dom:EmployeeOrgAssignment_OrganizationUnitId": "EmployeeOrgAssignment.OrganizationUnitId",
+    "loc:EmployeeGroup": "EmployeeOrgAssignment.EmployeeGroupId",
+    "dom:EmployeeOrgAssignment_EmployeeGroupId": "EmployeeOrgAssignment.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "EmployeeOrgAssignment.EmployeeSubGroupId",
+    "dom:EmployeeOrgAssignment_EmployeeSubGroupId": "EmployeeOrgAssignment.EmployeeSubGroupId",
+    "loc:PayrollArea": "EmployeeOrgAssignment.PayrollAreaId",
+    "dom:EmployeeOrgAssignment_PayrollAreaId": "EmployeeOrgAssignment.PayrollAreaId",
+    "loc:WorkflowGroup": "EmployeeOrgAssignment.WorkflowGroupId",
+    "dom:EmployeeOrgAssignment_WorkflowGroupId": "EmployeeOrgAssignment.WorkflowGroupId"
   },
   "fields": [
     {
@@ -116,7 +124,63 @@
       "rules": "اختياري. يُختار من قائمة الوحدات التنظيمية.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> القسم أو الوحدة التي ينتمي إليها الموظف اعتباراً من هذا التاريخ، ويُختار من الشجرة التنظيمية.</p><p><strong>مثال.</strong> المالية › الحسابات الدائنة</p><p><strong>لماذا يهم.</strong> يحدد موقع الموظف في الهيكل التنظيمي، وتُوجَّه خطوات الاعتماد المسندة إلى دور القسم إلى معتمِد هذا القسم. وتُقرَّب مبالغ رواتب الموظف إلى عدد المنازل العشرية لعملة منطقة الرواتب المحددة لهذه الوحدة.</p>",
-      "adminHtml": "<p>لا يحدد هذا النموذج مجموعة الموظفين ولا المجموعة الفرعية ولا منطقة الرواتب ولا مجموعة سير العمل، ولا ينسخها من التعيين السابق. لذلك لا يحمل أي تعيين جديد يُحفظ هنا شيئاً منها. ويبحث محرك الوقت عن المجموعة الفرعية للموظف في التعيينات التي تغطي الفترة التي يعالجها، ويقرأ سير الاعتماد مجموعة سير العمل من تعيين اليوم؛ فلا يجد أيٌّ منهما قيمة للتواريخ التي لا يغطيها إلا تعيين حُفظ من هنا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:EmployeeOrgAssignment_EmployeeGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملف راتب الموظف خلال تواريخ هذا التعيين.</p><p><strong>مثال.</strong> الموظفون الإداريون</p><p><strong>لماذا يهم.</strong> تؤخذ منه قواعد مكافأة نهاية الخدمة والتسوية التي تعتمد على ملف الراتب. وإذا تُرك فارغاً تبقى القيمة الموجودة في التعيين السابق. وإذا اختيرت الدرجة وحدها، يُعبَّأ ملف الراتب منها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:EmployeeOrgAssignment_EmployeeSubGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة الموظف خلال تواريخ هذا التعيين.</p><p><strong>مثال.</strong> الدرجة 5</p><p><strong>لماذا يهم.</strong> تعتمد معظم الاستحقاقات على الدرجة: أرصدة الإجازات، وتذاكر الطيران، ومكافأة نهاية الخدمة، واقتطاعات الصندوق، ومكافأة الخدمة، واسترداد المصاريف الصحية. ويقرأ محرك الوقت والرواتب الدرجة من التعيين الذي يغطي كل تاريخ. ويجب أن تتبع الدرجة ملف الراتب المختار؛ وإذا تُركت فارغة تبقى درجة التعيين السابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.PayrollAreaId",
+      "label": "PayrollArea",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:PayrollArea",
+        "dom:EmployeeOrgAssignment_PayrollAreaId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب التي يُصرف فيها راتب الموظف خلال تواريخ هذا التعيين.</p><p><strong>مثال.</strong> الكويت - شهري</p><p><strong>لماذا يهم.</strong> تحدد أي تشغيل للرواتب يشمل الموظف، وأي تقويم رواتب وإقفال ينطبقان عليه. وإذا تُركت فارغة تبقى منطقة التعيين السابق، وإلا فالمنطقة المحددة للوحدة التنظيمية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.WorkflowGroupId",
+      "label": "WorkflowGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:WorkflowGroup",
+        "dom:EmployeeOrgAssignment_WorkflowGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة سير العمل التي تتبع طلبات الموظف سلاسل اعتمادها.</p><p><strong>مثال.</strong> المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> عندما يقدّم الموظف طلباً، تُختار السلسلة من مجموعة سير العمل في تعيين اليوم. وإذا تُركت فارغة تُستخدم مجموعة سير العمل المحددة كافتراضية.</p>",
+      "adminHtml": "",
       "stub": false
     }
   ]

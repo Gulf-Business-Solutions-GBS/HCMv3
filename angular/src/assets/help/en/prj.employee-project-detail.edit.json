@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Project Details — Create / Edit",
   "entity": "HCMv3.ProjectManagement.EmployeeProjectDetail",
-  "overviewHtml": "<p>One project within an employee's project assignment. Its dates must fall within the assignment's dates.</p>",
+  "overviewHtml": "<p>One project within an employee's project assignment. Its dates must fall within the assignment's dates.</p><p>On a saved record, <strong>Calculate Work Days</strong> shows two counts for the project's dates. <strong>Work Days</strong> adds up the approved working days, public holidays and rest days in the employee's time register. <strong>Calendar Days</strong> is every day from the start date to the end date, both included. Neither is stored.</p>",
   "aliasIndex": {
     "loc:EmployeeProject": "EmployeeProjectDetail.EmployeeProjectId",
     "dom:EmployeeProjectDetail_EmployeeProjectId": "EmployeeProjectDetail.EmployeeProjectId",

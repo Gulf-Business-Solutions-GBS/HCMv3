@@ -25,7 +25,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBonuses.Create]
 **القواعد.** اختياري. رقم.
 
 :::admin
-لا يُتحقق من تاريخي بداية السطر ونهايته عند صرف المكافأة، فالمهم المجموعة الفرعية وعدد السنوات فقط.
+لا يُتحقق من تاريخي بداية السطر ونهايته عند صرف المكافأة، فالمهم الدرجة وعدد السنوات فقط.
 :::
 
 ## Percentage {#EmployeeSubGroupBonus.Percentage}

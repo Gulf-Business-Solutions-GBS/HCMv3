@@ -14,11 +14,11 @@ permissions: [Pages.Workflow.RequestDetails.Create]
 One step of an approval chain: who approves it, whether one or all of them must, what they may do, and when the request is chased or escalated. Steps are numbered from 1 and the request moves up one step at each approval; approving the last step approves the request. Reminder days must be less than escalate-after days.
 
 ## RequestMaster {#RequestDetail.RequestMasterId}
-<!-- alias: loc:RequestMaster, dom:RequestDetail_RequestMasterId -->
+<!-- alias: loc:RequestMaster, dom:RequestDetail_RequestMasterName -->
 
 **What it is.** The approval chain this step belongs to.
 
-**Rules.** Required. Chosen from Request Master master data.
+**Rules.** Optional. Chosen from Request Master master data.
 
 ## Step {#RequestDetail.Step}
 <!-- alias: loc:Step, dom:RequestDetail_Step -->
@@ -59,7 +59,7 @@ One step of an approval chain: who approves it, whether one or all of them must,
 **Rules.** Required. One of: None, Company, Department, Branch, CostCenter.
 
 ## OrganizationUnit {#RequestDetail.WorkflowRoleOrgId}
-<!-- alias: loc:OrganizationUnit, dom:RequestDetail_WorkflowRoleOrgId -->
+<!-- alias: loc:OrgLevel, dom:RequestDetail_WorkflowRoleOrgId -->
 
 **What it is.** An organisation unit level for the role.
 
@@ -96,7 +96,7 @@ One step of an approval chain: who approves it, whether one or all of them must,
 
 **Why it matters.** Counted from the request's last logged action. Used only when Should Escalate is ticked; 0 turns escalation off.
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## EscalateWorkflowRole {#RequestDetail.EscalateWorkflowRoleId}
 <!-- alias: loc:EscalateWorkflowRole, dom:RequestDetail_EscalateWorkflowRoleId -->
@@ -134,79 +134,7 @@ One step of an approval chain: who approves it, whether one or all of them must,
 
 **Why it matters.** A reminder goes to the approvers who have not yet acted every time the days since the last action reach a multiple of this number. 0 sends no reminders.
 
-**Rules.** Required. Whole number.
-
-## ShowPayment {#RequestDetail.ShowPayment}
-<!-- alias: loc:ShowPayment, dom:RequestDetail_ShowPayment -->
-
-**What it is.** Whether the approver sees payment details.
-
-**Why it matters.** Not read at present.
-
-**Rules.** Yes or no.
-
-## CanSendBack {#RequestDetail.CanSendBack}
-<!-- alias: loc:CanSendBack, dom:RequestDetail_CanSendBack -->
-
-**What it is.** Whether approvers at this step may send the request back.
-
-**Why it matters.** Sending back returns the request to its creator as a draft at step 1, where it can be changed and submitted again. When unticked the option is hidden and refused.
-
-**Rules.** Yes or no.
-
-## CanReject {#RequestDetail.CanReject}
-<!-- alias: loc:CanReject, dom:RequestDetail_CanReject -->
-
-**What it is.** Whether approvers at this step may reject the request.
-
-**Why it matters.** A rejection ends the request. When unticked the option is hidden and refused.
-
-**Rules.** Yes or no.
-
-## ShouldEscalate {#RequestDetail.ShouldEscalate}
-<!-- alias: loc:ShouldEscalate, dom:RequestDetail_ShouldEscalate -->
-
-**What it is.** Whether a stalled request at this step escalates.
-
-**Why it matters.** Needs Escalate After Days above 0.
-
-**Rules.** Yes or no.
-
-## EscalateNextLevel {#RequestDetail.EscalateNextLevel}
-<!-- alias: loc:EscalateNextLevel, dom:RequestDetail_EscalateNextLevel -->
-
-**What it is.** Whether escalation moves the request on to the next step.
-
-**Why it matters.** When ticked, a stalled request moves to the next step as if approved, but the transaction itself is not applied -- only a person's approval of the last step does that. A request on its last step is left where it is. When unticked, the escalation role takes over the same step.
-
-**Rules.** Yes or no.
-
-## EnableReadLog {#RequestDetail.EnableReadLog}
-<!-- alias: loc:EnableReadLog, dom:RequestDetail_EnableReadLog -->
-
-**What it is.** Whether opening the request at this step is recorded.
-
-**Why it matters.** The first time each person opens it at this step, a read entry is added to the read log and the activity feed.
-
-**Rules.** Yes or no.
-
-## IsCommentRequire {#RequestDetail.IsCommentRequire}
-<!-- alias: loc:IsCommentRequire, dom:RequestDetail_IsCommentRequire -->
-
-**What it is.** Whether approvers must write a comment to approve.
-
-**Why it matters.** An approval without a comment is refused.
-
-**Rules.** Yes or no.
-
-## SignatoryStep {#RequestDetail.SignatoryStep}
-<!-- alias: loc:SignatoryStep, dom:RequestDetail_SignatoryStep -->
-
-**What it is.** Whether this is a signatory step, needing someone who has not signed before.
-
-**Why it matters.** Anyone who approved an earlier signatory step of the same request is left out here, so one person cannot sign twice. If that leaves nobody, the chain's default approver is used.
-
-**Rules.** Yes or no.
+**Rules.** Optional. Whole number.
 
 ## OnSubmit {#RequestDetail.SubmitNotificationConfigId}
 <!-- alias: loc:OnSubmit, dom:RequestDetail_SubmitNotificationConfigId -->
@@ -284,3 +212,75 @@ One step of an approval chain: who approves it, whether one or all of them must,
 **What it sends.** The chosen configuration decides both who receives it and how: the in-app notification, the e-mail, or both. A configuration with no e-mail template attached notifies inside the system only.
 
 **Rules.** Optional. Chosen from Notification Config master data.
+
+## ShowPayment {#RequestDetail.ShowPayment}
+<!-- alias: loc:ShowPayment, dom:RequestDetail_ShowPayment -->
+
+**What it is.** Whether the approver sees payment details.
+
+**Why it matters.** Not read at present.
+
+**Rules.** Yes or no.
+
+## CanSendBack {#RequestDetail.CanSendBack}
+<!-- alias: loc:CanSendBack, dom:RequestDetail_CanSendBack -->
+
+**What it is.** Whether approvers at this step may send the request back.
+
+**Why it matters.** Sending back returns the request to its creator as a draft at step 1, where it can be changed and submitted again. When unticked the option is hidden and refused.
+
+**Rules.** Yes or no.
+
+## CanReject {#RequestDetail.CanReject}
+<!-- alias: loc:CanReject, dom:RequestDetail_CanReject -->
+
+**What it is.** Whether approvers at this step may reject the request.
+
+**Why it matters.** A rejection ends the request. When unticked the option is hidden and refused.
+
+**Rules.** Yes or no.
+
+## ShouldEscalate {#RequestDetail.ShouldEscalate}
+<!-- alias: loc:ShouldEscalate, dom:RequestDetail_ShouldEscalate -->
+
+**What it is.** Whether a stalled request at this step escalates.
+
+**Why it matters.** Needs Escalate After Days above 0.
+
+**Rules.** Yes or no.
+
+## EscalateNextLevel {#RequestDetail.EscalateNextLevel}
+<!-- alias: loc:EscalateNextLevel, dom:RequestDetail_EscalateNextLevel -->
+
+**What it is.** Whether escalation moves the request on to the next step.
+
+**Why it matters.** When ticked, a stalled request moves to the next step as if approved, but the transaction itself is not applied -- only a person's approval of the last step does that. A request on its last step is left where it is. When unticked, the escalation role takes over the same step.
+
+**Rules.** Yes or no.
+
+## EnableReadLog {#RequestDetail.EnableReadLog}
+<!-- alias: loc:EnableReadLog, dom:RequestDetail_EnableReadLog -->
+
+**What it is.** Whether opening the request at this step is recorded.
+
+**Why it matters.** The first time each person opens it at this step, a read entry is added to the read log and the activity feed.
+
+**Rules.** Yes or no.
+
+## IsCommentRequire {#RequestDetail.IsCommentRequire}
+<!-- alias: loc:IsCommentRequire, dom:RequestDetail_IsCommentRequire -->
+
+**What it is.** Whether approvers must write a comment to approve.
+
+**Why it matters.** An approval without a comment is refused.
+
+**Rules.** Yes or no.
+
+## SignatoryStep {#RequestDetail.SignatoryStep}
+<!-- alias: loc:SignatoryStep, dom:RequestDetail_SignatoryStep -->
+
+**What it is.** Whether this is a signatory step, needing someone who has not signed before.
+
+**Why it matters.** Anyone who approved an earlier signatory step of the same request is left out here, so one person cannot sign twice. If that leaves nobody, the chain's default approver is used.
+
+**Rules.** Yes or no.

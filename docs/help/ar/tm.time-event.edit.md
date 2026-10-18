@@ -78,6 +78,17 @@ permissions: [Pages.TimeManagement.TimeEvents.Create]
 
 **القواعد.** إلزامي. إحدى القيم: Machine، Manual، System، ESS، MobileAPI، ExternalAPI.
 
+## RecordSource {#TimeEvent.RecordSource}
+<!-- alias: loc:RecordSource, dom:TimeEvent_RecordSource -->
+
+**ما هو.** رقم السجل الذي أعطاه جهاز الحضور أو الاستيراد لهذا التسجيل. يحدده النظام.
+
+**مثال.** 10458723
+
+**لماذا يهم.** يُستخدم لتمييز السجلات المستوردة سابقاً حتى لا يُستورد التسجيل مرتين. ويجب أن يكون للتسجيل الذي مصدره «جهاز» رقم، وأن يكون فريداً بين تسجيلات الأجهزة.
+
+**القواعد.** اختياري. رقم صحيح.
+
 ## AccessUnit {#TimeEvent.AccessUnitId}
 <!-- alias: loc:AccessUnit, dom:TimeEvent_AccessUnitId -->
 
@@ -108,6 +119,17 @@ permissions: [Pages.TimeManagement.TimeEvents.Create]
 **لماذا يهم.** تستخدمه عمليات الاستيراد من الأجهزة لإيجاد وحدة الدخول أو إنشائها.
 
 **القواعد.** اختياري. الحد الأقصى 50 حرفاً.
+
+## DeviceAgentString {#TimeEvent.DeviceAgentString}
+<!-- alias: loc:DeviceAgentString, dom:TimeEvent_DeviceAgentString -->
+
+**ما هو.** المتصفح أو الجهاز الذي أرسل تسجيل الحضور عبر الخدمة الذاتية، كما عرّف نفسه. يحدده النظام.
+
+**مثال.** Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) ...
+
+**لماذا يهم.** للتحقق من مصدر التسجيل. ولا يقرؤه شيء آخر.
+
+**القواعد.** اختياري. الحد الأقصى 1000 حرف.
 
 ## GeoSelfiePath {#TimeEvent.GeoSelfiePath}
 <!-- alias: loc:GeoSelfiePath, dom:TimeEvent_GeoSelfiePath -->

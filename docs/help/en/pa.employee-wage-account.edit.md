@@ -22,7 +22,7 @@ Records for the same employee and wagetype form a history: saving a new one clos
 
 **Example.** Housing Allowance
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 :::admin
 Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI posting are posted.

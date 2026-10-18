@@ -1,7 +1,7 @@
 ---
 helpId: pay.employee-group.edit
 lang: ar
-title: مجموعات الموظفين — إنشاء / تحرير
+title: ملفات الرواتب — إنشاء / تحرير
 entity: HCMv3.PayrollManagement.EmployeeGroup
 surfaces:
   - angular/src/app/admin/payroll-management/employee-groups/create-or-edit-employee-group-modal.component.html
@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeGroups.Create]
 
 ## Overview
 
-تصنيف عام للموظفين، مثل الموظفين الإداريين والعمال، تندرج تحته المجموعات الفرعية للموظفين. ويحدد التعيين التنظيمي لكل موظف مجموعته ومجموعته الفرعية.
+تصنيف عام للموظفين، مثل الموظفين الإداريين والعمال، تندرج تحته الدرجات. ويحدد التعيين التنظيمي لكل موظف مجموعته ومجموعته الفرعية.
 
 وتحمل المجموعة الحد الأقصى لمكافأة نهاية الخدمة، ولا يُطبَّق هذا الحد إلا إذا لم يكن **الحد الأقصى لمكافأة نهاية الخدمة** صفراً.
 

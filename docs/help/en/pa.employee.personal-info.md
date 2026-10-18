@@ -100,7 +100,7 @@ Maintained under General Master Info → Titles.
 **Rules.** Required. One of: Male, Female, Not specified.
 
 :::admin
-Absence types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.
+Leave types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.
 :::
 
 ## BirthDate {#Employee.BirthDate}
@@ -156,7 +156,7 @@ Maintained under General Master Info → Nationalities. For the workforce quota,
 **Rules.** Optional. Chosen from Religion master data.
 
 :::admin
-Maintained under General Master Info → Religions. Absence types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.
+Maintained under General Master Info → Religions. Leave types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.
 :::
 
 ## MaritalStatus {#Employee.MaritalStatusId}

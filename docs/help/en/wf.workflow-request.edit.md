@@ -57,7 +57,7 @@ One request moving through its approval chain -- a leave, a loan, a document req
 
 **Why it matters.** Open while waiting for approval, Approved after the last step, Rejected, or Draft when sent back to its creator.
 
-**Rules.** Required. One of: Open, Approved, Rejected, Closed, Draft, Transferred.
+**Rules.** Required. One of: Open, Approved, Rejected, Closed, Draft, Transferred, Cancelled.
 
 ## ApprovalProcessTime {#WorkflowRequest.ApprovalProcessTime}
 <!-- alias: loc:ApprovalProcessTime, dom:WorkflowRequest_ApprovalProcessTime -->

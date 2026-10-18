@@ -15,6 +15,8 @@ The employee's full and final settlement at the end of service.
 
 An end-of-service payroll run includes employees whose compensation date falls in its period, and needs a settlement whose compensation date equals the run's payment date. The amounts, days and counts on this form are recorded for reference: payroll calculates the settlement itself and does not read them at present.
 
+When the employee still owes on a loan, the form shows **Settle the open loans in this payment**. Tick it to recover the whole remaining loan balance on the compensation date; without it, an employee with an open loan cannot be settled.
+
 ## CompensationDate {#EmployeeFnFPayment.CompensationDate}
 <!-- alias: loc:CompensationDate, dom:EmployeeFnFPayment_CompensationDate -->
 

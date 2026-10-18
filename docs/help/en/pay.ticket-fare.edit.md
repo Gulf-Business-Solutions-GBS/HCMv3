@@ -13,7 +13,7 @@ permissions: [Pages.PayrollManagement.TicketFares.Create]
 
 The fare for one route, passenger type and ticket class, from a given date.
 
-Tickets valued by *FareAmount* take the fare for the employee's route, the ticket class of their sub group and the passenger type of the traveller's age. The monthly ticket provision values accrued tickets at the return fare.
+Tickets valued by *FareAmount* take the fare for the employee's route, the ticket class of their grade and the passenger type of the traveller's age. The monthly ticket provision values accrued tickets at the return fare.
 
 ## TicketRouteId {#TicketFare.TicketRouteId}
 <!-- alias: loc:TicketRouteId, dom:TicketFare_TicketRouteId -->
@@ -49,7 +49,7 @@ Tickets valued by *FareAmount* take the fare for the employee's route, the ticke
 
 **Example.** `95`
 
-**Why it matters.** Used when the sub group's ticket rule is set to one way. It cannot be negative.
+**Why it matters.** Used when the grade's ticket rule is set to one way. It cannot be negative.
 
 **Rules.** Optional. Number.
 
@@ -60,6 +60,6 @@ Tickets valued by *FareAmount* take the fare for the employee's route, the ticke
 
 **Example.** `170`
 
-**Why it matters.** Used when the sub group's ticket rule is set to return, and for the monthly ticket provision. It cannot be negative.
+**Why it matters.** Used when the grade's ticket rule is set to return, and for the monthly ticket provision. It cannot be negative.
 
 **Rules.** Optional. Number.

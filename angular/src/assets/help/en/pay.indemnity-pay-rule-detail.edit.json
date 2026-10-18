@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Indemnity Pay Rule Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.IndemnityPayRuleDetail",
-  "overviewHtml": "<p>One step of an indemnity pay rule, by years of service — for example, a resignation after three to five years paid at half.</p><p>Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's <strong>Employee Group</strong>. These rules are saved and kept for reference.</p>",
+  "overviewHtml": "<p>One step of an indemnity pay rule, by years of service — for example, a resignation after three to five years paid at half.</p><p>Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's <strong>Salary Profile</strong>. These rules are saved and kept for reference.</p>",
   "aliasIndex": {
     "loc:IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",
     "dom:IndemnityPayRuleDetail_IndemnityPayRuleId": "IndemnityPayRuleDetail.IndemnityPayRuleId",

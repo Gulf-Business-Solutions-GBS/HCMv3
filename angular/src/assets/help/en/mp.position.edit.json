@@ -183,7 +183,7 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The employee group of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "html": "<p><strong>What it is.</strong> The salary profile of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -197,7 +197,7 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The employee sub group of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "html": "<p><strong>What it is.</strong> The grade of the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
       "stub": false
     },

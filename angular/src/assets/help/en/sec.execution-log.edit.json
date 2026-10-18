@@ -65,7 +65,7 @@
         "loc:Action",
         "dom:ExecutionLog_Action"
       ],
-      "rules": "Required. One of: Run, Generate, View, Export, PRINT.",
+      "rules": "Required. One of: Run, Generate, View, Export, Print.",
       "when": null,
       "html": "<p><strong>What it is.</strong> What was done.</p><p><strong>Example.</strong> Run</p>",
       "adminHtml": "",
@@ -121,7 +121,7 @@
         "loc:ExecutionStatus",
         "dom:ExecutionLog_ExecutionStatus"
       ],
-      "rules": "Required. One of: In Process, SUCCESS, FAILED, Partial, Aborted.",
+      "rules": "Required. One of: In Process, Success, Failed, Partial, Aborted.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How it ended.</p><p><strong>Example.</strong> Success</p>",
       "adminHtml": "",

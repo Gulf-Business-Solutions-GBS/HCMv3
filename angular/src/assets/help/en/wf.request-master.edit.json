@@ -103,7 +103,7 @@
         "loc:AutoCloseInDays",
         "dom:RequestMaster_AutoCloseInDays"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How many days after approval a request closes by itself.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
@@ -117,7 +117,7 @@
         "loc:DueInDays",
         "dom:RequestMaster_DueInDays"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How many days a request has to be completed.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",

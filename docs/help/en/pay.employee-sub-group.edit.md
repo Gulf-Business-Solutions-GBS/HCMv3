@@ -11,25 +11,25 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 
 ## Overview
 
-A finer grouping of employees under an employee group, and the place most benefit rules hang from: leave, gratuity, air tickets, health reimbursement, bonus and other entitlements are all set per sub group on its own tabs. Each employee's organisation assignment names their sub group.
+A finer grouping of employees under a salary profile, and the place most benefit rules hang from: leave, gratuity, air tickets, health reimbursement, bonus and other entitlements are all set per grade on its own tabs. Each employee's organisation assignment names their grade.
 
-The fields on this form are the sub group's general settings for overtime, air tickets and health reimbursement.
+The fields on this form are the grade's general settings for overtime, air tickets and health reimbursement.
 
 ## EmployeeGroup {#EmployeeSubGroup.EmployeeGroupId}
 <!-- alias: loc:EmployeeGroup, dom:EmployeeSubGroup_EmployeeGroupId -->
 
-**What it is.** The employee group this sub group belongs to.
+**What it is.** The salary profile this grade belongs to.
 
 **Example.** Staff
 
-**Why it matters.** Groups the sub groups; the sub group list can be filtered by it.
+**Why it matters.** Groups the grades; the grade list can be filtered by it.
 
 **Rules.** Required. Chosen from a list.
 
 ## TicketClass {#EmployeeSubGroup.TicketClassId}
 <!-- alias: loc:TicketClass, dom:EmployeeSubGroup_TicketClassId -->
 
-**What it is.** The class of air travel the sub group is entitled to.
+**What it is.** The class of air travel the grade is entitled to.
 
 **Example.** Economy
 
@@ -40,7 +40,7 @@ The fields on this form are the sub group's general settings for overtime, air t
 ## PayOvertime {#EmployeeSubGroup.PayOvertime}
 <!-- alias: loc:PayOvertime, dom:EmployeeSubGroup_PayOvertime -->
 
-**What it is.** Whether employees in this sub group are paid for overtime.
+**What it is.** Whether employees in this grade are paid for overtime.
 
 **Why it matters.** Ticked, the time engine turns overtime it finds on a day into an employee overtime record, which is then approved and paid. Unticked, no overtime record is created, so no overtime is paid however long the employee works.
 
@@ -53,11 +53,11 @@ With it ticked, a day with overtime needs an overtime type -- set on the duty, o
 ## AirTicketPayType {#EmployeeSubGroup.AirTicketPayType}
 <!-- alias: loc:AirTicketPayType, dom:EmployeeSubGroup_AirTicketPayType -->
 
-**What it is.** How the value of one air ticket is worked out for this sub group.
+**What it is.** How the value of one air ticket is worked out for this grade.
 
 **Example.** Fix Amount
 
-**Why it matters.** *FareAmount* prices the ticket from the fare table for the ticket class and the employee's route. *Fix Amount* uses the fixed amount on the sub group's ticket rule. *Actual Amount* divides what was actually paid by the number of tickets, falling back to the rule's maximum amount when nothing was paid. *ActualAmountWithinMaxlimit* does the same division but never goes above the rule's maximum amount. The average-ticket wagetype is priced this way.
+**Why it matters.** *FareAmount* prices the ticket from the fare table for the ticket class and the employee's route. *Fix Amount* uses the fixed amount on the grade's ticket rule. *Actual Amount* divides what was actually paid by the number of tickets, falling back to the rule's maximum amount when nothing was paid. *ActualAmountWithinMaxlimit* does the same division but never goes above the rule's maximum amount. The average-ticket wagetype is priced this way.
 
 **Rules.** Required. One of: FareAmount, Fix Amount, Actual Amount, ActualAmountWithinMaxlimit.
 
@@ -71,7 +71,7 @@ With it ticked, a day with overtime needs an overtime type -- set on the duty, o
 **Rules.** Yes or no.
 
 :::admin
-A ticket type with no ticket rule on the sub group is paid automatically only when the employee has an exception for it.
+A ticket type with no ticket rule on the grade is paid automatically only when the employee has an exception for it.
 :::
 
 ## MaxDependantAirTicketCount {#EmployeeSubGroup.MaxDependantAirTicketCount}
@@ -88,7 +88,7 @@ A ticket type with no ticket rule on the sub group is paid automatically only wh
 ## MaxHealthReimburseAmount {#EmployeeSubGroup.MaxHealthReimburseAmount}
 <!-- alias: loc:MaxHealthReimburseAmount, dom:EmployeeSubGroup_MaxHealthReimburseAmount -->
 
-**What it is.** The most an employee in this sub group can be reimbursed for health expenses in one health insurance year.
+**What it is.** The most an employee in this grade can be reimbursed for health expenses in one health insurance year.
 
 **Example.** `500`
 
@@ -114,6 +114,6 @@ A ticket type with no ticket rule on the sub group is paid automatically only wh
 
 **Example.** `4`
 
-**Why it matters.** The eligible amount adds up the sub group's per-dependant entitlements for the employee's dependants, up to this many. 0 means no limit.
+**Why it matters.** The eligible amount adds up the grade's per-dependant entitlements for the employee's dependants, up to this many. 0 means no limit.
 
 **Rules.** Optional. Whole number.

@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeWorkExperience",
   "overviewHtml": "<p>وظيفة سابقة شغلها الموظف قبل التحاقه. ولا يجوز أن تتداخل فترات الموظف نفسه.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeWorkExperience.StartDate",
+    "dom:EmployeeWorkExperience_StartDate": "EmployeeWorkExperience.StartDate",
+    "loc:EndDate": "EmployeeWorkExperience.EndDate",
+    "dom:EmployeeWorkExperience_EndDate": "EmployeeWorkExperience.EndDate",
     "loc:Company": "EmployeeWorkExperience.Company",
     "dom:EmployeeWorkExperience_Company": "EmployeeWorkExperience.Company",
     "loc:Position": "EmployeeWorkExperience.Position",
@@ -12,13 +16,37 @@
     "loc:Location": "EmployeeWorkExperience.Location",
     "dom:EmployeeWorkExperience_Location": "EmployeeWorkExperience.Location",
     "loc:ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
-    "dom:EmployeeWorkExperience_ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
-    "loc:StartDate": "EmployeeWorkExperience.StartDate",
-    "dom:EmployeeWorkExperience_StartDate": "EmployeeWorkExperience.StartDate",
-    "loc:EndDate": "EmployeeWorkExperience.EndDate",
-    "dom:EmployeeWorkExperience_EndDate": "EmployeeWorkExperience.EndDate"
+    "dom:EmployeeWorkExperience_ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving"
   },
   "fields": [
+    {
+      "id": "EmployeeWorkExperience.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeWorkExperience_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeWorkExperience_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeWorkExperience.Company",
       "label": "Company",
@@ -72,34 +100,6 @@
       "rules": "اختياري. الحد الأقصى 1000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> سبب ترك العمل.</p><p><strong>مثال.</strong> التطور الوظيفي</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeWorkExperience.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeWorkExperiences",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeWorkExperience_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeWorkExperience.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeWorkExperiences",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeWorkExperience_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     }

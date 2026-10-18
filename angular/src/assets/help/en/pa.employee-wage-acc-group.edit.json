@@ -5,26 +5,12 @@
   "entity": "HCMv3.PayrollManagement.EmployeeWageAccGroup",
   "overviewHtml": "<p>The wage account group assigned to the employee from a given date. Saving a new one closes the previous one on the day before the new start date. The same group cannot be recorded twice with the same start date.</p><p>It is recorded for reference; the cost engine and journal postings do not read it at present.</p>",
   "aliasIndex": {
-    "loc:WageAccGroupId": "EmployeeWageAccGroup.WageAccGroupId",
-    "dom:EmployeeWageAccGroup_WageAccGroupId": "EmployeeWageAccGroup.WageAccGroupId",
     "loc:StartDate": "EmployeeWageAccGroup.StartDate",
-    "dom:EmployeeWageAccGroup_StartDate": "EmployeeWageAccGroup.StartDate"
+    "dom:EmployeeWageAccGroup_StartDate": "EmployeeWageAccGroup.StartDate",
+    "loc:WageAccGroupId": "EmployeeWageAccGroup.WageAccGroupId",
+    "dom:EmployeeWageAccGroup_WageAccGroupId": "EmployeeWageAccGroup.WageAccGroupId"
   },
   "fields": [
-    {
-      "id": "EmployeeWageAccGroup.WageAccGroupId",
-      "label": "WageAccGroupId",
-      "section": "EmployeeWageAccGroups",
-      "aliases": [
-        "loc:WageAccGroupId",
-        "dom:EmployeeWageAccGroup_WageAccGroupId"
-      ],
-      "rules": "Required. Chosen from Wage Acc Group master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The wage account group.</p><p><strong>Example.</strong> Head Office Staff</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Wage Account Groups.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeWageAccGroup.StartDate",
       "label": "StartDate",
@@ -37,6 +23,20 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccGroup.WageAccGroupId",
+      "label": "WageAccGroupId",
+      "section": "EmployeeWageAccGroups",
+      "aliases": [
+        "loc:WageAccGroupId",
+        "dom:EmployeeWageAccGroup_WageAccGroupId"
+      ],
+      "rules": "Required. Chosen from Wage Acc Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wage account group.</p><p><strong>Example.</strong> Head Office Staff</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wage Account Groups.</p>",
       "stub": false
     }
   ]

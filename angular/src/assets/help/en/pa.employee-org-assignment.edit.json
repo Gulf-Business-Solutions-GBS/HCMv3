@@ -18,7 +18,15 @@
     "loc:BudgetingGroup": "EmployeeOrgAssignment.BudgetingGroupId",
     "dom:EmployeeOrgAssignment_BudgetingGroupId": "EmployeeOrgAssignment.BudgetingGroupId",
     "loc:OrganizationUnit": "EmployeeOrgAssignment.OrganizationUnitId",
-    "dom:EmployeeOrgAssignment_OrganizationUnitId": "EmployeeOrgAssignment.OrganizationUnitId"
+    "dom:EmployeeOrgAssignment_OrganizationUnitId": "EmployeeOrgAssignment.OrganizationUnitId",
+    "loc:EmployeeGroup": "EmployeeOrgAssignment.EmployeeGroupId",
+    "dom:EmployeeOrgAssignment_EmployeeGroupId": "EmployeeOrgAssignment.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "EmployeeOrgAssignment.EmployeeSubGroupId",
+    "dom:EmployeeOrgAssignment_EmployeeSubGroupId": "EmployeeOrgAssignment.EmployeeSubGroupId",
+    "loc:PayrollArea": "EmployeeOrgAssignment.PayrollAreaId",
+    "dom:EmployeeOrgAssignment_PayrollAreaId": "EmployeeOrgAssignment.PayrollAreaId",
+    "loc:WorkflowGroup": "EmployeeOrgAssignment.WorkflowGroupId",
+    "dom:EmployeeOrgAssignment_WorkflowGroupId": "EmployeeOrgAssignment.WorkflowGroupId"
   },
   "fields": [
     {
@@ -116,7 +124,63 @@
       "rules": "Optional. Chosen from Organization Unit master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The department or unit the employee belongs to from this date, chosen from the organisation tree.</p><p><strong>Example.</strong> Finance › Accounts Payable</p><p><strong>Why it matters.</strong> Decides the employee's place in the organisation structure, and approval steps assigned to a department role go to that department's approver. Payroll amounts for the employee are rounded to the decimal places of the currency on this unit's payroll area.</p>",
-      "adminHtml": "<p>This form does not set the employee group, employee sub group, payroll area or workflow group, and does not copy them from the previous assignment. A new assignment saved here therefore has none of them. The time engine looks for the employee sub group on the assignments covering the period it runs, and approval routing reads the workflow group on today's assignment; for dates covered only by an assignment saved here, neither finds one.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:EmployeeOrgAssignment_EmployeeGroupId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's salary profile for the dates of this assignment.</p><p><strong>Example.</strong> Staff</p><p><strong>Why it matters.</strong> Indemnity and end-of-service rules that depend on the salary profile are taken from it. Left blank, the value on the previous assignment is kept. If only a grade is chosen, the salary profile is filled in from it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:EmployeeOrgAssignment_EmployeeSubGroupId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's grade for the dates of this assignment.</p><p><strong>Example.</strong> Grade 5</p><p><strong>Why it matters.</strong> Most entitlements hang from the grade: leave quotas, air tickets, indemnity, fund deductions, service bonus and health reimbursement. The time engine and payroll read the grade on the assignment covering each date. The grade must belong to the chosen salary profile; left blank, the previous assignment's grade is kept.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.PayrollAreaId",
+      "label": "PayrollArea",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:PayrollArea",
+        "dom:EmployeeOrgAssignment_PayrollAreaId"
+      ],
+      "rules": "Optional. Chosen from Payroll Area master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll area the employee is paid in for the dates of this assignment.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> Decides which payroll run picks the employee up, and which payroll calendar and lock apply. Left blank, the previous assignment's area is kept, or failing that the area set for the organisation unit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.WorkflowGroupId",
+      "label": "WorkflowGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:WorkflowGroup",
+        "dom:EmployeeOrgAssignment_WorkflowGroupId"
+      ],
+      "rules": "Optional. Chosen from Workflow Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow group whose approval chains the employee's requests follow.</p><p><strong>Example.</strong> Head Office</p><p><strong>Why it matters.</strong> When the employee submits a request, the chain is chosen from the workflow group on today's assignment. Left blank, the workflow group marked as default is used.</p>",
+      "adminHtml": "",
       "stub": false
     }
   ]

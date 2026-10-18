@@ -5,16 +5,62 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeDocumentMvmt",
   "overviewHtml": "<p>A withdrawal and return of one of the employee's documents — for example a passport handed back for travel.</p><p>While a movement has no actual return date, the document shows as out. Employees can request a passport withdrawal through self-service.</p>",
   "aliasIndex": {
+    "loc:HandedOverOn": "EmployeeDocumentMvmt.ActualWithdrawDate",
+    "dom:Mvmt_HandOverDate": "EmployeeDocumentMvmt.ActualWithdrawDate",
+    "loc:ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "dom:Mvmt_ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "loc:ReturnRemarks": "EmployeeDocumentMvmt.ReturnRemarks",
+    "dom:Mvmt_ReturnRemarks": "EmployeeDocumentMvmt.ReturnRemarks",
     "loc:WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
     "dom:Mvmt_WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
     "loc:ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
     "dom:Mvmt_ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
-    "loc:ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
-    "dom:Mvmt_ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
     "loc:Comments": "EmployeeDocumentMvmt.Comments",
     "dom:Mvmt_Comments": "EmployeeDocumentMvmt.Comments"
   },
   "fields": [
+    {
+      "id": "EmployeeDocumentMvmt.ActualWithdrawDate",
+      "label": "HandedOverOn",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:HandedOverOn",
+        "dom:Mvmt_HandOverDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day the document was actually handed over to the employee.</p><p><strong>Why it matters.</strong> Recording it marks the document as out with the employee. It cannot be later than today.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ActualReturnDate",
+      "label": "ActualReturnDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ActualReturnDate",
+        "dom:Mvmt_ActualReturnDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the document actually came back.</p><p><strong>Example.</strong> 18 Jul 2026</p><p><strong>Why it matters.</strong> Leave it empty while the document is still out.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ReturnRemarks",
+      "label": "ReturnRemarks",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ReturnRemarks",
+        "dom:Mvmt_ReturnRemarks"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A note made when the document comes back.</p><p><strong>Example.</strong> Passport returned in good condition; new visa stamp on page 12.</p><p><strong>Why it matters.</strong> For information only. When the return comes through a self-service request, approvers see it on the request.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeDocumentMvmt.WithdrawDate",
       "label": "WithdrawDate",
@@ -40,20 +86,6 @@
       "rules": "Required. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The date the document is due back.</p><p><strong>Example.</strong> 20 Jul 2026</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeDocumentMvmt.ActualReturnDate",
-      "label": "ActualReturnDate",
-      "section": "DocumentMovements",
-      "aliases": [
-        "loc:ActualReturnDate",
-        "dom:Mvmt_ActualReturnDate"
-      ],
-      "rules": "Optional. Date value.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The date the document actually came back.</p><p><strong>Example.</strong> 18 Jul 2026</p><p><strong>Why it matters.</strong> Leave it empty while the document is still out.</p>",
       "adminHtml": "",
       "stub": false
     },

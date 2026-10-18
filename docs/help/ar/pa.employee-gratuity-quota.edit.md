@@ -1,7 +1,7 @@
 ---
 helpId: pa.employee-gratuity-quota.edit
 lang: ar
-title: حصص مكافأة نهاية الخدمة للموظف — إنشاء / تحرير
+title: أرصدة مكافأة نهاية الخدمة للموظف — إنشاء / تحرير
 entity: HCMv3.PersonnelAdministration.EmployeeGratuityQuota
 surfaces:
   - angular/src/app/admin/personnel-administration/employee-detail/gratuity-quotas/create-or-edit-employee-gratuity-quota-modal.component.html

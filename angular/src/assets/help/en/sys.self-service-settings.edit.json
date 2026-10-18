@@ -44,7 +44,9 @@
     "loc:IsPassportWithdrawalRequired": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
     "dom:SelfServiceSettings_IsPassportWithdrawalRequired": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
     "loc:PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
-    "dom:SelfServiceSettings_PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep"
+    "dom:SelfServiceSettings_PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
+    "loc:IsWithdrawalReasonMandatory": "ManageSelfServiceSettings.IsWithdrawalReasonMandatory",
+    "dom:SelfServiceSettings_IsWithdrawalReasonMandatory": "ManageSelfServiceSettings.IsWithdrawalReasonMandatory"
   },
   "fields": [
     {
@@ -324,6 +326,20 @@
       "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The workflow step at which the passport withdrawal is submitted.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSelfServiceSettings.IsWithdrawalReasonMandatory",
+      "label": "IsWithdrawalReasonMandatory",
+      "section": null,
+      "aliases": [
+        "loc:IsWithdrawalReasonMandatory",
+        "dom:SelfServiceSettings_IsWithdrawalReasonMandatory"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees must give a reason when they ask to withdraw a document such as their passport.</p><p><strong>Why it matters.</strong> Ticked, a self-service document withdrawal request without a reason is refused. Until the settings are saved for the first time, the reason is optional.</p>",
       "adminHtml": "",
       "stub": false
     }

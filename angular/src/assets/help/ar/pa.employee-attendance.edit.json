@@ -5,16 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAttendance",
   "overviewHtml": "<p>وقت يقضيه الموظف بعيداً عن دوامه المعتاد مع احتسابه حضوراً — كالتدريب أو الزيارة الميدانية أو المهمة الرسمية. ولا يجوز أن تتداخل سجلات حضور الموظف نفسه.</p><p>يقرأ محرك الوقت هذه السجلات عند بناء كل يوم. وتصرف الرواتب العادية الحضور من تلك الأيام، أما الرواتب خارج الدورة فتقرأ السجلات مباشرة.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeAttendance.StartDate",
+    "dom:EmployeeAttendance_StartDate": "EmployeeAttendance.StartDate",
+    "loc:EndDate": "EmployeeAttendance.EndDate",
+    "dom:EmployeeAttendance_EndDate": "EmployeeAttendance.EndDate",
     "loc:AttendanceTypeId": "EmployeeAttendance.AttendanceTypeId",
     "dom:EmployeeAttendance_AttendanceTypeId": "EmployeeAttendance.AttendanceTypeId",
     "loc:AttendanceUnit": "EmployeeAttendance.AttendanceUnit",
     "dom:EmployeeAttendance_AttendanceUnit": "EmployeeAttendance.AttendanceUnit",
     "loc:AttendanceHours": "EmployeeAttendance.AttendanceHours",
     "dom:EmployeeAttendance_AttendanceHours": "EmployeeAttendance.AttendanceHours",
-    "loc:StartDate": "EmployeeAttendance.StartDate",
-    "dom:EmployeeAttendance_StartDate": "EmployeeAttendance.StartDate",
-    "loc:EndDate": "EmployeeAttendance.EndDate",
-    "dom:EmployeeAttendance_EndDate": "EmployeeAttendance.EndDate",
     "loc:StartTime": "EmployeeAttendance.StartTime",
     "dom:EmployeeAttendance_StartTime": "EmployeeAttendance.StartTime",
     "loc:EndTime": "EmployeeAttendance.EndTime",
@@ -23,6 +23,34 @@
     "dom:EmployeeAttendance_Comments": "EmployeeAttendance.Comments"
   },
   "fields": [
+    {
+      "id": "EmployeeAttendance.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAttendance_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAttendance_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeAttendance.AttendanceTypeId",
       "label": "AttendanceTypeId",
@@ -62,34 +90,6 @@
       "rules": "اختياري. رقم.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الساعات، للحضور المسجل بالساعات.</p><p><strong>مثال.</strong> 3</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الحضور وفي إشعار الاعتماد.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeAttendance.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeAttendances",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeAttendance_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeAttendance.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeAttendances",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeAttendance_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     },

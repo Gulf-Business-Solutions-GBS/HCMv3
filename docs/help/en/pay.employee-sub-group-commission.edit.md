@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupCommissions.Create]
 
 ## Overview
 
-The commission wagetypes of a sub group. The average-commission wagetype pays one twelfth of what the employee earned on these wagetypes over the twelve months up to the pay date.
+The commission wagetypes of a grade. The average-commission wagetype pays one twelfth of what the employee earned on these wagetypes over the twelve months up to the pay date.
 
 ## WageType {#EmployeeSubGroupCommission.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupCommission_WageTypeId -->
@@ -20,6 +20,6 @@ The commission wagetypes of a sub group. The average-commission wagetype pays on
 
 **Example.** Sales Commission
 
-**Why it matters.** Each wagetype can be listed once per sub group.
+**Why it matters.** Each wagetype can be listed once per grade.
 
 **Rules.** Optional. Chosen from a list.

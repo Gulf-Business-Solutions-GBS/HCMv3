@@ -26,10 +26,10 @@ An absence entered on this form does not change the Used figure on the employee'
 
 **Why it matters.** Decides how the days are paid and which quota they belong to.
 
-**Rules.** Required. Chosen from Absence Type master data.
+**Rules.** Required. Chosen from Leave Type master data.
 
 :::admin
-Maintained under Payroll Management → Absence Types.
+Maintained under Payroll Management → Leave Types.
 :::
 
 ## HalfdayType {#EmployeeAbsence.HalfdayType}
@@ -134,7 +134,7 @@ For leave types that require a return date, an absence that has ended with neith
 
 **Why it matters.** Recorded only; no calculation reads the extension at present.
 
-**Rules.** Optional. Chosen from Absence Type master data.
+**Rules.** Optional. Chosen from Leave Type master data.
 
 ## ExtStartDate {#EmployeeAbsence.ExtStartDate}
 <!-- alias: loc:ExtStartDate, dom:EmployeeAbsence_ExtStartDate -->

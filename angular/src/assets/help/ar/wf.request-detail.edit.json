@@ -15,7 +15,7 @@
     "dom:RequestDetail_ApprovalRequire": "RequestDetail.ApprovalRequire",
     "loc:WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
     "dom:RequestDetail_WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
-    "loc:OrganizationUnit": "RequestDetail.WorkflowRoleOrgId",
+    "loc:OrgLevel": "RequestDetail.WorkflowRoleOrgId",
     "dom:RequestDetail_WorkflowRoleOrgId": "RequestDetail.WorkflowRoleOrgId",
     "loc:Person": "RequestDetail.Person",
     "dom:RequestDetail_Person": "RequestDetail.Person",
@@ -135,10 +135,10 @@
     },
     {
       "id": "RequestDetail.WorkflowRoleOrgId",
-      "label": "OrganizationUnit",
+      "label": "OrgLevel",
       "section": "RequestDetails",
       "aliases": [
-        "loc:OrganizationUnit",
+        "loc:OrgLevel",
         "dom:RequestDetail_WorkflowRoleOrgId"
       ],
       "rules": "اختياري. يُختار من قائمة أنواع وحدات الشركة.",
@@ -183,7 +183,7 @@
         "loc:EscalateAfterDays",
         "dom:RequestDetail_EscalateAfterDays"
       ],
-      "rules": "إلزامي. رقم صحيح.",
+      "rules": "اختياري. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الأيام دون إجراء قبل تصعيد الطلب.</p><p><strong>مثال.</strong> 5</p><p><strong>لماذا يهم.</strong> تُحسب من آخر إجراء مسجّل على الطلب. ولا يُستخدم إلا عند تحديد \"يجب التصعيد\"، والقيمة 0 توقف التصعيد.</p>",
       "adminHtml": "",
@@ -239,7 +239,7 @@
         "loc:ReminderDays",
         "dom:RequestDetail_ReminderDays"
       ],
-      "rules": "إلزامي. رقم صحيح.",
+      "rules": "اختياري. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الأيام بين كل تذكير للمعتمدين الذين لم يتخذوا إجراءً.</p><p><strong>مثال.</strong> 2 — تذكيرات في الأيام 2 و4 و6</p><p><strong>لماذا يهم.</strong> يُرسل تذكير إلى المعتمدين الذين لم يتخذوا إجراءً في كل مرة تبلغ فيها الأيام منذ آخر إجراء مضاعفاً لهذا العدد. والقيمة 0 لا ترسل تذكيرات.</p>",
       "adminHtml": "",

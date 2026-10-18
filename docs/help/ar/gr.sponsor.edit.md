@@ -13,12 +13,21 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 
 الكفيل: شركة أو مالك مرخّص يُكفل الموظفون تحته لأغراض الإقامة وتصاريح العمل. يُربط الموظفون بالكفيل في سجلات كفلاء الموظف، ويظهر اسم الكفيل عندها في تقارير الموظفين والرواتب. وتُحفظ تراخيصه والمخوّلون بالتوقيع عنه وممثلوه وحساباته البنكية وحصص مسمياته الوظيفية في الشاشات المرتبطة.
 
-## Email {#Sponsor.Email}
-<!-- alias: loc:Email, dom:Sponsor_Email -->
+## BusinessOwnerNameEn {#Sponsor.BusinessOwnerNameEn}
+<!-- alias: loc:BusinessOwnerNameEn, dom:Sponsor_BusinessOwnerNameEn -->
 
-**ما هو.** البريد الإلكتروني للكفيل.
+**ما هو.** اسم مالك النشاط بالإنجليزية.
 
-**لماذا يهم.** يظهر في تقرير الكفلاء.
+**لماذا يهم.** لا يُقرأ حالياً.
+
+**القواعد.** اختياري. الحد الأقصى 256 حرفاً.
+
+## BusinessOwnerNameAr {#Sponsor.BusinessOwnerNameAr}
+<!-- alias: loc:BusinessOwnerNameAr, dom:Sponsor_BusinessOwnerNameAr -->
+
+**ما هو.** اسم مالك النشاط بالعربية.
+
+**لماذا يهم.** لا يُقرأ حالياً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
@@ -31,6 +40,37 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 
 **القواعد.** إلزامي. إحدى القيم: ذكر، أنثى.
 
+## Nationality {#Sponsor.NationalityId}
+<!-- alias: loc:Nationality, dom:Sponsor_NationalityId -->
+
+**ما هو.** جنسية المالك.
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** إلزامي. يُختار من قائمة الجنسيات.
+
+## BusinessType {#Sponsor.BusinessTypeId}
+<!-- alias: loc:BusinessType, dom:Sponsor_BusinessTypeId -->
+
+**ما هو.** نوع النشاط التجاري.
+
+**مثال.** تجارة
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** إلزامي. يُختار من قائمة أنواع النشاط التجاري.
+
+## Governorate {#Sponsor.GovernorateId}
+<!-- alias: loc:Governorate, dom:Sponsor_GovernorateId -->
+
+**ما هو.** المحافظة في العنوان.
+
+**مثال.** العاصمة
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** إلزامي. يُختار من قائمة المحافظات.
+
 ## Profession {#Sponsor.Profession}
 <!-- alias: loc:Profession, dom:Sponsor_Profession -->
 
@@ -39,6 +79,33 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 **لماذا يهم.** يظهر في تقرير الكفلاء.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
+
+## MOSALID {#Sponsor.MOSALID}
+<!-- alias: loc:MOSALID, dom:Sponsor_MOSALID -->
+
+**ما هو.** رقم ملف الكفيل لدى وزارة الشؤون الاجتماعية والعمل.
+
+**لماذا يهم.** يظهر في تقرير الكفلاء وفي تقارير كشف الرواتب.
+
+**القواعد.** إلزامي. رقم صحيح.
+
+## UnifiedNum {#Sponsor.UnifiedNum}
+<!-- alias: loc:UnifiedNum, dom:Sponsor_UnifiedNum -->
+
+**ما هو.** الرقم الموحد للكفيل لدى الجهات الحكومية.
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** إلزامي. رقم صحيح.
+
+## OrganizationUnit {#Sponsor.OrganizationUnitId}
+<!-- alias: loc:OrganizationUnit, dom:Sponsor_OrganizationUnitId -->
+
+**ما هو.** جزء المنظمة الذي ينتمي إليه الكفيل.
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** إلزامي. يُختار من قائمة الوحدات التنظيمية.
 
 ## Building {#Sponsor.Building}
 <!-- alias: loc:Building, dom:Sponsor_Building -->
@@ -69,10 +136,10 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
-## Block {#Sponsor.Block}
-<!-- alias: loc:Block, dom:Sponsor_Block -->
+## Email {#Sponsor.Email}
+<!-- alias: loc:Email, dom:Sponsor_Email -->
 
-**ما هو.** القطعة.
+**ما هو.** البريد الإلكتروني للكفيل.
 
 **لماذا يهم.** يظهر في تقرير الكفلاء.
 
@@ -82,6 +149,24 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 <!-- alias: loc:Telephone, dom:Sponsor_Telephone -->
 
 **ما هو.** رقم الهاتف.
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** إلزامي. رقم صحيح.
+
+## Block {#Sponsor.Block}
+<!-- alias: loc:Block, dom:Sponsor_Block -->
+
+**ما هو.** القطعة.
+
+**لماذا يهم.** يظهر في تقرير الكفلاء.
+
+**القواعد.** اختياري. الحد الأقصى 256 حرفاً.
+
+## SocialSecurityNum {#Sponsor.SocialSecurityNum}
+<!-- alias: loc:SocialSecurityNum, dom:Sponsor_SocialSecurityNum -->
+
+**ما هو.** رقم تسجيل الكفيل في التأمينات الاجتماعية.
 
 **لماذا يهم.** يظهر في تقرير الكفلاء.
 
@@ -104,88 +189,3 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 **لماذا يهم.** يظهر في تقرير الكفلاء.
 
 **القواعد.** اختياري. الحد الأقصى 50 حرفاً.
-
-## Nationality {#Sponsor.NationalityId}
-<!-- alias: loc:Nationality, dom:Sponsor_NationalityId -->
-
-**ما هو.** جنسية المالك.
-
-**لماذا يهم.** يظهر في تقرير الكفلاء.
-
-**القواعد.** إلزامي. يُختار من قائمة الجنسيات.
-
-## BusinessType {#Sponsor.BusinessTypeId}
-<!-- alias: loc:BusinessType, dom:Sponsor_BusinessTypeId -->
-
-**ما هو.** نوع النشاط التجاري.
-
-**مثال.** تجارة
-
-**لماذا يهم.** يظهر في تقرير الكفلاء.
-
-**القواعد.** إلزامي. يُختار من قائمة أنواع النشاط التجاري.
-
-## OrganizationUnit {#Sponsor.OrganizationUnitId}
-<!-- alias: loc:OrganizationUnit, dom:Sponsor_OrganizationUnitId -->
-
-**ما هو.** جزء المنظمة الذي ينتمي إليه الكفيل.
-
-**لماذا يهم.** يظهر في تقرير الكفلاء.
-
-**القواعد.** إلزامي. يُختار من قائمة الوحدات التنظيمية.
-
-## Governorate {#Sponsor.GovernorateId}
-<!-- alias: loc:Governorate, dom:Sponsor_GovernorateId -->
-
-**ما هو.** المحافظة في العنوان.
-
-**مثال.** العاصمة
-
-**لماذا يهم.** يظهر في تقرير الكفلاء.
-
-**القواعد.** إلزامي. يُختار من قائمة المحافظات.
-
-## UnifiedNum {#Sponsor.UnifiedNum}
-<!-- alias: loc:UnifiedNum, dom:Sponsor_UnifiedNum -->
-
-**ما هو.** الرقم الموحد للكفيل لدى الجهات الحكومية.
-
-**لماذا يهم.** يظهر في تقرير الكفلاء.
-
-**القواعد.** إلزامي. رقم صحيح.
-
-## SocialSecurityNum {#Sponsor.SocialSecurityNum}
-<!-- alias: loc:SocialSecurityNum, dom:Sponsor_SocialSecurityNum -->
-
-**ما هو.** رقم تسجيل الكفيل في التأمينات الاجتماعية.
-
-**لماذا يهم.** يظهر في تقرير الكفلاء.
-
-**القواعد.** إلزامي. رقم صحيح.
-
-## MOSALID {#Sponsor.MOSALID}
-<!-- alias: loc:MOSALID, dom:Sponsor_MOSALID -->
-
-**ما هو.** رقم ملف الكفيل لدى وزارة الشؤون الاجتماعية والعمل.
-
-**لماذا يهم.** يظهر في تقرير الكفلاء وفي تقارير كشف الرواتب.
-
-**القواعد.** إلزامي. رقم صحيح.
-
-## BusinessOwnerNameEn {#Sponsor.BusinessOwnerNameEn}
-<!-- alias: loc:BusinessOwnerNameEn, dom:Sponsor_BusinessOwnerNameEn -->
-
-**ما هو.** اسم مالك النشاط بالإنجليزية.
-
-**لماذا يهم.** لا يُقرأ حالياً.
-
-**القواعد.** اختياري. الحد الأقصى 256 حرفاً.
-
-## BusinessOwnerNameAr {#Sponsor.BusinessOwnerNameAr}
-<!-- alias: loc:BusinessOwnerNameAr, dom:Sponsor_BusinessOwnerNameAr -->
-
-**ما هو.** اسم مالك النشاط بالعربية.
-
-**لماذا يهم.** لا يُقرأ حالياً.
-
-**القواعد.** اختياري. الحد الأقصى 256 حرفاً.

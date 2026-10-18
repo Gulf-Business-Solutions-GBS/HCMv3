@@ -37,9 +37,9 @@
       ],
       "rules": "Optional. Chosen from Workflow Role master data.",
       "when": null,
-      "html": "",
+      "html": "<p><strong>What it is.</strong> A workflow role whose holders are told when this notification fires.</p><p><strong>Example.</strong> HR Business Partner</p><p><strong>Why it matters.</strong> Everyone holding the role on the day is added to the recipients. A group with no role adds nobody. When the configuration has <strong>Send To Approver</strong> ticked, groups are not used at all and only the approvers are told.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "NotificationGroup.WorkflowRoleGroup",
@@ -51,9 +51,9 @@
       ],
       "rules": "Required. One of: None, Company, Department, Branch, CostCenter.",
       "when": null,
-      "html": "",
+      "html": "<p><strong>What it is.</strong> Limits the role holders to those in the same part of the organisation as the requester.</p><p><strong>Example.</strong> Department</p><p><strong>Why it matters.</strong> With Department, for example, only role holders in the requester's department are told. None tells every holder. If the limit leaves nobody, every holder of the role is told instead, so the notification is never lost.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

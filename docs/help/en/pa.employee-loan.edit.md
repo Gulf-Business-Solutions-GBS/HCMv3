@@ -84,7 +84,7 @@ Maintained under General Master Info → Loan Types. A loan type set to Variable
 **Rules.** Yes or no.
 
 ## IncludeInLoanPay {#EmployeeLoan.IncludeInLoanPay}
-<!-- alias: loc:IncludeInLoanPay, dom:EmployeeLoan_IncludeInLoanPay -->
+<!-- alias: loc:IncludeLoanPaymentInPayroll, dom:EmployeeLoan_IncludeInLoanPay -->
 
 **What it is.** Whether the loan is paid to the employee through payroll.
 

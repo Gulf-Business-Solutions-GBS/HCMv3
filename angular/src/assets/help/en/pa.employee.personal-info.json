@@ -8,7 +8,23 @@
     "loc:Code": "Employee.Code",
     "dom:Employee_Code": "Employee.Code",
     "loc:FullNameEn": "Employee.FullNameEn",
+    "loc:FirstNameEn": "Employee.FirstNameEn",
+    "dom:Employee_FirstNameEn": "Employee.FirstNameEn",
+    "loc:SecondNameEn": "Employee.SecondNameEn",
+    "dom:Employee_SecondNameEn": "Employee.SecondNameEn",
+    "loc:ThirdNameEn": "Employee.ThirdNameEn",
+    "dom:Employee_ThirdNameEn": "Employee.ThirdNameEn",
+    "loc:LastNameEn": "Employee.LastNameEn",
+    "dom:Employee_LastNameEn": "Employee.LastNameEn",
     "loc:FullNameAr": "Employee.FullNameAr",
+    "loc:FirstNameAr": "Employee.FirstNameAr",
+    "dom:Employee_FirstNameAr": "Employee.FirstNameAr",
+    "loc:SecondNameAr": "Employee.SecondNameAr",
+    "dom:Employee_SecondNameAr": "Employee.SecondNameAr",
+    "loc:ThirdNameAr": "Employee.ThirdNameAr",
+    "dom:Employee_ThirdNameAr": "Employee.ThirdNameAr",
+    "loc:LastNameAr": "Employee.LastNameAr",
+    "dom:Employee_LastNameAr": "Employee.LastNameAr",
     "loc:Title": "Employee.TitleId",
     "dom:Employee_TitleId": "Employee.TitleId",
     "loc:Status": "Employee.Status",
@@ -27,6 +43,14 @@
     "dom:Employee_ReligionId": "Employee.ReligionId",
     "loc:MaritalStatus": "Employee.MaritalStatusId",
     "dom:Employee_MaritalStatusId": "Employee.MaritalStatusId",
+    "loc:FatherNameEn": "Employee.FatherNameEn",
+    "dom:Employee_FatherNameEn": "Employee.FatherNameEn",
+    "loc:FatherNameAr": "Employee.FatherNameAr",
+    "dom:Employee_FatherNameAr": "Employee.FatherNameAr",
+    "loc:MotherNameEn": "Employee.MotherNameEn",
+    "dom:Employee_MotherNameEn": "Employee.MotherNameEn",
+    "loc:MotherNameAr": "Employee.MotherNameAr",
+    "dom:Employee_MotherNameAr": "Employee.MotherNameAr",
     "loc:Qualification": "Employee.QualificationId",
     "dom:Employee_QualificationId": "Employee.QualificationId",
     "loc:BloodGroup": "Employee.BloodGroup",
@@ -111,6 +135,62 @@
       "stub": false
     },
     {
+      "id": "Employee.FirstNameEn",
+      "label": "FirstNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FirstNameEn",
+        "dom:Employee_FirstNameEn"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's first (given) name in English, spelled as on their passport or Civil ID.</p><p><strong>Example.</strong> <code>Ahmed</code></p><p><strong>Why it matters.</strong> Together with the other English name parts it builds the English full name used on lists, in search, in self-service and on reports. Employees can ask for a correction through self-service (<em>Update my personal details</em>); it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.SecondNameEn",
+      "label": "SecondNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:SecondNameEn",
+        "dom:Employee_SecondNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second part of the English name. In Arabic naming this is usually the father's first name.</p><p><strong>Example.</strong> <code>Khaled</code></p><p><strong>Why it matters.</strong> Part of the English full name. Leave it blank if the employee's documents have no second name — the full name simply skips empty parts.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ThirdNameEn",
+      "label": "ThirdNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:ThirdNameEn",
+        "dom:Employee_ThirdNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third part of the English name. In Arabic naming this is usually the grandfather's first name.</p><p><strong>Example.</strong> <code>Saleh</code></p><p><strong>Why it matters.</strong> Part of the English full name. Leave it blank if the employee's documents have no third name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LastNameEn",
+      "label": "LastNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:LastNameEn",
+        "dom:Employee_LastNameEn"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The family or tribal name in English, as on the passport or Civil ID.</p><p><strong>Example.</strong> <code>Al-Mutairi</code></p><p><strong>Why it matters.</strong> Ends the English full name. Employees can ask for a correction through self-service; it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "Employee.FullNameAr",
       "label": "FullNameAr",
       "section": "EmpCard_Identity",
@@ -120,6 +200,62 @@
       "rules": "Set by the system when the record is saved; not entered on the form.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The complete Arabic name, assembled from the four Arabic name parts.</p><p><strong>Example.</strong> <code>أحمد خالد صالح المطيري</code></p><p><strong>Why it matters.</strong> Printed on Arabic government forms, such as the absence report cancellation and waiver forms. To correct it, edit the Arabic name parts; it rebuilds itself when the record is saved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FirstNameAr",
+      "label": "FirstNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FirstNameAr",
+        "dom:Employee_FirstNameAr"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's first name in Arabic, spelled as on the Civil ID.</p><p><strong>Example.</strong> <code>أحمد</code></p><p><strong>Why it matters.</strong> Together with the other Arabic name parts it builds the Arabic full name, which the system shows wherever names appear in Arabic. Employees can ask for a correction through self-service; it changes here once approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.SecondNameAr",
+      "label": "SecondNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:SecondNameAr",
+        "dom:Employee_SecondNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second part of the Arabic name — usually the father's first name.</p><p><strong>Example.</strong> <code>خالد</code></p><p><strong>Why it matters.</strong> Part of the Arabic full name. Leave it blank if the Civil ID has no second name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ThirdNameAr",
+      "label": "ThirdNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:ThirdNameAr",
+        "dom:Employee_ThirdNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third part of the Arabic name — usually the grandfather's first name.</p><p><strong>Example.</strong> <code>صالح</code></p><p><strong>Why it matters.</strong> Part of the Arabic full name. Leave it blank if the Civil ID has no third name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LastNameAr",
+      "label": "LastNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:LastNameAr",
+        "dom:Employee_LastNameAr"
+      ],
+      "rules": "Required. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The family or tribal name in Arabic, as on the Civil ID.</p><p><strong>Example.</strong> <code>المطيري</code></p><p><strong>Why it matters.</strong> Ends the Arabic full name. Employees can ask for a correction through self-service; it changes here once approved.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -176,7 +312,7 @@
       "rules": "Required. One of: Male, Female, Not specified.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The gender recorded on the Civil ID.</p><p><strong>Example.</strong> <code>Female</code></p><p><strong>Why it matters.</strong> Used by the social security (PIFSS) calculations in payroll. Business rules can also test it; the sample maternity-leave rule uses it to refuse maternity leave for male employees, where that rule is switched on. Employees can ask for a change through self-service.</p>",
-      "adminHtml": "<p>Absence types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.</p>",
+      "adminHtml": "<p>Leave types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.</p>",
       "stub": false
     },
     {
@@ -232,7 +368,7 @@
       "rules": "Optional. Chosen from Religion master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Religion, where the organisation records it.</p><p><strong>Example.</strong> <code>Muslim</code></p><p><strong>Why it matters.</strong> Recorded for information and printed on the work-visa request form; no calculation uses it. Leave it blank if your organisation does not track it.</p>",
-      "adminHtml": "<p>Maintained under General Master Info → Religions. Absence types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Religions. Leave types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.</p>",
       "stub": false
     },
     {
@@ -247,6 +383,62 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> Current marital status.</p><p><strong>Example.</strong> <code>Married</code></p><p><strong>Why it matters.</strong> Used by the social security (PIFSS) calculations in payroll, including the marital-status allowance, so keep it current. Employees can ask for a change through self-service.</p>",
       "adminHtml": "<p>Maintained under General Master Info → Marital Statuses.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.FatherNameEn",
+      "label": "FatherNameEn",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:FatherNameEn",
+        "dom:Employee_FatherNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The father's full name in English, as it appears on the employee's documents.</p><p><strong>Example.</strong> <code>Khaled Saleh Al-Mutairi</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FatherNameAr",
+      "label": "FatherNameAr",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:FatherNameAr",
+        "dom:Employee_FatherNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The father's full name in Arabic.</p><p><strong>Example.</strong> <code>خالد صالح المطيري</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MotherNameEn",
+      "label": "MotherNameEn",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:MotherNameEn",
+        "dom:Employee_MotherNameEn"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mother's full name in English, as it appears on the employee's documents.</p><p><strong>Example.</strong> <code>Fatima Ali Al-Enezi</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MotherNameAr",
+      "label": "MotherNameAr",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:MotherNameAr",
+        "dom:Employee_MotherNameAr"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mother's full name in Arabic.</p><p><strong>Example.</strong> <code>فاطمة علي العنزي</code></p><p><strong>Why it matters.</strong> Printed on the work-visa request form. Employees can ask for a correction through self-service.</p>",
+      "adminHtml": "",
       "stub": false
     },
     {

@@ -196,3 +196,12 @@ permissions: [Pages.SystemSettings.ManageSelfServiceSettings]
 **لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** اختياري. رقم صحيح.
+
+## IsWithdrawalReasonMandatory {#ManageSelfServiceSettings.IsWithdrawalReasonMandatory}
+<!-- alias: loc:IsWithdrawalReasonMandatory, dom:SelfServiceSettings_IsWithdrawalReasonMandatory -->
+
+**ما هو.** ما إذا كان يجب على الموظف ذكر سبب عند طلب سحب مستند مثل جواز السفر.
+
+**لماذا يهم.** إذا أُشِّر عليه، يُرفض طلب سحب المستند عبر الخدمة الذاتية إذا لم يتضمن سبباً. وإلى أن تُحفظ الإعدادات أول مرة يكون السبب اختيارياً.
+
+**القواعد.** نعم أو لا.

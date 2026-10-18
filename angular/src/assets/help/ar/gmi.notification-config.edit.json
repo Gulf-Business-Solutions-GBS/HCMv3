@@ -19,12 +19,12 @@
     "dom:NotificationConfig_ToRequestCreator": "NotificationConfig.ToRequestCreator",
     "loc:ToManager": "NotificationConfig.ToManager",
     "dom:NotificationConfig_ToManager": "NotificationConfig.ToManager",
+    "loc:SendToApprover": "NotificationConfig.SendToApprover",
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover",
     "loc:SendToAll": "NotificationConfig.SendToAll",
     "dom:NotificationConfig_SendToAll": "NotificationConfig.SendToAll",
     "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
-    "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
-    "loc:SendToApprover": "NotificationConfig.SendToApprover",
-    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
+    "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved"
   },
   "fields": [
     {
@@ -51,9 +51,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة قوالب البريد الإلكتروني.",
       "when": null,
-      "html": "",
+      "html": "<p><strong>ما هو.</strong> قالب البريد الإلكتروني الذي يُرسل عند تنفيذ إعداد الإخطار هذا.</p><p><strong>مثال.</strong> اعتماد طلب الإجازة</p><p><strong>لماذا يهم.</strong> تُنشأ الرسالة من القالب، مع تعبئة رقم الطلب وملخصه ومن اتخذ الإجراء وملاحظاته. اختر <strong>إشعار داخل النظام فقط</strong> لعدم إرسال بريد إلكتروني؛ ويظل الإشعار داخل النظام يُرسل.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "NotificationConfig.SendNotification",
@@ -126,6 +126,20 @@
       "stub": false
     },
     {
+      "id": "NotificationConfig.SendToApprover",
+      "label": "SendToApprover",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToApprover",
+        "dom:NotificationConfig_SendToApprover"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه مراسلة المعتمِد الحالي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "NotificationConfig.SendToAll",
       "label": "SendToAll",
       "section": "NotificationConfigs",
@@ -150,20 +164,6 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> في طلبات سير العمل، مراسلة كل من اعتمد الطلب.</p><p><strong>لماذا يهم.</strong> يُتخطى المعتمِدون الذين أصبحوا غير مفعّلين.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "NotificationConfig.SendToApprover",
-      "label": "SendToApprover",
-      "section": "NotificationConfigs",
-      "aliases": [
-        "loc:SendToApprover",
-        "dom:NotificationConfig_SendToApprover"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> كان المقصود منه مراسلة المعتمِد الحالي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
       "stub": false
     }

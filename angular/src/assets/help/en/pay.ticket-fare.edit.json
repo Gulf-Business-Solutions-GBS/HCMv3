@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Ticket Fares — Create / Edit",
   "entity": "HCMv3.PayrollManagement.TicketFare",
-  "overviewHtml": "<p>The fare for one route, passenger type and ticket class, from a given date.</p><p>Tickets valued by <em>FareAmount</em> take the fare for the employee's route, the ticket class of their sub group and the passenger type of the traveller's age. The monthly ticket provision values accrued tickets at the return fare.</p>",
+  "overviewHtml": "<p>The fare for one route, passenger type and ticket class, from a given date.</p><p>Tickets valued by <em>FareAmount</em> take the fare for the employee's route, the ticket class of their grade and the passenger type of the traveller's age. The monthly ticket provision values accrued tickets at the return fare.</p>",
   "aliasIndex": {
     "loc:TicketRouteId": "TicketFare.TicketRouteId",
     "dom:TicketFare_TicketRouteId": "TicketFare.TicketRouteId",
@@ -85,7 +85,7 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The one-way fare.</p><p><strong>Example.</strong> <code>95</code></p><p><strong>Why it matters.</strong> Used when the sub group's ticket rule is set to one way. It cannot be negative.</p>",
+      "html": "<p><strong>What it is.</strong> The one-way fare.</p><p><strong>Example.</strong> <code>95</code></p><p><strong>Why it matters.</strong> Used when the grade's ticket rule is set to one way. It cannot be negative.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -99,7 +99,7 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The return fare.</p><p><strong>Example.</strong> <code>170</code></p><p><strong>Why it matters.</strong> Used when the sub group's ticket rule is set to return, and for the monthly ticket provision. It cannot be negative.</p>",
+      "html": "<p><strong>What it is.</strong> The return fare.</p><p><strong>Example.</strong> <code>170</code></p><p><strong>Why it matters.</strong> Used when the grade's ticket rule is set to return, and for the monthly ticket provision. It cannot be negative.</p>",
       "adminHtml": "",
       "stub": false
     }

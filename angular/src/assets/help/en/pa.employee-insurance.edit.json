@@ -5,16 +5,16 @@
   "entity": "HCMv3.BenefitsManagement.EmployeeInsurance",
   "overviewHtml": "<p>An insurance enrolment for the employee or a dependant, and how its cost is shared and recovered.</p><p>Payroll pays the employee and company contributions in the payroll month in which the insurance starts, then recovers them in instalments from the instalment start date until each balance is cleared. The insurance amount must equal the employee contribution plus the company contribution.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeInsurance.StartDate",
+    "dom:EmployeeInsurance_StartDate": "EmployeeInsurance.StartDate",
+    "loc:EndDate": "EmployeeInsurance.EndDate",
+    "dom:EmployeeInsurance_EndDate": "EmployeeInsurance.EndDate",
     "loc:InsurancePlanId": "EmployeeInsurance.InsurancePlanId",
     "dom:EmployeeInsurance_InsurancePlanId": "EmployeeInsurance.InsurancePlanId",
     "loc:InsuranceProviderId": "EmployeeInsurance.InsuranceProviderId",
     "dom:EmployeeInsurance_InsuranceProviderId": "EmployeeInsurance.InsuranceProviderId",
     "loc:DependantId": "EmployeeInsurance.DependantId",
     "dom:EmployeeInsurance_DependantId": "EmployeeInsurance.DependantId",
-    "loc:StartDate": "EmployeeInsurance.StartDate",
-    "dom:EmployeeInsurance_StartDate": "EmployeeInsurance.StartDate",
-    "loc:EndDate": "EmployeeInsurance.EndDate",
-    "dom:EmployeeInsurance_EndDate": "EmployeeInsurance.EndDate",
     "loc:InstallmentStartDate": "EmployeeInsurance.InstallmentStartDate",
     "dom:EmployeeInsurance_InstallmentStartDate": "EmployeeInsurance.InstallmentStartDate",
     "loc:InsuranceAmount": "EmployeeInsurance.InsuranceAmount",
@@ -27,14 +27,46 @@
     "dom:EmployeeInsurance_CompanyContribution": "EmployeeInsurance.CompanyContribution",
     "loc:InstallmentCompanyDedAmount": "EmployeeInsurance.InstallmentCompanyDedAmount",
     "dom:EmployeeInsurance_InstallmentCompanyDedAmount": "EmployeeInsurance.InstallmentCompanyDedAmount",
+    "loc:BalanceCompanyContribution": "EmployeeInsurance.BalanceCompanyContribution",
+    "dom:EmployeeInsurance_BalanceCompanyContribution": "EmployeeInsurance.BalanceCompanyContribution",
     "loc:EmployeeInterval": "EmployeeInsurance.EmployeeInterval",
     "dom:EmployeeInsurance_EmployeeInterval": "EmployeeInsurance.EmployeeInterval",
     "loc:EmployeeContribution": "EmployeeInsurance.EmployeeContribution",
     "dom:EmployeeInsurance_EmployeeContribution": "EmployeeInsurance.EmployeeContribution",
     "loc:InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount",
-    "dom:EmployeeInsurance_InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount"
+    "dom:EmployeeInsurance_InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount",
+    "loc:BalanceEmployeeContribution": "EmployeeInsurance.BalanceEmployeeContribution",
+    "dom:EmployeeInsurance_BalanceEmployeeContribution": "EmployeeInsurance.BalanceEmployeeContribution"
   },
   "fields": [
+    {
+      "id": "EmployeeInsurance.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeInsurance_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeInsurance_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeInsurance.InsurancePlanId",
       "label": "InsurancePlanId",
@@ -74,34 +106,6 @@
       "rules": "Optional. Chosen from a list.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The dependant covered, when the insurance is not for the employee.</p><p><strong>Example.</strong> Sara Al-Mutairi (Daughter)</p><p><strong>Why it matters.</strong> Dependant insurance is paid and recovered in the same way as the employee's own.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeInsurance.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeInsurances",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeInsurance_StartDate"
-      ],
-      "rules": "Required. Date value.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeInsurance.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeInsurances",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeInsurance_EndDate"
-      ],
-      "rules": "Required. Date value. Cannot be before the start date.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -190,6 +194,20 @@
       "stub": false
     },
     {
+      "id": "EmployeeInsurance.BalanceCompanyContribution",
+      "label": "BalanceCompanyContribution",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:BalanceCompanyContribution",
+        "dom:EmployeeInsurance_BalanceCompanyContribution"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much of the company contribution is still to be recovered. Calculated, not typed in.</p><p><strong>Example.</strong> 360.000 of a 600.000 contribution, after four instalments of 60.000</p><p><strong>Why it matters.</strong> It starts at the full contribution and goes down as instalments are recorded or deducted in payroll. Payroll deducts the insurance only while a balance remains, and the last deduction never goes above it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "EmployeeInsurance.EmployeeInterval",
       "label": "EmployeeInterval",
       "section": "EmployeeInsurances",
@@ -228,6 +246,20 @@
       "rules": "Optional. Number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The monthly instalment recovering the employee contribution.</p><p><strong>Example.</strong> 16.667</p><p><strong>Why it matters.</strong> Payroll never recovers more than the balance left, or more than the employee's net pay allows.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.BalanceEmployeeContribution",
+      "label": "BalanceEmployeeContribution",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:BalanceEmployeeContribution",
+        "dom:EmployeeInsurance_BalanceEmployeeContribution"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much of the employee contribution is still to be recovered. Calculated, not typed in.</p><p><strong>Example.</strong> 120.000</p><p><strong>Why it matters.</strong> Works the same way as Balance Company Contribution, for the employee's share.</p>",
       "adminHtml": "",
       "stub": false
     }

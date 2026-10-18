@@ -5,16 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeSponsor",
   "overviewHtml": "<p>The sponsor (كفيل) the employee's work visa is under, for a period, with their government job title and contract salary.</p><p>Creating an assignment counts it against the sponsor's quota for that government job title, as a citizen or non-citizen according to the employee's nationality; deleting it releases the place. Editing an existing assignment does not move the count. An assignment is refused if the sponsor has no quota for the government job title.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeSponsor.StartDate",
+    "dom:EmployeeSponsor_StartDate": "EmployeeSponsor.StartDate",
+    "loc:EndDate": "EmployeeSponsor.EndDate",
+    "dom:EmployeeSponsor_EndDate": "EmployeeSponsor.EndDate",
     "loc:SponsorId": "EmployeeSponsor.SponsorId",
     "dom:EmployeeSponsor_SponsorId": "EmployeeSponsor.SponsorId",
     "loc:GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
     "dom:EmployeeSponsor_GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
     "loc:EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
     "dom:EmployeeSponsor_EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
-    "loc:StartDate": "EmployeeSponsor.StartDate",
-    "dom:EmployeeSponsor_StartDate": "EmployeeSponsor.StartDate",
-    "loc:EndDate": "EmployeeSponsor.EndDate",
-    "dom:EmployeeSponsor_EndDate": "EmployeeSponsor.EndDate",
     "loc:ContractSalary": "EmployeeSponsor.ContractSalary",
     "dom:EmployeeSponsor_ContractSalary": "EmployeeSponsor.ContractSalary",
     "loc:SalaryCurrencyId": "EmployeeSponsor.SalaryCurrencyId",
@@ -25,6 +25,34 @@
     "dom:EmployeeSponsor_WorkVisaTypeId": "EmployeeSponsor.WorkVisaTypeId"
   },
   "fields": [
+    {
+      "id": "EmployeeSponsor.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSponsor_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSponsor_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeSponsor.SponsorId",
       "label": "SponsorId",
@@ -64,34 +92,6 @@
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The employee's relation to the sponsor, as free text.</p><p><strong>Example.</strong> Employee</p><p><strong>Why it matters.</strong> Shown on the sponsor report.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeSponsor.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeSponsors",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeSponsor_StartDate"
-      ],
-      "rules": "Required. Date value.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeSponsor.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeSponsors",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeSponsor_EndDate"
-      ],
-      "rules": "Required. Date value. Cannot be before the start date.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     },

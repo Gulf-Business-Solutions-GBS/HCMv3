@@ -15,19 +15,6 @@ A manual record of leave days the employee has lost from a leave type.
 
 Saving it does not update the employee's leave quota record, so the self-service balance does not change. Leave forfeiture calculations maintain their own forfeit records.
 
-## AbsenceTypeId {#EmployeeAbsQuotaForfeit.AbsenceTypeId}
-<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsQuotaForfeit_AbsenceTypeId -->
-
-**What it is.** The leave type days are forfeited from.
-
-**Example.** Annual Leave
-
-**Rules.** Required. Chosen from Absence Type master data.
-
-:::admin
-Maintained under Payroll Management → Absence Types.
-:::
-
 ## EffectiveDate {#EmployeeAbsQuotaForfeit.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeAbsQuotaForfeit_EffectiveDate -->
 
@@ -36,6 +23,19 @@ Maintained under Payroll Management → Absence Types.
 **Example.** 31 Mar 2026
 
 **Rules.** Required. Date value.
+
+## AbsenceTypeId {#EmployeeAbsQuotaForfeit.AbsenceTypeId}
+<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsQuotaForfeit_AbsenceTypeId -->
+
+**What it is.** The leave type days are forfeited from.
+
+**Example.** Annual Leave
+
+**Rules.** Required. Chosen from Leave Type master data.
+
+:::admin
+Maintained under Payroll Management → Leave Types.
+:::
 
 ## QuotaForfeited {#EmployeeAbsQuotaForfeit.QuotaForfeited}
 <!-- alias: loc:QuotaForfeited, dom:EmployeeAbsQuotaForfeit_QuotaForfeited -->

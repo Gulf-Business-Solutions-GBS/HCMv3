@@ -142,7 +142,7 @@ A new wagetype cannot be created as a time type or a provision -- those are rese
 
 **Why it matters.** The arrear calculation takes the difference for this source wagetype, and costing posts the arrear to the source wagetype's accounts. An arrear wagetype with no source is left out of costing.
 
-**Rules.** Optional. Chosen from Wagetype master data.
+**Rules.** Optional. Chosen from Wage Type master data.
 
 ## Status {#WageType.Status}
 <!-- alias: loc:Status, dom:WageType_Status -->
@@ -171,7 +171,7 @@ On the time types `4001` (unpaid leave) and `4029` (absent days) the box means s
 
 **What it is.** Whether the wagetype is paid during leave.
 
-**Why it matters.** Not read at present. Which wagetypes make up leave pay is set per absence type in the **Wagetype Leaves** list.
+**Why it matters.** Not read at present. Which wagetypes make up leave pay is set per leave type in the **Wagetype Leaves** list.
 
 **Rules.** Yes or no.
 
@@ -297,7 +297,7 @@ On the time types `4001` (unpaid leave) and `4029` (absent days) the box means s
 
 **What it is.** Whether this wagetype's monthly amount counts in the base for the fund deduction.
 
-**Why it matters.** The sum of these wagetypes decides which of the sub group's fund bands applies.
+**Why it matters.** The sum of these wagetypes decides which of the grade's fund bands applies.
 
 **Rules.** Yes or no.
 

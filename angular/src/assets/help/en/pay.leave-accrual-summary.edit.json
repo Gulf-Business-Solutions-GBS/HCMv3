@@ -43,7 +43,7 @@
         "loc:AbsenceTypeId",
         "dom:LeaveAccrualSummary_AbsenceTypeId"
       ],
-      "rules": "Required. Chosen from Absence Type master data.",
+      "rules": "Required. Chosen from Leave Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The leave type.</p><p><strong>Example.</strong> Annual Leave</p>",
       "adminHtml": "",

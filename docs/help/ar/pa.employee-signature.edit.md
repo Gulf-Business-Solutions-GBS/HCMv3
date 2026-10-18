@@ -22,4 +22,4 @@ permissions: [Pages.PersonnelAdministration.EmployeeSignatures.Create, Pages.Per
 
 **مثال.** صورة PNG للتوقيع على خلفية بيضاء.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 512 حرفاً.

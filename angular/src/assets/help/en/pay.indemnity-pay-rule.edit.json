@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Indemnity Pay Rules — Create / Edit",
   "entity": "HCMv3.PayrollManagement.IndemnityPayRule",
-  "overviewHtml": "<p>A cap on end-of-service indemnity by reason for leaving and country.</p><p>Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's <strong>Employee Group</strong>. These rules are saved and kept for reference.</p>",
+  "overviewHtml": "<p>A cap on end-of-service indemnity by reason for leaving and country.</p><p>Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's <strong>Salary Profile</strong>. These rules are saved and kept for reference.</p>",
   "aliasIndex": {
     "loc:SeparationType": "IndemnityPayRule.SeparationType",
     "dom:IndemnityPayRule_SeparationType": "IndemnityPayRule.SeparationType",

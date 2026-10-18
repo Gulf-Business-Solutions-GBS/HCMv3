@@ -43,7 +43,7 @@
         "loc:WageTypeId",
         "dom:EmployeeBasicPayDetail_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The pay element this line pays.</p><p><strong>Example.</strong> Basic Salary</p><p><strong>Why it matters.</strong> Each wagetype can appear once per basic pay record.</p>",
       "adminHtml": "<p>Maintained under Payroll Management → Wagetypes.</p>",
@@ -113,7 +113,7 @@
         "loc:DependantWageTypeId",
         "dom:EmployeeBasicPayDetail_DependantWageTypeId"
       ],
-      "rules": "Optional. Chosen from Wagetype master data.",
+      "rules": "Optional. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Another wagetype this line is calculated from.</p><p><strong>Example.</strong> Basic Salary</p>",
       "adminHtml": "<p>When this is set, payroll calculates the percentage of that wagetype's amount but stores the result in the payroll line's number, not its amount — behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.</p>",

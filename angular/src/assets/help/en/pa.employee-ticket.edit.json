@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Tickets — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeTicket",
-  "overviewHtml": "<p>An air ticket entitlement taken or paid for the employee or a dependant.</p><p>When the employee's sub group pays air tickets automatically, the time engine creates these records itself on the day each ticket's accrual period starts. Payroll's average ticket calculation reads the tickets on the latest payment date. HCMv3 payroll does not currently calculate an air ticket payment from these records.</p>",
+  "overviewHtml": "<p>An air ticket entitlement taken or paid for the employee or a dependant.</p><p>When the employee's grade pays air tickets automatically, the time engine creates these records itself on the day each ticket's accrual period starts. Payroll's average ticket calculation reads the tickets on the latest payment date. HCMv3 payroll does not currently calculate an air ticket payment from these records.</p>",
   "aliasIndex": {
     "loc:TicketTypeId": "EmployeeTicket.TicketTypeId",
     "dom:EmployeeTicket_TicketTypeId": "EmployeeTicket.TicketTypeId",

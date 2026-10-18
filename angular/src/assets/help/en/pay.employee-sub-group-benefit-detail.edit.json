@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Benefit Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail",
-  "overviewHtml": "<p>The amount of a sub group benefit per kind of dependant, with an age limit.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
+  "overviewHtml": "<p>The amount of a grade benefit per kind of dependant, with an age limit.</p><p>Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
     "dom:EmployeeSubGroupBenefitDetail_StartDate": "EmployeeSubGroupBenefitDetail.StartDate",

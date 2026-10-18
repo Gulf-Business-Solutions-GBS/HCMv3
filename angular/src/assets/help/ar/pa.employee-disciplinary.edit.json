@@ -135,7 +135,7 @@
         "loc:DisciplinaryDeductionTypeId",
         "dom:EmployeeDisciplinary_DisciplinaryDeductionTypeId"
       ],
-      "rules": "اختياري. يُختار من قائمة أنواع الخصم بسبب إجراء تأديبي.",
+      "rules": "اختياري. يُختار من قائمة أنواع خصم المخالفات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الجزاء المطبَّق.</p><p><strong>مثال.</strong> خصم أجر يوم</p><p><strong>لماذا يهم.</strong> يُحدَّد من شرائح نوع المخالفة عند الاعتماد إذا وُجِّه السجل للاعتماد. ولا يُقتطع في الرواتب حالياً.</p>",
       "adminHtml": "",

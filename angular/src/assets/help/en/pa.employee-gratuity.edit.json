@@ -1,7 +1,7 @@
 {
   "helpId": "pa.employee-gratuity.edit",
   "lang": "en",
-  "title": "Employee Gratuities — Create / Edit",
+  "title": "Employee Indemnity — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeGratuity",
   "overviewHtml": "<p>An indemnity (gratuity) payment already made to the employee, in days.</p><p>Payroll counts the days paid in the month when working out the indemnity due. Ticking Reset makes the indemnity count start again from the paid date.</p>",
   "aliasIndex": {

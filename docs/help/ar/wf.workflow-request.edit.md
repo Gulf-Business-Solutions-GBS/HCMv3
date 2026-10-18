@@ -57,7 +57,7 @@ permissions: [Pages.Workflow.WorkflowRequests.Create]
 
 **لماذا يهم.** مفتوح أثناء انتظار الموافقة، وموافق عليه بعد الخطوة الأخيرة، ومرفوض، أو مسودة عند إعادته إلى منشئه.
 
-**القواعد.** إلزامي. إحدى القيم: مفتوح، معتمد، مرفوض، مغلق، مسودة، محوّل.
+**القواعد.** إلزامي. إحدى القيم: مفتوح، معتمد، مرفوض، مغلق، مسودة، محوّل، Cancelled.
 
 ## ApprovalProcessTime {#WorkflowRequest.ApprovalProcessTime}
 <!-- alias: loc:ApprovalProcessTime, dom:WorkflowRequest_ApprovalProcessTime -->

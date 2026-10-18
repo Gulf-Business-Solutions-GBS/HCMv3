@@ -5,30 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit",
   "overviewHtml": "<p>سجل يدوي لأيام إجازة فقدها الموظف من نوع إجازة.</p><p>لا يؤدي حفظه إلى تحديث سجل حصة إجازات الموظف، فلا يتغير الرصيد في الخدمة الذاتية. وتحتفظ احتسابات إسقاط الإجازات بسجلات الإسقاط الخاصة بها.</p>",
   "aliasIndex": {
-    "loc:AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
-    "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
     "loc:EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
     "dom:EmployeeAbsQuotaForfeit_EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
+    "loc:AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+    "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
     "loc:QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
     "dom:EmployeeAbsQuotaForfeit_QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
     "loc:Comments": "EmployeeAbsQuotaForfeit.Comments",
     "dom:EmployeeAbsQuotaForfeit_Comments": "EmployeeAbsQuotaForfeit.Comments"
   },
   "fields": [
-    {
-      "id": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
-      "label": "AbsenceTypeId",
-      "section": "EmployeeAbsQuotaForfeits",
-      "aliases": [
-        "loc:AbsenceTypeId",
-        "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي تُسقط منه الأيام.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
-      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الغياب.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeAbsQuotaForfeit.EffectiveDate",
       "label": "EffectiveDate",
@@ -41,6 +27,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> تاريخ سريان الإسقاط.</p><p><strong>مثال.</strong> 31 مارس 2026</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي تُسقط منه الأيام.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الإجازات.</p>",
       "stub": false
     },
     {

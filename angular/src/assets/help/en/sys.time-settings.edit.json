@@ -593,7 +593,7 @@
       ],
       "rules": "Required. One of: None, Monthly, Yearly.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> When annual leave above the sub group's maximum is forfeited.</p><p><strong>Example.</strong> None</p><p><strong>Why it matters.</strong> <em>None</em> cuts the balance back to the maximum day by day as the time engine runs. <em>Monthly</em> and <em>Yearly</em> let it run over and post a forfeit at the end of each month or year. The leave provision and annual leave reports follow the same rule.</p>",
+      "html": "<p><strong>What it is.</strong> When annual leave above the grade's maximum is forfeited.</p><p><strong>Example.</strong> None</p><p><strong>Why it matters.</strong> <em>None</em> cuts the balance back to the maximum day by day as the time engine runs. <em>Monthly</em> and <em>Yearly</em> let it run over and post a forfeit at the end of each month or year. The leave provision and annual leave reports follow the same rule.</p>",
       "adminHtml": "",
       "stub": false
     },

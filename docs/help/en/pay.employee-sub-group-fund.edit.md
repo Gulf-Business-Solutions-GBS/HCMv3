@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupFunds.Create]
 
 ## Overview
 
-One pay band of the sub group's fund deduction -- for example a savings or provident fund. The employee's pay for the fund is the monthly total of wagetypes marked *Include In Fund*; the band whose From–To range holds that total sets the deduction.
+One pay band of the grade's fund deduction -- for example a savings or provident fund. The employee's pay for the fund is the monthly total of wagetypes marked *Include In Fund*; the band whose From–To range holds that total sets the deduction.
 
 The deduction is made only for employees enrolled in a fund, and not while they have a fund exemption or after their last day in service.
 

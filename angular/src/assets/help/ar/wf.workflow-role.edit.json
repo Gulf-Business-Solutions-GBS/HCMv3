@@ -13,7 +13,7 @@
     "dom:WorkflowRole_NameEn": "WorkflowRole.NameEn",
     "loc:NameAr": "WorkflowRole.NameAr",
     "dom:WorkflowRole_NameAr": "WorkflowRole.NameAr",
-    "loc:OrganizationUnit": "WorkflowRole.WorkflowRoleOrgId",
+    "loc:OrgLevel": "WorkflowRole.WorkflowRoleOrgId",
     "dom:WorkflowRole_WorkflowRoleOrgId": "WorkflowRole.WorkflowRoleOrgId"
   },
   "fields": [
@@ -75,10 +75,10 @@
     },
     {
       "id": "WorkflowRole.WorkflowRoleOrgId",
-      "label": "OrganizationUnit",
+      "label": "OrgLevel",
       "section": "WorkflowRoles",
       "aliases": [
-        "loc:OrganizationUnit",
+        "loc:OrgLevel",
         "dom:WorkflowRole_WorkflowRoleOrgId"
       ],
       "rules": "اختياري. يُختار من قائمة أنواع وحدات الشركة.",

@@ -5,28 +5,14 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeDottedLineManager",
   "overviewHtml": "<p>مدير ثانوي (خط منقط) لفترة محددة — كقائد مشروع يتبع له الموظف أيضاً.</p><p>يُسجَّل للرجوع إليه فقط: فالمدير الثانوي لا يرى الموظف في الخدمة الذاتية، ولا يعتمد طلباته، ولا تصله إشعاراته.</p>",
   "aliasIndex": {
-    "loc:Manager": "EmployeeDottedLineManager.ManagerId",
-    "dom:EmployeeDottedLineManager_ManagerId": "EmployeeDottedLineManager.ManagerId",
     "loc:StartDate": "EmployeeDottedLineManager.StartDate",
     "dom:EmployeeDottedLineManager_StartDate": "EmployeeDottedLineManager.StartDate",
     "loc:EndDate": "EmployeeDottedLineManager.EndDate",
-    "dom:EmployeeDottedLineManager_EndDate": "EmployeeDottedLineManager.EndDate"
+    "dom:EmployeeDottedLineManager_EndDate": "EmployeeDottedLineManager.EndDate",
+    "loc:Manager": "EmployeeDottedLineManager.ManagerId",
+    "dom:EmployeeDottedLineManager_ManagerId": "EmployeeDottedLineManager.ManagerId"
   },
   "fields": [
-    {
-      "id": "EmployeeDottedLineManager.ManagerId",
-      "label": "Manager",
-      "section": "EmployeeDottedLineManagers",
-      "aliases": [
-        "loc:Manager",
-        "dom:EmployeeDottedLineManager_ManagerId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة الموظفين.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> المدير الثانوي خلال هذه الفترة.</p><p><strong>مثال.</strong> خالد الرشيدي (1044)</p>",
-      "adminHtml": "",
-      "stub": false
-    },
     {
       "id": "EmployeeDottedLineManager.StartDate",
       "label": "StartDate",
@@ -52,6 +38,20 @@
       "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDottedLineManager.ManagerId",
+      "label": "Manager",
+      "section": "EmployeeDottedLineManagers",
+      "aliases": [
+        "loc:Manager",
+        "dom:EmployeeDottedLineManager_ManagerId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المدير الثانوي خلال هذه الفترة.</p><p><strong>مثال.</strong> خالد الرشيدي (1044)</p>",
       "adminHtml": "",
       "stub": false
     }

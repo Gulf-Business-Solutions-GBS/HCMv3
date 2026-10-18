@@ -1,9 +1,9 @@
 {
   "helpId": "pay.employee-group.edit",
   "lang": "en",
-  "title": "Employee Groups — Create / Edit",
+  "title": "Salary Profiles — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeGroup",
-  "overviewHtml": "<p>A broad grouping of employees, such as staff and labour, that employee sub groups sit under. Each employee's organisation assignment names their group and sub group.</p><p>The group carries the cap on end-of-service indemnity. The cap applies only when <strong>Indemnity Max Number</strong> is not 0.</p>",
+  "overviewHtml": "<p>A broad grouping of employees, such as staff and labour, that grades sit under. Each employee's organisation assignment names their salary profile and grade.</p><p>The group carries the cap on end-of-service indemnity. The cap applies only when <strong>Indemnity Max Number</strong> is not 0.</p>",
   "aliasIndex": {
     "loc:Code": "EmployeeGroup.Code",
     "dom:EmployeeGroup_Code": "EmployeeGroup.Code",

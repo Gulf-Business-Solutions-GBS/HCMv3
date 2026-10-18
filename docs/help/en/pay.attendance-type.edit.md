@@ -42,43 +42,7 @@ A kind of attendance away from the normal routine -- business trip, training, on
 
 **Why it matters.** For that leave type, the balance is the attendance days recorded on types linked to it, less what has been taken.
 
-**Rules.** Optional. Chosen from Absence Type master data.
-
-## IsPaid {#AttendanceType.IsPaid}
-<!-- alias: loc:IsPaid, dom:AttendanceType_IsPaid -->
-
-**What it is.** Whether attendance of this type counts as paid working time.
-
-**Why it matters.** Ticked, the time register counts it as actual attendance time -- the full planned day or the attendance's own hours, per **Is Full Day**. Unticked, it adds no time.
-
-**Rules.** Yes or no.
-
-## HaveQuotaAccrual {#AttendanceType.HaveQuotaAccrual}
-<!-- alias: loc:HaveQuotaAccrual, dom:AttendanceType_HaveQuotaAccrual -->
-
-**What it is.** Whether this attendance earns leave.
-
-**Why it matters.** Ticked, **Link Leave Quota** must be filled in. The leave is earned through the link itself: any attendance type with a linked leave adds to it.
-
-**Rules.** Yes or no.
-
-## IncludeWeekend {#AttendanceType.IncludeWeekend}
-<!-- alias: loc:IncludeWeekend, dom:AttendanceType_IncludeWeekend -->
-
-**What it is.** Whether attendance on a weekly off counts.
-
-**Why it matters.** Unticked, attendance of this type on a weekly off adds no time.
-
-**Rules.** Yes or no.
-
-## IncludeRestDay {#AttendanceType.IncludeRestDay}
-<!-- alias: loc:IncludeRestDay, dom:AttendanceType_IncludeRestDay -->
-
-**What it is.** Whether attendance on a rest day counts.
-
-**Why it matters.** Unticked, attendance of this type on a rest day adds no time.
-
-**Rules.** Yes or no.
+**Rules.** Optional. Chosen from Leave Type master data.
 
 ## IncludePublicHoliday {#AttendanceType.IncludePublicHoliday}
 <!-- alias: loc:IncludePublicHoliday, dom:AttendanceType_IncludePublicHoliday -->
@@ -89,20 +53,11 @@ A kind of attendance away from the normal routine -- business trip, training, on
 
 **Rules.** Yes or no.
 
-## CalcOnCalendarDays {#AttendanceType.CalcOnCalendarDays}
-<!-- alias: loc:CalcOnCalendarDays, dom:AttendanceType_CalcOnCalendarDays -->
+## HaveQuotaAccrual {#AttendanceType.HaveQuotaAccrual}
+<!-- alias: loc:HaveQuotaAccrual, dom:AttendanceType_HaveQuotaAccrual -->
 
-**What it is.** Whether attendance days are counted on calendar days.
+**What it is.** Whether this attendance earns leave.
 
-**Why it matters.** Not read at present.
-
-**Rules.** Yes or no.
-
-## IsFullDay {#AttendanceType.IsFullDay}
-<!-- alias: loc:IsFullDay, dom:AttendanceType_IsFullDay -->
-
-**What it is.** Whether attendance of this type counts as a full working day.
-
-**Why it matters.** Ticked, it counts the employee's full planned minutes for the day. Unticked, it counts the hours between the attendance's start and end time.
+**Why it matters.** Ticked, **Link Leave Quota** must be filled in. The leave is earned through the link itself: any attendance type with a linked leave adds to it.
 
 **Rules.** Yes or no.

@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeTicketQuotas.Create]
 
 The employee's air ticket entitlement for one ticket type over an entitlement period.
 
-It is shown on the air ticket quota balance report, whose balance is accrued minus used and adjusted. The time engine works out ticket entitlement from the sub group's ticket rules and the tickets already paid, and does not read these quotas at present.
+It is shown on the air ticket quota balance report, whose balance is accrued minus used and adjusted. The time engine works out ticket entitlement from the grade's ticket rules and the tickets already paid, and does not read these quotas at present.
 
 ## TicketTypeId {#EmployeeTicketQuota.TicketTypeId}
 <!-- alias: loc:TicketTypeId, dom:EmployeeTicketQuota_TicketTypeId -->

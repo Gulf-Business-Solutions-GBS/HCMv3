@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeCertification",
   "overviewHtml": "<p>A course or professional certification the employee has completed.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeCertification.StartDate",
+    "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
+    "loc:EndDate": "EmployeeCertification.EndDate",
+    "dom:EmployeeCertification_EndDate": "EmployeeCertification.EndDate",
     "loc:Course": "EmployeeCertification.Course",
     "dom:EmployeeCertification_Course": "EmployeeCertification.Course",
     "loc:Institution": "EmployeeCertification.InstitutionId",
@@ -14,13 +18,37 @@
     "loc:Certificate": "EmployeeCertification.Certificate",
     "dom:EmployeeCertification_Certificate": "EmployeeCertification.Certificate",
     "loc:Grade": "EmployeeCertification.Grade",
-    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade",
-    "loc:StartDate": "EmployeeCertification.StartDate",
-    "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
-    "loc:EndDate": "EmployeeCertification.EndDate",
-    "dom:EmployeeCertification_EndDate": "EmployeeCertification.EndDate"
+    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade"
   },
   "fields": [
+    {
+      "id": "EmployeeCertification.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeCertification_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeCertification_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeCertification.Course",
       "label": "Course",
@@ -88,34 +116,6 @@
       "rules": "Optional. Maximum 64 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The grade achieved.</p><p><strong>Example.</strong> Pass</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeCertification.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeCertifications",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeCertification_StartDate"
-      ],
-      "rules": "Required. Date value.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeCertification.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeCertifications",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeCertification_EndDate"
-      ],
-      "rules": "Required. Date value. Cannot be before the start date.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     }

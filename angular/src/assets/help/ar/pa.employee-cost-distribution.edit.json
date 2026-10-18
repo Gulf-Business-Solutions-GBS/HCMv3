@@ -5,32 +5,18 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeCostDistribution",
   "overviewHtml": "<p>كيفية توزيع تكلفة الموظف على الوحدات التنظيمية خلال فترة.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه محرك التكلفة حالياً.</p>",
   "aliasIndex": {
-    "loc:OrganizationUnitId": "EmployeeCostDistribution.OrganizationUnitId",
-    "dom:EmployeeCostDistribution_OrganizationUnitId": "EmployeeCostDistribution.OrganizationUnitId",
     "loc:StartDate": "EmployeeCostDistribution.StartDate",
     "dom:EmployeeCostDistribution_StartDate": "EmployeeCostDistribution.StartDate",
     "loc:EndDate": "EmployeeCostDistribution.EndDate",
     "dom:EmployeeCostDistribution_EndDate": "EmployeeCostDistribution.EndDate",
+    "loc:OrganizationUnitId": "EmployeeCostDistribution.OrganizationUnitId",
+    "dom:EmployeeCostDistribution_OrganizationUnitId": "EmployeeCostDistribution.OrganizationUnitId",
     "loc:CostCount": "EmployeeCostDistribution.CostCount",
     "dom:EmployeeCostDistribution_CostCount": "EmployeeCostDistribution.CostCount",
     "loc:UsedDays": "EmployeeCostDistribution.UsedDays",
     "dom:EmployeeCostDistribution_UsedDays": "EmployeeCostDistribution.UsedDays"
   },
   "fields": [
-    {
-      "id": "EmployeeCostDistribution.OrganizationUnitId",
-      "label": "OrganizationUnitId",
-      "section": "EmployeeCostDistributions",
-      "aliases": [
-        "loc:OrganizationUnitId",
-        "dom:EmployeeCostDistribution_OrganizationUnitId"
-      ],
-      "rules": "اختياري. يُختار من قائمة الوحدات التنظيمية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> الوحدة التنظيمية التي توزَّع عليها التكلفة.</p><p><strong>مثال.</strong> قطاع المشاريع</p>",
-      "adminHtml": "",
-      "stub": false
-    },
     {
       "id": "EmployeeCostDistribution.StartDate",
       "label": "StartDate",
@@ -56,6 +42,20 @@
       "rules": "إلزامي. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCostDistribution.OrganizationUnitId",
+      "label": "OrganizationUnitId",
+      "section": "EmployeeCostDistributions",
+      "aliases": [
+        "loc:OrganizationUnitId",
+        "dom:EmployeeCostDistribution_OrganizationUnitId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوحدة التنظيمية التي توزَّع عليها التكلفة.</p><p><strong>مثال.</strong> قطاع المشاريع</p>",
       "adminHtml": "",
       "stub": false
     },

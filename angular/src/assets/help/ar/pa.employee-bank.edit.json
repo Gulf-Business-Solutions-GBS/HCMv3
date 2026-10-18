@@ -5,16 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeBank",
   "overviewHtml": "<p>كيف وأين يُصرف راتب الموظف، اعتباراً من تاريخ معين. ولا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه.</p><p>تستخدم ملفات التحويل البنكي السجل الساري في تاريخ نهاية الملف. ولا يؤدي حفظ سجل جديد إلى إغلاق السابق، لذا حدد تاريخ انتهاء السجل السابق بنفسك.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeBank.StartDate",
+    "dom:EmployeeBank_StartDate": "EmployeeBank.StartDate",
+    "loc:EndDate": "EmployeeBank.EndDate",
+    "dom:EmployeeBank_EndDate": "EmployeeBank.EndDate",
     "loc:BankId": "EmployeeBank.BankId",
     "dom:EmployeeBank_BankId": "EmployeeBank.BankId",
     "loc:PayerBankId": "EmployeeBank.PayerBankId",
     "dom:EmployeeBank_PayerBankId": "EmployeeBank.PayerBankId",
     "loc:BankCountryId": "EmployeeBank.BankCountryId",
     "dom:EmployeeBank_BankCountryId": "EmployeeBank.BankCountryId",
-    "loc:StartDate": "EmployeeBank.StartDate",
-    "dom:EmployeeBank_StartDate": "EmployeeBank.StartDate",
-    "loc:EndDate": "EmployeeBank.EndDate",
-    "dom:EmployeeBank_EndDate": "EmployeeBank.EndDate",
     "loc:PaymentType": "EmployeeBank.PaymentType",
     "dom:EmployeeBank_PaymentType": "EmployeeBank.PaymentType",
     "loc:PaymentCurrencyId": "EmployeeBank.PaymentCurrencyId",
@@ -27,6 +27,34 @@
     "dom:EmployeeBank_BankBranch": "EmployeeBank.BankBranch"
   },
   "fields": [
+    {
+      "id": "EmployeeBank.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBank_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBank_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeBank.BankId",
       "label": "BankId",
@@ -66,34 +94,6 @@
       "rules": "اختياري. يُختار من قائمة الدول.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> بلد بنك الموظف.</p><p><strong>مثال.</strong> الكويت</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه ملفات البنك حالياً.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeBank.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeBanks",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeBank_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeBank.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeBanks",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeBank_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     },

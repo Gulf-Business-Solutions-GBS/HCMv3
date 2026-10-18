@@ -1,7 +1,7 @@
 ---
 helpId: gmi.disciplinary-type.edit
 lang: en
-title: Disciplinary Types — Create / Edit
+title: Violation Types — Create / Edit
 entity: HCMv3.GeneralMasterInfo.DisciplinaryType
 surfaces:
   - angular/src/app/admin/general-master-info/disciplinary-types/create-or-edit-disciplinary-type-modal.component.html

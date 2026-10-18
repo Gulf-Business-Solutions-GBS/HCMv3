@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeWorkExperience",
   "overviewHtml": "<p>A previous job the employee held before joining. Periods for the same employee cannot overlap.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeWorkExperience.StartDate",
+    "dom:EmployeeWorkExperience_StartDate": "EmployeeWorkExperience.StartDate",
+    "loc:EndDate": "EmployeeWorkExperience.EndDate",
+    "dom:EmployeeWorkExperience_EndDate": "EmployeeWorkExperience.EndDate",
     "loc:Company": "EmployeeWorkExperience.Company",
     "dom:EmployeeWorkExperience_Company": "EmployeeWorkExperience.Company",
     "loc:Position": "EmployeeWorkExperience.Position",
@@ -12,13 +16,37 @@
     "loc:Location": "EmployeeWorkExperience.Location",
     "dom:EmployeeWorkExperience_Location": "EmployeeWorkExperience.Location",
     "loc:ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
-    "dom:EmployeeWorkExperience_ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
-    "loc:StartDate": "EmployeeWorkExperience.StartDate",
-    "dom:EmployeeWorkExperience_StartDate": "EmployeeWorkExperience.StartDate",
-    "loc:EndDate": "EmployeeWorkExperience.EndDate",
-    "dom:EmployeeWorkExperience_EndDate": "EmployeeWorkExperience.EndDate"
+    "dom:EmployeeWorkExperience_ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving"
   },
   "fields": [
+    {
+      "id": "EmployeeWorkExperience.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeWorkExperience_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeWorkExperience_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeWorkExperience.Company",
       "label": "Company",
@@ -72,34 +100,6 @@
       "rules": "Optional. Maximum 1000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Why the employee left.</p><p><strong>Example.</strong> Career progression</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeWorkExperience.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeWorkExperiences",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeWorkExperience_StartDate"
-      ],
-      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeWorkExperience.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeWorkExperiences",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeWorkExperience_EndDate"
-      ],
-      "rules": "Required. Date value. Cannot be before the start date.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     }

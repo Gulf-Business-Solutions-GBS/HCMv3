@@ -22,4 +22,4 @@ It is stored for reference; no printed form or report reads it at present.
 
 **Example.** A PNG of the signature on a white background.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 512 characters.

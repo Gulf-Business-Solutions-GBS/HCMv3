@@ -40,7 +40,7 @@ An approval chain: the named sequence of steps a request goes through. Each step
 
 **Why it matters.** Not read at present.
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## DueInDays {#RequestMaster.DueInDays}
 <!-- alias: loc:DueInDays, dom:RequestMaster_DueInDays -->
@@ -49,7 +49,7 @@ An approval chain: the named sequence of steps a request goes through. Each step
 
 **Why it matters.** Not read at present.
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## AutoClose {#RequestMaster.AutoClose}
 <!-- alias: loc:AutoClose, dom:RequestMaster_AutoClose -->
@@ -61,7 +61,7 @@ An approval chain: the named sequence of steps a request goes through. Each step
 **Rules.** Yes or no.
 
 ## IsCommentRequire {#RequestMaster.IsCommentRequire}
-<!-- alias: loc:IsCommentRequire, dom:RequestMaster_IsCommentRequire -->
+<!-- alias: loc:IsCommentRequired, dom:RequestMaster_IsCommentRequire -->
 
 **What it is.** Whether approvers must write a comment.
 

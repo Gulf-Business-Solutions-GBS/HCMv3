@@ -1,7 +1,7 @@
 ---
 helpId: pay.employee-sub-group.edit
 lang: ar
-title: المجموعات الفرعية للموظفين — إنشاء / تحرير
+title: الدرجات — إنشاء / تحرير
 entity: HCMv3.PayrollManagement.EmployeeSubGroup
 surfaces:
   - angular/src/app/admin/payroll-management/employee-sub-groups/create-or-edit-employee-sub-group-modal.component.html
@@ -18,18 +18,18 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 ## EmployeeGroup {#EmployeeSubGroup.EmployeeGroupId}
 <!-- alias: loc:EmployeeGroup, dom:EmployeeSubGroup_EmployeeGroupId -->
 
-**ما هو.** مجموعة الموظفين التي تتبعها هذه المجموعة الفرعية.
+**ما هو.** ملف الراتب الذي تتبعه هذه الدرجة.
 
 **مثال.** الموظفون الإداريون
 
-**لماذا يهم.** تُجمِّع المجموعات الفرعية، ويمكن تصفية قائمة المجموعات الفرعية بها.
+**لماذا يهم.** تُجمِّع الدرجات، ويمكن تصفية قائمة الدرجات بها.
 
 **القواعد.** إلزامي. يُختار من قائمة.
 
 ## TicketClass {#EmployeeSubGroup.TicketClassId}
 <!-- alias: loc:TicketClass, dom:EmployeeSubGroup_TicketClassId -->
 
-**ما هو.** درجة السفر الجوي التي تستحقها المجموعة الفرعية.
+**ما هو.** درجة السفر الجوي التي تستحقها الدرجة.
 
 **مثال.** الدرجة السياحية
 
@@ -40,7 +40,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 ## PayOvertime {#EmployeeSubGroup.PayOvertime}
 <!-- alias: loc:PayOvertime, dom:EmployeeSubGroup_PayOvertime -->
 
-**ما هو.** ما إذا كان موظفو هذه المجموعة الفرعية يتقاضون أجر العمل الإضافي.
+**ما هو.** ما إذا كان موظفو هذه الدرجة يتقاضون أجر العمل الإضافي.
 
 **لماذا يهم.** إذا أُشِّر عليها يحوّل محرك الوقت العمل الإضافي الذي يجده في يوم ما إلى سجل عمل إضافي للموظف، ثم يُعتمد ويُصرف. وإذا لم يُؤشَّر عليها لا يُنشأ سجل عمل إضافي، فلا يُصرف أي عمل إضافي مهما طالت ساعات العمل.
 
@@ -53,7 +53,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 ## AirTicketPayType {#EmployeeSubGroup.AirTicketPayType}
 <!-- alias: loc:AirTicketPayType, dom:EmployeeSubGroup_AirTicketPayType -->
 
-**ما هو.** طريقة احتساب قيمة تذكرة الطيران الواحدة لهذه المجموعة الفرعية.
+**ما هو.** طريقة احتساب قيمة تذكرة الطيران الواحدة لهذه الدرجة.
 
 **مثال.** مبلغ ثابت
 
@@ -71,7 +71,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 **القواعد.** نعم أو لا.
 
 :::admin
-نوع التذكرة الذي ليس له قاعدة تذاكر في المجموعة الفرعية لا يُصرف تلقائياً إلا إذا كان للموظف استثناء له.
+نوع التذكرة الذي ليس له قاعدة تذاكر في الدرجة لا يُصرف تلقائياً إلا إذا كان للموظف استثناء له.
 :::
 
 ## MaxDependantAirTicketCount {#EmployeeSubGroup.MaxDependantAirTicketCount}
@@ -88,7 +88,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 ## MaxHealthReimburseAmount {#EmployeeSubGroup.MaxHealthReimburseAmount}
 <!-- alias: loc:MaxHealthReimburseAmount, dom:EmployeeSubGroup_MaxHealthReimburseAmount -->
 
-**ما هو.** أقصى ما يمكن أن يُسترد لموظف في هذه المجموعة الفرعية من المصاريف الصحية في سنة التأمين الصحي الواحدة.
+**ما هو.** أقصى ما يمكن أن يُسترد لموظف في هذه الدرجة من المصاريف الصحية في سنة التأمين الصحي الواحدة.
 
 **مثال.** `500`
 
@@ -114,6 +114,6 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroups.Create]
 
 **مثال.** `4`
 
-**لماذا يهم.** يجمع المبلغ المستحق استحقاقات المجموعة الفرعية لكل عائل من عائلي الموظف، حتى هذا العدد. والقيمة 0 تعني بلا حد.
+**لماذا يهم.** يجمع المبلغ المستحق استحقاقات الدرجة لكل عائل من عائلي الموظف، حتى هذا العدد. والقيمة 0 تعني بلا حد.
 
 **القواعد.** اختياري. رقم صحيح.

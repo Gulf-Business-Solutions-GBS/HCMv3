@@ -15,6 +15,8 @@
     "dom:LoanType_LoanDeductionType": "LoanType.LoanDeductionType",
     "loc:RecoveryOption": "LoanType.RecoveryOption",
     "dom:LoanType_RecoveryOption": "LoanType.RecoveryOption",
+    "loc:WageType": "LoanType.WageTypeId",
+    "dom:LoanType_WageTypeId": "LoanType.WageTypeId",
     "loc:EligiblePeriod": "LoanType.EligiblePeriod",
     "dom:LoanType_EligiblePeriod": "LoanType.EligiblePeriod",
     "loc:EligibleCountPerYear": "LoanType.EligibleCountPerYear",
@@ -94,6 +96,20 @@
       "rules": "Required. One of: All, Through Payroll, Through External.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How the loan is repaid.</p><p><strong>Why it matters.</strong> Payroll recovers loans whose type is Through Payroll or All. With Through External, payroll does not deduct it and repayment is handled outside HCMv3.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.WageTypeId",
+      "label": "WageType",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:LoanType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The deduction wage type on which payroll recovers the instalments of loans of this type.</p><p><strong>Example.</strong> 2001 - Loan Recovery Deduction</p><p><strong>Why it matters.</strong> Payroll recovers a loan only through this wage type: each month it adds the instalments due on the employee's loans of this type to this line of the payslip. Left blank, loans of this type are never deducted. Several loan types can share one wage type; their instalments are then added together. The list offers only active deduction wage types that are not basic, calculated or arrear pay and are not already used by a leave or overtime type.</p>",
       "adminHtml": "",
       "stub": false
     },

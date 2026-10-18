@@ -19,7 +19,7 @@
         "loc:WageTypeId",
         "dom:WageTypeSecurityRole_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The secured wagetype.</p><p><strong>Example.</strong> Executive Bonus</p>",
       "adminHtml": "",

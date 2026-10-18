@@ -14,11 +14,11 @@ permissions: [Pages.Workflow.RequestDetails.Create]
 خطوة واحدة من سلسلة موافقات: من يوافق عليها، وهل يكفي واحد منهم أم يجب أن يوافقوا جميعاً، وما المسموح لهم، ومتى يُذكَّر بالطلب أو يُصعَّد. تُرقّم الخطوات من 1 وينتقل الطلب خطوة واحدة عند كل موافقة، والموافقة على الخطوة الأخيرة هي موافقة على الطلب. ويجب أن تكون أيام التذكير أقل من أيام التصعيد.
 
 ## RequestMaster {#RequestDetail.RequestMasterId}
-<!-- alias: loc:RequestMaster, dom:RequestDetail_RequestMasterId -->
+<!-- alias: loc:RequestMaster, dom:RequestDetail_RequestMasterName -->
 
 **ما هو.** سلسلة الموافقات التي تنتمي إليها هذه الخطوة.
 
-**القواعد.** إلزامي. يُختار من قائمة الطلبات الأساسية.
+**القواعد.** اختياري. يُختار من قائمة الطلبات الأساسية.
 
 ## Step {#RequestDetail.Step}
 <!-- alias: loc:Step, dom:RequestDetail_Step -->
@@ -59,7 +59,7 @@ permissions: [Pages.Workflow.RequestDetails.Create]
 **القواعد.** إلزامي. إحدى القيم: لا شيء، الشركة، الإدارة، الفرع، مركز التكلفة.
 
 ## OrganizationUnit {#RequestDetail.WorkflowRoleOrgId}
-<!-- alias: loc:OrganizationUnit, dom:RequestDetail_WorkflowRoleOrgId -->
+<!-- alias: loc:OrgLevel, dom:RequestDetail_WorkflowRoleOrgId -->
 
 **ما هو.** مستوى وحدة تنظيمية للدور.
 
@@ -96,7 +96,7 @@ permissions: [Pages.Workflow.RequestDetails.Create]
 
 **لماذا يهم.** تُحسب من آخر إجراء مسجّل على الطلب. ولا يُستخدم إلا عند تحديد "يجب التصعيد"، والقيمة 0 توقف التصعيد.
 
-**القواعد.** إلزامي. رقم صحيح.
+**القواعد.** اختياري. رقم صحيح.
 
 ## EscalateWorkflowRole {#RequestDetail.EscalateWorkflowRoleId}
 <!-- alias: loc:EscalateWorkflowRole, dom:RequestDetail_EscalateWorkflowRoleId -->
@@ -134,79 +134,7 @@ permissions: [Pages.Workflow.RequestDetails.Create]
 
 **لماذا يهم.** يُرسل تذكير إلى المعتمدين الذين لم يتخذوا إجراءً في كل مرة تبلغ فيها الأيام منذ آخر إجراء مضاعفاً لهذا العدد. والقيمة 0 لا ترسل تذكيرات.
 
-**القواعد.** إلزامي. رقم صحيح.
-
-## ShowPayment {#RequestDetail.ShowPayment}
-<!-- alias: loc:ShowPayment, dom:RequestDetail_ShowPayment -->
-
-**ما هو.** ما إذا كان المعتمد يرى تفاصيل الدفع.
-
-**لماذا يهم.** لا يُقرأ حالياً.
-
-**القواعد.** نعم أو لا.
-
-## CanSendBack {#RequestDetail.CanSendBack}
-<!-- alias: loc:CanSendBack, dom:RequestDetail_CanSendBack -->
-
-**ما هو.** ما إذا كان يجوز للمعتمدين في هذه الخطوة إعادة الطلب.
-
-**لماذا يهم.** الإعادة تُرجع الطلب إلى منشئه كمسودة في الخطوة 1، حيث يمكن تعديله وتقديمه من جديد. وعند عدم التحديد يُخفى الخيار ويُرفض.
-
-**القواعد.** نعم أو لا.
-
-## CanReject {#RequestDetail.CanReject}
-<!-- alias: loc:CanReject, dom:RequestDetail_CanReject -->
-
-**ما هو.** ما إذا كان يجوز للمعتمدين في هذه الخطوة رفض الطلب.
-
-**لماذا يهم.** الرفض يُنهي الطلب. وعند عدم التحديد يُخفى الخيار ويُرفض.
-
-**القواعد.** نعم أو لا.
-
-## ShouldEscalate {#RequestDetail.ShouldEscalate}
-<!-- alias: loc:ShouldEscalate, dom:RequestDetail_ShouldEscalate -->
-
-**ما هو.** ما إذا كان الطلب المتوقف في هذه الخطوة يُصعَّد.
-
-**لماذا يهم.** يتطلب أن تكون أيام التصعيد أكبر من 0.
-
-**القواعد.** نعم أو لا.
-
-## EscalateNextLevel {#RequestDetail.EscalateNextLevel}
-<!-- alias: loc:EscalateNextLevel, dom:RequestDetail_EscalateNextLevel -->
-
-**ما هو.** ما إذا كان التصعيد ينقل الطلب إلى الخطوة التالية.
-
-**لماذا يهم.** عند التحديد، ينتقل الطلب المتوقف إلى الخطوة التالية كأنه وُوفق عليه، لكن المعاملة نفسها لا تُطبَّق -- فذلك لا يحدث إلا بموافقة شخص على الخطوة الأخيرة. ويُترك الطلب الذي في خطوته الأخيرة مكانه. وعند عدم التحديد، يتولى دور التصعيد الخطوة نفسها.
-
-**القواعد.** نعم أو لا.
-
-## EnableReadLog {#RequestDetail.EnableReadLog}
-<!-- alias: loc:EnableReadLog, dom:RequestDetail_EnableReadLog -->
-
-**ما هو.** ما إذا كان فتح الطلب في هذه الخطوة يُسجَّل.
-
-**لماذا يهم.** في أول مرة يفتحه فيها كل شخص في هذه الخطوة، يُضاف قيد قراءة إلى سجل القراءة وإلى سجل النشاط.
-
-**القواعد.** نعم أو لا.
-
-## IsCommentRequire {#RequestDetail.IsCommentRequire}
-<!-- alias: loc:IsCommentRequire, dom:RequestDetail_IsCommentRequire -->
-
-**ما هو.** ما إذا كان على المعتمدين كتابة تعليق للموافقة.
-
-**لماذا يهم.** تُرفض الموافقة دون تعليق.
-
-**القواعد.** نعم أو لا.
-
-## SignatoryStep {#RequestDetail.SignatoryStep}
-<!-- alias: loc:SignatoryStep, dom:RequestDetail_SignatoryStep -->
-
-**ما هو.** ما إذا كانت هذه خطوة توقيع تحتاج شخصاً لم يوقّع من قبل.
-
-**لماذا يهم.** يُستبعد هنا كل من وافق على خطوة توقيع سابقة من الطلب نفسه، حتى لا يوقّع شخص واحد مرتين. وإذا لم يبقَ أحد، يُستخدم المعتمد الافتراضي للسلسلة.
-
-**القواعد.** نعم أو لا.
+**القواعد.** اختياري. رقم صحيح.
 
 ## OnSubmit {#RequestDetail.SubmitNotificationConfigId}
 <!-- alias: loc:OnSubmit, dom:RequestDetail_SubmitNotificationConfigId -->
@@ -284,3 +212,75 @@ permissions: [Pages.Workflow.RequestDetails.Create]
 **ماذا يُرسل.** الإعداد المختار هو من يحدد المستلمين وطريقة الإرسال: إشعار داخل النظام أو بريد إلكتروني أو كليهما. والإعداد الذي لا يحمل قالب بريد يُشعر داخل النظام فقط.
 
 **القواعد.** اختياري. يُختار من قائمة إعدادات الإخطار.
+
+## ShowPayment {#RequestDetail.ShowPayment}
+<!-- alias: loc:ShowPayment, dom:RequestDetail_ShowPayment -->
+
+**ما هو.** ما إذا كان المعتمد يرى تفاصيل الدفع.
+
+**لماذا يهم.** لا يُقرأ حالياً.
+
+**القواعد.** نعم أو لا.
+
+## CanSendBack {#RequestDetail.CanSendBack}
+<!-- alias: loc:CanSendBack, dom:RequestDetail_CanSendBack -->
+
+**ما هو.** ما إذا كان يجوز للمعتمدين في هذه الخطوة إعادة الطلب.
+
+**لماذا يهم.** الإعادة تُرجع الطلب إلى منشئه كمسودة في الخطوة 1، حيث يمكن تعديله وتقديمه من جديد. وعند عدم التحديد يُخفى الخيار ويُرفض.
+
+**القواعد.** نعم أو لا.
+
+## CanReject {#RequestDetail.CanReject}
+<!-- alias: loc:CanReject, dom:RequestDetail_CanReject -->
+
+**ما هو.** ما إذا كان يجوز للمعتمدين في هذه الخطوة رفض الطلب.
+
+**لماذا يهم.** الرفض يُنهي الطلب. وعند عدم التحديد يُخفى الخيار ويُرفض.
+
+**القواعد.** نعم أو لا.
+
+## ShouldEscalate {#RequestDetail.ShouldEscalate}
+<!-- alias: loc:ShouldEscalate, dom:RequestDetail_ShouldEscalate -->
+
+**ما هو.** ما إذا كان الطلب المتوقف في هذه الخطوة يُصعَّد.
+
+**لماذا يهم.** يتطلب أن تكون أيام التصعيد أكبر من 0.
+
+**القواعد.** نعم أو لا.
+
+## EscalateNextLevel {#RequestDetail.EscalateNextLevel}
+<!-- alias: loc:EscalateNextLevel, dom:RequestDetail_EscalateNextLevel -->
+
+**ما هو.** ما إذا كان التصعيد ينقل الطلب إلى الخطوة التالية.
+
+**لماذا يهم.** عند التحديد، ينتقل الطلب المتوقف إلى الخطوة التالية كأنه وُوفق عليه، لكن المعاملة نفسها لا تُطبَّق -- فذلك لا يحدث إلا بموافقة شخص على الخطوة الأخيرة. ويُترك الطلب الذي في خطوته الأخيرة مكانه. وعند عدم التحديد، يتولى دور التصعيد الخطوة نفسها.
+
+**القواعد.** نعم أو لا.
+
+## EnableReadLog {#RequestDetail.EnableReadLog}
+<!-- alias: loc:EnableReadLog, dom:RequestDetail_EnableReadLog -->
+
+**ما هو.** ما إذا كان فتح الطلب في هذه الخطوة يُسجَّل.
+
+**لماذا يهم.** في أول مرة يفتحه فيها كل شخص في هذه الخطوة، يُضاف قيد قراءة إلى سجل القراءة وإلى سجل النشاط.
+
+**القواعد.** نعم أو لا.
+
+## IsCommentRequire {#RequestDetail.IsCommentRequire}
+<!-- alias: loc:IsCommentRequire, dom:RequestDetail_IsCommentRequire -->
+
+**ما هو.** ما إذا كان على المعتمدين كتابة تعليق للموافقة.
+
+**لماذا يهم.** تُرفض الموافقة دون تعليق.
+
+**القواعد.** نعم أو لا.
+
+## SignatoryStep {#RequestDetail.SignatoryStep}
+<!-- alias: loc:SignatoryStep, dom:RequestDetail_SignatoryStep -->
+
+**ما هو.** ما إذا كانت هذه خطوة توقيع تحتاج شخصاً لم يوقّع من قبل.
+
+**لماذا يهم.** يُستبعد هنا كل من وافق على خطوة توقيع سابقة من الطلب نفسه، حتى لا يوقّع شخص واحد مرتين. وإذا لم يبقَ أحد، يُستخدم المعتمد الافتراضي للسلسلة.
+
+**القواعد.** نعم أو لا.

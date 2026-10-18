@@ -11,7 +11,7 @@ permissions: [Pages.TravelManagement.TravelDetails.Create]
 
 ## Overview
 
-One leg of a trip: from where to where, when, and where the employee stays. A leg cannot be deleted while it still has costs. The form can work out the expected per diem for the leg from the per-diem rates: choose the employee group and sub group, and it multiplies the nights by the rate for this route.
+One leg of a trip: from where to where, when, and where the employee stays. A leg cannot be deleted while it still has costs. The form can work out the expected per diem for the leg from the per-diem rates: choose the salary profile and grade, and it multiplies the nights by the rate for this route.
 
 ## Travel {#TravelDetail.TravelId}
 <!-- alias: loc:Travel, dom:TravelDetail_TravelId -->
