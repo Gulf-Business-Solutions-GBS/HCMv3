@@ -15,7 +15,6 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 
 @Component({
     templateUrl: './pa-forms.component.html',
@@ -31,7 +30,6 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         CreateOrEditPAFormModalComponent,
         LocalizePipe,
         PermissionPipe,
-        PermissionAnyPipe,
     ],
 })
 export class PAFormsComponent extends AppComponentBase implements OnInit {
@@ -105,7 +103,7 @@ export class PAFormsComponent extends AppComponentBase implements OnInit {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal().show(record.id),
+                command: () => this.createOrEditModal().show(record.id, record.overallScore),
             });
         }
 

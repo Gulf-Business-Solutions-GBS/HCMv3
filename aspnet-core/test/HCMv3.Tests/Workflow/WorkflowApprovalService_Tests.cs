@@ -479,6 +479,33 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
         request.RequestStatus.ShouldBe(RequestStatus.Approved);
     }
 
+    /// <summary>
+    /// Legacy AssignNewApprover only offered employees not already approving the step. Handing it to one of
+    /// them would merge two approvers into one and lose a vote, so the server refuses it.
+    /// </summary>
+    [Fact]
+    public async Task Should_Refuse_Reassigning_To_Someone_Already_Approving_The_Step()
+    {
+        var submitterId = CreateEmployee();
+        var approverId = CreateEmployee();
+        var otherApproverId = CreateEmployee();
+        var roleId = CreateWorkflowRole();
+        AssignEmployeeToRole(approverId, roleId);
+        AssignEmployeeToRole(otherApproverId, roleId);
+
+        var masterId = CreateRequestMaster("LeaveRequest", steps: 1);
+        CreateRequestDetail(masterId, step: 1, workflowRoleId: roleId);
+
+        var requestId = CreateDraftRequest(submitterId, "LeaveRequest");
+        var service = CreateService();
+        await service.SubmitAsync(requestId, submitterId);
+
+        await Should.ThrowAsync<UserFriendlyException>(
+            () => service.ReassignAsync(requestId, approverId, otherApproverId, "to a colleague already on it"));
+        await Should.ThrowAsync<UserFriendlyException>(
+            () => service.ReassignAsync(requestId, approverId, approverId, "to myself"));
+    }
+
     [Fact]
     public async Task Should_Throw_When_NonApprover_Tries_To_Approve()
     {

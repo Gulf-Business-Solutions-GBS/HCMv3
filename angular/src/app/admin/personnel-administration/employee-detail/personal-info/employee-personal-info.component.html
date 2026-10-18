@@ -24,6 +24,17 @@
             <!-- Identity -->
             <section class="epi-card">
                 <h4 class="epi-card-title">{{ 'EmpCard_Identity' | localize }}</h4>
+                <!-- The photo comes with the edit DTO as a data URL, the same source the edit form shows;
+                     the initial stands in when none is stored. -->
+                <div class="epi-photo">
+                    @if (photo()) {
+                        <img [src]="photo()" [alt]="'Photo' | localize" />
+                    } @else {
+                        <span class="epi-photo-initial" aria-hidden="true">
+                            {{ p.fullNameEn ? p.fullNameEn.charAt(0) : '?' }}
+                        </span>
+                    }
+                </div>
                 <dl class="epi-fields">
                     <dt data-help-loc="Code">{{ 'Code' | localize }}</dt>
                     <dd>{{ p.code }}</dd>
@@ -31,8 +42,32 @@
                     <dt data-help-loc="FullNameEn">{{ 'FullNameEn' | localize }}</dt>
                     <dd>{{ p.fullNameEn }}</dd>
 
+                    <dt data-help-loc="FirstNameEn">{{ 'FirstNameEn' | localize }}</dt>
+                    <dd>{{ p.firstNameEn }}</dd>
+
+                    <dt data-help-loc="SecondNameEn">{{ 'SecondNameEn' | localize }}</dt>
+                    <dd>{{ p.secondNameEn }}</dd>
+
+                    <dt data-help-loc="ThirdNameEn">{{ 'ThirdNameEn' | localize }}</dt>
+                    <dd>{{ p.thirdNameEn }}</dd>
+
+                    <dt data-help-loc="LastNameEn">{{ 'LastNameEn' | localize }}</dt>
+                    <dd>{{ p.lastNameEn }}</dd>
+
                     <dt data-help-loc="FullNameAr">{{ 'FullNameAr' | localize }}</dt>
                     <dd dir="rtl">{{ p.fullNameAr }}</dd>
+
+                    <dt data-help-loc="FirstNameAr">{{ 'FirstNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.firstNameAr }}</dd>
+
+                    <dt data-help-loc="SecondNameAr">{{ 'SecondNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.secondNameAr }}</dd>
+
+                    <dt data-help-loc="ThirdNameAr">{{ 'ThirdNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.thirdNameAr }}</dd>
+
+                    <dt data-help-loc="LastNameAr">{{ 'LastNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.lastNameAr }}</dd>
 
                     <dt data-help-loc="Title">{{ 'Title' | localize }}</dt>
                     <dd>{{ p.titleName }}</dd>
@@ -66,6 +101,18 @@
 
                     <dt data-help-loc="MaritalStatus">{{ 'MaritalStatus' | localize }}</dt>
                     <dd>{{ p.maritalStatusName }}</dd>
+
+                    <dt data-help-loc="FatherNameEn">{{ 'FatherNameEn' | localize }}</dt>
+                    <dd>{{ p.fatherNameEn }}</dd>
+
+                    <dt data-help-loc="FatherNameAr">{{ 'FatherNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ details()?.fatherNameAr }}</dd>
+
+                    <dt data-help-loc="MotherNameEn">{{ 'MotherNameEn' | localize }}</dt>
+                    <dd>{{ p.motherNameEn }}</dd>
+
+                    <dt data-help-loc="MotherNameAr">{{ 'MotherNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ details()?.motherNameAr }}</dd>
 
                     <dt data-help-loc="Qualification">{{ 'Qualification' | localize }}</dt>
                     <dd>{{ p.qualificationName }}</dd>

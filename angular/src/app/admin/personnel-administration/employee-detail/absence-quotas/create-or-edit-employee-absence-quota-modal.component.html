@@ -154,6 +154,22 @@
                                     (ngModelChange)="updateNumberField('quotaForfeited', $event)" />
                             </div>
                         </div>
+                        @if (record().id) {
+                            <!-- Read-only: the balance is calculated, not typed in. Value as listed. -->
+                            <div class="row">
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" for="EmployeeAbsenceQuota_QuotaBalance">{{ 'QuotaBalance' | localize }}</label>
+                                    <input
+                                        id="EmployeeAbsenceQuota_QuotaBalance"
+                                        class="form-control"
+                                        type="text"
+                                        name="QuotaBalance"
+                                        [value]="quotaBalance() ?? ''"
+                                        readonly
+                                        disabled />
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

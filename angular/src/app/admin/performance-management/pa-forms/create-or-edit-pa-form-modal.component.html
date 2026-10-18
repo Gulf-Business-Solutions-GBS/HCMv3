@@ -63,7 +63,18 @@
                                 </select>
                                 <validation-messages [formCtrl]="employeeIdInput" />
                             </div>
-                            <div class="col-md-4 mb-5">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="PAForm_OverallScore">{{ 'OverallScore' | localize }}</label>
+                                <input
+                                    id="PAForm_OverallScore"
+                                    type="number"
+                                    class="form-control"
+                                    name="OverallScore"
+                                    [value]="overallScore() ?? ''"
+                                    readonly
+                                    disabled />
+                            </div>
+                            <div class="col-md-2 mb-5">
                                 <label class="form-label" for="PAForm_ModeratedScore">{{ 'ModeratedScore' | localize }}</label>
                                 <input
                                     id="PAForm_ModeratedScore"

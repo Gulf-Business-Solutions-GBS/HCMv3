@@ -14,6 +14,9 @@ public class GetAllSalaryRegistersInput : PagedAndSortedResultRequestDto, IShoul
     /// </summary>
     public int? EmployeeId { get; set; }
 
+    /// <summary>Optional filter by the employee's current payroll area (legacy list column).</summary>
+    public int? PayrollAreaId { get; set; }
+
     public void Normalize()
     {
         if (Sorting.IsNullOrWhiteSpace())

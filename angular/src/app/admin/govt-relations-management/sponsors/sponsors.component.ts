@@ -15,7 +15,6 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 
 @Component({
     templateUrl: './sponsors.component.html',
@@ -31,7 +30,6 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         CreateOrEditSponsorModalComponent,
         LocalizePipe,
         PermissionPipe,
-        PermissionAnyPipe,
     ],
 })
 export class SponsorsComponent extends AppComponentBase implements OnInit {

@@ -4,6 +4,9 @@ import {
     ApplicantsServiceProxy,
     CountriesServiceProxy,
     CreateOrEditApplicantDto,
+    EmployeeDto,
+    EmployeesServiceProxy,
+    GetAllEmployeesInput,
     Gender,
     GetAllNationalitiesInput,
     GetAllSimpleLookupsInput,
@@ -47,6 +50,7 @@ export class CreateOrEditApplicantModalComponent extends AppComponentBase {
     private _countriesService = inject(CountriesServiceProxy);
     private _qualificationsService = inject(QualificationsServiceProxy);
     private _jobTitlesService = inject(JobTitlesServiceProxy);
+    private _employeesService = inject(EmployeesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -62,6 +66,8 @@ export class CreateOrEditApplicantModalComponent extends AppComponentBase {
     readonly countries = signal<SimpleLookupDto[]>([]);
     readonly qualifications = signal<SimpleLookupDto[]>([]);
     readonly jobTitles = signal<SimpleLookupDto[]>([]);
+    /** Onboarding coordinator and buddy are employees. */
+    readonly employees = signal<EmployeeDto[]>([]);
 
     readonly genders = [
         { value: Gender.Male, name: 'Male' },
@@ -113,6 +119,14 @@ export class CreateOrEditApplicantModalComponent extends AppComponentBase {
         this._jobTitlesService
             .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.jobTitles.set(result.items));
+
+        this._employeesService
+            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.employees.set(result.items));
+    }
+
+    employeeLabel(employee: EmployeeDto): string {
+        return `${employee.code} - ${employee.fullNameEn}`;
     }
 
     onShown(): void {

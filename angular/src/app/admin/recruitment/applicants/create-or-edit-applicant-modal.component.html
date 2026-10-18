@@ -470,6 +470,70 @@
                             </div>
                         </div>
 
+                        <h6>{{ 'Onboarding' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="Applicant_CompletionPoints">{{ 'CompletionPoints' | localize }}</label>
+                                <input
+                                    id="Applicant_CompletionPoints"
+                                    class="form-control"
+                                    type="number"
+                                    name="CompletionPoints"
+                                    [ngModel]="record().completionPoints"
+                                    readonly
+                                    disabled />
+                            </div>
+                            <div class="col-md-4 mb-5 form-check form-switch">
+                                <input
+                                    id="Applicant_IsOnbdStarted"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsOnbdStarted"
+                                    [ngModel]="record().isOnbdStarted"
+                                    (ngModelChange)="updateField('isOnbdStarted', $event)" />
+                                <label class="form-check-label" for="Applicant_IsOnbdStarted">{{ 'IsOnbdStarted' | localize }}</label>
+                            </div>
+                            <div class="col-md-4 mb-5 form-check form-switch">
+                                <input
+                                    id="Applicant_IsOnbdInit"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsOnbdInit"
+                                    [ngModel]="record().isOnbdInit"
+                                    (ngModelChange)="updateField('isOnbdInit', $event)" />
+                                <label class="form-check-label" for="Applicant_IsOnbdInit">{{ 'IsOnbdInit' | localize }}</label>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Applicant_OnbCoordinatorId">{{ 'OnbCoordinator' | localize }}</label>
+                                <select
+                                    id="Applicant_OnbCoordinatorId"
+                                    class="form-select"
+                                    name="OnbCoordinatorId"
+                                    [ngModel]="record().onbCoordinatorId"
+                                    (ngModelChange)="updateField('onbCoordinatorId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Applicant_OnbBuddyId">{{ 'OnbBuddy' | localize }}</label>
+                                <select
+                                    id="Applicant_OnbBuddyId"
+                                    class="form-select"
+                                    name="OnbBuddyId"
+                                    [ngModel]="record().onbBuddyId"
+                                    (ngModelChange)="updateField('onbBuddyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
                         <!--
                             The UserName / Password block that stood here was removed in wave R2.
 

@@ -36,6 +36,8 @@ export interface HelpPageContent {
 /** `angular/src/assets/help/index.json`, written by tools/help/help-tool.mjs build. */
 interface DomIndex {
     dom: Record<string, string[]>;
+    /** Edit-dialog component selector (lower case) -> the page documenting that screen. */
+    hosts?: Record<string, string>;
 }
 
 interface RegisteredPage {
@@ -78,10 +80,17 @@ export class HelpService {
      * create/edit form gets its own help with no per-screen wiring, exactly as the read views do.
      */
     private _modalPage: RegisteredPage | null = null;
+
+    /**
+     * The screen behind the drawer when it registered no [helpPage]: recognised by the edit dialog it
+     * hosts (see _screenPageFor). Found again on every press, as the reader may have moved on.
+     */
+    private _screenPage: RegisteredPage | null = null;
     private _lastHover: Element | null = null;
     private _pendingToken: string | null = null;
     private _pendingTechnical = false;
     private _domIndex: Record<string, string[]> | null = null;
+    private _hostIndex: Record<string, string> = {};
     private _domIndexLoad: Promise<void> | null = null;
 
     // -- technical information (DESIGN.md §9) --------------------------------------------------
@@ -125,7 +134,7 @@ export class HelpService {
 
     /** What the drawer is about right now: the dialog in front if it is documented, else the screen. */
     private get _active(): RegisteredPage | null {
-        return this._modalPage ?? this._page;
+        return this._modalPage ?? this._page ?? this._screenPage;
     }
 
     // -- opening -------------------------------------------------------------------------------
@@ -157,6 +166,7 @@ export class HelpService {
         this.isOpen.set(false);
         // The dialog it was speaking for may be gone by the next press; recognise it again then.
         this._modalPage = null;
+        this._screenPage = null;
     }
 
     toggle(): void {
@@ -336,7 +346,14 @@ export class HelpService {
 
         // A dialog in front answers for itself; otherwise the screen behind it does.
         const scope = this._modalInFront() ?? this._page?.host ?? null;
-        if (!scope) return;
+        if (!scope) {
+            // An unannotated screen. F1 is never wanted for the browser's own help, so take it either
+            // way, then look for the screen's edit dialog; with none documented, nothing opens.
+            e.preventDefault();
+            e.stopPropagation();
+            void this._openForScreen();
+            return;
+        }
 
         // Ctrl+F1 asks for the technical panel; without the permission it is plain F1, not a refusal.
         this._pendingTechnical = e.key === 'F1' && e.ctrlKey && this.canSeeTechnical();
@@ -346,6 +363,27 @@ export class HelpService {
         e.stopPropagation();
         this.openField(this._resolveTarget(scope));
     };
+
+    private async _openForScreen(): Promise<void> {
+        await this._ensureDomIndex();
+        const page = this._screenPageFor();
+        if (page?.helpId !== this._screenPage?.helpId) this.expandedTechnical.set(new Set());
+        this._screenPage = page;
+        if (page) this.openPage();
+    }
+
+    /**
+     * The first documented edit dialog hosted on the screen. Its host element stays in the DOM while
+     * the dialog is closed, and a screen hosts only its own (the employee record renders one section at
+     * a time), so finding any one is enough.
+     */
+    private _screenPageFor(): RegisteredPage | null {
+        for (const [selector, helpId] of Object.entries(this._hostIndex)) {
+            const host = document.querySelector<HTMLElement>(selector);
+            if (host) return { helpId, host: host.parentElement ?? host };
+        }
+        return null;
+    }
 
     private _resolveTarget(scope: HTMLElement): string | null {
         const start = this._startElement();
@@ -433,6 +471,7 @@ export class HelpService {
             this._http.get<DomIndex>('assets/help/index.json').subscribe({
                 next: (index) => {
                     this._domIndex = index?.dom ?? {};
+                    this._hostIndex = index?.hosts ?? {};
                     resolve();
                 },
                 error: () => {

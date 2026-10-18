@@ -18,17 +18,21 @@
                         @if (action() === 'Reassign') {
                             <div class="mb-5">
                                 <label class="form-label required" for="WorkflowRequestAction_NewApproverEmployeeId">
-                                    {{ 'Employee' | localize }}
+                                    {{ 'DelegateTo' | localize }}
                                 </label>
-                                <input
+                                <select
                                     id="WorkflowRequestAction_NewApproverEmployeeId"
                                     #newApproverInput="ngModel"
-                                    type="number"
-                                    class="form-control"
+                                    class="form-select"
                                     name="NewApproverEmployeeId"
                                     [ngModel]="newApproverEmployeeId()"
                                     (ngModelChange)="newApproverEmployeeId.set($event)"
-                                    required />
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employee.code }} - {{ employee.fullNameEn }}</option>
+                                    }
+                                </select>
                             </div>
                         }
                         <div class="mb-5">

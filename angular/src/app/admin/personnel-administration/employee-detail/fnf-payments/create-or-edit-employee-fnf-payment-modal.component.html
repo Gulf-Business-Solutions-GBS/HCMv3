@@ -93,6 +93,10 @@
                                         <div class="fw-bold text-primary">{{ b.suggestedIndemnityDays | number: '1.0-3' }}</div>
                                     </div>
                                     <div class="col-6 col-md-2">
+                                        <div class="text-muted fs-7">{{ 'TicketAccrualCount' | localize }}</div>
+                                        <div class="fw-semibold">{{ b.ticketAccrualCount | number: '1.0-3' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
                                         <div class="text-muted fs-7">{{ 'TicketRemainingCount' | localize }}</div>
                                         <div class="fw-semibold">{{ b.ticketRemainingCount | number: '1.0-3' }}</div>
                                     </div>
@@ -168,6 +172,8 @@
                                     [ngModel]="record().ticketCompensateCount"
                                     (ngModelChange)="updateNumberField('ticketCompensateCount', $event)" />
                             </div>
+                            <!-- Legacy showed a dependant's ticket only when the employee had that entitlement. -->
+                            @if (showDependantTicket(1)) {
                             <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeFnFPayment_Dependant1TicketCompensateCount">{{ 'Dependant1TicketCompensateCount' | localize }}</label>
                                 <input
@@ -178,7 +184,15 @@
                                     name="Dependant1TicketCompensateCount"
                                     [ngModel]="record().dependant1TicketCompensateCount"
                                     (ngModelChange)="updateNumberField('dependant1TicketCompensateCount', $event)" />
+                                @if (balances(); as b) {
+                                    <span class="form-text text-muted">
+                                        {{ 'TicketRemainingCount' | localize }}: {{ b.dependant1TicketRemainingCount | number: '1.0-3' }}
+                                    </span>
+                                }
                             </div>
+                            }
+                            <!-- Legacy showed a dependant's ticket only when the employee had that entitlement. -->
+                            @if (showDependantTicket(2)) {
                             <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeFnFPayment_Dependant2TicketCompensateCount">{{ 'Dependant2TicketCompensateCount' | localize }}</label>
                                 <input
@@ -189,7 +203,15 @@
                                     name="Dependant2TicketCompensateCount"
                                     [ngModel]="record().dependant2TicketCompensateCount"
                                     (ngModelChange)="updateNumberField('dependant2TicketCompensateCount', $event)" />
+                                @if (balances(); as b) {
+                                    <span class="form-text text-muted">
+                                        {{ 'TicketRemainingCount' | localize }}: {{ b.dependant2TicketRemainingCount | number: '1.0-3' }}
+                                    </span>
+                                }
                             </div>
+                            }
+                            <!-- Legacy showed a dependant's ticket only when the employee had that entitlement. -->
+                            @if (showDependantTicket(3)) {
                             <div class="col-md-3 mb-5">
                                 <label class="form-label" for="EmployeeFnFPayment_Dependant3TicketCompensateCount">{{ 'Dependant3TicketCompensateCount' | localize }}</label>
                                 <input
@@ -200,7 +222,13 @@
                                     name="Dependant3TicketCompensateCount"
                                     [ngModel]="record().dependant3TicketCompensateCount"
                                     (ngModelChange)="updateNumberField('dependant3TicketCompensateCount', $event)" />
+                                @if (balances(); as b) {
+                                    <span class="form-text text-muted">
+                                        {{ 'TicketRemainingCount' | localize }}: {{ b.dependant3TicketRemainingCount | number: '1.0-3' }}
+                                    </span>
+                                }
                             </div>
+                            }
                         </div>
                         <div class="row">
                             <div class="col-md-4 mb-5">

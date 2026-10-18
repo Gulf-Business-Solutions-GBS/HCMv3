@@ -54,16 +54,8 @@
                             [resizableColumns]="primengTableHelper.resizableColumns">
                             <ng-template #header>
                                 <tr>
-                                    <th
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(
-                                                [
-                                                    'Pages.GovtRelationsManagement.Sponsors.Edit',
-                                                    'Pages.GovtRelationsManagement.Sponsors.Delete',
-                                                ] | permissionAny
-                                            )
-                                        ">
+                                    <!-- Always shown: the menu always holds Details, which only needs the page permission. -->
+                                    <th style="width: 130px">
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 120px" pSortableColumn="code">
@@ -94,16 +86,7 @@
                             </ng-template>
                             <ng-template #body let-record="$implicit">
                                 <tr>
-                                    <td
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(
-                                                [
-                                                    'Pages.GovtRelationsManagement.Sponsors.Edit',
-                                                    'Pages.GovtRelationsManagement.Sponsors.Delete',
-                                                ] | permissionAny
-                                            )
-                                        ">
+                                    <td style="width: 130px">
                                         <button
                                             type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle"
@@ -116,7 +99,9 @@
                                         <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
                                     </td>
                                     <td style="min-width: 200px">
-                                        <a href="javascript:;" (click)="viewDetails(record)">{{ record.nameEn }}</a>
+                                        <a href="javascript:;" class="fw-bold" (click)="viewDetails(record)" [pTooltip]="l('Details')">
+                                            <i class="fa fa-external-link-alt me-1"></i>{{ record.nameEn }}
+                                        </a>
                                     </td>
                                     <td style="min-width: 200px">
                                         {{ record.nameAr }}

@@ -175737,6 +175737,7 @@ export interface ICalculateWorkDaysInput {
 
 export class CalculateWorkDaysOutput implements ICalculateWorkDaysOutput {
     workDays!: number;
+    calendarDays!: number;
 
     constructor(data?: ICalculateWorkDaysOutput) {
         if (data) {
@@ -175750,6 +175751,7 @@ export class CalculateWorkDaysOutput implements ICalculateWorkDaysOutput {
     init(_data?: any) {
         if (_data) {
             this.workDays = _data["workDays"];
+            this.calendarDays = _data["calendarDays"];
         }
     }
 
@@ -175763,12 +175765,14 @@ export class CalculateWorkDaysOutput implements ICalculateWorkDaysOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["workDays"] = this.workDays;
+        data["calendarDays"] = this.calendarDays;
         return data;
     }
 }
 
 export interface ICalculateWorkDaysOutput {
     workDays: number;
+    calendarDays: number;
 }
 
 export class CancelFeedbackInput implements ICancelFeedbackInput {
@@ -243133,6 +243137,7 @@ export class GetAllSalaryRegistersInput implements IGetAllSalaryRegistersInput {
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    payrollAreaId!: number | undefined;
 
     constructor(data?: IGetAllSalaryRegistersInput) {
         if (data) {
@@ -243149,6 +243154,7 @@ export class GetAllSalaryRegistersInput implements IGetAllSalaryRegistersInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.payrollAreaId = _data["payrollAreaId"];
         }
     }
 
@@ -243165,6 +243171,7 @@ export class GetAllSalaryRegistersInput implements IGetAllSalaryRegistersInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["payrollAreaId"] = this.payrollAreaId;
         return data;
     }
 }
@@ -243174,6 +243181,7 @@ export interface IGetAllSalaryRegistersInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    payrollAreaId: number | undefined;
 }
 
 export class GetAllScreensInput implements IGetAllScreensInput {
@@ -339188,6 +339196,8 @@ export class SalaryRegisterDto implements ISalaryRegisterDto {
     payrollReasonTypeName!: string | undefined;
     offCyclePaymentDate!: DateTime;
     locked!: boolean;
+    payrollAreaId!: number | undefined;
+    payrollAreaName!: string | undefined;
 
     constructor(data?: ISalaryRegisterDto) {
         if (data) {
@@ -339211,6 +339221,8 @@ export class SalaryRegisterDto implements ISalaryRegisterDto {
             this.payrollReasonTypeName = _data["payrollReasonTypeName"];
             this.offCyclePaymentDate = _data["offCyclePaymentDate"] ? DateTime.fromISO(_data["offCyclePaymentDate"].toString()) : undefined as any;
             this.locked = _data["locked"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.payrollAreaName = _data["payrollAreaName"];
         }
     }
 
@@ -339234,6 +339246,8 @@ export class SalaryRegisterDto implements ISalaryRegisterDto {
         data["payrollReasonTypeName"] = this.payrollReasonTypeName;
         data["offCyclePaymentDate"] = this.offCyclePaymentDate ? this.offCyclePaymentDate.toString() : undefined as any;
         data["locked"] = this.locked;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["payrollAreaName"] = this.payrollAreaName;
         return data;
     }
 }
@@ -339250,6 +339264,8 @@ export interface ISalaryRegisterDto {
     payrollReasonTypeName: string | undefined;
     offCyclePaymentDate: DateTime;
     locked: boolean;
+    payrollAreaId: number | undefined;
+    payrollAreaName: string | undefined;
 }
 
 export class SalaryRegisterMaintenanceInput implements ISalaryRegisterMaintenanceInput {

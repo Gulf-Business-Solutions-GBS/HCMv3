@@ -201,5 +201,8 @@ public class EmployeeProjectDetailsAppService_Tests : ProjectManagementAppServic
         var result = await service.CalculateWorkDaysAsync(new CalculateWorkDaysInput { EmployeeProjectDetailId = detailId });
 
         result.WorkDays.ShouldBe(2);
+
+        // Legacy CalendarDays: EndDate - StartDate + 1, whatever the time registers say.
+        result.CalendarDays.ShouldBe(5);
     }
 }

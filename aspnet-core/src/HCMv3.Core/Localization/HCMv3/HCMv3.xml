@@ -58,7 +58,7 @@
     <text name="LanguageInfos">Languages</text>
     <text name="MaritalStatuses">Marital Statuses</text>
     <text name="NationalityGroups">Nationality Groups</text>
-    <text name="NewsTypes">News Types</text>
+    <text name="NewsTypes">Announcement Types</text>
     <text name="PassportTypes">Passport Types</text>
     <text name="PostingGroups">Posting Groups</text>
     <text name="Qualifications">Qualifications</text>
@@ -79,7 +79,7 @@
     <text name="DependantTypes">Dependant Types</text>
     <text name="Currencies">Currencies</text>
     <text name="SeparationReasons">Separation Reasons</text>
-    <text name="DisciplinaryDeductionTypes">Disciplinary Deduction Types</text>
+    <text name="DisciplinaryDeductionTypes">Violation Deduction Types</text>
     <text name="PersonalActions">Personal Actions</text>
     <text name="PersonalActionReasons">Personal Action Reasons</text>
     <text name="Banks">Banks</text>
@@ -89,8 +89,8 @@
     <text name="ClearanceRequestTypes">Clearance Request Types</text>
     <text name="ClearanceRequestFields">Clearance Request Fields</text>
     <text name="ClearanceRequestFieldDetails">Clearance Request Field Details</text>
-    <text name="DisciplinaryTypes">Disciplinary Types</text>
-    <text name="DisciplinaryTypeDetails">Disciplinary Type Details</text>
+    <text name="DisciplinaryTypes">Violation Types</text>
+    <text name="DisciplinaryTypeDetails">Violation Type Details</text>
     <text name="NotificationConfigs">Notification Configs</text>
     <text name="NotificationGroups">Notification Groups</text>
     <text name="DocumentTypes">Document Types</text>
@@ -131,7 +131,7 @@
     <text name="CreatingNewClearanceRequestFieldDetail">Creating new clearance request field detail</text>
     <text name="EditingClearanceRequestFieldDetail">Editing clearance request field detail</text>
     <text name="ClearanceRequestFieldDetailDeleteWarningMessage">Are you sure you want to delete this clearance request field detail?</text>
-    <text name="DisciplinaryType">Disciplinary Type</text>
+    <text name="DisciplinaryType">Violation Type</text>
     <text name="RepeatDurationInDays">Repeat Duration In Days</text>
     <text name="CreatingNewDisciplinaryType">Creating new disciplinary type</text>
     <text name="EditingDisciplinaryType">Editing disciplinary type</text>
@@ -290,7 +290,7 @@
     <text name="CreatingNewSeparationReason">Creating new separation reason</text>
     <text name="EditingSeparationReason">Editing separation reason</text>
     <text name="SeparationReasonDeleteWarningMessage">Are you sure you want to delete the separation reason '{0}'?</text>
-    <text name="DisciplinaryDeductionType">Disciplinary Deduction Type</text>
+    <text name="DisciplinaryDeductionType">Violation Deduction Type</text>
     <text name="CreatingNewDisciplinaryDeductionType">Creating new disciplinary deduction type</text>
     <text name="EditingDisciplinaryDeductionType">Editing disciplinary deduction type</text>
     <text name="DisciplinaryDeductionTypeDeleteWarningMessage">Are you sure you want to delete the disciplinary deduction type '{0}'?</text>
@@ -2085,8 +2085,8 @@
     <text name="EmployeeBasicPays">Employee Basic Pays</text>
     <text name="EmployeeBasicPayDetails">Employee Basic Pay Details</text>
     <text name="EmployeeOnHolds">Employee On Holds</text>
-    <text name="EmployeeGratuities">Employee Gratuities</text>
-    <text name="EmployeeGratuityQuotas">Employee Gratuity Quotas</text>
+    <text name="EmployeeGratuities">Employee Indemnity</text>
+    <text name="EmployeeGratuityQuotas">Employee Indemnity Quotas</text>
     <text name="EmployeeLoans">Employee Loans</text>
     <text name="EmployeeLoanExemptions">Employee Loan Exemptions</text>
     <text name="EmployeeLoanRecoveries">Employee Loan Recoveries</text>
@@ -2256,7 +2256,7 @@
     <text name="EmployeeBanks">Employee Banks</text>
     <text name="EmployeeAssets">Employee Assets</text>
     <text name="EmployeeAssetInvoices">Employee Asset Invoices</text>
-    <text name="EmployeeDisciplinaries">Employee Disciplinaries</text>
+    <text name="EmployeeDisciplinaries">Employee Violations</text>
     <text name="EmployeeGrievances">Employee Grievances</text>
     <text name="EmployeeHealthReimburses">Employee Health Reimburses</text>
     <text name="EmployeeOvertimes">Employee Overtimes</text>
@@ -2801,7 +2801,7 @@
     <!-- PayrollManagement -->
     <text name="PayrollManagement">Payroll Management</text>
     <text name="AXBatches">AX Batches</text>
-    <text name="AbsenceTypes">Absence Types</text>
+    <text name="AbsenceTypes">Leave Types</text>
     <text name="AbsenceTypeExceptions">Absence Type Exceptions</text>
     <text name="AbsenceDeductionRules">Absence Deduction Rules</text>
     <text name="AbsenceDedRuleDetails">Absence Deduction Rule Details</text>
@@ -2819,7 +2819,7 @@
     <text name="AttendanceTypes">Attendance Types</text>
     <text name="AccountTypes">Account Types</text>
     <text name="AccountInfos">Account Infos</text>
-    <text name="EmployeeGroups">Employee Groups</text>
+    <text name="EmployeeGroups">Salary Profiles</text>
     <text name="PayrollReasonTypes">Payroll Reason Types</text>
     <text name="ReInitializeAfterMustBeGreaterThanZero">Reinitialize After must be greater than zero.</text>
     <text name="CustomStartMonthRequired">Custom Start Month cannot be None when Accrual Period is Custom.</text>
@@ -2830,7 +2830,7 @@
     <text name="StepAlreadyExists">Step '{0}' is already assigned.</text>
     <text name="LinkLeaveQuotaRequiredWhenQuotaAccrualEnabled">Link Leave Quota cannot be blank when Have Quota Accrual is enabled.</text>
     <text name="AccountTypeRequired">Account Type cannot be blank.</text>
-    <text name="EmployeeSubGroups">Employee Sub Groups</text>
+    <text name="EmployeeSubGroups">Grades</text>
     <text name="EmployeeSubGroupAbsences">Employee Sub Group Absences</text>
     <text name="EmployeeSubGroupAbsenceTypes">Employee Sub Group Absence Types</text>
     <text name="EmployeeSubGroupAssetAllowances">Employee Sub Group Asset Allowances</text>
@@ -2844,9 +2844,9 @@
     <text name="EmployeeSubGroupPayments">Employee Sub Group Payments</text>
     <text name="EmployeeSubGroupTickets">Employee Sub Group Tickets</text>
     <text name="EmployeeSubGroupWageTypes">Employee Sub Group Wagetypes</text>
-    <text name="EmployeeGroup">Employee Group</text>
-    <text name="EmployeeSubGroup">Employee Sub Group</text>
-    <text name="AbsenceType">Absence Type</text>
+    <text name="EmployeeGroup">Salary Profile</text>
+    <text name="EmployeeSubGroup">Grade</text>
+    <text name="AbsenceType">Leave Type</text>
     <text name="TicketType">Ticket Type</text>
     <text name="BenefitType">Benefit Type</text>
     <text name="TicketClass">Ticket Class</text>
@@ -2994,7 +2994,7 @@
     <text name="December">December</text>
     <text name="HaveQuotaAccrual">Have Quota Accrual</text>
     <text name="LinkLeaveQuota">Link Leave Quota</text>
-    <text name="WageType">Wagetype</text>
+    <text name="WageType">Wage Type</text>
     <text name="AccrualPeriod">Accrual Period</text>
     <text name="NoAccrual">No Accrual</text>
     <text name="CalendarYear">Calendar Year</text>
@@ -3113,7 +3113,7 @@
     <text name="IncludeInFund">Include In Fund</text>
     <text name="DontImpactNetPay">Don't Impact Net Pay</text>
     <text name="WageAccGroupId">Wage Acc Group</text>
-    <text name="WageTypeId">Wagetype</text>
+    <text name="WageTypeId">Wage Type</text>
     <text name="AccountInfoId">Account Info</text>
     <text name="OffsetAccountInfoType">Offset Account Info Type</text>
     <text name="OffsetAccountInfoId">Offset Account Info</text>
@@ -4577,7 +4577,7 @@
     <text name="NoDutyResolved">No duty</text>
     <text name="ShowSchedule">Show Schedule</text>
     <!-- Cost allocation file / Journal voucher posting (legacy uscCostingFile.ascx, uscPostJV.ascx) -->
-    <text name="CostingFile">Costing File</text>
+    <text name="CostingFile">Cost Engine</text>
     <text name="RunCostEngine">Run cost engine</text>
     <text name="ExportCostingFile">Export costing file</text>
     <text name="PostJv">Post JV</text>
@@ -5606,7 +5606,7 @@
     <text name="ALCurrentMonthAccrual">AL Current Month Accrual</text>
     <text name="IndemnityDays">Indemnity Days</text>
     <text name="LastName">Last Name</text>
-    <text name="VacancyId">Vacancy Id</text>
+    <text name="VacancyId">Vacancy</text>
     <text name="VacancyName">Vacancy Name</text>
     <text name="ClosedOn">Closed On</text>
     <text name="OTHours">OT Hours</text>
@@ -5962,8 +5962,8 @@
     <text name="EmpSection_Banks">Banks</text>
     <text name="EmpSection_CostDistributions">Cost Distributions</text>
     <text name="EmpSection_AccountAssignments">Account Assignments</text>
-    <text name="EmpSection_Gratuities">Gratuities</text>
-    <text name="EmpSection_GratuityQuotas">Gratuity Quotas</text>
+    <text name="EmpSection_Gratuities">Indemnity</text>
+    <text name="EmpSection_GratuityQuotas">Indemnity Quota</text>
     <text name="EmpSection_Loans">Loans</text>
     <text name="EmpSection_Funds">Funds</text>
     <text name="EmpSection_Insurances">Insurances</text>
@@ -5981,7 +5981,7 @@
     <text name="EmpSection_TalentMatrix">Talent Matrix</text>
     <text name="EmpSection_TalentFlags">Talent Flags</text>
     <text name="EmpSection_Rewards">Rewards</text>
-    <text name="EmpSection_Disciplinaries">Disciplinaries</text>
+    <text name="EmpSection_Disciplinaries">Violations</text>
     <text name="EmpSection_Grievances">Grievances</text>
     <text name="EmpSection_Tasks">Tasks</text>
     <text name="EmpSection_Assets">Assets</text>
@@ -7717,5 +7717,15 @@
     <text name="AllowDateOverlap">Allow Date Overlap</text>
     <text name="DocumentDatesOverlap">Issue or expiry date overlaps a {0} already on file ({1} to {2}).</text>
     <text name="DocumentIssueDateAlreadyOnFile">A {0} with issue date {1} is already on file.</text>
+    <text name="NewApproverIsAlreadyApprovingThisStep">This employee is already approving this step. Choose someone else.</text>
+    <text name="IncludeLoanPaymentInPayroll">Include Loan Payment in Payroll</text>
+    <text name="BankFilePaymentBankHint">The bank the company pays salaries from. Employees whose payer bank is this bank are included; if nobody in the period has a payer bank set, employees with no payer bank are included.</text>
+    <text name="AbsenceViolationRuleId">Absence Violation Rule</text>
+    <text name="TemplateOnbGroupId">Onboarding Group</text>
+    <text name="DelegateEmployeeListByOrganizationUnitTypeId">Delegate Employee List By Org Level</text>
+    <text name="Onboarding">Onboarding</text>
+    <text name="DutyPolicy">Duty Policy</text>
+    <text name="BreakshiftPolicy">Breakshift Policy</text>
+    <text name="TicketAccrualCount">Tickets accrued</text>
   </texts>
 </localizationDictionary>

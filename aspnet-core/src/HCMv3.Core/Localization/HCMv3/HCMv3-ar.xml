@@ -1206,7 +1206,7 @@
     <text name="LanguageInfos">اللغات</text>
     <text name="MaritalStatuses">الحالات الاجتماعية</text>
     <text name="NationalityGroups">مجموعات الجنسيات</text>
-    <text name="NewsTypes">أنواع الأخبار</text>
+    <text name="NewsTypes">أنواع الإعلانات</text>
     <text name="PassportTypes">أنواع جوازات السفر</text>
     <text name="PostingGroups">مجموعات القيود المحاسبية</text>
     <text name="Qualifications">المؤهلات</text>
@@ -1227,7 +1227,7 @@
     <text name="DependantTypes">أنواع صفات العائل</text>
     <text name="Currencies">العملات</text>
     <text name="SeparationReasons">أسباب الفصل</text>
-    <text name="DisciplinaryDeductionTypes">أنواع الخصم بسبب إجراء تأديبي</text>
+    <text name="DisciplinaryDeductionTypes">أنواع خصم المخالفات</text>
     <text name="PersonalActions">الإجراءات الشخصية</text>
     <text name="PersonalActionReasons">أسباب الإجراءات الشخصية</text>
     <text name="Banks">البنوك</text>
@@ -1435,7 +1435,7 @@
     <text name="CreatingNewSeparationReason">إنشاء سبب فصل جديد</text>
     <text name="EditingSeparationReason">تعديل سبب الفصل</text>
     <text name="SeparationReasonDeleteWarningMessage">هل أنت متأكد من حذف سبب الفصل '{0}'؟</text>
-    <text name="DisciplinaryDeductionType">نوع الخصم بسبب إجراء تأديبي</text>
+    <text name="DisciplinaryDeductionType">نوع خصم المخالفة</text>
     <text name="CreatingNewDisciplinaryDeductionType">إنشاء نوع خصم تأديبي جديد</text>
     <text name="EditingDisciplinaryDeductionType">تعديل نوع الخصم التأديبي</text>
     <text name="DisciplinaryDeductionTypeDeleteWarningMessage">هل أنت متأكد من حذف نوع الخصم التأديبي '{0}'؟</text>
@@ -2068,7 +2068,7 @@
     <text name="EmployeeBasicPayDetails">تفاصيل الراتب الأساسي للموظف</text>
     <text name="EmployeeOnHolds">حالات الإيقاف للموظف</text>
     <text name="EmployeeGratuities">مكافأة نهاية الخدمة للموظف</text>
-    <text name="EmployeeGratuityQuotas">حصص مكافأة نهاية الخدمة للموظف</text>
+    <text name="EmployeeGratuityQuotas">أرصدة مكافأة نهاية الخدمة للموظف</text>
     <text name="EmployeeLoans">قروض الموظف</text>
     <text name="EmployeeLoanExemptions">إعفاءات قروض الموظف</text>
     <text name="EmployeeLoanRecoveries">استردادات قروض الموظف</text>
@@ -2762,7 +2762,7 @@
     <text name="ActualBreakEndTime">وقت نهاية الاستراحة الفعلي</text>
     <text name="PayrollManagement">إدارة الرواتب</text>
     <text name="AXBatches">دفعات AX</text>
-    <text name="AbsenceTypes">أنواع الغياب</text>
+    <text name="AbsenceTypes">أنواع الإجازات</text>
     <text name="AbsenceTypeExceptions">استثناءات أنواع الغياب</text>
     <text name="AbsenceDeductionRules">قواعد الخصم على الغياب</text>
     <text name="AbsenceDedRuleDetails">تفاصيل قواعد الخصم على الغياب</text>
@@ -2777,7 +2777,7 @@
     <text name="AttendanceTypes">أنواع المواظبة</text>
     <text name="AccountTypes">أنواع الحسابات</text>
     <text name="AccountInfos">بيانات الحسابات</text>
-    <text name="EmployeeGroups">مجموعات الموظفين</text>
+    <text name="EmployeeGroups">ملفات الرواتب</text>
     <text name="PayrollReasonTypes">أنواع أسباب الرواتب</text>
     <text name="ReInitializeAfterMustBeGreaterThanZero">يجب أن تكون مدة إعادة التهيئة أكبر من صفر.</text>
     <text name="CustomStartMonthRequired">لا يمكن ترك شهر البداية المخصص بلا قيمة عندما تكون فترة التراكم مخصصة.</text>
@@ -2788,7 +2788,7 @@
     <text name="StepAlreadyExists">الخطوة '{0}' مخصصة مسبقاً.</text>
     <text name="LinkLeaveQuotaRequiredWhenQuotaAccrualEnabled">لا يمكن ترك ربط حصة الإجازة فارغاً عند تفعيل تراكم الحصة.</text>
     <text name="AccountTypeRequired">لا يمكن ترك نوع الحساب فارغاً.</text>
-    <text name="EmployeeSubGroups">المجموعات الفرعية للموظفين</text>
+    <text name="EmployeeSubGroups">الدرجات</text>
     <text name="EmployeeSubGroupAbsences">غيابات المجموعة الفرعية للموظفين</text>
     <text name="EmployeeSubGroupAbsenceTypes">أنواع غياب المجموعة الفرعية للموظفين</text>
     <text name="EmployeeSubGroupAssetAllowances">بدلات عهد المجموعة الفرعية للموظفين</text>
@@ -2802,9 +2802,9 @@
     <text name="EmployeeSubGroupPayments">مدفوعات المجموعة الفرعية للموظفين</text>
     <text name="EmployeeSubGroupTickets">تذاكر المجموعة الفرعية للموظفين</text>
     <text name="EmployeeSubGroupWageTypes">أنواع أجور المجموعة الفرعية للموظفين</text>
-    <text name="EmployeeGroup">مجموعة الموظفين</text>
-    <text name="EmployeeSubGroup">المجموعة الفرعية للموظفين</text>
-    <text name="AbsenceType">نوع الغياب</text>
+    <text name="EmployeeGroup">ملف الراتب</text>
+    <text name="EmployeeSubGroup">الدرجة</text>
+    <text name="AbsenceType">نوع الإجازة</text>
     <text name="TicketType">نوع التذكرة</text>
     <text name="BenefitType">نوع الميزة</text>
     <text name="TicketClass">درجة التذكرة</text>
@@ -4507,7 +4507,7 @@
     <text name="SelectADutyPeriodToViewEmployees">اختر فترة دوام لعرض الموظفين المخصصين لها.</text>
     <text name="NoDutyResolved">لا يوجد دوام</text>
     <text name="ShowSchedule">عرض الجدول</text>
-    <text name="CostingFile">ملف التكلفة</text>
+    <text name="CostingFile">محرك التكلفة</text>
     <text name="RunCostEngine">تشغيل محرك التكلفة</text>
     <text name="ExportCostingFile">تصدير ملف التكلفة</text>
     <text name="PostJv">ترحيل قيد اليومية</text>
@@ -5453,7 +5453,7 @@
     <text name="ALCurrentMonthAccrual">تراكم الإجازة السنوية للشهر الحالي</text>
     <text name="IndemnityDays">أيام مكافأة نهاية الخدمة</text>
     <text name="LastName">اسم العائلة</text>
-    <text name="VacancyId">معرّف الوظيفة الشاغرة</text>
+    <text name="VacancyId">الوظيفة الشاغرة</text>
     <text name="VacancyName">اسم الوظيفة الشاغرة</text>
     <text name="ClosedOn">تاريخ الإغلاق</text>
     <text name="OTHours">ساعات العمل الإضافي</text>
@@ -5806,7 +5806,7 @@
     <text name="EmpSection_CostDistributions">توزيع التكاليف</text>
     <text name="EmpSection_AccountAssignments">تخصيص الحسابات</text>
     <text name="EmpSection_Gratuities">مكافأة نهاية الخدمة</text>
-    <text name="EmpSection_GratuityQuotas">حصص مكافأة نهاية الخدمة</text>
+    <text name="EmpSection_GratuityQuotas">رصيد مكافأة نهاية الخدمة</text>
     <text name="EmpSection_Loans">القروض</text>
     <text name="EmpSection_Funds">الصناديق</text>
     <text name="EmpSection_Insurances">التأمينات</text>
@@ -7552,5 +7552,15 @@
     <text name="AllowDateOverlap">السماح بتداخل التواريخ</text>
     <text name="DocumentDatesOverlap">تاريخ الإصدار أو الانتهاء يتداخل مع وثيقة {0} مسجّلة ({1} إلى {2}).</text>
     <text name="DocumentIssueDateAlreadyOnFile">توجد وثيقة {0} مسجّلة بتاريخ الإصدار {1}.</text>
+    <text name="NewApproverIsAlreadyApprovingThisStep">هذا الموظف من معتمدي هذه الخطوة بالفعل. اختر موظفاً آخر.</text>
+    <text name="IncludeLoanPaymentInPayroll">تضمين دفعة القرض في الرواتب</text>
+    <text name="BankFilePaymentBankHint">البنك الذي تصرف منه الشركة الرواتب. يُدرج الموظفون الذين بنك الدفع لديهم هو هذا البنك؛ وإذا لم يكن لأي موظف في الفترة بنك دفع، يُدرج الموظفون الذين ليس لديهم بنك دفع.</text>
+    <text name="AbsenceViolationRuleId">قاعدة مخالفة الغياب</text>
+    <text name="TemplateOnbGroupId">مجموعة التهيئة الوظيفية</text>
+    <text name="DelegateEmployeeListByOrganizationUnitTypeId">قائمة الموظفين المفوَّض إليهم حسب المستوى التنظيمي</text>
+    <text name="Onboarding">التهيئة الوظيفية</text>
+    <text name="DutyPolicy">سياسة الدوام</text>
+    <text name="BreakshiftPolicy">سياسة الدوام المجزأ</text>
+    <text name="TicketAccrualCount">التذاكر المستحقة</text>
   </texts>
 </localizationDictionary>

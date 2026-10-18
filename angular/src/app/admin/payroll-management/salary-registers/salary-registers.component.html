@@ -15,6 +15,21 @@
     <div [class]="containerClass">
         <div class="card card-custom">
             <div class="card-body">
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label" for="SalaryRegisters_PayrollAreaFilter">{{ 'PayrollArea' | localize }}</label>
+                        <select
+                            id="SalaryRegisters_PayrollAreaFilter"
+                            class="form-select"
+                            [ngModel]="payrollAreaId()"
+                            (ngModelChange)="payrollAreaId.set($event); getSalaryRegisters()">
+                            <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                            @for (area of payrollAreas(); track area.id) {
+                                <option [ngValue]="area.id">{{ area.name }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
@@ -44,6 +59,7 @@
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 150px">{{ 'EmployeeId' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'PayrollArea' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'ForPeriod' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'InPeriod' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'PayrollRunType' | localize }}</th>
@@ -71,6 +87,7 @@
                                         </button>
                                     </td>
                                     <td style="min-width: 150px">{{ record.employeeCode }}</td>
+                                    <td style="min-width: 160px">{{ record.payrollAreaName }}</td>
                                     <td style="min-width: 140px">{{ record.forPeriod | luxonFormat: 'DD' }}</td>
                                     <td style="min-width: 140px">{{ record.inPeriod | luxonFormat: 'DD' }}</td>
                                     <td style="min-width: 140px">{{ record.payrollRunType === 0 ? ('Regular' | localize) : ('OffCycle' | localize) }}</td>

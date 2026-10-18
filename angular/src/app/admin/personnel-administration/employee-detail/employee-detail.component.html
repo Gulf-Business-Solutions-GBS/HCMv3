@@ -8,7 +8,12 @@
              or remembering which row was clicked, and it stays put while sections change. -->
         <div class="emp-identity">
             <div class="emp-identity-avatar" aria-hidden="true">
-                {{ displayName() ? displayName().charAt(0) : '?' }}
+                <!-- getEmployeeForEdit already carries the photo as a data URL; the initial is the fallback. -->
+                @if (employee()?.photo) {
+                    <img [src]="employee().photo" alt="" />
+                } @else {
+                    {{ displayName() ? displayName().charAt(0) : '?' }}
+                }
             </div>
             <div class="emp-identity-text">
                 <h2 class="emp-identity-name">

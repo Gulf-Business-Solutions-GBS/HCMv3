@@ -22,8 +22,9 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Field order follows legacy Sponsor_DetailView: identity, classification, registration, then Contact Information. -->
                         <div class="row">
-                            <div class="col-md-3 mb-5">
+                            <div class="col-md-4 mb-5">
                                 <label class="form-label" for="Sponsor_Code">{{ 'Code' | localize }}</label>
                                 <input
                                     id="Sponsor_Code"
@@ -49,7 +50,7 @@
                                     maxlength="200" />
                                 <validation-messages [formCtrl]="nameEnInput" />
                             </div>
-                            <div class="col-md-5 mb-5">
+                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="Sponsor_NameAr">{{ 'NameAr' | localize }}</label>
                                 <input
                                     id="Sponsor_NameAr"
@@ -66,18 +67,32 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="Sponsor_Email">{{ 'Email' | localize }}</label>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Sponsor_BusinessOwnerNameEn">{{ 'BusinessOwnerNameEn' | localize }}</label>
                                 <input
-                                    id="Sponsor_Email"
+                                    id="Sponsor_BusinessOwnerNameEn"
                                     class="form-control"
-                                    type="email"
-                                    name="Email"
-                                    [ngModel]="record().email"
-                                    (ngModelChange)="updateField('email', $event)"
+                                    type="text"
+                                    name="BusinessOwnerNameEn"
+                                    [ngModel]="record().businessOwnerNameEn"
+                                    (ngModelChange)="updateField('businessOwnerNameEn', $event)"
                                     maxlength="200" />
                             </div>
-                            <div class="col-md-4 mb-5">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Sponsor_BusinessOwnerNameAr">{{ 'BusinessOwnerNameAr' | localize }}</label>
+                                <input
+                                    id="Sponsor_BusinessOwnerNameAr"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="BusinessOwnerNameAr"
+                                    [ngModel]="record().businessOwnerNameAr"
+                                    (ngModelChange)="updateField('businessOwnerNameAr', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
                                 <label class="form-label required" for="Sponsor_Gender">{{ 'Gender' | localize }}</label>
                                 <select
                                     id="Sponsor_Gender"
@@ -91,103 +106,7 @@
                                     }
                                 </select>
                             </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="Sponsor_Profession">{{ 'Profession' | localize }}</label>
-                                <input
-                                    id="Sponsor_Profession"
-                                    class="form-control"
-                                    type="text"
-                                    name="Profession"
-                                    [ngModel]="record().profession"
-                                    (ngModelChange)="updateField('profession', $event)"
-                                    maxlength="200" />
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-3 mb-5">
-                                <label class="form-label" for="Sponsor_Building">{{ 'Building' | localize }}</label>
-                                <input
-                                    id="Sponsor_Building"
-                                    class="form-control"
-                                    type="text"
-                                    name="Building"
-                                    [ngModel]="record().building"
-                                    (ngModelChange)="updateField('building', $event)"
-                                    maxlength="100" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="Sponsor_Street">{{ 'Street' | localize }}</label>
-                                <input
-                                    id="Sponsor_Street"
-                                    class="form-control"
-                                    type="text"
-                                    name="Street"
-                                    [ngModel]="record().street"
-                                    (ngModelChange)="updateField('street', $event)"
-                                    maxlength="100" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="Sponsor_Area">{{ 'Area' | localize }}</label>
-                                <input
-                                    id="Sponsor_Area"
-                                    class="form-control"
-                                    type="text"
-                                    name="Area"
-                                    [ngModel]="record().area"
-                                    (ngModelChange)="updateField('area', $event)"
-                                    maxlength="100" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="Sponsor_Block">{{ 'Block' | localize }}</label>
-                                <input
-                                    id="Sponsor_Block"
-                                    class="form-control"
-                                    type="text"
-                                    name="Block"
-                                    [ngModel]="record().block"
-                                    (ngModelChange)="updateField('block', $event)"
-                                    maxlength="100" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label required" for="Sponsor_Telephone">{{ 'Telephone' | localize }}</label>
-                                <input
-                                    id="Sponsor_Telephone"
-                                    #telephoneInput="ngModel"
-                                    class="form-control"
-                                    type="number"
-                                    name="Telephone"
-                                    [ngModel]="record().telephone"
-                                    (ngModelChange)="updateField('telephone', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="telephoneInput" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="Sponsor_Fax">{{ 'Fax' | localize }}</label>
-                                <input
-                                    id="Sponsor_Fax"
-                                    class="form-control"
-                                    type="text"
-                                    name="Fax"
-                                    [ngModel]="record().fax"
-                                    (ngModelChange)="updateField('fax', $event)"
-                                    maxlength="50" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="Sponsor_POBox">{{ 'POBox' | localize }}</label>
-                                <input
-                                    id="Sponsor_POBox"
-                                    class="form-control"
-                                    type="text"
-                                    name="POBox"
-                                    [ngModel]="record().poBox"
-                                    (ngModelChange)="updateField('poBox', $event)"
-                                    maxlength="50" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="Sponsor_NationalityId">{{ 'Nationality' | localize }}</label>
                                 <select
                                     id="Sponsor_NationalityId"
@@ -204,7 +123,7 @@
                                 </select>
                                 <validation-messages [formCtrl]="nationalityInput" />
                             </div>
-                            <div class="col-md-4 mb-5">
+                            <div class="col-md-3 mb-5">
                                 <label class="form-label required" for="Sponsor_BusinessTypeId">{{ 'BusinessType' | localize }}</label>
                                 <select
                                     id="Sponsor_BusinessTypeId"
@@ -220,6 +139,62 @@
                                     }
                                 </select>
                                 <validation-messages [formCtrl]="businessTypeInput" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="Sponsor_GovernorateId">{{ 'Governorate' | localize }}</label>
+                                <select
+                                    id="Sponsor_GovernorateId"
+                                    #governorateInput="ngModel"
+                                    class="form-select"
+                                    name="GovernorateId"
+                                    [ngModel]="record().governorateId"
+                                    (ngModelChange)="updateField('governorateId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of governorates(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="governorateInput" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="Sponsor_Profession">{{ 'Profession' | localize }}</label>
+                                <input
+                                    id="Sponsor_Profession"
+                                    class="form-control"
+                                    type="text"
+                                    name="Profession"
+                                    [ngModel]="record().profession"
+                                    (ngModelChange)="updateField('profession', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="Sponsor_MOSALID">{{ 'MOSALID' | localize }}</label>
+                                <input
+                                    id="Sponsor_MOSALID"
+                                    #mosalidInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="MOSALID"
+                                    [ngModel]="record().mosalid"
+                                    (ngModelChange)="updateField('mosalid', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="mosalidInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="Sponsor_UnifiedNum">{{ 'UnifiedNum' | localize }}</label>
+                                <input
+                                    id="Sponsor_UnifiedNum"
+                                    #unifiedNumInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="UnifiedNum"
+                                    [ngModel]="record().unifiedNum"
+                                    (ngModelChange)="updateField('unifiedNum', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="unifiedNumInput" />
                             </div>
                             <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="Sponsor_OrganizationUnitId">{{ 'OrganizationUnit' | localize }}</label>
@@ -239,37 +214,82 @@
                                 <validation-messages [formCtrl]="organizationUnitInput" />
                             </div>
                         </div>
+
+                        <h6>{{ 'ContactInformation' | localize }}</h6>
+                        <hr />
                         <div class="row">
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="Sponsor_GovernorateId">{{ 'Governorate' | localize }}</label>
-                                <select
-                                    id="Sponsor_GovernorateId"
-                                    #governorateInput="ngModel"
-                                    class="form-select"
-                                    name="GovernorateId"
-                                    [ngModel]="record().governorateId"
-                                    (ngModelChange)="updateField('governorateId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (item of governorates(); track item.id) {
-                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="governorateInput" />
+                                <label class="form-label" for="Sponsor_Building">{{ 'Building' | localize }}</label>
+                                <input
+                                    id="Sponsor_Building"
+                                    class="form-control"
+                                    type="text"
+                                    name="Building"
+                                    [ngModel]="record().building"
+                                    (ngModelChange)="updateField('building', $event)"
+                                    maxlength="100" />
                             </div>
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="Sponsor_UnifiedNum">{{ 'UnifiedNum' | localize }}</label>
+                                <label class="form-label" for="Sponsor_Street">{{ 'Street' | localize }}</label>
                                 <input
-                                    id="Sponsor_UnifiedNum"
-                                    #unifiedNumInput="ngModel"
+                                    id="Sponsor_Street"
+                                    class="form-control"
+                                    type="text"
+                                    name="Street"
+                                    [ngModel]="record().street"
+                                    (ngModelChange)="updateField('street', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="Sponsor_Area">{{ 'Area' | localize }}</label>
+                                <input
+                                    id="Sponsor_Area"
+                                    class="form-control"
+                                    type="text"
+                                    name="Area"
+                                    [ngModel]="record().area"
+                                    (ngModelChange)="updateField('area', $event)"
+                                    maxlength="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="Sponsor_Email">{{ 'Email' | localize }}</label>
+                                <input
+                                    id="Sponsor_Email"
+                                    class="form-control"
+                                    type="email"
+                                    name="Email"
+                                    [ngModel]="record().email"
+                                    (ngModelChange)="updateField('email', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="Sponsor_Telephone">{{ 'Telephone' | localize }}</label>
+                                <input
+                                    id="Sponsor_Telephone"
+                                    #telephoneInput="ngModel"
                                     class="form-control"
                                     type="number"
-                                    name="UnifiedNum"
-                                    [ngModel]="record().unifiedNum"
-                                    (ngModelChange)="updateField('unifiedNum', $event)"
+                                    name="Telephone"
+                                    [ngModel]="record().telephone"
+                                    (ngModelChange)="updateField('telephone', $event)"
                                     required />
-                                <validation-messages [formCtrl]="unifiedNumInput" />
+                                <validation-messages [formCtrl]="telephoneInput" />
                             </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="Sponsor_Block">{{ 'Block' | localize }}</label>
+                                <input
+                                    id="Sponsor_Block"
+                                    class="form-control"
+                                    type="text"
+                                    name="Block"
+                                    [ngModel]="record().block"
+                                    (ngModelChange)="updateField('block', $event)"
+                                    maxlength="100" />
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="Sponsor_SocialSecurityNum">{{ 'SocialSecurityNum' | localize }}</label>
                                 <input
@@ -283,43 +303,27 @@
                                     required />
                                 <validation-messages [formCtrl]="socialSecurityNumInput" />
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="Sponsor_MOSALID">{{ 'MOSALID' | localize }}</label>
+                                <label class="form-label" for="Sponsor_Fax">{{ 'Fax' | localize }}</label>
                                 <input
-                                    id="Sponsor_MOSALID"
-                                    #mosalidInput="ngModel"
-                                    class="form-control"
-                                    type="number"
-                                    name="MOSALID"
-                                    [ngModel]="record().mosalid"
-                                    (ngModelChange)="updateField('mosalid', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="mosalidInput" />
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label" for="Sponsor_BusinessOwnerNameEn">{{ 'BusinessOwnerNameEn' | localize }}</label>
-                                <input
-                                    id="Sponsor_BusinessOwnerNameEn"
+                                    id="Sponsor_Fax"
                                     class="form-control"
                                     type="text"
-                                    name="BusinessOwnerNameEn"
-                                    [ngModel]="record().businessOwnerNameEn"
-                                    (ngModelChange)="updateField('businessOwnerNameEn', $event)"
-                                    maxlength="200" />
+                                    name="Fax"
+                                    [ngModel]="record().fax"
+                                    (ngModelChange)="updateField('fax', $event)"
+                                    maxlength="50" />
                             </div>
                             <div class="col-md-4 mb-5">
-                                <label class="form-label" for="Sponsor_BusinessOwnerNameAr">{{ 'BusinessOwnerNameAr' | localize }}</label>
+                                <label class="form-label" for="Sponsor_POBox">{{ 'POBox' | localize }}</label>
                                 <input
-                                    id="Sponsor_BusinessOwnerNameAr"
+                                    id="Sponsor_POBox"
                                     class="form-control"
                                     type="text"
-                                    dir="rtl"
-                                    name="BusinessOwnerNameAr"
-                                    [ngModel]="record().businessOwnerNameAr"
-                                    (ngModelChange)="updateField('businessOwnerNameAr', $event)"
-                                    maxlength="200" />
+                                    name="POBox"
+                                    [ngModel]="record().poBox"
+                                    (ngModelChange)="updateField('poBox', $event)"
+                                    maxlength="50" />
                             </div>
                         </div>
                     </div>

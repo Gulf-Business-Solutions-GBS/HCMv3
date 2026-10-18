@@ -42,8 +42,15 @@ export class CreateOrEditEmployeeAbsenceQuotaModalComponent extends AppComponent
 
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
 
-    show(employeeId: number, id?: number): void {
+    /**
+     * Read-only balance, shown on edit. The edit DTO does not carry it, so the list passes in the value
+     * from its row (EmployeeAbsenceQuotaDto); it is as of the last save, not recalculated here.
+     */
+    readonly quotaBalance = signal<number | undefined>(undefined);
+
+    show(employeeId: number, id?: number, quotaBalance?: number): void {
         this.active.set(true);
+        this.quotaBalance.set(quotaBalance);
 
         this._absenceTypesService
             .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))

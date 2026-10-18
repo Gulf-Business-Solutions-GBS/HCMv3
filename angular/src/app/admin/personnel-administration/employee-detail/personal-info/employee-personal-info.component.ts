@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, input, signal, computed, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
@@ -8,6 +9,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import {
     EmployeesServiceProxy,
     EmployeeProfileDto,
+    CreateOrEditEmployeeDto,
     Gender,
     EmployeeStatus,
     EmploymentType,
@@ -55,6 +57,13 @@ export class EmployeePersonalInfoComponent extends AppComponentBase implements O
     readonly isLoading = signal<boolean>(false);
     readonly profile = signal<EmployeeProfileDto | undefined>(undefined);
 
+    /**
+     * The edit DTO, read alongside the profile for what the profile does not carry: the Arabic
+     * father/mother names and the photo (a data URL). Same permission as the profile.
+     */
+    readonly details = signal<CreateOrEditEmployeeDto | undefined>(undefined);
+    readonly photo = computed(() => this.details()?.photo);
+
     readonly genderText = computed(() => this.enumText(Gender, this.profile()?.gender));
     readonly statusText = computed(() => this.enumText(EmployeeStatus, this.profile()?.status));
     readonly employmentTypeText = computed(() =>
@@ -72,10 +81,15 @@ export class EmployeePersonalInfoComponent extends AppComponentBase implements O
         }
 
         this.isLoading.set(true);
-        this._employeesService
-            .getEmployeeProfile(id)
+        forkJoin({
+            profile: this._employeesService.getEmployeeProfile(id),
+            forEdit: this._employeesService.getEmployeeForEdit(id),
+        })
             .pipe(finalize(() => this.isLoading.set(false)))
-            .subscribe((result) => this.profile.set(result));
+            .subscribe((result) => {
+                this.details.set(result.forEdit.employee);
+                this.profile.set(result.profile);
+            });
     }
 
     edit(): void {

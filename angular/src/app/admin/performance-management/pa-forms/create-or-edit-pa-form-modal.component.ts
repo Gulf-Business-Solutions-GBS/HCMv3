@@ -36,9 +36,12 @@ export class CreateOrEditPAFormModalComponent extends AppComponentBase {
     readonly paForm = signal<CreateOrEditPAFormDto>(new CreateOrEditPAFormDto());
     readonly paPeriods = signal<PAPeriodDto[]>([]);
     readonly employees = signal<EmployeeDto[]>([]);
+    /** Calculated by the appraisal process and not on the edit DTO, so the list row passes it in. Display only. */
+    readonly overallScore = signal<number | undefined>(undefined);
 
-    show(id?: number): void {
+    show(id?: number, overallScore?: number): void {
         this.active.set(true);
+        this.overallScore.set(id ? overallScore : undefined);
 
         this._paPeriodsService
             .getAll(new GetAllPAPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))

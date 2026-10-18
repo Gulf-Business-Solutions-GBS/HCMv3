@@ -25,7 +25,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeLoan_StartDate">{{ 'StartDate' | localize }}</label>
+                                <label class="form-label required" for="EmployeeLoan_StartDate">{{ 'LoanPaymentDate' | localize }}</label>
                                 <input
                                     id="EmployeeLoan_StartDate"
                                     #startDateInput="ngModel"
@@ -38,7 +38,7 @@
                                 <validation-messages [formCtrl]="startDateInput" />
                             </div>
                             <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="EmployeeLoan_EndDate">{{ 'EndDate' | localize }}</label>
+                                <label class="form-label required" for="EmployeeLoan_EndDate">{{ 'RecoveryEndDate' | localize }}</label>
                                 <input
                                     id="EmployeeLoan_EndDate"
                                     #endDateInput="ngModel"
@@ -138,7 +138,7 @@
                                         name="IncludeInLoanPay"
                                         [ngModel]="record().includeInLoanPay"
                                         (ngModelChange)="updateField('includeInLoanPay', $event)" />
-                                    <label class="form-check-label" for="EmployeeLoan_IncludeInLoanPay">{{ 'IncludeInLoanPay' | localize }}</label>
+                                    <label class="form-check-label" for="EmployeeLoan_IncludeInLoanPay">{{ 'IncludeLoanPaymentInPayroll' | localize }}</label>
                                 </div>
                             </div>
                         </div>

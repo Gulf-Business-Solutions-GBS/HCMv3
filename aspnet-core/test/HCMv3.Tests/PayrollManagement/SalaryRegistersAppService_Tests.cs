@@ -91,6 +91,56 @@ public class SalaryRegistersAppService_Tests : PayrollManagementAppServiceTestBa
         result.Items[0].Locked.ShouldBeFalse();
     }
 
+    /// <summary>
+    /// Legacy showed <c>Employee.CurrentPayrollArea</c> on the list: the area of the org assignment in force
+    /// today, filterable. An employee in another area is left out by the filter.
+    /// </summary>
+    [Fact]
+    public async Task Should_Show_And_Filter_By_The_Employees_Current_Payroll_Area()
+    {
+        var tenantId = AbpSession.TenantId ?? 1;
+        var period = new PayrollPeriod { TenantId = tenantId, Code = "SR-PP", NameEn = "SR-PP", NameAr = "SR-PP" };
+        var currency = new HCMv3.GeneralMasterInfo.Currency { TenantId = tenantId, Code = "KWD", NameEn = "KWD", NameAr = "KWD" };
+        Context.PayrollPeriods.Add(period);
+        Context.Currencies.Add(currency);
+        Context.SaveChanges();
+
+        PayrollArea Area(string code, string name) => new()
+        {
+            TenantId = tenantId, Code = code, Name = name, PayrollPeriodId = period.Id, CurrencyId = currency.Id
+        };
+        var inArea = Area("PA-IN", "Kuwait");
+        var outArea = Area("PA-OUT", "Dubai");
+        Context.PayrollAreas.AddRange(inArea, outArea);
+        Context.SaveChanges();
+
+        var reasonTypeId = CreatePayrollReasonType("SR_PA");
+        var insideId = CreateEmployee();
+        var outsideId = CreateEmployee();
+        foreach (var (employeeId, area) in new[] { (insideId, inArea), (outsideId, outArea) })
+        {
+            Context.EmployeeOrgAssignments.Add(new EmployeeOrgAssignment
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                PayrollAreaId = area.Id
+            });
+            CreateSalaryRegister(employeeId, reasonTypeId, locked: false);
+        }
+        Context.SaveChanges();
+
+        var service = CreateAppService();
+        service.EmployeeOrgAssignmentRepository = FakeRepository.For<EmployeeOrgAssignment>(Context);
+
+        var result = await service.GetAll(new GetAllSalaryRegistersInput { PayrollAreaId = inArea.Id });
+
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].EmployeeId.ShouldBe(insideId);
+        result.Items[0].PayrollAreaName.ShouldBe("Kuwait");
+    }
+
     [Fact]
     public async Task Should_Throw_When_Updating_Register_That_Remains_Locked()
     {

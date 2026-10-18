@@ -33,16 +33,8 @@
                             [resizableColumns]="primengTableHelper.resizableColumns">
                             <ng-template #header>
                                 <tr>
-                                    <th
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(
-                                                [
-                                                    'Pages.PerformanceManagement.PAForms.Edit',
-                                                    'Pages.PerformanceManagement.PAForms.Delete',
-                                                ] | permissionAny
-                                            )
-                                        ">
+                                    <!-- Always shown: the menu always holds Details, which only needs the page permission. -->
+                                    <th style="width: 130px">
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 180px">{{ 'PAPeriod' | localize }}</th>
@@ -55,16 +47,7 @@
                             </ng-template>
                             <ng-template #body let-record="$implicit">
                                 <tr>
-                                    <td
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(
-                                                [
-                                                    'Pages.PerformanceManagement.PAForms.Edit',
-                                                    'Pages.PerformanceManagement.PAForms.Delete',
-                                                ] | permissionAny
-                                            )
-                                        ">
+                                    <td style="width: 130px">
                                         <button
                                             type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle"
@@ -75,7 +58,9 @@
                                     </td>
                                     <td style="min-width: 180px">{{ record.paPeriodName }}</td>
                                     <td style="min-width: 200px">
-                                        <a href="javascript:;" (click)="viewDetails(record)">{{ record.employeeFullNameEn }}</a>
+                                        <a href="javascript:;" class="fw-bold" (click)="viewDetails(record)" [pTooltip]="l('Details')">
+                                            <i class="fa fa-external-link-alt me-1"></i>{{ record.employeeFullNameEn }}
+                                        </a>
                                     </td>
                                     <td style="min-width: 130px">{{ record.overallScore }}</td>
                                     <td style="min-width: 130px">{{ record.moderatedScore }}</td>

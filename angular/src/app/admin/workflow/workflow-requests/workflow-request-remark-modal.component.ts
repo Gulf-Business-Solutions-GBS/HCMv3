@@ -2,6 +2,9 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     ApproveWorkflowRequestDto,
+    EmployeeDto,
+    EmployeesServiceProxy,
+    GetAllEmployeesInput,
     ReassignWorkflowRequestDto,
     RejectWorkflowRequestDto,
     SendBackWorkflowRequestDto,
@@ -16,8 +19,8 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 
 /**
  * Shared action type driving this modal's title/localization key and which
- * WorkflowRequestsServiceProxy method it calls on save. Reassign additionally collects the
- * new approver's Employee id.
+ * WorkflowRequestsServiceProxy method it calls on save. Reassign additionally asks who to delegate the
+ * step to (legacy "Delegated Employee"); the server refuses anyone already approving the step.
  */
 export type WorkflowRequestActionType = 'Approve' | 'Reject' | 'SendBack' | 'Reassign';
 
@@ -28,6 +31,7 @@ export type WorkflowRequestActionType = 'Approve' | 'Reject' | 'SendBack' | 'Rea
 })
 export class WorkflowRequestRemarkModalComponent extends AppComponentBase {
     private _service = inject(WorkflowRequestsServiceProxy);
+    private _employeesService = inject(EmployeesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('actionModal');
     readonly modalSave = output<void>();
@@ -37,6 +41,7 @@ export class WorkflowRequestRemarkModalComponent extends AppComponentBase {
     readonly action = signal<WorkflowRequestActionType>('Approve');
     readonly remark = signal<string>('');
     readonly newApproverEmployeeId = signal<number | undefined>(undefined);
+    readonly employees = signal<EmployeeDto[]>([]);
 
     private _requestId: number;
 
@@ -45,6 +50,11 @@ export class WorkflowRequestRemarkModalComponent extends AppComponentBase {
         this.action.set(action);
         this.remark.set('');
         this.newApproverEmployeeId.set(undefined);
+        if (action === 'Reassign' && !this.employees().length) {
+            this._employeesService
+                .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+                .subscribe((result) => this.employees.set(result.items));
+        }
         this.active.set(true);
         this.modal().show();
     }

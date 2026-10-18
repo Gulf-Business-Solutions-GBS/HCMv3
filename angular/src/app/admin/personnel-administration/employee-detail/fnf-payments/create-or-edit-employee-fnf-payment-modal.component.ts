@@ -55,6 +55,17 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
     /** What this employee can be settled for, and the suggested indemnity days (resignation is paid less). */
     readonly balances = signal<FullAndFinalBalancesDto | undefined>(undefined);
 
+    /**
+     * A dependant's ticket is offered only when the employee is entitled to one, as legacy did. Until the
+     * balances arrive, and whenever a figure is already saved, the field stays so nothing is hidden by surprise.
+     */
+    showDependantTicket(n: 1 | 2 | 3): boolean {
+        const b = this.balances();
+        const saved = (this.record() as any)[`dependant${n}TicketCompensateCount`] ?? 0;
+        if (!b || saved) return true;
+        return ((b as any)[`dependant${n}TicketCount`] ?? 0) > 0 || ((b as any)[`dependant${n}TicketRemainingCount`] ?? 0) > 0;
+    }
+
     show(employeeId: number, id?: number): void {
         this.active.set(true);
         this.balances.set(undefined);

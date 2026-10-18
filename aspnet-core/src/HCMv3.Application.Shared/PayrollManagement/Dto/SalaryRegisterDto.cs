@@ -27,4 +27,12 @@ public class SalaryRegisterDto : EntityDto<int>
     public DateTime OffCyclePaymentDate { get; set; }
 
     public bool Locked { get; set; }
+
+    /// <summary>
+    /// Legacy <c>Employee.CurrentPayrollArea</c>: the payroll area of the employee's org assignment in force
+    /// today, not the one the register was calculated under.
+    /// </summary>
+    public int? PayrollAreaId { get; set; }
+
+    public string PayrollAreaName { get; set; }
 }

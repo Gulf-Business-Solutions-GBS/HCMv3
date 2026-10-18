@@ -134,6 +134,18 @@
                                     }
                                 </select>
                             </div>
+                            <!-- Read-only: written by the device import / punch, not typed in. 0 means none. -->
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TimeEvent_RecordSource">{{ 'RecordSource' | localize }}</label>
+                                <input
+                                    id="TimeEvent_RecordSource"
+                                    class="form-control"
+                                    type="text"
+                                    name="RecordSource"
+                                    [value]="timeEvent().recordSource || ''"
+                                    readonly
+                                    disabled />
+                            </div>
                         </div>
 
                         <h6>{{ 'DeviceLocation' | localize }}</h6>
@@ -177,6 +189,20 @@
                                     [ngModel]="timeEvent().ipAddress"
                                     (ngModelChange)="updateField('ipAddress', $event)"
                                     maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Read-only: the browser/device that sent the punch, recorded by the server. -->
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="TimeEvent_DeviceAgentString">{{ 'DeviceAgentString' | localize }}</label>
+                                <input
+                                    id="TimeEvent_DeviceAgentString"
+                                    class="form-control"
+                                    type="text"
+                                    name="DeviceAgentString"
+                                    [value]="timeEvent().deviceAgentString ?? ''"
+                                    readonly
+                                    disabled />
                             </div>
                         </div>
 

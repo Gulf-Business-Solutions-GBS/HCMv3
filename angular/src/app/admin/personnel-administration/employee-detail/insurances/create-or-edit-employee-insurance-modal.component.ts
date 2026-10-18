@@ -72,9 +72,22 @@ export class CreateOrEditEmployeeInsuranceModalComponent extends AppComponentBas
         { value: InstallmentInterval.Yearly, name: 'Yearly' },
     ];
 
-    show(employeeId: number, id?: number): void {
+    /**
+     * Read-only balances, shown on edit. The edit DTO does not carry them, so the list passes in the
+     * values from its row (EmployeeInsuranceDto); they are as of the last save, not recalculated here.
+     */
+    readonly balanceCompanyContribution = signal<number | undefined>(undefined);
+    readonly balanceEmployeeContribution = signal<number | undefined>(undefined);
+
+    show(
+        employeeId: number,
+        id?: number,
+        balances?: { balanceCompanyContribution?: number; balanceEmployeeContribution?: number }
+    ): void {
         this.isNew.set(!id);
         this.active.set(true);
+        this.balanceCompanyContribution.set(balances?.balanceCompanyContribution);
+        this.balanceEmployeeContribution.set(balances?.balanceEmployeeContribution);
 
         this._insurancePlansService
             .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))

@@ -117,48 +117,12 @@
                         </div>
 
                         <hr />
-                        <div class="row">
-                            <div class="col-md-3 mb-3 form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="AttendanceType_IsPaid"
-                                    name="IsPaid"
-                                    [ngModel]="attendanceType().isPaid"
-                                    (ngModelChange)="updateField('isPaid', $event)" />
-                                <label class="form-check-label" for="AttendanceType_IsPaid">{{ 'IsPaid' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-3 form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="AttendanceType_HaveQuotaAccrual"
-                                    name="HaveQuotaAccrual"
-                                    [ngModel]="attendanceType().haveQuotaAccrual"
-                                    (ngModelChange)="updateField('haveQuotaAccrual', $event)" />
-                                <label class="form-check-label" for="AttendanceType_HaveQuotaAccrual">{{ 'HaveQuotaAccrual' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-3 form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="AttendanceType_IncludeWeekend"
-                                    name="IncludeWeekend"
-                                    [ngModel]="attendanceType().includeWeekend"
-                                    (ngModelChange)="updateField('includeWeekend', $event)" />
-                                <label class="form-check-label" for="AttendanceType_IncludeWeekend">{{ 'IncludeWeekend' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-3 form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="AttendanceType_IncludeRestDay"
-                                    name="IncludeRestDay"
-                                    [ngModel]="attendanceType().includeRestDay"
-                                    (ngModelChange)="updateField('includeRestDay', $event)" />
-                                <label class="form-check-label" for="AttendanceType_IncludeRestDay">{{ 'IncludeRestDay' | localize }}</label>
-                            </div>
-                        </div>
+                        <!--
+                            Legacy AttendanceType_DetailView shows only Code, Name (En/Ar), Link Leave Quota,
+                            Include Public Holiday and Have Quota Accrual. IsPaid, IncludeWeekend, IncludeRestDay,
+                            CalcOnCalendarDays and IsFullDay stay on the DTO (and keep their saved values on edit)
+                            but are not rendered.
+                        -->
                         <div class="row">
                             <div class="col-md-3 mb-3 form-check">
                                 <input
@@ -174,21 +138,11 @@
                                 <input
                                     type="checkbox"
                                     class="form-check-input"
-                                    id="AttendanceType_CalcOnCalendarDays"
-                                    name="CalcOnCalendarDays"
-                                    [ngModel]="attendanceType().calcOnCalendarDays"
-                                    (ngModelChange)="updateField('calcOnCalendarDays', $event)" />
-                                <label class="form-check-label" for="AttendanceType_CalcOnCalendarDays">{{ 'CalcOnCalendarDays' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-3 form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="AttendanceType_IsFullDay"
-                                    name="IsFullDay"
-                                    [ngModel]="attendanceType().isFullDay"
-                                    (ngModelChange)="updateField('isFullDay', $event)" />
-                                <label class="form-check-label" for="AttendanceType_IsFullDay">{{ 'IsFullDay' | localize }}</label>
+                                    id="AttendanceType_HaveQuotaAccrual"
+                                    name="HaveQuotaAccrual"
+                                    [ngModel]="attendanceType().haveQuotaAccrual"
+                                    (ngModelChange)="updateField('haveQuotaAccrual', $event)" />
+                                <label class="form-check-label" for="AttendanceType_HaveQuotaAccrual">{{ 'HaveQuotaAccrual' | localize }}</label>
                             </div>
                         </div>
                     </div>

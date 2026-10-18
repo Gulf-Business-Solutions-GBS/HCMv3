@@ -342,7 +342,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 load: (injector, employeeId) =>
                     injector
                         .get(SalaryRegistersServiceProxy)
-                        .getAll(new GetAllSalaryRegistersInput({ employeeId, ...lastRows }))
+                        .getAll(new GetAllSalaryRegistersInput({ employeeId, payrollAreaId: undefined, ...lastRows }))
                         .pipe(map((r) => r.items)),
                 columns: [
                     { labelKey: 'Month', field: 'inPeriod', type: 'month' },

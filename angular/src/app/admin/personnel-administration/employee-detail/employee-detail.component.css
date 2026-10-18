@@ -31,6 +31,13 @@
     font-size: 19px;
     font-weight: 600;
     text-transform: uppercase;
+    overflow: hidden;
+}
+
+.emp-identity-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .emp-identity-text {

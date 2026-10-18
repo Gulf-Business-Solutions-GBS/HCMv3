@@ -61,6 +61,12 @@
                                     <th style="min-width: 120px">
                                         {{ 'TransSource' | localize }}
                                     </th>
+                                    <th style="min-width: 120px">
+                                        {{ 'RecordSource' | localize }}
+                                    </th>
+                                    <th style="min-width: 220px">
+                                        {{ 'DeviceAgentString' | localize }}
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -97,6 +103,12 @@
                                     </td>
                                     <td style="min-width: 120px">
                                         {{ record.transSource }}
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        {{ record.recordSource || '' }}
+                                    </td>
+                                    <td style="min-width: 220px">
+                                        <span pTooltip="{{ record.deviceAgentString }}" class="hide-overflown">{{ record.deviceAgentString }}</span>
                                     </td>
                                 </tr>
                             </ng-template>

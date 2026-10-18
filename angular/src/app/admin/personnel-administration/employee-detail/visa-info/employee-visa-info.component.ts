@@ -1,99 +1,140 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
-    CreateOrEditEmployeeVisaInfoDto,
+    EmployeeVisaInfoDto,
     EmployeeVisaInfosServiceProxy,
     GetAllEmployeeVisaInfosInput,
-    GetAllSimpleLookupsInput,
-    PassportTypesServiceProxy,
-    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { Paginator, PaginatorModule } from 'primeng/paginator';
+import { Table, TableModule } from 'primeng/table';
+import { TieredMenu } from 'primeng/tieredmenu';
 import { finalize } from 'rxjs/operators';
-import { FormsModule } from '@angular/forms';
-import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
+import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { BusyIfDirective } from '@shared/utils/busy-if.directive';
-import { DateTime } from 'luxon';
-import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
+import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { CreateOrEditEmployeeVisaInfoModalComponent } from './create-or-edit-employee-visa-info-modal.component';
 
+/**
+ * The employee's visa history. Legacy kept many visa records per employee (each renewal or sponsor
+ * transfer is its own row), so this is a list plus a create/edit modal like the other employee tabs,
+ * not a single form over whichever record came back first.
+ */
 @Component({
     selector: 'employee-visa-info',
     templateUrl: './employee-visa-info.component.html',
-    imports: [DateInputDirective, FormsModule, ButtonBusyDirective, LocalizePipe, PermissionPipe, BusyIfDirective],
+    imports: [
+        BusyIfDirective,
+        TableModule,
+        PaginatorModule,
+        TieredMenu,
+        LuxonFormatPipe,
+        LocalizePipe,
+        PermissionPipe,
+        PermissionAnyPipe,
+        CreateOrEditEmployeeVisaInfoModalComponent,
+    ],
 })
 export class EmployeeVisaInfoComponent extends AppComponentBase {
+    /** Newest first until the user picks a column: the current visa is the one looked up. */
+    private static readonly DefaultSorting = 'startDate desc, passportIssueDate desc';
+
     private _service = inject(EmployeeVisaInfosServiceProxy);
-    private _passportTypesService = inject(PassportTypesServiceProxy);
 
     readonly employeeId = input<number>();
 
-    readonly loading = signal<boolean>(false);
-    readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditEmployeeVisaInfoDto>(new CreateOrEditEmployeeVisaInfoDto());
-    readonly passportTypes = signal<SimpleLookupDto[]>([]);
+    readonly createOrEditModal = viewChild<CreateOrEditEmployeeVisaInfoModalComponent>('createOrEditModal');
+    readonly dataTable = viewChild<Table>('dataTable');
+    readonly paginator = viewChild<Paginator>('paginator');
+
+    readonly activeMenuItems = signal<MenuItem[]>([]);
 
     constructor() {
         super();
         effect(() => {
             if (this.employeeId()) {
-                this.load();
+                this.reloadPage();
             }
         });
-
-        this._passportTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.passportTypes.set(result.items));
     }
 
-    load(): void {
-        this.loading.set(true);
+    getRecords(event?: LazyLoadEvent): void {
+        if (!this.employeeId()) {
+            return;
+        }
+
+        if (this.primengTableHelper.shouldResetPaging(event)) {
+            this.paginator().changePage(0);
+            return;
+        }
+
+        this.primengTableHelper.showLoadingIndicator();
+
         this._service
             .getAll(
                 new GetAllEmployeeVisaInfosInput({
                     employeeId: this.employeeId(),
-                    maxResultCount: 1,
-                    skipCount: 0,
-                    sorting: undefined,
+                    sorting:
+                        this.primengTableHelper.getSorting(this.dataTable()) ||
+                        EmployeeVisaInfoComponent.DefaultSorting,
+                    maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
+                    skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
                 })
             )
-            .pipe(finalize(() => this.loading.set(false)))
+            .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
             .subscribe((result) => {
-                if (result.items.length > 0) {
-                    this._service.getEmployeeVisaInfoForEdit(result.items[0].id).subscribe((editResult) => {
-                        this.record.set(editResult.employeeVisaInfo);
-                    });
-                } else {
-                    const record = new CreateOrEditEmployeeVisaInfoDto();
-                    record.employeeId = this.employeeId();
-                    this.record.set(record);
-                }
+                this.primengTableHelper.totalRecordsCount.set(result.totalCount);
+                this.primengTableHelper.records.set(result.items);
+                this.primengTableHelper.hideLoadingIndicator();
             });
     }
 
-    updateField(field: keyof CreateOrEditEmployeeVisaInfoDto, value: any): void {
-        const current = this.record();
-        (current as any)[field] = value;
-        const next = new CreateOrEditEmployeeVisaInfoDto();
-        Object.assign(next, current);
-        this.record.set(next);
+    reloadPage(): void {
+        const rows = this.paginator() ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getRecords({ first: (this.paginator() ? this.paginator().getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 
-    updateDateField(
-        field: 'passportIssueDate' | 'passportExpiryDate' | 'entryDate' | 'terminationDate' | 'startDate' | 'endDate',
-        value: string
-    ): void {
-        this.updateField(field, value ? DateTime.fromISO(value) : (undefined as any));
+    createRecord(): void {
+        this.createOrEditModal().show(this.employeeId());
     }
 
-    save(): void {
-        this.saving.set(true);
-        this._service
-            .createOrEdit(this.record())
-            .pipe(finalize(() => this.saving.set(false)))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.load();
+    showMenu(event: Event, record: EmployeeVisaInfoDto, menu: any): void {
+        this.activeMenuItems.set(this.getMenuItems(record));
+        menu.toggle(event);
+    }
+
+    getMenuItems(record: EmployeeVisaInfoDto): MenuItem[] {
+        const items: MenuItem[] = [];
+
+        if (this.permission.isGranted('Pages.PersonnelAdministration.EmployeeVisaInfos.Edit')) {
+            items.push({
+                label: this.l('Edit'),
+                icon: 'pi pi-pencil',
+                command: () => this.createOrEditModal().show(this.employeeId(), record.id),
             });
+        }
+
+        if (this.permission.isGranted('Pages.PersonnelAdministration.EmployeeVisaInfos.Delete')) {
+            items.push({
+                label: this.l('Delete'),
+                icon: 'pi pi-trash',
+                command: () => this.deleteRecord(record),
+            });
+        }
+
+        return items;
+    }
+
+    deleteRecord(record: EmployeeVisaInfoDto): void {
+        this.message.confirm(this.l('AreYouSure'), this.l('AreYouSure'), (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.delete(record.id).subscribe(() => {
+                    this.reloadPage();
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                });
+            }
+        });
     }
 }

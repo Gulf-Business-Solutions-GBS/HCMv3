@@ -28,6 +28,9 @@
                             [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body" style="max-height: 75vh; overflow-y: auto">
+                        <!-- Sections and field order follow legacy TimePolicy_DetailView: General, Duty Policy, Notification, Breakshift Policy. -->
+                        <h6>{{ 'General' | localize }}</h6>
+                        <hr />
                         <div class="row">
                             <div class="col-md-4 mb-5">
                                 <label class="form-label" for="TimePolicy_Code">{{ 'Code' | localize }}</label>
@@ -71,162 +74,37 @@
                                 <validation-messages [formCtrl]="nameArInput" />
                             </div>
                         </div>
-
-                        <h6>{{ 'SignInOutRules' | localize }}</h6>
-                        <hr />
                         <div class="row">
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_ShouldSignIn"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="ShouldSignIn"
-                                    [ngModel]="timePolicy().shouldSignIn"
-                                    (ngModelChange)="updateField('shouldSignIn', $event)" />
-                                <label class="form-check-label" for="TimePolicy_ShouldSignIn">{{ 'ShouldSignIn' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_ShouldSignOut"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="ShouldSignOut"
-                                    [ngModel]="timePolicy().shouldSignOut"
-                                    (ngModelChange)="updateField('shouldSignOut', $event)" />
-                                <label class="form-check-label" for="TimePolicy_ShouldSignOut">{{ 'ShouldSignOut' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_ShouldBreakSignIn"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="ShouldBreakSignIn"
-                                    [ngModel]="timePolicy().shouldBreakSignIn"
-                                    (ngModelChange)="updateField('shouldBreakSignIn', $event)" />
-                                <label class="form-check-label" for="TimePolicy_ShouldBreakSignIn">{{ 'ShouldBreakSignIn' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_ShouldBreakSignOut"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="ShouldBreakSignOut"
-                                    [ngModel]="timePolicy().shouldBreakSignOut"
-                                    (ngModelChange)="updateField('shouldBreakSignOut', $event)" />
-                                <label class="form-check-label" for="TimePolicy_ShouldBreakSignOut">{{ 'ShouldBreakSignOut' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_MarkWeekoffOnHoliday"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="MarkWeekoffOnHoliday"
-                                    [ngModel]="timePolicy().markWeekoffOnHoliday"
-                                    (ngModelChange)="updateField('markWeekoffOnHoliday', $event)" />
-                                <label class="form-check-label" for="TimePolicy_MarkWeekoffOnHoliday">{{ 'MarkWeekoffOnHoliday' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_IsFaceRequired"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="IsFaceRequired"
-                                    [ngModel]="timePolicy().isFaceRequired"
-                                    (ngModelChange)="updateField('isFaceRequired', $event)" />
-                                <label class="form-check-label" for="TimePolicy_IsFaceRequired">{{ 'IsFaceRequired' | localize }}</label>
-                            </div>
-                        </div>
-
-                        <h6>{{ 'Tolerances' | localize }}</h6>
-                        <hr />
-                        <div class="row">
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_CalcLateInAfterTolerance"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="CalcLateInAfterTolerance"
-                                    [ngModel]="timePolicy().calcLateInAfterTolerance"
-                                    (ngModelChange)="updateField('calcLateInAfterTolerance', $event)" />
-                                <label class="form-check-label" for="TimePolicy_CalcLateInAfterTolerance">{{ 'CalcLateInAfterTolerance' | localize }}</label>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_TimeMgmtStatus">{{ 'TimeMgmtStatus' | localize }}</label>
+                                <select
+                                    id="TimePolicy_TimeMgmtStatus"
+                                    class="form-select"
+                                    name="TimeMgmtStatus"
+                                    [ngModel]="timePolicy().timeMgmtStatus"
+                                    (ngModelChange)="updateField('timeMgmtStatus', $event)">
+                                    <option [ngValue]="0">{{ 'NA' | localize }}</option>
+                                    <option [ngValue]="1">{{ 'PlannedTime' | localize }}</option>
+                                    <option [ngValue]="2">{{ 'ActualTime' | localize }}</option>
+                                    <option [ngValue]="3">{{ 'TimeSheet' | localize }}</option>
+                                    <option [ngValue]="4">{{ 'FlexiTime' | localize }}</option>
+                                    <option [ngValue]="5">{{ 'VariableTime' | localize }}</option>
+                                </select>
                             </div>
                             <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_LateInTolerance">{{ 'LateInTolerance' | localize }}</label>
-                                <input
-                                    id="TimePolicy_LateInTolerance"
-                                    class="form-control"
-                                    type="number"
-                                    name="LateInTolerance"
-                                    [ngModel]="timePolicy().lateInTolerance"
-                                    (ngModelChange)="updateField('lateInTolerance', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_CalcEarlyOutAfterTolerance"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="CalcEarlyOutAfterTolerance"
-                                    [ngModel]="timePolicy().calcEarlyOutAfterTolerance"
-                                    (ngModelChange)="updateField('calcEarlyOutAfterTolerance', $event)" />
-                                <label class="form-check-label" for="TimePolicy_CalcEarlyOutAfterTolerance">{{ 'CalcEarlyOutAfterTolerance' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_EarlyOutTolerance">{{ 'EarlyOutTolerance' | localize }}</label>
-                                <input
-                                    id="TimePolicy_EarlyOutTolerance"
-                                    class="form-control"
-                                    type="number"
-                                    name="EarlyOutTolerance"
-                                    [ngModel]="timePolicy().earlyOutTolerance"
-                                    (ngModelChange)="updateField('earlyOutTolerance', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_CalcBreakLateInAfterTolerance"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="CalcBreakLateInAfterTolerance"
-                                    [ngModel]="timePolicy().calcBreakLateInAfterTolerance"
-                                    (ngModelChange)="updateField('calcBreakLateInAfterTolerance', $event)" />
-                                <label class="form-check-label" for="TimePolicy_CalcBreakLateInAfterTolerance">{{ 'CalcBreakLateInAfterTolerance' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_BreakLateInTolerance">{{ 'BreakLateInTolerance' | localize }}</label>
-                                <input
-                                    id="TimePolicy_BreakLateInTolerance"
-                                    class="form-control"
-                                    type="number"
-                                    name="BreakLateInTolerance"
-                                    [ngModel]="timePolicy().breakLateInTolerance"
-                                    (ngModelChange)="updateField('breakLateInTolerance', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5 form-check">
-                                <input
-                                    id="TimePolicy_CalcBreakEarlyOutAfterTolerance"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="CalcBreakEarlyOutAfterTolerance"
-                                    [ngModel]="timePolicy().calcBreakEarlyOutAfterTolerance"
-                                    (ngModelChange)="updateField('calcBreakEarlyOutAfterTolerance', $event)" />
-                                <label class="form-check-label" for="TimePolicy_CalcBreakEarlyOutAfterTolerance">{{ 'CalcBreakEarlyOutAfterTolerance' | localize }}</label>
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_BreakEarlyOutTolerance">{{ 'BreakEarlyOutTolerance' | localize }}</label>
-                                <input
-                                    id="TimePolicy_BreakEarlyOutTolerance"
-                                    class="form-control"
-                                    type="number"
-                                    name="BreakEarlyOutTolerance"
-                                    [ngModel]="timePolicy().breakEarlyOutTolerance"
-                                    (ngModelChange)="updateField('breakEarlyOutTolerance', $event)"
-                                    step="1"
-                                    min="0" />
+                                <label class="form-label" for="TimePolicy_TimeEventRule">{{ 'TimeEventRule' | localize }}</label>
+                                <select
+                                    id="TimePolicy_TimeEventRule"
+                                    class="form-select"
+                                    name="TimeEventRule"
+                                    [ngModel]="timePolicy().timeEventRule"
+                                    (ngModelChange)="updateField('timeEventRule', $event)">
+                                    <option [ngValue]="0">{{ 'NA' | localize }}</option>
+                                    <option [ngValue]="1">{{ 'FirstInFirstOut' | localize }}</option>
+                                    <option [ngValue]="2">{{ 'FirstInLastOut' | localize }}</option>
+                                    <option [ngValue]="3">{{ 'LastInFirstOut' | localize }}</option>
+                                    <option [ngValue]="4">{{ 'LastInLastOut' | localize }}</option>
+                                </select>
                             </div>
                             <div class="col-md-3 mb-5">
                                 <label class="form-label" for="TimePolicy_MonthlyToleranceType">{{ 'MonthlyToleranceType' | localize }}</label>
@@ -254,83 +132,6 @@
                                     min="0" />
                             </div>
                             <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_MonthlyLateInTolerance">{{ 'MonthlyLateInTolerance' | localize }}</label>
-                                <input
-                                    id="TimePolicy_MonthlyLateInTolerance"
-                                    class="form-control"
-                                    type="number"
-                                    name="MonthlyLateInTolerance"
-                                    [ngModel]="timePolicy().monthlyLateInTolerance"
-                                    (ngModelChange)="updateField('monthlyLateInTolerance', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_MonthlyEarlyOutTolerance">{{ 'MonthlyEarlyOutTolerance' | localize }}</label>
-                                <input
-                                    id="TimePolicy_MonthlyEarlyOutTolerance"
-                                    class="form-control"
-                                    type="number"
-                                    name="MonthlyEarlyOutTolerance"
-                                    [ngModel]="timePolicy().monthlyEarlyOutTolerance"
-                                    (ngModelChange)="updateField('monthlyEarlyOutTolerance', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                        </div>
-
-                        <h6>{{ 'ClockLimits' | localize }}</h6>
-                        <hr />
-                        <div class="row">
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_ClockInLimit">{{ 'ClockInLimit' | localize }}</label>
-                                <input
-                                    id="TimePolicy_ClockInLimit"
-                                    class="form-control"
-                                    type="number"
-                                    name="ClockInLimit"
-                                    [ngModel]="timePolicy().clockInLimit"
-                                    (ngModelChange)="updateField('clockInLimit', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_ClockOutLimit">{{ 'ClockOutLimit' | localize }}</label>
-                                <input
-                                    id="TimePolicy_ClockOutLimit"
-                                    class="form-control"
-                                    type="number"
-                                    name="ClockOutLimit"
-                                    [ngModel]="timePolicy().clockOutLimit"
-                                    (ngModelChange)="updateField('clockOutLimit', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_BreakInLimit">{{ 'BreakInLimit' | localize }}</label>
-                                <input
-                                    id="TimePolicy_BreakInLimit"
-                                    class="form-control"
-                                    type="number"
-                                    name="BreakInLimit"
-                                    [ngModel]="timePolicy().breakInLimit"
-                                    (ngModelChange)="updateField('breakInLimit', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_BreakOutLimit">{{ 'BreakOutLimit' | localize }}</label>
-                                <input
-                                    id="TimePolicy_BreakOutLimit"
-                                    class="form-control"
-                                    type="number"
-                                    name="BreakOutLimit"
-                                    [ngModel]="timePolicy().breakOutLimit"
-                                    (ngModelChange)="updateField('breakOutLimit', $event)"
-                                    step="1"
-                                    min="0" />
-                            </div>
-                            <div class="col-md-3 mb-5">
                                 <label class="form-label" for="TimePolicy_OtMinLimit">{{ 'OtMinLimit' | localize }}</label>
                                 <input
                                     id="TimePolicy_OtMinLimit"
@@ -342,42 +143,18 @@
                                     step="1"
                                     min="0" />
                             </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_TimeEventRule">{{ 'TimeEventRule' | localize }}</label>
-                                <select
-                                    id="TimePolicy_TimeEventRule"
-                                    class="form-select"
-                                    name="TimeEventRule"
-                                    [ngModel]="timePolicy().timeEventRule"
-                                    (ngModelChange)="updateField('timeEventRule', $event)">
-                                    <option [ngValue]="0">{{ 'NA' | localize }}</option>
-                                    <option [ngValue]="1">{{ 'FirstInFirstOut' | localize }}</option>
-                                    <option [ngValue]="2">{{ 'FirstInLastOut' | localize }}</option>
-                                    <option [ngValue]="3">{{ 'LastInFirstOut' | localize }}</option>
-                                    <option [ngValue]="4">{{ 'LastInLastOut' | localize }}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3 mb-5">
-                                <label class="form-label" for="TimePolicy_TimeMgmtStatus">{{ 'TimeMgmtStatus' | localize }}</label>
-                                <select
-                                    id="TimePolicy_TimeMgmtStatus"
-                                    class="form-select"
-                                    name="TimeMgmtStatus"
-                                    [ngModel]="timePolicy().timeMgmtStatus"
-                                    (ngModelChange)="updateField('timeMgmtStatus', $event)">
-                                    <option [ngValue]="0">{{ 'NA' | localize }}</option>
-                                    <option [ngValue]="1">{{ 'PlannedTime' | localize }}</option>
-                                    <option [ngValue]="2">{{ 'ActualTime' | localize }}</option>
-                                    <option [ngValue]="3">{{ 'TimeSheet' | localize }}</option>
-                                    <option [ngValue]="4">{{ 'FlexiTime' | localize }}</option>
-                                    <option [ngValue]="5">{{ 'VariableTime' | localize }}</option>
-                                </select>
-                            </div>
                         </div>
-
-                        <h6>{{ 'PunchLocationRules' | localize }}</h6>
-                        <hr />
                         <div class="row">
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_MarkWeekoffOnHoliday"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="MarkWeekoffOnHoliday"
+                                    [ngModel]="timePolicy().markWeekoffOnHoliday"
+                                    (ngModelChange)="updateField('markWeekoffOnHoliday', $event)" />
+                                <label class="form-check-label" for="TimePolicy_MarkWeekoffOnHoliday">{{ 'MarkWeekoffOnHoliday' | localize }}</label>
+                            </div>
                             <div class="col-md-3 mb-5 form-check">
                                 <input
                                     id="TimePolicy_AllowPunchInFromWorkLocationOnly"
@@ -418,9 +195,138 @@
                                     (ngModelChange)="updateField('allowPunchOutFromExtWorklocation', $event)" />
                                 <label class="form-check-label" for="TimePolicy_AllowPunchOutFromExtWorklocation">{{ 'AllowPunchOutFromExtWorklocation' | localize }}</label>
                             </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_IsFaceRequired"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsFaceRequired"
+                                    [ngModel]="timePolicy().isFaceRequired"
+                                    (ngModelChange)="updateField('isFaceRequired', $event)" />
+                                <label class="form-check-label" for="TimePolicy_IsFaceRequired">{{ 'IsFaceRequired' | localize }}</label>
+                            </div>
                         </div>
 
-                        <h6>{{ 'Notifications' | localize }}</h6>
+                        <h6>{{ 'DutyPolicy' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_ShouldSignIn"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="ShouldSignIn"
+                                    [ngModel]="timePolicy().shouldSignIn"
+                                    (ngModelChange)="updateField('shouldSignIn', $event)" />
+                                <label class="form-check-label" for="TimePolicy_ShouldSignIn">{{ 'ShouldSignIn' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_ShouldSignOut"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="ShouldSignOut"
+                                    [ngModel]="timePolicy().shouldSignOut"
+                                    (ngModelChange)="updateField('shouldSignOut', $event)" />
+                                <label class="form-check-label" for="TimePolicy_ShouldSignOut">{{ 'ShouldSignOut' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_CalcLateInAfterTolerance"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="CalcLateInAfterTolerance"
+                                    [ngModel]="timePolicy().calcLateInAfterTolerance"
+                                    (ngModelChange)="updateField('calcLateInAfterTolerance', $event)" />
+                                <label class="form-check-label" for="TimePolicy_CalcLateInAfterTolerance">{{ 'CalcLateInAfterTolerance' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_CalcEarlyOutAfterTolerance"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="CalcEarlyOutAfterTolerance"
+                                    [ngModel]="timePolicy().calcEarlyOutAfterTolerance"
+                                    (ngModelChange)="updateField('calcEarlyOutAfterTolerance', $event)" />
+                                <label class="form-check-label" for="TimePolicy_CalcEarlyOutAfterTolerance">{{ 'CalcEarlyOutAfterTolerance' | localize }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_ClockInLimit">{{ 'ClockInLimit' | localize }}</label>
+                                <input
+                                    id="TimePolicy_ClockInLimit"
+                                    class="form-control"
+                                    type="number"
+                                    name="ClockInLimit"
+                                    [ngModel]="timePolicy().clockInLimit"
+                                    (ngModelChange)="updateField('clockInLimit', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_ClockOutLimit">{{ 'ClockOutLimit' | localize }}</label>
+                                <input
+                                    id="TimePolicy_ClockOutLimit"
+                                    class="form-control"
+                                    type="number"
+                                    name="ClockOutLimit"
+                                    [ngModel]="timePolicy().clockOutLimit"
+                                    (ngModelChange)="updateField('clockOutLimit', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_LateInTolerance">{{ 'LateInTolerance' | localize }}</label>
+                                <input
+                                    id="TimePolicy_LateInTolerance"
+                                    class="form-control"
+                                    type="number"
+                                    name="LateInTolerance"
+                                    [ngModel]="timePolicy().lateInTolerance"
+                                    (ngModelChange)="updateField('lateInTolerance', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_EarlyOutTolerance">{{ 'EarlyOutTolerance' | localize }}</label>
+                                <input
+                                    id="TimePolicy_EarlyOutTolerance"
+                                    class="form-control"
+                                    type="number"
+                                    name="EarlyOutTolerance"
+                                    [ngModel]="timePolicy().earlyOutTolerance"
+                                    (ngModelChange)="updateField('earlyOutTolerance', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_MonthlyLateInTolerance">{{ 'MonthlyLateInTolerance' | localize }}</label>
+                                <input
+                                    id="TimePolicy_MonthlyLateInTolerance"
+                                    class="form-control"
+                                    type="number"
+                                    name="MonthlyLateInTolerance"
+                                    [ngModel]="timePolicy().monthlyLateInTolerance"
+                                    (ngModelChange)="updateField('monthlyLateInTolerance', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_MonthlyEarlyOutTolerance">{{ 'MonthlyEarlyOutTolerance' | localize }}</label>
+                                <input
+                                    id="TimePolicy_MonthlyEarlyOutTolerance"
+                                    class="form-control"
+                                    type="number"
+                                    name="MonthlyEarlyOutTolerance"
+                                    [ngModel]="timePolicy().monthlyEarlyOutTolerance"
+                                    (ngModelChange)="updateField('monthlyEarlyOutTolerance', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'Notification' | localize }}</h6>
                         <hr />
                         <div class="row">
                             <div class="col-md-3 mb-5 form-check">
@@ -508,6 +414,99 @@
                                     name="EarlyPunchOutNotiTimeLimit"
                                     [ngModel]="timePolicy().earlyPunchOutNotiTimeLimit"
                                     (ngModelChange)="updateField('earlyPunchOutNotiTimeLimit', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'BreakshiftPolicy' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_ShouldBreakSignIn"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="ShouldBreakSignIn"
+                                    [ngModel]="timePolicy().shouldBreakSignIn"
+                                    (ngModelChange)="updateField('shouldBreakSignIn', $event)" />
+                                <label class="form-check-label" for="TimePolicy_ShouldBreakSignIn">{{ 'ShouldBreakSignIn' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_BreakInLimit">{{ 'BreakInLimit' | localize }}</label>
+                                <input
+                                    id="TimePolicy_BreakInLimit"
+                                    class="form-control"
+                                    type="number"
+                                    name="BreakInLimit"
+                                    [ngModel]="timePolicy().breakInLimit"
+                                    (ngModelChange)="updateField('breakInLimit', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_ShouldBreakSignOut"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="ShouldBreakSignOut"
+                                    [ngModel]="timePolicy().shouldBreakSignOut"
+                                    (ngModelChange)="updateField('shouldBreakSignOut', $event)" />
+                                <label class="form-check-label" for="TimePolicy_ShouldBreakSignOut">{{ 'ShouldBreakSignOut' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_BreakOutLimit">{{ 'BreakOutLimit' | localize }}</label>
+                                <input
+                                    id="TimePolicy_BreakOutLimit"
+                                    class="form-control"
+                                    type="number"
+                                    name="BreakOutLimit"
+                                    [ngModel]="timePolicy().breakOutLimit"
+                                    (ngModelChange)="updateField('breakOutLimit', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_CalcBreakLateInAfterTolerance"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="CalcBreakLateInAfterTolerance"
+                                    [ngModel]="timePolicy().calcBreakLateInAfterTolerance"
+                                    (ngModelChange)="updateField('calcBreakLateInAfterTolerance', $event)" />
+                                <label class="form-check-label" for="TimePolicy_CalcBreakLateInAfterTolerance">{{ 'CalcBreakLateInAfterTolerance' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_BreakLateInTolerance">{{ 'BreakLateInTolerance' | localize }}</label>
+                                <input
+                                    id="TimePolicy_BreakLateInTolerance"
+                                    class="form-control"
+                                    type="number"
+                                    name="BreakLateInTolerance"
+                                    [ngModel]="timePolicy().breakLateInTolerance"
+                                    (ngModelChange)="updateField('breakLateInTolerance', $event)"
+                                    step="1"
+                                    min="0" />
+                            </div>
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="TimePolicy_CalcBreakEarlyOutAfterTolerance"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="CalcBreakEarlyOutAfterTolerance"
+                                    [ngModel]="timePolicy().calcBreakEarlyOutAfterTolerance"
+                                    (ngModelChange)="updateField('calcBreakEarlyOutAfterTolerance', $event)" />
+                                <label class="form-check-label" for="TimePolicy_CalcBreakEarlyOutAfterTolerance">{{ 'CalcBreakEarlyOutAfterTolerance' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimePolicy_BreakEarlyOutTolerance">{{ 'BreakEarlyOutTolerance' | localize }}</label>
+                                <input
+                                    id="TimePolicy_BreakEarlyOutTolerance"
+                                    class="form-control"
+                                    type="number"
+                                    name="BreakEarlyOutTolerance"
+                                    [ngModel]="timePolicy().breakEarlyOutTolerance"
+                                    (ngModelChange)="updateField('breakEarlyOutTolerance', $event)"
                                     step="1"
                                     min="0" />
                             </div>

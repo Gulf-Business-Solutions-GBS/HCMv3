@@ -46,6 +46,7 @@ export class CreateOrEditEmployeeProjectDetailModalComponent extends AppComponen
     readonly saving = signal<boolean>(false);
     readonly calculating = signal<boolean>(false);
     readonly workDays = signal<number | undefined>(undefined);
+    readonly calendarDays = signal<number | undefined>(undefined);
     readonly record = signal<CreateOrEditEmployeeProjectDetailDto>(new CreateOrEditEmployeeProjectDetailDto());
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
@@ -69,6 +70,7 @@ export class CreateOrEditEmployeeProjectDetailModalComponent extends AppComponen
         this.isNew.set(!id);
         this.active.set(true);
         this.workDays.set(undefined);
+        this.calendarDays.set(undefined);
 
         this._employeeProjectsService
             .getAll(new GetAllEmployeeProjectsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
@@ -109,6 +111,7 @@ export class CreateOrEditEmployeeProjectDetailModalComponent extends AppComponen
             .pipe(finalize(() => this.calculating.set(false)))
             .subscribe((result) => {
                 this.workDays.set(result.workDays);
+                this.calendarDays.set(result.calendarDays);
             });
     }
 

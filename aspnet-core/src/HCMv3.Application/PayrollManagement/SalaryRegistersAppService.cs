@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -5,9 +6,11 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PayrollManagement.Dto;
+using HCMv3.PersonnelAdministration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,15 +36,27 @@ public class SalaryRegistersAppService : HCMv3AppServiceBase, ISalaryRegistersAp
         _salaryRegisterRepository = salaryRegisterRepository;
     }
 
+    /// <summary>
+    /// Property-injected so callers that build this service by hand keep compiling; without it the list
+    /// simply has no payroll area column.
+    /// </summary>
+    public IRepository<EmployeeOrgAssignment> EmployeeOrgAssignmentRepository { get; set; }
+
     [HttpPost]
     public async Task<PagedResultDto<SalaryRegisterDto>> GetAll(GetAllSalaryRegistersInput input)
     {
         input.Normalize();
 
+        var today = Clock.Now.Date;
+        var currentAssignments = EmployeeOrgAssignmentRepository?.GetAll()
+            .Where(a => a.StartDate <= today && a.EndDate >= today);
+
         var query = _salaryRegisterRepository.GetAll()
             .Include(r => r.Employee)
             .Include(r => r.PayrollReasonType)
-            .WhereIf(input.EmployeeId.HasValue, r => r.EmployeeId == input.EmployeeId);
+            .WhereIf(input.EmployeeId.HasValue, r => r.EmployeeId == input.EmployeeId)
+            .WhereIf(input.PayrollAreaId.HasValue && currentAssignments != null,
+                r => currentAssignments.Any(a => a.EmployeeId == r.EmployeeId && a.PayrollAreaId == input.PayrollAreaId));
 
         var totalCount = await query.CountAsync();
 
@@ -50,9 +65,35 @@ public class SalaryRegistersAppService : HCMv3AppServiceBase, ISalaryRegistersAp
             .PageBy(input)
             .ToListAsync();
 
-        return new PagedResultDto<SalaryRegisterDto>(
-            totalCount,
-            items.Select(ToDto).ToList());
+        var dtos = items.Select(ToDto).ToList();
+        await FillCurrentPayrollAreasAsync(dtos, currentAssignments);
+
+        return new PagedResultDto<SalaryRegisterDto>(totalCount, dtos);
+    }
+
+    private static async Task FillCurrentPayrollAreasAsync(
+        List<SalaryRegisterDto> dtos, IQueryable<EmployeeOrgAssignment> currentAssignments)
+    {
+        if (currentAssignments == null || dtos.Count == 0)
+        {
+            return;
+        }
+
+        var employeeIds = dtos.Select(d => d.EmployeeId).Distinct().ToList();
+        var areas = await currentAssignments
+            .Where(a => employeeIds.Contains(a.EmployeeId) && a.PayrollAreaId != null)
+            .Select(a => new { a.EmployeeId, a.PayrollAreaId, a.PayrollArea.Name })
+            .ToListAsync();
+        var byEmployee = areas.GroupBy(a => a.EmployeeId).ToDictionary(g => g.Key, g => g.First());
+
+        foreach (var dto in dtos)
+        {
+            if (byEmployee.TryGetValue(dto.EmployeeId, out var area))
+            {
+                dto.PayrollAreaId = area.PayrollAreaId;
+                dto.PayrollAreaName = area.Name;
+            }
+        }
     }
 
     public async Task<GetSalaryRegisterForEditOutput> GetSalaryRegisterForEdit(EntityDto input)

@@ -398,6 +398,19 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         var request = await _workflowRequestRepository.GetAsync(requestId);
         EnsureOpenAndCurrentApprover(request, actingEmployeeId);
 
+        // Legacy RequestProcessApproval.AssignNewApprover only offered employees not already approving this
+        // step. Handing the step to one of them would merge two approvers into one and silently lose a vote.
+        var alreadyApprovingThisStep = newApproverEmployeeId == actingEmployeeId
+            || _workFlowApproverRepository.GetAll()
+                .Any(a => a.WorkflowRequestId == request.Id
+                          && a.WorkflowStep == request.WorkflowStep
+                          && !a.IsApproved
+                          && a.ApproverId == newApproverEmployeeId);
+        if (alreadyApprovingThisStep)
+        {
+            throw new UserFriendlyException(L("NewApproverIsAlreadyApprovingThisStep"));
+        }
+
         var pendingApproverRows = _workFlowApproverRepository.GetAll()
             .Where(a => a.WorkflowRequestId == request.Id
                         && a.WorkflowStep == request.WorkflowStep

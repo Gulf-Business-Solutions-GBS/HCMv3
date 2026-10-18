@@ -1161,6 +1161,19 @@ function parseSectionBody(md) {
     return { html: blocksToHtml(body), adminHtml: blocksToHtml(admin), when };
 }
 
+/**
+ * The edit dialog's component selector, lower-cased the way the browser reports an element's tag name.
+ * Read from the component class beside the page's edit template; null when it has none.
+ */
+function editDialogSelector(page) {
+    const template = page.surfaces?.edit?.template;
+    if (!template) return null;
+    const ts = template.replace(/\.html$/, '.ts');
+    if (!exists(ts)) return null;
+    const m = read(ts).match(/selector:\s*'([A-Za-z][\w-]*)'/);
+    return m ? m[1].toLowerCase() : null;
+}
+
 function cmdBuild(argv) {
     const langs = argv.includes('--lang') ? argv[argv.indexOf('--lang') + 1].split(',') : LANGS;
     const inv = buildInventory();
@@ -1170,6 +1183,10 @@ function cmdBuild(argv) {
     // page: dialogs are not annotated, they are recognised by the ASP.NET Zero ids they carry.
     // Only fully written pages go in -- a page still holding stubs would answer F1 with _TODO_.
     const domIndex = {};
+    // Which page documents a screen, by the edit dialog's component selector. A list screen keeps that
+    // dialog's host element in its DOM even while it is closed, so F1 on a screen nobody annotated with
+    // [helpPage] can still name its page -- the employee tabs, sponsor tabs and every list screen.
+    const hostIndex = {};
 
     for (const lang of langs) {
         const { pool } = loadTopicPool(lang);
@@ -1234,14 +1251,22 @@ function cmdBuild(argv) {
                     (domIndex[id] ??= []).push(page.helpId);
                 }
             }
+            // Unlike a dialog, a screen with a field or two still to write is better served by its page than by
+            // the browser's own help, so stubs do not keep it out.
+            if (lang === INDEX_LANG && fields.length) {
+                const selector = editDialogSelector(page);
+                if (selector) hostIndex[selector] ??= page.helpId;
+            }
             console.log(`wrote    ${out}  (${fields.length} fields, ${stubbed} still stubs)`);
         }
     }
     if (langs.includes(INDEX_LANG)) {
         const out = path.join(ASSET_DIR, 'index.json');
-        fs.writeFileSync(abs(out), JSON.stringify({ dom: domIndex }, null, 2) + '\n');
+        fs.writeFileSync(abs(out), JSON.stringify({ dom: domIndex, hosts: hostIndex }, null, 2) + '\n');
         const pages = new Set(Object.values(domIndex).flat());
-        console.log(`wrote    ${out}  (${Object.keys(domIndex).length} ids, ${pages.size} pages)`);
+        console.log(
+            `wrote    ${out}  (${Object.keys(domIndex).length} ids, ${pages.size} pages, ${Object.keys(hostIndex).length} screens)`
+        );
     }
 
     console.log(`\n${written} file(s) written`);

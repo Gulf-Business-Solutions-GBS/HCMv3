@@ -99,7 +99,7 @@ export class EmployeeInsurancesComponent extends AppComponentBase {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal()?.show(this.employeeId(), record.id),
+                command: () => this.createOrEditModal()?.show(this.employeeId(), record.id, record),
             });
         }
 

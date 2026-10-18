@@ -183,7 +183,7 @@ public class EmployeeProjectDetailsAppService : HCMv3AppServiceBase, IEmployeePr
 
         if (detail.StartDate == default || detail.EndDate == default)
         {
-            return new CalculateWorkDaysOutput { WorkDays = 0 };
+            return new CalculateWorkDaysOutput { WorkDays = 0, CalendarDays = 0 };
         }
 
         var workDays = await _timeRegisterRepository.GetAll()
@@ -193,7 +193,11 @@ public class EmployeeProjectDetailsAppService : HCMv3AppServiceBase, IEmployeePr
                         (r.ApprovedActualWorkingDay != 0 || r.PublicHoliday == 1 || r.RestDay == 1))
             .SumAsync(r => (double?)(r.ApprovedActualWorkingDay + r.PublicHoliday + r.RestDay)) ?? 0;
 
-        return new CalculateWorkDaysOutput { WorkDays = workDays };
+        return new CalculateWorkDaysOutput
+        {
+            WorkDays = workDays,
+            CalendarDays = (detail.EndDate - detail.StartDate).TotalDays + 1
+        };
     }
 
     private static EmployeeProjectDetail MapToEntity(CreateOrEditEmployeeProjectDetailDto input, EmployeeProjectDetail entity)
