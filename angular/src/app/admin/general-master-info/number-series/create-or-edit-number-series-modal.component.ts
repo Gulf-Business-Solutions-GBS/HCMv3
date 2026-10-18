@@ -1,6 +1,6 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { NumberSeriesServiceProxy, CreateOrEditNumberSeriesDto } from '@shared/service-proxies/service-proxies';
+import { NumberSeriesServiceProxy, CreateOrEditNumberSeriesDto, EmploymentType } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -30,11 +30,20 @@ export class CreateOrEditNumberSeriesModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly numberSeries = signal<CreateOrEditNumberSeriesDto>(new CreateOrEditNumberSeriesDto());
 
+    /** Legacy NumberSeries.EmploymentType: one series per type, or a single ALL series for everyone. */
+    readonly employmentTypes = [
+        { value: EmploymentType.Permanent, name: 'Permanent' },
+        { value: EmploymentType.Temporary, name: 'Temporary' },
+        { value: EmploymentType.ALL, name: 'ALL' },
+    ];
+
     show(numberSeriesId?: number): void {
         this.active.set(true);
 
         if (!numberSeriesId) {
-            this.numberSeries.set(new CreateOrEditNumberSeriesDto());
+            const record = new CreateOrEditNumberSeriesDto();
+            record.employmentType = EmploymentType.Permanent;
+            this.numberSeries.set(record);
             this.modal().show();
         } else {
             this._numberSeriesService.getNumberSeriesForEdit(numberSeriesId).subscribe((result) => {

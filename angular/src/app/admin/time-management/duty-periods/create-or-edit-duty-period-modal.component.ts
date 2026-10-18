@@ -55,21 +55,44 @@ export class CreateOrEditDutyPeriodModalComponent extends AppComponentBase {
                 this.holidayCalendars.set(result.items);
             });
 
-        this._dutiesService
-            .getAll(new GetAllDutiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => {
-                this.duties.set(result.items);
-            });
-
         if (!dutyPeriodId) {
             this.dutyPeriod.set(new CreateOrEditDutyPeriodDto());
+            this.loadDuties([]);
             this.modal().show();
         } else {
             this._dutyPeriodsService.getDutyPeriodForEdit(dutyPeriodId).subscribe((result) => {
-                this.dutyPeriod.set(result.dutyPeriod);
+                const period = result.dutyPeriod;
+                this.dutyPeriod.set(period);
+                this.loadDuties([
+                    period.sundayDutyId,
+                    period.mondayDutyId,
+                    period.tuesdayDutyId,
+                    period.wednesdayDutyId,
+                    period.thursdayDutyId,
+                    period.fridayDutyId,
+                    period.saturdayDutyId,
+                ]);
                 this.modal().show();
             });
         }
+    }
+
+    // Only active duties are offered; the ones already on the record stay listed even if made inactive since.
+    private loadDuties(currentDutyIds: (number | undefined)[]): void {
+        this._dutiesService
+            .getAll(
+                new GetAllDutiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    isActive: true,
+                    includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
+                }),
+            )
+            .subscribe((result) => {
+                this.duties.set(result.items);
+            });
     }
 
     onShown(): void {

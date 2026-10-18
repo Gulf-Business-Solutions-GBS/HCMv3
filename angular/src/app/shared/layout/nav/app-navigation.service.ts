@@ -1529,6 +1529,12 @@ export class AppNavigationService {
                         '/app/admin/job-titles'
                     ),
                     new AppMenuItem(
+                        'JobTitleDetails',
+                        'Pages.OrganizationManagement.JobTitleDetails',
+                        'flaticon-list-3',
+                        '/app/admin/job-title-details'
+                    ),
+                    new AppMenuItem(
                         'CostCenters',
                         'Pages.OrganizationManagement.CostCenters',
                         'flaticon-list-3',
@@ -2428,6 +2434,12 @@ export class AppNavigationService {
                         'Pages.GovtRelationsManagement.OrganizationDocuments',
                         'flaticon-list-3',
                         '/app/admin/organization-documents'
+                    ),
+                    new AppMenuItem(
+                        'OrgPolicies',
+                        'Pages.GovtRelationsManagement.OrgPolicies',
+                        'flaticon-list-3',
+                        '/app/admin/org-policies'
                     ),
                 ]
             ),

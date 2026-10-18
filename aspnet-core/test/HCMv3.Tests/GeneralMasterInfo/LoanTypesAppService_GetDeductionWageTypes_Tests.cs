@@ -10,7 +10,8 @@ namespace HCMv3.Tests.GeneralMasterInfo;
 
 /// <summary>
 /// The Loan Types wage type dropdown offers what legacy <c>LoanType.LoanDedWageType</c> offered: active
-/// deduction wage types outside basic/calculated/arrear pay, not Net Pay, not used by a leave or overtime type.
+/// deduction wage types outside basic/calculated/arrear pay, not Net Pay, not used by a leave, overtime or
+/// violation type.
 /// </summary>
 // ReSharper disable once InconsistentNaming
 public class LoanTypesAppService_GetDeductionWageTypes_Tests : AppTestBase
@@ -54,6 +55,7 @@ public class LoanTypesAppService_GetDeductionWageTypes_Tests : AppTestBase
         var netPay = AddWageType("9000", BillingType.Deduction);
         var leaveDeduction = AddWageType("2004", BillingType.Deduction);
         var overtimeDeduction = AddWageType("2005", BillingType.Deduction);
+        var violationDeduction = AddWageType("2006", BillingType.Deduction);
         UsingDbContext(context =>
         {
             var tenantId = AbpSession.TenantId ?? 1;
@@ -73,6 +75,14 @@ public class LoanTypesAppService_GetDeductionWageTypes_Tests : AppTestBase
                 NameAr = "إضافي",
                 WageTypeId = overtimeDeduction
             });
+            context.DisciplinaryTypes.Add(new DisciplinaryType
+            {
+                TenantId = tenantId,
+                Code = "LATE",
+                NameEn = "Late arrival",
+                NameAr = "تأخير",
+                WageTypeId = violationDeduction
+            });
         });
 
         var ids = (await _appService.GetDeductionWageTypes(new NullableIdDto())).Items.Select(i => i.Id).ToList();
@@ -84,6 +94,7 @@ public class LoanTypesAppService_GetDeductionWageTypes_Tests : AppTestBase
         ids.ShouldNotContain(netPay);
         ids.ShouldNotContain(leaveDeduction);
         ids.ShouldNotContain(overtimeDeduction);
+        ids.ShouldNotContain(violationDeduction);
     }
 
     [Fact]

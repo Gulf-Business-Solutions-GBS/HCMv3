@@ -19,6 +19,7 @@ import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditEmployeeAssetModal',
@@ -31,6 +32,7 @@ import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        AttachmentsComponent,
     ],
 })
 export class CreateOrEditEmployeeAssetModalComponent extends AppComponentBase {

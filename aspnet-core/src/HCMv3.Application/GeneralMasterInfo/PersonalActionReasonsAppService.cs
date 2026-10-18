@@ -37,6 +37,7 @@ public class PersonalActionReasonsAppService : HCMv3AppServiceBase, IPersonalAct
 
         var query = _personalActionReasonRepository.GetAll()
             .Include(p => p.PersonalAction)
+            .Include(p => p.NotificationConfig)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), p =>
                 p.Code.Contains(input.Filter) ||
                 p.NameEn.Contains(input.Filter) ||
@@ -85,6 +86,7 @@ public class PersonalActionReasonsAppService : HCMv3AppServiceBase, IPersonalAct
             NameEn = input.NameEn,
             NameAr = input.NameAr,
             PersonalActionId = input.PersonalActionId,
+            NotificationConfigId = input.NotificationConfigId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -103,6 +105,7 @@ public class PersonalActionReasonsAppService : HCMv3AppServiceBase, IPersonalAct
         personalActionReason.NameEn = input.NameEn;
         personalActionReason.NameAr = input.NameAr;
         personalActionReason.PersonalActionId = input.PersonalActionId;
+        personalActionReason.NotificationConfigId = input.NotificationConfigId;
 
         await AssignCodeIfEmptyAsync(personalActionReason);
         await ValidateUniquenessAsync(personalActionReason);
@@ -169,7 +172,9 @@ public class PersonalActionReasonsAppService : HCMv3AppServiceBase, IPersonalAct
             NameEn = personalActionReason.NameEn,
             NameAr = personalActionReason.NameAr,
             PersonalActionId = personalActionReason.PersonalActionId,
-            PersonalActionName = personalActionReason.PersonalAction?.NameEn
+            PersonalActionName = personalActionReason.PersonalAction?.NameEn,
+            NotificationConfigId = personalActionReason.NotificationConfigId,
+            NotificationConfigName = personalActionReason.NotificationConfig?.Name
         };
     }
 
@@ -181,7 +186,8 @@ public class PersonalActionReasonsAppService : HCMv3AppServiceBase, IPersonalAct
             Code = personalActionReason.Code,
             NameEn = personalActionReason.NameEn,
             NameAr = personalActionReason.NameAr,
-            PersonalActionId = personalActionReason.PersonalActionId
+            PersonalActionId = personalActionReason.PersonalActionId,
+            NotificationConfigId = personalActionReason.NotificationConfigId
         };
     }
 }

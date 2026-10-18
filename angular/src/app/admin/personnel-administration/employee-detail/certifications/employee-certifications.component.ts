@@ -68,6 +68,7 @@ export class EmployeeCertificationsComponent extends AppComponentBase {
             .getAll(
                 new GetAllEmployeeCertificationsInput({
                     employeeId: this.employeeId(),
+                    certificationType: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

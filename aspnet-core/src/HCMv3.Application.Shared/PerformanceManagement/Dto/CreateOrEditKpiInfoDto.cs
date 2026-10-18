@@ -18,6 +18,9 @@ public class CreateOrEditKpiInfoDto
     [Required]
     public int KpiCategoryId { get; set; }
 
+    /// <summary>Legacy <c>KpiInfo.Competency</c>; optional.</summary>
+    public int? CompetencyId { get; set; }
+
     [StringLength(500)]
     public string Comments { get; set; }
 

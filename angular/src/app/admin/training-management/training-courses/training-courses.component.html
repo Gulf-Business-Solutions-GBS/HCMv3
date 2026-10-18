@@ -76,6 +76,8 @@
                                         {{ 'Fees' | localize }}
                                         <p-sortIcon field="fees" />
                                     </th>
+                                    <th style="min-width: 200px">{{ 'Institution' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Source' | localize }}</th>
                                     <th style="min-width: 120px">{{ 'Active' | localize }}</th>
                                 </tr>
                             </ng-template>
@@ -99,6 +101,8 @@
                                     <td style="min-width: 200px">{{ record.nameAr }}</td>
                                     <td style="min-width: 150px">{{ (record.deliveryMethod === 0 ? 'Online' : 'Classroom') | localize }}</td>
                                     <td style="min-width: 120px">{{ record.fees }}</td>
+                                    <td style="min-width: 200px">{{ record.institutionName }}</td>
+                                    <td style="min-width: 120px">{{ (record.source === 1 ? 'External' : 'Internal') | localize }}</td>
                                     <td style="min-width: 120px">
                                         <i class="fa" [ngClass]="record.active ? 'fa-check text-success' : 'fa-times text-muted'"></i>
                                     </td>

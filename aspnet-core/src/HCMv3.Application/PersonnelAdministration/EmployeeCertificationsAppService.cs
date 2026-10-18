@@ -36,7 +36,8 @@ public class EmployeeCertificationsAppService : HCMv3AppServiceBase, IEmployeeCe
         var query = _repository.GetAll()
             .Include(c => c.Employee)
             .Include(c => c.Institution)
-            .WhereIf(input.EmployeeId.HasValue, c => c.EmployeeId == input.EmployeeId.Value);
+            .WhereIf(input.EmployeeId.HasValue, c => c.EmployeeId == input.EmployeeId.Value)
+            .WhereIf(input.CertificationType.HasValue, c => c.CertificationType == input.CertificationType.Value);
 
         var totalCount = await query.CountAsync();
 
@@ -64,7 +65,8 @@ public class EmployeeCertificationsAppService : HCMv3AppServiceBase, IEmployeeCe
                 InstitutionId = entity.InstitutionId,
                 Duration = entity.Duration,
                 Certificate = entity.Certificate,
-                Grade = entity.Grade
+                Grade = entity.Grade,
+                CertificationType = entity.CertificationType
             }
         };
     }
@@ -125,6 +127,7 @@ public class EmployeeCertificationsAppService : HCMv3AppServiceBase, IEmployeeCe
         entity.Duration = input.Duration;
         entity.Certificate = input.Certificate;
         entity.Grade = input.Grade;
+        entity.CertificationType = input.CertificationType;
         return entity;
     }
 
@@ -143,7 +146,8 @@ public class EmployeeCertificationsAppService : HCMv3AppServiceBase, IEmployeeCe
             InstitutionName = entity.Institution?.NameEn,
             Duration = entity.Duration,
             Certificate = entity.Certificate,
-            Grade = entity.Grade
+            Grade = entity.Grade,
+            CertificationType = entity.CertificationType
         };
     }
 }

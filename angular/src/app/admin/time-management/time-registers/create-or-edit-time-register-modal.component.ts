@@ -79,9 +79,6 @@ export class CreateOrEditTimeRegisterModalComponent extends AppComponentBase {
             .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.dutyPeriods.set(result.items));
 
-        this._dutiesService
-            .getAll(new GetAllDutiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.duties.set(result.items));
 
         this._timePoliciesService
             .getAll(new GetAllTimePoliciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
@@ -93,13 +90,31 @@ export class CreateOrEditTimeRegisterModalComponent extends AppComponentBase {
 
         if (!timeRegisterId) {
             this.timeRegister.set(new CreateOrEditTimeRegisterDto());
+            this.loadDuties([]);
             this.modal().show();
         } else {
             this._timeRegistersService.getTimeRegisterForEdit(timeRegisterId).subscribe((result) => {
                 this.timeRegister.set(result.timeRegister);
+                this.loadDuties([result.timeRegister.dutyId]);
                 this.modal().show();
             });
         }
+    }
+
+    // Only active duties are offered; the one already on the record stays listed even if made inactive since.
+    private loadDuties(currentDutyIds: (number | undefined)[]): void {
+        this._dutiesService
+            .getAll(
+                new GetAllDutiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    isActive: true,
+                    includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
+                }),
+            )
+            .subscribe((result) => this.duties.set(result.items));
     }
 
     onShown(): void {

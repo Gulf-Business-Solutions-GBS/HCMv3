@@ -37,6 +37,7 @@ public class InstitutionsAppService : HCMv3AppServiceBase, IInstitutionsAppServi
 
         var query = _institutionRepository.GetAll()
             .Include(i => i.University)
+            .Include(i => i.Country)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), i =>
                 i.Code.Contains(input.Filter) ||
                 i.NameEn.Contains(input.Filter) ||
@@ -85,6 +86,7 @@ public class InstitutionsAppService : HCMv3AppServiceBase, IInstitutionsAppServi
             NameEn = input.NameEn,
             NameAr = input.NameAr,
             UniversityId = input.UniversityId,
+            CountryId = input.CountryId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -103,6 +105,7 @@ public class InstitutionsAppService : HCMv3AppServiceBase, IInstitutionsAppServi
         institution.NameEn = input.NameEn;
         institution.NameAr = input.NameAr;
         institution.UniversityId = input.UniversityId;
+        institution.CountryId = input.CountryId;
 
         await AssignCodeIfEmptyAsync(institution);
         await ValidateUniquenessAsync(institution);
@@ -169,7 +172,9 @@ public class InstitutionsAppService : HCMv3AppServiceBase, IInstitutionsAppServi
             NameEn = institution.NameEn,
             NameAr = institution.NameAr,
             UniversityId = institution.UniversityId,
-            UniversityName = institution.University?.NameEn
+            UniversityName = institution.University?.NameEn,
+            CountryId = institution.CountryId,
+            CountryName = institution.Country?.NameEn
         };
     }
 
@@ -181,7 +186,8 @@ public class InstitutionsAppService : HCMv3AppServiceBase, IInstitutionsAppServi
             Code = institution.Code,
             NameEn = institution.NameEn,
             NameAr = institution.NameAr,
-            UniversityId = institution.UniversityId
+            UniversityId = institution.UniversityId,
+            CountryId = institution.CountryId
         };
     }
 }

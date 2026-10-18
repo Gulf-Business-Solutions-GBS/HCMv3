@@ -26,4 +26,9 @@ public class CreateOrEditTrainingCourseDto
     public double Fees { get; set; }
 
     public bool Active { get; set; }
+
+    /// <summary>Legacy <c>TrainingCourse.Institution</c>. Optional.</summary>
+    public int? InstitutionId { get; set; }
+
+    public TrainingCourseSource Source { get; set; }
 }

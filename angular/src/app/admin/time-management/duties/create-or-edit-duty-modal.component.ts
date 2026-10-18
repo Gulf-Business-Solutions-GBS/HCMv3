@@ -62,7 +62,10 @@ export class CreateOrEditDutyModalComponent extends AppComponentBase {
             });
 
         if (!dutyId) {
-            this.duty.set(new CreateOrEditDutyDto());
+            const duty = new CreateOrEditDutyDto();
+            // Legacy AfterConstruction: a new duty is active.
+            duty.isActive = true;
+            this.duty.set(duty);
             this.modal().show();
         } else {
             this._dutiesService.getDutyForEdit(dutyId).subscribe((result) => {

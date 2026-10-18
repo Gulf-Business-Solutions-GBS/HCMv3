@@ -18,6 +18,8 @@ public class EmployeeDocumentDto : EntityDto<int>
     public DateTime ExpiryDate { get; set; }
     public string Comments { get; set; }
     public string Description { get; set; }
+    public int? DocPlaceId { get; set; }
+    public string DocPlaceName { get; set; }
 
     /// <summary>Computed (not stored) -- see <c>EmployeeDocumentsAppService.ComputeIsActive</c>.</summary>
     public DocumentStatus IsActive { get; set; }
@@ -52,6 +54,9 @@ public class CreateOrEditEmployeeDocumentDto
 
     [StringLength(2000)]
     public string Description { get; set; }
+
+    /// <summary>Legacy "Document Place": a <c>DocumentPlace</c> lookup row. Optional.</summary>
+    public int? DocPlaceId { get; set; }
 
     /// <summary>
     /// Record this as final instead of sending it for approval.

@@ -68,6 +68,9 @@ export class DutiesComponent extends AppComponentBase implements OnInit {
             .getAll(
                 new GetAllDutiesInput({
                     filter: this.filterText(),
+                    // The Duties screen lists every duty, active or not.
+                    isActive: undefined,
+                    includeIds: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

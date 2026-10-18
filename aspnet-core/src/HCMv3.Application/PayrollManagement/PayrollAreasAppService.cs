@@ -16,8 +16,9 @@ namespace HCMv3.PayrollManagement;
 
 /// <summary>
 /// Application service for the PayrollArea master (ported from legacy XAF PayrollArea business object). See
-/// <see cref="PayrollArea"/> class remarks for the dropped NotificationConfig FKs and default-currency
-/// simplification.
+/// <see cref="PayrollArea"/> class remarks for the default-currency simplification. The three notification
+/// configurations (release / exit / correction) are stored here and sent by
+/// <c>PayrollControlRecordsAppService.SetState</c>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollAreas)]
 public class PayrollAreasAppService : HCMv3AppServiceBase, IPayrollAreasAppService
@@ -40,6 +41,9 @@ public class PayrollAreasAppService : HCMv3AppServiceBase, IPayrollAreasAppServi
             .Include(a => a.FICompany)
             .Include(a => a.FIBank)
             .Include(a => a.Country)
+            .Include(a => a.PAReleaseNotification)
+            .Include(a => a.PAExitNotification)
+            .Include(a => a.PACorrectionNotification)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), a =>
                 a.Code.Contains(input.Filter) ||
                 a.Name.Contains(input.Filter));
@@ -118,6 +122,9 @@ public class PayrollAreasAppService : HCMv3AppServiceBase, IPayrollAreasAppServi
         entity.FICompanyId = input.FICompanyId;
         entity.FIBankId = input.FIBankId;
         entity.CountryId = input.CountryId;
+        entity.PAReleaseNotificationId = input.PAReleaseNotificationId;
+        entity.PAExitNotificationId = input.PAExitNotificationId;
+        entity.PACorrectionNotificationId = input.PACorrectionNotificationId;
 
         return entity;
     }
@@ -193,7 +200,13 @@ public class PayrollAreasAppService : HCMv3AppServiceBase, IPayrollAreasAppServi
             FIBankId = entity.FIBankId,
             FIBankName = entity.FIBank?.NameEn,
             CountryId = entity.CountryId,
-            CountryName = entity.Country?.NameEn
+            CountryName = entity.Country?.NameEn,
+            PAReleaseNotificationId = entity.PAReleaseNotificationId,
+            PAReleaseNotificationName = entity.PAReleaseNotification?.Name,
+            PAExitNotificationId = entity.PAExitNotificationId,
+            PAExitNotificationName = entity.PAExitNotification?.Name,
+            PACorrectionNotificationId = entity.PACorrectionNotificationId,
+            PACorrectionNotificationName = entity.PACorrectionNotification?.Name
         };
     }
 
@@ -209,7 +222,10 @@ public class PayrollAreasAppService : HCMv3AppServiceBase, IPayrollAreasAppServi
             CutOffDay = entity.CutOffDay,
             FICompanyId = entity.FICompanyId,
             FIBankId = entity.FIBankId,
-            CountryId = entity.CountryId
+            CountryId = entity.CountryId,
+            PAReleaseNotificationId = entity.PAReleaseNotificationId,
+            PAExitNotificationId = entity.PAExitNotificationId,
+            PACorrectionNotificationId = entity.PACorrectionNotificationId
         };
     }
 }

@@ -224,6 +224,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<JobTitle> JobTitles { get; set; }
 
+    public virtual DbSet<JobTitleDetail> JobTitleDetails { get; set; }
+
     public virtual DbSet<OrganizationUnitType> OrganizationUnitTypes { get; set; }
 
     public virtual DbSet<OrganizationBankInfo> OrganizationBankInfos { get; set; }
@@ -2586,6 +2588,7 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // TrainingCourse is reachable both directly (TrainingCourseId) and via
             // TrainingScheduleId->TrainingSchedule->TrainingCourseId.
             b.HasOne(e => e.TrainingCourse).WithMany().HasForeignKey(e => e.TrainingCourseId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.EmployeeCertification).WithMany().HasForeignKey(e => e.EmployeeCertificationId).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<TrainingAttendance>(b =>
@@ -2643,6 +2646,73 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         modelBuilder.Entity<LoanTypeDetail>(b =>
         {
             b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Fields restored from legacy once their modules were ported (legacy gap review, batch 5).
+        modelBuilder.Entity<EmployeeDocument>(b =>
+        {
+            b.HasOne(e => e.DocPlace).WithMany().HasForeignKey(e => e.DocPlaceId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<TrainingCourse>(b =>
+        {
+            b.HasOne(e => e.Institution).WithMany().HasForeignKey(e => e.InstitutionId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Institution>(b =>
+        {
+            b.HasOne(e => e.Country).WithMany().HasForeignKey(e => e.CountryId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<WorkLocation>(b =>
+        {
+            b.HasOne(e => e.Sponsor).WithMany().HasForeignKey(e => e.SponsorId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Asset>(b =>
+        {
+            b.HasOne(e => e.EarningWageType).WithMany().HasForeignKey(e => e.EarningWageTypeId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.DeductionWageType).WithMany().HasForeignKey(e => e.DeductionWageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<AssetType>(b =>
+        {
+            b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<DisciplinaryType>(b =>
+        {
+            b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<HCMv3.Recruitment.Vacancy>(b =>
+        {
+            b.HasOne(e => e.Position).WithMany().HasForeignKey(e => e.PositionId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Recruiter).WithMany().HasForeignKey(e => e.RecruiterId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<HCMv3.PerformanceManagement.KpiInfo>(b =>
+        {
+            b.HasOne(e => e.Competency).WithMany().HasForeignKey(e => e.CompetencyId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Three notifications into the same table, so each is spelled out (as RequestDetail's are).
+        modelBuilder.Entity<PayrollArea>(b =>
+        {
+            b.HasOne(e => e.PAReleaseNotification).WithMany().HasForeignKey(e => e.PAReleaseNotificationId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.PAExitNotification).WithMany().HasForeignKey(e => e.PAExitNotificationId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.PACorrectionNotification).WithMany().HasForeignKey(e => e.PACorrectionNotificationId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PersonalActionReason>(b =>
+        {
+            b.HasOne(e => e.NotificationConfig).WithMany().HasForeignKey(e => e.NotificationConfigId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<JobTitleDetail>(b =>
+        {
+            b.HasOne(e => e.JobTitle).WithMany().HasForeignKey(e => e.JobTitleId).OnDelete(DeleteBehavior.Cascade);
+            b.HasOne(e => e.WorkflowRole).WithMany().HasForeignKey(e => e.WorkflowRoleId).OnDelete(DeleteBehavior.Restrict);
         });
 
         // WAVE P9: LoanType.WageTypeId -- the master-table reference wage code 2001 "Loan Recovery Deduction"

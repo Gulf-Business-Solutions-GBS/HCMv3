@@ -46,6 +46,9 @@
     </form>
 
     @if (record().id) {
+        <div class="mb-5">
+            <app-attachments entityType="ApplicantCV" [entityId]="record().id" />
+        </div>
         <tabset class="tab-container">
             <tab heading="{{ 'CVQualifications' | localize }}" [active]="true">
                 <cv-qualifications [applicantCVId]="record().id" />

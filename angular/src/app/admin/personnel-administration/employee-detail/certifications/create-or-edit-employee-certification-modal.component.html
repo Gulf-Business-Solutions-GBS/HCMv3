@@ -108,6 +108,19 @@
                                 [ngModel]="record().grade"
                                 (ngModelChange)="updateField('grade', $event)" />
                         </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeCertification_CertificationType">{{ 'CertificationType' | localize }}</label>
+                            <select
+                                id="EmployeeCertification_CertificationType"
+                                class="form-select"
+                                name="CertificationType"
+                                [ngModel]="record().certificationType"
+                                (ngModelChange)="updateField('certificationType', $event)">
+                                @for (option of certificationTypes; track option.value) {
+                                    <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

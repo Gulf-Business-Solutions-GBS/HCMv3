@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.PersonnelAdministration;
 using HCMv3.TrainingManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,16 +20,22 @@ namespace HCMv3.TrainingManagement;
 /// <c>HCM10.Module.BusinessObjects.TrainingManagement.EmployeeTraining</c>). Legacy
 /// <c>PerformValidation</c> parity: no duplicate Employee+TrainingCourse+TrainingSchedule combination. The
 /// legacy "Employee/TrainingCourse/TrainingSchedule should not be blank" checks are covered by
-/// <c>[Required]</c> on <see cref="CreateOrEditEmployeeTrainingDto"/> instead.
+/// <c>[Required]</c> on <see cref="CreateOrEditEmployeeTrainingDto"/> instead. The optional certification
+/// link must be one of the same employee's certifications of type Training (legacy
+/// <c>TrainingCertificationList</c> filter).
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_TrainingManagement_EmployeeTrainings)]
 public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainingsAppService
 {
     private readonly IRepository<EmployeeTraining> _employeeTrainingRepository;
+    private readonly IRepository<EmployeeCertification> _employeeCertificationRepository;
 
-    public EmployeeTrainingsAppService(IRepository<EmployeeTraining> employeeTrainingRepository)
+    public EmployeeTrainingsAppService(
+        IRepository<EmployeeTraining> employeeTrainingRepository,
+        IRepository<EmployeeCertification> employeeCertificationRepository)
     {
         _employeeTrainingRepository = employeeTrainingRepository;
+        _employeeCertificationRepository = employeeCertificationRepository;
     }
 
     [HttpPost]
@@ -39,6 +47,7 @@ public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainin
             .Include(t => t.Employee)
             .Include(t => t.TrainingCourse)
             .Include(t => t.TrainingSchedule)
+            .Include(t => t.EmployeeCertification)
             .WhereIf(input.EmployeeId.HasValue, t => t.EmployeeId == input.EmployeeId)
             .WhereIf(input.TrainingScheduleId.HasValue, t => t.TrainingScheduleId == input.TrainingScheduleId);
 
@@ -82,6 +91,32 @@ public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainin
         await _employeeTrainingRepository.DeleteAsync(input.Id);
     }
 
+    /// <summary>
+    /// Certifications the Employee Training form may link: the employee's own certifications of type
+    /// Training (legacy <c>TrainingCertificationList</c>), plus the one already linked on the record.
+    /// </summary>
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_TrainingManagement_EmployeeTrainings_Create, AppPermissions.Pages_TrainingManagement_EmployeeTrainings_Edit)]
+    public async Task<ListResultDto<EmployeeTrainingCertificationLookupDto>> GetTrainingCertifications(GetEmployeeTrainingCertificationsInput input)
+    {
+        var items = await _employeeCertificationRepository.GetAll()
+            .Where(c => c.EmployeeId == input.EmployeeId
+                        && (c.CertificationType == CertificationType.Training
+                            || (input.CurrentCertificationId.HasValue && c.Id == input.CurrentCertificationId.Value)))
+            .OrderByDescending(c => c.StartDate)
+            .ToListAsync();
+
+        return new ListResultDto<EmployeeTrainingCertificationLookupDto>(items
+            .Select(c => new EmployeeTrainingCertificationLookupDto
+            {
+                Id = c.Id,
+                DisplayName = CertificationDisplayName(c),
+                Course = c.Course,
+                Certificate = c.Certificate
+            })
+            .ToList());
+    }
+
     [AbpAuthorize(AppPermissions.Pages_TrainingManagement_EmployeeTrainings_Create)]
     protected virtual async Task CreateAsync(CreateOrEditEmployeeTrainingDto input)
     {
@@ -97,18 +132,37 @@ public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainin
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeTrainingDto input)
     {
         var entity = await _employeeTrainingRepository.GetAsync(input.Id.Value);
+        var previousCertificationId = entity.EmployeeCertificationId;
+        var previousEmployeeId = entity.EmployeeId;
         entity = MapToEntity(input, entity);
 
-        await ValidateAsync(entity);
+        await ValidateAsync(entity, previousCertificationId, previousEmployeeId);
 
         await _employeeTrainingRepository.UpdateAsync(entity);
     }
 
     /// <summary>
     /// Legacy <c>PerformValidation</c> parity: no duplicate Employee+TrainingCourse+TrainingSchedule row.
+    /// A newly chosen certification must be the same employee's and of type Training; a link left as it
+    /// was is not re-checked, so a record stays saveable after its certification's type is changed.
     /// </summary>
-    private async Task ValidateAsync(EmployeeTraining entity)
+    private async Task ValidateAsync(EmployeeTraining entity, int? previousCertificationId = null, int? previousEmployeeId = null)
     {
+        if (entity.EmployeeCertificationId.HasValue
+            && (entity.EmployeeCertificationId != previousCertificationId || entity.EmployeeId != previousEmployeeId))
+        {
+            var certificationId = entity.EmployeeCertificationId.Value;
+            var employeeId = entity.EmployeeId;
+            var valid = await _employeeCertificationRepository.GetAll()
+                .AnyAsync(c => c.Id == certificationId
+                               && c.EmployeeId == employeeId
+                               && c.CertificationType == CertificationType.Training);
+            if (!valid)
+            {
+                throw new UserFriendlyException(L("EmployeeTrainingCertificationNotValid"));
+            }
+        }
+
         var duplicate = await _employeeTrainingRepository.GetAll()
             .AnyAsync(t => t.Id != entity.Id &&
                            t.EmployeeId == entity.EmployeeId &&
@@ -128,6 +182,7 @@ public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainin
         entity.CompletionStatus = input.CompletionStatus;
         entity.Score = input.Score;
         entity.Comments = input.Comments;
+        entity.EmployeeCertificationId = input.EmployeeCertificationId;
 
         return entity;
     }
@@ -145,8 +200,15 @@ public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainin
             TrainingScheduleNameEn = entity.TrainingSchedule?.NameEn,
             CompletionStatus = entity.CompletionStatus,
             Score = entity.Score,
-            Comments = entity.Comments
+            Comments = entity.Comments,
+            EmployeeCertificationId = entity.EmployeeCertificationId,
+            EmployeeCertificationName = entity.EmployeeCertification == null ? null : CertificationDisplayName(entity.EmployeeCertification)
         };
+    }
+
+    private static string CertificationDisplayName(EmployeeCertification certification)
+    {
+        return string.IsNullOrWhiteSpace(certification.Certificate) ? certification.Course : certification.Certificate;
     }
 
     private static CreateOrEditEmployeeTrainingDto ToCreateOrEditDto(EmployeeTraining entity)
@@ -159,7 +221,8 @@ public class EmployeeTrainingsAppService : HCMv3AppServiceBase, IEmployeeTrainin
             TrainingScheduleId = entity.TrainingScheduleId,
             CompletionStatus = entity.CompletionStatus,
             Score = entity.Score,
-            Comments = entity.Comments
+            Comments = entity.Comments,
+            EmployeeCertificationId = entity.EmployeeCertificationId
         };
     }
 }

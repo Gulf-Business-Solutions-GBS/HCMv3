@@ -38,6 +38,8 @@ public class AssetsAppService : HCMv3AppServiceBase, IAssetsAppService
 
         var query = _assetRepository.GetAll()
             .Include(a => a.AssetType)
+            .Include(a => a.EarningWageType)
+            .Include(a => a.DeductionWageType)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), a =>
                 a.Code.Contains(input.Filter) ||
                 a.NameEn.Contains(input.Filter) ||
@@ -98,6 +100,8 @@ public class AssetsAppService : HCMv3AppServiceBase, IAssetsAppService
             AssetTypeId = input.AssetTypeId,
             Status = input.Status,
             AssetAllocationStatus = input.AssetAllocationStatus,
+            EarningWageTypeId = input.EarningWageTypeId,
+            DeductionWageTypeId = input.DeductionWageTypeId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -128,6 +132,8 @@ public class AssetsAppService : HCMv3AppServiceBase, IAssetsAppService
         asset.AssetTypeId = input.AssetTypeId;
         asset.Status = input.Status;
         asset.AssetAllocationStatus = input.AssetAllocationStatus;
+        asset.EarningWageTypeId = input.EarningWageTypeId;
+        asset.DeductionWageTypeId = input.DeductionWageTypeId;
 
         await AssignCodeIfEmptyAsync(asset);
         await ValidateUniquenessAsync(asset);
@@ -206,7 +212,11 @@ public class AssetsAppService : HCMv3AppServiceBase, IAssetsAppService
             AssetTypeId = asset.AssetTypeId,
             AssetTypeName = asset.AssetType?.NameEn,
             Status = asset.Status,
-            AssetAllocationStatus = asset.AssetAllocationStatus
+            AssetAllocationStatus = asset.AssetAllocationStatus,
+            EarningWageTypeId = asset.EarningWageTypeId,
+            EarningWageTypeName = asset.EarningWageType?.NameEn,
+            DeductionWageTypeId = asset.DeductionWageTypeId,
+            DeductionWageTypeName = asset.DeductionWageType?.NameEn
         };
     }
 
@@ -230,7 +240,9 @@ public class AssetsAppService : HCMv3AppServiceBase, IAssetsAppService
             Value = asset.Value,
             AssetTypeId = asset.AssetTypeId,
             Status = asset.Status,
-            AssetAllocationStatus = asset.AssetAllocationStatus
+            AssetAllocationStatus = asset.AssetAllocationStatus,
+            EarningWageTypeId = asset.EarningWageTypeId,
+            DeductionWageTypeId = asset.DeductionWageTypeId
         };
     }
 }

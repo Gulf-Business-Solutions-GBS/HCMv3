@@ -139,6 +139,10 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
     /// <c>AssetStatus.Active</c> is <c>0</c> -- the CLR and database default -- so an untouched row reads as
     /// active rather than disappearing. Allocation status is left alone on purpose: an asset already issued
     /// to somebody else is still a thing an employee may reasonably ask for.
+    /// <para>
+    /// Only assets whose type has <c>IncludeInWorkflow</c> are offered, as legacy ESS did
+    /// (<c>GeneralController</c>: <c>r.AssetType.IncludeInWorkflow</c>); an asset with no type is not offered.
+    /// </para>
     /// </remarks>
     public Task<List<SimpleLookupDto>> GetAssets() =>
         ListAsync(_assetRepository, e => new SimpleLookupDto
@@ -148,7 +152,7 @@ public class EssLookupAppService : HCMv3AppServiceBase, IEssLookupAppService
             NameEn = e.NameEn,
             NameAr = e.NameAr
         },
-        e => e.Status == AssetStatus.Active);
+        e => e.Status == AssetStatus.Active && e.AssetType != null && e.AssetType.IncludeInWorkflow);
 
     public Task<List<SimpleLookupDto>> GetAttendanceTypes() =>
         ListAsync(_attendanceTypeRepository, e => new SimpleLookupDto

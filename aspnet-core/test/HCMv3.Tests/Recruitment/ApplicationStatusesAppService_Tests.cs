@@ -22,7 +22,7 @@ public class ApplicationStatusesAppService_Tests : RecruitmentAppServiceTestBase
             FakeRepository.For<ApplicationStatus>(Context),
             FakeRepository.For<ApplicantCV>(Context),
             employeeRepository,
-            new EmployeeCodeGenerator(employeeRepository),
+            new EmployeeCodeGenerator(employeeRepository, FakeRepository.For<HCMv3.GeneralMasterInfo.NumberSeries>(Context)),
             new EmployeeValidator(employeeRepository)));
     }
 

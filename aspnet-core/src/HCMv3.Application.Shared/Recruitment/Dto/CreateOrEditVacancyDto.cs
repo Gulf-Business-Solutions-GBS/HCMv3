@@ -27,6 +27,8 @@ public class CreateOrEditVacancyDto
 
     public int? RecruiterId { get; set; }
 
+    public int? PositionId { get; set; }
+
     public int? TemplateOnbGroupId { get; set; }
 
     [Required]

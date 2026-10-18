@@ -191,6 +191,48 @@
                                     }
                                 </select>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="Vacancy_PositionId">{{ 'Position' | localize }}</label>
+                                <select
+                                    id="Vacancy_PositionId"
+                                    class="form-select"
+                                    name="PositionId"
+                                    [ngModel]="record().positionId"
+                                    (ngModelChange)="updateField('positionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of positions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ positionLabel(item) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="Vacancy_RecruiterId">{{ 'Recruiter' | localize }}</label>
+                                <select
+                                    id="Vacancy_RecruiterId"
+                                    class="form-select"
+                                    name="RecruiterId"
+                                    [ngModel]="record().recruiterId"
+                                    (ngModelChange)="updateField('recruiterId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ employeeLabel(item) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="Vacancy_WorkLocationId">{{ 'Location' | localize }}</label>
+                                <select
+                                    id="Vacancy_WorkLocationId"
+                                    class="form-select"
+                                    name="WorkLocationId"
+                                    [ngModel]="record().workLocationId"
+                                    (ngModelChange)="updateField('workLocationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of workLocations(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
                             <div class="col-md-6 mb-3 form-check form-switch">
                                 <input
                                     id="Vacancy_IsBudgeted"
@@ -239,6 +281,11 @@
                                     [ngModel]="record().jobDescription"
                                     (ngModelChange)="updateField('jobDescription', $event)"></textarea>
                             </div>
+                            @if (record().id) {
+                                <div class="col-md-12 mb-3">
+                                    <app-attachments entityType="Vacancy" [entityId]="record().id" />
+                                </div>
+                            }
                         </div>
                     </div>
                     <div class="modal-footer">

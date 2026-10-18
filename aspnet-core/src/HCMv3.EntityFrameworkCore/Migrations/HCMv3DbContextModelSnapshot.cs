@@ -5281,11 +5281,17 @@ namespace HCMv3.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("DeductionWageTypeId")
+                        .HasColumnType("int");
+
                     b.Property<long?>("DeleterUserId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("EarningWageTypeId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
@@ -5341,6 +5347,10 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("AssetTypeId");
 
+                    b.HasIndex("DeductionWageTypeId");
+
+                    b.HasIndex("EarningWageTypeId");
+
                     b.ToTable("Assets");
                 });
 
@@ -5368,6 +5378,9 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IncludeInWorkflow")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -5390,7 +5403,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WageTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WageTypeId");
 
                     b.ToTable("AssetTypes");
                 });
@@ -6324,7 +6342,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WageTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WageTypeId");
 
                     b.ToTable("DisciplinaryTypes");
                 });
@@ -6550,6 +6573,9 @@ namespace HCMv3.Migrations
 
                     b.Property<int?>("PrintReportId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("ShowToAll")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -6881,6 +6907,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -6919,6 +6948,8 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("UniversityId");
 
@@ -7463,6 +7494,9 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EmploymentType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Formatting")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -7837,6 +7871,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int?>("NotificationConfigId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PersonalActionId")
                         .HasColumnType("int");
 
@@ -7844,6 +7881,8 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NotificationConfigId");
 
                     b.HasIndex("PersonalActionId");
 
@@ -12629,6 +12668,53 @@ namespace HCMv3.Migrations
                     b.ToTable("JobTitles");
                 });
 
+            modelBuilder.Entity("HCMv3.OrganizationManagement.JobTitleDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("JobTitleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkflowRoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobTitleId");
+
+                    b.HasIndex("WorkflowRoleId");
+
+                    b.ToTable("JobTitleDetails");
+                });
+
             modelBuilder.Entity("HCMv3.OrganizationManagement.OrgUnitProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -12875,10 +12961,15 @@ namespace HCMv3.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int?>("SponsorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SponsorId");
 
                     b.ToTable("WorkLocations");
                 });
@@ -15395,6 +15486,15 @@ namespace HCMv3.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int?>("PACorrectionNotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PAExitNotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PAReleaseNotificationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PayrollPeriodId")
                         .HasColumnType("int");
 
@@ -15410,6 +15510,12 @@ namespace HCMv3.Migrations
                     b.HasIndex("FIBankId");
 
                     b.HasIndex("FICompanyId");
+
+                    b.HasIndex("PACorrectionNotificationId");
+
+                    b.HasIndex("PAExitNotificationId");
+
+                    b.HasIndex("PAReleaseNotificationId");
 
                     b.HasIndex("PayrollPeriodId");
 
@@ -17797,6 +17903,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("CompetencyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -17833,6 +17942,8 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompetencyId");
 
                     b.HasIndex("KpiCategoryId");
 
@@ -20445,6 +20556,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("CertificationType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Course")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -21116,6 +21230,9 @@ namespace HCMv3.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
+                    b.Property<int?>("DocPlaceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("DocumentNum")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
@@ -21151,6 +21268,8 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DocPlaceId");
 
                     b.HasIndex("DocumentTypeId");
 
@@ -25923,6 +26042,9 @@ namespace HCMv3.Migrations
                     b.Property<long?>("OrganizationUnitId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("PositionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("PublishOn")
                         .HasColumnType("datetime2");
 
@@ -25967,7 +26089,11 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OnbGroupId");
 
+                    b.HasIndex("PositionId");
+
                     b.HasIndex("QualificationId");
+
+                    b.HasIndex("RecruiterId");
 
                     b.HasIndex("WorkLocationId");
 
@@ -30373,6 +30499,9 @@ namespace HCMv3.Migrations
                     b.Property<TimeSpan?>("FlexiStartTime")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -33137,6 +33266,9 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("EmployeeCertificationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
@@ -33162,6 +33294,8 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeCertificationId");
 
                     b.HasIndex("EmployeeId");
 
@@ -33258,6 +33392,9 @@ namespace HCMv3.Migrations
                     b.Property<double>("Fees")
                         .HasColumnType("float");
 
+                    b.Property<int?>("InstitutionId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -33277,10 +33414,15 @@ namespace HCMv3.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("Source")
+                        .HasColumnType("int");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
 
                     b.ToTable("TrainingCourses");
                 });
@@ -33751,6 +33893,9 @@ namespace HCMv3.Migrations
                     b.Property<string>("OtherComments")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<double>("PerDiemPayPercentage")
+                        .HasColumnType("float");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -35942,7 +36087,31 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("AssetTypeId");
 
+                    b.HasOne("HCMv3.PayrollManagement.WageType", "DeductionWageType")
+                        .WithMany()
+                        .HasForeignKey("DeductionWageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.PayrollManagement.WageType", "EarningWageType")
+                        .WithMany()
+                        .HasForeignKey("EarningWageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("AssetType");
+
+                    b.Navigation("DeductionWageType");
+
+                    b.Navigation("EarningWageType");
+                });
+
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.AssetType", b =>
+                {
+                    b.HasOne("HCMv3.PayrollManagement.WageType", "WageType")
+                        .WithMany()
+                        .HasForeignKey("WageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("WageType");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Bank", b =>
@@ -36017,6 +36186,16 @@ namespace HCMv3.Migrations
                     b.Navigation("ToCurr");
                 });
 
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.DisciplinaryType", b =>
+                {
+                    b.HasOne("HCMv3.PayrollManagement.WageType", "WageType")
+                        .WithMany()
+                        .HasForeignKey("WageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("WageType");
+                });
+
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DisciplinaryTypeDetail", b =>
                 {
                     b.HasOne("HCMv3.GeneralMasterInfo.DisciplinaryDeductionType", "DisciplinaryDeductionType")
@@ -36058,9 +36237,16 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.Institution", b =>
                 {
+                    b.HasOne("HCMv3.GeneralMasterInfo.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.GeneralMasterInfo.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId");
+
+                    b.Navigation("Country");
 
                     b.Navigation("University");
                 });
@@ -36176,9 +36362,16 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.PersonalActionReason", b =>
                 {
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "NotificationConfig")
+                        .WithMany()
+                        .HasForeignKey("NotificationConfigId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.GeneralMasterInfo.PersonalAction", "PersonalAction")
                         .WithMany()
                         .HasForeignKey("PersonalActionId");
+
+                    b.Navigation("NotificationConfig");
 
                     b.Navigation("PersonalAction");
                 });
@@ -36975,6 +37168,25 @@ namespace HCMv3.Migrations
                     b.Navigation("CostElementType");
                 });
 
+            modelBuilder.Entity("HCMv3.OrganizationManagement.JobTitleDetail", b =>
+                {
+                    b.HasOne("HCMv3.OrganizationManagement.JobTitle", "JobTitle")
+                        .WithMany()
+                        .HasForeignKey("JobTitleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.Workflow.WorkflowRole", "WorkflowRole")
+                        .WithMany()
+                        .HasForeignKey("WorkflowRoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("JobTitle");
+
+                    b.Navigation("WorkflowRole");
+                });
+
             modelBuilder.Entity("HCMv3.OrganizationManagement.OrgUnitProfile", b =>
                 {
                     b.HasOne("Abp.Organizations.OrganizationUnit", "OrganizationUnit")
@@ -37013,6 +37225,16 @@ namespace HCMv3.Migrations
                     b.Navigation("Bank");
 
                     b.Navigation("OrganizationUnit");
+                });
+
+            modelBuilder.Entity("HCMv3.OrganizationManagement.WorkLocation", b =>
+                {
+                    b.HasOne("HCMv3.GovtRelationsManagement.Sponsor", "Sponsor")
+                        .WithMany()
+                        .HasForeignKey("SponsorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Sponsor");
                 });
 
             modelBuilder.Entity("HCMv3.PayrollManagement.AbsenceDedRuleDetail", b =>
@@ -37621,6 +37843,21 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("FICompanyId");
 
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "PACorrectionNotification")
+                        .WithMany()
+                        .HasForeignKey("PACorrectionNotificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "PAExitNotification")
+                        .WithMany()
+                        .HasForeignKey("PAExitNotificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.NotificationConfig", "PAReleaseNotification")
+                        .WithMany()
+                        .HasForeignKey("PAReleaseNotificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PayrollManagement.PayrollPeriod", "PayrollPeriod")
                         .WithMany()
                         .HasForeignKey("PayrollPeriodId")
@@ -37634,6 +37871,12 @@ namespace HCMv3.Migrations
                     b.Navigation("FIBank");
 
                     b.Navigation("FICompany");
+
+                    b.Navigation("PACorrectionNotification");
+
+                    b.Navigation("PAExitNotification");
+
+                    b.Navigation("PAReleaseNotification");
 
                     b.Navigation("PayrollPeriod");
                 });
@@ -38211,11 +38454,18 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.PerformanceManagement.KpiInfo", b =>
                 {
+                    b.HasOne("HCMv3.CompetencyDevelopment.Competency", "Competency")
+                        .WithMany()
+                        .HasForeignKey("CompetencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PerformanceManagement.KpiCategory", "KpiCategory")
                         .WithMany()
                         .HasForeignKey("KpiCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Competency");
 
                     b.Navigation("KpiCategory");
                 });
@@ -39248,6 +39498,11 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocument", b =>
                 {
+                    b.HasOne("HCMv3.GeneralMasterInfo.DocumentPlace", "DocPlace")
+                        .WithMany()
+                        .HasForeignKey("DocPlaceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.GeneralMasterInfo.DocumentType", "DocumentType")
                         .WithMany()
                         .HasForeignKey("DocumentTypeId")
@@ -39259,6 +39514,8 @@ namespace HCMv3.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DocPlace");
 
                     b.Navigation("DocumentType");
 
@@ -40574,9 +40831,19 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("OnbGroupId");
 
+                    b.HasOne("HCMv3.ManpowerPlanningManagement.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.GeneralMasterInfo.Qualification", "Qualification")
                         .WithMany()
                         .HasForeignKey("QualificationId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Recruiter")
+                        .WithMany()
+                        .HasForeignKey("RecruiterId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HCMv3.OrganizationManagement.WorkLocation", "Location")
                         .WithMany()
@@ -40588,7 +40855,11 @@ namespace HCMv3.Migrations
 
                     b.Navigation("OnbGroup");
 
+                    b.Navigation("Position");
+
                     b.Navigation("Qualification");
+
+                    b.Navigation("Recruiter");
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.PrintReportPermission", b =>
@@ -41818,6 +42089,11 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.TrainingManagement.EmployeeTraining", b =>
                 {
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeCertification", "EmployeeCertification")
+                        .WithMany()
+                        .HasForeignKey("EmployeeCertificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
@@ -41837,6 +42113,8 @@ namespace HCMv3.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
+
+                    b.Navigation("EmployeeCertification");
 
                     b.Navigation("TrainingCourse");
 
@@ -41860,6 +42138,16 @@ namespace HCMv3.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("TrainingSchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.TrainingManagement.TrainingCourse", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Institution");
                 });
 
             modelBuilder.Entity("HCMv3.TrainingManagement.TrainingSchedule", b =>

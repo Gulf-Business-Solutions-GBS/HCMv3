@@ -3,11 +3,14 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     AssetsServiceProxy,
     CreateOrEditAssetDto,
-    GetAllSimpleLookupsInput,
-    SimpleLookupDto,
+    AssetTypeDto,
     AssetTypesServiceProxy,
     AssetStatus,
     AssetAllocationStatus,
+    GetAllAssetTypesInput,
+    GetAllWageTypesInput,
+    WageTypeDto,
+    WageTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -18,6 +21,7 @@ import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.direct
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditAssetModal',
@@ -29,11 +33,13 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        AttachmentsComponent,
     ],
 })
 export class CreateOrEditAssetModalComponent extends AppComponentBase {
     private _assetsService = inject(AssetsServiceProxy);
     private _assetTypesService = inject(AssetTypesServiceProxy);
+    private _wageTypesService = inject(WageTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -41,7 +47,9 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly asset = signal<CreateOrEditAssetDto>(new CreateOrEditAssetDto());
-    readonly assetTypes = signal<SimpleLookupDto[]>([]);
+    readonly assetTypes = signal<AssetTypeDto[]>([]);
+    // Legacy Asset.Earning / Asset.Deduction offered every wage type (no data-source filter).
+    readonly wageTypes = signal<WageTypeDto[]>([]);
 
     readonly statuses = [
         { value: AssetStatus.Active, label: 'Active' },
@@ -57,10 +65,14 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._assetTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(new GetAllAssetTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => {
                 this.assetTypes.set(result.items);
             });
+
+        this._wageTypesService
+            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined }))
+            .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!assetId) {
             this.asset.set(new CreateOrEditAssetDto());

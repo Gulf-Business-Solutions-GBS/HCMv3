@@ -73,6 +73,20 @@
                                 (ngModelChange)="updateDateField('expiryDate', $event)" />
                         </div>
                         <div class="mb-5">
+                            <label class="form-label" for="EmployeeDocument_DocPlaceId">{{ 'DocumentPlace' | localize }}</label>
+                            <select
+                                id="EmployeeDocument_DocPlaceId"
+                                class="form-select"
+                                name="DocPlaceId"
+                                [ngModel]="record().docPlaceId"
+                                (ngModelChange)="updateField('docPlaceId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of documentPlaces(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
                             <label class="form-label" for="EmployeeDocument_Description">{{ 'Description' | localize }}</label>
                             <input
                                 id="EmployeeDocument_Description"

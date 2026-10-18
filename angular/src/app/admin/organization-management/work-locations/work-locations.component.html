@@ -81,6 +81,9 @@
                                     <th style="min-width: 200px">
                                         {{ 'Address' | localize }}
                                     </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Sponsor' | localize }}
+                                    </th>
                                     <th style="min-width: 100px">
                                         {{ 'IsActive' | localize }}
                                     </th>
@@ -117,6 +120,9 @@
                                     </td>
                                     <td style="min-width: 200px">
                                         <span pTooltip="{{ record.address }}" class="hide-overflown">{{ record.address }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.sponsorName }}
                                     </td>
                                     <td style="min-width: 100px">
                                         <i class="fa" [ngClass]="record.isActive ? 'fa-check text-success' : 'fa-times text-danger'"></i>

@@ -23,10 +23,14 @@ namespace HCMv3.Recruitment;
 public class VacanciesAppService : HCMv3AppServiceBase, IVacanciesAppService
 {
     private readonly IRepository<Vacancy> _vacancyRepository;
+    private readonly IRepository<ApplicationStatus> _applicationStatusRepository;
 
-    public VacanciesAppService(IRepository<Vacancy> vacancyRepository)
+    public VacanciesAppService(
+        IRepository<Vacancy> vacancyRepository,
+        IRepository<ApplicationStatus> applicationStatusRepository)
     {
         _vacancyRepository = vacancyRepository;
+        _applicationStatusRepository = applicationStatusRepository;
     }
 
     [HttpPost]
@@ -37,6 +41,8 @@ public class VacanciesAppService : HCMv3AppServiceBase, IVacanciesAppService
         var query = _vacancyRepository.GetAll()
             .Include(v => v.JobTitle)
             .Include(v => v.Location)
+            .Include(v => v.Recruiter)
+            .Include(v => v.Position)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), v =>
                 v.Code.Contains(input.Filter) ||
                 v.VacancyTitle.Contains(input.Filter));
@@ -48,9 +54,59 @@ public class VacanciesAppService : HCMv3AppServiceBase, IVacanciesAppService
             .PageBy(input)
             .ToListAsync();
 
+        var lastJoiningDates = await GetLastJoiningDatesAsync(items.Select(v => v.Id).ToList());
+
         return new PagedResultDto<VacancyDto>(
             totalCount,
-            items.Select(ToDto).ToList());
+            items.Select(v =>
+            {
+                var dto = ToDto(v);
+                dto.ActualDaysToFill = CalculateActualDaysToFill(
+                    v.PublishOn,
+                    lastJoiningDates.TryGetValue(v.Id, out var lastJoining) ? lastJoining : (System.DateTime?)null);
+                return dto;
+            }).ToList());
+    }
+
+    /// <summary>
+    /// Legacy <c>Vacancy.ActualDaysToFill</c> getter: with a publish date set, and at least one application on
+    /// the vacancy in status Joined, the days from the publish date to the LATEST joining date among those
+    /// applicants (both truncated to the date); otherwise 0. Negative when that joining date is before the
+    /// publish date -- legacy did not guard against it either.
+    /// </summary>
+    private static double CalculateActualDaysToFill(System.DateTime publishOn, System.DateTime? lastJoiningDate)
+    {
+        if (publishOn == default || lastJoiningDate == null)
+        {
+            return 0;
+        }
+
+        return (lastJoiningDate.Value.Date - publishOn.Date).TotalDays;
+    }
+
+    /// <summary>
+    /// The latest applicant joining date per vacancy, over applications in status Joined -- one query for the
+    /// whole page. Applications without a CV are skipped (legacy would have failed on them).
+    /// </summary>
+    private async Task<System.Collections.Generic.Dictionary<int, System.DateTime>> GetLastJoiningDatesAsync(
+        System.Collections.Generic.List<int> vacancyIds)
+    {
+        if (vacancyIds.Count == 0)
+        {
+            return new System.Collections.Generic.Dictionary<int, System.DateTime>();
+        }
+
+        var rows = await _applicationStatusRepository.GetAll()
+            .Where(a => a.VacancyId != null
+                        && vacancyIds.Contains(a.VacancyId.Value)
+                        && a.AppStatus == AppStatus.Joined
+                        && a.ApplicantCVId != null)
+            .Select(a => new { VacancyId = a.VacancyId.Value, a.ApplicantCV.Applicant.JoiningDate })
+            .ToListAsync();
+
+        return rows
+            .GroupBy(r => r.VacancyId)
+            .ToDictionary(g => g.Key, g => g.Max(r => r.JoiningDate));
     }
 
     public async Task<GetVacancyForEditOutput> GetVacancyForEdit(EntityDto input)
@@ -149,6 +205,7 @@ public class VacanciesAppService : HCMv3AppServiceBase, IVacanciesAppService
         entity.PublishOn = input.PublishOn;
         entity.ClosingDate = input.ClosingDate;
         entity.RecruiterId = input.RecruiterId;
+        entity.PositionId = input.PositionId;
         entity.TemplateOnbGroupId = input.TemplateOnbGroupId;
         entity.OrganizationUnitId = input.OrganizationUnitId;
         entity.IsBudgeted = input.IsBudgeted;
@@ -180,6 +237,11 @@ public class VacanciesAppService : HCMv3AppServiceBase, IVacanciesAppService
             PublishOn = entity.PublishOn,
             ClosingDate = entity.ClosingDate,
             RecruiterId = entity.RecruiterId,
+            RecruiterCode = entity.Recruiter?.Code,
+            RecruiterFullNameEn = entity.Recruiter?.FullNameEn,
+            PositionId = entity.PositionId,
+            PositionCode = entity.Position?.Code,
+            PositionNameEn = entity.Position?.NameEn,
             TemplateOnbGroupId = entity.TemplateOnbGroupId,
             OrganizationUnitId = entity.OrganizationUnitId,
             IsBudgeted = entity.IsBudgeted,
@@ -209,6 +271,7 @@ public class VacanciesAppService : HCMv3AppServiceBase, IVacanciesAppService
             PublishOn = entity.PublishOn,
             ClosingDate = entity.ClosingDate,
             RecruiterId = entity.RecruiterId,
+            PositionId = entity.PositionId,
             TemplateOnbGroupId = entity.TemplateOnbGroupId,
             OrganizationUnitId = entity.OrganizationUnitId ?? 0,
             IsBudgeted = entity.IsBudgeted,

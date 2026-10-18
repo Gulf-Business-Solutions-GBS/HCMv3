@@ -87,6 +87,45 @@ public abstract class TrainingManagementAppServiceTestBase : AppTestBase
     }
 
     /// <summary>
+    /// Shared helper: inserts a minimal valid Institution directly into <see cref="Context"/>.
+    /// </summary>
+    protected int CreateInstitution(string nameEn = "Institution")
+    {
+        var entity = new HCMv3.GeneralMasterInfo.Institution
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+            NameEn = nameEn,
+            NameAr = nameEn
+        };
+        Context.Institutions.Add(entity);
+        Context.SaveChanges();
+        return entity.Id;
+    }
+
+    /// <summary>
+    /// Shared helper: inserts an EmployeeCertification (+ its required Institution) directly into
+    /// <see cref="Context"/>.
+    /// </summary>
+    protected int CreateEmployeeCertification(int employeeId, CertificationType type, string certificate = "Cert", string course = "Course")
+    {
+        var entity = new EmployeeCertification
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            EmployeeId = employeeId,
+            StartDate = new DateTime(2026, 1, 1),
+            EndDate = new DateTime(9999, 12, 31),
+            Course = course,
+            Certificate = certificate,
+            InstitutionId = CreateInstitution(),
+            CertificationType = type
+        };
+        Context.EmployeeCertifications.Add(entity);
+        Context.SaveChanges();
+        return entity.Id;
+    }
+
+    /// <summary>
     /// Shared helper: inserts a minimal valid TrainingCourse directly into <see cref="Context"/>.
     /// </summary>
     protected int CreateTrainingCourse()

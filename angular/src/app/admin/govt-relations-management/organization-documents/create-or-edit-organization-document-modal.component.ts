@@ -21,6 +21,7 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditOrganizationDocumentModal',
@@ -32,6 +33,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        AttachmentsComponent,
     ],
 })
 export class CreateOrEditOrganizationDocumentModalComponent extends AppComponentBase {

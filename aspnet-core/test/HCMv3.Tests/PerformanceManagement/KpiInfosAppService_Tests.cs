@@ -66,6 +66,88 @@ public class KpiInfosAppService_Tests : PerformanceManagementAppServiceTestBase
         afterDelete.TotalCount.ShouldBe(0);
     }
 
+    private int CreateCompetency()
+    {
+        var type = new HCMv3.CompetencyDevelopment.CompetencyType
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = "CT1",
+            NameEn = "Core",
+            NameAr = "أساسية"
+        };
+        Context.Set<HCMv3.CompetencyDevelopment.CompetencyType>().Add(type);
+        Context.SaveChanges();
+
+        var competency = new HCMv3.CompetencyDevelopment.Competency
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = "C1",
+            NameEn = "Teamwork",
+            NameAr = "العمل الجماعي",
+            CompetencyTypeId = type.Id,
+            Active = true
+        };
+        Context.Set<HCMv3.CompetencyDevelopment.Competency>().Add(competency);
+        Context.SaveChanges();
+        return competency.Id;
+    }
+
+    [Fact]
+    public async Task Should_Store_Competency_And_Show_It_In_The_List()
+    {
+        var categoryId = CreateKpiCategory("KC1");
+        var competencyId = CreateCompetency();
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditKpiInfoDto
+        {
+            NameEn = "Sales Growth",
+            NameAr = "نمو المبيعات",
+            KpiCategoryId = categoryId,
+            CompetencyId = competencyId
+        });
+
+        var item = (await service.GetAll(new GetAllKpiInfosInput())).Items[0];
+        item.CompetencyId.ShouldBe(competencyId);
+        item.CompetencyNameEn.ShouldBe("Teamwork");
+
+        var forEdit = await service.GetKpiInfoForEdit(new Abp.Application.Services.Dto.EntityDto(item.Id));
+        forEdit.KpiInfo.CompetencyId.ShouldBe(competencyId);
+    }
+
+    [Fact]
+    public async Task Should_Allow_A_Kpi_Without_A_Competency()
+    {
+        var categoryId = CreateKpiCategory("KC1");
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditKpiInfoDto { NameEn = "K1", NameAr = "K1", KpiCategoryId = categoryId });
+
+        var item = (await service.GetAll(new GetAllKpiInfosInput())).Items[0];
+        item.CompetencyId.ShouldBeNull();
+        item.CompetencyNameEn.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Change_And_Clear_Competency_On_Update()
+    {
+        var categoryId = CreateKpiCategory("KC1");
+        var competencyId = CreateCompetency();
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditKpiInfoDto
+        {
+            NameEn = "K1", NameAr = "K1", KpiCategoryId = categoryId, CompetencyId = competencyId
+        });
+        var id = (await service.GetAll(new GetAllKpiInfosInput())).Items[0].Id;
+
+        await service.CreateOrEdit(new CreateOrEditKpiInfoDto
+        {
+            Id = id, Code = "1", NameEn = "K1", NameAr = "K1", KpiCategoryId = categoryId, CompetencyId = null
+        });
+
+        (await service.GetAll(new GetAllKpiInfosInput())).Items[0].CompetencyId.ShouldBeNull();
+    }
+
     [Fact]
     public async Task Should_Throw_When_NameEn_Duplicate()
     {

@@ -14,4 +14,6 @@ public interface IEmployeeTrainingsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditEmployeeTrainingDto input);
 
     Task Delete(EntityDto input);
+
+    Task<ListResultDto<EmployeeTrainingCertificationLookupDto>> GetTrainingCertifications(GetEmployeeTrainingCertificationsInput input);
 }

@@ -7562,5 +7562,31 @@
     <text name="DutyPolicy">سياسة الدوام</text>
     <text name="BreakshiftPolicy">سياسة الدوام المجزأ</text>
     <text name="TicketAccrualCount">التذاكر المستحقة</text>
+    <text name="CertificationType">نوع الشهادة</text>
+    <text name="Professional">مهنية</text>
+    <text name="Training">تدريبية</text>
+    <text name="Internal">داخلي</text>
+    <text name="EmployeeTrainingCertificationNotValid">يجب أن تكون الشهادة من شهادات التدريب الخاصة بهذا الموظف.</text>
+    <text name="CreatingNewAssetType">إنشاء نوع أصل جديد</text>
+    <text name="EditingAssetType">تعديل نوع الأصل</text>
+    <text name="AssetTypeDeleteWarningMessage">هل أنت متأكد من حذف نوع الأصل '{0}'؟</text>
+    <text name="ActualDaysToFill">الأيام الفعلية لشغل الشاغر</text>
+    <text name="PerDiemPayPercentage">نسبة صرف البدل اليومي (%)</text>
+    <text name="PerDiemPayAmount">مبلغ البدل اليومي المستحق</text>
+    <text name="PerDiemPayPercentageMustBeBetween0And100">يجب أن تكون نسبة صرف البدل اليومي بين 0 و100.</text>
+    <text name="PAReleaseNotification">إشعار الإطلاق لمعالجة الرواتب</text>
+    <text name="PAExitNotification">إشعار إغلاق فترة الرواتب</text>
+    <text name="PACorrectionNotification">إشعار الإطلاق للتصحيح</text>
+    <text name="PayrollPeriodReleasedForPayrollMessage">منطقة الرواتب {0}: تم إطلاق الفترة {1}/{2} لمعالجة الرواتب.</text>
+    <text name="PayrollPeriodExitedMessage">منطقة الرواتب {0}: تم إغلاق الفترة {1}/{2} (الخروج من الرواتب).</text>
+    <text name="PayrollPeriodReleasedForCorrectionMessage">منطقة الرواتب {0}: تم إطلاق الفترة {1}/{2} للتصحيح.</text>
+    <text name="NumberSeriesForEmploymentTypeExists">توجد سلسلة أرقام لنوع التوظيف: {0}.</text>
+    <text name="NumberSeriesForOtherEmploymentTypeExists">توجد سلسلة أرقام لنوع توظيف آخر. يرجى تغيير نوع التوظيف أو حذف ذلك السجل أولاً.</text>
+    <text name="JobTitleDetails">تفاصيل المسميات الوظيفية</text>
+    <text name="CreatingNewJobTitleDetail">إنشاء تفصيل مسمى وظيفي جديد</text>
+    <text name="EditingJobTitleDetail">تعديل تفصيل المسمى الوظيفي</text>
+    <text name="JobTitleDetailRoleAlreadyListed">هذا المسمى الوظيفي يتضمن دور سير العمل هذا مسبقاً. اختر دوراً آخر.</text>
+    <text name="OrgPolicies">سياسات الشركة</text>
+    <text name="ShowToAll">عرض للجميع</text>
   </texts>
 </localizationDictionary>

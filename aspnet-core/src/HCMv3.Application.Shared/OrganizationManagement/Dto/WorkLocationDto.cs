@@ -24,4 +24,8 @@ public class WorkLocationDto : EntityDto<int>
     public string GeoFenceCoordinates { get; set; }
 
     public bool IsActive { get; set; }
+
+    public int? SponsorId { get; set; }
+
+    public string SponsorName { get; set; }
 }

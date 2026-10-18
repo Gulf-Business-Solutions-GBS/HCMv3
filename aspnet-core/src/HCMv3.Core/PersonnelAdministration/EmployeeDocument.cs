@@ -14,8 +14,9 @@ namespace HCMv3.PersonnelAdministration;
 /// <c>IsActive</c>/<c>DocumentMvmtStatus</c>/<c>DaysLeft</c> properties are DTO-level computed fields
 /// (see <c>EmployeeDocumentsAppService</c>), not stored columns. The <c>DocAttachment</c> child is
 /// skipped entirely (see Wave A deferral notes). <c>NotificationSent</c>/<c>NotificationCount</c>/
-/// <c>LastNotificationSentOn</c> (background-job bookkeeping) and <c>DocumentHtml</c>/<c>DocPlace</c>/
-/// <c>DocumentPlace</c> (print-form specific) are also out of Wave A scope.
+/// <c>LastNotificationSentOn</c> (background-job bookkeeping) and <c>DocumentHtml</c>/the legacy free-text
+/// <c>DocumentPlace</c> string (print-form specific) are also out of Wave A scope. The legacy
+/// <c>DocPlace</c> lookup is ported as <see cref="DocPlaceId"/>.
 /// </summary>
 public class EmployeeDocument : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
@@ -48,6 +49,11 @@ public class EmployeeDocument : FullAuditedEntity, IMustHaveTenant, IHasEmployee
 
     [StringLength(2000)]
     public virtual string Description { get; set; }
+
+    /// <summary>Legacy <c>EmployeeDocument.DocPlace</c> ("Document Place"): where the document is kept.</summary>
+    public virtual int? DocPlaceId { get; set; }
+
+    public virtual DocumentPlace DocPlace { get; set; }
 
     /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
     public virtual int? WorkflowRequestId { get; set; }

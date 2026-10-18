@@ -12,10 +12,10 @@ namespace HCMv3.TrainingManagement;
 /// Employee+TrainingCourse+TrainingSchedule combination) is enforced in
 /// <c>EmployeeTrainingsAppService</c>, not here.
 ///
-/// JUDGMENT CALL: legacy also had a <c>DocAttachment</c> 1:1 child (auto-created in
-/// <c>AfterConstruction</c>, used for attaching a certificate/document). The document-attachment module has
-/// not been ported to HCMv3 yet, so this field is deliberately dropped as a simplification -- it can be
-/// re-added once a DocAttachment-equivalent entity exists in this codebase.
+/// Legacy's <c>DocAttachment</c> 1:1 child is replaced by the generic per-tenant attachment store
+/// (attachment owner type <c>"EmployeeTraining"</c>), so it is not a column here. Legacy
+/// <c>EmployeeCertification</c> is ported as <see cref="EmployeeCertificationId"/>; the picker offers only
+/// the employee's certifications of type Training, as legacy's <c>TrainingCertificationList</c> did.
 /// </summary>
 public class EmployeeTraining : FullAuditedEntity, IMustHaveTenant
 {
@@ -39,4 +39,9 @@ public class EmployeeTraining : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(500)]
     public virtual string Comments { get; set; }
+
+    /// <summary>Legacy <c>EmployeeTraining.EmployeeCertification</c>: the certificate this training earned. Optional.</summary>
+    public virtual int? EmployeeCertificationId { get; set; }
+
+    public virtual EmployeeCertification EmployeeCertification { get; set; }
 }

@@ -45,4 +45,6 @@ public class DutyDto : EntityDto<int>
     public TimeSpan? FlexiStartTime { get; set; }
 
     public TimeSpan? FlexiEndTime { get; set; }
+
+    public bool IsActive { get; set; }
 }

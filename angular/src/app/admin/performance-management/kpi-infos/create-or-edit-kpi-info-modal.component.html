@@ -101,6 +101,22 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="KpiInfo_CompetencyId">{{ 'Competency' | localize }}</label>
+                                <select
+                                    id="KpiInfo_CompetencyId"
+                                    class="form-select"
+                                    name="CompetencyId"
+                                    [ngModel]="kpiInfo().competencyId"
+                                    (ngModelChange)="updateField('competencyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (competency of competencies(); track competency.id) {
+                                        <option [ngValue]="competency.id">{{ competency.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12 mb-5">
                                 <label class="form-label" for="KpiInfo_Comments">{{ 'Comments' | localize }}</label>
                                 <textarea

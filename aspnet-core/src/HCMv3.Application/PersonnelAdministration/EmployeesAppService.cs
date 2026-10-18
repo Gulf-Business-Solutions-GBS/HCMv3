@@ -203,7 +203,12 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeDto input)
     {
         var employee = await _employeeRepository.GetAsync(input.Id.Value);
+        var previousEmploymentType = employee.EmploymentType;
         MapToEntity(input, employee);
+
+        // Legacy Employee.OnSaving "Update Code For EmploymentType": a change of employment type takes the next
+        // code of the new type's number series (when one is set up), before the blank-code check.
+        _employeeCodeGenerator.ReassignCodeIfEmploymentTypeChanged(employee, previousEmploymentType);
 
         await AssignEmployeeCodeAsync(employee);
         ApplyComputedFields(employee);

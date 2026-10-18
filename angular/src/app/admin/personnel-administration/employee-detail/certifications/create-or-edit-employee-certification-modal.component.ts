@@ -1,6 +1,7 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    CertificationType,
     CreateOrEditEmployeeCertificationDto,
     EmployeeCertificationsServiceProxy,
     GetAllInstitutionsInput,
@@ -41,6 +42,11 @@ export class CreateOrEditEmployeeCertificationModalComponent extends AppComponen
     readonly record = signal<CreateOrEditEmployeeCertificationDto>(new CreateOrEditEmployeeCertificationDto());
     readonly institutions = signal<InstitutionDto[]>([]);
 
+    readonly certificationTypes = [
+        { value: CertificationType.Professional, name: 'Professional' },
+        { value: CertificationType.Training, name: 'Training' },
+    ];
+
     show(employeeId: number, id?: number): void {
         this.active.set(true);
 
@@ -51,6 +57,7 @@ export class CreateOrEditEmployeeCertificationModalComponent extends AppComponen
         if (!id) {
             const record = new CreateOrEditEmployeeCertificationDto();
             record.employeeId = employeeId;
+            record.certificationType = CertificationType.Professional;
             this.record.set(record);
             this.modal().show();
         } else {

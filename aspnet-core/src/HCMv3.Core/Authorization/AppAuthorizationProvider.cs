@@ -394,6 +394,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         jobTitles.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitles_Edit, L("EditItem"));
         jobTitles.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitles_Delete, L("DeleteItem"));
 
+        var jobTitleDetails = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitleDetails, L("JobTitleDetails"));
+        jobTitleDetails.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitleDetails_Create, L("CreateNewItem"));
+        jobTitleDetails.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitleDetails_Edit, L("EditItem"));
+        jobTitleDetails.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitleDetails_Delete, L("DeleteItem"));
+
         var organizationUnitTypes = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes, L("OrganizationUnitTypes"));
         organizationUnitTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes_Create, L("CreateNewItem"));
         organizationUnitTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes_Edit, L("EditItem"));
@@ -1582,6 +1587,8 @@ public class AppAuthorizationProvider : AuthorizationProvider
         organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Create, L("CreateNewItem"));
         organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Edit, L("EditItem"));
         organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Delete, L("DeleteItem"));
+
+        govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrgPolicies, L("OrgPolicies"));
 
         var employeeExitPermits = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits, L("EmployeeExitPermits"));
         employeeExitPermits.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits_Create, L("CreateNewItem"));

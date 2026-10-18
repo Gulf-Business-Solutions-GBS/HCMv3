@@ -24,4 +24,10 @@ public class CreateOrEditDisciplinaryTypeDto
     public string NameAr { get; set; }
 
     public int RepeatDurationInDays { get; set; }
+
+    /// <summary>
+    /// Legacy <c>ViolationType.WageType</c>: one of <c>GetViolationWageTypes</c>. Optional (legacy required it;
+    /// older rows have none).
+    /// </summary>
+    public int? WageTypeId { get; set; }
 }

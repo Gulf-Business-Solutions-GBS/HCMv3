@@ -98,6 +98,11 @@
                                     (ngModelChange)="updateField('comments', $event)"></textarea>
                             </div>
                         </div>
+                        @if (record().id) {
+                            <div class="mb-5">
+                                <app-attachments entityType="TravelFeedback" [entityId]="record().id" />
+                            </div>
+                        }
                         <!-- Shows itself only if this user may bypass approval AND the catalog allows it for
                              this type; otherwise the form is exactly as it was. -->
                         <record-directly-check

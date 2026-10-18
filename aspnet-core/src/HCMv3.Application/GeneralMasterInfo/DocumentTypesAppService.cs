@@ -101,6 +101,7 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             IsWithdrawable = input.IsWithdrawable,
             IncludeInWorkflow = input.IncludeInWorkflow,
             IsHiddenFromEmployee = input.IsHiddenFromEmployee,
+            ShowToAll = input.ShowToAll,
             IsExpiryDateRequired = input.IsExpiryDateRequired,
             AllowDateOverlap = input.AllowDateOverlap,
             TenantId = AbpSession.TenantId ?? 0
@@ -131,6 +132,7 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
         entity.IsWithdrawable = input.IsWithdrawable;
         entity.IncludeInWorkflow = input.IncludeInWorkflow;
         entity.IsHiddenFromEmployee = input.IsHiddenFromEmployee;
+        entity.ShowToAll = input.ShowToAll;
         entity.IsExpiryDateRequired = input.IsExpiryDateRequired;
         entity.AllowDateOverlap = input.AllowDateOverlap;
 
@@ -239,6 +241,7 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             IsWithdrawable = entity.IsWithdrawable,
             IncludeInWorkflow = entity.IncludeInWorkflow,
             IsHiddenFromEmployee = entity.IsHiddenFromEmployee,
+            ShowToAll = entity.ShowToAll,
             IsExpiryDateRequired = entity.IsExpiryDateRequired,
             AllowDateOverlap = entity.AllowDateOverlap
         };
@@ -262,6 +265,7 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             IsWithdrawable = entity.IsWithdrawable,
             IncludeInWorkflow = entity.IncludeInWorkflow,
             IsHiddenFromEmployee = entity.IsHiddenFromEmployee,
+            ShowToAll = entity.ShowToAll,
             IsExpiryDateRequired = entity.IsExpiryDateRequired,
             AllowDateOverlap = entity.AllowDateOverlap
         };

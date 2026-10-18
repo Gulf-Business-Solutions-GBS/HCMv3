@@ -82,6 +82,9 @@
                                         {{ 'RepeatDurationInDays' | localize }}
                                         <p-sortIcon field="repeatDurationInDays" />
                                     </th>
+                                    <th style="min-width: 200px">
+                                        {{ 'WageType' | localize }}
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -115,6 +118,9 @@
                                     </td>
                                     <td style="min-width: 150px">
                                         {{ record.repeatDurationInDays }}
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        {{ record.wageTypeName }}
                                     </td>
                                 </tr>
                             </ng-template>

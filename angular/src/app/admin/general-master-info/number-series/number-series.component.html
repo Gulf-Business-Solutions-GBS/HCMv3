@@ -77,6 +77,10 @@
                                         {{ 'Formatting' | localize }}
                                         <p-sortIcon field="formatting" />
                                     </th>
+                                    <th style="min-width: 150px" pSortableColumn="employmentType">
+                                        {{ 'EmploymentType' | localize }}
+                                        <p-sortIcon field="employmentType" />
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -104,6 +108,9 @@
                                     </td>
                                     <td style="min-width: 150px">
                                         {{ record.formatting }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ employmentTypeName(record.employmentType) | localize }}
                                     </td>
                                 </tr>
                             </ng-template>

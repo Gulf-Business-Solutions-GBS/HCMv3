@@ -1,4 +1,5 @@
 using Abp.Application.Services.Dto;
+using HCMv3.PersonnelAdministration;
 
 namespace HCMv3.GeneralMasterInfo.Dto;
 
@@ -16,4 +17,6 @@ public class NumberSeriesDto : EntityDto<int>
     public string Prefix { get; set; }
 
     public string Formatting { get; set; }
+
+    public EmploymentType EmploymentType { get; set; }
 }

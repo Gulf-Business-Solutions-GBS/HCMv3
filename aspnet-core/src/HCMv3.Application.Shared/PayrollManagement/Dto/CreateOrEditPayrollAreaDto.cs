@@ -33,4 +33,13 @@ public class CreateOrEditPayrollAreaDto
     public int? FIBankId { get; set; }
 
     public int? CountryId { get; set; }
+
+    /// <summary>Legacy <c>PAReleaseNotification</c>: sent when a period is locked for payroll. Optional.</summary>
+    public int? PAReleaseNotificationId { get; set; }
+
+    /// <summary>Legacy <c>PAExitNotification</c>: sent when a period is exited. Optional.</summary>
+    public int? PAExitNotificationId { get; set; }
+
+    /// <summary>Legacy <c>PACorrectionNotification</c>: sent when a period is released for correction. Optional.</summary>
+    public int? PACorrectionNotificationId { get; set; }
 }

@@ -234,4 +234,82 @@ public class EmployeeCertificationsAppService_Tests : AppTestBase
         var result = await _appService.GetAll(new GetAllEmployeeCertificationsInput { EmployeeId = employee.Id });
         result.TotalCount.ShouldBe(2);
     }
+
+    [Fact]
+    public async Task Should_Save_And_Return_Certification_Type()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("CE700");
+        var institution = CreateTestInstitution("I700");
+
+        //Act
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeCertificationDto
+        {
+            EmployeeId = employee.Id,
+            StartDate = new DateTime(2020, 1, 1),
+            EndDate = new DateTime(2020, 12, 31),
+            Course = "Course T",
+            InstitutionId = institution.Id,
+            CertificationType = CertificationType.Training
+        });
+
+        //Assert
+        var result = await _appService.GetAll(new GetAllEmployeeCertificationsInput { EmployeeId = employee.Id });
+        result.Items[0].CertificationType.ShouldBe(CertificationType.Training);
+        var forEdit = await _appService.GetEmployeeCertificationForEdit(new EntityDto(result.Items[0].Id));
+        forEdit.EmployeeCertification.CertificationType.ShouldBe(CertificationType.Training);
+    }
+
+    [Fact]
+    public async Task Should_Default_Certification_Type_To_Professional()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("CE710");
+        var institution = CreateTestInstitution("I710");
+
+        //Act
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeCertificationDto
+        {
+            EmployeeId = employee.Id,
+            StartDate = new DateTime(2020, 1, 1),
+            EndDate = new DateTime(2020, 12, 31),
+            Course = "Course P",
+            InstitutionId = institution.Id
+        });
+
+        //Assert
+        var result = await _appService.GetAll(new GetAllEmployeeCertificationsInput { EmployeeId = employee.Id });
+        result.Items[0].CertificationType.ShouldBe(CertificationType.Professional);
+    }
+
+    [Fact]
+    public async Task Should_Filter_By_Certification_Type()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("CE720");
+        var institution = CreateTestInstitution("I720");
+        foreach (var type in new[] { CertificationType.Professional, CertificationType.Training })
+        {
+            await _appService.CreateOrEdit(new CreateOrEditEmployeeCertificationDto
+            {
+                EmployeeId = employee.Id,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2020, 12, 31),
+                Course = "Course " + type,
+                InstitutionId = institution.Id,
+                CertificationType = type
+            });
+        }
+
+        //Act
+        var result = await _appService.GetAll(new GetAllEmployeeCertificationsInput
+        {
+            EmployeeId = employee.Id,
+            CertificationType = CertificationType.Training
+        });
+
+        //Assert
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].Course.ShouldBe("Course Training");
+    }
 }

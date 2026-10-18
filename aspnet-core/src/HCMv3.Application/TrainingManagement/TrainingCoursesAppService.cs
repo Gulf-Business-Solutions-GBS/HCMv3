@@ -37,6 +37,7 @@ public class TrainingCoursesAppService : HCMv3AppServiceBase, ITrainingCoursesAp
         input.Normalize();
 
         var query = _trainingCourseRepository.GetAll()
+            .Include(c => c.Institution)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), c =>
                 c.Code.Contains(input.Filter) ||
                 c.NameEn.Contains(input.Filter) ||
@@ -158,6 +159,8 @@ public class TrainingCoursesAppService : HCMv3AppServiceBase, ITrainingCoursesAp
         entity.DeliveryMethod = input.DeliveryMethod;
         entity.Fees = input.Fees;
         entity.Active = input.Active;
+        entity.InstitutionId = input.InstitutionId;
+        entity.Source = input.Source;
 
         return entity;
     }
@@ -172,7 +175,10 @@ public class TrainingCoursesAppService : HCMv3AppServiceBase, ITrainingCoursesAp
             NameAr = entity.NameAr,
             DeliveryMethod = entity.DeliveryMethod,
             Fees = entity.Fees,
-            Active = entity.Active
+            Active = entity.Active,
+            InstitutionId = entity.InstitutionId,
+            InstitutionName = entity.Institution?.NameEn,
+            Source = entity.Source
         };
     }
 
@@ -186,7 +192,9 @@ public class TrainingCoursesAppService : HCMv3AppServiceBase, ITrainingCoursesAp
             NameAr = entity.NameAr,
             DeliveryMethod = entity.DeliveryMethod,
             Fees = entity.Fees,
-            Active = entity.Active
+            Active = entity.Active,
+            InstitutionId = entity.InstitutionId,
+            Source = entity.Source
         };
     }
 }

@@ -32,4 +32,16 @@ public class PayrollAreaDto : EntityDto<int>
     public int? CountryId { get; set; }
 
     public string CountryName { get; set; }
+
+    public int? PAReleaseNotificationId { get; set; }
+
+    public string PAReleaseNotificationName { get; set; }
+
+    public int? PAExitNotificationId { get; set; }
+
+    public string PAExitNotificationName { get; set; }
+
+    public int? PACorrectionNotificationId { get; set; }
+
+    public string PACorrectionNotificationName { get; set; }
 }

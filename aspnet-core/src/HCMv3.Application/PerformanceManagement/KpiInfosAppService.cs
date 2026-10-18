@@ -31,6 +31,7 @@ public class KpiInfosAppService : HCMv3AppServiceBase, IKpiInfosAppService
 
         var query = _repository.GetAll()
             .Include(e => e.KpiCategory)
+            .Include(e => e.Competency)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), e =>
                 e.Code.Contains(input.Filter) || e.NameEn.Contains(input.Filter) || e.NameAr.Contains(input.Filter))
             .WhereIf(input.KpiCategoryId.HasValue, e => e.KpiCategoryId == input.KpiCategoryId.Value);
@@ -79,6 +80,7 @@ public class KpiInfosAppService : HCMv3AppServiceBase, IKpiInfosAppService
             NameEn = input.NameEn,
             NameAr = input.NameAr,
             KpiCategoryId = input.KpiCategoryId,
+            CompetencyId = input.CompetencyId,
             Comments = input.Comments,
             Active = input.Active
         };
@@ -97,6 +99,7 @@ public class KpiInfosAppService : HCMv3AppServiceBase, IKpiInfosAppService
         entity.NameEn = input.NameEn;
         entity.NameAr = input.NameAr;
         entity.KpiCategoryId = input.KpiCategoryId;
+        entity.CompetencyId = input.CompetencyId;
         entity.Comments = input.Comments;
         entity.Active = input.Active;
 
@@ -149,6 +152,8 @@ public class KpiInfosAppService : HCMv3AppServiceBase, IKpiInfosAppService
             NameAr = entity.NameAr,
             KpiCategoryId = entity.KpiCategoryId,
             KpiCategoryName = entity.KpiCategory?.NameEn,
+            CompetencyId = entity.CompetencyId,
+            CompetencyNameEn = entity.Competency?.NameEn,
             Comments = entity.Comments,
             Active = entity.Active
         };
@@ -163,6 +168,7 @@ public class KpiInfosAppService : HCMv3AppServiceBase, IKpiInfosAppService
             NameEn = entity.NameEn,
             NameAr = entity.NameAr,
             KpiCategoryId = entity.KpiCategoryId,
+            CompetencyId = entity.CompetencyId,
             Comments = entity.Comments,
             Active = entity.Active
         };

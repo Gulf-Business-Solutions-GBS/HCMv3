@@ -48,6 +48,9 @@ public class DocumentTypeDto : EntityDto<int>
     /// <summary>Kept out of the employee's own view. See <see cref="DocumentType.IsHiddenFromEmployee"/>.</summary>
     public bool IsHiddenFromEmployee { get; set; }
 
+    /// <summary>See <see cref="DocumentType.ShowToAll"/>.</summary>
+    public bool ShowToAll { get; set; }
+
     /// <summary>A document of this type must carry an expiry date. See <see cref="DocumentType.IsExpiryDateRequired"/>.</summary>
     public bool IsExpiryDateRequired { get; set; }
 

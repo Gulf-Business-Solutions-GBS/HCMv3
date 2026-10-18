@@ -52,6 +52,7 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
         var query = _repository.GetAll()
             .Include(d => d.Employee)
             .Include(d => d.DocumentType)
+            .Include(d => d.DocPlace)
             .WhereIf(input.EmployeeId.HasValue, d => d.EmployeeId == input.EmployeeId.Value);
 
         var totalCount = await query.CountAsync();
@@ -85,7 +86,8 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
                 IssueDate = entity.IssueDate,
                 ExpiryDate = entity.ExpiryDate,
                 Comments = entity.Comments,
-                Description = entity.Description
+                Description = entity.Description,
+                DocPlaceId = entity.DocPlaceId
             }
         };
     }
@@ -149,6 +151,7 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
         entity.ExpiryDate = input.ExpiryDate?.Date ?? InfiniteExpiryDate;
         entity.Comments = input.Comments;
         entity.Description = input.Description;
+        entity.DocPlaceId = input.DocPlaceId;
         return entity;
     }
 
@@ -189,6 +192,8 @@ public class EmployeeDocumentsAppService : HCMv3AppServiceBase, IEmployeeDocumen
             ExpiryDate = entity.ExpiryDate,
             Comments = entity.Comments,
             Description = entity.Description,
+            DocPlaceId = entity.DocPlaceId,
+            DocPlaceName = entity.DocPlace?.NameEn,
             IsActive = isActive,
             DocumentMvmtStatus = mvmtStatus,
             DaysLeft = daysLeft

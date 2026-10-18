@@ -172,15 +172,28 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
         return new CalculateExpectedPerDiemOutput
         {
             PerDiemRate = rate,
-            PerDiemAmount = amount
+            PerDiemAmount = amount,
+            PerDiemPayPercentage = detail.PerDiemPayPercentage,
+
+            // Legacy payroll GetTravelPerDiemPay: (PerDiemAmount * PerDiemPayPercentage) / 100, not rounded again.
+            PerDiemPayAmount = (amount * detail.PerDiemPayPercentage) / 100
         };
     }
 
+    /// <summary>
+    /// Legacy <c>PerformValidation</c>: arrival not before departure, and "Per Diem Pay (%) should between 0
+    /// and 100".
+    /// </summary>
     private void ValidateDates(TravelDetail entity)
     {
         if (entity.ArrivalDate.Date < entity.DepartureDate.Date)
         {
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
+        }
+
+        if (entity.PerDiemPayPercentage < 0 || entity.PerDiemPayPercentage > 100)
+        {
+            throw new UserFriendlyException(L("PerDiemPayPercentageMustBeBetween0And100"));
         }
     }
 
@@ -193,6 +206,7 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
         entity.DepartureTime = input.DepartureTime;
         entity.ArrivalDate = input.ArrivalDate;
         entity.ArrivalTime = input.ArrivalTime;
+        entity.PerDiemPayPercentage = input.PerDiemPayPercentage;
         entity.HotelId = input.HotelId;
         entity.TravelAirlineId = input.TravelAirlineId;
         entity.NightStay = input.NightStay;
@@ -229,6 +243,7 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             NightStay = entity.NightStay,
             TotalNights = entity.TotalNights,
             TotalAmount = entity.TotalAmount,
+            PerDiemPayPercentage = entity.PerDiemPayPercentage,
             IsVisaRequired = entity.IsVisaRequired,
             VisaComments = entity.VisaComments,
             IsHotelRequired = entity.IsHotelRequired,
@@ -255,6 +270,7 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             TravelAirlineId = entity.TravelAirlineId,
             NightStay = entity.NightStay,
             TotalNights = entity.TotalNights,
+            PerDiemPayPercentage = entity.PerDiemPayPercentage,
             IsVisaRequired = entity.IsVisaRequired,
             VisaComments = entity.VisaComments,
             IsHotelRequired = entity.IsHotelRequired,

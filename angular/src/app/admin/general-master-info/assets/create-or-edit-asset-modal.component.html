@@ -228,6 +228,44 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Asset_EarningWageTypeId">{{ 'Earning' | localize }}</label>
+                                <select
+                                    id="Asset_EarningWageTypeId"
+                                    class="form-select"
+                                    name="EarningWageTypeId"
+                                    [ngModel]="asset().earningWageTypeId"
+                                    (ngModelChange)="updateField('earningWageTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wageType of wageTypes(); track wageType.id) {
+                                        <option [ngValue]="wageType.id">{{ wageType.code }} - {{ wageType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="Asset_DeductionWageTypeId">{{ 'Deduction' | localize }}</label>
+                                <select
+                                    id="Asset_DeductionWageTypeId"
+                                    class="form-select"
+                                    name="DeductionWageTypeId"
+                                    [ngModel]="asset().deductionWageTypeId"
+                                    (ngModelChange)="updateField('deductionWageTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wageType of wageTypes(); track wageType.id) {
+                                        <option [ngValue]="wageType.id">{{ wageType.code }} - {{ wageType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        @if (asset().id) {
+                            <div class="mb-5">
+                                <app-attachments entityType="Asset" [entityId]="asset().id" />
+                            </div>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button

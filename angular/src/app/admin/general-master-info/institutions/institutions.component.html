@@ -81,6 +81,9 @@
                                     <th style="min-width: 150px">
                                         {{ 'University' | localize }}
                                     </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Country' | localize }}
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -114,6 +117,9 @@
                                     </td>
                                     <td style="min-width: 150px">
                                         {{ record.universityName }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.countryName }}
                                     </td>
                                 </tr>
                             </ng-template>

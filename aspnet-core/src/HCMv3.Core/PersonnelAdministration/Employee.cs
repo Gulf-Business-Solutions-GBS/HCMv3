@@ -23,8 +23,9 @@ public class Employee : FullAuditedEntity, IMustHaveTenant
     public int TenantId { get; set; }
 
     /// <summary>
-    /// Business code. Auto-generated (max numeric + 1) if left blank -- see
-    /// <c>Services.EmployeeCodeGenerator</c> (same pattern as <c>CitiesAppService</c>).
+    /// Business code. Auto-generated if left blank from the number series for the employee's
+    /// <see cref="EmploymentType"/> (falling back to max numeric + 1 when no series applies), and re-generated when
+    /// the employment type changes -- see <c>Services.EmployeeCodeGenerator</c>.
     /// </summary>
     [StringLength(64)]
     public virtual string Code { get; set; }

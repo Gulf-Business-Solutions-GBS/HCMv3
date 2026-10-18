@@ -106,6 +106,35 @@
                                     (ngModelChange)="updateNumberField('fees', $event)" />
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TrainingCourse_InstitutionId">{{ 'Institution' | localize }}</label>
+                                <select
+                                    id="TrainingCourse_InstitutionId"
+                                    class="form-select"
+                                    name="InstitutionId"
+                                    [ngModel]="record().institutionId"
+                                    (ngModelChange)="updateField('institutionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of institutions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TrainingCourse_Source">{{ 'Source' | localize }}</label>
+                                <select
+                                    id="TrainingCourse_Source"
+                                    class="form-select"
+                                    name="Source"
+                                    [ngModel]="record().source"
+                                    (ngModelChange)="updateField('source', $event)">
+                                    @for (option of sources; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

@@ -6874,7 +6874,7 @@ export class AssetTypesServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getAll(body?: GetAllSimpleLookupsInput | undefined): Observable<PagedResultDtoOfSimpleLookupDto> {
+    getAll(body?: GetAllAssetTypesInput | undefined): Observable<PagedResultDtoOfAssetTypeDto> {
         let url_ = this.baseUrl + "/api/services/app/AssetTypes/GetAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6897,14 +6897,14 @@ export class AssetTypesServiceProxy {
                 try {
                     return this.processGetAll(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PagedResultDtoOfSimpleLookupDto>;
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfAssetTypeDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<PagedResultDtoOfSimpleLookupDto>;
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfAssetTypeDto>;
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfSimpleLookupDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfAssetTypeDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6915,7 +6915,7 @@ export class AssetTypesServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSimpleLookupDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfAssetTypeDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6930,8 +6930,8 @@ export class AssetTypesServiceProxy {
      * @param id (optional) 
      * @return OK
      */
-    getForEdit(id?: number | undefined): Observable<CreateOrEditSimpleLookupDto> {
-        let url_ = this.baseUrl + "/api/services/app/AssetTypes/GetForEdit?";
+    getAssetTypeForEdit(id?: number | undefined): Observable<GetAssetTypeForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/AssetTypes/GetAssetTypeForEdit?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -6947,20 +6947,20 @@ export class AssetTypesServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetForEdit(response_);
+            return this.processGetAssetTypeForEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetForEdit(response_ as any);
+                    return this.processGetAssetTypeForEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<CreateOrEditSimpleLookupDto>;
+                    return _observableThrow(e) as any as Observable<GetAssetTypeForEditOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<CreateOrEditSimpleLookupDto>;
+                return _observableThrow(response_) as any as Observable<GetAssetTypeForEditOutput>;
         }));
     }
 
-    protected processGetForEdit(response: HttpResponseBase): Observable<CreateOrEditSimpleLookupDto> {
+    protected processGetAssetTypeForEdit(response: HttpResponseBase): Observable<GetAssetTypeForEditOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6971,7 +6971,7 @@ export class AssetTypesServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CreateOrEditSimpleLookupDto.fromJS(resultData200);
+            result200 = GetAssetTypeForEditOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6986,7 +6986,7 @@ export class AssetTypesServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    createOrEdit(body?: CreateOrEditSimpleLookupDto | undefined): Observable<void> {
+    createOrEdit(body?: CreateOrEditAssetTypeDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/AssetTypes/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -24327,6 +24327,60 @@ export class DisciplinaryTypesServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getViolationWageTypes(id?: number | null | undefined): Observable<ListResultDtoOfViolationWageTypeDto> {
+        let url_ = this.baseUrl + "/api/services/app/DisciplinaryTypes/GetViolationWageTypes?";
+        if (id !== undefined && id !== null)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetViolationWageTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetViolationWageTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfViolationWageTypeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfViolationWageTypeDto>;
+        }));
+    }
+
+    protected processGetViolationWageTypes(response: HttpResponseBase): Observable<ListResultDtoOfViolationWageTypeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfViolationWageTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -58953,6 +59007,62 @@ export class EmployeeTrainingsServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTrainingCertifications(body?: GetEmployeeTrainingCertificationsInput | undefined): Observable<ListResultDtoOfEmployeeTrainingCertificationLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeTrainings/GetTrainingCertifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTrainingCertifications(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTrainingCertifications(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfEmployeeTrainingCertificationLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfEmployeeTrainingCertificationLookupDto>;
+        }));
+    }
+
+    protected processGetTrainingCertifications(response: HttpResponseBase): Observable<ListResultDtoOfEmployeeTrainingCertificationLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfEmployeeTrainingCertificationLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -80287,6 +80397,234 @@ export class JobResponsibilitiesServiceProxy {
      */
     delete(id?: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/JobResponsibilities/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class JobTitleDetailsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllJobTitleDetailsInput | undefined): Observable<PagedResultDtoOfJobTitleDetailDto> {
+        let url_ = this.baseUrl + "/api/services/app/JobTitleDetails/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfJobTitleDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfJobTitleDetailDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfJobTitleDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfJobTitleDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getJobTitleDetailForEdit(id?: number | undefined): Observable<GetJobTitleDetailForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/JobTitleDetails/GetJobTitleDetailForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetJobTitleDetailForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetJobTitleDetailForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetJobTitleDetailForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetJobTitleDetailForEditOutput>;
+        }));
+    }
+
+    protected processGetJobTitleDetailForEdit(response: HttpResponseBase): Observable<GetJobTitleDetailForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetJobTitleDetailForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEdit(body?: CreateOrEditJobTitleDetailDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/JobTitleDetails/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/JobTitleDetails/Delete?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -104199,6 +104537,74 @@ export class OrganizationUnitTypesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class OrgPoliciesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllOrganizationDocumentsInput | undefined): Observable<PagedResultDtoOfOrganizationDocumentDto> {
+        let url_ = this.baseUrl + "/api/services/app/OrgPolicies/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfOrganizationDocumentDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfOrganizationDocumentDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfOrganizationDocumentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfOrganizationDocumentDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -171288,6 +171694,10 @@ export class AssetDto implements IAssetDto {
     assetTypeName!: string | undefined;
     status!: AssetStatus;
     assetAllocationStatus!: AssetAllocationStatus;
+    earningWageTypeId!: number | undefined;
+    earningWageTypeName!: string | undefined;
+    deductionWageTypeId!: number | undefined;
+    deductionWageTypeName!: string | undefined;
 
     constructor(data?: IAssetDto) {
         if (data) {
@@ -171318,6 +171728,10 @@ export class AssetDto implements IAssetDto {
             this.assetTypeName = _data["assetTypeName"];
             this.status = _data["status"];
             this.assetAllocationStatus = _data["assetAllocationStatus"];
+            this.earningWageTypeId = _data["earningWageTypeId"];
+            this.earningWageTypeName = _data["earningWageTypeName"];
+            this.deductionWageTypeId = _data["deductionWageTypeId"];
+            this.deductionWageTypeName = _data["deductionWageTypeName"];
         }
     }
 
@@ -171348,6 +171762,10 @@ export class AssetDto implements IAssetDto {
         data["assetTypeName"] = this.assetTypeName;
         data["status"] = this.status;
         data["assetAllocationStatus"] = this.assetAllocationStatus;
+        data["earningWageTypeId"] = this.earningWageTypeId;
+        data["earningWageTypeName"] = this.earningWageTypeName;
+        data["deductionWageTypeId"] = this.deductionWageTypeId;
+        data["deductionWageTypeName"] = this.deductionWageTypeName;
         return data;
     }
 }
@@ -171371,6 +171789,10 @@ export interface IAssetDto {
     assetTypeName: string | undefined;
     status: AssetStatus;
     assetAllocationStatus: AssetAllocationStatus;
+    earningWageTypeId: number | undefined;
+    earningWageTypeName: string | undefined;
+    deductionWageTypeId: number | undefined;
+    deductionWageTypeName: string | undefined;
 }
 
 export class AssetReportRowDto implements IAssetReportRowDto {
@@ -171476,6 +171898,66 @@ export interface IAssetReportRowDto {
 export enum AssetStatus {
     Active = 0,
     Inactive = 1,
+}
+
+export class AssetTypeDto implements IAssetTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    includeInWorkflow!: boolean;
+    wageTypeId!: number | undefined;
+    wageTypeName!: string | undefined;
+
+    constructor(data?: IAssetTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.includeInWorkflow = _data["includeInWorkflow"];
+            this.wageTypeId = _data["wageTypeId"];
+            this.wageTypeName = _data["wageTypeName"];
+        }
+    }
+
+    static fromJS(data: any): AssetTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssetTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["includeInWorkflow"] = this.includeInWorkflow;
+        data["wageTypeId"] = this.wageTypeId;
+        data["wageTypeName"] = this.wageTypeName;
+        return data;
+    }
+}
+
+export interface IAssetTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    includeInWorkflow: boolean;
+    wageTypeId: number | undefined;
+    wageTypeName: string | undefined;
 }
 
 export enum AssignedTaskStatus {
@@ -175662,6 +176144,8 @@ export interface ICalculateExpectedPerDiemInput {
 export class CalculateExpectedPerDiemOutput implements ICalculateExpectedPerDiemOutput {
     perDiemRate!: number;
     perDiemAmount!: number;
+    perDiemPayPercentage!: number;
+    perDiemPayAmount!: number;
 
     constructor(data?: ICalculateExpectedPerDiemOutput) {
         if (data) {
@@ -175676,6 +176160,8 @@ export class CalculateExpectedPerDiemOutput implements ICalculateExpectedPerDiem
         if (_data) {
             this.perDiemRate = _data["perDiemRate"];
             this.perDiemAmount = _data["perDiemAmount"];
+            this.perDiemPayPercentage = _data["perDiemPayPercentage"];
+            this.perDiemPayAmount = _data["perDiemPayAmount"];
         }
     }
 
@@ -175690,6 +176176,8 @@ export class CalculateExpectedPerDiemOutput implements ICalculateExpectedPerDiem
         data = typeof data === 'object' ? data : {};
         data["perDiemRate"] = this.perDiemRate;
         data["perDiemAmount"] = this.perDiemAmount;
+        data["perDiemPayPercentage"] = this.perDiemPayPercentage;
+        data["perDiemPayAmount"] = this.perDiemPayAmount;
         return data;
     }
 }
@@ -175697,6 +176185,8 @@ export class CalculateExpectedPerDiemOutput implements ICalculateExpectedPerDiem
 export interface ICalculateExpectedPerDiemOutput {
     perDiemRate: number;
     perDiemAmount: number;
+    perDiemPayPercentage: number;
+    perDiemPayAmount: number;
 }
 
 export class CalculateWorkDaysInput implements ICalculateWorkDaysInput {
@@ -176778,6 +177268,11 @@ export interface ICareersSendPasswordResetCodeInput {
 export enum Category {
     Custom = 0,
     Technical = 1,
+}
+
+export enum CertificationType {
+    Professional = 0,
+    Training = 1,
 }
 
 export class ChangeEmailInput implements IChangeEmailInput {
@@ -180458,6 +180953,8 @@ export class CreateOrEditAssetDto implements ICreateOrEditAssetDto {
     assetTypeId!: number | undefined;
     status!: AssetStatus;
     assetAllocationStatus!: AssetAllocationStatus;
+    earningWageTypeId!: number | undefined;
+    deductionWageTypeId!: number | undefined;
 
     constructor(data?: ICreateOrEditAssetDto) {
         if (data) {
@@ -180487,6 +180984,8 @@ export class CreateOrEditAssetDto implements ICreateOrEditAssetDto {
             this.assetTypeId = _data["assetTypeId"];
             this.status = _data["status"];
             this.assetAllocationStatus = _data["assetAllocationStatus"];
+            this.earningWageTypeId = _data["earningWageTypeId"];
+            this.deductionWageTypeId = _data["deductionWageTypeId"];
         }
     }
 
@@ -180516,6 +181015,8 @@ export class CreateOrEditAssetDto implements ICreateOrEditAssetDto {
         data["assetTypeId"] = this.assetTypeId;
         data["status"] = this.status;
         data["assetAllocationStatus"] = this.assetAllocationStatus;
+        data["earningWageTypeId"] = this.earningWageTypeId;
+        data["deductionWageTypeId"] = this.deductionWageTypeId;
         return data;
     }
 }
@@ -180538,6 +181039,64 @@ export interface ICreateOrEditAssetDto {
     assetTypeId: number | undefined;
     status: AssetStatus;
     assetAllocationStatus: AssetAllocationStatus;
+    earningWageTypeId: number | undefined;
+    deductionWageTypeId: number | undefined;
+}
+
+export class CreateOrEditAssetTypeDto implements ICreateOrEditAssetTypeDto {
+    id!: number | undefined;
+    code!: string | undefined;
+    nameEn!: string;
+    nameAr!: string;
+    includeInWorkflow!: boolean;
+    wageTypeId!: number | undefined;
+
+    constructor(data?: ICreateOrEditAssetTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.includeInWorkflow = _data["includeInWorkflow"];
+            this.wageTypeId = _data["wageTypeId"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditAssetTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditAssetTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["includeInWorkflow"] = this.includeInWorkflow;
+        data["wageTypeId"] = this.wageTypeId;
+        return data;
+    }
+}
+
+export interface ICreateOrEditAssetTypeDto {
+    id: number | undefined;
+    code: string | undefined;
+    nameEn: string;
+    nameAr: string;
+    includeInWorkflow: boolean;
+    wageTypeId: number | undefined;
 }
 
 export class CreateOrEditAttendanceTypeDto implements ICreateOrEditAttendanceTypeDto {
@@ -182762,6 +183321,7 @@ export class CreateOrEditDisciplinaryTypeDto implements ICreateOrEditDisciplinar
     nameEn!: string;
     nameAr!: string;
     repeatDurationInDays!: number;
+    wageTypeId!: number | undefined;
 
     constructor(data?: ICreateOrEditDisciplinaryTypeDto) {
         if (data) {
@@ -182779,6 +183339,7 @@ export class CreateOrEditDisciplinaryTypeDto implements ICreateOrEditDisciplinar
             this.nameEn = _data["nameEn"];
             this.nameAr = _data["nameAr"];
             this.repeatDurationInDays = _data["repeatDurationInDays"];
+            this.wageTypeId = _data["wageTypeId"];
         }
     }
 
@@ -182796,6 +183357,7 @@ export class CreateOrEditDisciplinaryTypeDto implements ICreateOrEditDisciplinar
         data["nameEn"] = this.nameEn;
         data["nameAr"] = this.nameAr;
         data["repeatDurationInDays"] = this.repeatDurationInDays;
+        data["wageTypeId"] = this.wageTypeId;
         return data;
     }
 }
@@ -182806,6 +183368,7 @@ export interface ICreateOrEditDisciplinaryTypeDto {
     nameEn: string;
     nameAr: string;
     repeatDurationInDays: number;
+    wageTypeId: number | undefined;
 }
 
 export class CreateOrEditDocumentPrintFormDto implements ICreateOrEditDocumentPrintFormDto {
@@ -182863,6 +183426,7 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
     isWithdrawable!: boolean;
     includeInWorkflow!: boolean;
     isHiddenFromEmployee!: boolean;
+    showToAll!: boolean;
     isExpiryDateRequired!: boolean;
     allowDateOverlap!: boolean;
 
@@ -182891,6 +183455,7 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
             this.isWithdrawable = _data["isWithdrawable"];
             this.includeInWorkflow = _data["includeInWorkflow"];
             this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
+            this.showToAll = _data["showToAll"];
             this.isExpiryDateRequired = _data["isExpiryDateRequired"];
             this.allowDateOverlap = _data["allowDateOverlap"];
         }
@@ -182919,6 +183484,7 @@ export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto
         data["isWithdrawable"] = this.isWithdrawable;
         data["includeInWorkflow"] = this.includeInWorkflow;
         data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
+        data["showToAll"] = this.showToAll;
         data["isExpiryDateRequired"] = this.isExpiryDateRequired;
         data["allowDateOverlap"] = this.allowDateOverlap;
         return data;
@@ -182940,6 +183506,7 @@ export interface ICreateOrEditDocumentTypeDto {
     isWithdrawable: boolean;
     includeInWorkflow: boolean;
     isHiddenFromEmployee: boolean;
+    showToAll: boolean;
     isExpiryDateRequired: boolean;
     allowDateOverlap: boolean;
 }
@@ -183011,6 +183578,7 @@ export class CreateOrEditDutyDto implements ICreateOrEditDutyDto {
     isHalfDay!: boolean;
     flexiStartTime!: string | undefined;
     flexiEndTime!: string | undefined;
+    isActive!: boolean;
 
     constructor(data?: ICreateOrEditDutyDto) {
         if (data) {
@@ -183041,6 +183609,7 @@ export class CreateOrEditDutyDto implements ICreateOrEditDutyDto {
             this.isHalfDay = _data["isHalfDay"];
             this.flexiStartTime = _data["flexiStartTime"];
             this.flexiEndTime = _data["flexiEndTime"];
+            this.isActive = _data["isActive"];
         }
     }
 
@@ -183071,6 +183640,7 @@ export class CreateOrEditDutyDto implements ICreateOrEditDutyDto {
         data["isHalfDay"] = this.isHalfDay;
         data["flexiStartTime"] = this.flexiStartTime;
         data["flexiEndTime"] = this.flexiEndTime;
+        data["isActive"] = this.isActive;
         return data;
     }
 }
@@ -183094,6 +183664,7 @@ export interface ICreateOrEditDutyDto {
     isHalfDay: boolean;
     flexiStartTime: string | undefined;
     flexiEndTime: string | undefined;
+    isActive: boolean;
 }
 
 export class CreateOrEditDutyPeriodDetailDto implements ICreateOrEditDutyPeriodDetailDto {
@@ -184802,6 +185373,7 @@ export class CreateOrEditEmployeeCertificationDto implements ICreateOrEditEmploy
     duration!: string | undefined;
     certificate!: string | undefined;
     grade!: string | undefined;
+    certificationType!: CertificationType;
 
     constructor(data?: ICreateOrEditEmployeeCertificationDto) {
         if (data) {
@@ -184823,6 +185395,7 @@ export class CreateOrEditEmployeeCertificationDto implements ICreateOrEditEmploy
             this.duration = _data["duration"];
             this.certificate = _data["certificate"];
             this.grade = _data["grade"];
+            this.certificationType = _data["certificationType"];
         }
     }
 
@@ -184844,6 +185417,7 @@ export class CreateOrEditEmployeeCertificationDto implements ICreateOrEditEmploy
         data["duration"] = this.duration;
         data["certificate"] = this.certificate;
         data["grade"] = this.grade;
+        data["certificationType"] = this.certificationType;
         return data;
     }
 }
@@ -184858,6 +185432,7 @@ export interface ICreateOrEditEmployeeCertificationDto {
     duration: string | undefined;
     certificate: string | undefined;
     grade: string | undefined;
+    certificationType: CertificationType;
 }
 
 export class CreateOrEditEmployeeContractDto implements ICreateOrEditEmployeeContractDto {
@@ -185309,6 +185884,7 @@ export class CreateOrEditEmployeeDocumentDto implements ICreateOrEditEmployeeDoc
     expiryDate!: DateTime | undefined;
     comments!: string | undefined;
     description!: string | undefined;
+    docPlaceId!: number | undefined;
     recordDirectly!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeDocumentDto) {
@@ -185330,6 +185906,7 @@ export class CreateOrEditEmployeeDocumentDto implements ICreateOrEditEmployeeDoc
             this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
             this.comments = _data["comments"];
             this.description = _data["description"];
+            this.docPlaceId = _data["docPlaceId"];
             this.recordDirectly = _data["recordDirectly"];
         }
     }
@@ -185351,6 +185928,7 @@ export class CreateOrEditEmployeeDocumentDto implements ICreateOrEditEmployeeDoc
         data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
         data["comments"] = this.comments;
         data["description"] = this.description;
+        data["docPlaceId"] = this.docPlaceId;
         data["recordDirectly"] = this.recordDirectly;
         return data;
     }
@@ -185365,6 +185943,7 @@ export interface ICreateOrEditEmployeeDocumentDto {
     expiryDate: DateTime | undefined;
     comments: string | undefined;
     description: string | undefined;
+    docPlaceId: number | undefined;
     recordDirectly: boolean;
 }
 
@@ -190012,6 +190591,7 @@ export class CreateOrEditEmployeeTrainingDto implements ICreateOrEditEmployeeTra
     completionStatus!: TrainingCompletionStatus;
     score!: number;
     comments!: string | undefined;
+    employeeCertificationId!: number | undefined;
 
     constructor(data?: ICreateOrEditEmployeeTrainingDto) {
         if (data) {
@@ -190031,6 +190611,7 @@ export class CreateOrEditEmployeeTrainingDto implements ICreateOrEditEmployeeTra
             this.completionStatus = _data["completionStatus"];
             this.score = _data["score"];
             this.comments = _data["comments"];
+            this.employeeCertificationId = _data["employeeCertificationId"];
         }
     }
 
@@ -190050,6 +190631,7 @@ export class CreateOrEditEmployeeTrainingDto implements ICreateOrEditEmployeeTra
         data["completionStatus"] = this.completionStatus;
         data["score"] = this.score;
         data["comments"] = this.comments;
+        data["employeeCertificationId"] = this.employeeCertificationId;
         return data;
     }
 }
@@ -190062,6 +190644,7 @@ export interface ICreateOrEditEmployeeTrainingDto {
     completionStatus: TrainingCompletionStatus;
     score: number;
     comments: string | undefined;
+    employeeCertificationId: number | undefined;
 }
 
 export class CreateOrEditEmployeeVisaInfoDto implements ICreateOrEditEmployeeVisaInfoDto {
@@ -191882,6 +192465,7 @@ export class CreateOrEditInstitutionDto implements ICreateOrEditInstitutionDto {
     nameEn!: string;
     nameAr!: string;
     universityId!: number | undefined;
+    countryId!: number | undefined;
 
     constructor(data?: ICreateOrEditInstitutionDto) {
         if (data) {
@@ -191899,6 +192483,7 @@ export class CreateOrEditInstitutionDto implements ICreateOrEditInstitutionDto {
             this.nameEn = _data["nameEn"];
             this.nameAr = _data["nameAr"];
             this.universityId = _data["universityId"];
+            this.countryId = _data["countryId"];
         }
     }
 
@@ -191916,6 +192501,7 @@ export class CreateOrEditInstitutionDto implements ICreateOrEditInstitutionDto {
         data["nameEn"] = this.nameEn;
         data["nameAr"] = this.nameAr;
         data["universityId"] = this.universityId;
+        data["countryId"] = this.countryId;
         return data;
     }
 }
@@ -191926,6 +192512,7 @@ export interface ICreateOrEditInstitutionDto {
     nameEn: string;
     nameAr: string;
     universityId: number | undefined;
+    countryId: number | undefined;
 }
 
 export class CreateOrEditInterviewDetailsDto implements ICreateOrEditInterviewDetailsDto {
@@ -192388,6 +192975,50 @@ export interface ICreateOrEditJobDescriptionSkillDto {
     skillId: number;
 }
 
+export class CreateOrEditJobTitleDetailDto implements ICreateOrEditJobTitleDetailDto {
+    id!: number | undefined;
+    jobTitleId!: number;
+    workflowRoleId!: number;
+
+    constructor(data?: ICreateOrEditJobTitleDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.workflowRoleId = _data["workflowRoleId"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditJobTitleDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditJobTitleDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["jobTitleId"] = this.jobTitleId;
+        data["workflowRoleId"] = this.workflowRoleId;
+        return data;
+    }
+}
+
+export interface ICreateOrEditJobTitleDetailDto {
+    id: number | undefined;
+    jobTitleId: number;
+    workflowRoleId: number;
+}
+
 export class CreateOrEditKpiByJobTitleDetailDto implements ICreateOrEditKpiByJobTitleDetailDto {
     id!: number | undefined;
     kpiByJobTitleId!: number;
@@ -192638,6 +193269,7 @@ export class CreateOrEditKpiInfoDto implements ICreateOrEditKpiInfoDto {
     nameEn!: string;
     nameAr!: string;
     kpiCategoryId!: number;
+    competencyId!: number | undefined;
     comments!: string | undefined;
     active!: boolean;
 
@@ -192657,6 +193289,7 @@ export class CreateOrEditKpiInfoDto implements ICreateOrEditKpiInfoDto {
             this.nameEn = _data["nameEn"];
             this.nameAr = _data["nameAr"];
             this.kpiCategoryId = _data["kpiCategoryId"];
+            this.competencyId = _data["competencyId"];
             this.comments = _data["comments"];
             this.active = _data["active"];
         }
@@ -192676,6 +193309,7 @@ export class CreateOrEditKpiInfoDto implements ICreateOrEditKpiInfoDto {
         data["nameEn"] = this.nameEn;
         data["nameAr"] = this.nameAr;
         data["kpiCategoryId"] = this.kpiCategoryId;
+        data["competencyId"] = this.competencyId;
         data["comments"] = this.comments;
         data["active"] = this.active;
         return data;
@@ -192688,6 +193322,7 @@ export interface ICreateOrEditKpiInfoDto {
     nameEn: string;
     nameAr: string;
     kpiCategoryId: number;
+    competencyId: number | undefined;
     comments: string | undefined;
     active: boolean;
 }
@@ -193799,6 +194434,7 @@ export class CreateOrEditNumberSeriesDto implements ICreateOrEditNumberSeriesDto
     start!: number;
     prefix!: string | undefined;
     formatting!: string;
+    employmentType!: EmploymentType;
 
     constructor(data?: ICreateOrEditNumberSeriesDto) {
         if (data) {
@@ -193817,6 +194453,7 @@ export class CreateOrEditNumberSeriesDto implements ICreateOrEditNumberSeriesDto
             this.start = _data["start"];
             this.prefix = _data["prefix"];
             this.formatting = _data["formatting"];
+            this.employmentType = _data["employmentType"];
         }
     }
 
@@ -193835,6 +194472,7 @@ export class CreateOrEditNumberSeriesDto implements ICreateOrEditNumberSeriesDto
         data["start"] = this.start;
         data["prefix"] = this.prefix;
         data["formatting"] = this.formatting;
+        data["employmentType"] = this.employmentType;
         return data;
     }
 }
@@ -193846,6 +194484,7 @@ export interface ICreateOrEditNumberSeriesDto {
     start: number;
     prefix: string | undefined;
     formatting: string;
+    employmentType: EmploymentType;
 }
 
 export class CreateOrEditOnbAppTaskCommentsDto implements ICreateOrEditOnbAppTaskCommentsDto {
@@ -195842,6 +196481,9 @@ export class CreateOrEditPayrollAreaDto implements ICreateOrEditPayrollAreaDto {
     fiCompanyId!: number | undefined;
     fiBankId!: number | undefined;
     countryId!: number | undefined;
+    paReleaseNotificationId!: number | undefined;
+    paExitNotificationId!: number | undefined;
+    paCorrectionNotificationId!: number | undefined;
 
     constructor(data?: ICreateOrEditPayrollAreaDto) {
         if (data) {
@@ -195863,6 +196505,9 @@ export class CreateOrEditPayrollAreaDto implements ICreateOrEditPayrollAreaDto {
             this.fiCompanyId = _data["fiCompanyId"];
             this.fiBankId = _data["fiBankId"];
             this.countryId = _data["countryId"];
+            this.paReleaseNotificationId = _data["paReleaseNotificationId"];
+            this.paExitNotificationId = _data["paExitNotificationId"];
+            this.paCorrectionNotificationId = _data["paCorrectionNotificationId"];
         }
     }
 
@@ -195884,6 +196529,9 @@ export class CreateOrEditPayrollAreaDto implements ICreateOrEditPayrollAreaDto {
         data["fiCompanyId"] = this.fiCompanyId;
         data["fiBankId"] = this.fiBankId;
         data["countryId"] = this.countryId;
+        data["paReleaseNotificationId"] = this.paReleaseNotificationId;
+        data["paExitNotificationId"] = this.paExitNotificationId;
+        data["paCorrectionNotificationId"] = this.paCorrectionNotificationId;
         return data;
     }
 }
@@ -195898,6 +196546,9 @@ export interface ICreateOrEditPayrollAreaDto {
     fiCompanyId: number | undefined;
     fiBankId: number | undefined;
     countryId: number | undefined;
+    paReleaseNotificationId: number | undefined;
+    paExitNotificationId: number | undefined;
+    paCorrectionNotificationId: number | undefined;
 }
 
 export class CreateOrEditPayrollCalendarDto implements ICreateOrEditPayrollCalendarDto {
@@ -196206,6 +196857,7 @@ export class CreateOrEditPersonalActionReasonDto implements ICreateOrEditPersona
     nameEn!: string;
     nameAr!: string;
     personalActionId!: number | undefined;
+    notificationConfigId!: number | undefined;
 
     constructor(data?: ICreateOrEditPersonalActionReasonDto) {
         if (data) {
@@ -196223,6 +196875,7 @@ export class CreateOrEditPersonalActionReasonDto implements ICreateOrEditPersona
             this.nameEn = _data["nameEn"];
             this.nameAr = _data["nameAr"];
             this.personalActionId = _data["personalActionId"];
+            this.notificationConfigId = _data["notificationConfigId"];
         }
     }
 
@@ -196240,6 +196893,7 @@ export class CreateOrEditPersonalActionReasonDto implements ICreateOrEditPersona
         data["nameEn"] = this.nameEn;
         data["nameAr"] = this.nameAr;
         data["personalActionId"] = this.personalActionId;
+        data["notificationConfigId"] = this.notificationConfigId;
         return data;
     }
 }
@@ -196250,6 +196904,7 @@ export interface ICreateOrEditPersonalActionReasonDto {
     nameEn: string;
     nameAr: string;
     personalActionId: number | undefined;
+    notificationConfigId: number | undefined;
 }
 
 export class CreateOrEditPoolCarDto implements ICreateOrEditPoolCarDto {
@@ -201672,6 +202327,8 @@ export class CreateOrEditTrainingCourseDto implements ICreateOrEditTrainingCours
     deliveryMethod!: TrainingDeliveryMethod;
     fees!: number;
     active!: boolean;
+    institutionId!: number | undefined;
+    source!: TrainingCourseSource;
 
     constructor(data?: ICreateOrEditTrainingCourseDto) {
         if (data) {
@@ -201691,6 +202348,8 @@ export class CreateOrEditTrainingCourseDto implements ICreateOrEditTrainingCours
             this.deliveryMethod = _data["deliveryMethod"];
             this.fees = _data["fees"];
             this.active = _data["active"];
+            this.institutionId = _data["institutionId"];
+            this.source = _data["source"];
         }
     }
 
@@ -201710,6 +202369,8 @@ export class CreateOrEditTrainingCourseDto implements ICreateOrEditTrainingCours
         data["deliveryMethod"] = this.deliveryMethod;
         data["fees"] = this.fees;
         data["active"] = this.active;
+        data["institutionId"] = this.institutionId;
+        data["source"] = this.source;
         return data;
     }
 }
@@ -201722,6 +202383,8 @@ export interface ICreateOrEditTrainingCourseDto {
     deliveryMethod: TrainingDeliveryMethod;
     fees: number;
     active: boolean;
+    institutionId: number | undefined;
+    source: TrainingCourseSource;
 }
 
 export class CreateOrEditTrainingScheduleDto implements ICreateOrEditTrainingScheduleDto {
@@ -201853,6 +202516,7 @@ export class CreateOrEditTravelDetailDto implements ICreateOrEditTravelDetailDto
     travelAirlineId!: number | undefined;
     nightStay!: boolean;
     totalNights!: number;
+    perDiemPayPercentage!: number;
     isVisaRequired!: boolean;
     visaComments!: string | undefined;
     isHotelRequired!: boolean;
@@ -201885,6 +202549,7 @@ export class CreateOrEditTravelDetailDto implements ICreateOrEditTravelDetailDto
             this.travelAirlineId = _data["travelAirlineId"];
             this.nightStay = _data["nightStay"];
             this.totalNights = _data["totalNights"];
+            this.perDiemPayPercentage = _data["perDiemPayPercentage"];
             this.isVisaRequired = _data["isVisaRequired"];
             this.visaComments = _data["visaComments"];
             this.isHotelRequired = _data["isHotelRequired"];
@@ -201921,6 +202586,7 @@ export class CreateOrEditTravelDetailDto implements ICreateOrEditTravelDetailDto
         data["travelAirlineId"] = this.travelAirlineId;
         data["nightStay"] = this.nightStay;
         data["totalNights"] = this.totalNights;
+        data["perDiemPayPercentage"] = this.perDiemPayPercentage;
         data["isVisaRequired"] = this.isVisaRequired;
         data["visaComments"] = this.visaComments;
         data["isHotelRequired"] = this.isHotelRequired;
@@ -201950,6 +202616,7 @@ export interface ICreateOrEditTravelDetailDto {
     travelAirlineId: number | undefined;
     nightStay: boolean;
     totalNights: number;
+    perDiemPayPercentage: number;
     isVisaRequired: boolean;
     visaComments: string | undefined;
     isHotelRequired: boolean;
@@ -202212,6 +202879,7 @@ export class CreateOrEditVacancyDto implements ICreateOrEditVacancyDto {
     publishOn!: DateTime;
     closingDate!: DateTime;
     recruiterId!: number | undefined;
+    positionId!: number | undefined;
     templateOnbGroupId!: number | undefined;
     organizationUnitId!: number;
     isBudgeted!: boolean;
@@ -202245,6 +202913,7 @@ export class CreateOrEditVacancyDto implements ICreateOrEditVacancyDto {
             this.publishOn = _data["publishOn"] ? DateTime.fromISO(_data["publishOn"].toString()) : undefined as any;
             this.closingDate = _data["closingDate"] ? DateTime.fromISO(_data["closingDate"].toString()) : undefined as any;
             this.recruiterId = _data["recruiterId"];
+            this.positionId = _data["positionId"];
             this.templateOnbGroupId = _data["templateOnbGroupId"];
             this.organizationUnitId = _data["organizationUnitId"];
             this.isBudgeted = _data["isBudgeted"];
@@ -202278,6 +202947,7 @@ export class CreateOrEditVacancyDto implements ICreateOrEditVacancyDto {
         data["publishOn"] = this.publishOn ? this.publishOn.toString() : undefined as any;
         data["closingDate"] = this.closingDate ? this.closingDate.toString() : undefined as any;
         data["recruiterId"] = this.recruiterId;
+        data["positionId"] = this.positionId;
         data["templateOnbGroupId"] = this.templateOnbGroupId;
         data["organizationUnitId"] = this.organizationUnitId;
         data["isBudgeted"] = this.isBudgeted;
@@ -202304,6 +202974,7 @@ export interface ICreateOrEditVacancyDto {
     publishOn: DateTime;
     closingDate: DateTime;
     recruiterId: number | undefined;
+    positionId: number | undefined;
     templateOnbGroupId: number | undefined;
     organizationUnitId: number;
     isBudgeted: boolean;
@@ -202903,6 +203574,7 @@ export class CreateOrEditWorkLocationDto implements ICreateOrEditWorkLocationDto
     address!: string | undefined;
     geoFenceCoordinates!: string | undefined;
     isActive!: boolean;
+    sponsorId!: number | undefined;
 
     constructor(data?: ICreateOrEditWorkLocationDto) {
         if (data) {
@@ -202925,6 +203597,7 @@ export class CreateOrEditWorkLocationDto implements ICreateOrEditWorkLocationDto
             this.address = _data["address"];
             this.geoFenceCoordinates = _data["geoFenceCoordinates"];
             this.isActive = _data["isActive"];
+            this.sponsorId = _data["sponsorId"];
         }
     }
 
@@ -202947,6 +203620,7 @@ export class CreateOrEditWorkLocationDto implements ICreateOrEditWorkLocationDto
         data["address"] = this.address;
         data["geoFenceCoordinates"] = this.geoFenceCoordinates;
         data["isActive"] = this.isActive;
+        data["sponsorId"] = this.sponsorId;
         return data;
     }
 }
@@ -202962,6 +203636,7 @@ export interface ICreateOrEditWorkLocationDto {
     address: string | undefined;
     geoFenceCoordinates: string | undefined;
     isActive: boolean;
+    sponsorId: number | undefined;
 }
 
 export class CreateOrEditWorkLocationDutyPeriodDto implements ICreateOrEditWorkLocationDutyPeriodDto {
@@ -205645,6 +206320,8 @@ export class DisciplinaryTypeDto implements IDisciplinaryTypeDto {
     nameEn!: string | undefined;
     nameAr!: string | undefined;
     repeatDurationInDays!: number;
+    wageTypeId!: number | undefined;
+    wageTypeName!: string | undefined;
 
     constructor(data?: IDisciplinaryTypeDto) {
         if (data) {
@@ -205662,6 +206339,8 @@ export class DisciplinaryTypeDto implements IDisciplinaryTypeDto {
             this.nameEn = _data["nameEn"];
             this.nameAr = _data["nameAr"];
             this.repeatDurationInDays = _data["repeatDurationInDays"];
+            this.wageTypeId = _data["wageTypeId"];
+            this.wageTypeName = _data["wageTypeName"];
         }
     }
 
@@ -205679,6 +206358,8 @@ export class DisciplinaryTypeDto implements IDisciplinaryTypeDto {
         data["nameEn"] = this.nameEn;
         data["nameAr"] = this.nameAr;
         data["repeatDurationInDays"] = this.repeatDurationInDays;
+        data["wageTypeId"] = this.wageTypeId;
+        data["wageTypeName"] = this.wageTypeName;
         return data;
     }
 }
@@ -205689,6 +206370,8 @@ export interface IDisciplinaryTypeDto {
     nameEn: string | undefined;
     nameAr: string | undefined;
     repeatDurationInDays: number;
+    wageTypeId: number | undefined;
+    wageTypeName: string | undefined;
 }
 
 export enum DocumentBelongsTo {
@@ -205970,6 +206653,7 @@ export class DocumentTypeDto implements IDocumentTypeDto {
     isWithdrawable!: boolean;
     includeInWorkflow!: boolean;
     isHiddenFromEmployee!: boolean;
+    showToAll!: boolean;
     isExpiryDateRequired!: boolean;
     allowDateOverlap!: boolean;
 
@@ -206001,6 +206685,7 @@ export class DocumentTypeDto implements IDocumentTypeDto {
             this.isWithdrawable = _data["isWithdrawable"];
             this.includeInWorkflow = _data["includeInWorkflow"];
             this.isHiddenFromEmployee = _data["isHiddenFromEmployee"];
+            this.showToAll = _data["showToAll"];
             this.isExpiryDateRequired = _data["isExpiryDateRequired"];
             this.allowDateOverlap = _data["allowDateOverlap"];
         }
@@ -206032,6 +206717,7 @@ export class DocumentTypeDto implements IDocumentTypeDto {
         data["isWithdrawable"] = this.isWithdrawable;
         data["includeInWorkflow"] = this.includeInWorkflow;
         data["isHiddenFromEmployee"] = this.isHiddenFromEmployee;
+        data["showToAll"] = this.showToAll;
         data["isExpiryDateRequired"] = this.isExpiryDateRequired;
         data["allowDateOverlap"] = this.allowDateOverlap;
         return data;
@@ -206056,6 +206742,7 @@ export interface IDocumentTypeDto {
     isWithdrawable: boolean;
     includeInWorkflow: boolean;
     isHiddenFromEmployee: boolean;
+    showToAll: boolean;
     isExpiryDateRequired: boolean;
     allowDateOverlap: boolean;
 }
@@ -206229,6 +206916,7 @@ export class DutyDto implements IDutyDto {
     isHalfDay!: boolean;
     flexiStartTime!: string | undefined;
     flexiEndTime!: string | undefined;
+    isActive!: boolean;
 
     constructor(data?: IDutyDto) {
         if (data) {
@@ -206261,6 +206949,7 @@ export class DutyDto implements IDutyDto {
             this.isHalfDay = _data["isHalfDay"];
             this.flexiStartTime = _data["flexiStartTime"];
             this.flexiEndTime = _data["flexiEndTime"];
+            this.isActive = _data["isActive"];
         }
     }
 
@@ -206293,6 +206982,7 @@ export class DutyDto implements IDutyDto {
         data["isHalfDay"] = this.isHalfDay;
         data["flexiStartTime"] = this.flexiStartTime;
         data["flexiEndTime"] = this.flexiEndTime;
+        data["isActive"] = this.isActive;
         return data;
     }
 }
@@ -206318,6 +207008,7 @@ export interface IDutyDto {
     isHalfDay: boolean;
     flexiStartTime: string | undefined;
     flexiEndTime: string | undefined;
+    isActive: boolean;
 }
 
 export class DutyPeriodDetailDto implements IDutyPeriodDetailDto {
@@ -207415,6 +208106,102 @@ export interface IEmailSettingsEditDto {
     smtpDomain: string | undefined;
     smtpEnableSsl: boolean;
     smtpUseAuthentication: boolean;
+}
+
+export class EmailTemplate implements IEmailTemplate {
+    id!: number;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    tenantId!: number;
+    code!: string | undefined;
+    nameEn!: string;
+    nameAr!: string;
+    smtpProfile!: string | undefined;
+    subject!: string | undefined;
+    emailBodyHtml!: string | undefined;
+    emailBodyText!: string | undefined;
+
+    constructor(data?: IEmailTemplate) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.creatorUserId = _data["creatorUserId"];
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
+            this.tenantId = _data["tenantId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.smtpProfile = _data["smtpProfile"];
+            this.subject = _data["subject"];
+            this.emailBodyHtml = _data["emailBodyHtml"];
+            this.emailBodyText = _data["emailBodyText"];
+        }
+    }
+
+    static fromJS(data: any): EmailTemplate {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmailTemplate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
+        data["tenantId"] = this.tenantId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["smtpProfile"] = this.smtpProfile;
+        data["subject"] = this.subject;
+        data["emailBodyHtml"] = this.emailBodyHtml;
+        data["emailBodyText"] = this.emailBodyText;
+        return data;
+    }
+}
+
+export interface IEmailTemplate {
+    id: number;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    tenantId: number;
+    code: string | undefined;
+    nameEn: string;
+    nameAr: string;
+    smtpProfile: string | undefined;
+    subject: string | undefined;
+    emailBodyHtml: string | undefined;
+    emailBodyText: string | undefined;
 }
 
 export class EmailTemplateDto implements IEmailTemplateDto {
@@ -211094,6 +211881,7 @@ export class EmployeeCertificationDto implements IEmployeeCertificationDto {
     duration!: string | undefined;
     certificate!: string | undefined;
     grade!: string | undefined;
+    certificationType!: CertificationType;
 
     constructor(data?: IEmployeeCertificationDto) {
         if (data) {
@@ -211118,6 +211906,7 @@ export class EmployeeCertificationDto implements IEmployeeCertificationDto {
             this.duration = _data["duration"];
             this.certificate = _data["certificate"];
             this.grade = _data["grade"];
+            this.certificationType = _data["certificationType"];
         }
     }
 
@@ -211142,6 +211931,7 @@ export class EmployeeCertificationDto implements IEmployeeCertificationDto {
         data["duration"] = this.duration;
         data["certificate"] = this.certificate;
         data["grade"] = this.grade;
+        data["certificationType"] = this.certificationType;
         return data;
     }
 }
@@ -211159,6 +211949,7 @@ export interface IEmployeeCertificationDto {
     duration: string | undefined;
     certificate: string | undefined;
     grade: string | undefined;
+    certificationType: CertificationType;
 }
 
 export class EmployeeContractDto implements IEmployeeContractDto {
@@ -212241,6 +213032,8 @@ export class EmployeeDocumentDto implements IEmployeeDocumentDto {
     expiryDate!: DateTime;
     comments!: string | undefined;
     description!: string | undefined;
+    docPlaceId!: number | undefined;
+    docPlaceName!: string | undefined;
     isActive!: DocumentStatus;
     documentMvmtStatus!: DocumentMvmtStatus;
     daysLeft!: number;
@@ -212267,6 +213060,8 @@ export class EmployeeDocumentDto implements IEmployeeDocumentDto {
             this.expiryDate = _data["expiryDate"] ? DateTime.fromISO(_data["expiryDate"].toString()) : undefined as any;
             this.comments = _data["comments"];
             this.description = _data["description"];
+            this.docPlaceId = _data["docPlaceId"];
+            this.docPlaceName = _data["docPlaceName"];
             this.isActive = _data["isActive"];
             this.documentMvmtStatus = _data["documentMvmtStatus"];
             this.daysLeft = _data["daysLeft"];
@@ -212293,6 +213088,8 @@ export class EmployeeDocumentDto implements IEmployeeDocumentDto {
         data["expiryDate"] = this.expiryDate ? this.expiryDate.toString() : undefined as any;
         data["comments"] = this.comments;
         data["description"] = this.description;
+        data["docPlaceId"] = this.docPlaceId;
+        data["docPlaceName"] = this.docPlaceName;
         data["isActive"] = this.isActive;
         data["documentMvmtStatus"] = this.documentMvmtStatus;
         data["daysLeft"] = this.daysLeft;
@@ -212312,6 +213109,8 @@ export interface IEmployeeDocumentDto {
     expiryDate: DateTime;
     comments: string | undefined;
     description: string | undefined;
+    docPlaceId: number | undefined;
+    docPlaceName: string | undefined;
     isActive: DocumentStatus;
     documentMvmtStatus: DocumentMvmtStatus;
     daysLeft: number;
@@ -221622,6 +222421,54 @@ export interface IEmployeeTktAdjustmentDto {
     comments: string | undefined;
 }
 
+export class EmployeeTrainingCertificationLookupDto implements IEmployeeTrainingCertificationLookupDto {
+    id!: number;
+    displayName!: string | undefined;
+    course!: string | undefined;
+    certificate!: string | undefined;
+
+    constructor(data?: IEmployeeTrainingCertificationLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+            this.course = _data["course"];
+            this.certificate = _data["certificate"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeTrainingCertificationLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeTrainingCertificationLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        data["course"] = this.course;
+        data["certificate"] = this.certificate;
+        return data;
+    }
+}
+
+export interface IEmployeeTrainingCertificationLookupDto {
+    id: number;
+    displayName: string | undefined;
+    course: string | undefined;
+    certificate: string | undefined;
+}
+
 export class EmployeeTrainingDto implements IEmployeeTrainingDto {
     id!: number;
     employeeId!: number;
@@ -221633,6 +222480,8 @@ export class EmployeeTrainingDto implements IEmployeeTrainingDto {
     completionStatus!: TrainingCompletionStatus;
     score!: number;
     comments!: string | undefined;
+    employeeCertificationId!: number | undefined;
+    employeeCertificationName!: string | undefined;
 
     constructor(data?: IEmployeeTrainingDto) {
         if (data) {
@@ -221655,6 +222504,8 @@ export class EmployeeTrainingDto implements IEmployeeTrainingDto {
             this.completionStatus = _data["completionStatus"];
             this.score = _data["score"];
             this.comments = _data["comments"];
+            this.employeeCertificationId = _data["employeeCertificationId"];
+            this.employeeCertificationName = _data["employeeCertificationName"];
         }
     }
 
@@ -221677,6 +222528,8 @@ export class EmployeeTrainingDto implements IEmployeeTrainingDto {
         data["completionStatus"] = this.completionStatus;
         data["score"] = this.score;
         data["comments"] = this.comments;
+        data["employeeCertificationId"] = this.employeeCertificationId;
+        data["employeeCertificationName"] = this.employeeCertificationName;
         return data;
     }
 }
@@ -221692,6 +222545,8 @@ export interface IEmployeeTrainingDto {
     completionStatus: TrainingCompletionStatus;
     score: number;
     comments: string | undefined;
+    employeeCertificationId: number | undefined;
+    employeeCertificationName: string | undefined;
 }
 
 export class EmployeeTrainingReportRowDto implements IEmployeeTrainingReportRowDto {
@@ -228968,6 +229823,54 @@ export interface IGetAllApplicationStatusesInput {
     vacancyId: number | undefined;
 }
 
+export class GetAllAssetTypesInput implements IGetAllAssetTypesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+
+    constructor(data?: IGetAllAssetTypesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetAllAssetTypesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllAssetTypesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetAllAssetTypesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+}
+
 export class GetAllAssetsInput implements IGetAllAssetsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -231053,6 +231956,8 @@ export class GetAllDutiesInput implements IGetAllDutiesInput {
     skipCount!: number;
     sorting!: string | undefined;
     filter!: string | undefined;
+    isActive!: boolean | undefined;
+    includeIds!: number[] | undefined;
 
     constructor(data?: IGetAllDutiesInput) {
         if (data) {
@@ -231069,6 +231974,12 @@ export class GetAllDutiesInput implements IGetAllDutiesInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.filter = _data["filter"];
+            this.isActive = _data["isActive"];
+            if (Array.isArray(_data["includeIds"])) {
+                this.includeIds = [] as any;
+                for (let item of _data["includeIds"])
+                    this.includeIds!.push(item);
+            }
         }
     }
 
@@ -231085,6 +231996,12 @@ export class GetAllDutiesInput implements IGetAllDutiesInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["filter"] = this.filter;
+        data["isActive"] = this.isActive;
+        if (Array.isArray(this.includeIds)) {
+            data["includeIds"] = [];
+            for (let item of this.includeIds)
+                data["includeIds"].push(item);
+        }
         return data;
     }
 }
@@ -231094,6 +232011,8 @@ export interface IGetAllDutiesInput {
     skipCount: number;
     sorting: string | undefined;
     filter: string | undefined;
+    isActive: boolean | undefined;
+    includeIds: number[] | undefined;
 }
 
 export class GetAllDutyPeriodDetailsInput implements IGetAllDutyPeriodDetailsInput {
@@ -232381,6 +233300,7 @@ export class GetAllEmployeeCertificationsInput implements IGetAllEmployeeCertifi
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    certificationType!: CertificationType;
 
     constructor(data?: IGetAllEmployeeCertificationsInput) {
         if (data) {
@@ -232397,6 +233317,7 @@ export class GetAllEmployeeCertificationsInput implements IGetAllEmployeeCertifi
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.certificationType = _data["certificationType"];
         }
     }
 
@@ -232413,6 +233334,7 @@ export class GetAllEmployeeCertificationsInput implements IGetAllEmployeeCertifi
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["certificationType"] = this.certificationType;
         return data;
     }
 }
@@ -232422,6 +233344,7 @@ export interface IGetAllEmployeeCertificationsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    certificationType: CertificationType;
 }
 
 export class GetAllEmployeeContractsInput implements IGetAllEmployeeContractsInput {
@@ -238234,6 +239157,54 @@ export interface IGetAllJobDescriptionsInput {
     skipCount: number;
     sorting: string | undefined;
     filter: string | undefined;
+}
+
+export class GetAllJobTitleDetailsInput implements IGetAllJobTitleDetailsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    jobTitleId!: number | undefined;
+
+    constructor(data?: IGetAllJobTitleDetailsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.jobTitleId = _data["jobTitleId"];
+        }
+    }
+
+    static fromJS(data: any): GetAllJobTitleDetailsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllJobTitleDetailsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["jobTitleId"] = this.jobTitleId;
+        return data;
+    }
+}
+
+export interface IGetAllJobTitleDetailsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    jobTitleId: number | undefined;
 }
 
 export class GetAllKpiByJobTitleDetailsInput implements IGetAllKpiByJobTitleDetailsInput {
@@ -247246,6 +248217,42 @@ export interface IGetAssetReportInput {
     employeeStatus: EmployeeStatus;
     assetTypeCode: string | undefined;
     assetStatus: AssetStatus;
+}
+
+export class GetAssetTypeForEditOutput implements IGetAssetTypeForEditOutput {
+    assetType!: CreateOrEditAssetTypeDto;
+
+    constructor(data?: IGetAssetTypeForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.assetType = _data["assetType"] ? CreateOrEditAssetTypeDto.fromJS(_data["assetType"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetAssetTypeForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAssetTypeForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["assetType"] = this.assetType ? this.assetType.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetAssetTypeForEditOutput {
+    assetType: CreateOrEditAssetTypeDto;
 }
 
 export class GetAttachmentsOutput implements IGetAttachmentsOutput {
@@ -256708,6 +257715,46 @@ export interface IGetEmployeeTktAdjustmentForEditOutput {
     employeeTktAdjustment: CreateOrEditEmployeeTktAdjustmentDto;
 }
 
+export class GetEmployeeTrainingCertificationsInput implements IGetEmployeeTrainingCertificationsInput {
+    employeeId!: number;
+    currentCertificationId!: number | undefined;
+
+    constructor(data?: IGetEmployeeTrainingCertificationsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.currentCertificationId = _data["currentCertificationId"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeTrainingCertificationsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeTrainingCertificationsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["currentCertificationId"] = this.currentCertificationId;
+        return data;
+    }
+}
+
+export interface IGetEmployeeTrainingCertificationsInput {
+    employeeId: number;
+    currentCertificationId: number | undefined;
+}
+
 export class GetEmployeeTrainingForEditOutput implements IGetEmployeeTrainingForEditOutput {
     employeeTraining!: CreateOrEditEmployeeTrainingDto;
 
@@ -258922,6 +259969,42 @@ export class GetJobDescriptionSkillForEditOutput implements IGetJobDescriptionSk
 
 export interface IGetJobDescriptionSkillForEditOutput {
     jobDescriptionSkill: CreateOrEditJobDescriptionSkillDto;
+}
+
+export class GetJobTitleDetailForEditOutput implements IGetJobTitleDetailForEditOutput {
+    jobTitleDetail!: CreateOrEditJobTitleDetailDto;
+
+    constructor(data?: IGetJobTitleDetailForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.jobTitleDetail = _data["jobTitleDetail"] ? CreateOrEditJobTitleDetailDto.fromJS(_data["jobTitleDetail"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetJobTitleDetailForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetJobTitleDetailForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["jobTitleDetail"] = this.jobTitleDetail ? this.jobTitleDetail.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetJobTitleDetailForEditOutput {
+    jobTitleDetail: CreateOrEditJobTitleDetailDto;
 }
 
 export class GetKpiByJobTitleDetailForEditOutput implements IGetKpiByJobTitleDetailForEditOutput {
@@ -278282,6 +279365,8 @@ export class InstitutionDto implements IInstitutionDto {
     nameAr!: string | undefined;
     universityId!: number | undefined;
     universityName!: string | undefined;
+    countryId!: number | undefined;
+    countryName!: string | undefined;
 
     constructor(data?: IInstitutionDto) {
         if (data) {
@@ -278300,6 +279385,8 @@ export class InstitutionDto implements IInstitutionDto {
             this.nameAr = _data["nameAr"];
             this.universityId = _data["universityId"];
             this.universityName = _data["universityName"];
+            this.countryId = _data["countryId"];
+            this.countryName = _data["countryName"];
         }
     }
 
@@ -278318,6 +279405,8 @@ export class InstitutionDto implements IInstitutionDto {
         data["nameAr"] = this.nameAr;
         data["universityId"] = this.universityId;
         data["universityName"] = this.universityName;
+        data["countryId"] = this.countryId;
+        data["countryName"] = this.countryName;
         return data;
     }
 }
@@ -278329,6 +279418,8 @@ export interface IInstitutionDto {
     nameAr: string | undefined;
     universityId: number | undefined;
     universityName: string | undefined;
+    countryId: number | undefined;
+    countryName: string | undefined;
 }
 
 export class IntegrationAttemptDto implements IIntegrationAttemptDto {
@@ -279368,6 +280459,58 @@ export interface IJobDescriptionSkillDto {
     skillNameEn: string | undefined;
 }
 
+export class JobTitleDetailDto implements IJobTitleDetailDto {
+    id!: number;
+    jobTitleId!: number;
+    jobTitleName!: string | undefined;
+    workflowRoleId!: number;
+    workflowRoleName!: string | undefined;
+
+    constructor(data?: IJobTitleDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.jobTitleId = _data["jobTitleId"];
+            this.jobTitleName = _data["jobTitleName"];
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.workflowRoleName = _data["workflowRoleName"];
+        }
+    }
+
+    static fromJS(data: any): JobTitleDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobTitleDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["jobTitleId"] = this.jobTitleId;
+        data["jobTitleName"] = this.jobTitleName;
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["workflowRoleName"] = this.workflowRoleName;
+        return data;
+    }
+}
+
+export interface IJobTitleDetailDto {
+    id: number;
+    jobTitleId: number;
+    jobTitleName: string | undefined;
+    workflowRoleId: number;
+    workflowRoleName: string | undefined;
+}
+
 export class JournalVoucherLineDto implements IJournalVoucherLineDto {
     companyAccounts!: string | undefined;
     journalBatchNumber!: string | undefined;
@@ -279923,6 +281066,8 @@ export class KpiInfoDto implements IKpiInfoDto {
     nameAr!: string | undefined;
     kpiCategoryId!: number;
     kpiCategoryName!: string | undefined;
+    competencyId!: number | undefined;
+    competencyNameEn!: string | undefined;
     comments!: string | undefined;
     active!: boolean;
 
@@ -279943,6 +281088,8 @@ export class KpiInfoDto implements IKpiInfoDto {
             this.nameAr = _data["nameAr"];
             this.kpiCategoryId = _data["kpiCategoryId"];
             this.kpiCategoryName = _data["kpiCategoryName"];
+            this.competencyId = _data["competencyId"];
+            this.competencyNameEn = _data["competencyNameEn"];
             this.comments = _data["comments"];
             this.active = _data["active"];
         }
@@ -279963,6 +281110,8 @@ export class KpiInfoDto implements IKpiInfoDto {
         data["nameAr"] = this.nameAr;
         data["kpiCategoryId"] = this.kpiCategoryId;
         data["kpiCategoryName"] = this.kpiCategoryName;
+        data["competencyId"] = this.competencyId;
+        data["competencyNameEn"] = this.competencyNameEn;
         data["comments"] = this.comments;
         data["active"] = this.active;
         return data;
@@ -279976,6 +281125,8 @@ export interface IKpiInfoDto {
     nameAr: string | undefined;
     kpiCategoryId: number;
     kpiCategoryName: string | undefined;
+    competencyId: number | undefined;
+    competencyNameEn: string | undefined;
     comments: string | undefined;
     active: boolean;
 }
@@ -283529,6 +284680,50 @@ export interface IListResultDtoOfEditionListDto {
     items: EditionListDto[] | undefined;
 }
 
+export class ListResultDtoOfEmployeeTrainingCertificationLookupDto implements IListResultDtoOfEmployeeTrainingCertificationLookupDto {
+    items!: EmployeeTrainingCertificationLookupDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfEmployeeTrainingCertificationLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmployeeTrainingCertificationLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfEmployeeTrainingCertificationLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfEmployeeTrainingCertificationLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfEmployeeTrainingCertificationLookupDto {
+    items: EmployeeTrainingCertificationLookupDto[] | undefined;
+}
+
 export class ListResultDtoOfEntityAndPropertyChangeListDto implements IListResultDtoOfEntityAndPropertyChangeListDto {
     items!: EntityAndPropertyChangeListDto[] | undefined;
 
@@ -284451,6 +285646,50 @@ export class ListResultDtoOfUserSessionDto implements IListResultDtoOfUserSessio
 
 export interface IListResultDtoOfUserSessionDto {
     items: UserSessionDto[] | undefined;
+}
+
+export class ListResultDtoOfViolationWageTypeDto implements IListResultDtoOfViolationWageTypeDto {
+    items!: ViolationWageTypeDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfViolationWageTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ViolationWageTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfViolationWageTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfViolationWageTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfViolationWageTypeDto {
+    items: ViolationWageTypeDto[] | undefined;
 }
 
 export class ListResultDtoOfWorkbenchAttendanceDayDto implements IListResultDtoOfWorkbenchAttendanceDayDto {
@@ -290490,6 +291729,130 @@ export interface INineBoxMappingDto {
     nineBoxRatingNameEn: string | undefined;
 }
 
+export class NotificationConfig implements INotificationConfig {
+    id!: number;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    tenantId!: number;
+    name!: string;
+    sendNotification!: boolean;
+    sendEmail!: boolean;
+    toEmployee!: boolean;
+    toRequestCreator!: boolean;
+    toManager!: boolean;
+    sendToAll!: boolean;
+    sendToAllApproved!: boolean;
+    sendToApprover!: boolean;
+    emailTemplateId!: number | undefined;
+    emailTemplate!: EmailTemplate;
+    notificationGroups!: NotificationGroup[] | undefined;
+
+    constructor(data?: INotificationConfig) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.creatorUserId = _data["creatorUserId"];
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
+            this.tenantId = _data["tenantId"];
+            this.name = _data["name"];
+            this.sendNotification = _data["sendNotification"];
+            this.sendEmail = _data["sendEmail"];
+            this.toEmployee = _data["toEmployee"];
+            this.toRequestCreator = _data["toRequestCreator"];
+            this.toManager = _data["toManager"];
+            this.sendToAll = _data["sendToAll"];
+            this.sendToAllApproved = _data["sendToAllApproved"];
+            this.sendToApprover = _data["sendToApprover"];
+            this.emailTemplateId = _data["emailTemplateId"];
+            this.emailTemplate = _data["emailTemplate"] ? EmailTemplate.fromJS(_data["emailTemplate"]) : undefined as any;
+            if (Array.isArray(_data["notificationGroups"])) {
+                this.notificationGroups = [] as any;
+                for (let item of _data["notificationGroups"])
+                    this.notificationGroups!.push(NotificationGroup.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): NotificationConfig {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationConfig();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
+        data["tenantId"] = this.tenantId;
+        data["name"] = this.name;
+        data["sendNotification"] = this.sendNotification;
+        data["sendEmail"] = this.sendEmail;
+        data["toEmployee"] = this.toEmployee;
+        data["toRequestCreator"] = this.toRequestCreator;
+        data["toManager"] = this.toManager;
+        data["sendToAll"] = this.sendToAll;
+        data["sendToAllApproved"] = this.sendToAllApproved;
+        data["sendToApprover"] = this.sendToApprover;
+        data["emailTemplateId"] = this.emailTemplateId;
+        data["emailTemplate"] = this.emailTemplate ? this.emailTemplate.toJSON() : undefined as any;
+        if (Array.isArray(this.notificationGroups)) {
+            data["notificationGroups"] = [];
+            for (let item of this.notificationGroups)
+                data["notificationGroups"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface INotificationConfig {
+    id: number;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    tenantId: number;
+    name: string;
+    sendNotification: boolean;
+    sendEmail: boolean;
+    toEmployee: boolean;
+    toRequestCreator: boolean;
+    toManager: boolean;
+    sendToAll: boolean;
+    sendToAllApproved: boolean;
+    sendToApprover: boolean;
+    emailTemplateId: number | undefined;
+    emailTemplate: EmailTemplate;
+    notificationGroups: NotificationGroup[] | undefined;
+}
+
 export class NotificationConfigDto implements INotificationConfigDto {
     id!: number;
     name!: string | undefined;
@@ -290715,6 +292078,102 @@ export enum NotificationFrequency {
     Daily = 1,
     Weekly = 2,
     Monthly = 3,
+}
+
+export class NotificationGroup implements INotificationGroup {
+    id!: number;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    tenantId!: number;
+    notificationConfigId!: number | undefined;
+    notificationConfig!: NotificationConfig;
+    workflowRoleId!: number | undefined;
+    workflowRole!: WorkflowRole;
+    workflowRoleGroup!: WorkflowRoleGroup;
+    workflowRoleOrgId!: number | undefined;
+    workflowRoleOrg!: OrganizationUnitType;
+
+    constructor(data?: INotificationGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.creatorUserId = _data["creatorUserId"];
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
+            this.tenantId = _data["tenantId"];
+            this.notificationConfigId = _data["notificationConfigId"];
+            this.notificationConfig = _data["notificationConfig"] ? NotificationConfig.fromJS(_data["notificationConfig"]) : undefined as any;
+            this.workflowRoleId = _data["workflowRoleId"];
+            this.workflowRole = _data["workflowRole"] ? WorkflowRole.fromJS(_data["workflowRole"]) : undefined as any;
+            this.workflowRoleGroup = _data["workflowRoleGroup"];
+            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
+            this.workflowRoleOrg = _data["workflowRoleOrg"] ? OrganizationUnitType.fromJS(_data["workflowRoleOrg"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): NotificationGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
+        data["tenantId"] = this.tenantId;
+        data["notificationConfigId"] = this.notificationConfigId;
+        data["notificationConfig"] = this.notificationConfig ? this.notificationConfig.toJSON() : undefined as any;
+        data["workflowRoleId"] = this.workflowRoleId;
+        data["workflowRole"] = this.workflowRole ? this.workflowRole.toJSON() : undefined as any;
+        data["workflowRoleGroup"] = this.workflowRoleGroup;
+        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
+        data["workflowRoleOrg"] = this.workflowRoleOrg ? this.workflowRoleOrg.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface INotificationGroup {
+    id: number;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    tenantId: number;
+    notificationConfigId: number | undefined;
+    notificationConfig: NotificationConfig;
+    workflowRoleId: number | undefined;
+    workflowRole: WorkflowRole;
+    workflowRoleGroup: WorkflowRoleGroup;
+    workflowRoleOrgId: number | undefined;
+    workflowRoleOrg: OrganizationUnitType;
 }
 
 export class NotificationGroupDto implements INotificationGroupDto {
@@ -291024,6 +292483,7 @@ export class NumberSeriesDto implements INumberSeriesDto {
     start!: number;
     prefix!: string | undefined;
     formatting!: string | undefined;
+    employmentType!: EmploymentType;
 
     constructor(data?: INumberSeriesDto) {
         if (data) {
@@ -291042,6 +292502,7 @@ export class NumberSeriesDto implements INumberSeriesDto {
             this.start = _data["start"];
             this.prefix = _data["prefix"];
             this.formatting = _data["formatting"];
+            this.employmentType = _data["employmentType"];
         }
     }
 
@@ -291060,6 +292521,7 @@ export class NumberSeriesDto implements INumberSeriesDto {
         data["start"] = this.start;
         data["prefix"] = this.prefix;
         data["formatting"] = this.formatting;
+        data["employmentType"] = this.employmentType;
         return data;
     }
 }
@@ -291071,6 +292533,7 @@ export interface INumberSeriesDto {
     start: number;
     prefix: string | undefined;
     formatting: string | undefined;
+    employmentType: EmploymentType;
 }
 
 export enum OffsetAccountInfoType {
@@ -292128,6 +293591,7 @@ export class OrganizationDocumentDto implements IOrganizationDocumentDto {
     comments!: string | undefined;
     documentPlace!: string | undefined;
     notificationSent!: boolean;
+    daysLeft!: number;
     sponsorId!: number | undefined;
     sponsorName!: string | undefined;
 
@@ -292153,6 +293617,7 @@ export class OrganizationDocumentDto implements IOrganizationDocumentDto {
             this.comments = _data["comments"];
             this.documentPlace = _data["documentPlace"];
             this.notificationSent = _data["notificationSent"];
+            this.daysLeft = _data["daysLeft"];
             this.sponsorId = _data["sponsorId"];
             this.sponsorName = _data["sponsorName"];
         }
@@ -292178,6 +293643,7 @@ export class OrganizationDocumentDto implements IOrganizationDocumentDto {
         data["comments"] = this.comments;
         data["documentPlace"] = this.documentPlace;
         data["notificationSent"] = this.notificationSent;
+        data["daysLeft"] = this.daysLeft;
         data["sponsorId"] = this.sponsorId;
         data["sponsorName"] = this.sponsorName;
         return data;
@@ -292196,6 +293662,7 @@ export interface IOrganizationDocumentDto {
     comments: string | undefined;
     documentPlace: string | undefined;
     notificationSent: boolean;
+    daysLeft: number;
     sponsorId: number | undefined;
     sponsorName: string | undefined;
 }
@@ -292386,6 +293853,94 @@ export interface IOrganizationUnitRoleListDto {
     displayName: string | undefined;
     name: string | undefined;
     addedTime: DateTime;
+}
+
+export class OrganizationUnitType implements IOrganizationUnitType {
+    id!: number;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    tenantId!: number;
+    code!: string | undefined;
+    nameEn!: string;
+    nameAr!: string;
+    allowLeaveConflict!: boolean;
+    assignPayrollArea!: boolean;
+
+    constructor(data?: IOrganizationUnitType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.creatorUserId = _data["creatorUserId"];
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
+            this.tenantId = _data["tenantId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.allowLeaveConflict = _data["allowLeaveConflict"];
+            this.assignPayrollArea = _data["assignPayrollArea"];
+        }
+    }
+
+    static fromJS(data: any): OrganizationUnitType {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrganizationUnitType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
+        data["tenantId"] = this.tenantId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["allowLeaveConflict"] = this.allowLeaveConflict;
+        data["assignPayrollArea"] = this.assignPayrollArea;
+        return data;
+    }
+}
+
+export interface IOrganizationUnitType {
+    id: number;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    tenantId: number;
+    code: string | undefined;
+    nameEn: string;
+    nameAr: string;
+    allowLeaveConflict: boolean;
+    assignPayrollArea: boolean;
 }
 
 export class OrganizationUnitTypeDto implements IOrganizationUnitTypeDto {
@@ -296205,6 +297760,54 @@ export class PagedResultDtoOfAssetReportRowDto implements IPagedResultDtoOfAsset
 
 export interface IPagedResultDtoOfAssetReportRowDto {
     items: AssetReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfAssetTypeDto implements IPagedResultDtoOfAssetTypeDto {
+    items!: AssetTypeDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfAssetTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AssetTypeDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAssetTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAssetTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfAssetTypeDto {
+    items: AssetTypeDto[] | undefined;
     totalCount: number;
 }
 
@@ -308589,6 +310192,54 @@ export class PagedResultDtoOfJobDescriptionSkillDto implements IPagedResultDtoOf
 
 export interface IPagedResultDtoOfJobDescriptionSkillDto {
     items: JobDescriptionSkillDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfJobTitleDetailDto implements IPagedResultDtoOfJobTitleDetailDto {
+    items!: JobTitleDetailDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfJobTitleDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(JobTitleDetailDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfJobTitleDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfJobTitleDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfJobTitleDetailDto {
+    items: JobTitleDetailDto[] | undefined;
     totalCount: number;
 }
 
@@ -323281,6 +324932,12 @@ export class PayrollArea implements IPayrollArea {
     fiBank!: AccountInfo;
     countryId!: number | undefined;
     country!: Country;
+    paReleaseNotificationId!: number | undefined;
+    paReleaseNotification!: NotificationConfig;
+    paExitNotificationId!: number | undefined;
+    paExitNotification!: NotificationConfig;
+    paCorrectionNotificationId!: number | undefined;
+    paCorrectionNotification!: NotificationConfig;
 
     constructor(data?: IPayrollArea) {
         if (data) {
@@ -323315,6 +324972,12 @@ export class PayrollArea implements IPayrollArea {
             this.fiBank = _data["fiBank"] ? AccountInfo.fromJS(_data["fiBank"]) : undefined as any;
             this.countryId = _data["countryId"];
             this.country = _data["country"] ? Country.fromJS(_data["country"]) : undefined as any;
+            this.paReleaseNotificationId = _data["paReleaseNotificationId"];
+            this.paReleaseNotification = _data["paReleaseNotification"] ? NotificationConfig.fromJS(_data["paReleaseNotification"]) : undefined as any;
+            this.paExitNotificationId = _data["paExitNotificationId"];
+            this.paExitNotification = _data["paExitNotification"] ? NotificationConfig.fromJS(_data["paExitNotification"]) : undefined as any;
+            this.paCorrectionNotificationId = _data["paCorrectionNotificationId"];
+            this.paCorrectionNotification = _data["paCorrectionNotification"] ? NotificationConfig.fromJS(_data["paCorrectionNotification"]) : undefined as any;
         }
     }
 
@@ -323349,6 +325012,12 @@ export class PayrollArea implements IPayrollArea {
         data["fiBank"] = this.fiBank ? this.fiBank.toJSON() : undefined as any;
         data["countryId"] = this.countryId;
         data["country"] = this.country ? this.country.toJSON() : undefined as any;
+        data["paReleaseNotificationId"] = this.paReleaseNotificationId;
+        data["paReleaseNotification"] = this.paReleaseNotification ? this.paReleaseNotification.toJSON() : undefined as any;
+        data["paExitNotificationId"] = this.paExitNotificationId;
+        data["paExitNotification"] = this.paExitNotification ? this.paExitNotification.toJSON() : undefined as any;
+        data["paCorrectionNotificationId"] = this.paCorrectionNotificationId;
+        data["paCorrectionNotification"] = this.paCorrectionNotification ? this.paCorrectionNotification.toJSON() : undefined as any;
         return data;
     }
 }
@@ -323376,6 +325045,12 @@ export interface IPayrollArea {
     fiBank: AccountInfo;
     countryId: number | undefined;
     country: Country;
+    paReleaseNotificationId: number | undefined;
+    paReleaseNotification: NotificationConfig;
+    paExitNotificationId: number | undefined;
+    paExitNotification: NotificationConfig;
+    paCorrectionNotificationId: number | undefined;
+    paCorrectionNotification: NotificationConfig;
 }
 
 export class PayrollAreaDto implements IPayrollAreaDto {
@@ -323393,6 +325068,12 @@ export class PayrollAreaDto implements IPayrollAreaDto {
     fiBankName!: string | undefined;
     countryId!: number | undefined;
     countryName!: string | undefined;
+    paReleaseNotificationId!: number | undefined;
+    paReleaseNotificationName!: string | undefined;
+    paExitNotificationId!: number | undefined;
+    paExitNotificationName!: string | undefined;
+    paCorrectionNotificationId!: number | undefined;
+    paCorrectionNotificationName!: string | undefined;
 
     constructor(data?: IPayrollAreaDto) {
         if (data) {
@@ -323419,6 +325100,12 @@ export class PayrollAreaDto implements IPayrollAreaDto {
             this.fiBankName = _data["fiBankName"];
             this.countryId = _data["countryId"];
             this.countryName = _data["countryName"];
+            this.paReleaseNotificationId = _data["paReleaseNotificationId"];
+            this.paReleaseNotificationName = _data["paReleaseNotificationName"];
+            this.paExitNotificationId = _data["paExitNotificationId"];
+            this.paExitNotificationName = _data["paExitNotificationName"];
+            this.paCorrectionNotificationId = _data["paCorrectionNotificationId"];
+            this.paCorrectionNotificationName = _data["paCorrectionNotificationName"];
         }
     }
 
@@ -323445,6 +325132,12 @@ export class PayrollAreaDto implements IPayrollAreaDto {
         data["fiBankName"] = this.fiBankName;
         data["countryId"] = this.countryId;
         data["countryName"] = this.countryName;
+        data["paReleaseNotificationId"] = this.paReleaseNotificationId;
+        data["paReleaseNotificationName"] = this.paReleaseNotificationName;
+        data["paExitNotificationId"] = this.paExitNotificationId;
+        data["paExitNotificationName"] = this.paExitNotificationName;
+        data["paCorrectionNotificationId"] = this.paCorrectionNotificationId;
+        data["paCorrectionNotificationName"] = this.paCorrectionNotificationName;
         return data;
     }
 }
@@ -323464,6 +325157,12 @@ export interface IPayrollAreaDto {
     fiBankName: string | undefined;
     countryId: number | undefined;
     countryName: string | undefined;
+    paReleaseNotificationId: number | undefined;
+    paReleaseNotificationName: string | undefined;
+    paExitNotificationId: number | undefined;
+    paExitNotificationName: string | undefined;
+    paCorrectionNotificationId: number | undefined;
+    paCorrectionNotificationName: string | undefined;
 }
 
 export class PayrollAreaLookupDto implements IPayrollAreaLookupDto {
@@ -328795,6 +330494,8 @@ export class PersonalActionReasonDto implements IPersonalActionReasonDto {
     nameAr!: string | undefined;
     personalActionId!: number | undefined;
     personalActionName!: string | undefined;
+    notificationConfigId!: number | undefined;
+    notificationConfigName!: string | undefined;
 
     constructor(data?: IPersonalActionReasonDto) {
         if (data) {
@@ -328813,6 +330514,8 @@ export class PersonalActionReasonDto implements IPersonalActionReasonDto {
             this.nameAr = _data["nameAr"];
             this.personalActionId = _data["personalActionId"];
             this.personalActionName = _data["personalActionName"];
+            this.notificationConfigId = _data["notificationConfigId"];
+            this.notificationConfigName = _data["notificationConfigName"];
         }
     }
 
@@ -328831,6 +330534,8 @@ export class PersonalActionReasonDto implements IPersonalActionReasonDto {
         data["nameAr"] = this.nameAr;
         data["personalActionId"] = this.personalActionId;
         data["personalActionName"] = this.personalActionName;
+        data["notificationConfigId"] = this.notificationConfigId;
+        data["notificationConfigName"] = this.notificationConfigName;
         return data;
     }
 }
@@ -328842,6 +330547,8 @@ export interface IPersonalActionReasonDto {
     nameAr: string | undefined;
     personalActionId: number | undefined;
     personalActionName: string | undefined;
+    notificationConfigId: number | undefined;
+    notificationConfigName: string | undefined;
 }
 
 export class PersonalDataChangeValuesDto implements IPersonalDataChangeValuesDto {
@@ -350247,6 +351954,9 @@ export class TrainingCourseDto implements ITrainingCourseDto {
     deliveryMethod!: TrainingDeliveryMethod;
     fees!: number;
     active!: boolean;
+    institutionId!: number | undefined;
+    institutionName!: string | undefined;
+    source!: TrainingCourseSource;
 
     constructor(data?: ITrainingCourseDto) {
         if (data) {
@@ -350266,6 +351976,9 @@ export class TrainingCourseDto implements ITrainingCourseDto {
             this.deliveryMethod = _data["deliveryMethod"];
             this.fees = _data["fees"];
             this.active = _data["active"];
+            this.institutionId = _data["institutionId"];
+            this.institutionName = _data["institutionName"];
+            this.source = _data["source"];
         }
     }
 
@@ -350285,6 +351998,9 @@ export class TrainingCourseDto implements ITrainingCourseDto {
         data["deliveryMethod"] = this.deliveryMethod;
         data["fees"] = this.fees;
         data["active"] = this.active;
+        data["institutionId"] = this.institutionId;
+        data["institutionName"] = this.institutionName;
+        data["source"] = this.source;
         return data;
     }
 }
@@ -350297,6 +352013,9 @@ export interface ITrainingCourseDto {
     deliveryMethod: TrainingDeliveryMethod;
     fees: number;
     active: boolean;
+    institutionId: number | undefined;
+    institutionName: string | undefined;
+    source: TrainingCourseSource;
 }
 
 export class TrainingCourseReportRowDto implements ITrainingCourseReportRowDto {
@@ -350357,6 +352076,11 @@ export interface ITrainingCourseReportRowDto {
     deliveryMethod: TrainingDeliveryMethod;
     fees: number;
     active: boolean;
+}
+
+export enum TrainingCourseSource {
+    Internal = 0,
+    External = 1,
 }
 
 export enum TrainingDeliveryMethod {
@@ -350619,6 +352343,7 @@ export class TravelDetailDto implements ITravelDetailDto {
     nightStay!: boolean;
     totalNights!: number;
     totalAmount!: number;
+    perDiemPayPercentage!: number;
     isVisaRequired!: boolean;
     visaComments!: string | undefined;
     isHotelRequired!: boolean;
@@ -350655,6 +352380,7 @@ export class TravelDetailDto implements ITravelDetailDto {
             this.nightStay = _data["nightStay"];
             this.totalNights = _data["totalNights"];
             this.totalAmount = _data["totalAmount"];
+            this.perDiemPayPercentage = _data["perDiemPayPercentage"];
             this.isVisaRequired = _data["isVisaRequired"];
             this.visaComments = _data["visaComments"];
             this.isHotelRequired = _data["isHotelRequired"];
@@ -350691,6 +352417,7 @@ export class TravelDetailDto implements ITravelDetailDto {
         data["nightStay"] = this.nightStay;
         data["totalNights"] = this.totalNights;
         data["totalAmount"] = this.totalAmount;
+        data["perDiemPayPercentage"] = this.perDiemPayPercentage;
         data["isVisaRequired"] = this.isVisaRequired;
         data["visaComments"] = this.visaComments;
         data["isHotelRequired"] = this.isHotelRequired;
@@ -350720,6 +352447,7 @@ export interface ITravelDetailDto {
     nightStay: boolean;
     totalNights: number;
     totalAmount: number;
+    perDiemPayPercentage: number;
     isVisaRequired: boolean;
     visaComments: string | undefined;
     isHotelRequired: boolean;
@@ -352859,11 +354587,17 @@ export class VacancyDto implements IVacancyDto {
     publishOn!: DateTime;
     closingDate!: DateTime;
     recruiterId!: number | undefined;
+    recruiterCode!: string | undefined;
+    recruiterFullNameEn!: string | undefined;
+    positionId!: number | undefined;
+    positionCode!: string | undefined;
+    positionNameEn!: string | undefined;
     templateOnbGroupId!: number | undefined;
     organizationUnitId!: number | undefined;
     isBudgeted!: boolean;
     vacancyStatus!: VacancyStatus;
     slaDaysToFill!: number;
+    actualDaysToFill!: number;
     jobDescription!: string | undefined;
     vacancyTitle!: string | undefined;
     workLocationId!: number | undefined;
@@ -352895,11 +354629,17 @@ export class VacancyDto implements IVacancyDto {
             this.publishOn = _data["publishOn"] ? DateTime.fromISO(_data["publishOn"].toString()) : undefined as any;
             this.closingDate = _data["closingDate"] ? DateTime.fromISO(_data["closingDate"].toString()) : undefined as any;
             this.recruiterId = _data["recruiterId"];
+            this.recruiterCode = _data["recruiterCode"];
+            this.recruiterFullNameEn = _data["recruiterFullNameEn"];
+            this.positionId = _data["positionId"];
+            this.positionCode = _data["positionCode"];
+            this.positionNameEn = _data["positionNameEn"];
             this.templateOnbGroupId = _data["templateOnbGroupId"];
             this.organizationUnitId = _data["organizationUnitId"];
             this.isBudgeted = _data["isBudgeted"];
             this.vacancyStatus = _data["vacancyStatus"];
             this.slaDaysToFill = _data["slaDaysToFill"];
+            this.actualDaysToFill = _data["actualDaysToFill"];
             this.jobDescription = _data["jobDescription"];
             this.vacancyTitle = _data["vacancyTitle"];
             this.workLocationId = _data["workLocationId"];
@@ -352931,11 +354671,17 @@ export class VacancyDto implements IVacancyDto {
         data["publishOn"] = this.publishOn ? this.publishOn.toString() : undefined as any;
         data["closingDate"] = this.closingDate ? this.closingDate.toString() : undefined as any;
         data["recruiterId"] = this.recruiterId;
+        data["recruiterCode"] = this.recruiterCode;
+        data["recruiterFullNameEn"] = this.recruiterFullNameEn;
+        data["positionId"] = this.positionId;
+        data["positionCode"] = this.positionCode;
+        data["positionNameEn"] = this.positionNameEn;
         data["templateOnbGroupId"] = this.templateOnbGroupId;
         data["organizationUnitId"] = this.organizationUnitId;
         data["isBudgeted"] = this.isBudgeted;
         data["vacancyStatus"] = this.vacancyStatus;
         data["slaDaysToFill"] = this.slaDaysToFill;
+        data["actualDaysToFill"] = this.actualDaysToFill;
         data["jobDescription"] = this.jobDescription;
         data["vacancyTitle"] = this.vacancyTitle;
         data["workLocationId"] = this.workLocationId;
@@ -352960,11 +354706,17 @@ export interface IVacancyDto {
     publishOn: DateTime;
     closingDate: DateTime;
     recruiterId: number | undefined;
+    recruiterCode: string | undefined;
+    recruiterFullNameEn: string | undefined;
+    positionId: number | undefined;
+    positionCode: string | undefined;
+    positionNameEn: string | undefined;
     templateOnbGroupId: number | undefined;
     organizationUnitId: number | undefined;
     isBudgeted: boolean;
     vacancyStatus: VacancyStatus;
     slaDaysToFill: number;
+    actualDaysToFill: number;
     jobDescription: string | undefined;
     vacancyTitle: string | undefined;
     workLocationId: number | undefined;
@@ -353223,6 +354975,54 @@ export class VerifySmsCodeInputDto implements IVerifySmsCodeInputDto {
 export interface IVerifySmsCodeInputDto {
     code: string | undefined;
     phoneNumber: string | undefined;
+}
+
+export class ViolationWageTypeDto implements IViolationWageTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IViolationWageTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): ViolationWageTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ViolationWageTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IViolationWageTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
 }
 
 export class WFReadLogDto implements IWFReadLogDto {
@@ -354248,6 +356048,8 @@ export class WorkLocationDto implements IWorkLocationDto {
     address!: string | undefined;
     geoFenceCoordinates!: string | undefined;
     isActive!: boolean;
+    sponsorId!: number | undefined;
+    sponsorName!: string | undefined;
 
     constructor(data?: IWorkLocationDto) {
         if (data) {
@@ -354270,6 +356072,8 @@ export class WorkLocationDto implements IWorkLocationDto {
             this.address = _data["address"];
             this.geoFenceCoordinates = _data["geoFenceCoordinates"];
             this.isActive = _data["isActive"];
+            this.sponsorId = _data["sponsorId"];
+            this.sponsorName = _data["sponsorName"];
         }
     }
 
@@ -354292,6 +356096,8 @@ export class WorkLocationDto implements IWorkLocationDto {
         data["address"] = this.address;
         data["geoFenceCoordinates"] = this.geoFenceCoordinates;
         data["isActive"] = this.isActive;
+        data["sponsorId"] = this.sponsorId;
+        data["sponsorName"] = this.sponsorName;
         return data;
     }
 }
@@ -354307,6 +356113,8 @@ export interface IWorkLocationDto {
     address: string | undefined;
     geoFenceCoordinates: string | undefined;
     isActive: boolean;
+    sponsorId: number | undefined;
+    sponsorName: string | undefined;
 }
 
 export class WorkLocationDutyPeriodDto implements IWorkLocationDutyPeriodDto {
@@ -356303,6 +358111,98 @@ export interface IWorkflowRequestTypeOptionDto {
     code: string | undefined;
     nameEn: string | undefined;
     nameAr: string | undefined;
+}
+
+export class WorkflowRole implements IWorkflowRole {
+    id!: number;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    tenantId!: number;
+    code!: string | undefined;
+    nameEn!: string;
+    nameAr!: string;
+    workflowRoleGroup!: WorkflowRoleGroup;
+    workflowRoleOrgId!: number | undefined;
+    workflowRoleOrg!: OrganizationUnitType;
+
+    constructor(data?: IWorkflowRole) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.creatorUserId = _data["creatorUserId"];
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
+            this.tenantId = _data["tenantId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.workflowRoleGroup = _data["workflowRoleGroup"];
+            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
+            this.workflowRoleOrg = _data["workflowRoleOrg"] ? OrganizationUnitType.fromJS(_data["workflowRoleOrg"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): WorkflowRole {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowRole();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
+        data["tenantId"] = this.tenantId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["workflowRoleGroup"] = this.workflowRoleGroup;
+        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
+        data["workflowRoleOrg"] = this.workflowRoleOrg ? this.workflowRoleOrg.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IWorkflowRole {
+    id: number;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    tenantId: number;
+    code: string | undefined;
+    nameEn: string;
+    nameAr: string;
+    workflowRoleGroup: WorkflowRoleGroup;
+    workflowRoleOrgId: number | undefined;
+    workflowRoleOrg: OrganizationUnitType;
 }
 
 export class WorkflowRoleDto implements IWorkflowRoleDto {

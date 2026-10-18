@@ -18,10 +18,10 @@ namespace HCMv3.TravelManagement;
 /// <c>EmpTravel</c> XPCollection branched on whichever of Employee/Applicant was set; since Applicant is
 /// dropped, only the Employee branch applies).
 ///
-/// DELIBERATE SIMPLIFICATION (DocAttachment drop): the legacy <c>AfterConstruction()</c> eagerly created a
-/// <c>DocAttachment</c> child record. <c>DocAttachment</c> is confirmed absent everywhere else in this
-/// codebase (dropped in every other module that referenced it), so it is dropped here too, along with the
-/// eager-creation side effect.
+/// LEGACY DocAttachment: the legacy <c>AfterConstruction()</c> eagerly created a <c>DocAttachment</c> child
+/// record. Files are now held by the shared per-tenant attachment store under owner type
+/// <c>"TravelFeedback"</c> (the <c>&lt;app-attachments&gt;</c> panel on the travel feedback form), so no
+/// column or eager child row is needed here.
 /// </summary>
 public class TravelFeedback : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {

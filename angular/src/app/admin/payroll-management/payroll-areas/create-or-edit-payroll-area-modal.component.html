@@ -150,6 +150,50 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollArea_PAReleaseNotificationId">{{ 'PAReleaseNotification' | localize }}</label>
+                                <select
+                                    id="PayrollArea_PAReleaseNotificationId"
+                                    class="form-select"
+                                    name="PAReleaseNotificationId"
+                                    [ngModel]="payrollArea().paReleaseNotificationId"
+                                    (ngModelChange)="updateField('paReleaseNotificationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (config of notificationConfigs(); track config.id) {
+                                        <option [ngValue]="config.id">{{ config.name }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollArea_PAExitNotificationId">{{ 'PAExitNotification' | localize }}</label>
+                                <select
+                                    id="PayrollArea_PAExitNotificationId"
+                                    class="form-select"
+                                    name="PAExitNotificationId"
+                                    [ngModel]="payrollArea().paExitNotificationId"
+                                    (ngModelChange)="updateField('paExitNotificationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (config of notificationConfigs(); track config.id) {
+                                        <option [ngValue]="config.id">{{ config.name }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollArea_PACorrectionNotificationId">{{ 'PACorrectionNotification' | localize }}</label>
+                                <select
+                                    id="PayrollArea_PACorrectionNotificationId"
+                                    class="form-select"
+                                    name="PACorrectionNotificationId"
+                                    [ngModel]="payrollArea().paCorrectionNotificationId"
+                                    (ngModelChange)="updateField('paCorrectionNotificationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (config of notificationConfigs(); track config.id) {
+                                        <option [ngValue]="config.id">{{ config.name }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

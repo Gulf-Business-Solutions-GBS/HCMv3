@@ -24,6 +24,9 @@ public class TrainingManagementTestDbContext : DbContext
 
     public DbSet<HCMv3.PersonnelAdministration.Employee> Employees { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.Nationality> Nationalities { get; set; }
+    public DbSet<HCMv3.PersonnelAdministration.EmployeeCertification> EmployeeCertifications { get; set; }
+    public DbSet<HCMv3.GeneralMasterInfo.Institution> Institutions { get; set; }
+    public DbSet<HCMv3.GeneralMasterInfo.Country> Countries { get; set; }
 
     public TrainingManagementTestDbContext(DbContextOptions<TrainingManagementTestDbContext> options) : base(options)
     {

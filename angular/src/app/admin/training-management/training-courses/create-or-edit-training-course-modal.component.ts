@@ -2,6 +2,10 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditTrainingCourseDto,
+    GetAllInstitutionsInput,
+    InstitutionDto,
+    InstitutionsServiceProxy,
+    TrainingCourseSource,
     TrainingCoursesServiceProxy,
     TrainingDeliveryMethod,
 } from '@shared/service-proxies/service-proxies';
@@ -20,6 +24,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 })
 export class CreateOrEditTrainingCourseModalComponent extends AppComponentBase {
     private _service = inject(TrainingCoursesServiceProxy);
+    private _institutionsService = inject(InstitutionsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -33,12 +38,24 @@ export class CreateOrEditTrainingCourseModalComponent extends AppComponentBase {
         { value: TrainingDeliveryMethod.Classroom, name: 'Classroom' },
     ];
 
+    readonly sources = [
+        { value: TrainingCourseSource.Internal, name: 'Internal' },
+        { value: TrainingCourseSource.External, name: 'External' },
+    ];
+
+    readonly institutions = signal<InstitutionDto[]>([]);
+
     show(id?: number): void {
         this.active.set(true);
+
+        this._institutionsService
+            .getAll(new GetAllInstitutionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.institutions.set(result.items));
 
         if (!id) {
             const record = new CreateOrEditTrainingCourseDto();
             record.deliveryMethod = TrainingDeliveryMethod.Online;
+            record.source = TrainingCourseSource.Internal;
             record.fees = 0;
             record.active = true;
             this.record.set(record);

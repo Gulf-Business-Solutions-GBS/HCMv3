@@ -2,6 +2,9 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditWorkLocationDto,
+    GetAllSponsorsInput,
+    SponsorDto,
+    SponsorsServiceProxy,
     WorkLocationsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -25,6 +28,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 })
 export class CreateOrEditWorkLocationModalComponent extends AppComponentBase {
     private _workLocationsService = inject(WorkLocationsServiceProxy);
+    private _sponsorsService = inject(SponsorsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -32,9 +36,14 @@ export class CreateOrEditWorkLocationModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly workLocation = signal<CreateOrEditWorkLocationDto>(new CreateOrEditWorkLocationDto());
+    readonly sponsors = signal<SponsorDto[]>([]);
 
     show(workLocationId?: number): void {
         this.active.set(true);
+
+        this._sponsorsService
+            .getAll(new GetAllSponsorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.sponsors.set(result.items));
 
         if (!workLocationId) {
             const newWorkLocation = new CreateOrEditWorkLocationDto();

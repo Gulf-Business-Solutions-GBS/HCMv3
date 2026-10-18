@@ -30,6 +30,7 @@
                         <th>{{ 'DocumentNum' | localize }}</th>
                         <th>{{ 'IssueDate' | localize }}</th>
                         <th>{{ 'ExpiryDate' | localize }}</th>
+                        <th>{{ 'DocumentPlace' | localize }}</th>
                         <th>{{ 'Status' | localize }}</th>
                         <th>{{ 'DaysLeft' | localize }}</th>
                     </tr>
@@ -49,6 +50,7 @@
                         <td>{{ record.documentNum }}</td>
                         <td>{{ record.issueDate | luxonFormat: 'DD' }}</td>
                         <td>{{ record.expiryDate | luxonFormat: 'DD' }}</td>
+                        <td>{{ record.docPlaceName }}</td>
                         <td>
                             @if (record.isActive === documentStatus.Active) {
                                 <span class="badge badge-success">{{ 'Active' | localize }}</span>

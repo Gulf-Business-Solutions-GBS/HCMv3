@@ -3,11 +3,13 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditEmployeeTrainingDto,
     EmployeeDto,
+    EmployeeTrainingCertificationLookupDto,
     EmployeeTrainingsServiceProxy,
     EmployeesServiceProxy,
     GetAllEmployeesInput,
     GetAllTrainingCoursesInput,
     GetAllTrainingSchedulesInput,
+    GetEmployeeTrainingCertificationsInput,
     TrainingCompletionStatus,
     TrainingCourseDto,
     TrainingCoursesServiceProxy,
@@ -21,11 +23,12 @@ import { FormsModule } from '@angular/forms';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditEmployeeTrainingModal',
     templateUrl: './create-or-edit-employee-training-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, AttachmentsComponent],
 })
 export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase {
     private _service = inject(EmployeeTrainingsServiceProxy);
@@ -43,6 +46,9 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
     readonly employees = signal<EmployeeDto[]>([]);
     readonly trainingCourses = signal<TrainingCourseDto[]>([]);
     readonly allTrainingSchedules = signal<TrainingScheduleDto[]>([]);
+    // The employee's certifications of type Training (legacy TrainingCertificationList), plus the one
+    // already linked on the record.
+    readonly certifications = signal<EmployeeTrainingCertificationLookupDto[]>([]);
 
     // Cascading: filter the schedule dropdown to the currently selected training course.
     readonly trainingSchedules = computed(() => {
@@ -70,6 +76,8 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
             .getAll(new GetAllTrainingSchedulesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, trainingCourseId: undefined }))
             .subscribe((result) => this.allTrainingSchedules.set(result.items));
 
+        this.certifications.set([]);
+
         if (!id) {
             const record = new CreateOrEditEmployeeTrainingDto();
             record.completionStatus = TrainingCompletionStatus.Pending;
@@ -79,9 +87,32 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
         } else {
             this._service.getEmployeeTrainingForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeTraining);
+                this.loadCertifications(result.employeeTraining.employeeId, result.employeeTraining.employeeCertificationId);
                 this.modal().show();
             });
         }
+    }
+
+    updateEmployee(value: number | undefined): void {
+        const next = new CreateOrEditEmployeeTrainingDto();
+        Object.assign(next, this.record());
+        next.employeeId = value as any;
+        next.employeeCertificationId = undefined;
+        this.record.set(next);
+        this.loadCertifications(value, undefined);
+    }
+
+    private loadCertifications(employeeId: number | undefined, currentCertificationId: number | undefined): void {
+        if (!employeeId) {
+            this.certifications.set([]);
+            return;
+        }
+
+        this._service
+            .getTrainingCertifications(
+                new GetEmployeeTrainingCertificationsInput({ employeeId: employeeId, currentCertificationId: currentCertificationId }),
+            )
+            .subscribe((result) => this.certifications.set(result.items));
     }
 
     onShown(): void {

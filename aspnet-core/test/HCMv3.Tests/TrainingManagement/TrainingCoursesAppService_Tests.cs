@@ -57,4 +57,41 @@ public class TrainingCoursesAppService_Tests : TrainingManagementAppServiceTestB
         await Should.ThrowAsync<UserFriendlyException>(() =>
             service.CreateOrEdit(new CreateOrEditTrainingCourseDto { Code = "C1", NameEn = "B", NameAr = "B" }));
     }
+
+    [Fact]
+    public async Task Should_Save_Institution_And_Source()
+    {
+        var institutionId = CreateInstitution("Kuwait Institute");
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTrainingCourseDto
+        {
+            NameEn = "Fire Safety",
+            NameAr = "Fire Safety",
+            InstitutionId = institutionId,
+            Source = TrainingCourseSource.External
+        });
+
+        var result = await service.GetAll(new GetAllTrainingCoursesInput());
+        result.Items[0].InstitutionId.ShouldBe(institutionId);
+        result.Items[0].InstitutionName.ShouldBe("Kuwait Institute");
+        result.Items[0].Source.ShouldBe(TrainingCourseSource.External);
+
+        var forEdit = await service.GetTrainingCourseForEdit(new Abp.Application.Services.Dto.EntityDto(result.Items[0].Id));
+        forEdit.TrainingCourse.InstitutionId.ShouldBe(institutionId);
+        forEdit.TrainingCourse.Source.ShouldBe(TrainingCourseSource.External);
+    }
+
+    [Fact]
+    public async Task Should_Default_Source_To_Internal_And_Allow_No_Institution()
+    {
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTrainingCourseDto { NameEn = "Induction", NameAr = "Induction" });
+
+        var result = await service.GetAll(new GetAllTrainingCoursesInput());
+        result.Items[0].InstitutionId.ShouldBeNull();
+        result.Items[0].InstitutionName.ShouldBeNull();
+        result.Items[0].Source.ShouldBe(TrainingCourseSource.Internal);
+    }
 }

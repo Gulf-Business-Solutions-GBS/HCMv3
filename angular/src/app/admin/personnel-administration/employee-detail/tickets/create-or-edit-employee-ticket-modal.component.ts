@@ -18,6 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly/record-directly-check.component';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditEmployeeTicketModal',
@@ -30,6 +31,7 @@ import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        AttachmentsComponent,
     ],
 })
 export class CreateOrEditEmployeeTicketModalComponent extends AppComponentBase {

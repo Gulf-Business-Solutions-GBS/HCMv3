@@ -64,6 +64,72 @@ public class PayrollAreasAppService_Tests : PayrollManagementAppServiceTestBase
         result.Items[0].Name.ShouldBe("Head Office");
     }
 
+    private int CreateNotificationConfig(string name)
+    {
+        var entity = new HCMv3.GeneralMasterInfo.NotificationConfig { TenantId = AbpSession.TenantId ?? 1, Name = name };
+        Context.Set<HCMv3.GeneralMasterInfo.NotificationConfig>().Add(entity);
+        Context.SaveChanges();
+        return entity.Id;
+    }
+
+    [Fact]
+    public async Task Should_Store_The_Three_Period_Notification_Configurations()
+    {
+        var payrollPeriodId = CreatePayrollPeriod("Jan-Dec");
+        var currencyId = CreateCurrency("KWD");
+        var releaseId = CreateNotificationConfig("Release");
+        var exitId = CreateNotificationConfig("Exit");
+        var correctionId = CreateNotificationConfig("Correction");
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditPayrollAreaDto
+        {
+            Code = "PA1",
+            Name = "Head Office",
+            PayrollPeriodId = payrollPeriodId,
+            CurrencyId = currencyId,
+            PAReleaseNotificationId = releaseId,
+            PAExitNotificationId = exitId,
+            PACorrectionNotificationId = correctionId
+        });
+
+        var item = (await service.GetAll(new GetAllPayrollAreasInput())).Items[0];
+        item.PAReleaseNotificationId.ShouldBe(releaseId);
+        item.PAReleaseNotificationName.ShouldBe("Release");
+        item.PAExitNotificationId.ShouldBe(exitId);
+        item.PAExitNotificationName.ShouldBe("Exit");
+        item.PACorrectionNotificationId.ShouldBe(correctionId);
+        item.PACorrectionNotificationName.ShouldBe("Correction");
+
+        var forEdit = await service.GetPayrollAreaForEdit(new Abp.Application.Services.Dto.EntityDto(item.Id));
+        forEdit.PayrollArea.PAReleaseNotificationId.ShouldBe(releaseId);
+        forEdit.PayrollArea.PAExitNotificationId.ShouldBe(exitId);
+        forEdit.PayrollArea.PACorrectionNotificationId.ShouldBe(correctionId);
+    }
+
+    [Fact]
+    public async Task Should_Clear_A_Period_Notification_Configuration_On_Update()
+    {
+        var payrollPeriodId = CreatePayrollPeriod("Jan-Dec");
+        var currencyId = CreateCurrency("KWD");
+        var releaseId = CreateNotificationConfig("Release");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditPayrollAreaDto
+        {
+            Code = "PA1", Name = "Head Office", PayrollPeriodId = payrollPeriodId, CurrencyId = currencyId,
+            PAReleaseNotificationId = releaseId
+        });
+        var id = (await service.GetAll(new GetAllPayrollAreasInput())).Items[0].Id;
+
+        await service.CreateOrEdit(new CreateOrEditPayrollAreaDto
+        {
+            Id = id, Code = "PA1", Name = "Head Office", PayrollPeriodId = payrollPeriodId, CurrencyId = currencyId,
+            PAReleaseNotificationId = null
+        });
+
+        (await service.GetAll(new GetAllPayrollAreasInput())).Items[0].PAReleaseNotificationId.ShouldBeNull();
+    }
+
     [Fact]
     public async Task Should_Throw_When_PayrollPeriod_Missing()
     {

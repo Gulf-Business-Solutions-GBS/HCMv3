@@ -7727,5 +7727,31 @@
     <text name="DutyPolicy">Duty Policy</text>
     <text name="BreakshiftPolicy">Breakshift Policy</text>
     <text name="TicketAccrualCount">Tickets accrued</text>
+    <text name="CertificationType">Certification Type</text>
+    <text name="Professional">Professional</text>
+    <text name="Training">Training</text>
+    <text name="Internal">Internal</text>
+    <text name="EmployeeTrainingCertificationNotValid">The certificate must be one of this employee's training certificates.</text>
+    <text name="CreatingNewAssetType">Creating new asset type</text>
+    <text name="EditingAssetType">Editing asset type</text>
+    <text name="AssetTypeDeleteWarningMessage">Are you sure you want to delete the asset type '{0}'?</text>
+    <text name="ActualDaysToFill">Actual Days to Fill</text>
+    <text name="PerDiemPayPercentage">Per Diem Pay (%)</text>
+    <text name="PerDiemPayAmount">Per Diem Pay Amount</text>
+    <text name="PerDiemPayPercentageMustBeBetween0And100">Per Diem Pay (%) should be between 0 and 100.</text>
+    <text name="PAReleaseNotification">Release for Payroll Notification</text>
+    <text name="PAExitNotification">Payroll Exit Notification</text>
+    <text name="PACorrectionNotification">Release for Correction Notification</text>
+    <text name="PayrollPeriodReleasedForPayrollMessage">Payroll area {0}: period {1}/{2} has been released for payroll.</text>
+    <text name="PayrollPeriodExitedMessage">Payroll area {0}: period {1}/{2} has been closed (payroll exit).</text>
+    <text name="PayrollPeriodReleasedForCorrectionMessage">Payroll area {0}: period {1}/{2} has been released for correction.</text>
+    <text name="NumberSeriesForEmploymentTypeExists">Number Series for Employment Type : {0} exists.</text>
+    <text name="NumberSeriesForOtherEmploymentTypeExists">Number Series for other Employment Type exists. Change the Employment Type or delete that record first.</text>
+    <text name="JobTitleDetails">Job Title Details</text>
+    <text name="CreatingNewJobTitleDetail">Creating new job title detail</text>
+    <text name="EditingJobTitleDetail">Editing job title detail</text>
+    <text name="JobTitleDetailRoleAlreadyListed">This job title already lists that workflow role. Choose another role.</text>
+    <text name="OrgPolicies">Org Policy</text>
+    <text name="ShowToAll">Show To All</text>
   </texts>
 </localizationDictionary>

@@ -145,5 +145,117 @@ public class TravelDetailsAppService_Tests : TravelManagementAppServiceTestBase
 
         output.PerDiemRate.ShouldBe(100);
         output.PerDiemAmount.ShouldBe(400);
+        output.PerDiemPayPercentage.ShouldBe(100);
+        output.PerDiemPayAmount.ShouldBe(400);
+    }
+
+    [Fact]
+    public async Task Should_Default_PerDiemPayPercentage_To_100()
+    {
+        var (travelId, departureId, arrivalId) = CreateTravelWithDestinations();
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTravelDetailDto
+        {
+            TravelId = travelId,
+            DepartureId = departureId,
+            ArrivalId = arrivalId,
+            DepartureDate = new DateTime(2024, 3, 1),
+            ArrivalDate = new DateTime(2024, 3, 5)
+        });
+
+        var item = (await service.GetAll(new GetAllTravelDetailsInput { TravelId = travelId })).Items[0];
+        item.PerDiemPayPercentage.ShouldBe(100);
+
+        var forEdit = await service.GetTravelDetailForEdit(new Abp.Application.Services.Dto.EntityDto(item.Id));
+        forEdit.TravelDetail.PerDiemPayPercentage.ShouldBe(100);
+    }
+
+    [Fact]
+    public async Task Should_Apply_PerDiemPayPercentage_To_The_Paid_Amount_Only()
+    {
+        var (travelId, departureId, arrivalId) = CreateTravelWithDestinations();
+        var groupId = CreateEmployeeGroup();
+        var subGroupId = CreateEmployeeSubGroup(groupId);
+
+        Context.TravelPerDiems.Add(new TravelPerDiem
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            FromDestinationId = departureId,
+            ToDestinationId = arrivalId,
+            EmployeeGroupId = groupId,
+            EmployeeSubGroupId = subGroupId,
+            Amount = 125
+        });
+        Context.SaveChanges();
+
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTravelDetailDto
+        {
+            TravelId = travelId,
+            DepartureId = departureId,
+            ArrivalId = arrivalId,
+            DepartureDate = new DateTime(2024, 3, 1),
+            ArrivalDate = new DateTime(2024, 3, 4),
+            TotalNights = 3,
+            PerDiemPayPercentage = 50
+        });
+        var detail = (await service.GetAll(new GetAllTravelDetailsInput { TravelId = travelId })).Items[0];
+
+        var output = await service.CalculateExpectedPerDiemAsync(new CalculateExpectedPerDiemInput
+        {
+            TravelDetailId = detail.Id,
+            EmployeeGroupId = groupId,
+            EmployeeSubGroupId = subGroupId
+        });
+
+        // Legacy PerDiemAmount (nights x rate) ignores the percentage; legacy payroll paid
+        // PerDiemAmount * PerDiemPayPercentage / 100.
+        output.PerDiemAmount.ShouldBe(375);
+        output.PerDiemPayPercentage.ShouldBe(50);
+        output.PerDiemPayAmount.ShouldBe(187.5);
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(100.01)]
+    public async Task Should_Throw_When_PerDiemPayPercentage_Is_Outside_0_To_100(double percentage)
+    {
+        var (travelId, departureId, arrivalId) = CreateTravelWithDestinations();
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(() =>
+            service.CreateOrEdit(new CreateOrEditTravelDetailDto
+            {
+                TravelId = travelId,
+                DepartureId = departureId,
+                ArrivalId = arrivalId,
+                DepartureDate = new DateTime(2024, 3, 1),
+                ArrivalDate = new DateTime(2024, 3, 5),
+                PerDiemPayPercentage = percentage
+            }));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(100)]
+    public async Task Should_Accept_PerDiemPayPercentage_At_The_Bounds(double percentage)
+    {
+        var (travelId, departureId, arrivalId) = CreateTravelWithDestinations();
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTravelDetailDto
+        {
+            TravelId = travelId,
+            DepartureId = departureId,
+            ArrivalId = arrivalId,
+            DepartureDate = new DateTime(2024, 3, 1),
+            ArrivalDate = new DateTime(2024, 3, 5),
+            PerDiemPayPercentage = percentage
+        });
+
+        var item = (await service.GetAll(new GetAllTravelDetailsInput { TravelId = travelId })).Items[0];
+        item.PerDiemPayPercentage.ShouldBe(percentage);
     }
 }

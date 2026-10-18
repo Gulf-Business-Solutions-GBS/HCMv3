@@ -68,11 +68,13 @@ export class CreateOrEditTravelDetailModalComponent extends AppComponentBase {
     readonly calcEmployeeSubGroupId = signal<number | undefined>(undefined);
     readonly perDiemRate = signal<number | undefined>(undefined);
     readonly perDiemAmount = signal<number | undefined>(undefined);
+    readonly perDiemPayAmount = signal<number | undefined>(undefined);
 
     show(id?: number): void {
         this.active.set(true);
         this.perDiemRate.set(undefined);
         this.perDiemAmount.set(undefined);
+        this.perDiemPayAmount.set(undefined);
         this.calcEmployeeGroupId.set(undefined);
         this.calcEmployeeSubGroupId.set(undefined);
 
@@ -109,7 +111,10 @@ export class CreateOrEditTravelDetailModalComponent extends AppComponentBase {
             .subscribe((result) => this.employeeSubGroups.set(result.items));
 
         if (!id) {
-            this.record.set(new CreateOrEditTravelDetailDto());
+            const record = new CreateOrEditTravelDetailDto();
+            // Legacy TravelDetail.AfterConstruction: Per Diem Pay (%) starts at 100.
+            record.perDiemPayPercentage = 100;
+            this.record.set(record);
             this.modal().show();
         } else {
             this._service.getTravelDetailForEdit(id).subscribe((result) => {
@@ -144,6 +149,7 @@ export class CreateOrEditTravelDetailModalComponent extends AppComponentBase {
             .subscribe((result) => {
                 this.perDiemRate.set(result.perDiemRate);
                 this.perDiemAmount.set(result.perDiemAmount);
+                this.perDiemPayAmount.set(result.perDiemPayAmount);
             });
     }
 

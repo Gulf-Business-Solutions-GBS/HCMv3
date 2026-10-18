@@ -19,6 +19,7 @@ public class EmployeeCertificationDto : EntityDto<int>
     public string Duration { get; set; }
     public string Certificate { get; set; }
     public string Grade { get; set; }
+    public CertificationType CertificationType { get; set; }
 }
 
 public class CreateOrEditEmployeeCertificationDto
@@ -49,6 +50,8 @@ public class CreateOrEditEmployeeCertificationDto
 
     [StringLength(64)]
     public string Grade { get; set; }
+
+    public CertificationType CertificationType { get; set; }
 }
 
 public class GetEmployeeCertificationForEditOutput
@@ -59,6 +62,9 @@ public class GetEmployeeCertificationForEditOutput
 public class GetAllEmployeeCertificationsInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
     public int? EmployeeId { get; set; }
+
+    /// <summary>Optional: only certifications of this type (the Employee Training picker asks for Training).</summary>
+    public CertificationType? CertificationType { get; set; }
 
     public void Normalize()
     {

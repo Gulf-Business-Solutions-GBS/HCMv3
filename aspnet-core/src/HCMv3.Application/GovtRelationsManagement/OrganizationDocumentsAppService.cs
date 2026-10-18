@@ -6,6 +6,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.GovtRelationsManagement.Dto;
@@ -16,8 +17,7 @@ namespace HCMv3.GovtRelationsManagement;
 
 /// <summary>
 /// Application service for <see cref="OrganizationDocument"/> (ported from legacy XAF
-/// OrganizationDocument business object). See <see cref="OrganizationDocument"/> remarks for the dropped
-/// legacy DocAttachment FK and computed DaysLeft field.
+/// OrganizationDocument business object). DaysLeft is computed here, as legacy's NonPersistent property was.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments)]
 public class OrganizationDocumentsAppService : HCMv3AppServiceBase, IOrganizationDocumentsAppService
@@ -131,7 +131,8 @@ public class OrganizationDocumentsAppService : HCMv3AppServiceBase, IOrganizatio
         }
     }
 
-    private static OrganizationDocumentDto ToDto(OrganizationDocument entity)
+    /// <summary>Shared with <see cref="OrgPoliciesAppService"/>, which lists the same rows read-only.</summary>
+    internal static OrganizationDocumentDto ToDto(OrganizationDocument entity)
     {
         return new OrganizationDocumentDto
         {
@@ -146,6 +147,8 @@ public class OrganizationDocumentsAppService : HCMv3AppServiceBase, IOrganizatio
             Comments = entity.Comments,
             DocumentPlace = entity.DocumentPlace,
             NotificationSent = entity.NotificationSent,
+            // Legacy: ExpiryDate.Subtract(DateTime.Now.Date).TotalDays, 0 with no expiry date.
+            DaysLeft = entity.ExpiryDate != default ? entity.ExpiryDate.Subtract(Clock.Now.Date).TotalDays : 0,
             SponsorId = entity.SponsorId,
             SponsorName = entity.Sponsor?.NameEn
         };

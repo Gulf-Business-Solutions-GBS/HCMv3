@@ -25,4 +25,7 @@ public class CreateOrEditPersonalActionReasonDto
     public string NameAr { get; set; }
 
     public int? PersonalActionId { get; set; }
+
+    /// <summary>Legacy <c>NotificationConfig</c>: sent when an action with this reason is approved. Optional.</summary>
+    public int? NotificationConfigId { get; set; }
 }

@@ -52,21 +52,44 @@ export class CreateOrEditDutyPeriodDetailModalComponent extends AppComponentBase
                 this.dutyPeriods.set(result.items);
             });
 
-        this._dutiesService
-            .getAll(new GetAllDutiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => {
-                this.duties.set(result.items);
-            });
-
         if (!dutyPeriodDetailId) {
             this.dutyPeriodDetail.set(new CreateOrEditDutyPeriodDetailDto());
+            this.loadDuties([]);
             this.modal().show();
         } else {
             this._dutyPeriodDetailsService.getDutyPeriodDetailForEdit(dutyPeriodDetailId).subscribe((result) => {
-                this.dutyPeriodDetail.set(result.dutyPeriodDetail);
+                const detail = result.dutyPeriodDetail;
+                this.dutyPeriodDetail.set(detail);
+                this.loadDuties([
+                    detail.day1DutyId,
+                    detail.day2DutyId,
+                    detail.day3DutyId,
+                    detail.day4DutyId,
+                    detail.day5DutyId,
+                    detail.day6DutyId,
+                    detail.day7DutyId,
+                ]);
                 this.modal().show();
             });
         }
+    }
+
+    // Only active duties are offered; the ones already on the record stay listed even if made inactive since.
+    private loadDuties(currentDutyIds: (number | undefined)[]): void {
+        this._dutiesService
+            .getAll(
+                new GetAllDutiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    isActive: true,
+                    includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
+                }),
+            )
+            .subscribe((result) => {
+                this.duties.set(result.items);
+            });
     }
 
     onShown(): void {

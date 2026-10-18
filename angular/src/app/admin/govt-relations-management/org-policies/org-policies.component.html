@@ -1,0 +1,102 @@
+<div [@routerTransition]>
+    <sub-header [title]="'OrgPolicies' | localize" [description]="'GovtRelationsManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getPolicies()" />
+                                <button class="btn btn-primary" (click)="getPolicies()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getPolicies($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 120px">{{ 'Attachments' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'DocumentType' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'DocumentNum' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'OrganizationUnit' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'IssueDate' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'ExpiryDate' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'DaysLeft' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 120px">
+                                        <button type="button" class="btn btn-light-primary btn-sm" (click)="toggleFiles(record)">
+                                            <i class="fa fa-paperclip"></i>
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.documentTypeName }}</td>
+                                    <td style="min-width: 150px">{{ record.documentNum }}</td>
+                                    <td style="min-width: 180px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 130px">{{ record.issueDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 130px">{{ record.expiryDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 110px" [class.text-danger]="record.daysLeft < 0">
+                                        {{ record.daysLeft | number: '1.0-0' }}
+                                    </td>
+                                </tr>
+                                @if (openId() === record.id) {
+                                    <tr>
+                                        <td colspan="7">
+                                            <app-attachments entityType="OrganizationDocument" [entityId]="record.id" [readonly]="true" />
+                                        </td>
+                                    </tr>
+                                }
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getPolicies($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,10 +9,7 @@ namespace HCMv3.CompetencyDevelopment;
 /// A single competency an employee can be assessed against (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.CompetencyDevelopment.Competency</c>).
 ///
-/// Note: <c>HCMv3.PerformanceManagement.KpiInfo</c> (already-ported PerformanceManagement module)
-/// deliberately DROPPED its legacy FK to this business object since CompetencyDevelopment did not exist yet
-/// in HCMv3 at the time -- see the remarks on <c>KpiInfo</c>. Retrofitting that link is out of scope for this
-/// dispatch.
+/// Referenced by <c>HCMv3.PerformanceManagement.KpiInfo.CompetencyId</c> (legacy <c>KpiInfo.Competency</c>).
 /// </summary>
 public class Competency : FullAuditedEntity, IMustHaveTenant
 {

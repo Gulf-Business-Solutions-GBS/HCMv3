@@ -3,9 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     DisciplinaryTypesServiceProxy,
     CreateOrEditDisciplinaryTypeDto,
-
-
-
+    ViolationWageTypeDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -35,19 +33,30 @@ export class CreateOrEditDisciplinaryTypeModalComponent extends AppComponentBase
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly disciplinaryType = signal<CreateOrEditDisciplinaryTypeDto>(new CreateOrEditDisciplinaryTypeDto());
+    // Legacy ViolationWageType: active deductions outside basic/calculated/arrear pay, not Net Pay.
+    readonly wageTypes = signal<ViolationWageTypeDto[]>([]);
 
     show(disciplinaryTypeId?: number): void {
         this.active.set(true);
 
         if (!disciplinaryTypeId) {
             this.disciplinaryType.set(new CreateOrEditDisciplinaryTypeDto());
+            this.loadWageTypes(undefined);
             this.modal().show();
         } else {
             this._disciplinaryTypeService.getDisciplinaryTypeForEdit(disciplinaryTypeId).subscribe((result) => {
                 this.disciplinaryType.set(result.disciplinaryType);
+                this.loadWageTypes(result.disciplinaryType.wageTypeId);
                 this.modal().show();
             });
         }
+    }
+
+    // The wage type already on the record is always returned, so it stays visible.
+    private loadWageTypes(currentWageTypeId: number | undefined): void {
+        this._disciplinaryTypeService
+            .getViolationWageTypes(currentWageTypeId)
+            .subscribe((result) => this.wageTypes.set(result.items));
     }
 
     onShown(): void {

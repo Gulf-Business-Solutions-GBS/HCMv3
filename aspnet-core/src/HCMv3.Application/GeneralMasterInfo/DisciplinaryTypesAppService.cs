@@ -9,6 +9,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.GeneralMasterInfo.Dto;
+using HCMv3.PayrollManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,17 +17,52 @@ namespace HCMv3.GeneralMasterInfo;
 
 /// <summary>
 /// Application service for the DisciplinaryType master (ported from legacy XAF DisciplinaryType).
-/// Mirrors <c>CitiesAppService</c>. The legacy <c>WageType</c> FK and <c>ViolationWageType</c>
-/// collection are not ported (Payroll module out of scope).
+/// Mirrors <c>CitiesAppService</c>. The legacy <c>WageType</c> FK is <see cref="DisciplinaryType.WageTypeId"/>;
+/// its legacy <c>ViolationWageType</c> picker filter is <see cref="GetViolationWageTypes"/>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypes)]
 public class DisciplinaryTypesAppService : HCMv3AppServiceBase, IDisciplinaryTypesAppService
 {
-    private readonly IRepository<DisciplinaryType> _repository;
+    /// <summary>Net Pay; legacy <c>ViolationWageType</c> excluded it by code.</summary>
+    private const string NetPayWageTypeCode = "9000";
 
-    public DisciplinaryTypesAppService(IRepository<DisciplinaryType> repository)
+    private readonly IRepository<DisciplinaryType> _repository;
+    private readonly IRepository<WageType> _wageTypeRepository;
+
+    public DisciplinaryTypesAppService(IRepository<DisciplinaryType> repository, IRepository<WageType> wageTypeRepository)
     {
         _repository = repository;
+        _wageTypeRepository = wageTypeRepository;
+    }
+
+    /// <summary>
+    /// Legacy <c>DisciplinaryType.ViolationWageType</c>: active deduction wage types that are not part of basic,
+    /// calculated or arrear pay, and not Net Pay (9000). The wage type already on the record being edited
+    /// (<paramref name="input"/>.Id) is always included so it stays visible.
+    /// </summary>
+    public async Task<ListResultDto<ViolationWageTypeDto>> GetViolationWageTypes(NullableIdDto input)
+    {
+        var currentId = input?.Id;
+
+        var items = await _wageTypeRepository.GetAll()
+            .Where(w => w.Id == currentId
+                        || (w.Status
+                            && w.BillingType == BillingType.Deduction
+                            && !w.IncludeInBasicPay
+                            && !w.IncludeInCalculatedPay
+                            && !w.IncludeInArrearPay
+                            && w.Code != NetPayWageTypeCode))
+            .OrderBy(w => w.Code)
+            .Select(w => new ViolationWageTypeDto
+            {
+                Id = w.Id,
+                Code = w.Code,
+                NameEn = w.NameEn,
+                NameAr = w.NameAr
+            })
+            .ToListAsync();
+
+        return new ListResultDto<ViolationWageTypeDto>(items);
     }
 
     [HttpPost]
@@ -35,6 +71,7 @@ public class DisciplinaryTypesAppService : HCMv3AppServiceBase, IDisciplinaryTyp
         input.Normalize();
 
         var query = _repository.GetAll()
+            .Include(t => t.WageType)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), t =>
                 t.Code.Contains(input.Filter) ||
                 t.NameEn.Contains(input.Filter) ||
@@ -83,6 +120,7 @@ public class DisciplinaryTypesAppService : HCMv3AppServiceBase, IDisciplinaryTyp
             NameEn = input.NameEn,
             NameAr = input.NameAr,
             RepeatDurationInDays = input.RepeatDurationInDays,
+            WageTypeId = input.WageTypeId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -101,6 +139,7 @@ public class DisciplinaryTypesAppService : HCMv3AppServiceBase, IDisciplinaryTyp
         entity.NameEn = input.NameEn;
         entity.NameAr = input.NameAr;
         entity.RepeatDurationInDays = input.RepeatDurationInDays;
+        entity.WageTypeId = input.WageTypeId;
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateUniquenessAsync(entity);
@@ -160,7 +199,9 @@ public class DisciplinaryTypesAppService : HCMv3AppServiceBase, IDisciplinaryTyp
             Code = entity.Code,
             NameEn = entity.NameEn,
             NameAr = entity.NameAr,
-            RepeatDurationInDays = entity.RepeatDurationInDays
+            RepeatDurationInDays = entity.RepeatDurationInDays,
+            WageTypeId = entity.WageTypeId,
+            WageTypeName = entity.WageType?.NameEn
         };
     }
 
@@ -172,7 +213,8 @@ public class DisciplinaryTypesAppService : HCMv3AppServiceBase, IDisciplinaryTyp
             Code = entity.Code,
             NameEn = entity.NameEn,
             NameAr = entity.NameAr,
-            RepeatDurationInDays = entity.RepeatDurationInDays
+            RepeatDurationInDays = entity.RepeatDurationInDays,
+            WageTypeId = entity.WageTypeId
         };
     }
 }

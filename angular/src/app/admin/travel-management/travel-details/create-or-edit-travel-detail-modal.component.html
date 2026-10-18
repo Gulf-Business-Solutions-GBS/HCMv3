@@ -169,6 +169,20 @@
                                     [ngModel]="record().totalNights"
                                     (ngModelChange)="updateField('totalNights', $event)" />
                             </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="TravelDetail_PerDiemPayPercentage">{{ 'PerDiemPayPercentage' | localize }}</label>
+                                <input
+                                    id="TravelDetail_PerDiemPayPercentage"
+                                    #perDiemPayPercentageInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    name="PerDiemPayPercentage"
+                                    [ngModel]="record().perDiemPayPercentage"
+                                    (ngModelChange)="updateField('perDiemPayPercentage', $event)" />
+                                <validation-messages [formCtrl]="perDiemPayPercentageInput" />
+                            </div>
                             <div class="col-md-2 mb-5 d-flex align-items-end">
                                 <div class="form-check form-switch">
                                     <input
@@ -241,6 +255,7 @@
                                     <div class="col-md-3 mb-5">
                                         <div><strong>{{ 'PerDiemRate' | localize }}:</strong> {{ perDiemRate() }}</div>
                                         <div><strong>{{ 'PerDiemAmount' | localize }}:</strong> {{ perDiemAmount() }}</div>
+                                        <div><strong>{{ 'PerDiemPayAmount' | localize }}:</strong> {{ perDiemPayAmount() }}</div>
                                     </div>
                                 }
                             </div>

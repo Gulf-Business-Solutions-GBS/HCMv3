@@ -71,6 +71,7 @@
                                     <th style="min-width: 150px">{{ 'DocumentNum' | localize }}</th>
                                     <th style="min-width: 130px">{{ 'IssueDate' | localize }}</th>
                                     <th style="min-width: 130px">{{ 'ExpiryDate' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'DaysLeft' | localize }}</th>
                                     <th style="min-width: 160px">{{ 'Sponsor' | localize }}</th>
                                     <th style="min-width: 130px">{{ 'NotificationSent' | localize }}</th>
                                 </tr>
@@ -100,6 +101,7 @@
                                     <td style="min-width: 150px">{{ record.documentNum }}</td>
                                     <td style="min-width: 130px">{{ record.issueDate | luxonFormat: 'DD' }}</td>
                                     <td style="min-width: 130px">{{ record.expiryDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 110px" [class.text-danger]="record.daysLeft < 0">{{ record.daysLeft | number: '1.0-0' }}</td>
                                     <td style="min-width: 160px">{{ record.sponsorName }}</td>
                                     <td style="min-width: 130px">
                                         <i class="fa" [class.fa-check]="record.notificationSent" [class.text-success]="record.notificationSent" [class.fa-times]="!record.notificationSent" [class.text-danger]="!record.notificationSent"></i>

@@ -1,6 +1,7 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    CountriesServiceProxy,
     CreateOrEditInstitutionDto,
     GetAllSimpleLookupsInput,
     InstitutionsServiceProxy,
@@ -29,6 +30,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditInstitutionModalComponent extends AppComponentBase {
     private _institutionsService = inject(InstitutionsServiceProxy);
     private _universitiesService = inject(UniversitiesServiceProxy);
+    private _countriesService = inject(CountriesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -37,6 +39,7 @@ export class CreateOrEditInstitutionModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly institution = signal<CreateOrEditInstitutionDto>(new CreateOrEditInstitutionDto());
     readonly universities = signal<SimpleLookupDto[]>([]);
+    readonly countries = signal<SimpleLookupDto[]>([]);
 
     show(institutionId?: number): void {
         this.active.set(true);
@@ -46,6 +49,10 @@ export class CreateOrEditInstitutionModalComponent extends AppComponentBase {
             .subscribe((result) => {
                 this.universities.set(result.items);
             });
+
+        this._countriesService
+            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.countries.set(result.items));
 
         if (!institutionId) {
             this.institution.set(new CreateOrEditInstitutionDto());

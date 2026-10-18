@@ -31,23 +31,25 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
     private readonly IRepository<WageType> _wageTypeRepository;
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IRepository<OvertimeType> _overtimeTypeRepository;
+    private readonly IRepository<DisciplinaryType> _disciplinaryTypeRepository;
 
     public LoanTypesAppService(
         IRepository<LoanType> repository,
         IRepository<WageType> wageTypeRepository,
         IRepository<AbsenceType> absenceTypeRepository,
-        IRepository<OvertimeType> overtimeTypeRepository)
+        IRepository<OvertimeType> overtimeTypeRepository,
+        IRepository<DisciplinaryType> disciplinaryTypeRepository)
     {
         _repository = repository;
         _wageTypeRepository = wageTypeRepository;
         _absenceTypeRepository = absenceTypeRepository;
         _overtimeTypeRepository = overtimeTypeRepository;
+        _disciplinaryTypeRepository = disciplinaryTypeRepository;
     }
 
     /// <summary>
     /// Legacy <c>LoanType.LoanDedWageType</c>: active deduction wage types that are not part of basic, calculated
-    /// or arrear pay, not Net Pay, and not already used by a leave or overtime type. Legacy also excluded
-    /// violation wage types; <see cref="DisciplinaryType"/> has no wage type yet, so there is nothing to exclude.
+    /// or arrear pay, not Net Pay, and not already used by a leave, overtime or violation type.
     /// </summary>
     public async Task<ListResultDto<LoanDeductionWageTypeDto>> GetDeductionWageTypes(NullableIdDto input)
     {
@@ -55,6 +57,9 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
             .Where(t => t.WageTypeId != null)
             .Select(t => t.WageTypeId.Value);
         var overtimeWageTypeIds = _overtimeTypeRepository.GetAll()
+            .Where(t => t.WageTypeId != null)
+            .Select(t => t.WageTypeId.Value);
+        var violationWageTypeIds = _disciplinaryTypeRepository.GetAll()
             .Where(t => t.WageTypeId != null)
             .Select(t => t.WageTypeId.Value);
 
@@ -67,7 +72,8 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
                             && !w.IncludeInArrearPay
                             && w.Code != NetPayWageTypeCode
                             && !leaveWageTypeIds.Contains(w.Id)
-                            && !overtimeWageTypeIds.Contains(w.Id)))
+                            && !overtimeWageTypeIds.Contains(w.Id)
+                            && !violationWageTypeIds.Contains(w.Id)))
             .OrderBy(w => w.Code)
             .Select(w => new LoanDeductionWageTypeDto
             {

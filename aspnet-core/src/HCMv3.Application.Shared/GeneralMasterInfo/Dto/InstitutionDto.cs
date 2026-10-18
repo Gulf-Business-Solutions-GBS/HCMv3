@@ -16,4 +16,8 @@ public class InstitutionDto : EntityDto<int>
     public int? UniversityId { get; set; }
 
     public string UniversityName { get; set; }
+
+    public int? CountryId { get; set; }
+
+    public string CountryName { get; set; }
 }

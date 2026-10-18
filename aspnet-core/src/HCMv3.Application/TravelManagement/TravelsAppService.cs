@@ -243,6 +243,7 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
                 TravelAirlineId = leg.TravelAirlineId,
                 NightStay = leg.NightStay,
                 TotalNights = leg.TotalNights,
+                PerDiemPayPercentage = leg.PerDiemPayPercentage,
                 IsVisaRequired = leg.IsVisaRequired,
                 VisaComments = leg.VisaComments,
                 IsHotelRequired = leg.IsHotelRequired,

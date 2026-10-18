@@ -4,7 +4,8 @@ using Abp.Application.Services.Dto;
 namespace HCMv3.Recruitment.Dto;
 
 /// <summary>
-/// Read/list DTO for <see cref="Vacancy"/>. Legacy computed <c>CodeWithTitle</c> is reproduced here.
+/// Read/list DTO for <see cref="Vacancy"/>. Legacy computed <c>CodeWithTitle</c> and <c>ActualDaysToFill</c>
+/// are reproduced here.
 /// </summary>
 public class VacancyDto : EntityDto<int>
 {
@@ -24,6 +25,16 @@ public class VacancyDto : EntityDto<int>
 
     public int? RecruiterId { get; set; }
 
+    public string RecruiterCode { get; set; }
+
+    public string RecruiterFullNameEn { get; set; }
+
+    public int? PositionId { get; set; }
+
+    public string PositionCode { get; set; }
+
+    public string PositionNameEn { get; set; }
+
     public int? TemplateOnbGroupId { get; set; }
 
     public long? OrganizationUnitId { get; set; }
@@ -33,6 +44,13 @@ public class VacancyDto : EntityDto<int>
     public VacancyStatus VacancyStatus { get; set; }
 
     public int SLADaysToFill { get; set; }
+
+    /// <summary>
+    /// Legacy computed <c>Vacancy.ActualDaysToFill</c>: days from <see cref="PublishOn"/> to the latest joining
+    /// date among this vacancy's applications in status Joined (both taken as dates). Zero when the vacancy has
+    /// no publish date or nobody has joined yet. Not stored.
+    /// </summary>
+    public double ActualDaysToFill { get; set; }
 
     public string JobDescription { get; set; }
 

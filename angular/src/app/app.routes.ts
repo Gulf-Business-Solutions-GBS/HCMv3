@@ -4,7 +4,6 @@ import { AppRouteGuard } from './shared/common/auth/auth-route-guard';
 import { startupDashboardGuard } from './shared/common/auth/startup-dashboard.guard';
 import { ISimpleLookupServiceProxy, SimpleLookupFlag } from './admin/general-master-info/shared/simple-lookup.types';
 import {
-    AssetTypesServiceProxy,
     CountriesServiceProxy,
     BankFilesServiceProxy,
     BudgetingGroupsServiceProxy,
@@ -569,7 +568,14 @@ export const appRoutes: Routes = [
                             ),
                         data: { permission: 'Pages.GeneralMasterInfo.CurrencyConvertors' },
                     },
-                    simpleLookupRoute('asset-types', 'AssetTypes', 'AssetTypes', AssetTypesServiceProxy),
+                    {
+                        path: 'asset-types',
+                        loadComponent: () =>
+                            import('./admin/general-master-info/asset-types/asset-types.component').then(
+                                (m) => m.AssetTypesComponent
+                            ),
+                        data: { permission: 'Pages.GeneralMasterInfo.AssetTypes' },
+                    },
                     simpleLookupRoute('countries', 'Countries', 'Countries', CountriesServiceProxy),
                     simpleLookupRoute(
                         'budgeting-groups',
@@ -686,6 +692,14 @@ export const appRoutes: Routes = [
                         JobTitlesServiceProxy,
                         'OrganizationManagement'
                     ),
+                    {
+                        path: 'job-title-details',
+                        loadComponent: () =>
+                            import('./admin/organization-management/job-title-details/job-title-details.component').then(
+                                (m) => m.JobTitleDetailsComponent
+                            ),
+                        data: { permission: 'Pages.OrganizationManagement.JobTitleDetails' },
+                    },
                     {
                         path: 'cost-centers',
                         loadComponent: () =>
@@ -3028,6 +3042,14 @@ export const appRoutes: Routes = [
                                 (m) => m.OrganizationDocumentsComponent
                             ),
                         data: { permission: 'Pages.GovtRelationsManagement.OrganizationDocuments' },
+                    },
+                    {
+                        path: 'org-policies',
+                        loadComponent: () =>
+                            import('./admin/govt-relations-management/org-policies/org-policies.component').then(
+                                (m) => m.OrgPoliciesComponent
+                            ),
+                        data: { permission: 'Pages.GovtRelationsManagement.OrgPolicies' },
                     },
                     {
                         path: 'sponsors',

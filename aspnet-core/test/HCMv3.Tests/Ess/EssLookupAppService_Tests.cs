@@ -71,19 +71,36 @@ public class EssLookupAppService_Tests : AppTestBase
         return id;
     }
 
-    private int CreateAsset(string name, AssetStatus status)
+    /// <summary>
+    /// <paramref name="includeInWorkflow"/> is the asset type's legacy switch; null means the asset has no type.
+    /// </summary>
+    private int CreateAsset(string name, AssetStatus status, bool? includeInWorkflow = true)
     {
         var id = 0;
 
         UsingDbContext(context =>
         {
+            AssetType assetType = null;
+            if (includeInWorkflow.HasValue)
+            {
+                assetType = context.Set<AssetType>().Add(new AssetType
+                {
+                    TenantId = TenantId,
+                    Code = Unique(),
+                    NameEn = name + " type",
+                    NameAr = name + " type",
+                    IncludeInWorkflow = includeInWorkflow.Value
+                }).Entity;
+            }
+
             var asset = context.Set<Asset>().Add(new Asset
             {
                 TenantId = TenantId,
                 Code = Unique(),
                 NameEn = name,
                 NameAr = name,
-                Status = status
+                Status = status,
+                AssetType = assetType
             }).Entity;
 
             context.SaveChanges();
@@ -447,6 +464,28 @@ public class EssLookupAppService_Tests : AppTestBase
 
         assets.Select(a => a.Id).ShouldContain(active);
         assets.Select(a => a.Id).ShouldNotContain(retired, "A retired asset was offered as requestable.");
+    }
+
+    [Fact]
+    public async Task Assets_Should_Offer_Only_Those_Whose_Type_Is_Included_In_Workflow()
+    {
+        var included = CreateAsset("Workflow laptop", AssetStatus.Active, includeInWorkflow: true);
+        var excluded = CreateAsset("Office-only printer", AssetStatus.Active, includeInWorkflow: false);
+
+        var assets = await _lookups.GetAssets();
+
+        assets.Select(a => a.Id).ShouldContain(included);
+        assets.Select(a => a.Id).ShouldNotContain(excluded, "An asset whose type is not in workflow was offered.");
+    }
+
+    [Fact]
+    public async Task Assets_Without_A_Type_Should_Not_Be_Offered()
+    {
+        var untyped = CreateAsset("Untyped asset", AssetStatus.Active, includeInWorkflow: null);
+
+        var assets = await _lookups.GetAssets();
+
+        assets.Select(a => a.Id).ShouldNotContain(untyped, "Legacy ESS offered only assets whose type is in workflow.");
     }
 
     [Fact]

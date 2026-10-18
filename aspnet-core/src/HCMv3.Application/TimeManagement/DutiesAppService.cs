@@ -47,6 +47,13 @@ public class DutiesAppService : HCMv3AppServiceBase, IDutiesAppService
                 d.NameEn.Contains(input.Filter) ||
                 d.NameAr.Contains(input.Filter));
 
+        if (input.IsActive.HasValue)
+        {
+            var isActive = input.IsActive.Value;
+            var includeIds = input.IncludeIds ?? new System.Collections.Generic.List<int>();
+            query = query.Where(d => d.IsActive == isActive || includeIds.Contains(d.Id));
+        }
+
         var totalCount = await query.CountAsync();
 
         var items = await query
@@ -109,6 +116,7 @@ public class DutiesAppService : HCMv3AppServiceBase, IDutiesAppService
             IsHalfDay = input.IsHalfDay,
             FlexiStartTime = input.FlexiStartTime,
             FlexiEndTime = input.FlexiEndTime,
+            IsActive = input.IsActive,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -140,6 +148,7 @@ public class DutiesAppService : HCMv3AppServiceBase, IDutiesAppService
         entity.IsHalfDay = input.IsHalfDay;
         entity.FlexiStartTime = input.FlexiStartTime;
         entity.FlexiEndTime = input.FlexiEndTime;
+        entity.IsActive = input.IsActive;
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateAsync(entity);
@@ -250,7 +259,8 @@ public class DutiesAppService : HCMv3AppServiceBase, IDutiesAppService
             IsRestDay = entity.IsRestDay,
             IsHalfDay = entity.IsHalfDay,
             FlexiStartTime = entity.FlexiStartTime,
-            FlexiEndTime = entity.FlexiEndTime
+            FlexiEndTime = entity.FlexiEndTime,
+            IsActive = entity.IsActive
         };
     }
 
@@ -275,7 +285,8 @@ public class DutiesAppService : HCMv3AppServiceBase, IDutiesAppService
             IsRestDay = entity.IsRestDay,
             IsHalfDay = entity.IsHalfDay,
             FlexiStartTime = entity.FlexiStartTime,
-            FlexiEndTime = entity.FlexiEndTime
+            FlexiEndTime = entity.FlexiEndTime,
+            IsActive = entity.IsActive
         };
     }
 }

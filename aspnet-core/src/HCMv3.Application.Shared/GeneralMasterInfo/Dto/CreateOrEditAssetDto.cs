@@ -56,4 +56,10 @@ public class CreateOrEditAssetDto
     public AssetStatus Status { get; set; }
 
     public AssetAllocationStatus AssetAllocationStatus { get; set; }
+
+    /// <summary>Legacy <c>Asset.Earning</c> wage type. Optional.</summary>
+    public int? EarningWageTypeId { get; set; }
+
+    /// <summary>Legacy <c>Asset.Deduction</c> wage type. Optional.</summary>
+    public int? DeductionWageTypeId { get; set; }
 }

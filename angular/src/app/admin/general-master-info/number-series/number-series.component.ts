@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { NumberSeriesDto, NumberSeriesServiceProxy, GetAllNumberSeriesInput } from '@shared/service-proxies/service-proxies';
+import { EmploymentType, NumberSeriesDto, NumberSeriesServiceProxy, GetAllNumberSeriesInput } from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -71,6 +71,11 @@ export class NumberSeriesComponent extends AppComponentBase implements OnInit {
                 this.primengTableHelper.records.set(result.items);
                 this.primengTableHelper.hideLoadingIndicator();
             });
+    }
+
+    /** Localization key of an employment type: Permanent, Temporary or ALL. */
+    employmentTypeName(value: EmploymentType): string {
+        return EmploymentType[value] ?? '';
     }
 
     reloadPage(): void {

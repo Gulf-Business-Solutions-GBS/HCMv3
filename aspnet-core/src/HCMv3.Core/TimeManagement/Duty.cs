@@ -12,7 +12,9 @@ namespace HCMv3.TimeManagement;
 /// equivalent building block — kept as a separate entity, not merged).
 /// The legacy <c>IExcelImport</c> marker and the <c>DutyCopy</c> "copy wizard" DTO are XAF UI concepts
 /// and are not ported. Legacy sentinel FlexiStartTime/FlexiEndTime values (1800-01-01 00:00/23:59, meaning
-/// "not set") are replaced here with nullable <see cref="TimeSpan"/>.
+/// "not set") are replaced here with nullable <see cref="TimeSpan"/>. <see cref="IsActive"/> defaults to
+/// true for a new duty, as legacy <c>AfterConstruction</c> set it; an inactive duty stays on the records that
+/// already use it but is no longer offered when choosing a duty.
 /// </summary>
 public class Duty : FullAuditedEntity, IMustHaveTenant
 {
@@ -60,4 +62,7 @@ public class Duty : FullAuditedEntity, IMustHaveTenant
     public virtual TimeSpan? FlexiStartTime { get; set; }
 
     public virtual TimeSpan? FlexiEndTime { get; set; }
+
+    /// <summary>Legacy <c>Duty.IsActive</c>. True for a new duty (legacy <c>AfterConstruction</c>).</summary>
+    public virtual bool IsActive { get; set; } = true;
 }

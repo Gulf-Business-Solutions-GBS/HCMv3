@@ -18,4 +18,10 @@ public class TrainingCourseDto : EntityDto<int>
     public double Fees { get; set; }
 
     public bool Active { get; set; }
+
+    public int? InstitutionId { get; set; }
+
+    public string InstitutionName { get; set; }
+
+    public TrainingCourseSource Source { get; set; }
 }

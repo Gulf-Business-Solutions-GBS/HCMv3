@@ -14,4 +14,6 @@ public interface IDisciplinaryTypesAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditDisciplinaryTypeDto input);
 
     Task Delete(EntityDto input);
+
+    Task<ListResultDto<ViolationWageTypeDto>> GetViolationWageTypes(NullableIdDto input);
 }

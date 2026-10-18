@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using HCMv3.PayrollManagement;
 
 namespace HCMv3.GeneralMasterInfo;
 
@@ -9,8 +10,10 @@ namespace HCMv3.GeneralMasterInfo;
 /// Asset master (ported from legacy XAF <c>HCM10.Module.BusinessObjects.GeneralMasterInfo.Asset</c>).
 /// Extends the Code/NameEn/NameAr shape with vehicle/equipment attributes and an <see cref="AssetType"/> FK,
 /// so it can't derive from <see cref="SimpleLookupEntity"/> (see <see cref="AccessUnit"/> for the same
-/// bespoke pattern). DEFERRED (not ported): the legacy Earning/Deduction <c>WageType</c> FKs (Payroll
-/// module not ported) and the <c>DocAttachment</c> FK (file-attachment infrastructure not ported).
+/// bespoke pattern). The legacy <c>Earning</c>/<c>Deduction</c> <c>WageType</c> FKs are ported as
+/// <see cref="EarningWageTypeId"/>/<see cref="DeductionWageTypeId"/>. The legacy <c>DocAttachment</c> FK
+/// is replaced by the generic per-tenant attachment store (attachment owner type <c>"Asset"</c>), so it is
+/// not a column here.
 /// </summary>
 public class Asset : FullAuditedEntity, IMustHaveTenant
 {
@@ -61,4 +64,14 @@ public class Asset : FullAuditedEntity, IMustHaveTenant
     public virtual AssetStatus Status { get; set; }
 
     public virtual AssetAllocationStatus AssetAllocationStatus { get; set; }
+
+    /// <summary>Legacy <c>Asset.Earning</c>: the wage type paid for this asset. Optional.</summary>
+    public virtual int? EarningWageTypeId { get; set; }
+
+    public virtual WageType EarningWageType { get; set; }
+
+    /// <summary>Legacy <c>Asset.Deduction</c>: the wage type deducted for this asset. Optional.</summary>
+    public virtual int? DeductionWageTypeId { get; set; }
+
+    public virtual WageType DeductionWageType { get; set; }
 }

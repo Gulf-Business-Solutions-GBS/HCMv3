@@ -92,6 +92,18 @@
                                     <th style="min-width: 110px">
                                         {{ 'TotalVacancy' | localize }}
                                     </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'Position' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'Recruiter' | localize }}
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'SlaDaysToFill' | localize }}
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'ActualDaysToFill' | localize }}
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -124,6 +136,18 @@
                                     <td style="min-width: 140px">{{ record.closingDate | luxonFormat: 'yyyy-MM-dd' }}</td>
                                     <td style="min-width: 140px">{{ record.vacancyStatus }}</td>
                                     <td style="min-width: 110px">{{ record.totalVacancy }}</td>
+                                    <td style="min-width: 180px">
+                                        @if (record.positionId) {
+                                            {{ record.positionCode }} - {{ record.positionNameEn }}
+                                        }
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        @if (record.recruiterId) {
+                                            {{ record.recruiterCode }} - {{ record.recruiterFullNameEn }}
+                                        }
+                                    </td>
+                                    <td style="min-width: 110px">{{ record.slaDaysToFill }}</td>
+                                    <td style="min-width: 110px">{{ record.actualDaysToFill }}</td>
                                 </tr>
                             </ng-template>
                         </p-table>

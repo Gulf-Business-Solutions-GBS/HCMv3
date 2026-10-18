@@ -31,7 +31,7 @@
                                     class="form-select"
                                     name="EmployeeId"
                                     [ngModel]="record().employeeId"
-                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    (ngModelChange)="updateEmployee($event)"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (employee of employees(); track employee.id) {
@@ -114,6 +114,28 @@
                                     maxlength="1000"></textarea>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeTraining_EmployeeCertificationId">{{ 'Certificate' | localize }}</label>
+                                <select
+                                    id="EmployeeTraining_EmployeeCertificationId"
+                                    class="form-select"
+                                    name="EmployeeCertificationId"
+                                    [ngModel]="record().employeeCertificationId"
+                                    (ngModelChange)="updateField('employeeCertificationId', $event)"
+                                    [disabled]="!record().employeeId">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (certification of certifications(); track certification.id) {
+                                        <option [ngValue]="certification.id">{{ certification.displayName }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        @if (record().id) {
+                            <div class="mb-5">
+                                <app-attachments entityType="EmployeeTraining" [entityId]="record().id" />
+                            </div>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

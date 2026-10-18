@@ -102,6 +102,9 @@
                                     <th style="min-width: 100px">
                                         {{ 'IsHalfDay' | localize }}
                                     </th>
+                                    <th style="min-width: 100px">
+                                        {{ 'IsActive' | localize }}
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -156,6 +159,9 @@
                                     </td>
                                     <td style="min-width: 100px">
                                         <i class="fa" [ngClass]="record.isHalfDay ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    </td>
+                                    <td style="min-width: 100px">
+                                        <i class="fa" [ngClass]="record.isActive ? 'fa-check text-success' : 'fa-times text-danger'"></i>
                                     </td>
                                 </tr>
                             </ng-template>

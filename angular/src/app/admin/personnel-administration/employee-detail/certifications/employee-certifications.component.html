@@ -37,6 +37,7 @@
                         <th>{{ 'Institution' | localize }}</th>
                         <th>{{ 'Certificate' | localize }}</th>
                         <th>{{ 'Grade' | localize }}</th>
+                        <th>{{ 'CertificationType' | localize }}</th>
                         <th>{{ 'StartDate' | localize }}</th>
                         <th>{{ 'EndDate' | localize }}</th>
                     </tr>
@@ -64,6 +65,7 @@
                         <td>{{ record.institutionName }}</td>
                         <td>{{ record.certificate }}</td>
                         <td>{{ record.grade }}</td>
+                        <td>{{ (record.certificationType === 1 ? 'Training' : 'Professional') | localize }}</td>
                         <td>{{ record.startDate | luxonFormat: 'DD' }}</td>
                         <td>{{ record.endDate | luxonFormat: 'DD' }}</td>
                     </tr>

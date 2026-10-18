@@ -6,6 +6,9 @@ import {
     EmployeeDocumentsServiceProxy,
     GetAllDocumentTypesInput,
     DocumentTypeDto,
+    DocumentPlacesServiceProxy,
+    GetAllSimpleLookupsInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -36,6 +39,7 @@ import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly
 export class CreateOrEditEmployeeDocumentModalComponent extends AppComponentBase {
     private _service = inject(EmployeeDocumentsServiceProxy);
     private _documentTypesService = inject(DocumentTypesServiceProxy);
+    private _documentPlacesService = inject(DocumentPlacesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -44,6 +48,7 @@ export class CreateOrEditEmployeeDocumentModalComponent extends AppComponentBase
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeDocumentDto>(new CreateOrEditEmployeeDocumentDto());
     readonly documentTypes = signal<DocumentTypeDto[]>([]);
+    readonly documentPlaces = signal<SimpleLookupDto[]>([]);
 
     show(employeeId: number, id?: number): void {
         this.active.set(true);
@@ -51,6 +56,10 @@ export class CreateOrEditEmployeeDocumentModalComponent extends AppComponentBase
         this._documentTypesService
             .getAll(new GetAllDocumentTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, onlyLetterTypes: false }))
             .subscribe((result) => this.documentTypes.set(result.items));
+
+        this._documentPlacesService
+            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.documentPlaces.set(result.items));
 
         if (!id) {
             const record = new CreateOrEditEmployeeDocumentDto();

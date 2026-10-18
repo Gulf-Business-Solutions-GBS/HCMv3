@@ -96,6 +96,12 @@ public class DocumentType : FullAuditedEntity, IMustHaveTenant
     public virtual bool IsHiddenFromEmployee { get; set; }
 
     /// <summary>
+    /// Legacy <c>ShowToAll</c>: organisation documents of this type are company policies everyone may read,
+    /// listed on the read-only Org Policy screen.
+    /// </summary>
+    public virtual bool ShowToAll { get; set; }
+
+    /// <summary>
     /// Whether a document of this type must carry an expiry date (legacy <c>IsExpiryDateRequired</c>). It also
     /// decides how two documents of the type are compared when <see cref="AllowDateOverlap"/> is off: by
     /// their whole periods when an expiry is required, by issue date alone when it is not.

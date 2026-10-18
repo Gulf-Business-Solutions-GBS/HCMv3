@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -37,6 +38,7 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
         PermissionPipe,
         PermissionAnyPipe,
         LuxonFormatPipe,
+        DecimalPipe,
     ],
 })
 export class OrganizationDocumentsComponent extends AppComponentBase implements OnInit {

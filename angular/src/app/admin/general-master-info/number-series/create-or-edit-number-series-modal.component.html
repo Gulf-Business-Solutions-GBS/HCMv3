@@ -92,6 +92,20 @@
                                 maxlength="200" />
                             <validation-messages [formCtrl]="formattingInput" />
                         </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="NumberSeries_EmploymentType">{{ 'EmploymentType' | localize }}</label>
+                            <select
+                                id="NumberSeries_EmploymentType"
+                                class="form-select"
+                                name="EmploymentType"
+                                [ngModel]="numberSeries().employmentType"
+                                (ngModelChange)="updateField('employmentType', $event)"
+                                required>
+                                @for (item of employmentTypes; track item.value) {
+                                    <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

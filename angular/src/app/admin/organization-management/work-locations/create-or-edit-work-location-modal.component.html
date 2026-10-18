@@ -134,6 +134,21 @@
                             <small class="form-text text-muted">{{ 'GeoFenceCoordinatesHint' | localize }}</small>
                         </div>
 
+                        <div class="mb-5">
+                            <label class="form-label" for="WorkLocation_SponsorId">{{ 'Sponsor' | localize }}</label>
+                            <select
+                                id="WorkLocation_SponsorId"
+                                class="form-select"
+                                name="SponsorId"
+                                [ngModel]="workLocation().sponsorId"
+                                (ngModelChange)="updateField('sponsorId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (sponsor of sponsors(); track sponsor.id) {
+                                    <option [ngValue]="sponsor.id">{{ sponsor.code }} - {{ sponsor.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
                         <div class="mb-5 form-check">
                             <input
                                 id="WorkLocation_IsActive"

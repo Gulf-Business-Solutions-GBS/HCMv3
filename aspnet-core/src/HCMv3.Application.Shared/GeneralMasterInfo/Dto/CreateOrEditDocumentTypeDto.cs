@@ -54,6 +54,9 @@ public class CreateOrEditDocumentTypeDto
     /// <summary>Tick to keep documents of this type out of the employee's own view in self-service.</summary>
     public bool IsHiddenFromEmployee { get; set; }
 
+    /// <summary>Organisation documents of this type are listed for everyone on the Org Policy screen.</summary>
+    public bool ShowToAll { get; set; }
+
     /// <summary>A document of this type must carry an expiry date. See <see cref="DocumentType.IsExpiryDateRequired"/>.</summary>
     public bool IsExpiryDateRequired { get; set; }
 

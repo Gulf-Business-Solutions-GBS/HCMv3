@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HCMv3.PersonnelAdministration;
 
 namespace HCMv3.GeneralMasterInfo.Dto;
 
@@ -26,4 +27,7 @@ public class CreateOrEditNumberSeriesDto
     [Required]
     [StringLength(64)]
     public string Formatting { get; set; }
+
+    /// <summary>Which employees this series numbers; <c>ALL</c> = everyone. Legacy <c>NumberSeries.EmploymentType</c>.</summary>
+    public EmploymentType EmploymentType { get; set; }
 }

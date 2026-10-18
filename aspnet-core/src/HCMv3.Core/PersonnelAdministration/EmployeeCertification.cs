@@ -40,4 +40,11 @@ public class EmployeeCertification : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(64)]
     public virtual string Grade { get; set; }
+
+    /// <summary>
+    /// Legacy <c>CertificationType</c>. Existing rows read as <c>Professional</c>
+    /// (0), the legacy default. Only <c>Training</c> rows can be linked
+    /// from an <c>EmployeeTraining</c>.
+    /// </summary>
+    public virtual CertificationType CertificationType { get; set; }
 }

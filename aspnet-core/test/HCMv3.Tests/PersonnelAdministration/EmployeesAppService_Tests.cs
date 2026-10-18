@@ -286,6 +286,73 @@ public class EmployeesAppService_Tests : AppTestBase
         });
     }
 
+    private void CreateNumberSeries(EmploymentType type, string prefix, string formatting)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<NumberSeries>().Add(new NumberSeries
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = type.ToString(),
+                Prefix = prefix,
+                Formatting = formatting,
+                EmploymentType = type
+            });
+        });
+    }
+
+    /// <summary>Legacy Employee.OnSaving -> NumberSeries.GetCode(EmploymentType).</summary>
+    [Fact]
+    public async Task A_Blank_Code_Should_Come_From_The_Number_Series_Of_The_Employees_Employment_Type()
+    {
+        var nationality = CreateTestNationality();
+        SetDisableAutoEmpCode(false);
+        CreateNumberSeries(EmploymentType.Permanent, "P", "000");
+        CreateNumberSeries(EmploymentType.Temporary, "T", "000");
+
+        var dto = ValidCreateDto(nationality.Id);
+        dto.EmploymentType = EmploymentType.Temporary;
+        await _employeesAppService.CreateOrEdit(dto);
+
+        UsingDbContext(context => context.Set<Employee>().Single(e => e.CivilID == 123456789012).Code).ShouldBe("T001");
+    }
+
+    /// <summary>Legacy Employee.OnSaving "Update Code For EmploymentType" (2024.04.15).</summary>
+    [Fact]
+    public async Task Changing_The_Employment_Type_Should_Take_The_Next_Code_Of_The_New_Types_Series()
+    {
+        var nationality = CreateTestNationality();
+        SetDisableAutoEmpCode(false);
+        CreateNumberSeries(EmploymentType.Permanent, "P", "000");
+        CreateNumberSeries(EmploymentType.Temporary, "T", "000");
+
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id));
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.CivilID == 123456789012).Id);
+        UsingDbContext(context => context.Set<Employee>().Single(e => e.Id == id).Code).ShouldBe("P001");
+
+        var forEdit = await _employeesAppService.GetEmployeeForEdit(new EntityDto(id));
+        forEdit.Employee.EmploymentType = EmploymentType.Temporary;
+        await _employeesAppService.CreateOrEdit(forEdit.Employee);
+
+        UsingDbContext(context => context.Set<Employee>().Single(e => e.Id == id).Code).ShouldBe("T001");
+    }
+
+    [Fact]
+    public async Task Saving_Without_Changing_The_Employment_Type_Should_Keep_The_Code()
+    {
+        var nationality = CreateTestNationality();
+        SetDisableAutoEmpCode(false);
+        CreateNumberSeries(EmploymentType.Permanent, "P", "000");
+
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id));
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.CivilID == 123456789012).Id);
+
+        var forEdit = await _employeesAppService.GetEmployeeForEdit(new EntityDto(id));
+        await _employeesAppService.CreateOrEdit(forEdit.Employee);
+
+        UsingDbContext(context => context.Set<Employee>().Single(e => e.Id == id).Code).ShouldBe("P001");
+    }
+
     [Fact]
     public async Task Should_Get_Employee_For_Edit()
     {

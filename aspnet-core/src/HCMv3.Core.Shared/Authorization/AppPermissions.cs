@@ -293,6 +293,11 @@ public static class AppPermissions
     public const string Pages_OrganizationManagement_JobTitles_Edit = "Pages.OrganizationManagement.JobTitles.Edit";
     public const string Pages_OrganizationManagement_JobTitles_Delete = "Pages.OrganizationManagement.JobTitles.Delete";
 
+    public const string Pages_OrganizationManagement_JobTitleDetails = "Pages.OrganizationManagement.JobTitleDetails";
+    public const string Pages_OrganizationManagement_JobTitleDetails_Create = "Pages.OrganizationManagement.JobTitleDetails.Create";
+    public const string Pages_OrganizationManagement_JobTitleDetails_Edit = "Pages.OrganizationManagement.JobTitleDetails.Edit";
+    public const string Pages_OrganizationManagement_JobTitleDetails_Delete = "Pages.OrganizationManagement.JobTitleDetails.Delete";
+
     public const string Pages_OrganizationManagement_OrganizationUnitTypes = "Pages.OrganizationManagement.OrganizationUnitTypes";
     public const string Pages_OrganizationManagement_OrganizationUnitTypes_Create = "Pages.OrganizationManagement.OrganizationUnitTypes.Create";
     public const string Pages_OrganizationManagement_OrganizationUnitTypes_Edit = "Pages.OrganizationManagement.OrganizationUnitTypes.Edit";
@@ -1546,6 +1551,9 @@ public static class AppPermissions
     public const string Pages_GovtRelationsManagement_OrganizationDocuments_Create = "Pages.GovtRelationsManagement.OrganizationDocuments.Create";
     public const string Pages_GovtRelationsManagement_OrganizationDocuments_Edit = "Pages.GovtRelationsManagement.OrganizationDocuments.Edit";
     public const string Pages_GovtRelationsManagement_OrganizationDocuments_Delete = "Pages.GovtRelationsManagement.OrganizationDocuments.Delete";
+
+    /// <summary>Read-only "Org Policy" list: organisation documents whose type is Show To All.</summary>
+    public const string Pages_GovtRelationsManagement_OrgPolicies = "Pages.GovtRelationsManagement.OrgPolicies";
 
     public const string Pages_GovtRelationsManagement_EmployeeExitPermits = "Pages.GovtRelationsManagement.EmployeeExitPermits";
     public const string Pages_GovtRelationsManagement_EmployeeExitPermits_Create = "Pages.GovtRelationsManagement.EmployeeExitPermits.Create";

@@ -153,6 +153,11 @@
                                     maxlength="1000"></textarea>
                             </div>
                         </div>
+                        @if (record().id) {
+                            <div class="mb-5">
+                                <app-attachments entityType="OrganizationDocument" [entityId]="record().id" />
+                            </div>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

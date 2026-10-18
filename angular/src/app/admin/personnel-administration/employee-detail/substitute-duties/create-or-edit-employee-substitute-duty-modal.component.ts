@@ -45,24 +45,35 @@ export class CreateOrEditEmployeeSubstituteDutyModalComponent extends AppCompone
     show(employeeId: number, id?: number): void {
         this.active.set(true);
 
-        this.loadLookups();
-
         if (!id) {
             const record = new CreateOrEditEmployeeSubstituteDutyDto();
             record.employeeId = employeeId;
             this.record.set(record);
+            this.loadLookups([]);
             this.modal().show();
         } else {
             this._service.getEmployeeSubstituteDutyForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeSubstituteDuty);
+                this.loadLookups([result.employeeSubstituteDuty.dutyId]);
                 this.modal().show();
             });
         }
     }
 
-    private loadLookups(): void {
+    // Only active duties are offered; the one already on the record stays listed even if it was made
+    // inactive since.
+    private loadLookups(currentDutyIds: (number | undefined)[]): void {
         this._dutiesService
-            .getAll(new GetAllDutiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    isActive: true,
+                    includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
+                }),
+            )
             .subscribe((result) => this.duties.set(result.items));
     }
 

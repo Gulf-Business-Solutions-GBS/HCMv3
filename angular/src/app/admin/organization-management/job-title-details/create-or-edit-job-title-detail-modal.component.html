@@ -1,0 +1,88 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #jobTitleDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (jobTitleDetail().id) {
+                                <span>{{ 'EditingJobTitleDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewJobTitleDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="JobTitleDetail_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                            <select
+                                id="JobTitleDetail_JobTitleId"
+                                #jobTitleInput="ngModel"
+                                class="form-select"
+                                name="JobTitleId"
+                                required
+                                [ngModel]="jobTitleDetail().jobTitleId || undefined"
+                                (ngModelChange)="updateField('jobTitleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (jobTitle of jobTitles(); track jobTitle.id) {
+                                    <option [ngValue]="jobTitle.id">{{ jobTitle.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="jobTitleInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="JobTitleDetail_WorkflowRoleId">{{ 'WorkflowRole' | localize }}</label>
+                            <select
+                                id="JobTitleDetail_WorkflowRoleId"
+                                #workflowRoleInput="ngModel"
+                                class="form-select"
+                                name="WorkflowRoleId"
+                                required
+                                [ngModel]="jobTitleDetail().workflowRoleId || undefined"
+                                (ngModelChange)="updateField('workflowRoleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (workflowRole of workflowRoles(); track workflowRole.id) {
+                                    <option [ngValue]="workflowRole.id">{{ workflowRole.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="workflowRoleInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!jobTitleDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

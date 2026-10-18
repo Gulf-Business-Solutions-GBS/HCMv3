@@ -12,7 +12,10 @@ import {
     GetAllAccountInfosInput,
     GetAllCostElementsInput,
     GetAllCurrenciesInput,
+    GetAllNotificationConfigsInput,
     GetAllSimpleLookupsInput,
+    NotificationConfigDto,
+    NotificationConfigsServiceProxy,
     PayrollAreasServiceProxy,
     PayrollPeriodsServiceProxy,
     SimpleLookupDto,
@@ -37,6 +40,7 @@ export class CreateOrEditPayrollAreaModalComponent extends AppComponentBase {
     private _costElementsService = inject(CostElementsServiceProxy);
     private _accountInfosService = inject(AccountInfosServiceProxy);
     private _countriesService = inject(CountriesServiceProxy);
+    private _notificationConfigsService = inject(NotificationConfigsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -50,6 +54,7 @@ export class CreateOrEditPayrollAreaModalComponent extends AppComponentBase {
     readonly costElements = signal<CostElementDto[]>([]);
     readonly accountInfos = signal<AccountInfoDto[]>([]);
     readonly countries = signal<SimpleLookupDto[]>([]);
+    readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
 
     show(payrollAreaId?: number): void {
         this.active.set(true);
@@ -87,6 +92,10 @@ export class CreateOrEditPayrollAreaModalComponent extends AppComponentBase {
         this._countriesService
             .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.countries.set(result.items));
+
+        this._notificationConfigsService
+            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.notificationConfigs.set(result.items));
     }
 
     onShown(): void {

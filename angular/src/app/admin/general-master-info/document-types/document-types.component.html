@@ -81,6 +81,10 @@
                                     <th style="min-width: 180px">
                                         {{ 'NotificationConfig' | localize }}
                                     </th>
+                                    <th style="min-width: 120px">{{ 'ReminderDays' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'IncludeInWorkflow' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'IsWithdrawable' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'ShowToAll' | localize }}</th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -114,6 +118,22 @@
                                     </td>
                                     <td style="min-width: 180px">
                                         <span pTooltip="{{ record.notificationConfigName }}" class="hide-overflown">{{ record.notificationConfigName }}</span>
+                                    </td>
+                                    <td style="min-width: 120px">{{ record.notificationPeriod }}</td>
+                                    <td style="min-width: 120px">
+                                        @if (record.includeInWorkflow) {
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                        }
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        @if (record.isWithdrawable) {
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                        }
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        @if (record.showToAll) {
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                        }
                                     </td>
                                 </tr>
                             </ng-template>

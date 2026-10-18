@@ -2,18 +2,27 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditVacancyDto,
+    EmployeeDto,
+    EmployeesServiceProxy,
+    GetAllEmployeesInput,
     GetAllOnbGroupsInput,
+    GetAllPositionsInput,
     GetAllSimpleLookupsInput,
+    GetAllWorkLocationsInput,
     JobTitlesServiceProxy,
     OnbGroupDto,
     OnbGroupsServiceProxy,
     OrganizationUnitDto,
     OrganizationUnitServiceProxy,
+    PositionDto,
+    PositionsServiceProxy,
     QualificationsServiceProxy,
     SimpleLookupDto,
     VacanciesServiceProxy,
     VacancyEmploymentType,
     VacancyStatus,
+    WorkLocationDto,
+    WorkLocationsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -24,11 +33,13 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'createOrEditVacancyModal',
     templateUrl: './create-or-edit-vacancy-modal.component.html',
     imports: [
+        AttachmentsComponent,
         DateInputDirective,
         AppBsModalDirective,
         FormsModule,
@@ -43,6 +54,9 @@ export class CreateOrEditVacancyModalComponent extends AppComponentBase {
     private _qualificationsService = inject(QualificationsServiceProxy);
     private _organizationUnitService = inject(OrganizationUnitServiceProxy);
     private _onbGroupsService = inject(OnbGroupsServiceProxy);
+    private _positionsService = inject(PositionsServiceProxy);
+    private _employeesService = inject(EmployeesServiceProxy);
+    private _workLocationsService = inject(WorkLocationsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -55,6 +69,9 @@ export class CreateOrEditVacancyModalComponent extends AppComponentBase {
     readonly qualifications = signal<SimpleLookupDto[]>([]);
     readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
     readonly onbGroups = signal<OnbGroupDto[]>([]);
+    readonly positions = signal<PositionDto[]>([]);
+    readonly employees = signal<EmployeeDto[]>([]);
+    readonly workLocations = signal<WorkLocationDto[]>([]);
 
     readonly vacancyStatuses = [
         { value: VacancyStatus.Open, name: 'Open' },
@@ -100,6 +117,26 @@ export class CreateOrEditVacancyModalComponent extends AppComponentBase {
         this._onbGroupsService
             .getAll(new GetAllOnbGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.onbGroups.set(result.items));
+
+        this._positionsService
+            .getAll(new GetAllPositionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, vacant: undefined }))
+            .subscribe((result) => this.positions.set(result.items));
+
+        this._employeesService
+            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.employees.set(result.items));
+
+        this._workLocationsService
+            .getAll(new GetAllWorkLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.workLocations.set(result.items));
+    }
+
+    positionLabel(position: PositionDto): string {
+        return `${position.code} - ${position.nameEn}`;
+    }
+
+    employeeLabel(employee: EmployeeDto): string {
+        return `${employee.code} - ${employee.fullNameEn}`;
     }
 
     onShown(): void {

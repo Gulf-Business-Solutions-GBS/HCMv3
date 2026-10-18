@@ -14,4 +14,8 @@ public class DisciplinaryTypeDto : EntityDto<int>
     public string NameAr { get; set; }
 
     public int RepeatDurationInDays { get; set; }
+
+    public int? WageTypeId { get; set; }
+
+    public string WageTypeName { get; set; }
 }

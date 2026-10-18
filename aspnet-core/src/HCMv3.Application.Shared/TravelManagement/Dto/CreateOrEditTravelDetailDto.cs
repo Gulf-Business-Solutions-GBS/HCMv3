@@ -39,6 +39,10 @@ public class CreateOrEditTravelDetailDto
 
     public int TotalNights { get; set; }
 
+    /// <summary>Legacy "Per Diem Pay (%)": 0-100, default 100. See <c>TravelDetail.PerDiemPayPercentage</c>.</summary>
+    [Range(0, 100)]
+    public double PerDiemPayPercentage { get; set; } = 100;
+
     /// <summary>Does this leg need a visa arranged? See <c>TravelDetail.IsVisaRequired</c>.</summary>
     public bool IsVisaRequired { get; set; }
 

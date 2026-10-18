@@ -25,4 +25,10 @@ public class CreateOrEditEmployeeTrainingDto
 
     [StringLength(500)]
     public string Comments { get; set; }
+
+    /// <summary>
+    /// Optional link to one of the employee's certifications of type Training (legacy
+    /// <c>EmployeeTraining.EmployeeCertification</c>).
+    /// </summary>
+    public int? EmployeeCertificationId { get; set; }
 }

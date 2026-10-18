@@ -86,6 +86,21 @@
                                 }
                             </select>
                         </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="Institution_CountryId">{{ 'Country' | localize }}</label>
+                            <select
+                                id="Institution_CountryId"
+                                class="form-select"
+                                name="CountryId"
+                                [ngModel]="institution().countryId"
+                                (ngModelChange)="updateField('countryId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (country of countries(); track country.id) {
+                                    <option [ngValue]="country.id">{{ country.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

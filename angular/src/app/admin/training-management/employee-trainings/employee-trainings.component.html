@@ -46,6 +46,7 @@
                                         {{ 'Score' | localize }}
                                         <p-sortIcon field="score" />
                                     </th>
+                                    <th style="min-width: 200px">{{ 'Certificate' | localize }}</th>
                                     <th style="min-width: 220px">{{ 'Comments' | localize }}</th>
                                 </tr>
                             </ng-template>
@@ -69,6 +70,7 @@
                                     <td style="min-width: 200px">{{ record.trainingScheduleNameEn }}</td>
                                     <td style="min-width: 150px">{{ (record.completionStatus === 0 ? 'Complete' : 'Pending') | localize }}</td>
                                     <td style="min-width: 120px">{{ record.score }}</td>
+                                    <td style="min-width: 200px">{{ record.employeeCertificationName }}</td>
                                     <td style="min-width: 220px">
                                         <span pTooltip="{{ record.comments }}" class="hide-overflown">{{ record.comments }}</span>
                                     </td>

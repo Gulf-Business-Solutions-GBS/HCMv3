@@ -19,6 +19,7 @@ import { CvWorkExpsComponent } from './work-exps/cv-work-exps.component';
 import { CvSkillsComponent } from './skills/cv-skills.component';
 import { CvLanguagesComponent } from './languages/cv-languages.component';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
+import { AttachmentsComponent } from '@app/shared/common/attachments/attachments.component';
 
 @Component({
     selector: 'applicant-cv',
@@ -34,6 +35,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         CvWorkExpsComponent,
         CvSkillsComponent,
         CvLanguagesComponent,
+        AttachmentsComponent,
     ],
 })
 export class ApplicantCvComponent extends AppComponentBase {

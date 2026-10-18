@@ -13,6 +13,9 @@ namespace HCMv3.Tests.PayrollManagement;
 // ReSharper disable once InconsistentNaming
 public class PayrollControlRecordsAppService_Tests : PayrollManagementAppServiceTestBase
 {
+    private readonly HCMv3.PayrollManagement.Services.IPayrollPeriodNotificationService _periodNotifications =
+        Substitute.For<HCMv3.PayrollManagement.Services.IPayrollPeriodNotificationService>();
+
     private PayrollControlRecordsAppService CreateAppService()
     {
         return CreateService(() => new PayrollControlRecordsAppService(
@@ -23,7 +26,8 @@ public class PayrollControlRecordsAppService_Tests : PayrollManagementAppService
             Substitute.For<IRepository<HCMv3.Authorization.Users.User, long>>(),
             Substitute.For<IRepository<SalaryRegister>>(),
             Substitute.For<IRepository<HCMv3.PersonnelAdministration.EmployeeOrgAssignment>>(),
-            Substitute.For<HCMv3.SystemSettings.Services.ISysSettingsAccessor>()));
+            Substitute.For<HCMv3.SystemSettings.Services.ISysSettingsAccessor>(),
+            _periodNotifications));
     }
 
     private int CreatePayrollArea(string payrollPeriodCode, string areaCode)
@@ -107,5 +111,45 @@ public class PayrollControlRecordsAppService_Tests : PayrollManagementAppService
                 PayrollMonth = 2,
                 PayrollYear = 2025
             }));
+    }
+
+    [Theory]
+    [InlineData(PayrollPeriodState.ReleasedForPayroll)]
+    [InlineData(PayrollPeriodState.Closed)]
+    [InlineData(PayrollPeriodState.ReleasedForCorrection)]
+    public async Task Should_Send_The_Payroll_Area_Notification_When_The_State_Is_Set(PayrollPeriodState state)
+    {
+        var payrollAreaId = CreatePayrollArea("Jan-Dec", "PCR4");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditPayrollControlRecordDto
+        {
+            PayrollAreaId = payrollAreaId,
+            PayrollMonth = 1,
+            PayrollYear = 2025
+        });
+        var id = (await service.GetAll(new GetAllPayrollControlRecordsInput())).Items[0].Id;
+
+        await service.SetState(new SetPayrollPeriodStateInput { Id = id, State = state });
+
+        await _periodNotifications.Received(1).NotifyStateChangedAsync(
+            Arg.Is<PayrollControlRecord>(r => r.Id == id && r.PeriodState == state),
+            state);
+    }
+
+    [Fact]
+    public async Task Should_Not_Notify_On_Plain_Create_Or_Edit()
+    {
+        var payrollAreaId = CreatePayrollArea("Jan-Dec", "PCR5");
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditPayrollControlRecordDto
+        {
+            PayrollAreaId = payrollAreaId,
+            PayrollMonth = 1,
+            PayrollYear = 2025,
+            PeriodLocked = true
+        });
+
+        _periodNotifications.ReceivedCalls().ShouldBeEmpty();
     }
 }

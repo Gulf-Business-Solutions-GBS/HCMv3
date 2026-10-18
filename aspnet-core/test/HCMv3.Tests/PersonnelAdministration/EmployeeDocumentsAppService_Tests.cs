@@ -261,4 +261,81 @@ public class EmployeeDocumentsAppService_Tests : AppTestBase
         var oldDoc = result.Items.Single(d => d.DocumentNum == "DOC-600-OLD");
         oldDoc.IsActive.ShouldBe(DocumentStatus.Inactive);
     }
+
+    private DocumentPlace CreateTestDocumentPlace(string code)
+    {
+        DocumentPlace place = null;
+        UsingDbContext(context =>
+        {
+            place = context.Set<DocumentPlace>().Add(new DocumentPlace
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = code,
+                NameEn = code + " Place",
+                NameAr = code
+            }).Entity;
+        });
+        return place;
+    }
+
+    [Fact]
+    public async Task Should_Save_And_List_Document_Place()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("ED700");
+        var documentType = CreateTestDocumentType("DT700");
+        var place = CreateTestDocumentPlace("DP700");
+
+        //Act
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeDocumentDto
+        {
+            EmployeeId = employee.Id,
+            DocumentTypeId = documentType.Id,
+            DocumentNum = "DOC-700",
+            IssueDate = new DateTime(2020, 1, 1),
+            ExpiryDate = new DateTime(2030, 1, 1),
+            DocPlaceId = place.Id
+        });
+
+        //Assert
+        var result = await _appService.GetAll(new GetAllEmployeeDocumentsInput { EmployeeId = employee.Id });
+        result.Items[0].DocPlaceId.ShouldBe(place.Id);
+        result.Items[0].DocPlaceName.ShouldBe("DP700 Place");
+    }
+
+    [Fact]
+    public async Task Should_Return_Document_Place_For_Edit_And_Clear_It_On_Update()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("ED710");
+        var documentType = CreateTestDocumentType("DT710");
+        var place = CreateTestDocumentPlace("DP710");
+
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeDocumentDto
+        {
+            EmployeeId = employee.Id,
+            DocumentTypeId = documentType.Id,
+            DocumentNum = "DOC-710",
+            IssueDate = new DateTime(2020, 1, 1),
+            ExpiryDate = new DateTime(2030, 1, 1),
+            DocPlaceId = place.Id
+        });
+        var id = (await _appService.GetAll(new GetAllEmployeeDocumentsInput { EmployeeId = employee.Id })).Items[0].Id;
+        (await _appService.GetEmployeeDocumentForEdit(new EntityDto(id))).EmployeeDocument.DocPlaceId.ShouldBe(place.Id);
+
+        //Act
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeDocumentDto
+        {
+            Id = id,
+            EmployeeId = employee.Id,
+            DocumentTypeId = documentType.Id,
+            DocumentNum = "DOC-710",
+            IssueDate = new DateTime(2020, 1, 1),
+            ExpiryDate = new DateTime(2030, 1, 1),
+            DocPlaceId = null
+        });
+
+        //Assert
+        (await _appService.GetEmployeeDocumentForEdit(new EntityDto(id))).EmployeeDocument.DocPlaceId.ShouldBeNull();
+    }
 }

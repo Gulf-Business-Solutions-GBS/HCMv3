@@ -66,6 +66,15 @@ public class TravelDetail : FullAuditedEntity, IMustHaveTenant
     public virtual double TotalAmount { get; set; }
 
     /// <summary>
+    /// Legacy "Per Diem Pay (%)": the share of this leg's per-diem amount that is paid. 0-100, default 100
+    /// (legacy <c>AfterConstruction</c>). Legacy applied it only where the per diem is PAID -- the payroll
+    /// engine's <c>GetTravelPerDiemPay</c> summed <c>PerDiemAmount * PerDiemPayPercentage / 100</c> per leg;
+    /// the per-diem amount itself (nights x rate) ignores it. <c>TravelDetailsAppService.CalculateExpectedPerDiemAsync</c>
+    /// returns both figures.
+    /// </summary>
+    public virtual double PerDiemPayPercentage { get; set; } = 100;
+
+    /// <summary>
     /// Does this leg need a visa arranged? Carried on the legacy <c>TravelDeskDetailRequest</c> and never
     /// copied onto <c>TravelDetail</c>, so the one instruction the travel desk actually had to act on
     /// disappeared the moment the request was approved. Now that the leg IS the request, it lives here.

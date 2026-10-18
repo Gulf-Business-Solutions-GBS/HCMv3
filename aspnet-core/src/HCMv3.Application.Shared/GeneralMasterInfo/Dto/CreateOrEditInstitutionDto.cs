@@ -25,4 +25,7 @@ public class CreateOrEditInstitutionDto
     public string NameAr { get; set; }
 
     public int? UniversityId { get; set; }
+
+    /// <summary>Legacy <c>Institution.Country</c>. Optional.</summary>
+    public int? CountryId { get; set; }
 }

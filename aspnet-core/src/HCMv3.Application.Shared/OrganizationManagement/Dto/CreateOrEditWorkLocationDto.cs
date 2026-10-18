@@ -38,4 +38,7 @@ public class CreateOrEditWorkLocationDto
     public string GeoFenceCoordinates { get; set; }
 
     public bool IsActive { get; set; }
+
+    /// <summary>Legacy <c>WorkLocation.Sponsor</c>. Optional.</summary>
+    public int? SponsorId { get; set; }
 }

@@ -1,13 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using HCMv3.CompetencyDevelopment;
 
 namespace HCMv3.PerformanceManagement;
 
 /// <summary>
 /// KPI master (ported from legacy XAF <c>HCM10.Module.BusinessObjects.PerformanceManagement.KpiInfo</c>).
-/// The legacy <c>Competency</c> FK (to the never-ported CompetencyDevelopment module) is DROPPED --
-/// deliberate simplification, consistent with other cross-module FKs dropped elsewhere in this port.
+/// Legacy <c>Competency</c> FK is <see cref="CompetencyId"/> (CompetencyDevelopment
+/// <see cref="CompetencyDevelopment.Competency"/>), optional as in legacy.
 /// <see cref="NameEn"/>/<see cref="NameAr"/> are unlimited length per legacy <c>[Size(SizeAttribute.Unlimited)]</c>.
 /// </summary>
 public class KpiInfo : FullAuditedEntity, IMustHaveTenant
@@ -26,6 +27,11 @@ public class KpiInfo : FullAuditedEntity, IMustHaveTenant
     public virtual int KpiCategoryId { get; set; }
 
     public virtual KpiCategory KpiCategory { get; set; }
+
+    /// <summary>Legacy <c>KpiInfo.Competency</c>. Optional; legacy validation never required it.</summary>
+    public virtual int? CompetencyId { get; set; }
+
+    public virtual Competency Competency { get; set; }
 
     [StringLength(500)]
     public virtual string Comments { get; set; }

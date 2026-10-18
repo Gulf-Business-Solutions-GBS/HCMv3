@@ -11,6 +11,7 @@ using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Authorization.Users;
 using HCMv3.PayrollManagement.Dto;
+using HCMv3.PayrollManagement.Services;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSettings.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ public class PayrollControlRecordsAppService : HCMv3AppServiceBase, IPayrollCont
     private readonly IRepository<SalaryRegister> _salaryRegisterRepository;
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly ISysSettingsAccessor _sysSettings;
+    private readonly IPayrollPeriodNotificationService _periodNotificationService;
 
     public PayrollControlRecordsAppService(
         IRepository<PayrollControlRecord> payrollControlRecordRepository,
@@ -40,7 +42,8 @@ public class PayrollControlRecordsAppService : HCMv3AppServiceBase, IPayrollCont
         IRepository<User, long> userRepository,
         IRepository<SalaryRegister> salaryRegisterRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
-        ISysSettingsAccessor sysSettings)
+        ISysSettingsAccessor sysSettings,
+        IPayrollPeriodNotificationService periodNotificationService)
     {
         _payrollControlRecordRepository = payrollControlRecordRepository;
         _payrollAreaRepository = payrollAreaRepository;
@@ -48,6 +51,7 @@ public class PayrollControlRecordsAppService : HCMv3AppServiceBase, IPayrollCont
         _salaryRegisterRepository = salaryRegisterRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _sysSettings = sysSettings;
+        _periodNotificationService = periodNotificationService;
     }
 
     [HttpPost]
@@ -135,6 +139,10 @@ public class PayrollControlRecordsAppService : HCMv3AppServiceBase, IPayrollCont
 
         await _payrollControlRecordRepository.UpdateAsync(entity);
         await LockRegistersForStateAsync(entity, input.State);
+
+        // Legacy ReleaseForPayroll / ExitPayroll / ReleaseForCorrection each sent the payroll area's own
+        // notification configuration after moving the period.
+        await _periodNotificationService.NotifyStateChangedAsync(entity, input.State);
     }
 
     /// <summary>

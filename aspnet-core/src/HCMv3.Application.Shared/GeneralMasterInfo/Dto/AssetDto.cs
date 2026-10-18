@@ -41,4 +41,12 @@ public class AssetDto : EntityDto<int>
     public AssetStatus Status { get; set; }
 
     public AssetAllocationStatus AssetAllocationStatus { get; set; }
+
+    public int? EarningWageTypeId { get; set; }
+
+    public string EarningWageTypeName { get; set; }
+
+    public int? DeductionWageTypeId { get; set; }
+
+    public string DeductionWageTypeName { get; set; }
 }

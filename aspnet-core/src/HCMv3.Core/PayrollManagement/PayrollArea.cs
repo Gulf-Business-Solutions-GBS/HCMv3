@@ -14,9 +14,6 @@ namespace HCMv3.PayrollManagement;
 /// <list type="bullet">
 /// <item><description>Unlike most Code/Name lookups in this port, the legacy <c>Name</c> is a single field
 /// (no NameAr) — ported faithfully as a single <see cref="Name"/> property.</description></item>
-/// <item><description>The 3 legacy <c>NotificationConfig</c> FKs (PAReleaseNotification,
-/// PAExitNotification, PACorrectionNotification) are NOT ported — no such lookup exists in this
-/// port.</description></item>
 /// <item><description>The legacy <c>AfterConstruction</c> default-currency assignment
 /// (<c>CurrencyService.GetDefaultCurrency</c>) has no equivalent "default currency" concept anywhere else
 /// in this port, so <see cref="CurrencyId"/> is left with no default — the caller must supply one (it is
@@ -63,4 +60,24 @@ public class PayrollArea : FullAuditedEntity, IMustHaveTenant
     public virtual int? CountryId { get; set; }
 
     public virtual Country Country { get; set; }
+
+    /// <summary>
+    /// Legacy <c>PayrollArea.PAReleaseNotification</c>: sent when a period of this area is locked for payroll
+    /// (<c>PayrollControlRecordsAppService.SetState</c> to ReleasedForPayroll). Optional.
+    /// </summary>
+    public virtual int? PAReleaseNotificationId { get; set; }
+
+    public virtual NotificationConfig PAReleaseNotification { get; set; }
+
+    /// <summary>Legacy <c>PayrollArea.PAExitNotification</c>: sent when a period is exited (Closed). Optional.</summary>
+    public virtual int? PAExitNotificationId { get; set; }
+
+    public virtual NotificationConfig PAExitNotification { get; set; }
+
+    /// <summary>
+    /// Legacy <c>PayrollArea.PACorrectionNotification</c>: sent when a period is released for correction. Optional.
+    /// </summary>
+    public virtual int? PACorrectionNotificationId { get; set; }
+
+    public virtual NotificationConfig PACorrectionNotification { get; set; }
 }

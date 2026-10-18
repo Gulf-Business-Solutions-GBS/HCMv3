@@ -35,6 +35,7 @@ public class WorkLocationsAppService : HCMv3AppServiceBase, IWorkLocationsAppSer
         input.Normalize();
 
         var query = _workLocationRepository.GetAll()
+            .Include(w => w.Sponsor)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), w =>
                 w.Code.Contains(input.Filter) ||
                 w.NameEn.Contains(input.Filter) ||
@@ -88,6 +89,7 @@ public class WorkLocationsAppService : HCMv3AppServiceBase, IWorkLocationsAppSer
             Address = input.Address,
             GeoFenceCoordinates = input.GeoFenceCoordinates,
             IsActive = input.IsActive,
+            SponsorId = input.SponsorId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -111,6 +113,7 @@ public class WorkLocationsAppService : HCMv3AppServiceBase, IWorkLocationsAppSer
         workLocation.Address = input.Address;
         workLocation.GeoFenceCoordinates = input.GeoFenceCoordinates;
         workLocation.IsActive = input.IsActive;
+        workLocation.SponsorId = input.SponsorId;
 
         await AssignCodeIfEmptyAsync(workLocation);
         await ValidateUniquenessAsync(workLocation);
@@ -181,7 +184,9 @@ public class WorkLocationsAppService : HCMv3AppServiceBase, IWorkLocationsAppSer
             GeoRange = workLocation.GeoRange,
             Address = workLocation.Address,
             GeoFenceCoordinates = workLocation.GeoFenceCoordinates,
-            IsActive = workLocation.IsActive
+            IsActive = workLocation.IsActive,
+            SponsorId = workLocation.SponsorId,
+            SponsorName = workLocation.Sponsor?.NameEn
         };
     }
 
@@ -198,7 +203,8 @@ public class WorkLocationsAppService : HCMv3AppServiceBase, IWorkLocationsAppSer
             GeoRange = workLocation.GeoRange,
             Address = workLocation.Address,
             GeoFenceCoordinates = workLocation.GeoFenceCoordinates,
-            IsActive = workLocation.IsActive
+            IsActive = workLocation.IsActive,
+            SponsorId = workLocation.SponsorId
         };
     }
 }

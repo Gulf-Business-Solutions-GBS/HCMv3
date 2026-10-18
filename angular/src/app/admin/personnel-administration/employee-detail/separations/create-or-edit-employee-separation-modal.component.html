@@ -118,6 +118,11 @@
                                 [ngModel]="record().revokeDate?.toISODate()"
                                 (ngModelChange)="updateRevokeDate($event)" />
                         </div>
+                        @if (record().id) {
+                            <div class="mb-5">
+                                <app-attachments entityType="EmployeeSeparation" [entityId]="record().id" />
+                            </div>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

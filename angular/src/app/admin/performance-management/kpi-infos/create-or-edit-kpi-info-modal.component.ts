@@ -1,7 +1,10 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    CompetenciesServiceProxy,
+    CompetencyDto,
     CreateOrEditKpiInfoDto,
+    GetAllCompetenciesInput,
     GetAllKpiCategoriesInput,
     KpiCategoryDto,
     KpiCategoriesServiceProxy,
@@ -23,6 +26,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditKpiInfoModalComponent extends AppComponentBase {
     private _service = inject(KpiInfosServiceProxy);
     private _kpiCategoriesService = inject(KpiCategoriesServiceProxy);
+    private _competenciesService = inject(CompetenciesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -31,6 +35,7 @@ export class CreateOrEditKpiInfoModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly kpiInfo = signal<CreateOrEditKpiInfoDto>(new CreateOrEditKpiInfoDto());
     readonly kpiCategories = signal<KpiCategoryDto[]>([]);
+    readonly competencies = signal<CompetencyDto[]>([]);
 
     show(id?: number): void {
         this.active.set(true);
@@ -38,6 +43,10 @@ export class CreateOrEditKpiInfoModalComponent extends AppComponentBase {
         this._kpiCategoriesService
             .getAll(new GetAllKpiCategoriesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.kpiCategories.set(result.items));
+
+        this._competenciesService
+            .getAll(new GetAllCompetenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, competencyTypeId: undefined }))
+            .subscribe((result) => this.competencies.set(result.items));
 
         if (!id) {
             const record = new CreateOrEditKpiInfoDto();

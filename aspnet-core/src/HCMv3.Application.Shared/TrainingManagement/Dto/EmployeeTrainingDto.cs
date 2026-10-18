@@ -24,4 +24,8 @@ public class EmployeeTrainingDto : EntityDto<int>
     public double Score { get; set; }
 
     public string Comments { get; set; }
+
+    public int? EmployeeCertificationId { get; set; }
+
+    public string EmployeeCertificationName { get; set; }
 }

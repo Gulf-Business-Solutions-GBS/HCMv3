@@ -86,6 +86,20 @@
                                 }
                             </select>
                         </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="PersonalActionReason_NotificationConfigId">{{ 'NotificationConfig' | localize }}</label>
+                            <select
+                                id="PersonalActionReason_NotificationConfigId"
+                                class="form-select"
+                                name="NotificationConfigId"
+                                [ngModel]="personalActionReason().notificationConfigId"
+                                (ngModelChange)="updateField('notificationConfigId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (config of notificationConfigs(); track config.id) {
+                                    <option [ngValue]="config.id">{{ config.name }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

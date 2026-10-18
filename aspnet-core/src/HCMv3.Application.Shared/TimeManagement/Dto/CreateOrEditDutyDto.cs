@@ -54,4 +54,7 @@ public class CreateOrEditDutyDto
     public TimeSpan? FlexiStartTime { get; set; }
 
     public TimeSpan? FlexiEndTime { get; set; }
+
+    /// <summary>Legacy <c>Duty.IsActive</c>. True unless the caller says otherwise, as legacy defaulted it.</summary>
+    public bool IsActive { get; set; } = true;
 }

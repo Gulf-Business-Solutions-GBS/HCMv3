@@ -47,7 +47,51 @@ public class RecruitmentTestDbContext : DbContext
     public DbSet<HCMv3.OrganizationManagement.WorkLocation> WorkLocations { get; set; }
     public DbSet<HCMv3.PersonnelAdministration.Employee> Employees { get; set; }
 
+    // Vacancy.Position (ManpowerPlanningManagement) and the employee-code number series read by
+    // EmployeeCodeGenerator on the Joined hand-off.
+    public DbSet<HCMv3.ManpowerPlanningManagement.Position> Positions { get; set; }
+    public DbSet<HCMv3.GeneralMasterInfo.NumberSeries> NumberSeries { get; set; }
+
     public RecruitmentTestDbContext(DbContextOptions<RecruitmentTestDbContext> options) : base(options)
     {
+    }
+
+    /// <summary>
+    /// Position pulls in a much wider graph (payroll area, org unit, position relationships ...). The same
+    /// User/Role audit-navigation ignores as <c>ManpowerPlanningManagementTestDbContext</c> (which maps Position
+    /// too) keep this minimal context buildable whichever way that graph reaches them.
+    /// </summary>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Ignore<Abp.Authorization.Users.UserPermissionSetting>();
+        modelBuilder.Ignore<Abp.Authorization.Roles.RolePermissionSetting>();
+        modelBuilder.Ignore<Abp.Authorization.Users.UserLogin>();
+        modelBuilder.Ignore<Abp.Authorization.Users.UserLoginAttempt>();
+        modelBuilder.Ignore<Abp.Authorization.Users.UserRole>();
+        modelBuilder.Ignore<Abp.Authorization.Users.UserOrganizationUnit>();
+
+        modelBuilder.Entity<HCMv3.Authorization.Users.User>(b =>
+        {
+            b.Ignore("CreatorUser");
+            b.Ignore("LastModifierUser");
+            b.Ignore("DeleterUser");
+            b.Ignore("Permissions");
+            b.Ignore("Roles");
+            b.Ignore("Logins");
+            b.Ignore("Claims");
+            b.Ignore("Tokens");
+            b.Ignore("Settings");
+            b.Ignore("OrganizationUnits");
+        });
+
+        modelBuilder.Entity<HCMv3.Authorization.Roles.Role>(b =>
+        {
+            b.Ignore("CreatorUser");
+            b.Ignore("LastModifierUser");
+            b.Ignore("DeleterUser");
+            b.Ignore("Permissions");
+        });
     }
 }

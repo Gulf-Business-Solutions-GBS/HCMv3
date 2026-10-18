@@ -2,7 +2,10 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditPersonalActionReasonDto,
+    GetAllNotificationConfigsInput,
     GetAllPersonalActionsInput,
+    NotificationConfigDto,
+    NotificationConfigsServiceProxy,
     PersonalActionDto,
     PersonalActionReasonsServiceProxy,
     PersonalActionsServiceProxy,
@@ -29,6 +32,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class CreateOrEditPersonalActionReasonModalComponent extends AppComponentBase {
     private _personalActionReasonsService = inject(PersonalActionReasonsServiceProxy);
     private _personalActionsService = inject(PersonalActionsServiceProxy);
+    private _notificationConfigsService = inject(NotificationConfigsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -39,6 +43,7 @@ export class CreateOrEditPersonalActionReasonModalComponent extends AppComponent
         new CreateOrEditPersonalActionReasonDto()
     );
     readonly personalActions = signal<PersonalActionDto[]>([]);
+    readonly notificationConfigs = signal<NotificationConfigDto[]>([]);
 
     show(personalActionReasonId?: number): void {
         this.active.set(true);
@@ -48,6 +53,10 @@ export class CreateOrEditPersonalActionReasonModalComponent extends AppComponent
             .subscribe((result) => {
                 this.personalActions.set(result.items);
             });
+
+        this._notificationConfigsService
+            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.notificationConfigs.set(result.items));
 
         if (!personalActionReasonId) {
             this.personalActionReason.set(new CreateOrEditPersonalActionReasonDto());

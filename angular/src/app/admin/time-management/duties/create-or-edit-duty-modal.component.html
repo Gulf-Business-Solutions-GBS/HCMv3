@@ -238,6 +238,18 @@
                                 <label class="form-check-label" for="Duty_IsHalfDay">{{ 'IsHalfDay' | localize }}</label>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5 form-check">
+                                <input
+                                    id="Duty_IsActive"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsActive"
+                                    [ngModel]="duty().isActive"
+                                    (ngModelChange)="updateField('isActive', $event)" />
+                                <label class="form-check-label" for="Duty_IsActive">{{ 'IsActive' | localize }}</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button
