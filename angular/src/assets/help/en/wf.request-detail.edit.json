@@ -15,7 +15,7 @@
     "dom:RequestDetail_ApprovalRequire": "RequestDetail.ApprovalRequire",
     "loc:WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
     "dom:RequestDetail_WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
-    "loc:OrganizationUnit": "RequestDetail.WorkflowRoleOrgId",
+    "loc:OrgLevel": "RequestDetail.WorkflowRoleOrgId",
     "dom:RequestDetail_WorkflowRoleOrgId": "RequestDetail.WorkflowRoleOrgId",
     "loc:Person": "RequestDetail.Person",
     "dom:RequestDetail_Person": "RequestDetail.Person",
@@ -135,10 +135,10 @@
     },
     {
       "id": "RequestDetail.WorkflowRoleOrgId",
-      "label": "OrganizationUnit",
+      "label": "OrgLevel",
       "section": "RequestDetails",
       "aliases": [
-        "loc:OrganizationUnit",
+        "loc:OrgLevel",
         "dom:RequestDetail_WorkflowRoleOrgId"
       ],
       "rules": "Optional. Chosen from Organization Unit Type master data.",
@@ -183,7 +183,7 @@
         "loc:EscalateAfterDays",
         "dom:RequestDetail_EscalateAfterDays"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How many days without action before the request escalates.</p><p><strong>Example.</strong> 5</p><p><strong>Why it matters.</strong> Counted from the request's last logged action. Used only when Should Escalate is ticked; 0 turns escalation off.</p>",
       "adminHtml": "",
@@ -239,7 +239,7 @@
         "loc:ReminderDays",
         "dom:RequestDetail_ReminderDays"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How often pending approvers are reminded, in days.</p><p><strong>Example.</strong> 2 — reminders on days 2, 4, 6</p><p><strong>Why it matters.</strong> A reminder goes to the approvers who have not yet acted every time the days since the last action reach a multiple of this number. 0 sends no reminders.</p>",
       "adminHtml": "",

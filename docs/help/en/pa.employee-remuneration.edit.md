@@ -24,7 +24,7 @@ When the employee's basic pay interval is Daily or Hourly, payroll adds up the d
 
 **Why it matters.** The daily and hourly calculation counts every entry in the month, whatever its wagetype.
 
-**Rules.** Optional. Chosen from Wagetype master data.
+**Rules.** Optional. Chosen from Wage Type master data.
 
 ## PaymentDate {#EmployeeRemuneration.PaymentDate}
 <!-- alias: loc:PaymentDate, dom:EmployeeRemuneration_PaymentDate -->

@@ -11,16 +11,16 @@ permissions: [Pages.PayrollManagement.AbsencePayments.Create]
 
 ## Overview
 
-Which wagetype pays a type of absence. Not read at present: leave is paid under the wagetype set on the absence type itself, and nothing reads this list.
+Which wagetype pays a type of absence. Not read at present: leave is paid under the wagetype set on the leave type itself, and nothing reads this list.
 
 ## AbsenceTypes {#AbsencePayment.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypes, dom:AbsencePayment_AbsenceTypeId -->
 
-**What it is.** The absence type.
+**What it is.** The leave type.
 
 **Example.** Annual Leave
 
-**Rules.** Required. Chosen from Absence Type master data.
+**Rules.** Required. Chosen from Leave Type master data.
 
 ## WageTypes {#AbsencePayment.WageTypeId}
 <!-- alias: loc:WageTypes, dom:AbsencePayment_WageTypeId -->
@@ -29,4 +29,4 @@ Which wagetype pays a type of absence. Not read at present: leave is paid under 
 
 **Example.** Annual Leave Pay
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.

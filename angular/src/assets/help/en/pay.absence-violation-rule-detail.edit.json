@@ -87,7 +87,7 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The leave type or disciplinary type the action would use, depending on the action.</p><p><strong>Example.</strong> Unpaid Leave</p>",
+      "html": "<p><strong>What it is.</strong> The leave type or violation type the action would use, depending on the action.</p><p><strong>Example.</strong> Unpaid Leave</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -101,9 +101,9 @@
       ],
       "rules": "Optional. Chosen from Notification Config master data.",
       "when": null,
-      "html": "",
+      "html": "<p><strong>What it is.</strong> The notification configuration used to tell people when this step is reached.</p><p><strong>Example.</strong> Absence escalation – notify HR and Line Manager</p><p><strong>Why it matters.</strong> Its recipients get an in-app notification, and an email if the configuration has a template. Left empty, the step acts without telling anybody. A failed notification does not undo the step.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.HoldTillPunchFound",
@@ -115,9 +115,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "",
+      "html": "<p><strong>What it is.</strong> Whether this step waits until the employee punches again.</p><p><strong>Why it matters.</strong> Ticked, the step's action — a deduction leave or a violation record — is applied only once the employee is back and has an approved punch, so someone still away is not penalised early.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

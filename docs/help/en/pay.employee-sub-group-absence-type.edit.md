@@ -11,15 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Create]
 
 ## Overview
 
-Absence types listed against an employee sub group. Not read at present: entitlements come from the sub group's leave rules, and nothing reads this list.
+Leave types listed against a grade. Not read at present: entitlements come from the grade's leave rules, and nothing reads this list.
 
 ## AbsenceType {#EmployeeSubGroupAbsenceType.AbsenceTypeId}
 <!-- alias: loc:AbsenceType, dom:EmployeeSubGroupAbsenceType_AbsenceTypeId -->
 
-**What it is.** An absence type listed for the sub group.
+**What it is.** A leave type listed for the grade.
 
 **Example.** Hajj Leave
 
-**Why it matters.** Each type can be listed once per sub group.
+**Why it matters.** Each type can be listed once per grade.
 
-**Rules.** Optional. Chosen from Absence Type master data.
+**Rules.** Optional. Chosen from Leave Type master data.

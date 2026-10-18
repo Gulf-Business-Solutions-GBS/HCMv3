@@ -69,6 +69,8 @@ The reminder settings on this form are stored, but no process reads them at pres
 
 **Why it matters.** Untick it and the type disappears from the New Request list on the employee's Documents screen, and a request for it is refused. HR can still record documents of the type.
 
+**Rules.** Yes or no.
+
 ## IsLetterType {#DocumentType.IsLetterType}
 <!-- alias: loc:IsLetterType, dom:DocumentType_IsLetterType -->
 
@@ -77,6 +79,8 @@ The reminder settings on this form are stored, but no process reads them at pres
 **Example.** Ticked for Salary Certificate and Experience Certificate; unticked for Passport and Civil ID.
 
 **Why it matters.** A ticked type is offered when the employee chooses Print Letter, and asks who the letter is addressed to. An unticked type is offered when the employee chooses New Document, and asks for a number and dates. A type cannot be both.
+
+**Rules.** Yes or no.
 
 ## PrintReport {#DocumentType.PrintReportId}
 <!-- alias: loc:PrintReport, dom:DocumentType_PrintReportId -->
@@ -87,7 +91,7 @@ The reminder settings on this form are stored, but no process reads them at pres
 
 **Why it matters.** Without a choice here, the report is found from the type's English name with the spaces removed — "Salary Certificate" prints the first report whose name starts with SalaryCertificate — and a type whose name matches no report cannot be printed at all. Choosing the report removes the guesswork and lets a type print a report with a different name, such as the Arabic certificate.
 
-**Rules.** Optional. Chosen from the active print reports. If the chosen report is later switched off, printing is refused until another is chosen; a different report is never printed in its place.
+**Rules.** Optional. Chosen from Print Report master data.
 
 ## IsWithdrawable {#DocumentType.IsWithdrawable}
 <!-- alias: loc:IsWithdrawable, dom:DocumentType_IsWithdrawable -->
@@ -98,6 +102,8 @@ The reminder settings on this form are stored, but no process reads them at pres
 
 **Why it matters.** Only ticked types offer Withdraw Document to the employee. More than one type may be ticked. If no type at all is ticked, the system falls back to the single type named by the older passport setting (code 2 unless changed).
 
+**Rules.** Yes or no.
+
 ## IsHiddenFromEmployee {#DocumentType.IsHiddenFromEmployee}
 <!-- alias: loc:IsHiddenFromEmployee, dom:DocumentType_IsHiddenFromEmployee -->
 
@@ -106,6 +112,8 @@ The reminder settings on this form are stored, but no process reads them at pres
 **Example.** Ticked for a document HR holds about the employee and not for them.
 
 **Why it matters.** The employee neither sees these documents nor can record one. HR's own screens are not affected.
+
+**Rules.** Yes or no.
 
 ## IsExpiryDateRequired {#DocumentType.IsExpiryDateRequired}
 <!-- alias: loc:IsExpiryDateRequired, dom:DocumentType_IsExpiryDateRequired -->
@@ -116,6 +124,8 @@ The reminder settings on this form are stored, but no process reads them at pres
 
 **Why it matters.** When ticked, a document saved without an expiry date is refused, on HR's screen and on the employee's own request. When unticked, the expiry date may be left blank and the document is treated as never expiring. It also changes how Allow Date Overlap compares two documents.
 
+**Rules.** Yes or no.
+
 ## AllowDateOverlap {#DocumentType.AllowDateOverlap}
 <!-- alias: loc:AllowDateOverlap, dom:DocumentType_AllowDateOverlap -->
 
@@ -124,3 +134,5 @@ The reminder settings on this form are stored, but no process reads them at pres
 **Example.** Unticked for Passport: a second passport dated inside the first one's validity is refused.
 
 **Why it matters.** When unticked, a new document of the type is refused if its issue-to-expiry period overlaps one already on the employee's file. For a type with no required expiry date, only two documents issued on the same day clash. **A renewal entered before the old document runs out counts as an overlap**, so tick this for types that are renewed early. Document types that existed before this switch was added were ticked automatically, so nothing that was accepted before is refused now.
+
+**Rules.** Yes or no.

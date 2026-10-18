@@ -32,7 +32,7 @@ One wagetype's cost charged to one project. Written by the Project Cost Engine; 
 
 **What it is.** The wagetype.
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## Number {#ProjectRegisterDetail.Number}
 <!-- alias: loc:Number, dom:ProjectRegisterDetail_Number -->

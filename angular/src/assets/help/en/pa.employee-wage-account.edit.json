@@ -5,10 +5,10 @@
   "entity": "HCMv3.PayrollManagement.EmployeeWageAccount",
   "overviewHtml": "<p>Which ledger account one of the employee's wagetypes posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.</p><p>Records for the same employee and wagetype form a history: saving a new one closes the previous one on the day before the new start date. A wagetype can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.</p>",
   "aliasIndex": {
-    "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
-    "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
     "loc:StartDate": "EmployeeWageAccount.StartDate",
     "dom:EmployeeWageAccount_StartDate": "EmployeeWageAccount.StartDate",
+    "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
+    "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
     "loc:CostPercentage": "EmployeeWageAccount.CostPercentage",
     "dom:EmployeeWageAccount_CostPercentage": "EmployeeWageAccount.CostPercentage",
     "loc:AccountInfoId": "EmployeeWageAccount.AccountInfoId",
@@ -34,20 +34,6 @@
   },
   "fields": [
     {
-      "id": "EmployeeWageAccount.WageTypeId",
-      "label": "WageTypeId",
-      "section": "EmployeeWageAccounts",
-      "aliases": [
-        "loc:WageTypeId",
-        "dom:EmployeeWageAccount_WageTypeId"
-      ],
-      "rules": "Required. Chosen from Wagetype master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The wagetype this mapping is for.</p><p><strong>Example.</strong> Housing Allowance</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI posting are posted.</p>",
-      "stub": false
-    },
-    {
       "id": "EmployeeWageAccount.StartDate",
       "label": "StartDate",
       "section": "EmployeeWageAccounts",
@@ -55,10 +41,24 @@
         "loc:StartDate",
         "dom:EmployeeWageAccount_StartDate"
       ],
-      "rules": "Required. Date value. Saving closes the previous record for the same employee and wagetype on the day before this date; the latest record stays open.",
+      "rules": "Required. Date value. Saving closes the previous record for the same employee and wage type on the day before this date; the latest record stays open.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeWageAccount_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wagetype this mapping is for.</p><p><strong>Example.</strong> Housing Allowance</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI posting are posted.</p>",
       "stub": false
     },
     {

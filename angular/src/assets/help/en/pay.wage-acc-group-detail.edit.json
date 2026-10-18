@@ -57,7 +57,7 @@
         "loc:WageTypeId",
         "dom:WageAccGroupDetail_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype this line maps.</p><p><strong>Example.</strong> Basic Salary</p>",
       "adminHtml": "",

@@ -31,6 +31,17 @@ The submission boxes record progress; they do not lock the form. The dashboard c
 
 **Rules.** Required. Chosen from the employee list.
 
+## OverallScore {#PAForm.OverallScore}
+<!-- alias: loc:OverallScore, dom:PAForm_OverallScore -->
+
+**What it is.** The appraisal's overall score. Calculated, not typed in.
+
+**Example.** 3.60 (KPI A weight 60 rated 4, KPI B weight 40 rated 3)
+
+**Why it matters.** Worked out again whenever a KPI review line is saved or deleted: the appraiser's rating on each line times the line's weight, divided by 100, added up. The employee's self-rating is not used.
+
+**Rules.** Optional. Number.
+
 ## ModeratedScore {#PAForm.ModeratedScore}
 <!-- alias: loc:ModeratedScore, dom:PAForm_ModeratedScore -->
 

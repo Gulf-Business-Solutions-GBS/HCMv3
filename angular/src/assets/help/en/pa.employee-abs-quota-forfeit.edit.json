@@ -5,30 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit",
   "overviewHtml": "<p>A manual record of leave days the employee has lost from a leave type.</p><p>Saving it does not update the employee's leave quota record, so the self-service balance does not change. Leave forfeiture calculations maintain their own forfeit records.</p>",
   "aliasIndex": {
-    "loc:AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
-    "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
     "loc:EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
     "dom:EmployeeAbsQuotaForfeit_EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
+    "loc:AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+    "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
     "loc:QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
     "dom:EmployeeAbsQuotaForfeit_QuotaForfeited": "EmployeeAbsQuotaForfeit.QuotaForfeited",
     "loc:Comments": "EmployeeAbsQuotaForfeit.Comments",
     "dom:EmployeeAbsQuotaForfeit_Comments": "EmployeeAbsQuotaForfeit.Comments"
   },
   "fields": [
-    {
-      "id": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
-      "label": "AbsenceTypeId",
-      "section": "EmployeeAbsQuotaForfeits",
-      "aliases": [
-        "loc:AbsenceTypeId",
-        "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId"
-      ],
-      "rules": "Required. Chosen from Absence Type master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The leave type days are forfeited from.</p><p><strong>Example.</strong> Annual Leave</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Absence Types.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeAbsQuotaForfeit.EffectiveDate",
       "label": "EffectiveDate",
@@ -41,6 +27,20 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> The date the forfeit takes effect.</p><p><strong>Example.</strong> 31 Mar 2026</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsQuotaForfeit.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsQuotaForfeits",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsQuotaForfeit_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type days are forfeited from.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Leave Types.</p>",
       "stub": false
     },
     {

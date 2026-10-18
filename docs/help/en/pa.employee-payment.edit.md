@@ -22,7 +22,7 @@ Payroll also creates payment records itself for advance payments and net-pay car
 
 **Example.** Performance Bonus
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 :::admin
 Maintained under Payroll Management → Wagetypes.

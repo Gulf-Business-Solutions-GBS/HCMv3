@@ -22,7 +22,7 @@ Not read at present: the cost engine and the journal voucher take their accounts
 
 **Example.** Housing Allowance
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## AccountInfoId {#WageAccount.AccountInfoId}
 <!-- alias: loc:AccountInfoId, dom:WageAccount_AccountInfoId -->

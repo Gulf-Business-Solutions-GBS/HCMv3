@@ -29,7 +29,7 @@ Not written at present: no process fills these summaries, and nothing reads them
 
 **Example.** Annual Leave
 
-**Rules.** Required. Chosen from Absence Type master data.
+**Rules.** Required. Chosen from Leave Type master data.
 
 ## Year {#LeaveAccrualSummary.Year}
 <!-- alias: loc:Year, dom:LeaveAccrualSummary_Year -->

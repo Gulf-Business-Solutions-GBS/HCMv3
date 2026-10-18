@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Deduction Rules — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceDeductionRule",
-  "overviewHtml": "<p>A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a sub group's sick leave entitlement.</p>",
+  "overviewHtml": "<p>A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a grade's sick leave entitlement.</p>",
   "aliasIndex": {
     "loc:Code": "AbsenceDeductionRule.Code",
     "dom:AbsenceDeductionRule_Code": "AbsenceDeductionRule.Code",

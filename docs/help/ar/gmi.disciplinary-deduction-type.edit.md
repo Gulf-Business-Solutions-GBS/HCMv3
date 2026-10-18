@@ -1,7 +1,7 @@
 ---
 helpId: gmi.disciplinary-deduction-type.edit
 lang: ar
-title: أنواع الخصم بسبب إجراء تأديبي — إنشاء / تحرير
+title: أنواع خصم المخالفات — إنشاء / تحرير
 entity: HCMv3.GeneralMasterInfo.DisciplinaryDeductionType
 surfaces:
   - angular/src/app/admin/general-master-info/disciplinary-deduction-types/create-or-edit-disciplinary-deduction-type-modal.component.html

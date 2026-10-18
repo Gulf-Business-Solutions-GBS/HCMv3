@@ -226,7 +226,7 @@ permissions: [Pages.Recruitment.Applicants.Create]
 
 **لماذا يهم.** يُحتسب ضمن قوة الملف التي تُعرض للمرشح في موقع الوظائف.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 512 حرفاً.
 
 ## CurrentAddress {#Applicant.CurrentAddress}
 <!-- alias: loc:CurrentAddress, dom:Applicant_CurrentAddress -->
@@ -319,3 +319,54 @@ permissions: [Pages.Recruitment.Applicants.Create]
 **لماذا يهم.** لا يُقرأ حالياً -- يُحفظ للرجوع إليه.
 
 **القواعد.** نعم أو لا.
+
+## CompletionPoints {#Applicant.CompletionPoints}
+<!-- alias: loc:CompletionPoints, dom:Applicant_CompletionPoints -->
+
+**ما هو.** مدى اكتمال ملف المرشح في بوابة التوظيف، من 60 نقطة. تُحتسب ولا تُدخل يدوياً.
+
+**مثال.** 35
+
+**لماذا يهم.** 5 نقاط لكل من الصورة والبطاقة المدنية والجنسية والعنوان الدائم وتاريخ الميلاد والبريد الإلكتروني والهاتف المحمول، و25 نقطة لوجود سيرة ذاتية واحدة على الأقل. تُحفظ عندما يحفظ المرشح ملفه؛ وهي للعلم فقط.
+
+**القواعد.** اختياري. رقم صحيح.
+
+## IsOnbdStarted {#Applicant.IsOnbdStarted}
+<!-- alias: loc:IsOnbdStarted, dom:Applicant_IsOnbdStarted -->
+
+**ما هو.** ما إذا كان يجوز بدء التهيئة الوظيفية لهذا المتقدم.
+
+**لماذا يهم.** يُسجَّل فقط. ولا يقرؤه شيء حالياً.
+
+**القواعد.** نعم أو لا.
+
+## IsOnbdInit {#Applicant.IsOnbdInit}
+<!-- alias: loc:IsOnbdInit, dom:Applicant_IsOnbdInit -->
+
+**ما هو.** ما إذا كانت التهيئة الوظيفية قد جُهِّزت لهذا المتقدم.
+
+**لماذا يهم.** يُسجَّل فقط. ولا يقرؤه شيء حالياً.
+
+**القواعد.** نعم أو لا.
+
+## OnbCoordinator {#Applicant.OnbCoordinatorId}
+<!-- alias: loc:OnbCoordinator, dom:Applicant_OnbCoordinatorId -->
+
+**ما هو.** الموظف الذي ينسّق التهيئة الوظيفية لهذا المتقدم.
+
+**مثال.** فاطمة الصباح (الموارد البشرية)
+
+**لماذا يهم.** يُسجَّل فقط. ولا يقرؤه شيء حالياً.
+
+**القواعد.** اختياري. يُختار من قائمة.
+
+## OnbBuddy {#Applicant.OnbBuddyId}
+<!-- alias: loc:OnbBuddy, dom:Applicant_OnbBuddyId -->
+
+**ما هو.** الموظف الذي يرافق الموظف الجديد أثناء التهيئة الوظيفية.
+
+**مثال.** أحمد خان
+
+**لماذا يهم.** يُسجَّل فقط. ولا يقرؤه شيء حالياً.
+
+**القواعد.** اختياري. يُختار من قائمة.

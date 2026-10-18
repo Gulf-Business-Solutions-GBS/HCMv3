@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "قواعد صرف مكافأة نهاية الخدمة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.IndemnityPayRule",
-  "overviewHtml": "<p>حد لمكافأة نهاية الخدمة بحسب سبب انتهاء الخدمة والبلد.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>مجموعة الموظفين</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
+  "overviewHtml": "<p>حد لمكافأة نهاية الخدمة بحسب سبب انتهاء الخدمة والبلد.</p><p>لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من <strong>ملف الراتب</strong> التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.</p>",
   "aliasIndex": {
     "loc:SeparationType": "IndemnityPayRule.SeparationType",
     "dom:IndemnityPayRule_SeparationType": "IndemnityPayRule.SeparationType",

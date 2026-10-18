@@ -13,12 +13,21 @@ permissions: [Pages.GovtRelationsManagement.Sponsors.Create]
 
 A sponsor: a licensed company or owner that employees are sponsored under for residence and work permits. Employees are linked to a sponsor on their Employee Sponsors records, and the sponsor's name then appears on employee and payroll reports. Its licences, signatories, representatives, bank accounts and job-title quotas are kept on the related screens.
 
-## Email {#Sponsor.Email}
-<!-- alias: loc:Email, dom:Sponsor_Email -->
+## BusinessOwnerNameEn {#Sponsor.BusinessOwnerNameEn}
+<!-- alias: loc:BusinessOwnerNameEn, dom:Sponsor_BusinessOwnerNameEn -->
 
-**What it is.** The sponsor's email address.
+**What it is.** The business owner's name in English.
 
-**Why it matters.** Shown on the Sponsor Report.
+**Why it matters.** Not read at present.
+
+**Rules.** Optional. Maximum 256 characters.
+
+## BusinessOwnerNameAr {#Sponsor.BusinessOwnerNameAr}
+<!-- alias: loc:BusinessOwnerNameAr, dom:Sponsor_BusinessOwnerNameAr -->
+
+**What it is.** The business owner's name in Arabic.
+
+**Why it matters.** Not read at present.
 
 **Rules.** Optional. Maximum 256 characters.
 
@@ -31,6 +40,37 @@ A sponsor: a licensed company or owner that employees are sponsored under for re
 
 **Rules.** Required. One of: Male, Female.
 
+## Nationality {#Sponsor.NationalityId}
+<!-- alias: loc:Nationality, dom:Sponsor_NationalityId -->
+
+**What it is.** The owner's nationality.
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Required. Chosen from Nationality master data.
+
+## BusinessType {#Sponsor.BusinessTypeId}
+<!-- alias: loc:BusinessType, dom:Sponsor_BusinessTypeId -->
+
+**What it is.** The kind of business.
+
+**Example.** Trading
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Required. Chosen from Business Type master data.
+
+## Governorate {#Sponsor.GovernorateId}
+<!-- alias: loc:Governorate, dom:Sponsor_GovernorateId -->
+
+**What it is.** The governorate of the address.
+
+**Example.** Capital
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Required. Chosen from Governorate master data.
+
 ## Profession {#Sponsor.Profession}
 <!-- alias: loc:Profession, dom:Sponsor_Profession -->
 
@@ -39,6 +79,33 @@ A sponsor: a licensed company or owner that employees are sponsored under for re
 **Why it matters.** Shown on the Sponsor Report.
 
 **Rules.** Optional. Maximum 256 characters.
+
+## MOSALID {#Sponsor.MOSALID}
+<!-- alias: loc:MOSALID, dom:Sponsor_MOSALID -->
+
+**What it is.** The sponsor's file number with the Ministry of Social Affairs and Labour.
+
+**Why it matters.** Shown on the Sponsor Report and on the payroll sheet reports.
+
+**Rules.** Required. Whole number.
+
+## UnifiedNum {#Sponsor.UnifiedNum}
+<!-- alias: loc:UnifiedNum, dom:Sponsor_UnifiedNum -->
+
+**What it is.** The sponsor's unified number with the authorities.
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Required. Whole number.
+
+## OrganizationUnit {#Sponsor.OrganizationUnitId}
+<!-- alias: loc:OrganizationUnit, dom:Sponsor_OrganizationUnitId -->
+
+**What it is.** The part of the organisation the sponsor belongs to.
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Required. Chosen from Organization Unit master data.
 
 ## Building {#Sponsor.Building}
 <!-- alias: loc:Building, dom:Sponsor_Building -->
@@ -69,10 +136,10 @@ A sponsor: a licensed company or owner that employees are sponsored under for re
 
 **Rules.** Optional. Maximum 256 characters.
 
-## Block {#Sponsor.Block}
-<!-- alias: loc:Block, dom:Sponsor_Block -->
+## Email {#Sponsor.Email}
+<!-- alias: loc:Email, dom:Sponsor_Email -->
 
-**What it is.** The block.
+**What it is.** The sponsor's email address.
 
 **Why it matters.** Shown on the Sponsor Report.
 
@@ -82,6 +149,24 @@ A sponsor: a licensed company or owner that employees are sponsored under for re
 <!-- alias: loc:Telephone, dom:Sponsor_Telephone -->
 
 **What it is.** The telephone number.
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Required. Whole number.
+
+## Block {#Sponsor.Block}
+<!-- alias: loc:Block, dom:Sponsor_Block -->
+
+**What it is.** The block.
+
+**Why it matters.** Shown on the Sponsor Report.
+
+**Rules.** Optional. Maximum 256 characters.
+
+## SocialSecurityNum {#Sponsor.SocialSecurityNum}
+<!-- alias: loc:SocialSecurityNum, dom:Sponsor_SocialSecurityNum -->
+
+**What it is.** The sponsor's social security registration number.
 
 **Why it matters.** Shown on the Sponsor Report.
 
@@ -104,88 +189,3 @@ A sponsor: a licensed company or owner that employees are sponsored under for re
 **Why it matters.** Shown on the Sponsor Report.
 
 **Rules.** Optional. Maximum 50 characters.
-
-## Nationality {#Sponsor.NationalityId}
-<!-- alias: loc:Nationality, dom:Sponsor_NationalityId -->
-
-**What it is.** The owner's nationality.
-
-**Why it matters.** Shown on the Sponsor Report.
-
-**Rules.** Required. Chosen from Nationality master data.
-
-## BusinessType {#Sponsor.BusinessTypeId}
-<!-- alias: loc:BusinessType, dom:Sponsor_BusinessTypeId -->
-
-**What it is.** The kind of business.
-
-**Example.** Trading
-
-**Why it matters.** Shown on the Sponsor Report.
-
-**Rules.** Required. Chosen from Business Type master data.
-
-## OrganizationUnit {#Sponsor.OrganizationUnitId}
-<!-- alias: loc:OrganizationUnit, dom:Sponsor_OrganizationUnitId -->
-
-**What it is.** The part of the organisation the sponsor belongs to.
-
-**Why it matters.** Shown on the Sponsor Report.
-
-**Rules.** Required. Chosen from Organization Unit master data.
-
-## Governorate {#Sponsor.GovernorateId}
-<!-- alias: loc:Governorate, dom:Sponsor_GovernorateId -->
-
-**What it is.** The governorate of the address.
-
-**Example.** Capital
-
-**Why it matters.** Shown on the Sponsor Report.
-
-**Rules.** Required. Chosen from Governorate master data.
-
-## UnifiedNum {#Sponsor.UnifiedNum}
-<!-- alias: loc:UnifiedNum, dom:Sponsor_UnifiedNum -->
-
-**What it is.** The sponsor's unified number with the authorities.
-
-**Why it matters.** Shown on the Sponsor Report.
-
-**Rules.** Required. Whole number.
-
-## SocialSecurityNum {#Sponsor.SocialSecurityNum}
-<!-- alias: loc:SocialSecurityNum, dom:Sponsor_SocialSecurityNum -->
-
-**What it is.** The sponsor's social security registration number.
-
-**Why it matters.** Shown on the Sponsor Report.
-
-**Rules.** Required. Whole number.
-
-## MOSALID {#Sponsor.MOSALID}
-<!-- alias: loc:MOSALID, dom:Sponsor_MOSALID -->
-
-**What it is.** The sponsor's file number with the Ministry of Social Affairs and Labour.
-
-**Why it matters.** Shown on the Sponsor Report and on the payroll sheet reports.
-
-**Rules.** Required. Whole number.
-
-## BusinessOwnerNameEn {#Sponsor.BusinessOwnerNameEn}
-<!-- alias: loc:BusinessOwnerNameEn, dom:Sponsor_BusinessOwnerNameEn -->
-
-**What it is.** The business owner's name in English.
-
-**Why it matters.** Not read at present.
-
-**Rules.** Optional. Maximum 256 characters.
-
-## BusinessOwnerNameAr {#Sponsor.BusinessOwnerNameAr}
-<!-- alias: loc:BusinessOwnerNameAr, dom:Sponsor_BusinessOwnerNameAr -->
-
-**What it is.** The business owner's name in Arabic.
-
-**Why it matters.** Not read at present.
-
-**Rules.** Optional. Maximum 256 characters.

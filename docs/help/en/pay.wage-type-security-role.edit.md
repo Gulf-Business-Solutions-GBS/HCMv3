@@ -20,7 +20,7 @@ The roles allowed to see a secured wagetype. Not enforced at present: nothing re
 
 **Example.** Executive Bonus
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## RoleId {#WageTypeSecurityRole.RoleId}
 <!-- alias: loc:RoleId, dom:WageTypeSecurityRole_RoleId -->

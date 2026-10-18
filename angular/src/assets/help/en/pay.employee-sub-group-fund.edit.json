@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Funds — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupFund",
-  "overviewHtml": "<p>One pay band of the sub group's fund deduction — for example a savings or provident fund. The employee's pay for the fund is the monthly total of wagetypes marked <em>Include In Fund</em>; the band whose From–To range holds that total sets the deduction.</p><p>The deduction is made only for employees enrolled in a fund, and not while they have a fund exemption or after their last day in service.</p>",
+  "overviewHtml": "<p>One pay band of the grade's fund deduction — for example a savings or provident fund. The employee's pay for the fund is the monthly total of wagetypes marked <em>Include In Fund</em>; the band whose From–To range holds that total sets the deduction.</p><p>The deduction is made only for employees enrolled in a fund, and not while they have a fund exemption or after their last day in service.</p>",
   "aliasIndex": {
     "loc:FromPay": "EmployeeSubGroupFund.FromPay",
     "dom:EmployeeSubGroupFund_FromPay": "EmployeeSubGroupFund.FromPay",

@@ -43,7 +43,7 @@
         "loc:AbsenceTypeId",
         "dom:LeaveAccrualSummary_AbsenceTypeId"
       ],
-      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
       "adminHtml": "",

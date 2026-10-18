@@ -19,12 +19,16 @@
     "dom:TimeEvent_TransTime": "TimeEvent.TransTime",
     "loc:TransSource": "TimeEvent.TransSource",
     "dom:TimeEvent_TransSource": "TimeEvent.TransSource",
+    "loc:RecordSource": "TimeEvent.RecordSource",
+    "dom:TimeEvent_RecordSource": "TimeEvent.RecordSource",
     "loc:AccessUnit": "TimeEvent.AccessUnitId",
     "dom:TimeEvent_AccessUnitId": "TimeEvent.AccessUnitId",
     "loc:WorkLocation": "TimeEvent.WorkLocationId",
     "dom:TimeEvent_WorkLocationId": "TimeEvent.WorkLocationId",
     "loc:IpAddress": "TimeEvent.IPAddress",
     "dom:TimeEvent_IpAddress": "TimeEvent.IPAddress",
+    "loc:DeviceAgentString": "TimeEvent.DeviceAgentString",
+    "dom:TimeEvent_DeviceAgentString": "TimeEvent.DeviceAgentString",
     "loc:GeoSelfiePath": "TimeEvent.GeoSelfiePath",
     "dom:TimeEvent_GeoSelfiePath": "TimeEvent.GeoSelfiePath",
     "loc:Latitude": "TimeEvent.Latitude",
@@ -138,6 +142,20 @@
       "stub": false
     },
     {
+      "id": "TimeEvent.RecordSource",
+      "label": "RecordSource",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:RecordSource",
+        "dom:TimeEvent_RecordSource"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The record number the attendance machine or import gave this punch. Set by the system.</p><p><strong>Example.</strong> 10458723</p><p><strong>Why it matters.</strong> Used to recognise records already imported so a punch is not brought in twice. A punch whose source is Machine must have one, and it must be unique among machine punches.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "TimeEvent.AccessUnitId",
       "label": "AccessUnit",
       "section": "TimeEvents",
@@ -176,6 +194,20 @@
       "rules": "Optional. Maximum 50 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The address of the device that sent the punch.</p><p><strong>Example.</strong> <code>10.0.4.21</code></p><p><strong>Why it matters.</strong> Device imports use it to find or create the access unit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimeEvent.DeviceAgentString",
+      "label": "DeviceAgentString",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:DeviceAgentString",
+        "dom:TimeEvent_DeviceAgentString"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The browser or device that sent a self-service punch, as it identified itself. Set by the system.</p><p><strong>Example.</strong> Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) ...</p><p><strong>Why it matters.</strong> For checking where a punch came from. Nothing else reads it.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -571,7 +571,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether unused health reimbursement carries into the next insurance year.</p><p><strong>Why it matters.</strong> Ticked, the unused balance is added to the next year's quota, still capped by the sub group's maximum.</p>",
+      "html": "<p><strong>What it is.</strong> Whether unused health reimbursement carries into the next insurance year.</p><p><strong>Why it matters.</strong> Ticked, the unused balance is added to the next year's quota, still capped by the grade's maximum.</p>",
       "adminHtml": "",
       "stub": false
     },

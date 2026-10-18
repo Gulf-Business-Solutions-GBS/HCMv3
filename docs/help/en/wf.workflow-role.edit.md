@@ -23,7 +23,7 @@ An approver role, such as Payroll Officer. Employees are given roles on their re
 **Rules.** Required. One of: None, Company, Department, Branch, CostCenter.
 
 ## OrganizationUnit {#WorkflowRole.WorkflowRoleOrgId}
-<!-- alias: loc:OrganizationUnit, dom:WorkflowRole_WorkflowRoleOrgId -->
+<!-- alias: loc:OrgLevel, dom:WorkflowRole_WorkflowRoleOrgId -->
 
 **What it is.** An organisation unit level for the role.
 

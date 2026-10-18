@@ -17,20 +17,10 @@
     "dom:AttendanceType_AccrualPeriod": "AttendanceType.AccrualPeriod",
     "loc:LinkLeaveQuota": "AttendanceType.LinkLeaveQuotaId",
     "dom:AttendanceType_LinkLeaveQuotaId": "AttendanceType.LinkLeaveQuotaId",
-    "loc:IsPaid": "AttendanceType.IsPaid",
-    "dom:AttendanceType_IsPaid": "AttendanceType.IsPaid",
-    "loc:HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
-    "dom:AttendanceType_HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
-    "loc:IncludeWeekend": "AttendanceType.IncludeWeekend",
-    "dom:AttendanceType_IncludeWeekend": "AttendanceType.IncludeWeekend",
-    "loc:IncludeRestDay": "AttendanceType.IncludeRestDay",
-    "dom:AttendanceType_IncludeRestDay": "AttendanceType.IncludeRestDay",
     "loc:IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
     "dom:AttendanceType_IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
-    "loc:CalcOnCalendarDays": "AttendanceType.CalcOnCalendarDays",
-    "dom:AttendanceType_CalcOnCalendarDays": "AttendanceType.CalcOnCalendarDays",
-    "loc:IsFullDay": "AttendanceType.IsFullDay",
-    "dom:AttendanceType_IsFullDay": "AttendanceType.IsFullDay"
+    "loc:HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
+    "dom:AttendanceType_HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual"
   },
   "fields": [
     {
@@ -111,65 +101,9 @@
         "loc:LinkLeaveQuota",
         "dom:AttendanceType_LinkLeaveQuotaId"
       ],
-      "rules": "اختياري. يُختار من قائمة أنواع الغياب.",
+      "rules": "اختياري. يُختار من قائمة أنواع الإجازات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الإجازة التي تُضاف إليها أيام هذه المواظبة.</p><p><strong>مثال.</strong> الإجازة التعويضية</p><p><strong>لماذا يهم.</strong> يكون رصيد نوع الإجازة ذاك هو أيام المواظبة المسجلة على الأنواع المرتبطة به، ناقص ما أُخذ منه.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IsPaid",
-      "label": "IsPaid",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IsPaid",
-        "dom:AttendanceType_IsPaid"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة من هذا النوع تُحتسب وقت عمل مدفوعاً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يحتسبها سجل الوقت وقتَ حضور فعلياً — اليوم المخطط كاملاً أو ساعات المواظبة نفسها، بحسب <strong>يوم كامل</strong>. وإلا فلا تضيف وقتاً.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.HaveQuotaAccrual",
-      "label": "HaveQuotaAccrual",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:HaveQuotaAccrual",
-        "dom:AttendanceType_HaveQuotaAccrual"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه المواظبة تُكسب إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يجب ملء <strong>ربط حصة الإجازة</strong>. وتُكتسب الإجازة عبر الربط نفسه: فكل نوع مواظبة له إجازة مرتبطة يضيف إليها.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IncludeWeekend",
-      "label": "IncludeWeekend",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IncludeWeekend",
-        "dom:AttendanceType_IncludeWeekend"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة في يوم الراحة الأسبوعية تُحتسب.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا تضيف المواظبة من هذا النوع في يوم الراحة الأسبوعية أي وقت.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IncludeRestDay",
-      "label": "IncludeRestDay",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IncludeRestDay",
-        "dom:AttendanceType_IncludeRestDay"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة في يوم الراحة تُحتسب.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا تضيف المواظبة من هذا النوع في يوم الراحة أي وقت.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -188,30 +122,16 @@
       "stub": false
     },
     {
-      "id": "AttendanceType.CalcOnCalendarDays",
-      "label": "CalcOnCalendarDays",
+      "id": "AttendanceType.HaveQuotaAccrual",
+      "label": "HaveQuotaAccrual",
       "section": "AttendanceTypes",
       "aliases": [
-        "loc:CalcOnCalendarDays",
-        "dom:AttendanceType_CalcOnCalendarDays"
+        "loc:HaveQuotaAccrual",
+        "dom:AttendanceType_HaveQuotaAccrual"
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت أيام المواظبة تُعدّ على أيام التقويم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IsFullDay",
-      "label": "IsFullDay",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IsFullDay",
-        "dom:AttendanceType_IsFullDay"
-      ],
-      "rules": "نعم أو لا.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة من هذا النوع تُحتسب يوم عمل كاملاً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُحتسب دقائق الموظف المخططة لذلك اليوم كاملة. وإلا تُحتسب الساعات بين وقتي بداية المواظبة ونهايتها.</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه المواظبة تُكسب إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يجب ملء <strong>ربط حصة الإجازة</strong>. وتُكتسب الإجازة عبر الربط نفسه: فكل نوع مواظبة له إجازة مرتبطة يضيف إليها.</p>",
       "adminHtml": "",
       "stub": false
     }

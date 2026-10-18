@@ -5,16 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeBank",
   "overviewHtml": "<p>How and where the employee's salary is paid, from a given date. Two records for the same employee cannot start on the same date.</p><p>Bank transfer files use the record in force on the file's end date. Saving a new record does not close the previous one, so set the previous record's end date yourself.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeBank.StartDate",
+    "dom:EmployeeBank_StartDate": "EmployeeBank.StartDate",
+    "loc:EndDate": "EmployeeBank.EndDate",
+    "dom:EmployeeBank_EndDate": "EmployeeBank.EndDate",
     "loc:BankId": "EmployeeBank.BankId",
     "dom:EmployeeBank_BankId": "EmployeeBank.BankId",
     "loc:PayerBankId": "EmployeeBank.PayerBankId",
     "dom:EmployeeBank_PayerBankId": "EmployeeBank.PayerBankId",
     "loc:BankCountryId": "EmployeeBank.BankCountryId",
     "dom:EmployeeBank_BankCountryId": "EmployeeBank.BankCountryId",
-    "loc:StartDate": "EmployeeBank.StartDate",
-    "dom:EmployeeBank_StartDate": "EmployeeBank.StartDate",
-    "loc:EndDate": "EmployeeBank.EndDate",
-    "dom:EmployeeBank_EndDate": "EmployeeBank.EndDate",
     "loc:PaymentType": "EmployeeBank.PaymentType",
     "dom:EmployeeBank_PaymentType": "EmployeeBank.PaymentType",
     "loc:PaymentCurrencyId": "EmployeeBank.PaymentCurrencyId",
@@ -27,6 +27,34 @@
     "dom:EmployeeBank_BankBranch": "EmployeeBank.BankBranch"
   },
   "fields": [
+    {
+      "id": "EmployeeBank.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBank_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBank_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeBank.BankId",
       "label": "BankId",
@@ -66,34 +94,6 @@
       "rules": "Optional. Chosen from Country master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The country of the employee's bank.</p><p><strong>Example.</strong> Kuwait</p><p><strong>Why it matters.</strong> Recorded only; bank files do not read it at present.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeBank.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeBanks",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeBank_StartDate"
-      ],
-      "rules": "Required. Date value.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeBank.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeBanks",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeBank_EndDate"
-      ],
-      "rules": "Required. Date value.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     },

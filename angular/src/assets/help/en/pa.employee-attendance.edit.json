@@ -5,16 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAttendance",
   "overviewHtml": "<p>Time the employee spends away from their normal duty but still counted as attendance — for example training, a field visit or official business. Attendance records for the same employee cannot overlap.</p><p>The time engine reads these records when it builds each day. Regular payroll pays attendance from those days; off-cycle payroll reads the records directly.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeAttendance.StartDate",
+    "dom:EmployeeAttendance_StartDate": "EmployeeAttendance.StartDate",
+    "loc:EndDate": "EmployeeAttendance.EndDate",
+    "dom:EmployeeAttendance_EndDate": "EmployeeAttendance.EndDate",
     "loc:AttendanceTypeId": "EmployeeAttendance.AttendanceTypeId",
     "dom:EmployeeAttendance_AttendanceTypeId": "EmployeeAttendance.AttendanceTypeId",
     "loc:AttendanceUnit": "EmployeeAttendance.AttendanceUnit",
     "dom:EmployeeAttendance_AttendanceUnit": "EmployeeAttendance.AttendanceUnit",
     "loc:AttendanceHours": "EmployeeAttendance.AttendanceHours",
     "dom:EmployeeAttendance_AttendanceHours": "EmployeeAttendance.AttendanceHours",
-    "loc:StartDate": "EmployeeAttendance.StartDate",
-    "dom:EmployeeAttendance_StartDate": "EmployeeAttendance.StartDate",
-    "loc:EndDate": "EmployeeAttendance.EndDate",
-    "dom:EmployeeAttendance_EndDate": "EmployeeAttendance.EndDate",
     "loc:StartTime": "EmployeeAttendance.StartTime",
     "dom:EmployeeAttendance_StartTime": "EmployeeAttendance.StartTime",
     "loc:EndTime": "EmployeeAttendance.EndTime",
@@ -23,6 +23,34 @@
     "dom:EmployeeAttendance_Comments": "EmployeeAttendance.Comments"
   },
   "fields": [
+    {
+      "id": "EmployeeAttendance.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAttendance_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAttendance_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeAttendance.AttendanceTypeId",
       "label": "AttendanceTypeId",
@@ -62,34 +90,6 @@
       "rules": "Optional. Number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The number of hours, for attendance recorded in hours.</p><p><strong>Example.</strong> 3</p><p><strong>Why it matters.</strong> Shown on the attendance report and in the approval notification.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeAttendance.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeAttendances",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeAttendance_StartDate"
-      ],
-      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeAttendance.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeAttendances",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeAttendance_EndDate"
-      ],
-      "rules": "Required. Date value. Cannot be before the start date.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     },

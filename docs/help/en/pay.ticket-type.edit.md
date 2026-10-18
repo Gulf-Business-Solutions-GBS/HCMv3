@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.TicketTypes.Create]
 
 ## Overview
 
-A kind of air ticket -- the employee's own, or one for a kind of dependant -- and how its entitlement builds up and lapses. Ticket type `1` is the employee's own ticket; the others are dependant tickets. How many tickets and their value are set per sub group.
+A kind of air ticket -- the employee's own, or one for a kind of dependant -- and how its entitlement builds up and lapses. Ticket type `1` is the employee's own ticket; the others are dependant tickets. How many tickets and their value are set per grade.
 
 ## TicketBasisPeriod {#TicketType.TicketBasisPeriod}
 <!-- alias: loc:TicketBasisPeriod, dom:TicketType_TicketBasisPeriod -->
@@ -100,4 +100,4 @@ With **Lapse** ticked, set this to at least 1. The form accepts 0, but 0 makes t
 
 **Why it matters.** It must be filled in to save, but nothing reads it at present.
 
-**Rules.** Optional. Chosen from Wagetype master data.
+**Rules.** Optional. Chosen from Wage Type master data.

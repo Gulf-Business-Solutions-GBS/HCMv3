@@ -339,7 +339,7 @@ There is one settings record per company; it cannot be deleted.
 ## ForfeitRule {#ManageTimeSettings.ForfeitRule}
 <!-- alias: loc:ForfeitRule, dom:TimeSettings_ForfeitRule -->
 
-**What it is.** When annual leave above the sub group's maximum is forfeited.
+**What it is.** When annual leave above the grade's maximum is forfeited.
 
 **Example.** None
 

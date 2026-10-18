@@ -19,12 +19,12 @@
     "dom:NotificationConfig_ToRequestCreator": "NotificationConfig.ToRequestCreator",
     "loc:ToManager": "NotificationConfig.ToManager",
     "dom:NotificationConfig_ToManager": "NotificationConfig.ToManager",
+    "loc:SendToApprover": "NotificationConfig.SendToApprover",
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover",
     "loc:SendToAll": "NotificationConfig.SendToAll",
     "dom:NotificationConfig_SendToAll": "NotificationConfig.SendToAll",
     "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
-    "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
-    "loc:SendToApprover": "NotificationConfig.SendToApprover",
-    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
+    "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved"
   },
   "fields": [
     {
@@ -51,9 +51,9 @@
       ],
       "rules": "Optional. Chosen from Email Template master data.",
       "when": null,
-      "html": "",
+      "html": "<p><strong>What it is.</strong> The email template sent when this notification configuration fires.</p><p><strong>Example.</strong> Leave Request Approved</p><p><strong>Why it matters.</strong> The email is built from the template, with the request number, summary, the person who acted and their remarks filled in. Choose <strong>In-app notification only</strong> to send no email; the in-app notification still goes out.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "NotificationConfig.SendNotification",
@@ -126,6 +126,20 @@
       "stub": false
     },
     {
+      "id": "NotificationConfig.SendToApprover",
+      "label": "SendToApprover",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToApprover",
+        "dom:NotificationConfig_SendToApprover"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to email the current approver.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "NotificationConfig.SendToAll",
       "label": "SendToAll",
       "section": "NotificationConfigs",
@@ -150,20 +164,6 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> For a workflow request, email everyone who approved it.</p><p><strong>Why it matters.</strong> Approvers who are now inactive are skipped.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "NotificationConfig.SendToApprover",
-      "label": "SendToApprover",
-      "section": "NotificationConfigs",
-      "aliases": [
-        "loc:SendToApprover",
-        "dom:NotificationConfig_SendToApprover"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Meant to email the current approver.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
       "stub": false
     }

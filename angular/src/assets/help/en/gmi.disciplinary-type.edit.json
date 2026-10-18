@@ -1,7 +1,7 @@
 {
   "helpId": "gmi.disciplinary-type.edit",
   "lang": "en",
-  "title": "Disciplinary Types — Create / Edit",
+  "title": "Violation Types — Create / Edit",
   "entity": "HCMv3.GeneralMasterInfo.DisciplinaryType",
   "overviewHtml": "<p>The kinds of disciplinary offence — late arrival, absence without leave and so on. Each disciplinary action recorded against an employee names one, and the type's escalation ladder decides which deduction the offence carries.</p>",
   "aliasIndex": {

@@ -226,7 +226,7 @@ The birth date must be in the past, the joining date after the birth date and pr
 
 **Why it matters.** Counts towards the profile strength shown to the candidate on the careers site.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 512 characters.
 
 ## CurrentAddress {#Applicant.CurrentAddress}
 <!-- alias: loc:CurrentAddress, dom:Applicant_CurrentAddress -->
@@ -319,3 +319,54 @@ The birth date must be in the past, the joining date after the birth date and pr
 **Why it matters.** Not read at present -- stored for reference.
 
 **Rules.** Yes or no.
+
+## CompletionPoints {#Applicant.CompletionPoints}
+<!-- alias: loc:CompletionPoints, dom:Applicant_CompletionPoints -->
+
+**What it is.** How complete the candidate's careers profile is, out of 60 points. Calculated, not typed in.
+
+**Example.** 35
+
+**Why it matters.** 5 points each for a photo, Civil ID, nationality, permanent address, birth date, email and mobile, and 25 for at least one CV. Stored when the candidate saves their profile; for information only.
+
+**Rules.** Optional. Whole number.
+
+## IsOnbdStarted {#Applicant.IsOnbdStarted}
+<!-- alias: loc:IsOnbdStarted, dom:Applicant_IsOnbdStarted -->
+
+**What it is.** Whether onboarding may start for this applicant.
+
+**Why it matters.** Recorded only. Nothing reads it at present.
+
+**Rules.** Yes or no.
+
+## IsOnbdInit {#Applicant.IsOnbdInit}
+<!-- alias: loc:IsOnbdInit, dom:Applicant_IsOnbdInit -->
+
+**What it is.** Whether onboarding has been initiated for this applicant.
+
+**Why it matters.** Recorded only. Nothing reads it at present.
+
+**Rules.** Yes or no.
+
+## OnbCoordinator {#Applicant.OnbCoordinatorId}
+<!-- alias: loc:OnbCoordinator, dom:Applicant_OnbCoordinatorId -->
+
+**What it is.** The employee who coordinates this applicant's onboarding.
+
+**Example.** Fatima Al-Sabah (HR)
+
+**Why it matters.** Recorded only. Nothing reads it at present.
+
+**Rules.** Optional. Chosen from a list.
+
+## OnbBuddy {#Applicant.OnbBuddyId}
+<!-- alias: loc:OnbBuddy, dom:Applicant_OnbBuddyId -->
+
+**What it is.** The employee who looks after the new joiner during onboarding.
+
+**Example.** Ahmed Khan
+
+**Why it matters.** Recorded only. Nothing reads it at present.
+
+**Rules.** Optional. Chosen from a list.

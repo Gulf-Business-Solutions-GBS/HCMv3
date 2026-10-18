@@ -168,7 +168,7 @@ permissions: [Pages.PersonnelAdministration.Employees.Create, Pages.PersonnelAdm
 لا يستطيع الموظفون تغيير صورهم من خلال الخدمة الذاتية -- فالصورة بحكم التصميم يديرها قسم الموارد البشرية من هذا النموذج وحده. ولا يقيّد النموذج حجم الملف، والصورة تُحفظ في قاعدة البيانات مع سجل الموظف، لذا صغّر صور الكاميرا الكبيرة قبل رفعها.
 :::
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 512 حرفاً.
 
 ## FlatNumber {#Employee.FlatNumn}
 <!-- alias: loc:FlatNumber, dom:Employee_FlatNumn -->

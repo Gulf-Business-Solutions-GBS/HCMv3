@@ -78,6 +78,17 @@ One punch: an employee clocking in or out, or out and back for a break, at a dat
 
 **Rules.** Required. One of: Machine, Manual, System, ESS, MobileAPI, ExternalAPI.
 
+## RecordSource {#TimeEvent.RecordSource}
+<!-- alias: loc:RecordSource, dom:TimeEvent_RecordSource -->
+
+**What it is.** The record number the attendance machine or import gave this punch. Set by the system.
+
+**Example.** 10458723
+
+**Why it matters.** Used to recognise records already imported so a punch is not brought in twice. A punch whose source is Machine must have one, and it must be unique among machine punches.
+
+**Rules.** Optional. Whole number.
+
 ## AccessUnit {#TimeEvent.AccessUnitId}
 <!-- alias: loc:AccessUnit, dom:TimeEvent_AccessUnitId -->
 
@@ -108,6 +119,17 @@ One punch: an employee clocking in or out, or out and back for a break, at a dat
 **Why it matters.** Device imports use it to find or create the access unit.
 
 **Rules.** Optional. Maximum 50 characters.
+
+## DeviceAgentString {#TimeEvent.DeviceAgentString}
+<!-- alias: loc:DeviceAgentString, dom:TimeEvent_DeviceAgentString -->
+
+**What it is.** The browser or device that sent a self-service punch, as it identified itself. Set by the system.
+
+**Example.** Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) ...
+
+**Why it matters.** For checking where a punch came from. Nothing else reads it.
+
+**Rules.** Optional. Maximum 1000 characters.
 
 ## GeoSelfiePath {#TimeEvent.GeoSelfiePath}
 <!-- alias: loc:GeoSelfiePath, dom:TimeEvent_GeoSelfiePath -->

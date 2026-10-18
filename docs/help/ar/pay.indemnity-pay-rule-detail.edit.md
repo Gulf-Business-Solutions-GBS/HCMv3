@@ -13,7 +13,7 @@ permissions: [Pages.PayrollManagement.IndemnityPayRuleDetails.Create]
 
 خطوة واحدة من قاعدة دفع المكافأة، بحسب سنوات الخدمة -- مثل الاستقالة بعد ثلاث إلى خمس سنوات تُصرف بالنصف.
 
-لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من **مجموعة الموظفين** التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.
+لا تُستخدم حالياً: لا تمرّر أي عملية احتساب للرواتب أو التقارير قاعدة دفع مكافأة، فيأتي حد المكافأة دائماً من **ملف الراتب** التي ينتمي إليها الموظف. وهذه القواعد تُحفظ للرجوع إليها.
 
 ## IndemnityPayRuleId {#IndemnityPayRuleDetail.IndemnityPayRuleId}
 <!-- alias: loc:IndemnityPayRuleId, dom:IndemnityPayRuleDetail_IndemnityPayRuleId -->

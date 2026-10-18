@@ -1,7 +1,7 @@
 ---
 helpId: pa.employee-disciplinary.edit
 lang: en
-title: Employee Disciplinaries — Create / Edit
+title: Employee Violations — Create / Edit
 entity: HCMv3.PersonnelAdministration.EmployeeDisciplinary
 surfaces:
   - angular/src/app/admin/personnel-administration/employee-detail/disciplinaries/create-or-edit-employee-disciplinary-modal.component.html
@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeDisciplinaries.Create]
 
 A disciplinary offence recorded against the employee.
 
-Disciplinary records can be routed for approval. When they are, the reporting employee and work location are required, and on approval the deduction type is set from the disciplinary type's tiers according to how many earlier offences of the same type fall within its repeat period. No deduction is taken in payroll at present.
+Violation records can be routed for approval. When they are, the reporting employee and work location are required, and on approval the deduction type is set from the violation type's tiers according to how many earlier offences of the same type fall within its repeat period. No deduction is taken in payroll at present.
 
 ## OrganizationUnitId {#EmployeeDisciplinary.OrganizationUnitId}
 <!-- alias: loc:OrganizationUnitId, dom:EmployeeDisciplinary_OrganizationUnitId -->
@@ -46,10 +46,10 @@ Disciplinary records can be routed for approval. When they are, the reporting em
 
 **Why it matters.** Earlier offences of the same type within its repeat period decide the escalation tier used on approval.
 
-**Rules.** Required. Chosen from Disciplinary Type master data.
+**Rules.** Required. Chosen from Violation Type master data.
 
 :::admin
-Maintained under General Master Info → Disciplinary Types.
+Maintained under General Master Info → Violation Types.
 :::
 
 ## DisciplinaryDate {#EmployeeDisciplinary.DisciplinaryDate}
@@ -101,9 +101,9 @@ Maintained under General Master Info → Disciplinary Types.
 
 **Example.** One day's pay
 
-**Why it matters.** Set from the disciplinary type's tiers on approval when the record is routed. Not deducted in payroll at present.
+**Why it matters.** Set from the violation type's tiers on approval when the record is routed. Not deducted in payroll at present.
 
-**Rules.** Optional. Chosen from Disciplinary Deduction Type master data.
+**Rules.** Optional. Chosen from Violation Deduction Type master data.
 
 ## WlSendToEmp {#EmployeeDisciplinary.WLSendToEmp}
 <!-- alias: loc:WlSendToEmp, dom:EmployeeDisciplinary_WlSendToEmp -->

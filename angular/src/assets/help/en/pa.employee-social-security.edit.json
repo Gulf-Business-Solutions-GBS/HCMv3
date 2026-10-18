@@ -5,44 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeSocialSecurity",
   "overviewHtml": "<p>The employee's social security (PIFSS) registration for a period.</p><p>Payroll calculates social security allowances and deductions for a month only when a registration with Contributes ticked covers that month's end.</p>",
   "aliasIndex": {
-    "loc:SocialSecurityNum": "EmployeeSocialSecurity.SocialSecurityNum",
-    "dom:EmployeeSocialSecurity_SocialSecurityNum": "EmployeeSocialSecurity.SocialSecurityNum",
-    "loc:SocialSecurityContrib": "EmployeeSocialSecurity.SocialSecurityContrib",
-    "dom:EmployeeSocialSecurity_SocialSecurityContrib": "EmployeeSocialSecurity.SocialSecurityContrib",
     "loc:StartDate": "EmployeeSocialSecurity.StartDate",
     "dom:EmployeeSocialSecurity_StartDate": "EmployeeSocialSecurity.StartDate",
     "loc:EndDate": "EmployeeSocialSecurity.EndDate",
-    "dom:EmployeeSocialSecurity_EndDate": "EmployeeSocialSecurity.EndDate"
+    "dom:EmployeeSocialSecurity_EndDate": "EmployeeSocialSecurity.EndDate",
+    "loc:SocialSecurityNum": "EmployeeSocialSecurity.SocialSecurityNum",
+    "dom:EmployeeSocialSecurity_SocialSecurityNum": "EmployeeSocialSecurity.SocialSecurityNum",
+    "loc:SocialSecurityContrib": "EmployeeSocialSecurity.SocialSecurityContrib",
+    "dom:EmployeeSocialSecurity_SocialSecurityContrib": "EmployeeSocialSecurity.SocialSecurityContrib"
   },
   "fields": [
-    {
-      "id": "EmployeeSocialSecurity.SocialSecurityNum",
-      "label": "SocialSecurityNum",
-      "section": "EmployeeSocialSecurities",
-      "aliases": [
-        "loc:SocialSecurityNum",
-        "dom:EmployeeSocialSecurity_SocialSecurityNum"
-      ],
-      "rules": "Required. Whole number.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The employee's social security registration number.</p><p><strong>Example.</strong> 1234567</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeSocialSecurity.SocialSecurityContrib",
-      "label": "SocialSecurityContrib",
-      "section": "EmployeeSocialSecurities",
-      "aliases": [
-        "loc:SocialSecurityContrib",
-        "dom:EmployeeSocialSecurity_SocialSecurityContrib"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the employee contributes to social security in this period.</p><p><strong>Why it matters.</strong> Without it, payroll calculates no social security for the months this record covers.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
     {
       "id": "EmployeeSocialSecurity.StartDate",
       "label": "StartDate",
@@ -68,6 +40,34 @@
       "rules": "Required. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurity.SocialSecurityNum",
+      "label": "SocialSecurityNum",
+      "section": "EmployeeSocialSecurities",
+      "aliases": [
+        "loc:SocialSecurityNum",
+        "dom:EmployeeSocialSecurity_SocialSecurityNum"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's social security registration number.</p><p><strong>Example.</strong> 1234567</p><p><strong>Why it matters.</strong> Recorded only; payroll and reports do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurity.SocialSecurityContrib",
+      "label": "SocialSecurityContrib",
+      "section": "EmployeeSocialSecurities",
+      "aliases": [
+        "loc:SocialSecurityContrib",
+        "dom:EmployeeSocialSecurity_SocialSecurityContrib"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee contributes to social security in this period.</p><p><strong>Why it matters.</strong> Without it, payroll calculates no social security for the months this record covers.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeDependant",
   "overviewHtml": "<p>فرد من الأسرة يعوله الموظف — زوج أو ابن أو والد — والمزايا التي يُحتسب ضمنها. ولا يجوز أن تتداخل فترات المعالين من نوع التذكرة نفسه للموظف نفسه.</p><p>يدخل المعالون في استحقاق تعويض المصاريف الصحية، وتذاكر طيران المعالين، وبدل الأبناء في التأمينات الاجتماعية.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeDependant.StartDate",
+    "dom:EmployeeDependant_StartDate": "EmployeeDependant.StartDate",
+    "loc:EndDate": "EmployeeDependant.EndDate",
+    "dom:EmployeeDependant_EndDate": "EmployeeDependant.EndDate",
     "loc:NameEn": "EmployeeDependant.NameEn",
     "dom:EmployeeDependant_NameEn": "EmployeeDependant.NameEn",
     "loc:NameAr": "EmployeeDependant.NameAr",
@@ -15,10 +19,6 @@
     "dom:EmployeeDependant_BirthDate": "EmployeeDependant.BirthDate",
     "loc:TicketTypeId": "EmployeeDependant.TicketTypeId",
     "dom:EmployeeDependant_TicketTypeId": "EmployeeDependant.TicketTypeId",
-    "loc:StartDate": "EmployeeDependant.StartDate",
-    "dom:EmployeeDependant_StartDate": "EmployeeDependant.StartDate",
-    "loc:EndDate": "EmployeeDependant.EndDate",
-    "dom:EmployeeDependant_EndDate": "EmployeeDependant.EndDate",
     "loc:SpecialNeed": "EmployeeDependant.SpecialNeed",
     "dom:EmployeeDependant_SpecialNeed": "EmployeeDependant.SpecialNeed",
     "loc:IncludeInSocialSecurity": "EmployeeDependant.IncludeInSocialSecurity",
@@ -27,6 +27,34 @@
     "dom:EmployeeDependant_IncludeInHealthInsurance": "EmployeeDependant.IncludeInHealthInsurance"
   },
   "fields": [
+    {
+      "id": "EmployeeDependant.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDependant_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه ونوع التذكرة نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDependant_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeDependant.NameEn",
       "label": "NameEn",
@@ -65,7 +93,7 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع صفات العائل.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> صفة العائل بالنسبة إلى الموظف.</p><p><strong>مثال.</strong> ابنة</p><p><strong>لماذا يهم.</strong> يُحدَّد استحقاق تعويض المصاريف الصحية لكل صفة عائل في المجموعة الفرعية للموظف.</p>",
+      "html": "<p><strong>ما هو.</strong> صفة العائل بالنسبة إلى الموظف.</p><p><strong>مثال.</strong> ابنة</p><p><strong>لماذا يهم.</strong> يُحدَّد استحقاق تعويض المصاريف الصحية لكل صفة عائل في الدرجة للموظف.</p>",
       "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع صفات العائل.</p>",
       "stub": false
     },
@@ -94,34 +122,6 @@
       "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> نوع التذكرة الذي تستخدمه تذاكر طيران المعال.</p><p><strong>مثال.</strong> المعال 1</p><p><strong>لماذا يهم.</strong> يحتسب محرك الوقت تراكم تذاكر المعال الساري في كل يوم.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeDependant.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeDependants",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeDependant_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه ونوع التذكرة نفسه.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeDependant.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeDependants",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeDependant_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     },

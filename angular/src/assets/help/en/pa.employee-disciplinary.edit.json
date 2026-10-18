@@ -1,9 +1,9 @@
 {
   "helpId": "pa.employee-disciplinary.edit",
   "lang": "en",
-  "title": "Employee Disciplinaries — Create / Edit",
+  "title": "Employee Violations — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeDisciplinary",
-  "overviewHtml": "<p>A disciplinary offence recorded against the employee.</p><p>Disciplinary records can be routed for approval. When they are, the reporting employee and work location are required, and on approval the deduction type is set from the disciplinary type's tiers according to how many earlier offences of the same type fall within its repeat period. No deduction is taken in payroll at present.</p>",
+  "overviewHtml": "<p>A disciplinary offence recorded against the employee.</p><p>Violation records can be routed for approval. When they are, the reporting employee and work location are required, and on approval the deduction type is set from the violation type's tiers according to how many earlier offences of the same type fall within its repeat period. No deduction is taken in payroll at present.</p>",
   "aliasIndex": {
     "loc:OrganizationUnitId": "EmployeeDisciplinary.OrganizationUnitId",
     "dom:EmployeeDisciplinary_OrganizationUnitId": "EmployeeDisciplinary.OrganizationUnitId",
@@ -65,10 +65,10 @@
         "loc:DisciplinaryTypeId",
         "dom:EmployeeDisciplinary_DisciplinaryTypeId"
       ],
-      "rules": "Required. Chosen from Disciplinary Type master data.",
+      "rules": "Required. Chosen from Violation Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The kind of offence.</p><p><strong>Example.</strong> Late arrival</p><p><strong>Why it matters.</strong> Earlier offences of the same type within its repeat period decide the escalation tier used on approval.</p>",
-      "adminHtml": "<p>Maintained under General Master Info → Disciplinary Types.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Violation Types.</p>",
       "stub": false
     },
     {
@@ -135,9 +135,9 @@
         "loc:DisciplinaryDeductionTypeId",
         "dom:EmployeeDisciplinary_DisciplinaryDeductionTypeId"
       ],
-      "rules": "Optional. Chosen from Disciplinary Deduction Type master data.",
+      "rules": "Optional. Chosen from Violation Deduction Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The penalty applied.</p><p><strong>Example.</strong> One day's pay</p><p><strong>Why it matters.</strong> Set from the disciplinary type's tiers on approval when the record is routed. Not deducted in payroll at present.</p>",
+      "html": "<p><strong>What it is.</strong> The penalty applied.</p><p><strong>Example.</strong> One day's pay</p><p><strong>Why it matters.</strong> Set from the violation type's tiers on approval when the record is routed. Not deducted in payroll at present.</p>",
       "adminHtml": "",
       "stub": false
     },

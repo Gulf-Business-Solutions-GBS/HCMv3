@@ -74,7 +74,17 @@
     "loc:IsAgency": "Applicant.IsAgency",
     "dom:Applicant_IsAgency": "Applicant.IsAgency",
     "loc:Comments": "Applicant.Comments",
-    "dom:Applicant_Comments": "Applicant.Comments"
+    "dom:Applicant_Comments": "Applicant.Comments",
+    "loc:CompletionPoints": "Applicant.CompletionPoints",
+    "dom:Applicant_CompletionPoints": "Applicant.CompletionPoints",
+    "loc:IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "dom:Applicant_IsOnbdStarted": "Applicant.IsOnbdStarted",
+    "loc:IsOnbdInit": "Applicant.IsOnbdInit",
+    "dom:Applicant_IsOnbdInit": "Applicant.IsOnbdInit",
+    "loc:OnbCoordinator": "Applicant.OnbCoordinatorId",
+    "dom:Applicant_OnbCoordinatorId": "Applicant.OnbCoordinatorId",
+    "loc:OnbBuddy": "Applicant.OnbBuddyId",
+    "dom:Applicant_OnbBuddyId": "Applicant.OnbBuddyId"
   },
   "fields": [
     {
@@ -564,6 +574,76 @@
       "rules": "اختياري.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.CompletionPoints",
+      "label": "CompletionPoints",
+      "section": "Applicants",
+      "aliases": [
+        "loc:CompletionPoints",
+        "dom:Applicant_CompletionPoints"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى اكتمال ملف المرشح في بوابة التوظيف، من 60 نقطة. تُحتسب ولا تُدخل يدوياً.</p><p><strong>مثال.</strong> 35</p><p><strong>لماذا يهم.</strong> 5 نقاط لكل من الصورة والبطاقة المدنية والجنسية والعنوان الدائم وتاريخ الميلاد والبريد الإلكتروني والهاتف المحمول، و25 نقطة لوجود سيرة ذاتية واحدة على الأقل. تُحفظ عندما يحفظ المرشح ملفه؛ وهي للعلم فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdStarted",
+      "label": "IsOnbdStarted",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdStarted",
+        "dom:Applicant_IsOnbdStarted"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز بدء التهيئة الوظيفية لهذا المتقدم.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.IsOnbdInit",
+      "label": "IsOnbdInit",
+      "section": "Applicants",
+      "aliases": [
+        "loc:IsOnbdInit",
+        "dom:Applicant_IsOnbdInit"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التهيئة الوظيفية قد جُهِّزت لهذا المتقدم.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbCoordinatorId",
+      "label": "OnbCoordinator",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbCoordinator",
+        "dom:Applicant_OnbCoordinatorId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي ينسّق التهيئة الوظيفية لهذا المتقدم.</p><p><strong>مثال.</strong> فاطمة الصباح (الموارد البشرية)</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Applicant.OnbBuddyId",
+      "label": "OnbBuddy",
+      "section": "Applicants",
+      "aliases": [
+        "loc:OnbBuddy",
+        "dom:Applicant_OnbBuddyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يرافق الموظف الجديد أثناء التهيئة الوظيفية.</p><p><strong>مثال.</strong> أحمد خان</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط. ولا يقرؤه شيء حالياً.</p>",
       "adminHtml": "",
       "stub": false
     }

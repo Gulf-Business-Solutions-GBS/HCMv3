@@ -5,12 +5,26 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeManager",
   "overviewHtml": "<p>المدير الذي يتبع له الموظف اعتباراً من تاريخ معين. تشكّل سجلات المدير تاريخاً متتابعاً: فعند حفظ سجل جديد يُغلق السابق في اليوم السابق لتاريخ البداية الجديد.</p><p>المدير الساري اليوم هو من يرى هذا الموظف ضمن مرؤوسيه المباشرين في الخدمة الذاتية، وتصله طلبات الموظف في خطوات اعتماد المدير، ويُنسخ على الإشعارات المحددة لإرسالها إلى المدير.</p>",
   "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeManager.StartDate",
+    "dom:EmployeeManager_StartDate": "EmployeeManager.StartDate",
     "loc:Manager": "EmployeeManager.ManagerId",
-    "dom:EmployeeManager_ManagerId": "EmployeeManager.ManagerId",
-    "loc:StartDate": "EmployeeManager.StartDate",
-    "dom:EmployeeManager_StartDate": "EmployeeManager.StartDate"
+    "dom:EmployeeManager_ManagerId": "EmployeeManager.ManagerId"
   },
   "fields": [
+    {
+      "id": "EmployeeManager.StartDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeManagers",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeManager_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق للموظف نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeManager.ManagerId",
       "label": "Manager",
@@ -22,20 +36,6 @@
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> المدير المباشر للموظف اعتباراً من هذا التاريخ.</p><p><strong>مثال.</strong> فاطمة العنزي (1002)</p><p><strong>لماذا يهم.</strong> يحدد ظهور الفريق في الخدمة الذاتية، وخطوات اعتماد المدير (ومنها المستويات الأعلى التي تتبع مدير كل مدير بالتتابع)، وإشعارات المدير، والمخطط التنظيمي، وتقارير المديرين. ويُتجاهل في كل ذلك أي سجل يجعل الموظف مديراً لنفسه.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeManager.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeManagers",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeManager_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق للموظف نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     }

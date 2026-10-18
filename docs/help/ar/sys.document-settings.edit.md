@@ -39,6 +39,8 @@ permissions: [Pages.SystemSettings.ManageDocumentSettings]
 تأتي القائمة من `FileStorage:Roots` في ملف `appsettings.json` على الخادم، ويرى مستخدم المضيف أيضاً المجلد الذي يشير إليه كل اسم. ولا شيء يُكتب في هذه الشاشة يمكنه تحديد موضع الكتابة على الخادم، وهذا مقصود: فالمجلد الذي يُكتب هنا يصبح مجلداً يكتب فيه حساب الخدمة الملفات المرفوعة، وتوجيهه إلى موقع الويب أو إلى مجلد مستأجر آخر يفتح ثغرة. أما الحقل النصي القديم **مسار مرفقات نظام الملفات** فلم يكن يُقرأ وقد أُزيل، وبقيت قيمته المخزَّنة في قاعدة البيانات دون تغيير.
 :::
 
+**القواعد.** اختياري. الحد الأقصى 64 حرفاً.
+
 ## AllowedFileExtensions {#ManageDocumentSettings.AllowedFileExtensions}
 <!-- alias: loc:AllowedFileExtensions, dom:DocumentSettings_AllowedFileExtensions -->
 

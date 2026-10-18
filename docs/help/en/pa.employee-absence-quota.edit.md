@@ -15,6 +15,8 @@ The employee's leave entitlement for one leave type over an entitlement period: 
 
 The self-service leave balance is built from the quota whose entitlement period covers the date. For annual leave, the time engine adds each day's accrual to Quota Accrued as it runs.
 
+When an existing quota is opened, **Quota Balance** shows what is left of it, as on the list: accrued, less used, adjusted and forfeited. It is calculated and cannot be typed in.
+
 ## AbsenceTypeId {#EmployeeAbsenceQuota.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsenceQuota_AbsenceTypeId -->
 
@@ -22,10 +24,10 @@ The self-service leave balance is built from the quota whose entitlement period 
 
 **Example.** Annual Leave
 
-**Rules.** Required. Chosen from Absence Type master data.
+**Rules.** Required. Chosen from Leave Type master data.
 
 :::admin
-Maintained under Payroll Management → Absence Types.
+Maintained under Payroll Management → Leave Types.
 :::
 
 ## NotificationSent {#EmployeeAbsenceQuota.NotificationSent}

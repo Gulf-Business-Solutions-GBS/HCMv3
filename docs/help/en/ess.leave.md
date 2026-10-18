@@ -16,15 +16,6 @@ Your balances sit at the top, one card per leave type. Below them are the forms 
 
 Leave you have asked for but that is not yet approved is already held against your balance. That is deliberate: it stops you booking the same days twice while the first request is with your manager.
 
-## Bookable balance {#ess.leave.bookable-balance}
-<!-- alias: loc:BookableBalance -->
-
-**What it is.** How many days you can still book, per leave type. **Remaining** is shown underneath it, and the two are different: remaining counts only leave already approved, while bookable also holds back what you have requested and not yet had approved.
-
-**Example.** Remaining 18, bookable 13 — because you have a five-day request waiting.
-
-**Why it matters.** **Book against bookable, not remaining.** The gap between them is leave you have already asked for; treating it as free is how a second request is rejected for a balance you thought you had.
-
 ## Leave type {#ess.leave.absence-type}
 <!-- alias: loc:AbsenceType -->
 
@@ -52,43 +43,6 @@ Leave you have asked for but that is not yet approved is already held against yo
 
 **Why it matters.** It must be on or after the start date, and the days between the two are what comes off your balance — how weekends and holidays count is your company's rule, and the **Days** figure shows the result.
 
-## Days {#ess.leave.days}
-<!-- alias: loc:Days -->
-
-**What it is.** How many days the leave actually costs you, from your dates and your company's calendar.
-
-**Example.** 3 to 14 August shows as 10 days, not 12, where the weekends do not count.
-
-**Why it matters.** This, not the span of dates, is what comes off your balance. If it is not the number you expected, the difference is weekends or public holidays inside your dates — which is worth knowing before you book the flights.
-
-## Payment type {#ess.leave.leave-payment-type-label}
-<!-- alias: loc:LeavePaymentTypeLabel -->
-
-**What it is.** Whether you want the leave paid as usual, or your leave salary paid in advance before you go.
-
-**Example.** Paid in advance, for a month away.
-
-**Why it matters.** Advance payment brings money forward, it does not add any: the advance is settled against the pay you would have had while away. It also needs more notice, because it has to reach a payroll run before you leave.
-
-## Payment date {#ess.leave.payment-date-label}
-<!-- alias: loc:PaymentDateLabel -->
-
-**What it is.** When you want the advance paid, if you asked for one.
-
-**Example.** 28 July 2026, the payroll before you fly.
-
-**Why it matters.** It has to be a date a payroll run can still reach. Asking for an advance two days before you go, after the month's payroll has been processed, means it arrives after you have gone.
-
-## Sick leave deduction breakdown {#ess.leave.sick-breakdown}
-<!-- alias: loc:SickLeaveDeductionBreakdown -->
-
-**What it is.** For sick leave, how the days you asked for are paid: which are at full pay, which at part pay and which unpaid, worked out from your company's rule and the sick leave you have already taken this year.
-
-**Example.** Days 1–15 at full pay, 16–25 at three quarters, 26–35 at half.
-
-**Why it matters.** Sick leave is rarely paid in full throughout, and the steps depend on how much you have already had. This is shown before you submit precisely so that the deduction is not a surprise on the payslip.
-
-
 ## Reason for the change {#ess.leave.reason-for-the-change}
 <!-- alias: loc:ReasonForTheChange -->
 
@@ -97,15 +51,6 @@ Leave you have asked for but that is not yet approved is already held against yo
 **Example.** "Client visit brought forward — coming back a week early."
 
 **Why it matters.** You are asking somebody to revisit a decision they already made, and they will want to know why. It is required for that reason, and it stays on the record with the amendment.
-
-## Report my return {#ess.leave.report-return}
-<!-- alias: loc:ReportMyReturn -->
-
-**What it is.** Opens the form for telling HR you are back, once your leave has started.
-
-**Example.** Back on Sunday as planned; or back four days early.
-
-**Why it matters.** Until your return is recorded, the system still has you away — which affects attendance, payroll and anybody looking for you. Reporting a return early gives the unused days back to your balance.
 
 ## Rejoining date {#ess.leave.rejoining-date}
 <!-- alias: loc:RejoiningDate -->
@@ -142,6 +87,60 @@ Leave you have asked for but that is not yet approved is already held against yo
 **Example.** The other two of the four days.
 
 **Why it matters.** These days are deducted from your pay. Splitting an overrun honestly between paid and unpaid here is what stops the whole of it being treated as unauthorised absence, which is the worse outcome.
+
+## Payment type {#ess.leave.leave-payment-type-label}
+<!-- alias: loc:LeavePaymentTypeLabel -->
+
+**What it is.** Whether you want the leave paid as usual, or your leave salary paid in advance before you go.
+
+**Example.** Paid in advance, for a month away.
+
+**Why it matters.** Advance payment brings money forward, it does not add any: the advance is settled against the pay you would have had while away. It also needs more notice, because it has to reach a payroll run before you leave.
+
+## Payment date {#ess.leave.payment-date-label}
+<!-- alias: loc:PaymentDateLabel -->
+
+**What it is.** When you want the advance paid, if you asked for one.
+
+**Example.** 28 July 2026, the payroll before you fly.
+
+**Why it matters.** It has to be a date a payroll run can still reach. Asking for an advance two days before you go, after the month's payroll has been processed, means it arrives after you have gone.
+
+## Bookable balance {#ess.leave.bookable-balance}
+<!-- alias: loc:BookableBalance -->
+
+**What it is.** How many days you can still book, per leave type. **Remaining** is shown underneath it, and the two are different: remaining counts only leave already approved, while bookable also holds back what you have requested and not yet had approved.
+
+**Example.** Remaining 18, bookable 13 — because you have a five-day request waiting.
+
+**Why it matters.** **Book against bookable, not remaining.** The gap between them is leave you have already asked for; treating it as free is how a second request is rejected for a balance you thought you had.
+
+## Sick leave deduction breakdown {#ess.leave.sick-breakdown}
+<!-- alias: loc:SickLeaveDeductionBreakdown -->
+
+**What it is.** For sick leave, how the days you asked for are paid: which are at full pay, which at part pay and which unpaid, worked out from your company's rule and the sick leave you have already taken this year.
+
+**Example.** Days 1–15 at full pay, 16–25 at three quarters, 26–35 at half.
+
+**Why it matters.** Sick leave is rarely paid in full throughout, and the steps depend on how much you have already had. This is shown before you submit precisely so that the deduction is not a surprise on the payslip.
+
+## Days {#ess.leave.days}
+<!-- alias: loc:Days -->
+
+**What it is.** How many days the leave actually costs you, from your dates and your company's calendar.
+
+**Example.** 3 to 14 August shows as 10 days, not 12, where the weekends do not count.
+
+**Why it matters.** This, not the span of dates, is what comes off your balance. If it is not the number you expected, the difference is weekends or public holidays inside your dates — which is worth knowing before you book the flights.
+
+## Report my return {#ess.leave.report-return}
+<!-- alias: loc:ReportMyReturn -->
+
+**What it is.** Opens the form for telling HR you are back, once your leave has started.
+
+**Example.** Back on Sunday as planned; or back four days early.
+
+**Why it matters.** Until your return is recorded, the system still has you away — which affects attendance, payroll and anybody looking for you. Reporting a return early gives the unused days back to your balance.
 
 ## Request cancellation {#ess.leave.request-cancellation}
 <!-- alias: loc:RequestCancellation -->

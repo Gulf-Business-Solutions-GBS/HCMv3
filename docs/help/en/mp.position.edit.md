@@ -52,7 +52,7 @@ A position in the establishment: one seat, or several, for a job title. Position
 ## EmployeeGroup {#Position.EmployeeGroupId}
 <!-- alias: loc:EmployeeGroup, dom:Position_EmployeeGroupId -->
 
-**What it is.** The employee group of the position.
+**What it is.** The salary profile of the position.
 
 **Why it matters.** Not read at present.
 
@@ -61,7 +61,7 @@ A position in the establishment: one seat, or several, for a job title. Position
 ## EmployeeSubGroup {#Position.EmployeeSubGroupId}
 <!-- alias: loc:EmployeeSubGroup, dom:Position_EmployeeSubGroupId -->
 
-**What it is.** The employee sub group of the position.
+**What it is.** The grade of the position.
 
 **Why it matters.** Not read at present.
 

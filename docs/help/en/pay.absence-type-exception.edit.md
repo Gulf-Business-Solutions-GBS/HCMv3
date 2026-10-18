@@ -11,22 +11,22 @@ permissions: [Pages.PayrollManagement.AbsenceTypeExceptions.Create]
 
 ## Overview
 
-Pairs of absence types that should not be combined. Not checked at present: the pairs are saved, but nothing stops the two types being taken together.
+Pairs of leave types that should not be combined. Not checked at present: the pairs are saved, but nothing stops the two types being taken together.
 
 ## AbsenceTypes {#AbsenceTypeException.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypes, dom:AbsenceTypeException_AbsenceTypeId -->
 
-**What it is.** The absence type.
+**What it is.** The leave type.
 
 **Example.** Annual Leave
 
-**Rules.** Required. Chosen from Absence Type master data.
+**Rules.** Required. Chosen from Leave Type master data.
 
 ## ExceptAbsenceType {#AbsenceTypeException.ExceptAbsenceTypeId}
 <!-- alias: loc:ExceptAbsenceType, dom:AbsenceTypeException_ExceptAbsenceTypeId -->
 
-**What it is.** The absence type it should not be combined with. A type cannot except itself.
+**What it is.** The leave type it should not be combined with. A type cannot except itself.
 
 **Example.** Sick Leave
 
-**Rules.** Required. Chosen from Absence Type master data.
+**Rules.** Required. Chosen from Leave Type master data.

@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Payments — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupPayment",
-  "overviewHtml": "<p>A standing payment for everyone in the sub group, paid through a wagetype.</p><p>Only two pay intervals are used. <em>Yearly</em> rows are paid once a year, in their <strong>Pay Month</strong>. <em>End Of Service</em> rows are paid in the employee's end-of-service run. Rows with any other interval are not paid.</p>",
+  "overviewHtml": "<p>A standing payment for everyone in the grade, paid through a wagetype.</p><p>Only two pay intervals are used. <em>Yearly</em> rows are paid once a year, in their <strong>Pay Month</strong>. <em>End Of Service</em> rows are paid in the employee's end-of-service run. Rows with any other interval are not paid.</p>",
   "aliasIndex": {
     "loc:WageType": "EmployeeSubGroupPayment.WageTypeId",
     "dom:EmployeeSubGroupPayment_WageTypeId": "EmployeeSubGroupPayment.WageTypeId",

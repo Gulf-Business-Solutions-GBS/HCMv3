@@ -84,7 +84,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeLoans.Create]
 **القواعد.** نعم أو لا.
 
 ## IncludeInLoanPay {#EmployeeLoan.IncludeInLoanPay}
-<!-- alias: loc:IncludeInLoanPay, dom:EmployeeLoan_IncludeInLoanPay -->
+<!-- alias: loc:IncludeLoanPaymentInPayroll, dom:EmployeeLoan_IncludeInLoanPay -->
 
 **ما هو.** هل يُصرف القرض للموظف عبر الرواتب.
 

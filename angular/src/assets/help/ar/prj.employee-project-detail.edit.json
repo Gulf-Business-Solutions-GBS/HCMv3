@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل مشاريع الموظف — إنشاء / تحرير",
   "entity": "HCMv3.ProjectManagement.EmployeeProjectDetail",
-  "overviewHtml": "<p>مشروع واحد ضمن تعيين مشاريع الموظف. ويجب أن تقع تواريخه ضمن تواريخ التعيين.</p>",
+  "overviewHtml": "<p>مشروع واحد ضمن تعيين مشاريع الموظف. ويجب أن تقع تواريخه ضمن تواريخ التعيين.</p><p>في السجل المحفوظ، يعرض زر <strong>احتساب أيام العمل</strong> عددين لتواريخ المشروع. <strong>أيام العمل</strong> مجموع أيام العمل المعتمدة والعطل الرسمية وأيام الراحة في سجل وقت الموظف. و<strong>أيام التقويم</strong> جميع الأيام من تاريخ البداية إلى تاريخ النهاية شاملةً الطرفين. ولا يُحفظ أيٌّ منهما.</p>",
   "aliasIndex": {
     "loc:EmployeeProject": "EmployeeProjectDetail.EmployeeProjectId",
     "dom:EmployeeProjectDetail_EmployeeProjectId": "EmployeeProjectDetail.EmployeeProjectId",

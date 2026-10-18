@@ -19,7 +19,7 @@
         "loc:WageTypes",
         "dom:WageTypeException_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype that is skipped.</p><p><strong>Example.</strong> Transport Allowance</p><p><strong>Why it matters.</strong> Payroll leaves it out for an employee whose payslip already has the excepted wagetype.</p>",
       "adminHtml": "",
@@ -33,7 +33,7 @@
         "loc:ExceptWageType",
         "dom:WageTypeException_ExceptWageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype whose presence stops it.</p><p><strong>Example.</strong> Company Car Benefit</p><p><strong>Why it matters.</strong> It must already be on the payslip when the first wagetype is reached, so give it a lower payroll order.</p>",
       "adminHtml": "",

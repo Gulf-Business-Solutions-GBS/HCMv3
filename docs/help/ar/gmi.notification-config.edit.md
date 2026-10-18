@@ -22,6 +22,17 @@ permissions: [Pages.GeneralMasterInfo.NotificationConfigs.Create]
 
 **القواعد.** إلزامي. الحد الأقصى 256 حرفاً.
 
+## EmailTemplate {#NotificationConfig.EmailTemplateId}
+<!-- alias: loc:EmailTemplate, dom:NotificationConfig_EmailTemplateId -->
+
+**ما هو.** قالب البريد الإلكتروني الذي يُرسل عند تنفيذ إعداد الإخطار هذا.
+
+**مثال.** اعتماد طلب الإجازة
+
+**لماذا يهم.** تُنشأ الرسالة من القالب، مع تعبئة رقم الطلب وملخصه ومن اتخذ الإجراء وملاحظاته. اختر **إشعار داخل النظام فقط** لعدم إرسال بريد إلكتروني؛ ويظل الإشعار داخل النظام يُرسل.
+
+**القواعد.** اختياري. يُختار من قائمة قوالب البريد الإلكتروني.
+
 ## SendNotification {#NotificationConfig.SendNotification}
 <!-- alias: loc:SendNotification, dom:NotificationConfig_SendNotification -->
 
@@ -65,6 +76,15 @@ permissions: [Pages.GeneralMasterInfo.NotificationConfigs.Create]
 
 **القواعد.** نعم أو لا.
 
+## SendToApprover {#NotificationConfig.SendToApprover}
+<!-- alias: loc:SendToApprover, dom:NotificationConfig_SendToApprover -->
+
+**ما هو.** كان المقصود منه مراسلة المعتمِد الحالي.
+
+**لماذا يهم.** لا يُقرأ حالياً.
+
+**القواعد.** نعم أو لا.
+
 ## SendToAll {#NotificationConfig.SendToAll}
 <!-- alias: loc:SendToAll, dom:NotificationConfig_SendToAll -->
 
@@ -78,14 +98,5 @@ permissions: [Pages.GeneralMasterInfo.NotificationConfigs.Create]
 **ما هو.** في طلبات سير العمل، مراسلة كل من اعتمد الطلب.
 
 **لماذا يهم.** يُتخطى المعتمِدون الذين أصبحوا غير مفعّلين.
-
-**القواعد.** نعم أو لا.
-
-## SendToApprover {#NotificationConfig.SendToApprover}
-<!-- alias: loc:SendToApprover, dom:NotificationConfig_SendToApprover -->
-
-**ما هو.** كان المقصود منه مراسلة المعتمِد الحالي.
-
-**لماذا يهم.** لا يُقرأ حالياً.
 
 **القواعد.** نعم أو لا.

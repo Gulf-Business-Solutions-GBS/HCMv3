@@ -331,7 +331,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether unused health reimbursement carries into the next insurance year.
 
-**Why it matters.** Ticked, the unused balance is added to the next year's quota, still capped by the sub group's maximum.
+**Why it matters.** Ticked, the unused balance is added to the next year's quota, still capped by the grade's maximum.
 
 **Rules.** Yes or no.
 

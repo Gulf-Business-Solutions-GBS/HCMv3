@@ -1,7 +1,7 @@
 ---
 helpId: pa.employee-gratuity.edit
 lang: en
-title: Employee Gratuities — Create / Edit
+title: Employee Indemnity — Create / Edit
 entity: HCMv3.PersonnelAdministration.EmployeeGratuity
 surfaces:
   - angular/src/app/admin/personnel-administration/employee-detail/gratuities/create-or-edit-employee-gratuity-modal.component.html

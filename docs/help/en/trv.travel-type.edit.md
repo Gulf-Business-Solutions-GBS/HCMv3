@@ -20,4 +20,4 @@ A kind of trip, such as a business meeting or training.
 
 **Why it matters.** Not read at present: payroll has no travel calculation, so nothing is paid through it.
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.

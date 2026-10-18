@@ -15,6 +15,8 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsenceQuotas.Create]
 
 يُبنى رصيد الإجازات في الخدمة الذاتية من الحصة التي تغطي فترة استحقاقها التاريخ. وفي الإجازة السنوية، يضيف محرك الوقت تراكم كل يوم إلى الحصة المتراكمة أثناء تشغيله.
 
+عند فتح حصة قائمة، يعرض **رصيد الحصة** المتبقي منها كما في القائمة: المتراكم مطروحاً منه المستخدَم والمعدَّل والمُسقط. ويُحتسب ولا يمكن إدخاله يدوياً.
+
 ## AbsenceTypeId {#EmployeeAbsenceQuota.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsenceQuota_AbsenceTypeId -->
 
@@ -22,10 +24,10 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsenceQuotas.Create]
 
 **مثال.** إجازة سنوية
 
-**القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
+**القواعد.** إلزامي. يُختار من قائمة أنواع الإجازات.
 
 :::admin
-تُدار من إدارة الرواتب ← أنواع الغياب.
+تُدار من إدارة الرواتب ← أنواع الإجازات.
 :::
 
 ## NotificationSent {#EmployeeAbsenceQuota.NotificationSent}

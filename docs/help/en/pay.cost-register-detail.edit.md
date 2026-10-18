@@ -27,7 +27,7 @@ One cost line: part of a wagetype's amount posted to a ledger account under a se
 
 **Example.** Basic Salary
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## AccountInfoId {#CostRegisterDetail.AccountInfoId}
 <!-- alias: loc:AccountInfoId, dom:CostRegisterDetail_AccountInfoId -->

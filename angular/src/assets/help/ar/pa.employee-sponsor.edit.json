@@ -5,16 +5,16 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeSponsor",
   "overviewHtml": "<p>الكفيل الذي تقع تأشيرة عمل الموظف تحت كفالته خلال فترة، مع المسمى الوظيفي الحكومي وراتب العقد.</p><p>عند إنشاء التخصيص يُحتسب ضمن حصة الكفيل لذلك المسمى الوظيفي الحكومي، مواطناً أو غير مواطن بحسب جنسية الموظف؛ وعند حذفه يُفرج عن المكان. ولا يؤدي تعديل تخصيص قائم إلى نقل العدد. ويُرفض التخصيص إذا لم تكن للكفيل حصة لذلك المسمى الوظيفي الحكومي.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeSponsor.StartDate",
+    "dom:EmployeeSponsor_StartDate": "EmployeeSponsor.StartDate",
+    "loc:EndDate": "EmployeeSponsor.EndDate",
+    "dom:EmployeeSponsor_EndDate": "EmployeeSponsor.EndDate",
     "loc:SponsorId": "EmployeeSponsor.SponsorId",
     "dom:EmployeeSponsor_SponsorId": "EmployeeSponsor.SponsorId",
     "loc:GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
     "dom:EmployeeSponsor_GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
     "loc:EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
     "dom:EmployeeSponsor_EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
-    "loc:StartDate": "EmployeeSponsor.StartDate",
-    "dom:EmployeeSponsor_StartDate": "EmployeeSponsor.StartDate",
-    "loc:EndDate": "EmployeeSponsor.EndDate",
-    "dom:EmployeeSponsor_EndDate": "EmployeeSponsor.EndDate",
     "loc:ContractSalary": "EmployeeSponsor.ContractSalary",
     "dom:EmployeeSponsor_ContractSalary": "EmployeeSponsor.ContractSalary",
     "loc:SalaryCurrencyId": "EmployeeSponsor.SalaryCurrencyId",
@@ -25,6 +25,34 @@
     "dom:EmployeeSponsor_WorkVisaTypeId": "EmployeeSponsor.WorkVisaTypeId"
   },
   "fields": [
+    {
+      "id": "EmployeeSponsor.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSponsor_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSponsor_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeSponsor.SponsorId",
       "label": "SponsorId",
@@ -64,34 +92,6 @@
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> صلة الموظف بالكفيل، كنص حر.</p><p><strong>مثال.</strong> موظف</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeSponsor.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeSponsors",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeSponsor_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeSponsor.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeSponsors",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeSponsor_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -5,10 +5,10 @@
   "entity": "HCMv3.PayrollManagement.EmployeeWageAccount",
   "overviewHtml": "<p>الحساب في دفتر الأستاذ الذي يُرحَّل إليه أحد أنواع أجور الموظف اعتباراً من تاريخ معين، وعناصر التكلفة التي يُرحَّل تحتها. يقرأ محرك التكلفة وملفات القيود المحاسبية هذه السجلات لترحيل أجر الموظف.</p><p>تشكّل سجلات الموظف ونوع الأجر نفسه تاريخاً متتابعاً: فعند حفظ سجل جديد يُغلق السابق في اليوم السابق لتاريخ البداية الجديد. ويمكن توزيع نوع الأجر على عدة حسابات تبدأ في التاريخ نفسه، بشرط ألا يزيد مجموع النسب على 100.</p>",
   "aliasIndex": {
-    "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
-    "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
     "loc:StartDate": "EmployeeWageAccount.StartDate",
     "dom:EmployeeWageAccount_StartDate": "EmployeeWageAccount.StartDate",
+    "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
+    "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
     "loc:CostPercentage": "EmployeeWageAccount.CostPercentage",
     "dom:EmployeeWageAccount_CostPercentage": "EmployeeWageAccount.CostPercentage",
     "loc:AccountInfoId": "EmployeeWageAccount.AccountInfoId",
@@ -34,20 +34,6 @@
   },
   "fields": [
     {
-      "id": "EmployeeWageAccount.WageTypeId",
-      "label": "WageTypeId",
-      "section": "EmployeeWageAccounts",
-      "aliases": [
-        "loc:WageTypeId",
-        "dom:EmployeeWageAccount_WageTypeId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يخص هذا الربط.</p><p><strong>مثال.</strong> بدل السكن</p>",
-      "adminHtml": "<p>يُدار من إدارة الرواتب ← أنواع الأجور. ولا يُرحَّل إلا نوع الأجر المشمول بالترحيل المالي.</p>",
-      "stub": false
-    },
-    {
       "id": "EmployeeWageAccount.StartDate",
       "label": "StartDate",
       "section": "EmployeeWageAccounts",
@@ -59,6 +45,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeWageAccount_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يخص هذا الربط.</p><p><strong>مثال.</strong> بدل السكن</p>",
+      "adminHtml": "<p>يُدار من إدارة الرواتب ← أنواع الأجور. ولا يُرحَّل إلا نوع الأجر المشمول بالترحيل المالي.</p>",
       "stub": false
     },
     {

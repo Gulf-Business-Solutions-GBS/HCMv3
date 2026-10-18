@@ -1,7 +1,7 @@
 {
   "helpId": "pay.absence-type.edit",
   "lang": "ar",
-  "title": "أنواع الغياب — إنشاء / تحرير",
+  "title": "أنواع الإجازات — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AbsenceType",
   "overviewHtml": "<p>نوع من الإجازات أو الغياب — السنوية والمرضية وغير المدفوعة والحج والأمومة وغيرها — وطريقة عدّه وصرفه واستحقاقه.</p><p>ويُحدَّد ما يستحقه كل موظف لكل مجموعة فرعية للموظفين، في قواعد الإجازات للمجموعة الفرعية، أما هذا النموذج فيحدد سلوك النوع نفسه.</p><p><strong>كثير من الإعدادات في هذا النموذج تُحفظ ولا تُطبَّق.</strong> فالحدود والقيود على طلب الإجازة — الحد الأقصى والأدنى للأيام، والأيام التي لا يجوز أن تبدأ فيها، والمرفقات، وفترة التجربة، وفترة الإنذار، والجنس، والديانة، والرصيد السالب، وحدود الساعات — لا يُتحقق منها عند إدخال الإجازة أو اعتمادها، وكل حقل من هذا النوع مبيَّن أدناه. ولتطبيق سياسة للإجازات استخدم قاعدة عمل على الإجازة من <strong>إعداد قواعد العمل</strong>، إذ يمكن للقواعد أن تقرأ رمز نوع الإجازة، وهل هي مدفوعة، وهل هي مفعّلة، والحد الأدنى لأيام الخدمة.</p>",
   "aliasIndex": {
@@ -107,6 +107,12 @@
     "dom:AbsenceType_AllowPartialLeave": "AbsenceType.AllowPartialLeave",
     "loc:SendNotification": "AbsenceType.SendNotification",
     "dom:AbsenceType_SendNotification": "AbsenceType.SendNotification",
+    "loc:RequirePolicyAcceptance": "AbsenceType.RequirePolicyAcceptance",
+    "dom:AbsenceType_RequirePolicyAcceptance": "AbsenceType.RequirePolicyAcceptance",
+    "loc:LeaveDurationType": "AbsenceType.LeaveDurationType",
+    "dom:AbsenceType_LeaveDurationType": "AbsenceType.LeaveDurationType",
+    "loc:MaxFutureDays": "AbsenceType.MaxFutureDays",
+    "dom:AbsenceType_MaxFutureDays": "AbsenceType.MaxFutureDays",
     "loc:Sunday": "AbsenceType.DontAllowToStartOnSunday",
     "dom:AbsenceType_DontAllowToStartOnSunday": "AbsenceType.DontAllowToStartOnSunday",
     "loc:Monday": "AbsenceType.DontAllowToStartOnMonday",
@@ -651,7 +657,7 @@
       ],
       "rules": "إلزامي. إحدى القيم: لا شيء، الإجازة السنوية، الإجازة المرضية.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الإجازة هذا يتبع قواعد رصيد الإجازة السنوية أو المرضية.</p><p><strong>مثال.</strong> الإجازة السنوية</p><p><strong>لماذا يهم.</strong> <em>الإجازة السنوية</em> تجعل رصيده كالإجازة السنوية: يتراكم يوماً بيوم خلال السنة، بحدّ أقصى هو حد المجموعة الفرعية. و<em>الإجازة المرضية</em> تجعل رصيده كالإجازة المرضية: استحقاق سنوي لكل دورة ناقص ما أُخذ منه. و<em>لا شيء</em> لا يجعله يتبع أياً منهما.</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الإجازة هذا يتبع قواعد رصيد الإجازة السنوية أو المرضية.</p><p><strong>مثال.</strong> الإجازة السنوية</p><p><strong>لماذا يهم.</strong> <em>الإجازة السنوية</em> تجعل رصيده كالإجازة السنوية: يتراكم يوماً بيوم خلال السنة، بحدّ أقصى هو حد الدرجة. و<em>الإجازة المرضية</em> تجعل رصيده كالإجازة المرضية: استحقاق سنوي لكل دورة ناقص ما أُخذ منه. و<em>لا شيء</em> لا يجعله يتبع أياً منهما.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -834,6 +840,48 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما إذا كان يُرسل إشعار لهذه الإجازة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.RequirePolicyAcceptance",
+      "label": "RequirePolicyAcceptance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:RequirePolicyAcceptance",
+        "dom:AbsenceType_RequirePolicyAcceptance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على الموظف الموافقة على سياسة الإجازات قبل إرسال طلب لنوع الإجازة هذا.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، تعرض الخدمة الذاتية أحدث مستند سياسة مرفق بنوع الإجازة مع خانة للموافقة، ولا يمكن إرسال الطلب حتى يُؤشَّر عليها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveDurationType",
+      "label": "LeaveDurationType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveDurationType",
+        "dom:AbsenceType_LeaveDurationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الجميع، FullDay، Partial.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه الإجازة تؤخذ بأيام كاملة، أو بالساعات، أو بكليهما.</p><p><strong>مثال.</strong> يوم كامل فقط</p><p><strong>لماذا يهم.</strong> مع «يوم كامل فقط» يُرفض الطلب الذي فيه ساعات أو نصف يوم. ومع «جزئية (بالساعات) فقط» يُرفض الطلب الذي ليس فيه ساعات أو نصف يوم. أما «يوم كامل أو جزئية» فيترك الأمر لإعداد <strong>السماح بالإجازة الجزئية</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MaxFutureDays",
+      "label": "MaxFutureDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxFutureDays",
+        "dom:AbsenceType_MaxFutureDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقصى عدد من الأيام مقدَّماً يجوز أن تبدأ بعدها إجازة جديدة من هذا النوع.</p><p><strong>مثال.</strong> 90</p><p><strong>لماذا يهم.</strong> يُرفض الطلب الجديد الذي يبدأ بعد تاريخ اليوم مضافاً إليه هذا العدد من الأيام، ويتوقف منتقي التاريخ في الخدمة الذاتية عنده. والقيمة 0 تعني بلا حد. ولا يُتحقق من طلبات التعديل.</p>",
       "adminHtml": "",
       "stub": false
     },

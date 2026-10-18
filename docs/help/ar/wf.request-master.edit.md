@@ -40,7 +40,7 @@ permissions: [Pages.Workflow.RequestMasters.Create]
 
 **لماذا يهم.** لا يُقرأ حالياً.
 
-**القواعد.** إلزامي. رقم صحيح.
+**القواعد.** اختياري. رقم صحيح.
 
 ## DueInDays {#RequestMaster.DueInDays}
 <!-- alias: loc:DueInDays, dom:RequestMaster_DueInDays -->
@@ -49,7 +49,7 @@ permissions: [Pages.Workflow.RequestMasters.Create]
 
 **لماذا يهم.** لا يُقرأ حالياً.
 
-**القواعد.** إلزامي. رقم صحيح.
+**القواعد.** اختياري. رقم صحيح.
 
 ## AutoClose {#RequestMaster.AutoClose}
 <!-- alias: loc:AutoClose, dom:RequestMaster_AutoClose -->
@@ -61,7 +61,7 @@ permissions: [Pages.Workflow.RequestMasters.Create]
 **القواعد.** نعم أو لا.
 
 ## IsCommentRequire {#RequestMaster.IsCommentRequire}
-<!-- alias: loc:IsCommentRequire, dom:RequestMaster_IsCommentRequire -->
+<!-- alias: loc:IsCommentRequired, dom:RequestMaster_IsCommentRequire -->
 
 **ما هو.** ما إذا كان على المعتمدين كتابة تعليق.
 

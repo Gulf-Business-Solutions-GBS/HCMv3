@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.AbsenceDeductionRules.Create]
 
 ## Overview
 
-A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a sub group's sick leave entitlement.
+A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a grade's sick leave entitlement.
 
 ## RuleName {#AbsenceDeductionRule.RuleName}
 <!-- alias: loc:RuleName, dom:AbsenceDeductionRule_RuleName -->

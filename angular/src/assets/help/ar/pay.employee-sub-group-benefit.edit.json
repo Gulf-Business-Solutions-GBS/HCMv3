@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "مزايا المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefit",
-  "overviewHtml": "<p>نوع مزايا تستحقه المجموعة الفرعية، مع حد أقصى للمبلغ.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
+  "overviewHtml": "<p>نوع مزايا تستحقه الدرجة، مع حد أقصى للمبلغ.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
   "aliasIndex": {
     "loc:BenefitType": "EmployeeSubGroupBenefit.BenefitTypeId",
     "dom:EmployeeSubGroupBenefit_BenefitTypeId": "EmployeeSubGroupBenefit.BenefitTypeId",

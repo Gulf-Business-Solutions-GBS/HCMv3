@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeCertification",
   "overviewHtml": "<p>دورة أو شهادة مهنية أنهاها الموظف.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeCertification.StartDate",
+    "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
+    "loc:EndDate": "EmployeeCertification.EndDate",
+    "dom:EmployeeCertification_EndDate": "EmployeeCertification.EndDate",
     "loc:Course": "EmployeeCertification.Course",
     "dom:EmployeeCertification_Course": "EmployeeCertification.Course",
     "loc:Institution": "EmployeeCertification.InstitutionId",
@@ -14,13 +18,37 @@
     "loc:Certificate": "EmployeeCertification.Certificate",
     "dom:EmployeeCertification_Certificate": "EmployeeCertification.Certificate",
     "loc:Grade": "EmployeeCertification.Grade",
-    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade",
-    "loc:StartDate": "EmployeeCertification.StartDate",
-    "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
-    "loc:EndDate": "EmployeeCertification.EndDate",
-    "dom:EmployeeCertification_EndDate": "EmployeeCertification.EndDate"
+    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade"
   },
   "fields": [
+    {
+      "id": "EmployeeCertification.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeCertification_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeCertification_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeCertification.Course",
       "label": "Course",
@@ -88,34 +116,6 @@
       "rules": "اختياري. الحد الأقصى 64 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> التقدير الحاصل عليه.</p><p><strong>مثال.</strong> ناجح</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeCertification.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeCertifications",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeCertification_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeCertification.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeCertifications",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeCertification_EndDate"
-      ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -44,7 +44,9 @@
     "loc:IsPassportWithdrawalRequired": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
     "dom:SelfServiceSettings_IsPassportWithdrawalRequired": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
     "loc:PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
-    "dom:SelfServiceSettings_PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep"
+    "dom:SelfServiceSettings_PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
+    "loc:IsWithdrawalReasonMandatory": "ManageSelfServiceSettings.IsWithdrawalReasonMandatory",
+    "dom:SelfServiceSettings_IsWithdrawalReasonMandatory": "ManageSelfServiceSettings.IsWithdrawalReasonMandatory"
   },
   "fields": [
     {
@@ -324,6 +326,20 @@
       "rules": "اختياري. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> خطوة سير العمل التي يُقدَّم فيها سحب جواز السفر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSelfServiceSettings.IsWithdrawalReasonMandatory",
+      "label": "IsWithdrawalReasonMandatory",
+      "section": null,
+      "aliases": [
+        "loc:IsWithdrawalReasonMandatory",
+        "dom:SelfServiceSettings_IsWithdrawalReasonMandatory"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب على الموظف ذكر سبب عند طلب سحب مستند مثل جواز السفر.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه، يُرفض طلب سحب المستند عبر الخدمة الذاتية إذا لم يتضمن سبباً. وإلى أن تُحفظ الإعدادات أول مرة يكون السبب اختيارياً.</p>",
       "adminHtml": "",
       "stub": false
     }

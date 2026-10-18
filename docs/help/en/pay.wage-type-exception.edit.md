@@ -22,7 +22,7 @@ Pairs of wagetypes that should not both be paid. When payroll reaches the wagety
 
 **Why it matters.** Payroll leaves it out for an employee whose payslip already has the excepted wagetype.
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## ExceptWageType {#WageTypeException.ExceptWageTypeId}
 <!-- alias: loc:ExceptWageType, dom:WageTypeException_ExceptWageTypeId -->
@@ -33,4 +33,4 @@ Pairs of wagetypes that should not both be paid. When payroll reaches the wagety
 
 **Why it matters.** It must already be on the payslip when the first wagetype is reached, so give it a lower payroll order.
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.

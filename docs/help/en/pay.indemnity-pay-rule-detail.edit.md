@@ -13,7 +13,7 @@ permissions: [Pages.PayrollManagement.IndemnityPayRuleDetails.Create]
 
 One step of an indemnity pay rule, by years of service -- for example, a resignation after three to five years paid at half.
 
-Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's **Employee Group**. These rules are saved and kept for reference.
+Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's **Salary Profile**. These rules are saved and kept for reference.
 
 ## IndemnityPayRuleId {#IndemnityPayRuleDetail.IndemnityPayRuleId}
 <!-- alias: loc:IndemnityPayRuleId, dom:IndemnityPayRuleDetail_IndemnityPayRuleId -->

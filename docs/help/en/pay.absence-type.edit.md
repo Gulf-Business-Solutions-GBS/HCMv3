@@ -1,7 +1,7 @@
 ---
 helpId: pay.absence-type.edit
 lang: en
-title: Absence Types — Create / Edit
+title: Leave Types — Create / Edit
 entity: HCMv3.PayrollManagement.AbsenceType
 surfaces:
   - angular/src/app/admin/payroll-management/absence-types/create-or-edit-absence-type-modal.component.html
@@ -13,7 +13,7 @@ permissions: [Pages.PayrollManagement.AbsenceTypes.Create]
 
 A type of leave or absence -- annual, sick, unpaid, Hajj, maternity and so on -- and how it is counted, paid and accrued.
 
-What each employee is entitled to is set per employee sub group, on the sub group's leave rules; this form sets how the type behaves.
+What each employee is entitled to is set per grade, on the grade's leave rules; this form sets how the type behaves.
 
 **Many settings on this form are saved but not enforced.** The limits and restrictions on applying for leave -- maximum and minimum days, days it may not start on, attachments, probation, notice period, gender, religion, negative balance, hourly limits -- are not checked when leave is entered or approved. Each such field says so below. To enforce a leave policy, use a business rule on leave under **Configure Business Rules**; rules can read the leave type's code, whether it is paid, whether it is active and its minimum days in service.
 
@@ -357,7 +357,7 @@ What each employee is entitled to is set per employee sub group, on the sub grou
 
 **Example.** Annual Leave
 
-**Why it matters.** *Annual Leave* balances it like annual leave: accrued day by day through the year, capped by the sub group's maximum. *Sick Leave* balances it like sick leave: a yearly entitlement per cycle, less what has been taken. *None* gives it neither.
+**Why it matters.** *Annual Leave* balances it like annual leave: accrued day by day through the year, capped by the grade's maximum. *Sick Leave* balances it like sick leave: a yearly entitlement per cycle, less what has been taken. *None* gives it neither.
 
 **Rules.** Required. One of: None, Annual Leave, Sick Leave.
 
@@ -384,11 +384,11 @@ What each employee is entitled to is set per employee sub group, on the sub grou
 ## TotalDaysAllowed {#AbsenceType.TotalDaysAllowed}
 <!-- alias: loc:TotalDaysAllowed, dom:AbsenceType_TotalDaysAllowed -->
 
-**What it is.** The yearly entitlement, for employees whose sub group sets none.
+**What it is.** The yearly entitlement, for employees whose grade sets none.
 
 **Example.** `30`
 
-**Why it matters.** When the employee's sub group has a leave rule for this type, the sub group's total days are used instead. The leave quota balance report shows the figure in use.
+**Why it matters.** When the employee's grade has a leave rule for this type, the grade's total days are used instead. The leave quota balance report shows the figure in use.
 
 **Rules.** Optional. Number.
 
@@ -481,6 +481,37 @@ What each employee is entitled to is set per employee sub group, on the sub grou
 **Why it matters.** Not checked at present -- the setting is saved, but nothing enforces it when leave is entered or approved.
 
 **Rules.** Yes or no.
+
+## RequirePolicyAcceptance {#AbsenceType.RequirePolicyAcceptance}
+<!-- alias: loc:RequirePolicyAcceptance, dom:AbsenceType_RequirePolicyAcceptance -->
+
+**What it is.** Whether employees must accept the leave policy before sending a request for this leave type.
+
+**Why it matters.** Ticked, self-service shows the latest policy document attached to the leave type with an acceptance box, and the request cannot be sent until it is ticked.
+
+**Rules.** Yes or no.
+
+## LeaveDurationType {#AbsenceType.LeaveDurationType}
+<!-- alias: loc:LeaveDurationType, dom:AbsenceType_LeaveDurationType -->
+
+**What it is.** Whether this leave can be taken in full days, in hours, or both.
+
+**Example.** Full day only
+
+**Why it matters.** With Full day only, a request with hours or a half day is refused. With Partial (hourly) only, a request without hours or a half day is refused. Full day or partial leaves it to **Allow Partial Leave**.
+
+**Rules.** Required. One of: All, FullDay, Partial.
+
+## MaxFutureDays {#AbsenceType.MaxFutureDays}
+<!-- alias: loc:MaxFutureDays, dom:AbsenceType_MaxFutureDays -->
+
+**What it is.** How many days ahead a new leave of this type may start.
+
+**Example.** 90
+
+**Why it matters.** A new request starting later than today plus this many days is refused, and the self-service date picker stops there. 0 means no limit. Amendments are not checked.
+
+**Rules.** Optional. Whole number.
 
 ## Sunday {#AbsenceType.DontAllowToStartOnSunday}
 <!-- alias: loc:Sunday, dom:AbsenceType_DontAllowToStartOnSunday -->

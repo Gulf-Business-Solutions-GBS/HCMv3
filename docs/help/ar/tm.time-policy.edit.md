@@ -17,139 +17,27 @@ permissions: [Pages.TimeManagement.TimePolicies.Create]
 
 وإعدادات موقع البصمة وإشعارات البصمة في آخر النموذج لا تُقرأ حالياً.
 
-## ShouldSignIn {#TimePolicy.ShouldSignIn}
-<!-- alias: loc:ShouldSignIn, dom:TimePolicy_ShouldSignIn -->
+## TimeMgmtStatus {#TimePolicy.TimeMgmtStatus}
+<!-- alias: loc:TimeMgmtStatus, dom:TimePolicy_TimeMgmtStatus -->
 
-**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الدخول في بداية المناوبة.
+**ما هو.** طريقة احتساب الحضور لموظفي هذه السياسة.
 
-**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
+**مثال.** الوقت الفعلي
 
-**القواعد.** نعم أو لا.
+**لماذا يهم.** انظر النظرة العامة لما تفعله كل حالة.
 
-## ShouldSignOut {#TimePolicy.ShouldSignOut}
-<!-- alias: loc:ShouldSignOut, dom:TimePolicy_ShouldSignOut -->
+**القواعد.** إلزامي. إحدى القيم: لا ينطبق، الوقت المخطط، الوقت الفعلي، كشف الدوام، الوقت المرن، الوقت المتغير.
 
-**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج في نهاية المناوبة.
+## TimeEventRule {#TimePolicy.TimeEventRule}
+<!-- alias: loc:TimeEventRule, dom:TimePolicy_TimeEventRule -->
 
-**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
+**ما هو.** أي بصمة تُحتسب عند وجود عدة بصمات في النافذة.
 
-**القواعد.** نعم أو لا.
+**مثال.** أول دخول وآخر خروج
 
-## ShouldBreakSignIn {#TimePolicy.ShouldBreakSignIn}
-<!-- alias: loc:ShouldBreakSignIn, dom:TimePolicy_ShouldBreakSignIn -->
+**لماذا يهم.** أول دخول أو آخره، وأول خروج أو آخره، بحسب الاسم. أما *غير منطبق* فلا يأخذ أي بصمة، فيبدو كل يوم بلا بصمات.
 
-**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة العودة من الاستراحة.
-
-**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
-
-**القواعد.** نعم أو لا.
-
-## ShouldBreakSignOut {#TimePolicy.ShouldBreakSignOut}
-<!-- alias: loc:ShouldBreakSignOut, dom:TimePolicy_ShouldBreakSignOut -->
-
-**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج إلى الاستراحة.
-
-**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
-
-**القواعد.** نعم أو لا.
-
-## MarkWeekoffOnHoliday {#TimePolicy.MarkWeekoffOnHoliday}
-<!-- alias: loc:MarkWeekoffOnHoliday, dom:TimePolicy_MarkWeekoffOnHoliday -->
-
-**ما هو.** ما إذا كانت العطلة الرسمية الواقعة في يوم راحة أسبوعية تُعدّ راحة أسبوعية.
-
-**لماذا يهم.** إذا أُشِّر عليه، وفقط إذا كان الراتب الأساسي (نوع الأجر `1000`) على *أيام ثابتة شهرياً*، يُعامل هذا اليوم راحةً أسبوعية لا عطلة رسمية.
-
-**القواعد.** نعم أو لا.
-
-## IsFaceRequired {#TimePolicy.IsFaceRequired}
-<!-- alias: loc:IsFaceRequired, dom:TimePolicy_IsFaceRequired -->
-
-**ما هو.** ما إذا كان التعرف على الوجه مطلوباً عند البصمة.
-
-**لماذا يهم.** تقرأه شاشة البصمة الجغرافية في الخدمة الذاتية مع إعداد الخدمة الذاتية الخاص بالسماح بالصورة الشخصية: تُطلب صورة شخصية مع كل بصمة جغرافية فقط عند تفعيل الإعدادين معاً.
-
-**القواعد.** نعم أو لا.
-
-## CalcLateInAfterTolerance {#TimePolicy.CalcLateInAfterTolerance}
-<!-- alias: loc:CalcLateInAfterTolerance, dom:TimePolicy_CalcLateInAfterTolerance -->
-
-**ما هو.** ما إذا كان التأخير الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
-
-**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
-
-**القواعد.** نعم أو لا.
-
-## LateInTolerance {#TimePolicy.LateInTolerance}
-<!-- alias: loc:LateInTolerance, dom:TimePolicy_LateInTolerance -->
-
-**ما هو.** دقائق التأخير المسموح بها قبل أي خصم.
-
-**مثال.** `10`
-
-**لماذا يهم.** لا يُخصم التأخير حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخير كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
-
-**القواعد.** اختياري. رقم.
-
-## CalcEarlyOutAfterTolerance {#TimePolicy.CalcEarlyOutAfterTolerance}
-<!-- alias: loc:CalcEarlyOutAfterTolerance, dom:TimePolicy_CalcEarlyOutAfterTolerance -->
-
-**ما هو.** ما إذا كان الانصراف المبكر الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
-
-**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
-
-**القواعد.** نعم أو لا.
-
-## EarlyOutTolerance {#TimePolicy.EarlyOutTolerance}
-<!-- alias: loc:EarlyOutTolerance, dom:TimePolicy_EarlyOutTolerance -->
-
-**ما هو.** دقائق الانصراف المبكر المسموح بها قبل أي خصم.
-
-**مثال.** `10`
-
-**لماذا يهم.** لا يُخصم الانصراف المبكر حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الانصراف المبكر كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
-
-**القواعد.** اختياري. رقم.
-
-## CalcBreakLateInAfterTolerance {#TimePolicy.CalcBreakLateInAfterTolerance}
-<!-- alias: loc:CalcBreakLateInAfterTolerance, dom:TimePolicy_CalcBreakLateInAfterTolerance -->
-
-**ما هو.** ما إذا كان التأخر في العودة من الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
-
-**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
-
-**القواعد.** نعم أو لا.
-
-## BreakLateInTolerance {#TimePolicy.BreakLateInTolerance}
-<!-- alias: loc:BreakLateInTolerance, dom:TimePolicy_BreakLateInTolerance -->
-
-**ما هو.** دقائق التأخر في العودة من الاستراحة المسموح بها قبل أي خصم.
-
-**مثال.** `5`
-
-**لماذا يهم.** لا يُخصم التأخر في العودة من الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخر في العودة من الاستراحة كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
-
-**القواعد.** اختياري. رقم.
-
-## CalcBreakEarlyOutAfterTolerance {#TimePolicy.CalcBreakEarlyOutAfterTolerance}
-<!-- alias: loc:CalcBreakEarlyOutAfterTolerance, dom:TimePolicy_CalcBreakEarlyOutAfterTolerance -->
-
-**ما هو.** ما إذا كان الخروج المبكر إلى الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
-
-**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
-
-**القواعد.** نعم أو لا.
-
-## BreakEarlyOutTolerance {#TimePolicy.BreakEarlyOutTolerance}
-<!-- alias: loc:BreakEarlyOutTolerance, dom:TimePolicy_BreakEarlyOutTolerance -->
-
-**ما هو.** دقائق الخروج المبكر إلى الاستراحة المسموح بها قبل أي خصم.
-
-**مثال.** `5`
-
-**لماذا يهم.** لا يُخصم الخروج المبكر إلى الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الخروج المبكر إلى الاستراحة كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
-
-**القواعد.** اختياري. رقم.
+**القواعد.** إلزامي. إحدى القيم: لا ينطبق، أول دخول وأول خروج، أول دخول وآخر خروج، آخر دخول وأول خروج، آخر دخول وآخر خروج.
 
 ## MonthlyToleranceType {#TimePolicy.MonthlyToleranceType}
 <!-- alias: loc:MonthlyToleranceType, dom:TimePolicy_MonthlyToleranceType -->
@@ -173,64 +61,6 @@ permissions: [Pages.TimeManagement.TimePolicies.Create]
 
 **القواعد.** اختياري. رقم.
 
-## MonthlyLateInTolerance {#TimePolicy.MonthlyLateInTolerance}
-<!-- alias: loc:MonthlyLateInTolerance, dom:TimePolicy_MonthlyLateInTolerance -->
-
-**ما هو.** دقائق التأخير المسموح بها شهرياً.
-
-**لماذا يهم.** لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.
-
-**القواعد.** اختياري. رقم.
-
-## MonthlyEarlyOutTolerance {#TimePolicy.MonthlyEarlyOutTolerance}
-<!-- alias: loc:MonthlyEarlyOutTolerance, dom:TimePolicy_MonthlyEarlyOutTolerance -->
-
-**ما هو.** دقائق الانصراف المبكر المسموح بها شهرياً.
-
-**لماذا يهم.** لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.
-
-**القواعد.** اختياري. رقم.
-
-## ClockInLimit {#TimePolicy.ClockInLimit}
-<!-- alias: loc:ClockInLimit, dom:TimePolicy_ClockInLimit -->
-
-**ما هو.** عدد الدقائق قبل بداية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.
-
-**مثال.** `120`
-
-**لماذا يهم.** البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.
-
-**القواعد.** اختياري. رقم.
-
-## ClockOutLimit {#TimePolicy.ClockOutLimit}
-<!-- alias: loc:ClockOutLimit, dom:TimePolicy_ClockOutLimit -->
-
-**ما هو.** عدد الدقائق قبل نهاية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.
-
-**مثال.** `240`
-
-**لماذا يهم.** البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.
-
-**القواعد.** اختياري. رقم.
-
-## BreakInLimit {#TimePolicy.BreakInLimit}
-<!-- alias: loc:BreakInLimit, dom:TimePolicy_BreakInLimit -->
-
-**ما هو.** عدد الدقائق قبل نهاية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة العودة من الاستراحة.
-
-**مثال.** `30`
-
-**القواعد.** اختياري. رقم.
-
-## BreakOutLimit {#TimePolicy.BreakOutLimit}
-<!-- alias: loc:BreakOutLimit, dom:TimePolicy_BreakOutLimit -->
-
-**ما هو.** عدد الدقائق قبل بداية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة الخروج إلى الاستراحة.
-
-**مثال.** `30`
-
-**القواعد.** اختياري. رقم.
-
 ## OtMinLimit {#TimePolicy.OTMinLimit}
 <!-- alias: loc:OtMinLimit, dom:TimePolicy_OtMinLimit -->
 
@@ -242,27 +72,14 @@ permissions: [Pages.TimeManagement.TimePolicies.Create]
 
 **القواعد.** اختياري. رقم.
 
-## TimeEventRule {#TimePolicy.TimeEventRule}
-<!-- alias: loc:TimeEventRule, dom:TimePolicy_TimeEventRule -->
+## MarkWeekoffOnHoliday {#TimePolicy.MarkWeekoffOnHoliday}
+<!-- alias: loc:MarkWeekoffOnHoliday, dom:TimePolicy_MarkWeekoffOnHoliday -->
 
-**ما هو.** أي بصمة تُحتسب عند وجود عدة بصمات في النافذة.
+**ما هو.** ما إذا كانت العطلة الرسمية الواقعة في يوم راحة أسبوعية تُعدّ راحة أسبوعية.
 
-**مثال.** أول دخول وآخر خروج
+**لماذا يهم.** إذا أُشِّر عليه، وفقط إذا كان الراتب الأساسي (نوع الأجر `1000`) على *أيام ثابتة شهرياً*، يُعامل هذا اليوم راحةً أسبوعية لا عطلة رسمية.
 
-**لماذا يهم.** أول دخول أو آخره، وأول خروج أو آخره، بحسب الاسم. أما *غير منطبق* فلا يأخذ أي بصمة، فيبدو كل يوم بلا بصمات.
-
-**القواعد.** إلزامي. إحدى القيم: لا ينطبق، أول دخول وأول خروج، أول دخول وآخر خروج، آخر دخول وأول خروج، آخر دخول وآخر خروج.
-
-## TimeMgmtStatus {#TimePolicy.TimeMgmtStatus}
-<!-- alias: loc:TimeMgmtStatus, dom:TimePolicy_TimeMgmtStatus -->
-
-**ما هو.** طريقة احتساب الحضور لموظفي هذه السياسة.
-
-**مثال.** الوقت الفعلي
-
-**لماذا يهم.** انظر النظرة العامة لما تفعله كل حالة.
-
-**القواعد.** إلزامي. إحدى القيم: لا ينطبق، الوقت المخطط، الوقت الفعلي، كشف الدوام، الوقت المرن، الوقت المتغير.
+**القواعد.** نعم أو لا.
 
 ## AllowPunchInFromWorkLocationOnly {#TimePolicy.AllowPunchInFromWorkLocationOnly}
 <!-- alias: loc:AllowPunchInFromWorkLocationOnly, dom:TimePolicy_AllowPunchInFromWorkLocationOnly -->
@@ -299,6 +116,113 @@ permissions: [Pages.TimeManagement.TimePolicies.Create]
 **لماذا يهم.** تقرأه شاشة البصمة الجغرافية في الخدمة الذاتية. عند تفعيله تُعرض مواقع العمل الإضافية للموظف السارية اليوم (بما في ذلك يومها الأخير) لبصمة الانصراف، ويُتحقق من البصمة وفق نطاق الموقع المختار.
 
 **القواعد.** نعم أو لا.
+
+## IsFaceRequired {#TimePolicy.IsFaceRequired}
+<!-- alias: loc:IsFaceRequired, dom:TimePolicy_IsFaceRequired -->
+
+**ما هو.** ما إذا كان التعرف على الوجه مطلوباً عند البصمة.
+
+**لماذا يهم.** تقرأه شاشة البصمة الجغرافية في الخدمة الذاتية مع إعداد الخدمة الذاتية الخاص بالسماح بالصورة الشخصية: تُطلب صورة شخصية مع كل بصمة جغرافية فقط عند تفعيل الإعدادين معاً.
+
+**القواعد.** نعم أو لا.
+
+## ShouldSignIn {#TimePolicy.ShouldSignIn}
+<!-- alias: loc:ShouldSignIn, dom:TimePolicy_ShouldSignIn -->
+
+**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الدخول في بداية المناوبة.
+
+**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
+
+**القواعد.** نعم أو لا.
+
+## ShouldSignOut {#TimePolicy.ShouldSignOut}
+<!-- alias: loc:ShouldSignOut, dom:TimePolicy_ShouldSignOut -->
+
+**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج في نهاية المناوبة.
+
+**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
+
+**القواعد.** نعم أو لا.
+
+## CalcLateInAfterTolerance {#TimePolicy.CalcLateInAfterTolerance}
+<!-- alias: loc:CalcLateInAfterTolerance, dom:TimePolicy_CalcLateInAfterTolerance -->
+
+**ما هو.** ما إذا كان التأخير الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
+
+**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
+
+**القواعد.** نعم أو لا.
+
+## CalcEarlyOutAfterTolerance {#TimePolicy.CalcEarlyOutAfterTolerance}
+<!-- alias: loc:CalcEarlyOutAfterTolerance, dom:TimePolicy_CalcEarlyOutAfterTolerance -->
+
+**ما هو.** ما إذا كان الانصراف المبكر الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
+
+**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
+
+**القواعد.** نعم أو لا.
+
+## ClockInLimit {#TimePolicy.ClockInLimit}
+<!-- alias: loc:ClockInLimit, dom:TimePolicy_ClockInLimit -->
+
+**ما هو.** عدد الدقائق قبل بداية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.
+
+**مثال.** `120`
+
+**لماذا يهم.** البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.
+
+**القواعد.** اختياري. رقم.
+
+## ClockOutLimit {#TimePolicy.ClockOutLimit}
+<!-- alias: loc:ClockOutLimit, dom:TimePolicy_ClockOutLimit -->
+
+**ما هو.** عدد الدقائق قبل نهاية المناوبة وبعده التي يبحث فيها محرك الوقت عن تلك البصمة.
+
+**مثال.** `240`
+
+**لماذا يهم.** البصمات خارج النافذة لا تُعدّ تلك البصمة. وفي العطلات الرسمية وأيام الراحة الأسبوعية وأيام الراحة يُبحث في اليوم كله بدلاً من ذلك.
+
+**القواعد.** اختياري. رقم.
+
+## LateInTolerance {#TimePolicy.LateInTolerance}
+<!-- alias: loc:LateInTolerance, dom:TimePolicy_LateInTolerance -->
+
+**ما هو.** دقائق التأخير المسموح بها قبل أي خصم.
+
+**مثال.** `10`
+
+**لماذا يهم.** لا يُخصم التأخير حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخير كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
+
+**القواعد.** اختياري. رقم.
+
+## EarlyOutTolerance {#TimePolicy.EarlyOutTolerance}
+<!-- alias: loc:EarlyOutTolerance, dom:TimePolicy_EarlyOutTolerance -->
+
+**ما هو.** دقائق الانصراف المبكر المسموح بها قبل أي خصم.
+
+**مثال.** `10`
+
+**لماذا يهم.** لا يُخصم الانصراف المبكر حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الانصراف المبكر كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
+
+**القواعد.** اختياري. رقم.
+
+## MonthlyLateInTolerance {#TimePolicy.MonthlyLateInTolerance}
+<!-- alias: loc:MonthlyLateInTolerance, dom:TimePolicy_MonthlyLateInTolerance -->
+
+**ما هو.** دقائق التأخير المسموح بها شهرياً.
+
+**لماذا يهم.** لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.
+
+**القواعد.** اختياري. رقم.
+
+## MonthlyEarlyOutTolerance {#TimePolicy.MonthlyEarlyOutTolerance}
+<!-- alias: loc:MonthlyEarlyOutTolerance, dom:TimePolicy_MonthlyEarlyOutTolerance -->
+
+**ما هو.** دقائق الانصراف المبكر المسموح بها شهرياً.
+
+**لماذا يهم.** لا يستخدمه إلا تقرير الحضور الشهري مع فترة السماح المخصص (019)، ولا يقرؤه محرك الوقت.
+
+**القواعد.** اختياري. رقم.
 
 ## IsMissedPunchInNotiEnabled {#TimePolicy.IsMissedPunchInNotiEnabled}
 <!-- alias: loc:IsMissedPunchInNotiEnabled, dom:TimePolicy_IsMissedPunchInNotiEnabled -->
@@ -369,5 +293,81 @@ permissions: [Pages.TimeManagement.TimePolicies.Create]
 **ما هو.** دقائق الانصراف المبكر قبل الإشعار به.
 
 **لماذا يهم.** لا يُقرأ حالياً.
+
+**القواعد.** اختياري. رقم.
+
+## ShouldBreakSignIn {#TimePolicy.ShouldBreakSignIn}
+<!-- alias: loc:ShouldBreakSignIn, dom:TimePolicy_ShouldBreakSignIn -->
+
+**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة العودة من الاستراحة.
+
+**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
+
+**القواعد.** نعم أو لا.
+
+## BreakInLimit {#TimePolicy.BreakInLimit}
+<!-- alias: loc:BreakInLimit, dom:TimePolicy_BreakInLimit -->
+
+**ما هو.** عدد الدقائق قبل نهاية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة العودة من الاستراحة.
+
+**مثال.** `30`
+
+**القواعد.** اختياري. رقم.
+
+## ShouldBreakSignOut {#TimePolicy.ShouldBreakSignOut}
+<!-- alias: loc:ShouldBreakSignOut, dom:TimePolicy_ShouldBreakSignOut -->
+
+**ما هو.** ما إذا كان يجب على موظفي هذه السياسة تسجيل بصمة الخروج إلى الاستراحة.
+
+**لماذا يهم.** إذا أُشِّر عليه يُحتسب يوم العمل الذي تنقصه هذه البصمة غياباً عن وقت العمل المخطط، ولا يُقاس التأخير أو الانصراف المبكر إلا عند وجود البصمة. وإلا فلا تُتوقع البصمة.
+
+**القواعد.** نعم أو لا.
+
+## BreakOutLimit {#TimePolicy.BreakOutLimit}
+<!-- alias: loc:BreakOutLimit, dom:TimePolicy_BreakOutLimit -->
+
+**ما هو.** عدد الدقائق قبل بداية الاستراحة وبعدها التي يبحث فيها محرك الوقت عن بصمة الخروج إلى الاستراحة.
+
+**مثال.** `30`
+
+**القواعد.** اختياري. رقم.
+
+## CalcBreakLateInAfterTolerance {#TimePolicy.CalcBreakLateInAfterTolerance}
+<!-- alias: loc:CalcBreakLateInAfterTolerance, dom:TimePolicy_CalcBreakLateInAfterTolerance -->
+
+**ما هو.** ما إذا كان التأخر في العودة من الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
+
+**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
+
+**القواعد.** نعم أو لا.
+
+## BreakLateInTolerance {#TimePolicy.BreakLateInTolerance}
+<!-- alias: loc:BreakLateInTolerance, dom:TimePolicy_BreakLateInTolerance -->
+
+**ما هو.** دقائق التأخر في العودة من الاستراحة المسموح بها قبل أي خصم.
+
+**مثال.** `5`
+
+**لماذا يهم.** لا يُخصم التأخر في العودة من الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم التأخر في العودة من الاستراحة كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
+
+**القواعد.** اختياري. رقم.
+
+## CalcBreakEarlyOutAfterTolerance {#TimePolicy.CalcBreakEarlyOutAfterTolerance}
+<!-- alias: loc:CalcBreakEarlyOutAfterTolerance, dom:TimePolicy_CalcBreakEarlyOutAfterTolerance -->
+
+**ما هو.** ما إذا كان الخروج المبكر إلى الاستراحة الذي يتجاوز السماح يُخصم عن الدقائق الزائدة عليه فقط.
+
+**لماذا يهم.** إذا أُشِّر عليه يُخصم عن التأخر 15 دقيقة مع سماح 10 دقائق 5 دقائق فقط، وإلا فتُخصم الدقائق الخمس عشرة كلها.
+
+**القواعد.** نعم أو لا.
+
+## BreakEarlyOutTolerance {#TimePolicy.BreakEarlyOutTolerance}
+<!-- alias: loc:BreakEarlyOutTolerance, dom:TimePolicy_BreakEarlyOutTolerance -->
+
+**ما هو.** دقائق الخروج المبكر إلى الاستراحة المسموح بها قبل أي خصم.
+
+**مثال.** `5`
+
+**لماذا يهم.** لا يُخصم الخروج المبكر إلى الاستراحة حتى هذا العدد من الدقائق. وما زاد عليه يُخصم الخروج المبكر إلى الاستراحة كله -- أو الجزء الزائد على السماح فقط، إذا أُشِّر على خانة **بعد السماح** المقابلة.
 
 **القواعد.** اختياري. رقم.

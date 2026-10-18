@@ -168,7 +168,7 @@ It refuses to save when the code is already in use, the birth date is today or l
 Employees cannot change their photo through self-service -- by design it is managed by HR on this form only. The form does not limit the file size, and the photo is stored in the database with the employee, so resize large camera images before uploading.
 :::
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 512 characters.
 
 ## FlatNumber {#Employee.FlatNumn}
 <!-- alias: loc:FlatNumber, dom:Employee_FlatNumn -->

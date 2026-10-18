@@ -61,3 +61,23 @@ permissions: [Pages.PayrollManagement.AbsenceViolationRuleDetails.Create]
 **مثال.** إجازة غير مدفوعة
 
 **القواعد.** اختياري. يُختار من قائمة.
+
+## NotificationConfig {#AbsenceViolationRuleDetail.NotificationConfigId}
+<!-- alias: loc:NotificationConfig, dom:AbsenceViolationRuleDetail_NotificationConfigId -->
+
+**ما هو.** إعداد الإخطار المستخدم لإبلاغ المعنيين عند الوصول إلى هذه الخطوة.
+
+**مثال.** تصعيد الغياب – إبلاغ الموارد البشرية والمدير المباشر
+
+**لماذا يهم.** يتلقى مستلموه إشعاراً داخل النظام، وبريداً إلكترونياً إذا كان للإعداد قالب. وإذا تُرك فارغاً تُنفَّذ الخطوة دون إشعار أحد. ولا يُلغى إجراء الخطوة إذا تعذّر الإشعار.
+
+**القواعد.** اختياري. يُختار من قائمة إعدادات الإخطار.
+
+## HoldTillPunchFoundHint {#AbsenceViolationRuleDetail.HoldTillPunchFound}
+<!-- alias: loc:HoldTillPunchFoundHint, dom:AbsenceViolationRuleDetail_HoldTillPunchFound -->
+
+**ما هو.** ما إذا كانت هذه الخطوة تنتظر حتى يسجّل الموظف حضوره مرة أخرى.
+
+**لماذا يهم.** إذا أُشِّر عليه، لا يُطبَّق إجراء الخطوة -- إجازة خصم أو سجل مخالفة -- إلا بعد عودة الموظف ووجود تسجيل حضور معتمد له، فلا يُعاقب من لا يزال غائباً قبل الأوان.
+
+**القواعد.** نعم أو لا.

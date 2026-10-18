@@ -31,7 +31,7 @@ Not read at present: the cost engine and the journal voucher take their accounts
 
 **Example.** Basic Salary
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## AccountInfoId {#WageAccGroupDetail.AccountInfoId}
 <!-- alias: loc:AccountInfoId, dom:WageAccGroupDetail_AccountInfoId -->

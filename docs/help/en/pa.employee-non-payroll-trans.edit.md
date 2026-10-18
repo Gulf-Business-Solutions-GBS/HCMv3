@@ -22,7 +22,7 @@ Payroll does not pay it. The average bonus calculation does count non-payroll am
 
 **Example.** Annual Bonus
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 :::admin
 Maintained under Payroll Management → Wagetypes.

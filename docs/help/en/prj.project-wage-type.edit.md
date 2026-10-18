@@ -27,4 +27,4 @@ A wagetype costed to a project. Only pay lines whose wagetype is listed here are
 
 **Example.** Basic Salary
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.

@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeDependant",
   "overviewHtml": "<p>A family member who depends on the employee — a spouse, child or parent — and the benefits they count towards. Dependants of the same ticket type for the same employee cannot overlap.</p><p>Dependants feed health reimbursement entitlement, dependant air tickets, and the child allowance in social security.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeDependant.StartDate",
+    "dom:EmployeeDependant_StartDate": "EmployeeDependant.StartDate",
+    "loc:EndDate": "EmployeeDependant.EndDate",
+    "dom:EmployeeDependant_EndDate": "EmployeeDependant.EndDate",
     "loc:NameEn": "EmployeeDependant.NameEn",
     "dom:EmployeeDependant_NameEn": "EmployeeDependant.NameEn",
     "loc:NameAr": "EmployeeDependant.NameAr",
@@ -15,10 +19,6 @@
     "dom:EmployeeDependant_BirthDate": "EmployeeDependant.BirthDate",
     "loc:TicketTypeId": "EmployeeDependant.TicketTypeId",
     "dom:EmployeeDependant_TicketTypeId": "EmployeeDependant.TicketTypeId",
-    "loc:StartDate": "EmployeeDependant.StartDate",
-    "dom:EmployeeDependant_StartDate": "EmployeeDependant.StartDate",
-    "loc:EndDate": "EmployeeDependant.EndDate",
-    "dom:EmployeeDependant_EndDate": "EmployeeDependant.EndDate",
     "loc:SpecialNeed": "EmployeeDependant.SpecialNeed",
     "dom:EmployeeDependant_SpecialNeed": "EmployeeDependant.SpecialNeed",
     "loc:IncludeInSocialSecurity": "EmployeeDependant.IncludeInSocialSecurity",
@@ -27,6 +27,34 @@
     "dom:EmployeeDependant_IncludeInHealthInsurance": "EmployeeDependant.IncludeInHealthInsurance"
   },
   "fields": [
+    {
+      "id": "EmployeeDependant.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDependant_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee and ticket type.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDependant_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeDependant.NameEn",
       "label": "NameEn",
@@ -65,7 +93,7 @@
       ],
       "rules": "Required. Chosen from Dependant Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> How the dependant is related to the employee.</p><p><strong>Example.</strong> Daughter</p><p><strong>Why it matters.</strong> Health reimbursement entitlement is set per dependant type on the employee's sub group.</p>",
+      "html": "<p><strong>What it is.</strong> How the dependant is related to the employee.</p><p><strong>Example.</strong> Daughter</p><p><strong>Why it matters.</strong> Health reimbursement entitlement is set per dependant type on the employee's grade.</p>",
       "adminHtml": "<p>Maintained under General Master Info → Dependant Types.</p>",
       "stub": false
     },
@@ -94,34 +122,6 @@
       "rules": "Required. Chosen from Ticket Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The ticket type the dependant's air tickets use.</p><p><strong>Example.</strong> Dependant 1</p><p><strong>Why it matters.</strong> The time engine accrues dependant tickets for the dependant in force on each day.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeDependant.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeDependants",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeDependant_StartDate"
-      ],
-      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee and ticket type.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeDependant.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeDependants",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeDependant_EndDate"
-      ],
-      "rules": "Required. Date value. Cannot be before the start date.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
       "stub": false
     },

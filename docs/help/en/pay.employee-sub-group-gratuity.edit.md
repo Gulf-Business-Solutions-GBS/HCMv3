@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupGratuities.Create]
 
 ## Overview
 
-The sub group's end-of-service indemnity scale: how many days' pay each year of service earns, in slabs by years of service.
+The grade's end-of-service indemnity scale: how many days' pay each year of service earns, in slabs by years of service.
 
 Service is split across the slabs in order of **Change Year**. Kuwait's law, for example, is two slabs: 15 days a year up to year 5, and 30 days a year after that.
 

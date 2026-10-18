@@ -5,12 +5,12 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsence",
   "overviewHtml": "<p>فترة إجازة أو غياب للموظف. ولا يجوز أن تتداخل فترات غياب الموظف نفسه.</p><p>تدفع الرواتب أجر الإجازة وفق نوع الدفع وتاريخه، ويحدد محرك الوقت الأيام على أنها إجازة.</p><p>الغياب المُدخل في هذا النموذج لا يغيّر رقم المستخدَم في حصة إجازات الموظف، فلا ينقص رصيد الإجازات في الخدمة الذاتية. أما الإجازة المطلوبة والمعتمدة عبر الخدمة الذاتية فتحدّثه.</p>",
   "aliasIndex": {
-    "loc:AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
-    "dom:EmployeeAbsence_AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
     "loc:StartDate": "EmployeeAbsence.StartDate",
     "dom:EmployeeAbsence_StartDate": "EmployeeAbsence.StartDate",
     "loc:EndDate": "EmployeeAbsence.EndDate",
     "dom:EmployeeAbsence_EndDate": "EmployeeAbsence.EndDate",
+    "loc:AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
+    "dom:EmployeeAbsence_AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
     "loc:HalfdayType": "EmployeeAbsence.HalfdayType",
     "dom:EmployeeAbsence_HalfdayType": "EmployeeAbsence.HalfdayType",
     "loc:StartTime": "EmployeeAbsence.StartTime",
@@ -40,20 +40,6 @@
   },
   "fields": [
     {
-      "id": "EmployeeAbsence.AbsenceTypeId",
-      "label": "AbsenceTypeId",
-      "section": "EmployeeAbsences",
-      "aliases": [
-        "loc:AbsenceTypeId",
-        "dom:EmployeeAbsence_AbsenceTypeId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> إجازة سنوية</p><p><strong>لماذا يهم.</strong> يحدد طريقة دفع الأيام والحصة التي تنتمي إليها.</p>",
-      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الغياب.</p>",
-      "stub": false
-    },
-    {
       "id": "EmployeeAbsence.StartDate",
       "label": "StartDate",
       "section": "EmployeeAbsences",
@@ -79,6 +65,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsence_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الإجازات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> إجازة سنوية</p><p><strong>لماذا يهم.</strong> يحدد طريقة دفع الأيام والحصة التي تنتمي إليها.</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الإجازات.</p>",
       "stub": false
     },
     {
@@ -215,7 +215,7 @@
         "loc:ExtAbsenceTypeId",
         "dom:EmployeeAbsence_ExtAbsenceTypeId"
       ],
-      "rules": "اختياري. يُختار من قائمة أنواع الغياب.",
+      "rules": "اختياري. يُختار من قائمة أنواع الإجازات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي يُحوَّل إليه تمديد هذا الغياب — كالإجازة السنوية الزائدة التي تُحتسب دون أجر.</p><p><strong>مثال.</strong> إجازة بدون أجر</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرأ أي احتساب التمديد حالياً.</p>",
       "adminHtml": "",

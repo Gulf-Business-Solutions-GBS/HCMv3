@@ -1,9 +1,9 @@
 {
   "helpId": "pa.employee-gratuity-quota.edit",
   "lang": "en",
-  "title": "Employee Gratuity Quotas — Create / Edit",
+  "title": "Employee Indemnity Quotas — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeGratuityQuota",
-  "overviewHtml": "<p>The employee's indemnity entitlement over an entitlement period.</p><p>The time engine creates a quota itself for any day no quota covers when the employee's sub group has an indemnity rule. The indemnity calculation overwrites Quota Accrued and Quota Used from its own results each time it runs.</p>",
+  "overviewHtml": "<p>The employee's indemnity entitlement over an entitlement period.</p><p>The time engine creates a quota itself for any day no quota covers when the employee's grade has an indemnity rule. The indemnity calculation overwrites Quota Accrued and Quota Used from its own results each time it runs.</p>",
   "aliasIndex": {
     "loc:EntitlementFrom": "EmployeeGratuityQuota.EntitlementFrom",
     "dom:EmployeeGratuityQuota_EntitlementFrom": "EmployeeGratuityQuota.EntitlementFrom",

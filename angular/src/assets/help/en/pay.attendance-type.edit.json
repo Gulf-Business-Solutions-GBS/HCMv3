@@ -17,20 +17,10 @@
     "dom:AttendanceType_AccrualPeriod": "AttendanceType.AccrualPeriod",
     "loc:LinkLeaveQuota": "AttendanceType.LinkLeaveQuotaId",
     "dom:AttendanceType_LinkLeaveQuotaId": "AttendanceType.LinkLeaveQuotaId",
-    "loc:IsPaid": "AttendanceType.IsPaid",
-    "dom:AttendanceType_IsPaid": "AttendanceType.IsPaid",
-    "loc:HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
-    "dom:AttendanceType_HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
-    "loc:IncludeWeekend": "AttendanceType.IncludeWeekend",
-    "dom:AttendanceType_IncludeWeekend": "AttendanceType.IncludeWeekend",
-    "loc:IncludeRestDay": "AttendanceType.IncludeRestDay",
-    "dom:AttendanceType_IncludeRestDay": "AttendanceType.IncludeRestDay",
     "loc:IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
     "dom:AttendanceType_IncludePublicHoliday": "AttendanceType.IncludePublicHoliday",
-    "loc:CalcOnCalendarDays": "AttendanceType.CalcOnCalendarDays",
-    "dom:AttendanceType_CalcOnCalendarDays": "AttendanceType.CalcOnCalendarDays",
-    "loc:IsFullDay": "AttendanceType.IsFullDay",
-    "dom:AttendanceType_IsFullDay": "AttendanceType.IsFullDay"
+    "loc:HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual",
+    "dom:AttendanceType_HaveQuotaAccrual": "AttendanceType.HaveQuotaAccrual"
   },
   "fields": [
     {
@@ -111,65 +101,9 @@
         "loc:LinkLeaveQuota",
         "dom:AttendanceType_LinkLeaveQuotaId"
       ],
-      "rules": "Optional. Chosen from Absence Type master data.",
+      "rules": "Optional. Chosen from Leave Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The leave that days of this attendance add to.</p><p><strong>Example.</strong> Compensatory Leave</p><p><strong>Why it matters.</strong> For that leave type, the balance is the attendance days recorded on types linked to it, less what has been taken.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IsPaid",
-      "label": "IsPaid",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IsPaid",
-        "dom:AttendanceType_IsPaid"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Whether attendance of this type counts as paid working time.</p><p><strong>Why it matters.</strong> Ticked, the time register counts it as actual attendance time — the full planned day or the attendance's own hours, per <strong>Is Full Day</strong>. Unticked, it adds no time.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.HaveQuotaAccrual",
-      "label": "HaveQuotaAccrual",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:HaveQuotaAccrual",
-        "dom:AttendanceType_HaveQuotaAccrual"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Whether this attendance earns leave.</p><p><strong>Why it matters.</strong> Ticked, <strong>Link Leave Quota</strong> must be filled in. The leave is earned through the link itself: any attendance type with a linked leave adds to it.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IncludeWeekend",
-      "label": "IncludeWeekend",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IncludeWeekend",
-        "dom:AttendanceType_IncludeWeekend"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Whether attendance on a weekly off counts.</p><p><strong>Why it matters.</strong> Unticked, attendance of this type on a weekly off adds no time.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IncludeRestDay",
-      "label": "IncludeRestDay",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IncludeRestDay",
-        "dom:AttendanceType_IncludeRestDay"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Whether attendance on a rest day counts.</p><p><strong>Why it matters.</strong> Unticked, attendance of this type on a rest day adds no time.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -188,30 +122,16 @@
       "stub": false
     },
     {
-      "id": "AttendanceType.CalcOnCalendarDays",
-      "label": "CalcOnCalendarDays",
+      "id": "AttendanceType.HaveQuotaAccrual",
+      "label": "HaveQuotaAccrual",
       "section": "AttendanceTypes",
       "aliases": [
-        "loc:CalcOnCalendarDays",
-        "dom:AttendanceType_CalcOnCalendarDays"
+        "loc:HaveQuotaAccrual",
+        "dom:AttendanceType_HaveQuotaAccrual"
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether attendance days are counted on calendar days.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "AttendanceType.IsFullDay",
-      "label": "IsFullDay",
-      "section": "AttendanceTypes",
-      "aliases": [
-        "loc:IsFullDay",
-        "dom:AttendanceType_IsFullDay"
-      ],
-      "rules": "Yes or no.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> Whether attendance of this type counts as a full working day.</p><p><strong>Why it matters.</strong> Ticked, it counts the employee's full planned minutes for the day. Unticked, it counts the hours between the attendance's start and end time.</p>",
+      "html": "<p><strong>What it is.</strong> Whether this attendance earns leave.</p><p><strong>Why it matters.</strong> Ticked, <strong>Link Leave Quota</strong> must be filled in. The leave is earned through the link itself: any attendance type with a linked leave adds to it.</p>",
       "adminHtml": "",
       "stub": false
     }

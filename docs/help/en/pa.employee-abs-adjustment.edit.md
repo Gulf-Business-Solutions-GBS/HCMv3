@@ -17,19 +17,6 @@ Payroll pays annual-leave encashment and fractional adjustments falling in the p
 
 Saving an adjustment does not update the employee's leave quota record, so the self-service balance does not change.
 
-## AbsenceTypeId {#EmployeeAbsAdjustment.AbsenceTypeId}
-<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsAdjustment_AbsenceTypeId -->
-
-**What it is.** The leave type being adjusted.
-
-**Example.** Annual Leave
-
-**Rules.** Required. Chosen from Absence Type master data.
-
-:::admin
-Maintained under Payroll Management → Absence Types.
-:::
-
 ## EffectiveDate {#EmployeeAbsAdjustment.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeAbsAdjustment_EffectiveDate -->
 
@@ -40,6 +27,19 @@ Maintained under Payroll Management → Absence Types.
 **Why it matters.** Payroll pays encashment whose effective date falls in the pay period, and the as-on-date quota counts adjustments up to the date asked for.
 
 **Rules.** Required. Date value.
+
+## AbsenceTypeId {#EmployeeAbsAdjustment.AbsenceTypeId}
+<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsAdjustment_AbsenceTypeId -->
+
+**What it is.** The leave type being adjusted.
+
+**Example.** Annual Leave
+
+**Rules.** Required. Chosen from Leave Type master data.
+
+:::admin
+Maintained under Payroll Management → Leave Types.
+:::
 
 ## AdjustmentType {#EmployeeAbsAdjustment.AdjustmentType}
 <!-- alias: loc:AdjustmentType, dom:EmployeeAbsAdjustment_AdjustmentType -->

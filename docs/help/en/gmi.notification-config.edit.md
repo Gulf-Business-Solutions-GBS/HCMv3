@@ -22,6 +22,17 @@ Settings that decide whether HCMv3 sends an email for an event, and to whom. Doc
 
 **Rules.** Required. Maximum 256 characters.
 
+## EmailTemplate {#NotificationConfig.EmailTemplateId}
+<!-- alias: loc:EmailTemplate, dom:NotificationConfig_EmailTemplateId -->
+
+**What it is.** The email template sent when this notification configuration fires.
+
+**Example.** Leave Request Approved
+
+**Why it matters.** The email is built from the template, with the request number, summary, the person who acted and their remarks filled in. Choose **In-app notification only** to send no email; the in-app notification still goes out.
+
+**Rules.** Optional. Chosen from Email Template master data.
+
 ## SendNotification {#NotificationConfig.SendNotification}
 <!-- alias: loc:SendNotification, dom:NotificationConfig_SendNotification -->
 
@@ -65,6 +76,15 @@ Settings that decide whether HCMv3 sends an email for an event, and to whom. Doc
 
 **Rules.** Yes or no.
 
+## SendToApprover {#NotificationConfig.SendToApprover}
+<!-- alias: loc:SendToApprover, dom:NotificationConfig_SendToApprover -->
+
+**What it is.** Meant to email the current approver.
+
+**Why it matters.** Not read at present.
+
+**Rules.** Yes or no.
+
 ## SendToAll {#NotificationConfig.SendToAll}
 <!-- alias: loc:SendToAll, dom:NotificationConfig_SendToAll -->
 
@@ -78,14 +98,5 @@ Settings that decide whether HCMv3 sends an email for an event, and to whom. Doc
 **What it is.** For a workflow request, email everyone who approved it.
 
 **Why it matters.** Approvers who are now inactive are skipped.
-
-**Rules.** Yes or no.
-
-## SendToApprover {#NotificationConfig.SendToApprover}
-<!-- alias: loc:SendToApprover, dom:NotificationConfig_SendToApprover -->
-
-**What it is.** Meant to email the current approver.
-
-**Why it matters.** Not read at present.
 
 **Rules.** Yes or no.

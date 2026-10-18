@@ -21,7 +21,7 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The wagetype of the allowance.</p><p><strong>Example.</strong> Car Allowance</p><p><strong>Why it matters.</strong> Each wagetype can be listed once per sub group.</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype of the allowance.</p><p><strong>Example.</strong> Car Allowance</p><p><strong>Why it matters.</strong> Each wagetype can be listed once per grade.</p>",
       "adminHtml": "",
       "stub": false
     },

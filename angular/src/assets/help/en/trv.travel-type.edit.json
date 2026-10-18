@@ -37,7 +37,7 @@
         "loc:WageType",
         "dom:TravelType_WageTypeId"
       ],
-      "rules": "Required. Chosen from Wagetype master data.",
+      "rules": "Required. Chosen from Wage Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The wagetype travel would be paid through.</p><p><strong>Why it matters.</strong> Not read at present: payroll has no travel calculation, so nothing is paid through it.</p>",
       "adminHtml": "",

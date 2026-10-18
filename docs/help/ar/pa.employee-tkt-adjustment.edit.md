@@ -15,15 +15,6 @@ permissions: [Pages.PersonnelAdministration.EmployeeTktAdjustments.Create]
 
 يُسجَّل للرجوع إليه: فلا يؤدي حفظه إلى تحديث حصة تذاكر الموظف، ولا تقرؤه الرواتب ولا محرك الوقت حالياً.
 
-## TicketTypeId {#EmployeeTktAdjustment.TicketTypeId}
-<!-- alias: loc:TicketTypeId, dom:EmployeeTktAdjustment_TicketTypeId -->
-
-**ما هو.** نوع التذكرة المعدَّل.
-
-**مثال.** الموظف
-
-**القواعد.** إلزامي. يُختار من قائمة أنواع التذاكر.
-
 ## EffectiveDate {#EmployeeTktAdjustment.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeTktAdjustment_EffectiveDate -->
 
@@ -32,6 +23,15 @@ permissions: [Pages.PersonnelAdministration.EmployeeTktAdjustments.Create]
 **مثال.** 30 يونيو 2026
 
 **القواعد.** إلزامي. تاريخ.
+
+## TicketTypeId {#EmployeeTktAdjustment.TicketTypeId}
+<!-- alias: loc:TicketTypeId, dom:EmployeeTktAdjustment_TicketTypeId -->
+
+**ما هو.** نوع التذكرة المعدَّل.
+
+**مثال.** الموظف
+
+**القواعد.** إلزامي. يُختار من قائمة أنواع التذاكر.
 
 ## AdjustmentType {#EmployeeTktAdjustment.AdjustmentType}
 <!-- alias: loc:AdjustmentType, dom:EmployeeTktAdjustment_AdjustmentType -->

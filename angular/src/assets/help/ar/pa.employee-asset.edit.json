@@ -5,32 +5,18 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAsset",
   "overviewHtml": "<p>أصل من أصول الشركة سُلِّم للموظف خلال فترة — حاسوب محمول أو هاتف أو سيارة.</p><p>لا يجوز تخصيص الأصل نفسه لفترات متداخلة، أياً كان الموظف الذي يحمله. ويمكن للموظفين طلب الأصول عبر الخدمة الذاتية.</p>",
   "aliasIndex": {
-    "loc:AssetId": "EmployeeAsset.AssetId",
-    "dom:EmployeeAsset_AssetId": "EmployeeAsset.AssetId",
     "loc:StartDate": "EmployeeAsset.StartDate",
     "dom:EmployeeAsset_StartDate": "EmployeeAsset.StartDate",
     "loc:EndDate": "EmployeeAsset.EndDate",
     "dom:EmployeeAsset_EndDate": "EmployeeAsset.EndDate",
+    "loc:AssetId": "EmployeeAsset.AssetId",
+    "dom:EmployeeAsset_AssetId": "EmployeeAsset.AssetId",
     "loc:AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
     "dom:EmployeeAsset_AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
     "loc:Comments": "EmployeeAsset.Comments",
     "dom:EmployeeAsset_Comments": "EmployeeAsset.Comments"
   },
   "fields": [
-    {
-      "id": "EmployeeAsset.AssetId",
-      "label": "AssetId",
-      "section": "EmployeeAssets",
-      "aliases": [
-        "loc:AssetId",
-        "dom:EmployeeAsset_AssetId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة العهد.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> الأصل المسلَّم.</p><p><strong>مثال.</strong> حاسوب محمول — Dell 5540 (SN 7GH21)</p><p><strong>لماذا يهم.</strong> لا يجوز تخصيصه لأي شخص آخر لفترة متداخلة.</p>",
-      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← العهد.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeAsset.StartDate",
       "label": "StartDate",
@@ -57,6 +43,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.AssetId",
+      "label": "AssetId",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:AssetId",
+        "dom:EmployeeAsset_AssetId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العهد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأصل المسلَّم.</p><p><strong>مثال.</strong> حاسوب محمول — Dell 5540 (SN 7GH21)</p><p><strong>لماذا يهم.</strong> لا يجوز تخصيصه لأي شخص آخر لفترة متداخلة.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← العهد.</p>",
       "stub": false
     },
     {

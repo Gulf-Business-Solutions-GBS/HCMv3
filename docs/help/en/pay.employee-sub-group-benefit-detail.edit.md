@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Create]
 
 ## Overview
 
-The amount of a sub group benefit per kind of dependant, with an age limit.
+The amount of a grade benefit per kind of dependant, with an age limit.
 
 Not read at present: payroll does not use this list, and it is kept for reference only.
 

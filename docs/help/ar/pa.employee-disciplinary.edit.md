@@ -103,7 +103,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeDisciplinaries.Create]
 
 **لماذا يهم.** يُحدَّد من شرائح نوع المخالفة عند الاعتماد إذا وُجِّه السجل للاعتماد. ولا يُقتطع في الرواتب حالياً.
 
-**القواعد.** اختياري. يُختار من قائمة أنواع الخصم بسبب إجراء تأديبي.
+**القواعد.** اختياري. يُختار من قائمة أنواع خصم المخالفات.
 
 ## WlSendToEmp {#EmployeeDisciplinary.WLSendToEmp}
 <!-- alias: loc:WlSendToEmp, dom:EmployeeDisciplinary_WlSendToEmp -->

@@ -13,6 +13,8 @@ permissions: [Pages.ProjectManagement.EmployeeProjectDetails.Create]
 
 One project within an employee's project assignment. Its dates must fall within the assignment's dates.
 
+On a saved record, **Calculate Work Days** shows two counts for the project's dates. **Work Days** adds up the approved working days, public holidays and rest days in the employee's time register. **Calendar Days** is every day from the start date to the end date, both included. Neither is stored.
+
 ## EmployeeProject {#EmployeeProjectDetail.EmployeeProjectId}
 <!-- alias: loc:EmployeeProject, dom:EmployeeProjectDetail_EmployeeProjectId -->
 

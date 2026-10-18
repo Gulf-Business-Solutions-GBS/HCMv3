@@ -8,7 +8,23 @@
     "loc:Code": "Employee.Code",
     "dom:Employee_Code": "Employee.Code",
     "loc:FullNameEn": "Employee.FullNameEn",
+    "loc:FirstNameEn": "Employee.FirstNameEn",
+    "dom:Employee_FirstNameEn": "Employee.FirstNameEn",
+    "loc:SecondNameEn": "Employee.SecondNameEn",
+    "dom:Employee_SecondNameEn": "Employee.SecondNameEn",
+    "loc:ThirdNameEn": "Employee.ThirdNameEn",
+    "dom:Employee_ThirdNameEn": "Employee.ThirdNameEn",
+    "loc:LastNameEn": "Employee.LastNameEn",
+    "dom:Employee_LastNameEn": "Employee.LastNameEn",
     "loc:FullNameAr": "Employee.FullNameAr",
+    "loc:FirstNameAr": "Employee.FirstNameAr",
+    "dom:Employee_FirstNameAr": "Employee.FirstNameAr",
+    "loc:SecondNameAr": "Employee.SecondNameAr",
+    "dom:Employee_SecondNameAr": "Employee.SecondNameAr",
+    "loc:ThirdNameAr": "Employee.ThirdNameAr",
+    "dom:Employee_ThirdNameAr": "Employee.ThirdNameAr",
+    "loc:LastNameAr": "Employee.LastNameAr",
+    "dom:Employee_LastNameAr": "Employee.LastNameAr",
     "loc:Title": "Employee.TitleId",
     "dom:Employee_TitleId": "Employee.TitleId",
     "loc:Status": "Employee.Status",
@@ -27,6 +43,14 @@
     "dom:Employee_ReligionId": "Employee.ReligionId",
     "loc:MaritalStatus": "Employee.MaritalStatusId",
     "dom:Employee_MaritalStatusId": "Employee.MaritalStatusId",
+    "loc:FatherNameEn": "Employee.FatherNameEn",
+    "dom:Employee_FatherNameEn": "Employee.FatherNameEn",
+    "loc:FatherNameAr": "Employee.FatherNameAr",
+    "dom:Employee_FatherNameAr": "Employee.FatherNameAr",
+    "loc:MotherNameEn": "Employee.MotherNameEn",
+    "dom:Employee_MotherNameEn": "Employee.MotherNameEn",
+    "loc:MotherNameAr": "Employee.MotherNameAr",
+    "dom:Employee_MotherNameAr": "Employee.MotherNameAr",
     "loc:Qualification": "Employee.QualificationId",
     "dom:Employee_QualificationId": "Employee.QualificationId",
     "loc:BloodGroup": "Employee.BloodGroup",
@@ -111,6 +135,62 @@
       "stub": false
     },
     {
+      "id": "Employee.FirstNameEn",
+      "label": "FirstNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FirstNameEn",
+        "dom:Employee_FirstNameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاسم الأول للموظف بالإنجليزية، كما يُكتب في جواز سفره أو بطاقته المدنية.</p><p><strong>مثال.</strong> <code>Ahmed</code></p><p><strong>لماذا يهم.</strong> يُركَّب منه مع بقية أجزاء الاسم بالإنجليزية الاسمُ الكامل بالإنجليزية، المستخدم في القوائم والبحث والخدمة الذاتية والتقارير. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية (<em>تعديل بياناتي الشخصية</em>)، فيتغير هنا بعد اعتماد الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.SecondNameEn",
+      "label": "SecondNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:SecondNameEn",
+        "dom:Employee_SecondNameEn"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثاني من الاسم بالإنجليزية، وهو في التسمية العربية عادةً الاسم الأول للأب.</p><p><strong>مثال.</strong> <code>Khaled</code></p><p><strong>لماذا يهم.</strong> جزء من الاسم الكامل بالإنجليزية. اتركه فارغاً إن لم يكن في وثائق الموظف اسم ثانٍ — إذ يتخطى الاسم الكامل الأجزاء الفارغة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ThirdNameEn",
+      "label": "ThirdNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:ThirdNameEn",
+        "dom:Employee_ThirdNameEn"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثالث من الاسم بالإنجليزية، وهو في التسمية العربية عادةً الاسم الأول للجد.</p><p><strong>مثال.</strong> <code>Saleh</code></p><p><strong>لماذا يهم.</strong> جزء من الاسم الكامل بالإنجليزية. اتركه فارغاً إن لم يكن في وثائق الموظف اسم ثالث.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LastNameEn",
+      "label": "LastNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:LastNameEn",
+        "dom:Employee_LastNameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم العائلة أو القبيلة بالإنجليزية، كما في جواز السفر أو البطاقة المدنية.</p><p><strong>مثال.</strong> <code>Al-Mutairi</code></p><p><strong>لماذا يهم.</strong> يُختم به الاسم الكامل بالإنجليزية. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية، فيتغير هنا بعد اعتماد الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "Employee.FullNameAr",
       "label": "FullNameAr",
       "section": "EmpCard_Identity",
@@ -120,6 +200,62 @@
       "rules": "يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الاسم الكامل بالعربية، ويُركَّب من أجزاء الاسم الأربعة بالعربية.</p><p><strong>مثال.</strong> <code>أحمد خالد صالح المطيري</code></p><p><strong>لماذا يهم.</strong> يُطبع على النماذج الحكومية العربية، مثل نموذجي إلغاء بلاغ التغيب والتنازل عنه. لتصحيحه عدّل أجزاء الاسم بالعربية، فيُعاد تركيبه عند حفظ السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FirstNameAr",
+      "label": "FirstNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FirstNameAr",
+        "dom:Employee_FirstNameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاسم الأول للموظف بالعربية، كما يُكتب في البطاقة المدنية.</p><p><strong>مثال.</strong> <code>أحمد</code></p><p><strong>لماذا يهم.</strong> يُركَّب منه مع بقية أجزاء الاسم بالعربية الاسمُ الكامل بالعربية، الذي يعرضه النظام حيثما ظهرت الأسماء بالعربية. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية، فيتغير هنا بعد اعتماد الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.SecondNameAr",
+      "label": "SecondNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:SecondNameAr",
+        "dom:Employee_SecondNameAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثاني من الاسم بالعربية — وهو عادةً الاسم الأول للأب.</p><p><strong>مثال.</strong> <code>خالد</code></p><p><strong>لماذا يهم.</strong> جزء من الاسم الكامل بالعربية. اتركه فارغاً إن لم يكن في البطاقة المدنية اسم ثانٍ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ThirdNameAr",
+      "label": "ThirdNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:ThirdNameAr",
+        "dom:Employee_ThirdNameAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء الثالث من الاسم بالعربية — وهو عادةً الاسم الأول للجد.</p><p><strong>مثال.</strong> <code>صالح</code></p><p><strong>لماذا يهم.</strong> جزء من الاسم الكامل بالعربية. اتركه فارغاً إن لم يكن في البطاقة المدنية اسم ثالث.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.LastNameAr",
+      "label": "LastNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:LastNameAr",
+        "dom:Employee_LastNameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم العائلة أو القبيلة بالعربية، كما في البطاقة المدنية.</p><p><strong>مثال.</strong> <code>المطيري</code></p><p><strong>لماذا يهم.</strong> يُختم به الاسم الكامل بالعربية. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية، فيتغير هنا بعد اعتماد الطلب.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -176,7 +312,7 @@
       "rules": "إلزامي. إحدى القيم: ذكر، أنثى، غير محدد.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الجنس كما هو مسجل في البطاقة المدنية.</p><p><strong>مثال.</strong> <code>أنثى</code></p><p><strong>لماذا يهم.</strong> تستخدمه احتسابات التأمينات الاجتماعية في الرواتب. ويمكن لقواعد العمل اختباره أيضاً؛ إذ تستخدمه قاعدة إجازة الأمومة النموذجية لرفض إجازة الأمومة للموظفين الذكور عند تفعيل تلك القاعدة. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
-      "adminHtml": "<p>لأنواع الغياب إعداد خاص بالجنس، لكن النظام لا يطابقه حالياً مع هذا الحقل. لقصر نوع إجازة على جنس معين، استخدم قاعدة عمل.</p>",
+      "adminHtml": "<p>لأنواع الإجازات إعداد خاص بالجنس، لكن النظام لا يطابقه حالياً مع هذا الحقل. لقصر نوع إجازة على جنس معين، استخدم قاعدة عمل.</p>",
       "stub": false
     },
     {
@@ -232,7 +368,7 @@
       "rules": "اختياري. يُختار من قائمة الديانات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الديانة، إن كانت الشركة تسجلها.</p><p><strong>مثال.</strong> <code>مسلم</code></p><p><strong>لماذا يهم.</strong> تُسجَّل للعلم وتُطبع على نموذج طلب تأشيرة العمل، ولا يعتمد عليها أي احتساب. اتركها فارغة إن كانت شركتك لا تتابعها.</p>",
-      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الديانات. لأنواع الغياب إعداد خاص بالديانة (لإجازات مثل إجازة الحج)، لكن النظام لا يطابقه حالياً مع هذا الحقل.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الديانات. لأنواع الإجازات إعداد خاص بالديانة (لإجازات مثل إجازة الحج)، لكن النظام لا يطابقه حالياً مع هذا الحقل.</p>",
       "stub": false
     },
     {
@@ -247,6 +383,62 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> الحالة الاجتماعية الحالية.</p><p><strong>مثال.</strong> <code>متزوج</code></p><p><strong>لماذا يهم.</strong> تستخدمها احتسابات التأمينات الاجتماعية في الرواتب، ومنها بدل الحالة الاجتماعية، لذا احرص على تحديثها. ويمكن للموظف طلب تغييرها من خلال الخدمة الذاتية.</p>",
       "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الحالات الاجتماعية.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.FatherNameEn",
+      "label": "FatherNameEn",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:FatherNameEn",
+        "dom:Employee_FatherNameEn"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الأب الكامل بالإنجليزية، كما يظهر في وثائق الموظف.</p><p><strong>مثال.</strong> <code>Khaled Saleh Al-Mutairi</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FatherNameAr",
+      "label": "FatherNameAr",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:FatherNameAr",
+        "dom:Employee_FatherNameAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الأب الكامل بالعربية.</p><p><strong>مثال.</strong> <code>خالد صالح المطيري</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MotherNameEn",
+      "label": "MotherNameEn",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:MotherNameEn",
+        "dom:Employee_MotherNameEn"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الأم الكامل بالإنجليزية، كما يظهر في وثائق الموظف.</p><p><strong>مثال.</strong> <code>Fatima Ali Al-Enezi</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MotherNameAr",
+      "label": "MotherNameAr",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:MotherNameAr",
+        "dom:Employee_MotherNameAr"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الأم الكامل بالعربية.</p><p><strong>مثال.</strong> <code>فاطمة علي العنزي</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تصحيحه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
       "stub": false
     },
     {

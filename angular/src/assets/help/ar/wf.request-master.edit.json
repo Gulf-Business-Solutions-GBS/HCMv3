@@ -103,7 +103,7 @@
         "loc:AutoCloseInDays",
         "dom:RequestMaster_AutoCloseInDays"
       ],
-      "rules": "إلزامي. رقم صحيح.",
+      "rules": "اختياري. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الأيام بعد الموافقة التي يُغلق بعدها الطلب تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
@@ -117,7 +117,7 @@
         "loc:DueInDays",
         "dom:RequestMaster_DueInDays"
       ],
-      "rules": "إلزامي. رقم صحيح.",
+      "rules": "اختياري. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الأيام المتاحة لإنجاز الطلب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",

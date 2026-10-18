@@ -103,6 +103,17 @@ permissions: [Pages.BenefitsManagement.EmployeeInsurances.Create]
 
 **القواعد.** اختياري. رقم.
 
+## BalanceCompanyContribution {#EmployeeInsurance.BalanceCompanyContribution}
+<!-- alias: loc:BalanceCompanyContribution, dom:EmployeeInsurance_BalanceCompanyContribution -->
+
+**ما هو.** المتبقي من اشتراك الشركة الذي لم يُسترد بعد. يُحتسب ولا يُدخل يدوياً.
+
+**مثال.** 360.000 من اشتراك قدره 600.000، بعد أربعة أقساط قيمة كل منها 60.000
+
+**لماذا يهم.** يبدأ بكامل الاشتراك وينقص كلما سُجِّل قسط أو خُصم في الرواتب. ولا تخصم الرواتب التأمين إلا ما دام هناك رصيد، ولا يتجاوزه آخر خصم أبداً.
+
+**القواعد.** اختياري. رقم.
+
 ## EmployeeInterval {#EmployeeInsurance.EmployeeInterval}
 <!-- alias: loc:EmployeeInterval, dom:EmployeeInsurance_EmployeeInterval -->
 
@@ -133,5 +144,16 @@ permissions: [Pages.BenefitsManagement.EmployeeInsurances.Create]
 **مثال.** 16.667
 
 **لماذا يهم.** لا تسترد الرواتب أكثر من الرصيد المتبقي، ولا أكثر مما يسمح به صافي راتب الموظف.
+
+**القواعد.** اختياري. رقم.
+
+## BalanceEmployeeContribution {#EmployeeInsurance.BalanceEmployeeContribution}
+<!-- alias: loc:BalanceEmployeeContribution, dom:EmployeeInsurance_BalanceEmployeeContribution -->
+
+**ما هو.** المتبقي من اشتراك الموظف الذي لم يُسترد بعد. يُحتسب ولا يُدخل يدوياً.
+
+**مثال.** 120.000
+
+**لماذا يهم.** يعمل بالطريقة نفسها التي يعمل بها رصيد اشتراك الشركة، لحصة الموظف.
 
 **القواعد.** اختياري. رقم.

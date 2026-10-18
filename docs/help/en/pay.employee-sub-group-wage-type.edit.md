@@ -11,15 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupWageTypes.Create]
 
 ## Overview
 
-Wagetypes listed against an employee sub group. Not read at present: payroll does not use this list, and it is kept for reference only.
+Wagetypes listed against a grade. Not read at present: payroll does not use this list, and it is kept for reference only.
 
 ## WageType {#EmployeeSubGroupWageType.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupWageType_WageTypeId -->
 
-**What it is.** A wagetype listed for the sub group.
+**What it is.** A wagetype listed for the grade.
 
 **Example.** Site Allowance
 
-**Why it matters.** Each wagetype can be listed once per sub group.
+**Why it matters.** Each wagetype can be listed once per grade.
 
 **Rules.** Optional. Chosen from a list.

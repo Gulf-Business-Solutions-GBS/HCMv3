@@ -27,7 +27,7 @@ One line of a simulation payslip: a wagetype with its rate, number and amount.
 
 **Example.** Basic Salary
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## Rate {#SimulationSalaryRegisterDetail.Rate}
 <!-- alias: loc:Rate, dom:SimulationSalaryRegisterDetail_Rate -->

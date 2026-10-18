@@ -13,7 +13,7 @@ permissions: [Pages.PayrollManagement.IndemnityPayRules.Create]
 
 A cap on end-of-service indemnity by reason for leaving and country.
 
-Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's **Employee Group**. These rules are saved and kept for reference.
+Not used at present: every payroll and report calculation passes no indemnity pay rule, so the indemnity cap always comes from the employee's **Salary Profile**. These rules are saved and kept for reference.
 
 ## SeparationType {#IndemnityPayRule.SeparationType}
 <!-- alias: loc:SeparationType, dom:IndemnityPayRule_SeparationType -->

@@ -5,16 +5,62 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeDocumentMvmt",
   "overviewHtml": "<p>سحب إحدى وثائق الموظف وإرجاعها — كتسليم جواز السفر للموظف من أجل السفر.</p><p>ما دامت الحركة بلا تاريخ إرجاع فعلي، تظهر الوثيقة خارجة. ويمكن للموظفين طلب سحب جواز السفر عبر الخدمة الذاتية.</p>",
   "aliasIndex": {
+    "loc:HandedOverOn": "EmployeeDocumentMvmt.ActualWithdrawDate",
+    "dom:Mvmt_HandOverDate": "EmployeeDocumentMvmt.ActualWithdrawDate",
+    "loc:ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "dom:Mvmt_ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "loc:ReturnRemarks": "EmployeeDocumentMvmt.ReturnRemarks",
+    "dom:Mvmt_ReturnRemarks": "EmployeeDocumentMvmt.ReturnRemarks",
     "loc:WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
     "dom:Mvmt_WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
     "loc:ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
     "dom:Mvmt_ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
-    "loc:ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
-    "dom:Mvmt_ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
     "loc:Comments": "EmployeeDocumentMvmt.Comments",
     "dom:Mvmt_Comments": "EmployeeDocumentMvmt.Comments"
   },
   "fields": [
+    {
+      "id": "EmployeeDocumentMvmt.ActualWithdrawDate",
+      "label": "HandedOverOn",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:HandedOverOn",
+        "dom:Mvmt_HandOverDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اليوم الذي سُلِّم فيه المستند فعلياً إلى الموظف.</p><p><strong>لماذا يهم.</strong> تسجيله يجعل المستند في عهدة الموظف. ولا يجوز أن يكون بعد اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ActualReturnDate",
+      "label": "ActualReturnDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ActualReturnDate",
+        "dom:Mvmt_ActualReturnDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي أُرجعت فيه الوثيقة فعلياً.</p><p><strong>مثال.</strong> 18 يوليو 2026</p><p><strong>لماذا يهم.</strong> اتركه فارغاً ما دامت الوثيقة خارجة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ReturnRemarks",
+      "label": "ReturnRemarks",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ReturnRemarks",
+        "dom:Mvmt_ReturnRemarks"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظة تُدوَّن عند إعادة المستند.</p><p><strong>مثال.</strong> أُعيد جواز السفر بحالة جيدة؛ ختم تأشيرة جديد في الصفحة 12.</p><p><strong>لماذا يهم.</strong> للعلم فقط. وعندما تأتي الإعادة عن طريق طلب خدمة ذاتية، يراها المعتمِدون على الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeDocumentMvmt.WithdrawDate",
       "label": "WithdrawDate",
@@ -40,20 +86,6 @@
       "rules": "إلزامي. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> التاريخ المتوقع لإرجاع الوثيقة.</p><p><strong>مثال.</strong> 20 يوليو 2026</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeDocumentMvmt.ActualReturnDate",
-      "label": "ActualReturnDate",
-      "section": "DocumentMovements",
-      "aliases": [
-        "loc:ActualReturnDate",
-        "dom:Mvmt_ActualReturnDate"
-      ],
-      "rules": "اختياري. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> التاريخ الذي أُرجعت فيه الوثيقة فعلياً.</p><p><strong>مثال.</strong> 18 يوليو 2026</p><p><strong>لماذا يهم.</strong> اتركه فارغاً ما دامت الوثيقة خارجة.</p>",
       "adminHtml": "",
       "stub": false
     },

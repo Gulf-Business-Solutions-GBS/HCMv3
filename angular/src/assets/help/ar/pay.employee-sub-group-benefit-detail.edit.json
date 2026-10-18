@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل مزايا المجموعة الفرعية للموظفين — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail",
-  "overviewHtml": "<p>مبلغ مزايا المجموعة الفرعية لكل نوع من العائلين، مع حد للعمر.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
+  "overviewHtml": "<p>مبلغ مزايا الدرجة لكل نوع من العائلين، مع حد للعمر.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeSubGroupBenefitDetail.StartDate",
     "dom:EmployeeSubGroupBenefitDetail_StartDate": "EmployeeSubGroupBenefitDetail.StartDate",

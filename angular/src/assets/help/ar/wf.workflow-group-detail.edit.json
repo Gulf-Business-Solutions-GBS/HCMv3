@@ -12,7 +12,9 @@
     "loc:RequestSubType": "WorkflowGroupDetail.RequestSubTypeId",
     "dom:WorkflowGroupDetail_RequestSubTypeId": "WorkflowGroupDetail.RequestSubTypeId",
     "loc:CustomSubType": "WorkflowGroupDetail.CustomSubTypeId",
-    "dom:WorkflowGroupDetail_CustomSubTypeId": "WorkflowGroupDetail.CustomSubTypeId"
+    "dom:WorkflowGroupDetail_CustomSubTypeId": "WorkflowGroupDetail.CustomSubTypeId",
+    "loc:RequestActionAppliesTo": "WorkflowGroupDetail.RequestAction",
+    "dom:WorkflowGroupDetail_RequestAction": "WorkflowGroupDetail.RequestAction"
   },
   "fields": [
     {
@@ -68,6 +70,20 @@
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> يحصر السجل أكثر.</p><p><strong>لماذا يهم.</strong> تُوجَّه الطلبات حالياً دون نوع فرعي مخصص، فلا يضيّق هذا شيئاً: السجل الذي فيه نوع فرعي يُطابَق على النوع الفرعي وحده، والسجل الذي فيه هذا الحقل وحده لا يُختار أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.RequestAction",
+      "label": "RequestActionAppliesTo",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestActionAppliesTo",
+        "dom:WorkflowGroupDetail_RequestAction"
+      ],
+      "rules": "اختياري. إحدى القيم: جميع الإجراءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إجراء الطلب الذي ينطبق عليه هذا السطر: طلب جديد، أو تعديل، أو إلغاء، أو عودة من إجازة.</p><p><strong>مثال.</strong> إلغاء</p><p><strong>لماذا يهم.</strong> يتيح لمجموعة سير عمل واحدة أن توجّه مثلاً طلبات إلغاء الإجازة إلى سلسلة أقصر من الطلبات الجديدة. والسطر الذي يسمّي إجراء الطلب نفسه هو المعتمد؛ ولا تُستخدم الأسطر المتروكة على <strong>جميع الإجراءات</strong> إلا إذا لم يسمِّ أي سطر ذلك الإجراء.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -1,7 +1,7 @@
 ---
 helpId: pay.employee-group.edit
 lang: en
-title: Employee Groups — Create / Edit
+title: Salary Profiles — Create / Edit
 entity: HCMv3.PayrollManagement.EmployeeGroup
 surfaces:
   - angular/src/app/admin/payroll-management/employee-groups/create-or-edit-employee-group-modal.component.html
@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeGroups.Create]
 
 ## Overview
 
-A broad grouping of employees, such as staff and labour, that employee sub groups sit under. Each employee's organisation assignment names their group and sub group.
+A broad grouping of employees, such as staff and labour, that grades sit under. Each employee's organisation assignment names their salary profile and grade.
 
 The group carries the cap on end-of-service indemnity. The cap applies only when **Indemnity Max Number** is not 0.
 

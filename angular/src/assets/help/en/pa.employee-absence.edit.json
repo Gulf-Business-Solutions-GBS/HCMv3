@@ -5,12 +5,12 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsence",
   "overviewHtml": "<p>A period of leave or absence for the employee. Absences for the same employee cannot overlap.</p><p>Payroll pays leave according to the payment type and payment date, and the time engine marks the days as leave.</p><p>An absence entered on this form does not change the Used figure on the employee's leave quota, so the self-service leave balance does not go down. Leave requested and approved through self-service does update it.</p>",
   "aliasIndex": {
-    "loc:AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
-    "dom:EmployeeAbsence_AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
     "loc:StartDate": "EmployeeAbsence.StartDate",
     "dom:EmployeeAbsence_StartDate": "EmployeeAbsence.StartDate",
     "loc:EndDate": "EmployeeAbsence.EndDate",
     "dom:EmployeeAbsence_EndDate": "EmployeeAbsence.EndDate",
+    "loc:AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
+    "dom:EmployeeAbsence_AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
     "loc:HalfdayType": "EmployeeAbsence.HalfdayType",
     "dom:EmployeeAbsence_HalfdayType": "EmployeeAbsence.HalfdayType",
     "loc:StartTime": "EmployeeAbsence.StartTime",
@@ -40,20 +40,6 @@
   },
   "fields": [
     {
-      "id": "EmployeeAbsence.AbsenceTypeId",
-      "label": "AbsenceTypeId",
-      "section": "EmployeeAbsences",
-      "aliases": [
-        "loc:AbsenceTypeId",
-        "dom:EmployeeAbsence_AbsenceTypeId"
-      ],
-      "rules": "Required. Chosen from Absence Type master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The kind of leave.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> Decides how the days are paid and which quota they belong to.</p>",
-      "adminHtml": "<p>Maintained under Payroll Management → Absence Types.</p>",
-      "stub": false
-    },
-    {
       "id": "EmployeeAbsence.StartDate",
       "label": "StartDate",
       "section": "EmployeeAbsences",
@@ -79,6 +65,20 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsence_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Leave Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of leave.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> Decides how the days are paid and which quota they belong to.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Leave Types.</p>",
       "stub": false
     },
     {
@@ -215,7 +215,7 @@
         "loc:ExtAbsenceTypeId",
         "dom:EmployeeAbsence_ExtAbsenceTypeId"
       ],
-      "rules": "Optional. Chosen from Absence Type master data.",
+      "rules": "Optional. Chosen from Leave Type master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The leave type an extension of this absence is converted to — for example excess annual leave taken as unpaid.</p><p><strong>Example.</strong> Unpaid Leave</p><p><strong>Why it matters.</strong> Recorded only; no calculation reads the extension at present.</p>",
       "adminHtml": "",

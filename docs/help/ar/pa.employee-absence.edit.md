@@ -26,10 +26,10 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsences.Create]
 
 **لماذا يهم.** يحدد طريقة دفع الأيام والحصة التي تنتمي إليها.
 
-**القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
+**القواعد.** إلزامي. يُختار من قائمة أنواع الإجازات.
 
 :::admin
-تُدار من إدارة الرواتب ← أنواع الغياب.
+تُدار من إدارة الرواتب ← أنواع الإجازات.
 :::
 
 ## HalfdayType {#EmployeeAbsence.HalfdayType}
@@ -134,7 +134,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsences.Create]
 
 **لماذا يهم.** يُسجَّل فقط، ولا يقرأ أي احتساب التمديد حالياً.
 
-**القواعد.** اختياري. يُختار من قائمة أنواع الغياب.
+**القواعد.** اختياري. يُختار من قائمة أنواع الإجازات.
 
 ## ExtStartDate {#EmployeeAbsence.ExtStartDate}
 <!-- alias: loc:ExtStartDate, dom:EmployeeAbsence_ExtStartDate -->

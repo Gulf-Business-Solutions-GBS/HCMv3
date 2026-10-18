@@ -5,10 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeTktAdjustment",
   "overviewHtml": "<p>تعديل يدوي على استحقاق الموظف من تذاكر الطيران.</p><p>يُسجَّل للرجوع إليه: فلا يؤدي حفظه إلى تحديث حصة تذاكر الموظف، ولا تقرؤه الرواتب ولا محرك الوقت حالياً.</p>",
   "aliasIndex": {
-    "loc:TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
-    "dom:EmployeeTktAdjustment_TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
     "loc:EffectiveDate": "EmployeeTktAdjustment.EffectiveDate",
     "dom:EmployeeTktAdjustment_EffectiveDate": "EmployeeTktAdjustment.EffectiveDate",
+    "loc:TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
+    "dom:EmployeeTktAdjustment_TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
     "loc:AdjustmentType": "EmployeeTktAdjustment.AdjustmentType",
     "dom:EmployeeTktAdjustment_AdjustmentType": "EmployeeTktAdjustment.AdjustmentType",
     "loc:TicketPaymentType": "EmployeeTktAdjustment.TicketPaymentType",
@@ -22,20 +22,6 @@
   },
   "fields": [
     {
-      "id": "EmployeeTktAdjustment.TicketTypeId",
-      "label": "TicketTypeId",
-      "section": "EmployeeTktAdjustments",
-      "aliases": [
-        "loc:TicketTypeId",
-        "dom:EmployeeTktAdjustment_TicketTypeId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> نوع التذكرة المعدَّل.</p><p><strong>مثال.</strong> الموظف</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
       "id": "EmployeeTktAdjustment.EffectiveDate",
       "label": "EffectiveDate",
       "section": "EmployeeTktAdjustments",
@@ -46,6 +32,20 @@
       "rules": "إلزامي. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> تاريخ سريان التعديل.</p><p><strong>مثال.</strong> 30 يونيو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTktAdjustment_TicketTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التذكرة المعدَّل.</p><p><strong>مثال.</strong> الموظف</p>",
       "adminHtml": "",
       "stub": false
     },

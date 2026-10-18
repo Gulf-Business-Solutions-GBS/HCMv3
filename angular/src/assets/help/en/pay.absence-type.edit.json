@@ -1,9 +1,9 @@
 {
   "helpId": "pay.absence-type.edit",
   "lang": "en",
-  "title": "Absence Types — Create / Edit",
+  "title": "Leave Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceType",
-  "overviewHtml": "<p>A type of leave or absence — annual, sick, unpaid, Hajj, maternity and so on — and how it is counted, paid and accrued.</p><p>What each employee is entitled to is set per employee sub group, on the sub group's leave rules; this form sets how the type behaves.</p><p><strong>Many settings on this form are saved but not enforced.</strong> The limits and restrictions on applying for leave — maximum and minimum days, days it may not start on, attachments, probation, notice period, gender, religion, negative balance, hourly limits — are not checked when leave is entered or approved. Each such field says so below. To enforce a leave policy, use a business rule on leave under <strong>Configure Business Rules</strong>; rules can read the leave type's code, whether it is paid, whether it is active and its minimum days in service.</p>",
+  "overviewHtml": "<p>A type of leave or absence — annual, sick, unpaid, Hajj, maternity and so on — and how it is counted, paid and accrued.</p><p>What each employee is entitled to is set per grade, on the grade's leave rules; this form sets how the type behaves.</p><p><strong>Many settings on this form are saved but not enforced.</strong> The limits and restrictions on applying for leave — maximum and minimum days, days it may not start on, attachments, probation, notice period, gender, religion, negative balance, hourly limits — are not checked when leave is entered or approved. Each such field says so below. To enforce a leave policy, use a business rule on leave under <strong>Configure Business Rules</strong>; rules can read the leave type's code, whether it is paid, whether it is active and its minimum days in service.</p>",
   "aliasIndex": {
     "loc:Code": "AbsenceType.Code",
     "dom:AbsenceType_Code": "AbsenceType.Code",
@@ -107,6 +107,12 @@
     "dom:AbsenceType_AllowPartialLeave": "AbsenceType.AllowPartialLeave",
     "loc:SendNotification": "AbsenceType.SendNotification",
     "dom:AbsenceType_SendNotification": "AbsenceType.SendNotification",
+    "loc:RequirePolicyAcceptance": "AbsenceType.RequirePolicyAcceptance",
+    "dom:AbsenceType_RequirePolicyAcceptance": "AbsenceType.RequirePolicyAcceptance",
+    "loc:LeaveDurationType": "AbsenceType.LeaveDurationType",
+    "dom:AbsenceType_LeaveDurationType": "AbsenceType.LeaveDurationType",
+    "loc:MaxFutureDays": "AbsenceType.MaxFutureDays",
+    "dom:AbsenceType_MaxFutureDays": "AbsenceType.MaxFutureDays",
     "loc:Sunday": "AbsenceType.DontAllowToStartOnSunday",
     "dom:AbsenceType_DontAllowToStartOnSunday": "AbsenceType.DontAllowToStartOnSunday",
     "loc:Monday": "AbsenceType.DontAllowToStartOnMonday",
@@ -651,7 +657,7 @@
       ],
       "rules": "Required. One of: None, Annual Leave, Sick Leave.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether this leave type shares the annual leave or sick leave balance rules.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> <em>Annual Leave</em> balances it like annual leave: accrued day by day through the year, capped by the sub group's maximum. <em>Sick Leave</em> balances it like sick leave: a yearly entitlement per cycle, less what has been taken. <em>None</em> gives it neither.</p>",
+      "html": "<p><strong>What it is.</strong> Whether this leave type shares the annual leave or sick leave balance rules.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> <em>Annual Leave</em> balances it like annual leave: accrued day by day through the year, capped by the grade's maximum. <em>Sick Leave</em> balances it like sick leave: a yearly entitlement per cycle, less what has been taken. <em>None</em> gives it neither.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -693,7 +699,7 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The yearly entitlement, for employees whose sub group sets none.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> When the employee's sub group has a leave rule for this type, the sub group's total days are used instead. The leave quota balance report shows the figure in use.</p>",
+      "html": "<p><strong>What it is.</strong> The yearly entitlement, for employees whose grade sets none.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> When the employee's grade has a leave rule for this type, the grade's total days are used instead. The leave quota balance report shows the figure in use.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -834,6 +840,48 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether a notification is sent for this leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.RequirePolicyAcceptance",
+      "label": "RequirePolicyAcceptance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:RequirePolicyAcceptance",
+        "dom:AbsenceType_RequirePolicyAcceptance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether employees must accept the leave policy before sending a request for this leave type.</p><p><strong>Why it matters.</strong> Ticked, self-service shows the latest policy document attached to the leave type with an acceptance box, and the request cannot be sent until it is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.LeaveDurationType",
+      "label": "LeaveDurationType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveDurationType",
+        "dom:AbsenceType_LeaveDurationType"
+      ],
+      "rules": "Required. One of: All, FullDay, Partial.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this leave can be taken in full days, in hours, or both.</p><p><strong>Example.</strong> Full day only</p><p><strong>Why it matters.</strong> With Full day only, a request with hours or a half day is refused. With Partial (hourly) only, a request without hours or a half day is refused. Full day or partial leaves it to <strong>Allow Partial Leave</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.MaxFutureDays",
+      "label": "MaxFutureDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxFutureDays",
+        "dom:AbsenceType_MaxFutureDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days ahead a new leave of this type may start.</p><p><strong>Example.</strong> 90</p><p><strong>Why it matters.</strong> A new request starting later than today plus this many days is refused, and the self-service date picker stops there. 0 means no limit. Amendments are not checked.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -15,19 +15,6 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsQuotaForfeits.Create]
 
 لا يؤدي حفظه إلى تحديث سجل حصة إجازات الموظف، فلا يتغير الرصيد في الخدمة الذاتية. وتحتفظ احتسابات إسقاط الإجازات بسجلات الإسقاط الخاصة بها.
 
-## AbsenceTypeId {#EmployeeAbsQuotaForfeit.AbsenceTypeId}
-<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsQuotaForfeit_AbsenceTypeId -->
-
-**ما هو.** نوع الإجازة الذي تُسقط منه الأيام.
-
-**مثال.** إجازة سنوية
-
-**القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
-
-:::admin
-تُدار من إدارة الرواتب ← أنواع الغياب.
-:::
-
 ## EffectiveDate {#EmployeeAbsQuotaForfeit.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeAbsQuotaForfeit_EffectiveDate -->
 
@@ -36,6 +23,19 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsQuotaForfeits.Create]
 **مثال.** 31 مارس 2026
 
 **القواعد.** إلزامي. تاريخ.
+
+## AbsenceTypeId {#EmployeeAbsQuotaForfeit.AbsenceTypeId}
+<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsQuotaForfeit_AbsenceTypeId -->
+
+**ما هو.** نوع الإجازة الذي تُسقط منه الأيام.
+
+**مثال.** إجازة سنوية
+
+**القواعد.** إلزامي. يُختار من قائمة أنواع الإجازات.
+
+:::admin
+تُدار من إدارة الرواتب ← أنواع الإجازات.
+:::
 
 ## QuotaForfeited {#EmployeeAbsQuotaForfeit.QuotaForfeited}
 <!-- alias: loc:QuotaForfeited, dom:EmployeeAbsQuotaForfeit_QuotaForfeited -->

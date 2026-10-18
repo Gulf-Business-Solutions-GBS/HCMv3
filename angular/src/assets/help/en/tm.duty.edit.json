@@ -191,7 +191,7 @@
       ],
       "rules": "Optional. Chosen from Overtime Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The overtime type for overtime worked on this duty.</p><p><strong>Example.</strong> Normal Overtime</p><p><strong>Why it matters.</strong> Overtime found on a day of this duty is recorded under this type. For a sub group that pays overtime, a day with overtime and no overtime type makes the time engine raise an error.</p>",
+      "html": "<p><strong>What it is.</strong> The overtime type for overtime worked on this duty.</p><p><strong>Example.</strong> Normal Overtime</p><p><strong>Why it matters.</strong> Overtime found on a day of this duty is recorded under this type. For a grade that pays overtime, a day with overtime and no overtime type makes the time engine raise an error.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -83,6 +83,46 @@ Maintained under Organization Management → Job Titles.
 
 **Rules.** Optional. Chosen from Organization Unit master data.
 
-:::admin
-This form does not set the employee group, employee sub group, payroll area or workflow group, and does not copy them from the previous assignment. A new assignment saved here therefore has none of them. The time engine looks for the employee sub group on the assignments covering the period it runs, and approval routing reads the workflow group on today's assignment; for dates covered only by an assignment saved here, neither finds one.
-:::
+## EmployeeGroup {#EmployeeOrgAssignment.EmployeeGroupId}
+<!-- alias: loc:EmployeeGroup, dom:EmployeeOrgAssignment_EmployeeGroupId -->
+
+**What it is.** The employee's salary profile for the dates of this assignment.
+
+**Example.** Staff
+
+**Why it matters.** Indemnity and end-of-service rules that depend on the salary profile are taken from it. Left blank, the value on the previous assignment is kept. If only a grade is chosen, the salary profile is filled in from it.
+
+**Rules.** Optional. Chosen from a list.
+
+## EmployeeSubGroup {#EmployeeOrgAssignment.EmployeeSubGroupId}
+<!-- alias: loc:EmployeeSubGroup, dom:EmployeeOrgAssignment_EmployeeSubGroupId -->
+
+**What it is.** The employee's grade for the dates of this assignment.
+
+**Example.** Grade 5
+
+**Why it matters.** Most entitlements hang from the grade: leave quotas, air tickets, indemnity, fund deductions, service bonus and health reimbursement. The time engine and payroll read the grade on the assignment covering each date. The grade must belong to the chosen salary profile; left blank, the previous assignment's grade is kept.
+
+**Rules.** Optional. Chosen from a list.
+
+## PayrollArea {#EmployeeOrgAssignment.PayrollAreaId}
+<!-- alias: loc:PayrollArea, dom:EmployeeOrgAssignment_PayrollAreaId -->
+
+**What it is.** The payroll area the employee is paid in for the dates of this assignment.
+
+**Example.** Kuwait Monthly
+
+**Why it matters.** Decides which payroll run picks the employee up, and which payroll calendar and lock apply. Left blank, the previous assignment's area is kept, or failing that the area set for the organisation unit.
+
+**Rules.** Optional. Chosen from Payroll Area master data.
+
+## WorkflowGroup {#EmployeeOrgAssignment.WorkflowGroupId}
+<!-- alias: loc:WorkflowGroup, dom:EmployeeOrgAssignment_WorkflowGroupId -->
+
+**What it is.** The workflow group whose approval chains the employee's requests follow.
+
+**Example.** Head Office
+
+**Why it matters.** When the employee submits a request, the chain is chosen from the workflow group on today's assignment. Left blank, the workflow group marked as default is used.
+
+**Rules.** Optional. Chosen from Workflow Group master data.

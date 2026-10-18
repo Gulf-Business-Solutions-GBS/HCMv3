@@ -103,6 +103,17 @@ Payroll pays the employee and company contributions in the payroll month in whic
 
 **Rules.** Optional. Number.
 
+## BalanceCompanyContribution {#EmployeeInsurance.BalanceCompanyContribution}
+<!-- alias: loc:BalanceCompanyContribution, dom:EmployeeInsurance_BalanceCompanyContribution -->
+
+**What it is.** How much of the company contribution is still to be recovered. Calculated, not typed in.
+
+**Example.** 360.000 of a 600.000 contribution, after four instalments of 60.000
+
+**Why it matters.** It starts at the full contribution and goes down as instalments are recorded or deducted in payroll. Payroll deducts the insurance only while a balance remains, and the last deduction never goes above it.
+
+**Rules.** Optional. Number.
+
 ## EmployeeInterval {#EmployeeInsurance.EmployeeInterval}
 <!-- alias: loc:EmployeeInterval, dom:EmployeeInsurance_EmployeeInterval -->
 
@@ -133,5 +144,16 @@ Payroll pays the employee and company contributions in the payroll month in whic
 **Example.** 16.667
 
 **Why it matters.** Payroll never recovers more than the balance left, or more than the employee's net pay allows.
+
+**Rules.** Optional. Number.
+
+## BalanceEmployeeContribution {#EmployeeInsurance.BalanceEmployeeContribution}
+<!-- alias: loc:BalanceEmployeeContribution, dom:EmployeeInsurance_BalanceEmployeeContribution -->
+
+**What it is.** How much of the employee contribution is still to be recovered. Calculated, not typed in.
+
+**Example.** 120.000
+
+**Why it matters.** Works the same way as Balance Company Contribution, for the employee's share.
 
 **Rules.** Optional. Number.

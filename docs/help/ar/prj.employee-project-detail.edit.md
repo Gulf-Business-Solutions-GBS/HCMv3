@@ -13,6 +13,8 @@ permissions: [Pages.ProjectManagement.EmployeeProjectDetails.Create]
 
 مشروع واحد ضمن تعيين مشاريع الموظف. ويجب أن تقع تواريخه ضمن تواريخ التعيين.
 
+في السجل المحفوظ، يعرض زر **احتساب أيام العمل** عددين لتواريخ المشروع. **أيام العمل** مجموع أيام العمل المعتمدة والعطل الرسمية وأيام الراحة في سجل وقت الموظف. و**أيام التقويم** جميع الأيام من تاريخ البداية إلى تاريخ النهاية شاملةً الطرفين. ولا يُحفظ أيٌّ منهما.
+
 ## EmployeeProject {#EmployeeProjectDetail.EmployeeProjectId}
 <!-- alias: loc:EmployeeProject, dom:EmployeeProjectDetail_EmployeeProjectId -->
 

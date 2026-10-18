@@ -99,7 +99,7 @@
         "loc:RequestStatus",
         "dom:WorkflowRequest_RequestStatus"
       ],
-      "rules": "Required. One of: Open, Approved, Rejected, Closed, Draft, Transferred.",
+      "rules": "Required. One of: Open, Approved, Rejected, Closed, Draft, Transferred, Cancelled.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Where the request stands.</p><p><strong>Why it matters.</strong> Open while waiting for approval, Approved after the last step, Rejected, or Draft when sent back to its creator.</p>",
       "adminHtml": "",

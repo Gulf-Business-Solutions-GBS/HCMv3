@@ -17,19 +17,6 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsAdjustments.Create]
 
 لا يؤدي حفظ التعديل إلى تحديث سجل حصة إجازات الموظف، فلا يتغير الرصيد في الخدمة الذاتية.
 
-## AbsenceTypeId {#EmployeeAbsAdjustment.AbsenceTypeId}
-<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsAdjustment_AbsenceTypeId -->
-
-**ما هو.** نوع الإجازة المعدَّل.
-
-**مثال.** إجازة سنوية
-
-**القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
-
-:::admin
-تُدار من إدارة الرواتب ← أنواع الغياب.
-:::
-
 ## EffectiveDate {#EmployeeAbsAdjustment.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeAbsAdjustment_EffectiveDate -->
 
@@ -40,6 +27,19 @@ permissions: [Pages.PersonnelAdministration.EmployeeAbsAdjustments.Create]
 **لماذا يهم.** تصرف الرواتب النقد الذي يقع تاريخ سريانه في فترة الدفع، ويحتسب رصيد الحصة حتى التاريخ التعديلاتِ حتى التاريخ المطلوب.
 
 **القواعد.** إلزامي. تاريخ.
+
+## AbsenceTypeId {#EmployeeAbsAdjustment.AbsenceTypeId}
+<!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsAdjustment_AbsenceTypeId -->
+
+**ما هو.** نوع الإجازة المعدَّل.
+
+**مثال.** إجازة سنوية
+
+**القواعد.** إلزامي. يُختار من قائمة أنواع الإجازات.
+
+:::admin
+تُدار من إدارة الرواتب ← أنواع الإجازات.
+:::
 
 ## AdjustmentType {#EmployeeAbsAdjustment.AdjustmentType}
 <!-- alias: loc:AdjustmentType, dom:EmployeeAbsAdjustment_AdjustmentType -->

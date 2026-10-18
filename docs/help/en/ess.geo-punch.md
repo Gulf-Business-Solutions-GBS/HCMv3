@@ -28,11 +28,11 @@ Allow your browser to use your location when it asks, and your camera too when a
 ## Overtime In and Overtime Out {#ess.geo-punch.overtime}
 <!-- alias: loc:GeoPunchOvertimeIn -->
 
-**What it is.** Two extra buttons for work outside your duty hours, shown only when your employee sub group is paid overtime.
+**What it is.** Two extra buttons for work outside your duty hours, shown only when your grade is paid overtime.
 
 **Example.** Your duty ends at 16:00 and you are asked to stay on. You clock out at 16:00, press **Overtime In**, and press **Overtime Out** when you leave at 18:30.
 
-**Why it matters.** Overtime is counted from these punches and not from the ordinary ones, so time worked after **Clock Out** without an **Overtime In** is not paid as overtime. If you do not see the buttons, your sub group is not set up for overtime — ask HR rather than clocking out late instead.
+**Why it matters.** Overtime is counted from these punches and not from the ordinary ones, so time worked after **Clock Out** without an **Overtime In** is not paid as overtime. If you do not see the buttons, your grade is not set up for overtime — ask HR rather than clocking out late instead.
 
 ## Selfie {#ess.geo-punch.selfie}
 <!-- alias: loc:GeoPunchSelfie -->

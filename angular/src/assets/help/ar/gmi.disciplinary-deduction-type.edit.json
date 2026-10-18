@@ -1,7 +1,7 @@
 {
   "helpId": "gmi.disciplinary-deduction-type.edit",
   "lang": "ar",
-  "title": "أنواع الخصم بسبب إجراء تأديبي — إنشاء / تحرير",
+  "title": "أنواع خصم المخالفات — إنشاء / تحرير",
   "entity": "HCMv3.GeneralMasterInfo.DisciplinaryDeductionType",
   "overviewHtml": "<p>الخصومات التي يمكن أن يترتب عليها إجراء تأديبي — عدد من أيام الأجر أو ساعاته، أو مبلغ ثابت، أو نسبة مئوية. وتحدد أنواع المخالفات أي خصم ينطبق على أي مخالفة.</p>",
   "aliasIndex": {

@@ -27,7 +27,7 @@ One line of a payslip: a wagetype with its rate, number and amount. Lines of a l
 
 **Example.** Basic Salary
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 ## Rate {#SalaryRegisterDetail.Rate}
 <!-- alias: loc:Rate, dom:SalaryRegisterDetail_Rate -->

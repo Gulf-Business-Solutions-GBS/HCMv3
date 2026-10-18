@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Funds — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeFund",
-  "overviewHtml": "<p>The employee's fund account — for example a savings or provident fund — over a period.</p><p>Payroll deducts the fund contribution according to the fund bands on the employee's sub group, and creates this record itself if the employee has none. The account's totals are kept up to date from its fund details.</p>",
+  "overviewHtml": "<p>The employee's fund account — for example a savings or provident fund — over a period.</p><p>Payroll deducts the fund contribution according to the fund bands on the employee's grade, and creates this record itself if the employee has none. The account's totals are kept up to date from its fund details.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeFund.StartDate",
     "dom:EmployeeFund_StartDate": "EmployeeFund.StartDate",

@@ -1,7 +1,7 @@
 ---
 helpId: gmi.disciplinary-deduction-type.edit
 lang: en
-title: Disciplinary Deduction Types — Create / Edit
+title: Violation Deduction Types — Create / Edit
 entity: HCMv3.GeneralMasterInfo.DisciplinaryDeductionType
 surfaces:
   - angular/src/app/admin/general-master-info/disciplinary-deduction-types/create-or-edit-disciplinary-deduction-type-modal.component.html

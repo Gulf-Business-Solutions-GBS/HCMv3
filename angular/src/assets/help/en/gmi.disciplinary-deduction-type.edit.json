@@ -1,7 +1,7 @@
 {
   "helpId": "gmi.disciplinary-deduction-type.edit",
   "lang": "en",
-  "title": "Disciplinary Deduction Types — Create / Edit",
+  "title": "Violation Deduction Types — Create / Edit",
   "entity": "HCMv3.GeneralMasterInfo.DisciplinaryDeductionType",
   "overviewHtml": "<p>The deductions a disciplinary action can carry — a number of days' or hours' pay, a fixed amount, or a percentage. Disciplinary types list which deduction applies to which offence.</p>",
   "aliasIndex": {

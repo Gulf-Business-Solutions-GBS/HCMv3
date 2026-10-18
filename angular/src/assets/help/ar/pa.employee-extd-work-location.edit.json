@@ -5,28 +5,14 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeExtdWorkLocation",
   "overviewHtml": "<p>مكان عمل إضافي يمكن للموظف العمل فيه خلال فترة، إلى جانب مكان العمل في تعيينه التنظيمي. ولا يجوز تسجيل المكان نفسه لفترات متداخلة.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو خطوة اعتماد حالياً.</p>",
   "aliasIndex": {
-    "loc:WorkLocationId": "EmployeeExtdWorkLocation.WorkLocationId",
-    "dom:EmployeeExtdWorkLocation_WorkLocationId": "EmployeeExtdWorkLocation.WorkLocationId",
     "loc:StartDate": "EmployeeExtdWorkLocation.StartDate",
     "dom:EmployeeExtdWorkLocation_StartDate": "EmployeeExtdWorkLocation.StartDate",
     "loc:EndDate": "EmployeeExtdWorkLocation.EndDate",
-    "dom:EmployeeExtdWorkLocation_EndDate": "EmployeeExtdWorkLocation.EndDate"
+    "dom:EmployeeExtdWorkLocation_EndDate": "EmployeeExtdWorkLocation.EndDate",
+    "loc:WorkLocationId": "EmployeeExtdWorkLocation.WorkLocationId",
+    "dom:EmployeeExtdWorkLocation_WorkLocationId": "EmployeeExtdWorkLocation.WorkLocationId"
   },
   "fields": [
-    {
-      "id": "EmployeeExtdWorkLocation.WorkLocationId",
-      "label": "WorkLocationId",
-      "section": "EmployeeExtdWorkLocations",
-      "aliases": [
-        "loc:WorkLocationId",
-        "dom:EmployeeExtdWorkLocation_WorkLocationId"
-      ],
-      "rules": "إلزامي. يُختار من قائمة أماكن العمل.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> مكان العمل الإضافي.</p><p><strong>مثال.</strong> المستودع — الشويخ</p>",
-      "adminHtml": "<p>يُدار من إدارة الهيكل التنظيمي ← أماكن العمل.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeExtdWorkLocation.StartDate",
       "label": "StartDate",
@@ -53,6 +39,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeExtdWorkLocation.WorkLocationId",
+      "label": "WorkLocationId",
+      "section": "EmployeeExtdWorkLocations",
+      "aliases": [
+        "loc:WorkLocationId",
+        "dom:EmployeeExtdWorkLocation_WorkLocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان العمل الإضافي.</p><p><strong>مثال.</strong> المستودع — الشويخ</p>",
+      "adminHtml": "<p>يُدار من إدارة الهيكل التنظيمي ← أماكن العمل.</p>",
       "stub": false
     }
   ]

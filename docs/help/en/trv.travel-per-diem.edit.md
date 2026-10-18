@@ -11,7 +11,7 @@ permissions: [Pages.TravelManagement.TravelPerDiems.Create]
 
 ## Overview
 
-The daily allowance for a route and an employee group and sub group. Only one rate can exist for each combination. It is used only to show an expected per diem on a trip leg.
+The daily allowance for a route and a salary profile and grade. Only one rate can exist for each combination. It is used only to show an expected per diem on a trip leg.
 
 ## FromDestination {#TravelPerDiem.FromDestinationId}
 <!-- alias: loc:FromDestination, dom:TravelPerDiem_FromDestinationId -->
@@ -34,14 +34,14 @@ The daily allowance for a route and an employee group and sub group. Only one ra
 ## EmployeeGroup {#TravelPerDiem.EmployeeGroupId}
 <!-- alias: loc:EmployeeGroup, dom:TravelPerDiem_EmployeeGroupId -->
 
-**What it is.** The employee group.
+**What it is.** The salary profile.
 
 **Rules.** Required. Chosen from a list.
 
 ## EmployeeSubGroup {#TravelPerDiem.EmployeeSubGroupId}
 <!-- alias: loc:EmployeeSubGroup, dom:TravelPerDiem_EmployeeSubGroupId -->
 
-**What it is.** The employee sub group.
+**What it is.** The grade.
 
 **Rules.** Required. Chosen from a list.
 

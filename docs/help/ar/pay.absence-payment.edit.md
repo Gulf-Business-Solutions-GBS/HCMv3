@@ -11,16 +11,16 @@ permissions: [Pages.PayrollManagement.AbsencePayments.Create]
 
 ## Overview
 
-نوع الأجر الذي يُصرف به نوع من أنواع الغياب. لا تُقرأ حالياً: تُصرف الإجازة تحت نوع الأجر المحدد في نوع الغياب نفسه، ولا شيء يقرأ هذه القائمة.
+نوع الأجر الذي يُصرف به نوع من أنواع الإجازات. لا تُقرأ حالياً: تُصرف الإجازة تحت نوع الأجر المحدد في نوع الإجازة نفسه، ولا شيء يقرأ هذه القائمة.
 
 ## AbsenceTypes {#AbsencePayment.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypes, dom:AbsencePayment_AbsenceTypeId -->
 
-**ما هو.** نوع الغياب.
+**ما هو.** نوع الإجازة.
 
 **مثال.** الإجازة السنوية
 
-**القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
+**القواعد.** إلزامي. يُختار من قائمة أنواع الإجازات.
 
 ## WageTypes {#AbsencePayment.WageTypeId}
 <!-- alias: loc:WageTypes, dom:AbsencePayment_WageTypeId -->

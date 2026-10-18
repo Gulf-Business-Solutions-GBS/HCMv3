@@ -31,7 +31,7 @@ A basic pay record can hold each wagetype only once.
 
 **Why it matters.** Each wagetype can appear once per basic pay record.
 
-**Rules.** Required. Chosen from Wagetype master data.
+**Rules.** Required. Chosen from Wage Type master data.
 
 :::admin
 Maintained under Payroll Management → Wagetypes.
@@ -86,7 +86,7 @@ Maintained under Payroll Management → Wagetypes.
 
 **Example.** Basic Salary
 
-**Rules.** Optional. Chosen from Wagetype master data.
+**Rules.** Optional. Chosen from Wage Type master data.
 
 :::admin
 When this is set, payroll calculates the percentage of that wagetype's amount but stores the result in the payroll line's number, not its amount -- behaviour carried over from the legacy system. The line does not currently pay the calculated percentage.

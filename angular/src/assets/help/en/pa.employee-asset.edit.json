@@ -5,32 +5,18 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeAsset",
   "overviewHtml": "<p>A company asset issued to the employee for a period — a laptop, phone or car.</p><p>The same asset cannot be assigned for overlapping periods, whichever employee holds it. Employees can request assets through self-service.</p>",
   "aliasIndex": {
-    "loc:AssetId": "EmployeeAsset.AssetId",
-    "dom:EmployeeAsset_AssetId": "EmployeeAsset.AssetId",
     "loc:StartDate": "EmployeeAsset.StartDate",
     "dom:EmployeeAsset_StartDate": "EmployeeAsset.StartDate",
     "loc:EndDate": "EmployeeAsset.EndDate",
     "dom:EmployeeAsset_EndDate": "EmployeeAsset.EndDate",
+    "loc:AssetId": "EmployeeAsset.AssetId",
+    "dom:EmployeeAsset_AssetId": "EmployeeAsset.AssetId",
     "loc:AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
     "dom:EmployeeAsset_AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
     "loc:Comments": "EmployeeAsset.Comments",
     "dom:EmployeeAsset_Comments": "EmployeeAsset.Comments"
   },
   "fields": [
-    {
-      "id": "EmployeeAsset.AssetId",
-      "label": "AssetId",
-      "section": "EmployeeAssets",
-      "aliases": [
-        "loc:AssetId",
-        "dom:EmployeeAsset_AssetId"
-      ],
-      "rules": "Required. Chosen from Asset master data.",
-      "when": null,
-      "html": "<p><strong>What it is.</strong> The asset issued.</p><p><strong>Example.</strong> Laptop — Dell 5540 (SN 7GH21)</p><p><strong>Why it matters.</strong> Cannot be assigned to anyone else for an overlapping period.</p>",
-      "adminHtml": "<p>Maintained under General Master Info → Assets.</p>",
-      "stub": false
-    },
     {
       "id": "EmployeeAsset.StartDate",
       "label": "StartDate",
@@ -57,6 +43,20 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.AssetId",
+      "label": "AssetId",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:AssetId",
+        "dom:EmployeeAsset_AssetId"
+      ],
+      "rules": "Required. Chosen from Asset master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset issued.</p><p><strong>Example.</strong> Laptop — Dell 5540 (SN 7GH21)</p><p><strong>Why it matters.</strong> Cannot be assigned to anyone else for an overlapping period.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Assets.</p>",
       "stub": false
     },
     {

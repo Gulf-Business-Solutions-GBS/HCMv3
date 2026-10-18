@@ -52,7 +52,7 @@ permissions: [Pages.ManpowerPlanningManagement.Positions.Create]
 ## EmployeeGroup {#Position.EmployeeGroupId}
 <!-- alias: loc:EmployeeGroup, dom:Position_EmployeeGroupId -->
 
-**ما هو.** مجموعة الموظفين للوظيفة.
+**ما هو.** ملف الراتب للوظيفة.
 
 **لماذا يهم.** لا يُقرأ حالياً.
 
@@ -61,7 +61,7 @@ permissions: [Pages.ManpowerPlanningManagement.Positions.Create]
 ## EmployeeSubGroup {#Position.EmployeeSubGroupId}
 <!-- alias: loc:EmployeeSubGroup, dom:Position_EmployeeSubGroupId -->
 
-**ما هو.** المجموعة الفرعية للموظفين للوظيفة.
+**ما هو.** الدرجة للوظيفة.
 
 **لماذا يهم.** لا يُقرأ حالياً.
 

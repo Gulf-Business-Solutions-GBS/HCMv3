@@ -5,6 +5,10 @@
   "entity": "HCMv3.PersonnelAdministration.EmployeeEducation",
   "overviewHtml": "<p>مؤهل حصل عليه الموظف من تعليمه.</p><p>يُطابَق المؤهل والتخصص مع جدول بدل التعليم في التأمينات الاجتماعية في الرواتب. أما بقية التفاصيل فتُسجَّل للرجوع إليها.</p>",
   "aliasIndex": {
+    "loc:StartDate": "EmployeeEducation.StartDate",
+    "dom:EmployeeEducation_StartDate": "EmployeeEducation.StartDate",
+    "loc:EndDate": "EmployeeEducation.EndDate",
+    "dom:EmployeeEducation_EndDate": "EmployeeEducation.EndDate",
     "loc:Education": "EmployeeEducation.EducationId",
     "dom:EmployeeEducation_EducationId": "EmployeeEducation.EducationId",
     "loc:EducationBranch": "EmployeeEducation.EducationBranchId",
@@ -22,13 +26,37 @@
     "loc:Grade": "EmployeeEducation.Grade",
     "dom:EmployeeEducation_Grade": "EmployeeEducation.Grade",
     "loc:YearOfPassing": "EmployeeEducation.YearOfPassing",
-    "dom:EmployeeEducation_YearOfPassing": "EmployeeEducation.YearOfPassing",
-    "loc:StartDate": "EmployeeEducation.StartDate",
-    "dom:EmployeeEducation_StartDate": "EmployeeEducation.StartDate",
-    "loc:EndDate": "EmployeeEducation.EndDate",
-    "dom:EmployeeEducation_EndDate": "EmployeeEducation.EndDate"
+    "dom:EmployeeEducation_YearOfPassing": "EmployeeEducation.YearOfPassing"
   },
   "fields": [
+    {
+      "id": "EmployeeEducation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeEducation_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeEducation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeEducations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeEducation_EndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeEducation.EducationId",
       "label": "Education",
@@ -152,34 +180,6 @@
       "rules": "اختياري. الحد الأقصى 16 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> سنة الحصول على المؤهل.</p><p><strong>مثال.</strong> 2012</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeEducation.StartDate",
-      "label": "StartDate",
-      "section": "EmployeeEducations",
-      "aliases": [
-        "loc:StartDate",
-        "dom:EmployeeEducation_StartDate"
-      ],
-      "rules": "إلزامي. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
-      "adminHtml": "",
-      "stub": false
-    },
-    {
-      "id": "EmployeeEducation.EndDate",
-      "label": "EndDate",
-      "section": "EmployeeEducations",
-      "aliases": [
-        "loc:EndDate",
-        "dom:EmployeeEducation_EndDate"
-      ],
-      "rules": "اختياري. تاريخ.",
-      "when": null,
-      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
       "stub": false
     }

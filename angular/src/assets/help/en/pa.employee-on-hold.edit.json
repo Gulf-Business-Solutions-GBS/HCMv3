@@ -69,7 +69,7 @@
         "loc:BankTransfer",
         "dom:EmployeeOnHold_BankTransfer"
       ],
-      "rules": "Required. One of: NA, Hold, Unhold.",
+      "rules": "Required. One of: N/A, Hold, Unhold.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether the employee's salary transfer is held.</p><p><strong>Example.</strong> Hold</p>",
       "adminHtml": "<p>Of the bank file formats, only ABK leaves out employees whose transfer is held. The other formats do not check it at present.</p>",

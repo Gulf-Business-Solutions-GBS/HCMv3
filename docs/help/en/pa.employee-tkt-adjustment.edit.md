@@ -15,15 +15,6 @@ A manual adjustment to the employee's air ticket entitlement.
 
 It is recorded for reference: saving it does not update the employee's ticket quota, and neither payroll nor the time engine reads it at present.
 
-## TicketTypeId {#EmployeeTktAdjustment.TicketTypeId}
-<!-- alias: loc:TicketTypeId, dom:EmployeeTktAdjustment_TicketTypeId -->
-
-**What it is.** The ticket type being adjusted.
-
-**Example.** Employee
-
-**Rules.** Required. Chosen from Ticket Type master data.
-
 ## EffectiveDate {#EmployeeTktAdjustment.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeTktAdjustment_EffectiveDate -->
 
@@ -32,6 +23,15 @@ It is recorded for reference: saving it does not update the employee's ticket qu
 **Example.** 30 Jun 2026
 
 **Rules.** Required. Date value.
+
+## TicketTypeId {#EmployeeTktAdjustment.TicketTypeId}
+<!-- alias: loc:TicketTypeId, dom:EmployeeTktAdjustment_TicketTypeId -->
+
+**What it is.** The ticket type being adjusted.
+
+**Example.** Employee
+
+**Rules.** Required. Chosen from Ticket Type master data.
 
 ## AdjustmentType {#EmployeeTktAdjustment.AdjustmentType}
 <!-- alias: loc:AdjustmentType, dom:EmployeeTktAdjustment_AdjustmentType -->

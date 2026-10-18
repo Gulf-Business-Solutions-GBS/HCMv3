@@ -1,7 +1,7 @@
 ---
 helpId: pa.employee-gratuity-quota.edit
 lang: en
-title: Employee Gratuity Quotas — Create / Edit
+title: Employee Indemnity Quotas — Create / Edit
 entity: HCMv3.PersonnelAdministration.EmployeeGratuityQuota
 surfaces:
   - angular/src/app/admin/personnel-administration/employee-detail/gratuity-quotas/create-or-edit-employee-gratuity-quota-modal.component.html
@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeGratuityQuotas.Create]
 
 The employee's indemnity entitlement over an entitlement period.
 
-The time engine creates a quota itself for any day no quota covers when the employee's sub group has an indemnity rule. The indemnity calculation overwrites Quota Accrued and Quota Used from its own results each time it runs.
+The time engine creates a quota itself for any day no quota covers when the employee's grade has an indemnity rule. The indemnity calculation overwrites Quota Accrued and Quota Used from its own results each time it runs.
 
 ## EntitlementFrom {#EmployeeGratuityQuota.EntitlementFrom}
 <!-- alias: loc:EntitlementFrom, dom:EmployeeGratuityQuota_EntitlementFrom -->
