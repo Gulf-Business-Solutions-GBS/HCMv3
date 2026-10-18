@@ -12,7 +12,9 @@
     "loc:NameAr": "PersonalActionReason.NameAr",
     "dom:PersonalActionReason_NameAr": "PersonalActionReason.NameAr",
     "loc:PersonalAction": "PersonalActionReason.PersonalActionId",
-    "dom:PersonalActionReason_PersonalActionId": "PersonalActionReason.PersonalActionId"
+    "dom:PersonalActionReason_PersonalActionId": "PersonalActionReason.PersonalActionId",
+    "loc:NotificationConfig": "PersonalActionReason.NotificationConfigId",
+    "dom:PersonalActionReason_NotificationConfigId": "PersonalActionReason.NotificationConfigId"
   },
   "fields": [
     {
@@ -68,6 +70,20 @@
       "rules": "Optional. Chosen from Personal Action master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The personal action this reason belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:PersonalActionReason_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The email sent when an employee action with this reason is approved.</p><p><strong>Example.</strong> Promotion Letter</p><p><strong>Why it matters.</strong> On approval, the configuration's email template is sent about the employee, to whoever the configuration addresses. Only email is sent. Nothing is sent when it is blank or the configuration has no email template, or when an amendment of an action is approved. A failed send never undoes the approval.</p>",
       "adminHtml": "",
       "stub": false
     }

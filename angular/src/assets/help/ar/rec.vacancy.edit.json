@@ -33,6 +33,12 @@
     "dom:Vacancy_MonthlySalaryRange": "Vacancy.MonthlySalaryRange",
     "loc:Qualification": "Vacancy.QualificationId",
     "dom:Vacancy_QualificationId": "Vacancy.QualificationId",
+    "loc:Position": "Vacancy.PositionId",
+    "dom:Vacancy_PositionId": "Vacancy.PositionId",
+    "loc:Recruiter": "Vacancy.RecruiterId",
+    "dom:Vacancy_RecruiterId": "Vacancy.RecruiterId",
+    "loc:Location": "Vacancy.WorkLocationId",
+    "dom:Vacancy_WorkLocationId": "Vacancy.WorkLocationId",
     "loc:IsBudgeted": "Vacancy.IsBudgeted",
     "dom:Vacancy_IsBudgeted": "Vacancy.IsBudgeted",
     "loc:TemplateOnbGroupId": "Vacancy.TemplateOnbGroupId",
@@ -236,6 +242,48 @@
       "rules": "اختياري. يُختار من قائمة المؤهلات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> المؤهل المطلوب.</p><p><strong>لماذا يهم.</strong> يُعرض في موقع الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.PositionId",
+      "label": "Position",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Position",
+        "dom:Vacancy_PositionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوظائف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوظيفة التي يُراد شغلها بهذا الشاغر.</p><p><strong>مثال.</strong> <code>P-0142</code> - محاسب أول، المالية</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.RecruiterId",
+      "label": "Recruiter",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Recruiter",
+        "dom:Vacancy_RecruiterId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المسؤول عن شغل الشاغر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.WorkLocationId",
+      "label": "Location",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Location",
+        "dom:Vacancy_WorkLocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان العمل الذي تقع فيه الوظيفة.</p><p><strong>مثال.</strong> المكتب الرئيسي</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — يُحفظ للرجوع إليه.</p>",
       "adminHtml": "",
       "stub": false
     },

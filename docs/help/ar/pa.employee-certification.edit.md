@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeCertifications.Create]
 
 دورة أو شهادة مهنية أنهاها الموظف.
 
-تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً.
+تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً. ويمكن ربط الشهادات التدريبية من سجلات تدريب الموظف.
 
 ## Course {#EmployeeCertification.Course}
 <!-- alias: loc:Course, dom:EmployeeCertification_Course -->
@@ -59,3 +59,14 @@ permissions: [Pages.PersonnelAdministration.EmployeeCertifications.Create]
 **مثال.** ناجح
 
 **القواعد.** اختياري. الحد الأقصى 64 حرفاً.
+
+## CertificationType {#EmployeeCertification.CertificationType}
+<!-- alias: loc:CertificationType, dom:EmployeeCertification_CertificationType -->
+
+**ما هو.** ما إذا كانت هذه شهادة مهنية أم شهادة نالها الموظف من خلال التدريب.
+
+**مثال.** تدريبية
+
+**لماذا يهم.** لا يمكن ربط إلا الشهادات التدريبية من سجلات تدريب الموظف. والسجلات التي كانت موجودة قبل إضافة هذا الحقل مهنية.
+
+**القواعد.** إلزامي. إحدى القيم: مهنية، تدريبية.

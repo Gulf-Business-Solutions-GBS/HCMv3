@@ -59,6 +59,17 @@ permissions: [Pages.PersonnelAdministration.EmployeeDocuments.Create]
 
 **القواعد.** اختياري. تاريخ.
 
+## DocumentPlace {#EmployeeDocument.DocPlaceId}
+<!-- alias: loc:DocumentPlace, dom:EmployeeDocument_DocPlaceId -->
+
+**ما هو.** مكان حفظ أصل الوثيقة، من قائمة جهات المستندات.
+
+**مثال.** خزنة مكتب الموارد البشرية
+
+**لماذا يهم.** تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.
+
+**القواعد.** اختياري. يُختار من قائمة جهات إصدار المستندات.
+
 ## Description {#EmployeeDocument.Description}
 <!-- alias: loc:Description, dom:EmployeeDocument_Description -->
 

@@ -30,3 +30,14 @@ A key performance indicator that appraisals rate.
 **Why it matters.** Not read at present.
 
 **Rules.** Yes or no.
+
+## Competency {#KpiInfo.CompetencyId}
+<!-- alias: loc:Competency, dom:KpiInfo_CompetencyId -->
+
+**What it is.** The competency the KPI relates to, from the competencies list.
+
+**Example.** Customer Focus
+
+**Why it matters.** Recorded for reference; nothing else uses it.
+
+**Rules.** Optional. Chosen from Competency master data.

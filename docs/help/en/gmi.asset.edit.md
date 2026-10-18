@@ -11,7 +11,7 @@ permissions: [Pages.GeneralMasterInfo.Assets.Create]
 
 ## Overview
 
-Company assets that can be issued to employees -- vehicles and equipment. Assets issued to an employee are recorded on the employee's record, and employees can request assets through self-service, which offers only active assets.
+Company assets that can be issued to employees -- vehicles and equipment. Assets issued to an employee are recorded on the employee's record, and employees can request assets through self-service, which offers only active assets whose asset type has Include In Workflow ticked.
 
 The descriptive details below are printed on the employee asset report.
 
@@ -131,3 +131,25 @@ Asset types are maintained under General Master Info → Asset Types.
 **Why it matters.** Set by hand -- issuing the asset to an employee does not change it. It is shown on the asset report.
 
 **Rules.** Required. One of: Occupied, Unoccupied.
+
+## Earning {#Asset.EarningWageTypeId}
+<!-- alias: loc:Earning, dom:Asset_EarningWageTypeId -->
+
+**What it is.** The earning wage type meant for payments made for this asset, such as an allowance to the employee who holds it.
+
+**Example.** Car Allowance
+
+**Why it matters.** Recorded only; payroll does not read it at present.
+
+**Rules.** Optional. Chosen from Wage Type master data.
+
+## Deduction {#Asset.DeductionWageTypeId}
+<!-- alias: loc:Deduction, dom:Asset_DeductionWageTypeId -->
+
+**What it is.** The deduction wage type meant for recovering charges for this asset from the employee, such as damage or loss.
+
+**Example.** Asset Recovery Deduction
+
+**Why it matters.** Recorded only; payroll does not read it at present.
+
+**Rules.** Optional. Chosen from Wage Type master data.

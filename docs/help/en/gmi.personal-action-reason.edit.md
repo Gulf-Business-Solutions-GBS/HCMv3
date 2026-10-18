@@ -19,3 +19,14 @@ The reasons that can be given for a personal action -- why an employee was trans
 **What it is.** The personal action this reason belongs to.
 
 **Rules.** Optional. Chosen from Personal Action master data.
+
+## NotificationConfig {#PersonalActionReason.NotificationConfigId}
+<!-- alias: loc:NotificationConfig, dom:PersonalActionReason_NotificationConfigId -->
+
+**What it is.** The email sent when an employee action with this reason is approved.
+
+**Example.** Promotion Letter
+
+**Why it matters.** On approval, the configuration's email template is sent about the employee, to whoever the configuration addresses. Only email is sent. Nothing is sent when it is blank or the configuration has no email template, or when an amendment of an action is approved. A failed send never undoes the approval.
+
+**Rules.** Optional. Chosen from Notification Config master data.

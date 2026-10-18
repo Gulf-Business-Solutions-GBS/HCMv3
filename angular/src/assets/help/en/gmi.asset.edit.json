@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Assets — Create / Edit",
   "entity": "HCMv3.GeneralMasterInfo.Asset",
-  "overviewHtml": "<p>Company assets that can be issued to employees — vehicles and equipment. Assets issued to an employee are recorded on the employee's record, and employees can request assets through self-service, which offers only active assets.</p><p>The descriptive details below are printed on the employee asset report.</p>",
+  "overviewHtml": "<p>Company assets that can be issued to employees — vehicles and equipment. Assets issued to an employee are recorded on the employee's record, and employees can request assets through self-service, which offers only active assets whose asset type has Include In Workflow ticked.</p><p>The descriptive details below are printed on the employee asset report.</p>",
   "aliasIndex": {
     "loc:Code": "Asset.Code",
     "dom:Asset_Code": "Asset.Code",
@@ -36,7 +36,11 @@
     "loc:Status": "Asset.Status",
     "dom:Asset_Status": "Asset.Status",
     "loc:AssetAllocationStatus": "Asset.AssetAllocationStatus",
-    "dom:Asset_AssetAllocationStatus": "Asset.AssetAllocationStatus"
+    "dom:Asset_AssetAllocationStatus": "Asset.AssetAllocationStatus",
+    "loc:Earning": "Asset.EarningWageTypeId",
+    "dom:Asset_EarningWageTypeId": "Asset.EarningWageTypeId",
+    "loc:Deduction": "Asset.DeductionWageTypeId",
+    "dom:Asset_DeductionWageTypeId": "Asset.DeductionWageTypeId"
   },
   "fields": [
     {
@@ -260,6 +264,34 @@
       "rules": "Required. One of: Occupied, Unoccupied.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether the asset is currently issued to someone.</p><p><strong>Why it matters.</strong> Set by hand — issuing the asset to an employee does not change it. It is shown on the asset report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.EarningWageTypeId",
+      "label": "Earning",
+      "section": "Assets",
+      "aliases": [
+        "loc:Earning",
+        "dom:Asset_EarningWageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The earning wage type meant for payments made for this asset, such as an allowance to the employee who holds it.</p><p><strong>Example.</strong> Car Allowance</p><p><strong>Why it matters.</strong> Recorded only; payroll does not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.DeductionWageTypeId",
+      "label": "Deduction",
+      "section": "Assets",
+      "aliases": [
+        "loc:Deduction",
+        "dom:Asset_DeductionWageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The deduction wage type meant for recovering charges for this asset from the employee, such as damage or loss.</p><p><strong>Example.</strong> Asset Recovery Deduction</p><p><strong>Why it matters.</strong> Recorded only; payroll does not read it at present.</p>",
       "adminHtml": "",
       "stub": false
     }

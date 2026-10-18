@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "العهد — إنشاء / تحرير",
   "entity": "HCMv3.GeneralMasterInfo.Asset",
-  "overviewHtml": "<p>عُهد الشركة التي يمكن تسليمها للموظفين — من مركبات ومعدات. تُسجَّل العهد المسلَّمة للموظف في سجله، ويمكن للموظفين طلب العهد من خلال الخدمة الذاتية، التي لا تعرض إلا العهد المفعّلة.</p><p>وتُطبع البيانات الوصفية أدناه في تقرير عهد الموظفين.</p>",
+  "overviewHtml": "<p>عُهد الشركة التي يمكن تسليمها للموظفين — من مركبات ومعدات. تُسجَّل العهد المسلَّمة للموظف في سجله، ويمكن للموظفين طلب العهد من خلال الخدمة الذاتية، التي لا تعرض إلا العهد المفعّلة التي حُدِّد في نوعها خيار «تضمين في سير العمل».</p><p>وتُطبع البيانات الوصفية أدناه في تقرير عهد الموظفين.</p>",
   "aliasIndex": {
     "loc:Code": "Asset.Code",
     "dom:Asset_Code": "Asset.Code",
@@ -36,7 +36,11 @@
     "loc:Status": "Asset.Status",
     "dom:Asset_Status": "Asset.Status",
     "loc:AssetAllocationStatus": "Asset.AssetAllocationStatus",
-    "dom:Asset_AssetAllocationStatus": "Asset.AssetAllocationStatus"
+    "dom:Asset_AssetAllocationStatus": "Asset.AssetAllocationStatus",
+    "loc:Earning": "Asset.EarningWageTypeId",
+    "dom:Asset_EarningWageTypeId": "Asset.EarningWageTypeId",
+    "loc:Deduction": "Asset.DeductionWageTypeId",
+    "dom:Asset_DeductionWageTypeId": "Asset.DeductionWageTypeId"
   },
   "fields": [
     {
@@ -260,6 +264,34 @@
       "rules": "إلزامي. إحدى القيم: مشغول، غير مشغول.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> هل العهدة مسلَّمة لأحد حالياً.</p><p><strong>لماذا يهم.</strong> تُضبط يدوياً — فتسليم العهدة لموظف لا يغيّرها. وتظهر في تقرير العهد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.EarningWageTypeId",
+      "label": "Earning",
+      "section": "Assets",
+      "aliases": [
+        "loc:Earning",
+        "dom:Asset_EarningWageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر الاستحقاق المخصص لما يُصرف بخصوص هذه العهدة، مثل بدل يُصرف للموظف الذي يتسلّمها.</p><p><strong>مثال.</strong> بدل سيارة</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.DeductionWageTypeId",
+      "label": "Deduction",
+      "section": "Assets",
+      "aliases": [
+        "loc:Deduction",
+        "dom:Asset_DeductionWageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر الخصم المخصص لاسترداد ما يترتب على هذه العهدة من الموظف، مثل التلف أو الفقد.</p><p><strong>مثال.</strong> خصم استرداد عهدة</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب حالياً.</p>",
       "adminHtml": "",
       "stub": false
     }

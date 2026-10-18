@@ -15,6 +15,8 @@
     "dom:KpiInfo_KpiCategoryId": "KpiInfo.KpiCategoryId",
     "loc:Active": "KpiInfo.Active",
     "dom:KpiInfo_Active": "KpiInfo.Active",
+    "loc:Competency": "KpiInfo.CompetencyId",
+    "dom:KpiInfo_CompetencyId": "KpiInfo.CompetencyId",
     "loc:Comments": "KpiInfo.Comments",
     "dom:KpiInfo_Comments": "KpiInfo.Comments"
   },
@@ -86,6 +88,20 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether the KPI is in use.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.CompetencyId",
+      "label": "Competency",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:Competency",
+        "dom:KpiInfo_CompetencyId"
+      ],
+      "rules": "Optional. Chosen from Competency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The competency the KPI relates to, from the competencies list.</p><p><strong>Example.</strong> Customer Focus</p><p><strong>Why it matters.</strong> Recorded for reference; nothing else uses it.</p>",
       "adminHtml": "",
       "stub": false
     },

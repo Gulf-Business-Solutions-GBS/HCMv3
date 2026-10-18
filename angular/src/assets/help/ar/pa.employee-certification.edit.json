@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "شهادات الموظف — إنشاء / تحرير",
   "entity": "HCMv3.PersonnelAdministration.EmployeeCertification",
-  "overviewHtml": "<p>دورة أو شهادة مهنية أنهاها الموظف.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً.</p>",
+  "overviewHtml": "<p>دورة أو شهادة مهنية أنهاها الموظف.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً. ويمكن ربط الشهادات التدريبية من سجلات تدريب الموظف.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeCertification.StartDate",
     "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
@@ -18,7 +18,9 @@
     "loc:Certificate": "EmployeeCertification.Certificate",
     "dom:EmployeeCertification_Certificate": "EmployeeCertification.Certificate",
     "loc:Grade": "EmployeeCertification.Grade",
-    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade"
+    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade",
+    "loc:CertificationType": "EmployeeCertification.CertificationType",
+    "dom:EmployeeCertification_CertificationType": "EmployeeCertification.CertificationType"
   },
   "fields": [
     {
@@ -116,6 +118,20 @@
       "rules": "اختياري. الحد الأقصى 64 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> التقدير الحاصل عليه.</p><p><strong>مثال.</strong> ناجح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.CertificationType",
+      "label": "CertificationType",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:CertificationType",
+        "dom:EmployeeCertification_CertificationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: مهنية، تدريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه شهادة مهنية أم شهادة نالها الموظف من خلال التدريب.</p><p><strong>مثال.</strong> تدريبية</p><p><strong>لماذا يهم.</strong> لا يمكن ربط إلا الشهادات التدريبية من سجلات تدريب الموظف. والسجلات التي كانت موجودة قبل إضافة هذا الحقل مهنية.</p>",
       "adminHtml": "",
       "stub": false
     }

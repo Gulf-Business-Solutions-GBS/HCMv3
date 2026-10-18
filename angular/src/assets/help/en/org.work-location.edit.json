@@ -21,6 +21,8 @@
     "dom:WorkLocation_Address": "WorkLocation.Address",
     "loc:GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
     "dom:WorkLocation_GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
+    "loc:Sponsor": "WorkLocation.SponsorId",
+    "dom:WorkLocation_SponsorId": "WorkLocation.SponsorId",
     "loc:IsActive": "WorkLocation.IsActive",
     "dom:WorkLocation_IsActive": "WorkLocation.IsActive"
   },
@@ -134,6 +136,20 @@
       "rules": "Optional. Maximum 2000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> A boundary drawn around the location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.SponsorId",
+      "label": "Sponsor",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Sponsor",
+        "dom:WorkLocation_SponsorId"
+      ],
+      "rules": "Optional. Chosen from Sponsor master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The sponsor — the licence holder — this location belongs to.</p><p><strong>Example.</strong> Al-Mutawa Trading Co.</p><p><strong>Why it matters.</strong> Recorded for reference; nothing else uses it.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -11,7 +11,7 @@
     "dom:DocumentType_NameEn": "DocumentType.NameEn",
     "loc:NameAr": "DocumentType.NameAr",
     "dom:DocumentType_NameAr": "DocumentType.NameAr",
-    "loc:NotificationPeriod": "DocumentType.NotificationPeriod",
+    "loc:ReminderDays": "DocumentType.NotificationPeriod",
     "dom:DocumentType_NotificationPeriod": "DocumentType.NotificationPeriod",
     "loc:NotificationConfig": "DocumentType.NotificationConfigId",
     "dom:DocumentType_NotificationConfigId": "DocumentType.NotificationConfigId",
@@ -31,6 +31,8 @@
     "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
     "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
     "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "loc:ShowToAll": "DocumentType.ShowToAll",
+    "dom:DocumentType_ShowToAll": "DocumentType.ShowToAll",
     "loc:IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
     "dom:DocumentType_IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
     "loc:AllowDateOverlap": "DocumentType.AllowDateOverlap",
@@ -81,10 +83,10 @@
     },
     {
       "id": "DocumentType.NotificationPeriod",
-      "label": "NotificationPeriod",
+      "label": "ReminderDays",
       "section": "DocumentTypes",
       "aliases": [
-        "loc:NotificationPeriod",
+        "loc:ReminderDays",
         "dom:DocumentType_NotificationPeriod"
       ],
       "rules": "Required. Whole number.",
@@ -216,6 +218,20 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Keeps documents of this type out of the employee's own Documents screen.</p><p><strong>Example.</strong> Ticked for a document HR holds about the employee and not for them.</p><p><strong>Why it matters.</strong> The employee neither sees these documents nor can record one. HR's own screens are not affected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.ShowToAll",
+      "label": "ShowToAll",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:ShowToAll",
+        "dom:DocumentType_ShowToAll"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Makes organisation documents of this type company policies everyone may read.</p><p><strong>Example.</strong> Ticked for Employee Handbook and Code of Conduct; unticked for Commercial Licence.</p><p><strong>Why it matters.</strong> Organisation documents of a ticked type are listed, read-only, on the Org Policy screen for everyone who has access to it, and their attached files can be opened there. Untick it and they disappear from that screen; they stay on Organization Documents for HR.</p>",
       "adminHtml": "",
       "stub": false
     },

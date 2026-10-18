@@ -16,7 +16,11 @@
     "loc:DeliveryMethod": "TrainingCourse.DeliveryMethod",
     "dom:TrainingCourse_DeliveryMethod": "TrainingCourse.DeliveryMethod",
     "loc:Fees": "TrainingCourse.Fees",
-    "dom:TrainingCourse_Fees": "TrainingCourse.Fees"
+    "dom:TrainingCourse_Fees": "TrainingCourse.Fees",
+    "loc:Institution": "TrainingCourse.InstitutionId",
+    "dom:TrainingCourse_InstitutionId": "TrainingCourse.InstitutionId",
+    "loc:Source": "TrainingCourse.Source",
+    "dom:TrainingCourse_Source": "TrainingCourse.Source"
   },
   "fields": [
     {
@@ -100,6 +104,34 @@
       "rules": "اختياري. رقم.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> تكلفة الدورة.</p><p><strong>مثال.</strong> 250.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.InstitutionId",
+      "label": "Institution",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:Institution",
+        "dom:TrainingCourse_InstitutionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الجهات التعليمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجهة التعليمية التي تنظّم الدورة.</p><p><strong>مثال.</strong> معهد الكويت للأبحاث العلمية</p><p><strong>لماذا يهم.</strong> تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TrainingCourse.Source",
+      "label": "Source",
+      "section": "TrainingCourses",
+      "aliases": [
+        "loc:Source",
+        "dom:TrainingCourse_Source"
+      ],
+      "rules": "إلزامي. إحدى القيم: داخلي، خارجي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الدورة تُعقد داخل الشركة أم لدى جهة خارجية.</p><p><strong>مثال.</strong> خارجي</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يستخدمه شيء آخر. والدورات التي كانت موجودة قبل إضافة هذا الحقل داخلية.</p>",
       "adminHtml": "",
       "stub": false
     }

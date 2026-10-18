@@ -16,7 +16,7 @@ The kinds of document HCMv3 keeps -- for employees and for the organisation. Emp
 The reminder settings on this form are stored, but no process reads them at present, so they do not yet send reminders before a document expires.
 
 ## NotificationPeriod {#DocumentType.NotificationPeriod}
-<!-- alias: loc:NotificationPeriod, dom:DocumentType_NotificationPeriod -->
+<!-- alias: loc:ReminderDays, dom:DocumentType_NotificationPeriod -->
 
 **What it is.** How long before a document's expiry reminders were meant to start.
 
@@ -112,6 +112,17 @@ The reminder settings on this form are stored, but no process reads them at pres
 **Example.** Ticked for a document HR holds about the employee and not for them.
 
 **Why it matters.** The employee neither sees these documents nor can record one. HR's own screens are not affected.
+
+**Rules.** Yes or no.
+
+## ShowToAll {#DocumentType.ShowToAll}
+<!-- alias: loc:ShowToAll, dom:DocumentType_ShowToAll -->
+
+**What it is.** Makes organisation documents of this type company policies everyone may read.
+
+**Example.** Ticked for Employee Handbook and Code of Conduct; unticked for Commercial Licence.
+
+**Why it matters.** Organisation documents of a ticked type are listed, read-only, on the Org Policy screen for everyone who has access to it, and their attached files can be opened there. Untick it and they disappear from that screen; they stay on Organization Documents for HR.
 
 **Rules.** Yes or no.
 

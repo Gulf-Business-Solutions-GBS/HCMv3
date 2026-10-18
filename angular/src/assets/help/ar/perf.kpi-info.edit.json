@@ -15,6 +15,8 @@
     "dom:KpiInfo_KpiCategoryId": "KpiInfo.KpiCategoryId",
     "loc:Active": "KpiInfo.Active",
     "dom:KpiInfo_Active": "KpiInfo.Active",
+    "loc:Competency": "KpiInfo.CompetencyId",
+    "dom:KpiInfo_CompetencyId": "KpiInfo.CompetencyId",
     "loc:Comments": "KpiInfo.Comments",
     "dom:KpiInfo_Comments": "KpiInfo.Comments"
   },
@@ -86,6 +88,20 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما إذا كان المؤشر مستخدماً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiInfo.CompetencyId",
+      "label": "Competency",
+      "section": "KpiInfos",
+      "aliases": [
+        "loc:Competency",
+        "dom:KpiInfo_CompetencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفاءة التي يرتبط بها المؤشر، من قائمة الكفاءات.</p><p><strong>مثال.</strong> التركيز على العملاء</p><p><strong>لماذا يهم.</strong> تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.</p>",
       "adminHtml": "",
       "stub": false
     },

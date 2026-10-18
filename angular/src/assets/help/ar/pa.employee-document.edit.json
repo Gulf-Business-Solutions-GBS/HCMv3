@@ -13,6 +13,8 @@
     "dom:EmployeeDocument_IssueDate": "EmployeeDocument.IssueDate",
     "loc:ExpiryDate": "EmployeeDocument.ExpiryDate",
     "dom:EmployeeDocument_ExpiryDate": "EmployeeDocument.ExpiryDate",
+    "loc:DocumentPlace": "EmployeeDocument.DocPlaceId",
+    "dom:EmployeeDocument_DocPlaceId": "EmployeeDocument.DocPlaceId",
     "loc:Description": "EmployeeDocument.Description",
     "dom:EmployeeDocument_Description": "EmployeeDocument.Description",
     "loc:Comments": "EmployeeDocument.Comments",
@@ -72,6 +74,20 @@
       "rules": "اختياري. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> تاريخ انتهاء صلاحية الوثيقة.</p><p><strong>مثال.</strong> 2 مارس 2032</p><p><strong>لماذا يهم.</strong> تعرض الخدمة الذاتية للموظف وثائقه التي لم تنتهِ صلاحيتها بعد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.DocPlaceId",
+      "label": "DocumentPlace",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:DocumentPlace",
+        "dom:EmployeeDocument_DocPlaceId"
+      ],
+      "rules": "اختياري. يُختار من قائمة جهات إصدار المستندات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان حفظ أصل الوثيقة، من قائمة جهات المستندات.</p><p><strong>مثال.</strong> خزنة مكتب الموارد البشرية</p><p><strong>لماذا يهم.</strong> تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.</p>",
       "adminHtml": "",
       "stub": false
     },

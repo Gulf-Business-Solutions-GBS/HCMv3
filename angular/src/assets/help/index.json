@@ -282,6 +282,12 @@
     "Asset_AssetAllocationStatus": [
       "gmi.asset.edit"
     ],
+    "Asset_EarningWageTypeId": [
+      "gmi.asset.edit"
+    ],
+    "Asset_DeductionWageTypeId": [
+      "gmi.asset.edit"
+    ],
     "Bank_Code": [
       "gmi.bank.edit"
     ],
@@ -435,6 +441,9 @@
     "DisciplinaryType_RepeatDurationInDays": [
       "gmi.disciplinary-type.edit"
     ],
+    "DisciplinaryType_WageTypeId": [
+      "gmi.disciplinary-type.edit"
+    ],
     "DocumentPrintForm_DocumentTypeId": [
       "gmi.document-print-form.edit"
     ],
@@ -477,6 +486,9 @@
     "DocumentType_IsHiddenFromEmployee": [
       "gmi.document-type.edit"
     ],
+    "DocumentType_ShowToAll": [
+      "gmi.document-type.edit"
+    ],
     "DocumentType_IsExpiryDateRequired": [
       "gmi.document-type.edit"
     ],
@@ -493,6 +505,9 @@
       "gmi.institution.edit"
     ],
     "Institution_UniversityId": [
+      "gmi.institution.edit"
+    ],
+    "Institution_CountryId": [
       "gmi.institution.edit"
     ],
     "LoanTypeDetail_LoanTypeId": [
@@ -603,6 +618,9 @@
     "NumberSeries_Formatting": [
       "gmi.number-series.edit"
     ],
+    "NumberSeries_EmploymentType": [
+      "gmi.number-series.edit"
+    ],
     "OvertimeTypeDetail_OvertimeTypeId": [
       "gmi.overtime-type-detail.edit"
     ],
@@ -655,6 +673,9 @@
       "gmi.personal-action-reason.edit"
     ],
     "PersonalActionReason_PersonalActionId": [
+      "gmi.personal-action-reason.edit"
+    ],
+    "PersonalActionReason_NotificationConfigId": [
       "gmi.personal-action-reason.edit"
     ],
     "PersonalAction_Code": [
@@ -1044,6 +1065,9 @@
     "EmployeeCertification_Grade": [
       "pa.employee-certification.edit"
     ],
+    "EmployeeCertification_CertificationType": [
+      "pa.employee-certification.edit"
+    ],
     "EmployeeContract_ContractTypeId": [
       "pa.employee-contract.edit"
     ],
@@ -1162,6 +1186,9 @@
       "pa.employee-document.edit"
     ],
     "EmployeeDocument_ExpiryDate": [
+      "pa.employee-document.edit"
+    ],
+    "EmployeeDocument_DocPlaceId": [
       "pa.employee-document.edit"
     ],
     "EmployeeDocument_Description": [
@@ -2874,6 +2901,15 @@
     "PayrollArea_FIBankId": [
       "pay.payroll-area.edit"
     ],
+    "PayrollArea_PAReleaseNotificationId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_PAExitNotificationId": [
+      "pay.payroll-area.edit"
+    ],
+    "PayrollArea_PACorrectionNotificationId": [
+      "pay.payroll-area.edit"
+    ],
     "PayrollCalendar_PayrollAreaId": [
       "pay.payroll-calendar.edit"
     ],
@@ -3613,6 +3649,9 @@
       "tm.duty.edit"
     ],
     "Duty_IsHalfDay": [
+      "tm.duty.edit"
+    ],
+    "Duty_IsActive": [
       "tm.duty.edit"
     ],
     "DutyPeriodDetail_DutyPeriodId": [
@@ -5100,6 +5139,9 @@
     "KpiInfo_Active": [
       "perf.kpi-info.edit"
     ],
+    "KpiInfo_CompetencyId": [
+      "perf.kpi-info.edit"
+    ],
     "KpiInfo_Comments": [
       "perf.kpi-info.edit"
     ],
@@ -5731,6 +5773,15 @@
       "rec.vacancy.edit"
     ],
     "Vacancy_QualificationId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_PositionId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_RecruiterId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_WorkLocationId": [
       "rec.vacancy.edit"
     ],
     "Vacancy_IsBudgeted": [
@@ -7479,6 +7530,9 @@
     "WorkLocation_GeoFenceCoordinates": [
       "org.work-location.edit"
     ],
+    "WorkLocation_SponsorId": [
+      "org.work-location.edit"
+    ],
     "WorkLocation_IsActive": [
       "org.work-location.edit"
     ],
@@ -7522,6 +7576,9 @@
       "trv.travel-detail.edit"
     ],
     "TravelDetail_TotalNights": [
+      "trv.travel-detail.edit"
+    ],
+    "TravelDetail_PerDiemPayPercentage": [
       "trv.travel-detail.edit"
     ],
     "TravelDetail_NightStay": [
@@ -7791,6 +7848,9 @@
     "EmployeeTraining_Comments": [
       "trn.employee-training.edit"
     ],
+    "EmployeeTraining_EmployeeCertificationId": [
+      "trn.employee-training.edit"
+    ],
     "TrainingAttendance_TrainingScheduleId": [
       "trn.training-attendance.edit"
     ],
@@ -7819,6 +7879,12 @@
       "trn.training-course.edit"
     ],
     "TrainingCourse_Fees": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_InstitutionId": [
+      "trn.training-course.edit"
+    ],
+    "TrainingCourse_Source": [
       "trn.training-course.edit"
     ],
     "TrainingSchedule_Code": [
@@ -7910,6 +7976,18 @@
     ],
     "BusinessRule_IsActive": [
       "br.business-rule.edit"
+    ],
+    "AssetType_WageTypeId": [
+      "gmi.asset-type.edit"
+    ],
+    "AssetType_IncludeInWorkflow": [
+      "gmi.asset-type.edit"
+    ],
+    "JobTitleDetail_JobTitleId": [
+      "org.job-title-detail.edit"
+    ],
+    "JobTitleDetail_WorkflowRoleId": [
+      "org.job-title-detail.edit"
     ]
   },
   "hosts": {
@@ -8294,6 +8372,8 @@
     "ess-letter-requests": "ess.letter",
     "ess-documents": "ess.document",
     "ess-document-withdrawals": "ess.passport-withdrawal",
-    "ess-home": "ess.home"
+    "ess-home": "ess.home",
+    "createoreditassettypemodal": "gmi.asset-type.edit",
+    "createoreditjobtitledetailmodal": "org.job-title-detail.edit"
   }
 }

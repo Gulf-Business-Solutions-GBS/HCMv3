@@ -134,3 +134,14 @@ One working day's pattern: when the shift starts and ends, its break, and whethe
 **Why it matters.** Shown on the roster schedule viewer only; the time engine does not treat the day differently.
 
 **Rules.** Yes or no.
+
+## IsActive {#Duty.IsActive}
+<!-- alias: loc:IsActive, dom:Duty_IsActive -->
+
+**What it is.** Whether the duty is still in use.
+
+**Example.** Unticked for a Ramadan shift outside Ramadan.
+
+**Why it matters.** Only active duties are offered in the duty pickers -- substitute duty, duty periods and time registers. A record that already names an inactive duty keeps showing it. New duties start active.
+
+**Rules.** Yes or no.

@@ -58,6 +58,17 @@ A place employees work, such as an office or site. Employees are placed in one o
 
 **Rules.** Optional. Maximum 2000 characters.
 
+## Sponsor {#WorkLocation.SponsorId}
+<!-- alias: loc:Sponsor, dom:WorkLocation_SponsorId -->
+
+**What it is.** The sponsor -- the licence holder -- this location belongs to.
+
+**Example.** Al-Mutawa Trading Co.
+
+**Why it matters.** Recorded for reference; nothing else uses it.
+
+**Rules.** Optional. Chosen from Sponsor master data.
+
 ## IsActive {#WorkLocation.IsActive}
 <!-- alias: loc:IsActive, dom:WorkLocation_IsActive -->
 

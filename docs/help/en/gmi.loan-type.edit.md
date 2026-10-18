@@ -44,7 +44,7 @@ Do not use Variable yet. The payroll calculation does not support it, and stops 
 
 **Example.** 2001 - Loan Recovery Deduction
 
-**Why it matters.** Payroll recovers a loan only through this wage type: each month it adds the instalments due on the employee's loans of this type to this line of the payslip. Left blank, loans of this type are never deducted. Several loan types can share one wage type; their instalments are then added together. The list offers only active deduction wage types that are not basic, calculated or arrear pay and are not already used by a leave or overtime type.
+**Why it matters.** Payroll recovers a loan only through this wage type: each month it adds the instalments due on the employee's loans of this type to this line of the payslip. Left blank, loans of this type are never deducted. Several loan types can share one wage type; their instalments are then added together. The list offers only active deduction wage types that are not basic, calculated or arrear pay and are not already used by a leave, overtime or violation type.
 
 **Rules.** Optional. Chosen from Wage Type master data.
 

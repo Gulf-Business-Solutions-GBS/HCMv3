@@ -58,6 +58,17 @@ permissions: [Pages.OrganizationManagement.WorkLocations.Create]
 
 **القواعد.** اختياري. الحد الأقصى 2000 حرف.
 
+## Sponsor {#WorkLocation.SponsorId}
+<!-- alias: loc:Sponsor, dom:WorkLocation_SponsorId -->
+
+**ما هو.** الكفيل -- صاحب الترخيص -- الذي يتبعه هذا الموقع.
+
+**مثال.** شركة المطوع التجارية
+
+**لماذا يهم.** يُسجَّل للرجوع إليه، ولا يستخدمه شيء آخر.
+
+**القواعد.** اختياري. يُختار من قائمة الكفلاء.
+
 ## IsActive {#WorkLocation.IsActive}
 <!-- alias: loc:IsActive, dom:WorkLocation_IsActive -->
 

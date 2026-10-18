@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Number Series — Create / Edit",
   "entity": "HCMv3.GeneralMasterInfo.NumberSeries",
-  "overviewHtml": "<p>Number series for generating codes. Not used at present: employee codes, for example, are assigned as the highest existing number plus one, not from a number series.</p>",
+  "overviewHtml": "<p>Number series for employee codes. A new employee saved without a code is numbered from the series for their employment type: the highest number already used with the series prefix, plus one, written in the series format and prefixed. With no series at all, employee codes are the highest existing number plus one.</p>",
   "aliasIndex": {
     "loc:Code": "NumberSeries.Code",
     "dom:NumberSeries_Code": "NumberSeries.Code",
@@ -14,7 +14,9 @@
     "loc:Prefix": "NumberSeries.Prefix",
     "dom:NumberSeries_Prefix": "NumberSeries.Prefix",
     "loc:Formatting": "NumberSeries.Formatting",
-    "dom:NumberSeries_Formatting": "NumberSeries.Formatting"
+    "dom:NumberSeries_Formatting": "NumberSeries.Formatting",
+    "loc:EmploymentType": "NumberSeries.EmploymentType",
+    "dom:NumberSeries_EmploymentType": "NumberSeries.EmploymentType"
   },
   "fields": [
     {
@@ -55,7 +57,7 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The first number in the series.</p>",
+      "html": "<p><strong>What it is.</strong> The first number the series was meant to start from.</p><p><strong>Why it matters.</strong> Not read at present: a new series always starts at 1.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -84,6 +86,20 @@
       "rules": "Required. Maximum 64 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The pattern numbers are written in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NumberSeries.EmploymentType",
+      "label": "EmploymentType",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:NumberSeries_EmploymentType"
+      ],
+      "rules": "Required. One of: Permanent, Temporary, All.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which employees the series numbers: one employment type, or All for every employee.</p><p><strong>Example.</strong> Permanent — permanent staff are numbered <code>EMP-0001</code>, <code>EMP-0002</code>…, while a Temporary series numbers temporary staff separately.</p><p><strong>Why it matters.</strong> A new employee saved without a code gets the next number of the series for their employment type, counted over the codes of employees of that type. An All series wins over the others and is counted over every employee. Changing an employee to a type that has its own series gives them a new code from it. With no matching series, the code is the highest existing number plus one. There can be one series per employment type, and an All series must be the only one.</p>",
       "adminHtml": "",
       "stub": false
     }

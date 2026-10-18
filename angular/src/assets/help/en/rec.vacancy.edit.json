@@ -33,6 +33,12 @@
     "dom:Vacancy_MonthlySalaryRange": "Vacancy.MonthlySalaryRange",
     "loc:Qualification": "Vacancy.QualificationId",
     "dom:Vacancy_QualificationId": "Vacancy.QualificationId",
+    "loc:Position": "Vacancy.PositionId",
+    "dom:Vacancy_PositionId": "Vacancy.PositionId",
+    "loc:Recruiter": "Vacancy.RecruiterId",
+    "dom:Vacancy_RecruiterId": "Vacancy.RecruiterId",
+    "loc:Location": "Vacancy.WorkLocationId",
+    "dom:Vacancy_WorkLocationId": "Vacancy.WorkLocationId",
     "loc:IsBudgeted": "Vacancy.IsBudgeted",
     "dom:Vacancy_IsBudgeted": "Vacancy.IsBudgeted",
     "loc:TemplateOnbGroupId": "Vacancy.TemplateOnbGroupId",
@@ -236,6 +242,48 @@
       "rules": "Optional. Chosen from Qualification master data.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The qualification asked for.</p><p><strong>Why it matters.</strong> Shown on the careers site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.PositionId",
+      "label": "Position",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Position",
+        "dom:Vacancy_PositionId"
+      ],
+      "rules": "Optional. Chosen from Position master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The position the vacancy is to fill.</p><p><strong>Example.</strong> <code>P-0142</code> - Senior Accountant, Finance</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.RecruiterId",
+      "label": "Recruiter",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Recruiter",
+        "dom:Vacancy_RecruiterId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee responsible for filling the vacancy.</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Vacancy.WorkLocationId",
+      "label": "Location",
+      "section": "Vacancies",
+      "aliases": [
+        "loc:Location",
+        "dom:Vacancy_WorkLocationId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location the job is based at.</p><p><strong>Example.</strong> Head Office</p><p><strong>Why it matters.</strong> Not read at present — stored for reference.</p>",
       "adminHtml": "",
       "stub": false
     },

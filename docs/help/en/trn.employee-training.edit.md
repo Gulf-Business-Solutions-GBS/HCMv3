@@ -51,3 +51,14 @@ An employee enrolled on a run of a course, and how it went. An employee can be e
 **Example.** 85
 
 **Rules.** Optional. Number.
+
+## Certificate {#EmployeeTraining.EmployeeCertificationId}
+<!-- alias: loc:Certificate, dom:EmployeeTraining_EmployeeCertificationId -->
+
+**What it is.** The certificate the employee gained from this training, from their own certifications.
+
+**Example.** Certified Payroll Professional (CPP)
+
+**Why it matters.** Only the employee's certifications of type Training can be chosen; record the certificate on the employee's certifications first. A newly chosen certificate that is not the employee's, or not a Training one, is refused. A certificate already linked stays even if its type is changed later.
+
+**Rules.** Optional. Chosen from a list.

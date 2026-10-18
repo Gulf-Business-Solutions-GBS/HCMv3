@@ -10101,6 +10101,53 @@
           "loc": "WorkflowDashboard_Requests"
         }
       ]
+    },
+    {
+      "helpId": "gmi.asset-type.edit",
+      "title": "Asset Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.AssetTypes.Create"
+      ],
+      "entity": {
+        "name": "AssetType",
+        "fullName": "HCMv3.GeneralMasterInfo.AssetType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/AssetType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/asset-types/create-or-edit-asset-type-modal.component.html"
+        }
+      },
+      "defaultSection": "AssetTypes",
+      "ignoreInputs": [
+        "AssetType_Code",
+        "AssetType_NameEn",
+        "AssetType_NameAr"
+      ]
+    },
+    {
+      "helpId": "org.job-title-detail.edit",
+      "title": "Job Title Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.JobTitleDetails.Create"
+      ],
+      "entity": {
+        "name": "JobTitleDetail",
+        "fullName": "HCMv3.OrganizationManagement.JobTitleDetail",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/JobTitleDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/job-title-details/create-or-edit-job-title-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "JobTitleDetails"
     }
   ]
 }

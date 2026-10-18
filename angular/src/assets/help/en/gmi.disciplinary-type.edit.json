@@ -12,7 +12,9 @@
     "loc:NameAr": "DisciplinaryType.NameAr",
     "dom:DisciplinaryType_NameAr": "DisciplinaryType.NameAr",
     "loc:RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays",
-    "dom:DisciplinaryType_RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays"
+    "dom:DisciplinaryType_RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays",
+    "loc:WageType": "DisciplinaryType.WageTypeId",
+    "dom:DisciplinaryType_WageTypeId": "DisciplinaryType.WageTypeId"
   },
   "fields": [
     {
@@ -68,6 +70,20 @@
       "rules": "Required. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How far back, in days, earlier offences of this type count towards escalation.</p><p><strong>Example.</strong> <code>365</code></p><p><strong>Why it matters.</strong> An earlier offence counts if it falls within this many days before the new one, counting both ends. With 0, only offences on the same day count, so the type never escalates.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryType.WageTypeId",
+      "label": "WageType",
+      "section": "DisciplinaryTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:DisciplinaryType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The deduction wage type a violation of this type is meant to be charged through.</p><p><strong>Example.</strong> Violation Deduction</p><p><strong>Why it matters.</strong> The list offers active deduction wage types that are not basic, calculated or arrear pay and are not Net Pay. A wage type chosen here is no longer offered as a loan type's wage type. Payroll does not yet post violation deductions through it.</p>",
       "adminHtml": "",
       "stub": false
     }

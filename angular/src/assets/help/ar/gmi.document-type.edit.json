@@ -11,7 +11,7 @@
     "dom:DocumentType_NameEn": "DocumentType.NameEn",
     "loc:NameAr": "DocumentType.NameAr",
     "dom:DocumentType_NameAr": "DocumentType.NameAr",
-    "loc:NotificationPeriod": "DocumentType.NotificationPeriod",
+    "loc:ReminderDays": "DocumentType.NotificationPeriod",
     "dom:DocumentType_NotificationPeriod": "DocumentType.NotificationPeriod",
     "loc:NotificationConfig": "DocumentType.NotificationConfigId",
     "dom:DocumentType_NotificationConfigId": "DocumentType.NotificationConfigId",
@@ -31,6 +31,8 @@
     "dom:DocumentType_IsWithdrawable": "DocumentType.IsWithdrawable",
     "loc:IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
     "dom:DocumentType_IsHiddenFromEmployee": "DocumentType.IsHiddenFromEmployee",
+    "loc:ShowToAll": "DocumentType.ShowToAll",
+    "dom:DocumentType_ShowToAll": "DocumentType.ShowToAll",
     "loc:IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
     "dom:DocumentType_IsExpiryDateRequired": "DocumentType.IsExpiryDateRequired",
     "loc:AllowDateOverlap": "DocumentType.AllowDateOverlap",
@@ -81,10 +83,10 @@
     },
     {
       "id": "DocumentType.NotificationPeriod",
-      "label": "NotificationPeriod",
+      "label": "ReminderDays",
       "section": "DocumentTypes",
       "aliases": [
-        "loc:NotificationPeriod",
+        "loc:ReminderDays",
         "dom:DocumentType_NotificationPeriod"
       ],
       "rules": "إلزامي. رقم صحيح.",
@@ -216,6 +218,20 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> يُبقي وثائق هذا النوع خارج شاشة الوثائق الخاصة بالموظف.</p><p><strong>مثال.</strong> مفعّل لوثيقة تحتفظ بها الموارد البشرية عن الموظف لا له.</p><p><strong>لماذا يهم.</strong> لا يرى الموظف هذه الوثائق ولا يستطيع تسجيل واحدة منها. ولا تتأثر شاشات الموارد البشرية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.ShowToAll",
+      "label": "ShowToAll",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:ShowToAll",
+        "dom:DocumentType_ShowToAll"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يجعل وثائق الشركة من هذا النوع سياسات للشركة يحق للجميع الاطلاع عليها.</p><p><strong>مثال.</strong> مفعّل لدليل الموظف ومدونة السلوك؛ وغير مفعّل للرخصة التجارية.</p><p><strong>لماذا يهم.</strong> تُعرض وثائق الشركة من النوع المفعّل للاطلاع فقط في شاشة «سياسات الشركة» لكل من له صلاحية الدخول إليها، ويمكن فتح ملفاتها المرفقة منها. وإذا أُلغي التفعيل اختفت من تلك الشاشة، وتبقى في وثائق الشركة لدى الموارد البشرية.</p>",
       "adminHtml": "",
       "stub": false
     },

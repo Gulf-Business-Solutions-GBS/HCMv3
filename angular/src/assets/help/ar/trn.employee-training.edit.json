@@ -16,7 +16,9 @@
     "loc:Score": "EmployeeTraining.Score",
     "dom:EmployeeTraining_Score": "EmployeeTraining.Score",
     "loc:Comments": "EmployeeTraining.Comments",
-    "dom:EmployeeTraining_Comments": "EmployeeTraining.Comments"
+    "dom:EmployeeTraining_Comments": "EmployeeTraining.Comments",
+    "loc:Certificate": "EmployeeTraining.EmployeeCertificationId",
+    "dom:EmployeeTraining_EmployeeCertificationId": "EmployeeTraining.EmployeeCertificationId"
   },
   "fields": [
     {
@@ -100,6 +102,20 @@
       "rules": "اختياري. الحد الأقصى 500 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.EmployeeCertificationId",
+      "label": "Certificate",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeTraining_EmployeeCertificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشهادة التي نالها الموظف من هذا التدريب، من شهاداته المسجلة.</p><p><strong>مثال.</strong> اختصاصي رواتب معتمد (CPP)</p><p><strong>لماذا يهم.</strong> لا يمكن اختيار إلا شهادات الموظف من النوع «تدريبية»؛ فيجب تسجيل الشهادة في شهادات الموظف أولاً. وتُرفض الشهادة المختارة حديثاً إذا لم تكن للموظف نفسه أو لم تكن تدريبية. وتبقى الشهادة المرتبطة من قبل حتى لو تغيّر نوعها لاحقاً.</p>",
       "adminHtml": "",
       "stub": false
     }

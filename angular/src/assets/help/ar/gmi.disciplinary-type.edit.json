@@ -12,7 +12,9 @@
     "loc:NameAr": "DisciplinaryType.NameAr",
     "dom:DisciplinaryType_NameAr": "DisciplinaryType.NameAr",
     "loc:RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays",
-    "dom:DisciplinaryType_RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays"
+    "dom:DisciplinaryType_RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays",
+    "loc:WageType": "DisciplinaryType.WageTypeId",
+    "dom:DisciplinaryType_WageTypeId": "DisciplinaryType.WageTypeId"
   },
   "fields": [
     {
@@ -68,6 +70,20 @@
       "rules": "إلزامي. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الأيام التي تُحتسب خلالها المخالفات السابقة من هذا النوع لأغراض التصعيد.</p><p><strong>مثال.</strong> <code>365</code></p><p><strong>لماذا يهم.</strong> تُحتسب المخالفة السابقة إذا وقعت خلال هذا العدد من الأيام قبل المخالفة الجديدة، مع احتساب طرفي المدة. ومع القيمة 0 لا تُحتسب إلا المخالفات الواقعة في اليوم نفسه، فلا يتصاعد النوع أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryType.WageTypeId",
+      "label": "WageType",
+      "section": "DisciplinaryTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:DisciplinaryType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع أجر الخصم الذي يُفترض أن تُحمَّل عليه المخالفة من هذا النوع.</p><p><strong>مثال.</strong> خصم المخالفات</p><p><strong>لماذا يهم.</strong> لا تعرض القائمة إلا أنواع أجور الخصم الفعّالة التي ليست من الراتب الأساسي أو الأجور المحتسبة أو الفروقات وليست صافي الراتب. ونوع الأجر المختار هنا لا يُعرض بعد ذلك نوعَ أجر لأنواع القروض. ولا تُرحّل الرواتب خصومات المخالفات من خلاله بعد.</p>",
       "adminHtml": "",
       "stub": false
     }

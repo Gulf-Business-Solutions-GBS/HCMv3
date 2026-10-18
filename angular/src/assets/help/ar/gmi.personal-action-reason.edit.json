@@ -12,7 +12,9 @@
     "loc:NameAr": "PersonalActionReason.NameAr",
     "dom:PersonalActionReason_NameAr": "PersonalActionReason.NameAr",
     "loc:PersonalAction": "PersonalActionReason.PersonalActionId",
-    "dom:PersonalActionReason_PersonalActionId": "PersonalActionReason.PersonalActionId"
+    "dom:PersonalActionReason_PersonalActionId": "PersonalActionReason.PersonalActionId",
+    "loc:NotificationConfig": "PersonalActionReason.NotificationConfigId",
+    "dom:PersonalActionReason_NotificationConfigId": "PersonalActionReason.NotificationConfigId"
   },
   "fields": [
     {
@@ -68,6 +70,20 @@
       "rules": "اختياري. يُختار من قائمة الإجراءات الشخصية.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الإجراء الشخصي الذي ينتمي إليه هذا السبب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:PersonalActionReason_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البريد الإلكتروني الذي يُرسل عند اعتماد إجراء موظف بهذا السبب.</p><p><strong>مثال.</strong> خطاب الترقية</p><p><strong>لماذا يهم.</strong> عند الاعتماد يُرسل قالب البريد الإلكتروني الخاص بالإعداد بشأن الموظف إلى من يحددهم الإعداد. ولا يُرسل إلا البريد الإلكتروني. ولا يُرسل شيء إذا تُرك فارغاً أو لم يكن للإعداد قالب بريد إلكتروني، أو عند اعتماد تعديل على إجراء. وإخفاق الإرسال لا يُلغي الاعتماد أبداً.</p>",
       "adminHtml": "",
       "stub": false
     }

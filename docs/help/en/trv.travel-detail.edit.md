@@ -93,6 +93,17 @@ One leg of a trip: from where to where, when, and where the employee stays. A le
 
 **Rules.** Optional. Whole number.
 
+## PerDiemPayPercentage {#TravelDetail.PerDiemPayPercentage}
+<!-- alias: loc:PerDiemPayPercentage, dom:TravelDetail_PerDiemPayPercentage -->
+
+**What it is.** The share of this leg's per diem that is to be paid, as a percentage. New legs start at 100.
+
+**Example.** `50` -- half the per diem, for a leg where meals are provided.
+
+**Why it matters.** It does not change the per diem itself, which is the nights times the rate. The expected per diem panel shows both the per diem and the amount to be paid at this percentage. Values below 0 or above 100 are refused. Payroll does not pay travel per diem yet, so nothing is paid from it at present.
+
+**Rules.** Optional. Number.
+
 ## NightStay {#TravelDetail.NightStay}
 <!-- alias: loc:NightStay, dom:TravelDetail_NightStay -->
 

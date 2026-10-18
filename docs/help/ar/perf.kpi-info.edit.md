@@ -30,3 +30,14 @@ permissions: [Pages.PerformanceManagement.KpiInfos.Create]
 **لماذا يهم.** لا يُقرأ حالياً.
 
 **القواعد.** نعم أو لا.
+
+## Competency {#KpiInfo.CompetencyId}
+<!-- alias: loc:Competency, dom:KpiInfo_CompetencyId -->
+
+**ما هو.** الكفاءة التي يرتبط بها المؤشر، من قائمة الكفاءات.
+
+**مثال.** التركيز على العملاء
+
+**لماذا يهم.** تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.
+
+**القواعد.** اختياري. يُختار من قائمة الكفاءات.

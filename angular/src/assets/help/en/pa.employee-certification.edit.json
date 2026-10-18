@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Certifications — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeCertification",
-  "overviewHtml": "<p>A course or professional certification the employee has completed.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "overviewHtml": "<p>A course or professional certification the employee has completed.</p><p>It is recorded for reference; no calculation or report reads it at present. Training certifications can be linked from the employee's training records.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeCertification.StartDate",
     "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
@@ -18,7 +18,9 @@
     "loc:Certificate": "EmployeeCertification.Certificate",
     "dom:EmployeeCertification_Certificate": "EmployeeCertification.Certificate",
     "loc:Grade": "EmployeeCertification.Grade",
-    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade"
+    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade",
+    "loc:CertificationType": "EmployeeCertification.CertificationType",
+    "dom:EmployeeCertification_CertificationType": "EmployeeCertification.CertificationType"
   },
   "fields": [
     {
@@ -116,6 +118,20 @@
       "rules": "Optional. Maximum 64 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The grade achieved.</p><p><strong>Example.</strong> Pass</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.CertificationType",
+      "label": "CertificationType",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:CertificationType",
+        "dom:EmployeeCertification_CertificationType"
+      ],
+      "rules": "Required. One of: Professional, Training.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this is a professional certification or one gained through training.</p><p><strong>Example.</strong> Training</p><p><strong>Why it matters.</strong> Only Training certifications can be linked from the employee's training records. Records that existed before this field was added are Professional.</p>",
       "adminHtml": "",
       "stub": false
     }

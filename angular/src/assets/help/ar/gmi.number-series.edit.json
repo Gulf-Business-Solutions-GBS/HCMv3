@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تسلسل الأرقام — إنشاء / تحرير",
   "entity": "HCMv3.GeneralMasterInfo.NumberSeries",
-  "overviewHtml": "<p>تسلسلات أرقام لتوليد الرموز. لا تُستخدم حالياً: فرموز الموظفين مثلاً تُمنح بأعلى رقم موجود مضافاً إليه واحد، لا من تسلسل أرقام.</p>",
+  "overviewHtml": "<p>تسلسلات أرقام لرموز الموظفين. يُرقَّم الموظف الجديد الذي يُحفظ دون رمز من تسلسل نوع توظيفه: أعلى رقم مستخدم مع بادئة التسلسل مضافاً إليه واحد، مكتوباً بتنسيق التسلسل ومسبوقاً بالبادئة. وإذا لم يوجد أي تسلسل كانت رموز الموظفين أعلى رقم موجود مضافاً إليه واحد.</p>",
   "aliasIndex": {
     "loc:Code": "NumberSeries.Code",
     "dom:NumberSeries_Code": "NumberSeries.Code",
@@ -14,7 +14,9 @@
     "loc:Prefix": "NumberSeries.Prefix",
     "dom:NumberSeries_Prefix": "NumberSeries.Prefix",
     "loc:Formatting": "NumberSeries.Formatting",
-    "dom:NumberSeries_Formatting": "NumberSeries.Formatting"
+    "dom:NumberSeries_Formatting": "NumberSeries.Formatting",
+    "loc:EmploymentType": "NumberSeries.EmploymentType",
+    "dom:NumberSeries_EmploymentType": "NumberSeries.EmploymentType"
   },
   "fields": [
     {
@@ -55,7 +57,7 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> أول رقم في التسلسل.</p>",
+      "html": "<p><strong>ما هو.</strong> الرقم الذي كان يُفترض أن يبدأ منه التسلسل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: يبدأ التسلسل الجديد دائماً من 1.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -84,6 +86,20 @@
       "rules": "إلزامي. الحد الأقصى 64 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> النمط الذي تُكتب به الأرقام.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NumberSeries.EmploymentType",
+      "label": "EmploymentType",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:NumberSeries_EmploymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: دائم، مؤقت، الكل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظفون الذين يرقّمهم التسلسل: نوع توظيف واحد، أو «الكل» لجميع الموظفين.</p><p><strong>مثال.</strong> دائم — يُرقَّم الموظفون الدائمون <code>EMP-0001</code> و<code>EMP-0002</code>…، بينما يرقّم تسلسل «مؤقت» الموظفين المؤقتين على حدة.</p><p><strong>لماذا يهم.</strong> يحصل الموظف الجديد الذي يُحفظ دون رمز على الرقم التالي من تسلسل نوع توظيفه، محسوباً على رموز موظفي ذلك النوع. ويتقدم تسلسل «الكل» على غيره ويُحسب على جميع الموظفين. وإذا غُيِّر نوع توظيف الموظف إلى نوع له تسلسل خاص به حصل على رمز جديد منه. وإذا لم يوجد تسلسل مطابق كان الرمز أعلى رقم موجود مضافاً إليه واحد. ولا يجوز إلا تسلسل واحد لكل نوع توظيف، ويجب أن يكون تسلسل «الكل» هو التسلسل الوحيد.</p>",
       "adminHtml": "",
       "stub": false
     }

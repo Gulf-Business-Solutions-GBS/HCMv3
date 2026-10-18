@@ -20,7 +20,13 @@
     "loc:FICompanyId": "PayrollArea.FICompanyId",
     "dom:PayrollArea_FICompanyId": "PayrollArea.FICompanyId",
     "loc:FIBankId": "PayrollArea.FIBankId",
-    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId"
+    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId",
+    "loc:PAReleaseNotification": "PayrollArea.PAReleaseNotificationId",
+    "dom:PayrollArea_PAReleaseNotificationId": "PayrollArea.PAReleaseNotificationId",
+    "loc:PAExitNotification": "PayrollArea.PAExitNotificationId",
+    "dom:PayrollArea_PAExitNotificationId": "PayrollArea.PAExitNotificationId",
+    "loc:PACorrectionNotification": "PayrollArea.PACorrectionNotificationId",
+    "dom:PayrollArea_PACorrectionNotificationId": "PayrollArea.PACorrectionNotificationId"
   },
   "fields": [
     {
@@ -133,6 +139,48 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> الحساب البنكي الذي يُقيَّد فيه إجمالي صافي رواتب المنطقة دائناً في قيد اليومية.</p><p><strong>مثال.</strong> <code>110200 — حساب الرواتب لدى بنك الكويت الوطني</code></p><p><strong>لماذا يهم.</strong> يُقيّد قيد اليومية صافي رواتب التشغيل كله دائناً في هذا الحساب، مع نوع الحساب بجانبه. ويُرفض ترحيل قيد اليومية وإعداد ملف التكاليف للمنطقة ما دام فارغاً.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PAReleaseNotificationId",
+      "label": "PAReleaseNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PAReleaseNotification",
+        "dom:PayrollArea_PAReleaseNotificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإخطار الذي يُرسل عند فتح سجل ضبط الرواتب الخاص بهذه المنطقة لتشغيل الرواتب.</p><p><strong>مثال.</strong> فتح الرواتب للمعالجة</p><p><strong>لماذا يهم.</strong> يُرسل في كل مرة يُفتح فيها سجل الضبط لتشغيل الرواتب. وهو يخص سجل الضبط لا موظفاً بعينه، فيصل إلى مجموعات الإخطار في الإعداد وغيرها من المستلمين الثابتين. ولا يُرسل شيء ما لم تكن لإعدادات الإخطار مجموعة إخطار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PAExitNotificationId",
+      "label": "PAExitNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PAExitNotification",
+        "dom:PayrollArea_PAExitNotificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإخطار الذي يُرسل عند إنهاء الرواتب في سجل ضبط الرواتب الخاص بهذه المنطقة وإقفال الشهر.</p><p><strong>مثال.</strong> إقفال الرواتب</p><p><strong>لماذا يهم.</strong> يُرسل في كل مرة يُنهى فيها تشغيل الرواتب في سجل الضبط. ولا يُرسل شيء ما لم تكن لإعدادات الإخطار مجموعة إخطار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PACorrectionNotificationId",
+      "label": "PACorrectionNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PACorrectionNotification",
+        "dom:PayrollArea_PACorrectionNotificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإخطار الذي يُرسل عند فتح سجل ضبط الرواتب الخاص بهذه المنطقة للتصحيح.</p><p><strong>مثال.</strong> فتح الرواتب للتصحيح</p><p><strong>لماذا يهم.</strong> يُرسل في كل مرة يُفتح فيها سجل الضبط للتصحيح. ولا يُرسل شيء ما لم تكن لإعدادات الإخطار مجموعة إخطار.</p>",
+      "adminHtml": "<p>في الإخطارات الثلاثة: يُرسل البريد الإلكتروني إذا كان خيار «إرسال بريد إلكتروني» محدداً في الإعداد وله قالب بريد إلكتروني، ويُرسل الإخطار داخل النظام إذا كان خيار «إرسال إخطار» محدداً. والإعداد الذي له مجموعتا إخطار يُرسل كل شيء مرتين، كما كان يفعل النظام السابق. وإخفاق الإرسال لا يُلغي تغيير الحالة أبداً.</p>",
       "stub": false
     }
   ]

@@ -138,6 +138,37 @@ permissions: [Pages.Recruitment.Vacancies.Create]
 
 **القواعد.** اختياري. يُختار من قائمة المؤهلات.
 
+## Position {#Vacancy.PositionId}
+<!-- alias: loc:Position, dom:Vacancy_PositionId -->
+
+**ما هو.** الوظيفة التي يُراد شغلها بهذا الشاغر.
+
+**مثال.** `P-0142` - محاسب أول، المالية
+
+**لماذا يهم.** لا يُقرأ حالياً -- يُحفظ للرجوع إليه.
+
+**القواعد.** اختياري. يُختار من قائمة الوظائف.
+
+## Recruiter {#Vacancy.RecruiterId}
+<!-- alias: loc:Recruiter, dom:Vacancy_RecruiterId -->
+
+**ما هو.** الموظف المسؤول عن شغل الشاغر.
+
+**لماذا يهم.** لا يُقرأ حالياً -- يُحفظ للرجوع إليه.
+
+**القواعد.** اختياري. يُختار من قائمة الموظفين.
+
+## Location {#Vacancy.WorkLocationId}
+<!-- alias: loc:Location, dom:Vacancy_WorkLocationId -->
+
+**ما هو.** مكان العمل الذي تقع فيه الوظيفة.
+
+**مثال.** المكتب الرئيسي
+
+**لماذا يهم.** لا يُقرأ حالياً -- يُحفظ للرجوع إليه.
+
+**القواعد.** اختياري. يُختار من قائمة.
+
 ## IsBudgeted {#Vacancy.IsBudgeted}
 <!-- alias: loc:IsBudgeted, dom:Vacancy_IsBudgeted -->
 

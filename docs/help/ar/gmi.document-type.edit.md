@@ -16,7 +16,7 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 إعدادات التذكير في هذا النموذج محفوظة، لكن لا تقرؤها أي عملية حالياً، فهي لا ترسل بعدُ تذكيرات قبل انتهاء صلاحية الوثيقة.
 
 ## NotificationPeriod {#DocumentType.NotificationPeriod}
-<!-- alias: loc:NotificationPeriod, dom:DocumentType_NotificationPeriod -->
+<!-- alias: loc:ReminderDays, dom:DocumentType_NotificationPeriod -->
 
 **ما هو.** المدة التي كان يُفترض أن تبدأ فيها التذكيرات قبل انتهاء صلاحية الوثيقة.
 
@@ -112,6 +112,17 @@ permissions: [Pages.GeneralMasterInfo.DocumentTypes.Create]
 **مثال.** مفعّل لوثيقة تحتفظ بها الموارد البشرية عن الموظف لا له.
 
 **لماذا يهم.** لا يرى الموظف هذه الوثائق ولا يستطيع تسجيل واحدة منها. ولا تتأثر شاشات الموارد البشرية.
+
+**القواعد.** نعم أو لا.
+
+## ShowToAll {#DocumentType.ShowToAll}
+<!-- alias: loc:ShowToAll, dom:DocumentType_ShowToAll -->
+
+**ما هو.** يجعل وثائق الشركة من هذا النوع سياسات للشركة يحق للجميع الاطلاع عليها.
+
+**مثال.** مفعّل لدليل الموظف ومدونة السلوك؛ وغير مفعّل للرخصة التجارية.
+
+**لماذا يهم.** تُعرض وثائق الشركة من النوع المفعّل للاطلاع فقط في شاشة «سياسات الشركة» لكل من له صلاحية الدخول إليها، ويمكن فتح ملفاتها المرفقة منها. وإذا أُلغي التفعيل اختفت من تلك الشاشة، وتبقى في وثائق الشركة لدى الموارد البشرية.
 
 **القواعد.** نعم أو لا.
 

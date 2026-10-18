@@ -59,6 +59,17 @@ Maintained under General Master Info → Document Types. Their reminder settings
 
 **Rules.** Optional. Date value.
 
+## DocumentPlace {#EmployeeDocument.DocPlaceId}
+<!-- alias: loc:DocumentPlace, dom:EmployeeDocument_DocPlaceId -->
+
+**What it is.** Where the original document is kept, from the document places list.
+
+**Example.** HR Office Safe
+
+**Why it matters.** Recorded for reference; nothing else uses it.
+
+**Rules.** Optional. Chosen from Document Place master data.
+
 ## Description {#EmployeeDocument.Description}
 <!-- alias: loc:Description, dom:EmployeeDocument_Description -->
 

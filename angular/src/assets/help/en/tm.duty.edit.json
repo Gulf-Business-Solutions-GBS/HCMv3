@@ -38,7 +38,9 @@
     "loc:IsRestDay": "Duty.IsRestDay",
     "dom:Duty_IsRestDay": "Duty.IsRestDay",
     "loc:IsHalfDay": "Duty.IsHalfDay",
-    "dom:Duty_IsHalfDay": "Duty.IsHalfDay"
+    "dom:Duty_IsHalfDay": "Duty.IsHalfDay",
+    "loc:IsActive": "Duty.IsActive",
+    "dom:Duty_IsActive": "Duty.IsActive"
   },
   "fields": [
     {
@@ -276,6 +278,20 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether this duty is a half working day.</p><p><strong>Why it matters.</strong> Shown on the roster schedule viewer only; the time engine does not treat the day differently.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsActive",
+      "label": "IsActive",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsActive",
+        "dom:Duty_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the duty is still in use.</p><p><strong>Example.</strong> Unticked for a Ramadan shift outside Ramadan.</p><p><strong>Why it matters.</strong> Only active duties are offered in the duty pickers — substitute duty, duty periods and time registers. A record that already names an inactive duty keeps showing it. New duties start active.</p>",
       "adminHtml": "",
       "stub": false
     }

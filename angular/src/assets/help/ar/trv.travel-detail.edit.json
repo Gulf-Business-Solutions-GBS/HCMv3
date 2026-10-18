@@ -25,6 +25,8 @@
     "dom:TravelDetail_TravelAirlineId": "TravelDetail.TravelAirlineId",
     "loc:TotalNights": "TravelDetail.TotalNights",
     "dom:TravelDetail_TotalNights": "TravelDetail.TotalNights",
+    "loc:PerDiemPayPercentage": "TravelDetail.PerDiemPayPercentage",
+    "dom:TravelDetail_PerDiemPayPercentage": "TravelDetail.PerDiemPayPercentage",
     "loc:NightStay": "TravelDetail.NightStay",
     "dom:TravelDetail_NightStay": "TravelDetail.NightStay",
     "loc:Comments": "TravelDetail.Comments",
@@ -168,6 +170,20 @@
       "rules": "اختياري. رقم صحيح.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> عدد الليالي في الوجهة. يُستخدم لحساب البدل اليومي المتوقع.</p><p><strong>مثال.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.PerDiemPayPercentage",
+      "label": "PerDiemPayPercentage",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:PerDiemPayPercentage",
+        "dom:TravelDetail_PerDiemPayPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية التي تُصرف من البدل اليومي لهذه الرحلة. وتبدأ الرحلة الجديدة بـ 100.</p><p><strong>مثال.</strong> <code>50</code> — نصف البدل اليومي، لرحلة تُوفَّر فيها الوجبات.</p><p><strong>لماذا يهم.</strong> لا تغيّر البدل اليومي نفسه، وهو عدد الليالي مضروباً في السعر. وتعرض لوحة البدل اليومي المتوقع البدل والمبلغ الذي يُصرف بهذه النسبة كليهما. وتُرفض القيم التي تقل عن 0 أو تزيد على 100. ولا تصرف الرواتب البدل اليومي للسفر بعد، فلا يُصرف منه شيء حالياً.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -20,7 +20,13 @@
     "loc:FICompanyId": "PayrollArea.FICompanyId",
     "dom:PayrollArea_FICompanyId": "PayrollArea.FICompanyId",
     "loc:FIBankId": "PayrollArea.FIBankId",
-    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId"
+    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId",
+    "loc:PAReleaseNotification": "PayrollArea.PAReleaseNotificationId",
+    "dom:PayrollArea_PAReleaseNotificationId": "PayrollArea.PAReleaseNotificationId",
+    "loc:PAExitNotification": "PayrollArea.PAExitNotificationId",
+    "dom:PayrollArea_PAExitNotificationId": "PayrollArea.PAExitNotificationId",
+    "loc:PACorrectionNotification": "PayrollArea.PACorrectionNotificationId",
+    "dom:PayrollArea_PACorrectionNotificationId": "PayrollArea.PACorrectionNotificationId"
   },
   "fields": [
     {
@@ -133,6 +139,48 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> The bank account the area's total net pay is credited to on the journal voucher.</p><p><strong>Example.</strong> <code>110200 — NBK Salary Account</code></p><p><strong>Why it matters.</strong> The journal voucher credits the whole net pay of the run to this account, with the account's type beside it. Posting the journal voucher and producing the costing file are refused for the area while it is blank.</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PAReleaseNotificationId",
+      "label": "PAReleaseNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PAReleaseNotification",
+        "dom:PayrollArea_PAReleaseNotificationId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification sent when this area's payroll control record is released for payroll.</p><p><strong>Example.</strong> Payroll Open for Processing</p><p><strong>Why it matters.</strong> Sent each time the control record is released for payroll. It is about the control record, not an employee, so it reaches the configuration's notification groups and other fixed recipients. Nothing is sent unless the notification configuration has a notification group.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PAExitNotificationId",
+      "label": "PAExitNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PAExitNotification",
+        "dom:PayrollArea_PAExitNotificationId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification sent when this area's payroll control record exits payroll and the month is closed.</p><p><strong>Example.</strong> Payroll Closed</p><p><strong>Why it matters.</strong> Sent each time the control record exits payroll. Nothing is sent unless the notification configuration has a notification group.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.PACorrectionNotificationId",
+      "label": "PACorrectionNotification",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PACorrectionNotification",
+        "dom:PayrollArea_PACorrectionNotificationId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification sent when this area's payroll control record is released for correction.</p><p><strong>Example.</strong> Payroll Open for Correction</p><p><strong>Why it matters.</strong> Sent each time the control record is released for correction. Nothing is sent unless the notification configuration has a notification group.</p>",
+      "adminHtml": "<p>For all three notifications: email goes when the configuration has Send Email ticked and an email template, and the in-app notification when Send Notification is ticked. A configuration with two notification groups sends everything twice, as the earlier system did. A failed send never undoes the change of status.</p>",
       "stub": false
     }
   ]

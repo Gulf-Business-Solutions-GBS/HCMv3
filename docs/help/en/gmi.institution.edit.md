@@ -21,3 +21,14 @@ Educational and training institutions, used on employees' education and certific
 **Why it matters.** Recorded for reference; nothing else uses it.
 
 **Rules.** Optional. Chosen from University master data.
+
+## Country {#Institution.CountryId}
+<!-- alias: loc:Country, dom:Institution_CountryId -->
+
+**What it is.** The country the institution is in.
+
+**Example.** United Kingdom
+
+**Why it matters.** Recorded for reference; nothing else uses it.
+
+**Rules.** Optional. Chosen from Country master data.

@@ -93,6 +93,17 @@ permissions: [Pages.TravelManagement.TravelDetails.Create]
 
 **القواعد.** اختياري. رقم صحيح.
 
+## PerDiemPayPercentage {#TravelDetail.PerDiemPayPercentage}
+<!-- alias: loc:PerDiemPayPercentage, dom:TravelDetail_PerDiemPayPercentage -->
+
+**ما هو.** النسبة المئوية التي تُصرف من البدل اليومي لهذه الرحلة. وتبدأ الرحلة الجديدة بـ 100.
+
+**مثال.** `50` -- نصف البدل اليومي، لرحلة تُوفَّر فيها الوجبات.
+
+**لماذا يهم.** لا تغيّر البدل اليومي نفسه، وهو عدد الليالي مضروباً في السعر. وتعرض لوحة البدل اليومي المتوقع البدل والمبلغ الذي يُصرف بهذه النسبة كليهما. وتُرفض القيم التي تقل عن 0 أو تزيد على 100. ولا تصرف الرواتب البدل اليومي للسفر بعد، فلا يُصرف منه شيء حالياً.
+
+**القواعد.** اختياري. رقم.
+
 ## NightStay {#TravelDetail.NightStay}
 <!-- alias: loc:NightStay, dom:TravelDetail_NightStay -->
 

@@ -21,6 +21,8 @@
     "dom:WorkLocation_Address": "WorkLocation.Address",
     "loc:GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
     "dom:WorkLocation_GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
+    "loc:Sponsor": "WorkLocation.SponsorId",
+    "dom:WorkLocation_SponsorId": "WorkLocation.SponsorId",
     "loc:IsActive": "WorkLocation.IsActive",
     "dom:WorkLocation_IsActive": "WorkLocation.IsActive"
   },
@@ -134,6 +136,20 @@
       "rules": "اختياري. الحد الأقصى 2000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> حدود مرسومة حول الموقع.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.SponsorId",
+      "label": "Sponsor",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Sponsor",
+        "dom:WorkLocation_SponsorId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الكفلاء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفيل — صاحب الترخيص — الذي يتبعه هذا الموقع.</p><p><strong>مثال.</strong> شركة المطوع التجارية</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يستخدمه شيء آخر.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -12,7 +12,9 @@
     "loc:NameAr": "Institution.NameAr",
     "dom:Institution_NameAr": "Institution.NameAr",
     "loc:University": "Institution.UniversityId",
-    "dom:Institution_UniversityId": "Institution.UniversityId"
+    "dom:Institution_UniversityId": "Institution.UniversityId",
+    "loc:Country": "Institution.CountryId",
+    "dom:Institution_CountryId": "Institution.CountryId"
   },
   "fields": [
     {
@@ -68,6 +70,20 @@
       "rules": "اختياري. يُختار من قائمة الجامعات.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الجامعة التي تتبعها المؤسسة، من قائمة الجامعات.</p><p><strong>لماذا يهم.</strong> تُسجَّل للرجوع إليها، ولا يستخدمها شيء آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Institution.CountryId",
+      "label": "Country",
+      "section": "Institutions",
+      "aliases": [
+        "loc:Country",
+        "dom:Institution_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البلد الذي تقع فيه المؤسسة.</p><p><strong>مثال.</strong> المملكة المتحدة</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يستخدمه شيء آخر.</p>",
       "adminHtml": "",
       "stub": false
     }

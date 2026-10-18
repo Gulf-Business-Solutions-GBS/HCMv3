@@ -99,3 +99,40 @@ A cut-off day later than the month has days means the last day of that month -- 
 **Why it matters.** The journal voucher credits the whole net pay of the run to this account, with the account's type beside it. Posting the journal voucher and producing the costing file are refused for the area while it is blank.
 
 **Rules.** Optional. Chosen from Account Info master data.
+
+## PAReleaseNotification {#PayrollArea.PAReleaseNotificationId}
+<!-- alias: loc:PAReleaseNotification, dom:PayrollArea_PAReleaseNotificationId -->
+
+**What it is.** The notification sent when this area's payroll control record is released for payroll.
+
+**Example.** Payroll Open for Processing
+
+**Why it matters.** Sent each time the control record is released for payroll. It is about the control record, not an employee, so it reaches the configuration's notification groups and other fixed recipients. Nothing is sent unless the notification configuration has a notification group.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## PAExitNotification {#PayrollArea.PAExitNotificationId}
+<!-- alias: loc:PAExitNotification, dom:PayrollArea_PAExitNotificationId -->
+
+**What it is.** The notification sent when this area's payroll control record exits payroll and the month is closed.
+
+**Example.** Payroll Closed
+
+**Why it matters.** Sent each time the control record exits payroll. Nothing is sent unless the notification configuration has a notification group.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+## PACorrectionNotification {#PayrollArea.PACorrectionNotificationId}
+<!-- alias: loc:PACorrectionNotification, dom:PayrollArea_PACorrectionNotificationId -->
+
+**What it is.** The notification sent when this area's payroll control record is released for correction.
+
+**Example.** Payroll Open for Correction
+
+**Why it matters.** Sent each time the control record is released for correction. Nothing is sent unless the notification configuration has a notification group.
+
+**Rules.** Optional. Chosen from Notification Config master data.
+
+:::admin
+For all three notifications: email goes when the configuration has Send Email ticked and an email template, and the in-app notification when Send Notification is ticked. A configuration with two notification groups sends everything twice, as the earlier system did. A failed send never undoes the change of status.
+:::

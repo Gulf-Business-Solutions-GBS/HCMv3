@@ -13,7 +13,7 @@ permissions: [Pages.PersonnelAdministration.EmployeeCertifications.Create]
 
 A course or professional certification the employee has completed.
 
-It is recorded for reference; no calculation or report reads it at present.
+It is recorded for reference; no calculation or report reads it at present. Training certifications can be linked from the employee's training records.
 
 ## Course {#EmployeeCertification.Course}
 <!-- alias: loc:Course, dom:EmployeeCertification_Course -->
@@ -59,3 +59,14 @@ It is recorded for reference; no calculation or report reads it at present.
 **Example.** Pass
 
 **Rules.** Optional. Maximum 64 characters.
+
+## CertificationType {#EmployeeCertification.CertificationType}
+<!-- alias: loc:CertificationType, dom:EmployeeCertification_CertificationType -->
+
+**What it is.** Whether this is a professional certification or one gained through training.
+
+**Example.** Training
+
+**Why it matters.** Only Training certifications can be linked from the employee's training records. Records that existed before this field was added are Professional.
+
+**Rules.** Required. One of: Professional, Training.

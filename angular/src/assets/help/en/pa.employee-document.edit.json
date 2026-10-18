@@ -13,6 +13,8 @@
     "dom:EmployeeDocument_IssueDate": "EmployeeDocument.IssueDate",
     "loc:ExpiryDate": "EmployeeDocument.ExpiryDate",
     "dom:EmployeeDocument_ExpiryDate": "EmployeeDocument.ExpiryDate",
+    "loc:DocumentPlace": "EmployeeDocument.DocPlaceId",
+    "dom:EmployeeDocument_DocPlaceId": "EmployeeDocument.DocPlaceId",
     "loc:Description": "EmployeeDocument.Description",
     "dom:EmployeeDocument_Description": "EmployeeDocument.Description",
     "loc:Comments": "EmployeeDocument.Comments",
@@ -72,6 +74,20 @@
       "rules": "Optional. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The date the document expires.</p><p><strong>Example.</strong> 2 Mar 2032</p><p><strong>Why it matters.</strong> Self-service shows the employee their documents that have not yet expired.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.DocPlaceId",
+      "label": "DocumentPlace",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:DocumentPlace",
+        "dom:EmployeeDocument_DocPlaceId"
+      ],
+      "rules": "Optional. Chosen from Document Place master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the original document is kept, from the document places list.</p><p><strong>Example.</strong> HR Office Safe</p><p><strong>Why it matters.</strong> Recorded for reference; nothing else uses it.</p>",
       "adminHtml": "",
       "stub": false
     },

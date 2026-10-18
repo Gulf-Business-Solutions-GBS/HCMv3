@@ -967,7 +967,7 @@
     <text name="AddNewWebhookSubscription">إضافة اشتراك خطاف الويب جديد</text>
     <text name="EditWebhookSubscription">Edit Webhook Subscription</text>
     <text name="WebhookEvents">Webhook Events</text>
-    <text name="IsActive">مغعّل</text>
+    <text name="IsActive">مفعّل</text>
     <text name="WebhookEventDetail">Webhook Event Detail</text>
     <text name="Data">البيانات</text>
     <text name="WebhookSendAttempts">Webhook Send Attempts</text>

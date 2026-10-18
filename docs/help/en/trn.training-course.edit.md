@@ -37,3 +37,25 @@ A training course. Its runs are set up as schedules. Courses are listed on the T
 **Example.** 250.000
 
 **Rules.** Optional. Number.
+
+## Institution {#TrainingCourse.InstitutionId}
+<!-- alias: loc:Institution, dom:TrainingCourse_InstitutionId -->
+
+**What it is.** The institution that runs the course.
+
+**Example.** Kuwait Institute for Scientific Research
+
+**Why it matters.** Recorded for reference; nothing else uses it.
+
+**Rules.** Optional. Chosen from Institution master data.
+
+## Source {#TrainingCourse.Source}
+<!-- alias: loc:Source, dom:TrainingCourse_Source -->
+
+**What it is.** Whether the course is run in-house or by an outside provider.
+
+**Example.** External
+
+**Why it matters.** Recorded for reference; nothing else uses it. Courses that existed before this field was added are Internal.
+
+**Rules.** Required. One of: Internal, External.

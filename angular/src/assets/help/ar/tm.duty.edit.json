@@ -38,7 +38,9 @@
     "loc:IsRestDay": "Duty.IsRestDay",
     "dom:Duty_IsRestDay": "Duty.IsRestDay",
     "loc:IsHalfDay": "Duty.IsHalfDay",
-    "dom:Duty_IsHalfDay": "Duty.IsHalfDay"
+    "dom:Duty_IsHalfDay": "Duty.IsHalfDay",
+    "loc:IsActive": "Duty.IsActive",
+    "dom:Duty_IsActive": "Duty.IsActive"
   },
   "fields": [
     {
@@ -276,6 +278,20 @@
       "rules": "نعم أو لا.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ما إذا كان هذا الدوام نصف يوم عمل.</p><p><strong>لماذا يهم.</strong> يظهر في عارض جدول المناوبات فقط، ولا يعامل محرك الوقت اليوم بطريقة مختلفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsActive",
+      "label": "IsActive",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsActive",
+        "dom:Duty_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الدوام لا يزال مستخدماً.</p><p><strong>مثال.</strong> غير مفعّل لدوام رمضان في غير شهر رمضان.</p><p><strong>لماذا يهم.</strong> لا تُعرض إلا الدوامات المفعّلة في قوائم اختيار الدوام — الدوام البديل وفترات الدوام وسجلات الوقت. ويظل السجل الذي يحمل دواماً غير مفعّل يعرضه. ويبدأ الدوام الجديد مفعّلاً.</p>",
       "adminHtml": "",
       "stub": false
     }

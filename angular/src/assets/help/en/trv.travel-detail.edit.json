@@ -25,6 +25,8 @@
     "dom:TravelDetail_TravelAirlineId": "TravelDetail.TravelAirlineId",
     "loc:TotalNights": "TravelDetail.TotalNights",
     "dom:TravelDetail_TotalNights": "TravelDetail.TotalNights",
+    "loc:PerDiemPayPercentage": "TravelDetail.PerDiemPayPercentage",
+    "dom:TravelDetail_PerDiemPayPercentage": "TravelDetail.PerDiemPayPercentage",
     "loc:NightStay": "TravelDetail.NightStay",
     "dom:TravelDetail_NightStay": "TravelDetail.NightStay",
     "loc:Comments": "TravelDetail.Comments",
@@ -168,6 +170,20 @@
       "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> How many nights are spent at the destination. Used for the expected per diem.</p><p><strong>Example.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelDetail.PerDiemPayPercentage",
+      "label": "PerDiemPayPercentage",
+      "section": "TravelDetails",
+      "aliases": [
+        "loc:PerDiemPayPercentage",
+        "dom:TravelDetail_PerDiemPayPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The share of this leg's per diem that is to be paid, as a percentage. New legs start at 100.</p><p><strong>Example.</strong> <code>50</code> — half the per diem, for a leg where meals are provided.</p><p><strong>Why it matters.</strong> It does not change the per diem itself, which is the nights times the rate. The expected per diem panel shows both the per diem and the amount to be paid at this percentage. Values below 0 or above 100 are refused. Payroll does not pay travel per diem yet, so nothing is paid from it at present.</p>",
       "adminHtml": "",
       "stub": false
     },

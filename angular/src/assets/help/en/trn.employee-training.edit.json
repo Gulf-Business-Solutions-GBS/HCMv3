@@ -16,7 +16,9 @@
     "loc:Score": "EmployeeTraining.Score",
     "dom:EmployeeTraining_Score": "EmployeeTraining.Score",
     "loc:Comments": "EmployeeTraining.Comments",
-    "dom:EmployeeTraining_Comments": "EmployeeTraining.Comments"
+    "dom:EmployeeTraining_Comments": "EmployeeTraining.Comments",
+    "loc:Certificate": "EmployeeTraining.EmployeeCertificationId",
+    "dom:EmployeeTraining_EmployeeCertificationId": "EmployeeTraining.EmployeeCertificationId"
   },
   "fields": [
     {
@@ -100,6 +102,20 @@
       "rules": "Optional. Maximum 500 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTraining.EmployeeCertificationId",
+      "label": "Certificate",
+      "section": "EmployeeTrainings",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeTraining_EmployeeCertificationId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The certificate the employee gained from this training, from their own certifications.</p><p><strong>Example.</strong> Certified Payroll Professional (CPP)</p><p><strong>Why it matters.</strong> Only the employee's certifications of type Training can be chosen; record the certificate on the employee's certifications first. A newly chosen certificate that is not the employee's, or not a Training one, is refused. A certificate already linked stays even if its type is changed later.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -138,6 +138,37 @@ The publish date is shown to candidates but does not hide the vacancy before it 
 
 **Rules.** Optional. Chosen from Qualification master data.
 
+## Position {#Vacancy.PositionId}
+<!-- alias: loc:Position, dom:Vacancy_PositionId -->
+
+**What it is.** The position the vacancy is to fill.
+
+**Example.** `P-0142` - Senior Accountant, Finance
+
+**Why it matters.** Not read at present -- stored for reference.
+
+**Rules.** Optional. Chosen from Position master data.
+
+## Recruiter {#Vacancy.RecruiterId}
+<!-- alias: loc:Recruiter, dom:Vacancy_RecruiterId -->
+
+**What it is.** The employee responsible for filling the vacancy.
+
+**Why it matters.** Not read at present -- stored for reference.
+
+**Rules.** Optional. Chosen from the employee list.
+
+## Location {#Vacancy.WorkLocationId}
+<!-- alias: loc:Location, dom:Vacancy_WorkLocationId -->
+
+**What it is.** The work location the job is based at.
+
+**Example.** Head Office
+
+**Why it matters.** Not read at present -- stored for reference.
+
+**Rules.** Optional. Chosen from a list.
+
 ## IsBudgeted {#Vacancy.IsBudgeted}
 <!-- alias: loc:IsBudgeted, dom:Vacancy_IsBudgeted -->
 
