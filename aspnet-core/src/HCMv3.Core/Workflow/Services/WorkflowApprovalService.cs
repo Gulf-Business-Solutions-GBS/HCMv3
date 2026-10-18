@@ -114,7 +114,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         request.WorkflowStep = firstApproverStep;
         request.RequestStatus = RequestStatus.Open;
 
-        await AssignApproversForStepAsync(request, requestMaster, firstApproverStep);
+        await AssignApproversForStepAsync(request, requestMaster, firstApproverStep, actingEmployeeId);
 
         // The requester's own words, carried onto the Created entry so the activity feed opens with what
         // they said rather than with a bare "Created" line and their comment nowhere at all.
@@ -237,7 +237,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         {
             request.WorkflowStep = nextStep.Value;
 
-            await AssignApproversForStepAsync(request, requestMaster, nextStep.Value);
+            await AssignApproversForStepAsync(request, requestMaster, nextStep.Value, actingEmployeeId);
         }
 
         await _workflowRequestRepository.UpdateAsync(request);
@@ -765,11 +765,12 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         }
     }
 
-    private async Task AssignApproversForStepAsync(WorkflowRequest request, RequestMaster requestMaster, int step)
+    private async Task AssignApproversForStepAsync(
+        WorkflowRequest request, RequestMaster requestMaster, int step, int actingEmployeeId)
     {
         var requestDetail = GetRequestDetail(requestMaster.Id, step);
 
-        var approverEmployeeIds = ResolveApproversForStep(request, requestMaster, requestDetail);
+        var approverEmployeeIds = ResolveApproversForStep(request, requestMaster, requestDetail, actingEmployeeId);
 
         if (approverEmployeeIds.Count == 0)
         {
@@ -822,12 +823,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         return steps.Count == 0 ? fallback : steps.Min();
     }
 
-    private List<int> ResolveApproversForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
+    private List<int> ResolveApproversForStep(
+        WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail, int actingEmployeeId)
     {
         // Delegated: role holders narrowed by org scope, manager chains walked to the configured level, and
         // signatories excluded from later signatory steps all live in one place, so escalation resolves
         // approvers exactly the way a normal step does.
-        return _approverResolver.ResolveForStep(request, requestMaster, requestDetail);
+        return _approverResolver.ResolveForStep(request, requestMaster, requestDetail, actingEmployeeId);
     }
 
     /// <summary>

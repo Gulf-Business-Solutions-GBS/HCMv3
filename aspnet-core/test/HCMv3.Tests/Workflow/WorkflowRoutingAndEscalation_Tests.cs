@@ -595,6 +595,121 @@ public class WorkflowRoutingAndEscalation_Tests : AppTestBase
         }
     }
 
+    /// <summary>Who the request is waiting on at <paramref name="step"/>, read from the saved rows.</summary>
+    private List<int> PendingApprovers(int requestId, int step)
+    {
+        return UsingDbContext(context => context.Set<WorkFlowApprover>()
+            .Where(a => a.WorkflowRequestId == requestId && a.WorkflowStep == step && a.ApproverId.HasValue)
+            .Select(a => a.ApproverId.Value)
+            .ToList());
+    }
+
+    [Fact]
+    public async Task Approving_A_Signatory_Step_Should_Not_Route_The_Next_Signatory_Step_Back_To_The_Same_Person()
+    {
+        // The everyday case, through the real Approve path. The approver's log entry for step 1 is added but
+        // not yet saved when step 2 is resolved, so the engine has to exclude the person clicking directly --
+        // reading the log alone would miss them.
+        var requesterId = CreateEmployee("RT320REQ");
+        var firstSignerId = CreateEmployee("RT320ONE");
+        var secondSignerId = CreateEmployee("RT320TWO");
+
+        var roleId = CreateWorkflowRole();
+        GiveRole(firstSignerId, roleId);
+        GiveRole(secondSignerId, roleId);
+
+        var masterId = CreateMaster(steps: 2);
+        AddStep(masterId, 1, roleId: roleId, signatoryStep: true);
+        AddStep(masterId, 2, roleId: roleId, signatoryStep: true);
+        EnableCatalog(masterId);
+
+        var requestId = CreateOpenRequest(requesterId);
+        SetApprover(requestId, firstSignerId);
+
+        await _approval.ApproveAsync(requestId, firstSignerId, remark: null);
+
+        var stepTwo = PendingApprovers(requestId, 2);
+        stepTwo.ShouldNotContain(firstSignerId);
+        stepTwo.ShouldContain(secondSignerId);
+    }
+
+    [Fact]
+    public async Task A_Signatory_Step_Should_Exclude_The_Previous_Approver_Even_When_Their_Step_Was_Not_A_Signatory_Step()
+    {
+        // Legacy parity: legacy dropped the logged-in user from a signatory step whatever step they had
+        // just acted on.
+        var requesterId = CreateEmployee("RT330REQ");
+        var reviewerId = CreateEmployee("RT330REV");
+        var signerId = CreateEmployee("RT330SIG");
+
+        var roleId = CreateWorkflowRole();
+        GiveRole(reviewerId, roleId);
+        GiveRole(signerId, roleId);
+
+        var masterId = CreateMaster(steps: 2);
+        AddStep(masterId, 1, roleId: roleId);
+        AddStep(masterId, 2, roleId: roleId, signatoryStep: true);
+        EnableCatalog(masterId);
+
+        var requestId = CreateOpenRequest(requesterId);
+        SetApprover(requestId, reviewerId);
+
+        await _approval.ApproveAsync(requestId, reviewerId, remark: null);
+
+        var stepTwo = PendingApprovers(requestId, 2);
+        stepTwo.ShouldNotContain(reviewerId);
+        stepTwo.ShouldContain(signerId);
+    }
+
+    [Fact]
+    public async Task A_Signatory_Step_With_No_Fresh_Signer_Should_Fall_Back_To_The_Default_Approver()
+    {
+        // Only the person who just signed holds the role. Routing to nobody would strand the request, so the
+        // chain's nominated last resort gets it -- as in legacy.
+        var requesterId = CreateEmployee("RT340REQ");
+        var onlySignerId = CreateEmployee("RT340ONE");
+        var fallbackId = CreateEmployee("RT340DEF");
+
+        var roleId = CreateWorkflowRole();
+        GiveRole(onlySignerId, roleId);
+
+        var masterId = CreateMaster(steps: 2, defaultApproverId: fallbackId);
+        AddStep(masterId, 1, roleId: roleId, signatoryStep: true);
+        AddStep(masterId, 2, roleId: roleId, signatoryStep: true);
+        EnableCatalog(masterId);
+
+        var requestId = CreateOpenRequest(requesterId);
+        SetApprover(requestId, onlySignerId);
+
+        await _approval.ApproveAsync(requestId, onlySignerId, remark: null);
+
+        PendingApprovers(requestId, 2).ShouldBe(new List<int> { fallbackId });
+    }
+
+    [Fact]
+    public async Task Approving_Should_Still_Route_An_Ordinary_Next_Step_Back_To_The_Same_Person()
+    {
+        // Excluding the person acting is a signatory rule only. An ordinary chain that names the same role
+        // twice must keep working.
+        var requesterId = CreateEmployee("RT350REQ");
+        var approverId = CreateEmployee("RT350APP");
+
+        var roleId = CreateWorkflowRole();
+        GiveRole(approverId, roleId);
+
+        var masterId = CreateMaster(steps: 2);
+        AddStep(masterId, 1, roleId: roleId);
+        AddStep(masterId, 2, roleId: roleId);
+        EnableCatalog(masterId);
+
+        var requestId = CreateOpenRequest(requesterId);
+        SetApprover(requestId, approverId);
+
+        await _approval.ApproveAsync(requestId, approverId, remark: null);
+
+        PendingApprovers(requestId, 2).ShouldContain(approverId);
+    }
+
     // ---------------------------------------------------------------- required comment
 
     [Fact]

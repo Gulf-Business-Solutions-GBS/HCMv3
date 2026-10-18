@@ -18,8 +18,19 @@ public interface IWorkflowApproverResolver
     /// <summary>
     /// Approvers for a step, in the order they should be recorded. Empty when nothing matches, which the
     /// caller treats as a configuration failure rather than an approval.
+    ///
+    /// <para>
+    /// <paramref name="actingEmployeeId"/> is the person whose click is moving the request onto this step
+    /// (the submitter, or the approver of the previous step). A signatory step never goes back to them --
+    /// their own log entry is not saved yet when the next step is resolved, so it has to be passed in.
+    /// Null for system routing such as escalation.
+    /// </para>
     /// </summary>
-    List<int> ResolveForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail);
+    List<int> ResolveForStep(
+        WorkflowRequest request,
+        RequestMaster requestMaster,
+        RequestDetail requestDetail,
+        int? actingEmployeeId = null);
 
     /// <summary>
     /// Approvers to escalate a stalled step TO.

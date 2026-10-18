@@ -89,9 +89,13 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
         _orgHierarchyService = orgHierarchyService;
     }
 
-    public List<int> ResolveForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
+    public List<int> ResolveForStep(
+        WorkflowRequest request,
+        RequestMaster requestMaster,
+        RequestDetail requestDetail,
+        int? actingEmployeeId = null)
     {
-        return ResolveStep(request, requestMaster, requestDetail).Approvers;
+        return ResolveStep(request, requestMaster, requestDetail, actingEmployeeId).Approvers;
     }
 
     public int? ResolveDelegatedFrom(
@@ -129,7 +133,11 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     /// used.
     /// </para>
     /// </summary>
-    private StepApprovers ResolveStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
+    private StepApprovers ResolveStep(
+        WorkflowRequest request,
+        RequestMaster requestMaster,
+        RequestDetail requestDetail,
+        int? actingEmployeeId = null)
     {
         var originalCandidates = ResolveCandidates(request, requestDetail);
 
@@ -138,7 +146,8 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
         if (requestDetail != null && requestDetail.SignatoryStep)
         {
-            candidates = ExcludePreviousSignatories(request, requestMaster, requestDetail.Step, candidates);
+            candidates = ExcludePreviousSignatories(
+                request, requestMaster, requestDetail.Step, candidates, actingEmployeeId);
         }
 
         if (candidates.Count > 0)
@@ -465,12 +474,18 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     /// One person holding two of the roles would otherwise satisfy both steps by clicking twice, which looks
     /// like two approvals in the log and is one in substance.
     /// </para>
+    /// <para>
+    /// The person acting right now is dropped too, whatever kind of step they acted on -- exactly as legacy
+    /// dropped the logged-in user. It is also the only way to catch them: their approval of the previous step
+    /// has been added to the log but not yet saved, so the log query below cannot see it.
+    /// </para>
     /// </summary>
     private List<int> ExcludePreviousSignatories(
         WorkflowRequest request,
         RequestMaster requestMaster,
         int currentStep,
-        List<int> candidates)
+        List<int> candidates,
+        int? actingEmployeeId)
     {
         if (requestMaster == null || candidates.Count == 0)
         {
@@ -482,19 +497,21 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
             .Select(d => d.Step)
             .ToList();
 
-        if (earlierSignatorySteps.Count == 0)
-        {
-            return candidates;
-        }
+        var alreadySigned = earlierSignatorySteps.Count == 0
+            ? new List<int>()
+            : _requestLogRepository.GetAll()
+                .Where(l => l.WorkflowRequestId == request.Id
+                            && l.ActionById.HasValue
+                            && earlierSignatorySteps.Contains(l.WorkflowStep)
+                            && l.ActionType == RequestActionType.Approved)
+                .Select(l => l.ActionById.Value)
+                .Distinct()
+                .ToList();
 
-        var alreadySigned = _requestLogRepository.GetAll()
-            .Where(l => l.WorkflowRequestId == request.Id
-                        && l.ActionById.HasValue
-                        && earlierSignatorySteps.Contains(l.WorkflowStep)
-                        && l.ActionType == RequestActionType.Approved)
-            .Select(l => l.ActionById.Value)
-            .Distinct()
-            .ToList();
+        if (actingEmployeeId.HasValue)
+        {
+            alreadySigned.Add(actingEmployeeId.Value);
+        }
 
         if (alreadySigned.Count == 0)
         {
