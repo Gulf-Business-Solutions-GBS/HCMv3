@@ -43,6 +43,7 @@ export class CreateOrEditEmployeeRejoinModalComponent extends AppComponentBase {
             record.carryForwardTicketBalance = false;
             record.carryForwardIndemnityBalance = false;
             record.carryForwardLoanBalance = false;
+            record.createNewEmployeeCode = false;
             this.record.set(record);
             this.modal().show();
         } else {

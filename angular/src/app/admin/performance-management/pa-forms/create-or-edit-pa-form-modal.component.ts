@@ -7,6 +7,8 @@ import {
     GetAllEmployeesInput,
     GetAllPAPeriodsInput,
     PAFormsServiceProxy,
+    PAFormTickRulesDto,
+    EntityDto,
     PAPeriodDto,
     PAPeriodsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
@@ -39,9 +41,65 @@ export class CreateOrEditPAFormModalComponent extends AppComponentBase {
     /** Calculated by the appraisal process and not on the edit DTO, so the list row passes it in. Display only. */
     readonly overallScore = signal<number | undefined>(undefined);
 
+    /**
+     * Which of the twelve boxes the signed-in employee may see and tick, from the server. Until it arrives
+     * every box is shown and none can be ticked -- offering a box and then having the save refuse it would
+     * be worse than a moment of grey.
+     */
+    readonly tickRules = signal<PAFormTickRulesDto | undefined>(undefined);
+
+    /** The twelve boxes in legacy order: the rule's name for each, and the DTO field it writes. */
+    readonly boxes: { name: string; field: keyof CreateOrEditPAFormDto }[] = [
+        { name: 'PlanSubmitByAppraiser', field: 'planSubmitByAppraiser' },
+        { name: 'PlanSubmitByAppraisee', field: 'planSubmitByAppraisee' },
+        { name: 'Quarter1SubmitByAppraiser', field: 'quarter1SubmitByAppraiser' },
+        { name: 'Quarter1SubmitByAppraisee', field: 'quarter1SubmitByAppraisee' },
+        { name: 'MRSubmitByAppraiser', field: 'mrSubmitByAppraiser' },
+        { name: 'MRSubmitByAppraisee', field: 'mrSubmitByAppraisee' },
+        { name: 'Quarter3SubmitByAppraiser', field: 'quarter3SubmitByAppraiser' },
+        { name: 'Quarter3SubmitByAppraisee', field: 'quarter3SubmitByAppraisee' },
+        { name: 'ERSubmitByAppraiser', field: 'erSubmitByAppraiser' },
+        { name: 'ERSubmitByAppraisee', field: 'erSubmitByAppraisee' },
+        { name: 'AppraiserSignedOff', field: 'appraiserSignedOff' },
+        { name: 'AppraiseeSignedOff', field: 'appraiseeSignedOff' },
+    ];
+
+    boxVisible(name: string): boolean {
+        const rule = this.tickRules()?.boxes?.find((b) => b.box === name);
+        return rule ? !!rule.visible : true;
+    }
+
+    boxEnabled(name: string): boolean {
+        const rule = this.tickRules()?.boxes?.find((b) => b.box === name);
+        return !!rule?.enabled;
+    }
+
+    /** A nominated peer marks their own peer review submitted. Saved at once; there is nothing else for them to save. */
+    submitPeerReview(ticked: boolean): void {
+        const id = this.paForm().id;
+        if (!ticked || !id) {
+            return;
+        }
+
+        this.saving.set(true);
+        this._service
+            .submitPeerReview(new EntityDto({ id }))
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.loadTickRules(id);
+            });
+    }
+
+    private loadTickRules(id?: number): void {
+        this.tickRules.set(undefined);
+        this._service.getPAFormTickRules(id).subscribe((rules) => this.tickRules.set(rules));
+    }
+
     show(id?: number, overallScore?: number): void {
         this.active.set(true);
         this.overallScore.set(id ? overallScore : undefined);
+        this.loadTickRules(id);
 
         this._paPeriodsService
             .getAll(new GetAllPAPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))

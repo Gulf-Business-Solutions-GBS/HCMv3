@@ -125,6 +125,32 @@ public interface IWorkflowTransactionHandler : IDomainService
     Task OnStepActionAsync(WorkflowTransactionContext context, WorkflowStepAction action, int step);
 
     /// <summary>
+    /// Approvers have just been assigned to a step: on submission (the first approver step) and each time
+    /// an approval moves the request on to the next step.
+    ///
+    /// <para>
+    /// Exists for the 360 appraisal, whose legacy reviewers were added at exactly this moment
+    /// (<c>WorkFlowServices.OperateApproverInfo</c>) -- not when the step is approved, which is what
+    /// <see cref="OnStepActionAsync"/> reports. A send-back adds nothing here: it re-assigns no step until
+    /// the request is resubmitted, and whatever was added before stays, as in legacy.
+    /// </para>
+    ///
+    /// <para>
+    /// <b>Unlike <see cref="OnStepActionAsync"/>, this one is part of the action.</b> It runs inside the same
+    /// unit of work, after the approver rows are written, and may write; if it throws, the submission or
+    /// approval rolls back with it. That is what legacy did, and it is the only safe reading for a rule that
+    /// changes who scores an appraisal: a step must not open with half its reviewers.
+    /// </para>
+    /// </summary>
+    /// <param name="context">The request and who acted.</param>
+    /// <param name="step">The step the approvers were assigned to.</param>
+    /// <param name="approverEmployeeIds">The employees now approving that step, in assignment order.</param>
+    Task OnApproversAssignedAsync(
+        WorkflowTransactionContext context,
+        int step,
+        System.Collections.Generic.IReadOnlyList<int> approverEmployeeIds);
+
+    /// <summary>
     /// Whether this transaction type can be CHANGED through workflow after it has already been approved.
     ///
     /// <para>

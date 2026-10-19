@@ -12,11 +12,13 @@ import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditNotificationMasterModalComponent } from './create-or-edit-notification-master-modal.component';
+import { NotificationSentLogModalComponent } from './notification-sent-log-modal.component';
+import { printFormula } from '../../business-rules/rule-formula';
+import { RuleExpression } from '../../business-rules/rule-model';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 
 @Component({
     templateUrl: './notification-masters.component.html',
@@ -31,15 +33,16 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         TieredMenu,
         Tooltip,
         CreateOrEditNotificationMasterModalComponent,
+        NotificationSentLogModalComponent,
         LocalizePipe,
         PermissionPipe,
-        PermissionAnyPipe,
     ],
 })
 export class NotificationMastersComponent extends AppComponentBase implements OnInit {
     private _service = inject(NotificationMastersServiceProxy);
 
     readonly createOrEditModal = viewChild<CreateOrEditNotificationMasterModalComponent>('createOrEditModal');
+    readonly sentLogModal = viewChild<NotificationSentLogModalComponent>('sentLogModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -89,8 +92,31 @@ export class NotificationMastersComponent extends AppComponentBase implements On
         menu.toggle(event);
     }
 
+    /** The stored criterion as the formula the administrator typed; legacy text is shown as it is. */
+    criterionText(record: NotificationMasterDto): string {
+        if (!record.criterion) {
+            return this.l('NotificationCriterionAllRecords');
+        }
+
+        try {
+            return printFormula(JSON.parse(record.criterion) as RuleExpression);
+        } catch {
+            return record.criterion;
+        }
+    }
+
+    showSentLog(record?: NotificationMasterDto): void {
+        this.sentLogModal().show(record?.id, record?.notificationTypeName);
+    }
+
     getMenuItems(record: NotificationMasterDto): MenuItem[] {
-        const items: MenuItem[] = [];
+        const items: MenuItem[] = [
+            {
+                label: this.l('NotificationSentHistory'),
+                icon: 'pi pi-history',
+                command: () => this.showSentLog(record),
+            },
+        ];
 
         if (this.permission.isGranted('Pages.SystemSecurity.NotificationMasters.Edit')) {
             items.push({

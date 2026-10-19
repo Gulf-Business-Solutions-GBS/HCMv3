@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
+using HCMv3.PerformanceManagement.Review;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -35,15 +36,13 @@ namespace HCMv3.PerformanceManagement.Workflow;
 /// </para>
 ///
 /// <para>
-/// <b>No approval side effect, on purpose.</b> Legacy did have one, but it fired when APPROVERS WERE
-/// ASSIGNED rather than on approval (<c>WorkFlowServices.OperateApproverInfo</c>): it auto-created
-/// <see cref="PAEmployeeReviewer"/> rows for the appraisee, the approver, the current manager and anyone
-/// related through configured relationship types. Every branch of it is gated on the legacy <c>PARequest</c>
-/// flags <c>CanEmployeeSelfRate</c>, <c>CanAddRatings</c>, <c>AutoAddManager</c> and
-/// <c>AutoAddRelationShip</c>, which hang off the legacy request master and have no counterpart on HCMv3's
-/// <c>RequestMaster</c>/<c>RequestDetail</c>. Reproducing it would mean inventing those flags and picking
-/// defaults, and a wrong default here silently adds or omits a reviewer -- which changes the score. So the
-/// base behaviour stands and the gap is reported rather than guessed at.
+/// <b>Reviewers are added when approvers are assigned</b>, not on approval -- legacy's one side effect for
+/// this type (<c>WorkFlowServices.OperateApproverInfo</c>). The step's <see cref="AppraisalStepSetting"/>
+/// (legacy <c>PARequest</c>, "Appraisal WF Setup") decides who: the appraisee (self rate), each approver
+/// (can add ratings), the current manager and anyone related through the configured relationship types.
+/// Every flag defaults to off and nothing is seeded, so with no setting for the step nobody is added --
+/// which is also what an appraisal already in flight gets: nothing is back-filled. A send-back removes
+/// nobody; a reviewer once added stays (the owner's decision, as legacy).
 /// </para>
 /// </summary>
 public class AppraisalWorkflowTransactionHandler : WorkflowTransactionHandlerBase<PAEmployee>
@@ -53,16 +52,22 @@ public class AppraisalWorkflowTransactionHandler : WorkflowTransactionHandlerBas
 
     private readonly IRepository<PACycle> _cycleRepository;
     private readonly IRepository<FormType> _formTypeRepository;
+    private readonly IAppraisalStepSettingResolver _stepSettingResolver;
+    private readonly IAppraisalReviewerManager _reviewerManager;
 
     public AppraisalWorkflowTransactionHandler(
         IRepository<PAEmployee> repository,
         IRepository<PACycle> cycleRepository,
         IRepository<FormType> formTypeRepository,
+        IAppraisalStepSettingResolver stepSettingResolver,
+        IAppraisalReviewerManager reviewerManager,
         IUnitOfWorkManager unitOfWorkManager)
         : base(repository, unitOfWorkManager)
     {
         _cycleRepository = cycleRepository;
         _formTypeRepository = formTypeRepository;
+        _stepSettingResolver = stepSettingResolver;
+        _reviewerManager = reviewerManager;
     }
 
     public override string RequestType => AppraisalRequestType;
@@ -135,5 +140,72 @@ public class AppraisalWorkflowTransactionHandler : WorkflowTransactionHandlerBas
         return new WorkflowSummary(
             $"{cycle?.NameEn ?? "Appraisal"}, {formType?.NameEn ?? "-"}, score {score}",
             $"{cycle?.NameAr ?? "تقييم"}، {formType?.NameAr ?? "-"}، النتيجة {score}");
+    }
+
+    /// <summary>
+    /// Adds the step's reviewers the moment its approvers are known -- legacy's timing exactly. Inside the
+    /// action: if a reviewer cannot be added (the form type's reviewer limit, most likely), the submission or
+    /// approval fails with the reason, as it did in legacy, rather than opening a step that is missing
+    /// somebody who should have scored.
+    /// </summary>
+    public override async Task OnApproversAssignedAsync(
+        WorkflowTransactionContext context,
+        int step,
+        System.Collections.Generic.IReadOnlyList<int> approverEmployeeIds)
+    {
+        if (context.IsAmendment)
+        {
+            return;
+        }
+
+        var appraisal = await GetTargetAsync(context);
+        if (appraisal == null)
+        {
+            return;
+        }
+
+        var setting = await _stepSettingResolver.GetForStepAsync(context.Request, step);
+        if (setting == null)
+        {
+            return;
+        }
+
+        await _reviewerManager.AddStepReviewersAsync(appraisal, setting, approverEmployeeIds);
+    }
+
+    /// <summary>
+    /// The appraisal's own fields for the approver's card: which cycle and form, the three scores and the
+    /// proposals. The review itself -- KPI lines, ratings, reviewers -- is read live by the appraisal review
+    /// form, which the card hosts by the target id.
+    /// </summary>
+    public override async Task<WorkflowRequestDetail> BuildDetailAsync(WorkflowTransactionContext context)
+    {
+        var appraisal = await GetTargetAsync(context);
+        if (appraisal == null)
+        {
+            return await base.BuildDetailAsync(context);
+        }
+
+        var cycle = _cycleRepository.GetAll()
+            .Where(c => c.Id == appraisal.PACycleId)
+            .Select(c => new { c.NameEn, c.NameAr })
+            .FirstOrDefault();
+
+        var formType = _formTypeRepository.GetAll()
+            .Where(f => f.Id == appraisal.FormTypeId)
+            .Select(f => new { f.NameEn, f.NameAr })
+            .FirstOrDefault();
+
+        var isArabic = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+
+        return new WorkflowRequestDetail()
+            .Add(WorkflowDetailField.Text(WorkflowDetailFieldNames.RequestNumber, L("RequestNumber"), context.Request?.RequestNumber))
+            .Add(WorkflowDetailField.Text(nameof(PAEmployee.PACycle), L("PACycle"), isArabic ? cycle?.NameAr ?? cycle?.NameEn : cycle?.NameEn))
+            .Add(WorkflowDetailField.Text(nameof(PAEmployee.FormType), L("FormType"), isArabic ? formType?.NameAr ?? formType?.NameEn : formType?.NameEn))
+            .Add(WorkflowDetailField.Number(nameof(PAEmployee.OverallAverageScore), L("OverallAverageScore"), (decimal)appraisal.OverallAverageScore))
+            .Add(WorkflowDetailField.Number(nameof(PAEmployee.PeerAverageScore), L("PeerAverageScore"), (decimal)appraisal.PeerAverageScore))
+            .Add(WorkflowDetailField.Number(nameof(PAEmployee.EmployeeAverageScore), L("EmployeeAverageScore"), (decimal)appraisal.EmployeeAverageScore))
+            .Add(WorkflowDetailField.Text(nameof(PAEmployee.ProposedIncrement), L("ProposedIncrement"), appraisal.ProposedIncrement))
+            .Add(WorkflowDetailField.Text(nameof(PAEmployee.ProposedJobTitle), L("ProposedJobTitle"), appraisal.ProposedJobTitle));
     }
 }

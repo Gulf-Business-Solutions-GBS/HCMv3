@@ -40,10 +40,10 @@ namespace HCMv3.PersonnelAdministration.Services;
 /// <c>EmployeePayment</c>. <c>EmployeeGratuity</c>, <c>EmployeeAbsAdjustment</c> and <c>EmployeeTktAdjustment</c>
 /// carry no such column in this port, the same data-shape gap <c>IndemnityCalculationService</c>
 /// documents.</description></item>
-/// <item><description><b><c>EmployeeRejoin.CreateNewEmployeeCode</c> does not exist here.</b> Legacy filtered
-/// rejoins to those that KEPT the employee code; this port's rejoin always keeps the same employee (it carries
-/// balances forward on the one record), so every rejoin qualifies and the filter is dropped.
-/// <c>StartDate</c> is <c>RejoinDate</c> here.</description></item>
+/// <item><description><b>Where service restarts</b> (<c>startExit</c>): as legacy, only rejoins that KEPT the
+/// employee code (<c>EmployeeRejoin.CreateNewEmployeeCode</c> off) move it. The filter was dropped while the rejoin
+/// could not create a new employee, and restored with <c>EmployeeRejoinService</c>. <c>StartDate</c> is
+/// <c>RejoinDate</c> here.</description></item>
 /// <item><description><b>The slab list is not a static.</b> Legacy built <c>IndemnitySlabList</c> as a
 /// process-wide static inside <c>GetIndemnitySuggested</c>, and <c>GetIndemnityAccrude</c> then read whatever a
 /// PREVIOUS call had left in it -- stale, and different per request. Here the suggestion builds its own list,
@@ -1147,8 +1147,13 @@ public class FullAndFinalSettlementService : HCMv3DomainServiceBase, IFullAndFin
 
         var startExit = employee.JoiningDate > earliestEvaluationDate ? employee.JoiningDate : earliestEvaluationDate;
 
+        // Legacy 714 / 1077: only a rejoin that KEPT the employee code restarts service on this record. A rejoin
+        // that created a new employee leaves the old one's service where it was.
         var rejoin = _rejoinRepository.GetAll()
-            .Where(r => r.EmployeeId == employee.Id && r.RejoinDate <= compensationDate && r.RejoinDate >= startExit)
+            .Where(r => r.EmployeeId == employee.Id
+                        && !r.CreateNewEmployeeCode
+                        && r.RejoinDate <= compensationDate
+                        && r.RejoinDate >= startExit)
             .OrderByDescending(r => r.RejoinDate)
             .FirstOrDefault();
 

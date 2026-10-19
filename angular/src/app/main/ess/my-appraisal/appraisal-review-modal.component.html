@@ -1,0 +1,22 @@
+<div
+    appBsModal
+    #reviewModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ title() }}</h4>
+                <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')"></button>
+            </div>
+            <div class="modal-body">
+                @if (value(); as v) {
+                    <appraisal-review-form mode="view" [value]="v" (changed)="changed.emit()" (cancelled)="close()" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

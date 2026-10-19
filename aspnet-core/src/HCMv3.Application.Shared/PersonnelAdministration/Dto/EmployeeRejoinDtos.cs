@@ -17,6 +17,11 @@ public class EmployeeRejoinDto : EntityDto<int>
     public bool CarryForwardTicketBalance { get; set; }
     public bool CarryForwardIndemnityBalance { get; set; }
     public bool CarryForwardLoanBalance { get; set; }
+    public bool CreateNewEmployeeCode { get; set; }
+
+    /// <summary>The employee this rejoin created (new-code rejoins only), for the link on the list.</summary>
+    public int? NewEmployeeId { get; set; }
+    public string NewEmployeeCode { get; set; }
 }
 
 public class CreateOrEditEmployeeRejoinDto
@@ -39,6 +44,11 @@ public class CreateOrEditEmployeeRejoinDto
     public bool CarryForwardIndemnityBalance { get; set; }
 
     public bool CarryForwardLoanBalance { get; set; }
+
+    /// <summary>
+    /// Rejoin as a NEW employee with a new code (legacy CreateNewEmployeeCode) instead of reactivating this one.
+    /// </summary>
+    public bool CreateNewEmployeeCode { get; set; }
 }
 
 public class GetEmployeeRejoinForEditOutput

@@ -6564,6 +6564,285 @@ export class ApplicationStatusesServiceProxy {
 }
 
 @Injectable()
+export class AppraisalStepSettingsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllAppraisalStepSettingsInput | undefined): Observable<PagedResultDtoOfAppraisalStepSettingDto> {
+        let url_ = this.baseUrl + "/api/services/app/AppraisalStepSettings/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfAppraisalStepSettingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfAppraisalStepSettingDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfAppraisalStepSettingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAppraisalStepSettingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getAppraisalStepSettingForEdit(id?: number | undefined): Observable<GetAppraisalStepSettingForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/AppraisalStepSettings/GetAppraisalStepSettingForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAppraisalStepSettingForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAppraisalStepSettingForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAppraisalStepSettingForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAppraisalStepSettingForEditOutput>;
+        }));
+    }
+
+    protected processGetAppraisalStepSettingForEdit(response: HttpResponseBase): Observable<GetAppraisalStepSettingForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAppraisalStepSettingForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getLookups(): Observable<AppraisalStepSettingLookupsDto> {
+        let url_ = this.baseUrl + "/api/services/app/AppraisalStepSettings/GetLookups";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLookups(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLookups(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AppraisalStepSettingLookupsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AppraisalStepSettingLookupsDto>;
+        }));
+    }
+
+    protected processGetLookups(response: HttpResponseBase): Observable<AppraisalStepSettingLookupsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AppraisalStepSettingLookupsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEdit(body?: CreateOrEditAppraisalStepSettingDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AppraisalStepSettings/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AppraisalStepSettings/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AssetReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -11789,130 +12068,6 @@ export class BulkImportExportServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = ImportTimesheetOutput.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
-export class BulkPasswordServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    getBulkPasswordCandidates(body?: GetBulkPasswordCandidatesInput | undefined): Observable<PagedResultDtoOfBulkPasswordCandidateDto> {
-        let url_ = this.baseUrl + "/api/services/app/BulkPassword/GetBulkPasswordCandidates";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetBulkPasswordCandidates(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetBulkPasswordCandidates(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<PagedResultDtoOfBulkPasswordCandidateDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<PagedResultDtoOfBulkPasswordCandidateDto>;
-        }));
-    }
-
-    protected processGetBulkPasswordCandidates(response: HttpResponseBase): Observable<PagedResultDtoOfBulkPasswordCandidateDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfBulkPasswordCandidateDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    bulkResetPasswords(body?: BulkResetPasswordsInput | undefined): Observable<BulkResetPasswordsResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/BulkPassword/BulkResetPasswords";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processBulkResetPasswords(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processBulkResetPasswords(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<BulkResetPasswordsResultDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<BulkResetPasswordsResultDto>;
-        }));
-    }
-
-    protected processBulkResetPasswords(response: HttpResponseBase): Observable<BulkResetPasswordsResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BulkResetPasswordsResultDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -85160,6 +85315,181 @@ export class LeaveRequestReportServiceProxy {
 }
 
 @Injectable()
+export class LicenceAssignmentServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getSummary(): Observable<GetLicenceAssignmentSummaryOutput> {
+        let url_ = this.baseUrl + "/api/services/app/LicenceAssignment/GetSummary";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSummary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSummary(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetLicenceAssignmentSummaryOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetLicenceAssignmentSummaryOutput>;
+        }));
+    }
+
+    protected processGetSummary(response: HttpResponseBase): Observable<GetLicenceAssignmentSummaryOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetLicenceAssignmentSummaryOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getUsers(body?: GetLicenceAssignmentUsersInput | undefined): Observable<PagedResultDtoOfLicenceAssignmentUserDto> {
+        let url_ = this.baseUrl + "/api/services/app/LicenceAssignment/GetUsers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUsers(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLicenceAssignmentUserDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLicenceAssignmentUserDto>;
+        }));
+    }
+
+    protected processGetUsers(response: HttpResponseBase): Observable<PagedResultDtoOfLicenceAssignmentUserDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLicenceAssignmentUserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    setUserModuleLicence(body?: SetUserModuleLicenceInput | undefined): Observable<LicenceModuleUsageDto> {
+        let url_ = this.baseUrl + "/api/services/app/LicenceAssignment/SetUserModuleLicence";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetUserModuleLicence(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetUserModuleLicence(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LicenceModuleUsageDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LicenceModuleUsageDto>;
+        }));
+    }
+
+    protected processSetUserModuleLicence(response: HttpResponseBase): Observable<LicenceModuleUsageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LicenceModuleUsageDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class LoanInstallmentsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -91332,6 +91662,461 @@ export class MonthlyTimeRegistersServiceProxy {
     }
 
     protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyAppraisalServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyAppraisals(body?: GetMyAppraisalsInput | undefined): Observable<PagedResultDtoOfMyAppraisalListDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/GetMyAppraisals";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyAppraisals(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyAppraisals(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyAppraisalListDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyAppraisalListDto>;
+        }));
+    }
+
+    protected processGetMyAppraisals(response: HttpResponseBase): Observable<PagedResultDtoOfMyAppraisalListDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyAppraisalListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getAppraisalReview(id?: number | undefined): Observable<MyAppraisalReviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/GetAppraisalReview?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAppraisalReview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAppraisalReview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyAppraisalReviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyAppraisalReviewDto>;
+        }));
+    }
+
+    protected processGetAppraisalReview(response: HttpResponseBase): Observable<MyAppraisalReviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyAppraisalReviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveReview(body?: SaveMyAppraisalReviewInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/SaveReview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveReview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveReview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSaveReview(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitReview(body?: SaveMyAppraisalReviewInput | undefined): Observable<SubmitMyAppraisalReviewResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/SubmitReview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitReview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitReview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SubmitMyAppraisalReviewResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SubmitMyAppraisalReviewResultDto>;
+        }));
+    }
+
+    protected processSubmitReview(response: HttpResponseBase): Observable<SubmitMyAppraisalReviewResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SubmitMyAppraisalReviewResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getKpiSources(id?: number | undefined): Observable<MyAppraisalKpiSourcesDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/GetKpiSources?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetKpiSources(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetKpiSources(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyAppraisalKpiSourcesDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyAppraisalKpiSourcesDto>;
+        }));
+    }
+
+    protected processGetKpiSources(response: HttpResponseBase): Observable<MyAppraisalKpiSourcesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyAppraisalKpiSourcesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    copyKpi(body?: CopyMyAppraisalKpiInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/CopyKpi";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCopyKpi(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCopyKpi(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCopyKpi(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPeerCandidates(body?: GetMyAppraisalPeerCandidatesInput | undefined): Observable<MyAppraisalPersonDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/GetPeerCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPeerCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPeerCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyAppraisalPersonDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyAppraisalPersonDto[]>;
+        }));
+    }
+
+    protected processGetPeerCandidates(response: HttpResponseBase): Observable<MyAppraisalPersonDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MyAppraisalPersonDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addPeer(body?: AddMyAppraisalPeerInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyAppraisal/AddPeer";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddPeer(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddPeer(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processAddPeer(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -101645,6 +102430,299 @@ export class NotificationMastersServiceProxy {
 }
 
 @Injectable()
+export class NotificationRulesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getNotificationRuleMetadata(): Observable<NotificationRuleMetadataDto> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationRules/GetNotificationRuleMetadata";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNotificationRuleMetadata(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNotificationRuleMetadata(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NotificationRuleMetadataDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NotificationRuleMetadataDto>;
+        }));
+    }
+
+    protected processGetNotificationRuleMetadata(response: HttpResponseBase): Observable<NotificationRuleMetadataDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NotificationRuleMetadataDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param notificationType (optional) 
+     * @return OK
+     */
+    getSubTypes(notificationType?: string | null | undefined): Observable<NotificationRuleSubTypeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationRules/GetSubTypes?";
+        if (notificationType !== undefined && notificationType !== null)
+            url_ += "notificationType=" + encodeURIComponent("" + notificationType) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NotificationRuleSubTypeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NotificationRuleSubTypeDto[]>;
+        }));
+    }
+
+    protected processGetSubTypes(response: HttpResponseBase): Observable<NotificationRuleSubTypeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NotificationRuleSubTypeDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    previewNotificationRule(body?: PreviewNotificationRuleInput | undefined): Observable<NotificationRulePreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationRules/PreviewNotificationRule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreviewNotificationRule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreviewNotificationRule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NotificationRulePreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NotificationRulePreviewDto>;
+        }));
+    }
+
+    protected processPreviewNotificationRule(response: HttpResponseBase): Observable<NotificationRulePreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NotificationRulePreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    markExistingAsSent(body?: EntityDto | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationRules/MarkExistingAsSent";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMarkExistingAsSent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMarkExistingAsSent(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processMarkExistingAsSent(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getSentLogs(body?: GetNotificationSentLogsInput | undefined): Observable<PagedResultDtoOfNotificationSentLogDto> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationRules/GetSentLogs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSentLogs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSentLogs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfNotificationSentLogDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfNotificationSentLogDto>;
+        }));
+    }
+
+    protected processGetSentLogs(response: HttpResponseBase): Observable<PagedResultDtoOfNotificationSentLogDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfNotificationSentLogDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class NumberSeriesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -108684,6 +109762,112 @@ export class PAFormsServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getPAFormTickRules(id?: number | null | undefined): Observable<PAFormTickRulesDto> {
+        let url_ = this.baseUrl + "/api/services/app/PAForms/GetPAFormTickRules?";
+        if (id !== undefined && id !== null)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPAFormTickRules(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPAFormTickRules(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PAFormTickRulesDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PAFormTickRulesDto>;
+        }));
+    }
+
+    protected processGetPAFormTickRules(response: HttpResponseBase): Observable<PAFormTickRulesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PAFormTickRulesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitPeerReview(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PAForms/SubmitPeerReview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitPeerReview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitPeerReview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSubmitPeerReview(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -170947,6 +172131,46 @@ export interface IAddAttachmentInput {
     fileToken: string;
 }
 
+export class AddMyAppraisalPeerInput implements IAddMyAppraisalPeerInput {
+    paEmployeeId!: number;
+    peerEmployeeId!: number;
+
+    constructor(data?: IAddMyAppraisalPeerInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.paEmployeeId = _data["paEmployeeId"];
+            this.peerEmployeeId = _data["peerEmployeeId"];
+        }
+    }
+
+    static fromJS(data: any): AddMyAppraisalPeerInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddMyAppraisalPeerInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["paEmployeeId"] = this.paEmployeeId;
+        data["peerEmployeeId"] = this.peerEmployeeId;
+        return data;
+    }
+}
+
+export interface IAddMyAppraisalPeerInput {
+    paEmployeeId: number;
+    peerEmployeeId: number;
+}
+
 export class AddNewPageInput implements IAddNewPageInput {
     dashboardName!: string | undefined;
     name!: string | undefined;
@@ -173256,6 +174480,274 @@ export interface IAppraisalSettingsListDto {
     setPeerMaxLimit: number;
     enableMarksInPAReview: boolean;
     marksOn: MarksOn;
+}
+
+export class AppraisalStepSettingDto implements IAppraisalStepSettingDto {
+    id!: number;
+    requestMasterId!: number;
+    requestMasterNameEn!: string | undefined;
+    requestMasterNameAr!: string | undefined;
+    step!: number;
+    canAddKpi!: boolean;
+    canAddPeer!: boolean;
+    canAddRatings!: boolean;
+    canViewPeerRatings!: boolean;
+    canViewRatings!: boolean;
+    canPeerAddRatings!: boolean;
+    canViewOverallAverageRating!: boolean;
+    canEmployeeSelfRate!: boolean;
+    autoAddManager!: boolean;
+    autoAddRelationShip!: boolean;
+    autoSubmitOnLastFill!: boolean;
+    allowedPeerCount!: number;
+    relationshipTypeNames!: string | undefined;
+
+    constructor(data?: IAppraisalStepSettingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestMasterId = _data["requestMasterId"];
+            this.requestMasterNameEn = _data["requestMasterNameEn"];
+            this.requestMasterNameAr = _data["requestMasterNameAr"];
+            this.step = _data["step"];
+            this.canAddKpi = _data["canAddKpi"];
+            this.canAddPeer = _data["canAddPeer"];
+            this.canAddRatings = _data["canAddRatings"];
+            this.canViewPeerRatings = _data["canViewPeerRatings"];
+            this.canViewRatings = _data["canViewRatings"];
+            this.canPeerAddRatings = _data["canPeerAddRatings"];
+            this.canViewOverallAverageRating = _data["canViewOverallAverageRating"];
+            this.canEmployeeSelfRate = _data["canEmployeeSelfRate"];
+            this.autoAddManager = _data["autoAddManager"];
+            this.autoAddRelationShip = _data["autoAddRelationShip"];
+            this.autoSubmitOnLastFill = _data["autoSubmitOnLastFill"];
+            this.allowedPeerCount = _data["allowedPeerCount"];
+            this.relationshipTypeNames = _data["relationshipTypeNames"];
+        }
+    }
+
+    static fromJS(data: any): AppraisalStepSettingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppraisalStepSettingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestMasterId"] = this.requestMasterId;
+        data["requestMasterNameEn"] = this.requestMasterNameEn;
+        data["requestMasterNameAr"] = this.requestMasterNameAr;
+        data["step"] = this.step;
+        data["canAddKpi"] = this.canAddKpi;
+        data["canAddPeer"] = this.canAddPeer;
+        data["canAddRatings"] = this.canAddRatings;
+        data["canViewPeerRatings"] = this.canViewPeerRatings;
+        data["canViewRatings"] = this.canViewRatings;
+        data["canPeerAddRatings"] = this.canPeerAddRatings;
+        data["canViewOverallAverageRating"] = this.canViewOverallAverageRating;
+        data["canEmployeeSelfRate"] = this.canEmployeeSelfRate;
+        data["autoAddManager"] = this.autoAddManager;
+        data["autoAddRelationShip"] = this.autoAddRelationShip;
+        data["autoSubmitOnLastFill"] = this.autoSubmitOnLastFill;
+        data["allowedPeerCount"] = this.allowedPeerCount;
+        data["relationshipTypeNames"] = this.relationshipTypeNames;
+        return data;
+    }
+}
+
+export interface IAppraisalStepSettingDto {
+    id: number;
+    requestMasterId: number;
+    requestMasterNameEn: string | undefined;
+    requestMasterNameAr: string | undefined;
+    step: number;
+    canAddKpi: boolean;
+    canAddPeer: boolean;
+    canAddRatings: boolean;
+    canViewPeerRatings: boolean;
+    canViewRatings: boolean;
+    canPeerAddRatings: boolean;
+    canViewOverallAverageRating: boolean;
+    canEmployeeSelfRate: boolean;
+    autoAddManager: boolean;
+    autoAddRelationShip: boolean;
+    autoSubmitOnLastFill: boolean;
+    allowedPeerCount: number;
+    relationshipTypeNames: string | undefined;
+}
+
+export class AppraisalStepSettingLookupsDto implements IAppraisalStepSettingLookupsDto {
+    requestMasters!: AppraisalStepSettingRequestMasterDto[] | undefined;
+    relationshipTypes!: AppraisalStepSettingRelationshipTypeDto[] | undefined;
+
+    constructor(data?: IAppraisalStepSettingLookupsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["requestMasters"])) {
+                this.requestMasters = [] as any;
+                for (let item of _data["requestMasters"])
+                    this.requestMasters!.push(AppraisalStepSettingRequestMasterDto.fromJS(item));
+            }
+            if (Array.isArray(_data["relationshipTypes"])) {
+                this.relationshipTypes = [] as any;
+                for (let item of _data["relationshipTypes"])
+                    this.relationshipTypes!.push(AppraisalStepSettingRelationshipTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AppraisalStepSettingLookupsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppraisalStepSettingLookupsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.requestMasters)) {
+            data["requestMasters"] = [];
+            for (let item of this.requestMasters)
+                data["requestMasters"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.relationshipTypes)) {
+            data["relationshipTypes"] = [];
+            for (let item of this.relationshipTypes)
+                data["relationshipTypes"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IAppraisalStepSettingLookupsDto {
+    requestMasters: AppraisalStepSettingRequestMasterDto[] | undefined;
+    relationshipTypes: AppraisalStepSettingRelationshipTypeDto[] | undefined;
+}
+
+export class AppraisalStepSettingRelationshipTypeDto implements IAppraisalStepSettingRelationshipTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IAppraisalStepSettingRelationshipTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): AppraisalStepSettingRelationshipTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppraisalStepSettingRelationshipTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IAppraisalStepSettingRelationshipTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+}
+
+export class AppraisalStepSettingRequestMasterDto implements IAppraisalStepSettingRequestMasterDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    steps!: number[] | undefined;
+
+    constructor(data?: IAppraisalStepSettingRequestMasterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            if (Array.isArray(_data["steps"])) {
+                this.steps = [] as any;
+                for (let item of _data["steps"])
+                    this.steps!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): AppraisalStepSettingRequestMasterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppraisalStepSettingRequestMasterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        if (Array.isArray(this.steps)) {
+            data["steps"] = [];
+            for (let item of this.steps)
+                data["steps"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IAppraisalStepSettingRequestMasterDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    steps: number[] | undefined;
 }
 
 export enum ApprovalRequire {
@@ -176640,154 +178132,6 @@ export enum BulkImportType {
     Purge = 1,
 }
 
-export class BulkPasswordCandidateDto implements IBulkPasswordCandidateDto {
-    id!: number;
-    userName!: string | undefined;
-    code!: string | undefined;
-    employeeName!: string | undefined;
-    email!: string | undefined;
-
-    constructor(data?: IBulkPasswordCandidateDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-            this.code = _data["code"];
-            this.employeeName = _data["employeeName"];
-            this.email = _data["email"];
-        }
-    }
-
-    static fromJS(data: any): BulkPasswordCandidateDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new BulkPasswordCandidateDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        data["code"] = this.code;
-        data["employeeName"] = this.employeeName;
-        data["email"] = this.email;
-        return data;
-    }
-}
-
-export interface IBulkPasswordCandidateDto {
-    id: number;
-    userName: string | undefined;
-    code: string | undefined;
-    employeeName: string | undefined;
-    email: string | undefined;
-}
-
-export class BulkResetPasswordsInput implements IBulkResetPasswordsInput {
-    employeeIds!: number[] | undefined;
-
-    constructor(data?: IBulkResetPasswordsInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["employeeIds"])) {
-                this.employeeIds = [] as any;
-                for (let item of _data["employeeIds"])
-                    this.employeeIds!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): BulkResetPasswordsInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new BulkResetPasswordsInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.employeeIds)) {
-            data["employeeIds"] = [];
-            for (let item of this.employeeIds)
-                data["employeeIds"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IBulkResetPasswordsInput {
-    employeeIds: number[] | undefined;
-}
-
-export class BulkResetPasswordsResultDto implements IBulkResetPasswordsResultDto {
-    updatedPasswordCount!: number;
-    emailedPasswordCount!: number;
-    messages!: string[] | undefined;
-
-    constructor(data?: IBulkResetPasswordsResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.updatedPasswordCount = _data["updatedPasswordCount"];
-            this.emailedPasswordCount = _data["emailedPasswordCount"];
-            if (Array.isArray(_data["messages"])) {
-                this.messages = [] as any;
-                for (let item of _data["messages"])
-                    this.messages!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): BulkResetPasswordsResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new BulkResetPasswordsResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["updatedPasswordCount"] = this.updatedPasswordCount;
-        data["emailedPasswordCount"] = this.emailedPasswordCount;
-        if (Array.isArray(this.messages)) {
-            data["messages"] = [];
-            for (let item of this.messages)
-                data["messages"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IBulkResetPasswordsResultDto {
-    updatedPasswordCount: number;
-    emailedPasswordCount: number;
-    messages: string[] | undefined;
-}
-
 export class BulkUploadLogDto implements IBulkUploadLogDto {
     id!: number;
     logType!: BulkUploadLogType;
@@ -180119,6 +181463,58 @@ export interface ICompetencyTypeDto {
     foreColor: string | undefined;
 }
 
+export class CopyMyAppraisalKpiInput implements ICopyMyAppraisalKpiInput {
+    paEmployeeId!: number;
+    kpiFrom!: KpiFrom;
+    kpiByJobTitleId!: number | undefined;
+    kpiByOrgUnitId!: number | undefined;
+    sourceEmployeeId!: number | undefined;
+
+    constructor(data?: ICopyMyAppraisalKpiInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.paEmployeeId = _data["paEmployeeId"];
+            this.kpiFrom = _data["kpiFrom"];
+            this.kpiByJobTitleId = _data["kpiByJobTitleId"];
+            this.kpiByOrgUnitId = _data["kpiByOrgUnitId"];
+            this.sourceEmployeeId = _data["sourceEmployeeId"];
+        }
+    }
+
+    static fromJS(data: any): CopyMyAppraisalKpiInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CopyMyAppraisalKpiInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["paEmployeeId"] = this.paEmployeeId;
+        data["kpiFrom"] = this.kpiFrom;
+        data["kpiByJobTitleId"] = this.kpiByJobTitleId;
+        data["kpiByOrgUnitId"] = this.kpiByOrgUnitId;
+        data["sourceEmployeeId"] = this.sourceEmployeeId;
+        return data;
+    }
+}
+
+export interface ICopyMyAppraisalKpiInput {
+    paEmployeeId: number;
+    kpiFrom: KpiFrom;
+    kpiByJobTitleId: number | undefined;
+    kpiByOrgUnitId: number | undefined;
+    sourceEmployeeId: number | undefined;
+}
+
 export class CopyWorkflowSetupInput implements ICopyWorkflowSetupInput {
     sourceRequestMasterId!: number;
     newRequestCode!: string;
@@ -182725,6 +184121,110 @@ export interface ICreateOrEditApplicationStatusDto {
     applicantCVId: number | undefined;
     appStatus: AppStatus;
     coverLetter: string | undefined;
+}
+
+export class CreateOrEditAppraisalStepSettingDto implements ICreateOrEditAppraisalStepSettingDto {
+    id!: number | undefined;
+    requestMasterId!: number;
+    step!: number;
+    canAddKpi!: boolean;
+    canAddPeer!: boolean;
+    canAddRatings!: boolean;
+    canViewPeerRatings!: boolean;
+    canViewRatings!: boolean;
+    canPeerAddRatings!: boolean;
+    canViewOverallAverageRating!: boolean;
+    canEmployeeSelfRate!: boolean;
+    autoAddManager!: boolean;
+    autoAddRelationShip!: boolean;
+    autoSubmitOnLastFill!: boolean;
+    allowedPeerCount!: number;
+    relationshipTypeIds!: number[] | undefined;
+
+    constructor(data?: ICreateOrEditAppraisalStepSettingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestMasterId = _data["requestMasterId"];
+            this.step = _data["step"];
+            this.canAddKpi = _data["canAddKpi"];
+            this.canAddPeer = _data["canAddPeer"];
+            this.canAddRatings = _data["canAddRatings"];
+            this.canViewPeerRatings = _data["canViewPeerRatings"];
+            this.canViewRatings = _data["canViewRatings"];
+            this.canPeerAddRatings = _data["canPeerAddRatings"];
+            this.canViewOverallAverageRating = _data["canViewOverallAverageRating"];
+            this.canEmployeeSelfRate = _data["canEmployeeSelfRate"];
+            this.autoAddManager = _data["autoAddManager"];
+            this.autoAddRelationShip = _data["autoAddRelationShip"];
+            this.autoSubmitOnLastFill = _data["autoSubmitOnLastFill"];
+            this.allowedPeerCount = _data["allowedPeerCount"];
+            if (Array.isArray(_data["relationshipTypeIds"])) {
+                this.relationshipTypeIds = [] as any;
+                for (let item of _data["relationshipTypeIds"])
+                    this.relationshipTypeIds!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditAppraisalStepSettingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditAppraisalStepSettingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestMasterId"] = this.requestMasterId;
+        data["step"] = this.step;
+        data["canAddKpi"] = this.canAddKpi;
+        data["canAddPeer"] = this.canAddPeer;
+        data["canAddRatings"] = this.canAddRatings;
+        data["canViewPeerRatings"] = this.canViewPeerRatings;
+        data["canViewRatings"] = this.canViewRatings;
+        data["canPeerAddRatings"] = this.canPeerAddRatings;
+        data["canViewOverallAverageRating"] = this.canViewOverallAverageRating;
+        data["canEmployeeSelfRate"] = this.canEmployeeSelfRate;
+        data["autoAddManager"] = this.autoAddManager;
+        data["autoAddRelationShip"] = this.autoAddRelationShip;
+        data["autoSubmitOnLastFill"] = this.autoSubmitOnLastFill;
+        data["allowedPeerCount"] = this.allowedPeerCount;
+        if (Array.isArray(this.relationshipTypeIds)) {
+            data["relationshipTypeIds"] = [];
+            for (let item of this.relationshipTypeIds)
+                data["relationshipTypeIds"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface ICreateOrEditAppraisalStepSettingDto {
+    id: number | undefined;
+    requestMasterId: number;
+    step: number;
+    canAddKpi: boolean;
+    canAddPeer: boolean;
+    canAddRatings: boolean;
+    canViewPeerRatings: boolean;
+    canViewRatings: boolean;
+    canPeerAddRatings: boolean;
+    canViewOverallAverageRating: boolean;
+    canEmployeeSelfRate: boolean;
+    autoAddManager: boolean;
+    autoAddRelationShip: boolean;
+    autoSubmitOnLastFill: boolean;
+    allowedPeerCount: number;
+    relationshipTypeIds: number[] | undefined;
 }
 
 export class CreateOrEditAssetDto implements ICreateOrEditAssetDto {
@@ -190336,6 +191836,7 @@ export class CreateOrEditEmployeeRejoinDto implements ICreateOrEditEmployeeRejoi
     carryForwardTicketBalance!: boolean;
     carryForwardIndemnityBalance!: boolean;
     carryForwardLoanBalance!: boolean;
+    createNewEmployeeCode!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeRejoinDto) {
         if (data) {
@@ -190356,6 +191857,7 @@ export class CreateOrEditEmployeeRejoinDto implements ICreateOrEditEmployeeRejoi
             this.carryForwardTicketBalance = _data["carryForwardTicketBalance"];
             this.carryForwardIndemnityBalance = _data["carryForwardIndemnityBalance"];
             this.carryForwardLoanBalance = _data["carryForwardLoanBalance"];
+            this.createNewEmployeeCode = _data["createNewEmployeeCode"];
         }
     }
 
@@ -190376,6 +191878,7 @@ export class CreateOrEditEmployeeRejoinDto implements ICreateOrEditEmployeeRejoi
         data["carryForwardTicketBalance"] = this.carryForwardTicketBalance;
         data["carryForwardIndemnityBalance"] = this.carryForwardIndemnityBalance;
         data["carryForwardLoanBalance"] = this.carryForwardLoanBalance;
+        data["createNewEmployeeCode"] = this.createNewEmployeeCode;
         return data;
     }
 }
@@ -190389,6 +191892,7 @@ export interface ICreateOrEditEmployeeRejoinDto {
     carryForwardTicketBalance: boolean;
     carryForwardIndemnityBalance: boolean;
     carryForwardLoanBalance: boolean;
+    createNewEmployeeCode: boolean;
 }
 
 export class CreateOrEditEmployeeRelationshipDto implements ICreateOrEditEmployeeRelationshipDto {
@@ -196190,6 +197694,7 @@ export interface ICreateOrEditNotificationGroupDto {
 export class CreateOrEditNotificationMasterDto implements ICreateOrEditNotificationMasterDto {
     id!: number | undefined;
     notificationType!: string;
+    notificationSubTypeId!: number | undefined;
     notificationConfigId!: number;
     criterion!: string | undefined;
     isEnabled!: boolean;
@@ -196207,6 +197712,7 @@ export class CreateOrEditNotificationMasterDto implements ICreateOrEditNotificat
         if (_data) {
             this.id = _data["id"];
             this.notificationType = _data["notificationType"];
+            this.notificationSubTypeId = _data["notificationSubTypeId"];
             this.notificationConfigId = _data["notificationConfigId"];
             this.criterion = _data["criterion"];
             this.isEnabled = _data["isEnabled"];
@@ -196224,6 +197730,7 @@ export class CreateOrEditNotificationMasterDto implements ICreateOrEditNotificat
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["notificationType"] = this.notificationType;
+        data["notificationSubTypeId"] = this.notificationSubTypeId;
         data["notificationConfigId"] = this.notificationConfigId;
         data["criterion"] = this.criterion;
         data["isEnabled"] = this.isEnabled;
@@ -196234,6 +197741,7 @@ export class CreateOrEditNotificationMasterDto implements ICreateOrEditNotificat
 export interface ICreateOrEditNotificationMasterDto {
     id: number | undefined;
     notificationType: string;
+    notificationSubTypeId: number | undefined;
     notificationConfigId: number;
     criterion: string | undefined;
     isEnabled: boolean;
@@ -220522,6 +222030,7 @@ export class EmployeeProfileDto implements IEmployeeProfileDto {
     probationEndDate!: DateTime;
     recruitmentTypeName!: string | undefined;
     previousEmpCode!: string | undefined;
+    previousEmployeeId!: number | undefined;
     referenceCode!: string | undefined;
     loginID!: string | undefined;
     accessID!: string | undefined;
@@ -220593,6 +222102,7 @@ export class EmployeeProfileDto implements IEmployeeProfileDto {
             this.probationEndDate = _data["probationEndDate"] ? DateTime.fromISO(_data["probationEndDate"].toString()) : undefined as any;
             this.recruitmentTypeName = _data["recruitmentTypeName"];
             this.previousEmpCode = _data["previousEmpCode"];
+            this.previousEmployeeId = _data["previousEmployeeId"];
             this.referenceCode = _data["referenceCode"];
             this.loginID = _data["loginID"];
             this.accessID = _data["accessID"];
@@ -220664,6 +222174,7 @@ export class EmployeeProfileDto implements IEmployeeProfileDto {
         data["probationEndDate"] = this.probationEndDate ? this.probationEndDate.toString() : undefined as any;
         data["recruitmentTypeName"] = this.recruitmentTypeName;
         data["previousEmpCode"] = this.previousEmpCode;
+        data["previousEmployeeId"] = this.previousEmployeeId;
         data["referenceCode"] = this.referenceCode;
         data["loginID"] = this.loginID;
         data["accessID"] = this.accessID;
@@ -220728,6 +222239,7 @@ export interface IEmployeeProfileDto {
     probationEndDate: DateTime;
     recruitmentTypeName: string | undefined;
     previousEmpCode: string | undefined;
+    previousEmployeeId: number | undefined;
     referenceCode: string | undefined;
     loginID: string | undefined;
     accessID: string | undefined;
@@ -220959,6 +222471,9 @@ export class EmployeeRejoinDto implements IEmployeeRejoinDto {
     carryForwardTicketBalance!: boolean;
     carryForwardIndemnityBalance!: boolean;
     carryForwardLoanBalance!: boolean;
+    createNewEmployeeCode!: boolean;
+    newEmployeeId!: number | undefined;
+    newEmployeeCode!: string | undefined;
 
     constructor(data?: IEmployeeRejoinDto) {
         if (data) {
@@ -220981,6 +222496,9 @@ export class EmployeeRejoinDto implements IEmployeeRejoinDto {
             this.carryForwardTicketBalance = _data["carryForwardTicketBalance"];
             this.carryForwardIndemnityBalance = _data["carryForwardIndemnityBalance"];
             this.carryForwardLoanBalance = _data["carryForwardLoanBalance"];
+            this.createNewEmployeeCode = _data["createNewEmployeeCode"];
+            this.newEmployeeId = _data["newEmployeeId"];
+            this.newEmployeeCode = _data["newEmployeeCode"];
         }
     }
 
@@ -221003,6 +222521,9 @@ export class EmployeeRejoinDto implements IEmployeeRejoinDto {
         data["carryForwardTicketBalance"] = this.carryForwardTicketBalance;
         data["carryForwardIndemnityBalance"] = this.carryForwardIndemnityBalance;
         data["carryForwardLoanBalance"] = this.carryForwardLoanBalance;
+        data["createNewEmployeeCode"] = this.createNewEmployeeCode;
+        data["newEmployeeId"] = this.newEmployeeId;
+        data["newEmployeeCode"] = this.newEmployeeCode;
         return data;
     }
 }
@@ -221018,6 +222539,9 @@ export interface IEmployeeRejoinDto {
     carryForwardTicketBalance: boolean;
     carryForwardIndemnityBalance: boolean;
     carryForwardLoanBalance: boolean;
+    createNewEmployeeCode: boolean;
+    newEmployeeId: number | undefined;
+    newEmployeeCode: string | undefined;
 }
 
 export class EmployeeRejoinReportRowDto implements IEmployeeRejoinReportRowDto {
@@ -231977,6 +233501,54 @@ export interface IGetAllApplicationStatusesInput {
     skipCount: number;
     sorting: string | undefined;
     vacancyId: number | undefined;
+}
+
+export class GetAllAppraisalStepSettingsInput implements IGetAllAppraisalStepSettingsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    requestMasterId!: number | undefined;
+
+    constructor(data?: IGetAllAppraisalStepSettingsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.requestMasterId = _data["requestMasterId"];
+        }
+    }
+
+    static fromJS(data: any): GetAllAppraisalStepSettingsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllAppraisalStepSettingsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["requestMasterId"] = this.requestMasterId;
+        return data;
+    }
+}
+
+export interface IGetAllAppraisalStepSettingsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    requestMasterId: number | undefined;
 }
 
 export class GetAllAssetTypesInput implements IGetAllAssetTypesInput {
@@ -250367,6 +251939,42 @@ export interface IGetApplicationStatusForEditOutput {
     applicationStatus: CreateOrEditApplicationStatusDto;
 }
 
+export class GetAppraisalStepSettingForEditOutput implements IGetAppraisalStepSettingForEditOutput {
+    appraisalStepSetting!: CreateOrEditAppraisalStepSettingDto;
+
+    constructor(data?: IGetAppraisalStepSettingForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appraisalStepSetting = _data["appraisalStepSetting"] ? CreateOrEditAppraisalStepSettingDto.fromJS(_data["appraisalStepSetting"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetAppraisalStepSettingForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAppraisalStepSettingForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appraisalStepSetting"] = this.appraisalStepSetting ? this.appraisalStepSetting.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetAppraisalStepSettingForEditOutput {
+    appraisalStepSetting: CreateOrEditAppraisalStepSettingDto;
+}
+
 export class GetAssetForEditOutput implements IGetAssetForEditOutput {
     asset!: CreateOrEditAssetDto;
 
@@ -251165,54 +252773,6 @@ export class GetBulkImportEntitiesOutput implements IGetBulkImportEntitiesOutput
 
 export interface IGetBulkImportEntitiesOutput {
     entities: BulkImportEntityDto[] | undefined;
-}
-
-export class GetBulkPasswordCandidatesInput implements IGetBulkPasswordCandidatesInput {
-    maxResultCount!: number;
-    skipCount!: number;
-    sorting!: string | undefined;
-    filter!: string | undefined;
-
-    constructor(data?: IGetBulkPasswordCandidatesInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.maxResultCount = _data["maxResultCount"];
-            this.skipCount = _data["skipCount"];
-            this.sorting = _data["sorting"];
-            this.filter = _data["filter"];
-        }
-    }
-
-    static fromJS(data: any): GetBulkPasswordCandidatesInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetBulkPasswordCandidatesInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["maxResultCount"] = this.maxResultCount;
-        data["skipCount"] = this.skipCount;
-        data["sorting"] = this.sorting;
-        data["filter"] = this.filter;
-        return data;
-    }
-}
-
-export interface IGetBulkPasswordCandidatesInput {
-    maxResultCount: number;
-    skipCount: number;
-    sorting: string | undefined;
-    filter: string | undefined;
 }
 
 export class GetBulkUploadLogEntriesInput implements IGetBulkUploadLogEntriesInput {
@@ -263663,6 +265223,110 @@ export interface IGetLeaveRequestReportInput {
     approverCode: string | undefined;
 }
 
+export class GetLicenceAssignmentSummaryOutput implements IGetLicenceAssignmentSummaryOutput {
+    isEnforced!: boolean;
+    modules!: LicenceModuleUsageDto[] | undefined;
+
+    constructor(data?: IGetLicenceAssignmentSummaryOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isEnforced = _data["isEnforced"];
+            if (Array.isArray(_data["modules"])) {
+                this.modules = [] as any;
+                for (let item of _data["modules"])
+                    this.modules!.push(LicenceModuleUsageDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetLicenceAssignmentSummaryOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLicenceAssignmentSummaryOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isEnforced"] = this.isEnforced;
+        if (Array.isArray(this.modules)) {
+            data["modules"] = [];
+            for (let item of this.modules)
+                data["modules"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGetLicenceAssignmentSummaryOutput {
+    isEnforced: boolean;
+    modules: LicenceModuleUsageDto[] | undefined;
+}
+
+export class GetLicenceAssignmentUsersInput implements IGetLicenceAssignmentUsersInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    module!: LicenceModule;
+    isAssigned!: boolean | undefined;
+
+    constructor(data?: IGetLicenceAssignmentUsersInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.module = _data["module"];
+            this.isAssigned = _data["isAssigned"];
+        }
+    }
+
+    static fromJS(data: any): GetLicenceAssignmentUsersInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLicenceAssignmentUsersInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["module"] = this.module;
+        data["isAssigned"] = this.isAssigned;
+        return data;
+    }
+}
+
+export interface IGetLicenceAssignmentUsersInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    module: LicenceModule;
+    isAssigned: boolean | undefined;
+}
+
 export class GetLinkableUsersInput implements IGetLinkableUsersInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -264367,6 +266031,94 @@ export interface IGetMonthlyTimeRegisterForEditOutput {
     monthlyTimeRegister: CreateOrEditMonthlyTimeRegisterDto;
 }
 
+export class GetMyAppraisalPeerCandidatesInput implements IGetMyAppraisalPeerCandidatesInput {
+    paEmployeeId!: number;
+    filter!: string | undefined;
+
+    constructor(data?: IGetMyAppraisalPeerCandidatesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.paEmployeeId = _data["paEmployeeId"];
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetMyAppraisalPeerCandidatesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyAppraisalPeerCandidatesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["paEmployeeId"] = this.paEmployeeId;
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetMyAppraisalPeerCandidatesInput {
+    paEmployeeId: number;
+    filter: string | undefined;
+}
+
+export class GetMyAppraisalsInput implements IGetMyAppraisalsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    scope!: MyAppraisalListScope;
+
+    constructor(data?: IGetMyAppraisalsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.scope = _data["scope"];
+        }
+    }
+
+    static fromJS(data: any): GetMyAppraisalsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyAppraisalsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["scope"] = this.scope;
+        return data;
+    }
+}
+
+export interface IGetMyAppraisalsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    scope: MyAppraisalListScope;
+}
+
 export class GetMyHealthReimburseBalanceInput implements IGetMyHealthReimburseBalanceInput {
     asOf!: DateTime | undefined;
 
@@ -264897,6 +266649,62 @@ export class GetNotificationMasterForEditOutput implements IGetNotificationMaste
 
 export interface IGetNotificationMasterForEditOutput {
     notificationMaster: CreateOrEditNotificationMasterDto;
+}
+
+export class GetNotificationSentLogsInput implements IGetNotificationSentLogsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    notificationMasterId!: number | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+
+    constructor(data?: IGetNotificationSentLogsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.notificationMasterId = _data["notificationMasterId"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetNotificationSentLogsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetNotificationSentLogsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["notificationMasterId"] = this.notificationMasterId;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetNotificationSentLogsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    notificationMasterId: number | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
 }
 
 export class GetNotificationSettingsOutput implements IGetNotificationSettingsOutput {
@@ -283591,6 +285399,12 @@ export interface IKpiCategoryDto {
     hexColor: string | undefined;
 }
 
+export enum KpiFrom {
+    JobTitle = 0,
+    OrganizationUnit = 1,
+    Employee = 2,
+}
+
 export class KpiInfoDto implements IKpiInfoDto {
     id!: number;
     code!: string | undefined;
@@ -286937,6 +288751,146 @@ export interface ILeaveSplitPreviewDto {
     unpaidEndDate: DateTime | undefined;
     unpaidLeaveDays: number;
     unpaidLeaveTypeMissing: boolean;
+}
+
+export class LicenceAssignmentUserDto implements ILicenceAssignmentUserDto {
+    id!: number;
+    userName!: string | undefined;
+    fullName!: string | undefined;
+    emailAddress!: string | undefined;
+    isActive!: boolean;
+    isAdministrator!: boolean;
+    employeeCode!: string | undefined;
+    modules!: LicenceModule[] | undefined;
+
+    constructor(data?: ILicenceAssignmentUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.fullName = _data["fullName"];
+            this.emailAddress = _data["emailAddress"];
+            this.isActive = _data["isActive"];
+            this.isAdministrator = _data["isAdministrator"];
+            this.employeeCode = _data["employeeCode"];
+            if (Array.isArray(_data["modules"])) {
+                this.modules = [] as any;
+                for (let item of _data["modules"])
+                    this.modules!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): LicenceAssignmentUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LicenceAssignmentUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["fullName"] = this.fullName;
+        data["emailAddress"] = this.emailAddress;
+        data["isActive"] = this.isActive;
+        data["isAdministrator"] = this.isAdministrator;
+        data["employeeCode"] = this.employeeCode;
+        if (Array.isArray(this.modules)) {
+            data["modules"] = [];
+            for (let item of this.modules)
+                data["modules"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface ILicenceAssignmentUserDto {
+    id: number;
+    userName: string | undefined;
+    fullName: string | undefined;
+    emailAddress: string | undefined;
+    isActive: boolean;
+    isAdministrator: boolean;
+    employeeCode: string | undefined;
+    modules: LicenceModule[] | undefined;
+}
+
+export enum LicenceModule {
+    Admin = 0,
+    Ess = 1,
+    Mobile = 2,
+    Performance = 4,
+    Recruitment = 5,
+}
+
+export class LicenceModuleUsageDto implements ILicenceModuleUsageDto {
+    module!: LicenceModule;
+    moduleName!: string | undefined;
+    isModuleEnabled!: boolean;
+    seatCount!: number;
+    usedCount!: number;
+    isUnlimited!: boolean;
+    isOverLimit!: boolean;
+
+    constructor(data?: ILicenceModuleUsageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.module = _data["module"];
+            this.moduleName = _data["moduleName"];
+            this.isModuleEnabled = _data["isModuleEnabled"];
+            this.seatCount = _data["seatCount"];
+            this.usedCount = _data["usedCount"];
+            this.isUnlimited = _data["isUnlimited"];
+            this.isOverLimit = _data["isOverLimit"];
+        }
+    }
+
+    static fromJS(data: any): LicenceModuleUsageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LicenceModuleUsageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["module"] = this.module;
+        data["moduleName"] = this.moduleName;
+        data["isModuleEnabled"] = this.isModuleEnabled;
+        data["seatCount"] = this.seatCount;
+        data["usedCount"] = this.usedCount;
+        data["isUnlimited"] = this.isUnlimited;
+        data["isOverLimit"] = this.isOverLimit;
+        return data;
+    }
+}
+
+export interface ILicenceModuleUsageDto {
+    module: LicenceModule;
+    moduleName: string | undefined;
+    isModuleEnabled: boolean;
+    seatCount: number;
+    usedCount: number;
+    isUnlimited: boolean;
+    isOverLimit: boolean;
 }
 
 export class LinkEmployeeUserInput implements ILinkEmployeeUserInput {
@@ -290732,6 +292686,840 @@ export class MoveTenantsToAnotherEditionDto implements IMoveTenantsToAnotherEdit
 export interface IMoveTenantsToAnotherEditionDto {
     sourceEditionId: number;
     targetEditionId: number;
+}
+
+export class MyAppraisalAccessDto implements IMyAppraisalAccessDto {
+    isOpen!: boolean;
+    isAppraisee!: boolean;
+    isApprover!: boolean;
+    isReviewer!: boolean;
+    reviewSubmitted!: boolean;
+    canCopyKpi!: boolean;
+    canSaveReview!: boolean;
+    canSubmitReview!: boolean;
+    canAddPeer!: boolean;
+    showKpiDetails!: boolean;
+    showRatings!: boolean;
+    showReviewers!: boolean;
+    showAverages!: boolean;
+    useMarks!: boolean;
+
+    constructor(data?: IMyAppraisalAccessDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isOpen = _data["isOpen"];
+            this.isAppraisee = _data["isAppraisee"];
+            this.isApprover = _data["isApprover"];
+            this.isReviewer = _data["isReviewer"];
+            this.reviewSubmitted = _data["reviewSubmitted"];
+            this.canCopyKpi = _data["canCopyKpi"];
+            this.canSaveReview = _data["canSaveReview"];
+            this.canSubmitReview = _data["canSubmitReview"];
+            this.canAddPeer = _data["canAddPeer"];
+            this.showKpiDetails = _data["showKpiDetails"];
+            this.showRatings = _data["showRatings"];
+            this.showReviewers = _data["showReviewers"];
+            this.showAverages = _data["showAverages"];
+            this.useMarks = _data["useMarks"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalAccessDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalAccessDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isOpen"] = this.isOpen;
+        data["isAppraisee"] = this.isAppraisee;
+        data["isApprover"] = this.isApprover;
+        data["isReviewer"] = this.isReviewer;
+        data["reviewSubmitted"] = this.reviewSubmitted;
+        data["canCopyKpi"] = this.canCopyKpi;
+        data["canSaveReview"] = this.canSaveReview;
+        data["canSubmitReview"] = this.canSubmitReview;
+        data["canAddPeer"] = this.canAddPeer;
+        data["showKpiDetails"] = this.showKpiDetails;
+        data["showRatings"] = this.showRatings;
+        data["showReviewers"] = this.showReviewers;
+        data["showAverages"] = this.showAverages;
+        data["useMarks"] = this.useMarks;
+        return data;
+    }
+}
+
+export interface IMyAppraisalAccessDto {
+    isOpen: boolean;
+    isAppraisee: boolean;
+    isApprover: boolean;
+    isReviewer: boolean;
+    reviewSubmitted: boolean;
+    canCopyKpi: boolean;
+    canSaveReview: boolean;
+    canSubmitReview: boolean;
+    canAddPeer: boolean;
+    showKpiDetails: boolean;
+    showRatings: boolean;
+    showReviewers: boolean;
+    showAverages: boolean;
+    useMarks: boolean;
+}
+
+export class MyAppraisalKpiDto implements IMyAppraisalKpiDto {
+    id!: number;
+    kpiNameEn!: string | undefined;
+    kpiNameAr!: string | undefined;
+    kpiCategoryNameEn!: string | undefined;
+    kpiCategoryNameAr!: string | undefined;
+    kpiDescription!: string | undefined;
+    weight!: number;
+    target!: string | undefined;
+
+    constructor(data?: IMyAppraisalKpiDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.kpiNameEn = _data["kpiNameEn"];
+            this.kpiNameAr = _data["kpiNameAr"];
+            this.kpiCategoryNameEn = _data["kpiCategoryNameEn"];
+            this.kpiCategoryNameAr = _data["kpiCategoryNameAr"];
+            this.kpiDescription = _data["kpiDescription"];
+            this.weight = _data["weight"];
+            this.target = _data["target"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalKpiDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalKpiDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["kpiNameEn"] = this.kpiNameEn;
+        data["kpiNameAr"] = this.kpiNameAr;
+        data["kpiCategoryNameEn"] = this.kpiCategoryNameEn;
+        data["kpiCategoryNameAr"] = this.kpiCategoryNameAr;
+        data["kpiDescription"] = this.kpiDescription;
+        data["weight"] = this.weight;
+        data["target"] = this.target;
+        return data;
+    }
+}
+
+export interface IMyAppraisalKpiDto {
+    id: number;
+    kpiNameEn: string | undefined;
+    kpiNameAr: string | undefined;
+    kpiCategoryNameEn: string | undefined;
+    kpiCategoryNameAr: string | undefined;
+    kpiDescription: string | undefined;
+    weight: number;
+    target: string | undefined;
+}
+
+export class MyAppraisalKpiSourceDto implements IMyAppraisalKpiSourceDto {
+    id!: number;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+
+    constructor(data?: IMyAppraisalKpiSourceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalKpiSourceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalKpiSourceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IMyAppraisalKpiSourceDto {
+    id: number;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+}
+
+export class MyAppraisalKpiSourcesDto implements IMyAppraisalKpiSourcesDto {
+    jobTitles!: MyAppraisalKpiSourceDto[] | undefined;
+    organizationUnits!: MyAppraisalKpiSourceDto[] | undefined;
+    employees!: MyAppraisalPersonDto[] | undefined;
+
+    constructor(data?: IMyAppraisalKpiSourcesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["jobTitles"])) {
+                this.jobTitles = [] as any;
+                for (let item of _data["jobTitles"])
+                    this.jobTitles!.push(MyAppraisalKpiSourceDto.fromJS(item));
+            }
+            if (Array.isArray(_data["organizationUnits"])) {
+                this.organizationUnits = [] as any;
+                for (let item of _data["organizationUnits"])
+                    this.organizationUnits!.push(MyAppraisalKpiSourceDto.fromJS(item));
+            }
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(MyAppraisalPersonDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalKpiSourcesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalKpiSourcesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.jobTitles)) {
+            data["jobTitles"] = [];
+            for (let item of this.jobTitles)
+                data["jobTitles"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.organizationUnits)) {
+            data["organizationUnits"] = [];
+            for (let item of this.organizationUnits)
+                data["organizationUnits"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IMyAppraisalKpiSourcesDto {
+    jobTitles: MyAppraisalKpiSourceDto[] | undefined;
+    organizationUnits: MyAppraisalKpiSourceDto[] | undefined;
+    employees: MyAppraisalPersonDto[] | undefined;
+}
+
+export class MyAppraisalListDto implements IMyAppraisalListDto {
+    id!: number;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    employeeFullNameAr!: string | undefined;
+    paCycleNameEn!: string | undefined;
+    paCycleNameAr!: string | undefined;
+    formTypeNameEn!: string | undefined;
+    formTypeNameAr!: string | undefined;
+    requestNumber!: string | undefined;
+    workflowRequestId!: number | undefined;
+    workflowStatus!: RequestStatus;
+    creationTime!: DateTime;
+
+    constructor(data?: IMyAppraisalListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.employeeFullNameAr = _data["employeeFullNameAr"];
+            this.paCycleNameEn = _data["paCycleNameEn"];
+            this.paCycleNameAr = _data["paCycleNameAr"];
+            this.formTypeNameEn = _data["formTypeNameEn"];
+            this.formTypeNameAr = _data["formTypeNameAr"];
+            this.requestNumber = _data["requestNumber"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["employeeFullNameAr"] = this.employeeFullNameAr;
+        data["paCycleNameEn"] = this.paCycleNameEn;
+        data["paCycleNameAr"] = this.paCycleNameAr;
+        data["formTypeNameEn"] = this.formTypeNameEn;
+        data["formTypeNameAr"] = this.formTypeNameAr;
+        data["requestNumber"] = this.requestNumber;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["workflowStatus"] = this.workflowStatus;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IMyAppraisalListDto {
+    id: number;
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    employeeFullNameAr: string | undefined;
+    paCycleNameEn: string | undefined;
+    paCycleNameAr: string | undefined;
+    formTypeNameEn: string | undefined;
+    formTypeNameAr: string | undefined;
+    requestNumber: string | undefined;
+    workflowRequestId: number | undefined;
+    workflowStatus: RequestStatus;
+    creationTime: DateTime;
+}
+
+export enum MyAppraisalListScope {
+    Mine = 0,
+    ToReview = 1,
+    Team = 2,
+}
+
+export class MyAppraisalPersonDto implements IMyAppraisalPersonDto {
+    id!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+
+    constructor(data?: IMyAppraisalPersonDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalPersonDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalPersonDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        return data;
+    }
+}
+
+export interface IMyAppraisalPersonDto {
+    id: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+}
+
+export class MyAppraisalRatingLineDto implements IMyAppraisalRatingLineDto {
+    id!: number;
+    paEmployeeReviewerId!: number;
+    reviewerEmployeeId!: number;
+    reviewerNameEn!: string | undefined;
+    reviewerNameAr!: string | undefined;
+    isOwn!: boolean;
+    paEmployeeDetailId!: number;
+    kpiNameEn!: string | undefined;
+    kpiNameAr!: string | undefined;
+    kpiCategoryNameEn!: string | undefined;
+    kpiCategoryNameAr!: string | undefined;
+    kpiDescription!: string | undefined;
+    weight!: number;
+    target!: string | undefined;
+    ratingId!: number | undefined;
+    ratingNameEn!: string | undefined;
+    ratingNameAr!: string | undefined;
+    marks!: number;
+    comments!: string | undefined;
+
+    constructor(data?: IMyAppraisalRatingLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.paEmployeeReviewerId = _data["paEmployeeReviewerId"];
+            this.reviewerEmployeeId = _data["reviewerEmployeeId"];
+            this.reviewerNameEn = _data["reviewerNameEn"];
+            this.reviewerNameAr = _data["reviewerNameAr"];
+            this.isOwn = _data["isOwn"];
+            this.paEmployeeDetailId = _data["paEmployeeDetailId"];
+            this.kpiNameEn = _data["kpiNameEn"];
+            this.kpiNameAr = _data["kpiNameAr"];
+            this.kpiCategoryNameEn = _data["kpiCategoryNameEn"];
+            this.kpiCategoryNameAr = _data["kpiCategoryNameAr"];
+            this.kpiDescription = _data["kpiDescription"];
+            this.weight = _data["weight"];
+            this.target = _data["target"];
+            this.ratingId = _data["ratingId"];
+            this.ratingNameEn = _data["ratingNameEn"];
+            this.ratingNameAr = _data["ratingNameAr"];
+            this.marks = _data["marks"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalRatingLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalRatingLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["paEmployeeReviewerId"] = this.paEmployeeReviewerId;
+        data["reviewerEmployeeId"] = this.reviewerEmployeeId;
+        data["reviewerNameEn"] = this.reviewerNameEn;
+        data["reviewerNameAr"] = this.reviewerNameAr;
+        data["isOwn"] = this.isOwn;
+        data["paEmployeeDetailId"] = this.paEmployeeDetailId;
+        data["kpiNameEn"] = this.kpiNameEn;
+        data["kpiNameAr"] = this.kpiNameAr;
+        data["kpiCategoryNameEn"] = this.kpiCategoryNameEn;
+        data["kpiCategoryNameAr"] = this.kpiCategoryNameAr;
+        data["kpiDescription"] = this.kpiDescription;
+        data["weight"] = this.weight;
+        data["target"] = this.target;
+        data["ratingId"] = this.ratingId;
+        data["ratingNameEn"] = this.ratingNameEn;
+        data["ratingNameAr"] = this.ratingNameAr;
+        data["marks"] = this.marks;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IMyAppraisalRatingLineDto {
+    id: number;
+    paEmployeeReviewerId: number;
+    reviewerEmployeeId: number;
+    reviewerNameEn: string | undefined;
+    reviewerNameAr: string | undefined;
+    isOwn: boolean;
+    paEmployeeDetailId: number;
+    kpiNameEn: string | undefined;
+    kpiNameAr: string | undefined;
+    kpiCategoryNameEn: string | undefined;
+    kpiCategoryNameAr: string | undefined;
+    kpiDescription: string | undefined;
+    weight: number;
+    target: string | undefined;
+    ratingId: number | undefined;
+    ratingNameEn: string | undefined;
+    ratingNameAr: string | undefined;
+    marks: number;
+    comments: string | undefined;
+}
+
+export class MyAppraisalRatingOptionDto implements IMyAppraisalRatingOptionDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    descriptionEn!: string | undefined;
+    descriptionAr!: string | undefined;
+    isCommentRequired!: boolean;
+    maxLimit!: number;
+    remainingLimit!: number;
+    fromRange!: number;
+    toRange!: number;
+
+    constructor(data?: IMyAppraisalRatingOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.descriptionEn = _data["descriptionEn"];
+            this.descriptionAr = _data["descriptionAr"];
+            this.isCommentRequired = _data["isCommentRequired"];
+            this.maxLimit = _data["maxLimit"];
+            this.remainingLimit = _data["remainingLimit"];
+            this.fromRange = _data["fromRange"];
+            this.toRange = _data["toRange"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalRatingOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalRatingOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["descriptionEn"] = this.descriptionEn;
+        data["descriptionAr"] = this.descriptionAr;
+        data["isCommentRequired"] = this.isCommentRequired;
+        data["maxLimit"] = this.maxLimit;
+        data["remainingLimit"] = this.remainingLimit;
+        data["fromRange"] = this.fromRange;
+        data["toRange"] = this.toRange;
+        return data;
+    }
+}
+
+export interface IMyAppraisalRatingOptionDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    descriptionEn: string | undefined;
+    descriptionAr: string | undefined;
+    isCommentRequired: boolean;
+    maxLimit: number;
+    remainingLimit: number;
+    fromRange: number;
+    toRange: number;
+}
+
+export class MyAppraisalReviewDto implements IMyAppraisalReviewDto {
+    id!: number;
+    requestNumber!: string | undefined;
+    workflowRequestId!: number | undefined;
+    workflowStatus!: RequestStatus;
+    workflowStep!: number;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    employeeFullNameAr!: string | undefined;
+    paCycleNameEn!: string | undefined;
+    paCycleNameAr!: string | undefined;
+    formTypeNameEn!: string | undefined;
+    formTypeNameAr!: string | undefined;
+    access!: MyAppraisalAccessDto;
+    overallAverageScore!: number | undefined;
+    peerAverageScore!: number | undefined;
+    employeeAverageScore!: number | undefined;
+    kpis!: MyAppraisalKpiDto[] | undefined;
+    ratingLines!: MyAppraisalRatingLineDto[] | undefined;
+    reviewers!: MyAppraisalReviewerDto[] | undefined;
+    ratingOptions!: MyAppraisalRatingOptionDto[] | undefined;
+    customTextField1!: string | undefined;
+    customTextField2!: string | undefined;
+    customTextField3!: string | undefined;
+
+    constructor(data?: IMyAppraisalReviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestNumber = _data["requestNumber"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowStep = _data["workflowStep"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.employeeFullNameAr = _data["employeeFullNameAr"];
+            this.paCycleNameEn = _data["paCycleNameEn"];
+            this.paCycleNameAr = _data["paCycleNameAr"];
+            this.formTypeNameEn = _data["formTypeNameEn"];
+            this.formTypeNameAr = _data["formTypeNameAr"];
+            this.access = _data["access"] ? MyAppraisalAccessDto.fromJS(_data["access"]) : undefined as any;
+            this.overallAverageScore = _data["overallAverageScore"];
+            this.peerAverageScore = _data["peerAverageScore"];
+            this.employeeAverageScore = _data["employeeAverageScore"];
+            if (Array.isArray(_data["kpis"])) {
+                this.kpis = [] as any;
+                for (let item of _data["kpis"])
+                    this.kpis!.push(MyAppraisalKpiDto.fromJS(item));
+            }
+            if (Array.isArray(_data["ratingLines"])) {
+                this.ratingLines = [] as any;
+                for (let item of _data["ratingLines"])
+                    this.ratingLines!.push(MyAppraisalRatingLineDto.fromJS(item));
+            }
+            if (Array.isArray(_data["reviewers"])) {
+                this.reviewers = [] as any;
+                for (let item of _data["reviewers"])
+                    this.reviewers!.push(MyAppraisalReviewerDto.fromJS(item));
+            }
+            if (Array.isArray(_data["ratingOptions"])) {
+                this.ratingOptions = [] as any;
+                for (let item of _data["ratingOptions"])
+                    this.ratingOptions!.push(MyAppraisalRatingOptionDto.fromJS(item));
+            }
+            this.customTextField1 = _data["customTextField1"];
+            this.customTextField2 = _data["customTextField2"];
+            this.customTextField3 = _data["customTextField3"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalReviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalReviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestNumber"] = this.requestNumber;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowStep"] = this.workflowStep;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["employeeFullNameAr"] = this.employeeFullNameAr;
+        data["paCycleNameEn"] = this.paCycleNameEn;
+        data["paCycleNameAr"] = this.paCycleNameAr;
+        data["formTypeNameEn"] = this.formTypeNameEn;
+        data["formTypeNameAr"] = this.formTypeNameAr;
+        data["access"] = this.access ? this.access.toJSON() : undefined as any;
+        data["overallAverageScore"] = this.overallAverageScore;
+        data["peerAverageScore"] = this.peerAverageScore;
+        data["employeeAverageScore"] = this.employeeAverageScore;
+        if (Array.isArray(this.kpis)) {
+            data["kpis"] = [];
+            for (let item of this.kpis)
+                data["kpis"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.ratingLines)) {
+            data["ratingLines"] = [];
+            for (let item of this.ratingLines)
+                data["ratingLines"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.reviewers)) {
+            data["reviewers"] = [];
+            for (let item of this.reviewers)
+                data["reviewers"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.ratingOptions)) {
+            data["ratingOptions"] = [];
+            for (let item of this.ratingOptions)
+                data["ratingOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["customTextField1"] = this.customTextField1;
+        data["customTextField2"] = this.customTextField2;
+        data["customTextField3"] = this.customTextField3;
+        return data;
+    }
+}
+
+export interface IMyAppraisalReviewDto {
+    id: number;
+    requestNumber: string | undefined;
+    workflowRequestId: number | undefined;
+    workflowStatus: RequestStatus;
+    workflowStep: number;
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    employeeFullNameAr: string | undefined;
+    paCycleNameEn: string | undefined;
+    paCycleNameAr: string | undefined;
+    formTypeNameEn: string | undefined;
+    formTypeNameAr: string | undefined;
+    access: MyAppraisalAccessDto;
+    overallAverageScore: number | undefined;
+    peerAverageScore: number | undefined;
+    employeeAverageScore: number | undefined;
+    kpis: MyAppraisalKpiDto[] | undefined;
+    ratingLines: MyAppraisalRatingLineDto[] | undefined;
+    reviewers: MyAppraisalReviewerDto[] | undefined;
+    ratingOptions: MyAppraisalRatingOptionDto[] | undefined;
+    customTextField1: string | undefined;
+    customTextField2: string | undefined;
+    customTextField3: string | undefined;
+}
+
+export class MyAppraisalReviewerDto implements IMyAppraisalReviewerDto {
+    id!: number;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+    reviewerType!: string | undefined;
+    isPeer!: boolean;
+    reviewSubmitted!: boolean;
+    averageScore!: number;
+    totalMarks!: number;
+    averageRatingNameEn!: string | undefined;
+    averageRatingNameAr!: string | undefined;
+
+    constructor(data?: IMyAppraisalReviewerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+            this.reviewerType = _data["reviewerType"];
+            this.isPeer = _data["isPeer"];
+            this.reviewSubmitted = _data["reviewSubmitted"];
+            this.averageScore = _data["averageScore"];
+            this.totalMarks = _data["totalMarks"];
+            this.averageRatingNameEn = _data["averageRatingNameEn"];
+            this.averageRatingNameAr = _data["averageRatingNameAr"];
+        }
+    }
+
+    static fromJS(data: any): MyAppraisalReviewerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAppraisalReviewerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        data["reviewerType"] = this.reviewerType;
+        data["isPeer"] = this.isPeer;
+        data["reviewSubmitted"] = this.reviewSubmitted;
+        data["averageScore"] = this.averageScore;
+        data["totalMarks"] = this.totalMarks;
+        data["averageRatingNameEn"] = this.averageRatingNameEn;
+        data["averageRatingNameAr"] = this.averageRatingNameAr;
+        return data;
+    }
+}
+
+export interface IMyAppraisalReviewerDto {
+    id: number;
+    employeeId: number;
+    employeeCode: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+    reviewerType: string | undefined;
+    isPeer: boolean;
+    reviewSubmitted: boolean;
+    averageScore: number;
+    totalMarks: number;
+    averageRatingNameEn: string | undefined;
+    averageRatingNameAr: string | undefined;
 }
 
 export class MyAssetRequestDto implements IMyAssetRequestDto {
@@ -295442,6 +298230,10 @@ export interface INotificationGroupDto {
 export class NotificationMasterDto implements INotificationMasterDto {
     id!: number;
     notificationType!: string | undefined;
+    notificationTypeName!: string | undefined;
+    isSupportedType!: boolean;
+    notificationSubTypeId!: number | undefined;
+    notificationSubTypeName!: string | undefined;
     notificationConfigId!: number;
     notificationConfigName!: string | undefined;
     criterion!: string | undefined;
@@ -295460,6 +298252,10 @@ export class NotificationMasterDto implements INotificationMasterDto {
         if (_data) {
             this.id = _data["id"];
             this.notificationType = _data["notificationType"];
+            this.notificationTypeName = _data["notificationTypeName"];
+            this.isSupportedType = _data["isSupportedType"];
+            this.notificationSubTypeId = _data["notificationSubTypeId"];
+            this.notificationSubTypeName = _data["notificationSubTypeName"];
             this.notificationConfigId = _data["notificationConfigId"];
             this.notificationConfigName = _data["notificationConfigName"];
             this.criterion = _data["criterion"];
@@ -295478,6 +298274,10 @@ export class NotificationMasterDto implements INotificationMasterDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["notificationType"] = this.notificationType;
+        data["notificationTypeName"] = this.notificationTypeName;
+        data["isSupportedType"] = this.isSupportedType;
+        data["notificationSubTypeId"] = this.notificationSubTypeId;
+        data["notificationSubTypeName"] = this.notificationSubTypeName;
         data["notificationConfigId"] = this.notificationConfigId;
         data["notificationConfigName"] = this.notificationConfigName;
         data["criterion"] = this.criterion;
@@ -295489,10 +298289,346 @@ export class NotificationMasterDto implements INotificationMasterDto {
 export interface INotificationMasterDto {
     id: number;
     notificationType: string | undefined;
+    notificationTypeName: string | undefined;
+    isSupportedType: boolean;
+    notificationSubTypeId: number | undefined;
+    notificationSubTypeName: string | undefined;
     notificationConfigId: number;
     notificationConfigName: string | undefined;
     criterion: string | undefined;
     isEnabled: boolean;
+}
+
+export class NotificationRuleMetadataDto implements INotificationRuleMetadataDto {
+    sources!: NotificationRuleSourceDto[] | undefined;
+    functions!: RuleFunctionMetadataDto[] | undefined;
+
+    constructor(data?: INotificationRuleMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["sources"])) {
+                this.sources = [] as any;
+                for (let item of _data["sources"])
+                    this.sources!.push(NotificationRuleSourceDto.fromJS(item));
+            }
+            if (Array.isArray(_data["functions"])) {
+                this.functions = [] as any;
+                for (let item of _data["functions"])
+                    this.functions!.push(RuleFunctionMetadataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): NotificationRuleMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationRuleMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.sources)) {
+            data["sources"] = [];
+            for (let item of this.sources)
+                data["sources"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.functions)) {
+            data["functions"] = [];
+            for (let item of this.functions)
+                data["functions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface INotificationRuleMetadataDto {
+    sources: NotificationRuleSourceDto[] | undefined;
+    functions: RuleFunctionMetadataDto[] | undefined;
+}
+
+export class NotificationRulePreviewDto implements INotificationRulePreviewDto {
+    isValid!: boolean;
+    errors!: string[] | undefined;
+    matchCount!: number;
+    notYetSentCount!: number;
+    samples!: NotificationRulePreviewItemDto[] | undefined;
+
+    constructor(data?: INotificationRulePreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isValid = _data["isValid"];
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors!.push(item);
+            }
+            this.matchCount = _data["matchCount"];
+            this.notYetSentCount = _data["notYetSentCount"];
+            if (Array.isArray(_data["samples"])) {
+                this.samples = [] as any;
+                for (let item of _data["samples"])
+                    this.samples!.push(NotificationRulePreviewItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): NotificationRulePreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationRulePreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isValid"] = this.isValid;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["matchCount"] = this.matchCount;
+        data["notYetSentCount"] = this.notYetSentCount;
+        if (Array.isArray(this.samples)) {
+            data["samples"] = [];
+            for (let item of this.samples)
+                data["samples"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface INotificationRulePreviewDto {
+    isValid: boolean;
+    errors: string[] | undefined;
+    matchCount: number;
+    notYetSentCount: number;
+    samples: NotificationRulePreviewItemDto[] | undefined;
+}
+
+export class NotificationRulePreviewItemDto implements INotificationRulePreviewItemDto {
+    recordId!: number;
+    label!: string | undefined;
+    subjectDate!: DateTime | undefined;
+
+    constructor(data?: INotificationRulePreviewItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.recordId = _data["recordId"];
+            this.label = _data["label"];
+            this.subjectDate = _data["subjectDate"] ? DateTime.fromISO(_data["subjectDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): NotificationRulePreviewItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationRulePreviewItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["recordId"] = this.recordId;
+        data["label"] = this.label;
+        data["subjectDate"] = this.subjectDate ? this.subjectDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface INotificationRulePreviewItemDto {
+    recordId: number;
+    label: string | undefined;
+    subjectDate: DateTime | undefined;
+}
+
+export class NotificationRuleSourceDto implements INotificationRuleSourceDto {
+    code!: string | undefined;
+    displayName!: string | undefined;
+    subTypeDisplayName!: string | undefined;
+    hasSubType!: boolean;
+    baseObject!: RuleBaseObjectMetadataDto;
+
+    constructor(data?: INotificationRuleSourceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.displayName = _data["displayName"];
+            this.subTypeDisplayName = _data["subTypeDisplayName"];
+            this.hasSubType = _data["hasSubType"];
+            this.baseObject = _data["baseObject"] ? RuleBaseObjectMetadataDto.fromJS(_data["baseObject"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): NotificationRuleSourceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationRuleSourceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["displayName"] = this.displayName;
+        data["subTypeDisplayName"] = this.subTypeDisplayName;
+        data["hasSubType"] = this.hasSubType;
+        data["baseObject"] = this.baseObject ? this.baseObject.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface INotificationRuleSourceDto {
+    code: string | undefined;
+    displayName: string | undefined;
+    subTypeDisplayName: string | undefined;
+    hasSubType: boolean;
+    baseObject: RuleBaseObjectMetadataDto;
+}
+
+export class NotificationRuleSubTypeDto implements INotificationRuleSubTypeDto {
+    id!: number;
+    name!: string | undefined;
+
+    constructor(data?: INotificationRuleSubTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): NotificationRuleSubTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationRuleSubTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface INotificationRuleSubTypeDto {
+    id: number;
+    name: string | undefined;
+}
+
+export class NotificationSentLogDto implements INotificationSentLogDto {
+    id!: number;
+    notificationMasterId!: number | undefined;
+    notificationName!: string | undefined;
+    notificationDisplayName!: string | undefined;
+    sourceCode!: string | undefined;
+    recordId!: number;
+    sentDate!: DateTime;
+    recipientCount!: number;
+    wasSent!: boolean;
+    isFinal!: boolean;
+
+    constructor(data?: INotificationSentLogDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.notificationMasterId = _data["notificationMasterId"];
+            this.notificationName = _data["notificationName"];
+            this.notificationDisplayName = _data["notificationDisplayName"];
+            this.sourceCode = _data["sourceCode"];
+            this.recordId = _data["recordId"];
+            this.sentDate = _data["sentDate"] ? DateTime.fromISO(_data["sentDate"].toString()) : undefined as any;
+            this.recipientCount = _data["recipientCount"];
+            this.wasSent = _data["wasSent"];
+            this.isFinal = _data["isFinal"];
+        }
+    }
+
+    static fromJS(data: any): NotificationSentLogDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NotificationSentLogDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["notificationMasterId"] = this.notificationMasterId;
+        data["notificationName"] = this.notificationName;
+        data["notificationDisplayName"] = this.notificationDisplayName;
+        data["sourceCode"] = this.sourceCode;
+        data["recordId"] = this.recordId;
+        data["sentDate"] = this.sentDate ? this.sentDate.toString() : undefined as any;
+        data["recipientCount"] = this.recipientCount;
+        data["wasSent"] = this.wasSent;
+        data["isFinal"] = this.isFinal;
+        return data;
+    }
+}
+
+export interface INotificationSentLogDto {
+    id: number;
+    notificationMasterId: number | undefined;
+    notificationName: string | undefined;
+    notificationDisplayName: string | undefined;
+    sourceCode: string | undefined;
+    recordId: number;
+    sentDate: DateTime;
+    recipientCount: number;
+    wasSent: boolean;
+    isFinal: boolean;
 }
 
 export class NotificationSettingsEditDto implements INotificationSettingsEditDto {
@@ -299135,6 +302271,50 @@ export interface IPAEmployeeScorecardReportRowDto {
     overallAverageRating: string | undefined;
 }
 
+export class PAFormBoxRuleDto implements IPAFormBoxRuleDto {
+    box!: string | undefined;
+    visible!: boolean;
+    enabled!: boolean;
+
+    constructor(data?: IPAFormBoxRuleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.box = _data["box"];
+            this.visible = _data["visible"];
+            this.enabled = _data["enabled"];
+        }
+    }
+
+    static fromJS(data: any): PAFormBoxRuleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PAFormBoxRuleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["box"] = this.box;
+        data["visible"] = this.visible;
+        data["enabled"] = this.enabled;
+        return data;
+    }
+}
+
+export interface IPAFormBoxRuleDto {
+    box: string | undefined;
+    visible: boolean;
+    enabled: boolean;
+}
+
 export class PAFormDto implements IPAFormDto {
     id!: number;
     paPeriodId!: number;
@@ -299265,6 +302445,78 @@ export interface IPAFormDto {
     newlySetGoals: string | undefined;
     overallComments: string | undefined;
     comments: string | undefined;
+}
+
+export class PAFormTickRulesDto implements IPAFormTickRulesDto {
+    unrestricted!: boolean;
+    phase!: string | undefined;
+    boxes!: PAFormBoxRuleDto[] | undefined;
+    showPeerSubmitted!: boolean;
+    canTickPeerSubmitted!: boolean;
+    hiddenListBoxes!: string[] | undefined;
+
+    constructor(data?: IPAFormTickRulesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.unrestricted = _data["unrestricted"];
+            this.phase = _data["phase"];
+            if (Array.isArray(_data["boxes"])) {
+                this.boxes = [] as any;
+                for (let item of _data["boxes"])
+                    this.boxes!.push(PAFormBoxRuleDto.fromJS(item));
+            }
+            this.showPeerSubmitted = _data["showPeerSubmitted"];
+            this.canTickPeerSubmitted = _data["canTickPeerSubmitted"];
+            if (Array.isArray(_data["hiddenListBoxes"])) {
+                this.hiddenListBoxes = [] as any;
+                for (let item of _data["hiddenListBoxes"])
+                    this.hiddenListBoxes!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): PAFormTickRulesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PAFormTickRulesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["unrestricted"] = this.unrestricted;
+        data["phase"] = this.phase;
+        if (Array.isArray(this.boxes)) {
+            data["boxes"] = [];
+            for (let item of this.boxes)
+                data["boxes"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["showPeerSubmitted"] = this.showPeerSubmitted;
+        data["canTickPeerSubmitted"] = this.canTickPeerSubmitted;
+        if (Array.isArray(this.hiddenListBoxes)) {
+            data["hiddenListBoxes"] = [];
+            for (let item of this.hiddenListBoxes)
+                data["hiddenListBoxes"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IPAFormTickRulesDto {
+    unrestricted: boolean;
+    phase: string | undefined;
+    boxes: PAFormBoxRuleDto[] | undefined;
+    showPeerSubmitted: boolean;
+    canTickPeerSubmitted: boolean;
+    hiddenListBoxes: string[] | undefined;
 }
 
 export class PAGoalDto implements IPAGoalDto {
@@ -301210,6 +304462,54 @@ export interface IPagedResultDtoOfAppraisalSettingsListDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfAppraisalStepSettingDto implements IPagedResultDtoOfAppraisalStepSettingDto {
+    items!: AppraisalStepSettingDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfAppraisalStepSettingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AppraisalStepSettingDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAppraisalStepSettingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAppraisalStepSettingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfAppraisalStepSettingDto {
+    items: AppraisalStepSettingDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfAssetDto implements IPagedResultDtoOfAssetDto {
     items!: AssetDto[] | undefined;
     totalCount!: number;
@@ -301975,54 +305275,6 @@ export class PagedResultDtoOfBuildingDto implements IPagedResultDtoOfBuildingDto
 
 export interface IPagedResultDtoOfBuildingDto {
     items: BuildingDto[] | undefined;
-    totalCount: number;
-}
-
-export class PagedResultDtoOfBulkPasswordCandidateDto implements IPagedResultDtoOfBulkPasswordCandidateDto {
-    items!: BulkPasswordCandidateDto[] | undefined;
-    totalCount!: number;
-
-    constructor(data?: IPagedResultDtoOfBulkPasswordCandidateDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(BulkPasswordCandidateDto.fromJS(item));
-            }
-            this.totalCount = _data["totalCount"];
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfBulkPasswordCandidateDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfBulkPasswordCandidateDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["totalCount"] = this.totalCount;
-        return data;
-    }
-}
-
-export interface IPagedResultDtoOfBulkPasswordCandidateDto {
-    items: BulkPasswordCandidateDto[] | undefined;
     totalCount: number;
 }
 
@@ -314842,6 +318094,54 @@ export interface IPagedResultDtoOfLeaveRequestReportRowDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfLicenceAssignmentUserDto implements IPagedResultDtoOfLicenceAssignmentUserDto {
+    items!: LicenceAssignmentUserDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLicenceAssignmentUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LicenceAssignmentUserDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLicenceAssignmentUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLicenceAssignmentUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLicenceAssignmentUserDto {
+    items: LicenceAssignmentUserDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfLinkableUserDto implements IPagedResultDtoOfLinkableUserDto {
     items!: LinkableUserDto[] | undefined;
     totalCount!: number;
@@ -315751,6 +319051,54 @@ export class PagedResultDtoOfMonthlyTimeRegisterDto implements IPagedResultDtoOf
 
 export interface IPagedResultDtoOfMonthlyTimeRegisterDto {
     items: MonthlyTimeRegisterDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMyAppraisalListDto implements IPagedResultDtoOfMyAppraisalListDto {
+    items!: MyAppraisalListDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyAppraisalListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyAppraisalListDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyAppraisalListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyAppraisalListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyAppraisalListDto {
+    items: MyAppraisalListDto[] | undefined;
     totalCount: number;
 }
 
@@ -317239,6 +320587,54 @@ export class PagedResultDtoOfNotificationMasterDto implements IPagedResultDtoOfN
 
 export interface IPagedResultDtoOfNotificationMasterDto {
     items: NotificationMasterDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfNotificationSentLogDto implements IPagedResultDtoOfNotificationSentLogDto {
+    items!: NotificationSentLogDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfNotificationSentLogDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(NotificationSentLogDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfNotificationSentLogDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfNotificationSentLogDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfNotificationSentLogDto {
+    items: NotificationSentLogDto[] | undefined;
     totalCount: number;
 }
 
@@ -335451,6 +338847,54 @@ export interface IPreviewLeavePlanInput {
     endDate: DateTime | undefined;
 }
 
+export class PreviewNotificationRuleInput implements IPreviewNotificationRuleInput {
+    notificationType!: string;
+    notificationSubTypeId!: number | undefined;
+    criterion!: string | undefined;
+    notificationMasterId!: number | undefined;
+
+    constructor(data?: IPreviewNotificationRuleInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.notificationType = _data["notificationType"];
+            this.notificationSubTypeId = _data["notificationSubTypeId"];
+            this.criterion = _data["criterion"];
+            this.notificationMasterId = _data["notificationMasterId"];
+        }
+    }
+
+    static fromJS(data: any): PreviewNotificationRuleInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PreviewNotificationRuleInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["notificationType"] = this.notificationType;
+        data["notificationSubTypeId"] = this.notificationSubTypeId;
+        data["criterion"] = this.criterion;
+        data["notificationMasterId"] = this.notificationMasterId;
+        return data;
+    }
+}
+
+export interface IPreviewNotificationRuleInput {
+    notificationType: string;
+    notificationSubTypeId: number | undefined;
+    criterion: string | undefined;
+    notificationMasterId: number | undefined;
+}
+
 export class PrintReportDto implements IPrintReportDto {
     id!: number;
     code!: string | undefined;
@@ -343431,6 +346875,7 @@ export enum RulePurpose {
     Evaluate = 1,
     Validate = 2,
     Route = 3,
+    Notify = 4,
 }
 
 export class RuleRecordColumnDto implements IRuleRecordColumnDto {
@@ -345844,6 +349289,114 @@ export interface ISaveLetterDraftInput {
     comments: string | undefined;
 }
 
+export class SaveMyAppraisalRatingLineInput implements ISaveMyAppraisalRatingLineInput {
+    id!: number;
+    ratingId!: number | undefined;
+    marks!: number;
+    comments!: string | undefined;
+
+    constructor(data?: ISaveMyAppraisalRatingLineInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.ratingId = _data["ratingId"];
+            this.marks = _data["marks"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): SaveMyAppraisalRatingLineInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveMyAppraisalRatingLineInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["ratingId"] = this.ratingId;
+        data["marks"] = this.marks;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ISaveMyAppraisalRatingLineInput {
+    id: number;
+    ratingId: number | undefined;
+    marks: number;
+    comments: string | undefined;
+}
+
+export class SaveMyAppraisalReviewInput implements ISaveMyAppraisalReviewInput {
+    paEmployeeId!: number;
+    lines!: SaveMyAppraisalRatingLineInput[] | undefined;
+    customTextField1!: string | undefined;
+    customTextField2!: string | undefined;
+    customTextField3!: string | undefined;
+
+    constructor(data?: ISaveMyAppraisalReviewInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.paEmployeeId = _data["paEmployeeId"];
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(SaveMyAppraisalRatingLineInput.fromJS(item));
+            }
+            this.customTextField1 = _data["customTextField1"];
+            this.customTextField2 = _data["customTextField2"];
+            this.customTextField3 = _data["customTextField3"];
+        }
+    }
+
+    static fromJS(data: any): SaveMyAppraisalReviewInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveMyAppraisalReviewInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["paEmployeeId"] = this.paEmployeeId;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["customTextField1"] = this.customTextField1;
+        data["customTextField2"] = this.customTextField2;
+        data["customTextField3"] = this.customTextField3;
+        return data;
+    }
+}
+
+export interface ISaveMyAppraisalReviewInput {
+    paEmployeeId: number;
+    lines: SaveMyAppraisalRatingLineInput[] | undefined;
+    customTextField1: string | undefined;
+    customTextField2: string | undefined;
+    customTextField3: string | undefined;
+}
+
 export class SaveMyLeaveChangeDraftInput implements ISaveMyLeaveChangeDraftInput {
     employeeAbsenceId!: number;
     absenceTypeId!: number | undefined;
@@ -348239,6 +351792,50 @@ export class SetScreenFavoriteInput implements ISetScreenFavoriteInput {
 export interface ISetScreenFavoriteInput {
     screenKey: string;
     isFavorite: boolean;
+}
+
+export class SetUserModuleLicenceInput implements ISetUserModuleLicenceInput {
+    userId!: number;
+    module!: LicenceModule;
+    isAssigned!: boolean;
+
+    constructor(data?: ISetUserModuleLicenceInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.module = _data["module"];
+            this.isAssigned = _data["isAssigned"];
+        }
+    }
+
+    static fromJS(data: any): SetUserModuleLicenceInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetUserModuleLicenceInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["module"] = this.module;
+        data["isAssigned"] = this.isAssigned;
+        return data;
+    }
+}
+
+export interface ISetUserModuleLicenceInput {
+    userId: number;
+    module: LicenceModule;
+    isAssigned: boolean;
 }
 
 export enum SettingScopes {
@@ -350818,6 +354415,42 @@ export class SubmitFeedbackInput implements ISubmitFeedbackInput {
 export interface ISubmitFeedbackInput {
     workflowRequestId: number;
     comment: string;
+}
+
+export class SubmitMyAppraisalReviewResultDto implements ISubmitMyAppraisalReviewResultDto {
+    stepApproved!: boolean;
+
+    constructor(data?: ISubmitMyAppraisalReviewResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.stepApproved = _data["stepApproved"];
+        }
+    }
+
+    static fromJS(data: any): SubmitMyAppraisalReviewResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubmitMyAppraisalReviewResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["stepApproved"] = this.stepApproved;
+        return data;
+    }
+}
+
+export interface ISubmitMyAppraisalReviewResultDto {
+    stepApproved: boolean;
 }
 
 export class SubmitTimeLogApprovalDayDto implements ISubmitTimeLogApprovalDayDto {

@@ -24,10 +24,22 @@ public class PAFormsAppService_Tests : PerformanceManagementAppServiceTestBase
                 SetPeerMaxLimit = peerMax
             }));
 
+        // The tick rules are real but the actor is the unlinked admin, for whom legacy applied none -- so
+        // these tests keep exercising the form's own validation. The rules have their own tests in
+        // PAFormsAppService_TickRules_Tests.
+        var scope = NSubstitute.Substitute.For<HCMv3.PersonnelAdministration.Services.IEmployeeScopeProvider>();
+        NSubstitute.SubstituteExtensions.Returns(scope.GetCurrentEmployeeIdAsync(), Task.FromResult((int?)null));
+
         return CreateService(() => new PAFormsAppService(
             FakeRepository.For<PAForm>(Context),
             FakeRepository.For<PAPeerNominee>(Context),
-            _settings));
+            _settings,
+            new HCMv3.PerformanceManagement.Review.PAFormTickPolicy(
+                FakeRepository.For<PATimeline>(Context),
+                FakeRepository.For<PATimelineException>(Context),
+                FakeRepository.For<PAPeerNominee>(Context),
+                _settings),
+            scope));
     }
 
     private void NominatePeer(int periodId, int employeeId, int peerId)

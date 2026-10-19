@@ -44,6 +44,22 @@ public class PAEmployeeReviewersAppService : HCMv3AppServiceBase, IPAEmployeeRev
         _ratingRepository = ratingRepository;
     }
 
+    /// <summary>
+    /// The reviewer rules shared with self-service Add Peer and the automatic additions -- here for the one
+    /// rule this grid did not have: the employee's own peer allowance on the current step.
+    ///
+    /// <para>
+    /// Property-injected, as <c>MyTransactionAppServiceBase.RequestNumberGenerator</c> is, so the
+    /// constructor every caller and test builds this with stays as it was. The container always supplies
+    /// them; a hand-built instance without them simply skips that one rule.
+    /// </para>
+    /// </summary>
+    public Review.IAppraisalReviewerManager ReviewerManager { get; set; }
+
+    public Review.IAppraisalStepSettingResolver StepSettingResolver { get; set; }
+
+    public HCMv3.PersonnelAdministration.Services.IEmployeeScopeProvider EmployeeScopeProvider { get; set; }
+
     [HttpPost]
     public async Task<PagedResultDto<PAEmployeeReviewerDto>> GetAll(GetAllPAEmployeeReviewersInput input)
     {
@@ -107,6 +123,13 @@ public class PAEmployeeReviewersAppService : HCMv3AppServiceBase, IPAEmployeeRev
         var entity = MapToEntity(input, new PAEmployeeReviewer());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
+        // Legacy PAEmployeeReviewer.PerformValidation: a new reviewer with nobody named as adding them was
+        // added by whoever is signed in. That is what lets the employee's own nominations be counted.
+        if (!entity.PeerAddedById.HasValue && EmployeeScopeProvider != null)
+        {
+            entity.PeerAddedById = await EmployeeScopeProvider.GetCurrentEmployeeIdAsync();
+        }
+
         await ValidateAsync(entity);
 
         await _repository.InsertAsync(entity);
@@ -162,6 +185,14 @@ public class PAEmployeeReviewersAppService : HCMv3AppServiceBase, IPAEmployeeRev
             {
                 throw new UserFriendlyException(L("MaxReviewerLimitReached", formType.MaxReviewerLimit));
             }
+        }
+
+        // The employee's own peer allowance ("Allowed Peer Count" on the current step), which only the
+        // shared reviewer rules know how to read.
+        if (ReviewerManager != null && StepSettingResolver != null)
+        {
+            var setting = await StepSettingResolver.GetCurrentAsync(paEmployee);
+            await ReviewerManager.ValidateAsync(entity, paEmployee, setting);
         }
     }
 

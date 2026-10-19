@@ -9,6 +9,7 @@ using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.Licensing;
 using HCMv3.PersonnelAdministration.Dto;
 using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Storage;
@@ -33,6 +34,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> _employeeWageAccountRepository;
+    private readonly IActiveEmployeeLimitChecker _activeEmployeeLimitChecker;
 
     public EmployeesAppService(
         IRepository<Employee> employeeRepository,
@@ -40,8 +42,10 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         IEmployeeValidator employeeValidator,
         IEntityImageStore imageStore,
         HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
-        IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> employeeWageAccountRepository)
+        IRepository<HCMv3.PayrollManagement.EmployeeWageAccount> employeeWageAccountRepository,
+        IActiveEmployeeLimitChecker activeEmployeeLimitChecker)
     {
+        _activeEmployeeLimitChecker = activeEmployeeLimitChecker;
         _employeeWageAccountRepository = employeeWageAccountRepository;
         _employeeRepository = employeeRepository;
         _employeeCodeGenerator = employeeCodeGenerator;
@@ -112,7 +116,19 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
             throw new UserFriendlyException(L("EmployeeNotFound"));
         }
 
-        return ToProfileDto(employee);
+        var profile = ToProfileDto(employee);
+
+        // The link to the old record of an employee who rejoined with a new code.
+        if (!employee.PreviousEmpCode.IsNullOrWhiteSpace())
+        {
+            profile.PreviousEmployeeId = await _employeeRepository.GetAll()
+                .Where(e => e.Id != employee.Id && e.Code == employee.PreviousEmpCode)
+                .OrderBy(e => e.Id)
+                .Select(e => (int?)e.Id)
+                .FirstOrDefaultAsync();
+        }
+
+        return profile;
     }
 
     public async Task CreateOrEdit(CreateOrEditEmployeeDto input)
@@ -204,7 +220,16 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     {
         var employee = await _employeeRepository.GetAsync(input.Id.Value);
         var previousEmploymentType = employee.EmploymentType;
+        var wasActive = employee.Status == EmployeeStatus.Active;
         MapToEntity(input, employee);
+
+        // Edition feature Max Active Employees (legacy licence line "Active Employees"): only a change TO active is
+        // checked, so an already-active employee can always be saved. New employees are checked by
+        // ActiveEmployeeLimitEntityHook on insert.
+        if (!wasActive && employee.Status == EmployeeStatus.Active)
+        {
+            await _activeEmployeeLimitChecker.EnsureCanActivateAsync(employee.TenantId, employee.Id);
+        }
 
         // Legacy Employee.OnSaving "Update Code For EmploymentType": a change of employment type takes the next
         // code of the new type's number series (when one is set up), before the blank-code check.

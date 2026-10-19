@@ -361,6 +361,8 @@ public class AppraisalWorkflow_Tests : AppTestBase
             ListRepository(appraisals),
             ListRepository<PACycle>(),
             ListRepository<FormType>(),
+            Substitute.For<HCMv3.PerformanceManagement.Review.IAppraisalStepSettingResolver>(),
+            Substitute.For<HCMv3.PerformanceManagement.Review.IAppraisalReviewerManager>(),
             unitOfWorkManager);
 
         handler.LocalizationManager = LocalIocManager.Resolve<ILocalizationManager>();

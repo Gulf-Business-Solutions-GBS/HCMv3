@@ -6,26 +6,24 @@ using Abp.Domain.Entities.Auditing;
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
-/// Employee rejoin record -- DELIBERATELY MINIMAL "record-keeping only" port of legacy XAF
-/// <c>HCM10.Module.BusinessObjects.PersonnelAdministration.EmployeeRejoin</c> (Wave B). Along with
-/// <see cref="EmployeeSeparation"/>, this is the biggest simplification in Wave B.
+/// Employee rejoin record, ported from legacy XAF
+/// <c>HCM10.Module.BusinessObjects.PersonnelAdministration.EmployeeRejoin</c>.
 ///
-/// SIGNIFICANT SIMPLIFICATION vs legacy business logic: this entity is a simple audit/record-keeping
-/// table this wave, NOT a working orchestration. The legacy "carry forward" boolean flags
-/// (<c>RejoinWithPrevLeaveAccrual</c>/<c>RejoinWithPrevTicketAccrual</c>/
-/// <c>RejoinWithPrevIndemnityAccrual</c>/<c>RejoinWithPrevLoan</c>) are kept here purely as record-keeping
-/// fields -- none of their side effects (creation/adjustment of <c>EmployeeAbsAdjustment</c>,
-/// <c>EmployeeGratuity</c>, <c>EmployeeTktAdjustment</c>, <c>EmployeeLoan</c>/<c>EmployeeLoanRecovery</c>,
-/// or <c>TimeTransfer</c> records) are implemented, since none of those balance-adjustment entities exist
-/// in this port yet.
+/// <para>Saving a rejoin is no longer record-keeping only: <see cref="Services.IEmployeeRejoinService"/> runs
+/// legacy's <c>PerformValidations</c> / <c>ValidatePreviousEntry</c>, <c>UpdatePreviousValues</c> and
+/// <c>SaveEmployeeInformation</c> for it (design note <c>docs/design/legacy-gap-batch8-round-b.md</c>,
+/// section 2). Legacy's <c>StartDate</c> is <see cref="RejoinDate"/> here, and <c>RejoinWithPrevXxx</c> is
+/// <c>CarryForwardXxxBalance</c>.</para>
 ///
-/// DEFERRED / DROPPED (not ported):
-/// - <c>CreateNewEmployeeCode</c> branching logic (create-new-employee-record vs reactivate-existing):
-///   this entity just records which <see cref="Employee"/> the rejoin applies to; no new Employee row is
-///   auto-created.
-/// - <c>ValidatePreviousEntry</c>/chain-blocking against Exit/FnFPayment/SalaryRegister/other-Rejoin state.
-/// - <c>SaveEmployeeInformation</c>/<c>UpdatePreviousValues</c> orchestration (Employee.Status flips,
-///   quota/loan carry-forward creation and rollback).
+/// <list type="bullet">
+/// <item><description><see cref="CreateNewEmployeeCode"/> off: the same employee is made Active again, and every
+/// balance NOT carried forward is zeroed by a record dated the day before the rejoin.</description></item>
+/// <item><description><see cref="CreateNewEmployeeCode"/> on: a new employee is created from the old one (legacy's
+/// field list), linked by <see cref="Employee.PreviousEmpCode"/>, and every balance that IS carried forward is
+/// opened on the new employee. The old employee is left as it was.</description></item>
+/// </list>
+///
+/// <para>Rows saved before the service existed had no side effects, and they are not re-run.</para>
 /// </summary>
 public class EmployeeRejoin : FullAuditedEntity, IMustHaveTenant
 {
@@ -47,4 +45,11 @@ public class EmployeeRejoin : FullAuditedEntity, IMustHaveTenant
     public virtual bool CarryForwardIndemnityBalance { get; set; }
 
     public virtual bool CarryForwardLoanBalance { get; set; }
+
+    /// <summary>
+    /// Legacy <c>CreateNewEmployeeCode</c>: the employee rejoins as a NEW employee with a new code instead of the
+    /// old record being reactivated. It also decides whether the rejoin restarts service on the old record for
+    /// Full &amp; Final: only rejoins that kept the code do.
+    /// </summary>
+    public virtual bool CreateNewEmployeeCode { get; set; }
 }

@@ -148,6 +148,49 @@ public static class RuleDefinitionSerializer
         return root.ToJsonString(WriteOptions);
     }
 
+    /// <summary>
+    /// Parses ONE stored expression -- a condition on its own, with no blocks around it -- or throws
+    /// <see cref="RuleDefinitionException"/>.
+    ///
+    /// <para>
+    /// For callers that need a condition but not a rule: the notification criterion is the first. It is the
+    /// same node grammar as a block's <c>if</c>, so the formula editor's output can be stored as-is and the
+    /// evaluator walks it exactly as it walks a rule's condition. Going through <see cref="Parse"/> instead
+    /// would mean wrapping the condition in a block with a dummy action, because a block without actions is
+    /// rejected there -- for a rule, rightly.
+    /// </para>
+    /// </summary>
+    public static RuleExpression ParseExpression(string json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            throw new RuleDefinitionException("The expression is empty.");
+        }
+
+        JsonNode root;
+        try
+        {
+            root = JsonNode.Parse(json);
+        }
+        catch (JsonException ex)
+        {
+            throw new RuleDefinitionException("The expression is not valid JSON: " + ex.Message, ex);
+        }
+
+        return ParseExpression(root, 1);
+    }
+
+    /// <summary>Writes one expression back to the stored form <see cref="ParseExpression(string)"/> reads.</summary>
+    public static string SerializeExpression(RuleExpression expression)
+    {
+        if (expression == null)
+        {
+            throw new ArgumentNullException(nameof(expression));
+        }
+
+        return WriteExpression(expression).ToJsonString(WriteOptions);
+    }
+
     private static RuleVariable ParseVariable(JsonNode node)
     {
         if (node is not JsonObject obj)

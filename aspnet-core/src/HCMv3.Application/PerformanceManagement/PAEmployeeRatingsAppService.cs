@@ -132,140 +132,29 @@ public class PAEmployeeRatingsAppService : HCMv3AppServiceBase, IPAEmployeeRatin
     }
 
     /// <summary>
-    /// Legacy <c>PAEmployee.UpdateAverageRating</c>, all three branches of <c>ManageAppraisalSettings</c>:
-    /// marks off (rating codes averaged), marks on scored against ratings (weighted marks against the highest
-    /// rating code), and marks on scored against KPI weight (marks summed).
+    /// Legacy <c>PAEmployee.UpdateAverageRating</c>, all three branches of <c>ManageAppraisalSettings</c>.
+    /// The calculation itself lives in <see cref="Review.PAEmployeeScoreCalculator"/> so the self-service
+    /// review screen scores a rating exactly as this grid does.
     /// </summary>
-    private async Task UpdateAverageRatingAsync(int reviewerId)
-    {
-        var reviewer = await _reviewerRepository.FirstOrDefaultAsync(reviewerId);
-        if (reviewer == null)
-        {
-            return;
-        }
+    private Task UpdateAverageRatingAsync(int reviewerId) => ScoreCalculator.UpdateAverageRatingAsync(reviewerId);
 
-        var ratings = await _repository.GetAll()
-            .Include(r => r.PAEmployeeDetail)
-            .Where(r => r.PAEmployeeReviewerId == reviewerId)
-            .ToListAsync();
-
-        var appraisalSettings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
-        if (appraisalSettings != null && appraisalSettings.EnableMarksInPAReview)
-        {
-            await UpdateMarksBasedAveragesAsync(reviewer, ratings, appraisalSettings.MarksOn);
-            await _reviewerRepository.UpdateAsync(reviewer);
-            await CurrentUnitOfWork.SaveChangesAsync();
-            await UpdatePAEmployeeAveragesAsync(reviewer.PAEmployeeId);
-            return;
-        }
-
-        var ratedLines = ratings.Where(r => r.RatingId != null).ToList();
-        if (ratedLines.Count > 0)
-        {
-            var ratingIds = ratedLines.Select(r => r.RatingId.Value).Distinct().ToList();
-            var paRatings = await _paRatingRepository.GetAll().Where(r => ratingIds.Contains(r.Id)).ToListAsync();
-
-            double totalRatingCodes = 0;
-            foreach (var line in ratedLines)
-            {
-                var rating = paRatings.FirstOrDefault(r => r.Id == line.RatingId);
-                if (rating != null && int.TryParse(rating.Code, out var code))
-                {
-                    totalRatingCodes += code;
-                }
-            }
-
-            var averageRating = Math.Round(totalRatingCodes / ratedLines.Count);
-            reviewer.AverageScore = Math.Round(averageRating, 2);
-            reviewer.AverageRating = paRatings
-                .Where(r => int.TryParse(r.Code, out var c) && c <= averageRating)
-                .OrderByDescending(r => int.Parse(r.Code))
-                .FirstOrDefault();
-            reviewer.AverageRatingId = reviewer.AverageRating?.Id;
-        }
-        else
-        {
-            reviewer.AverageScore = 0;
-            reviewer.AverageRatingId = null;
-        }
-
-        await _reviewerRepository.UpdateAsync(reviewer);
-        await CurrentUnitOfWork.SaveChangesAsync();
-
-        await UpdatePAEmployeeAveragesAsync(reviewer.PAEmployeeId);
-    }
+    private Review.PAEmployeeScoreCalculator _scoreCalculator;
 
     /// <summary>
-    /// Legacy "Marks enabled" branches. Against ratings: each line's marks are weighted by its KPI weight over
-    /// the highest rating code, and the reviewer's score is that total scaled back to the rating range;
-    /// against weight: the reviewer's total marks are simply summed. Legacy set no average rating in either
-    /// branch (that assignment was commented out), so it is left untouched here too.
+    /// Built on first use rather than in the constructor: it saves through this service's unit of work, and
+    /// that is property-injected only after construction. Built here rather than injected so the
+    /// constructor -- and everything that constructs this service -- stays as it was.
     /// </summary>
-    private async Task UpdateMarksBasedAveragesAsync(
-        PAEmployeeReviewer reviewer,
-        List<PAEmployeeRating> ratings,
-        HCMv3.SystemSettings.MarksOn marksOn)
-    {
-        var totalMarks = ratings.Sum(r => r.Marks);
-        reviewer.TotalMarks = totalMarks;
-
-        if (marksOn != HCMv3.SystemSettings.MarksOn.Ratings)
+    private Review.PAEmployeeScoreCalculator ScoreCalculator =>
+        _scoreCalculator ??= new Review.PAEmployeeScoreCalculator(
+            _repository,
+            _reviewerRepository,
+            _paEmployeeRepository,
+            _paRatingRepository,
+            _sysSettingsAccessor)
         {
-            return;
-        }
-
-        if (ratings.Count == 0)
-        {
-            reviewer.AverageScore = 0;
-            reviewer.AverageRatingId = null;
-            return;
-        }
-
-        var maxRating = (await _paRatingRepository.GetAll().Select(r => r.Code).ToListAsync())
-            .Select(code => int.TryParse(code, out var c) ? c : 0)
-            .DefaultIfEmpty(0)
-            .Max();
-
-        double calculatedScore = 0;
-        if (maxRating != 0)
-        {
-            calculatedScore = ratings.Sum(r => ((r.PAEmployeeDetail?.Weight ?? 0) / maxRating) * r.Marks);
-        }
-
-        reviewer.AverageScore = Math.Round((calculatedScore / 100) * maxRating, 2);
-    }
-
-    private async Task UpdatePAEmployeeAveragesAsync(int paEmployeeId)
-    {
-        var paEmployee = await _paEmployeeRepository.FirstOrDefaultAsync(paEmployeeId);
-        if (paEmployee == null)
-        {
-            return;
-        }
-
-        var reviewers = await _reviewerRepository.GetAll()
-            .Where(r => r.PAEmployeeId == paEmployeeId)
-            .ToListAsync();
-
-        if (reviewers.Count > 0)
-        {
-            paEmployee.OverallAverageScore = Math.Round(reviewers.Average(r => r.AverageScore), 2);
-        }
-        else
-        {
-            paEmployee.OverallAverageScore = 0;
-        }
-
-        var peerReviewers = reviewers.Where(r => r.EmployeeId != paEmployee.EmployeeId).ToList();
-        paEmployee.PeerAverageScore = peerReviewers.Count > 0 ? Math.Round(peerReviewers.Average(r => r.AverageScore), 2) : 0;
-
-        var employeeReviewer = reviewers.FirstOrDefault(r => r.EmployeeId == paEmployee.EmployeeId);
-        paEmployee.EmployeeAverageScore = employeeReviewer?.AverageScore ?? 0;
-        paEmployee.EmployeeAverageRatingId = employeeReviewer?.AverageRatingId;
-
-        await _paEmployeeRepository.UpdateAsync(paEmployee);
-        await CurrentUnitOfWork.SaveChangesAsync();
-    }
+            UnitOfWorkManager = UnitOfWorkManager
+        };
 
     private static PAEmployeeRatingDto ToDto(PAEmployeeRating entity)
     {

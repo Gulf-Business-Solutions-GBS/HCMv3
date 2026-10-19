@@ -151,6 +151,16 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
     }
 
     /// <inheritdoc/>
+    public virtual Task OnApproversAssignedAsync(
+        WorkflowTransactionContext context,
+        int step,
+        System.Collections.Generic.IReadOnlyList<int> approverEmployeeIds)
+    {
+        // Nothing happens on assignment for most types.
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
     public virtual Task OnApprovedAsync(WorkflowTransactionContext context)
     {
         // The row is already approved and live; what changes is what it says.

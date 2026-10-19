@@ -815,6 +815,17 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         }
 
         request.ApproverId = approverEmployeeIds[0];
+
+        // The moment some types act on: the appraisal adds its reviewers here, as legacy did when approvers
+        // were assigned. Inside the action on purpose -- see IWorkflowTransactionHandler.OnApproversAssignedAsync.
+        var handler = _handlerResolver.Resolve(request.RequestType);
+        if (handler != null)
+        {
+            await handler.OnApproversAssignedAsync(
+                new WorkflowTransactionContext(request, actingEmployeeId),
+                step,
+                approverEmployeeIds);
+        }
     }
 
     /// <summary>

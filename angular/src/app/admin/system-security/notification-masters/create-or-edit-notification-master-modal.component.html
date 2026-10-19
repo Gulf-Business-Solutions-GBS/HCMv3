@@ -8,7 +8,7 @@
     aria-labelledby="createOrEditModal"
     aria-hidden="true"
     [config]="{ backdrop: 'static', keyboard: !saving() }">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             @if (active()) {
                 <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -29,21 +29,44 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 mb-5">
+                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="NotificationMaster_NotificationType">{{ 'NotificationType' | localize }}</label>
-                                <input
+                                <select
                                     id="NotificationMaster_NotificationType"
                                     #notificationTypeInput="ngModel"
-                                    class="form-control"
-                                    type="text"
+                                    class="form-select"
                                     name="NotificationType"
                                     [ngModel]="record().notificationType"
-                                    (ngModelChange)="updateField('notificationType', $event)"
-                                    required
-                                    maxlength="256" />
+                                    (ngModelChange)="onTypeChange($event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (source of sources(); track source.code) {
+                                        <option [ngValue]="source.code">{{ source.displayName }}</option>
+                                    }
+                                </select>
                                 <validation-messages [formCtrl]="notificationTypeInput" />
+                                @if (record().notificationType && !selectedSource()) {
+                                    <div class="form-text text-danger">{{ 'NotificationTypeNotSupported' | localize: record().notificationType }}</div>
+                                }
                             </div>
-                            <div class="col-md-6 mb-5">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="NotificationMaster_NotificationSubTypeId">
+                                    {{ selectedSource()?.subTypeDisplayName || ('NotificationSubType' | localize) }}
+                                </label>
+                                <select
+                                    id="NotificationMaster_NotificationSubTypeId"
+                                    class="form-select"
+                                    name="NotificationSubTypeId"
+                                    [disabled]="!selectedSource()?.hasSubType"
+                                    [ngModel]="record().notificationSubTypeId"
+                                    (ngModelChange)="updateField('notificationSubTypeId', $event); preview.set(undefined)">
+                                    <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                                    @for (item of subTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.name }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="NotificationMaster_NotificationConfigId">{{ 'NotificationConfig' | localize }}</label>
                                 <select
                                     id="NotificationMaster_NotificationConfigId"
@@ -61,18 +84,25 @@
                                 <validation-messages [formCtrl]="notificationConfigIdInput" />
                             </div>
                         </div>
+
                         <div class="row">
-                            <div class="col-md-8 mb-5">
+                            <div class="col-md-12 mb-3">
                                 <label class="form-label" for="NotificationMaster_Criterion">{{ 'Criterion' | localize }}</label>
-                                <input
+                                <rule-formula-input
                                     id="NotificationMaster_Criterion"
-                                    class="form-control"
-                                    type="text"
-                                    name="Criterion"
-                                    [ngModel]="record().criterion"
-                                    (ngModelChange)="updateField('criterion', $event)" />
+                                    [value]="formulaText()"
+                                    [baseObject]="selectedSource()?.baseObject"
+                                    [functions]="functions()"
+                                    [rows]="3"
+                                    [placeholder]="l('NotificationCriterionPlaceholder')"
+                                    (valueChange)="onFormulaChange($event)"
+                                    (validityChange)="formulaValid.set($event)" />
+                                <div class="form-text">{{ 'NotificationCriterionHint' | localize }}</div>
                             </div>
-                            <div class="col-md-4 mb-5 form-check form-switch mt-8">
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-6 mb-5 form-check form-switch">
                                 <input
                                     id="NotificationMaster_IsEnabled"
                                     class="form-check-input"
@@ -82,7 +112,63 @@
                                     (ngModelChange)="updateField('isEnabled', $event)" />
                                 <label class="form-check-label" for="NotificationMaster_IsEnabled">{{ 'IsEnabled' | localize }}</label>
                             </div>
+                            <div class="col-md-6 mb-5 text-end">
+                                <button
+                                    type="button"
+                                    class="btn btn-light-primary btn-sm"
+                                    [disabled]="!record().notificationType || !formulaValid()"
+                                    [buttonBusy]="previewing()"
+                                    (click)="runPreview()">
+                                    <i class="fa fa-eye"></i>
+                                    {{ 'NotificationRulePreview' | localize }}
+                                </button>
+                            </div>
                         </div>
+
+                        @if (preview(); as result) {
+                            <div class="card card-flush border mb-3">
+                                <div class="card-body py-4">
+                                    @if (!result.isValid) {
+                                        @for (error of result.errors ?? []; track $index) {
+                                            <div class="text-danger">
+                                                <i class="fa fa-exclamation-circle me-1"></i>{{ error }}
+                                            </div>
+                                        }
+                                    } @else {
+                                        <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
+                                            <span class="fw-bold">{{ 'NotificationRuleMatchesToday' | localize: result.matchCount }}</span>
+                                            @if (record().id) {
+                                                <span>{{ 'NotificationRuleNotYetSent' | localize: result.notYetSentCount }}</span>
+                                                @if (result.notYetSentCount > 0) {
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-light-warning btn-sm"
+                                                        [buttonBusy]="marking()"
+                                                        (click)="markExistingAsSent()">
+                                                        <i class="fa fa-check-double"></i>
+                                                        {{ 'NotificationRuleMarkExistingAsSent' | localize }}
+                                                    </button>
+                                                }
+                                            } @else {
+                                                <span class="text-muted">{{ 'NotificationRuleSaveToMarkExisting' | localize }}</span>
+                                            }
+                                        </div>
+                                        @if ((result.samples?.length ?? 0) > 0) {
+                                            <table class="table table-sm table-row-dashed mb-0">
+                                                <tbody>
+                                                    @for (sample of result.samples ?? []; track sample.recordId) {
+                                                        <tr>
+                                                            <td>{{ sample.label }}</td>
+                                                            <td class="text-end text-muted">{{ sample.subjectDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
@@ -91,7 +177,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary fw-bold"
-                            [disabled]="!recordForm.form.valid"
+                            [disabled]="!recordForm.form.valid || !formulaValid()"
                             [buttonBusy]="saving()"
                             [busyText]="l('SavingWithThreeDot')">
                             <i class="fa fa-save"></i>

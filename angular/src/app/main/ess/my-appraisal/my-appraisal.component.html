@@ -1,0 +1,71 @@
+<div [@routerTransition] [helpPage]="'ess.appraisal'">
+    <sub-header [title]="'EssMyAppraisals' | localize" />
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b mb-5">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0" data-help-loc="CurrentUserHasNoEmployeeRecord">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                </div>
+            </div>
+        } @else {
+            <div class="card card-custom gutter-b mb-5">
+                <div class="card-body">
+                    <!-- The three lists the design note asks for. One screen, so an employee who is also a
+                         reviewer and a manager finds everything appraisal-related in one place. -->
+                    <ul class="nav nav-tabs nav-line-tabs mb-5">
+                        @for (s of scopes; track s) {
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link"
+                                    href="javascript:;"
+                                    [class.active]="scope() === s"
+                                    [attr.data-help-loc]="scopeKey(s)"
+                                    (click)="selectScope(s)">
+                                    {{ scopeLabel(s) }}
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    @if (loading()) {
+                        <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    } @else {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead [essListHead]="list" [exportTitle]="'EssMyAppraisals' | localize"></thead>
+                                <tbody>
+                                    @for (row of list.view(); track row.id) {
+                                        <tr>
+                                            <td>{{ row.requestNumber }}</td>
+                                            <td>{{ employeeLabel(row) }}</td>
+                                            <td>{{ pick(row.paCycleNameEn, row.paCycleNameAr) }}</td>
+                                            <td>{{ pick(row.formTypeNameEn, row.formTypeNameAr) }}</td>
+                                            <td>{{ row.creationTime | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <!-- The review happens in Details: there is nothing else to do from the row. -->
+                                                <button class="btn btn-light-primary" (click)="openDetail(row)" data-help-loc="Details">
+                                                    {{ 'Details' | localize }}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="7" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <ess-list-pager [list]="list" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<appraisalReviewModal #review (changed)="reload()" />

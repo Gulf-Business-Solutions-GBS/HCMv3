@@ -1,6 +1,12 @@
 <div [@routerTransition]>
     <sub-header [title]="'NotificationMasters' | localize" [description]="'SystemSecurity' | localize">
         <div role="actions">
+            <button (click)="showSentLog()" class="btn btn-light-primary float-end ms-2">
+                <i class="fa fa-history btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'NotificationSentHistory' | localize }}
+                </span>
+            </button>
             @if ('Pages.SystemSecurity.NotificationMasters.Create' | permission) {
                 <button (click)="createRecord()" class="btn btn-primary float-end">
                     <i class="fa fa-plus btn-md-icon"></i>
@@ -54,24 +60,22 @@
                             [resizableColumns]="primengTableHelper.resizableColumns">
                             <ng-template #header>
                                 <tr>
-                                    <th
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(['Pages.SystemSecurity.NotificationMasters.Edit', 'Pages.SystemSecurity.NotificationMasters.Delete'] | permissionAny)
-                                        ">
+                                    <th style="width: 130px">
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 180px" pSortableColumn="notificationType">
                                         {{ 'NotificationType' | localize }}
                                         <p-sortIcon field="notificationType" />
                                     </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'NotificationSubType' | localize }}
+                                    </th>
                                     <th style="min-width: 200px" pSortableColumn="notificationConfigName">
                                         {{ 'NotificationConfig' | localize }}
                                         <p-sortIcon field="notificationConfigName" />
                                     </th>
-                                    <th style="min-width: 200px" pSortableColumn="criterion">
+                                    <th style="min-width: 260px">
                                         {{ 'Criterion' | localize }}
-                                        <p-sortIcon field="criterion" />
                                     </th>
                                     <th style="min-width: 110px" pSortableColumn="isEnabled">
                                         {{ 'IsEnabled' | localize }}
@@ -81,11 +85,7 @@
                             </ng-template>
                             <ng-template #body let-record="$implicit">
                                 <tr>
-                                    <td
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(['Pages.SystemSecurity.NotificationMasters.Edit', 'Pages.SystemSecurity.NotificationMasters.Delete'] | permissionAny)
-                                        ">
+                                    <td style="width: 130px">
                                         <button
                                             type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle"
@@ -95,13 +95,21 @@
                                         </button>
                                     </td>
                                     <td style="min-width: 180px">
-                                        <span pTooltip="{{ record.notificationType }}" class="hide-overflown">{{ record.notificationType }}</span>
+                                        <span pTooltip="{{ record.notificationTypeName }}" class="hide-overflown">{{ record.notificationTypeName }}</span>
+                                        @if (!record.isSupportedType) {
+                                            <span class="badge badge-light-danger ms-2" [pTooltip]="'NotificationTypeNeedsReentry' | localize">
+                                                {{ 'NotificationTypeNotSupportedShort' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        <span class="hide-overflown">{{ record.notificationSubTypeName || ('All' | localize) }}</span>
                                     </td>
                                     <td style="min-width: 200px">
                                         <span pTooltip="{{ record.notificationConfigName }}" class="hide-overflown">{{ record.notificationConfigName }}</span>
                                     </td>
-                                    <td style="min-width: 200px">
-                                        <span pTooltip="{{ record.criterion }}" class="hide-overflown">{{ record.criterion }}</span>
+                                    <td style="min-width: 260px">
+                                        <span pTooltip="{{ criterionText(record) }}" class="hide-overflown font-monospace">{{ criterionText(record) }}</span>
                                     </td>
                                     <td style="min-width: 110px">
                                         <span class="badge" [ngClass]="record.isEnabled ? 'badge-success' : 'badge-secondary'">
@@ -136,4 +144,5 @@
     </div>
 
     <createOrEditNotificationMasterModal #createOrEditModal (modalSave)="reloadPage()" />
+    <notificationSentLogModal #sentLogModal />
 </div>

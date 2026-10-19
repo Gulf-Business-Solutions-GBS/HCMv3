@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
+using Abp.Linq.Extensions;
 using Abp.UI;
 
 namespace HCMv3.PersonnelAdministration.Services;
@@ -50,10 +51,18 @@ public class EmployeeValidator : HCMv3DomainServiceBase, IEmployeeValidator
         // The duplicate lookups below project to an object, not straight to Code: selecting Code alone read a
         // match with a blank code as "no match", so a clash with such an employee (e.g. one created by the old
         // recruitment Joined path) slipped through.
+        //
+        // Legacy also skips the employee's own previous code (Employee.cs 1640/1651), so a rejoin that creates a
+        // new employee can be saved while the old record still carries the same civil ID and access ID. Applied
+        // only when a previous code is set: legacy's "Code != ''" form would also skip every blank-coded employee,
+        // which is the clash the projection above was introduced to catch.
+        var previousCode = employee.PreviousEmpCode.IsNullOrWhiteSpace() ? null : employee.PreviousEmpCode;
+
         var duplicateCivilId = _employeeRepository.GetAll()
             .Where(e => e.Id != employee.Id
                         && e.CivilID == employee.CivilID
                         && e.Status == EmployeeStatus.Active)
+            .WhereIf(previousCode != null, e => e.Code != previousCode)
             .Select(e => new { e.Code })
             .FirstOrDefault();
         if (duplicateCivilId != null)
@@ -67,6 +76,7 @@ public class EmployeeValidator : HCMv3DomainServiceBase, IEmployeeValidator
                 .Where(e => e.Id != employee.Id
                             && e.AccessID == employee.AccessID
                             && e.Status == EmployeeStatus.Active)
+                .WhereIf(previousCode != null, e => e.Code != previousCode)
                 .Select(e => new { e.Code })
                 .FirstOrDefault();
             if (duplicateAccessId != null)

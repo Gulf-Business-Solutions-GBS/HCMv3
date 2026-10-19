@@ -17,6 +17,8 @@ public class HCMv3ApplicationModule : AbpModule
     {
         //Adding authorization providers
         Configuration.Authorization.Providers.Add<AppAuthorizationProvider>();
+        // Must come after AppAuthorizationProvider: it attaches HCM licence checks to the permissions defined there.
+        Configuration.Authorization.Providers.Add<HCMv3.Licensing.HcmLicensingAuthorizationProvider>();
     }
 
     public override void Initialize()

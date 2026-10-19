@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities;
@@ -58,7 +59,7 @@ public class EmployeeRejoinsAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Create_Rejoin_As_Record_Keeping_Only()
+    public async Task Should_Save_The_Rejoin_With_Its_Ticks()
     {
         //Arrange
         var employee = CreateTestEmployee("R100");
@@ -79,6 +80,32 @@ public class EmployeeRejoinsAppService_Tests : AppTestBase
         result.TotalCount.ShouldBe(1);
         result.Items[0].CarryForwardLeaveBalance.ShouldBeTrue();
         result.Items[0].CarryForwardTicketBalance.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Should_Return_The_Create_New_Employee_Code_Tick_For_Edit()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("R101");
+        int rejoinId = 0;
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeRejoin>().Add(new EmployeeRejoin
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employee.Id,
+                RejoinDate = new DateTime(2023, 1, 1),
+                CreateNewEmployeeCode = true
+            });
+            context.SaveChanges();
+            rejoinId = context.Set<EmployeeRejoin>().First(r => r.EmployeeId == employee.Id).Id;
+        });
+
+        //Act
+        var result = await _appService.GetEmployeeRejoinForEdit(new EntityDto(rejoinId));
+
+        //Assert
+        result.EmployeeRejoin.CreateNewEmployeeCode.ShouldBeTrue();
     }
 
     [Fact]

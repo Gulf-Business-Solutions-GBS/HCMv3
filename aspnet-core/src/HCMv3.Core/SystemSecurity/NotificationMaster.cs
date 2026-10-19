@@ -22,6 +22,17 @@ namespace HCMv3.SystemSecurity;
 ///
 /// NotificationConfig reuses the existing HCMv3.GeneralMasterInfo.NotificationConfig
 /// entity, already ported.
+///
+/// RULE ENGINE (2026-10-19, legacy gap batch 8 round B, section 3). The three simplifications above are now
+/// replaced, not just documented:
+/// - <see cref="NotificationType"/> holds a rule source code (<c>HcmNotifications.NotificationRuleSourceCodes</c>):
+///   a whitelisted kind of record, not a free-text name and not an arbitrary type.
+/// - <see cref="NotificationSubTypeId"/> is the sub type, and unlike legacy it actually filters.
+/// - <see cref="Criterion"/> holds a business rule engine expression (the JSON the formula editor produces),
+///   evaluated against the fields the source declares. Legacy XAF criteria text does not parse as one; such a
+///   rule is skipped (and logged) until it is re-entered.
+/// What a rule has already sent about is kept per rule in <c>HcmNotifications.NotificationSentLog</c>, not in
+/// a flag on the record.
 /// </summary>
 public class NotificationMaster : FullAuditedEntity, IMustHaveTenant
 {
@@ -34,6 +45,13 @@ public class NotificationMaster : FullAuditedEntity, IMustHaveTenant
     [Required]
     [StringLength(256)]
     public virtual string NotificationType { get; set; }
+
+    /// <summary>
+    /// The sub type the rule is limited to -- a document type, absence type, disciplinary type or loan type,
+    /// depending on <see cref="NotificationType"/>. Not a foreign key: which table it points into depends on
+    /// the type. Null means every sub type.
+    /// </summary>
+    public virtual int? NotificationSubTypeId { get; set; }
 
     public virtual int NotificationConfigId { get; set; }
 

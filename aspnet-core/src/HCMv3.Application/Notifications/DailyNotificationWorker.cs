@@ -7,6 +7,8 @@ using Abp.Threading;
 using Abp.Threading.Timers;
 using Abp.Timing;
 using HCMv3.BackgroundJobs;
+using HCMv3.HcmNotifications.Daily;
+using HCMv3.HcmNotifications.Rules;
 using HCMv3.MultiTenancy;
 using HCMv3.PayrollManagement.Services;
 using HCMv3.PersonnelAdministration.Services;
@@ -46,6 +48,8 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
     private readonly INotificationDispatchService _notificationDispatchService;
     private readonly IAbsenceViolationService _absenceViolationService;
     private readonly IDocumentOverdueReminderService _documentOverdueReminderService;
+    private readonly IFixedDailyNotificationService _fixedDailyNotificationService;
+    private readonly INotificationRuleRunner _notificationRuleRunner;
 
     public DailyNotificationWorker(
         AbpTimer timer,
@@ -53,9 +57,13 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
         IRepository<Tenant> tenantRepository,
         INotificationDispatchService notificationDispatchService,
         IAbsenceViolationService absenceViolationService,
-        IDocumentOverdueReminderService documentOverdueReminderService)
+        IDocumentOverdueReminderService documentOverdueReminderService,
+        IFixedDailyNotificationService fixedDailyNotificationService,
+        INotificationRuleRunner notificationRuleRunner)
         : base(timer)
     {
+        _fixedDailyNotificationService = fixedDailyNotificationService;
+        _notificationRuleRunner = notificationRuleRunner;
         _documentOverdueReminderService = documentOverdueReminderService;
         _unitOfWorkManager = unitOfWorkManager;
         _tenantRepository = tenantRepository;
@@ -88,11 +96,25 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
     /// </summary>
     private void RunForTenant(int tenantId)
     {
+        // Legacy SendRealTimeNotification's order is kept for the ones it ran: document expiry first, the
+        // Notification Master rules after news, the annual leave limit after the rules.
+        Run(tenantId, "employee document expiry", () => _fixedDailyNotificationService.SendEmployeeDocumentExpiryNotificationsAsync(Clock.Now));
+        Run(tenantId, "company document expiry", () => _fixedDailyNotificationService.SendCompanyDocumentExpiryNotificationsAsync(Clock.Now));
+
         Run(tenantId, "birthday", () => _notificationDispatchService.SendBirthdayNotificationsAsync());
         Run(tenantId, "anniversary", () => _notificationDispatchService.SendAnniversaryNotificationsAsync());
         Run(tenantId, "leave pay in advance", () => _notificationDispatchService.SendAdvancePaymentNotificationsAsync());
+        Run(tenantId, "separation", () => _fixedDailyNotificationService.SendSeparationNotificationsAsync(Clock.Now));
         Run(tenantId, "leave resumption", () => _notificationDispatchService.SendLeaveResumptionNotificationsAsync());
         Run(tenantId, "punch during leave", () => _notificationDispatchService.SendPunchDuringLeaveNotificationsAsync());
+        Run(tenantId, "probation", () => _fixedDailyNotificationService.SendProbationNotificationsAsync(Clock.Now));
+        Run(tenantId, "news", () => _fixedDailyNotificationService.SendNewsNotificationsAsync(Clock.Now));
+
+        // The Notification Master rules. Each rule runs in its own unit of work inside this one, so a broken
+        // rule is logged and skipped without holding back the others.
+        Run(tenantId, "notification rules", () => _notificationRuleRunner.RunAsync(Clock.Now.Date));
+
+        Run(tenantId, "annual leave over the limit", () => _fixedDailyNotificationService.SendAnnualLeaveMaxLimitNotificationsAsync(Clock.Now));
 
         // Legacy SendRealTimeNotification ended with these two, in this order. Unlike the runs above they are
         // not "is today the day" checks but escalation ladders; running them every four hours is still safe,

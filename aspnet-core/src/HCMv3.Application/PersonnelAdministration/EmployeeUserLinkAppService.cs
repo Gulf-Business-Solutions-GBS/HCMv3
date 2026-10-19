@@ -11,6 +11,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Authorization.Users;
+using HCMv3.Licensing;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,11 +32,14 @@ public class EmployeeUserLinkAppService : HCMv3AppServiceBase, IEmployeeUserLink
 {
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<User, long> _userRepository;
+    private readonly IUserModuleLicenceManager _licenceManager;
 
     public EmployeeUserLinkAppService(
         IRepository<Employee> employeeRepository,
-        IRepository<User, long> userRepository)
+        IRepository<User, long> userRepository,
+        IUserModuleLicenceManager licenceManager)
     {
+        _licenceManager = licenceManager;
         _employeeRepository = employeeRepository;
         _userRepository = userRepository;
     }
@@ -97,6 +101,10 @@ public class EmployeeUserLinkAppService : HCMv3AppServiceBase, IEmployeeUserLink
         employee.UserId = input.UserId;
 
         await _employeeRepository.UpdateAsync(employee);
+
+        // Legacy gave a new employee user its ESS and Mobile licences when seats were free. Skips quietly when
+        // they are not -- the link itself must never fail over licensing.
+        await _licenceManager.AssignOnEmployeeLinkAsync(input.UserId);
     }
 
     public async Task UnlinkUser(EntityDto input)
@@ -239,6 +247,7 @@ public class EmployeeUserLinkAppService : HCMv3AppServiceBase, IEmployeeUserLink
             result.LinkedCount++;
 
             await _employeeRepository.UpdateAsync(employee);
+            await _licenceManager.AssignOnEmployeeLinkAsync(userId);
         }
 
         result.AmbiguousLoginIds = ambiguousLoginIds;

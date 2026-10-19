@@ -39,6 +39,8 @@
                         <th>{{ 'CarryForwardTicketBalance' | localize }}</th>
                         <th>{{ 'CarryForwardIndemnityBalance' | localize }}</th>
                         <th>{{ 'CarryForwardLoanBalance' | localize }}</th>
+                        <th>{{ 'CreateNewEmployeeCode' | localize }}</th>
+                        <th>{{ 'NewEmployeeCode' | localize }}</th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-record="$implicit">
@@ -88,6 +90,18 @@
                                 <i class="fa fa-check text-success"></i>
                             } @else {
                                 <i class="fa fa-times text-danger"></i>
+                            }
+                        </td>
+                        <td>
+                            @if (record.createNewEmployeeCode) {
+                                <i class="fa fa-check text-success"></i>
+                            } @else {
+                                <i class="fa fa-times text-danger"></i>
+                            }
+                        </td>
+                        <td>
+                            @if (record.newEmployeeId) {
+                                <a [routerLink]="['/app/admin/employees', record.newEmployeeId]">{{ record.newEmployeeCode }}</a>
                             }
                         </td>
                     </tr>

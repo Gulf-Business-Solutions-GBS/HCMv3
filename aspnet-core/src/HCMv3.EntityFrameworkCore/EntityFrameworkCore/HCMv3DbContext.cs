@@ -685,6 +685,14 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<OvertimeBatch> OvertimeBatches { get; set; }
 
+    public virtual DbSet<HCMv3.Licensing.UserModuleLicence> UserModuleLicences { get; set; }
+
+    public virtual DbSet<HCMv3.PerformanceManagement.Review.AppraisalStepSetting> AppraisalStepSettings { get; set; }
+
+    public virtual DbSet<HCMv3.PerformanceManagement.Review.AppraisalStepSettingRelationship> AppraisalStepSettingRelationships { get; set; }
+
+    public virtual DbSet<HCMv3.HcmNotifications.NotificationSentLog> NotificationSentLogs { get; set; }
+
     public virtual DbSet<OvertimeBatchDetail> OvertimeBatchDetails { get; set; }
 
     public virtual DbSet<EmployeePaymentBatchDetail> EmployeePaymentBatchDetails { get; set; }
@@ -1688,8 +1696,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
 
             // LoginID must also name exactly one employee: it is what EmployeeSessionService falls back to
-            // for employees not yet linked by UserId, and what BulkPasswordAppService and
-            // WorkflowAdminToolsAppService still resolve people by. A duplicate here means sign-in resolves
+            // for employees not yet linked by UserId, and what
+            // WorkflowAdminToolsAppService still resolves people by. A duplicate here means sign-in resolves
             // to whichever row the database happens to return first.
             //
             // Enforced in EmployeesAppService.ValidateAsync as well, which catches it with a readable
@@ -2736,6 +2744,33 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.Property(e => e.Comments).HasMaxLength(LeavePlan.MaxCommentsLength);
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
             b.HasIndex(e => new { e.TenantId, e.StartDate, e.EndDate });
+        });
+
+        modelBuilder.Entity<HCMv3.PerformanceManagement.Review.AppraisalStepSetting>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.RequestMasterId, e.Step }).IsUnique().HasFilter("[IsDeleted] = 0");
+            b.HasOne(e => e.RequestMaster).WithMany().HasForeignKey(e => e.RequestMasterId).OnDelete(DeleteBehavior.Restrict);
+            b.HasMany(e => e.Relationships).WithOne(r => r.AppraisalStepSetting).HasForeignKey(r => r.AppraisalStepSettingId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<HCMv3.PerformanceManagement.Review.AppraisalStepSettingRelationship>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.AppraisalStepSettingId, e.RelationshipTypeId });
+            b.HasOne(e => e.RelationshipType).WithMany().HasForeignKey(e => e.RelationshipTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<HCMv3.Licensing.UserModuleLicence>(b =>
+        {
+            b.ToTable("UserModuleLicences");
+            b.HasIndex(e => new { e.TenantId, e.UserId, e.Module }).IsUnique().HasFilter("[IsDeleted] = 0");
+            b.HasIndex(e => new { e.TenantId, e.Module });
+        });
+
+        modelBuilder.Entity<HCMv3.HcmNotifications.NotificationSentLog>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.NotificationMasterId, e.RecordId });
+            b.HasIndex(e => new { e.TenantId, e.NotificationName, e.RecordId });
+            b.HasOne(e => e.NotificationMaster).WithMany().HasForeignKey(e => e.NotificationMasterId).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<OvertimeBatch>(b =>

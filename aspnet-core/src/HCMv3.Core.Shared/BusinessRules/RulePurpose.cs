@@ -16,5 +16,11 @@ public enum RulePurpose
     Validate = 2,
 
     /// <summary>Chooses a workflow chain or approver set. Writes land on the routing parameter only.</summary>
-    Route = 3
+    Route = 3,
+
+    /// <summary>
+    /// Decides whether a record is due a notification (the Notification Master criterion). A test only:
+    /// writes are never applied, so a criterion cannot change the record it is asking about.
+    /// </summary>
+    Notify = 4
 }

@@ -181,6 +181,12 @@ export const appRoutes: Routes = [
                         data: { permission: 'Ess.MyLeavePlans' },
                     },
                     {
+                        path: 'ess/appraisal',
+                        loadComponent: () =>
+                            import('./main/ess/my-appraisal/my-appraisal.component').then((m) => m.MyAppraisalComponent),
+                        data: { permission: 'Ess.MyAppraisals' },
+                    },
+                    {
                         path: 'ess/inbox',
                         loadComponent: () =>
                             import('./main/ess/inbox/ess-inbox.component').then((m) => m.EssInboxComponent),
@@ -3820,20 +3826,20 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Tools.TransferApprovals' },
                     },
                     {
-                        path: 'bulk-password-reset',
-                        loadComponent: () =>
-                            import('./admin/administration/bulk-password-reset/bulk-password-reset.component').then(
-                                (m) => m.BulkPasswordResetComponent
-                            ),
-                        data: { permission: 'Pages.Administration.Tools.BulkPasswordReset' },
-                    },
-                    {
                         path: 'user-credential-reset',
                         loadComponent: () =>
                             import('./admin/administration/user-credential-reset/user-credential-reset.component').then(
                                 (m) => m.UserCredentialResetComponent
                             ),
                         data: { permission: 'Pages.Administration.Tools.ResetUserCredentials' },
+                    },
+                    {
+                        path: 'licence-assignment',
+                        loadComponent: () =>
+                            import('./admin/administration/licence-assignment/licence-assignment.component').then(
+                                (m) => m.LicenceAssignmentComponent
+                            ),
+                        data: { permission: 'Pages.Administration.Tools.LicenceAssignment' },
                     },
                     {
                         path: 'tenant-version-check',
@@ -3858,6 +3864,14 @@ export const appRoutes: Routes = [
                                 (m) => m.PAEmployeesComponent
                             ),
                         data: { permission: 'Pages.PerformanceManagement.PAEmployees' },
+                    },
+                    {
+                        path: 'appraisal-step-settings',
+                        loadComponent: () =>
+                            import('./admin/performance-management/appraisal-step-settings/appraisal-step-settings.component').then(
+                                (m) => m.AppraisalStepSettingsComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.AppraisalStepSettings' },
                     },
                     {
                         path: 'pa-employees/:id',

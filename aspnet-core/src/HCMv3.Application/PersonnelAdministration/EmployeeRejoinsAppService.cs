@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -7,27 +8,33 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
-/// Application service for <see cref="EmployeeRejoin"/> -- DELIBERATELY MINIMAL "record-keeping only"
-/// port of the legacy XAF EmployeeRejoin business object (Wave B). This is a simple audit/record-keeping
-/// CRUD service; NONE of the legacy carry-forward orchestration (leave/ticket/indemnity/loan balance
-/// adjustments, new-employee-code creation, ValidatePreviousEntry chain-blocking) is implemented -- see
-/// the entity class remarks for the full list of dropped behaviors. Only required-field validation
-/// (already enforced by DTO Data Annotations) applies.
+/// Application service for <see cref="EmployeeRejoin"/>. Saving or deleting a rejoin runs legacy's checks and side
+/// effects through <see cref="IEmployeeRejoinService"/>: reactivating the employee and zeroing the balances not
+/// carried forward, or creating the new employee and opening the balances carried forward. All of it happens in
+/// the method's unit of work, so it is saved together with the rejoin or not at all.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeRejoins)]
 public class EmployeeRejoinsAppService : HCMv3AppServiceBase, IEmployeeRejoinsAppService
 {
     private readonly IRepository<EmployeeRejoin> _repository;
+    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeRejoinService _rejoinService;
 
-    public EmployeeRejoinsAppService(IRepository<EmployeeRejoin> repository)
+    public EmployeeRejoinsAppService(
+        IRepository<EmployeeRejoin> repository,
+        IRepository<Employee> employeeRepository,
+        IEmployeeRejoinService rejoinService)
     {
         _repository = repository;
+        _employeeRepository = employeeRepository;
+        _rejoinService = rejoinService;
     }
 
     [HttpPost]
@@ -46,7 +53,10 @@ public class EmployeeRejoinsAppService : HCMv3AppServiceBase, IEmployeeRejoinsAp
             .PageBy(input)
             .ToListAsync();
 
-        return new PagedResultDto<EmployeeRejoinDto>(totalCount, items.Select(ToDto).ToList());
+        var dtos = items.Select(ToDto).ToList();
+        await FillNewEmployeesAsync(items, dtos);
+
+        return new PagedResultDto<EmployeeRejoinDto>(totalCount, dtos);
     }
 
     public async Task<GetEmployeeRejoinForEditOutput> GetEmployeeRejoinForEdit(EntityDto input)
@@ -64,7 +74,8 @@ public class EmployeeRejoinsAppService : HCMv3AppServiceBase, IEmployeeRejoinsAp
                 CarryForwardLeaveBalance = entity.CarryForwardLeaveBalance,
                 CarryForwardTicketBalance = entity.CarryForwardTicketBalance,
                 CarryForwardIndemnityBalance = entity.CarryForwardIndemnityBalance,
-                CarryForwardLoanBalance = entity.CarryForwardLoanBalance
+                CarryForwardLoanBalance = entity.CarryForwardLoanBalance,
+                CreateNewEmployeeCode = entity.CreateNewEmployeeCode
             }
         };
     }
@@ -87,22 +98,79 @@ public class EmployeeRejoinsAppService : HCMv3AppServiceBase, IEmployeeRejoinsAp
         var entity = MapToEntity(input, new EmployeeRejoin());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
+        var current = EmployeeRejoinValues.From(entity);
+        await _rejoinService.ValidateSaveAsync(current, null, null);
+
         await _repository.InsertAsync(entity);
+        await _rejoinService.ApplyAsync(current, null);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeRejoins_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeRejoinDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previous = EmployeeRejoinValues.From(entity);
+
         MapToEntity(input, entity);
+        var current = EmployeeRejoinValues.From(entity);
+
+        await _rejoinService.ValidateSaveAsync(current, previous, entity.Id);
 
         await _repository.UpdateAsync(entity);
+        await _rejoinService.ApplyAsync(current, previous);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeRejoins_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.GetAsync(input.Id);
+        var previous = EmployeeRejoinValues.From(entity);
+
+        await _rejoinService.ValidateDeleteAsync(previous, entity.Id);
+        await _rejoinService.UndoAsync(previous);
+
+        await _repository.DeleteAsync(entity);
+    }
+
+    /// <summary>
+    /// The employee a new-code rejoin created: the one carrying the old code as its previous code and joining on
+    /// the rejoin date (a person can rejoin with a new code more than once).
+    /// </summary>
+    private async Task FillNewEmployeesAsync(List<EmployeeRejoin> items, List<EmployeeRejoinDto> dtos)
+    {
+        var oldCodes = items
+            .Where(r => r.CreateNewEmployeeCode && r.Employee?.Code != null)
+            .Select(r => r.Employee.Code)
+            .Distinct()
+            .ToList();
+        if (oldCodes.Count == 0)
+        {
+            return;
+        }
+
+        var candidates = await _employeeRepository.GetAll()
+            .Where(e => oldCodes.Contains(e.PreviousEmpCode))
+            .Select(e => new { e.Id, e.Code, e.PreviousEmpCode, e.JoiningDate })
+            .ToListAsync();
+
+        for (var i = 0; i < items.Count; i++)
+        {
+            var rejoin = items[i];
+            if (!rejoin.CreateNewEmployeeCode || rejoin.Employee?.Code == null)
+            {
+                continue;
+            }
+
+            var match = candidates
+                .Where(e => e.PreviousEmpCode == rejoin.Employee.Code && e.JoiningDate.Date == rejoin.RejoinDate.Date)
+                .OrderBy(e => e.Id)
+                .FirstOrDefault();
+            if (match != null)
+            {
+                dtos[i].NewEmployeeId = match.Id;
+                dtos[i].NewEmployeeCode = match.Code;
+            }
+        }
     }
 
     private static EmployeeRejoin MapToEntity(CreateOrEditEmployeeRejoinDto input, EmployeeRejoin entity)
@@ -114,6 +182,7 @@ public class EmployeeRejoinsAppService : HCMv3AppServiceBase, IEmployeeRejoinsAp
         entity.CarryForwardTicketBalance = input.CarryForwardTicketBalance;
         entity.CarryForwardIndemnityBalance = input.CarryForwardIndemnityBalance;
         entity.CarryForwardLoanBalance = input.CarryForwardLoanBalance;
+        entity.CreateNewEmployeeCode = input.CreateNewEmployeeCode;
         return entity;
     }
 
@@ -130,7 +199,8 @@ public class EmployeeRejoinsAppService : HCMv3AppServiceBase, IEmployeeRejoinsAp
             CarryForwardLeaveBalance = entity.CarryForwardLeaveBalance,
             CarryForwardTicketBalance = entity.CarryForwardTicketBalance,
             CarryForwardIndemnityBalance = entity.CarryForwardIndemnityBalance,
-            CarryForwardLoanBalance = entity.CarryForwardLoanBalance
+            CarryForwardLoanBalance = entity.CarryForwardLoanBalance,
+            CreateNewEmployeeCode = entity.CreateNewEmployeeCode
         };
     }
 }

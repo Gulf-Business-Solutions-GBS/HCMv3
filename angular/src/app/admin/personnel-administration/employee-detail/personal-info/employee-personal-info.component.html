@@ -147,7 +147,13 @@
                     <dd>{{ p.recruitmentTypeName }}</dd>
 
                     <dt data-help-loc="PreviousEmpCode">{{ 'PreviousEmpCode' | localize }}</dt>
-                    <dd>{{ p.previousEmpCode }}</dd>
+                    <dd>
+                        @if (p.previousEmployeeId) {
+                            <a [routerLink]="['/app/admin/employees', p.previousEmployeeId]">{{ p.previousEmpCode }}</a>
+                        } @else {
+                            {{ p.previousEmpCode }}
+                        }
+                    </dd>
 
                     <dt data-help-loc="ReferenceCode">{{ 'ReferenceCode' | localize }}</dt>
                     <dd>{{ p.referenceCode }}</dd>

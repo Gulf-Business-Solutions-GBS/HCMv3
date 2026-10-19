@@ -189,7 +189,9 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         // Validation rules never write, whatever event they are armed on. Enforced here rather than trusted
         // to the author, so moving an assignment cannot turn a check into a mutation.
         var previousAllowWrites = context.AllowWrites;
-        context.AllowWrites = previousAllowWrites && rule.Purpose != RulePurpose.Validate;
+        context.AllowWrites = previousAllowWrites
+                              && rule.Purpose != RulePurpose.Validate
+                              && rule.Purpose != RulePurpose.Notify;
 
         var stopwatch = Stopwatch.StartNew();
 

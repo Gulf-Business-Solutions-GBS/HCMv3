@@ -90,6 +90,12 @@ public class EmployeeProfileDto
 
     public string PreviousEmpCode { get; set; }
 
+    /// <summary>
+    /// The employee whose code is <see cref="PreviousEmpCode"/>, so the screen can link to the old record (set by a
+    /// rejoin with a new employee code). Null when no employee has that code.
+    /// </summary>
+    public int? PreviousEmployeeId { get; set; }
+
     public string ReferenceCode { get; set; }
 
     public string LoginID { get; set; }

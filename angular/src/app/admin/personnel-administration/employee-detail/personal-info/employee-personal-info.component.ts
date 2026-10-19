@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, input, signal, computed, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -45,6 +46,7 @@ import { toBase64Payload, toImageSrc } from '@shared/utils/image-data-url';
         DatePipe,
         CreateOrEditEmployeeModalComponent,
         HelpPageDirective,
+        RouterLink,
     ],
 })
 export class EmployeePersonalInfoComponent extends AppComponentBase implements OnInit {

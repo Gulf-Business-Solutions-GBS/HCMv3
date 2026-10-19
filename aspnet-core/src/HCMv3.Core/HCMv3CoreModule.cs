@@ -71,7 +71,8 @@ namespace HCMv3;
     typeof(AbpMapperlyModule),
     typeof(AbpAspNetZeroCoreModule),
     typeof(AbpMailKitModule),
-    typeof(AbpZeroCoreOpenIddictModule))]
+    typeof(AbpZeroCoreOpenIddictModule),
+    typeof(HCMv3.HcmNotifications.HCMv3HcmNotificationsModule))]
 public class HCMv3CoreModule : AbpModule
 {
     public override void PreInitialize()

@@ -17,6 +17,7 @@ import { LeaveFormValue, LeaveRequestFormComponent } from '../my-leave/leave-req
 import { DocumentRequestFormComponent, DocumentRequestFormValue } from '../my-document/document-request-form.component';
 import { LetterRequestFormComponent, LetterRequestFormValue } from '../my-letter/letter-request-form.component';
 import { LeavePlanFormComponent, LeavePlanFormValue } from '../my-leave-plan/leave-plan-form.component';
+import { AppraisalReviewFormComponent, AppraisalReviewFormValue } from '../my-appraisal/appraisal-review-form.component';
 import {
     PassportWithdrawalFormComponent,
     PassportWithdrawalFormValue,
@@ -80,6 +81,13 @@ export interface EssRequestFormRegistration {
  * <c>WorkflowRequest.RequestType</c> holds.</p>
  */
 export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
+    PAEmployee: {
+        component: AppraisalReviewFormComponent,
+        toValue: (context): AppraisalReviewFormValue => ({
+            paEmployeeId: context.targetEntityId ?? 0,
+            employeeDisplay: context.employeeDisplay,
+        }),
+    },
     LeavePlan: {
         component: LeavePlanFormComponent,
         toValue: (context): LeavePlanFormValue => ({

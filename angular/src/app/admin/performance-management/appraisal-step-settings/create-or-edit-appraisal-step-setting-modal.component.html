@@ -1,0 +1,161 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #stepForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (stepSetting().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'AppraisalWFSetup' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'AppraisalWFSetup' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label required" for="AppraisalStepSetting_RequestMasterId">{{ 'RequestMaster' | localize }}</label>
+                                <select
+                                    id="AppraisalStepSetting_RequestMasterId"
+                                    class="form-select"
+                                    name="RequestMasterId"
+                                    required
+                                    [ngModel]="stepSetting().requestMasterId"
+                                    (ngModelChange)="onMasterChange($event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (master of lookups()?.requestMasters ?? []; track master.id) {
+                                        <option [ngValue]="master.id">{{ masterLabel(master) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="AppraisalStepSetting_Step">{{ 'Step' | localize }}</label>
+                                <select
+                                    id="AppraisalStepSetting_Step"
+                                    class="form-select"
+                                    name="Step"
+                                    required
+                                    [ngModel]="stepSetting().step"
+                                    (ngModelChange)="updateField('step', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (step of steps(); track step) {
+                                        <option [ngValue]="step">{{ step }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <h6 class="mb-3">{{ 'AppraisalReviewersAdded' | localize }}</h6>
+                                @for (flag of addFlags; track flag.field) {
+                                    <div class="form-check mb-2">
+                                        <input
+                                            [id]="'AppraisalStepSetting_' + flag.label"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            [name]="flag.label"
+                                            [ngModel]="flagValue(flag.field)"
+                                            (ngModelChange)="updateField(flag.field, $event)" />
+                                        <label class="form-check-label" [for]="'AppraisalStepSetting_' + flag.label">{{ flag.label | localize }}</label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <h6 class="mb-3">{{ 'AppraisalReviewActions' | localize }}</h6>
+                                @for (flag of doFlags; track flag.field) {
+                                    <div class="form-check mb-2">
+                                        <input
+                                            [id]="'AppraisalStepSetting_' + flag.label"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            [name]="flag.label"
+                                            [ngModel]="flagValue(flag.field)"
+                                            (ngModelChange)="updateField(flag.field, $event)" />
+                                        <label class="form-check-label" [for]="'AppraisalStepSetting_' + flag.label">{{ flag.label | localize }}</label>
+                                    </div>
+                                }
+                                <label class="form-label mt-2" for="AppraisalStepSetting_AllowedPeerCount">{{ 'AllowedPeerCount' | localize }}</label>
+                                <input
+                                    id="AppraisalStepSetting_AllowedPeerCount"
+                                    type="number"
+                                    min="0"
+                                    max="999"
+                                    class="form-control"
+                                    name="AllowedPeerCount"
+                                    [disabled]="!stepSetting().canAddPeer"
+                                    [ngModel]="stepSetting().allowedPeerCount"
+                                    (ngModelChange)="updateField('allowedPeerCount', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <h6 class="mb-3">{{ 'AppraisalReviewVisibility' | localize }}</h6>
+                                @for (flag of viewFlags; track flag.field) {
+                                    <div class="form-check mb-2">
+                                        <input
+                                            [id]="'AppraisalStepSetting_' + flag.label"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            [name]="flag.label"
+                                            [ngModel]="flagValue(flag.field)"
+                                            (ngModelChange)="updateField(flag.field, $event)" />
+                                        <label class="form-check-label" [for]="'AppraisalStepSetting_' + flag.label">{{ flag.label | localize }}</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        @if (stepSetting().autoAddRelationShip) {
+                            <!-- Legacy's Relationship child list. Only read when "Auto Add Relationship" is on. -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="mb-3">{{ 'RelationshipType' | localize }}</h6>
+                                    @for (type of lookups()?.relationshipTypes ?? []; track type.id) {
+                                        <div class="form-check form-check-inline mb-2">
+                                            <input
+                                                [id]="'AppraisalStepSetting_Relationship_' + type.id"
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                [name]="'Relationship_' + type.id"
+                                                [ngModel]="hasRelationship(type.id)"
+                                                (ngModelChange)="toggleRelationship(type.id, $event)" />
+                                            <label class="form-check-label" [for]="'AppraisalStepSetting_Relationship_' + type.id">{{ relationshipLabel(type) }}</label>
+                                        </div>
+                                    } @empty {
+                                        <div class="text-muted">{{ 'NoData' | localize }}</div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!stepForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

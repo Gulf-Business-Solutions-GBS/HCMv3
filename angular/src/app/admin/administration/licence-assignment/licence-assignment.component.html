@@ -1,0 +1,154 @@
+<div [@routerTransition]>
+    <sub-header [title]="'LicenceAssignment' | localize" [description]="'LicenceAssignmentDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (summary(); as s) {
+            @if (!s.isEnforced) {
+                <div class="alert alert-info">{{ 'LicencesNotEnforcedInfo' | localize }}</div>
+            }
+
+            <div class="row g-5 mb-5">
+                @for (usage of s.modules; track usage.module) {
+                    <div class="col-sm-6 col-lg">
+                        <div class="card card-custom h-100" [class.border-danger]="usage.isOverLimit" [class.border]="usage.isOverLimit">
+                            <div class="card-body py-5">
+                                <div class="fw-bold fs-5">{{ usage.moduleName }}</div>
+                                <div class="fs-2 mt-2" [class.text-danger]="usage.isOverLimit">{{ usageText(usage) }}</div>
+                                @if (!usage.isModuleEnabled) {
+                                    <span class="badge badge-light-secondary mt-2">{{ 'LicenceModuleNotInEditionShort' | localize }}</span>
+                                }
+                                @if (usage.isOverLimit) {
+                                    <span class="badge badge-light-danger mt-2">{{ 'LicenceOverLimit' | localize }}</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row mb-5">
+                    <div class="col-md-4">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="LicenceAssignmentFilter"
+                            [placeholder]="'SearchWithThreeDot' | localize"
+                            [ngModel]="filterText()"
+                            (ngModelChange)="filterText.set($event)"
+                            (keyup.enter)="reloadPage()" />
+                    </div>
+                    <div class="col-md-3">
+                        <select
+                            id="LicenceAssignment_Module"
+                            class="form-select"
+                            name="Module"
+                            [ngModel]="moduleFilter()"
+                            (ngModelChange)="onModuleFilterChange($event)">
+                            <option [ngValue]="undefined">{{ 'AllLicenceModules' | localize }}</option>
+                            @for (usage of modules(); track usage.module) {
+                                <option [ngValue]="usage.module">{{ usage.moduleName }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select
+                            id="LicenceAssignment_Assigned"
+                            class="form-select"
+                            name="IsAssigned"
+                            [disabled]="moduleFilter() === undefined"
+                            [ngModel]="assignedFilter()"
+                            (ngModelChange)="onAssignedFilterChange($event)">
+                            <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                            <option [ngValue]="true">{{ 'LicenceAssigned' | localize }}</option>
+                            <option [ngValue]="false">{{ 'LicenceNotAssigned' | localize }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button type="button" class="btn btn-primary" (click)="reloadPage()">
+                            <i class="la la-search btn-md-icon"></i>
+                            <span class="d-none d-md-inline-block">{{ 'Search' | localize }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getUsers($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            [tableStyle]="{ 'min-width': '60rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 160px" pSortableColumn="userName">
+                                        {{ 'UserName' | localize }}
+                                        <p-sortIcon field="userName" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="fullName">
+                                        {{ 'FullName' | localize }}
+                                        <p-sortIcon field="fullName" />
+                                    </th>
+                                    <th style="min-width: 120px">{{ 'EmployeeCode' | localize }}</th>
+                                    @for (usage of modules(); track usage.module) {
+                                        <th style="min-width: 110px" class="text-center">{{ usage.moduleName }}</th>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 160px">
+                                        {{ record.userName }}
+                                        @if (!record.isActive) {
+                                            <span class="badge badge-light-warning ms-2">{{ 'Inactive' | localize }}</span>
+                                        }
+                                        @if (record.isAdministrator) {
+                                            <span class="badge badge-light-primary ms-2">{{ 'LicenceNotNeededForAdministratorShort' | localize }}</span>
+                                        }
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.fullName }}</td>
+                                    <td style="min-width: 120px">{{ record.employeeCode }}</td>
+                                    @for (usage of modules(); track usage.module) {
+                                        <td style="min-width: 110px" class="text-center">
+                                            <input
+                                                #tick
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                [title]="lockReason(record, usage) ?? ''"
+                                                [disabled]="!!lockReason(record, usage) || isSaving(record, usage.module)"
+                                                [checked]="holds(record, usage.module)"
+                                                (change)="toggle(record, usage, tick)" />
+                                        </td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getUsers($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

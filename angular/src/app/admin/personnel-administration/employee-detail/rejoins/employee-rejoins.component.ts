@@ -12,6 +12,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeRejoinModalComponent } from './create-or-edit-employee-rejoin-modal.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'employee-rejoins',
@@ -26,6 +27,7 @@ import { CreateOrEditEmployeeRejoinModalComponent } from './create-or-edit-emplo
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeRejoinModalComponent,
+        RouterLink,
     ],
 })
 export class EmployeeRejoinsComponent extends AppComponentBase {

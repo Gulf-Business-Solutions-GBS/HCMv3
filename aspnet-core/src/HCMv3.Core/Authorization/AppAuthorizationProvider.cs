@@ -42,6 +42,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyTeam, L("EssMyTeam"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyLeave, L("EssMyLeave"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyLeavePlans, L("EssMyLeavePlans"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyAppraisals, L("EssMyAppraisals"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyAssets, L("EssMyAssets"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyDocuments, L("EssMyDocuments"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyLoans, L("EssMyLoans"), multiTenancySides: MultiTenancySides.Tenant);
@@ -1797,6 +1798,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         paEmployees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAEmployees_Edit, L("EditItem"));
         paEmployees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAEmployees_Delete, L("DeleteItem"));
 
+        var appraisalStepSettings = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_AppraisalStepSettings, L("AppraisalWFSetup"));
+        appraisalStepSettings.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_AppraisalStepSettings_Create, L("CreateNewItem"));
+        appraisalStepSettings.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_AppraisalStepSettings_Edit, L("EditItem"));
+        appraisalStepSettings.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_AppraisalStepSettings_Delete, L("DeleteItem"));
+
         var successionManagement = pages.CreateChildPermission(AppPermissions.Pages_SuccessionManagement, L("SuccessionManagement"));
 
         var impactOfLosses = successionManagement.CreateChildPermission(AppPermissions.Pages_SuccessionManagement_ImpactOfLosses, L("ImpactOfLosses"));
@@ -2814,8 +2820,8 @@ public class AppAuthorizationProvider : AuthorizationProvider
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_RecalculateProbation, L("RecalculatingProbationEndDates"));
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_TimeAttendanceResync, L("ResyncingTimeAttendanceData"));
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_TransferApprovals, L("TransferringPendingApprovals"));
-        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_BulkPasswordReset, L("BulkResettingPasswords"));
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_ResetUserCredentials, L("ResettingUserCredentials"), multiTenancySides: MultiTenancySides.Tenant);
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_LicenceAssignment, L("ManagingLicenceAssignment"), multiTenancySides: MultiTenancySides.Tenant);
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_CopyWorkflowSetup, L("CopyingWorkflowSetup"));
 
         // Legacy HCM10.Web/UserControls/ImportExport/. See AppPermissions for why Import and Export are

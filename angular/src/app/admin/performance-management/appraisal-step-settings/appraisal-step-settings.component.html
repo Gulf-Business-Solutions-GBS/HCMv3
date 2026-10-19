@@ -1,0 +1,119 @@
+<div [@routerTransition]>
+    <sub-header [title]="'AppraisalWFSetup' | localize" [description]="'PerformanceManagement' | localize">
+        <div role="actions">
+            @if ('Pages.PerformanceManagement.AppraisalStepSettings.Create' | permission) {
+                <button (click)="create()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">{{ 'CreateNew' | localize }}</span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-4 col-md-6">
+                        <label class="form-label" for="AppraisalStepSettings_RequestMasterFilter">{{ 'RequestMaster' | localize }}</label>
+                        <select
+                            id="AppraisalStepSettings_RequestMasterFilter"
+                            class="form-select"
+                            [ngModel]="requestMasterFilter()"
+                            (ngModelChange)="onFilterChange($event)">
+                            <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                            @for (master of requestMasters(); track master.id) {
+                                <option [ngValue]="master.id">{{ masterOptionLabel(master) }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRows($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '90rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 130px">{{ 'Actions' | localize }}</th>
+                                    <th style="min-width: 200px" pSortableColumn="requestMasterId">
+                                        {{ 'RequestMaster' | localize }}
+                                        <p-sortIcon field="requestMasterId" />
+                                    </th>
+                                    <th style="min-width: 80px" pSortableColumn="step">
+                                        {{ 'Step' | localize }}
+                                        <p-sortIcon field="step" />
+                                    </th>
+                                    <th>{{ 'CanAddKpi' | localize }}</th>
+                                    <th>{{ 'CanAddPeer' | localize }}</th>
+                                    <th>{{ 'AllowedPeerCount' | localize }}</th>
+                                    <th>{{ 'CanAddRatings' | localize }}</th>
+                                    <th>{{ 'CanPeerAddRatings' | localize }}</th>
+                                    <th>{{ 'CanViewRatings' | localize }}</th>
+                                    <th>{{ 'CanViewPeerRatings' | localize }}</th>
+                                    <th>{{ 'CanViewOverallAverageRating' | localize }}</th>
+                                    <th>{{ 'CanEmployeeSelfRate' | localize }}</th>
+                                    <th>{{ 'AutoAddManager' | localize }}</th>
+                                    <th>{{ 'AutoAddRelationShip' | localize }}</th>
+                                    <th>{{ 'AutoSubmitOnLastFill' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'RelationshipType' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 200px">{{ masterName(record) }}</td>
+                                    <td style="min-width: 80px">{{ record.step }}</td>
+                                    <td><i class="fa" [class.fa-check]="record.canAddKpi" [class.text-success]="record.canAddKpi"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.canAddPeer" [class.text-success]="record.canAddPeer"></i></td>
+                                    <td>{{ record.allowedPeerCount }}</td>
+                                    <td><i class="fa" [class.fa-check]="record.canAddRatings" [class.text-success]="record.canAddRatings"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.canPeerAddRatings" [class.text-success]="record.canPeerAddRatings"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.canViewRatings" [class.text-success]="record.canViewRatings"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.canViewPeerRatings" [class.text-success]="record.canViewPeerRatings"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.canViewOverallAverageRating" [class.text-success]="record.canViewOverallAverageRating"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.canEmployeeSelfRate" [class.text-success]="record.canEmployeeSelfRate"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.autoAddManager" [class.text-success]="record.autoAddManager"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.autoAddRelationShip" [class.text-success]="record.autoAddRelationShip"></i></td>
+                                    <td><i class="fa" [class.fa-check]="record.autoSubmitOnLastFill" [class.text-success]="record.autoSubmitOnLastFill"></i></td>
+                                    <td style="min-width: 200px">{{ record.relationshipTypeNames }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRows($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditAppraisalStepSettingModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

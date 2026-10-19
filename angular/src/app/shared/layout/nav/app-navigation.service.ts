@@ -112,6 +112,7 @@ export class AppNavigationService {
                         new AppMenuItem('EssMyLeavePlans', 'Ess.MyLeavePlans', 'flaticon-calendar-3', '/app/main/ess/leave-plan').governedBy('LeavePlan'),
                     ]),
                     // Directly under Workflow, not inside a group -- as legacy has Skip Punch Request.
+                    new AppMenuItem('EssMyAppraisals', 'Ess.MyAppraisals', 'flaticon-medal', '/app/main/ess/appraisal'),
                     new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch').governedBy('TimeEvent'),
                     new AppMenuItem('Travel', '', 'flaticon-airplane', '', [], [
                         new AppMenuItem('EssMyTravel', 'Ess.MyTravel', 'flaticon-airplane', '/app/main/ess/travel').governedBy('Travel'),
@@ -2984,6 +2985,12 @@ export class AppNavigationService {
                         'flaticon-list-3',
                         '/app/admin/pa-employees'
                     ),
+                    new AppMenuItem(
+                        'AppraisalWFSetup',
+                        'Pages.PerformanceManagement.AppraisalStepSettings',
+                        'flaticon-list-3',
+                        '/app/admin/appraisal-step-settings'
+                    ),
                 ]
             ),
             new AppMenuItem(
@@ -3570,16 +3577,16 @@ export class AppNavigationService {
                         '/app/admin/transfer-approvals'
                     ),
                     new AppMenuItem(
-                        'BulkPasswordReset',
-                        'Pages.Administration.Tools.BulkPasswordReset',
-                        'flaticon-lock',
-                        '/app/admin/bulk-password-reset'
-                    ),
-                    new AppMenuItem(
                         'ResetUserCredentials',
                         'Pages.Administration.Tools.ResetUserCredentials',
                         'flaticon-lock',
                         '/app/admin/user-credential-reset'
+                    ),
+                    new AppMenuItem(
+                        'LicenceAssignment',
+                        'Pages.Administration.Tools.LicenceAssignment',
+                        'flaticon-users',
+                        '/app/admin/licence-assignment'
                     ),
                     new AppMenuItem(
                         'TenantVersionCheck',

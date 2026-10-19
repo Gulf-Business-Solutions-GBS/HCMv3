@@ -21,10 +21,9 @@ namespace HCMv3.Administration.Tools;
 /// <para><b>DELIBERATE DEVIATION — permission instead of a username check</b> (legacy
 /// <c>CheckIfAdminUser()</c>, uscSystemConfigPanel.ascx.cs line 59).</para>
 ///
-/// <para><b>DELIBERATE DEVIATION — "Create Users with Default Roles" moved.</b> Legacy's
-/// <c>ASPxCallbackPanel19_Callback</c> (line 138) lived on this panel but is a credential-minting
-/// operation; it is implemented in <see cref="BulkPasswordAppService"/> so it sits behind the same
-/// dedicated <c>Pages_Administration_Tools_BulkPasswordReset</c> permission as the other password tools.</para>
+/// <para><b>DELIBERATE DEVIATION — password tools moved.</b> Legacy's credential-minting callbacks on this
+/// panel live in <see cref="UserCredentialResetAppService"/> (Reset User Passwords), behind its own
+/// <c>Pages_Administration_Tools_ResetUserCredentials</c> permission.</para>
 ///
 /// <para><b>NOT PORTED — "Reset Model Navigation Items Nodes" (legacy line 83) and "Migrate Attachments"
 /// (legacy line 309).</b> Justified on <see cref="ISystemAdminToolsAppService"/>.</para>

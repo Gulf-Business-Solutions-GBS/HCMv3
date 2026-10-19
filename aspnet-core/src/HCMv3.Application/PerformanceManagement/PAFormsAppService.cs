@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using Abp.Timing;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PerformanceManagement.Dto;
@@ -24,15 +25,80 @@ public class PAFormsAppService : HCMv3AppServiceBase, IPAFormsAppService
     private readonly IRepository<PAForm> _repository;
     private readonly IRepository<PAPeerNominee> _peerNomineeRepository;
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly Review.IPAFormTickPolicy _tickPolicy;
+    private readonly HCMv3.PersonnelAdministration.Services.IEmployeeScopeProvider _employeeScopeProvider;
 
     public PAFormsAppService(
         IRepository<PAForm> repository,
         IRepository<PAPeerNominee> peerNomineeRepository,
-        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
+        Review.IPAFormTickPolicy tickPolicy,
+        HCMv3.PersonnelAdministration.Services.IEmployeeScopeProvider employeeScopeProvider)
     {
         _repository = repository;
         _peerNomineeRepository = peerNomineeRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _tickPolicy = tickPolicy;
+        _employeeScopeProvider = employeeScopeProvider;
+    }
+
+    /// <summary>
+    /// The twelve boxes as the signed-in employee may use them -- the same answer the save is checked
+    /// against, so the dialog cannot offer a box the server will then refuse.
+    /// </summary>
+    public async Task<PAFormTickRulesDto> GetPAFormTickRules(NullableIdDto input)
+    {
+        var stored = input?.Id.HasValue == true
+            ? Review.PAFormTickSubject.From(await _repository.GetAsync(input.Id.Value))
+            : null;
+
+        var actingEmployeeId = await _employeeScopeProvider.GetCurrentEmployeeIdAsync();
+        var rules = await _tickPolicy.EvaluateAsync(stored, actingEmployeeId, Clock.Now);
+        var settings = await _sysSettingsAccessor.GetAppraisalSettingsAsync();
+
+        return new PAFormTickRulesDto
+        {
+            Unrestricted = rules.Unrestricted,
+            Phase = rules.Phase?.ToString(),
+            Boxes = rules.Boxes
+                .Select(b => new PAFormBoxRuleDto { Box = b.Box.ToString(), Visible = b.Visible, Enabled = b.Enabled })
+                .ToList(),
+            ShowPeerSubmitted = rules.ShowPeerSubmitted,
+            CanTickPeerSubmitted = rules.CanTickPeerSubmitted,
+            HiddenListBoxes = Review.PAFormTickRules
+                .HiddenForCycle(settings?.AppraisalCycle ?? HCMv3.SystemSettings.AppraisalCycle.Quarterly)
+                .Select(b => b.ToString())
+                .ToList()
+        };
+    }
+
+    /// <summary>
+    /// Legacy <c>PAForm.UpdatePeerReviewStatus</c>: the peer's own nomination for this form's employee and
+    /// period is marked submitted. Legacy offered the box to anyone nominated in the period, for any form,
+    /// and then quietly saved nothing when the nomination was for somebody else; the box is offered the same
+    /// way and the same nothing happens.
+    /// </summary>
+    public async Task SubmitPeerReview(EntityDto input)
+    {
+        var form = await _repository.GetAsync(input.Id);
+        var actingEmployeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        var rules = await _tickPolicy.EvaluateAsync(Review.PAFormTickSubject.From(form), actingEmployeeId, Clock.Now);
+        if (!rules.CanTickPeerSubmitted)
+        {
+            throw new UserFriendlyException(L("GoalFormBoxCannotBeChanged"));
+        }
+
+        var nomination = await _peerNomineeRepository.GetAll()
+            .FirstOrDefaultAsync(n => n.PAPeriodId == form.PAPeriodId && n.EmployeeId == form.EmployeeId && n.PeerId == actingEmployeeId);
+
+        if (nomination == null)
+        {
+            return;
+        }
+
+        nomination.Submitted = true;
+        await _peerNomineeRepository.UpdateAsync(nomination);
     }
 
     /// <summary>
@@ -105,6 +171,13 @@ public class PAFormsAppService : HCMv3AppServiceBase, IPAFormsAppService
         var entity = MapToEntity(input, new PAForm());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
+        // A new form has no open stage yet, so for an employee every box must start unticked.
+        await _tickPolicy.EnsureChangesAllowedAsync(
+            null,
+            Review.PAFormBoxValues.From(entity),
+            await _employeeScopeProvider.GetCurrentEmployeeIdAsync(),
+            Clock.Now);
+
         await ValidateAsync(entity);
 
         await _repository.InsertAsync(entity);
@@ -114,7 +187,17 @@ public class PAFormsAppService : HCMv3AppServiceBase, IPAFormsAppService
     protected virtual async Task UpdateAsync(CreateOrEditPAFormDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+
+        // Judged against the form as it was stored -- that is the state the dialog offered the boxes from.
+        var stored = Review.PAFormTickSubject.From(entity);
+
         entity = MapToEntity(input, entity);
+
+        await _tickPolicy.EnsureChangesAllowedAsync(
+            stored,
+            Review.PAFormBoxValues.From(entity),
+            await _employeeScopeProvider.GetCurrentEmployeeIdAsync(),
+            Clock.Now);
 
         await ValidateAsync(entity);
 

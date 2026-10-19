@@ -4631,7 +4631,6 @@
     <text name="RecalculatingProbationEndDates">Recalculating probation end dates</text>
     <text name="ResyncingTimeAttendanceData">Re-syncing time attendance data</text>
     <text name="TransferringPendingApprovals">Transferring pending approvals</text>
-    <text name="BulkResettingPasswords">Bulk resetting passwords</text>
 
     <text name="EndDateCannotBeBeforeStartDate">End date cannot be before start date.</text>
     <text name="PayrollControlRecordNotFoundForPayrollArea">No payroll control record exists for the selected payroll area. Create one before generating the payroll calendar.</text>
@@ -4651,10 +4650,6 @@
 
     <text name="NoUsersSelected">No users were selected.</text>
     <text name="RandomPasswordNotificationTemplateNotConfigured">The "Random Password Notification" email template is missing or has no body, so no passwords were reset.</text>
-    <text name="BulkPasswordUserNotFound">{0}: no user account found for login "{1}".</text>
-    <text name="BulkPasswordAdminUserSkipped">{0}: skipped, the account holds an administrative role.</text>
-    <text name="BulkPasswordResetAndEmailed">{0}: password reset, email sent to {1}.</text>
-    <text name="BulkPasswordResetButEmailFailed">{0}: password reset, but the email could not be sent.</text>
 
     <!-- ADMINISTRATION TOOLS - Angular screen labels.
          The block above holds the server-side messages; these are the UI captions/confirmations.
@@ -4664,7 +4659,6 @@
     <text name="PayrollAdminTools">Payroll Admin Tools</text>
     <text name="SystemAdminTools">System Admin Tools</text>
     <text name="TransferApprovals">Transfer Approvals</text>
-    <text name="BulkPasswordReset">Bulk Password Reset</text>
     <text name="AdministrationToolsDescription">Destructive maintenance utilities. Read the confirmation carefully before running any of them.</text>
 
     <text name="GeneratePayrollCalendar">Generate Payroll Calendar</text>
@@ -7840,5 +7834,164 @@
     <text name="CredentialResetSkippedNotEligible">User {0} cannot be reset here: the account is inactive, an administrator, or your own.</text>
     <text name="OutboundEmailIsOffCannotResetPasswords">Outbound e-mail is switched off, so new passwords could not be delivered. Switch it on in the Integration Center first.</text>
     <text name="TooManyUsersForOneCredentialReset">Reset at most {0} users at a time; run the rest in another batch.</text>
+    <text name="CreateNewEmployeeCode">Create New Employee Code</text>
+    <text name="RejoinNewEmployeeCodeHint">A new employee is created with the next employee code, joining on the rejoin date. The ticked balances are opened on the new employee. Org assignment, salary, bank, documents and login are not copied; enter them as for any new joiner. The previous record is not changed.</text>
+    <text name="RejoinKeepEmployeeCodeHint">This employee is made active again. Every balance that is not carried forward is set to zero on the day before the rejoin date.</text>
+    <text name="LicenceAssignment">Licence Assignment</text>
+    <text name="LicenceAssignmentDescription">Choose which modules each user may use. The number of licences comes from your subscription.</text>
+    <text name="ManagingLicenceAssignment">Assigning licences to users</text>
+    <text name="LicencesNotEnforcedInfo">Per-user licences are not switched on for your subscription, so nobody is refused access yet. You can prepare assignments now.</text>
+    <text name="LicenceModuleNotInEditionShort">Not in subscription</text>
+    <text name="LicenceOverLimit">Over the limit</text>
+    <text name="AllLicenceModules">All modules</text>
+    <text name="LicenceAssigned">Assigned</text>
+    <text name="LicenceNotAssigned">Not assigned</text>
+    <text name="LicenceNotNeededForAdministratorShort">Administrator, no licence needed</text>
+    <text name="LicenceNoSeatLeftShort">No licence left</text>
+    <text name="LicenceUsedOfUnlimited">{0} used / unlimited</text>
+    <text name="LicenceUsedOfTotal">{0} used of {1}</text>
+    <text name="LicenceNotNeededForAdministrator">{0} is an administrator and needs no licence.</text>
+    <text name="LicenceModuleNotInEdition">{0} is not part of your subscription. Please contact your GBS Account Manager.</text>
+    <text name="LicenceSeatLimitReached">All {1} {0} licences are in use. Unassign a user first, or contact your GBS Account Manager for more licences.</text>
+    <text name="NoLicenceAssignedCannotSignIn">No licence is assigned to your user. Please contact your system administrator.</text>
+    <text name="MaxActiveEmployeesReached">Your subscription allows {0} active employees and that number has been reached. Please contact your GBS Account Manager.</text>
+    <text name="LicenceModuleAdmin">Administration (HRMS)</text>
+    <text name="LicenceModuleEss">Employee Self Service</text>
+    <text name="LicenceModuleMobile">Mobile Application</text>
+    <text name="LicenceModulePerformance">Performance</text>
+    <text name="LicenceModuleRecruitment">Recruitment</text>
+    <text name="HcmFeatureModuleEss">HCM: Employee Self Service</text>
+    <text name="HcmFeatureModuleMobile">HCM: Mobile Application</text>
+    <text name="HcmFeatureModulePerformance">HCM: Performance</text>
+    <text name="HcmFeatureModuleRecruitment">HCM: Recruitment</text>
+    <text name="HcmFeatureMaxActiveEmployees">HCM: Maximum active employees</text>
+    <text name="HcmFeatureMaxActiveEmployees_Description">0 = unlimited</text>
+    <text name="HcmFeatureSeats">HCM: Per-user module licences</text>
+    <text name="HcmFeatureSeats_Description">When on, each user needs a licence for every module they use (Licence Assignment screen).</text>
+    <text name="HcmFeatureSeatsAdmin">Administration licences (0 = unlimited)</text>
+    <text name="HcmFeatureSeatsEss">Self-service licences (0 = unlimited)</text>
+    <text name="HcmFeatureSeatsMobile">Mobile application licences (0 = unlimited)</text>
+    <text name="HcmFeatureSeatsPerformance">Performance licences (0 = unlimited)</text>
+    <text name="HcmFeatureSeatsRecruitment">Recruitment licences (0 = unlimited)</text>
+    <text name="NotificationRuleMessage">{0}: {1}</text>
+    <text name="EmployeeDocumentExpiryNotificationMessage">{0} {1} expires on {2}.</text>
+    <text name="CompanyDocumentExpiryNotificationMessage">Company document {0} {1} expires on {2}.</text>
+    <text name="ProbationEndNotificationMessage">The probation period of {0} ends on {1}.</text>
+    <text name="SeparationNotificationMessage">The last day in service of {0} is {1}.</text>
+    <text name="AnnualLeaveMaxLimitNotificationMessage">The annual leave balance of {0} has reached {1} days.</text>
+    <text name="NotificationRuleSource_EmployeeDocument">Employee Document</text>
+    <text name="NotificationRuleSource_CompanyDocument">Company Document</text>
+    <text name="NotificationRuleSource_Leave">Leave</text>
+    <text name="NotificationRuleSource_Disciplinary">Disciplinary Action</text>
+    <text name="NotificationRuleSource_Employee">Employee</text>
+    <text name="NotificationRuleSource_Loan">Loan</text>
+    <text name="NotificationDefinition_EmployeeDocumentExpiry">Employee document expiry</text>
+    <text name="NotificationDefinition_CompanyDocumentExpiry">Company document expiry</text>
+    <text name="NotificationDefinition_ProbationEnd">End of probation</text>
+    <text name="NotificationDefinition_Separation">Employee separation</text>
+    <text name="NotificationDefinition_AnnualLeaveMaxLimit">Annual leave balance over the limit</text>
+    <text name="NotificationDefinition_News">News and announcements</text>
+    <text name="NotificationDefinition_Rule_EmployeeDocument">Notification rules: employee documents</text>
+    <text name="NotificationDefinition_Rule_CompanyDocument">Notification rules: company documents</text>
+    <text name="NotificationDefinition_Rule_Leave">Notification rules: leave</text>
+    <text name="NotificationDefinition_Rule_Disciplinary">Notification rules: disciplinary actions</text>
+    <text name="NotificationDefinition_Rule_Employee">Notification rules: employees</text>
+    <text name="NotificationDefinition_Rule_Loan">Notification rules: loans</text>
+    <text name="RuleFunction_DaysUntil">Days until a date (negative once it has passed)</text>
+    <text name="NotificationRuleCannotRun">This notification rule cannot run.</text>
+    <text name="NotificationTypeNotSupported">"{0}" is not a notification type HCM supports. Choose a type from the list.</text>
+    <text name="NotificationSubTypeNotValid">The selected sub type does not belong to this notification type.</text>
+    <text name="NotificationCriterionNotValid">The criterion cannot be used.</text>
+    <text name="NotificationSubType">Sub Type</text>
+    <text name="NotificationCriterionPlaceholder">Leave empty to notify about every record, for example: DaysUntil(Document.ExpiryDate) &lt;= 30</text>
+    <text name="NotificationCriterionHint">Each matching record is notified once by this rule.</text>
+    <text name="NotificationRulePreview">Preview</text>
+    <text name="NotificationRuleMatchesToday">{0} records match today.</text>
+    <text name="NotificationRuleNotYetSent">{0} not yet notified.</text>
+    <text name="NotificationRuleMarkExistingAsSent">Mark these as sent</text>
+    <text name="NotificationRuleSaveToMarkExisting">Save the rule to mark existing records as sent.</text>
+    <text name="NotificationRuleMarkExistingWarning">The records this rule matches today will be marked as sent and will not be notified. Continue?</text>
+    <text name="NotificationRuleMarkedAsSent">{0} records marked as sent.</text>
+    <text name="NotificationSentHistory">Sent History</text>
+    <text name="NotificationSentDate">Sent On</text>
+    <text name="NotificationRecordId">Record</text>
+    <text name="NotificationRecipientCount">Recipients</text>
+    <text name="NotificationWasSent">Sent</text>
+    <text name="NotificationMarkedOnly">Marked only</text>
+    <text name="NotificationCriterionAllRecords">(all records)</text>
+    <text name="NotificationTypeNeedsReentry">Saved before notification types were introduced. Edit the rule and choose a type; until then it does not run.</text>
+    <text name="NotificationTypeNotSupportedShort">Needs re-entry</text>
+    <text name="Id">Id</text>
+    <text name="AddPeer">Add Peer</text>
+    <text name="AllowedPeerCount">Allowed Peer Count</text>
+    <text name="AppraisalInfo">Appraisal Info</text>
+    <text name="AppraisalNotFound">The appraisal was not found.</text>
+    <text name="AppraisalReviewersAdded">Reviewers added automatically</text>
+    <text name="AppraisalReviewActions">Actions on this step</text>
+    <text name="AppraisalReviewVisibility">What is visible</text>
+    <text name="AppraisalStepSettingAlreadyExistsForStep">Request {0} already has a setup row for step {1}.</text>
+    <text name="AppraisalStepSettingDeleteWarningMessage">The setup of {0}, step {1} will be deleted.</text>
+    <text name="AppraisalWFSetup">Appraisal WF Setup</text>
+    <text name="ApprovedAutomaticallyWhenTheLastReviewWasSubmitted">Approved automatically when the last review was submitted.</text>
+    <text name="AutoAddManager">Auto Add Manager</text>
+    <text name="AutoAddRelationShip">Auto Add Relationship</text>
+    <text name="AutoSubmitOnLastFill">Auto Submit On Last Fill</text>
+    <text name="CanAddKpi">Can Add Kpi</text>
+    <text name="CanAddPeer">Can Add Peer</text>
+    <text name="CanAddRatings">Can Add Ratings</text>
+    <text name="CanEmployeeSelfRate">Can Employee Self Rate</text>
+    <text name="CanPeerAddRatings">Can Peer Add Ratings</text>
+    <text name="CanViewOverallAverageRating">Can View Overall Average Rating</text>
+    <text name="CanViewPeerRatings">Can View Peer Ratings</text>
+    <text name="CanViewRatings">Can View Ratings</text>
+    <text name="CommentRequired">Comment Required</text>
+    <text name="ContributionReview">Contribution Review</text>
+    <text name="CopyKpi">Copy Kpi</text>
+    <text name="EmployeeCannotAddMorePeersThan">The employee cannot add more than {0} peers.</text>
+    <text name="EmployeeManager">Employee Manager</text>
+    <text name="EssMyAppraisals">360 Degree Appraisal</text>
+    <text name="EveryKpiNeedsARatingBeforeSubmitting">Every KPI must be rated before the review is submitted.</text>
+    <text name="GoalFormBoxCannotBeChanged">This box cannot be changed now.</text>
+    <text name="KpiByJobTitleCannotBeBlank">KPI By Job Title cannot be blank.</text>
+    <text name="KpiByOrgUnitCannotBeBlank">KPI By Org Unit cannot be blank.</text>
+    <text name="KpiFrom">KPI From</text>
+    <text name="KpiFrom_JobTitle">Job Title</text>
+    <text name="KpiFrom_OrganizationUnit">Organization Unit</text>
+    <text name="KpiFrom_Employee">Employee</text>
+    <text name="KpiFromCannotBeBlank">KPI From cannot be blank.</text>
+    <text name="KpiSourceIsRequired">Select where the KPIs are copied from.</text>
+    <text name="KpisCopied">KPIs copied successfully.</text>
+    <text name="MyAppraisalListScope_Mine">My Appraisals</text>
+    <text name="MyAppraisalListScope_ToReview">Appraisals to Review</text>
+    <text name="MyAppraisalListScope_Team">Team Appraisals</text>
+    <text name="NoAppraisalForThisEmployeeInThisCycle">No appraisal exists for this employee in this period.</text>
+    <text name="PeerAdded">Peer added successfully.</text>
+    <text name="PeerIsRequired">Select a peer.</text>
+    <text name="PeerLimitReached">The peer limit has been reached. You cannot add more than {0} peer(s).</text>
+    <text name="PeerReviewerLimitIsNotConfigured">The peer reviewer limit is not configured in Appraisal Settings.</text>
+    <text name="RatingLimitReached">The rating {0} can be used on at most {1} KPIs.</text>
+    <text name="RelationshipTypeIsAlreadyAssignedToStep">Relationship type {0} is already assigned to step {1}.</text>
+    <text name="RequestMasterCannotBeBlank">Request Master cannot be blank.</text>
+    <text name="RequestMasterHasNotDefinedTheStep">Request {0} has not defined step {1}.</text>
+    <text name="ReviewerName">Reviewer Name</text>
+    <text name="Reviewers">Reviewers</text>
+    <text name="ReviewerType">Reviewer Type</text>
+    <text name="ReviewSaved">Review saved.</text>
+    <text name="ReviewSubmittedAndStepApproved">Review submitted. All reviews are in, so the step was approved.</text>
+    <text name="ReviewSubmittedSuccessfully">Review submitted.</text>
+    <text name="SaveReview">Save Review</text>
+    <text name="SelectRating">Select Rating</text>
+    <text name="StepShouldBeGreaterThanZero">Step should be greater than 0.</text>
+    <text name="SubmitReview">Submit Review</text>
+    <text name="SubmitReviewConfirmation">After submitting you can no longer change your review. Submit now?</text>
+    <text name="ThisEmployeeCannotBeAddedAsPeer">This employee cannot be added as a peer.</text>
+    <text name="ThisRatingCannotBeChosen">This rating cannot be chosen.</text>
+    <text name="ThisRatingNeedsAComment">A comment is required for the chosen rating.</text>
+    <text name="YouCannotAddPeersToThisAppraisal">You cannot add peers to this appraisal.</text>
+    <text name="YouCannotChangeThisReview">You cannot change this review.</text>
+    <text name="YouCannotCopyKpisOnThisAppraisal">You cannot copy KPIs on this appraisal.</text>
+    <text name="YouCannotSubmitThisReview">You cannot submit this review.</text>
+    <text name="YouCannotViewThisAppraisal">You cannot view this appraisal.</text>
+    <text name="YouCanOnlyRateYourOwnLines">You can only rate your own lines.</text>
   </texts>
 </localizationDictionary>

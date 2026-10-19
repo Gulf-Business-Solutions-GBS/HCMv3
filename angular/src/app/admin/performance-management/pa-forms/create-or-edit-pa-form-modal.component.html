@@ -85,91 +85,43 @@
                                     (ngModelChange)="updateField('moderatedScore', $event)" />
                             </div>
                         </div>
+                        <!-- The twelve progress boxes, in legacy order. Which are shown and which can be ticked
+                             comes from the server (GetPAFormTickRules) -- the same answer the save is checked
+                             against, so a box offered here is never refused on Save. -->
                         <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_PlanSubmitByAppraiser" type="checkbox" class="form-check-input" name="PlanSubmitByAppraiser"
-                                        [ngModel]="paForm().planSubmitByAppraiser" (ngModelChange)="updateField('planSubmitByAppraiser', $event)" />
-                                    <label class="form-check-label" for="PAForm_PlanSubmitByAppraiser">{{ 'PlanSubmitByAppraiser' | localize }}</label>
+                            @for (box of boxes; track box.name) {
+                                @if (boxVisible(box.name)) {
+                                    <div class="col-md-3 mb-3">
+                                        <div class="form-check">
+                                            <input
+                                                [id]="'PAForm_' + box.name"
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                [name]="box.name"
+                                                [disabled]="!boxEnabled(box.name)"
+                                                [ngModel]="paForm()[box.field]"
+                                                (ngModelChange)="updateField(box.field, $event)" />
+                                            <label class="form-check-label" [for]="'PAForm_' + box.name">{{ box.name | localize }}</label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            @if (tickRules()?.showPeerSubmitted) {
+                                <!-- A nominated peer's own "Submitted" box: the only one a peer sees. -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-check">
+                                        <input
+                                            id="PAForm_PeerSubmitted"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="PeerSubmitted"
+                                            [disabled]="!tickRules()?.canTickPeerSubmitted || saving()"
+                                            [ngModel]="false"
+                                            (ngModelChange)="submitPeerReview($event)" />
+                                        <label class="form-check-label" for="PAForm_PeerSubmitted">{{ 'Submitted' | localize }}</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_PlanSubmitByAppraisee" type="checkbox" class="form-check-input" name="PlanSubmitByAppraisee"
-                                        [ngModel]="paForm().planSubmitByAppraisee" (ngModelChange)="updateField('planSubmitByAppraisee', $event)" />
-                                    <label class="form-check-label" for="PAForm_PlanSubmitByAppraisee">{{ 'PlanSubmitByAppraisee' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_Quarter1SubmitByAppraiser" type="checkbox" class="form-check-input" name="Quarter1SubmitByAppraiser"
-                                        [ngModel]="paForm().quarter1SubmitByAppraiser" (ngModelChange)="updateField('quarter1SubmitByAppraiser', $event)" />
-                                    <label class="form-check-label" for="PAForm_Quarter1SubmitByAppraiser">{{ 'Quarter1SubmitByAppraiser' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_Quarter1SubmitByAppraisee" type="checkbox" class="form-check-input" name="Quarter1SubmitByAppraisee"
-                                        [ngModel]="paForm().quarter1SubmitByAppraisee" (ngModelChange)="updateField('quarter1SubmitByAppraisee', $event)" />
-                                    <label class="form-check-label" for="PAForm_Quarter1SubmitByAppraisee">{{ 'Quarter1SubmitByAppraisee' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_MRSubmitByAppraiser" type="checkbox" class="form-check-input" name="MRSubmitByAppraiser"
-                                        [ngModel]="paForm().mrSubmitByAppraiser" (ngModelChange)="updateField('mrSubmitByAppraiser', $event)" />
-                                    <label class="form-check-label" for="PAForm_MRSubmitByAppraiser">{{ 'MRSubmitByAppraiser' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_MRSubmitByAppraisee" type="checkbox" class="form-check-input" name="MRSubmitByAppraisee"
-                                        [ngModel]="paForm().mrSubmitByAppraisee" (ngModelChange)="updateField('mrSubmitByAppraisee', $event)" />
-                                    <label class="form-check-label" for="PAForm_MRSubmitByAppraisee">{{ 'MRSubmitByAppraisee' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_Quarter3SubmitByAppraiser" type="checkbox" class="form-check-input" name="Quarter3SubmitByAppraiser"
-                                        [ngModel]="paForm().quarter3SubmitByAppraiser" (ngModelChange)="updateField('quarter3SubmitByAppraiser', $event)" />
-                                    <label class="form-check-label" for="PAForm_Quarter3SubmitByAppraiser">{{ 'Quarter3SubmitByAppraiser' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_Quarter3SubmitByAppraisee" type="checkbox" class="form-check-input" name="Quarter3SubmitByAppraisee"
-                                        [ngModel]="paForm().quarter3SubmitByAppraisee" (ngModelChange)="updateField('quarter3SubmitByAppraisee', $event)" />
-                                    <label class="form-check-label" for="PAForm_Quarter3SubmitByAppraisee">{{ 'Quarter3SubmitByAppraisee' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_ERSubmitByAppraiser" type="checkbox" class="form-check-input" name="ERSubmitByAppraiser"
-                                        [ngModel]="paForm().erSubmitByAppraiser" (ngModelChange)="updateField('erSubmitByAppraiser', $event)" />
-                                    <label class="form-check-label" for="PAForm_ERSubmitByAppraiser">{{ 'ERSubmitByAppraiser' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_ERSubmitByAppraisee" type="checkbox" class="form-check-input" name="ERSubmitByAppraisee"
-                                        [ngModel]="paForm().erSubmitByAppraisee" (ngModelChange)="updateField('erSubmitByAppraisee', $event)" />
-                                    <label class="form-check-label" for="PAForm_ERSubmitByAppraisee">{{ 'ERSubmitByAppraisee' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_AppraiserSignedOff" type="checkbox" class="form-check-input" name="AppraiserSignedOff"
-                                        [ngModel]="paForm().appraiserSignedOff" (ngModelChange)="updateField('appraiserSignedOff', $event)" />
-                                    <label class="form-check-label" for="PAForm_AppraiserSignedOff">{{ 'AppraiserSignedOff' | localize }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="form-check">
-                                    <input id="PAForm_AppraiseeSignedOff" type="checkbox" class="form-check-input" name="AppraiseeSignedOff"
-                                        [ngModel]="paForm().appraiseeSignedOff" (ngModelChange)="updateField('appraiseeSignedOff', $event)" />
-                                    <label class="form-check-label" for="PAForm_AppraiseeSignedOff">{{ 'AppraiseeSignedOff' | localize }}</label>
-                                </div>
-                            </div>
+                            }
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-5">

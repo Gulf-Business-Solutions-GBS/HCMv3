@@ -1685,6 +1685,10 @@ public static class AppPermissions
     public const string Pages_PerformanceManagement_PAForms_Delete = "Pages.PerformanceManagement.PAForms.Delete";
 
     public const string Pages_PerformanceManagement_PAEmployees = "Pages.PerformanceManagement.PAEmployees";
+    public const string Pages_PerformanceManagement_AppraisalStepSettings = "Pages.PerformanceManagement.AppraisalStepSettings";
+    public const string Pages_PerformanceManagement_AppraisalStepSettings_Create = "Pages.PerformanceManagement.AppraisalStepSettings.Create";
+    public const string Pages_PerformanceManagement_AppraisalStepSettings_Edit = "Pages.PerformanceManagement.AppraisalStepSettings.Edit";
+    public const string Pages_PerformanceManagement_AppraisalStepSettings_Delete = "Pages.PerformanceManagement.AppraisalStepSettings.Delete";
     public const string Pages_PerformanceManagement_PAEmployees_Create = "Pages.PerformanceManagement.PAEmployees.Create";
     public const string Pages_PerformanceManagement_PAEmployees_Edit = "Pages.PerformanceManagement.PAEmployees.Edit";
     public const string Pages_PerformanceManagement_PAEmployees_Delete = "Pages.PerformanceManagement.PAEmployees.Delete";
@@ -1909,6 +1913,7 @@ public static class AppPermissions
     // holds, so the catalog row and the permission must agree or the menu entry silently never renders.
     public const string Ess_MyLeave = "Ess.MyLeave";
     public const string Ess_MyLeavePlans = "Ess.MyLeavePlans";
+    public const string Ess_MyAppraisals = "Ess.MyAppraisals";
     public const string Ess_MyAssets = "Ess.MyAssets";
     public const string Ess_MyDocuments = "Ess.MyDocuments";
     public const string Ess_MyLoans = "Ess.MyLoans";
@@ -3161,8 +3166,8 @@ public static class AppPermissions
     /// e-mails them in plaintext. It is deliberately a standalone permission (NOT implied by
     /// Pages_Administration_Users) so it can be granted to nobody by default.
     /// </summary>
-    public const string Pages_Administration_Tools_BulkPasswordReset = "Pages.Administration.Tools.BulkPasswordReset";
     public const string Pages_Administration_Tools_ResetUserCredentials = "Pages.Administration.Tools.ResetUserCredentials";
+    public const string Pages_Administration_Tools_LicenceAssignment = "Pages.Administration.Tools.LicenceAssignment";
 
     // Legacy uscCopyWorkflowSetup.ascx.cs -- clone a RequestMaster + its RequestDetail steps.
     public const string Pages_Administration_Tools_CopyWorkflowSetup = "Pages.Administration.Tools.CopyWorkflowSetup";
