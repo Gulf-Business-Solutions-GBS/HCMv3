@@ -43,7 +43,11 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
     readonly clearanceRequestFields = signal<ClearanceRequestFieldDto[]>([]);
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
 
-    show(clearanceRequestFieldDetailId?: number): void {
+    /** Set when opened from a clearance request field's page: the detail belongs to that field and the choice is not offered. */
+    readonly fixedClearanceRequestFieldId = signal<number | undefined>(undefined);
+
+    show(clearanceRequestFieldDetailId?: number, clearanceRequestFieldId?: number): void {
+        this.fixedClearanceRequestFieldId.set(clearanceRequestFieldId);
         this.active.set(true);
 
         this._clearanceRequestFieldsService
@@ -58,7 +62,9 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
             .subscribe((result) => this.workflowRoles.set(result.items));
 
         if (!clearanceRequestFieldDetailId) {
-            this.clearanceRequestFieldDetail.set(new CreateOrEditClearanceRequestFieldDetailDto());
+            const record = new CreateOrEditClearanceRequestFieldDetailDto();
+            record.clearanceRequestFieldId = clearanceRequestFieldId;
+            this.clearanceRequestFieldDetail.set(record);
             this.modal().show();
         } else {
             this._clearanceRequestFieldDetailService.getClearanceRequestFieldDetailForEdit(clearanceRequestFieldDetailId).subscribe((result) => {
@@ -69,7 +75,11 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
     }
 
     onShown(): void {
-        document.getElementById('ClearanceRequestFieldDetail_ClearanceRequestFieldId')?.focus();
+        document
+            .getElementById(
+                this.fixedClearanceRequestFieldId() ? 'ClearanceRequestFieldDetail_WorkflowRoleId' : 'ClearanceRequestFieldDetail_ClearanceRequestFieldId'
+            )
+            ?.focus();
     }
 
     save(): void {

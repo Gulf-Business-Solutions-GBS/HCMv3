@@ -2,7 +2,10 @@ import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditEmployeeDutyScheduleDto,
+    EmployeeDto,
     EmployeeDutySchedulesServiceProxy,
+    EmployeesServiceProxy,
+    GetAllEmployeesInput,
     GetAllRosterDutySchedulesInput,
     RosterDutyScheduleDto,
     RosterDutySchedulesServiceProxy,
@@ -33,6 +36,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 export class CreateOrEditEmployeeDutyScheduleModalComponent extends AppComponentBase {
     private _service = inject(EmployeeDutySchedulesServiceProxy);
     private _rosterDutySchedulesService = inject(RosterDutySchedulesServiceProxy);
+    private _employeesService = inject(EmployeesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -58,11 +62,25 @@ export class CreateOrEditEmployeeDutyScheduleModalComponent extends AppComponent
 
     readonly rosterDutySchedules = signal<RosterDutyScheduleDto[]>([]);
 
-    show(employeeId: number, id?: number): void {
+    /**
+     * True when opened from the all-employees Duty Schedule screen to add a record: no employee is known
+     * yet, so the form asks for one. From the employee record the employee is fixed and this stays false.
+     */
+    readonly pickEmployee = signal<boolean>(false);
+    readonly employees = signal<EmployeeDto[]>([]);
+
+    show(employeeId?: number, id?: number): void {
         this.isNew.set(!id);
         this.active.set(true);
+        this.pickEmployee.set(!id && !employeeId);
 
         this.loadLookups();
+
+        if (this.pickEmployee()) {
+            this._employeesService
+                .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+                .subscribe((result) => this.employees.set(result.items));
+        }
 
         if (!id) {
             const record = new CreateOrEditEmployeeDutyScheduleDto();
@@ -84,7 +102,13 @@ export class CreateOrEditEmployeeDutyScheduleModalComponent extends AppComponent
     }
 
     onShown(): void {
-        document.getElementById('EmployeeDutySchedule_StartDate')?.focus();
+        document
+            .getElementById(this.pickEmployee() ? 'EmployeeDutySchedule_EmployeeId' : 'EmployeeDutySchedule_StartDate')
+            ?.focus();
+    }
+
+    employeeLabel(employee: EmployeeDto): string {
+        return `${employee.code} - ${employee.fullNameEn}`;
     }
 
     save(): void {

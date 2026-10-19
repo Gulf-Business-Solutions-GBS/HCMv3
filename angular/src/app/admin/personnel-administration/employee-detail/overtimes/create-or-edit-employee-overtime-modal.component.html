@@ -90,6 +90,22 @@
                                     (ngModelChange)="updateNumberField('approvedOvertimeHours', $event)" />
                             </div>
                         </div>
+                        @if (record().id) {
+                            <!-- Read-only: worked out by the server from the saved record, never posted back. -->
+                            <div class="row">
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label" for="EmployeeOvertime_ExpectedOvertimeAmount">{{ 'ExpectedOvertimeAmount' | localize }}</label>
+                                    <input
+                                        id="EmployeeOvertime_ExpectedOvertimeAmount"
+                                        class="form-control"
+                                        type="text"
+                                        name="ExpectedOvertimeAmount"
+                                        [value]="expectedOvertimeAmount() | number: '1.3-3'"
+                                        readonly
+                                        disabled />
+                                </div>
+                            </div>
+                        }
                         <div class="mb-5">
                             <label class="form-label" for="EmployeeOvertime_Comments">{{ 'Comments' | localize }}</label>
                             <textarea

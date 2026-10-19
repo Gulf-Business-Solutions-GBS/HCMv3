@@ -3,11 +3,8 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     AccountInfoDto,
     AccountInfosServiceProxy,
-    CostElementDto,
-    CostElementsServiceProxy,
     CreateOrEditWageAccGroupDetailDto,
     GetAllAccountInfosInput,
-    GetAllCostElementsInput,
     GetAllSimpleLookupsInput,
     GetAllWageTypesInput,
     OffsetAccountInfoType,
@@ -24,18 +21,18 @@ import { FormsModule } from '@angular/forms';
 import { ValidationMessagesComponent } from '../../../../shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { CostElementSlotFieldsComponent } from '@app/shared/common/cost-element-slots/cost-element-slot-fields.component';
 
 @Component({
     selector: 'createOrEditWageAccGroupDetailModal',
     templateUrl: './create-or-edit-wage-acc-group-detail-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, CostElementSlotFieldsComponent],
 })
 export class CreateOrEditWageAccGroupDetailModalComponent extends AppComponentBase {
     private _wageAccGroupDetailsService = inject(WageAccGroupDetailsServiceProxy);
     private _wageAccGroupsService = inject(WageAccGroupsServiceProxy);
     private _wageTypesService = inject(WageTypesServiceProxy);
     private _accountInfosService = inject(AccountInfosServiceProxy);
-    private _costElementsService = inject(CostElementsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -47,21 +44,10 @@ export class CreateOrEditWageAccGroupDetailModalComponent extends AppComponentBa
     readonly wageAccGroups = signal<SimpleLookupDto[]>([]);
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly accountInfos = signal<AccountInfoDto[]>([]);
-    readonly costElements = signal<CostElementDto[]>([]);
 
     readonly offsetAccountInfoTypes = [
         { value: OffsetAccountInfoType.Fixed, name: 'Fixed' },
         { value: OffsetAccountInfoType.EmployeeCode, name: 'EmployeeCode' },
-    ];
-
-    readonly costElementFields: (keyof CreateOrEditWageAccGroupDetailDto)[] = [
-        'costElement1Id',
-        'costElement2Id',
-        'costElement3Id',
-        'costElement4Id',
-        'costElement5Id',
-        'costElement6Id',
-        'costElement7Id',
     ];
 
     show(wageAccGroupDetailId?: number): void {
@@ -92,10 +78,6 @@ export class CreateOrEditWageAccGroupDetailModalComponent extends AppComponentBa
         this._accountInfosService
             .getAll(new GetAllAccountInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.accountInfos.set(result.items));
-
-        this._costElementsService
-            .getAll(new GetAllCostElementsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.costElements.set(result.items));
     }
 
     onShown(): void {
@@ -117,10 +99,6 @@ export class CreateOrEditWageAccGroupDetailModalComponent extends AppComponentBa
     close(): void {
         this.active.set(false);
         this.modal().hide();
-    }
-
-    getCostElementValue(field: keyof CreateOrEditWageAccGroupDetailDto): number | undefined {
-        return (this.wageAccGroupDetail() as any)[field];
     }
 
     updateField(field: keyof CreateOrEditWageAccGroupDetailDto, value: any): void {

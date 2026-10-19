@@ -18,6 +18,12 @@ public class EmployeeOvertimeDto : EntityDto<int>
     public double ActualOvertimeHours { get; set; }
     public double ApprovedOvertimeHours { get; set; }
     public string Comments { get; set; }
+
+    /// <summary>
+    /// Read-only. What the approved hours are worth, as legacy showed it (legacy non-persistent
+    /// <c>EmployeeOvertime.ExpectedOvertimeAmount</c>). Calculated on read, never stored.
+    /// </summary>
+    public double ExpectedOvertimeAmount { get; set; }
 }
 
 public class CreateOrEditEmployeeOvertimeDto
@@ -57,6 +63,12 @@ public class CreateOrEditEmployeeOvertimeDto
 public class GetEmployeeOvertimeForEditOutput
 {
     public CreateOrEditEmployeeOvertimeDto EmployeeOvertime { get; set; }
+
+    /// <summary>
+    /// Read-only, for display in the edit form. Kept out of <see cref="CreateOrEditEmployeeOvertimeDto"/> so
+    /// it is never posted back. See <see cref="EmployeeOvertimeDto.ExpectedOvertimeAmount"/>.
+    /// </summary>
+    public double ExpectedOvertimeAmount { get; set; }
 }
 
 public class GetAllEmployeeOvertimesInput : PagedAndSortedResultRequestDto, IShouldNormalize

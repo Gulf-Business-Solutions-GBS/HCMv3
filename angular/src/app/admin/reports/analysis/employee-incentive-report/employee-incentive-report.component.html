@@ -112,7 +112,7 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template #header>
                                     <tr>
-                                        @for (col of detailColumns; track col.field) {
+                                        @for (col of detailColumns(); track col.field) {
                                             @if (col.sortable) {
                                                 <th
                                                     [style.min-width.px]="col.width"
@@ -128,7 +128,7 @@
                                 </ng-template>
                                 <ng-template #body let-record="$implicit">
                                     <tr>
-                                        @for (col of detailColumns; track col.field) {
+                                        @for (col of detailColumns(); track col.field) {
                                             <td [style.min-width.px]="col.width">
                                                 @if (col.isDate) {
                                                     {{ record[col.field] | luxonFormat: 'dd/MM/yyyy' }}

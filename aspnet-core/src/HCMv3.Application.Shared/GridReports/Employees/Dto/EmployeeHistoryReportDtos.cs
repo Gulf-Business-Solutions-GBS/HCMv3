@@ -74,6 +74,9 @@ public class EmployeeHistoryReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
     /// <summary>Legacy "CostCenter" column.</summary>
     public string CostCenterName { get; set; }
 
+    /// <summary>Legacy "WorkflowGroup" column: the assignment's workflow group on <see cref="StartDate"/> (line 587).</summary>
+    public string WorkflowGroupName { get; set; }
+
     public string OrgLevel1 { get; set; }
     public string OrgLevel2 { get; set; }
     public string OrgLevel3 { get; set; }

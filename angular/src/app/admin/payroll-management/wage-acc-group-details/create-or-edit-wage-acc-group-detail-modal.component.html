@@ -132,25 +132,10 @@
                                 <label class="form-check-label" for="WageAccGroupDetail_MergeOffsetAccount">{{ 'MergeOffsetAccount' | localize }}</label>
                             </div>
                         </div>
-                        <hr />
-                        <div class="row">
-                            @for (field of costElementFields; track field; let i = $index) {
-                                <div class="col-md-3 mb-5">
-                                    <label class="form-label" [for]="'WageAccGroupDetail_' + field">{{ ('CostElement' + (i + 1) + 'Id') | localize }}</label>
-                                    <select
-                                        [id]="'WageAccGroupDetail_' + field"
-                                        class="form-select"
-                                        [name]="field"
-                                        [ngModel]="getCostElementValue(field)"
-                                        (ngModelChange)="updateField(field, $event)">
-                                        <option [ngValue]="undefined"></option>
-                                        @for (ce of costElements(); track ce.id) {
-                                            <option [ngValue]="ce.id">{{ ce.nameEn }}</option>
-                                        }
-                                    </select>
-                                </div>
-                            }
-                        </div>
+                        <costElementSlotFields
+                            [record]="wageAccGroupDetail()"
+                            idPrefix="WageAccGroupDetail_"
+                            (fieldChange)="updateField($event.field, $event.value)" />
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

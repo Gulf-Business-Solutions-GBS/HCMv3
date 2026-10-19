@@ -22,7 +22,8 @@ namespace HCMv3.TravelManagement;
 /// Application service for <see cref="Travel"/> (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.TravelManagement.Travel</c>). Legacy <c>PerformValidation</c> parity
 /// ported here: auto Code, duplicate Code check, EndDate must not be earlier than StartDate. See
-/// <see cref="Travel"/> class remarks for the Applicant-drop and TotalTravelCost-rollup simplifications.
+/// <see cref="Travel"/> class remarks for the Applicant drop. TotalTravelCost is kept by
+/// <see cref="ITravelCostRollupService"/> on create and on every update (legacy <c>Travel.UpdateTotalAmount</c>).
 ///
 /// <para>
 /// APPROVAL LIVES IN THE ENGINE. A trip booked here is raised through
@@ -43,13 +44,16 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
 {
     private readonly IRepository<Travel> _repository;
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
+    private readonly ITravelCostRollupService _costRollupService;
 
     public TravelsAppService(
         IRepository<Travel> repository,
-        IAdminTransactionSubmitter transactionSubmitter)
+        IAdminTransactionSubmitter transactionSubmitter,
+        ITravelCostRollupService costRollupService)
     {
         _repository = repository;
         _transactionSubmitter = transactionSubmitter;
+        _costRollupService = costRollupService;
     }
 
     [HttpPost]
@@ -87,7 +91,8 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
 
             return new GetTravelForEditOutput
             {
-                Travel = ToCreateOrEditDto(entity)
+                Travel = ToCreateOrEditDto(entity),
+                TotalTravelCost = entity.TotalTravelCost
             };
         }
     }
@@ -113,7 +118,9 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
         // Legs travel with the header so they exist by the time the handler validates the submission -- EF
         // inserts the graph, and the submitter saves before it submits. Same shape as the manpower plan.
         entity.TravelDetails = BuildDetails(input, entity.TenantId);
-        entity.TotalTravelCost = entity.TravelDetails?.Sum(d => d.TotalAmount) ?? 0;
+        // Legacy Travel.UpdateTotalAmount (Travel.cs lines 194-211) and TravelDetailCost.UpdateTotalAmount
+        // (TravelDetailCost.cs lines 117-118): leg = rounded sum of its costs, trip = rounded sum of its legs.
+        await _costRollupService.ApplyToNewTravelAsync(entity);
 
         await ValidateAsync(entity);
         await AssignCodeIfEmptyAsync(entity);
@@ -138,6 +145,9 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
             await AssignCodeIfEmptyAsync(entity);
 
             await _repository.UpdateAsync(entity);
+
+            // Legacy Travel.OnSaving (Travel.cs lines 153-156): every save of the header re-sums its legs.
+            await _costRollupService.RecalculateTravelTotalAsync(entity.Id);
         }
     }
 
@@ -251,7 +261,7 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
                 AnyOtherExpense = leg.AnyOtherExpense,
                 OtherComments = leg.OtherComments,
                 Comments = leg.Comments,
-                TotalAmount = costs.Sum(c => c.Amount),
+                // Set by ITravelCostRollupService.ApplyToNewTravelAsync once the graph is built.
                 TravelDetailCosts = costs
             };
         }).ToList();

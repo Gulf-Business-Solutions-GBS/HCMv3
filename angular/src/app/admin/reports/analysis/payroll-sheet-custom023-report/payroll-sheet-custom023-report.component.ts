@@ -19,6 +19,7 @@ import {
     PayrollSheetCustom023ReportServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 /**
  * One grid column. `localize` distinguishes the fixed columns (whose header is a localization key)
@@ -43,8 +44,8 @@ interface PayrollSheetCustom023Column {
  * the exported xlsx are driven by ONE server-side column list. There are no leave " Days" columns here,
  * and wage types are matched by NAME rather than by code.
  *
- * The seven OrgLevel columns are rendered because the legacy grid renders seven -- that is the standing
- * decision for this wave.
+ * The OrgLevel columns are captioned with the tenant's Organization Unit Type names, and levels the tenant
+ * has not defined are hidden (see `injectOrgLevelCaptions`); the exported xlsx still carries all seven.
  *
  * ATYPICAL FILTER PANEL vs the reference screen (employee-contract-report): legacy's panel
  * (uscRptPayrollSheet_Custom023.ascx:24-48) is Month/Year, To-Month/To-Year, Run Type, Payroll Area and
@@ -126,6 +127,10 @@ export class PayrollSheetCustom023ReportComponent extends AppComponentBase {
     ];
 
     readonly columns = signal<PayrollSheetCustom023Column[]>(PayrollSheetCustom023ReportComponent.FIXED_COLUMNS);
+
+    /** OrgLevel1..7 are captioned with the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly displayColumns = this.orgLevels.columns(() => this.columns());
 
     // No ngOnInit fetch on purpose: the table's (onLazyLoad) fires the first getRecords().
 

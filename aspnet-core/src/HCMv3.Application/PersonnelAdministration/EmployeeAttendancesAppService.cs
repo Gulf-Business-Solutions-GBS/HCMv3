@@ -22,10 +22,15 @@ namespace HCMv3.PersonnelAdministration;
 /// Application service for <see cref="EmployeeAttendance"/> (ported from legacy XAF EmployeeAttendance
 /// business object, Wave 1 deferred bucket). Ports the essential active validations only (required fields,
 /// EndDate not earlier than StartDate, EndTime not earlier than StartTime, no-duplicate-attendance-period
-/// for the same employee for <see cref="AttendanceUnit.Period"/> entries). The legacy hourly-based
-/// duty/roster lookup to derive <c>TotalAttendDays</c> from hours, and the auto-accrual cascade into a
-/// linked <see cref="EmployeeAbsenceQuota"/>, are NOT ported here -- see class remarks on
-/// <see cref="EmployeeAttendance"/>.
+/// for the same employee for <see cref="AttendanceUnit.Period"/> entries).
+///
+/// <para>
+/// <c>TotalAttendDays</c> for the Period and Hours units (derived from hours through the employee's duty /
+/// roster) and the accrual into the attendance type's linked <see cref="EmployeeAbsenceQuota"/> are legacy
+/// <c>EmployeeAttendance.UpdateAttendanceQuota</c> / <c>OnDeleting</c>, ported in
+/// <see cref="IEmployeeAttendanceCalculationService"/>. As with leave, only an EFFECTIVE row (entered by HR, or
+/// approved) moves the quota; a row awaiting approval is accrued by the workflow handler when it is approved.
+/// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances)]
 public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAttendancesAppService
@@ -34,17 +39,20 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IEmployeeAbsenceCalculationService _absenceCalculationService;
+    private readonly IEmployeeAttendanceCalculationService _attendanceCalculationService;
 
     public EmployeeAttendancesAppService(
         IRepository<EmployeeAttendance> repository,
         ISysSettingsAccessor sysSettingsAccessor,
         IEmployeeAbsenceCalculationService absenceCalculationService,
+        IEmployeeAttendanceCalculationService attendanceCalculationService,
         IAdminTransactionSubmitter transactionSubmitter)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _sysSettingsAccessor = sysSettingsAccessor;
         _absenceCalculationService = absenceCalculationService;
+        _attendanceCalculationService = attendanceCalculationService;
     }
 
     [HttpPost]
@@ -84,6 +92,7 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime,
                 AttendanceHours = entity.AttendanceHours,
+                TotalAttendDays = entity.TotalAttendDays,
                 Comments = entity.Comments
             }
         };
@@ -106,9 +115,11 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
     {
         var entity = MapToEntity(input, new EmployeeAttendance());
         entity.TenantId = AbpSession.TenantId ?? 0;
-        entity.TotalAttendDays = CalculateTotalAttendDays(entity);
 
+        // Legacy OnSaving order (lines 177-178): PerformValidation, then UpdateAttendanceQuota.
         await ValidateAsync(entity);
+        await CalculateTotalAttendDaysAsync(entity);
+
         // Routed for approval when the catalog says so, and simply filed when it does not -- the same
         // question the self-service form asks, so the answer no longer depends on which screen was used.
         // recordDirectly is refused unless the type permits a bypass AND the user holds the permission.
@@ -119,23 +130,68 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
             "ATT",
             entity.AttendanceTypeId,
             input.RecordDirectly);
+
+        // Legacy lines 411-436. A new row has nothing to give back (legacy Oid == -1, line 385).
+        if (IsEffective(entity))
+        {
+            await _attendanceCalculationService.AccrueAttendanceQuotaAsync(entity);
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeAttendanceDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+
+        // Legacy OnLoaded (lines 155-163): what the quota currently carries for this row.
+        var previous = AttendanceQuotaSnapshot.Of(entity);
+        var wasEffective = IsEffective(entity);
+
         MapToEntity(input, entity);
-        entity.TotalAttendDays = CalculateTotalAttendDays(entity);
 
         await ValidateAsync(entity);
+        await CalculateTotalAttendDaysAsync(entity);
         await _repository.UpdateAsync(entity);
+
+        // Legacy lines 383-436: give back what the row accrued before, then accrue what it accrues now.
+        if (wasEffective)
+        {
+            await _attendanceCalculationService.ReleaseAttendanceQuotaAsync(previous);
+        }
+
+        if (IsEffective(entity))
+        {
+            await _attendanceCalculationService.AccrueAttendanceQuotaAsync(entity);
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.FirstOrDefaultAsync(input.Id);
+        if (entity == null)
+        {
+            return;
+        }
+
+        // Legacy OnDeleting (lines 309-343): the accrued days come off the quota.
+        if (IsEffective(entity))
+        {
+            await _attendanceCalculationService.ReleaseAttendanceQuotaAsync(AttendanceQuotaSnapshot.Of(entity));
+        }
+
+        await _repository.DeleteAsync(entity);
+    }
+
+    /// <summary>
+    /// Whether the row counts today: entered by HR (no workflow status) or approved -- the same test the leave
+    /// screen uses. A Draft, Open or Rejected row has accrued nothing.
+    /// </summary>
+    private static bool IsEffective(EmployeeAttendance entity)
+    {
+        return entity.WorkflowStatus is null
+               or HCMv3.Workflow.RequestStatus.Approved
+               or HCMv3.Workflow.RequestStatus.Closed;
     }
 
     private async Task ValidateAsync(EmployeeAttendance entity)
@@ -209,15 +265,18 @@ public class EmployeeAttendancesAppService : HCMv3AppServiceBase, IEmployeeAtten
         }
     }
 
-    private static double CalculateTotalAttendDays(EmployeeAttendance entity)
+    private async Task CalculateTotalAttendDaysAsync(EmployeeAttendance entity)
     {
         if (entity.AttendanceUnit == AttendanceUnit.Day)
         {
-            return entity.EndDate.Subtract(entity.StartDate).TotalDays + 1;
+            // HCMv3's existing rule for the Day unit, left unchanged by this port. (Legacy kept the TotalAttendDays
+            // the user typed for Day and forced EndDate = StartDate, lines 239-242 / 368-371.)
+            entity.TotalAttendDays = entity.EndDate.Subtract(entity.StartDate).TotalDays + 1;
+            return;
         }
 
-        // Period/Hours-based day-count derivation from duty/roster is not ported -- see class remarks.
-        return entity.TotalAttendDays;
+        // Period and Hours: legacy UpdateAttendanceQuota lines 348-381.
+        await _attendanceCalculationService.ApplyTotalAttendDaysAsync(entity);
     }
 
     private static EmployeeAttendance MapToEntity(CreateOrEditEmployeeAttendanceDto input, EmployeeAttendance entity)

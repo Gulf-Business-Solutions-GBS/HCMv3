@@ -21,9 +21,9 @@ namespace HCMv3.TravelManagement;
 /// <see cref="ExpenseType"/> and a child <see cref="TravelDetailCost"/> row on first save) is NOT ported --
 /// that implicit side effect is out of scope; costs must be added explicitly via
 /// <c>TravelDetailCostsAppService</c>.</description></item>
-/// <item><description><see cref="TotalAmount"/> (legacy <c>UpdateTotalAmount()</c> rollup of child
-/// <see cref="TravelDetailCost.Amount"/> rows) is kept as a stored, but NOT client-editable, column --
-/// same precedent as <see cref="Travel.TotalTravelCost"/>; see that class's remarks.</description></item>
+/// <item><description><see cref="TotalAmount"/> (legacy rollup of child <see cref="TravelDetailCost.Amount"/>
+/// rows) is stored, NOT client-editable, and recalculated by <see cref="ITravelCostRollupService"/> when a
+/// cost line is saved or deleted.</description></item>
 /// </list>
 /// </summary>
 public class TravelDetail : FullAuditedEntity, IMustHaveTenant

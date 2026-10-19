@@ -34,7 +34,9 @@
                                     <th>{{ 'Employee' | localize }}</th>
                                     <th>{{ 'JobTitle' | localize }}</th>
                                     <th>{{ 'Grade' | localize }}</th>
-                                    <th>{{ 'OrgLevel1' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th>{{ orgLevels.caption(1) }}</th>
+                                    }
                                     <th>{{ 'JoiningDate' | localize }}</th>
                                     <th>{{ 'ServiceDueDate' | localize }}</th>
                                     <th>{{ 'ServicePeriod' | localize }}</th>
@@ -48,7 +50,9 @@
                                     <td>{{ record.employeeName }}</td>
                                     <td>{{ record.jobTitle }}</td>
                                     <td>{{ record.grade }}</td>
-                                    <td>{{ record.orgLevel1 }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td>{{ record.orgLevel1 }}</td>
+                                    }
                                     <td>{{ record.joiningDate | luxonFormat: 'dd/MM/yyyy' }}</td>
                                     <td>{{ record.serviceDueDate | luxonFormat: 'dd/MM/yyyy' }}</td>
                                     <td>{{ record.servicePeriod }}</td>

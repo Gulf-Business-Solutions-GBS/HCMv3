@@ -9,7 +9,7 @@
                 accept="image/*"
                 (change)="onSignatureSelected($event)" />
             @if (record().signature) {
-                <img [src]="record().signature" style="max-height: 100px; margin-top: 8px" alt="signature" />
+                <img [src]="toImageSrc(record().signature)" style="max-height: 100px; margin-top: 8px" alt="signature" />
             }
         </div>
 

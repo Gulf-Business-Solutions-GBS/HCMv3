@@ -115,7 +115,19 @@ namespace HCMv3.Reports
             {
                 byte[] bytes = null;
 
-                if (GetCurrentColumnValue(pathColumn) is string path && path.Length > 0
+                // A report whose SQL does not return the path column yet (the logo reports, until each query is
+                // wired) must print without a picture, not fail.
+                object pathValue;
+                try
+                {
+                    pathValue = GetCurrentColumnValue(pathColumn);
+                }
+                catch (Exception)
+                {
+                    pathValue = null;
+                }
+
+                if (pathValue is string path && path.Length > 0
                     && StoredImageLoader != null
                     && int.TryParse(Convert.ToString(Parameters[TenantParameterName]?.Value), out var tenantId))
                 {
@@ -126,6 +138,68 @@ namespace HCMv3.Reports
                     ? null
                     : System.Drawing.Image.FromStream(new System.IO.MemoryStream(bytes), false, false);
             };
+        }
+
+        /// <summary>
+        /// Suffix of the column that carries a logo's file-store path: a picture box bound to
+        /// <c>[Companylogo]</c> reads its picture from the path in column <c>CompanylogoPath</c>.
+        /// </summary>
+        public const string StoredLogoPathSuffix = "Path";
+
+        /// <summary>
+        /// Matches the legacy logo bindings: <c>[Companylogo]</c>, <c>[CompanyLogo]</c>, <c>[logo]</c>, and the
+        /// member-qualified <c>[Query].[logo]</c> form.
+        /// </summary>
+        private static readonly System.Text.RegularExpressions.Regex LogoBindingPattern = new(
+            @"^\[(?:(?<member>[^\]]+)\]\.\[)?(?<column>[^\]]*logo)\]$",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase |
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// Legacy printed the company logo from <c>OrganizationUnit.logo</c>, an image column. HCMv3 keeps
+        /// the logo on disk (<c>OrgUnitProfile.LogoPath</c>), so the report SQL can only return WHERE the
+        /// logo is. This rewires every picture box whose image is bound to a legacy logo column (see
+        /// <see cref="LogoBindingPattern"/>) to load the file named in the sibling
+        /// <c>{column}</c>+<see cref="StoredLogoPathSuffix"/> column instead, through
+        /// <see cref="BindStoredImage"/>.
+        ///
+        /// Called from <see cref="EnsureHcmParameters"/>, so every report gets it with no edit of its own;
+        /// wiring one report's logo is then a SQL-only change: also return
+        /// <c>OrgUnitProfiles.LogoPath AS CompanylogoPath</c> next to the old column. Until a report's SQL
+        /// does that, its column value is null and the picture box stays empty -- exactly what it printed
+        /// before, because every logo column is currently projected as NULL.
+        ///
+        /// Picture boxes bound to ANOTHER query (<c>[PayslipLogoQuery].[logo]</c> when the report's
+        /// DataMember is a different query) are left alone: their path cannot be read from the report's
+        /// current row. Idempotent: a rewired box has no logo binding left to match.
+        /// </summary>
+        protected void BindStoredLogos()
+        {
+            foreach (var pictureBox in AllControls(this).OfType<XRPictureBox>().ToList())
+            {
+                var binding = pictureBox.ExpressionBindings
+                    .Cast<ExpressionBinding>()
+                    .FirstOrDefault(b => string.Equals(b.PropertyName, "Image", StringComparison.Ordinal)
+                                         && !string.IsNullOrWhiteSpace(b.Expression));
+                if (binding == null)
+                {
+                    continue;
+                }
+
+                var match = LogoBindingPattern.Match(binding.Expression.Trim());
+                if (!match.Success)
+                {
+                    continue;
+                }
+
+                var member = match.Groups["member"];
+                if (member.Success && !string.Equals(member.Value, DataMember, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                BindStoredImage(pictureBox, match.Groups["column"].Value + StoredLogoPathSuffix);
+            }
         }
 
         /// <summary>Sets the logged-in user name shown in the page footer, where the report has one.</summary>
@@ -205,6 +279,8 @@ namespace HCMv3.Reports
 
             DataSourceDemanded -= ClampDateParametersOnDemand;
             DataSourceDemanded += ClampDateParametersOnDemand;
+
+            BindStoredLogos();
         }
 
         private static CustomStringConnectionParameters ToDevExpressConnectionParameters(string adoConnectionString)

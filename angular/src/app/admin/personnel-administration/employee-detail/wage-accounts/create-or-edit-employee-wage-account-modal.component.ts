@@ -3,12 +3,9 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     AccountInfoDto,
     AccountInfosServiceProxy,
-    CostElementDto,
-    CostElementsServiceProxy,
     CreateOrEditEmployeeWageAccountDto,
     EmployeeWageAccountsServiceProxy,
     GetAllAccountInfosInput,
-    GetAllCostElementsInput,
     GetAllWageTypesInput,
     WageTypeDto,
     WageTypesServiceProxy,
@@ -20,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { CostElementSlotFieldsComponent } from '@app/shared/common/cost-element-slots/cost-element-slot-fields.component';
 import { DateTime } from 'luxon';
 import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
@@ -34,13 +32,13 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        CostElementSlotFieldsComponent,
     ],
 })
 export class CreateOrEditEmployeeWageAccountModalComponent extends AppComponentBase {
     private _service = inject(EmployeeWageAccountsServiceProxy);
     private _wageTypesService = inject(WageTypesServiceProxy);
     private _accountInfosService = inject(AccountInfosServiceProxy);
-    private _costElementsService = inject(CostElementsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -66,17 +64,6 @@ export class CreateOrEditEmployeeWageAccountModalComponent extends AppComponentB
 
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly accountInfos = signal<AccountInfoDto[]>([]);
-    readonly costElements = signal<CostElementDto[]>([]);
-
-    readonly costElementFields: (keyof CreateOrEditEmployeeWageAccountDto)[] = [
-        'costElement1Id',
-        'costElement2Id',
-        'costElement3Id',
-        'costElement4Id',
-        'costElement5Id',
-        'costElement6Id',
-        'costElement7Id',
-    ];
 
     show(employeeId: number, id?: number): void {
         this.isNew.set(!id);
@@ -105,10 +92,6 @@ export class CreateOrEditEmployeeWageAccountModalComponent extends AppComponentB
         this._accountInfosService
             .getAll(new GetAllAccountInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.accountInfos.set(result.items));
-
-        this._costElementsService
-            .getAll(new GetAllCostElementsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.costElements.set(result.items));
     }
 
     onShown(): void {
@@ -130,10 +113,6 @@ export class CreateOrEditEmployeeWageAccountModalComponent extends AppComponentB
     close(): void {
         this.active.set(false);
         this.modal().hide();
-    }
-
-    getCostElementValue(field: keyof CreateOrEditEmployeeWageAccountDto): number | undefined {
-        return (this.record() as any)[field];
     }
 
     updateField(field: keyof CreateOrEditEmployeeWageAccountDto, value: any): void {

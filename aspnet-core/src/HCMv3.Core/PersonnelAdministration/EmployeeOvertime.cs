@@ -14,10 +14,9 @@ namespace HCMv3.PersonnelAdministration;
 ///
 /// <see cref="OvertimeTypeId"/> FKs <c>HCMv3.GeneralMasterInfo.OvertimeType</c> (already ported).
 ///
-/// DELIBERATE SIMPLIFICATION: the legacy <c>ExpectedOvertimeAmount</c>/<c>GetExpectedOvertimeAmount</c>
-/// computed-amount logic depends on <c>EmployeeBasicPayDetail</c>/<c>TimeDataService</c>/payroll-settings
-/// wage-rate calculation -- NOT ported on the entity itself (equivalent read-time computation belongs in
-/// <c>EmployeeOvertimesAppService</c> if/when needed, not stored here).
+/// The legacy non-persistent <c>ExpectedOvertimeAmount</c>/<c>GetExpectedOvertimeAmount</c> is not a
+/// property here: it is calculated on read by
+/// <see cref="HCMv3.PersonnelAdministration.Services.IExpectedOvertimeAmountService"/> and never stored.
 /// </summary>
 public class EmployeeOvertime : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {

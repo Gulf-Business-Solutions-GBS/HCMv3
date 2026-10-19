@@ -46,13 +46,27 @@
                                     <th style="min-width: 120px" pSortableColumn="employeeCode">{{ 'Code' | localize }}</th>
                                     <th style="min-width: 180px" pSortableColumn="employeeName">{{ 'Employee' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'JobTitle' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel1' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel2' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel3' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel4' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel5' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel6' | localize }}</th>
-                                    <th style="min-width: 130px">{{ 'OrgLevel7' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(1) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(2) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(3) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(4) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(5) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(6) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <th style="min-width: 130px">{{ orgLevels.caption(7) }}</th>
+                                    }
                                     <th style="min-width: 140px">{{ 'WageType' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'PaymentDate' | localize }}</th>
                                     <th style="min-width: 120px">{{ 'Amount' | localize }}</th>
@@ -69,13 +83,27 @@
                                     </td>
                                     <td style="min-width: 180px">{{ record.employeeName }}</td>
                                     <td style="min-width: 140px">{{ record.jobTitleName }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel1 }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel2 }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel3 }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel4 }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel5 }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel6 }}</td>
-                                    <td style="min-width: 130px">{{ record.orgLevel7 }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel1 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel2 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel3 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel4 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel5 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel6 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <td style="min-width: 130px">{{ record.orgLevel7 }}</td>
+                                    }
                                     <td style="min-width: 140px">{{ record.wageTypeName }}</td>
                                     <td style="min-width: 140px">{{ record.paymentDate | luxonFormat: 'dd/MM/yyyy' }}</td>
                                     <td style="min-width: 120px">{{ record.amount }}</td>

@@ -50,7 +50,9 @@
                                     <th>{{ 'PayrollArea' | localize }}</th>
                                     <th>{{ 'RunType' | localize }}</th>
                                     <th>{{ 'JobTitle' | localize }}</th>
-                                    <th>{{ 'OrgLevel1' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th>{{ orgLevels.caption(1) }}</th>
+                                    }
                                     <th>{{ 'WorkingDays' | localize }}</th>
                                     <th>{{ 'ActualBasicSalary' | localize }}</th>
                                     <th>{{ 'BasicSalary' | localize }}</th>
@@ -68,7 +70,9 @@
                                     <td>{{ record.payrollAreaName }}</td>
                                     <td>{{ record.payrollRunTypeName }}</td>
                                     <td>{{ record.jobTitle }}</td>
-                                    <td>{{ record.orgLevel1 }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td>{{ record.orgLevel1 }}</td>
+                                    }
                                     <td>{{ record.workingDays }}</td>
                                     <td>{{ record.actBasicSalary }}</td>
                                     <td>{{ record.basicSalary }}</td>

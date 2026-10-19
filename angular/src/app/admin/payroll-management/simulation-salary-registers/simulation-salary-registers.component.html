@@ -73,7 +73,9 @@
                                             {{ 'Actions' | localize }}
                                         </button>
                                     </td>
-                                    <td style="min-width: 150px">{{ record.employeeCode }}</td>
+                                    <td style="min-width: 150px">
+                                        <a [routerLink]="['/app/admin/simulation-salary-registers', record.id]">{{ record.employeeCode }}</a>
+                                    </td>
                                     <td style="min-width: 140px">{{ record.forPeriod | luxonFormat: 'DD' }}</td>
                                     <td style="min-width: 140px">{{ record.inPeriod | luxonFormat: 'DD' }}</td>
                                     <td style="min-width: 140px">{{ record.payrollRunType === 0 ? ('Regular' | localize) : ('OffCycle' | localize) }}</td>

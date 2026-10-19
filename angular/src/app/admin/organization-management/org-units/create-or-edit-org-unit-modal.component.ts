@@ -47,6 +47,23 @@ export class CreateOrEditOrgUnitModalComponent extends AppComponentBase {
     readonly organizationUnitTypes = signal<SimpleLookupDto[]>([]);
     readonly payrollAreas = signal<PayrollAreaDto[]>([]);
 
+    /** Largest logo the server accepts (OrgUnitProfileConsts.MaxLogoBytes). */
+    static readonly maxLogoBytes = 1024 * 1024;
+
+    /**
+     * Preview of the logo. NSwag carries the server's byte[] as plain base64, so the data-URL prefix is put
+     * back here; the image type is read from the first bytes (PNG, JPEG or GIF -- all the server accepts).
+     */
+    readonly logoSrc = computed(() => {
+        const logo = this.orgUnit()?.logo;
+        if (!logo) {
+            return undefined;
+        }
+
+        const type = logo.startsWith('/9j/') ? 'jpeg' : logo.startsWith('R0lG') ? 'gif' : 'png';
+        return 'data:image/' + type + ';base64,' + logo;
+    });
+
     /** Parent dropdown options: excludes the record's own id so a unit can't be made its own parent. */
     readonly parentOptions = computed(() => {
         const ownId = this.orgUnit()?.id;
@@ -97,6 +114,40 @@ export class CreateOrEditOrgUnitModalComponent extends AppComponentBase {
                 this.close();
                 this.modalSave.emit();
             });
+    }
+
+    /** Reads the chosen file and keeps it as base64 (without the data-URL prefix, which byte[] cannot parse). */
+    onLogoSelected(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        const file = input.files && input.files.length ? input.files[0] : null;
+        input.value = '';
+        if (!file) {
+            return;
+        }
+
+        if (file.size > CreateOrEditOrgUnitModalComponent.maxLogoBytes) {
+            this.notify.warn(this.l('File_SizeLimit_Error'));
+            return;
+        }
+
+        if (!['image/png', 'image/jpeg', 'image/gif'].includes(file.type)) {
+            this.notify.warn(this.l('CustomLogo_TypeError'));
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const dataUrl = reader.result as string;
+            this.updateField('logo', dataUrl.substring(dataUrl.indexOf(',') + 1));
+            this.updateField('removeLogo', false);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    /** Clears the logo; the server deletes the stored file on save. */
+    removeLogo(): void {
+        this.updateField('logo', undefined);
+        this.updateField('removeLogo', true);
     }
 
     close(): void {

@@ -102,4 +102,35 @@ public class SimulationSalaryRegistersAppService_Tests : PayrollManagementAppSer
         var afterDelete = await service.GetAll(new GetAllSimulationSalaryRegistersInput { EmployeeId = employeeId });
         afterDelete.TotalCount.ShouldBe(0);
     }
+
+    [Fact]
+    public async Task Should_Return_One_Register_With_Its_Reason_Type_Name()
+    {
+        var employeeId = CreateEmployee();
+        var reasonTypeId = CreatePayrollReasonType("SSR_RT3");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditSimulationSalaryRegisterDto
+        {
+            EmployeeId = employeeId,
+            ForPeriod = new DateTime(2026, 3, 1),
+            InPeriod = new DateTime(2026, 3, 1),
+            PayrollReasonTypeId = reasonTypeId
+        });
+        var id = (await service.GetAll(new GetAllSimulationSalaryRegistersInput { EmployeeId = employeeId })).Items[0].Id;
+
+        var register = await service.GetSimulationSalaryRegister(new Abp.Application.Services.Dto.EntityDto(id));
+
+        register.Id.ShouldBe(id);
+        register.EmployeeId.ShouldBe(employeeId);
+        register.PayrollReasonTypeName.ShouldBe("SSR_RT3");
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_The_Register_Does_Not_Exist()
+    {
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<Abp.Domain.Entities.EntityNotFoundException>(
+            () => service.GetSimulationSalaryRegister(new Abp.Application.Services.Dto.EntityDto(999999)));
+    }
 }

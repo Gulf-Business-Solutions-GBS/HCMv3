@@ -15,6 +15,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditCostRegisterDetailModalComponent } from './create-or-edit-cost-register-detail-modal.component';
+import { CostElementSlotsService } from '@app/shared/common/cost-element-slots/cost-element-slots.service';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -41,6 +42,9 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 export class CostRegisterDetailsComponent extends AppComponentBase implements OnInit {
     private _costRegisterDetailsService = inject(CostRegisterDetailsServiceProxy);
 
+    /** Columns for the configured cost element slots, captioned with their cost element types. */
+    readonly costElementSlots = inject(CostElementSlotsService);
+
     readonly createOrEditModal = viewChild<CreateOrEditCostRegisterDetailModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
@@ -48,7 +52,8 @@ export class CostRegisterDetailsComponent extends AppComponentBase implements On
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
     ngOnInit(): void {
-        // Intentionally empty: the PrimeNG table's (onLazyLoad) triggers the first getCostRegisterDetails().
+        // No getCostRegisterDetails() here: the PrimeNG table's (onLazyLoad) triggers the first load.
+        this.costElementSlots.ensureLoaded().subscribe();
     }
 
     getCostRegisterDetails(event?: LazyLoadEvent): void {

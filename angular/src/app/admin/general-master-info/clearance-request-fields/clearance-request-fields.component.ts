@@ -20,6 +20,7 @@ import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     templateUrl: './clearance-request-fields.component.html',
@@ -36,10 +37,12 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
+        RouterLink,
     ],
 })
 export class ClearanceRequestFieldsComponent extends AppComponentBase implements OnInit {
     private _clearanceRequestFieldsService = inject(ClearanceRequestFieldsServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditClearanceRequestFieldModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -93,6 +96,12 @@ export class ClearanceRequestFieldsComponent extends AppComponentBase implements
 
     getMenuItems(record: ClearanceRequestFieldDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-list',
+            command: () => this._router.navigate(['/app/admin/clearance-request-fields', record.id]),
+        });
 
         if (this.permission.isGranted('Pages.GeneralMasterInfo.ClearanceRequestFields.Edit')) {
             items.push({

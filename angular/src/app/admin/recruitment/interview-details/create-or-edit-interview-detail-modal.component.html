@@ -16,23 +16,25 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label required" for="InterviewDetails_ApplicationStatusId">{{ 'ApplicationStatuses' | localize }}</label>
-                            <select
-                                id="InterviewDetails_ApplicationStatusId"
-                                #applicationStatusInput="ngModel"
-                                class="form-select"
-                                name="ApplicationStatusId"
-                                [ngModel]="record().applicationStatusId"
-                                (ngModelChange)="updateField('applicationStatusId', $event)"
-                                required>
-                                <option [ngValue]="undefined"></option>
-                                @for (item of applicationStatuses(); track item.id) {
-                                    <option [ngValue]="item.id">{{ item.applicantFullNameEn }} - {{ item.vacancyTitle }}</option>
-                                }
-                            </select>
-                            <validation-messages [formCtrl]="applicationStatusInput" />
-                        </div>
+                        @if (!fixedApplicationStatusId()) {
+                            <div class="mb-3">
+                                <label class="form-label required" for="InterviewDetails_ApplicationStatusId">{{ 'ApplicationStatuses' | localize }}</label>
+                                <select
+                                    id="InterviewDetails_ApplicationStatusId"
+                                    #applicationStatusInput="ngModel"
+                                    class="form-select"
+                                    name="ApplicationStatusId"
+                                    [ngModel]="record().applicationStatusId"
+                                    (ngModelChange)="updateField('applicationStatusId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of applicationStatuses(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.applicantFullNameEn }} - {{ item.vacancyTitle }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="applicationStatusInput" />
+                            </div>
+                        }
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="InterviewDetails_InterviewDate">{{ 'InterviewDate' | localize }}</label>

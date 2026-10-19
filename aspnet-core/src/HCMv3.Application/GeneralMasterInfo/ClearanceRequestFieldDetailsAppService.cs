@@ -34,7 +34,8 @@ public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClea
 
         var query = _repository.GetAll()
             .Include(d => d.ClearanceRequestField)
-            .Include(d => d.WorkflowRole);
+            .Include(d => d.WorkflowRole)
+            .WhereIf(input.ClearanceRequestFieldId.HasValue, d => d.ClearanceRequestFieldId == input.ClearanceRequestFieldId);
 
         var totalCount = await query.CountAsync();
 

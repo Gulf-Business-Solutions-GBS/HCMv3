@@ -457,6 +457,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.GeneralMasterInfo.ClearanceRequestFields' },
                     },
                     {
+                        path: 'clearance-request-fields/:id',
+                        loadComponent: () =>
+                            import('./admin/general-master-info/clearance-request-fields/clearance-request-field-detail/clearance-request-field-detail.component').then(
+                                (m) => m.ClearanceRequestFieldDetailComponent
+                            ),
+                        data: { permission: 'Pages.GeneralMasterInfo.ClearanceRequestFields' },
+                    },
+                    {
                         path: 'clearance-request-field-details',
                         loadComponent: () =>
                             import('./admin/general-master-info/clearance-request-field-details/clearance-request-field-details.component').then(
@@ -890,6 +898,14 @@ export const appRoutes: Routes = [
                                 (m) => m.RosterDutySchedulesComponent
                             ),
                         data: { permission: 'Pages.TimeManagement.RosterDutySchedules' },
+                    },
+                    {
+                        path: 'employee-duty-schedules',
+                        loadComponent: () =>
+                            import('./admin/time-management/employee-duty-schedules/employee-duty-schedules.component').then(
+                                (m) => m.EmployeeDutySchedulesListComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.EmployeeDutySchedules' },
                     },
                     {
                         path: 'roster-groups',
@@ -1471,6 +1487,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.CostRegisters' },
                     },
                     {
+                        path: 'cost-registers/:id',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/cost-registers/cost-register-detail/cost-register-detail.component').then(
+                                (m) => m.CostRegisterDetailComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.CostRegisters' },
+                    },
+                    {
                         path: 'cost-register-details',
                         loadComponent: () =>
                             import('./admin/payroll-management/cost-register-details/cost-register-details.component').then(
@@ -1507,6 +1531,14 @@ export const appRoutes: Routes = [
                         loadComponent: () =>
                             import('./admin/payroll-management/simulation-salary-registers/simulation-salary-registers.component').then(
                                 (m) => m.SimulationSalaryRegistersComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.SimulationSalaryRegisters' },
+                    },
+                    {
+                        path: 'simulation-salary-registers/:id',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/simulation-salary-registers/simulation-salary-register-detail/simulation-salary-register-detail.component').then(
+                                (m) => m.SimulationSalaryRegisterDetailComponent
                             ),
                         data: { permission: 'Pages.PayrollManagement.SimulationSalaryRegisters' },
                     },
@@ -3096,6 +3128,14 @@ export const appRoutes: Routes = [
                         loadComponent: () =>
                             import('./admin/recruitment/application-statuses/application-statuses.component').then(
                                 (m) => m.ApplicationStatusesComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.ApplicationStatuses' },
+                    },
+                    {
+                        path: 'application-statuses/:id',
+                        loadComponent: () =>
+                            import('./admin/recruitment/application-statuses/application-status-detail/application-status-detail.component').then(
+                                (m) => m.ApplicationStatusDetailComponent
                             ),
                         data: { permission: 'Pages.Recruitment.ApplicationStatuses' },
                     },

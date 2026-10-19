@@ -9,6 +9,8 @@ public interface ISimulationSalaryRegistersAppService : IApplicationService
 {
     Task<PagedResultDto<SimulationSalaryRegisterDto>> GetAll(GetAllSimulationSalaryRegistersInput input);
 
+    Task<SimulationSalaryRegisterDto> GetSimulationSalaryRegister(EntityDto input);
+
     Task<GetSimulationSalaryRegisterForEditOutput> GetSimulationSalaryRegisterForEdit(EntityDto input);
 
     Task CreateOrEdit(CreateOrEditSimulationSalaryRegisterDto input);

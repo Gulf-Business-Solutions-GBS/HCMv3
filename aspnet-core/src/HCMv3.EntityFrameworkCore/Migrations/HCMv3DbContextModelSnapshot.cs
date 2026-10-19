@@ -12752,6 +12752,10 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("LogoPath")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)

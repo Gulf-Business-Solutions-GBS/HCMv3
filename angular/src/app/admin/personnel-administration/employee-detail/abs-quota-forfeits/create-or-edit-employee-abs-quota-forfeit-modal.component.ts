@@ -53,6 +53,7 @@ export class CreateOrEditEmployeeAbsQuotaForfeitModalComponent extends AppCompon
             const record = new CreateOrEditEmployeeAbsQuotaForfeitDto();
             record.employeeId = employeeId;
             record.quotaForfeited = 0;
+            record.dontUpdateQuotaBalance = false;
             this.record.set(record);
             this.modal().show();
         } else {

@@ -356,6 +356,12 @@ public class EmployeeCTCReportAppService : GridReportAppServiceBase, IEmployeeCT
                 .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
                 .Select(o => o.BudgetingGroup == null ? string.Empty : o.BudgetingGroup.NameEn)
                 .FirstOrDefault(),
+            // Legacy lines 1468/1615: today's assignment's workflow group, always NameEn like the groups above.
+            WorkflowGroupName = currentAssignments
+                .Where(o => o.EmployeeId == e.Id)
+                .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
+                .Select(o => o.WorkflowGroup == null ? string.Empty : o.WorkflowGroup.NameEn)
+                .FirstOrDefault(),
             OrganizationUnitId = currentAssignments
                 .Where(o => o.EmployeeId == e.Id)
                 .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
@@ -638,6 +644,7 @@ public class EmployeeCTCReportAppService : GridReportAppServiceBase, IEmployeeCT
             new("CostCenterGroup", r => r.CostCenterGroupName),
             new("PostingGroup", r => r.PostingGroupName),
             new("BudgetingGroup", r => r.BudgetingGroupName),
+            new("WorkflowGroup", r => r.WorkflowGroupName),
             new("EffectiveDate", r => r.EffectiveDate)
         };
 

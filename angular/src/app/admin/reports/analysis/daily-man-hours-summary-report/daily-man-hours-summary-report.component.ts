@@ -23,6 +23,7 @@ import {
     WorkLocationsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 interface DailyManHoursSummaryReportColumn {
     field: string;
@@ -105,6 +106,8 @@ export class DailyManHoursSummaryReportComponent extends AppComponentBase implem
         { field: 'employeeCount', header: this.l('Employees'), sortable: true, width: 180 },
     ];
 
+    /** OrgLevel1..7 are captioned with the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
     private readonly detailIdentityColumns: DailyManHoursSummaryReportColumn[] = [
         { field: 'employeeCode', header: this.l('EmployeeCode'), sortable: true, width: 130 },
         { field: 'employeeName', header: this.l('EmployeeName'), sortable: true, width: 220 },
@@ -121,7 +124,7 @@ export class DailyManHoursSummaryReportComponent extends AppComponentBase implem
     get detailColumns(): DailyManHoursSummaryReportColumn[] {
         if (this.selectedType() === ManHourType.Overtime) {
             return [
-                ...this.detailIdentityColumns,
+                ...this.orgLevels.apply(this.detailIdentityColumns),
                 { field: 'overtimeHours', header: this.l('OvertimeHours'), sortable: false, width: 160 },
                 {
                     field: 'accumulatedOvertimeHours',
@@ -133,7 +136,7 @@ export class DailyManHoursSummaryReportComponent extends AppComponentBase implem
         }
 
         return [
-            ...this.detailIdentityColumns,
+            ...this.orgLevels.apply(this.detailIdentityColumns),
             { field: 'signIn', header: this.l('SignIn'), sortable: false, width: 120 },
             { field: 'signOut', header: this.l('SignOut'), sortable: false, width: 120 },
             { field: 'totalHours', header: this.l('TotalHours'), sortable: false, width: 150 },

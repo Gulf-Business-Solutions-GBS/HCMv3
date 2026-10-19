@@ -16,6 +16,7 @@ import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
+import { Router, RouterLink } from '@angular/router';
 import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
 
 @Component({
@@ -33,11 +34,13 @@ import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
+        RouterLink,
         LuxonFormatPipe,
     ],
 })
 export class CostRegistersComponent extends AppComponentBase implements OnInit {
     private _costRegistersService = inject(CostRegistersServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditCostRegisterModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -90,6 +93,12 @@ export class CostRegistersComponent extends AppComponentBase implements OnInit {
 
     getMenuItems(record: CostRegisterDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-list',
+            command: () => this._router.navigate(['/app/admin/cost-registers', record.id]),
+        });
 
         if (this.permission.isGranted('Pages.PayrollManagement.CostRegisters.Edit')) {
             items.push({

@@ -21,6 +21,7 @@ import {
     LoanTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 /**
  * Employee Loan analysis grid report.
@@ -49,6 +50,9 @@ import { GridReportFilterComponent } from '../shared/grid-report-filter.componen
     ],
 })
 export class EmployeeLoanReportComponent extends AppComponentBase implements OnInit {
+    /** OrgLevel1..7 headers use the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+
     private readonly _reportService = inject(EmployeeLoanReportServiceProxy);
     private readonly _loanTypeService = inject(LoanTypesServiceProxy);
     private readonly _fileDownloadService = inject(FileDownloadService);

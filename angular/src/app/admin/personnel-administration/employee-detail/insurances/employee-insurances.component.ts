@@ -12,6 +12,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeInsuranceModalComponent } from './create-or-edit-employee-insurance-modal.component';
+import { EmployeeInsuranceInstallmentsModalComponent } from './employee-insurance-installments-modal.component';
 
 @Component({
     selector: 'employee-insurances',
@@ -26,6 +27,7 @@ import { CreateOrEditEmployeeInsuranceModalComponent } from './create-or-edit-em
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeInsuranceModalComponent,
+        EmployeeInsuranceInstallmentsModalComponent,
     ],
 })
 export class EmployeeInsurancesComponent extends AppComponentBase {
@@ -34,6 +36,7 @@ export class EmployeeInsurancesComponent extends AppComponentBase {
     readonly employeeId = input<number>();
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeInsuranceModalComponent>('createOrEditModal');
+    readonly installmentsModal = viewChild<EmployeeInsuranceInstallmentsModalComponent>('installmentsModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -100,6 +103,18 @@ export class EmployeeInsurancesComponent extends AppComponentBase {
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
                 command: () => this.createOrEditModal()?.show(this.employeeId(), record.id, record),
+            });
+        }
+
+        // Legacy nested the employee and company installments inside the insurance; this keeps them one click away.
+        if (
+            this.permission.isGranted('Pages.BenefitsManagement.EmployeeInsuranceDetails') ||
+            this.permission.isGranted('Pages.BenefitsManagement.CompanyInsuranceDetails')
+        ) {
+            items.push({
+                label: this.l('InsuranceInstallments'),
+                icon: 'pi pi-list',
+                command: () => this.installmentsModal()?.show(record),
             });
         }
 

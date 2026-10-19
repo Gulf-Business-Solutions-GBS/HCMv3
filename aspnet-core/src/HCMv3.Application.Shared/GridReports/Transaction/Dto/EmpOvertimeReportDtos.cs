@@ -56,8 +56,8 @@ public class EmpOvertimeReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
     public double TotalHours { get; set; }
 
     /// <summary>
-    /// Not ported on <c>EmployeeOvertime</c> (see the entity's remarks: the wage-rate calculation was
-    /// never brought over). Always 0 -- see <see cref="EmpOvertimeReportAppService"/> remarks.
+    /// Sum of the legacy per-row expected overtime amount over the employee's rows in the window (legacy
+    /// <c>uscRptEmpOvertime.ascx.cs</c> line 634).
     /// </summary>
     public double ExpectedOvertimeAmount { get; set; }
 

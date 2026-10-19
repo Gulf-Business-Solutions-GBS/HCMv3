@@ -1587,7 +1587,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
     /// <paramref name="dayDate"/> (a "years-of-service tiered" leave quota rule), falling back to any
     /// date-effective row with no ChangeYear tiering.
     /// </summary>
-    private EmployeeSubGroupAbsence GetEmployeeSubGroupLeave(int? employeeSubGroupId, DateTime employeeJoiningDate, int absenceTypeId, DateTime dayDate)
+    public EmployeeSubGroupAbsence GetEmployeeSubGroupLeave(int? employeeSubGroupId, DateTime employeeJoiningDate, int absenceTypeId, DateTime dayDate)
     {
         if (employeeSubGroupId == null)
         {

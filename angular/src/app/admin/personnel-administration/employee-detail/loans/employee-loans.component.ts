@@ -12,6 +12,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeLoanModalComponent } from './create-or-edit-employee-loan-modal.component';
+import { EmployeeLoanRecoveriesExemptionsModalComponent } from './employee-loan-recoveries-exemptions-modal.component';
 
 @Component({
     selector: 'employee-loans',
@@ -26,6 +27,7 @@ import { CreateOrEditEmployeeLoanModalComponent } from './create-or-edit-employe
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeLoanModalComponent,
+        EmployeeLoanRecoveriesExemptionsModalComponent,
     ],
 })
 export class EmployeeLoansComponent extends AppComponentBase {
@@ -34,6 +36,7 @@ export class EmployeeLoansComponent extends AppComponentBase {
     readonly employeeId = input<number>();
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeLoanModalComponent>('createOrEditModal');
+    readonly recoveriesExemptionsModal = viewChild<EmployeeLoanRecoveriesExemptionsModalComponent>('recoveriesExemptionsModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -100,6 +103,18 @@ export class EmployeeLoansComponent extends AppComponentBase {
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
                 command: () => this.createOrEditModal()?.show(this.employeeId(), record.id),
+            });
+        }
+
+        // Legacy showed a loan's recoveries and exemptions inside the loan; this keeps them one click away.
+        if (
+            this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoanRecoveries') ||
+            this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoanExemptions')
+        ) {
+            items.push({
+                label: this.l('LoanRecoveriesAndExemptions'),
+                icon: 'pi pi-list',
+                command: () => this.recoveriesExemptionsModal()?.show(record),
             });
         }
 

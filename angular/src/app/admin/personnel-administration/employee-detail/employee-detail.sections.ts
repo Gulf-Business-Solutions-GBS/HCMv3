@@ -314,6 +314,14 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
                     ),
             },
             {
+                id: 'recurring-payments',
+                labelKey: 'EmpSection_RecurringPayments',
+                load: () =>
+                    import('./recurring-payments/employee-recurring-payments.component').then(
+                        (m) => m.EmployeeRecurringPaymentsComponent
+                    ),
+            },
+            {
                 id: 'payments',
                 labelKey: 'EmpSection_Payments',
                 load: () => import('./payments/employee-payments.component').then((m) => m.EmployeePaymentsComponent),
@@ -559,6 +567,14 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
                 id: 'assets',
                 labelKey: 'EmpSection_Assets',
                 load: () => import('./assets/employee-assets.component').then((m) => m.EmployeeAssetsComponent),
+            },
+            {
+                id: 'asset-invoices',
+                labelKey: 'EmpSection_AssetInvoices',
+                load: () =>
+                    import('./asset-invoices/employee-asset-invoices.component').then(
+                        (m) => m.EmployeeAssetInvoicesComponent
+                    ),
             },
         ],
     },

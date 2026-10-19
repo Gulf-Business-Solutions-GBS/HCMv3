@@ -35,7 +35,11 @@ export class CreateOrEditSimulationSalaryRegisterDetailModalComponent extends Ap
 
     readonly wageTypes = signal<WageTypeDto[]>([]);
 
-    show(simulationSalaryRegisterDetailId?: number): void {
+    /** Set when opened from a register's page: the line belongs to that register and the field is not offered. */
+    readonly fixedSimulationSalaryRegisterId = signal<number | undefined>(undefined);
+
+    show(simulationSalaryRegisterDetailId?: number, simulationSalaryRegisterId?: number): void {
+        this.fixedSimulationSalaryRegisterId.set(simulationSalaryRegisterId);
         this.active.set(true);
 
         this._wageTypesService
@@ -43,7 +47,9 @@ export class CreateOrEditSimulationSalaryRegisterDetailModalComponent extends Ap
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!simulationSalaryRegisterDetailId) {
-            this.simulationSalaryRegisterDetail.set(new CreateOrEditSimulationSalaryRegisterDetailDto());
+            const record = new CreateOrEditSimulationSalaryRegisterDetailDto();
+            record.simulationSalaryRegisterId = simulationSalaryRegisterId;
+            this.simulationSalaryRegisterDetail.set(record);
             this.modal().show();
         } else {
             this._simulationSalaryRegisterDetailsService
@@ -56,7 +62,11 @@ export class CreateOrEditSimulationSalaryRegisterDetailModalComponent extends Ap
     }
 
     onShown(): void {
-        document.getElementById('SimulationSalaryRegisterDetail_SimulationSalaryRegisterId')?.focus();
+        document
+            .getElementById(
+                this.fixedSimulationSalaryRegisterId() ? 'SimulationSalaryRegisterDetail_WageTypeId' : 'SimulationSalaryRegisterDetail_SimulationSalaryRegisterId'
+            )
+            ?.focus();
     }
 
     save(): void {

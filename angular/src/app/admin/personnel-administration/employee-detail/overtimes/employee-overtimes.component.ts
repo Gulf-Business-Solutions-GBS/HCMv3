@@ -1,4 +1,5 @@
 import { Component, effect, inject, input, signal, viewChild } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { EmployeeOvertimeDto, EmployeeOvertimesServiceProxy, GetAllEmployeeOvertimesInput } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
@@ -22,6 +23,7 @@ import { CreateOrEditEmployeeOvertimeModalComponent } from './create-or-edit-emp
         PaginatorModule,
         TieredMenu,
         LuxonFormatPipe,
+        DecimalPipe,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,

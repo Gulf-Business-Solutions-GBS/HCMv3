@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, input, viewChild, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -24,9 +25,11 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 
 @Component({
+    selector: 'interviewDetails',
     templateUrl: './interview-details.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        NgTemplateOutlet,
         SubHeaderComponent,
         BusyIfDirective,
         FormsModule,
@@ -48,11 +51,21 @@ export class InterviewDetailsComponent extends AppComponentBase implements OnIni
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
+    /**
+     * Set when embedded in an application's page (its Interview Details tab): the list shows only that
+     * application's interviews, without the page header or the application filter. Unset on the route.
+     */
+    readonly applicationStatusId = input<number | undefined>(undefined);
+    readonly embedded = computed(() => !!this.applicationStatusId());
+
     readonly applicationStatusIdFilter = signal<number | undefined>(undefined);
     readonly applicationStatuses = signal<ApplicationStatusDto[]>([]);
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
     ngOnInit(): void {
+        if (this.embedded()) {
+            return;
+        }
         this._applicationStatusesService
             .getAll(new GetAllApplicationStatusesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, vacancyId: undefined }))
             .subscribe((result) => this.applicationStatuses.set(result.items));
@@ -69,7 +82,7 @@ export class InterviewDetailsComponent extends AppComponentBase implements OnIni
         this._service
             .getAll(
                 new GetAllInterviewDetailsInput({
-                    applicationStatusId: this.applicationStatusIdFilter(),
+                    applicationStatusId: this.applicationStatusId() ?? this.applicationStatusIdFilter(),
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
@@ -89,7 +102,7 @@ export class InterviewDetailsComponent extends AppComponentBase implements OnIni
     }
 
     createRecord(): void {
-        this.createOrEditModal().show();
+        this.createOrEditModal().show(undefined, this.applicationStatusId());
     }
 
     showMenu(event: Event, record: InterviewDetailsDto, menu: any): void {
@@ -104,7 +117,7 @@ export class InterviewDetailsComponent extends AppComponentBase implements OnIni
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal().show(record.id),
+                command: () => this.createOrEditModal().show(record.id, this.applicationStatusId()),
             });
         }
 

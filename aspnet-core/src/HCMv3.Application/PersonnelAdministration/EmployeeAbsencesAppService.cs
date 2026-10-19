@@ -29,9 +29,9 @@ namespace HCMv3.PersonnelAdministration;
 /// </para>
 ///
 /// <para>
-/// Still NOT ported here: the sick-leave deduction slabs, the notification side effects, and the back-office
-/// return-from-leave logic (legacy <c>SaveDiffInformation</c>) -- see class remarks on
-/// <see cref="EmployeeAbsence"/>.
+/// The form's calculated read-only fields (calendar days, total leave days, current balance, paid / unpaid split,
+/// sick-leave deduction info) are served by <see cref="GetAbsencePreview"/>.
+/// Still NOT ported here: the notification side effects -- see class remarks on <see cref="EmployeeAbsence"/>.
 /// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences)]
@@ -44,6 +44,7 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
     private readonly Services.IEmployeeAbsenceCalculationService _calculationService;
     private readonly Services.ILeaveReturnProcessor _returnProcessor;
     private readonly Services.IProbationEndDateService _probation;
+    private readonly Services.IEmployeeAbsencePreviewService _previewService;
 
     public EmployeeAbsencesAppService(
         IRepository<EmployeeAbsence> repository,
@@ -52,7 +53,8 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         Services.IEmployeeAbsenceCalculationService calculationService,
         Services.ILeaveReturnProcessor returnProcessor,
         Services.IProbationEndDateService probation,
-        IAdminTransactionSubmitter transactionSubmitter)
+        IAdminTransactionSubmitter transactionSubmitter,
+        Services.IEmployeeAbsencePreviewService previewService)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
@@ -61,6 +63,67 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         _calculationService = calculationService;
         _returnProcessor = returnProcessor;
         _probation = probation;
+        _previewService = previewService;
+    }
+
+    /// <summary>
+    /// The read-only panel on HR's leave form -- legacy <c>EmployeeAbsence</c> detail view's calculated fields,
+    /// worked out by <see cref="Services.IEmployeeAbsencePreviewService"/> from the same calculation services the
+    /// save uses. Nothing is saved.
+    ///
+    /// <para>
+    /// <c>[HttpPost]</c> because the input is a custom DTO (ABP would otherwise expose it as a GET with every field
+    /// in the query string and NSwag would not generate the input class).
+    /// </para>
+    /// </summary>
+    [HttpPost]
+    public async Task<EmployeeAbsencePreviewDto> GetAbsencePreview(GetEmployeeAbsencePreviewInput input)
+    {
+        Services.EmployeeAbsencePreview preview;
+        try
+        {
+            preview = await _previewService.CalculateAsync(new Services.EmployeeAbsencePreviewRequest
+            {
+                EmployeeId = input.EmployeeId,
+                AbsenceTypeId = input.AbsenceTypeId,
+                StartDate = input.StartDate,
+                EndDate = input.EndDate,
+                StartTime = input.StartTime,
+                EndTime = input.EndTime,
+                ReturnDate = input.ReturnDate,
+                PaidStartDate = input.PaidStartDate,
+                PaidEndDate = input.PaidEndDate,
+                UnpaidStartDate = input.UnpaidStartDate,
+                UnpaidEndDate = input.UnpaidEndDate
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            // The engine's "duty / duty period / contract not found" refusals -- legacy surfaced the same failure on
+            // the form as the user typed.
+            throw new UserFriendlyException(L("LeaveCalculationPreviewNotAvailable"), ex.Message);
+        }
+
+        return new EmployeeAbsencePreviewDto
+        {
+            CalendarDays = preview.CalendarDays,
+            AbsenceHours = preview.AbsenceHours,
+            TotalLeaveDays = preview.TotalLeaveDays,
+            CurrentBalance = preview.CurrentBalance,
+            PaidCalendarDays = preview.PaidCalendarDays,
+            DeductFromQuota = preview.DeductFromQuota,
+            UnpaidCalendarDays = preview.UnpaidCalendarDays,
+            UnpaidDays = preview.UnpaidDays,
+            SickLeaveUnpaidInfo = preview.SickLeaveUnpaidInfo,
+            SickLeaveSegments = preview.SickLeaveSegments.Select(s => new HCMv3.Ess.Dto.SickLeaveDeductionSegmentDto
+            {
+                FromDate = s.FromDate,
+                ToDate = s.ToDate,
+                DeductionNumber = s.DeductionNumber,
+                DeductionUnit = s.DeductionUnit,
+                IsBeyondTheLastSlab = s.IsBeyondTheLastSlab
+            }).ToList()
+        };
     }
 
     /// <summary>

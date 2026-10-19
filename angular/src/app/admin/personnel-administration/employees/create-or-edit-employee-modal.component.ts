@@ -37,6 +37,8 @@ interface LookupOption {
     nameEn: string | undefined;
 }
 
+import { toBase64Payload, toImageSrc } from '@shared/utils/image-data-url';
+
 @Component({
     selector: 'createOrEditEmployeeModal',
     templateUrl: './create-or-edit-employee-modal.component.html',
@@ -53,6 +55,8 @@ interface LookupOption {
     ],
 })
 export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
+    readonly toImageSrc = toImageSrc;
+
     private _employeesService = inject(EmployeesServiceProxy);
     private _nationalitiesService = inject(NationalitiesServiceProxy);
     private _religionsService = inject(ReligionsServiceProxy);
@@ -460,7 +464,7 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
 
         const reader = new FileReader();
         reader.onload = () => {
-            this.updateField('photo', reader.result as string);
+            this.updateField('photo', toBase64Payload(reader.result as string));
         };
         reader.readAsDataURL(file);
     }

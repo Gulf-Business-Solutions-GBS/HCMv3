@@ -20,8 +20,9 @@ namespace HCMv3.TravelManagement;
 /// <c>PerformValidation</c> parity ported here: ArrivalDate must not be earlier than DepartureDate. Delete is
 /// blocked when child <see cref="TravelDetailCost"/> rows exist (legacy <c>OnDeleting</c> parity). See
 /// <see cref="TravelDetail"/> class remarks for the dropped legacy <c>PerDiemRate</c>/<c>PerDiemAmount</c>
-/// non-persistent properties, the dropped <c>SavePerDiemAmount()</c> auto-creation side effect, and the
-/// TotalAmount-rollup simplification.
+/// non-persistent properties and the dropped <c>SavePerDiemAmount()</c> auto-creation side effect. Create,
+/// update and delete re-sum the trip's TotalTravelCost through <see cref="ITravelCostRollupService"/>
+/// (legacy <c>TravelDetail.UpdateTotalAmount</c>).
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_TravelManagement_TravelDetails)]
 public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppService
@@ -30,17 +31,20 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
     private readonly IRepository<TravelDetailCost> _travelDetailCostRepository;
     private readonly IRepository<TravelPerDiem> _travelPerDiemRepository;
     private readonly IRepository<Travel> _travelRepository;
+    private readonly ITravelCostRollupService _costRollupService;
 
     public TravelDetailsAppService(
         IRepository<TravelDetail> repository,
         IRepository<TravelDetailCost> travelDetailCostRepository,
         IRepository<TravelPerDiem> travelPerDiemRepository,
-        IRepository<Travel> travelRepository)
+        IRepository<Travel> travelRepository,
+        ITravelCostRollupService costRollupService)
     {
         _repository = repository;
         _travelDetailCostRepository = travelDetailCostRepository;
         _travelPerDiemRepository = travelPerDiemRepository;
         _travelRepository = travelRepository;
+        _costRollupService = costRollupService;
     }
 
     /// <summary>
@@ -120,6 +124,11 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
         ValidateDates(entity);
 
         await _repository.InsertAsync(entity);
+
+        // Legacy TravelDetail.OnSaving -> UpdateTotalAmount(0) (TravelDetail.cs lines 227, 262-279): re-sum
+        // the trip's legs, this one included.
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await _costRollupService.RecalculateTravelTotalAsync(entity.TravelId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_TravelManagement_TravelDetails_Edit)]
@@ -131,6 +140,11 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
         ValidateDates(entity);
 
         await _repository.UpdateAsync(entity);
+
+        // Legacy TravelDetail.cs lines 227, 262-279. Only the trip the leg belongs to NOW is re-summed: if
+        // the leg was moved to another trip, the old trip keeps its old total, exactly as in legacy.
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await _costRollupService.RecalculateTravelTotalAsync(entity.TravelId);
     }
 
     /// <summary>
@@ -146,7 +160,20 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             throw new UserFriendlyException(L("DeleteTravelDetailCostsFirst"));
         }
 
+        var travelId = await _repository.GetAll()
+            .Where(d => d.Id == input.Id)
+            .Select(d => (int?)d.TravelId)
+            .FirstOrDefaultAsync();
+
         await _repository.DeleteAsync(input.Id);
+
+        // Legacy TravelDetail.OnDeleting -> UpdateTotalAmount(this.Oid) (TravelDetail.cs lines 260, 268):
+        // the trip total without this leg.
+        if (travelId.HasValue)
+        {
+            await CurrentUnitOfWork.SaveChangesAsync();
+            await _costRollupService.RecalculateTravelTotalAsync(travelId.Value);
+        }
     }
 
     /// <summary>

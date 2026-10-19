@@ -27,18 +27,56 @@ public class AttendanceWorkflowTransactionHandler : WorkflowTransactionHandlerBa
 
     private readonly IRepository<AttendanceType> _attendanceTypeRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly Services.IEmployeeAttendanceCalculationService _attendanceCalculation;
 
     public AttendanceWorkflowTransactionHandler(
         IRepository<EmployeeAttendance> repository,
         IRepository<AttendanceType> attendanceTypeRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        Services.IEmployeeAttendanceCalculationService attendanceCalculation)
         : base(repository, unitOfWorkManager)
     {
         _attendanceTypeRepository = attendanceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
+        _attendanceCalculation = attendanceCalculation;
     }
 
     public override string RequestType => AttendanceRequestType;
+
+    /// <summary>
+    /// The moment a requested attendance becomes real. Legacy created the <c>EmployeeAttendance</c> row only now,
+    /// and that row's <c>OnSaving</c> worked out <c>TotalAttendDays</c> and accrued it into the linked leave quota
+    /// (<c>EmployeeAttendance.UpdateAttendanceQuota</c>, lines 348-436) -- so the same happens here. A row HR keyed
+    /// in directly was already accrued by the admin screen and never reaches this point.
+    /// </summary>
+    public override async Task OnApprovedAsync(WorkflowTransactionContext context)
+    {
+        await base.OnApprovedAsync(context);
+
+        if (context.IsAmendment)
+        {
+            return;
+        }
+
+        var attendance = await GetTargetAsync(context);
+        if (attendance == null)
+        {
+            return;
+        }
+
+        // Day keeps the value it was saved with (legacy lines 368-371); Period/Hours are derived.
+        if (attendance.AttendanceUnit != AttendanceUnit.Day)
+        {
+            await _attendanceCalculation.ApplyTotalAttendDaysAsync(attendance);
+
+            using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+            {
+                await Repository.UpdateAsync(attendance);
+            }
+        }
+
+        await _attendanceCalculation.AccrueAttendanceQuotaAsync(attendance);
+    }
 
     public override async Task ValidateBeforeSubmitAsync(WorkflowTransactionContext context)
     {

@@ -33,6 +33,7 @@
                                     name="EmployeeInsuranceId"
                                     [ngModel]="record().employeeInsuranceId"
                                     (ngModelChange)="updateField('employeeInsuranceId', $event)"
+                                    [disabled]="insuranceLocked()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (item of employeeInsurances(); track item.id) {

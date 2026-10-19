@@ -50,17 +50,34 @@ export class CreateOrEditCompanyInsuranceDetailModalComponent extends AppCompone
         { value: InstallmentType.Exemption, name: 'Exemption' },
     ];
 
-    show(id?: number): void {
+    /** Set when opened from inside one insurance (employee record > Insurances): it cannot be changed there. */
+    readonly insuranceLocked = signal<boolean>(false);
+
+    /**
+     * @param insuranceContext Opened from inside an insurance: the insurance list is that employee's only, a
+     * new installment starts on that insurance, and it defaults to External -- through-payroll installments
+     * are written by the payroll run and are not keyed in from there.
+     */
+    show(id?: number, insuranceContext?: { employeeInsuranceId: number; employeeId: number }): void {
         this.active.set(true);
+        this.insuranceLocked.set(!!insuranceContext);
 
         this._employeeInsurancesService
-            .getAll(new GetAllEmployeeInsurancesInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeInsurancesInput({
+                    employeeId: insuranceContext?.employeeId,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeInsurances.set(result.items));
 
         if (!id) {
             const record = new CreateOrEditCompanyInsuranceDetailDto();
             record.installmentAmount = 0;
-            record.installmentType = InstallmentType.ThroughPayroll;
+            record.employeeInsuranceId = insuranceContext?.employeeInsuranceId;
+            record.installmentType = insuranceContext ? InstallmentType.External : InstallmentType.ThroughPayroll;
             this.record.set(record);
             this.modal().show();
         } else {

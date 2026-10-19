@@ -64,6 +64,13 @@ public interface IAccrualService
     /// </summary>
     double GetProRataBasedBalanceQuota(DateTime employeeJoiningDate, AccrualPeriod accrualPeriod, LeaveEntitlement leaveEntitlement, double balanceQuota, DateTime deductionStartDate, DateTime deductionEndDate);
 
+    /// <summary>
+    /// Ported from legacy <c>EmployeeSubGroupAbsence.GetEmployeeSubGroupLeave</c>: the salary-profile leave row
+    /// for the type on <paramref name="dayDate"/>, years-of-service tier first. Exposed so callers outside this
+    /// service (the leave calculation preview) use the same selection rather than a copy.
+    /// </summary>
+    EmployeeSubGroupAbsence GetEmployeeSubGroupLeave(int? employeeSubGroupId, DateTime employeeJoiningDate, int absenceTypeId, DateTime dayDate);
+
     /// <summary>Ported from legacy <c>AccrualService.GetAsOnDateQuotaWithProjection</c>.</summary>
     Task<double> GetAsOnDateQuotaWithProjectionAsync(int employeeId, int? employeeSubGroupId, int absenceTypeId, DateTime asOnDate);
 

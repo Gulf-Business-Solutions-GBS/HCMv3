@@ -48,8 +48,6 @@ public class EmployeeInfoWageAmountDto
 /// AbsentUnpaidOpening, TotalLoanBalance.
 ///
 /// DEVIATIONS (all structural, none silent):
-/// - <c>WorkflowGroup</c> is DROPPED: legacy read it off <c>EmployeeOrgAssignment.WorkflowGroup</c>, and
-///   HCMv3's <c>EmployeeOrgAssignment</c> has no workflow-group FK at all.
 /// - <c>OrgLevelN</c>/<c>OrgLevelNAr</c> are resolved from the org unit TREE -- see
 ///   <c>EmployeeOrgLevelNameResolver</c>.
 /// - Legacy's Passport column additionally required <c>EmployeeDocument.IsActive == Active</c>
@@ -144,6 +142,9 @@ public class EmployeeInfoReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
     public string WorkLocationName { get; set; }
 
     public string CostCenterName { get; set; }
+
+    /// <summary>Legacy "WorkflowGroup" column: the workflow group of today's org assignment (line 811).</summary>
+    public string WorkflowGroupName { get; set; }
 
     public string SponsorName { get; set; }
 

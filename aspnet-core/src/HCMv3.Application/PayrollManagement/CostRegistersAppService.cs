@@ -48,6 +48,17 @@ public class CostRegistersAppService : HCMv3AppServiceBase, ICostRegistersAppSer
             items.Select(ToDto).ToList());
     }
 
+    /// <summary>One register with its display names, for the register's own page.</summary>
+    public async Task<CostRegisterDto> GetCostRegister(EntityDto input)
+    {
+        var entity = await _costRegisterRepository.GetAll()
+            .Include(c => c.Employee)
+            .FirstOrDefaultAsync(c => c.Id == input.Id)
+            ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(CostRegister), input.Id);
+
+        return ToDto(entity);
+    }
+
     public async Task<GetCostRegisterForEditOutput> GetCostRegisterForEdit(EntityDto input)
     {
         var entity = await _costRegisterRepository.GetAsync(input.Id);

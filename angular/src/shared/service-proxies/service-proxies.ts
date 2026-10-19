@@ -6350,6 +6350,62 @@ export class ApplicationStatusesServiceProxy {
      * @param id (optional) 
      * @return OK
      */
+    getApplicationStatusSummary(id?: number | undefined): Observable<ApplicationStatusSummaryDto> {
+        let url_ = this.baseUrl + "/api/services/app/ApplicationStatuses/GetApplicationStatusSummary?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApplicationStatusSummary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApplicationStatusSummary(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApplicationStatusSummaryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApplicationStatusSummaryDto>;
+        }));
+    }
+
+    protected processGetApplicationStatusSummary(response: HttpResponseBase): Observable<ApplicationStatusSummaryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationStatusSummaryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
     getApplicationStatusForEdit(id?: number | undefined): Observable<GetApplicationStatusForEditOutput> {
         let url_ = this.baseUrl + "/api/services/app/ApplicationStatuses/GetApplicationStatusForEdit?";
         if (id === null)
@@ -16249,6 +16305,62 @@ export class ClearanceRequestFieldsServiceProxy {
      * @param id (optional) 
      * @return OK
      */
+    getClearanceRequestField(id?: number | undefined): Observable<ClearanceRequestFieldDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceRequestFields/GetClearanceRequestField?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetClearanceRequestField(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetClearanceRequestField(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ClearanceRequestFieldDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ClearanceRequestFieldDto>;
+        }));
+    }
+
+    protected processGetClearanceRequestField(response: HttpResponseBase): Observable<ClearanceRequestFieldDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ClearanceRequestFieldDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
     getClearanceRequestFieldForEdit(id?: number | undefined): Observable<GetClearanceRequestFieldForEditOutput> {
         let url_ = this.baseUrl + "/api/services/app/ClearanceRequestFields/GetClearanceRequestFieldForEdit?";
         if (id === null)
@@ -19147,6 +19259,69 @@ export class CostElementsServiceProxy {
 }
 
 @Injectable()
+export class CostElementSlotsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getSlots(): Observable<ListResultDtoOfCostElementSlotDto> {
+        let url_ = this.baseUrl + "/api/services/app/CostElementSlots/GetSlots";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSlots(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSlots(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfCostElementSlotDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfCostElementSlotDto>;
+        }));
+    }
+
+    protected processGetSlots(response: HttpResponseBase): Observable<ListResultDtoOfCostElementSlotDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfCostElementSlotDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class CostElementTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -20098,6 +20273,62 @@ export class CostRegistersServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = PagedResultDtoOfCostRegisterDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getCostRegister(id?: number | undefined): Observable<CostRegisterDto> {
+        let url_ = this.baseUrl + "/api/services/app/CostRegisters/GetCostRegister?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CostRegisterDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CostRegisterDto>;
+        }));
+    }
+
+    protected processGetCostRegister(response: HttpResponseBase): Observable<CostRegisterDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CostRegisterDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -30516,6 +30747,62 @@ export class EmployeeAbsencesServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAbsencePreview(body?: GetEmployeeAbsencePreviewInput | undefined): Observable<EmployeeAbsencePreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAbsences/GetAbsencePreview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAbsencePreview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAbsencePreview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeAbsencePreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeAbsencePreviewDto>;
+        }));
+    }
+
+    protected processGetAbsencePreview(response: HttpResponseBase): Observable<EmployeeAbsencePreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeAbsencePreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -70997,6 +71284,69 @@ export class GratuityAccrualSummariesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class GridReportOrgLevelsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getOrgLevelCaptions(): Observable<ListResultDtoOfOrgLevelCaptionDto> {
+        let url_ = this.baseUrl + "/api/services/app/GridReportOrgLevels/GetOrgLevelCaptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOrgLevelCaptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOrgLevelCaptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfOrgLevelCaptionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfOrgLevelCaptionDto>;
+        }));
+    }
+
+    protected processGetOrgLevelCaptions(response: HttpResponseBase): Observable<ListResultDtoOfOrgLevelCaptionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfOrgLevelCaptionDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -137185,6 +137535,62 @@ export class SimulationSalaryRegistersServiceProxy {
      * @param id (optional) 
      * @return OK
      */
+    getSimulationSalaryRegister(id?: number | undefined): Observable<SimulationSalaryRegisterDto> {
+        let url_ = this.baseUrl + "/api/services/app/SimulationSalaryRegisters/GetSimulationSalaryRegister?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSimulationSalaryRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSimulationSalaryRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SimulationSalaryRegisterDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SimulationSalaryRegisterDto>;
+        }));
+    }
+
+    protected processGetSimulationSalaryRegister(response: HttpResponseBase): Observable<SimulationSalaryRegisterDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SimulationSalaryRegisterDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
     getSimulationSalaryRegisterForEdit(id?: number | undefined): Observable<GetSimulationSalaryRegisterForEditOutput> {
         let url_ = this.baseUrl + "/api/services/app/SimulationSalaryRegisters/GetSimulationSalaryRegisterForEdit?";
         if (id === null)
@@ -171248,6 +171654,122 @@ export interface IApplicationStatusDto {
     coverLetter: string | undefined;
 }
 
+export class ApplicationStatusSummaryDto implements IApplicationStatusSummaryDto {
+    id!: number;
+    appStatus!: AppStatus;
+    coverLetter!: string | undefined;
+    vacancyId!: number | undefined;
+    vacancyCode!: string | undefined;
+    vacancyTitle!: string | undefined;
+    applicantCVId!: number | undefined;
+    cvName!: string | undefined;
+    cvUploadDate!: DateTime | undefined;
+    applicantId!: number | undefined;
+    applicantCode!: string | undefined;
+    applicantFullNameEn!: string | undefined;
+    applicantFullNameAr!: string | undefined;
+    gender!: Gender;
+    birthDate!: DateTime | undefined;
+    nationalityNameEn!: string | undefined;
+    nationalityNameAr!: string | undefined;
+    jobTitleNameEn!: string | undefined;
+    jobTitleNameAr!: string | undefined;
+    email!: string | undefined;
+    mobile!: number | undefined;
+
+    constructor(data?: IApplicationStatusSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.appStatus = _data["appStatus"];
+            this.coverLetter = _data["coverLetter"];
+            this.vacancyId = _data["vacancyId"];
+            this.vacancyCode = _data["vacancyCode"];
+            this.vacancyTitle = _data["vacancyTitle"];
+            this.applicantCVId = _data["applicantCVId"];
+            this.cvName = _data["cvName"];
+            this.cvUploadDate = _data["cvUploadDate"] ? DateTime.fromISO(_data["cvUploadDate"].toString()) : undefined as any;
+            this.applicantId = _data["applicantId"];
+            this.applicantCode = _data["applicantCode"];
+            this.applicantFullNameEn = _data["applicantFullNameEn"];
+            this.applicantFullNameAr = _data["applicantFullNameAr"];
+            this.gender = _data["gender"];
+            this.birthDate = _data["birthDate"] ? DateTime.fromISO(_data["birthDate"].toString()) : undefined as any;
+            this.nationalityNameEn = _data["nationalityNameEn"];
+            this.nationalityNameAr = _data["nationalityNameAr"];
+            this.jobTitleNameEn = _data["jobTitleNameEn"];
+            this.jobTitleNameAr = _data["jobTitleNameAr"];
+            this.email = _data["email"];
+            this.mobile = _data["mobile"];
+        }
+    }
+
+    static fromJS(data: any): ApplicationStatusSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationStatusSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["appStatus"] = this.appStatus;
+        data["coverLetter"] = this.coverLetter;
+        data["vacancyId"] = this.vacancyId;
+        data["vacancyCode"] = this.vacancyCode;
+        data["vacancyTitle"] = this.vacancyTitle;
+        data["applicantCVId"] = this.applicantCVId;
+        data["cvName"] = this.cvName;
+        data["cvUploadDate"] = this.cvUploadDate ? this.cvUploadDate.toString() : undefined as any;
+        data["applicantId"] = this.applicantId;
+        data["applicantCode"] = this.applicantCode;
+        data["applicantFullNameEn"] = this.applicantFullNameEn;
+        data["applicantFullNameAr"] = this.applicantFullNameAr;
+        data["gender"] = this.gender;
+        data["birthDate"] = this.birthDate ? this.birthDate.toString() : undefined as any;
+        data["nationalityNameEn"] = this.nationalityNameEn;
+        data["nationalityNameAr"] = this.nationalityNameAr;
+        data["jobTitleNameEn"] = this.jobTitleNameEn;
+        data["jobTitleNameAr"] = this.jobTitleNameAr;
+        data["email"] = this.email;
+        data["mobile"] = this.mobile;
+        return data;
+    }
+}
+
+export interface IApplicationStatusSummaryDto {
+    id: number;
+    appStatus: AppStatus;
+    coverLetter: string | undefined;
+    vacancyId: number | undefined;
+    vacancyCode: string | undefined;
+    vacancyTitle: string | undefined;
+    applicantCVId: number | undefined;
+    cvName: string | undefined;
+    cvUploadDate: DateTime | undefined;
+    applicantId: number | undefined;
+    applicantCode: string | undefined;
+    applicantFullNameEn: string | undefined;
+    applicantFullNameAr: string | undefined;
+    gender: Gender;
+    birthDate: DateTime | undefined;
+    nationalityNameEn: string | undefined;
+    nationalityNameAr: string | undefined;
+    jobTitleNameEn: string | undefined;
+    jobTitleNameAr: string | undefined;
+    email: string | undefined;
+    mobile: number | undefined;
+}
+
 export class ApplyForLeaveInput implements IApplyForLeaveInput {
     absenceTypeId!: number;
     startDate!: DateTime;
@@ -178687,6 +179209,118 @@ export interface ICostElementDto {
     costElementTypeName: string | undefined;
 }
 
+export class CostElementSlotDto implements ICostElementSlotDto {
+    slot!: number;
+    costElementTypeId!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    options!: CostElementSlotOptionDto[] | undefined;
+
+    constructor(data?: ICostElementSlotDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.slot = _data["slot"];
+            this.costElementTypeId = _data["costElementTypeId"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            if (Array.isArray(_data["options"])) {
+                this.options = [] as any;
+                for (let item of _data["options"])
+                    this.options!.push(CostElementSlotOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CostElementSlotDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CostElementSlotDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["slot"] = this.slot;
+        data["costElementTypeId"] = this.costElementTypeId;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        if (Array.isArray(this.options)) {
+            data["options"] = [];
+            for (let item of this.options)
+                data["options"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ICostElementSlotDto {
+    slot: number;
+    costElementTypeId: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    options: CostElementSlotOptionDto[] | undefined;
+}
+
+export class CostElementSlotOptionDto implements ICostElementSlotOptionDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: ICostElementSlotOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): CostElementSlotOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CostElementSlotOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface ICostElementSlotOptionDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+}
+
 export class CostElementType implements ICostElementType {
     id!: number;
     creationTime!: DateTime;
@@ -184282,6 +184916,7 @@ export class CreateOrEditEmployeeAbsQuotaForfeitDto implements ICreateOrEditEmpl
     effectiveDate!: DateTime;
     quotaForfeited!: number;
     comments!: string | undefined;
+    dontUpdateQuotaBalance!: boolean;
 
     constructor(data?: ICreateOrEditEmployeeAbsQuotaForfeitDto) {
         if (data) {
@@ -184300,6 +184935,7 @@ export class CreateOrEditEmployeeAbsQuotaForfeitDto implements ICreateOrEditEmpl
             this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
             this.quotaForfeited = _data["quotaForfeited"];
             this.comments = _data["comments"];
+            this.dontUpdateQuotaBalance = _data["dontUpdateQuotaBalance"];
         }
     }
 
@@ -184318,6 +184954,7 @@ export class CreateOrEditEmployeeAbsQuotaForfeitDto implements ICreateOrEditEmpl
         data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
         data["quotaForfeited"] = this.quotaForfeited;
         data["comments"] = this.comments;
+        data["dontUpdateQuotaBalance"] = this.dontUpdateQuotaBalance;
         return data;
     }
 }
@@ -184329,6 +184966,7 @@ export interface ICreateOrEditEmployeeAbsQuotaForfeitDto {
     effectiveDate: DateTime;
     quotaForfeited: number;
     comments: string | undefined;
+    dontUpdateQuotaBalance: boolean;
 }
 
 export class CreateOrEditEmployeeAbsenceDto implements ICreateOrEditEmployeeAbsenceDto {
@@ -184965,6 +185603,7 @@ export class CreateOrEditEmployeeAttendanceDto implements ICreateOrEditEmployeeA
     startTime!: DateTime;
     endTime!: DateTime;
     attendanceHours!: number;
+    totalAttendDays!: number;
     comments!: string | undefined;
     recordDirectly!: boolean;
 
@@ -184988,6 +185627,7 @@ export class CreateOrEditEmployeeAttendanceDto implements ICreateOrEditEmployeeA
             this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : undefined as any;
             this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : undefined as any;
             this.attendanceHours = _data["attendanceHours"];
+            this.totalAttendDays = _data["totalAttendDays"];
             this.comments = _data["comments"];
             this.recordDirectly = _data["recordDirectly"];
         }
@@ -185011,6 +185651,7 @@ export class CreateOrEditEmployeeAttendanceDto implements ICreateOrEditEmployeeA
         data["startTime"] = this.startTime ? this.startTime.toString() : undefined as any;
         data["endTime"] = this.endTime ? this.endTime.toString() : undefined as any;
         data["attendanceHours"] = this.attendanceHours;
+        data["totalAttendDays"] = this.totalAttendDays;
         data["comments"] = this.comments;
         data["recordDirectly"] = this.recordDirectly;
         return data;
@@ -185027,6 +185668,7 @@ export interface ICreateOrEditEmployeeAttendanceDto {
     startTime: DateTime;
     endTime: DateTime;
     attendanceHours: number;
+    totalAttendDays: number;
     comments: string | undefined;
     recordDirectly: boolean;
 }
@@ -194897,6 +195539,8 @@ export class CreateOrEditOrgUnitDto implements ICreateOrEditOrgUnitDto {
     address!: string | undefined;
     orgGeoLocation!: string | undefined;
     payrollAreaId!: number | undefined;
+    logo!: string | undefined;
+    removeLogo!: boolean;
 
     constructor(data?: ICreateOrEditOrgUnitDto) {
         if (data) {
@@ -194918,6 +195562,8 @@ export class CreateOrEditOrgUnitDto implements ICreateOrEditOrgUnitDto {
             this.address = _data["address"];
             this.orgGeoLocation = _data["orgGeoLocation"];
             this.payrollAreaId = _data["payrollAreaId"];
+            this.logo = _data["logo"];
+            this.removeLogo = _data["removeLogo"];
         }
     }
 
@@ -194939,6 +195585,8 @@ export class CreateOrEditOrgUnitDto implements ICreateOrEditOrgUnitDto {
         data["address"] = this.address;
         data["orgGeoLocation"] = this.orgGeoLocation;
         data["payrollAreaId"] = this.payrollAreaId;
+        data["logo"] = this.logo;
+        data["removeLogo"] = this.removeLogo;
         return data;
     }
 }
@@ -194953,6 +195601,8 @@ export interface ICreateOrEditOrgUnitDto {
     address: string | undefined;
     orgGeoLocation: string | undefined;
     payrollAreaId: number | undefined;
+    logo: string | undefined;
+    removeLogo: boolean;
 }
 
 export class CreateOrEditOrgUnitWageAccGroupDto implements ICreateOrEditOrgUnitWageAccGroupDto {
@@ -209180,6 +209830,86 @@ export interface IEmployeeAbsenceDto {
     workflowStatus: RequestStatus;
 }
 
+export class EmployeeAbsencePreviewDto implements IEmployeeAbsencePreviewDto {
+    calendarDays!: number;
+    absenceHours!: number;
+    totalLeaveDays!: number;
+    currentBalance!: number;
+    paidCalendarDays!: number;
+    deductFromQuota!: number;
+    unpaidCalendarDays!: number;
+    unpaidDays!: number;
+    sickLeaveUnpaidInfo!: string | undefined;
+    sickLeaveSegments!: SickLeaveDeductionSegmentDto[] | undefined;
+
+    constructor(data?: IEmployeeAbsencePreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.calendarDays = _data["calendarDays"];
+            this.absenceHours = _data["absenceHours"];
+            this.totalLeaveDays = _data["totalLeaveDays"];
+            this.currentBalance = _data["currentBalance"];
+            this.paidCalendarDays = _data["paidCalendarDays"];
+            this.deductFromQuota = _data["deductFromQuota"];
+            this.unpaidCalendarDays = _data["unpaidCalendarDays"];
+            this.unpaidDays = _data["unpaidDays"];
+            this.sickLeaveUnpaidInfo = _data["sickLeaveUnpaidInfo"];
+            if (Array.isArray(_data["sickLeaveSegments"])) {
+                this.sickLeaveSegments = [] as any;
+                for (let item of _data["sickLeaveSegments"])
+                    this.sickLeaveSegments!.push(SickLeaveDeductionSegmentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EmployeeAbsencePreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeAbsencePreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["calendarDays"] = this.calendarDays;
+        data["absenceHours"] = this.absenceHours;
+        data["totalLeaveDays"] = this.totalLeaveDays;
+        data["currentBalance"] = this.currentBalance;
+        data["paidCalendarDays"] = this.paidCalendarDays;
+        data["deductFromQuota"] = this.deductFromQuota;
+        data["unpaidCalendarDays"] = this.unpaidCalendarDays;
+        data["unpaidDays"] = this.unpaidDays;
+        data["sickLeaveUnpaidInfo"] = this.sickLeaveUnpaidInfo;
+        if (Array.isArray(this.sickLeaveSegments)) {
+            data["sickLeaveSegments"] = [];
+            for (let item of this.sickLeaveSegments)
+                data["sickLeaveSegments"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IEmployeeAbsencePreviewDto {
+    calendarDays: number;
+    absenceHours: number;
+    totalLeaveDays: number;
+    currentBalance: number;
+    paidCalendarDays: number;
+    deductFromQuota: number;
+    unpaidCalendarDays: number;
+    unpaidDays: number;
+    sickLeaveUnpaidInfo: string | undefined;
+    sickLeaveSegments: SickLeaveDeductionSegmentDto[] | undefined;
+}
+
 export class EmployeeAbsenceQuotaDto implements IEmployeeAbsenceQuotaDto {
     id!: number;
     employeeId!: number;
@@ -211564,6 +212294,7 @@ export class EmployeeCTCReportRowDto implements IEmployeeCTCReportRowDto {
     costCenterGroupName!: string | undefined;
     postingGroupName!: string | undefined;
     budgetingGroupName!: string | undefined;
+    workflowGroupName!: string | undefined;
     effectiveDate!: DateTime | undefined;
     wageAmounts!: EmployeeCTCWageAmountDto[] | undefined;
     totalSalary!: number;
@@ -211643,6 +212374,7 @@ export class EmployeeCTCReportRowDto implements IEmployeeCTCReportRowDto {
             this.costCenterGroupName = _data["costCenterGroupName"];
             this.postingGroupName = _data["postingGroupName"];
             this.budgetingGroupName = _data["budgetingGroupName"];
+            this.workflowGroupName = _data["workflowGroupName"];
             this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
             if (Array.isArray(_data["wageAmounts"])) {
                 this.wageAmounts = [] as any;
@@ -211726,6 +212458,7 @@ export class EmployeeCTCReportRowDto implements IEmployeeCTCReportRowDto {
         data["costCenterGroupName"] = this.costCenterGroupName;
         data["postingGroupName"] = this.postingGroupName;
         data["budgetingGroupName"] = this.budgetingGroupName;
+        data["workflowGroupName"] = this.workflowGroupName;
         data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
         if (Array.isArray(this.wageAmounts)) {
             data["wageAmounts"] = [];
@@ -211802,6 +212535,7 @@ export interface IEmployeeCTCReportRowDto {
     costCenterGroupName: string | undefined;
     postingGroupName: string | undefined;
     budgetingGroupName: string | undefined;
+    workflowGroupName: string | undefined;
     effectiveDate: DateTime | undefined;
     wageAmounts: EmployeeCTCWageAmountDto[] | undefined;
     totalSalary: number;
@@ -214910,6 +215644,7 @@ export class EmployeeHistoryReportRowDto implements IEmployeeHistoryReportRowDto
     basicSalary!: number;
     workLocationName!: string | undefined;
     costCenterName!: string | undefined;
+    workflowGroupName!: string | undefined;
     orgLevel1!: string | undefined;
     orgLevel2!: string | undefined;
     orgLevel3!: string | undefined;
@@ -214943,6 +215678,7 @@ export class EmployeeHistoryReportRowDto implements IEmployeeHistoryReportRowDto
             this.basicSalary = _data["basicSalary"];
             this.workLocationName = _data["workLocationName"];
             this.costCenterName = _data["costCenterName"];
+            this.workflowGroupName = _data["workflowGroupName"];
             this.orgLevel1 = _data["orgLevel1"];
             this.orgLevel2 = _data["orgLevel2"];
             this.orgLevel3 = _data["orgLevel3"];
@@ -214976,6 +215712,7 @@ export class EmployeeHistoryReportRowDto implements IEmployeeHistoryReportRowDto
         data["basicSalary"] = this.basicSalary;
         data["workLocationName"] = this.workLocationName;
         data["costCenterName"] = this.costCenterName;
+        data["workflowGroupName"] = this.workflowGroupName;
         data["orgLevel1"] = this.orgLevel1;
         data["orgLevel2"] = this.orgLevel2;
         data["orgLevel3"] = this.orgLevel3;
@@ -215002,6 +215739,7 @@ export interface IEmployeeHistoryReportRowDto {
     basicSalary: number;
     workLocationName: string | undefined;
     costCenterName: string | undefined;
+    workflowGroupName: string | undefined;
     orgLevel1: string | undefined;
     orgLevel2: string | undefined;
     orgLevel3: string | undefined;
@@ -215341,6 +216079,7 @@ export class EmployeeInfoReportRowDto implements IEmployeeInfoReportRowDto {
     employeeSubGroupName!: string | undefined;
     workLocationName!: string | undefined;
     costCenterName!: string | undefined;
+    workflowGroupName!: string | undefined;
     sponsorName!: string | undefined;
     govtJobTitleName!: string | undefined;
     contractSalary!: number;
@@ -215432,6 +216171,7 @@ export class EmployeeInfoReportRowDto implements IEmployeeInfoReportRowDto {
             this.employeeSubGroupName = _data["employeeSubGroupName"];
             this.workLocationName = _data["workLocationName"];
             this.costCenterName = _data["costCenterName"];
+            this.workflowGroupName = _data["workflowGroupName"];
             this.sponsorName = _data["sponsorName"];
             this.govtJobTitleName = _data["govtJobTitleName"];
             this.contractSalary = _data["contractSalary"];
@@ -215527,6 +216267,7 @@ export class EmployeeInfoReportRowDto implements IEmployeeInfoReportRowDto {
         data["employeeSubGroupName"] = this.employeeSubGroupName;
         data["workLocationName"] = this.workLocationName;
         data["costCenterName"] = this.costCenterName;
+        data["workflowGroupName"] = this.workflowGroupName;
         data["sponsorName"] = this.sponsorName;
         data["govtJobTitleName"] = this.govtJobTitleName;
         data["contractSalary"] = this.contractSalary;
@@ -215615,6 +216356,7 @@ export interface IEmployeeInfoReportRowDto {
     employeeSubGroupName: string | undefined;
     workLocationName: string | undefined;
     costCenterName: string | undefined;
+    workflowGroupName: string | undefined;
     sponsorName: string | undefined;
     govtJobTitleName: string | undefined;
     contractSalary: number;
@@ -217448,6 +218190,7 @@ export class EmployeeOvertimeDto implements IEmployeeOvertimeDto {
     actualOvertimeHours!: number;
     approvedOvertimeHours!: number;
     comments!: string | undefined;
+    expectedOvertimeAmount!: number;
 
     constructor(data?: IEmployeeOvertimeDto) {
         if (data) {
@@ -217471,6 +218214,7 @@ export class EmployeeOvertimeDto implements IEmployeeOvertimeDto {
             this.actualOvertimeHours = _data["actualOvertimeHours"];
             this.approvedOvertimeHours = _data["approvedOvertimeHours"];
             this.comments = _data["comments"];
+            this.expectedOvertimeAmount = _data["expectedOvertimeAmount"];
         }
     }
 
@@ -217494,6 +218238,7 @@ export class EmployeeOvertimeDto implements IEmployeeOvertimeDto {
         data["actualOvertimeHours"] = this.actualOvertimeHours;
         data["approvedOvertimeHours"] = this.approvedOvertimeHours;
         data["comments"] = this.comments;
+        data["expectedOvertimeAmount"] = this.expectedOvertimeAmount;
         return data;
     }
 }
@@ -217510,6 +218255,7 @@ export interface IEmployeeOvertimeDto {
     actualOvertimeHours: number;
     approvedOvertimeHours: number;
     comments: string | undefined;
+    expectedOvertimeAmount: number;
 }
 
 export class EmployeePassportReportRowDto implements IEmployeePassportReportRowDto {
@@ -230955,6 +231701,7 @@ export class GetAllClearanceRequestFieldDetailsInput implements IGetAllClearance
     maxResultCount!: number;
     skipCount!: number;
     sorting!: string | undefined;
+    clearanceRequestFieldId!: number | undefined;
 
     constructor(data?: IGetAllClearanceRequestFieldDetailsInput) {
         if (data) {
@@ -230970,6 +231717,7 @@ export class GetAllClearanceRequestFieldDetailsInput implements IGetAllClearance
             this.maxResultCount = _data["maxResultCount"];
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
+            this.clearanceRequestFieldId = _data["clearanceRequestFieldId"];
         }
     }
 
@@ -230985,6 +231733,7 @@ export class GetAllClearanceRequestFieldDetailsInput implements IGetAllClearance
         data["maxResultCount"] = this.maxResultCount;
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
+        data["clearanceRequestFieldId"] = this.clearanceRequestFieldId;
         return data;
     }
 }
@@ -230993,6 +231742,7 @@ export interface IGetAllClearanceRequestFieldDetailsInput {
     maxResultCount: number;
     skipCount: number;
     sorting: string | undefined;
+    clearanceRequestFieldId: number | undefined;
 }
 
 export class GetAllClearanceRequestFieldsInput implements IGetAllClearanceRequestFieldsInput {
@@ -233880,6 +234630,7 @@ export class GetAllEmployeeDutySchedulesInput implements IGetAllEmployeeDutySche
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllEmployeeDutySchedulesInput) {
         if (data) {
@@ -233896,6 +234647,7 @@ export class GetAllEmployeeDutySchedulesInput implements IGetAllEmployeeDutySche
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -233912,6 +234664,7 @@ export class GetAllEmployeeDutySchedulesInput implements IGetAllEmployeeDutySche
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -233921,6 +234674,7 @@ export interface IGetAllEmployeeDutySchedulesInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllEmployeeEducationsInput implements IGetAllEmployeeEducationsInput {
@@ -251623,6 +252377,82 @@ export interface IGetEmployeeAbsenceForEditOutput {
     employeeAbsence: CreateOrEditEmployeeAbsenceDto;
 }
 
+export class GetEmployeeAbsencePreviewInput implements IGetEmployeeAbsencePreviewInput {
+    employeeId!: number;
+    absenceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    startTime!: DateTime;
+    endTime!: DateTime;
+    returnDate!: DateTime;
+    paidStartDate!: DateTime | undefined;
+    paidEndDate!: DateTime | undefined;
+    unpaidStartDate!: DateTime | undefined;
+    unpaidEndDate!: DateTime | undefined;
+
+    constructor(data?: IGetEmployeeAbsencePreviewInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : undefined as any;
+            this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : undefined as any;
+            this.returnDate = _data["returnDate"] ? DateTime.fromISO(_data["returnDate"].toString()) : undefined as any;
+            this.paidStartDate = _data["paidStartDate"] ? DateTime.fromISO(_data["paidStartDate"].toString()) : undefined as any;
+            this.paidEndDate = _data["paidEndDate"] ? DateTime.fromISO(_data["paidEndDate"].toString()) : undefined as any;
+            this.unpaidStartDate = _data["unpaidStartDate"] ? DateTime.fromISO(_data["unpaidStartDate"].toString()) : undefined as any;
+            this.unpaidEndDate = _data["unpaidEndDate"] ? DateTime.fromISO(_data["unpaidEndDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeAbsencePreviewInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeAbsencePreviewInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["startTime"] = this.startTime ? this.startTime.toString() : undefined as any;
+        data["endTime"] = this.endTime ? this.endTime.toString() : undefined as any;
+        data["returnDate"] = this.returnDate ? this.returnDate.toString() : undefined as any;
+        data["paidStartDate"] = this.paidStartDate ? this.paidStartDate.toString() : undefined as any;
+        data["paidEndDate"] = this.paidEndDate ? this.paidEndDate.toString() : undefined as any;
+        data["unpaidStartDate"] = this.unpaidStartDate ? this.unpaidStartDate.toString() : undefined as any;
+        data["unpaidEndDate"] = this.unpaidEndDate ? this.unpaidEndDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetEmployeeAbsencePreviewInput {
+    employeeId: number;
+    absenceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    startTime: DateTime;
+    endTime: DateTime;
+    returnDate: DateTime;
+    paidStartDate: DateTime | undefined;
+    paidEndDate: DateTime | undefined;
+    unpaidStartDate: DateTime | undefined;
+    unpaidEndDate: DateTime | undefined;
+}
+
 export class GetEmployeeAbsenceQuotaForEditOutput implements IGetEmployeeAbsenceQuotaForEditOutput {
     employeeAbsenceQuota!: CreateOrEditEmployeeAbsenceQuotaDto;
 
@@ -255337,6 +256167,7 @@ export interface IGetEmployeeOrgChartNodeInput {
 
 export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeForEditOutput {
     employeeOvertime!: CreateOrEditEmployeeOvertimeDto;
+    expectedOvertimeAmount!: number;
 
     constructor(data?: IGetEmployeeOvertimeForEditOutput) {
         if (data) {
@@ -255350,6 +256181,7 @@ export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeFor
     init(_data?: any) {
         if (_data) {
             this.employeeOvertime = _data["employeeOvertime"] ? CreateOrEditEmployeeOvertimeDto.fromJS(_data["employeeOvertime"]) : undefined as any;
+            this.expectedOvertimeAmount = _data["expectedOvertimeAmount"];
         }
     }
 
@@ -255363,12 +256195,14 @@ export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeFor
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeOvertime"] = this.employeeOvertime ? this.employeeOvertime.toJSON() : undefined as any;
+        data["expectedOvertimeAmount"] = this.expectedOvertimeAmount;
         return data;
     }
 }
 
 export interface IGetEmployeeOvertimeForEditOutput {
     employeeOvertime: CreateOrEditEmployeeOvertimeDto;
+    expectedOvertimeAmount: number;
 }
 
 export class GetEmployeePassportReportInput implements IGetEmployeePassportReportInput {
@@ -272785,6 +273619,7 @@ export interface IGetTravelFeedbackForEditOutput {
 
 export class GetTravelForEditOutput implements IGetTravelForEditOutput {
     travel!: CreateOrEditTravelDto;
+    totalTravelCost!: number;
 
     constructor(data?: IGetTravelForEditOutput) {
         if (data) {
@@ -272798,6 +273633,7 @@ export class GetTravelForEditOutput implements IGetTravelForEditOutput {
     init(_data?: any) {
         if (_data) {
             this.travel = _data["travel"] ? CreateOrEditTravelDto.fromJS(_data["travel"]) : undefined as any;
+            this.totalTravelCost = _data["totalTravelCost"];
         }
     }
 
@@ -272811,12 +273647,14 @@ export class GetTravelForEditOutput implements IGetTravelForEditOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["travel"] = this.travel ? this.travel.toJSON() : undefined as any;
+        data["totalTravelCost"] = this.totalTravelCost;
         return data;
     }
 }
 
 export interface IGetTravelForEditOutput {
     travel: CreateOrEditTravelDto;
+    totalTravelCost: number;
 }
 
 export class GetTravelPerDiemForEditOutput implements IGetTravelPerDiemForEditOutput {
@@ -284460,6 +285298,50 @@ export interface IListResultDtoOfChatMessageDto {
     items: ChatMessageDto[] | undefined;
 }
 
+export class ListResultDtoOfCostElementSlotDto implements IListResultDtoOfCostElementSlotDto {
+    items!: CostElementSlotDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfCostElementSlotDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(CostElementSlotDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfCostElementSlotDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfCostElementSlotDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfCostElementSlotDto {
+    items: CostElementSlotDto[] | undefined;
+}
+
 export class ListResultDtoOfDynamicEntityPropertyDto implements IListResultDtoOfDynamicEntityPropertyDto {
     items!: DynamicEntityPropertyDto[] | undefined;
 
@@ -285250,6 +286132,50 @@ export class ListResultDtoOfNameValueDto implements IListResultDtoOfNameValueDto
 
 export interface IListResultDtoOfNameValueDto {
     items: NameValueDto[] | undefined;
+}
+
+export class ListResultDtoOfOrgLevelCaptionDto implements IListResultDtoOfOrgLevelCaptionDto {
+    items!: OrgLevelCaptionDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfOrgLevelCaptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(OrgLevelCaptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfOrgLevelCaptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfOrgLevelCaptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfOrgLevelCaptionDto {
+    items: OrgLevelCaptionDto[] | undefined;
 }
 
 export class ListResultDtoOfOrganizationUnitDto implements IListResultDtoOfOrganizationUnitDto {
@@ -293219,6 +294145,50 @@ export interface IOrgChartTypeOptionDto {
     nameAr: string | undefined;
 }
 
+export class OrgLevelCaptionDto implements IOrgLevelCaptionDto {
+    level!: number;
+    code!: string | undefined;
+    caption!: string | undefined;
+
+    constructor(data?: IOrgLevelCaptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.level = _data["level"];
+            this.code = _data["code"];
+            this.caption = _data["caption"];
+        }
+    }
+
+    static fromJS(data: any): OrgLevelCaptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgLevelCaptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["level"] = this.level;
+        data["code"] = this.code;
+        data["caption"] = this.caption;
+        return data;
+    }
+}
+
+export interface IOrgLevelCaptionDto {
+    level: number;
+    code: string | undefined;
+    caption: string | undefined;
+}
+
 export class OrgSettingsEditDto implements IOrgSettingsEditDto {
     id!: number;
     enablePostingGroup!: boolean;
@@ -293337,6 +294307,7 @@ export class OrgUnitDto implements IOrgUnitDto {
     orgGeoLocation!: string | undefined;
     payrollAreaId!: number | undefined;
     payrollAreaName!: string | undefined;
+    hasLogo!: boolean;
 
     constructor(data?: IOrgUnitDto) {
         if (data) {
@@ -293362,6 +294333,7 @@ export class OrgUnitDto implements IOrgUnitDto {
             this.orgGeoLocation = _data["orgGeoLocation"];
             this.payrollAreaId = _data["payrollAreaId"];
             this.payrollAreaName = _data["payrollAreaName"];
+            this.hasLogo = _data["hasLogo"];
         }
     }
 
@@ -293387,6 +294359,7 @@ export class OrgUnitDto implements IOrgUnitDto {
         data["orgGeoLocation"] = this.orgGeoLocation;
         data["payrollAreaId"] = this.payrollAreaId;
         data["payrollAreaName"] = this.payrollAreaName;
+        data["hasLogo"] = this.hasLogo;
         return data;
     }
 }
@@ -293405,6 +294378,7 @@ export interface IOrgUnitDto {
     orgGeoLocation: string | undefined;
     payrollAreaId: number | undefined;
     payrollAreaName: string | undefined;
+    hasLogo: boolean;
 }
 
 export class OrgUnitTreeNodeDto implements IOrgUnitTreeNodeDto {
@@ -340185,6 +341159,7 @@ export class SalaryBenefitsReportRowDto implements ISalaryBenefitsReportRowDto {
     wageAmounts!: { [key: string]: number; } | undefined;
     totalSalary!: number | undefined;
     managerName!: string | undefined;
+    workflowGroupName!: string | undefined;
     recruitmentTypeName!: string | undefined;
     sponsorName!: string | undefined;
     separationType!: string | undefined;
@@ -340231,6 +341206,7 @@ export class SalaryBenefitsReportRowDto implements ISalaryBenefitsReportRowDto {
             }
             this.totalSalary = _data["totalSalary"];
             this.managerName = _data["managerName"];
+            this.workflowGroupName = _data["workflowGroupName"];
             this.recruitmentTypeName = _data["recruitmentTypeName"];
             this.sponsorName = _data["sponsorName"];
             this.separationType = _data["separationType"];
@@ -340277,6 +341253,7 @@ export class SalaryBenefitsReportRowDto implements ISalaryBenefitsReportRowDto {
         }
         data["totalSalary"] = this.totalSalary;
         data["managerName"] = this.managerName;
+        data["workflowGroupName"] = this.workflowGroupName;
         data["recruitmentTypeName"] = this.recruitmentTypeName;
         data["sponsorName"] = this.sponsorName;
         data["separationType"] = this.separationType;
@@ -340310,6 +341287,7 @@ export interface ISalaryBenefitsReportRowDto {
     wageAmounts: { [key: string]: number; } | undefined;
     totalSalary: number | undefined;
     managerName: string | undefined;
+    workflowGroupName: string | undefined;
     recruitmentTypeName: string | undefined;
     sponsorName: string | undefined;
     separationType: string | undefined;

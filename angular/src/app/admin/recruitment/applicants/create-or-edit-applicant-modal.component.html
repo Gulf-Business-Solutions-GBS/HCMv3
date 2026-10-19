@@ -336,7 +336,7 @@
                                 <label class="form-label" for="Applicant_Photo">{{ 'Photo' | localize }}</label>
                                 <input id="Applicant_Photo" class="form-control" type="file" accept="image/*" (change)="onPhotoSelected($event)" />
                                 @if (record().photo) {
-                                    <img [src]="record().photo" style="max-height: 80px; margin-top: 8px" alt="photo" />
+                                    <img [src]="toImageSrc(record().photo)" style="max-height: 80px; margin-top: 8px" alt="photo" />
                                 }
                             </div>
                         </div>

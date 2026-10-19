@@ -53,17 +53,36 @@ export class CreateOrEditEmployeeLoanRecoveryModalComponent extends AppComponent
         { value: LoanRecoveryMethod.AddlRecoveryThroughPayroll, name: 'AddlRecoveryThroughPayroll' },
     ];
 
-    show(id?: number): void {
+    /** Set when opened from inside one loan (employee record > Loans): the loan cannot be changed there. */
+    readonly loanLocked = signal<boolean>(false);
+
+    /**
+     * @param loanContext Opened from inside a loan: the loan list is that employee's only, a new recovery
+     * starts on that loan, and it defaults to an external recovery -- through-payroll rows are the payroll
+     * run's own and are not keyed in from there.
+     */
+    show(id?: number, loanContext?: { employeeLoanId: number; employeeId: number }): void {
         this.active.set(true);
+        this.loanLocked.set(!!loanContext);
 
         this._employeeLoansService
-            .getAll(new GetAllEmployeeLoansInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeLoansInput({
+                    employeeId: loanContext?.employeeId,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeLoans.set(result.items));
 
         if (!id) {
             const record = new CreateOrEditEmployeeLoanRecoveryDto();
             record.recoveryAmount = 0;
-            record.loanRecoveryMethod = LoanRecoveryMethod.RecoveryThroughPayroll;
+            record.employeeLoanId = loanContext?.employeeLoanId;
+            record.loanRecoveryMethod = loanContext
+                ? LoanRecoveryMethod.RecoveryExternal
+                : LoanRecoveryMethod.RecoveryThroughPayroll;
             this.record.set(record);
             this.modal().show();
         } else {

@@ -44,15 +44,32 @@ export class CreateOrEditEmployeeLoanExemptionModalComponent extends AppComponen
 
     readonly employeeLoans = signal<EmployeeLoanDto[]>([]);
 
-    show(id?: number): void {
+    /** Set when opened from inside one loan (employee record > Loans): the loan cannot be changed there. */
+    readonly loanLocked = signal<boolean>(false);
+
+    /**
+     * @param loanContext Opened from inside a loan: the loan list is that employee's only and a new
+     * exemption starts on that loan.
+     */
+    show(id?: number, loanContext?: { employeeLoanId: number; employeeId: number }): void {
         this.active.set(true);
+        this.loanLocked.set(!!loanContext);
 
         this._employeeLoansService
-            .getAll(new GetAllEmployeeLoansInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeLoansInput({
+                    employeeId: loanContext?.employeeId,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeLoans.set(result.items));
 
         if (!id) {
-            this.record.set(new CreateOrEditEmployeeLoanExemptionDto());
+            const record = new CreateOrEditEmployeeLoanExemptionDto();
+            record.employeeLoanId = loanContext?.employeeLoanId;
+            this.record.set(record);
             this.modal().show();
         } else {
             this._service.getEmployeeLoanExemptionForEdit(id).subscribe((result) => {

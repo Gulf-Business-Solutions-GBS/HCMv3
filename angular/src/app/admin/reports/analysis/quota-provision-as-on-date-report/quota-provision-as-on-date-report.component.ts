@@ -19,6 +19,7 @@ import {
     QuotaProvisionAsOnDateReportServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 interface QuotaProvisionAsOnDateReportColumn {
     field: string;
@@ -78,7 +79,7 @@ export class QuotaProvisionAsOnDateReportComponent extends AppComponentBase {
 
     readonly exporting = signal<boolean>(false);
 
-    readonly columns: QuotaProvisionAsOnDateReportColumn[] = [
+    private readonly allColumns: QuotaProvisionAsOnDateReportColumn[] = [
         { field: 'employeeCode', header: this.l('Code'), sortable: true, width: 120 },
         { field: 'employeeName', header: this.l('Employee'), sortable: true, width: 220 },
         { field: 'status', header: this.l('Status'), sortable: false, width: 120 },
@@ -108,6 +109,10 @@ export class QuotaProvisionAsOnDateReportComponent extends AppComponentBase {
         { field: 'balanceProvision', header: this.l('BalanceProvision'), sortable: false, width: 150 },
         { field: 'comment', header: this.l('Comment'), sortable: false, width: 220 },
     ];
+
+    /** OrgLevel1..7 are captioned with the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly columns = this.orgLevels.columns(this.allColumns);
 
     // No ngOnInit fetch on purpose: the table's (onLazyLoad) fires the first getRecords().
 

@@ -19,6 +19,7 @@ import {
     SeparationType,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 interface SeparationReportColumn {
     field: string;
@@ -86,7 +87,7 @@ export class EmployeeSeparationReportComponent extends AppComponentBase {
         { label: this.l('Revoked'), value: true },
     ];
 
-    readonly columns: SeparationReportColumn[] = [
+    private readonly allColumns: SeparationReportColumn[] = [
         { field: 'employeeCode', header: this.l('Code'), sortable: true, width: 120 },
         { field: 'employeeName', header: this.l('Employee'), sortable: true, width: 220 },
         { field: 'jobTitleName', header: this.l('JobTitle'), sortable: false, width: 180 },
@@ -129,6 +130,10 @@ export class EmployeeSeparationReportComponent extends AppComponentBase {
         { field: 'costCenterName', header: this.l('CostCenter'), sortable: false, width: 160 },
         { field: 'costCenterGroupName', header: this.l('CostCenterGroup'), sortable: false, width: 180 },
     ];
+
+    /** OrgLevel1..7 are captioned with the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly columns = this.orgLevels.columns(this.allColumns);
 
     // No ngOnInit fetch on purpose: the table's (onLazyLoad) fires the first getRecords().
 

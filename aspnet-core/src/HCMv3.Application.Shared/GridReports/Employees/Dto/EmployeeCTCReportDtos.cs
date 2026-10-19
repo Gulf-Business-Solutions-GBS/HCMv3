@@ -52,7 +52,6 @@ public class EmployeeCTCWageAmountDto
 /// SubmissionDate, LastDayInService, RevokeDate, RevokeComments.
 ///
 /// DEVIATIONS (all structural, none silent):
-/// - <c>WorkflowGroup</c> is DROPPED: HCMv3's <c>EmployeeOrgAssignment</c> has no workflow-group FK.
 /// - <c>RevokeComments</c> is DROPPED: HCMv3's <c>EmployeeSeparation</c> has no such property (it keeps
 ///   only the nullable <c>RevokeDate</c>).
 /// - Legacy's Passport column additionally required <c>EmployeeDocument.IsActive == Active</c>
@@ -158,6 +157,9 @@ public class EmployeeCTCReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
     public string PostingGroupName { get; set; }
 
     public string BudgetingGroupName { get; set; }
+
+    /// <summary>Legacy "WorkflowGroup": today's org assignment's workflow group, always NameEn (legacy line 1615).</summary>
+    public string WorkflowGroupName { get; set; }
 
     /// <summary>Legacy "EffectiveDate": the start date of the basic pay in force today.</summary>
     public DateTime? EffectiveDate { get; set; }

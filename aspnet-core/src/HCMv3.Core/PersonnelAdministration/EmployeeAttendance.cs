@@ -15,8 +15,9 @@ namespace HCMv3.PersonnelAdministration;
 /// The legacy cascade side effects (auto-accruing into a linked <see cref="EmployeeAbsenceQuota"/> when
 /// <c>AttendanceType.HaveQuotaAccrual</c> is set, hourly-based duty/roster lookups to derive
 /// <see cref="TotalAttendDays"/> from hours) reference the (already-ported) TimeManagement duty/roster
-/// infrastructure and are ported at the app-service level in <c>EmployeeAttendancesAppService</c> in a
-/// simplified form, not on the entity. The legacy <c>prevXxx</c> change-tracking fields are
+/// infrastructure and are ported in <c>Services.EmployeeAttendanceCalculationService</c> (called by
+/// <c>EmployeeAttendancesAppService</c> and, on approval, <c>AttendanceWorkflowTransactionHandler</c>), not on
+/// the entity. The legacy <c>prevXxx</c> change-tracking fields are
 /// <c>[NonPersistent]</c> and not re-ported as columns.
 /// </summary>
 public class EmployeeAttendance : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity

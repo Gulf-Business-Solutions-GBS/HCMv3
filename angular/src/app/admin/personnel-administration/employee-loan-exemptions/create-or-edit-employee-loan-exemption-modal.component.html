@@ -33,6 +33,7 @@
                                     name="EmployeeLoanId"
                                     [ngModel]="record().employeeLoanId"
                                     (ngModelChange)="updateField('employeeLoanId', $event)"
+                                    [disabled]="loanLocked()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (loan of employeeLoans(); track loan.id) {

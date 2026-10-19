@@ -12,6 +12,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeWageAccountModalComponent } from './create-or-edit-employee-wage-account-modal.component';
+import { CostElementSlotsService } from '@app/shared/common/cost-element-slots/cost-element-slots.service';
 
 @Component({
     selector: 'employee-wage-accounts',
@@ -31,6 +32,9 @@ import { CreateOrEditEmployeeWageAccountModalComponent } from './create-or-edit-
 export class EmployeeWageAccountsComponent extends AppComponentBase {
     private _service = inject(EmployeeWageAccountsServiceProxy);
 
+    /** Columns for the configured cost element slots, captioned with their cost element types. */
+    readonly costElementSlots = inject(CostElementSlotsService);
+
     readonly employeeId = input<number>();
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeWageAccountModalComponent>('createOrEditModal');
@@ -41,6 +45,7 @@ export class EmployeeWageAccountsComponent extends AppComponentBase {
 
     constructor() {
         super();
+        this.costElementSlots.ensureLoaded().subscribe();
         effect(() => {
             if (this.employeeId()) {
                 this.reloadPage();

@@ -54,6 +54,9 @@
                                         <p-sortIcon field="costPercentage" />
                                     </th>
                                     <th style="min-width: 150px">{{ 'MergeOffsetAccount' | localize }}</th>
+                                    @for (slot of costElementSlots.slots(); track slot.slot) {
+                                        <th style="min-width: 150px">{{ costElementSlots.label(slot) }}</th>
+                                    }
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -84,6 +87,9 @@
                                     <td style="min-width: 150px">
                                         <i class="fa" [class.fa-check]="record.mergeOffsetAccount" [class.text-success]="record.mergeOffsetAccount" [class.fa-times]="!record.mergeOffsetAccount" [class.text-danger]="!record.mergeOffsetAccount"></i>
                                     </td>
+                                    @for (slot of costElementSlots.slots(); track slot.slot) {
+                                        <td style="min-width: 150px">{{ costElementSlots.valueName(slot, record) }}</td>
+                                    }
                                 </tr>
                             </ng-template>
                         </p-table>

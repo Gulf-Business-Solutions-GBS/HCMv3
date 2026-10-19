@@ -67,6 +67,18 @@
                                     [ngModel]="record().quotaForfeited"
                                     (ngModelChange)="updateNumberField('quotaForfeited', $event)" />
                             </div>
+                            <div class="col-md-6 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="EmployeeAbsQuotaForfeit_DontUpdateQuotaBalance"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="DontUpdateQuotaBalance"
+                                        [ngModel]="record().dontUpdateQuotaBalance"
+                                        (ngModelChange)="updateField('dontUpdateQuotaBalance', $event)" />
+                                    <label class="form-check-label" for="EmployeeAbsQuotaForfeit_DontUpdateQuotaBalance">{{ 'DontUpdateQuotaBalance' | localize }}</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-5">
                             <label class="form-label" for="EmployeeAbsQuotaForfeit_Comments">{{ 'Comments' | localize }}</label>

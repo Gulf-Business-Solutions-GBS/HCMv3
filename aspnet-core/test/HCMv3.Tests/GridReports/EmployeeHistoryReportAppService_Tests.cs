@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Storage;
+using HCMv3.Workflow;
 using MiniExcelLibs;
 using Shouldly;
 using Xunit;
@@ -260,5 +262,109 @@ public class EmployeeHistoryReportAppService_Tests : AppTestBase
 
         exported.Count.ShouldBe(3);
         exported.First().Keys.ShouldContain("Start Date");
+    }
+
+    // --- Workflow Group column -------------------------------------------------------------------------
+
+    private int CreateWorkflowGroup(string code)
+    {
+        var id = 0;
+        UsingDbContext(context =>
+        {
+            var group = context.Set<WorkflowGroup>().Add(new WorkflowGroup
+            {
+                TenantId = TenantId,
+                Code = code,
+                NameEn = code + " En",
+                NameAr = code + " Ar"
+            }).Entity;
+            context.SaveChanges();
+            id = group.Id;
+        });
+
+        return id;
+    }
+
+    private void CreateAssignmentWithWorkflowGroup(Employee employee, DateTime start, DateTime end, int? workflowGroupId)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
+            {
+                TenantId = TenantId,
+                EmployeeId = employee.Id,
+                StartDate = start,
+                EndDate = end,
+                WorkflowGroupId = workflowGroupId
+            });
+        });
+    }
+
+    private static async Task<TResult> WithUiCulture<TResult>(string cultureName, Func<Task<TResult>> action)
+    {
+        var previous = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+        try
+        {
+            return await action();
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previous;
+        }
+    }
+
+    [Fact]
+    public async Task Should_Show_The_Workflow_Group_In_Force_On_Each_Change_Date()
+    {
+        var employee = CreateEmployee("HIS-WFG");
+        var oldGroup = CreateWorkflowGroup("HIS-WFG-OLD");
+        var newGroup = CreateWorkflowGroup("HIS-WFG-NEW");
+
+        CreateAssignmentWithWorkflowGroup(employee, new DateTime(2022, 1, 1), new DateTime(2022, 12, 31), oldGroup);
+        CreateAssignmentWithWorkflowGroup(employee, new DateTime(2023, 1, 1), DateTime.Now.Date.AddYears(2), newGroup);
+
+        var result = await WithUiCulture("en", () => _appService.GetEmployeeHistoryReport(Input(employeeCode: "HIS-WFG")));
+
+        result.Items.Single(i => i.StartDate.Date == new DateTime(2022, 1, 1)).WorkflowGroupName.ShouldBe("HIS-WFG-OLD En");
+        result.Items.Single(i => i.StartDate.Date == new DateTime(2023, 1, 1)).WorkflowGroupName.ShouldBe("HIS-WFG-NEW En");
+    }
+
+    [Fact]
+    public async Task Should_Leave_The_Workflow_Group_Empty_When_The_Assignment_Has_None()
+    {
+        var employee = CreateEmployee("HIS-WFG-NONE");
+        CreateAssignmentWithWorkflowGroup(employee, new DateTime(2023, 1, 1), DateTime.Now.Date.AddYears(2), null);
+
+        var result = await _appService.GetEmployeeHistoryReport(Input(employeeCode: "HIS-WFG-NONE"));
+
+        result.Items.Single().WorkflowGroupName.ShouldBe(string.Empty);
+    }
+
+    [Fact]
+    public async Task Should_Show_The_Arabic_Workflow_Group_Name_For_An_Arabic_Request()
+    {
+        var employee = CreateEmployee("HIS-WFG-AR");
+        var group = CreateWorkflowGroup("HIS-WFG-AR");
+        CreateAssignmentWithWorkflowGroup(employee, DateTime.Now.Date.AddYears(-1), DateTime.Now.Date.AddYears(1), group);
+
+        var result = await WithUiCulture("ar", () => _appService.GetEmployeeHistoryReport(Input(employeeCode: "HIS-WFG-AR")));
+
+        result.Items.Single().WorkflowGroupName.ShouldBe("HIS-WFG-AR Ar");
+    }
+
+    [Fact]
+    public async Task Should_Export_The_Workflow_Group_Column()
+    {
+        var employee = CreateEmployee("HIS-WFG-EXP");
+        var group = CreateWorkflowGroup("HIS-WFG-EXP");
+        CreateAssignmentWithWorkflowGroup(employee, DateTime.Now.Date.AddYears(-1), DateTime.Now.Date.AddYears(1), group);
+
+        var file = await WithUiCulture("en", () => _appService.GetEmployeeHistoryReportToExcel(Input(employeeCode: "HIS-WFG-EXP")));
+
+        using var stream = new MemoryStream(_tempFileCacheManager.GetFile(file.FileToken));
+        var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
+
+        exported.Single()["Workflow Group"]?.ToString().ShouldBe("HIS-WFG-EXP En");
     }
 }

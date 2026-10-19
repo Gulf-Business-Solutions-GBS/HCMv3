@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
@@ -38,7 +39,14 @@ public class EmployeeDutySchedulesAppService : HCMv3AppServiceBase, IEmployeeDut
         var query = _repository.GetAll()
             .Include(e => e.Employee)
             .Include(e => e.RosterDutySchedule)
-            .WhereIf(input.EmployeeId.HasValue, e => e.EmployeeId == input.EmployeeId.Value);
+            .WhereIf(input.EmployeeId.HasValue, e => e.EmployeeId == input.EmployeeId.Value)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), e =>
+                e.Employee.Code.Contains(input.Filter) ||
+                e.Employee.FullNameEn.Contains(input.Filter) ||
+                e.Employee.FullNameAr.Contains(input.Filter) ||
+                e.RosterDutySchedule.Code.Contains(input.Filter) ||
+                e.RosterDutySchedule.NameEn.Contains(input.Filter) ||
+                e.RosterDutySchedule.NameAr.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 

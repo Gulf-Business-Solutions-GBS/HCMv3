@@ -19,6 +19,7 @@ import {
     PayrollSheetReportServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 /**
  * One grid column. `localize` distinguishes the fixed columns (whose header is a localization key)
@@ -42,8 +43,8 @@ interface PayrollSheetColumn {
  * lists alongside the rows, so the grid and the exported xlsx are driven by ONE server-side column list
  * and can never drift apart.
  *
- * The seven OrgLevel columns are rendered because the legacy grid renders seven -- that is the standing
- * decision for this wave.
+ * The OrgLevel columns are captioned with the tenant's Organization Unit Type names, and levels the tenant
+ * has not defined are hidden (see `injectOrgLevelCaptions`); the exported xlsx still carries all seven.
  *
  * ATYPICAL FILTER PANEL vs the reference screen (employee-contract-report): legacy's panel is
  * Month/Year, To-Month/To-Year, Run Type, Payroll Area, Reason Type and an employee-code box -- there is
@@ -127,6 +128,10 @@ export class PayrollSheetReportComponent extends AppComponentBase {
     ];
 
     readonly columns = signal<PayrollSheetColumn[]>(PayrollSheetReportComponent.FIXED_COLUMNS);
+
+    /** OrgLevel1..7 are captioned with the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly displayColumns = this.orgLevels.columns(() => this.columns());
 
     // No ngOnInit fetch on purpose: the table's (onLazyLoad) fires the first getRecords().
 

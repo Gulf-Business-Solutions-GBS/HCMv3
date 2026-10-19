@@ -311,6 +311,14 @@ public class EmployeeInfoReportAppService : GridReportAppServiceBase, IEmployeeI
                     ? string.Empty
                     : (useArabicNames ? o.CostCenter.NameAr : o.CostCenter.NameEn))
                 .FirstOrDefault(),
+            // Legacy line 811: the workflow group of today's org assignment.
+            WorkflowGroupName = currentAssignments
+                .Where(o => o.EmployeeId == e.Id)
+                .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
+                .Select(o => o.WorkflowGroup == null
+                    ? string.Empty
+                    : (useArabicNames ? o.WorkflowGroup.NameAr : o.WorkflowGroup.NameEn))
+                .FirstOrDefault(),
             OrganizationUnitId = currentAssignments
                 .Where(o => o.EmployeeId == e.Id)
                 .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
@@ -633,6 +641,7 @@ public class EmployeeInfoReportAppService : GridReportAppServiceBase, IEmployeeI
             new("EmployeeSubGroup", r => r.EmployeeSubGroupName),
             new("WorkLocation", r => r.WorkLocationName),
             new("CostCenter", r => r.CostCenterName),
+            new("WorkflowGroup", r => r.WorkflowGroupName),
             new("OrgLevel1", r => r.OrgLevel1),
             new("OrgLevel1Ar", r => r.OrgLevel1Ar),
             new("OrgLevel2", r => r.OrgLevel2),

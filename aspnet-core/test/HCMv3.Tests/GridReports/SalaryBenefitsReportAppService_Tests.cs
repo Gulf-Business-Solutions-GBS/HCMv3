@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using HCMv3.GridReports.Employees.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Storage;
+using HCMv3.Workflow;
 using MiniExcelLibs;
 using Shouldly;
 using Xunit;
@@ -275,5 +277,99 @@ public class SalaryBenefitsReportAppService_Tests : AppTestBase
         exported.First().Keys.ShouldContain("SB Export Basic");
         // The exporter writes LOCALIZED header cells, not the raw localization key.
         exported.First().Keys.ShouldContain("Total Salary");
+    }
+
+    // --- Workflow Group column -------------------------------------------------------------------------
+
+    private int CreateWorkflowGroup(string code)
+    {
+        var id = 0;
+        UsingDbContext(context =>
+        {
+            var group = context.Set<WorkflowGroup>().Add(new WorkflowGroup
+            {
+                TenantId = TenantId,
+                Code = code,
+                NameEn = code + " En",
+                NameAr = code + " Ar"
+            }).Entity;
+            context.SaveChanges();
+            id = group.Id;
+        });
+
+        return id;
+    }
+
+    private void CreateAssignmentWithWorkflowGroup(Employee employee, DateTime start, DateTime end, int? workflowGroupId)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
+            {
+                TenantId = TenantId,
+                EmployeeId = employee.Id,
+                StartDate = start,
+                EndDate = end,
+                WorkflowGroupId = workflowGroupId
+            });
+        });
+    }
+
+    private static async Task<TResult> WithUiCulture<TResult>(string cultureName, Func<Task<TResult>> action)
+    {
+        var previous = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+        try
+        {
+            return await action();
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previous;
+        }
+    }
+
+    [Fact]
+    public async Task Should_Show_The_Workflow_Group_Of_Todays_Assignment()
+    {
+        var today = DateTime.Now.Date;
+        var employee = CreateEmployee("SB-WFG");
+        var oldGroup = CreateWorkflowGroup("SB-WFG-OLD");
+        var currentGroup = CreateWorkflowGroup("SB-WFG-CUR");
+
+        CreateAssignmentWithWorkflowGroup(employee, today.AddYears(-3), today.AddYears(-1), oldGroup);
+        CreateAssignmentWithWorkflowGroup(employee, today.AddYears(-1).AddDays(1), today.AddYears(1), currentGroup);
+
+        var result = await WithUiCulture("en", () => _appService.GetSalaryBenefitsReport(Input(employeeCode: "SB-WFG")));
+
+        result.Items.Single().WorkflowGroupName.ShouldBe("SB-WFG-CUR En");
+    }
+
+    [Fact]
+    public async Task Should_Keep_The_English_Workflow_Group_Name_For_An_Arabic_Request()
+    {
+        // Legacy line 845 wrote WorkflowGroup.NameEn in every language.
+        var employee = CreateEmployee("SB-WFG-AR");
+        var group = CreateWorkflowGroup("SB-WFG-AR");
+        CreateAssignmentWithWorkflowGroup(employee, DateTime.Now.Date.AddYears(-1), DateTime.Now.Date.AddYears(1), group);
+
+        var result = await WithUiCulture("ar", () => _appService.GetSalaryBenefitsReport(Input(employeeCode: "SB-WFG-AR")));
+
+        result.Items.Single().WorkflowGroupName.ShouldBe("SB-WFG-AR En");
+    }
+
+    [Fact]
+    public async Task Should_Export_The_Workflow_Group_Column()
+    {
+        var employee = CreateEmployee("SB-WFG-EXP");
+        var group = CreateWorkflowGroup("SB-WFG-EXP");
+        CreateAssignmentWithWorkflowGroup(employee, DateTime.Now.Date.AddYears(-1), DateTime.Now.Date.AddYears(1), group);
+
+        var file = await WithUiCulture("en", () => _appService.GetSalaryBenefitsReportToExcel(Input(employeeCode: "SB-WFG-EXP")));
+
+        using var stream = new MemoryStream(_tempFileCacheManager.GetFile(file.FileToken));
+        var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
+
+        exported.Single()["Workflow Group"]?.ToString().ShouldBe("SB-WFG-EXP En");
     }
 }

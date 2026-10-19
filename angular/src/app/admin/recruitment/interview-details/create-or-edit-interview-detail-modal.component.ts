@@ -42,15 +42,23 @@ export class CreateOrEditInterviewDetailModalComponent extends AppComponentBase 
 
     readonly applicationStatuses = signal<ApplicationStatusDto[]>([]);
 
-    show(id?: number): void {
+    /** Set when opened from an application's page: the interview belongs to that application and the choice is not offered. */
+    readonly fixedApplicationStatusId = signal<number | undefined>(undefined);
+
+    show(id?: number, applicationStatusId?: number): void {
+        this.fixedApplicationStatusId.set(applicationStatusId);
         this.active.set(true);
 
-        this._applicationStatusesService
-            .getAll(new GetAllApplicationStatusesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, vacancyId: undefined }))
-            .subscribe((result) => this.applicationStatuses.set(result.items));
+        if (!applicationStatusId) {
+            this._applicationStatusesService
+                .getAll(new GetAllApplicationStatusesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, vacancyId: undefined }))
+                .subscribe((result) => this.applicationStatuses.set(result.items));
+        }
 
         if (!id) {
-            this.record.set(new CreateOrEditInterviewDetailsDto());
+            const record = new CreateOrEditInterviewDetailsDto();
+            record.applicationStatusId = applicationStatusId;
+            this.record.set(record);
             this.modal().show();
         } else {
             this._service.getInterviewDetailsForEdit(id).subscribe((result) => {
@@ -61,7 +69,7 @@ export class CreateOrEditInterviewDetailModalComponent extends AppComponentBase 
     }
 
     onShown(): void {
-        document.getElementById('InterviewDetails_ApplicationStatusId')?.focus();
+        document.getElementById(this.fixedApplicationStatusId() ? 'InterviewDetails_InterviewDate' : 'InterviewDetails_ApplicationStatusId')?.focus();
     }
 
     save(): void {

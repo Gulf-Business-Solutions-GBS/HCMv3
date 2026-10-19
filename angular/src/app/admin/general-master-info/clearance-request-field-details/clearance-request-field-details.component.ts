@@ -63,6 +63,7 @@ export class ClearanceRequestFieldDetailsComponent extends AppComponentBase impl
         this._clearanceRequestFieldDetailsService
             .getAll(
                 new GetAllClearanceRequestFieldDetailsInput({
+                    clearanceRequestFieldId: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

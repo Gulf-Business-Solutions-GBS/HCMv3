@@ -53,6 +53,9 @@
                                         <p-sortIcon field="amount" />
                                     </th>
                                     <th style="min-width: 120px">{{ 'CurrencyId' | localize }}</th>
+                                    @for (slot of costElementSlots.slots(); track slot.slot) {
+                                        <th style="min-width: 150px">{{ costElementSlots.label(slot) }}</th>
+                                    }
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -80,6 +83,9 @@
                                     <td style="min-width: 180px">{{ record.accountInfoName }}</td>
                                     <td style="min-width: 120px">{{ record.amount }}</td>
                                     <td style="min-width: 120px">{{ record.currencyId }}</td>
+                                    @for (slot of costElementSlots.slots(); track slot.slot) {
+                                        <td style="min-width: 150px">{{ costElementSlots.valueName(slot, record) }}</td>
+                                    }
                                 </tr>
                             </ng-template>
                         </p-table>

@@ -14,6 +14,7 @@ using HCMv3.GridReports.Exporting;
 using HCMv3.GridReports.Transaction.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.SystemSecurity;
 using HCMv3.TimeManagement;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +35,8 @@ namespace HCMv3.GridReports.Transaction;
 /// with a non-null WageTypeId, i.e. effectively "all wage types with any leave mapping at all". Reproduced
 /// exactly rather than silently fixed.
 ///
-/// DEVIATION: <c>EmployeeOvertime.ExpectedOvertimeAmount</c> is not ported on the entity (see
-/// <c>EmpOvertimeReportAppService</c> remarks); the overtime branch's ExpectedAmount is always 0 here.
+/// The overtime branch's ExpectedAmount is legacy's per-row <c>EmployeeOvertime.ExpectedOvertimeAmount</c> (legacy
+/// line 580), calculated by <see cref="IExpectedOvertimeAmountService"/>.
 ///
 /// NOT PORTED: the drill-up/drill-down session stack, the ColumnChooser JSON persistence, and the PDF
 /// export button.
@@ -52,6 +53,7 @@ public class MonthlyPayrollTransactionReportAppService : GridReportAppServiceBas
     private readonly IRepository<EmployeeBasicPay> _employeeBasicPayRepository;
     private readonly IRepository<EmployeeBasicPayDetail> _employeeBasicPayDetailRepository;
     private readonly IRepository<TimeRegister> _timeRegisterRepository;
+    private readonly IExpectedOvertimeAmountService _expectedOvertimeAmountService;
 
     public MonthlyPayrollTransactionReportAppService(
         IRepository<EmployeeAbsence> employeeAbsenceRepository,
@@ -62,7 +64,8 @@ public class MonthlyPayrollTransactionReportAppService : GridReportAppServiceBas
         IRepository<WageType> wageTypeRepository,
         IRepository<EmployeeBasicPay> employeeBasicPayRepository,
         IRepository<EmployeeBasicPayDetail> employeeBasicPayDetailRepository,
-        IRepository<TimeRegister> timeRegisterRepository)
+        IRepository<TimeRegister> timeRegisterRepository,
+        IExpectedOvertimeAmountService expectedOvertimeAmountService)
     {
         _employeeAbsenceRepository = employeeAbsenceRepository;
         _employeePaymentRepository = employeePaymentRepository;
@@ -73,6 +76,7 @@ public class MonthlyPayrollTransactionReportAppService : GridReportAppServiceBas
         _employeeBasicPayRepository = employeeBasicPayRepository;
         _employeeBasicPayDetailRepository = employeeBasicPayDetailRepository;
         _timeRegisterRepository = timeRegisterRepository;
+        _expectedOvertimeAmountService = expectedOvertimeAmountService;
     }
 
     protected override string LegacyScreenName => "uscRptMonthlyPayrollTransaction";
@@ -211,10 +215,24 @@ public class MonthlyPayrollTransactionReportAppService : GridReportAppServiceBas
                     ? string.Empty
                     : (useArabicNames ? o.OvertimeType.WageType.NameAr : o.OvertimeType.WageType.NameEn),
                 TransactionDate = o.EffectiveDate,
-                // Not ported on the entity -- see class remarks.
+                // Filled below: the legacy figure is computed, not stored.
                 ExpectedAmount = 0
             })
             .ToListAsync();
+
+        if (overtimeRows.Count > 0)
+        {
+            var overtimeIds = overtimeRows.Select(r => r.Id).ToList();
+            var overtimes = await _employeeOvertimeRepository.GetAll()
+                .Where(o => overtimeIds.Contains(o.Id))
+                .ToListAsync();
+            var expected = await _expectedOvertimeAmountService.GetExpectedOvertimeAmountsAsync(overtimes);
+            foreach (var row in overtimeRows)
+            {
+                row.ExpectedAmount = expected.TryGetValue(row.Id, out var amount) ? amount : 0;
+            }
+        }
+
         rows.AddRange(overtimeRows);
 
         var loanRows = await _employeeLoanRepository.GetAll()

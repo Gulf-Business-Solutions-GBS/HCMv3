@@ -3,14 +3,11 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     AccountInfoDto,
     AccountInfosServiceProxy,
-    CostElementDto,
-    CostElementsServiceProxy,
     CostRegisterDetailsServiceProxy,
     CreateOrEditCostRegisterDetailDto,
     CurrenciesServiceProxy,
     CurrencyDto,
     GetAllAccountInfosInput,
-    GetAllCostElementsInput,
     GetAllCurrenciesInput,
     GetAllWageTypesInput,
     WageTypeDto,
@@ -23,17 +20,17 @@ import { FormsModule } from '@angular/forms';
 import { ValidationMessagesComponent } from '../../../../shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { CostElementSlotFieldsComponent } from '@app/shared/common/cost-element-slots/cost-element-slot-fields.component';
 
 @Component({
     selector: 'createOrEditCostRegisterDetailModal',
     templateUrl: './create-or-edit-cost-register-detail-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, CostElementSlotFieldsComponent],
 })
 export class CreateOrEditCostRegisterDetailModalComponent extends AppComponentBase {
     private _costRegisterDetailsService = inject(CostRegisterDetailsServiceProxy);
     private _wageTypesService = inject(WageTypesServiceProxy);
     private _accountInfosService = inject(AccountInfosServiceProxy);
-    private _costElementsService = inject(CostElementsServiceProxy);
     private _currenciesService = inject(CurrenciesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
@@ -45,26 +42,21 @@ export class CreateOrEditCostRegisterDetailModalComponent extends AppComponentBa
 
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly accountInfos = signal<AccountInfoDto[]>([]);
-    readonly costElements = signal<CostElementDto[]>([]);
     readonly currencies = signal<CurrencyDto[]>([]);
 
-    readonly costElementFields: (keyof CreateOrEditCostRegisterDetailDto)[] = [
-        'costElement1Id',
-        'costElement2Id',
-        'costElement3Id',
-        'costElement4Id',
-        'costElement5Id',
-        'costElement6Id',
-        'costElement7Id',
-    ];
+    /** Set when opened from a register's page: the line belongs to that register and the field is not offered. */
+    readonly fixedCostRegisterId = signal<number | undefined>(undefined);
 
-    show(costRegisterDetailId?: number): void {
+    show(costRegisterDetailId?: number, costRegisterId?: number): void {
+        this.fixedCostRegisterId.set(costRegisterId);
         this.active.set(true);
 
         this.loadLookups();
 
         if (!costRegisterDetailId) {
-            this.costRegisterDetail.set(new CreateOrEditCostRegisterDetailDto());
+            const record = new CreateOrEditCostRegisterDetailDto();
+            record.costRegisterId = costRegisterId;
+            this.costRegisterDetail.set(record);
             this.modal().show();
         } else {
             this._costRegisterDetailsService.getCostRegisterDetailForEdit(costRegisterDetailId).subscribe((result) => {
@@ -83,17 +75,13 @@ export class CreateOrEditCostRegisterDetailModalComponent extends AppComponentBa
             .getAll(new GetAllAccountInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.accountInfos.set(result.items));
 
-        this._costElementsService
-            .getAll(new GetAllCostElementsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.costElements.set(result.items));
-
         this._currenciesService
             .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.currencies.set(result.items));
     }
 
     onShown(): void {
-        document.getElementById('CostRegisterDetail_CostRegisterId')?.focus();
+        document.getElementById(this.fixedCostRegisterId() ? 'CostRegisterDetail_WageTypeId' : 'CostRegisterDetail_CostRegisterId')?.focus();
     }
 
     save(): void {
@@ -111,10 +99,6 @@ export class CreateOrEditCostRegisterDetailModalComponent extends AppComponentBa
     close(): void {
         this.active.set(false);
         this.modal().hide();
-    }
-
-    getCostElementValue(field: keyof CreateOrEditCostRegisterDetailDto): number | undefined {
-        return (this.costRegisterDetail() as any)[field];
     }
 
     updateField(field: keyof CreateOrEditCostRegisterDetailDto, value: any): void {

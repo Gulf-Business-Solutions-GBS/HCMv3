@@ -49,6 +49,18 @@ public class SimulationSalaryRegistersAppService : HCMv3AppServiceBase, ISimulat
             items.Select(ToDto).ToList());
     }
 
+    /// <summary>One register with its display names, for the register's own page.</summary>
+    public async Task<SimulationSalaryRegisterDto> GetSimulationSalaryRegister(EntityDto input)
+    {
+        var entity = await _simulationSalaryRegisterRepository.GetAll()
+            .Include(r => r.Employee)
+            .Include(r => r.PayrollReasonType)
+            .FirstOrDefaultAsync(r => r.Id == input.Id)
+            ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(SimulationSalaryRegister), input.Id);
+
+        return ToDto(entity);
+    }
+
     public async Task<GetSimulationSalaryRegisterForEditOutput> GetSimulationSalaryRegisterForEdit(EntityDto input)
     {
         var entity = await _simulationSalaryRegisterRepository.GetAsync(input.Id);

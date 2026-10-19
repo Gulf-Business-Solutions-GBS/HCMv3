@@ -563,6 +563,7 @@ public static class ScreenCatalog
         new("app.admin.roster-daily-duties", "STM011", "TimeManagement", "RosterDailyDuties", "/app/admin/roster-daily-duties", "Pages.TimeManagement.RosterDailyDuties"),
         new("app.admin.roster-duty-period-details", "STM012", "TimeManagement", "RosterDutyPeriodDetails", "/app/admin/roster-duty-period-details", "Pages.TimeManagement.RosterDutyPeriodDetails"),
         new("app.admin.roster-duty-periods", "STM013", "TimeManagement", "RosterDutyPeriods", "/app/admin/roster-duty-periods", "Pages.TimeManagement.RosterDutyPeriods"),
+        new("app.admin.employee-duty-schedules", "STM034", "TimeManagement", "DutySchedule", "/app/admin/employee-duty-schedules", "Pages.TimeManagement.EmployeeDutySchedules"),
         new("app.admin.roster-duty-schedules", "STM014", "TimeManagement", "RosterDutySchedules", "/app/admin/roster-duty-schedules", "Pages.TimeManagement.RosterDutySchedules"),
         new("app.admin.roster-group-details", "STM015", "TimeManagement", "RosterGroupDetails", "/app/admin/roster-group-details", "Pages.TimeManagement.RosterGroupDetails"),
         new("app.admin.roster-group-schedules", "STM016", "TimeManagement", "RosterGroupSchedules", "/app/admin/roster-group-schedules", "Pages.TimeManagement.RosterGroupSchedules"),

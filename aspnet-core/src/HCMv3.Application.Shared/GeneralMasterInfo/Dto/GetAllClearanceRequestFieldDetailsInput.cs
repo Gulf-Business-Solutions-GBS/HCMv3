@@ -9,6 +9,9 @@ namespace HCMv3.GeneralMasterInfo.Dto;
 /// </summary>
 public class GetAllClearanceRequestFieldDetailsInput : PagedAndSortedResultRequestDto, IShouldNormalize
 {
+    /// <summary>When set, only the details of this clearance request field (its own page's Details tab).</summary>
+    public int? ClearanceRequestFieldId { get; set; }
+
     public void Normalize()
     {
         if (Sorting.IsNullOrWhiteSpace())

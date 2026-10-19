@@ -14,6 +14,12 @@ public class GetAllEmployeeDutySchedulesInput : PagedAndSortedResultRequestDto, 
     /// </summary>
     public int? EmployeeId { get; set; }
 
+    /// <summary>
+    /// Optional free-text search for the all-employees Duty Schedule screen: matches the employee code or
+    /// name, or the roster duty schedule code or name.
+    /// </summary>
+    public string Filter { get; set; }
+
     public void Normalize()
     {
         if (Sorting.IsNullOrWhiteSpace())

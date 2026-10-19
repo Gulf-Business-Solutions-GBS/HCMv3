@@ -115,6 +115,19 @@
                                     [ngModel]="getTimeValue('endTime')"
                                     (ngModelChange)="updateTimeField('endTime', $event)" />
                             </div>
+                            <!-- Calculated by the server on save (legacy EmployeeAttendance.UpdateAttendanceQuota);
+                                 shown read-only, never sent back as an input. -->
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeAttendance_TotalAttendDays">{{ 'TotalAttendDays' | localize }}</label>
+                                <input
+                                    id="EmployeeAttendance_TotalAttendDays"
+                                    class="form-control"
+                                    type="text"
+                                    name="TotalAttendDays"
+                                    [value]="record().id ? record().totalAttendDays : ''"
+                                    readonly
+                                    disabled />
+                            </div>
                         </div>
                         <div class="mb-5">
                             <label class="form-label" for="EmployeeAttendance_Comments">{{ 'Comments' | localize }}</label>

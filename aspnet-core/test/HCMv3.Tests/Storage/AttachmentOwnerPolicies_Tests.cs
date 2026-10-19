@@ -7,6 +7,7 @@ using HCMv3.Authorization;
 using HCMv3.Authorization.Users;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GovtRelationsManagement;
+using HCMv3.PersonnelAdministration;
 using HCMv3.Recruitment;
 using HCMv3.Storage;
 using HCMv3.Storage.Dto;
@@ -108,6 +109,58 @@ public class AttachmentOwnerPolicies_Tests : AppTestBase
         return vacancy.Id;
     }
 
+    private int CreateEmployeeAssetInvoice()
+    {
+        var assetId = CreateAsset();
+
+        Nationality nationality = null;
+        UsingDbContext(context =>
+        {
+            nationality = context.Nationalities.Add(new Nationality
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N")[..8],
+                NameEn = "N",
+                NameAr = "N"
+            }).Entity;
+        });
+
+        Employee employee = null;
+        UsingDbContext(context =>
+        {
+            employee = context.Set<Employee>().Add(new Employee
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N")[..8],
+                FirstNameEn = "F",
+                LastNameEn = "L",
+                FirstNameAr = "ف",
+                LastNameAr = "ل",
+                FullNameEn = "F L",
+                FullNameAr = "ف ل",
+                BirthDate = new DateTime(1990, 1, 1),
+                JoiningDate = new DateTime(2020, 1, 1),
+                ProbationEndDate = new DateTime(2020, 4, 1),
+                NationalityId = nationality.Id
+            }).Entity;
+        });
+
+        EmployeeAssetInvoice invoice = null;
+        UsingDbContext(context =>
+        {
+            invoice = context.Set<EmployeeAssetInvoice>().Add(new EmployeeAssetInvoice
+            {
+                TenantId = TenantId,
+                EmployeeId = employee.Id,
+                AssetId = assetId,
+                InvoiceDate = DateTime.Today,
+                InvoiceAmount = 50
+            }).Entity;
+        });
+
+        return invoice.Id;
+    }
+
     private Task<GetAttachmentsOutput> List(string entityType, int entityId) =>
         _attachments.GetAttachments(new AttachmentOwnerInput { EntityType = entityType, EntityId = entityId.ToString() });
 
@@ -127,6 +180,7 @@ public class AttachmentOwnerPolicies_Tests : AppTestBase
     [InlineData("TravelFeedback")]
     [InlineData("OrganizationDocument")]
     [InlineData("Asset")]
+    [InlineData("EmployeeAssetInvoice")]
     public void Should_Register_Exactly_One_Policy_For_The_Entity_Type(string entityType)
     {
         var policies = LocalIocManager.ResolveAll<IAttachmentOwnerPolicy>();
@@ -165,6 +219,48 @@ public class AttachmentOwnerPolicies_Tests : AppTestBase
         LoginAsTenant("Default", CreateUser());
 
         await Should.ThrowAsync<AbpAuthorizationException>(() => List(AssetAttachmentOwnerPolicy.Type, assetId));
+    }
+
+    // ---------------------------------------------------------------- Employee Asset Invoice
+
+    [Fact]
+    public async Task Should_Let_Asset_Invoice_Editors_See_And_Change_Invoice_Files()
+    {
+        var invoiceId = CreateEmployeeAssetInvoice();
+        LoginAsTenant("Default", CreateUser(
+            AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices,
+            AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Edit));
+
+        var list = await List(EmployeeAssetInvoiceAttachmentOwnerPolicy.Type, invoiceId);
+
+        list.CanEdit.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task Should_Let_Asset_Invoice_Readers_See_But_Not_Change_Invoice_Files()
+    {
+        var invoiceId = CreateEmployeeAssetInvoice();
+        LoginAsTenant("Default", CreateUser(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices));
+
+        var list = await List(EmployeeAssetInvoiceAttachmentOwnerPolicy.Type, invoiceId);
+
+        list.CanEdit.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Should_Refuse_Invoice_Files_Without_The_Asset_Invoice_Permission()
+    {
+        var invoiceId = CreateEmployeeAssetInvoice();
+        LoginAsTenant("Default", CreateUser(AppPermissions.Pages_GeneralMasterInfo_Assets));
+
+        await Should.ThrowAsync<AbpAuthorizationException>(() => List(EmployeeAssetInvoiceAttachmentOwnerPolicy.Type, invoiceId));
+    }
+
+    [Fact]
+    public async Task Should_Refuse_An_Asset_Invoice_That_Does_Not_Exist()
+    {
+        // Tenant admin: holds the Asset Invoices permissions, so only the missing record can refuse it.
+        await Should.ThrowAsync<AbpAuthorizationException>(() => List(EmployeeAssetInvoiceAttachmentOwnerPolicy.Type, 999999));
     }
 
     // ---------------------------------------------------------------- Vacancy

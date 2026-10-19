@@ -39,6 +39,8 @@ import {
  * The section id lives in the URL fragment (`/employees/12#loans`), so a particular section can be
  * linked to and survives a refresh. That is the one thing tabs did badly that people notice daily.
  */
+import { toBase64Payload, toImageSrc } from '@shared/utils/image-data-url';
+
 @Component({
     templateUrl: './employee-detail.component.html',
     styleUrl: './employee-detail.component.css',
@@ -46,6 +48,8 @@ import {
     imports: [SubHeaderComponent, LocalizePipe, FormsModule, NgComponentOutlet, RecordBreadcrumbComponent],
 })
 export class EmployeeDetailComponent extends AppComponentBase implements OnInit {
+    readonly toImageSrc = toImageSrc;
+
     private _route = inject(ActivatedRoute);
     private _router = inject(Router);
     private _employeesService = inject(EmployeesServiceProxy);

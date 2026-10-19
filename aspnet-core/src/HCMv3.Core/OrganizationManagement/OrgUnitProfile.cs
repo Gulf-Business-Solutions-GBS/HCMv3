@@ -63,4 +63,12 @@ public class OrgUnitProfile : FullAuditedEntity, IMustHaveTenant
     public virtual int? PayrollAreaId { get; set; }
 
     public virtual PayrollArea PayrollArea { get; set; }
+
+    /// <summary>
+    /// Where the unit's logo is, relative to the tenant file store (<c>HCMv3.Storage.IEntityImageStore</c>,
+    /// kind <c>org-unit-logos</c>); the image itself is never kept in the database. Legacy
+    /// <c>OrganizationUnit.Logo</c> -- the company logo printed on letters, payslips and bank reports.
+    /// </summary>
+    [StringLength(OrgUnitProfileConsts.MaxLogoPathLength)]
+    public virtual string LogoPath { get; set; }
 }

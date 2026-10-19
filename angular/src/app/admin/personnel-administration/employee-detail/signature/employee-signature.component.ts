@@ -12,12 +12,16 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 
+import { toBase64Payload, toImageSrc } from '@shared/utils/image-data-url';
+
 @Component({
     selector: 'employee-signature',
     templateUrl: './employee-signature.component.html',
     imports: [FormsModule, ButtonBusyDirective, LocalizePipe, PermissionPipe, BusyIfDirective],
 })
 export class EmployeeSignatureComponent extends AppComponentBase {
+    readonly toImageSrc = toImageSrc;
+
     private _service = inject(EmployeeSignaturesServiceProxy);
 
     readonly employeeId = input<number>();
@@ -75,7 +79,7 @@ export class EmployeeSignatureComponent extends AppComponentBase {
             const current = this.record();
             const next = new CreateOrEditEmployeeSignatureDto();
             Object.assign(next, current);
-            next.signature = reader.result as string;
+            next.signature = toBase64Payload(reader.result as string);
             this.record.set(next);
         };
         reader.readAsDataURL(file);

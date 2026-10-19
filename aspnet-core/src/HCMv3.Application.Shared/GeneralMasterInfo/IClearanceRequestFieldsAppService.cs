@@ -9,6 +9,8 @@ public interface IClearanceRequestFieldsAppService : IApplicationService
 {
     Task<PagedResultDto<ClearanceRequestFieldDto>> GetAll(GetAllClearanceRequestFieldsInput input);
 
+    Task<ClearanceRequestFieldDto> GetClearanceRequestField(EntityDto input);
+
     Task<GetClearanceRequestFieldForEditOutput> GetClearanceRequestFieldForEdit(EntityDto input);
 
     Task CreateOrEdit(CreateOrEditClearanceRequestFieldDto input);

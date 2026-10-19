@@ -22,7 +22,7 @@ public static class EntityHistoryHelper
 
     public static readonly Type[] TrackedTypes =
         HostSideTrackedTypes
-            .Concat(TenantSideTrackedTypes)
+            .Concat(TenantSideTrackedTypes).Concat(HcmEntityHistoryTypes.TrackedTypes) // HCM hook: see HcmEntityHistoryTypes
             .GroupBy(type => type.FullName)
             .Select(types => types.First())
             .ToArray();

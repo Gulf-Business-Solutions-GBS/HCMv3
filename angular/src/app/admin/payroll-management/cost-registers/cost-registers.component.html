@@ -66,7 +66,9 @@
                                             {{ 'Actions' | localize }}
                                         </button>
                                     </td>
-                                    <td style="min-width: 150px">{{ record.employeeCode }}</td>
+                                    <td style="min-width: 150px">
+                                        <a [routerLink]="['/app/admin/cost-registers', record.id]">{{ record.employeeCode }}</a>
+                                    </td>
                                     <td style="min-width: 150px">{{ record.period | luxonFormat: 'DD' }}</td>
                                     <td style="min-width: 150px">{{ record.payrollRunType === 0 ? ('Regular' | localize) : ('OffCycle' | localize) }}</td>
                                 </tr>

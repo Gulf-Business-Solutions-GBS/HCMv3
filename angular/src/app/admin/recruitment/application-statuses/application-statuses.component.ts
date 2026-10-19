@@ -21,6 +21,7 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     templateUrl: './application-statuses.component.html',
@@ -36,10 +37,12 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
+        RouterLink,
     ],
 })
 export class ApplicationStatusesComponent extends AppComponentBase implements OnInit {
     private _service = inject(ApplicationStatusesServiceProxy);
+    private _router = inject(Router);
     private _vacanciesService = inject(VacanciesServiceProxy);
 
     readonly createOrEditModal = viewChild<CreateOrEditApplicationStatusModalComponent>('createOrEditModal');
@@ -97,6 +100,12 @@ export class ApplicationStatusesComponent extends AppComponentBase implements On
 
     getMenuItems(record: ApplicationStatusDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-list',
+            command: () => this._router.navigate(['/app/admin/application-statuses', record.id]),
+        });
 
         if (this.permission.isGranted('Pages.Recruitment.ApplicationStatuses.Edit')) {
             items.push({

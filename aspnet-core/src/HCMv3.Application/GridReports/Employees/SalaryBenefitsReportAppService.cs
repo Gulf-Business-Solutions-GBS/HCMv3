@@ -40,10 +40,9 @@ namespace HCMv3.GridReports.Employees;
 /// and the export call BOTH phases in the same order, so the export still honours exactly the filters
 /// the grid shows; the split is about SQL translatability, not about filtering.
 ///
-/// DEVIATIONS from legacy, all detailed on <see cref="SalaryBenefitsReportRowDto"/>: OrgLevel1..7
-/// collapse to one org-unit column; the "WorkflowGroup" column is dropped (the underlying
-/// <c>EmployeeOrgAssignment.WorkflowGroup</c> is still deferred in HCMv3); the "RevokeComments" column
-/// is dropped (no such property on HCMv3's <c>EmployeeSeparation</c>).
+/// DEVIATIONS from legacy, all detailed on <see cref="SalaryBenefitsReportRowDto"/>: OrgLevel1..7 are
+/// resolved from the org unit tree; the "RevokeComments" column is dropped (no such property on HCMv3's
+/// <c>EmployeeSeparation</c>).
 ///
 /// NOT PORTED -- DevExpress/WebForms UI plumbing: the drill-down "Table2"/"Table3" branches (commented
 /// out in legacy's own <c>GetTable()</c>, lines 460-467, so dead in production), the ColumnChooser JSON
@@ -262,6 +261,14 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
                 .Select(m => m.Manager.Code + " " + m.Manager.FullNameEn)
                 .FirstOrDefault(),
 
+            // Legacy lines 726/845: the workflow group of today's org assignment, hard-coded NameEn.
+            WorkflowGroupName = currentAssignments
+                .Where(o => o.EmployeeId == e.Id)
+                .OrderBy(o => o.StartDate)
+                .ThenBy(o => o.Id)
+                .Select(o => o.WorkflowGroup == null ? null : o.WorkflowGroup.NameEn)
+                .FirstOrDefault(),
+
             RecruitmentTypeName = e.RecruitmentType == null
                 ? null
                 : (useArabicNames ? e.RecruitmentType.NameAr : e.RecruitmentType.NameEn),
@@ -463,6 +470,7 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
         {
             new GridReportColumn<SalaryBenefitsReportRowDto>("TotalSalary", r => r.TotalSalary),
             new GridReportColumn<SalaryBenefitsReportRowDto>("Manager", r => r.ManagerName),
+            new GridReportColumn<SalaryBenefitsReportRowDto>("WorkflowGroup", r => r.WorkflowGroupName),
             new GridReportColumn<SalaryBenefitsReportRowDto>("RecruitmentType", r => r.RecruitmentTypeName),
             new GridReportColumn<SalaryBenefitsReportRowDto>("Sponsor", r => r.SponsorName),
             new GridReportColumn<SalaryBenefitsReportRowDto>("SeparationType", r => r.SeparationType),

@@ -29,19 +29,21 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <label class="form-label required" for="CostRegisterDetail_CostRegisterId">{{ 'CostRegisterId' | localize }}</label>
-                                <input
-                                    id="CostRegisterDetail_CostRegisterId"
-                                    #costRegisterIdInput="ngModel"
-                                    class="form-control"
-                                    type="number"
-                                    name="CostRegisterId"
-                                    [ngModel]="costRegisterDetail().costRegisterId"
-                                    (ngModelChange)="updateField('costRegisterId', $event)"
-                                    required />
-                                <validation-messages [formCtrl]="costRegisterIdInput" />
-                            </div>
+                            @if (!fixedCostRegisterId()) {
+                                <div class="col-md-4 mb-5">
+                                    <label class="form-label required" for="CostRegisterDetail_CostRegisterId">{{ 'CostRegisterId' | localize }}</label>
+                                    <input
+                                        id="CostRegisterDetail_CostRegisterId"
+                                        #costRegisterIdInput="ngModel"
+                                        class="form-control"
+                                        type="number"
+                                        name="CostRegisterId"
+                                        [ngModel]="costRegisterDetail().costRegisterId"
+                                        (ngModelChange)="updateField('costRegisterId', $event)"
+                                        required />
+                                    <validation-messages [formCtrl]="costRegisterIdInput" />
+                                </div>
+                            }
                             <div class="col-md-4 mb-5">
                                 <label class="form-label required" for="CostRegisterDetail_WageTypeId">{{ 'WageTypeId' | localize }}</label>
                                 <select
@@ -106,25 +108,10 @@
                                 </select>
                             </div>
                         </div>
-                        <hr />
-                        <div class="row">
-                            @for (field of costElementFields; track field; let i = $index) {
-                                <div class="col-md-3 mb-5">
-                                    <label class="form-label" [for]="'CostRegisterDetail_' + field">{{ ('CostElement' + (i + 1) + 'Id') | localize }}</label>
-                                    <select
-                                        [id]="'CostRegisterDetail_' + field"
-                                        class="form-select"
-                                        [name]="field"
-                                        [ngModel]="getCostElementValue(field)"
-                                        (ngModelChange)="updateField(field, $event)">
-                                        <option [ngValue]="undefined"></option>
-                                        @for (ce of costElements(); track ce.id) {
-                                            <option [ngValue]="ce.id">{{ ce.nameEn }}</option>
-                                        }
-                                    </select>
-                                </div>
-                            }
-                        </div>
+                        <costElementSlotFields
+                            [record]="costRegisterDetail()"
+                            idPrefix="CostRegisterDetail_"
+                            (fieldChange)="updateField($event.field, $event.value)" />
                     </div>
                     <div class="modal-footer">
                         <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">

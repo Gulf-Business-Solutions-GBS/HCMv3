@@ -16,8 +16,8 @@ namespace HCMv3.TravelManagement;
 /// <summary>
 /// Application service for <see cref="TravelDetailCost"/>, the aggregated child of <see cref="TravelDetail"/>
 /// (ported from legacy XAF <c>HCM10.Module.BusinessObjects.TravelManagement.TravelDetailCost</c>).
-/// Straightforward CRUD only -- see <see cref="TravelDetailCost"/> class remarks for the dropped legacy
-/// TotalAmount/TotalTravelCost recompute cascade.
+/// Every create, update and delete recalculates the leg's TotalAmount and the trip's TotalTravelCost through
+/// <see cref="ITravelCostRollupService"/> (legacy <c>TravelDetailCost.UpdateTotalAmount</c>).
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_TravelManagement_TravelDetailCosts)]
 public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCostsAppService
@@ -25,15 +25,18 @@ public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCos
     private readonly IRepository<TravelDetailCost> _repository;
     private readonly IRepository<TravelDetail> _travelDetailRepository;
     private readonly IRepository<Travel> _travelRepository;
+    private readonly ITravelCostRollupService _costRollupService;
 
     public TravelDetailCostsAppService(
         IRepository<TravelDetailCost> repository,
         IRepository<TravelDetail> travelDetailRepository,
-        IRepository<Travel> travelRepository)
+        IRepository<Travel> travelRepository,
+        ITravelCostRollupService costRollupService)
     {
         _repository = repository;
         _travelDetailRepository = travelDetailRepository;
         _travelRepository = travelRepository;
+        _costRollupService = costRollupService;
     }
 
     /// <summary>
@@ -102,6 +105,10 @@ public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCos
         entity.TenantId = AbpSession.TenantId ?? 0;
 
         await _repository.InsertAsync(entity);
+
+        // Legacy TravelDetailCost.OnSaving -> UpdateTotalAmount(0) (TravelDetailCost.cs lines 85, 111-133).
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await _costRollupService.RecalculateTravelDetailTotalAsync(entity.TravelDetailId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_TravelManagement_TravelDetailCosts_Edit)]
@@ -111,12 +118,30 @@ public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCos
         entity = MapToEntity(input, entity);
 
         await _repository.UpdateAsync(entity);
+
+        // Legacy TravelDetailCost.cs lines 85, 111-133. Only the leg the line belongs to NOW is recalculated:
+        // a line moved to another leg leaves the old leg's total as it was, exactly as in legacy.
+        await CurrentUnitOfWork.SaveChangesAsync();
+        await _costRollupService.RecalculateTravelDetailTotalAsync(entity.TravelDetailId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_TravelManagement_TravelDetailCosts_Delete)]
     public async Task Delete(EntityDto input)
     {
+        var travelDetailId = await _repository.GetAll()
+            .Where(c => c.Id == input.Id)
+            .Select(c => (int?)c.TravelDetailId)
+            .FirstOrDefaultAsync();
+
         await _repository.DeleteAsync(input.Id);
+
+        // Legacy TravelDetailCost.OnDeleting -> UpdateTotalAmount(this.Oid) (TravelDetailCost.cs lines 109,
+        // 117): the leg total without this line, then the trip.
+        if (travelDetailId.HasValue)
+        {
+            await CurrentUnitOfWork.SaveChangesAsync();
+            await _costRollupService.RecalculateTravelDetailTotalAsync(travelDetailId.Value);
+        }
     }
 
     private static TravelDetailCost MapToEntity(CreateOrEditTravelDetailCostDto input, TravelDetailCost entity)

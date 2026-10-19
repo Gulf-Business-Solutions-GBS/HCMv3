@@ -61,13 +61,27 @@
                                     <th style="min-width: 140px">{{ 'EndDate' | localize }}</th>
                                     <th style="min-width: 160px">{{ 'JobTitle' | localize }}</th>
                                     <th style="min-width: 160px">{{ 'WorkLocation' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel1' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel2' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel3' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel4' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel5' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel6' | localize }}</th>
-                                    <th style="min-width: 140px">{{ 'OrgLevel7' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(1) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(2) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(3) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(4) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(5) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(6) }}</th>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <th style="min-width: 140px">{{ orgLevels.caption(7) }}</th>
+                                    }
                                     <th style="min-width: 150px">{{ 'ServiceType' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'ServiceStartDate' | localize }}</th>
                                     <th style="min-width: 140px">{{ 'ServiceEndDate' | localize }}</th>
@@ -94,13 +108,27 @@
                                     <td style="min-width: 140px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
                                     <td style="min-width: 160px">{{ record.jobTitle }}</td>
                                     <td style="min-width: 160px">{{ record.workLocation }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel1 }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel2 }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel3 }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel4 }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel5 }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel6 }}</td>
-                                    <td style="min-width: 140px">{{ record.orgLevel7 }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel1 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(2)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel2 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(3)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel3 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(4)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel4 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(5)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel5 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(6)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel6 }}</td>
+                                    }
+                                    @if (orgLevels.isShown(7)) {
+                                        <td style="min-width: 140px">{{ record.orgLevel7 }}</td>
+                                    }
                                     <td style="min-width: 150px">{{ record.serviceTypeName }}</td>
                                     <td style="min-width: 140px">
                                         {{ record.serviceStartDate ? (record.serviceStartDate | luxonFormat: 'dd/MM/yyyy') : '' }}

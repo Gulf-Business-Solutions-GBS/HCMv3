@@ -18,6 +18,7 @@ import {
     IndemnityProvisionReportServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 interface IndemnityProvisionReportColumn {
     field: string;
@@ -70,7 +71,7 @@ export class IndemnityProvisionReportComponent extends AppComponentBase {
 
     readonly exporting = signal<boolean>(false);
 
-    readonly columns: IndemnityProvisionReportColumn[] = [
+    private readonly allColumns: IndemnityProvisionReportColumn[] = [
         { field: 'employeeCode', header: this.l('Code'), sortable: true, width: 120 },
         { field: 'employeeName', header: this.l('Employee'), sortable: true, width: 220 },
         { field: 'joiningDate', header: this.l('JoiningDate'), sortable: false, width: 140, isDate: true },
@@ -111,6 +112,10 @@ export class IndemnityProvisionReportComponent extends AppComponentBase {
         { field: 'balanceAmount', header: this.l('BalanceAmount'), sortable: false, width: 140 },
         { field: 'fnfStatus', header: this.l('FnfStatus'), sortable: false, width: 150 },
     ];
+
+    /** OrgLevel1..7 are captioned with the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+    readonly columns = this.orgLevels.columns(this.allColumns);
 
     // No ngOnInit fetch on purpose: the table's (onLazyLoad) fires the first getRecords().
 

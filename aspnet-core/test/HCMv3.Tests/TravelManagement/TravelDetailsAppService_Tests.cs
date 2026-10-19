@@ -19,7 +19,8 @@ public class TravelDetailsAppService_Tests : TravelManagementAppServiceTestBase
             FakeRepository.For<TravelDetail>(Context),
             FakeRepository.For<TravelDetailCost>(Context),
             FakeRepository.For<TravelPerDiem>(Context),
-            FakeRepository.For<Travel>(Context)));
+            FakeRepository.For<Travel>(Context),
+            TravelCostRollupTestFactory.Create(Context)));
     }
 
     private (int travelId, int departureId, int arrivalId) CreateTravelWithDestinations()

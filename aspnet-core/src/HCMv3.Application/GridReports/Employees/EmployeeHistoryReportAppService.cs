@@ -206,6 +206,14 @@ public class EmployeeHistoryReportAppService : GridReportAppServiceBase, IEmploy
                     ? string.Empty
                     : (useArabicNames ? o.CostCenter.NameAr : o.CostCenter.NameEn))
                 .FirstOrDefault(),
+            // Legacy line 587: the workflow group of the assignment in force on the change date.
+            WorkflowGroupName = orgAssignments
+                .Where(o => o.EmployeeId == x.Employee.Id && o.StartDate <= x.Date && o.EndDate >= x.Date)
+                .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
+                .Select(o => o.WorkflowGroup == null
+                    ? string.Empty
+                    : (useArabicNames ? o.WorkflowGroup.NameAr : o.WorkflowGroup.NameEn))
+                .FirstOrDefault(),
             OrganizationUnitId = orgAssignments
                 .Where(o => o.EmployeeId == x.Employee.Id && o.StartDate <= x.Date && o.EndDate >= x.Date)
                 .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
@@ -265,6 +273,7 @@ public class EmployeeHistoryReportAppService : GridReportAppServiceBase, IEmploy
             new("BasicSalary", r => r.BasicSalary),
             new("WorkLocation", r => r.WorkLocationName),
             new("CostCenter", r => r.CostCenterName),
+            new("WorkflowGroup", r => r.WorkflowGroupName),
             new("OrgLevel1", r => r.OrgLevel1),
             new("OrgLevel2", r => r.OrgLevel2),
             new("OrgLevel3", r => r.OrgLevel3),

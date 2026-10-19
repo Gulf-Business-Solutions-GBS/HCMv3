@@ -17,7 +17,8 @@ public class TravelDetailCostsAppService_Tests : TravelManagementAppServiceTestB
         return CreateService(() => new TravelDetailCostsAppService(
             FakeRepository.For<TravelDetailCost>(Context),
             FakeRepository.For<TravelDetail>(Context),
-            FakeRepository.For<Travel>(Context)));
+            FakeRepository.For<Travel>(Context),
+            TravelCostRollupTestFactory.Create(Context)));
     }
 
     private int CreateTravelDetail()

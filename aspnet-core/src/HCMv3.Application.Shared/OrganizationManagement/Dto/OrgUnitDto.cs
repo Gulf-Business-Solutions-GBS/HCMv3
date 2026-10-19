@@ -35,4 +35,7 @@ public class OrgUnitDto : EntityDto<long>
     public int? PayrollAreaId { get; set; }
 
     public string PayrollAreaName { get; set; }
+
+    /// <summary>True when the unit has a logo; the image itself comes with <c>GetOrgUnitForEdit</c>.</summary>
+    public bool HasLogo { get; set; }
 }

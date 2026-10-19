@@ -1427,12 +1427,6 @@ export class AppNavigationService {
                         '/app/admin/clearance-request-fields'
                     ),
                     new AppMenuItem(
-                        'ClearanceRequestFieldDetails',
-                        'Pages.GeneralMasterInfo.ClearanceRequestFieldDetails',
-                        'flaticon-list-3',
-                        '/app/admin/clearance-request-field-details'
-                    ),
-                    new AppMenuItem(
                         'DisciplinaryTypes',
                         'Pages.GeneralMasterInfo.DisciplinaryTypes',
                         'flaticon-list-3',
@@ -1669,6 +1663,12 @@ export class AppNavigationService {
                         'Pages.TimeManagement.RosterDutySchedules',
                         'flaticon-list-3',
                         '/app/admin/roster-duty-schedules'
+                    ),
+                    new AppMenuItem(
+                        'DutySchedule',
+                        'Pages.TimeManagement.EmployeeDutySchedules',
+                        'flaticon-list-3',
+                        '/app/admin/employee-duty-schedules'
                     ),
                     new AppMenuItem(
                         'RosterGroups',

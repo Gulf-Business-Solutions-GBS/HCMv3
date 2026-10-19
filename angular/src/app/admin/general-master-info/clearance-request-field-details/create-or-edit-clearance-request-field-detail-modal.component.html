@@ -28,20 +28,22 @@
                             [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-5">
-                            <label class="form-label" for="ClearanceRequestFieldDetail_ClearanceRequestFieldId">{{ 'ClearanceRequestField' | localize }}</label>
-                            <select
-                                id="ClearanceRequestFieldDetail_ClearanceRequestFieldId"
-                                class="form-select"
-                                name="ClearanceRequestFieldId"
-                                [ngModel]="clearanceRequestFieldDetail().clearanceRequestFieldId"
-                                (ngModelChange)="updateField('clearanceRequestFieldId', $event)">
-                                <option [ngValue]="undefined"></option>
-                                @for (clearanceRequestField of clearanceRequestFields(); track clearanceRequestField.id) {
-                                    <option [ngValue]="clearanceRequestField.id">{{ clearanceRequestField.nameEn }}</option>
-                                }
-                            </select>
-                        </div>
+                        @if (!fixedClearanceRequestFieldId()) {
+                            <div class="mb-5">
+                                <label class="form-label" for="ClearanceRequestFieldDetail_ClearanceRequestFieldId">{{ 'ClearanceRequestField' | localize }}</label>
+                                <select
+                                    id="ClearanceRequestFieldDetail_ClearanceRequestFieldId"
+                                    class="form-select"
+                                    name="ClearanceRequestFieldId"
+                                    [ngModel]="clearanceRequestFieldDetail().clearanceRequestFieldId"
+                                    (ngModelChange)="updateField('clearanceRequestFieldId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (clearanceRequestField of clearanceRequestFields(); track clearanceRequestField.id) {
+                                        <option [ngValue]="clearanceRequestField.id">{{ clearanceRequestField.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        }
                         <div class="mb-5">
                             <label class="form-label required" for="ClearanceRequestFieldDetail_WorkflowRoleId">{{ 'WorkflowRole' | localize }}</label>
                             <select

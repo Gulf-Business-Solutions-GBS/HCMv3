@@ -49,7 +49,9 @@
                                     <th pSortableColumn="employeeCode">{{ 'Code' | localize }}<p-sortIcon field="employeeCode" /></th>
                                     <th>{{ 'Employee' | localize }}</th>
                                     <th>{{ 'JobTitle' | localize }}</th>
-                                    <th>{{ 'OrgLevel1' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th>{{ orgLevels.caption(1) }}</th>
+                                    }
                                     <th>{{ 'PayDate' | localize }}</th>
                                     <th>{{ 'ContractPay' | localize }}</th>
                                     <th>{{ 'NetPay' | localize }}</th>
@@ -61,7 +63,9 @@
                                     <td>{{ record.employeeCode }}</td>
                                     <td>{{ record.employeeName }}</td>
                                     <td>{{ record.jobTitle }}</td>
-                                    <td>{{ record.orgLevel1 }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td>{{ record.orgLevel1 }}</td>
+                                    }
                                     <td>{{ record.payDate | luxonFormat: 'dd/MM/yyyy' }}</td>
                                     <td>{{ record.contractPay }}</td>
                                     <td>{{ record.netPay }}</td>

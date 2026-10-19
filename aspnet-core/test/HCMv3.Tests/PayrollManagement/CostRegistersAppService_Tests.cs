@@ -59,4 +59,33 @@ public class CostRegistersAppService_Tests : PayrollManagementAppServiceTestBase
         result.TotalCount.ShouldBe(1);
         result.Items[0].PayrollRunType.ShouldBe(PayrollRunType.Regular);
     }
+
+    [Fact]
+    public async Task Should_Return_One_Register_By_Id()
+    {
+        var employeeId = CreateEmployee();
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditCostRegisterDto
+        {
+            EmployeeId = employeeId,
+            Period = new DateTime(2026, 2, 1),
+            PayrollRunType = PayrollRunType.Regular
+        });
+        var id = (await service.GetAll(new GetAllCostRegistersInput { EmployeeId = employeeId })).Items[0].Id;
+
+        var register = await service.GetCostRegister(new Abp.Application.Services.Dto.EntityDto(id));
+
+        register.Id.ShouldBe(id);
+        register.EmployeeId.ShouldBe(employeeId);
+        register.Period.ShouldBe(new DateTime(2026, 2, 1));
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_The_Register_Does_Not_Exist()
+    {
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<Abp.Domain.Entities.EntityNotFoundException>(
+            () => service.GetCostRegister(new Abp.Application.Services.Dto.EntityDto(999999)));
+    }
 }

@@ -11,6 +11,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -29,6 +30,7 @@ import { RecordDirectlyCheckComponent } from '@app/shared/common/record-directly
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        DecimalPipe,
     ],
 })
 export class CreateOrEditEmployeeOvertimeModalComponent extends AppComponentBase {
@@ -44,6 +46,9 @@ export class CreateOrEditEmployeeOvertimeModalComponent extends AppComponentBase
 
     readonly overtimeTypes = signal<OvertimeTypeDto[]>([]);
 
+    /** Read-only, worked out by the server from the SAVED record (legacy ExpectedOvertimeAmount). */
+    readonly expectedOvertimeAmount = signal<number>(0);
+
     show(employeeId: number, id?: number): void {
         this.active.set(true);
 
@@ -58,10 +63,12 @@ export class CreateOrEditEmployeeOvertimeModalComponent extends AppComponentBase
             record.actualOvertimeHours = 0;
             record.approvedOvertimeHours = 0;
             this.record.set(record);
+            this.expectedOvertimeAmount.set(0);
             this.modal().show();
         } else {
             this._service.getEmployeeOvertimeForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeOvertime);
+                this.expectedOvertimeAmount.set(result.expectedOvertimeAmount ?? 0);
                 this.modal().show();
             });
         }

@@ -51,7 +51,9 @@
                                     <th>{{ 'JoiningDate' | localize }}</th>
                                     <th>{{ 'PayrollArea' | localize }}</th>
                                     <th>{{ 'JobTitle' | localize }}</th>
-                                    <th>{{ 'OrgLevel1' | localize }}</th>
+                                    @if (orgLevels.isShown(1)) {
+                                        <th>{{ orgLevels.caption(1) }}</th>
+                                    }
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -61,7 +63,9 @@
                                     <td>{{ record.joiningDate | luxonFormat: 'dd/MM/yyyy' }}</td>
                                     <td>{{ record.payrollAreaName }}</td>
                                     <td>{{ record.jobTitle }}</td>
-                                    <td>{{ record.orgLevel1 }}</td>
+                                    @if (orgLevels.isShown(1)) {
+                                        <td>{{ record.orgLevel1 }}</td>
+                                    }
                                 </tr>
                             </ng-template>
                         </p-table>

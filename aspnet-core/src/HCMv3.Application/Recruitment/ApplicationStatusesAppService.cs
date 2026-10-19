@@ -68,6 +68,53 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             items.Select(ToDto).ToList());
     }
 
+    /// <summary>
+    /// The application's own page header: the application, its vacancy, and the applicant behind the CV
+    /// (joined in names so they show in the reader's language). Read-only.
+    /// </summary>
+    public async Task<ApplicationStatusSummaryDto> GetApplicationStatusSummary(EntityDto input)
+    {
+        var entity = await _applicationStatusRepository.GetAll()
+            .Include(a => a.Vacancy)
+            .Include(a => a.ApplicantCV).ThenInclude(c => c.Applicant).ThenInclude(p => p.Nationality)
+            .Include(a => a.ApplicantCV).ThenInclude(c => c.Applicant).ThenInclude(p => p.JobTitle)
+            .FirstOrDefaultAsync(a => a.Id == input.Id)
+            ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(ApplicationStatus), input.Id);
+
+        var cv = entity.ApplicantCV;
+        var applicant = cv?.Applicant;
+
+        return new ApplicationStatusSummaryDto
+        {
+            Id = entity.Id,
+            AppStatus = entity.AppStatus,
+            CoverLetter = entity.CoverLetter,
+            VacancyId = entity.VacancyId,
+            VacancyCode = entity.Vacancy?.Code,
+            VacancyTitle = entity.Vacancy?.VacancyTitle,
+            ApplicantCVId = entity.ApplicantCVId,
+            CVName = cv?.CVName,
+            CVUploadDate = cv?.UploadDate,
+            ApplicantId = applicant?.Id,
+            ApplicantCode = applicant?.Code,
+            ApplicantFullNameEn = applicant == null ? null : JoinName(applicant.FirstNameEn, applicant.SecondNameEn, applicant.ThirdNameEn, applicant.LastNameEn),
+            ApplicantFullNameAr = applicant == null ? null : JoinName(applicant.FirstNameAr, applicant.SecondNameAr, applicant.ThirdNameAr, applicant.LastNameAr),
+            Gender = applicant?.Gender,
+            BirthDate = applicant?.BirthDate,
+            NationalityNameEn = applicant?.Nationality?.NameEn,
+            NationalityNameAr = applicant?.Nationality?.NameAr,
+            JobTitleNameEn = applicant?.JobTitle?.NameEn,
+            JobTitleNameAr = applicant?.JobTitle?.NameAr,
+            Email = applicant?.Email,
+            Mobile = applicant?.Mobile
+        };
+    }
+
+    private static string JoinName(params string[] parts)
+    {
+        return string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p.Trim()));
+    }
+
     public async Task<GetApplicationStatusForEditOutput> GetApplicationStatusForEdit(EntityDto input)
     {
         var entity = await _applicationStatusRepository.GetAsync(input.Id);

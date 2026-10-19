@@ -9,6 +9,8 @@ public interface ICostRegistersAppService : IApplicationService
 {
     Task<PagedResultDto<CostRegisterDto>> GetAll(GetAllCostRegistersInput input);
 
+    Task<CostRegisterDto> GetCostRegister(EntityDto input);
+
     Task<GetCostRegisterForEditOutput> GetCostRegisterForEdit(EntityDto input);
 
     Task CreateOrEdit(CreateOrEditCostRegisterDto input);

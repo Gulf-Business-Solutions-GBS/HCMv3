@@ -9,6 +9,8 @@ public interface IApplicationStatusesAppService : IApplicationService
 {
     Task<PagedResultDto<ApplicationStatusDto>> GetAll(GetAllApplicationStatusesInput input);
 
+    Task<ApplicationStatusSummaryDto> GetApplicationStatusSummary(EntityDto input);
+
     Task<GetApplicationStatusForEditOutput> GetApplicationStatusForEdit(EntityDto input);
 
     Task CreateOrEdit(CreateOrEditApplicationStatusDto input);

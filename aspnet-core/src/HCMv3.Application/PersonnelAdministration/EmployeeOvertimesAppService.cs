@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HCMv3.Workflow.Services;
@@ -18,8 +19,8 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Application service for <see cref="EmployeeOvertime"/> (ported from legacy XAF EmployeeOvertime business
 /// object, Wave 4 deferred bucket). Ports the essential active validation only: required fields and no
-/// duplicate Employee+EffectiveDate. The legacy <c>ExpectedOvertimeAmount</c> wage-rate computation and the
-/// EmployeeSubGroup.PayOvertime cross-check are NOT ported -- see class remarks on
+/// duplicate Employee+EffectiveDate. The legacy read-only <c>ExpectedOvertimeAmount</c> is calculated on read by
+/// <see cref="IExpectedOvertimeAmountService"/>. The EmployeeSubGroup.PayOvertime cross-check is NOT ported -- see
 /// <see cref="EmployeeOvertime"/>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes)]
@@ -27,12 +28,15 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
 {
     private readonly IRepository<EmployeeOvertime> _repository;
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
+    private readonly IExpectedOvertimeAmountService _expectedOvertimeAmountService;
 
     public EmployeeOvertimesAppService(IRepository<EmployeeOvertime> repository,
-        IAdminTransactionSubmitter transactionSubmitter)
+        IAdminTransactionSubmitter transactionSubmitter,
+        IExpectedOvertimeAmountService expectedOvertimeAmountService)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
+        _expectedOvertimeAmountService = expectedOvertimeAmountService;
     }
 
     [HttpPost]
@@ -52,7 +56,16 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
             .PageBy(input)
             .ToListAsync();
 
-        return new PagedResultDto<EmployeeOvertimeDto>(totalCount, items.Select(ToDto).ToList());
+        var dtos = items.Select(ToDto).ToList();
+
+        // Legacy non-persistent ExpectedOvertimeAmount, worked out for the page only.
+        var amounts = await _expectedOvertimeAmountService.GetExpectedOvertimeAmountsAsync(items);
+        foreach (var dto in dtos)
+        {
+            dto.ExpectedOvertimeAmount = amounts.TryGetValue(dto.Id, out var amount) ? amount : 0;
+        }
+
+        return new PagedResultDto<EmployeeOvertimeDto>(totalCount, dtos);
     }
 
     public async Task<GetEmployeeOvertimeForEditOutput> GetEmployeeOvertimeForEdit(EntityDto input)
@@ -71,7 +84,9 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
                 ActualOvertimeHours = entity.ActualOvertimeHours,
                 ApprovedOvertimeHours = entity.ApprovedOvertimeHours,
                 Comments = entity.Comments
-            }
+            },
+            ExpectedOvertimeAmount = await _expectedOvertimeAmountService.GetExpectedOvertimeAmountAsync(
+                entity.EmployeeId, entity.OvertimeTypeId, entity.EffectiveDate, entity.ApprovedOvertimeHours)
         };
     }
 

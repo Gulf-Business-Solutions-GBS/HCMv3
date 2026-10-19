@@ -130,6 +130,26 @@
                         </div>
 
                         <div class="mb-5">
+                            <label class="form-label" for="OrgUnit_Logo">{{ 'OrgUnitLogo' | localize }}</label>
+                            <input
+                                id="OrgUnit_Logo"
+                                class="form-control"
+                                type="file"
+                                accept="image/png,image/jpeg,image/gif"
+                                (change)="onLogoSelected($event)" />
+                            <div class="form-text">{{ 'OrgUnitLogo_Info' | localize }}</div>
+                            @if (logoSrc()) {
+                                <div class="d-flex align-items-center gap-3 mt-3">
+                                    <img [src]="logoSrc()" style="max-height: 80px; max-width: 240px" [alt]="l('OrgUnitLogo')" />
+                                    <button type="button" class="btn btn-sm btn-light-danger" (click)="removeLogo()">
+                                        <i class="fa fa-trash"></i>
+                                        {{ 'Remove' | localize }}
+                                    </button>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mb-5">
                             <label class="form-label" for="OrgUnit_PayrollAreaId">{{ 'PayrollAreaId' | localize }}</label>
                             <select
                                 id="OrgUnit_PayrollAreaId"

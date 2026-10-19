@@ -19,12 +19,9 @@ namespace HCMv3.TravelManagement;
 /// nullable) -- meaning this port only supports travel records for existing employees, not job applicants.
 /// This is an acceptable scope reduction given Recruitment is out of scope for this codebase.
 ///
-/// DELIBERATE SIMPLIFICATION (TotalTravelCost rollup): legacy <c>UpdateTotalAmount()</c> eagerly recomputed
-/// this field on every save by summing child <see cref="TravelDetail.TotalAmount"/> rows. Following the
-/// established precedent in this codebase for identical header/detail amount rollups (see
-/// <c>PersonnelAdministration.EmployeeBasicPay.Amount</c> and its detail app service), this field is kept as
-/// a stored, but NOT client-editable (absent from <c>CreateOrEditTravelDto</c>), column -- the legacy
-/// cross-entity cascade recompute is deliberately NOT re-implemented here.
+/// TotalTravelCost rollup: stored, NOT client-editable (absent from <c>CreateOrEditTravelDto</c>), and kept
+/// in line with the legs by <see cref="ITravelCostRollupService"/> whenever the trip, a leg or a cost line
+/// is saved or deleted -- the port of legacy's three <c>UpdateTotalAmount()</c> methods.
 ///
 /// <para>
 /// <b>THIS ROW IS THE TRAVEL REQUEST.</b> Legacy had a separate <c>TravelDeskRequest</c> header with its own

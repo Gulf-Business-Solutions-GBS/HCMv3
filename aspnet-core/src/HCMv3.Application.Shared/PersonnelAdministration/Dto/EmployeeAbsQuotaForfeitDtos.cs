@@ -35,6 +35,13 @@ public class CreateOrEditEmployeeAbsQuotaForfeitDto
 
     [StringLength(500)]
     public string Comments { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeeAbsQuotaForfeit.DontUpdateQuotaBalance</c> (<c>[NonPersistent]</c>, legacy lines 60-63):
+    /// when ticked, the save records the forfeit without moving the annual-leave quota (and so without the
+    /// negative-balance check, legacy line 140-144). Not stored -- the edit form always opens unticked.
+    /// </summary>
+    public bool DontUpdateQuotaBalance { get; set; }
 }
 
 public class GetEmployeeAbsQuotaForfeitForEditOutput

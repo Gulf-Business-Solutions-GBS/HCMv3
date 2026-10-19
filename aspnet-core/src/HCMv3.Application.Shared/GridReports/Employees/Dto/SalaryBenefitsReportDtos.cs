@@ -67,12 +67,7 @@ public class SalaryBenefitsReportOutput : PagedResultDto<SalaryBenefitsReportRow
 /// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
 /// see <c>EmployeeOrgLevelNameResolver</c>.
 ///
-/// DEVIATION 2 -- legacy's "WorkflowGroup" column (line 843) is DROPPED. It reads
-/// <c>EmployeeOrgAssignment.WorkflowGroup</c>, which is explicitly still deferred in HCMv3's
-/// <c>EmployeeOrgAssignment</c> ("STILL DEFERRED ... Position/WorkflowGroup fields" in that entity's
-/// class remarks). There is no column to read; it is dropped rather than faked.
-///
-/// DEVIATION 3 -- legacy's "RevokeComments" column (line 858) is DROPPED. HCMv3's
+/// DEVIATION -- legacy's "RevokeComments" column (line 858) is DROPPED. HCMv3's
 /// <c>EmployeeSeparation</c> ports <c>RevokeDate</c> but has no RevokeComments property.
 /// </summary>
 public class SalaryBenefitsReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
@@ -140,6 +135,12 @@ public class SalaryBenefitsReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
     /// today (line 745). Legacy's persistent alias is <c>Concat(Code, ' ', FullNameEn)</c>.
     /// </summary>
     public string ManagerName { get; set; }
+
+    /// <summary>
+    /// Legacy "WorkflowGroup" column -- the workflow group of the org assignment current today (line 726).
+    /// Legacy wrote <c>NameEn</c> even in the Arabic aspect (line 845); reproduced as-is.
+    /// </summary>
+    public string WorkflowGroupName { get; set; }
 
     /// <summary>Legacy "RecruitmentType" column (line 844).</summary>
     public string RecruitmentTypeName { get; set; }

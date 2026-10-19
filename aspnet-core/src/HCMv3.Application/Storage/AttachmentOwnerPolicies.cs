@@ -612,3 +612,23 @@ public class AssetAttachmentOwnerPolicy : ScreenPermissionAttachmentOwnerPolicy<
 
     protected override string EditPermission => AppPermissions.Pages_GeneralMasterInfo_Assets_Edit;
 }
+
+/// <summary>
+/// The invoice scan on an employee asset invoice (legacy <c>EmployeeAssetInvoice.DocAttachment</c>). No
+/// workflow: HR keeps these from the employee record, so the Asset Invoices screen permissions decide.
+/// </summary>
+public class EmployeeAssetInvoiceAttachmentOwnerPolicy : ScreenPermissionAttachmentOwnerPolicy<EmployeeAssetInvoice>
+{
+    public const string Type = "EmployeeAssetInvoice";
+
+    public EmployeeAssetInvoiceAttachmentOwnerPolicy(IRepository<EmployeeAssetInvoice> repository, IPermissionChecker permissionChecker)
+        : base(repository, permissionChecker)
+    {
+    }
+
+    public override string EntityType => Type;
+
+    protected override string ViewPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices;
+
+    protected override string EditPermission => AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Edit;
+}

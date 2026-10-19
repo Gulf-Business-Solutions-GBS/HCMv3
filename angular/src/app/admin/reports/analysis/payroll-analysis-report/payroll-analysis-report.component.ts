@@ -18,6 +18,7 @@ import {
     PayrollRunType,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 /**
  * Payroll Analysis analysis grid report.
@@ -52,6 +53,9 @@ import { GridReportFilterComponent } from '../shared/grid-report-filter.componen
     ],
 })
 export class PayrollAnalysisReportComponent extends AppComponentBase {
+    /** OrgLevel1..7 headers use the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+
     private readonly _reportService = inject(PayrollAnalysisReportServiceProxy);
     private readonly _fileDownloadService = inject(FileDownloadService);
 

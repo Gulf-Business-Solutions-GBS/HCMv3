@@ -10,10 +10,8 @@ namespace HCMv3.TravelManagement;
 /// <c>HCM10.Module.BusinessObjects.TravelManagement.TravelDetailCost</c>), linked back via
 /// <see cref="TravelDetailId"/>.
 ///
-/// DELIBERATE SIMPLIFICATION: the legacy cascade that recomputed <c>TravelDetail.TotalAmount</c> and
-/// <c>Travel.TotalTravelCost</c> on every save/delete of a cost row is NOT ported -- see
-/// <see cref="TravelDetail"/> remarks. <c>TravelDetailCostsAppService</c> performs straightforward CRUD on
-/// this row only.
+/// Saving or deleting a cost line recalculates <c>TravelDetail.TotalAmount</c> and
+/// <c>Travel.TotalTravelCost</c> through <see cref="ITravelCostRollupService"/>, as legacy did.
 /// </summary>
 public class TravelDetailCost : FullAuditedEntity, IMustHaveTenant
 {

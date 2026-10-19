@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using HCMv3.GridReports.Employees.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Storage;
+using HCMv3.Workflow;
 using MiniExcelLibs;
 using Shouldly;
 using Xunit;
@@ -352,5 +354,99 @@ public class EmployeeCTCReportAppService_Tests : AppTestBase
         exported.Count.ShouldBe(3);
         var exportedCodes = exported.Select(r => r["Code"]?.ToString()).OrderBy(c => c).ToList();
         exportedCodes.ShouldBe(new List<string> { "CTC-EXP-A", "CTC-EXP-B", "CTC-EXP-C" });
+    }
+
+    // --- Workflow Group column -------------------------------------------------------------------------
+
+    private int CreateWorkflowGroup(string code)
+    {
+        var id = 0;
+        UsingDbContext(context =>
+        {
+            var group = context.Set<WorkflowGroup>().Add(new WorkflowGroup
+            {
+                TenantId = TenantId,
+                Code = code,
+                NameEn = code + " En",
+                NameAr = code + " Ar"
+            }).Entity;
+            context.SaveChanges();
+            id = group.Id;
+        });
+
+        return id;
+    }
+
+    private void CreateAssignmentWithWorkflowGroup(Employee employee, DateTime start, DateTime end, int? workflowGroupId)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
+            {
+                TenantId = TenantId,
+                EmployeeId = employee.Id,
+                StartDate = start,
+                EndDate = end,
+                WorkflowGroupId = workflowGroupId
+            });
+        });
+    }
+
+    private static async Task<TResult> WithUiCulture<TResult>(string cultureName, Func<Task<TResult>> action)
+    {
+        var previous = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+        try
+        {
+            return await action();
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previous;
+        }
+    }
+
+    [Fact]
+    public async Task Should_Show_The_Workflow_Group_Of_Todays_Assignment()
+    {
+        var today = DateTime.Now.Date;
+        var employee = CreateEmployee("CTC-WFG");
+        var oldGroup = CreateWorkflowGroup("CTC-WFG-OLD");
+        var currentGroup = CreateWorkflowGroup("CTC-WFG-CUR");
+
+        CreateAssignmentWithWorkflowGroup(employee, today.AddYears(-3), today.AddYears(-1), oldGroup);
+        CreateAssignmentWithWorkflowGroup(employee, today.AddYears(-1).AddDays(1), today.AddYears(1), currentGroup);
+
+        var result = await WithUiCulture("en", () => _appService.GetEmployeeCTCReport(Input(employeeCode: "CTC-WFG")));
+
+        result.Items.Single().WorkflowGroupName.ShouldBe("CTC-WFG-CUR En");
+    }
+
+    [Fact]
+    public async Task Should_Keep_The_English_Workflow_Group_Name_For_An_Arabic_Request()
+    {
+        // Legacy Table1 (line 1615) wrote WorkflowGroup.NameEn in every language, like the other groups.
+        var employee = CreateEmployee("CTC-WFG-AR");
+        var group = CreateWorkflowGroup("CTC-WFG-AR");
+        CreateAssignmentWithWorkflowGroup(employee, DateTime.Now.Date.AddYears(-1), DateTime.Now.Date.AddYears(1), group);
+
+        var result = await WithUiCulture("ar", () => _appService.GetEmployeeCTCReport(Input(employeeCode: "CTC-WFG-AR")));
+
+        result.Items.Single().WorkflowGroupName.ShouldBe("CTC-WFG-AR En");
+    }
+
+    [Fact]
+    public async Task Should_Export_The_Workflow_Group_Column()
+    {
+        var employee = CreateEmployee("CTC-WFG-EXP");
+        var group = CreateWorkflowGroup("CTC-WFG-EXP");
+        CreateAssignmentWithWorkflowGroup(employee, DateTime.Now.Date.AddYears(-1), DateTime.Now.Date.AddYears(1), group);
+
+        var file = await WithUiCulture("en", () => _appService.GetEmployeeCTCReportToExcel(Input(employeeCode: "CTC-WFG-EXP")));
+
+        using var stream = new MemoryStream(_tempFileCacheManager.GetFile(file.FileToken));
+        var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
+
+        exported.Single()["Workflow Group"]?.ToString().ShouldBe("CTC-WFG-EXP En");
     }
 }

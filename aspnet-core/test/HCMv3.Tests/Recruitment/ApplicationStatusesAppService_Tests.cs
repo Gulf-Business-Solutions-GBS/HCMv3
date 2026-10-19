@@ -199,4 +199,47 @@ public class ApplicationStatusesAppService_Tests : RecruitmentAppServiceTestBase
 
         Context.Employees.Any(e => e.FirstNameEn == "John").ShouldBeFalse();
     }
+
+    [Fact]
+    public async Task Should_Return_The_Applicant_Summary_Of_An_Application()
+    {
+        var applicantId = CreateApplicant("Sara", "sara@example.com");
+        var applicantCVId = CreateApplicantCV(applicantId);
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditApplicationStatusDto { ApplicantCVId = applicantCVId, AppStatus = AppStatus.Shortlisted });
+        var id = Context.ApplicationStatuses.Single(a => a.ApplicantCVId == applicantCVId).Id;
+
+        var summary = await service.GetApplicationStatusSummary(new Abp.Application.Services.Dto.EntityDto(id));
+
+        summary.Id.ShouldBe(id);
+        summary.AppStatus.ShouldBe(AppStatus.Shortlisted);
+        summary.ApplicantId.ShouldBe(applicantId);
+        summary.ApplicantFullNameEn.ShouldBe("Sara Doe");
+        summary.ApplicantFullNameAr.ShouldBe("ف دو");
+        summary.Email.ShouldBe("sara@example.com");
+        summary.NationalityNameEn.ShouldBe("N");
+        summary.CVUploadDate.ShouldBe(new DateTime(2026, 1, 1));
+    }
+
+    [Fact]
+    public async Task Should_Return_A_Summary_Without_Applicant_When_No_CV_Is_Linked()
+    {
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditApplicationStatusDto { AppStatus = AppStatus.Applied });
+        var id = Context.ApplicationStatuses.Single().Id;
+
+        var summary = await service.GetApplicationStatusSummary(new Abp.Application.Services.Dto.EntityDto(id));
+
+        summary.ApplicantId.ShouldBeNull();
+        summary.ApplicantFullNameEn.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_The_Application_Does_Not_Exist()
+    {
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<Abp.Domain.Entities.EntityNotFoundException>(
+            () => service.GetApplicationStatusSummary(new Abp.Application.Services.Dto.EntityDto(999999)));
+    }
 }

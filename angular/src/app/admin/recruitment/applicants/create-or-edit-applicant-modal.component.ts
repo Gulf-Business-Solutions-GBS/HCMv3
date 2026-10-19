@@ -29,6 +29,8 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
+import { toBase64Payload, toImageSrc } from '@shared/utils/image-data-url';
+
 @Component({
     selector: 'createOrEditApplicantModal',
     templateUrl: './create-or-edit-applicant-modal.component.html',
@@ -42,6 +44,8 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
     ],
 })
 export class CreateOrEditApplicantModalComponent extends AppComponentBase {
+    readonly toImageSrc = toImageSrc;
+
     private _service = inject(ApplicantsServiceProxy);
     private _nationalitiesService = inject(NationalitiesServiceProxy);
     private _religionsService = inject(ReligionsServiceProxy);
@@ -171,7 +175,7 @@ export class CreateOrEditApplicantModalComponent extends AppComponentBase {
 
         const reader = new FileReader();
         reader.onload = () => {
-            this.updateField('photo', reader.result as string);
+            this.updateField('photo', toBase64Payload(reader.result as string));
         };
         reader.readAsDataURL(file);
     }

@@ -47,6 +47,12 @@ public class CreateOrEditEmployeeAttendanceDto
 
     public double AttendanceHours { get; set; }
 
+    /// <summary>
+    /// Read-only, filled by <c>GetEmployeeAttendanceForEdit</c> for display. Ignored on save: the server always
+    /// recalculates it (legacy <c>EmployeeAttendance.UpdateAttendanceQuota</c>, lines 348-381).
+    /// </summary>
+    public double TotalAttendDays { get; set; }
+
     [StringLength(4000)]
     public string Comments { get; set; }
 

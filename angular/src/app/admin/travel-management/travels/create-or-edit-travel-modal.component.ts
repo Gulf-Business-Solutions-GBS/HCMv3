@@ -14,6 +14,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -30,6 +31,7 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
         ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        DecimalPipe,
     ],
 })
 export class CreateOrEditTravelModalComponent extends AppComponentBase {
@@ -46,6 +48,9 @@ export class CreateOrEditTravelModalComponent extends AppComponentBase {
     readonly employees = signal<EmployeeDto[]>([]);
     readonly travelTypes = signal<TravelTypeDto[]>([]);
 
+    /** Read-only, totalled by the server from the legs and their costs (legacy Travel.TotalTravelCost). */
+    readonly totalTravelCost = signal<number>(0);
+
     show(id?: number): void {
         this.active.set(true);
 
@@ -59,10 +64,12 @@ export class CreateOrEditTravelModalComponent extends AppComponentBase {
 
         if (!id) {
             this.record.set(new CreateOrEditTravelDto());
+            this.totalTravelCost.set(0);
             this.modal().show();
         } else {
             this._service.getTravelForEdit(id).subscribe((result) => {
                 this.record.set(result.travel);
+                this.totalTravelCost.set(result.totalTravelCost ?? 0);
                 this.modal().show();
             });
         }

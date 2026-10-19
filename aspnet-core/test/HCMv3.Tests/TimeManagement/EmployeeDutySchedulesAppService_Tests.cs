@@ -145,4 +145,71 @@ public class EmployeeDutySchedulesAppService_Tests : TimeManagementAppServiceTes
                 EndDate = new DateTime(2026, 1, 1)
             }));
     }
+
+    private async Task<EmployeeDutySchedulesAppService> SeedTwoEmployeesAsync()
+    {
+        var dutyPeriodId = CreateDutyPeriod("DPF");
+        var morningId = CreateRosterDutySchedule("MORNING", dutyPeriodId);
+        var nightId = CreateRosterDutySchedule("NIGHT", dutyPeriodId);
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditEmployeeDutyScheduleDto
+        {
+            EmployeeId = CreateEmployee("Fatima"),
+            RosterDutyScheduleId = morningId,
+            StartDate = new DateTime(2026, 1, 1),
+            EndDate = new DateTime(2026, 6, 30)
+        });
+        await service.CreateOrEdit(new CreateOrEditEmployeeDutyScheduleDto
+        {
+            EmployeeId = CreateEmployee("Yousef"),
+            RosterDutyScheduleId = nightId,
+            StartDate = new DateTime(2026, 1, 1),
+            EndDate = new DateTime(2026, 6, 30)
+        });
+
+        return service;
+    }
+
+    [Fact]
+    public async Task Should_List_Every_Employee_When_No_Employee_Is_Given()
+    {
+        var service = await SeedTwoEmployeesAsync();
+
+        var result = await service.GetAll(new GetAllEmployeeDutySchedulesInput { MaxResultCount = 10 });
+
+        result.TotalCount.ShouldBe(2);
+    }
+
+    [Fact]
+    public async Task Should_Filter_By_Employee_Name()
+    {
+        var service = await SeedTwoEmployeesAsync();
+
+        var result = await service.GetAll(new GetAllEmployeeDutySchedulesInput { Filter = "Fatima", MaxResultCount = 10 });
+
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].EmployeeFullNameEn.ShouldBe("Fatima");
+    }
+
+    [Fact]
+    public async Task Should_Filter_By_Roster_Duty_Schedule_Code()
+    {
+        var service = await SeedTwoEmployeesAsync();
+
+        var result = await service.GetAll(new GetAllEmployeeDutySchedulesInput { Filter = "NIGHT", MaxResultCount = 10 });
+
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].EmployeeFullNameEn.ShouldBe("Yousef");
+    }
+
+    [Fact]
+    public async Task Should_Ignore_A_Blank_Filter()
+    {
+        var service = await SeedTwoEmployeesAsync();
+
+        var result = await service.GetAll(new GetAllEmployeeDutySchedulesInput { Filter = "  ", MaxResultCount = 10 });
+
+        result.TotalCount.ShouldBe(2);
+    }
 }

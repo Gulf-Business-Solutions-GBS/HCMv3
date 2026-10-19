@@ -52,6 +52,17 @@ public class ClearanceRequestFieldsAppService : HCMv3AppServiceBase, IClearanceR
             items.Select(ToDto).ToList());
     }
 
+    /// <summary>One field with its display names, for the field's own page.</summary>
+    public async Task<ClearanceRequestFieldDto> GetClearanceRequestField(EntityDto input)
+    {
+        var entity = await _repository.GetAll()
+            .Include(f => f.ClearanceRequestType)
+            .FirstOrDefaultAsync(f => f.Id == input.Id)
+            ?? throw new Abp.Domain.Entities.EntityNotFoundException(typeof(ClearanceRequestField), input.Id);
+
+        return ToDto(entity);
+    }
+
     public async Task<GetClearanceRequestFieldForEditOutput> GetClearanceRequestFieldForEdit(EntityDto input)
     {
         var entity = await _repository.GetAsync(input.Id);

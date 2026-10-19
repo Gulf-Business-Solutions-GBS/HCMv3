@@ -29,7 +29,9 @@
                                 !(
                                     [
                                         'Pages.BenefitsManagement.EmployeeInsurances.Edit',
-                                        'Pages.BenefitsManagement.EmployeeInsurances.Delete'
+                                        'Pages.BenefitsManagement.EmployeeInsurances.Delete',
+                                        'Pages.BenefitsManagement.EmployeeInsuranceDetails',
+                                        'Pages.BenefitsManagement.CompanyInsuranceDetails'
                                     ] | permissionAny
                                 )
                             ">
@@ -60,7 +62,9 @@
                                 !(
                                     [
                                         'Pages.BenefitsManagement.EmployeeInsurances.Edit',
-                                        'Pages.BenefitsManagement.EmployeeInsurances.Delete'
+                                        'Pages.BenefitsManagement.EmployeeInsurances.Delete',
+                                        'Pages.BenefitsManagement.EmployeeInsuranceDetails',
+                                        'Pages.BenefitsManagement.CompanyInsuranceDetails'
                                     ] | permissionAny
                                 )
                             ">
@@ -103,3 +107,4 @@
 </div>
 
 <createOrEditEmployeeInsuranceModal #createOrEditModal (modalSave)="reloadPage()" />
+<employeeInsuranceInstallmentsModal #installmentsModal (changed)="reloadPage()" />

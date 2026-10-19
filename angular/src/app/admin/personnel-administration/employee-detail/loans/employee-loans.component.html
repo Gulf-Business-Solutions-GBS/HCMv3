@@ -29,7 +29,9 @@
                                 !(
                                     [
                                         'Pages.PersonnelAdministration.EmployeeLoans.Edit',
-                                        'Pages.PersonnelAdministration.EmployeeLoans.Delete'
+                                        'Pages.PersonnelAdministration.EmployeeLoans.Delete',
+                                        'Pages.PersonnelAdministration.EmployeeLoanRecoveries',
+                                        'Pages.PersonnelAdministration.EmployeeLoanExemptions'
                                     ] | permissionAny
                                 )
                             ">
@@ -56,7 +58,9 @@
                                 !(
                                     [
                                         'Pages.PersonnelAdministration.EmployeeLoans.Edit',
-                                        'Pages.PersonnelAdministration.EmployeeLoans.Delete'
+                                        'Pages.PersonnelAdministration.EmployeeLoans.Delete',
+                                        'Pages.PersonnelAdministration.EmployeeLoanRecoveries',
+                                        'Pages.PersonnelAdministration.EmployeeLoanExemptions'
                                     ] | permissionAny
                                 )
                             ">
@@ -95,3 +99,4 @@
 </div>
 
 <createOrEditEmployeeLoanModal #createOrEditModal (modalSave)="reloadPage()" />
+<employeeLoanRecoveriesExemptionsModal #recoveriesExemptionsModal (changed)="reloadPage()" />

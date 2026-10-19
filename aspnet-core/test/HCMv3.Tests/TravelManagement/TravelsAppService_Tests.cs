@@ -20,7 +20,8 @@ public class TravelsAppService_Tests : TravelManagementAppServiceTestBase
         // HCMv3.Tests.Workflow.TravelWorkflow_Tests.
         return CreateService(() => new TravelsAppService(
             FakeRepository.For<Travel>(Context),
-            new HCMv3.Tests.PerformanceManagement.FakeAdminTransactionSubmitter()));
+            new HCMv3.Tests.PerformanceManagement.FakeAdminTransactionSubmitter(),
+            TravelCostRollupTestFactory.Create(Context)));
     }
 
     [Fact]

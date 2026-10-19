@@ -64,6 +64,7 @@ export class EmployeeDutySchedulesComponent extends AppComponentBase {
             .getAll(
                 new GetAllEmployeeDutySchedulesInput({
                     employeeId: this.employeeId(),
+                    filter: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

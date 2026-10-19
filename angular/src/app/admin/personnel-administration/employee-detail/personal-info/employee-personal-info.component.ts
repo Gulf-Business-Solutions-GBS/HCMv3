@@ -32,6 +32,8 @@ import { HelpService } from '@app/shared/help/help.service';
  * second one: two forms over one entity drift apart, and the one with the validation would not be
  * this one.
  */
+import { toBase64Payload, toImageSrc } from '@shared/utils/image-data-url';
+
 @Component({
     selector: 'employee-personal-info',
     templateUrl: './employee-personal-info.component.html',
@@ -62,7 +64,7 @@ export class EmployeePersonalInfoComponent extends AppComponentBase implements O
      * father/mother names and the photo (a data URL). Same permission as the profile.
      */
     readonly details = signal<CreateOrEditEmployeeDto | undefined>(undefined);
-    readonly photo = computed(() => this.details()?.photo);
+    readonly photo = computed(() => toImageSrc(this.details()?.photo));
 
     readonly genderText = computed(() => this.enumText(Gender, this.profile()?.gender));
     readonly statusText = computed(() => this.enumText(EmployeeStatus, this.profile()?.status));

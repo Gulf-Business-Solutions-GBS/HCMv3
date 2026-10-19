@@ -19,6 +19,7 @@ import {
     GetEmployeeTransferReportInput,
 } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
 /**
  * Employee Transfer analysis grid report.
@@ -47,6 +48,9 @@ import { GridReportFilterComponent } from '../shared/grid-report-filter.componen
     ],
 })
 export class EmployeeTransferReportComponent extends AppComponentBase {
+    /** OrgLevel1..7 headers use the tenant's Organization Unit Type names; undefined levels are hidden. */
+    readonly orgLevels = injectOrgLevelCaptions((key, ...args) => this.l(key, ...args));
+
     private readonly _reportService = inject(EmployeeTransferReportServiceProxy);
     private readonly _fileDownloadService = inject(FileDownloadService);
 

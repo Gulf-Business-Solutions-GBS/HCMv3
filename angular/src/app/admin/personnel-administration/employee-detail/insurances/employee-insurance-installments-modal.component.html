@@ -1,0 +1,185 @@
+<div
+    appBsModal
+    #installmentsModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="installmentsModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active() && insurance(); as insurance) {
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {{ 'InsuranceInstallments' | localize }}
+                        <small class="text-muted ms-2">
+                            {{ insurance.insurancePlanNameEn }} ({{ insurance.startDate | luxonFormat: 'yyyy-MM-dd' }})
+                        </small>
+                    </h4>
+                    <button type="button" class="btn-close" (click)="close()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-wrap gap-8 mb-6">
+                        <div>
+                            <span class="text-muted">{{ 'InsuranceAmount' | localize }}:</span>
+                            <span class="fw-bold">{{ insurance.insuranceAmount }}</span>
+                        </div>
+                        <div>
+                            <span class="text-muted">{{ 'EmployeeContribution' | localize }}:</span>
+                            <span class="fw-bold">{{ insurance.employeeContribution }}</span>
+                        </div>
+                        <div>
+                            <span class="text-muted">{{ 'BalanceEmployeeContribution' | localize }}:</span>
+                            <span class="fw-bold">{{ insurance.balanceEmployeeContribution }}</span>
+                        </div>
+                        <div>
+                            <span class="text-muted">{{ 'CompanyContribution' | localize }}:</span>
+                            <span class="fw-bold">{{ insurance.companyContribution }}</span>
+                        </div>
+                        <div>
+                            <span class="text-muted">{{ 'BalanceCompanyContribution' | localize }}:</span>
+                            <span class="fw-bold">{{ insurance.balanceCompanyContribution }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Employee share -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">{{ 'EmployeeInsuranceDetails' | localize }}</h5>
+                        @if ('Pages.BenefitsManagement.EmployeeInsuranceDetails.Create' | permission) {
+                            <button type="button" class="btn btn-primary btn-sm" (click)="createEmployeeDetail()">
+                                <i class="fa fa-plus"></i>
+                                {{ 'CreateNew' | localize }}
+                            </button>
+                        }
+                    </div>
+                    <div class="primeng-datatable-container mb-8" [busyIf]="loadingEmployeeDetails()">
+                        <p-table
+                            [value]="employeeDetails()"
+                            [paginator]="employeeDetails().length > 10"
+                            [rows]="10"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                                    <th>{{ 'InstallmentDate' | localize }}</th>
+                                    <th>{{ 'InstallmentAmount' | localize }}</th>
+                                    <th>{{ 'InstallmentType' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td class="text-nowrap">
+                                        @if (isPayrollInstallment(record)) {
+                                            <i
+                                                class="fa fa-lock text-muted"
+                                                [pTooltip]="'InstallmentWrittenByPayroll' | localize"
+                                                tooltipPosition="top"></i>
+                                        } @else {
+                                            @if ('Pages.BenefitsManagement.EmployeeInsuranceDetails.Edit' | permission) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-icon btn-sm btn-light-primary me-1"
+                                                    [title]="'Edit' | localize"
+                                                    (click)="editEmployeeDetail(record)">
+                                                    <i class="fa fa-pen"></i>
+                                                </button>
+                                            }
+                                            @if ('Pages.BenefitsManagement.EmployeeInsuranceDetails.Delete' | permission) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-icon btn-sm btn-light-danger"
+                                                    [title]="'Delete' | localize"
+                                                    (click)="deleteEmployeeDetail(record)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            }
+                                        }
+                                    </td>
+                                    <td>{{ record.installmentDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td>{{ record.installmentAmount }}</td>
+                                    <td>{{ installmentTypeName(record.installmentType) | localize }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (!loadingEmployeeDetails() && employeeDetails().length === 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                    </div>
+
+                    <!-- Company share -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">{{ 'CompanyInsuranceDetails' | localize }}</h5>
+                        @if ('Pages.BenefitsManagement.CompanyInsuranceDetails.Create' | permission) {
+                            <button type="button" class="btn btn-primary btn-sm" (click)="createCompanyDetail()">
+                                <i class="fa fa-plus"></i>
+                                {{ 'CreateNew' | localize }}
+                            </button>
+                        }
+                    </div>
+                    <div class="primeng-datatable-container" [busyIf]="loadingCompanyDetails()">
+                        <p-table
+                            [value]="companyDetails()"
+                            [paginator]="companyDetails().length > 10"
+                            [rows]="10"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                                    <th>{{ 'InstallmentDate' | localize }}</th>
+                                    <th>{{ 'InstallmentAmount' | localize }}</th>
+                                    <th>{{ 'InstallmentType' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td class="text-nowrap">
+                                        @if (isPayrollInstallment(record)) {
+                                            <i
+                                                class="fa fa-lock text-muted"
+                                                [pTooltip]="'InstallmentWrittenByPayroll' | localize"
+                                                tooltipPosition="top"></i>
+                                        } @else {
+                                            @if ('Pages.BenefitsManagement.CompanyInsuranceDetails.Edit' | permission) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-icon btn-sm btn-light-primary me-1"
+                                                    [title]="'Edit' | localize"
+                                                    (click)="editCompanyDetail(record)">
+                                                    <i class="fa fa-pen"></i>
+                                                </button>
+                                            }
+                                            @if ('Pages.BenefitsManagement.CompanyInsuranceDetails.Delete' | permission) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-icon btn-sm btn-light-danger"
+                                                    [title]="'Delete' | localize"
+                                                    (click)="deleteCompanyDetail(record)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            }
+                                        }
+                                    </td>
+                                    <td>{{ record.installmentDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td>{{ record.installmentAmount }}</td>
+                                    <td>{{ installmentTypeName(record.installmentType) | localize }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (!loadingCompanyDetails() && companyDetails().length === 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<createOrEditEmployeeInsuranceDetailModal #employeeDetailModal (modalSave)="onEmployeeDetailSaved()" />
+<createOrEditCompanyInsuranceDetailModal #companyDetailModal (modalSave)="onCompanyDetailSaved()" />

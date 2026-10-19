@@ -13,6 +13,8 @@ public static class EntityImageKinds
     public const string EmployeeSignature = "employee-signatures";
 
     public const string ApplicantPhoto = "applicant-photos";
+
+    public const string OrgUnitLogo = "org-unit-logos";
 }
 
 /// <summary>

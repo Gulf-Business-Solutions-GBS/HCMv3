@@ -22,6 +22,25 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        @if (pickEmployee()) {
+                            <div class="mb-5">
+                                <label class="form-label required" for="EmployeeDutySchedule_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="EmployeeDutySchedule_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                        }
                         <div class="mb-5">
                             <label class="form-label required" for="EmployeeDutySchedule_StartDate">{{ 'StartDate' | localize }}</label>
                             <input
