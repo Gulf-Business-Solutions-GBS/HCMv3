@@ -1,3 +1,4 @@
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
@@ -30,7 +31,7 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 @Component({
     templateUrl: './licence-assignment.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, LocalizePipe],
+    imports: [HelpPageDirective, SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, LocalizePipe],
 })
 export class LicenceAssignmentComponent extends AppComponentBase implements OnInit {
     private _service = inject(LicenceAssignmentServiceProxy);

@@ -20,7 +20,7 @@ permissions: [Pages.Workflow.RequestMasters.Create]
 
 **لماذا يهم.** لا يُقرأ حالياً.
 
-**القواعد.** إلزامي. إحدى القيم: EmployeeOnly، EmployeeManager، EmployeeDepartment، الجميع.
+**القواعد.** إلزامي. إحدى القيم: EmployeeOnly، مدير الموظف، EmployeeDepartment، الجميع.
 
 ## DefaultApprover {#RequestMaster.DefaultApproverId}
 <!-- alias: loc:DefaultApprover, dom:RequestMaster_DefaultApproverId -->

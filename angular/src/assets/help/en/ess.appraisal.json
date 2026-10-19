@@ -1,0 +1,501 @@
+{
+  "helpId": "ess.appraisal",
+  "lang": "en",
+  "title": "360 Degree Appraisal",
+  "entity": null,
+  "overviewHtml": "<p>Everything about performance appraisals in one place: your own appraisals, the ones you have been asked to review, and, if you are a manager, your team's. Pick a list at the top, then press <strong>Details</strong> on a row to open the appraisal. There you see the KPIs, enter your ratings and comments, add peers and submit your review.</p><p>What you see and may do in an appraisal depends on two things: your part in it (the employee being appraised, a reviewer, a peer, or an approver on the step the appraisal is waiting at), and what HR has allowed for that step under <strong>Appraisal WF Setup</strong>. So a button you used at one step may be missing at the next. If HR has not set up the step, no review buttons are offered.</p><p>Once the appraisal's request is approved, rejected or closed, it can only be read. Approvers who open the appraisal from their <strong>Approvals</strong> see the same review.</p>",
+  "aliasIndex": {
+    "loc:MyAppraisalListScope_Mine": "ess.appraisal.mine",
+    "loc:MyAppraisalListScope_ToReview": "ess.appraisal.to-review",
+    "loc:MyAppraisalListScope_Team": "ess.appraisal.team",
+    "loc:RequestNumber": "ess.appraisal.request-number",
+    "loc:Employee": "ess.appraisal.employee",
+    "loc:Period": "ess.appraisal.period",
+    "loc:FormType": "ess.appraisal.form-type",
+    "loc:CreatedOn": "ess.appraisal.created-on",
+    "loc:RequestStatus": "ess.appraisal.status",
+    "loc:Details": "ess.appraisal.details",
+    "loc:KpiInfo": "ess.appraisal.kpis",
+    "loc:CopyKpi": "ess.appraisal.copy-kpi",
+    "loc:KpiFrom": "ess.appraisal.kpi-from",
+    "loc:KpiCategory": "ess.appraisal.kpi-category",
+    "loc:ContributionReview": "ess.appraisal.contribution",
+    "loc:Weight": "ess.appraisal.weight",
+    "loc:Target": "ess.appraisal.target",
+    "loc:Ratings": "ess.appraisal.ratings",
+    "loc:ReviewerName": "ess.appraisal.reviewer-name",
+    "loc:Marks": "ess.appraisal.marks",
+    "loc:Comments": "ess.appraisal.comments",
+    "loc:Reviewers": "ess.appraisal.reviewers",
+    "loc:AddPeer": "ess.appraisal.add-peer",
+    "loc:Peer": "ess.appraisal.peer",
+    "loc:ReviewerType": "ess.appraisal.reviewer-type",
+    "loc:AverageRating": "ess.appraisal.average-rating",
+    "loc:AverageScore": "ess.appraisal.average-score",
+    "loc:TotalMarks": "ess.appraisal.total-marks",
+    "loc:ReviewSubmitted": "ess.appraisal.review-submitted",
+    "loc:SaveReview": "ess.appraisal.save-review",
+    "loc:SubmitReview": "ess.appraisal.submit-review",
+    "loc:OverallAverageScore": "ess.appraisal.overall-average",
+    "loc:PeerAverageScore": "ess.appraisal.peer-average",
+    "loc:EmployeeAverageScore": "ess.appraisal.employee-average",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked"
+  },
+  "fields": [
+    {
+      "id": "ess.appraisal.mine",
+      "label": "MyAppraisalListScope_Mine",
+      "section": null,
+      "aliases": [
+        "loc:MyAppraisalListScope_Mine"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisals about you.</p><p><strong>Example.</strong> Your 2026 annual appraisal, waiting at your manager's step.</p><p><strong>Why it matters.</strong> Open one to rate yourself (when your company asks for self-rating), nominate peers when allowed, and follow its status.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.to-review",
+      "label": "MyAppraisalListScope_ToReview",
+      "section": null,
+      "aliases": [
+        "loc:MyAppraisalListScope_ToReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisals you have to act on: those where you are on the reviewer list, and those waiting at a step where you are an approver.</p><p><strong>Example.</strong> A colleague nominated you as a peer: their appraisal appears here.</p><p><strong>Why it matters.</strong> An appraisal stays on this list after you have submitted your review, so you can look back at it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.team",
+      "label": "MyAppraisalListScope_Team",
+      "section": null,
+      "aliases": [
+        "loc:MyAppraisalListScope_Team"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisals of the employees who report to you directly today, one level down.</p><p><strong>Example.</strong> The four people in your section.</p><p><strong>Why it matters.</strong> It lets a manager follow the team's appraisals even at steps where they are not an approver. What you may see inside follows the step's setup.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.request-number",
+      "label": "RequestNumber",
+      "section": null,
+      "aliases": [
+        "loc:RequestNumber"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow request number of the appraisal.</p><p><strong>Example.</strong> 1052</p><p><strong>Why it matters.</strong> Quote it when you ask HR about an appraisal. It is blank for an appraisal that has not been sent into the workflow.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.employee",
+      "label": "Employee",
+      "section": null,
+      "aliases": [
+        "loc:Employee"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee being appraised, by code and name.</p><p><strong>Example.</strong> 1045 - Fatima Al-Sabah</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [
+        "loc:Period"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisal period (cycle) the appraisal belongs to.</p><p><strong>Example.</strong> Annual 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.form-type",
+      "label": "FormType",
+      "section": null,
+      "aliases": [
+        "loc:FormType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of appraisal form, which also decides its approval chain and the most reviewers it may have.</p><p><strong>Example.</strong> Staff Appraisal</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.created-on",
+      "label": "CreatedOn",
+      "section": null,
+      "aliases": [
+        "loc:CreatedOn"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the appraisal was opened.</p><p><strong>Example.</strong> 2026-12-01</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.status",
+      "label": "RequestStatus",
+      "section": null,
+      "aliases": [
+        "loc:RequestStatus"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the appraisal's request stands: open (in progress), approved, rejected or closed. <strong>Recorded</strong> means the appraisal is not managed by the workflow.</p><p><strong>Example.</strong> Open</p><p><strong>Why it matters.</strong> Ratings, peers and reviews can only be changed while the request is open (or still a draft).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.details",
+      "label": "Details",
+      "section": null,
+      "aliases": [
+        "loc:Details"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Opens the appraisal.</p><p><strong>Why it matters.</strong> All the work on an appraisal happens there; nothing else can be done from the row.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.kpis",
+      "label": "KpiInfo",
+      "section": null,
+      "aliases": [
+        "loc:KpiInfo"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPIs the employee is appraised on, with their category, description, weight and target.</p><p><strong>Example.</strong> Customer satisfaction, weight 30, target 90%.</p><p><strong>Why it matters.</strong> Shown only where the step allows the KPI list to be seen, and never to a reviewer who is not an approver on the step: they see the KPIs in their own rating lines instead.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.copy-kpi",
+      "label": "CopyKpi",
+      "section": null,
+      "aliases": [
+        "loc:CopyKpi"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Fills the appraisal's KPI list from a ready-made set. Offered to the approver on a step that allows it, while the request is open.</p><p><strong>Example.</strong> Copy the KPIs set up for the job title \"Accountant\".</p><p><strong>Why it matters.</strong> Only KPIs the appraisal does not already have are added, so copying twice does not double them. Every reviewer already on the appraisal gets a rating line for each new KPI. On a step where the approver rates, copying also puts you on the reviewer list. When peer review is switched on in Appraisal Settings, the copy is refused if one more reviewer would go over the form type's reviewer limit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.kpi-from",
+      "label": "KpiFrom",
+      "section": null,
+      "aliases": [
+        "loc:KpiFrom"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where Copy KPI takes the KPIs from: a <strong>Job Title</strong> KPI set, an <strong>Organization Unit</strong> KPI set, or another <strong>Employee</strong>'s appraisal for the same period. Then choose the set or the employee in the box beside it.</p><p><strong>Example.</strong> Organization Unit, then \"Finance Department\".</p><p><strong>Why it matters.</strong> Only employees with an appraisal in the same period that already has KPIs are offered.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.kpi-category",
+      "label": "KpiCategory",
+      "section": null,
+      "aliases": [
+        "loc:KpiCategory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The group the KPI belongs to.</p><p><strong>Example.</strong> Financial</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.contribution",
+      "label": "ContributionReview",
+      "section": null,
+      "aliases": [
+        "loc:ContributionReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI itself, with its description underneath.</p><p><strong>Example.</strong> Close the month within 5 working days.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.weight",
+      "label": "Weight",
+      "section": null,
+      "aliases": [
+        "loc:Weight"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much the KPI counts in the score compared with the others.</p><p><strong>Example.</strong> 25</p><p><strong>Why it matters.</strong> Not shown when your company appraises with marks instead of ratings.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.target",
+      "label": "Target",
+      "section": null,
+      "aliases": [
+        "loc:Target"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the employee is expected to achieve on the KPI.</p><p><strong>Example.</strong> 95% on time</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.ratings",
+      "label": "Ratings",
+      "section": null,
+      "aliases": [
+        "loc:Ratings"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One line per KPI for each reviewer. You always see your own lines; other reviewers' lines are shown only where the step allows it. Pick a rating for each of your lines while your review is not yet submitted.</p><p><strong>Example.</strong> \"Exceeds expectations (2/3)\": you may give this rating to 2 more KPIs out of a limit of 3.</p><p><strong>Why it matters.</strong> Each rating can be given to only a limited number of your KPIs; a rating with none left is greyed out. Some ratings need a comment: the comment box turns red until you write one.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.reviewer-name",
+      "label": "ReviewerName",
+      "section": null,
+      "aliases": [
+        "loc:ReviewerName"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whose rating line it is. The column appears only when you can see other reviewers' lines as well as your own.</p><p><strong>Example.</strong> 1020 - Ahmad Al-Kandari</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.marks",
+      "label": "Marks",
+      "section": null,
+      "aliases": [
+        "loc:Marks"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The marks you give a KPI, used instead of a rating when your company has marks switched on in Appraisal Settings.</p><p><strong>Example.</strong> 8</p><p><strong>Why it matters.</strong> Marks are not required before you submit, and with marks there are no average ratings.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Your remark on the KPI, up to 4000 characters.</p><p><strong>Example.</strong> Delivered every month-end on time; one late reconciliation in March.</p><p><strong>Why it matters.</strong> Required where the chosen rating asks for a comment; you cannot submit without it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.reviewers",
+      "label": "Reviewers",
+      "section": null,
+      "aliases": [
+        "loc:Reviewers"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Everyone reviewing the appraisal, with their type, scores and whether they have submitted. Shown where the step allows it, and never to a reviewer who is not an approver on the step.</p><p><strong>Example.</strong> The employee, their manager and two peers.</p><p><strong>Why it matters.</strong> Reviewers are mostly added automatically when the appraisal reaches a step, as HR has set it up; peers can also be added with <strong>Add Peer</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.add-peer",
+      "label": "AddPeer",
+      "section": null,
+      "aliases": [
+        "loc:AddPeer"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Adds a colleague as a peer reviewer. Offered to the employee and to the approver on a step that allows peers. Search by code or name, choose the person and press <strong>Add Peer</strong>.</p><p><strong>Example.</strong> The employee adds a colleague from a project team.</p><p><strong>Why it matters.</strong> You cannot add yourself, the employee or someone already reviewing. When the employee is choosing, their manager and people who will be added automatically are not offered either. Adding is refused when the appraisal has reached the peer limit in Appraisal Settings, the form type's reviewer limit, or, for the employee, the number of peers they may nominate on this step.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.peer",
+      "label": "Peer",
+      "section": null,
+      "aliases": [
+        "loc:Peer"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The colleague to add, from the search results (active employees, up to 50 at a time).</p><p><strong>Example.</strong> 1102 - Noura Al-Ali</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.reviewer-type",
+      "label": "ReviewerType",
+      "section": null,
+      "aliases": [
+        "loc:ReviewerType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the person is reviewing: <strong>Employee</strong> (self-rating), <strong>Employee Manager</strong>, the name of their relationship to the employee, or <strong>Peer</strong>.</p><p><strong>Example.</strong> Employee Manager</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.average-rating",
+      "label": "AverageRating",
+      "section": null,
+      "aliases": [
+        "loc:AverageRating"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rating that the reviewer's ratings average out to.</p><p><strong>Example.</strong> Meets expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.average-score",
+      "label": "AverageScore",
+      "section": null,
+      "aliases": [
+        "loc:AverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The reviewer's score, worked out from their ratings in the same way as on the admin appraisal screen. It is updated every time they save.</p><p><strong>Example.</strong> 3.25</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.total-marks",
+      "label": "TotalMarks",
+      "section": null,
+      "aliases": [
+        "loc:TotalMarks"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The reviewer's marks added up, shown instead of the average when marks are used.</p><p><strong>Example.</strong> 42</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.review-submitted",
+      "label": "ReviewSubmitted",
+      "section": null,
+      "aliases": [
+        "loc:ReviewSubmitted"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the reviewer has submitted their review.</p><p><strong>Example.</strong> No</p><p><strong>Why it matters.</strong> A submitted review is locked. On some steps the appraisal moves on by itself when the last reviewer submits.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.save-review",
+      "label": "SaveReview",
+      "section": null,
+      "aliases": [
+        "loc:SaveReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Saves your ratings, marks and comments without submitting them.</p><p><strong>Example.</strong> Save half-way and finish tomorrow.</p><p><strong>Why it matters.</strong> You can change a saved review as often as you like until you submit it. The scores are recalculated on every save.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.submit-review",
+      "label": "SubmitReview",
+      "section": null,
+      "aliases": [
+        "loc:SubmitReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Saves and hands in your review. You are asked to confirm, because a submitted review cannot be changed.</p><p><strong>Example.</strong> \"Review submitted. All reviews are in, so the step was approved.\"</p><p><strong>Why it matters.</strong> Every KPI must have a rating, and a comment where the rating needs one. Peers and the employee rating themselves finish with this button; an approver who rates usually finishes by approving from the <strong>Approvals</strong> instead. When the step is set to move on after the last review, submitting the last one approves the step automatically.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.overall-average",
+      "label": "OverallAverageScore",
+      "section": null,
+      "aliases": [
+        "loc:OverallAverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The average of all reviewers' scores, to 2 decimals. Shown on the right where the step allows it.</p><p><strong>Example.</strong> 3.40</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.peer-average",
+      "label": "PeerAverageScore",
+      "section": null,
+      "aliases": [
+        "loc:PeerAverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The average score of every reviewer other than the employee: managers, peers and approvers who rated.</p><p><strong>Example.</strong> 3.55</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.employee-average",
+      "label": "EmployeeAverageScore",
+      "section": null,
+      "aliases": [
+        "loc:EmployeeAverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's own score from rating themselves; 0 when they do not self-rate.</p><p><strong>Example.</strong> 3.80</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A warning that the account you signed in with is not attached to an employee, so there is nobody for a request to be about.</p><p><strong>Example.</strong> A newly created user, or an administrator account that is deliberately not an employee.</p><p><strong>Why it matters.</strong> Nothing on the self-service screens works until HR links the account to your employee record, and only HR can do it. Administrator accounts are often left unlinked on purpose.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

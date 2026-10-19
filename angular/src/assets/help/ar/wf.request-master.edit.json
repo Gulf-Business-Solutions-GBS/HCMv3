@@ -47,7 +47,7 @@
         "loc:SecurityLevel",
         "dom:RequestMaster_SecurityLevel"
       ],
-      "rules": "إلزامي. إحدى القيم: EmployeeOnly، EmployeeManager، EmployeeDepartment، الجميع.",
+      "rules": "إلزامي. إحدى القيم: EmployeeOnly، مدير الموظف، EmployeeDepartment، الجميع.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> من يمكنه رؤية الطلبات على هذه السلسلة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",

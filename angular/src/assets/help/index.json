@@ -1641,6 +1641,9 @@
     "EmployeeRejoin_Comments": [
       "pa.employee-rejoin.edit"
     ],
+    "EmployeeRejoin_CreateNewEmployeeCode": [
+      "pa.employee-rejoin.edit"
+    ],
     "EmployeeRejoin_CarryForwardLeaveBalance": [
       "pa.employee-rejoin.edit"
     ],
@@ -8093,6 +8096,48 @@
     ],
     "OvertimeBatch_Comments": [
       "pa.overtime-batch.edit"
+    ],
+    "AppraisalStepSetting_RequestMasterId": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_Step": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanEmployeeSelfRate": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanAddRatings": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_AutoAddManager": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_AutoAddRelationShip": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanAddKpi": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanAddPeer": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanPeerAddRatings": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_AutoSubmitOnLastFill": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_AllowedPeerCount": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanViewRatings": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanViewPeerRatings": [
+      "perf.appraisal-step-setting.edit"
+    ],
+    "AppraisalStepSetting_CanViewOverallAverageRating": [
+      "perf.appraisal-step-setting.edit"
     ]
   },
   "hosts": {
@@ -8482,6 +8527,7 @@
     "createoreditemployeerecurringpaymentmodal": "pa.employee-recurring-payment.edit",
     "createoreditemployeeassetinvoicemodal": "pa.employee-asset-invoice.edit",
     "createoreditovertimebatchmodal": "pa.overtime-batch.edit",
-    "leave-plans": "pa.leave-plans"
+    "leave-plans": "pa.leave-plans",
+    "createoreditappraisalstepsettingmodal": "perf.appraisal-step-setting.edit"
   }
 }

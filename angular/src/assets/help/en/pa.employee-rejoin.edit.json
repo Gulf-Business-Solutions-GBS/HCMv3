@@ -3,12 +3,14 @@
   "lang": "en",
   "title": "Employee Rejoins — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeRejoin",
-  "overviewHtml": "<p>Records that a separated employee has come back.</p><p>Once a rejoin date has been reached, payroll only takes separations whose last day in service is on or after the rejoin date into account, so an earlier exit no longer stops pay. The carry-forward options are recorded for reference; balances are not carried forward automatically.</p>",
+  "overviewHtml": "<p>Records that a separated employee has come back, and brings them back in one of two ways, chosen with <strong>Create New Employee Code</strong>:</p><ul><li><strong>Unticked: the same employee returns.</strong> The employee record is made Active again under its old code. Every balance whose carry-forward box is not ticked is set to zero on the day before the rejoin date.</li><li><strong>Ticked: a new employee is created.</strong> The person gets a new employee record and a new code, joining on the rejoin date. The balances whose boxes are ticked are opened on the new record. The old record stays exactly as it was.</li></ul><p>Everything happens on save, together: if any part is refused, nothing is changed. Once the rejoin date has been reached, payroll only takes separations whose last day in service is on or after the rejoin date into account, so the earlier exit no longer stops pay.</p><p>A rejoin can no longer be added, changed or deleted once a later exit, Full and Final payment, regular payroll run or another rejoin exists for the employee from the rejoin date on. A rejoin that created a new employee can never be changed or deleted. Changing or deleting a rejoin that kept the old code takes the employee back to Inactive and removes the zeroing records it wrote, before the new values are applied.</p><p>:::admin Only the annual leave type with code 1 and the ticket type with code 1 are carried forward or zeroed, and only from the employee's first quota row of each. Indemnity uses the first indemnity quota row. The zeroing records carry the comment \"Employee Rejoined with Nill Quota Balance\" (loans: \"Nill Loan Balance\"). Rejoins saved before this behaviour existed were not re-run. :::</p>",
   "aliasIndex": {
     "loc:RejoinDate": "EmployeeRejoin.RejoinDate",
     "dom:EmployeeRejoin_RejoinDate": "EmployeeRejoin.RejoinDate",
     "loc:Comments": "EmployeeRejoin.Comments",
     "dom:EmployeeRejoin_Comments": "EmployeeRejoin.Comments",
+    "loc:CreateNewEmployeeCode": "EmployeeRejoin.CreateNewEmployeeCode",
+    "dom:EmployeeRejoin_CreateNewEmployeeCode": "EmployeeRejoin.CreateNewEmployeeCode",
     "loc:CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
     "dom:EmployeeRejoin_CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
     "loc:CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
@@ -29,7 +31,7 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The date the employee rejoined.</p><p><strong>Example.</strong> 1 Feb 2027</p><p><strong>Why it matters.</strong> From this date payroll ignores separations that ended before it.</p>",
+      "html": "<p><strong>What it is.</strong> The date the employee rejoined.</p><p><strong>Example.</strong> 1 Feb 2027</p><p><strong>Why it matters.</strong> From this date payroll ignores separations that ended before it. With a new employee code it is also the new record's joining date; with the old code, balances that are not carried forward are zeroed on the day before it (31 Jan 2027 in the example).</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -48,6 +50,20 @@
       "stub": false
     },
     {
+      "id": "EmployeeRejoin.CreateNewEmployeeCode",
+      "label": "CreateNewEmployeeCode",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CreateNewEmployeeCode",
+        "dom:EmployeeRejoin_CreateNewEmployeeCode"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the person comes back as a new employee with a new code, instead of reactivating the old record.</p><p><strong>Example.</strong> Ticked for a former employee with code 1045 who is re-hired on a fresh contract: a new employee, say 2310, is created, with 1045 in its <strong>Previous Employee Code</strong>.</p><p><strong>Why it matters.</strong> The blue note under the box changes with it, so you can see which way the save will go.</p><p>When <strong>ticked</strong>:</p><ul><li>A new, Active employee is created with the next code from the number series of the old employee's employment type, joining on the rejoin date. Probation is zero days.</li><li>Names, title, birth date and birth place, nationality, religion, gender, marital status, country, phones, addresses, qualification, blood group, Civil ID and email are copied from the old record.</li><li>Org assignment, salary, bank, documents, photo, passport and login are <strong>not</strong> copied. Enter them on the new employee as for any new joiner.</li><li>Each ticked balance is opened on the new employee (see the carry-forward boxes). Unticked balances are simply not brought over.</li><li>The old employee is not changed. The rejoin list shows the new employee's code as a link in <strong>New Employee Code</strong>.</li></ul><p>When <strong>unticked</strong>, the same employee is made Active again, and every balance whose box is not ticked is zeroed on the day before the rejoin date.</p><p>Either way the save counts against your subscription's maximum number of active employees, and is refused when that limit has been reached. If leave is carried forward to a new code, a Time Transfer Type with code 1 must exist under <strong>Time Transfer Types</strong>, or the save is refused.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
       "id": "EmployeeRejoin.CarryForwardLeaveBalance",
       "label": "CarryForwardLeaveBalance",
       "section": "EmployeeRejoins",
@@ -57,7 +73,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the leave balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the employee's annual leave balance comes back with them.</p><p><strong>Example.</strong> A balance of 12.5 days at separation, ticked: the employee returns with 12.5 days.</p><p><strong>Why it matters.</strong> With a <strong>new code</strong>, ticked opens the old balance on the new employee as a time transfer on the rejoin date (it needs Time Transfer Type code 1). With the <strong>old code</strong>, unticked writes an absence adjustment on the day before the rejoin date that brings the balance to zero; ticked leaves it as it is.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -71,7 +87,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the ticket balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the employee's ticket balance comes back with them.</p><p><strong>Example.</strong> 1 ticket outstanding at separation, ticked: the employee returns with 1 ticket.</p><p><strong>Why it matters.</strong> With a <strong>new code</strong>, ticked gives the new employee a ticket quota equal to the old balance, entitled from the rejoin date, from which tickets can be deducted only 9 months after joining. With the <strong>old code</strong>, unticked writes a ticket adjustment on the day before the rejoin date that brings the balance to zero; ticked leaves it as it is.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -85,7 +101,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the indemnity balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the indemnity (end of service) days the employee had built up come back with them.</p><p><strong>Example.</strong> 45 indemnity days at separation, ticked: the service before the exit still counts.</p><p><strong>Why it matters.</strong> With a <strong>new code</strong>, ticked gives the new employee an indemnity quota equal to the old balance, from the rejoin date, usable only 9 months after joining. With the <strong>old code</strong>, unticked writes an indemnity record, with reset ticked, dated the day before the rejoin date, that settles the whole balance; ticked leaves the balance as it is.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -99,7 +115,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the loan balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "html": "<p><strong>What it is.</strong> Whether loans still owed at separation are recovered after the employee returns.</p><p><strong>Example.</strong> Two personal loans with 300 and 200 KWD still due, ticked: one personal loan of 500 KWD on the new employee.</p><p><strong>Why it matters.</strong> With a <strong>new code</strong>, ticked creates one loan per loan type on the new employee, combining the amounts still due and the instalments of the old loans, starting on the rejoin date and running for 2 years. With the <strong>old code</strong>, unticked records an external recovery of the full amount due on each open loan, dated that loan's end date, so payroll stops deducting it; ticked leaves the loans running.</p>",
       "adminHtml": "",
       "stub": false
     }

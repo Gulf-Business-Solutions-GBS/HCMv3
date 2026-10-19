@@ -4845,7 +4845,10 @@
           "template": "angular/src/app/admin/performance-management/pa-forms/create-or-edit-pa-form-modal.component.html"
         }
       },
-      "defaultSection": "PAForms"
+      "defaultSection": "PAForms",
+      "ignoreInputs": [
+        "PAForm_PeerSubmitted"
+      ]
     },
     {
       "helpId": "perf.papeer-nominee.edit",
@@ -10409,6 +10412,241 @@
         {
           "id": "ess.common.not-linked",
           "loc": "CurrentUserHasNoEmployeeRecord"
+        }
+      ]
+    },
+    {
+      "helpId": "perf.appraisal-step-setting.edit",
+      "title": "Appraisal WF Setup — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.AppraisalStepSettings.Create"
+      ],
+      "entity": {
+        "name": "AppraisalStepSetting",
+        "fullName": "HCMv3.PerformanceManagement.Review.AppraisalStepSetting",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/Review/AppraisalStepSetting.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/appraisal-step-settings/create-or-edit-appraisal-step-setting-modal.component.html"
+        }
+      },
+      "defaultSection": "AppraisalWFSetup"
+    },
+    {
+      "helpId": "ess.appraisal",
+      "title": "360 Degree Appraisal",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyAppraisals"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-appraisal/my-appraisal.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.appraisal.mine",
+          "loc": "MyAppraisalListScope_Mine"
+        },
+        {
+          "id": "ess.appraisal.to-review",
+          "loc": "MyAppraisalListScope_ToReview"
+        },
+        {
+          "id": "ess.appraisal.team",
+          "loc": "MyAppraisalListScope_Team"
+        },
+        {
+          "id": "ess.appraisal.request-number",
+          "loc": "RequestNumber"
+        },
+        {
+          "id": "ess.appraisal.employee",
+          "loc": "Employee"
+        },
+        {
+          "id": "ess.appraisal.period",
+          "loc": "Period"
+        },
+        {
+          "id": "ess.appraisal.form-type",
+          "loc": "FormType"
+        },
+        {
+          "id": "ess.appraisal.created-on",
+          "loc": "CreatedOn"
+        },
+        {
+          "id": "ess.appraisal.status",
+          "loc": "RequestStatus"
+        },
+        {
+          "id": "ess.appraisal.details",
+          "loc": "Details"
+        },
+        {
+          "id": "ess.appraisal.kpis",
+          "loc": "KpiInfo"
+        },
+        {
+          "id": "ess.appraisal.copy-kpi",
+          "loc": "CopyKpi"
+        },
+        {
+          "id": "ess.appraisal.kpi-from",
+          "loc": "KpiFrom"
+        },
+        {
+          "id": "ess.appraisal.kpi-category",
+          "loc": "KpiCategory"
+        },
+        {
+          "id": "ess.appraisal.contribution",
+          "loc": "ContributionReview"
+        },
+        {
+          "id": "ess.appraisal.weight",
+          "loc": "Weight"
+        },
+        {
+          "id": "ess.appraisal.target",
+          "loc": "Target"
+        },
+        {
+          "id": "ess.appraisal.ratings",
+          "loc": "Ratings"
+        },
+        {
+          "id": "ess.appraisal.reviewer-name",
+          "loc": "ReviewerName"
+        },
+        {
+          "id": "ess.appraisal.marks",
+          "loc": "Marks"
+        },
+        {
+          "id": "ess.appraisal.comments",
+          "loc": "Comments"
+        },
+        {
+          "id": "ess.appraisal.reviewers",
+          "loc": "Reviewers"
+        },
+        {
+          "id": "ess.appraisal.add-peer",
+          "loc": "AddPeer"
+        },
+        {
+          "id": "ess.appraisal.peer",
+          "loc": "Peer"
+        },
+        {
+          "id": "ess.appraisal.reviewer-type",
+          "loc": "ReviewerType"
+        },
+        {
+          "id": "ess.appraisal.average-rating",
+          "loc": "AverageRating"
+        },
+        {
+          "id": "ess.appraisal.average-score",
+          "loc": "AverageScore"
+        },
+        {
+          "id": "ess.appraisal.total-marks",
+          "loc": "TotalMarks"
+        },
+        {
+          "id": "ess.appraisal.review-submitted",
+          "loc": "ReviewSubmitted"
+        },
+        {
+          "id": "ess.appraisal.save-review",
+          "loc": "SaveReview"
+        },
+        {
+          "id": "ess.appraisal.submit-review",
+          "loc": "SubmitReview"
+        },
+        {
+          "id": "ess.appraisal.overall-average",
+          "loc": "OverallAverageScore"
+        },
+        {
+          "id": "ess.appraisal.peer-average",
+          "loc": "PeerAverageScore"
+        },
+        {
+          "id": "ess.appraisal.employee-average",
+          "loc": "EmployeeAverageScore"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        }
+      ]
+    },
+    {
+      "helpId": "adm.licence-assignment",
+      "title": "Licence Assignment",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Administration.Tools.LicenceAssignment"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/administration/licence-assignment/licence-assignment.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "adm.licence-assignment.enforced",
+          "label": "HcmFeatureSeats"
+        },
+        {
+          "id": "adm.licence-assignment.usage",
+          "label": "Module"
+        },
+        {
+          "id": "adm.licence-assignment.search",
+          "label": "Search"
+        },
+        {
+          "id": "adm.licence-assignment.users",
+          "label": "Users"
+        },
+        {
+          "id": "adm.licence-assignment.administrator",
+          "label": "LicenceNotNeededForAdministratorShort"
+        },
+        {
+          "id": "adm.licence-assignment.inactive",
+          "label": "Inactive"
+        },
+        {
+          "id": "adm.licence-assignment.not-in-subscription",
+          "label": "LicenceModuleNotInEditionShort"
+        },
+        {
+          "id": "adm.licence-assignment.no-licence-left",
+          "label": "LicenceNoSeatLeftShort"
+        },
+        {
+          "id": "adm.licence-assignment.over-limit",
+          "label": "LicenceOverLimit"
+        },
+        {
+          "id": "adm.licence-assignment.active-employees",
+          "label": "HcmFeatureMaxActiveEmployees"
         }
       ]
     }

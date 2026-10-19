@@ -1,0 +1,501 @@
+{
+  "helpId": "ess.appraisal",
+  "lang": "ar",
+  "title": "تقييم 360 درجة",
+  "entity": null,
+  "overviewHtml": "<p>كل ما يخص تقييمات الأداء في مكان واحد: تقييماتك، والتقييمات المطلوب منك مراجعتها، وتقييمات فريقك إن كنت مديراً. اختر القائمة من الأعلى، ثم اضغط <strong>التفاصيل</strong> في السطر لفتح التقييم، وفيه ترى مؤشرات الأداء وتدخل تقديراتك وتعليقاتك وتضيف الزملاء وتقدّم تقييمك.</p><p>يتوقف ما تراه وما يمكنك فعله في التقييم على أمرين: دورك فيه (الموظف موضوع التقييم، أو مقيّم، أو زميل، أو معتمِد في الخطوة التي ينتظر عندها التقييم)، وما سمحت به الموارد البشرية لتلك الخطوة في <strong>إعداد سير عمل التقييم</strong>. لذلك قد يغيب في خطوة زرٌّ استخدمته في خطوة سابقة. وإذا لم تُعِدّ الموارد البشرية الخطوة فلا تُعرض أزرار التقييم.</p><p>وبعد اعتماد طلب التقييم أو رفضه أو إغلاقه يصبح للاطلاع فقط. ويرى المعتمِدون الذين يفتحون التقييم من <strong>الاعتمادات</strong> التقييم نفسه.</p>",
+  "aliasIndex": {
+    "loc:MyAppraisalListScope_Mine": "ess.appraisal.mine",
+    "loc:MyAppraisalListScope_ToReview": "ess.appraisal.to-review",
+    "loc:MyAppraisalListScope_Team": "ess.appraisal.team",
+    "loc:RequestNumber": "ess.appraisal.request-number",
+    "loc:Employee": "ess.appraisal.employee",
+    "loc:Period": "ess.appraisal.period",
+    "loc:FormType": "ess.appraisal.form-type",
+    "loc:CreatedOn": "ess.appraisal.created-on",
+    "loc:RequestStatus": "ess.appraisal.status",
+    "loc:Details": "ess.appraisal.details",
+    "loc:KpiInfo": "ess.appraisal.kpis",
+    "loc:CopyKpi": "ess.appraisal.copy-kpi",
+    "loc:KpiFrom": "ess.appraisal.kpi-from",
+    "loc:KpiCategory": "ess.appraisal.kpi-category",
+    "loc:ContributionReview": "ess.appraisal.contribution",
+    "loc:Weight": "ess.appraisal.weight",
+    "loc:Target": "ess.appraisal.target",
+    "loc:Ratings": "ess.appraisal.ratings",
+    "loc:ReviewerName": "ess.appraisal.reviewer-name",
+    "loc:Marks": "ess.appraisal.marks",
+    "loc:Comments": "ess.appraisal.comments",
+    "loc:Reviewers": "ess.appraisal.reviewers",
+    "loc:AddPeer": "ess.appraisal.add-peer",
+    "loc:Peer": "ess.appraisal.peer",
+    "loc:ReviewerType": "ess.appraisal.reviewer-type",
+    "loc:AverageRating": "ess.appraisal.average-rating",
+    "loc:AverageScore": "ess.appraisal.average-score",
+    "loc:TotalMarks": "ess.appraisal.total-marks",
+    "loc:ReviewSubmitted": "ess.appraisal.review-submitted",
+    "loc:SaveReview": "ess.appraisal.save-review",
+    "loc:SubmitReview": "ess.appraisal.submit-review",
+    "loc:OverallAverageScore": "ess.appraisal.overall-average",
+    "loc:PeerAverageScore": "ess.appraisal.peer-average",
+    "loc:EmployeeAverageScore": "ess.appraisal.employee-average",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked"
+  },
+  "fields": [
+    {
+      "id": "ess.appraisal.mine",
+      "label": "MyAppraisalListScope_Mine",
+      "section": null,
+      "aliases": [
+        "loc:MyAppraisalListScope_Mine"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقييمات الخاصة بك.</p><p><strong>مثال.</strong> تقييمك السنوي لعام 2026 بانتظار خطوة مديرك.</p><p><strong>لماذا يهمّ.</strong> افتحه لتقيّم نفسك (إذا طلبت شركتك التقييم الذاتي)، ولترشّح زملاء حين يُسمح بذلك، ولتتابع حالته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.to-review",
+      "label": "MyAppraisalListScope_ToReview",
+      "section": null,
+      "aliases": [
+        "loc:MyAppraisalListScope_ToReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقييمات التي عليك العمل عليها: ما كنت فيه ضمن قائمة المقيّمين، وما ينتظر عند خطوة أنت معتمِد فيها.</p><p><strong>مثال.</strong> رشّحك زميل لتقييمه بصفة زميل، فيظهر تقييمه هنا.</p><p><strong>لماذا يهمّ.</strong> يبقى التقييم في هذه القائمة بعد تقديم تقييمك، فيمكنك الرجوع إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.team",
+      "label": "MyAppraisalListScope_Team",
+      "section": null,
+      "aliases": [
+        "loc:MyAppraisalListScope_Team"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقييمات الموظفين الذين يتبعونك مباشرة اليوم، مستوى واحداً إلى الأسفل.</p><p><strong>مثال.</strong> الموظفون الأربعة في قسمك.</p><p><strong>لماذا يهمّ.</strong> يتيح للمدير متابعة تقييمات فريقه حتى في الخطوات التي ليس معتمِداً فيها. وما يمكنك رؤيته داخل التقييم يتبع إعداد الخطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.request-number",
+      "label": "RequestNumber",
+      "section": null,
+      "aliases": [
+        "loc:RequestNumber"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم طلب سير العمل الخاص بالتقييم.</p><p><strong>مثال.</strong> 1052</p><p><strong>لماذا يهمّ.</strong> اذكره عند سؤال الموارد البشرية عن التقييم. ويكون فارغاً للتقييم الذي لم يُرسل إلى سير العمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.employee",
+      "label": "Employee",
+      "section": null,
+      "aliases": [
+        "loc:Employee"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف موضوع التقييم، برقمه واسمه.</p><p><strong>مثال.</strong> 1045 - فاطمة الصباح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [
+        "loc:Period"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة (دورة) التقييم التي يتبعها التقييم.</p><p><strong>مثال.</strong> السنوي 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.form-type",
+      "label": "FormType",
+      "section": null,
+      "aliases": [
+        "loc:FormType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع نموذج التقييم، وهو الذي يحدد أيضاً سلسلة اعتماده والحد الأقصى لعدد مقيّميه.</p><p><strong>مثال.</strong> تقييم الموظفين</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.created-on",
+      "label": "CreatedOn",
+      "section": null,
+      "aliases": [
+        "loc:CreatedOn"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ فتح التقييم.</p><p><strong>مثال.</strong> 2026-12-01</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.status",
+      "label": "RequestStatus",
+      "section": null,
+      "aliases": [
+        "loc:RequestStatus"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقف طلب التقييم: مفتوح (قيد الإجراء) أو معتمد أو مرفوض أو مغلق. وتعني <strong>مسجل</strong> أن التقييم لا يُدار عبر سير العمل.</p><p><strong>مثال.</strong> مفتوح</p><p><strong>لماذا يهمّ.</strong> لا يمكن تغيير التقديرات والزملاء والتقييمات إلا ما دام الطلب مفتوحاً (أو لا يزال مسودة).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.details",
+      "label": "Details",
+      "section": null,
+      "aliases": [
+        "loc:Details"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفتح التقييم.</p><p><strong>لماذا يهمّ.</strong> كل العمل على التقييم يجري فيه، ولا يمكن فعل شيء آخر من السطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.kpis",
+      "label": "KpiInfo",
+      "section": null,
+      "aliases": [
+        "loc:KpiInfo"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشرات الأداء التي يُقيَّم عليها الموظف، مع فئتها ووصفها ووزنها والمستهدف منها.</p><p><strong>مثال.</strong> رضا العملاء، الوزن 30، المستهدف 90%.</p><p><strong>لماذا يهمّ.</strong> لا يُعرض إلا حيث تسمح الخطوة برؤية قائمة مؤشرات الأداء، ولا يُعرض أبداً لمقيّم ليس معتمِداً في الخطوة، إذ يرى مؤشرات الأداء في أسطر تقديره هو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.copy-kpi",
+      "label": "CopyKpi",
+      "section": null,
+      "aliases": [
+        "loc:CopyKpi"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يملأ قائمة مؤشرات الأداء للتقييم من مجموعة معدّة مسبقاً. ويُتاح للمعتمِد في خطوة تسمح بذلك، ما دام الطلب مفتوحاً.</p><p><strong>مثال.</strong> نسخ مؤشرات الأداء المعدّة للمسمى الوظيفي \"محاسب\".</p><p><strong>لماذا يهمّ.</strong> لا يُضاف إلا ما ليس في التقييم من مؤشرات الأداء، فالنسخ مرتين لا يضاعفها. ويحصل كل مقيّم موجود في التقييم على سطر تقدير لكل مؤشر جديد. وفي الخطوة التي يقدّر فيها المعتمِد يضعك النسخ أيضاً في قائمة المقيّمين. وإذا كانت مراجعة الزملاء مفعّلة في إعدادات تقييم الأداء رُفض النسخ متى كان مقيّم إضافي واحد سيتجاوز الحد الأقصى لعدد المراجعين في نوع النموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.kpi-from",
+      "label": "KpiFrom",
+      "section": null,
+      "aliases": [
+        "loc:KpiFrom"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المصدر الذي يأخذ منه النسخ مؤشرات الأداء: مجموعة مؤشرات <strong>المسمى الوظيفي</strong>، أو مجموعة مؤشرات <strong>الوحدة التنظيمية</strong>، أو تقييم <strong>موظف</strong> آخر في الفترة نفسها. ثم اختر المجموعة أو الموظف من الحقل المجاور.</p><p><strong>مثال.</strong> الوحدة التنظيمية، ثم \"إدارة الشؤون المالية\".</p><p><strong>لماذا يهمّ.</strong> لا يُعرض من الموظفين إلا من له تقييم في الفترة نفسها يحتوي مؤشرات أداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.kpi-category",
+      "label": "KpiCategory",
+      "section": null,
+      "aliases": [
+        "loc:KpiCategory"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجموعة التي ينتمي إليها مؤشر الأداء.</p><p><strong>مثال.</strong> مالي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.contribution",
+      "label": "ContributionReview",
+      "section": null,
+      "aliases": [
+        "loc:ContributionReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء نفسه، ووصفه أسفله.</p><p><strong>مثال.</strong> إقفال الشهر خلال 5 أيام عمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.weight",
+      "label": "Weight",
+      "section": null,
+      "aliases": [
+        "loc:Weight"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مقدار ما يُحتسب به مؤشر الأداء في الدرجة مقارنة بغيره.</p><p><strong>مثال.</strong> 25</p><p><strong>لماذا يهمّ.</strong> لا يُعرض إذا كانت شركتك تقيّم بالدرجات بدلاً من التقديرات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.target",
+      "label": "Target",
+      "section": null,
+      "aliases": [
+        "loc:Target"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يُنتظر من الموظف تحقيقه في مؤشر الأداء.</p><p><strong>مثال.</strong> 95% في الموعد</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.ratings",
+      "label": "Ratings",
+      "section": null,
+      "aliases": [
+        "loc:Ratings"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سطر لكل مؤشر أداء لكل مقيّم. وترى أسطرك دائماً، أما أسطر المقيّمين الآخرين فلا تُعرض إلا حيث تسمح الخطوة بذلك. اختر تقديراً لكل سطر من أسطرك ما دام تقييمك لم يُقدَّم بعد.</p><p><strong>مثال.</strong> \"يفوق التوقعات (2/3)\": يمكنك منح هذا التقدير لمؤشرين آخرين من حد قدره 3.</p><p><strong>لماذا يهمّ.</strong> لا يُمنح كل تقدير إلا لعدد محدود من مؤشرات الأداء في تقييمك، ويظهر التقدير الذي نفد رصيده باهتاً. وبعض التقديرات تتطلب تعليقاً، فيبقى حقل التعليق أحمر حتى تكتبه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.reviewer-name",
+      "label": "ReviewerName",
+      "section": null,
+      "aliases": [
+        "loc:ReviewerName"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صاحب سطر التقدير. ولا يظهر هذا العمود إلا حين ترى أسطر مقيّمين آخرين إلى جانب أسطرك.</p><p><strong>مثال.</strong> 1020 - أحمد الكندري</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.marks",
+      "label": "Marks",
+      "section": null,
+      "aliases": [
+        "loc:Marks"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجات التي تمنحها لمؤشر الأداء، وتُستخدم بدلاً من التقدير حين تفعّل شركتك الدرجات في إعدادات تقييم الأداء.</p><p><strong>مثال.</strong> 8</p><p><strong>لماذا يهمّ.</strong> الدرجات غير لازمة قبل التقديم، ولا توجد مع الدرجات متوسطات تقدير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.comments",
+      "label": "Comments",
+      "section": null,
+      "aliases": [
+        "loc:Comments"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظتك على مؤشر الأداء، بحد أقصى 4000 حرف.</p><p><strong>مثال.</strong> أنجز إقفال كل شهر في موعده، مع تأخر تسوية واحدة في مارس.</p><p><strong>لماذا يهمّ.</strong> يكون إلزامياً حيث يتطلب التقدير المختار تعليقاً، ولا يمكنك التقديم بدونه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.reviewers",
+      "label": "Reviewers",
+      "section": null,
+      "aliases": [
+        "loc:Reviewers"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل من يراجع التقييم، مع نوعه ودرجاته وما إذا قدّم تقييمه. ويُعرض حيث تسمح الخطوة بذلك، ولا يُعرض أبداً لمقيّم ليس معتمِداً في الخطوة.</p><p><strong>مثال.</strong> الموظف ومديره وزميلان.</p><p><strong>لماذا يهمّ.</strong> يُضاف المقيّمون في الغالب تلقائياً عند وصول التقييم إلى خطوة ما، بحسب إعداد الموارد البشرية، ويمكن أيضاً إضافة زملاء بزر <strong>إضافة زميل</strong>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.add-peer",
+      "label": "AddPeer",
+      "section": null,
+      "aliases": [
+        "loc:AddPeer"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يضيف زميلاً مقيّماً. ويُتاح للموظف وللمعتمِد في خطوة تسمح بإضافة الزملاء. ابحث بالرقم أو الاسم، واختر الشخص، ثم اضغط <strong>إضافة زميل</strong>.</p><p><strong>مثال.</strong> يضيف الموظف زميلاً من فريق مشروع.</p><p><strong>لماذا يهمّ.</strong> لا يمكنك إضافة نفسك أو الموظف أو من يراجع التقييم أصلاً. وحين يختار الموظف لا يُعرض عليه أيضاً مديره ولا من سيُضافون تلقائياً. وتُرفض الإضافة إذا بلغ التقييم الحد الأقصى لعدد الزملاء في إعدادات تقييم الأداء، أو الحد الأقصى لعدد المراجعين في نوع النموذج، أو، بالنسبة للموظف، عدد الزملاء المسموح له بترشيحهم في هذه الخطوة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.peer",
+      "label": "Peer",
+      "section": null,
+      "aliases": [
+        "loc:Peer"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزميل المراد إضافته، من نتائج البحث (الموظفون النشطون، حتى 50 في المرة).</p><p><strong>مثال.</strong> 1102 - نورة العلي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.reviewer-type",
+      "label": "ReviewerType",
+      "section": null,
+      "aliases": [
+        "loc:ReviewerType"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب مراجعة الشخص: <strong>الموظف</strong> (التقييم الذاتي)، أو <strong>مدير الموظف</strong>، أو اسم صلته بالموظف، أو <strong>زميل</strong>.</p><p><strong>مثال.</strong> مدير الموظف</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.average-rating",
+      "label": "AverageRating",
+      "section": null,
+      "aliases": [
+        "loc:AverageRating"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقدير الذي تؤول إليه تقديرات المقيّم في المتوسط.</p><p><strong>مثال.</strong> يلبي التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.average-score",
+      "label": "AverageScore",
+      "section": null,
+      "aliases": [
+        "loc:AverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة المقيّم، محسوبة من تقديراته بالطريقة نفسها المتبعة في شاشة التقييم الإدارية. وتُحدَّث في كل مرة يحفظ فيها.</p><p><strong>مثال.</strong> 3.25</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.total-marks",
+      "label": "TotalMarks",
+      "section": null,
+      "aliases": [
+        "loc:TotalMarks"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموع درجات المقيّم، ويُعرض بدلاً من المتوسط عند استخدام الدرجات.</p><p><strong>مثال.</strong> 42</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.review-submitted",
+      "label": "ReviewSubmitted",
+      "section": null,
+      "aliases": [
+        "loc:ReviewSubmitted"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المقيّم قد قدّم تقييمه.</p><p><strong>مثال.</strong> لا</p><p><strong>لماذا يهمّ.</strong> التقييم المقدَّم مقفل. وفي بعض الخطوات ينتقل التقييم تلقائياً حين يقدّم آخر مقيّم تقييمه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.save-review",
+      "label": "SaveReview",
+      "section": null,
+      "aliases": [
+        "loc:SaveReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحفظ تقديراتك ودرجاتك وتعليقاتك دون تقديمها.</p><p><strong>مثال.</strong> احفظ في منتصف العمل وأكمل غداً.</p><p><strong>لماذا يهمّ.</strong> يمكنك تعديل التقييم المحفوظ متى شئت حتى تقدّمه. وتُعاد حساب الدرجات عند كل حفظ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.submit-review",
+      "label": "SubmitReview",
+      "section": null,
+      "aliases": [
+        "loc:SubmitReview"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحفظ تقييمك ويسلّمه. ويُطلب منك التأكيد، لأن التقييم المقدَّم لا يمكن تعديله.</p><p><strong>مثال.</strong> \"تم تقديم التقييم، واكتملت جميع التقييمات فتمت الموافقة على الخطوة.\"</p><p><strong>لماذا يهمّ.</strong> يجب أن يكون لكل مؤشر أداء تقدير، وتعليق حيث يتطلبه التقدير. وينهي الزملاء والموظف الذي يقيّم نفسه عملهم بهذا الزر، أما المعتمِد الذي يقدّر فينهي عمله عادة بالاعتماد من <strong>الاعتمادات</strong>. وإذا كانت الخطوة مُعدّة للانتقال بعد آخر تقييم، فإن تقديم آخر تقييم يعتمد الخطوة تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.overall-average",
+      "label": "OverallAverageScore",
+      "section": null,
+      "aliases": [
+        "loc:OverallAverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط درجات جميع المقيّمين، لأقرب منزلتين عشريتين. ويُعرض على الجانب حيث تسمح الخطوة بذلك.</p><p><strong>مثال.</strong> 3.40</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.peer-average",
+      "label": "PeerAverageScore",
+      "section": null,
+      "aliases": [
+        "loc:PeerAverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متوسط درجات كل المقيّمين عدا الموظف: المدراء والزملاء والمعتمِدون الذين قدّروا.</p><p><strong>مثال.</strong> 3.55</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.appraisal.employee-average",
+      "label": "EmployeeAverageScore",
+      "section": null,
+      "aliases": [
+        "loc:EmployeeAverageScore"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة الموظف من تقييمه لنفسه، وتكون 0 إذا لم يقيّم نفسه.</p><p><strong>مثال.</strong> 3.80</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
