@@ -5,6 +5,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Recruitment;
 using HCMv3.Workflow;
 
 namespace HCMv3.TravelManagement;
@@ -12,12 +13,24 @@ namespace HCMv3.TravelManagement;
 /// <summary>
 /// Travel header (ported from legacy XAF <c>HCM10.Module.BusinessObjects.TravelManagement.Travel</c>).
 ///
-/// DELIBERATE SIMPLIFICATION (Applicant drop): the legacy entity had an either-or
-/// <c>Employee</c>/<c>Applicant</c> relationship (a Travel record could belong to either an existing
-/// Employee or a job Applicant from the never-ported Recruitment module). This port drops the
-/// <c>Applicant</c> FK entirely and makes <see cref="EmployeeId"/> the only party field (required, not
-/// nullable) -- meaning this port only supports travel records for existing employees, not job applicants.
-/// This is an acceptable scope reduction given Recruitment is out of scope for this codebase.
+/// EMPLOYEE OR APPLICANT. Legacy's Travel could belong to an existing <see cref="Employee"/> or to a job
+/// <see cref="Applicant"/> (a candidate flown in for interview, a new hire travelling before joining). Both
+/// party columns are nullable here and <c>TravelsAppService</c> requires exactly one of them
+/// (<see cref="TravelParty.HasExactlyOne"/>). Legacy itself only refused "both blank"
+/// (<c>Travel.PerformValidation</c>: "Employee and Applicant both together should not be blank."); the
+/// stricter rule is deliberate, because a row naming both is ambiguous about whose trip it is, whose per
+/// diem applies and whose claim matches it.
+///
+/// An applicant trip has no employee, so everything legacy keyed on <c>Travel.Employee</c> degrades the way
+/// legacy's did: per diem is zero (legacy <c>TravelDetail.PerDiemRate</c>/<c>PerDiemAmount</c> return 0 when
+/// <c>Travel.Employee == null</c>), cost totals are left unrounded (legacy <c>CurrencyService.Rounding</c>
+/// returns the value as-is for a null employee), and the trip never appears in self service, in the leave
+/// clash check or under an employee in the travel report.
+///
+/// <para><b><see cref="IHasEmployeeId"/> is implemented explicitly</b> and reads 0 for an applicant trip, so
+/// the in-memory "is this row mine?" checks in the shared self-service and attachment code never match one.
+/// Do NOT pass this type to <c>EmployeeScopeFilter.Apply</c> or <c>MyRowsQuery</c>: those bind to the column
+/// by name and the column is <c>int?</c>. Query <see cref="EmployeeId"/> directly instead.</para>
 ///
 /// TotalTravelCost rollup: stored, NOT client-editable (absent from <c>CreateOrEditTravelDto</c>), and kept
 /// in line with the legs by <see cref="ITravelCostRollupService"/> whenever the trip, a leg or a cost line
@@ -45,9 +58,18 @@ public class Travel : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkf
     [StringLength(SimpleLookupConsts.MaxCodeLength)]
     public virtual string Code { get; set; }
 
-    public virtual int EmployeeId { get; set; }
+    /// <summary>The employee travelling. Null for an applicant trip -- see class remarks.</summary>
+    public virtual int? EmployeeId { get; set; }
 
     public virtual Employee Employee { get; set; }
+
+    /// <summary>The job applicant travelling, when the trip is not an employee's (legacy <c>Travel.Applicant</c>).</summary>
+    public virtual int? ApplicantId { get; set; }
+
+    public virtual Applicant Applicant { get; set; }
+
+    /// <summary>0 for an applicant trip, so no employee ever matches it. See class remarks.</summary>
+    int IHasEmployeeId.EmployeeId => EmployeeId ?? 0;
 
     public virtual int TravelTypeId { get; set; }
 

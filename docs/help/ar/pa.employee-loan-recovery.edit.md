@@ -15,6 +15,8 @@ permissions: [Pages.PersonnelAdministration.EmployeeLoanRecoveries.Create]
 
 لا يجوز أن يسبق تاريخ الاسترداد تاريخ بدء استرداد القرض، ولا أن يزيد مجموع الاستردادات على المبلغ المستحق للقرض. ولا يؤدي حفظ استرداد في هذا النموذج إلى تحديث الرصيد المستحق للقرض؛ إذ تحدّثه الرواتب عند الاسترداد.
 
+وعند فتحه من نافذة الاستردادات والإعفاءات لقرض ما، يكون القرض معبأً مسبقاً ولا يمكن تغييره، وتبدأ الطريقة بقيمة "الاسترداد خارجياً".
+
 ## EmployeeLoanId {#EmployeeLoanRecovery.EmployeeLoanId}
 <!-- alias: loc:EmployeeLoanId, dom:EmployeeLoanRecovery_EmployeeLoanId -->
 

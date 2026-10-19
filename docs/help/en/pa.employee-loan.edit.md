@@ -15,6 +15,8 @@ A loan to the employee and how it is recovered. Payroll recovers it from the rec
 
 The actual amount cannot be less than the amount due, and neither the recovery start date nor the end date can be before the start date.
 
+**Recoveries & Exemptions**, in a loan's row menu on the employee's Loans section, opens the loan's repayments and skipped months in one dialog, under the loan's actual amount, due amount and balance due. Recoveries and exemptions are added and changed there with the same dialogs, and the same rules, as the Loan Recoveries and Loan Exemptions screens, with the loan already filled in. Recoveries written by the payroll run (Recovery Through Payroll) are shown but cannot be edited or deleted there: the next run of that period deletes and rewrites them.
+
 ## LoanTypeId {#EmployeeLoan.LoanTypeId}
 <!-- alias: loc:LoanTypeId, dom:EmployeeLoan_LoanTypeId -->
 

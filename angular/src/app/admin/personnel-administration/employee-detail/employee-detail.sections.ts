@@ -269,6 +269,11 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
                 load: () => import('./absences/employee-absences.component').then((m) => m.EmployeeAbsencesComponent),
             },
             {
+                id: 'leave-plans',
+                labelKey: 'EmpSection_LeavePlans',
+                load: () => import('../leave-plans/leave-plans.component').then((m) => m.LeavePlansComponent),
+            },
+            {
                 id: 'absence-quotas',
                 labelKey: 'EmpSection_AbsenceQuotas',
                 load: () =>

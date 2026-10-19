@@ -46,7 +46,7 @@
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 200px">
-                                        {{ 'Employee' | localize }}
+                                        {{ 'EmployeeOrApplicant' | localize }}
                                     </th>
                                     <th style="min-width: 130px">
                                         {{ 'Travel' | localize }}
@@ -84,7 +84,14 @@
                                             {{ 'Actions' | localize }}
                                         </button>
                                     </td>
-                                    <td style="min-width: 200px">{{ record.employeeCode }} - {{ record.employeeFullNameEn }}</td>
+                                    <td style="min-width: 200px">
+                                        @if (record.applicantId) {
+                                            <span class="badge badge-light-info me-2">{{ 'Applicant' | localize }}</span>
+                                            {{ record.applicantCode }} - {{ record.applicantFullNameEn }}
+                                        } @else {
+                                            {{ record.employeeCode }} - {{ record.employeeFullNameEn }}
+                                        }
+                                    </td>
                                     <td style="min-width: 130px">{{ record.travelCode }}</td>
                                     <td style="min-width: 130px">{{ record.claimDate | luxonFormat:'yyyy-MM-dd' }}</td>
                                     <td style="min-width: 130px">{{ record.claimAmount }}</td>

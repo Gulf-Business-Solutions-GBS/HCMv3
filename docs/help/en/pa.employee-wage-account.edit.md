@@ -71,16 +71,20 @@ Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI
 ## CostElement1Id {#EmployeeWageAccount.CostElement1Id}
 <!-- alias: loc:CostElement1Id, dom:EmployeeWageAccount_costElement1Id -->
 
-**What it is.** Cost element 1 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 1 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement1, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
+:::admin
+The slot captions come from Organization Management → Cost Element Types: give a type the code CostElement1 to CostElement7 to switch that slot on. A saved value whose cost element has since moved to another type is still shown, by its number, so opening the row does not clear it.
+:::
+
 ## CostElement2Id {#EmployeeWageAccount.CostElement2Id}
 <!-- alias: loc:CostElement2Id, dom:EmployeeWageAccount_costElement2Id -->
 
-**What it is.** Cost element 2 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 2 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement2, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 
@@ -89,7 +93,7 @@ Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI
 ## CostElement3Id {#EmployeeWageAccount.CostElement3Id}
 <!-- alias: loc:CostElement3Id, dom:EmployeeWageAccount_costElement3Id -->
 
-**What it is.** Cost element 3 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 3 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement3, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 
@@ -98,7 +102,7 @@ Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI
 ## CostElement4Id {#EmployeeWageAccount.CostElement4Id}
 <!-- alias: loc:CostElement4Id, dom:EmployeeWageAccount_costElement4Id -->
 
-**What it is.** Cost element 4 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 4 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement4, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 
@@ -107,7 +111,7 @@ Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI
 ## CostElement5Id {#EmployeeWageAccount.CostElement5Id}
 <!-- alias: loc:CostElement5Id, dom:EmployeeWageAccount_costElement5Id -->
 
-**What it is.** Cost element 5 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 5 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement5, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 
@@ -116,7 +120,7 @@ Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI
 ## CostElement6Id {#EmployeeWageAccount.CostElement6Id}
 <!-- alias: loc:CostElement6Id, dom:EmployeeWageAccount_costElement6Id -->
 
-**What it is.** Cost element 6 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 6 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement6, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 
@@ -125,7 +129,7 @@ Maintained under Payroll Management → Wagetypes. Only wagetypes included in FI
 ## CostElement7Id {#EmployeeWageAccount.CostElement7Id}
 <!-- alias: loc:CostElement7Id, dom:EmployeeWageAccount_costElement7Id -->
 
-**What it is.** Cost element 7 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 7 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement7, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
 

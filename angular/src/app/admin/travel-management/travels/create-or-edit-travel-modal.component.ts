@@ -7,6 +7,7 @@ import {
     GetAllEmployeesInput,
     GetAllTravelTypesInput,
     TravelTypeDto,
+    TravelApplicantLookupDto,
     TravelTypesServiceProxy,
     TravelsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
@@ -46,6 +47,13 @@ export class CreateOrEditTravelModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditTravelDto>(new CreateOrEditTravelDto());
     readonly employees = signal<EmployeeDto[]>([]);
+    readonly applicants = signal<TravelApplicantLookupDto[]>([]);
+
+    /**
+     * Who the trip is for (legacy Travel.Employee / Travel.Applicant). Exactly one is sent; the server refuses
+     * neither or both. An applicant's trip is recorded directly rather than sent for approval.
+     */
+    readonly partyType = signal<'employee' | 'applicant'>('employee');
     readonly travelTypes = signal<TravelTypeDto[]>([]);
 
     /** Read-only, totalled by the server from the legs and their costs (legacy Travel.TotalTravelCost). */
@@ -58,17 +66,21 @@ export class CreateOrEditTravelModalComponent extends AppComponentBase {
             .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.employees.set(result.items));
 
+        this._service.getApplicantsForLookup().subscribe((result) => this.applicants.set(result.items));
+
         this._travelTypesService
             .getAll(new GetAllTravelTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => this.travelTypes.set(result.items));
 
         if (!id) {
             this.record.set(new CreateOrEditTravelDto());
+            this.partyType.set('employee');
             this.totalTravelCost.set(0);
             this.modal().show();
         } else {
             this._service.getTravelForEdit(id).subscribe((result) => {
                 this.record.set(result.travel);
+                this.partyType.set(result.travel.applicantId ? 'applicant' : 'employee');
                 this.totalTravelCost.set(result.totalTravelCost ?? 0);
                 this.modal().show();
             });
@@ -81,6 +93,16 @@ export class CreateOrEditTravelModalComponent extends AppComponentBase {
 
     employeeLabel(employee: EmployeeDto): string {
         return `${employee.code} - ${employee.fullNameEn}`;
+    }
+
+    applicantLabel(applicant: TravelApplicantLookupDto): string {
+        return `${applicant.code} - ${applicant.fullNameEn}`;
+    }
+
+    /** Switching clears the other side, so the record never carries both. */
+    setPartyType(type: 'employee' | 'applicant'): void {
+        this.partyType.set(type);
+        this.updateField(type === 'employee' ? 'applicantId' : 'employeeId', undefined);
     }
 
     save(): void {

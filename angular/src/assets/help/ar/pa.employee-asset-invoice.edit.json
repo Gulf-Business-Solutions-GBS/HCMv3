@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-asset-invoice.edit",
+  "lang": "ar",
+  "title": "فواتير عهد الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAssetInvoice",
+  "overviewHtml": "<p>فاتورة شهرية لعهدة يحملها الموظف — كفاتورة الهاتف النقال أو كشف بطاقة الوقود — والجزء الذي يتحمله الموظف منها. وتُفتح من قسم فواتير العهد في سجل الموظف.</p><p>لا يجوز أن يكون للموظف أكثر من فاتورة واحدة للعهدة نفسها في الشهر الواحد (حسب تاريخ الفاتورة). وتُدخل المبالغ كلها يدوياً: فلا يُحتسب شيء منها من بدل العهدة للموظف، ولا تخصم الرواتب شيئاً بناءً على هذه السجلات. ويعرضها تقرير فواتير عهد الموظفين، ويُظهر تقرير خصومات الموظفين المطبوع مبلغ الخصم لكل فاتورة مؤشَّر عليها في شهرها.</p>",
+  "aliasIndex": {
+    "loc:AssetId": "EmployeeAssetInvoice.AssetId",
+    "dom:EmployeeAssetInvoice_AssetId": "EmployeeAssetInvoice.AssetId",
+    "loc:InvoiceDate": "EmployeeAssetInvoice.InvoiceDate",
+    "dom:EmployeeAssetInvoice_InvoiceDate": "EmployeeAssetInvoice.InvoiceDate",
+    "loc:InvoiceAmount": "EmployeeAssetInvoice.InvoiceAmount",
+    "dom:EmployeeAssetInvoice_InvoiceAmount": "EmployeeAssetInvoice.InvoiceAmount",
+    "loc:EmployeePlanAmount": "EmployeeAssetInvoice.EmployeePlanAmount",
+    "dom:EmployeeAssetInvoice_EmployeePlanAmount": "EmployeeAssetInvoice.EmployeePlanAmount",
+    "loc:DeductionAmount": "EmployeeAssetInvoice.DeductionAmount",
+    "dom:EmployeeAssetInvoice_DeductionAmount": "EmployeeAssetInvoice.DeductionAmount",
+    "loc:DeductFromEmployee": "EmployeeAssetInvoice.DeductFromEmployee",
+    "dom:EmployeeAssetInvoice_DeductFromEmployee": "EmployeeAssetInvoice.DeductFromEmployee",
+    "loc:Comments": "EmployeeAssetInvoice.Comments",
+    "dom:EmployeeAssetInvoice_Comments": "EmployeeAssetInvoice.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAssetInvoice.AssetId",
+      "label": "AssetId",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:AssetId",
+        "dom:EmployeeAssetInvoice_AssetId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العهد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العهدة التي تخصها الفاتورة.</p><p><strong>مثال.</strong> هاتف نقال — 9999 1234</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← العهد.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.InvoiceDate",
+      "label": "InvoiceDate",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:InvoiceDate",
+        "dom:EmployeeAssetInvoice_InvoiceDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الفاتورة.</p><p><strong>مثال.</strong> 30 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> شهره وسنته يحددان الشهر الذي تنتمي إليه الفاتورة، في التحقق من فاتورة واحدة في الشهر وفي تقرير خصومات الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.InvoiceAmount",
+      "label": "InvoiceAmount",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:InvoiceAmount",
+        "dom:EmployeeAssetInvoice_InvoiceAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إجمالي الفاتورة.</p><p><strong>مثال.</strong> 32.500</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.EmployeePlanAmount",
+      "label": "EmployeePlanAmount",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:EmployeePlanAmount",
+        "dom:EmployeeAssetInvoice_EmployeePlanAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء من الفاتورة الذي تتحمله الشركة ضمن خطة الموظف أو بدله.</p><p><strong>مثال.</strong> 20.000</p><p><strong>لماذا يهم.</strong> يظهر في تقرير فواتير عهد الموظفين. ولا يُحتسب تلقائياً، بل يُدخل يدوياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.DeductionAmount",
+      "label": "DeductionAmount",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:DeductionAmount",
+        "dom:EmployeeAssetInvoice_DeductionAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجزء من الفاتورة الذي يتحمله الموظف.</p><p><strong>مثال.</strong> 12.500</p><p><strong>لماذا يهم.</strong> يُطبع في تقرير خصومات الموظفين إذا أُشِّر على الخصم من الموظف. ولا تخصمه الرواتب؛ فإن كان سيُقتطع من الراتب فأضِف دفعة في سجل الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.DeductFromEmployee",
+      "label": "DeductFromEmployee",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:DeductFromEmployee",
+        "dom:EmployeeAssetInvoice_DeductFromEmployee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يتحمل الموظف مبلغ الخصم.</p><p><strong>مثال.</strong> نعم</p><p><strong>لماذا يهم.</strong> لا تظهر في تقرير خصومات الموظفين إلا الفواتير المؤشَّر عليها والتي لها مبلغ خصم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAssetInvoice.Comments",
+      "label": "Comments",
+      "section": "EmployeeAssetInvoices",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAssetInvoice_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

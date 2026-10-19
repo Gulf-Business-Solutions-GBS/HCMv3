@@ -13,6 +13,8 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisters.Create]
 
 كشف راتب من محاكاة -- تشغيل تجريبي يبيّن ما سيصرفه نظام الرواتب دون صرفه. وتُحفظ كشوف المحاكاة منفصلة عن الكشوف الفعلية ولا تُقفل أبداً.
 
+يفتح خيار التفاصيل على أي كشف في القائمة صفحته الخاصة: الموظف والفترات ونوع التشغيل ونوع النتيجة في الأعلى مع زر التحرير، وتحتها بنود أنواع الأجور، ويمكن إضافتها وتعديلها وحذفها من هناك.
+
 ## EmployeeId {#SimulationSalaryRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:SimulationSalaryRegister_EmployeeId -->
 

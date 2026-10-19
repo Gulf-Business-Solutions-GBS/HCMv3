@@ -19,10 +19,9 @@ public class GetEmployeeTravelReportInput : GridReportInputBase
 /// <summary>
 /// One grid row. Mirrors legacy <c>Table1()</c>'s column set (uscRptEmployeeTravel.ascx.cs:529-709).
 ///
-/// DEVIATION (non-data-loss): legacy's <c>Travel</c> entity had an either-or Employee/Applicant party FK
-/// (a Travel could belong to a job Applicant from the never-ported Recruitment module); HCMv3's
-/// <see cref="HCMv3.TravelManagement.Travel"/> dropped the Applicant side entirely (see that entity's
-/// class remarks) so every row is Employee-owned and the legacy "Applicant" column is always blank here.
+/// A trip can belong to an employee or to a job applicant (see <see cref="HCMv3.TravelManagement.Travel"/>).
+/// An applicant's row fills <see cref="Applicant"/> and leaves the employee, job and org columns blank, as
+/// legacy did.
 /// </summary>
 public class EmployeeTravelReportRowDto : EntityDto<int>
 {
@@ -30,7 +29,7 @@ public class EmployeeTravelReportRowDto : EntityDto<int>
 
     public string EmployeeName { get; set; }
 
-    /// <summary>Always blank -- see class remarks (legacy Applicant party dropped from Travel).</summary>
+    /// <summary>The applicant's full name on an applicant's trip; blank on an employee's.</summary>
     public string Applicant { get; set; }
 
     public string TravelCode { get; set; }

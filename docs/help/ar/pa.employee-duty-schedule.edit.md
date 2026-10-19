@@ -15,6 +15,17 @@ permissions: [Pages.TimeManagement.EmployeeDutySchedules.Create]
 
 يُسجَّل للرجوع إليه؛ إذ يأخذ محرك الوقت والرواتب دوام الموظف من فترات الدوام والدوام البديل، ولا يقرآن هذا التخصيص حالياً.
 
+وتُعرض السجلات نفسها لجميع الموظفين من إدارة الوقت ← جدول الدوام، ويمكن البحث فيها برمز الموظف أو اسمه وبرمز الجدول أو اسمه. وعند إضافة سجل من هناك يُطلب اختيار الموظف، أما من سجل الموظف فيكون الموظف محدداً مسبقاً.
+
+## Employee {#EmployeeDutySchedule.EmployeeId}
+<!-- alias: loc:Employee, dom:EmployeeDutySchedule_EmployeeId -->
+
+**ما هو.** الموظف الذي يُخصَّص له الجدول. ولا يظهر إلا عند إضافة سجل من شاشة جدول الدوام لجميع الموظفين.
+
+**مثال.** 1024 - فاطمة الصباح
+
+**القواعد.** إلزامي. يُختار من قائمة الموظفين.
+
 ## RosterDutySchedule {#EmployeeDutySchedule.RosterDutyScheduleId}
 <!-- alias: loc:RosterDutySchedule, dom:EmployeeDutySchedule_RosterDutyScheduleId -->
 

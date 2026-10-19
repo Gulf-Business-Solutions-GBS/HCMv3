@@ -44,6 +44,7 @@ public class EmployeeRoleBuilder
         AppPermissions.Ess_MyRequests,
         AppPermissions.Ess_MyProfile,
         AppPermissions.Ess_MyLeave,
+        AppPermissions.Ess_MyLeavePlans,
         AppPermissions.Ess_MyAssets,
         AppPermissions.Ess_MyDocuments,
         AppPermissions.Ess_MyLoans,

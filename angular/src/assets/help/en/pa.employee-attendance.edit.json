@@ -19,6 +19,8 @@
     "dom:EmployeeAttendance_StartTime": "EmployeeAttendance.StartTime",
     "loc:EndTime": "EmployeeAttendance.EndTime",
     "dom:EmployeeAttendance_EndTime": "EmployeeAttendance.EndTime",
+    "loc:TotalAttendDays": "EmployeeAttendance.TotalAttendDays",
+    "dom:EmployeeAttendance_TotalAttendDays": "EmployeeAttendance.TotalAttendDays",
     "loc:Comments": "EmployeeAttendance.Comments",
     "dom:EmployeeAttendance_Comments": "EmployeeAttendance.Comments"
   },
@@ -75,7 +77,7 @@
       ],
       "rules": "Required. One of: Period, Day, Hours.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether the attendance is recorded as a period, in days or in hours.</p><p><strong>Example.</strong> Hours</p><p><strong>Why it matters.</strong> Recorded only; no calculation reads it at present.</p>",
+      "html": "<p><strong>What it is.</strong> Whether the attendance is recorded as a period, in days or in hours.</p><p><strong>Example.</strong> Hours</p><p><strong>Why it matters.</strong> Decides how Total Attend Days is worked out when the record is saved.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -119,6 +121,20 @@
       "when": null,
       "html": "<p><strong>What it is.</strong> The time the attendance ends.</p><p><strong>Example.</strong> 12:00</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.TotalAttendDays",
+      "label": "TotalAttendDays",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:TotalAttendDays",
+        "dom:EmployeeAttendance_TotalAttendDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of days the attendance counts for, worked out when the record is saved. It is empty until the record has been saved once.</p><p><strong>Example.</strong> 0.5</p><p><strong>Why it matters.</strong> For Period with a start and end time, the hours between the two times (which replace the hours entered) are divided by the employee's planned duty hours that day, or the payroll default working hours when the duty has none, and the result is kept between 0 and 1. For Period without times it is the calendar days from start date to end date. For Hours it is the hours entered divided the same way, with no upper limit. For Day it is not calculated. When the attendance type has Have Quota Accrual ticked, these days are added to the accrued quota of its linked leave type, and taken off again when the record is changed or deleted. The leave provision report also reads them.</p>",
+      "adminHtml": "<p>Saving fails when no duty is found for the employee on the start date. The quota row used is the one covering the employee's joining date, as in the old system; if there is none, one is created.</p>",
       "stub": false
     },
     {

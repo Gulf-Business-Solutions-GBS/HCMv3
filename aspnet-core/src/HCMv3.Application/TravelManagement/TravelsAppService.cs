@@ -9,6 +9,7 @@ using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.Recruitment;
 using HCMv3.TravelManagement.Dto;
 using HCMv3.TravelManagement.Workflow;
 using HCMv3.Workflow;
@@ -21,8 +22,8 @@ namespace HCMv3.TravelManagement;
 /// <summary>
 /// Application service for <see cref="Travel"/> (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.TravelManagement.Travel</c>). Legacy <c>PerformValidation</c> parity
-/// ported here: auto Code, duplicate Code check, EndDate must not be earlier than StartDate. See
-/// <see cref="Travel"/> class remarks for the Applicant drop. TotalTravelCost is kept by
+/// ported here: auto Code, duplicate Code check, EndDate must not be earlier than StartDate, and the trip
+/// belongs to an employee or a job applicant -- exactly one (see <see cref="TravelParty"/>). TotalTravelCost is kept by
 /// <see cref="ITravelCostRollupService"/> on create and on every update (legacy <c>Travel.UpdateTotalAmount</c>).
 ///
 /// <para>
@@ -32,6 +33,12 @@ namespace HCMv3.TravelManagement;
 /// decision, so it takes the same route and is judged by the same
 /// <see cref="TravelWorkflowTransactionHandler"/>. Nothing here writes approval state, and with workflow
 /// switched off for the type the submitter simply inserts, which is the pre-workflow behaviour.
+/// </para>
+/// <para>
+/// AN APPLICANT TRIP IS RECORDED, NOT ROUTED. Routing is decided by the employee a request is about -- their
+/// manager, their organisation unit, the routing rules matched against them -- and an applicant has none of
+/// those. Legacy's Travel screen was direct entry for everybody, so recording an applicant's trip straight
+/// away is legacy behaviour; it is the employee path that HCMv3 added approval to.
 /// </para>
 /// <para>
 /// The <c>ApprovedOnly</c> filter is disabled throughout, for the same reason as the manpower plan register:
@@ -45,15 +52,38 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
     private readonly IRepository<Travel> _repository;
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly ITravelCostRollupService _costRollupService;
+    private readonly IRepository<Applicant> _applicantRepository;
 
     public TravelsAppService(
         IRepository<Travel> repository,
         IAdminTransactionSubmitter transactionSubmitter,
-        ITravelCostRollupService costRollupService)
+        ITravelCostRollupService costRollupService,
+        IRepository<Applicant> applicantRepository)
     {
         _repository = repository;
         _transactionSubmitter = transactionSubmitter;
         _costRollupService = costRollupService;
+        _applicantRepository = applicantRepository;
+    }
+
+    /// <summary>
+    /// The applicants a trip or a claim can be booked for. Served here, under the travel permission, so the
+    /// travel desk does not also need the Recruitment screens just to fill in one drop-down.
+    /// </summary>
+    public async Task<ListResultDto<TravelApplicantLookupDto>> GetApplicantsForLookup()
+    {
+        var applicants = await _applicantRepository.GetAll()
+            .OrderBy(a => a.Code)
+            .Select(a => new TravelApplicantLookupDto
+            {
+                Id = a.Id,
+                Code = a.Code,
+                FullNameEn = (a.FirstNameEn ?? "") + " " + (a.LastNameEn ?? ""),
+                FullNameAr = (a.FirstNameAr ?? "") + " " + (a.LastNameAr ?? "")
+            })
+            .ToListAsync();
+
+        return new ListResultDto<TravelApplicantLookupDto>(applicants);
     }
 
     [HttpPost]
@@ -65,8 +95,10 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
         {
             var query = _repository.GetAll()
                 .Include(t => t.Employee)
+                .Include(t => t.Applicant)
                 .Include(t => t.TravelType)
                 .WhereIf(input.EmployeeId.HasValue, t => t.EmployeeId == input.EmployeeId)
+                .WhereIf(input.ApplicantId.HasValue, t => t.ApplicantId == input.ApplicantId)
                 .WhereIf(!input.Filter.IsNullOrWhiteSpace(), t => t.Code.Contains(input.Filter));
 
             var totalCount = await query.CountAsync();
@@ -125,6 +157,15 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
         await ValidateAsync(entity);
         await AssignCodeIfEmptyAsync(entity);
 
+        if (!entity.EmployeeId.HasValue)
+        {
+            // An applicant's trip: recorded, not routed -- see class remarks. Null status means "in effect",
+            // the same state the submitter leaves a row in when workflow is off for the type.
+            entity.WorkflowStatus = null;
+            await _repository.InsertAsync(entity);
+            return;
+        }
+
         await _transactionSubmitter.CreateAndSubmitAsync(
             _repository,
             entity,
@@ -139,7 +180,17 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
         using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
             var entity = await _repository.GetAsync(input.Id.Value);
+            var raisedForApproval = entity.WorkflowRequestId.HasValue;
+
             entity = MapToEntity(input, entity);
+
+            // The approval request was raised against the employee and is routed by them. Moving the trip to
+            // an applicant afterwards would leave an approver deciding a request about somebody who is no
+            // longer on it.
+            if (raisedForApproval && !entity.EmployeeId.HasValue)
+            {
+                throw new UserFriendlyException(L("ATripSentForApprovalCannotBeMovedToAnApplicant"));
+            }
 
             await ValidateAsync(entity);
             await AssignCodeIfEmptyAsync(entity);
@@ -161,10 +212,16 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
     }
 
     /// <summary>
-    /// Legacy <c>PerformValidation</c> parity: EndDate must not be earlier than StartDate.
+    /// Legacy <c>PerformValidation</c> parity: an employee or an applicant (exactly one -- see
+    /// <see cref="TravelParty"/>), and EndDate must not be earlier than StartDate.
     /// </summary>
     private Task ValidateAsync(Travel entity)
     {
+        if (!TravelParty.HasExactlyOne(entity.EmployeeId, entity.ApplicantId))
+        {
+            throw new UserFriendlyException(L("SelectEitherAnEmployeeOrAnApplicant"));
+        }
+
         if (entity.EndDate.Date < entity.StartDate.Date)
         {
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
@@ -206,7 +263,8 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
     private static Travel MapToEntity(CreateOrEditTravelDto input, Travel entity)
     {
         entity.Code = input.Code;
-        entity.EmployeeId = input.EmployeeId;
+        entity.EmployeeId = TravelParty.Normalize(input.EmployeeId);
+        entity.ApplicantId = TravelParty.Normalize(input.ApplicantId);
         entity.TravelTypeId = input.TravelTypeId;
         entity.StartDate = input.StartDate;
         entity.EndDate = input.EndDate;
@@ -278,6 +336,11 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
             EmployeeFullNameEn = entity.Employee != null
                 ? $"{entity.Employee.FirstNameEn} {entity.Employee.LastNameEn}"
                 : null,
+            ApplicantId = entity.ApplicantId,
+            ApplicantCode = entity.Applicant?.Code,
+            ApplicantFullNameEn = entity.Applicant != null
+                ? $"{entity.Applicant.FirstNameEn} {entity.Applicant.LastNameEn}"
+                : null,
             TravelTypeId = entity.TravelTypeId,
             TravelTypeNameEn = entity.TravelType?.NameEn,
             StartDate = entity.StartDate,
@@ -297,6 +360,7 @@ public class TravelsAppService : HCMv3AppServiceBase, ITravelsAppService
             Id = entity.Id,
             Code = entity.Code,
             EmployeeId = entity.EmployeeId,
+            ApplicantId = entity.ApplicantId,
             TravelTypeId = entity.TravelTypeId,
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,

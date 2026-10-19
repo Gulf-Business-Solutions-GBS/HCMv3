@@ -6,6 +6,11 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
 import { ZeroTemplateHttpInterceptor } from './zero-template-http-interceptor';
 
 export const SERVICE_PROXY_PROVIDERS = [
+    ApiServiceProxies.LeavePlannerServiceProxy,
+    ApiServiceProxies.LeavePlansServiceProxy,
+    ApiServiceProxies.MyLeavePlanServiceProxy,
+    ApiServiceProxies.OvertimeBatchesServiceProxy,
+    ApiServiceProxies.UserCredentialResetServiceProxy,
     ApiServiceProxies.CostElementSlotsServiceProxy,
     ApiServiceProxies.GridReportOrgLevelsServiceProxy,
     ApiServiceProxies.AXBatchesServiceProxy,
@@ -311,7 +316,6 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.NotificationConfigsServiceProxy,
     ApiServiceProxies.NotificationGroupsServiceProxy,
     ApiServiceProxies.DocumentTypesServiceProxy,
-    ApiServiceProxies.DocumentPrintFormsServiceProxy,
     ApiServiceProxies.LoanTypesServiceProxy,
     ApiServiceProxies.LoanTypeDetailsServiceProxy,
     ApiServiceProxies.OvertimeTypesServiceProxy,

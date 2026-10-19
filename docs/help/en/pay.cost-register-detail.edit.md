@@ -16,7 +16,7 @@ One cost line: part of a wagetype's amount posted to a ledger account under a se
 ## CostRegisterId {#CostRegisterDetail.CostRegisterId}
 <!-- alias: loc:CostRegisterId, dom:CostRegisterDetail_CostRegisterId -->
 
-**What it is.** The cost register this line belongs to.
+**What it is.** The cost register this line belongs to. Not shown when the dialog is opened from a cost register's own page: that register is filled in for you.
 
 **Rules.** Required. Chosen from Cost Register master data.
 
@@ -59,48 +59,52 @@ One cost line: part of a wagetype's amount posted to a ledger account under a se
 ## CostElement1Id {#CostRegisterDetail.CostElement1Id}
 <!-- alias: loc:CostElement1Id, dom:CostRegisterDetail_costElement1Id -->
 
-**What it is.** Cost element 1 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 1 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement1, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
+
+:::admin
+The slot captions come from Organization Management → Cost Element Types: give a type the code CostElement1 to CostElement7 to switch that slot on. A saved value whose cost element has since moved to another type is still shown, by its number, so opening the row does not clear it.
+:::
 
 ## CostElement2Id {#CostRegisterDetail.CostElement2Id}
 <!-- alias: loc:CostElement2Id, dom:CostRegisterDetail_costElement2Id -->
 
-**What it is.** Cost element 2 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 2 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement2, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement3Id {#CostRegisterDetail.CostElement3Id}
 <!-- alias: loc:CostElement3Id, dom:CostRegisterDetail_costElement3Id -->
 
-**What it is.** Cost element 3 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 3 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement3, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement4Id {#CostRegisterDetail.CostElement4Id}
 <!-- alias: loc:CostElement4Id, dom:CostRegisterDetail_costElement4Id -->
 
-**What it is.** Cost element 4 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 4 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement4, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement5Id {#CostRegisterDetail.CostElement5Id}
 <!-- alias: loc:CostElement5Id, dom:CostRegisterDetail_costElement5Id -->
 
-**What it is.** Cost element 5 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 5 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement5, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement6Id {#CostRegisterDetail.CostElement6Id}
 <!-- alias: loc:CostElement6Id, dom:CostRegisterDetail_costElement6Id -->
 
-**What it is.** Cost element 6 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 6 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement6, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement7Id {#CostRegisterDetail.CostElement7Id}
 <!-- alias: loc:CostElement7Id, dom:CostRegisterDetail_costElement7Id -->
 
-**What it is.** Cost element 7 -- one of up to seven accounting dimensions, copied from the employee's wage account.
+**What it is.** Cost element 7 -- one of up to seven accounting dimensions, copied from the employee's wage account. Captioned with the name of the cost element type whose code is CostElement7, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.

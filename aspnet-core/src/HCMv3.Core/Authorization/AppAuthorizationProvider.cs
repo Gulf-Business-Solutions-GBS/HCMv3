@@ -41,6 +41,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyProfile, L("EssMyProfile"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyTeam, L("EssMyTeam"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyLeave, L("EssMyLeave"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyLeavePlans, L("EssMyLeavePlans"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyAssets, L("EssMyAssets"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyDocuments, L("EssMyDocuments"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyLoans, L("EssMyLoans"), multiTenancySides: MultiTenancySides.Tenant);
@@ -326,10 +327,6 @@ public class AppAuthorizationProvider : AuthorizationProvider
         documentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes_Edit, L("EditItem"));
         documentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes_Delete, L("DeleteItem"));
 
-        var documentPrintForms = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms, L("DocumentPrintForms"));
-        documentPrintForms.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms_Create, L("CreateNewItem"));
-        documentPrintForms.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms_Edit, L("EditItem"));
-        documentPrintForms.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms_Delete, L("DeleteItem"));
 
         var loanTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypes, L("LoanTypes"));
         loanTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypes_Create, L("CreateNewItem"));
@@ -726,6 +723,15 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeePaymentBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches_Create, L("CreateNewItem"));
         employeePaymentBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches_Edit, L("EditItem"));
         employeePaymentBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches_Delete, L("DeleteItem"));
+
+        var leavePlans = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LeavePlans, L("LeavePlans"));
+        leavePlans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LeavePlans_Delete, L("DeleteItem"));
+        personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LeavePlanner, L("LeavePlanner"));
+
+        var overtimeBatches = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_OvertimeBatches, L("OvertimeBatches"));
+        overtimeBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_OvertimeBatches_Create, L("CreateNewItem"));
+        overtimeBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_OvertimeBatches_Edit, L("EditItem"));
+        overtimeBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_OvertimeBatches_Delete, L("DeleteItem"));
 
         var employeeRecurringPayments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments, L("EmployeeRecurringPayments"));
         employeeRecurringPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments_Create, L("CreateNewItem"));
@@ -2809,6 +2815,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_TimeAttendanceResync, L("ResyncingTimeAttendanceData"));
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_TransferApprovals, L("TransferringPendingApprovals"));
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_BulkPasswordReset, L("BulkResettingPasswords"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_ResetUserCredentials, L("ResettingUserCredentials"), multiTenancySides: MultiTenancySides.Tenant);
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_CopyWorkflowSetup, L("CopyingWorkflowSetup"));
 
         // Legacy HCM10.Web/UserControls/ImportExport/. See AppPermissions for why Import and Export are

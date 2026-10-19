@@ -13,6 +13,8 @@ permissions: [Pages.BenefitsManagement.EmployeeInsuranceDetails.Create]
 
 One payment towards the employee share of an employee insurance. The balance still to recover is the employee contribution less all of these lines, whatever their type. Each month payroll replaces that month's Through Payroll line with a new one for the insurance's installment amount, cut to what net pay and the balance allow; add External or Exemption lines by hand for amounts settled another way. The amount cannot exceed the remaining balance, and the date cannot be before the insurance's installment start date.
 
+Opened from an insurance's Insurance Installments dialog, the insurance is already filled in and cannot be changed, and the type starts as External.
+
 ## EmployeeInsuranceId {#EmployeeInsuranceDetail.EmployeeInsuranceId}
 <!-- alias: loc:EmployeeInsuranceId, dom:EmployeeInsuranceDetail_EmployeeInsuranceId -->
 

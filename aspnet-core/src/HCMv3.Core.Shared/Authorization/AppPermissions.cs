@@ -232,10 +232,6 @@ public static class AppPermissions
     public const string Pages_GeneralMasterInfo_DocumentTypes_Create = "Pages.GeneralMasterInfo.DocumentTypes.Create";
     public const string Pages_GeneralMasterInfo_DocumentTypes_Edit = "Pages.GeneralMasterInfo.DocumentTypes.Edit";
     public const string Pages_GeneralMasterInfo_DocumentTypes_Delete = "Pages.GeneralMasterInfo.DocumentTypes.Delete";
-    public const string Pages_GeneralMasterInfo_DocumentPrintForms = "Pages.GeneralMasterInfo.DocumentPrintForms";
-    public const string Pages_GeneralMasterInfo_DocumentPrintForms_Create = "Pages.GeneralMasterInfo.DocumentPrintForms.Create";
-    public const string Pages_GeneralMasterInfo_DocumentPrintForms_Edit = "Pages.GeneralMasterInfo.DocumentPrintForms.Edit";
-    public const string Pages_GeneralMasterInfo_DocumentPrintForms_Delete = "Pages.GeneralMasterInfo.DocumentPrintForms.Delete";
     public const string Pages_GeneralMasterInfo_LoanTypes = "Pages.GeneralMasterInfo.LoanTypes";
     public const string Pages_GeneralMasterInfo_LoanTypes_Create = "Pages.GeneralMasterInfo.LoanTypes.Create";
     public const string Pages_GeneralMasterInfo_LoanTypes_Edit = "Pages.GeneralMasterInfo.LoanTypes.Edit";
@@ -638,6 +634,15 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeePaymentBatches_Create = "Pages.PersonnelAdministration.EmployeePaymentBatches.Create";
     public const string Pages_PersonnelAdministration_EmployeePaymentBatches_Edit = "Pages.PersonnelAdministration.EmployeePaymentBatches.Edit";
     public const string Pages_PersonnelAdministration_EmployeePaymentBatches_Delete = "Pages.PersonnelAdministration.EmployeePaymentBatches.Delete";
+
+    public const string Pages_PersonnelAdministration_LeavePlans = "Pages.PersonnelAdministration.LeavePlans";
+    public const string Pages_PersonnelAdministration_LeavePlans_Delete = "Pages.PersonnelAdministration.LeavePlans.Delete";
+    public const string Pages_PersonnelAdministration_LeavePlanner = "Pages.PersonnelAdministration.LeavePlanner";
+
+    public const string Pages_PersonnelAdministration_OvertimeBatches = "Pages.PersonnelAdministration.OvertimeBatches";
+    public const string Pages_PersonnelAdministration_OvertimeBatches_Create = "Pages.PersonnelAdministration.OvertimeBatches.Create";
+    public const string Pages_PersonnelAdministration_OvertimeBatches_Edit = "Pages.PersonnelAdministration.OvertimeBatches.Edit";
+    public const string Pages_PersonnelAdministration_OvertimeBatches_Delete = "Pages.PersonnelAdministration.OvertimeBatches.Delete";
 
     public const string Pages_PersonnelAdministration_EmployeeRecurringPayments = "Pages.PersonnelAdministration.EmployeeRecurringPayments";
     public const string Pages_PersonnelAdministration_EmployeeRecurringPayments_Create = "Pages.PersonnelAdministration.EmployeeRecurringPayments.Create";
@@ -1903,6 +1908,7 @@ public static class AppPermissions
     // One per ESS-enabled transaction type. These strings are what WorkflowTransactionType.EssPermissionName
     // holds, so the catalog row and the permission must agree or the menu entry silently never renders.
     public const string Ess_MyLeave = "Ess.MyLeave";
+    public const string Ess_MyLeavePlans = "Ess.MyLeavePlans";
     public const string Ess_MyAssets = "Ess.MyAssets";
     public const string Ess_MyDocuments = "Ess.MyDocuments";
     public const string Ess_MyLoans = "Ess.MyLoans";
@@ -3156,6 +3162,7 @@ public static class AppPermissions
     /// Pages_Administration_Users) so it can be granted to nobody by default.
     /// </summary>
     public const string Pages_Administration_Tools_BulkPasswordReset = "Pages.Administration.Tools.BulkPasswordReset";
+    public const string Pages_Administration_Tools_ResetUserCredentials = "Pages.Administration.Tools.ResetUserCredentials";
 
     // Legacy uscCopyWorkflowSetup.ascx.cs -- clone a RequestMaster + its RequestDetail steps.
     public const string Pages_Administration_Tools_CopyWorkflowSetup = "Pages.Administration.Tools.CopyWorkflowSetup";

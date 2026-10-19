@@ -655,7 +655,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether recurring payments use an effective date.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether a new open-ended recurring payment takes over from the current one instead of being refused as an overlap.</p><p><strong>Why it matters.</strong> When on, saving an employee recurring payment with end date 31/12/9999 closes the employee's open-ended payment of the same wage type the day before the new one starts. The current payment must itself be open-ended and start earlier, and only one may overlap; otherwise the save is refused. When off, any overlap is refused.</p>",
       "adminHtml": "",
       "stub": false
     },

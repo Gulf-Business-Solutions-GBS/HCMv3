@@ -19,8 +19,12 @@ public class CreateOrEditTravelDto
     [StringLength(SimpleLookupConsts.MaxCodeLength)]
     public string Code { get; set; }
 
-    [Required]
-    public int EmployeeId { get; set; }
+    /// <summary>The employee travelling. Leave empty for an applicant trip -- exactly one of this and
+    /// <see cref="ApplicantId"/> must be set (checked by the server).</summary>
+    public int? EmployeeId { get; set; }
+
+    /// <summary>The job applicant travelling, when the trip is not an employee's.</summary>
+    public int? ApplicantId { get; set; }
 
     [Required]
     public int TravelTypeId { get; set; }

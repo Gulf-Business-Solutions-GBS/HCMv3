@@ -29,14 +29,17 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
     private readonly IRepository<EmployeeOvertime> _repository;
     private readonly IAdminTransactionSubmitter _transactionSubmitter;
     private readonly IExpectedOvertimeAmountService _expectedOvertimeAmountService;
+    private readonly IEmployeeOvertimeService _employeeOvertimeService;
 
     public EmployeeOvertimesAppService(IRepository<EmployeeOvertime> repository,
         IAdminTransactionSubmitter transactionSubmitter,
-        IExpectedOvertimeAmountService expectedOvertimeAmountService)
+        IExpectedOvertimeAmountService expectedOvertimeAmountService,
+        IEmployeeOvertimeService employeeOvertimeService)
     {
         _transactionSubmitter = transactionSubmitter;
         _repository = repository;
         _expectedOvertimeAmountService = expectedOvertimeAmountService;
+        _employeeOvertimeService = employeeOvertimeService;
     }
 
     [HttpPost]
@@ -137,15 +140,12 @@ public class EmployeeOvertimesAppService : HCMv3AppServiceBase, IEmployeeOvertim
         await _repository.DeleteAsync(input.Id);
     }
 
-    private async Task ValidateEntityAsync(EmployeeOvertime entity)
-    {
-        var hasDuplicate = await _repository.GetAll()
-            .AnyAsync(e => e.Id != entity.Id && e.EmployeeId == entity.EmployeeId && e.EffectiveDate == entity.EffectiveDate);
-        if (hasDuplicate)
-        {
-            throw new UserFriendlyException(L("DuplicateRecordFound"));
-        }
-    }
+    /// <summary>
+    /// One row per employee per day -- shared with the overtime batch, whose approval writes rows too.
+    /// See <see cref="IEmployeeOvertimeService"/>.
+    /// </summary>
+    private Task ValidateEntityAsync(EmployeeOvertime entity) =>
+        _employeeOvertimeService.EnsureNoOvertimeOnDateAsync(entity.EmployeeId, entity.EffectiveDate, entity.Id);
 
     private static EmployeeOvertime MapToEntity(CreateOrEditEmployeeOvertimeDto input, EmployeeOvertime entity)
     {

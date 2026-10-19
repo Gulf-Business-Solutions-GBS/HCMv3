@@ -40,6 +40,15 @@ permissions: [Pages.OrganizationManagement.OrgUnits]
 
 **القواعد.** اختياري. الحد الأقصى 500 حرف.
 
+## OrgUnitLogo {#OrgUnitProfile.LogoPath}
+<!-- alias: loc:OrgUnitLogo, dom:OrgUnit_Logo -->
+
+**ما هو.** شعار الوحدة، لطباعته على الخطابات وكشوف الرواتب والتقارير المصرفية. بصيغة PNG أو JPEG أو GIF، بحد أقصى 1 ميجابايت، ويُزال بزر الإزالة.
+
+**لماذا يهم.** يُحفظ ملفاً في مخزن ملفات الجهة، لا في قاعدة البيانات. ولا يعرضه أي تقرير مطبوع حتى الآن، وستعرضه التقارير تباعاً كلما حُدِّث كل منها لقراءته.
+
+**القواعد.** اختياري.
+
 ## PayrollAreaId {#OrgUnitProfile.PayrollAreaId}
 <!-- alias: loc:PayrollAreaId, dom:OrgUnit_PayrollAreaId -->
 

@@ -22,24 +22,73 @@
                         <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Legacy TravelFeedback.Employee / TravelFeedback.Applicant: exactly one. An applicant's
+                             claim is recorded directly; only an employee's is sent for approval. -->
                         <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="TravelFeedback_EmployeeId">{{ 'Employee' | localize }}</label>
-                                <select
-                                    id="TravelFeedback_EmployeeId"
-                                    #employeeIdInput="ngModel"
-                                    class="form-select"
-                                    name="EmployeeId"
-                                    [ngModel]="record().employeeId"
-                                    (ngModelChange)="updateField('employeeId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (employee of employees(); track employee.id) {
-                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="employeeIdInput" />
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">{{ 'EmployeeOrApplicant' | localize }}</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            id="TravelFeedback_PartyType_Employee"
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="PartyType"
+                                            [checked]="partyType() === 'employee'"
+                                            (change)="setPartyType('employee')" />
+                                        <label class="form-check-label" for="TravelFeedback_PartyType_Employee">{{ 'Employee' | localize }}</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            id="TravelFeedback_PartyType_Applicant"
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="PartyType"
+                                            [checked]="partyType() === 'applicant'"
+                                            (change)="setPartyType('applicant')" />
+                                        <label class="form-check-label" for="TravelFeedback_PartyType_Applicant">{{ 'Applicant' | localize }}</label>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            @if (partyType() === 'employee') {
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label required" for="TravelFeedback_EmployeeId">{{ 'Employee' | localize }}</label>
+                                    <select
+                                        id="TravelFeedback_EmployeeId"
+                                        #employeeIdInput="ngModel"
+                                        class="form-select"
+                                        name="EmployeeId"
+                                        [ngModel]="record().employeeId"
+                                        (ngModelChange)="updateField('employeeId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (employee of employees(); track employee.id) {
+                                            <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="employeeIdInput" />
+                                </div>
+                            } @else {
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label required" for="TravelFeedback_ApplicantId">{{ 'Applicant' | localize }}</label>
+                                    <select
+                                        id="TravelFeedback_ApplicantId"
+                                        #applicantIdInput="ngModel"
+                                        class="form-select"
+                                        name="ApplicantId"
+                                        [ngModel]="record().applicantId"
+                                        (ngModelChange)="updateField('applicantId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (applicant of applicants(); track applicant.id) {
+                                            <option [ngValue]="applicant.id">{{ applicantLabel(applicant) }}</option>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="applicantIdInput" />
+                                </div>
+                            }
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="TravelFeedback_TravelId">{{ 'Travel' | localize }}</label>
                                 <select
@@ -49,8 +98,8 @@
                                     [ngModel]="record().travelId"
                                     (ngModelChange)="updateField('travelId', $event)">
                                     <option [ngValue]="undefined"></option>
-                                    @for (item of travels(); track item.id) {
-                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.employeeFullNameEn }}</option>
+                                    @for (item of partyTravels(); track item.id) {
+                                        <option [ngValue]="item.id">{{ travelLabel(item) }}</option>
                                     }
                                 </select>
                             </div>

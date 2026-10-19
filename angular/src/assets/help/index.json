@@ -444,9 +444,6 @@
     "DisciplinaryType_WageTypeId": [
       "gmi.disciplinary-type.edit"
     ],
-    "DocumentPrintForm_DocumentTypeId": [
-      "gmi.document-print-form.edit"
-    ],
     "DocumentType_Code": [
       "gmi.document-type.edit"
     ],
@@ -981,6 +978,9 @@
     "EmployeeAttendance_EndTime": [
       "pa.employee-attendance.edit"
     ],
+    "EmployeeAttendance_TotalAttendDays": [
+      "pa.employee-attendance.edit"
+    ],
     "EmployeeAttendance_Comments": [
       "pa.employee-attendance.edit"
     ],
@@ -1211,6 +1211,9 @@
     ],
     "EmployeeDutyPeriod_DutyPeriodId": [
       "pa.employee-duty-period.edit"
+    ],
+    "EmployeeDutySchedule_EmployeeId": [
+      "pa.employee-duty-schedule.edit"
     ],
     "EmployeeDutySchedule_StartDate": [
       "pa.employee-duty-schedule.edit"
@@ -1708,6 +1711,45 @@
       "pa.employee-separation.edit"
     ],
     "EmployeeSeparation_RevokeDate": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_RevokeComments": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_OnHoldFromDate": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_OnHoldTillDate": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_BankTransfer": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldAll": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldBasicPay": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldLeavePay": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldIndemnityPay": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldAirTicketPay": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldLoanDeduction": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldAllEarnings": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_onHoldAllDeductions": [
+      "pa.employee-separation.edit"
+    ],
+    "EmployeeSeparation_Comments": [
       "pa.employee-separation.edit"
     ],
     "EmployeeSignature_Signature": [
@@ -7590,6 +7632,9 @@
     "TravelFeedback_EmployeeId": [
       "trv.travel-feedback.edit"
     ],
+    "TravelFeedback_ApplicantId": [
+      "trv.travel-feedback.edit"
+    ],
     "TravelFeedback_TravelId": [
       "trv.travel-feedback.edit"
     ],
@@ -7632,6 +7677,9 @@
     "Travel_EmployeeId": [
       "trv.travel.edit"
     ],
+    "Travel_ApplicantId": [
+      "trv.travel.edit"
+    ],
     "Travel_TravelTypeId": [
       "trv.travel.edit"
     ],
@@ -7639,6 +7687,9 @@
       "trv.travel.edit"
     ],
     "Travel_EndDate": [
+      "trv.travel.edit"
+    ],
+    "Travel_TotalTravelCost": [
       "trv.travel.edit"
     ],
     "Travel_Comments": [
@@ -7965,6 +8016,9 @@
     "OrgUnit_OrgGeoLocation": [
       "org.org-unit.edit"
     ],
+    "OrgUnit_Logo": [
+      "org.org-unit.edit"
+    ],
     "OrgUnit_PayrollAreaId": [
       "org.org-unit.edit"
     ],
@@ -7988,6 +8042,57 @@
     ],
     "JobTitleDetail_WorkflowRoleId": [
       "org.job-title-detail.edit"
+    ],
+    "EmployeeRecurringPayment_WageTypeId": [
+      "pa.employee-recurring-payment.edit"
+    ],
+    "EmployeeRecurringPayment_PayInterval": [
+      "pa.employee-recurring-payment.edit"
+    ],
+    "EmployeeRecurringPayment_StartDate": [
+      "pa.employee-recurring-payment.edit"
+    ],
+    "EmployeeRecurringPayment_EndDate": [
+      "pa.employee-recurring-payment.edit"
+    ],
+    "EmployeeRecurringPayment_Amount": [
+      "pa.employee-recurring-payment.edit"
+    ],
+    "EmployeeRecurringPayment_Comments": [
+      "pa.employee-recurring-payment.edit"
+    ],
+    "EmployeeAssetInvoice_AssetId": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "EmployeeAssetInvoice_InvoiceDate": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "EmployeeAssetInvoice_InvoiceAmount": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "EmployeeAssetInvoice_EmployeePlanAmount": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "EmployeeAssetInvoice_DeductionAmount": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "EmployeeAssetInvoice_DeductFromEmployee": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "EmployeeAssetInvoice_Comments": [
+      "pa.employee-asset-invoice.edit"
+    ],
+    "OvertimeBatch_OrganizationUnitId": [
+      "pa.overtime-batch.edit"
+    ],
+    "OvertimeBatch_StartDate": [
+      "pa.overtime-batch.edit"
+    ],
+    "OvertimeBatch_EndDate": [
+      "pa.overtime-batch.edit"
+    ],
+    "OvertimeBatch_Comments": [
+      "pa.overtime-batch.edit"
     ]
   },
   "hosts": {
@@ -8005,7 +8110,6 @@
     "createoreditdisciplinarydeductiontypemodal": "gmi.disciplinary-deduction-type.edit",
     "createoreditdisciplinarytypedetailmodal": "gmi.disciplinary-type-detail.edit",
     "createoreditdisciplinarytypemodal": "gmi.disciplinary-type.edit",
-    "createoreditdocumentprintformmodal": "gmi.document-print-form.edit",
     "createoreditdocumenttypemodal": "gmi.document-type.edit",
     "createoreditinstitutionmodal": "gmi.institution.edit",
     "createoreditloantypedetailmodal": "gmi.loan-type-detail.edit",
@@ -8374,6 +8478,10 @@
     "ess-document-withdrawals": "ess.passport-withdrawal",
     "ess-home": "ess.home",
     "createoreditassettypemodal": "gmi.asset-type.edit",
-    "createoreditjobtitledetailmodal": "org.job-title-detail.edit"
+    "createoreditjobtitledetailmodal": "org.job-title-detail.edit",
+    "createoreditemployeerecurringpaymentmodal": "pa.employee-recurring-payment.edit",
+    "createoreditemployeeassetinvoicemodal": "pa.employee-asset-invoice.edit",
+    "createoreditovertimebatchmodal": "pa.overtime-batch.edit",
+    "leave-plans": "pa.leave-plans"
   }
 }

@@ -41,7 +41,7 @@
         "loc:StartDate",
         "dom:EmployeeOnHold_StartDate"
       ],
-      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "rules": "Required. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
       "adminHtml": "",
@@ -55,7 +55,7 @@
         "loc:EndDate",
         "dom:EmployeeOnHold_EndDate"
       ],
-      "rules": "Required. Date value. Cannot be before the start date.",
+      "rules": "Required. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
       "adminHtml": "",

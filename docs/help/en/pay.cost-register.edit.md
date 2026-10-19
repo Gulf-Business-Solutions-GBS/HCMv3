@@ -13,6 +13,8 @@ permissions: [Pages.PayrollManagement.CostRegisters.Create]
 
 An employee's payroll cost for one month and run, split across ledger accounts and cost elements. The cost engine writes these from the payslip and the employee's wage accounts; the journal voucher is built from them.
 
+Details on a register in the list opens its own page: the employee, period and run type at the top, with Edit, and below them its cost lines, with a column for each cost element type in use. Lines can be added, changed and removed there.
+
 ## EmployeeId {#CostRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:CostRegister_EmployeeId -->
 

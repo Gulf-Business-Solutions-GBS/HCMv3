@@ -14,4 +14,7 @@ public interface ITravelsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditTravelDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>Job applicants a trip or a travel claim can be recorded for.</summary>
+    Task<ListResultDto<TravelApplicantLookupDto>> GetApplicantsForLookup();
 }

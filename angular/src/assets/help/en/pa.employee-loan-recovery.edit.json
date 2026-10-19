@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Loan Recoveries — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeLoanRecovery",
-  "overviewHtml": "<p>A repayment against one of the employee's loans. Payroll records its own instalments here as Recovery Through Payroll.</p><p>A recovery cannot be dated before the loan's recovery start date, and recoveries cannot add up to more than the loan's due amount. Saving a recovery on this form does not update the loan's balance due; payroll updates the balance when it recovers.</p>",
+  "overviewHtml": "<p>A repayment against one of the employee's loans. Payroll records its own instalments here as Recovery Through Payroll.</p><p>A recovery cannot be dated before the loan's recovery start date, and recoveries cannot add up to more than the loan's due amount. Saving a recovery on this form does not update the loan's balance due; payroll updates the balance when it recovers.</p><p>Opened from a loan's Recoveries &amp; Exemptions dialog, the loan is already filled in and cannot be changed, and the method starts as Recovery External.</p>",
   "aliasIndex": {
     "loc:EmployeeLoanId": "EmployeeLoanRecovery.EmployeeLoanId",
     "dom:EmployeeLoanRecovery_EmployeeLoanId": "EmployeeLoanRecovery.EmployeeLoanId",

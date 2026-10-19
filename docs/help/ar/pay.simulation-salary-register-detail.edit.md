@@ -16,7 +16,7 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisterDetails.Create]
 ## SimulationSalaryRegisterId {#SimulationSalaryRegisterDetail.SimulationSalaryRegisterId}
 <!-- alias: loc:SimulationSalaryRegisterId, dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId -->
 
-**ما هو.** كشف راتب المحاكاة الذي يتبعه هذا السطر.
+**ما هو.** كشف راتب المحاكاة الذي يتبعه هذا السطر. ولا يظهر عند فتح النافذة من صفحة كشف المحاكاة نفسه، إذ يُملأ تلقائياً.
 
 **القواعد.** إلزامي. يُختار من قائمة سجلات الرواتب التجريبية.
 

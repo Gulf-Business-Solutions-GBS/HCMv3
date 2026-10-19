@@ -20,7 +20,7 @@ namespace HCMv3.TravelManagement;
 /// <item><description>The cost line's own currency is ignored: amounts in any currency are added as they
 /// are. Legacy had no currency on the line at all.</description></item>
 /// <item><description>Rounding is to the employee's payroll-area currency decimals, unrounded when none is
-/// found -- reused from <see cref="ICurrencyService.RoundAsync"/>, the existing port of legacy
+/// found, and unrounded for an applicant's trip (no employee) -- reused from <see cref="ICurrencyService.RoundAsync"/>, the existing port of legacy
 /// <c>CurrencyService.Rounding</c>.</description></item>
 /// </list>
 ///
@@ -63,7 +63,7 @@ public class TravelCostRollupService : HCMv3DomainServiceBase, ITravelCostRollup
             .ToList()
             .Sum(d => d.TotalAmount);
 
-        travel.TotalTravelCost = await _currencyService.RoundAsync(travel.EmployeeId, totalAmount);
+        travel.TotalTravelCost = await RoundAsync(travel, totalAmount);
         await _travelRepository.UpdateAsync(travel);
     }
 
@@ -87,7 +87,7 @@ public class TravelCostRollupService : HCMv3DomainServiceBase, ITravelCostRollup
             .ToList()
             .Sum(c => c.Amount);
 
-        detail.TotalAmount = await _currencyService.RoundAsync(travel.EmployeeId, totalAmount);
+        detail.TotalAmount = await RoundAsync(travel, totalAmount);
         await _travelDetailRepository.UpdateAsync(detail);
 
         await RecalculateTravelTotalAsync(travel.Id);
@@ -103,17 +103,28 @@ public class TravelCostRollupService : HCMv3DomainServiceBase, ITravelCostRollup
         var legs = travel.TravelDetails?.ToList();
         if (legs == null || legs.Count == 0)
         {
-            travel.TotalTravelCost = await _currencyService.RoundAsync(travel.EmployeeId, 0);
+            travel.TotalTravelCost = await RoundAsync(travel, 0);
             return;
         }
 
         foreach (var leg in legs)
         {
             var costTotal = leg.TravelDetailCosts?.Sum(c => c.Amount) ?? 0;
-            leg.TotalAmount = await _currencyService.RoundAsync(travel.EmployeeId, costTotal);
+            leg.TotalAmount = await RoundAsync(travel, costTotal);
         }
 
-        travel.TotalTravelCost = await _currencyService.RoundAsync(travel.EmployeeId, legs.Sum(l => l.TotalAmount));
+        travel.TotalTravelCost = await RoundAsync(travel, legs.Sum(l => l.TotalAmount));
+    }
+
+    /// <summary>
+    /// Legacy <c>CurrencyService.Rounding(Travel.Employee, value)</c>: <c>emp?.CurrentPayrollArea?...</c>, so an
+    /// applicant's trip -- no employee -- is left unrounded rather than refused.
+    /// </summary>
+    private Task<double> RoundAsync(Travel travel, double value)
+    {
+        return travel.EmployeeId.HasValue
+            ? _currencyService.RoundAsync(travel.EmployeeId.Value, value)
+            : Task.FromResult(value);
     }
 
     private Travel FindTravel(int travelId)

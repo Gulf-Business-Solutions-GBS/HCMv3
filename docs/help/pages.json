@@ -329,27 +329,6 @@
       "defaultSection": "DisciplinaryTypes"
     },
     {
-      "helpId": "gmi.document-print-form.edit",
-      "title": "Document Print Forms — Create / Edit",
-      "audience": [
-        "admin"
-      ],
-      "permissions": [
-        "Pages.GeneralMasterInfo.DocumentPrintForms.Create"
-      ],
-      "entity": {
-        "name": "DocumentPrintForm",
-        "fullName": "HCMv3.GeneralMasterInfo.DocumentPrintForm",
-        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DocumentPrintForm.cs"
-      },
-      "surfaces": {
-        "edit": {
-          "template": "angular/src/app/admin/general-master-info/document-print-forms/create-or-edit-document-print-form-modal.component.html"
-        }
-      },
-      "defaultSection": "DocumentPrintForms"
-    },
-    {
       "helpId": "gmi.document-type.edit",
       "title": "Document Types — Create / Edit",
       "audience": [
@@ -744,7 +723,10 @@
           "template": "angular/src/app/admin/personnel-administration/employee-detail/abs-quota-forfeits/create-or-edit-employee-abs-quota-forfeit-modal.component.html"
         }
       },
-      "defaultSection": "EmployeeAbsQuotaForfeits"
+      "defaultSection": "EmployeeAbsQuotaForfeits",
+      "ignoreInputs": [
+        "EmployeeAbsQuotaForfeit_DontUpdateQuotaBalance"
+      ]
     },
     {
       "helpId": "pa.employee-absence-quota.edit",
@@ -789,7 +771,13 @@
           "template": "angular/src/app/admin/personnel-administration/employee-detail/absences/create-or-edit-employee-absence-modal.component.html"
         }
       },
-      "defaultSection": "EmployeeAbsences"
+      "defaultSection": "EmployeeAbsences",
+      "ignoreInputs": [
+        "EmployeeAbsence_PaidStartDate",
+        "EmployeeAbsence_PaidEndDate",
+        "EmployeeAbsence_UnpaidStartDate",
+        "EmployeeAbsence_UnpaidEndDate"
+      ]
     },
     {
       "helpId": "pa.employee-account-assignment.edit",
@@ -1485,7 +1473,10 @@
           "template": "angular/src/app/admin/personnel-administration/employee-detail/overtimes/create-or-edit-employee-overtime-modal.component.html"
         }
       },
-      "defaultSection": "EmployeeOvertimes"
+      "defaultSection": "EmployeeOvertimes",
+      "ignoreInputs": [
+        "EmployeeOvertime_ExpectedOvertimeAmount"
+      ]
     },
     {
       "helpId": "pa.employee-payment.edit",
@@ -7544,7 +7535,11 @@
           "template": "angular/src/app/admin/travel-management/travel-feedbacks/create-or-edit-travel-feedback-modal.component.html"
         }
       },
-      "defaultSection": "TravelFeedbacks"
+      "defaultSection": "TravelFeedbacks",
+      "ignoreInputs": [
+        "TravelFeedback_PartyType_Employee",
+        "TravelFeedback_PartyType_Applicant"
+      ]
     },
     {
       "helpId": "trv.travel-per-diem.edit",
@@ -7607,7 +7602,11 @@
           "template": "angular/src/app/admin/travel-management/travels/create-or-edit-travel-modal.component.html"
         }
       },
-      "defaultSection": "Travels"
+      "defaultSection": "Travels",
+      "ignoreInputs": [
+        "Travel_PartyType_Employee",
+        "Travel_PartyType_Applicant"
+      ]
     },
     {
       "helpId": "mp.manpower-planning-detail.edit",
@@ -7990,7 +7989,10 @@
         "OrgUnit_ParentId",
         "OrgUnit_NameEn"
       ],
-      "defaultSection": "OrgUnits"
+      "defaultSection": "OrgUnits",
+      "propertyAliases": {
+        "Logo": "LogoPath"
+      }
     },
     {
       "helpId": "br.business-rule.edit",
@@ -10148,6 +10150,267 @@
         }
       },
       "defaultSection": "JobTitleDetails"
+    },
+    {
+      "helpId": "pa.employee-recurring-payment.edit",
+      "title": "Employee Recurring Payments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeRecurringPayments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeRecurringPayment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeRecurringPayment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeRecurringPayment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/recurring-payments/create-or-edit-employee-recurring-payment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeRecurringPayments"
+    },
+    {
+      "helpId": "pa.employee-asset-invoice.edit",
+      "title": "Employee Asset Invoices — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAssetInvoices.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAssetInvoice",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAssetInvoice",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAssetInvoice.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/asset-invoices/create-or-edit-employee-asset-invoice-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAssetInvoices"
+    },
+    {
+      "helpId": "pa.overtime-batch.edit",
+      "title": "Overtime Batches — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.OvertimeBatches.Create"
+      ],
+      "entity": {
+        "name": "OvertimeBatch",
+        "fullName": "HCMv3.PersonnelAdministration.OvertimeBatch",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/OvertimeBatch.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/overtime-batches/create-or-edit-overtime-batch-modal.component.html"
+        }
+      },
+      "defaultSection": "OvertimeBatches",
+      "ignoreInputs": [
+        "OvertimeBatch_OnlyOvertimeDays"
+      ]
+    },
+    {
+      "helpId": "pa.leave-plans",
+      "title": "Leave Plans",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.LeavePlans"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/leave-plans/leave-plans.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "pa.leave-plans.filter",
+          "label": "Filter"
+        },
+        {
+          "id": "pa.leave-plans.show-unapproved",
+          "label": "ShowLeavePlannerUnapproved"
+        },
+        {
+          "id": "pa.leave-plans.planned-days",
+          "label": "PlannedDays"
+        },
+        {
+          "id": "pa.leave-plans.projected-balance",
+          "label": "ProjectedLeaveBalance"
+        },
+        {
+          "id": "pa.leave-plans.status",
+          "label": "Status"
+        },
+        {
+          "id": "pa.leave-plans.delete",
+          "label": "Delete"
+        }
+      ]
+    },
+    {
+      "helpId": "pa.leave-planner",
+      "title": "Leave Planner",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.LeavePlanner"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/leave-planner/leave-planner.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "dash.common.showing",
+          "label": "Dashboard_Showing",
+          "loc": "Dashboard_Showing"
+        },
+        {
+          "id": "pa.leave-planner.org-unit",
+          "loc": "OrganizationUnit"
+        },
+        {
+          "id": "pa.leave-planner.employee",
+          "loc": "Employee"
+        },
+        {
+          "id": "pa.leave-planner.leave-approved",
+          "loc": "ShowActualLeaveApproved"
+        },
+        {
+          "id": "pa.leave-planner.leave-unapproved",
+          "loc": "ShowActualLeaveUnapproved"
+        },
+        {
+          "id": "pa.leave-planner.plan-approved",
+          "loc": "ShowLeavePlannerApproved"
+        },
+        {
+          "id": "pa.leave-planner.plan-unapproved",
+          "loc": "ShowLeavePlannerUnapproved"
+        }
+      ]
+    },
+    {
+      "helpId": "adm.user-credential-reset",
+      "title": "Reset User Passwords",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Administration.Tools.ResetUserCredentials"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/administration/user-credential-reset/user-credential-reset.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "adm.user-credential-reset.role",
+          "label": "Role"
+        },
+        {
+          "id": "adm.user-credential-reset.users",
+          "label": "Users"
+        },
+        {
+          "id": "adm.user-credential-reset.reset",
+          "label": "ResetAndEmailPasswords"
+        },
+        {
+          "id": "adm.user-credential-reset.result",
+          "label": "Result"
+        }
+      ]
+    },
+    {
+      "helpId": "ess.leave-plan",
+      "title": "Leave Planner Request",
+      "audience": [
+        "end-user"
+      ],
+      "permissions": [
+        "Ess.MyLeavePlans"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/main/ess/my-leave-plan/my-leave-plan.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "ess.leave-plan.start-date",
+          "loc": "StartDate"
+        },
+        {
+          "id": "ess.leave-plan.end-date",
+          "loc": "EndDate"
+        },
+        {
+          "id": "ess.leave-plan.planned-days",
+          "loc": "PlannedDays"
+        },
+        {
+          "id": "ess.leave-plan.projected-balance",
+          "loc": "ProjectedLeaveBalance"
+        },
+        {
+          "id": "ess.leave-plan.leave-days",
+          "loc": "LeaveDays"
+        },
+        {
+          "id": "ess.common.comments",
+          "label": "RequestComment",
+          "loc": "RequestComment"
+        },
+        {
+          "id": "ess.leave-plan.save",
+          "loc": "Save"
+        },
+        {
+          "id": "ess.leave-plan.submit",
+          "loc": "Submit"
+        },
+        {
+          "id": "ess.common.new-request",
+          "label": "NewLeavePlan",
+          "loc": "NewLeavePlan"
+        },
+        {
+          "id": "ess.leave-plan.scheduler",
+          "loc": "LeaveScheduler"
+        },
+        {
+          "id": "ess.common.my-requests",
+          "loc": "EssMyRequests"
+        },
+        {
+          "id": "ess.common.status",
+          "loc": "Status"
+        },
+        {
+          "id": "ess.leave-plan.actions",
+          "loc": "Actions"
+        },
+        {
+          "id": "ess.common.not-linked",
+          "loc": "CurrentUserHasNoEmployeeRecord"
+        }
+      ]
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات الرواتب التجريبية — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.SimulationSalaryRegister",
-  "overviewHtml": "<p>كشف راتب من محاكاة — تشغيل تجريبي يبيّن ما سيصرفه نظام الرواتب دون صرفه. وتُحفظ كشوف المحاكاة منفصلة عن الكشوف الفعلية ولا تُقفل أبداً.</p>",
+  "overviewHtml": "<p>كشف راتب من محاكاة — تشغيل تجريبي يبيّن ما سيصرفه نظام الرواتب دون صرفه. وتُحفظ كشوف المحاكاة منفصلة عن الكشوف الفعلية ولا تُقفل أبداً.</p><p>يفتح خيار التفاصيل على أي كشف في القائمة صفحته الخاصة: الموظف والفترات ونوع التشغيل ونوع النتيجة في الأعلى مع زر التحرير، وتحتها بنود أنواع الأجور، ويمكن إضافتها وتعديلها وحذفها من هناك.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "SimulationSalaryRegister.EmployeeId",
     "dom:SimulationSalaryRegister_EmployeeId": "SimulationSalaryRegister.EmployeeId",

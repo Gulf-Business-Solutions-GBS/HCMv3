@@ -18,8 +18,8 @@ namespace HCMv3.GeneralMasterInfo;
 
 /// <summary>
 /// Application service for the DocumentType master (ported from legacy XAF DocumentType).
-/// Mirrors <c>CitiesAppService</c>. The legacy aggregated <c>PrintForm</c> collection is ported
-/// separately as <see cref="DocumentPrintForm"/>.
+/// Mirrors <c>CitiesAppService</c>. The legacy aggregated <c>PrintForm</c> collection is not kept:
+/// letters print through the document type's own Print Report (Document Print Forms retired, item 240).
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes)]
 public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppService

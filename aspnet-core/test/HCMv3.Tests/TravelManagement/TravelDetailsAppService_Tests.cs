@@ -259,4 +259,52 @@ public class TravelDetailsAppService_Tests : TravelManagementAppServiceTestBase
         var item = (await service.GetAll(new GetAllTravelDetailsInput { TravelId = travelId })).Items[0];
         item.PerDiemPayPercentage.ShouldBe(percentage);
     }
+
+    [Fact]
+    public async Task Should_Give_No_PerDiem_On_An_Applicant_Trip()
+    {
+        // Legacy TravelDetail.PerDiemRate/PerDiemAmount return 0 when Travel.Employee is null: per diem is
+        // priced by the traveller's salary profile, and an applicant has none -- even when a matching rate exists.
+        var applicantId = CreateApplicant();
+        var travelTypeId = CreateTravelType();
+        var travelId = CreateApplicantTravel(applicantId, travelTypeId);
+        var departureId = CreateTravelDestination("Kuwait");
+        var arrivalId = CreateTravelDestination("Dubai");
+        var groupId = CreateEmployeeGroup();
+        var subGroupId = CreateEmployeeSubGroup(groupId);
+
+        Context.TravelPerDiems.Add(new TravelPerDiem
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            FromDestinationId = departureId,
+            ToDestinationId = arrivalId,
+            EmployeeGroupId = groupId,
+            EmployeeSubGroupId = subGroupId,
+            Amount = 100
+        });
+        Context.SaveChanges();
+
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditTravelDetailDto
+        {
+            TravelId = travelId,
+            DepartureId = departureId,
+            ArrivalId = arrivalId,
+            DepartureDate = new DateTime(2024, 1, 1),
+            ArrivalDate = new DateTime(2024, 1, 4),
+            TotalNights = 3
+        });
+        var detail = (await service.GetAll(new GetAllTravelDetailsInput { TravelId = travelId })).Items[0];
+
+        var output = await service.CalculateExpectedPerDiemAsync(new CalculateExpectedPerDiemInput
+        {
+            TravelDetailId = detail.Id,
+            EmployeeGroupId = groupId,
+            EmployeeSubGroupId = subGroupId
+        });
+
+        output.PerDiemRate.ShouldBe(0);
+        output.PerDiemAmount.ShouldBe(0);
+        output.PerDiemPayAmount.ShouldBe(0);
+    }
 }

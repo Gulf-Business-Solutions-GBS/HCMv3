@@ -59,7 +59,7 @@
                                         <p-sortIcon field="code" />
                                     </th>
                                     <th style="min-width: 200px">
-                                        {{ 'Employee' | localize }}
+                                        {{ 'EmployeeOrApplicant' | localize }}
                                     </th>
                                     <th style="min-width: 160px">
                                         {{ 'TravelType' | localize }}
@@ -102,7 +102,14 @@
                                         </button>
                                     </td>
                                     <td style="min-width: 120px">{{ record.code }}</td>
-                                    <td style="min-width: 200px">{{ record.employeeCode }} - {{ record.employeeFullNameEn }}</td>
+                                    <td style="min-width: 200px">
+                                        @if (record.applicantId) {
+                                            <span class="badge badge-light-info me-2">{{ 'Applicant' | localize }}</span>
+                                            {{ record.applicantCode }} - {{ record.applicantFullNameEn }}
+                                        } @else {
+                                            {{ record.employeeCode }} - {{ record.employeeFullNameEn }}
+                                        }
+                                    </td>
                                     <td style="min-width: 160px">{{ record.travelTypeNameEn }}</td>
                                     <td style="min-width: 130px">{{ record.startDate | luxonFormat:'yyyy-MM-dd' }}</td>
                                     <td style="min-width: 130px">{{ record.endDate | luxonFormat:'yyyy-MM-dd' }}</td>

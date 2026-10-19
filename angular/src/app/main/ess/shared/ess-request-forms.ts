@@ -16,6 +16,7 @@ import { PersonalDataChangesComponent, PersonalDataChangesValue } from '../my-pe
 import { LeaveFormValue, LeaveRequestFormComponent } from '../my-leave/leave-request-form.component';
 import { DocumentRequestFormComponent, DocumentRequestFormValue } from '../my-document/document-request-form.component';
 import { LetterRequestFormComponent, LetterRequestFormValue } from '../my-letter/letter-request-form.component';
+import { LeavePlanFormComponent, LeavePlanFormValue } from '../my-leave-plan/leave-plan-form.component';
 import {
     PassportWithdrawalFormComponent,
     PassportWithdrawalFormValue,
@@ -79,6 +80,17 @@ export interface EssRequestFormRegistration {
  * <c>WorkflowRequest.RequestType</c> holds.</p>
  */
 export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
+    LeavePlan: {
+        component: LeavePlanFormComponent,
+        toValue: (context): LeavePlanFormValue => ({
+            employeeDisplay: context.values['Employee'] || context.employeeDisplay,
+            startDate: context.values['StartDate'] ?? '',
+            endDate: context.values['EndDate'] ?? '',
+            comments: context.values['Comments'] ?? '',
+            plannedDays: context.values['PlannedDays'] ?? '',
+            projectedLeaveBalance: context.values['ProjectedLeaveBalance'] ?? '',
+        }),
+    },
     EmployeeAbsence: {
         component: LeaveRequestFormComponent,
         toValue: (context): LeaveFormValue => {

@@ -15,6 +15,8 @@
     "dom:OrgUnit_Address": "OrgUnitProfile.Address",
     "loc:OrgGeoLocation": "OrgUnitProfile.OrgGeoLocation",
     "dom:OrgUnit_OrgGeoLocation": "OrgUnitProfile.OrgGeoLocation",
+    "loc:OrgUnitLogo": "OrgUnitProfile.LogoPath",
+    "dom:OrgUnit_Logo": "OrgUnitProfile.LogoPath",
     "loc:PayrollAreaId": "OrgUnitProfile.PayrollAreaId",
     "dom:OrgUnit_PayrollAreaId": "OrgUnitProfile.PayrollAreaId"
   },
@@ -86,6 +88,20 @@
       "rules": "Optional. Maximum 500 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The unit's map location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.LogoPath",
+      "label": "OrgUnitLogo",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:OrgUnitLogo",
+        "dom:OrgUnit_Logo"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The unit's logo, for printing on letters, payslips and bank reports. PNG, JPEG or GIF, up to 1 MB; Remove clears it.</p><p><strong>Why it matters.</strong> Kept as a file in the tenant's file store, not in the database. No printed report shows it yet; reports pick it up as each one is updated to read it.</p>",
       "adminHtml": "",
       "stub": false
     },

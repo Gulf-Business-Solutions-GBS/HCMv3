@@ -6453,48 +6453,6 @@ namespace HCMv3.Migrations
                     b.ToTable("DocumentPlaces");
                 });
 
-            modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentPrintForm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DocumentTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentTypeId");
-
-                    b.ToTable("DocumentPrintForms");
-                });
-
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentType", b =>
                 {
                     b.Property<int>("Id")
@@ -23579,6 +23537,13 @@ namespace HCMv3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BankTransfer")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -23612,8 +23577,42 @@ namespace HCMv3.Migrations
                     b.Property<int>("NoticePeriodDays")
                         .HasColumnType("int");
 
+                    b.Property<bool>("OnHoldAirTicketPay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnHoldAll")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnHoldAllDeductions")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnHoldAllEarnings")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnHoldBasicPay")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OnHoldFromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("OnHoldIndemnityPay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnHoldLeavePay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnHoldLoanDeduction")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OnHoldTillDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("PlannedLastDayInService")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokeComments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("RevokeDate")
                         .HasColumnType("datetime2");
@@ -24414,6 +24413,74 @@ namespace HCMv3.Migrations
                     b.ToTable("EmployeeWorkExperiences");
                 });
 
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.LeavePlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("PlannedDays")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("ProjectedLeaveBalance")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
+
+                    b.HasIndex("TenantId", "StartDate", "EndDate");
+
+                    b.ToTable("LeavePlans");
+                });
+
             modelBuilder.Entity("HCMv3.PersonnelAdministration.LoanInstallment", b =>
                 {
                     b.Property<int>("Id")
@@ -24550,6 +24617,162 @@ namespace HCMv3.Migrations
                     b.HasIndex("OrganizationUnitTypeId");
 
                     b.ToTable("News");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.OvertimeBatch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("OrganizationUnitId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationUnitId");
+
+                    b.HasIndex("TenantId", "WorkflowStatus");
+
+                    b.ToTable("OvertimeBatches");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.OvertimeBatchDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("ApprovedHours")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("EarlyOut")
+                        .HasColumnType("float");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EmployeeOvertimeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("LateIn")
+                        .HasColumnType("float");
+
+                    b.Property<int>("OvertimeBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OvertimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PlannedHours")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("ShiftEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ShiftStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SignIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SignOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TimeRegisterId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalHours")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("OvertimeBatchId");
+
+                    b.HasIndex("OvertimeTypeId");
+
+                    b.HasIndex("TenantId", "OvertimeBatchId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "Date");
+
+                    b.ToTable("OvertimeBatchDetails");
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.EmployeeProject", b =>
@@ -33603,6 +33826,9 @@ namespace HCMv3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ApplicantId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -33623,7 +33849,7 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -33662,13 +33888,20 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantId");
+
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("TravelTypeId");
 
+                    b.HasIndex("TenantId", "ApplicantId");
+
                     b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
-                    b.ToTable("Travels");
+                    b.ToTable("Travels", t =>
+                        {
+                            t.HasCheckConstraint("CK_Travels_EmployeeOrApplicant", "([EmployeeId] IS NOT NULL AND [ApplicantId] IS NULL) OR ([EmployeeId] IS NULL AND [ApplicantId] IS NOT NULL)");
+                        });
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelAirline", b =>
@@ -34002,6 +34235,9 @@ namespace HCMv3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ApplicantId")
+                        .HasColumnType("int");
+
                     b.Property<double>("ClaimAmount")
                         .HasColumnType("float");
 
@@ -34024,7 +34260,7 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -34050,11 +34286,18 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantId");
+
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("TravelId");
 
-                    b.ToTable("TravelFeedbacks");
+                    b.HasIndex("TenantId", "ApplicantId");
+
+                    b.ToTable("TravelFeedbacks", t =>
+                        {
+                            t.HasCheckConstraint("CK_TravelFeedbacks_EmployeeOrApplicant", "([EmployeeId] IS NOT NULL AND [ApplicantId] IS NULL) OR ([EmployeeId] IS NULL AND [ApplicantId] IS NOT NULL)");
+                        });
                 });
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelPerDiem", b =>
@@ -36213,15 +36456,6 @@ namespace HCMv3.Migrations
                     b.Navigation("DisciplinaryDeductionType");
 
                     b.Navigation("DisciplinaryType");
-                });
-
-            modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentPrintForm", b =>
-                {
-                    b.HasOne("HCMv3.GeneralMasterInfo.DocumentType", "DocumentType")
-                        .WithMany()
-                        .HasForeignKey("DocumentTypeId");
-
-                    b.Navigation("DocumentType");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.DocumentType", b =>
@@ -40470,6 +40704,17 @@ namespace HCMv3.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.LeavePlan", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("HCMv3.PersonnelAdministration.LoanInstallment", b =>
                 {
                     b.HasOne("HCMv3.PersonnelAdministration.EmployeeLoan", "EmployeeLoan")
@@ -40500,6 +40745,43 @@ namespace HCMv3.Migrations
                     b.Navigation("OrganizationUnit");
 
                     b.Navigation("OrganizationUnitType");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.OvertimeBatch", b =>
+                {
+                    b.HasOne("Abp.Organizations.OrganizationUnit", "OrganizationUnit")
+                        .WithMany()
+                        .HasForeignKey("OrganizationUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OrganizationUnit");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.OvertimeBatchDetail", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.OvertimeBatch", "OvertimeBatch")
+                        .WithMany("Details")
+                        .HasForeignKey("OvertimeBatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.OvertimeType", "OvertimeType")
+                        .WithMany()
+                        .HasForeignKey("OvertimeTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("OvertimeBatch");
+
+                    b.Navigation("OvertimeType");
                 });
 
             modelBuilder.Entity("HCMv3.ProjectManagement.EmployeeProject", b =>
@@ -42167,17 +42449,23 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.TravelManagement.Travel", b =>
                 {
+                    b.HasOne("HCMv3.Recruitment.Applicant", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HCMv3.TravelManagement.TravelType", "TravelType")
                         .WithMany()
                         .HasForeignKey("TravelTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Applicant");
 
                     b.Navigation("Employee");
 
@@ -42250,15 +42538,21 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelFeedback", b =>
                 {
+                    b.HasOne("HCMv3.Recruitment.Applicant", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HCMv3.TravelManagement.Travel", "Travel")
                         .WithMany()
                         .HasForeignKey("TravelId");
+
+                    b.Navigation("Applicant");
 
                     b.Navigation("Employee");
 
@@ -42727,6 +43021,11 @@ namespace HCMv3.Migrations
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeePaymentBatch", b =>
+                {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.OvertimeBatch", b =>
                 {
                     b.Navigation("Details");
                 });

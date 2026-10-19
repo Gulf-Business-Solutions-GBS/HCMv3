@@ -1,0 +1,207 @@
+{
+  "helpId": "ess.leave-plan",
+  "lang": "ar",
+  "title": "طلب تخطيط الإجازة",
+  "entity": null,
+  "overviewHtml": "<p>أبلغ مديرك بموعد الإجازة التي تنوي أخذها قبل أن تتقدم بطلبها بوقت كافٍ، واطّلع على خطط فريقك وإجازاته خلال الشهر.</p><p>والخطة معلومة وليست إجازة. فاعتمادها لا يحجز شيئاً: لا يحجز من رصيدك ولا يخصم منه، ولا يُنشئ إجازة. وكل ما يفعله الاعتماد أن تظهر خطتك للموارد البشرية ولمديرك بوصفها متفقاً عليها لا مطلوبة. وحين يحين الموعد تتقدم بطلب الإجازة نفسها من شاشة <strong>طلبات الإجازة</strong>، حيث تنطبق قواعد الإجازات المعتادة. ولا توجد قاعدة تداخل للخطط، فيجوز أن تغطي الخطة أياماً لديك عنها خطة أخرى أو إجازة.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "ess.leave-plan.start-date",
+    "loc:EndDate": "ess.leave-plan.end-date",
+    "loc:PlannedDays": "ess.leave-plan.planned-days",
+    "loc:ProjectedLeaveBalance": "ess.leave-plan.projected-balance",
+    "loc:LeaveDays": "ess.leave-plan.leave-days",
+    "loc:RequestComment": "ess.common.comments",
+    "loc:Save": "ess.leave-plan.save",
+    "loc:Submit": "ess.leave-plan.submit",
+    "loc:NewLeavePlan": "ess.common.new-request",
+    "loc:LeaveScheduler": "ess.leave-plan.scheduler",
+    "loc:EssMyRequests": "ess.common.my-requests",
+    "loc:Status": "ess.common.status",
+    "loc:Actions": "ess.leave-plan.actions",
+    "loc:CurrentUserHasNoEmployeeRecord": "ess.common.not-linked"
+  },
+  "fields": [
+    {
+      "id": "ess.leave-plan.start-date",
+      "label": "StartDate",
+      "section": null,
+      "aliases": [
+        "loc:StartDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم تخطط للغياب فيه.</p><p><strong>مثال.</strong> 3 أغسطس 2026</p><p><strong>لماذا يهمّ.</strong> يُحتسب الرصيد المتوقع حتى هذا التاريخ، فتغييره يغيّر الرقم الظاهر على الجانب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.end-date",
+      "label": "EndDate",
+      "section": null,
+      "aliases": [
+        "loc:EndDate"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم تخطط للغياب فيه.</p><p><strong>مثال.</strong> 20 أغسطس 2026</p><p><strong>لماذا يهمّ.</strong> لا يجوز أن يسبق تاريخ البدء. والتاريخان لازمان للإرسال، أما المسودة فيمكن حفظها بدونهما.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.planned-days",
+      "label": "PlannedDays",
+      "section": null,
+      "aliases": [
+        "loc:PlannedDays"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام التقويمية من تاريخ البدء إلى تاريخ الانتهاء، شاملةً اليومين. وتُحتسب فيها عطلات نهاية الأسبوع والعطل الرسمية.</p><p><strong>مثال.</strong> من 3 إلى 20 أغسطس تساوي 18 يوماً مقرراً.</p><p><strong>لماذا يهمّ.</strong> الخطة لا تحدد نوع إجازة، فلا توجد قواعد إجازة تستبعد عطلات نهاية الأسبوع. أما عدد الأيام التي ستكلفك إياها الإجازة فعلاً فانظره في <strong>أيام الإجازة</strong> أدناه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.projected-balance",
+      "label": "ProjectedLeaveBalance",
+      "section": null,
+      "aliases": [
+        "loc:ProjectedLeaveBalance"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رصيد إجازتك السنوية كما يُتوقع أن يكون في تاريخ البدء، شاملاً ما تستحقه حتى ذلك الحين، ولا تُحتسب فيه إلا الإجازات المعتمدة فعلاً. ويظهر باللون الأحمر إذا كان أقل من صفر.</p><p><strong>مثال.</strong> 21.5</p><p><strong>لماذا يهمّ.</strong> هو أسرع طريقة لمعرفة ما إذا كان الرصيد سيغطي الإجازة عند التقدم بطلبها. ويُحفظ الرقم مع الخطة كما كان عند الحفظ والإرسال، فيرى المعتمد ما رأيته أنت. ويبقى فارغاً إذا لم تُعدّ شركتك نوعاً للإجازة السنوية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.leave-days",
+      "label": "LeaveDays",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDays"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد أيام الإجازة السنوية التي ستكلفك إياها هذه التواريخ فعلاً: الأيام المقررة ناقصاً أيام الراحة الأسبوعية والعطل التي لا تحتسبها الإجازة السنوية. ولا يظهر إلا أثناء تعبئة النموذج.</p><p><strong>مثال.</strong> 18 يوماً مقرراً، و14 يوم إجازة.</p><p><strong>لماذا يهمّ.</strong> قارن هذا الرقم، لا الأيام المقررة، برصيدك المتوقع. ولا يُحفظ مع الخطة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.comments",
+      "label": "RequestComment",
+      "section": null,
+      "aliases": [
+        "loc:RequestComment"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما تريد أن يقرأه من يعتمدون الطلب. نص حرّ واختياري.</p><p><strong>مثال.</strong> «سفري يوم 14 وعودتي يوم 28، وقد اتُّفق على البديل مع أحمد.»</p><p><strong>لماذا يهمّ.</strong> هو المكان الوحيد الذي تشرح فيه طلباً يحتاج إلى شرح، ويبقى مع الطلب دائماً: يراه المعتمدون، ويراه كل من يعود إلى الطلب لاحقاً. والطلب الذي يفاجئ أحدهم طلبٌ يعود إليك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.save",
+      "label": "Save",
+      "section": null,
+      "aliases": [
+        "loc:Save"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحتفظ بالخطة مسودةً، دون فحصها ودون إرسالها إلى أحد.</p><p><strong>مثال.</strong> تعرف أنك تريد أسبوعين في أغسطس لكنك لم تحدد أيهما بعد.</p><p><strong>لماذا يهمّ.</strong> المسودة لك وحدك: تظهر في قائمتك بحالة <strong>مسودة</strong> ولا يراها أحد غيرك، ولا حتى الموارد البشرية. افتحها مجدداً بزر <strong>تحرير</strong> حين تكون جاهزاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.submit",
+      "label": "Submit",
+      "section": null,
+      "aliases": [
+        "loc:Submit"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يفحص التاريخين ويرسل الخطة للاعتماد.</p><p><strong>لماذا يهمّ.</strong> بعد الإرسال لا يمكنك تعديلها مباشرة؛ فاسحبها وخطط من جديد، أو انتظر حتى تُعاد إليك. وإذا كانت خطط الإجازات في شركتك مُعدّة دون اعتماد، فإنها تُسجَّل فوراً بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.new-request",
+      "label": "NewLeavePlan",
+      "section": null,
+      "aliases": [
+        "loc:NewLeavePlan"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزرّ في أعلى الشاشة الذي يفتح النموذج. وتعبئته ثم الضغط على <strong>حفظ</strong> يقدّم الطلب، ولا يُرسل شيء قبل ذلك.</p><p><strong>مثال.</strong> <strong>طلب إجازة</strong>، <strong>طلب تذكرة</strong>، <strong>طلب سلفة</strong> — وتتبع الصياغة الشاشة.</p><p><strong>لماذا يهمّ.</strong> بعد التقديم يذهب الطلب إلى من يعتمد هذا النوع من الطلبات في شركتك، ولا يمكنك تعديله في مكانه. ولتغيير شيء فيه اسحبه وقدّم طلباً جديداً، أو استخدم <strong>التعديل</strong> في الشاشات التي توفّره.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.scheduler",
+      "label": "LeaveScheduler",
+      "section": null,
+      "aliases": [
+        "loc:LeaveScheduler"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عرض شهري لخططك وإجازاتك، وخطط وإجازات من يتبعونك مباشرة. والسهمان ينتقلان شهراً إلى الخلف أو إلى الأمام، واضغط الزر مرة أخرى لإخفائه.</p><p><strong>مثال.</strong> قبل أن تخطط للنصف الأول من أغسطس، ترى أن اثنين من فريقك لديهما خطة لتلك الفترة أصلاً.</p><p><strong>لماذا يهمّ.</strong> تظهر الخطط والإجازات المعتمدة والتي لا تزال مفتوحة، أما المسودات والطلبات المرفوضة فلا تظهر. ولا يُعرض إلا مستوى واحد: فمن يتبعون مرؤوسيك المباشرين لا يدخلون فيه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.my-requests",
+      "label": "EssMyRequests",
+      "section": null,
+      "aliases": [
+        "loc:EssMyRequests"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كل ما طلبته من هذه الشاشة، والأحدث أولاً، مع ما آل إليه كل طلب.</p><p><strong>مثال.</strong> ثلاثة طلبات تذاكر: واحد اعتُمد الشهر الماضي، وواحد قيد الانتظار، وواحد سحبته.</p><p><strong>لماذا يهمّ.</strong> هذه هي السجلّ. والطلب غير الموجود في هذه القائمة لم يُقدَّم أصلاً، فإن عبّأت النموذج ولم تضغط <strong>حفظ</strong> فلم يُرسل شيء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [
+        "loc:Status"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما آل إليه الطلب. <strong>مسودة</strong> يعني أنه لم يُقدَّم، و<strong>قيد الانتظار</strong> يعني أنه لدى أحدهم، و<strong>معتمد</strong> يعني أنه أُقرّ ونُفّذ، و<strong>مرفوض</strong> يعني أنه رُفض، و<strong>مسحوب</strong> يعني أنك استرجعته بنفسك.</p><p><strong>مثال.</strong> قيد الانتظار — لدى مديرك المباشر.</p><p><strong>لماذا يهمّ.</strong> لا يغيّر شيئاً إلا الطلب المعتمد: رصيدك أو راتبك أو سجلّك. أما الطلب قيد الانتظار فلم يفعل شيئاً بعد، مهما جاء في النموذج عند تعبئته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.leave-plan.actions",
+      "label": "Actions",
+      "section": null,
+      "aliases": [
+        "loc:Actions"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يمكنك فعله بالخطة في قائمتك: <strong>تحرير</strong> المسودة أو الخطة المعادة إليك، أو فتح <strong>التفاصيل</strong>، أو استرجاعها — <strong>سحب الطلب</strong> ما دامت لدى المعتمد، و<strong>إلغاء المسودة</strong> لخطة لم ترسلها قط.</p><p><strong>لماذا يهمّ.</strong> الخطة المعادة تُفتح في النموذج نفسه، وتعود برقم الطلب نفسه عند إرسالها مجدداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ess.common.not-linked",
+      "label": "CurrentUserHasNoEmployeeRecord",
+      "section": null,
+      "aliases": [
+        "loc:CurrentUserHasNoEmployeeRecord"
+      ],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنبيه بأن الحساب الذي سجّلت الدخول به غير مرتبط بموظف، فلا يوجد من يكون الطلب عنه.</p><p><strong>مثال.</strong> مستخدم أُنشئ حديثاً، أو حساب مسؤول تُرك عمداً بلا موظف.</p><p><strong>لماذا يهمّ.</strong> لا يعمل شيء في شاشات الخدمة الذاتية قبل أن تربط الموارد البشرية الحساب بسجلّ موظفك، ولا يفعل ذلك سواها. وكثيراً ما تُترك حسابات المسؤولين غير مرتبطة عن قصد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

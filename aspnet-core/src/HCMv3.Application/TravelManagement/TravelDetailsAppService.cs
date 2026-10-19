@@ -186,6 +186,27 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
     {
         var detail = await _repository.GetAsync(input.TravelDetailId);
 
+        // Legacy TravelDetail.PerDiemRate/PerDiemAmount: both 0 unless Travel.Employee is set. Per diem is
+        // priced by the traveller's salary profile, and an applicant has none -- so an applicant's leg gets
+        // nothing, exactly as in legacy, whatever group the caller passes in.
+        bool isApplicantTrip;
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            isApplicantTrip = await _travelRepository.GetAll()
+                .AnyAsync(t => t.Id == detail.TravelId && t.EmployeeId == null);
+        }
+
+        if (isApplicantTrip)
+        {
+            return new CalculateExpectedPerDiemOutput
+            {
+                PerDiemRate = 0,
+                PerDiemAmount = 0,
+                PerDiemPayPercentage = detail.PerDiemPayPercentage,
+                PerDiemPayAmount = 0
+            };
+        }
+
         var rate = await _travelPerDiemRepository.GetAll()
             .Where(p => p.FromDestinationId == detail.DepartureId &&
                         p.ToDestinationId == detail.ArrivalId &&

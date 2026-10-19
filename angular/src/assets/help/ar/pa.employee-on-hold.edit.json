@@ -41,7 +41,7 @@
         "loc:StartDate",
         "dom:EmployeeOnHold_StartDate"
       ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "rules": "إلزامي. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",
@@ -55,7 +55,7 @@
         "loc:EndDate",
         "dom:EmployeeOnHold_EndDate"
       ],
-      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "rules": "إلزامي. تاريخ.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
       "adminHtml": "",

@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Simulation Salary Registers — Create / Edit",
   "entity": "HCMv3.PayrollManagement.SimulationSalaryRegister",
-  "overviewHtml": "<p>A payslip from a simulation — a trial run that shows what payroll would pay without paying it. Simulation payslips are kept apart from real ones and are never locked.</p>",
+  "overviewHtml": "<p>A payslip from a simulation — a trial run that shows what payroll would pay without paying it. Simulation payslips are kept apart from real ones and are never locked.</p><p>Details on a payslip in the list opens its own page: the employee, periods, run type and result type at the top, with Edit, and below them its wagetype lines, which can be added, changed and removed there.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "SimulationSalaryRegister.EmployeeId",
     "dom:SimulationSalaryRegister_EmployeeId": "SimulationSalaryRegister.EmployeeId",

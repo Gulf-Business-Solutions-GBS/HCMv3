@@ -15,6 +15,8 @@
     "dom:OrgUnit_Address": "OrgUnitProfile.Address",
     "loc:OrgGeoLocation": "OrgUnitProfile.OrgGeoLocation",
     "dom:OrgUnit_OrgGeoLocation": "OrgUnitProfile.OrgGeoLocation",
+    "loc:OrgUnitLogo": "OrgUnitProfile.LogoPath",
+    "dom:OrgUnit_Logo": "OrgUnitProfile.LogoPath",
     "loc:PayrollAreaId": "OrgUnitProfile.PayrollAreaId",
     "dom:OrgUnit_PayrollAreaId": "OrgUnitProfile.PayrollAreaId"
   },
@@ -86,6 +88,20 @@
       "rules": "اختياري. الحد الأقصى 500 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الموقع الجغرافي للوحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrgUnitProfile.LogoPath",
+      "label": "OrgUnitLogo",
+      "section": "OrgUnits",
+      "aliases": [
+        "loc:OrgUnitLogo",
+        "dom:OrgUnit_Logo"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شعار الوحدة، لطباعته على الخطابات وكشوف الرواتب والتقارير المصرفية. بصيغة PNG أو JPEG أو GIF، بحد أقصى 1 ميجابايت، ويُزال بزر الإزالة.</p><p><strong>لماذا يهم.</strong> يُحفظ ملفاً في مخزن ملفات الجهة، لا في قاعدة البيانات. ولا يعرضه أي تقرير مطبوع حتى الآن، وستعرضه التقارير تباعاً كلما حُدِّث كل منها لقراءته.</p>",
       "adminHtml": "",
       "stub": false
     },

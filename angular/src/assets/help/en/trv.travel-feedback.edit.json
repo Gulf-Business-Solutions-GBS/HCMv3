@@ -3,10 +3,12 @@
   "lang": "en",
   "title": "Travel Feedbacks — Create / Edit",
   "entity": "HCMv3.TravelManagement.TravelFeedback",
-  "overviewHtml": "<p>A travel expense claim. Claims an employee raises in self-service go to approval: the amount must be above 0, and the employee cannot already have another claim for the trip, unless that one was rejected or sent back. A claim entered here is saved directly. Claims are not paid through payroll.</p>",
+  "overviewHtml": "<p>A travel expense claim. Claims an employee raises in self-service go to approval: the amount must be above 0, and the employee cannot already have another claim for the trip, unless that one was rejected or sent back. Claims are not paid through payroll.</p><p><strong>Employee or Applicant</strong> at the top says whose claim it is: an employee's, or a job applicant's. A claim is for exactly one of the two, and only that person's trips are offered under <strong>Travel</strong>; switching clears the other person and the trip.</p><p>An employee's claim entered here goes to approval when travel claims are set up for approval, and is saved directly when they are not. An applicant's claim is always saved directly, because approval is routed through the employee a request is about and an applicant has no manager or unit to route by. A claim that has been sent for approval cannot later be moved from the employee to an applicant.</p>",
   "aliasIndex": {
     "loc:Employee": "TravelFeedback.EmployeeId",
     "dom:TravelFeedback_EmployeeId": "TravelFeedback.EmployeeId",
+    "loc:Applicant": "TravelFeedback.ApplicantId",
+    "dom:TravelFeedback_ApplicantId": "TravelFeedback.ApplicantId",
     "loc:Travel": "TravelFeedback.TravelId",
     "dom:TravelFeedback_TravelId": "TravelFeedback.TravelId",
     "loc:ClaimDate": "TravelFeedback.ClaimDate",
@@ -28,6 +30,20 @@
       "rules": "Required. Chosen from the employee list.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The employee claiming.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelFeedback.ApplicantId",
+      "label": "Applicant",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:Applicant",
+        "dom:TravelFeedback_ApplicantId"
+      ],
+      "rules": "Required. Chosen from Applicant master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job applicant claiming. Shown instead of Employee when <strong>Applicant</strong> is chosen above.</p><p><strong>Example.</strong> APP-0042 - Sara Ahmed</p><p><strong>Why it matters.</strong> Choosing the applicant narrows <strong>Travel</strong> to that applicant's trips. The claim is saved at once, with no approval.</p>",
       "adminHtml": "",
       "stub": false
     },

@@ -50,7 +50,9 @@ public class MyTravelClaimAppService : MyTransactionAppServiceBase<TravelFeedbac
 
             // A claim is always for a trip that has happened, so a date cutoff would hide everything. The
             // current year is the useful default view.
-            var query = MyRowsQuery(employeeId)
+            // Queried on the concrete column, not through MyRowsQuery: EmployeeId is nullable here (an applicant's
+            // rows have none), and the shared helper binds to the non-nullable interface member.
+            var query = Repository.GetAll().Where(t => t.EmployeeId == employeeId)
                 .WhereIf(!input.IncludeHistory,
                     c => c.ClaimDate.Year >= thisYear || c.WorkflowStatus == RequestStatus.Open);
 

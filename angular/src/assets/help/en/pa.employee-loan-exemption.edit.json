@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Loan Exemptions — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeLoanExemption",
-  "overviewHtml": "<p>Skips one month's instalment on one of the employee's loans. Payroll does not recover the loan in a month that has an exemption.</p><p>The exemption date must fall within the loan's recovery period, and a loan can have only one exemption per month. Exemptions can be requested through self-service and routed for approval.</p>",
+  "overviewHtml": "<p>Skips one month's instalment on one of the employee's loans. Payroll does not recover the loan in a month that has an exemption.</p><p>The exemption date must fall within the loan's recovery period, and a loan can have only one exemption per month. Exemptions can be requested through self-service and routed for approval.</p><p>Opened from a loan's Recoveries &amp; Exemptions dialog, the loan is already filled in and cannot be changed.</p>",
   "aliasIndex": {
     "loc:EmployeeLoanId": "EmployeeLoanExemption.EmployeeLoanId",
     "dom:EmployeeLoanExemption_EmployeeLoanId": "EmployeeLoanExemption.EmployeeLoanId",

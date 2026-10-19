@@ -49,6 +49,12 @@ public class TravelClaimWorkflowTransactionHandler : WorkflowTransactionHandlerB
             return;
         }
 
+        // Only an employee's claim is routed; an applicant's is recorded directly (TravelFeedbacksAppService).
+        if (!claim.EmployeeId.HasValue || claim.EmployeeId.Value <= 0)
+        {
+            throw new UserFriendlyException(L("EmployeeIsRequired"));
+        }
+
         if (claim.ClaimAmount <= 0)
         {
             throw new UserFriendlyException(L("ClaimAmountMustBeGreaterThanZero"));

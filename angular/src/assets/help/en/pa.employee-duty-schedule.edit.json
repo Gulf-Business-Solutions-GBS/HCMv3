@@ -3,8 +3,10 @@
   "lang": "en",
   "title": "Employee Duty Schedules — Create / Edit",
   "entity": "HCMv3.TimeManagement.EmployeeDutySchedule",
-  "overviewHtml": "<p>Assigns the employee to a roster duty schedule for a period. Schedules for the same employee cannot overlap.</p><p>It is recorded for reference; the time engine and payroll take the employee's duties from duty periods and substitute duties, and do not read this assignment at present.</p>",
+  "overviewHtml": "<p>Assigns the employee to a roster duty schedule for a period. Schedules for the same employee cannot overlap.</p><p>It is recorded for reference; the time engine and payroll take the employee's duties from duty periods and substitute duties, and do not read this assignment at present.</p><p>The same records are listed for all employees under Time Management → Duty Schedule, which can be searched by employee code or name and by schedule code or name. Adding a record there asks for the employee; from the employee record the employee is already set.</p>",
   "aliasIndex": {
+    "loc:Employee": "EmployeeDutySchedule.EmployeeId",
+    "dom:EmployeeDutySchedule_EmployeeId": "EmployeeDutySchedule.EmployeeId",
     "loc:StartDate": "EmployeeDutySchedule.StartDate",
     "dom:EmployeeDutySchedule_StartDate": "EmployeeDutySchedule.StartDate",
     "loc:EndDate": "EmployeeDutySchedule.EndDate",
@@ -13,6 +15,20 @@
     "dom:EmployeeDutySchedule_RosterDutyScheduleId": "EmployeeDutySchedule.RosterDutyScheduleId"
   },
   "fields": [
+    {
+      "id": "EmployeeDutySchedule.EmployeeId",
+      "label": "Employee",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:Employee",
+        "dom:EmployeeDutySchedule_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee the schedule is assigned to. Shown only when adding a record from the all-employees Duty Schedule screen.</p><p><strong>Example.</strong> 1024 - Fatima Al-Sabah</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeDutySchedule.StartDate",
       "label": "StartDate",

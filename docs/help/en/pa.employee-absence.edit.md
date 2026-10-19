@@ -15,7 +15,18 @@ A period of leave or absence for the employee. Absences for the same employee ca
 
 Payroll pays leave according to the payment type and payment date, and the time engine marks the days as leave.
 
-An absence entered on this form does not change the Used figure on the employee's leave quota, so the self-service leave balance does not go down. Leave requested and approved through self-service does update it.
+Saving an absence on this form charges its leave days to the Used figure of the employee's leave quota, the same as leave approved through self-service; changing or deleting it moves the days accordingly.
+
+While the form is filled in, a **Leave Calculation** panel shows figures the server works out as the dates, type and times change; none of them is typed or stored by the panel:
+
+- **Calendar Days** -- every day from start date to end date.
+- **Total Leave Days** -- the days charged to the quota, after the leave type's excluded days (for example weekends and public holidays). This is the figure saved on the record.
+- **Absence Hours** -- the hours between start time and end time, for leave taken in hours.
+- **Current Balance** -- the balance of this leave type: for a type with quota accrual, the quota covering the whole leave; otherwise the days allowed for the period less every leave of the type in it, this one included.
+- With a return date entered: **Paid Calendar Days** and **Deduct From Quota** for the paid part of a late return, and **Unpaid Calendar Days** and **Unpaid Days** for the unpaid part. Deduct From Quota always uses the annual leave type's (code 1) excluded days, and Unpaid Days the unpaid leave type's (code 2), whatever this leave's type.
+- For sick leave, how the leave will be paid across the sick-leave deduction slabs.
+
+**Late return.** When a return date is entered, four more fields appear: **Paid Leave Start Date** / **Paid Leave End Date** and **Unpaid Leave Start Date** / **Unpaid Leave End Date**. They split the days between the leave's last day and the return date into further paid leave of the same type and unpaid leave (the leave type with code 2). They are used only when a return date is first entered and is later than the leave's end. The paid part must start the day after the leave ends, the unpaid part must end the day before the return date, the two must not overlap, and together they must cover exactly the days missed, or the save is refused.
 
 ## AbsenceTypeId {#EmployeeAbsence.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:EmployeeAbsence_AbsenceTypeId -->
@@ -93,6 +104,8 @@ The time and payroll engines treat an absence as hourly only when its absence ho
 **What it is.** The date the employee actually came back from leave.
 
 **Example.** 16 Jul 2026
+
+**Why it matters.** Entering it records the return. If it is earlier than planned, the leave is cut to end the day before and the unused days go back to the quota; if later, the days missed are booked as further paid and/or unpaid leave from the late-return fields that appear. Re-saving with the same date does nothing again.
 
 **Rules.** Optional. Date value.
 

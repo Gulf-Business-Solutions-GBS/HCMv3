@@ -15,6 +15,8 @@ permissions: [Pages.PersonnelAdministration.EmployeeLoanExemptions.Create]
 
 يجب أن يقع تاريخ الإعفاء ضمن فترة استرداد القرض، ولا يجوز أن يكون للقرض أكثر من إعفاء واحد في الشهر. ويمكن طلب الإعفاء عبر الخدمة الذاتية وتوجيهه للاعتماد.
 
+وعند فتحه من نافذة الاستردادات والإعفاءات لقرض ما، يكون القرض معبأً مسبقاً ولا يمكن تغييره.
+
 ## EmployeeLoanId {#EmployeeLoanExemption.EmployeeLoanId}
 <!-- alias: loc:EmployeeLoanId, dom:EmployeeLoanExemption_EmployeeLoanId -->
 

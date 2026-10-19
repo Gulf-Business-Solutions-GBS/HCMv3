@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.PersonnelAdministration;
-
+using HCMv3.Recruitment;
 using HCMv3.Workflow;
 
 namespace HCMv3.TravelManagement;
@@ -12,11 +12,12 @@ namespace HCMv3.TravelManagement;
 /// Travel feedback/claim record (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.TravelManagement.TravelFeedback</c>).
 ///
-/// DELIBERATE SIMPLIFICATION (Applicant drop): same rationale as <see cref="Travel"/> -- the legacy
-/// either-or <c>Employee</c>/<c>Applicant</c> relationship is dropped; <see cref="EmployeeId"/> is the only
-/// party field (required). <see cref="TravelId"/> is filtered by Employee only (the legacy
-/// <c>EmpTravel</c> XPCollection branched on whichever of Employee/Applicant was set; since Applicant is
-/// dropped, only the Employee branch applies).
+/// EMPLOYEE OR APPLICANT: the same rule as <see cref="Travel"/> -- exactly one of <see cref="EmployeeId"/> /
+/// <see cref="ApplicantId"/> is set (enforced in <c>TravelFeedbacksAppService</c>; legacy only refused both
+/// blank). The selectable <see cref="TravelId"/> list follows whichever is set, as legacy's
+/// <c>EmpTravel</c> XPCollection did. <see cref="IHasEmployeeId"/> is implemented explicitly and reads 0 for
+/// an applicant's claim, so self service and the attachment policy never treat it as anybody's own -- only
+/// holders of the Travel Feedback permissions see its files.
 ///
 /// LEGACY DocAttachment: the legacy <c>AfterConstruction()</c> eagerly created a <c>DocAttachment</c> child
 /// record. Files are now held by the shared per-tenant attachment store under owner type
@@ -27,9 +28,18 @@ public class TravelFeedback : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId
 {
     public int TenantId { get; set; }
 
-    public virtual int EmployeeId { get; set; }
+    /// <summary>The employee claiming. Null for an applicant's claim.</summary>
+    public virtual int? EmployeeId { get; set; }
 
     public virtual Employee Employee { get; set; }
+
+    /// <summary>The job applicant claiming, when it is not an employee's claim (legacy <c>TravelFeedback.Applicant</c>).</summary>
+    public virtual int? ApplicantId { get; set; }
+
+    public virtual Applicant Applicant { get; set; }
+
+    /// <summary>0 for an applicant's claim, so no employee ever matches it.</summary>
+    int IHasEmployeeId.EmployeeId => EmployeeId ?? 0;
 
     public virtual int? TravelId { get; set; }
 

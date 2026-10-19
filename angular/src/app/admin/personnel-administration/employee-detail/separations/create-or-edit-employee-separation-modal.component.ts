@@ -4,6 +4,7 @@ import {
     CreateOrEditEmployeeSeparationDto,
     EmployeeSeparationsServiceProxy,
     GetAllSeparationReasonsInput,
+    OnHoldStatus,
     SeparationReasonDto,
     SeparationReasonsServiceProxy,
     SeparationType,
@@ -48,6 +49,25 @@ export class CreateOrEditEmployeeSeparationModalComponent extends AppComponentBa
         { value: SeparationType.Termination, name: this.l('Termination') },
     ];
 
+    /** Same choices as the On Hold tab: the separation writes an on-hold record with this value. */
+    readonly bankTransferOptions = [
+        { value: OnHoldStatus.NA, name: 'NA' },
+        { value: OnHoldStatus.Hold, name: 'Hold' },
+        { value: OnHoldStatus.Unhold, name: 'Unhold' },
+    ];
+
+    /** Legacy order of the hold flags (OnHold Information region). */
+    readonly holdFlags: { field: keyof CreateOrEditEmployeeSeparationDto; label: string }[] = [
+        { field: 'onHoldAll', label: 'OnHoldAll' },
+        { field: 'onHoldBasicPay', label: 'OnHoldBasicPay' },
+        { field: 'onHoldLeavePay', label: 'OnHoldLeavePay' },
+        { field: 'onHoldIndemnityPay', label: 'OnHoldIndemnityPay' },
+        { field: 'onHoldAirTicketPay', label: 'OnHoldAirTicketPay' },
+        { field: 'onHoldLoanDeduction', label: 'OnHoldLoanDeduction' },
+        { field: 'onHoldAllEarnings', label: 'OnHoldAllEarnings' },
+        { field: 'onHoldAllDeductions', label: 'OnHoldAllDeductions' },
+    ];
+
     show(employeeId: number, id?: number): void {
         this.active.set(true);
 
@@ -58,6 +78,7 @@ export class CreateOrEditEmployeeSeparationModalComponent extends AppComponentBa
         if (!id) {
             const record = new CreateOrEditEmployeeSeparationDto();
             record.employeeId = employeeId;
+            record.bankTransfer = OnHoldStatus.NA;
             this.record.set(record);
             this.modal().show();
         } else {
@@ -111,5 +132,17 @@ export class CreateOrEditEmployeeSeparationModalComponent extends AppComponentBa
 
     updateRevokeDate(value: string): void {
         this.updateField('revokeDate', value ? DateTime.fromISO(value) : (undefined as any));
+    }
+
+    updateOnHoldFromDate(value: string): void {
+        this.updateField('onHoldFromDate', value ? DateTime.fromISO(value) : (undefined as any));
+    }
+
+    updateOnHoldTillDate(value: string): void {
+        this.updateField('onHoldTillDate', value ? DateTime.fromISO(value) : (undefined as any));
+    }
+
+    flagValue(field: keyof CreateOrEditEmployeeSeparationDto): boolean {
+        return !!(this.record() as any)[field];
     }
 }

@@ -35,7 +35,7 @@
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (item of travels(); track item.id) {
-                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.employeeFullNameEn }}</option>
+                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.applicantId ? item.applicantFullNameEn : item.employeeFullNameEn }}</option>
                                     }
                                 </select>
                                 <validation-messages [formCtrl]="travelIdInput" />

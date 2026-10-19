@@ -1,0 +1,76 @@
+{
+  "helpId": "pa.leave-plans",
+  "lang": "en",
+  "title": "Leave Plans",
+  "entity": null,
+  "overviewHtml": "<p>The leave employees say they intend to take, as they planned it in self-service under <strong>Leave Planner Request</strong>. The same list shows on an employee's record as <strong>Leave Plans</strong>, limited to that employee.</p><p>A plan is information, not leave. Approving one books nothing: it charges no balance, creates no leave record and changes nothing else. What approval does is let the plan show as planned, rather than asked for, on the Leave Planner. The leave itself is still applied for on the leave screen. Plans have no overlap rule: two plans of the same employee, or a plan and an actual leave, can cover the same days.</p><p>An employee's draft that was never sent is not listed here; it is nobody else's business until it is sent.</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "pa.leave-plans.filter",
+      "label": "Filter",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Narrows the list to employees whose code, English name or Arabic name contains the text. Press Enter or <strong>Search</strong>. Not shown on the employee record, where the list is already one employee's.</p><p><strong>Example.</strong> <code>1042</code>, or <code>Fatima</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-plans.show-unapproved",
+      "label": "ShowLeavePlannerUnapproved",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Also lists plans that are not in effect: still with an approver, sent back, rejected or withdrawn. Off, the list holds only approved plans and plans recorded without approval.</p><p><strong>Example.</strong> Switch it on to see what is still waiting before you plan cover for next month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-plans.planned-days",
+      "label": "PlannedDays",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Calendar days from the start date to the end date, both included. Weekly days off and public holidays are counted, because a plan names no leave type whose rules could leave them out.</p><p><strong>Example.</strong> 1 Aug to 14 Aug 2026 is 14 planned days.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-plans.projected-balance",
+      "label": "ProjectedLeaveBalance",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's annual leave balance projected to the plan's start date: what the employee is expected to have on that day, counting what accrues until then and approved leave only. Taken when the plan was saved and again when it was sent, so it shows what the employee saw, not today's figure.</p><p><strong>Example.</strong> 18.5</p><p><strong>Why it matters.</strong> A figure lower than the planned days is an early sign that the leave, when applied for, may not be covered. Blank when no annual leave type is set up.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-plans.status",
+      "label": "Status",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the plan has got to in approval: Open while with an approver, Approved, Rejected, sent back as Draft. <strong>Recorded</strong> means it was saved without approval, because leave plans are not set up for approval.</p><p><strong>Example.</strong> Open</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pa.leave-plans.delete",
+      "label": "Delete",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Removes the plan, from the Actions menu. Needs the Leave Plans delete permission.</p><p><strong>Why it matters.</strong> A plan still with an approver, or sent back to the employee, has its request closed as well, so it does not stay in anybody's inbox pointing at nothing. Nothing else is affected, since a plan booked nothing.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

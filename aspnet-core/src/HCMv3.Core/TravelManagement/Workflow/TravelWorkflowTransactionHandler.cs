@@ -91,7 +91,10 @@ public class TravelWorkflowTransactionHandler : WorkflowTransactionHandlerBase<T
             return;
         }
 
-        if (travel.EmployeeId <= 0)
+        // Only an employee's trip is ever routed -- an applicant's is recorded directly, because routing is
+        // decided by the employee a request is about (TravelsAppService). So a submission with no employee
+        // is refused here whichever door it came through, rather than routed against nobody.
+        if (!travel.EmployeeId.HasValue || travel.EmployeeId.Value <= 0)
         {
             throw new UserFriendlyException(L("EmployeeIsRequired"));
         }

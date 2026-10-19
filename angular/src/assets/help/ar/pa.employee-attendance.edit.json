@@ -19,6 +19,8 @@
     "dom:EmployeeAttendance_StartTime": "EmployeeAttendance.StartTime",
     "loc:EndTime": "EmployeeAttendance.EndTime",
     "dom:EmployeeAttendance_EndTime": "EmployeeAttendance.EndTime",
+    "loc:TotalAttendDays": "EmployeeAttendance.TotalAttendDays",
+    "dom:EmployeeAttendance_TotalAttendDays": "EmployeeAttendance.TotalAttendDays",
     "loc:Comments": "EmployeeAttendance.Comments",
     "dom:EmployeeAttendance_Comments": "EmployeeAttendance.Comments"
   },
@@ -75,7 +77,7 @@
       ],
       "rules": "إلزامي. إحدى القيم: فترة، اليوم، ساعات.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> هل يُسجَّل الحضور فترةً أم بالأيام أم بالساعات.</p><p><strong>مثال.</strong> ساعات</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرؤه أي احتساب حالياً.</p>",
+      "html": "<p><strong>ما هو.</strong> هل يُسجَّل الحضور فترةً أم بالأيام أم بالساعات.</p><p><strong>مثال.</strong> ساعات</p><p><strong>لماذا يهم.</strong> يحدد طريقة احتساب مجموع أيام الحضور عند حفظ السجل.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -119,6 +121,20 @@
       "when": null,
       "html": "<p><strong>ما هو.</strong> وقت انتهاء الحضور.</p><p><strong>مثال.</strong> 12:00</p>",
       "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.TotalAttendDays",
+      "label": "TotalAttendDays",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:TotalAttendDays",
+        "dom:EmployeeAttendance_TotalAttendDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام التي يُحتسب بها الحضور، ويُحسب عند حفظ السجل. ويبقى فارغاً حتى يُحفظ السجل أول مرة.</p><p><strong>مثال.</strong> 0.5</p><p><strong>لماذا يهم.</strong> في وحدة الفترة مع وقت بداية ووقت نهاية، تُقسم الساعات بين الوقتين (وتحل محل الساعات المُدخلة) على ساعات الدوام المخططة للموظف في ذلك اليوم، أو على ساعات العمل الافتراضية في إعدادات الرواتب إن لم يكن للدوام ساعات، وتبقى النتيجة بين 0 و1. وفي وحدة الفترة دون أوقات تكون عدد الأيام التقويمية من تاريخ البداية إلى تاريخ النهاية. وفي وحدة الساعات تكون الساعات المُدخلة مقسومة بالطريقة نفسها، دون حد أعلى. أما وحدة اليوم فلا يُحتسب لها شيء. وإذا كان نوع المواظبة مؤشَّراً عليه بخيار له تراكم حصة، أُضيفت هذه الأيام إلى الحصة المتراكمة لنوع الإجازة المرتبط به، وتُسترد عند تعديل السجل أو حذفه. ويقرؤها كذلك تقرير مخصص الإجازات.</p>",
+      "adminHtml": "<p>يتعذر الحفظ إذا لم يوجد دوام للموظف في تاريخ البداية. والحصة المستخدمة هي التي تغطي تاريخ التحاق الموظف، كما في النظام السابق، وإن لم توجد أُنشئت.</p>",
       "stub": false
     },
     {

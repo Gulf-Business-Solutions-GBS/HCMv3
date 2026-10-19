@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Loans — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeLoan",
-  "overviewHtml": "<p>A loan to the employee and how it is recovered. Payroll recovers it from the recovery start date according to the loan type; each instalment it takes is recorded as a loan recovery and reduces the balance due.</p><p>The actual amount cannot be less than the amount due, and neither the recovery start date nor the end date can be before the start date.</p>",
+  "overviewHtml": "<p>A loan to the employee and how it is recovered. Payroll recovers it from the recovery start date according to the loan type; each instalment it takes is recorded as a loan recovery and reduces the balance due.</p><p>The actual amount cannot be less than the amount due, and neither the recovery start date nor the end date can be before the start date.</p><p><strong>Recoveries &amp; Exemptions</strong>, in a loan's row menu on the employee's Loans section, opens the loan's repayments and skipped months in one dialog, under the loan's actual amount, due amount and balance due. Recoveries and exemptions are added and changed there with the same dialogs, and the same rules, as the Loan Recoveries and Loan Exemptions screens, with the loan already filled in. Recoveries written by the payroll run (Recovery Through Payroll) are shown but cannot be edited or deleted there: the next run of that period deletes and rewrites them.</p>",
   "aliasIndex": {
     "loc:LoanPaymentDate": "EmployeeLoan.StartDate",
     "dom:EmployeeLoan_StartDate": "EmployeeLoan.StartDate",

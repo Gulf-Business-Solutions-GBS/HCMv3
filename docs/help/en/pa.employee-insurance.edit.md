@@ -15,6 +15,8 @@ An insurance enrolment for the employee or a dependant, and how its cost is shar
 
 Payroll pays the employee and company contributions in the payroll month in which the insurance starts, then recovers them in instalments from the instalment start date until each balance is cleared. The insurance amount must equal the employee contribution plus the company contribution.
 
+**Insurance Installments**, in an insurance's row menu on the employee's Insurances section, opens its instalments in one dialog: the employee share and the company share in two lists, under the insurance amount and each contribution with its remaining balance. Instalments are added and changed there with the same dialogs, and the same rules, as the Employee Insurance Details and Company Insurance Details screens, with the insurance already filled in. Instalments written by the payroll run (Through Payroll) are shown but cannot be edited or deleted there: the next run of that period deletes and rewrites them.
+
 ## InsurancePlanId {#EmployeeInsurance.InsurancePlanId}
 <!-- alias: loc:InsurancePlanId, dom:EmployeeInsurance_InsurancePlanId -->
 

@@ -16,7 +16,7 @@ permissions: []
 ## ApplicationStatuses {#InterviewDetails.ApplicationStatusId}
 <!-- alias: loc:ApplicationStatuses, dom:InterviewDetails_ApplicationStatusId -->
 
-**ما هو.** الطلب.
+**ما هو.** الطلب. ولا يظهر عند فتح النافذة من تبويب تفاصيل المقابلات في صفحة الطلب نفسه، إذ يُملأ تلقائياً.
 
 **القواعد.** إلزامي. يُختار من قائمة حالات الطلبات.
 

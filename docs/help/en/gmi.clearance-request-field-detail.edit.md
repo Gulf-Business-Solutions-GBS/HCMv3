@@ -16,7 +16,7 @@ Assigns one line of the exit clearance checklist to a department. On a parallel 
 ## ClearanceRequestField {#ClearanceRequestFieldDetail.ClearanceRequestFieldId}
 <!-- alias: loc:ClearanceRequestField, dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId -->
 
-**What it is.** The checklist line being assigned.
+**What it is.** The checklist line being assigned. Not shown when the dialog is opened from a clearance request field's own page: that line is filled in for you.
 
 **Rules.** Optional. Chosen from Clearance Request Field master data.
 

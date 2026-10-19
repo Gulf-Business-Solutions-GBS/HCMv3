@@ -11,8 +11,12 @@ public class CreateOrEditTravelFeedbackDto
 {
     public int? Id { get; set; }
 
-    [Required]
-    public int EmployeeId { get; set; }
+    /// <summary>The employee claiming. Leave empty for an applicant's claim -- exactly one of this and
+    /// <see cref="ApplicantId"/> must be set (checked by the server).</summary>
+    public int? EmployeeId { get; set; }
+
+    /// <summary>The job applicant claiming, when it is not an employee's claim.</summary>
+    public int? ApplicantId { get; set; }
 
     public int? TravelId { get; set; }
 

@@ -21,7 +21,7 @@
       ],
       "rules": "Optional. Chosen from Clearance Request Field master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The checklist line being assigned.</p>",
+      "html": "<p><strong>What it is.</strong> The checklist line being assigned. Not shown when the dialog is opened from a clearance request field's own page: that line is filled in for you.</p>",
       "adminHtml": "",
       "stub": false
     },

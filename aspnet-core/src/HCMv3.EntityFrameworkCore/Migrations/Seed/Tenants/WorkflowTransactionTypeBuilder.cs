@@ -47,6 +47,10 @@ public class WorkflowTransactionTypeBuilder
     private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
     {
         ("EmployeeAbsence", "Leave Request", "طلب إجازة", "AbsenceType", "/app/main/ess/leave", AppPermissions.Ess_MyLeave, "flaticon-calendar-3", 10),
+
+        // Leave plan (legacy LeavePlanner, request code "14"): an employee's planned future leave. Informational:
+        // legacy's approval side effect was commented out, so approving a plan changes nothing else.
+        ("LeavePlan", "Leave Planner Request", "طلب تخطيط الإجازة", null, "/app/main/ess/leave-plan", AppPermissions.Ess_MyLeavePlans, "flaticon-calendar-3", 15),
         ("EmployeeAsset", "Asset Request", "طلب عهدة", null, "/app/main/ess/asset", AppPermissions.Ess_MyAssets, "flaticon-app", 20),
         ("EmployeeDocument", "Document Request", "طلب مستند", "DocumentType", "/app/main/ess/document", AppPermissions.Ess_MyDocuments, "flaticon-notepad", 30),
         ("EmployeeLoan", "Loan Request", "طلب قرض", "LoanType", "/app/main/ess/loan", AppPermissions.Ess_MyLoans, "flaticon-piggy-bank", 40),
@@ -219,7 +223,12 @@ public class WorkflowTransactionTypeBuilder
         // commented out and copy-pasted from the asset request, so an approved device registration had
         // nowhere to land and nothing ever read DeviceId back. Here approval is what makes the row visible
         // to IMobileDeviceRegistrationService, which is what makes the handset usable.
-        ("EmployeeMobileDevice", "Mobile Device Registration", "تسجيل جهاز محمول", null, "/app/main/ess/mobile-device", AppPermissions.Ess_MyMobileDevices, "flaticon2-phone", 270)
+        ("EmployeeMobileDevice", "Mobile Device Registration", "تسجيل جهاز محمول", null, "/app/main/ess/mobile-device", AppPermissions.Ess_MyMobileDevices, "flaticon2-phone", 270),
+
+        // Overtime batch (legacy OvertimeRequest, request code "23"): a department's overtime for a date range,
+        // one line per employee per day. Admin-raised, so no EssRoute. Approval writes the EmployeeOvertime rows,
+        // once, like EmployeePaymentBatch above.
+        ("OvertimeBatch", "Overtime Batch", "دفعة عمل إضافي", null, null, null, "flaticon-alarm", 280)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

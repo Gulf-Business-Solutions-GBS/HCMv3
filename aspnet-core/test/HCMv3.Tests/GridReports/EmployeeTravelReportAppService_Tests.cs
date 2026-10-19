@@ -184,4 +184,63 @@ public class EmployeeTravelReportAppService_Tests : AppTestBase
             exported.First().Keys.ShouldContain("Org Level " + level);
         }
     }
+
+    [Fact]
+    public async Task Should_Show_An_Applicant_Trip_With_The_Applicant_Name_And_Its_Own_Claims()
+    {
+        // Legacy Table1(): an applicant's trip fills the Applicant column and leaves the employee columns blank.
+        var employee = CreateEmployee("TRV-EMP-A");
+        var employeeTravel = CreateTravel(employee, new DateTime(2024, 5, 1), new DateTime(2024, 5, 3));
+        CreateTravelFeedback(employee, employeeTravel, 40);
+
+        HCMv3.Recruitment.Applicant applicant = null;
+        Travel applicantTravel = null;
+        UsingDbContext(context =>
+        {
+            applicant = context.Set<HCMv3.Recruitment.Applicant>().Add(new HCMv3.Recruitment.Applicant
+            {
+                TenantId = TenantId,
+                Code = "APP-T1",
+                FirstNameEn = "Nora",
+                LastNameEn = "Candidate",
+                FirstNameAr = "نورة",
+                LastNameAr = "مرشحة",
+                BirthDate = new DateTime(1995, 1, 1)
+            }).Entity;
+            context.SaveChanges();
+
+            applicantTravel = context.Set<Travel>().Add(new Travel
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                ApplicantId = applicant.Id,
+                TravelTypeId = employeeTravel.TravelTypeId,
+                StartDate = new DateTime(2024, 5, 10),
+                EndDate = new DateTime(2024, 5, 12),
+                TotalTravelCost = 300
+            }).Entity;
+            context.SaveChanges();
+
+            context.Set<TravelFeedback>().Add(new TravelFeedback
+            {
+                TenantId = TenantId,
+                ApplicantId = applicant.Id,
+                TravelId = applicantTravel.Id,
+                ClaimDate = new DateTime(2024, 5, 12),
+                ClaimAmount = 25
+            });
+        });
+
+        var result = await _appService.GetEmployeeTravelReport(Input(new DateTime(2024, 1, 1), new DateTime(2024, 12, 31)));
+
+        var applicantRow = result.Items.Single(r => r.Id == applicantTravel.Id);
+        applicantRow.Applicant.ShouldContain("Nora");
+        applicantRow.Applicant.ShouldContain("Candidate");
+        applicantRow.EmployeeCode.ShouldBeNull();
+        applicantRow.ClaimAmount.ShouldBe(25);
+
+        var employeeRow = result.Items.Single(r => r.Id == employeeTravel.Id);
+        employeeRow.Applicant.ShouldBe("");
+        employeeRow.ClaimAmount.ShouldBe(40);
+    }
 }

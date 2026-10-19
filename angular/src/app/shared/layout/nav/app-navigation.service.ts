@@ -109,6 +109,7 @@ export class AppNavigationService {
                     ]),
                     new AppMenuItem('Leave', '', 'flaticon-calendar', '', [], [
                         new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave').governedBy('EmployeeAbsence'),
+                        new AppMenuItem('EssMyLeavePlans', 'Ess.MyLeavePlans', 'flaticon-calendar-3', '/app/main/ess/leave-plan').governedBy('LeavePlan'),
                     ]),
                     // Directly under Workflow, not inside a group -- as legacy has Skip Punch Request.
                     new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch').governedBy('TimeEvent'),
@@ -1453,12 +1454,6 @@ export class AppNavigationService {
                         '/app/admin/document-types'
                     ),
                     new AppMenuItem(
-                        'DocumentPrintForms',
-                        'Pages.GeneralMasterInfo.DocumentPrintForms',
-                        'flaticon-list-3',
-                        '/app/admin/document-print-forms'
-                    ),
-                    new AppMenuItem(
                         'LoanTypes',
                         'Pages.GeneralMasterInfo.LoanTypes',
                         'flaticon-list-3',
@@ -2365,6 +2360,24 @@ export class AppNavigationService {
                         'Pages.PersonnelAdministration.EmployeeLetterRequests',
                         'flaticon-mail-1',
                         '/app/admin/employee-letter-requests'
+                    ),
+                    new AppMenuItem(
+                        'LeavePlans',
+                        'Pages.PersonnelAdministration.LeavePlans',
+                        'flaticon-calendar-3',
+                        '/app/admin/leave-plans'
+                    ),
+                    new AppMenuItem(
+                        'LeavePlanner',
+                        'Pages.PersonnelAdministration.LeavePlanner',
+                        'flaticon-calendar',
+                        '/app/admin/leave-planner'
+                    ),
+                    new AppMenuItem(
+                        'OvertimeBatches',
+                        'Pages.PersonnelAdministration.OvertimeBatches',
+                        'flaticon-alarm',
+                        '/app/admin/overtime-batches'
                     ),
                     new AppMenuItem(
                         'LoanInstallments',
@@ -3561,6 +3574,12 @@ export class AppNavigationService {
                         'Pages.Administration.Tools.BulkPasswordReset',
                         'flaticon-lock',
                         '/app/admin/bulk-password-reset'
+                    ),
+                    new AppMenuItem(
+                        'ResetUserCredentials',
+                        'Pages.Administration.Tools.ResetUserCredentials',
+                        'flaticon-lock',
+                        '/app/admin/user-credential-reset'
                     ),
                     new AppMenuItem(
                         'TenantVersionCheck',

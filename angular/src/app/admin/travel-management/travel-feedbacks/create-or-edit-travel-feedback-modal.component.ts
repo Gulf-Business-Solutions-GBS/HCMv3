@@ -1,4 +1,4 @@
-import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditTravelFeedbackDto,
@@ -6,6 +6,7 @@ import {
     EmployeesServiceProxy,
     GetAllEmployeesInput,
     GetAllTravelsInput,
+    TravelApplicantLookupDto,
     TravelDto,
     TravelFeedbacksServiceProxy,
     TravelsServiceProxy,
@@ -49,6 +50,23 @@ export class CreateOrEditTravelFeedbackModalComponent extends AppComponentBase {
     readonly record = signal<CreateOrEditTravelFeedbackDto>(new CreateOrEditTravelFeedbackDto());
     readonly employees = signal<EmployeeDto[]>([]);
     readonly travels = signal<TravelDto[]>([]);
+    readonly applicants = signal<TravelApplicantLookupDto[]>([]);
+
+    /**
+     * Who the claim is for (legacy TravelFeedback.Employee / TravelFeedback.Applicant). Exactly one is sent; the
+     * server refuses neither or both. An applicant's claim is recorded directly rather than sent for approval.
+     */
+    readonly partyType = signal<'employee' | 'applicant'>('employee');
+
+    /** Legacy EmpTravel: only the chosen person's trips are offered. */
+    readonly partyTravels = computed(() => {
+        const record = this.record();
+        return this.travels().filter((t) =>
+            this.partyType() === 'employee'
+                ? !t.applicantId && (!record.employeeId || t.employeeId === record.employeeId)
+                : !!t.applicantId && (!record.applicantId || t.applicantId === record.applicantId)
+        );
+    });
 
     show(id?: number): void {
         this.active.set(true);
@@ -58,15 +76,19 @@ export class CreateOrEditTravelFeedbackModalComponent extends AppComponentBase {
             .subscribe((result) => this.employees.set(result.items));
 
         this._travelsService
-            .getAll(new GetAllTravelsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined, filter: undefined }))
+            .getAll(new GetAllTravelsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined, applicantId: undefined, filter: undefined }))
             .subscribe((result) => this.travels.set(result.items));
+
+        this._travelsService.getApplicantsForLookup().subscribe((result) => this.applicants.set(result.items));
 
         if (!id) {
             this.record.set(new CreateOrEditTravelFeedbackDto());
+            this.partyType.set('employee');
             this.modal().show();
         } else {
             this._service.getTravelFeedbackForEdit(id).subscribe((result) => {
                 this.record.set(result.travelFeedback);
+                this.partyType.set(result.travelFeedback.applicantId ? 'applicant' : 'employee');
                 this.modal().show();
             });
         }
@@ -78,6 +100,21 @@ export class CreateOrEditTravelFeedbackModalComponent extends AppComponentBase {
 
     employeeLabel(employee: EmployeeDto): string {
         return `${employee.code} - ${employee.fullNameEn}`;
+    }
+
+    applicantLabel(applicant: TravelApplicantLookupDto): string {
+        return `${applicant.code} - ${applicant.fullNameEn}`;
+    }
+
+    travelLabel(travel: TravelDto): string {
+        return `${travel.code} - ${travel.applicantId ? travel.applicantFullNameEn : travel.employeeFullNameEn}`;
+    }
+
+    /** Switching clears the other side and the trip, so the record never carries both or a stranger's trip. */
+    setPartyType(type: 'employee' | 'applicant'): void {
+        this.partyType.set(type);
+        this.updateField(type === 'employee' ? 'applicantId' : 'employeeId', undefined);
+        this.updateField('travelId', undefined);
     }
 
     save(): void {

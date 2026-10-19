@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Clearance Request Fields — Create / Edit",
   "entity": "HCMv3.GeneralMasterInfo.ClearanceRequestField",
-  "overviewHtml": "<p>The lines of the exit clearance checklist — \"laptop returned\", \"access badge handed in\" — that departments confirm before an employee leaves.</p>",
+  "overviewHtml": "<p>The lines of the exit clearance checklist — \"laptop returned\", \"access badge handed in\" — that departments confirm before an employee leaves.</p><p>Details on a line in the list opens that line's own page: its fields at the top, with Edit, and below them the departments (workflow roles) it is assigned to, which can be added, changed and removed there.</p>",
   "aliasIndex": {
     "loc:Code": "ClearanceRequestField.Code",
     "dom:ClearanceRequestField_Code": "ClearanceRequestField.Code",

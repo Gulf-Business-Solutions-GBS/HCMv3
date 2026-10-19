@@ -16,7 +16,7 @@ One line of a simulation payslip: a wagetype with its rate, number and amount.
 ## SimulationSalaryRegisterId {#SimulationSalaryRegisterDetail.SimulationSalaryRegisterId}
 <!-- alias: loc:SimulationSalaryRegisterId, dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId -->
 
-**What it is.** The simulation payslip this line belongs to.
+**What it is.** The simulation payslip this line belongs to. Not shown when the dialog is opened from a simulation payslip's own page: that payslip is filled in for you.
 
 **Rules.** Required. Chosen from Simulation Salary Register master data.
 

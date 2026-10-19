@@ -107,7 +107,7 @@ public class EmployeeTravelReportAppService : GridReportAppServiceBase, IEmploye
             .WhereIf(employeeStatus.HasValue, t => t.Employee.Status == employeeStatus.Value)
             .WhereIf(!travelTypeCode.IsNullOrWhiteSpace(), t => t.TravelType.Code == travelTypeCode)
             .WhereIf(employeeCodes.Count > 0, t => employeeCodes.Contains(t.Employee.Code))
-            .WhereIf(rlsEmployeeIds.Count > 0, t => rlsEmployeeIds.Contains(t.EmployeeId));
+            .WhereIf(rlsEmployeeIds.Count > 0, t => t.EmployeeId.HasValue && rlsEmployeeIds.Contains(t.EmployeeId.Value));
 
         var orgAss = _employeeOrgAssignmentRepository.GetAll()
             .Where(o => o.StartDate.Date <= today && o.EndDate.Date >= today);
@@ -117,7 +117,13 @@ public class EmployeeTravelReportAppService : GridReportAppServiceBase, IEmploye
             Id = t.Id,
             EmployeeCode = t.Employee.Code,
             EmployeeName = useArabicNames ? t.Employee.FullNameAr : t.Employee.FullNameEn,
-            Applicant = "",
+            // Legacy Table1(): the applicant's full name when the trip is an applicant's, blank otherwise. Such a
+            // row has no employee, so its employee, job and org columns are blank -- as they were in legacy.
+            Applicant = t.Applicant == null
+                ? ""
+                : (useArabicNames
+                    ? (t.Applicant.FirstNameAr ?? "") + " " + (t.Applicant.SecondNameAr ?? "") + " " + (t.Applicant.ThirdNameAr ?? "") + " " + (t.Applicant.LastNameAr ?? "")
+                    : (t.Applicant.FirstNameEn ?? "") + " " + (t.Applicant.SecondNameEn ?? "") + " " + (t.Applicant.ThirdNameEn ?? "") + " " + (t.Applicant.LastNameEn ?? "")),
             TravelCode = t.Code,
             TravelType = t.TravelType == null ? "" : (useArabicNames ? t.TravelType.NameAr : t.TravelType.NameEn),
             StartDate = t.StartDate,
@@ -138,9 +144,10 @@ public class EmployeeTravelReportAppService : GridReportAppServiceBase, IEmploye
                 .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             TotalTravelCost = t.TotalTravelCost,
-            // Legacy lines 622-628/662-663: sum of TravelFeedback.ClaimAmount for this Employee+Travel.
+            // Legacy lines 622-628/662-663: sum of TravelFeedback.ClaimAmount for this Employee+Travel. Matched on
+            // the applicant too, so an applicant's claims count against an applicant's trip.
             ClaimAmount = _travelFeedbackRepository.GetAll()
-                .Where(f => f.EmployeeId == t.EmployeeId && f.TravelId == t.Id)
+                .Where(f => f.EmployeeId == t.EmployeeId && f.ApplicantId == t.ApplicantId && f.TravelId == t.Id)
                 .Sum(f => (double?)f.ClaimAmount) ?? 0
         });
     }

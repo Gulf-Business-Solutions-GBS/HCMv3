@@ -13,6 +13,8 @@ permissions: [Pages.GeneralMasterInfo.ClearanceRequestFields.Create]
 
 بنود قائمة إخلاء الطرف -- «تسليم الحاسوب المحمول»، «تسليم بطاقة الدخول» -- التي تؤكدها الإدارات قبل مغادرة الموظف.
 
+يفتح خيار التفاصيل على أي بند في القائمة صفحة البند نفسه: بياناته في الأعلى مع زر التحرير، وتحتها الإدارات (أدوار سير العمل) المسند إليها، ويمكن إضافتها وتعديلها وحذفها من هناك.
+
 ## ClearanceRequestType {#ClearanceRequestField.ClearanceRequestTypeId}
 <!-- alias: loc:ClearanceRequestType, dom:ClearanceRequestField_ClearanceRequestTypeId -->
 

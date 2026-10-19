@@ -16,7 +16,7 @@ permissions: [Pages.GeneralMasterInfo.ClearanceRequestFieldDetails.Create]
 ## ClearanceRequestField {#ClearanceRequestFieldDetail.ClearanceRequestFieldId}
 <!-- alias: loc:ClearanceRequestField, dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId -->
 
-**ما هو.** بند القائمة الذي يجري إسناده.
+**ما هو.** بند القائمة الذي يجري إسناده. ولا يظهر عند فتح النافذة من صفحة البند نفسه، إذ يُملأ تلقائياً.
 
 **القواعد.** اختياري. يُختار من قائمة بنود براءة الذمة.
 

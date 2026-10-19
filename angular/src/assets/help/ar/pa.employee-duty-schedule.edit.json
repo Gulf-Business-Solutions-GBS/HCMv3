@@ -3,8 +3,10 @@
   "lang": "ar",
   "title": "جداول دوام الموظف — إنشاء / تحرير",
   "entity": "HCMv3.TimeManagement.EmployeeDutySchedule",
-  "overviewHtml": "<p>يخصص الموظف لجدول دوام مناوب خلال فترة. ولا يجوز أن تتداخل جداول الموظف نفسه.</p><p>يُسجَّل للرجوع إليه؛ إذ يأخذ محرك الوقت والرواتب دوام الموظف من فترات الدوام والدوام البديل، ولا يقرآن هذا التخصيص حالياً.</p>",
+  "overviewHtml": "<p>يخصص الموظف لجدول دوام مناوب خلال فترة. ولا يجوز أن تتداخل جداول الموظف نفسه.</p><p>يُسجَّل للرجوع إليه؛ إذ يأخذ محرك الوقت والرواتب دوام الموظف من فترات الدوام والدوام البديل، ولا يقرآن هذا التخصيص حالياً.</p><p>وتُعرض السجلات نفسها لجميع الموظفين من إدارة الوقت ← جدول الدوام، ويمكن البحث فيها برمز الموظف أو اسمه وبرمز الجدول أو اسمه. وعند إضافة سجل من هناك يُطلب اختيار الموظف، أما من سجل الموظف فيكون الموظف محدداً مسبقاً.</p>",
   "aliasIndex": {
+    "loc:Employee": "EmployeeDutySchedule.EmployeeId",
+    "dom:EmployeeDutySchedule_EmployeeId": "EmployeeDutySchedule.EmployeeId",
     "loc:StartDate": "EmployeeDutySchedule.StartDate",
     "dom:EmployeeDutySchedule_StartDate": "EmployeeDutySchedule.StartDate",
     "loc:EndDate": "EmployeeDutySchedule.EndDate",
@@ -13,6 +15,20 @@
     "dom:EmployeeDutySchedule_RosterDutyScheduleId": "EmployeeDutySchedule.RosterDutyScheduleId"
   },
   "fields": [
+    {
+      "id": "EmployeeDutySchedule.EmployeeId",
+      "label": "Employee",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:Employee",
+        "dom:EmployeeDutySchedule_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يُخصَّص له الجدول. ولا يظهر إلا عند إضافة سجل من شاشة جدول الدوام لجميع الموظفين.</p><p><strong>مثال.</strong> 1024 - فاطمة الصباح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeeDutySchedule.StartDate",
       "label": "StartDate",

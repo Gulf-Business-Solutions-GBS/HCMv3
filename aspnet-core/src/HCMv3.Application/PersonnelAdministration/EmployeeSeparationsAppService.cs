@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +17,11 @@ namespace HCMv3.PersonnelAdministration;
 /// <summary>
 /// Application service for <see cref="EmployeeSeparation"/> -- DELIBERATELY MINIMAL "record-keeping only"
 /// port of the legacy XAF EmployeeSeparation business object (Wave B). See the entity class remarks for
-/// the full list of dropped legacy behaviors (OnHold auto-creation, TimeRegister deletion, payroll-retro,
-/// advance-EoS indemnity accrual, ValidatePreviousEntry chain-blocking, interdependent date recompute).
-/// Only required-field and LastDayInService &gt;= SubmissionDate validation is ported.
+/// the full list of dropped legacy behaviors (TimeRegister deletion, payroll-retro, advance-EoS indemnity
+/// accrual, FnF/Rejoin chain-blocking, interdependent date recompute). Required-field and
+/// LastDayInService &gt;= SubmissionDate validation is ported, and so is the on-hold block: saving the
+/// separation's on-hold flags creates/replaces/removes the matching <see cref="EmployeeOnHold"/> row through
+/// <see cref="ISeparationOnHoldService"/>, as legacy <c>SaveOtherInfo</c>/<c>OnDeleting</c> did.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeSeparations)]
 public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSeparationsAppService
@@ -27,12 +30,16 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
 
     private readonly HCMv3.SystemSettings.Services.ISysSettingsAccessor _sysSettingsAccessor;
 
+    private readonly ISeparationOnHoldService _separationOnHoldService;
+
     public EmployeeSeparationsAppService(
         IRepository<EmployeeSeparation> repository,
-        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor)
+        HCMv3.SystemSettings.Services.ISysSettingsAccessor sysSettingsAccessor,
+        ISeparationOnHoldService separationOnHoldService)
     {
         _repository = repository;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _separationOnHoldService = separationOnHoldService;
     }
 
     /// <summary>
@@ -92,7 +99,20 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
                 PlannedLastDayInService = entity.PlannedLastDayInService,
                 SeparationType = entity.SeparationType,
                 SeparationReasonId = entity.SeparationReasonId,
-                RevokeDate = entity.RevokeDate
+                RevokeDate = entity.RevokeDate,
+                OnHoldFromDate = entity.OnHoldFromDate,
+                OnHoldTillDate = entity.OnHoldTillDate,
+                OnHoldAll = entity.OnHoldAll,
+                OnHoldBasicPay = entity.OnHoldBasicPay,
+                OnHoldLeavePay = entity.OnHoldLeavePay,
+                OnHoldIndemnityPay = entity.OnHoldIndemnityPay,
+                OnHoldAirTicketPay = entity.OnHoldAirTicketPay,
+                OnHoldLoanDeduction = entity.OnHoldLoanDeduction,
+                OnHoldAllEarnings = entity.OnHoldAllEarnings,
+                OnHoldAllDeductions = entity.OnHoldAllDeductions,
+                BankTransfer = entity.BankTransfer,
+                RevokeComments = entity.RevokeComments,
+                Comments = entity.Comments
             }
         };
     }
@@ -117,6 +137,11 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
 
         await ApplyNoticePeriodAsync(entity);
         Validate(entity);
+
+        // Legacy order: PerformValidations, then SaveOtherInfo. A new separation has no previous values.
+        await _separationOnHoldService.EnsureNoLaterOnHoldAsync(entity, null, null);
+        await _separationOnHoldService.ApplyAsync(entity, null, null);
+
         await _repository.InsertAsync(entity);
     }
 
@@ -124,17 +149,32 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeSeparationDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+
+        // Legacy prevEmployee/prevOnHoldFromDate (OnLoaded): the values as stored, before this edit.
+        var previousEmployeeId = entity.EmployeeId;
+        var previousOnHoldFromDate = entity.OnHoldFromDate;
+
         MapToEntity(input, entity);
 
         await ApplyNoticePeriodAsync(entity);
         Validate(entity);
+
+        await _separationOnHoldService.EnsureNoLaterOnHoldAsync(entity, previousEmployeeId, previousOnHoldFromDate);
+        await _separationOnHoldService.ApplyAsync(entity, previousEmployeeId, previousOnHoldFromDate);
+
         await _repository.UpdateAsync(entity);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeSeparations_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _repository.DeleteAsync(input.Id);
+        var entity = await _repository.GetAsync(input.Id);
+
+        // Legacy OnDeleting: ValidatePreviousEntry, then delete the hold this separation created.
+        await _separationOnHoldService.EnsureNoLaterOnHoldAsync(null, entity.EmployeeId, entity.OnHoldFromDate);
+        await _separationOnHoldService.RemoveAsync(entity.EmployeeId, entity.OnHoldFromDate);
+
+        await _repository.DeleteAsync(entity);
     }
 
     /// <summary>
@@ -161,6 +201,19 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
         entity.SeparationType = input.SeparationType;
         entity.SeparationReasonId = input.SeparationReasonId;
         entity.RevokeDate = input.RevokeDate?.Date;
+        entity.OnHoldFromDate = input.OnHoldFromDate?.Date;
+        entity.OnHoldTillDate = input.OnHoldTillDate?.Date;
+        entity.OnHoldAll = input.OnHoldAll;
+        entity.OnHoldBasicPay = input.OnHoldBasicPay;
+        entity.OnHoldLeavePay = input.OnHoldLeavePay;
+        entity.OnHoldIndemnityPay = input.OnHoldIndemnityPay;
+        entity.OnHoldAirTicketPay = input.OnHoldAirTicketPay;
+        entity.OnHoldLoanDeduction = input.OnHoldLoanDeduction;
+        entity.OnHoldAllEarnings = input.OnHoldAllEarnings;
+        entity.OnHoldAllDeductions = input.OnHoldAllDeductions;
+        entity.BankTransfer = input.BankTransfer;
+        entity.RevokeComments = input.RevokeComments;
+        entity.Comments = input.Comments;
         return entity;
     }
 
@@ -179,7 +232,11 @@ public class EmployeeSeparationsAppService : HCMv3AppServiceBase, IEmployeeSepar
             SeparationType = entity.SeparationType,
             SeparationReasonId = entity.SeparationReasonId,
             SeparationReasonName = entity.SeparationReason?.NameEn,
-            RevokeDate = entity.RevokeDate
+            RevokeDate = entity.RevokeDate,
+            OnHoldFromDate = entity.OnHoldFromDate,
+            OnHoldTillDate = entity.OnHoldTillDate,
+            RevokeComments = entity.RevokeComments,
+            Comments = entity.Comments
         };
     }
 }

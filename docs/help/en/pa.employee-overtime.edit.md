@@ -15,6 +15,8 @@ Overtime for the employee on one date: hours requested, hours the time engine me
 
 Payroll pays the approved hours multiplied by the overtime type's rate. The time engine creates these records itself when it finds overtime, and fills in the approved hours from the measured hours if none were approved.
 
+Once the record is saved, the form also shows the **Expected Overtime Amount** (read-only, never stored; also a column in the overtime list and on the overtime and monthly payroll transaction reports). It is the approved hours times the overtime type's rate, times an hourly rate. The hourly rate is the fixed rate of the overtime type detail covering the date; otherwise, and when no detail covers the date, it is the employee's basic pay divided by the days of the month -- fixed days, calendar days or working days, as the overtime type's wage type is billed -- and then by the payroll settings' overtime hours basis (the default working hours, or the employee's duty hours that day). With no wage type on the overtime type it is 0. It is an estimate: payroll works out its own rate from the payslip, so the amount paid can differ.
+
 ## EffectiveDate {#EmployeeOvertime.EffectiveDate}
 <!-- alias: loc:EffectiveDate, dom:EmployeeOvertime_EffectiveDate -->
 

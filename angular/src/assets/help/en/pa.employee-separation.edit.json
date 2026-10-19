@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Separations — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeSeparation",
-  "overviewHtml": "<p>The employee's exit: when they resigned or were terminated, and their last day in service. A separation stays in effect until it is revoked.</p><p>Payroll stops calculating most pay after the end of the month of the last day in service, and the end-of-service payroll run needs an unrevoked separation. Saving a separation does not create a pay hold or remove later time records; those are separate steps.</p>",
+  "overviewHtml": "<p>The employee's exit: when they resigned or were terminated, and their last day in service. A separation stays in effect until it is revoked.</p><p>Payroll stops calculating most pay after the end of the month of the last day in service, and the end-of-service payroll run needs an unrevoked separation. Saving a separation does not remove later time records; that is a separate step.</p><p><strong>On Hold Information</strong> can hold the employee's pay at the same time. Saving the separation with an <strong>On Hold From Date</strong> and at least one hold ticked creates the employee's on-hold record, for whole months: the from date is moved to the first of its month and the till date to the last day of its month. Saving again replaces the hold this separation created earlier, and deleting the separation removes it. Payroll reads that on-hold record, not the ticks on this form, so the hold also shows, and can be checked, under the employee's On Holds.</p><p>Once a later on-hold has been entered for the employee — one starting after this separation's from date — the separation can no longer be added, changed or deleted; the message names that hold's dates.</p>",
   "aliasIndex": {
     "loc:SubmissionDate": "EmployeeSeparation.SubmissionDate",
     "dom:EmployeeSeparation_SubmissionDate": "EmployeeSeparation.SubmissionDate",
@@ -18,7 +18,33 @@
     "loc:SeparationReason": "EmployeeSeparation.SeparationReasonId",
     "dom:EmployeeSeparation_SeparationReasonId": "EmployeeSeparation.SeparationReasonId",
     "loc:RevokeDate": "EmployeeSeparation.RevokeDate",
-    "dom:EmployeeSeparation_RevokeDate": "EmployeeSeparation.RevokeDate"
+    "dom:EmployeeSeparation_RevokeDate": "EmployeeSeparation.RevokeDate",
+    "loc:RevokeComments": "EmployeeSeparation.RevokeComments",
+    "dom:EmployeeSeparation_RevokeComments": "EmployeeSeparation.RevokeComments",
+    "loc:OnHoldFromDate": "EmployeeSeparation.OnHoldFromDate",
+    "dom:EmployeeSeparation_OnHoldFromDate": "EmployeeSeparation.OnHoldFromDate",
+    "loc:OnHoldTillDate": "EmployeeSeparation.OnHoldTillDate",
+    "dom:EmployeeSeparation_OnHoldTillDate": "EmployeeSeparation.OnHoldTillDate",
+    "loc:BankTransfer": "EmployeeSeparation.BankTransfer",
+    "dom:EmployeeSeparation_BankTransfer": "EmployeeSeparation.BankTransfer",
+    "loc:OnHoldAll": "EmployeeSeparation.OnHoldAll",
+    "dom:EmployeeSeparation_onHoldAll": "EmployeeSeparation.OnHoldAll",
+    "loc:OnHoldBasicPay": "EmployeeSeparation.OnHoldBasicPay",
+    "dom:EmployeeSeparation_onHoldBasicPay": "EmployeeSeparation.OnHoldBasicPay",
+    "loc:OnHoldLeavePay": "EmployeeSeparation.OnHoldLeavePay",
+    "dom:EmployeeSeparation_onHoldLeavePay": "EmployeeSeparation.OnHoldLeavePay",
+    "loc:OnHoldIndemnityPay": "EmployeeSeparation.OnHoldIndemnityPay",
+    "dom:EmployeeSeparation_onHoldIndemnityPay": "EmployeeSeparation.OnHoldIndemnityPay",
+    "loc:OnHoldAirTicketPay": "EmployeeSeparation.OnHoldAirTicketPay",
+    "dom:EmployeeSeparation_onHoldAirTicketPay": "EmployeeSeparation.OnHoldAirTicketPay",
+    "loc:OnHoldLoanDeduction": "EmployeeSeparation.OnHoldLoanDeduction",
+    "dom:EmployeeSeparation_onHoldLoanDeduction": "EmployeeSeparation.OnHoldLoanDeduction",
+    "loc:OnHoldAllEarnings": "EmployeeSeparation.OnHoldAllEarnings",
+    "dom:EmployeeSeparation_onHoldAllEarnings": "EmployeeSeparation.OnHoldAllEarnings",
+    "loc:OnHoldAllDeductions": "EmployeeSeparation.OnHoldAllDeductions",
+    "dom:EmployeeSeparation_onHoldAllDeductions": "EmployeeSeparation.OnHoldAllDeductions",
+    "loc:Comments": "EmployeeSeparation.Comments",
+    "dom:EmployeeSeparation_Comments": "EmployeeSeparation.Comments"
   },
   "fields": [
     {
@@ -116,6 +142,188 @@
       "rules": "Optional. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The date the separation was withdrawn, if it was.</p><p><strong>Example.</strong> 10 Aug 2026</p><p><strong>Why it matters.</strong> Once set, payroll and the indemnity calculation ignore this separation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.RevokeComments",
+      "label": "RevokeComments",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:RevokeComments",
+        "dom:EmployeeSeparation_RevokeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the separation was revoked, in a sentence or two.</p><p><strong>Example.</strong> Employee withdrew the resignation after a counter-offer.</p><p><strong>Why it matters.</strong> Recorded with the separation only; no report shows it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldFromDate",
+      "label": "OnHoldFromDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldFromDate",
+        "dom:EmployeeSeparation_OnHoldFromDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the pay hold starts. Any day in the month will do: on save it becomes the first of that month.</p><p><strong>Example.</strong> 15 Aug 2026, saved as 1 Aug 2026</p><p><strong>Why it matters.</strong> Nothing is held unless at least one hold below is ticked as well. The saved date also identifies the hold this separation created, which is how a later save replaces it and a delete removes it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldTillDate",
+      "label": "OnHoldTillDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldTillDate",
+        "dom:EmployeeSeparation_OnHoldTillDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The month the pay hold ends. On save it becomes the last day of that month.</p><p><strong>Example.</strong> 10 Sep 2026, saved as 30 Sep 2026</p><p><strong>Why it matters.</strong> Needed whenever a hold is ticked: without it the hold's end falls before its start and the save is refused. The period cannot overlap another hold of the same employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.BankTransfer",
+      "label": "BankTransfer",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:BankTransfer",
+        "dom:EmployeeSeparation_BankTransfer"
+      ],
+      "rules": "Required. One of: N/A, Hold, Unhold.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee's salary transfer is held for the hold period.</p><p><strong>Example.</strong> Hold</p><p><strong>Why it matters.</strong> Copied to the on-hold record, where the bank file reads it. It does not on its own create a hold: one of the ticks below is still needed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAll",
+      "label": "OnHoldAll",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAll",
+        "dom:EmployeeSeparation_onHoldAll"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds everything for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record's <strong>On Hold</strong>, so payroll treats every individual hold as ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldBasicPay",
+      "label": "OnHoldBasicPay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldBasicPay",
+        "dom:EmployeeSeparation_onHoldBasicPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds basic pay for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record; payroll pays no basic pay while it applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldLeavePay",
+      "label": "OnHoldLeavePay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldLeavePay",
+        "dom:EmployeeSeparation_onHoldLeavePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds leave pay for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldIndemnityPay",
+      "label": "OnHoldIndemnityPay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldIndemnityPay",
+        "dom:EmployeeSeparation_onHoldIndemnityPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds indemnity pay for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record — the usual choice while a leaver's clearance is still open.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAirTicketPay",
+      "label": "OnHoldAirTicketPay",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAirTicketPay",
+        "dom:EmployeeSeparation_onHoldAirTicketPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds air ticket pay for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record, where it is recorded only; payroll does not currently check it when paying tickets.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldLoanDeduction",
+      "label": "OnHoldLoanDeduction",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldLoanDeduction",
+        "dom:EmployeeSeparation_onHoldLoanDeduction"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds loan instalment deductions for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record; payroll does not recover loans while it applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAllEarnings",
+      "label": "OnHoldAllEarnings",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAllEarnings",
+        "dom:EmployeeSeparation_onHoldAllEarnings"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds all earnings for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.OnHoldAllDeductions",
+      "label": "OnHoldAllDeductions",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:OnHoldAllDeductions",
+        "dom:EmployeeSeparation_onHoldAllDeductions"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Holds all deductions for the hold period.</p><p><strong>Why it matters.</strong> Copied to the on-hold record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.Comments",
+      "label": "Comments",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeSeparation_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
       "adminHtml": "",
       "stub": false
     }

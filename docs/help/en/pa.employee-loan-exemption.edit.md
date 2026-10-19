@@ -15,6 +15,8 @@ Skips one month's instalment on one of the employee's loans. Payroll does not re
 
 The exemption date must fall within the loan's recovery period, and a loan can have only one exemption per month. Exemptions can be requested through self-service and routed for approval.
 
+Opened from a loan's Recoveries & Exemptions dialog, the loan is already filled in and cannot be changed.
+
 ## EmployeeLoanId {#EmployeeLoanExemption.EmployeeLoanId}
 <!-- alias: loc:EmployeeLoanId, dom:EmployeeLoanExemption_EmployeeLoanId -->
 

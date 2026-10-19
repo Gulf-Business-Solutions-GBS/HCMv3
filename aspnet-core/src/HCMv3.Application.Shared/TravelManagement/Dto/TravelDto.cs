@@ -11,11 +11,19 @@ public class TravelDto : EntityDto<int>
 {
     public string Code { get; set; }
 
-    public int EmployeeId { get; set; }
+    /// <summary>Null for an applicant's trip.</summary>
+    public int? EmployeeId { get; set; }
 
     public string EmployeeCode { get; set; }
 
     public string EmployeeFullNameEn { get; set; }
+
+    /// <summary>Set instead of the employee fields when the trip belongs to a job applicant.</summary>
+    public int? ApplicantId { get; set; }
+
+    public string ApplicantCode { get; set; }
+
+    public string ApplicantFullNameEn { get; set; }
 
     public int TravelTypeId { get; set; }
 

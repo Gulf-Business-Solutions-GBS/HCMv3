@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Absence Quota Forfeitures — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit",
-  "overviewHtml": "<p>A manual record of leave days the employee has lost from a leave type.</p><p>Saving it does not update the employee's leave quota record, so the self-service balance does not change. Leave forfeiture calculations maintain their own forfeit records.</p>",
+  "overviewHtml": "<p>A manual record of leave days the employee has lost from a leave type.</p><p>Saving it adds the days to the Forfeited figure of the employee's annual leave quota covering the effective date, so the leave balance goes down; changing it first gives back the days saved before, and deleting it gives them all back. Only annual leave types move the quota, and always the quota of the annual leave type with code 1. Nothing moves for a date before the earliest evaluation date in time settings. The save is refused when the days are more than the balance, or when the employee has no annual leave quota for that date.</p><p><strong>Do not update quota balance</strong> — tick it to save the record without touching the quota. It is not stored: it is always unticked when the form opens, and a delete always gives the days back. Leave forfeiture calculations maintain their own forfeit records.</p>",
   "aliasIndex": {
     "loc:EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",
     "dom:EmployeeAbsQuotaForfeit_EffectiveDate": "EmployeeAbsQuotaForfeit.EffectiveDate",

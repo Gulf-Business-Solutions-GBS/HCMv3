@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-recurring-payment.edit",
+  "lang": "en",
+  "title": "Employee Recurring Payments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRecurringPayment",
+  "overviewHtml": "<p>A fixed amount paid to, or deducted from, the employee under one wage type for a period — a car allowance, a phone allowance or a fixed monthly deduction. Opened from the Recurring Payments section of the employee record.</p><p>Payroll reads Monthly and Yearly payments. A Monthly payment adds its full amount for every month its period touches, even a month it covers only in part. A Yearly payment adds its amount once a year, in the month of its start date. Daily, Hourly and End Of Service payments are saved but not paid at present.</p><p>The amount must be more than zero, and two payments of the same wage type for the same employee cannot overlap. With Enable Effective Date In Recurring Payment switched on in payroll settings, a new open-ended payment (end date 31/12/9999) closes the current open-ended one the day before it starts, instead of being refused as an overlap.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "EmployeeRecurringPayment.WageTypeId",
+    "dom:EmployeeRecurringPayment_WageTypeId": "EmployeeRecurringPayment.WageTypeId",
+    "loc:PayInterval": "EmployeeRecurringPayment.PayInterval",
+    "dom:EmployeeRecurringPayment_PayInterval": "EmployeeRecurringPayment.PayInterval",
+    "loc:StartDate": "EmployeeRecurringPayment.StartDate",
+    "dom:EmployeeRecurringPayment_StartDate": "EmployeeRecurringPayment.StartDate",
+    "loc:EndDate": "EmployeeRecurringPayment.EndDate",
+    "dom:EmployeeRecurringPayment_EndDate": "EmployeeRecurringPayment.EndDate",
+    "loc:Amount": "EmployeeRecurringPayment.Amount",
+    "dom:EmployeeRecurringPayment_Amount": "EmployeeRecurringPayment.Amount",
+    "loc:Comments": "EmployeeRecurringPayment.Comments",
+    "dom:EmployeeRecurringPayment_Comments": "EmployeeRecurringPayment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRecurringPayment.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeRecurringPayments",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeRecurringPayment_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The wage type the amount is paid or deducted under.</p><p><strong>Example.</strong> Car Allowance</p><p><strong>Why it matters.</strong> Payroll adds the amount to that wage type's line on the payslip, so the wage type's billing type decides whether it is an earning or a deduction.</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wage Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRecurringPayment.PayInterval",
+      "label": "PayInterval",
+      "section": "EmployeeRecurringPayments",
+      "aliases": [
+        "loc:PayInterval",
+        "dom:EmployeeRecurringPayment_PayInterval"
+      ],
+      "rules": "Required. One of: Monthly, Daily, Hourly, End Of Service, Yearly.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How often the amount is paid.</p><p><strong>Example.</strong> Monthly</p><p><strong>Why it matters.</strong> Monthly pays every month of the period; Yearly pays once a year, in the start date's month. Payroll does not pay Daily, Hourly or End Of Service payments at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRecurringPayment.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeRecurringPayments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeRecurringPayment_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRecurringPayment.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeRecurringPayments",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeRecurringPayment_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRecurringPayment.Amount",
+      "label": "Amount",
+      "section": "EmployeeRecurringPayments",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeRecurringPayment_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount paid each time, in the payroll currency.</p><p><strong>Example.</strong> 75.000</p><p><strong>Why it matters.</strong> Paid in full for each month that qualifies; it is not reduced for a part month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRecurringPayment.Comments",
+      "label": "Comments",
+      "section": "EmployeeRecurringPayments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeRecurringPayment_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

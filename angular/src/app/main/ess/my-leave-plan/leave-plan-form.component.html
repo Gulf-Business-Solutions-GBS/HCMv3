@@ -1,0 +1,85 @@
+<!-- Request Detail on the left, Leave Info on the right, as on the leave form. Read-only means every input is
+     disabled where it stands, never a second layout. -->
+<div class="row g-5">
+    <div class="col-12 col-md-8 col-xl-9">
+        <div class="card card-custom gutter-b mb-5">
+            <div class="card-body">
+                <h5 class="card-title" data-help-loc="RequestDetail">{{ 'RequestDetail' | localize }}</h5>
+
+                <div class="row g-4">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class="form-label" data-help-loc="Employee">{{ 'Employee' | localize }}</label>
+                        <input type="text" class="form-control" [value]="value().employeeDisplay" readonly disabled />
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class="form-label" data-help-loc="StartDate">{{ 'StartDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                        @if (readOnly()) {
+                            <input type="text" class="form-control" [value]="asDayMonthYear(value().startDate)" readonly disabled />
+                        } @else {
+                            <input type="date" class="form-control" [(ngModel)]="value().startDate" (ngModelChange)="onDateChange()" />
+                        }
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class="form-label" data-help-loc="EndDate">{{ 'EndDate' | localize }}{{ readOnly() ? '' : ' *' }}</label>
+                        @if (readOnly()) {
+                            <input type="text" class="form-control" [value]="asDayMonthYear(value().endDate)" readonly disabled />
+                        } @else {
+                            <input type="date" class="form-control" [(ngModel)]="value().endDate" (ngModelChange)="onDateChange()" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leave Info: re-asked of the server whenever a date changes. -->
+    <div class="col-12 col-md-4 col-xl-3">
+        <div class="card card-custom gutter-b mb-5">
+            <div class="card-body">
+                <h5 class="card-title" data-help-loc="LeaveInfo">{{ 'LeaveInfo' | localize }}</h5>
+
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted" data-help-loc="PlannedDays">{{ 'PlannedDays' | localize }}</span>
+                    <span class="fw-bold">{{ info().plannedDays || '–' }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2" [class.border-bottom]="!readOnly()">
+                    <span class="text-muted" data-help-loc="ProjectedLeaveBalance">{{ 'ProjectedLeaveBalance' | localize }}</span>
+                    <span class="fw-bold" [class.text-danger]="info().projected.startsWith('-')">{{ info().projected || '–' }}</span>
+                </div>
+                @if (!readOnly()) {
+                    <div class="d-flex justify-content-between py-2">
+                        <span class="text-muted" data-help-loc="LeaveDays">{{ 'LeaveDays' | localize }}</span>
+                        <span class="fw-bold">{{ info().leaveDays || '–' }}</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Request Comment is its own card, as on the exit permit. Shown only while it is being written; once sent, the
+     same words open the conversation in the detail view. -->
+@if (!readOnly()) {
+    <div class="card card-custom gutter-b mb-5">
+        <div class="card-body">
+            <h5 class="card-title" data-help-loc="RequestComment">{{ 'RequestComment' | localize }}</h5>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <textarea class="form-control" rows="3" maxlength="1000" [(ngModel)]="value().comments"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <!-- The standard three, in the standard order. -->
+                <button class="btn btn-light-primary me-2" [disabled]="saving()" (click)="saved.emit()" data-help-loc="Save">
+                    {{ 'Save' | localize }}
+                </button>
+                <button class="btn btn-primary me-2" [disabled]="saving()" (click)="submitted.emit()" data-help-loc="Submit">
+                    {{ 'Submit' | localize }}
+                </button>
+                <button class="btn btn-light" (click)="cancelled.emit()">{{ 'Cancel' | localize }}</button>
+            </div>
+        </div>
+    </div>
+}

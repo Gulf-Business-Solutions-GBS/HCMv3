@@ -9,8 +9,8 @@ namespace HCMv3.GeneralMasterInfo;
 /// DocumentType master (ported from legacy XAF <c>HCM10.Module.BusinessObjects.GeneralMasterInfo.DocumentType</c>).
 /// Extends the Code/NameEn/NameAr shape with a <see cref="NotificationConfig"/> FK and notification
 /// scheduling fields, so it can't derive from <see cref="SimpleLookupEntity"/> (see <see cref="City"/> for the
-/// same bespoke pattern). The legacy aggregated <c>PrintForm</c> collection is ported separately as
-/// <see cref="DocumentPrintForm"/>.
+/// same bespoke pattern). The legacy aggregated <c>PrintForm</c> collection is not kept: letters print
+/// through the document type's own Print Report, so the Document Print Forms screen was retired (item 240).
 /// </summary>
 public class DocumentType : FullAuditedEntity, IMustHaveTenant
 {

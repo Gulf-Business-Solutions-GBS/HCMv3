@@ -61,6 +61,7 @@ export class TravelsComponent extends AppComponentBase implements OnInit {
             .getAll(
                 new GetAllTravelsInput({
                     employeeId: undefined,
+                    applicantId: undefined,
                     filter: this.filterText(),
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),

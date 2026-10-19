@@ -3,16 +3,20 @@
   "lang": "ar",
   "title": "السفريات — إنشاء / تحرير",
   "entity": "HCMv3.TravelManagement.Travel",
-  "overviewHtml": "<p>رحلة عمل لموظف، مع مراحلها وتكاليفها. تذهب الرحلة المُدخلة هنا إلى الموافقة تماماً كالرحلة التي يطلبها الموظف في الخدمة الذاتية، وتخضع للقواعد نفسها: يلزم مرحلة واحدة على الأقل، ولا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء، ولا يجوز أن تتداخل التواريخ مع رحلة أخرى للموظف موافق عليها أو بانتظار الموافقة. ويرى المعتمد الوجهة والتواريخ والتكلفة الإجمالية. اترك الرمز فارغاً ليُعطى الرقم التالي. ولا تُدفع الرحلات عبر الرواتب.</p>",
+  "overviewHtml": "<p>رحلة عمل، مع مراحلها وتكاليفها. اترك الرمز فارغاً ليُعطى الرقم التالي. ولا تُدفع الرحلات عبر الرواتب.</p><p>يحدد خيار <strong>موظف أو متقدم لوظيفة</strong> في أعلى النموذج المسافر: أحد موظفيك، أو متقدم لوظيفة تستقدمه الشركة، لإجراء مقابلة مثلاً. والرحلة تخص أحدهما فقط، وعند التبديل يُمسح الآخر.</p><p>تذهب رحلة الموظف إلى الموافقة تماماً كالرحلة التي يطلبها الموظف في الخدمة الذاتية، وتخضع للقواعد نفسها: يلزم مرحلة واحدة على الأقل، ولا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء، ولا يجوز أن تتداخل التواريخ مع رحلة أخرى للموظف موافق عليها أو بانتظار الموافقة. ويرى المعتمد الوجهة والتواريخ والتكلفة الإجمالية.</p><p>أما رحلة المتقدم لوظيفة فتُحفظ مباشرة دون موافقة، لأن مسار الموافقة يُحدَّد بالموظف الذي يخصه الطلب — مديره ووحدته التنظيمية — والمتقدم لا مدير له ولا وحدة. ولا تنطبق عليها إلا قاعدة تاريخ الانتهاء. والرحلة التي أُرسلت للاعتماد لا يمكن نقلها لاحقاً من الموظف إلى متقدم لوظيفة.</p>",
   "aliasIndex": {
     "loc:Employee": "Travel.EmployeeId",
     "dom:Travel_EmployeeId": "Travel.EmployeeId",
+    "loc:Applicant": "Travel.ApplicantId",
+    "dom:Travel_ApplicantId": "Travel.ApplicantId",
     "loc:TravelType": "Travel.TravelTypeId",
     "dom:Travel_TravelTypeId": "Travel.TravelTypeId",
     "loc:StartDate": "Travel.StartDate",
     "dom:Travel_StartDate": "Travel.StartDate",
     "loc:EndDate": "Travel.EndDate",
     "dom:Travel_EndDate": "Travel.EndDate",
+    "loc:TotalTravelCost": "Travel.TotalTravelCost",
+    "dom:Travel_TotalTravelCost": "Travel.TotalTravelCost",
     "loc:Comments": "Travel.Comments",
     "dom:Travel_Comments": "Travel.Comments"
   },
@@ -28,6 +32,20 @@
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الموظف المسافر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.ApplicantId",
+      "label": "Applicant",
+      "section": "Travels",
+      "aliases": [
+        "loc:Applicant",
+        "dom:Travel_ApplicantId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المتقدمون.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المتقدم لوظيفة المسافر. يظهر بدلاً من حقل الموظف عند اختيار <strong>المتقدم</strong> في الأعلى.</p><p><strong>مثال.</strong> APP-0042 - سارة أحمد</p><p><strong>لماذا يهم.</strong> تضم القائمة جميع المتقدمين المسجلين في التوظيف، مرتبين حسب الرمز. وتُسجَّل الرحلة فوراً دون موافقة، ويعرضها تقرير السفر وشاشة المطالبات باسم المتقدم.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -70,6 +88,20 @@
       "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Travel.TotalTravelCost",
+      "label": "TotalTravelCost",
+      "section": "Travels",
+      "aliases": [
+        "loc:TotalTravelCost",
+        "dom:Travel_TotalTravelCost"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تكلفة الرحلة كاملة: مجموع إجماليات مراحلها، مقرَّباً إلى عدد الخانات العشرية لعملة رواتب الموظف. ويظهر بعد حفظ الرحلة، ولا يمكن كتابته.</p><p><strong>مثال.</strong> 465.250</p><p><strong>لماذا يهم.</strong> يُحدَّث كلما أُضيفت المراحل وتكاليفها أو عُدِّلت أو حُذفت، حتى في الرحلات التي لا تزال بانتظار الموافقة. وإجمالي كل مرحلة هو مجموع بنود تكاليفها، تُجمع كما هي أياً كانت عملة كل بند. ويعرضه تقرير السفر.</p>",
       "adminHtml": "",
       "stub": false
     },

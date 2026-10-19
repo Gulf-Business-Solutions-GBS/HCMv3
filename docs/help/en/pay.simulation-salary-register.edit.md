@@ -13,6 +13,8 @@ permissions: [Pages.PayrollManagement.SimulationSalaryRegisters.Create]
 
 A payslip from a simulation -- a trial run that shows what payroll would pay without paying it. Simulation payslips are kept apart from real ones and are never locked.
 
+Details on a payslip in the list opens its own page: the employee, periods, run type and result type at the top, with Edit, and below them its wagetype lines, which can be added, changed and removed there.
+
 ## EmployeeId {#SimulationSalaryRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:SimulationSalaryRegister_EmployeeId -->
 

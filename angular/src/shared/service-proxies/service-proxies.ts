@@ -25060,234 +25060,6 @@ export class DocumentPlacesServiceProxy {
 }
 
 @Injectable()
-export class DocumentPrintFormsServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    getAll(body?: GetAllDocumentPrintFormsInput | undefined): Observable<PagedResultDtoOfDocumentPrintFormDto> {
-        let url_ = this.baseUrl + "/api/services/app/DocumentPrintForms/GetAll";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<PagedResultDtoOfDocumentPrintFormDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<PagedResultDtoOfDocumentPrintFormDto>;
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfDocumentPrintFormDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfDocumentPrintFormDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return OK
-     */
-    getDocumentPrintFormForEdit(id?: number | undefined): Observable<GetDocumentPrintFormForEditOutput> {
-        let url_ = this.baseUrl + "/api/services/app/DocumentPrintForms/GetDocumentPrintFormForEdit?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetDocumentPrintFormForEdit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetDocumentPrintFormForEdit(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetDocumentPrintFormForEditOutput>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetDocumentPrintFormForEditOutput>;
-        }));
-    }
-
-    protected processGetDocumentPrintFormForEdit(response: HttpResponseBase): Observable<GetDocumentPrintFormForEditOutput> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetDocumentPrintFormForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    createOrEdit(body?: CreateOrEditDocumentPrintFormDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/DocumentPrintForms/CreateOrEdit";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOrEdit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateOrEdit(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return OK
-     */
-    delete(id?: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/DocumentPrintForms/Delete?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDelete(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDelete(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processDelete(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
 export class DocumentTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -84828,6 +84600,194 @@ export class LeaveDashboardServiceProxy {
 }
 
 @Injectable()
+export class LeavePlannerServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLeavePlanner(body?: GetLeavePlannerInput | undefined): Observable<LeavePlannerDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeavePlanner/GetLeavePlanner";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeavePlanner(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeavePlanner(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeavePlannerDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeavePlannerDto>;
+        }));
+    }
+
+    protected processGetLeavePlanner(response: HttpResponseBase): Observable<LeavePlannerDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeavePlannerDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LeavePlansServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllLeavePlansInput | undefined): Observable<PagedResultDtoOfLeavePlanDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeavePlans/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLeavePlanDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLeavePlanDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfLeavePlanDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLeavePlanDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/LeavePlans/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class LeaveProvisionReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -95070,6 +95030,462 @@ export class MyLeaveServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyLeavePlanServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyLeavePlans(body?: GetMyRequestsInput | undefined): Observable<PagedResultDtoOfMyLeavePlanDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/GetMyLeavePlans";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeavePlans(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeavePlans(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyLeavePlanDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyLeavePlanDto>;
+        }));
+    }
+
+    protected processGetMyLeavePlans(response: HttpResponseBase): Observable<PagedResultDtoOfMyLeavePlanDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyLeavePlanDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    previewMyLeavePlan(body?: PreviewLeavePlanInput | undefined): Observable<LeavePlanPreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/PreviewMyLeavePlan";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreviewMyLeavePlan(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreviewMyLeavePlan(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeavePlanPreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeavePlanPreviewDto>;
+        }));
+    }
+
+    protected processPreviewMyLeavePlan(response: HttpResponseBase): Observable<LeavePlanPreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeavePlanPreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestLeavePlan(body?: RequestLeavePlanInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/RequestLeavePlan";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestLeavePlan(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestLeavePlan(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processRequestLeavePlan(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveMyLeavePlanDraft(body?: SaveLeavePlanDraftInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/SaveMyLeavePlanDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveMyLeavePlanDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveMyLeavePlanDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSaveMyLeavePlanDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyLeavePlanDraftForEdit(id?: number | undefined): Observable<MyLeavePlanDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/GetMyLeavePlanDraftForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeavePlanDraftForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeavePlanDraftForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyLeavePlanDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyLeavePlanDto>;
+        }));
+    }
+
+    protected processGetMyLeavePlanDraftForEdit(response: HttpResponseBase): Observable<MyLeavePlanDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyLeavePlanDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    submitMyLeavePlanDraft(body?: EntityDto | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/SubmitMyLeavePlanDraft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitMyLeavePlanDraft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitMyLeavePlanDraft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processSubmitMyLeavePlanDraft(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelMyLeavePlan(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/CancelMyLeavePlan";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelMyLeavePlan(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelMyLeavePlan(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelMyLeavePlan(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyTeamLeavePlanner(body?: GetLeavePlannerInput | undefined): Observable<LeavePlannerDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeavePlan/GetMyTeamLeavePlanner";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyTeamLeavePlanner(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyTeamLeavePlanner(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeavePlannerDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeavePlannerDto>;
+        }));
+    }
+
+    protected processGetMyTeamLeavePlanner(response: HttpResponseBase): Observable<LeavePlannerDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeavePlannerDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -105444,6 +105860,522 @@ export class OrgUnitWageAccGroupsServiceProxy {
      */
     delete(id?: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/OrgUnitWageAccGroups/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class OvertimeBatchesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllOvertimeBatchesInput | undefined): Observable<PagedResultDtoOfOvertimeBatchListDto> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfOvertimeBatchListDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfOvertimeBatchListDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfOvertimeBatchListDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfOvertimeBatchListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getOvertimeBatchForEdit(id?: number | undefined): Observable<GetOvertimeBatchForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/GetOvertimeBatchForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOvertimeBatchForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOvertimeBatchForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetOvertimeBatchForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetOvertimeBatchForEditOutput>;
+        }));
+    }
+
+    protected processGetOvertimeBatchForEdit(response: HttpResponseBase): Observable<GetOvertimeBatchForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetOvertimeBatchForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getOrganizationUnits(): Observable<OvertimeBatchOrganizationUnitDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/GetOrganizationUnits";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOrganizationUnits(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOrganizationUnits(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OvertimeBatchOrganizationUnitDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OvertimeBatchOrganizationUnitDto[]>;
+        }));
+    }
+
+    protected processGetOrganizationUnits(response: HttpResponseBase): Observable<OvertimeBatchOrganizationUnitDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(OvertimeBatchOrganizationUnitDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getOvertimeTypes(): Observable<OvertimeBatchOvertimeTypeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/GetOvertimeTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOvertimeTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOvertimeTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OvertimeBatchOvertimeTypeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OvertimeBatchOvertimeTypeDto[]>;
+        }));
+    }
+
+    protected processGetOvertimeTypes(response: HttpResponseBase): Observable<OvertimeBatchOvertimeTypeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(OvertimeBatchOvertimeTypeDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getOvertimeBatchCandidates(body?: GetOvertimeBatchCandidatesInput | undefined): Observable<OvertimeBatchLineDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/GetOvertimeBatchCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOvertimeBatchCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOvertimeBatchCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OvertimeBatchLineDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OvertimeBatchLineDto[]>;
+        }));
+    }
+
+    protected processGetOvertimeBatchCandidates(response: HttpResponseBase): Observable<OvertimeBatchLineDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(OvertimeBatchLineDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOvertimeBatch(body?: CreateOrEditOvertimeBatchDto | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/CreateOvertimeBatch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOvertimeBatch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOvertimeBatch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreateOvertimeBatch(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    updateOvertimeBatch(body?: CreateOrEditOvertimeBatchDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/UpdateOvertimeBatch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateOvertimeBatch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateOvertimeBatch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateOvertimeBatch(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    resubmitOvertimeBatch(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/ResubmitOvertimeBatch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResubmitOvertimeBatch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResubmitOvertimeBatch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processResubmitOvertimeBatch(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/OvertimeBatches/Delete?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -156555,6 +157487,57 @@ export class TravelsServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getApplicantsForLookup(): Observable<ListResultDtoOfTravelApplicantLookupDto> {
+        let url_ = this.baseUrl + "/api/services/app/Travels/GetApplicantsForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApplicantsForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApplicantsForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfTravelApplicantLookupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfTravelApplicantLookupDto>;
+        }));
+    }
+
+    protected processGetApplicantsForLookup(response: HttpResponseBase): Observable<ListResultDtoOfTravelApplicantLookupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfTravelApplicantLookupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -158227,6 +159210,181 @@ export class UserServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class UserCredentialResetServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getUsers(body?: GetCredentialResetUsersInput | undefined): Observable<PagedResultDtoOfCredentialResetUserDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserCredentialReset/GetUsers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUsers(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfCredentialResetUserDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfCredentialResetUserDto>;
+        }));
+    }
+
+    protected processGetUsers(response: HttpResponseBase): Observable<PagedResultDtoOfCredentialResetUserDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfCredentialResetUserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getRoles(): Observable<ListResultDtoOfCredentialResetRoleDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserCredentialReset/GetRoles";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRoles(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRoles(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfCredentialResetRoleDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfCredentialResetRoleDto>;
+        }));
+    }
+
+    protected processGetRoles(response: HttpResponseBase): Observable<ListResultDtoOfCredentialResetRoleDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfCredentialResetRoleDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    resetCredentials(body?: ResetUserCredentialsInput | undefined): Observable<ResetUserCredentialsResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserCredentialReset/ResetCredentials";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResetCredentials(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResetCredentials(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResetUserCredentialsResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResetUserCredentialsResultDto>;
+        }));
+    }
+
+    protected processResetCredentials(response: HttpResponseBase): Observable<ResetUserCredentialsResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ResetUserCredentialsResultDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -184005,46 +185163,6 @@ export interface ICreateOrEditDisciplinaryTypeDto {
     wageTypeId: number | undefined;
 }
 
-export class CreateOrEditDocumentPrintFormDto implements ICreateOrEditDocumentPrintFormDto {
-    id!: number | undefined;
-    documentTypeId!: number | undefined;
-
-    constructor(data?: ICreateOrEditDocumentPrintFormDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.documentTypeId = _data["documentTypeId"];
-        }
-    }
-
-    static fromJS(data: any): CreateOrEditDocumentPrintFormDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateOrEditDocumentPrintFormDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["documentTypeId"] = this.documentTypeId;
-        return data;
-    }
-}
-
-export interface ICreateOrEditDocumentPrintFormDto {
-    id: number | undefined;
-    documentTypeId: number | undefined;
-}
-
 export class CreateOrEditDocumentTypeDto implements ICreateOrEditDocumentTypeDto {
     id!: number | undefined;
     code!: string | undefined;
@@ -189455,6 +190573,19 @@ export class CreateOrEditEmployeeSeparationDto implements ICreateOrEditEmployeeS
     separationType!: SeparationType;
     separationReasonId!: number;
     revokeDate!: DateTime | undefined;
+    onHoldFromDate!: DateTime | undefined;
+    onHoldTillDate!: DateTime | undefined;
+    onHoldAll!: boolean;
+    onHoldBasicPay!: boolean;
+    onHoldLeavePay!: boolean;
+    onHoldIndemnityPay!: boolean;
+    onHoldAirTicketPay!: boolean;
+    onHoldLoanDeduction!: boolean;
+    onHoldAllEarnings!: boolean;
+    onHoldAllDeductions!: boolean;
+    bankTransfer!: OnHoldStatus;
+    revokeComments!: string | undefined;
+    comments!: string | undefined;
 
     constructor(data?: ICreateOrEditEmployeeSeparationDto) {
         if (data) {
@@ -189476,6 +190607,19 @@ export class CreateOrEditEmployeeSeparationDto implements ICreateOrEditEmployeeS
             this.separationType = _data["separationType"];
             this.separationReasonId = _data["separationReasonId"];
             this.revokeDate = _data["revokeDate"] ? DateTime.fromISO(_data["revokeDate"].toString()) : undefined as any;
+            this.onHoldFromDate = _data["onHoldFromDate"] ? DateTime.fromISO(_data["onHoldFromDate"].toString()) : undefined as any;
+            this.onHoldTillDate = _data["onHoldTillDate"] ? DateTime.fromISO(_data["onHoldTillDate"].toString()) : undefined as any;
+            this.onHoldAll = _data["onHoldAll"];
+            this.onHoldBasicPay = _data["onHoldBasicPay"];
+            this.onHoldLeavePay = _data["onHoldLeavePay"];
+            this.onHoldIndemnityPay = _data["onHoldIndemnityPay"];
+            this.onHoldAirTicketPay = _data["onHoldAirTicketPay"];
+            this.onHoldLoanDeduction = _data["onHoldLoanDeduction"];
+            this.onHoldAllEarnings = _data["onHoldAllEarnings"];
+            this.onHoldAllDeductions = _data["onHoldAllDeductions"];
+            this.bankTransfer = _data["bankTransfer"];
+            this.revokeComments = _data["revokeComments"];
+            this.comments = _data["comments"];
         }
     }
 
@@ -189497,6 +190641,19 @@ export class CreateOrEditEmployeeSeparationDto implements ICreateOrEditEmployeeS
         data["separationType"] = this.separationType;
         data["separationReasonId"] = this.separationReasonId;
         data["revokeDate"] = this.revokeDate ? this.revokeDate.toString() : undefined as any;
+        data["onHoldFromDate"] = this.onHoldFromDate ? this.onHoldFromDate.toString() : undefined as any;
+        data["onHoldTillDate"] = this.onHoldTillDate ? this.onHoldTillDate.toString() : undefined as any;
+        data["onHoldAll"] = this.onHoldAll;
+        data["onHoldBasicPay"] = this.onHoldBasicPay;
+        data["onHoldLeavePay"] = this.onHoldLeavePay;
+        data["onHoldIndemnityPay"] = this.onHoldIndemnityPay;
+        data["onHoldAirTicketPay"] = this.onHoldAirTicketPay;
+        data["onHoldLoanDeduction"] = this.onHoldLoanDeduction;
+        data["onHoldAllEarnings"] = this.onHoldAllEarnings;
+        data["onHoldAllDeductions"] = this.onHoldAllDeductions;
+        data["bankTransfer"] = this.bankTransfer;
+        data["revokeComments"] = this.revokeComments;
+        data["comments"] = this.comments;
         return data;
     }
 }
@@ -189511,6 +190668,19 @@ export interface ICreateOrEditEmployeeSeparationDto {
     separationType: SeparationType;
     separationReasonId: number;
     revokeDate: DateTime | undefined;
+    onHoldFromDate: DateTime | undefined;
+    onHoldTillDate: DateTime | undefined;
+    onHoldAll: boolean;
+    onHoldBasicPay: boolean;
+    onHoldLeavePay: boolean;
+    onHoldIndemnityPay: boolean;
+    onHoldAirTicketPay: boolean;
+    onHoldLoanDeduction: boolean;
+    onHoldAllEarnings: boolean;
+    onHoldAllDeductions: boolean;
+    bankTransfer: OnHoldStatus;
+    revokeComments: string | undefined;
+    comments: string | undefined;
 }
 
 export class CreateOrEditEmployeeSignatureDto implements ICreateOrEditEmployeeSignatureDto {
@@ -195831,6 +197001,118 @@ export interface ICreateOrEditOrganizationUnitTypeDto {
     nameAr: string;
     allowLeaveConflict: boolean;
     assignPayrollArea: boolean;
+}
+
+export class CreateOrEditOvertimeBatchDto implements ICreateOrEditOvertimeBatchDto {
+    id!: number | undefined;
+    organizationUnitId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+    details!: CreateOrEditOvertimeBatchLineDto[] | undefined;
+
+    constructor(data?: ICreateOrEditOvertimeBatchDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+            if (Array.isArray(_data["details"])) {
+                this.details = [] as any;
+                for (let item of _data["details"])
+                    this.details!.push(CreateOrEditOvertimeBatchLineDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditOvertimeBatchDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditOvertimeBatchDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        if (Array.isArray(this.details)) {
+            data["details"] = [];
+            for (let item of this.details)
+                data["details"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ICreateOrEditOvertimeBatchDto {
+    id: number | undefined;
+    organizationUnitId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+    details: CreateOrEditOvertimeBatchLineDto[] | undefined;
+}
+
+export class CreateOrEditOvertimeBatchLineDto implements ICreateOrEditOvertimeBatchLineDto {
+    timeRegisterId!: number;
+    approvedHours!: number;
+    overtimeTypeId!: number | undefined;
+    comments!: string | undefined;
+
+    constructor(data?: ICreateOrEditOvertimeBatchLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.timeRegisterId = _data["timeRegisterId"];
+            this.approvedHours = _data["approvedHours"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditOvertimeBatchLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditOvertimeBatchLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["timeRegisterId"] = this.timeRegisterId;
+        data["approvedHours"] = this.approvedHours;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ICreateOrEditOvertimeBatchLineDto {
+    timeRegisterId: number;
+    approvedHours: number;
+    overtimeTypeId: number | undefined;
+    comments: string | undefined;
 }
 
 export class CreateOrEditOvertimeTypeDetailDto implements ICreateOrEditOvertimeTypeDetailDto {
@@ -203280,7 +204562,8 @@ export interface ICreateOrEditTravelDetailDto {
 export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
     id!: number | undefined;
     code!: string | undefined;
-    employeeId!: number;
+    employeeId!: number | undefined;
+    applicantId!: number | undefined;
     travelTypeId!: number;
     startDate!: DateTime;
     endDate!: DateTime;
@@ -203302,6 +204585,7 @@ export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
             this.id = _data["id"];
             this.code = _data["code"];
             this.employeeId = _data["employeeId"];
+            this.applicantId = _data["applicantId"];
             this.travelTypeId = _data["travelTypeId"];
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
@@ -203327,6 +204611,7 @@ export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
         data["id"] = this.id;
         data["code"] = this.code;
         data["employeeId"] = this.employeeId;
+        data["applicantId"] = this.applicantId;
         data["travelTypeId"] = this.travelTypeId;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
@@ -203344,7 +204629,8 @@ export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
 export interface ICreateOrEditTravelDto {
     id: number | undefined;
     code: string | undefined;
-    employeeId: number;
+    employeeId: number | undefined;
+    applicantId: number | undefined;
     travelTypeId: number;
     startDate: DateTime;
     endDate: DateTime;
@@ -203355,7 +204641,8 @@ export interface ICreateOrEditTravelDto {
 
 export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbackDto {
     id!: number | undefined;
-    employeeId!: number;
+    employeeId!: number | undefined;
+    applicantId!: number | undefined;
     travelId!: number | undefined;
     claimDate!: DateTime;
     claimAmount!: number;
@@ -203375,6 +204662,7 @@ export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbac
         if (_data) {
             this.id = _data["id"];
             this.employeeId = _data["employeeId"];
+            this.applicantId = _data["applicantId"];
             this.travelId = _data["travelId"];
             this.claimDate = _data["claimDate"] ? DateTime.fromISO(_data["claimDate"].toString()) : undefined as any;
             this.claimAmount = _data["claimAmount"];
@@ -203394,6 +204682,7 @@ export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbac
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["employeeId"] = this.employeeId;
+        data["applicantId"] = this.applicantId;
         data["travelId"] = this.travelId;
         data["claimDate"] = this.claimDate ? this.claimDate.toString() : undefined as any;
         data["claimAmount"] = this.claimAmount;
@@ -203405,7 +204694,8 @@ export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbac
 
 export interface ICreateOrEditTravelFeedbackDto {
     id: number | undefined;
-    employeeId: number;
+    employeeId: number | undefined;
+    applicantId: number | undefined;
     travelId: number | undefined;
     claimDate: DateTime;
     claimAmount: number;
@@ -205632,6 +206922,154 @@ export interface ICreateWorkflowSetupRoleInput {
     employeeIds: number[] | undefined;
 }
 
+export class CredentialResetOutcomeDto implements ICredentialResetOutcomeDto {
+    userId!: number;
+    userName!: string | undefined;
+    passwordReset!: boolean;
+    emailSent!: boolean;
+    message!: string | undefined;
+
+    constructor(data?: ICredentialResetOutcomeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.userName = _data["userName"];
+            this.passwordReset = _data["passwordReset"];
+            this.emailSent = _data["emailSent"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): CredentialResetOutcomeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CredentialResetOutcomeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["userName"] = this.userName;
+        data["passwordReset"] = this.passwordReset;
+        data["emailSent"] = this.emailSent;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface ICredentialResetOutcomeDto {
+    userId: number;
+    userName: string | undefined;
+    passwordReset: boolean;
+    emailSent: boolean;
+    message: string | undefined;
+}
+
+export class CredentialResetRoleDto implements ICredentialResetRoleDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: ICredentialResetRoleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): CredentialResetRoleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CredentialResetRoleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data;
+    }
+}
+
+export interface ICredentialResetRoleDto {
+    id: number;
+    displayName: string | undefined;
+}
+
+export class CredentialResetUserDto implements ICredentialResetUserDto {
+    id!: number;
+    userName!: string | undefined;
+    fullName!: string | undefined;
+    emailAddress!: string | undefined;
+    employeeCode!: string | undefined;
+    hasEmailAddress!: boolean;
+
+    constructor(data?: ICredentialResetUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.fullName = _data["fullName"];
+            this.emailAddress = _data["emailAddress"];
+            this.employeeCode = _data["employeeCode"];
+            this.hasEmailAddress = _data["hasEmailAddress"];
+        }
+    }
+
+    static fromJS(data: any): CredentialResetUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CredentialResetUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["fullName"] = this.fullName;
+        data["emailAddress"] = this.emailAddress;
+        data["employeeCode"] = this.employeeCode;
+        data["hasEmailAddress"] = this.hasEmailAddress;
+        return data;
+    }
+}
+
+export interface ICredentialResetUserDto {
+    id: number;
+    userName: string | undefined;
+    fullName: string | undefined;
+    emailAddress: string | undefined;
+    employeeCode: string | undefined;
+    hasEmailAddress: boolean;
+}
+
 export class Currency implements ICurrency {
     id!: number;
     creationTime!: DateTime;
@@ -207085,50 +208523,6 @@ export interface IDocumentMovementExtensionDto {
 export enum DocumentMvmtStatus {
     IN = 0,
     OUT = 1,
-}
-
-export class DocumentPrintFormDto implements IDocumentPrintFormDto {
-    id!: number;
-    documentTypeId!: number | undefined;
-    documentTypeName!: string | undefined;
-
-    constructor(data?: IDocumentPrintFormDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.documentTypeId = _data["documentTypeId"];
-            this.documentTypeName = _data["documentTypeName"];
-        }
-    }
-
-    static fromJS(data: any): DocumentPrintFormDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DocumentPrintFormDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["documentTypeId"] = this.documentTypeId;
-        data["documentTypeName"] = this.documentTypeName;
-        return data;
-    }
-}
-
-export interface IDocumentPrintFormDto {
-    id: number;
-    documentTypeId: number | undefined;
-    documentTypeName: string | undefined;
 }
 
 export class DocumentSettingsEditDto implements IDocumentSettingsEditDto {
@@ -220351,6 +221745,10 @@ export class EmployeeSeparationDto implements IEmployeeSeparationDto {
     separationReasonId!: number;
     separationReasonName!: string | undefined;
     revokeDate!: DateTime | undefined;
+    onHoldFromDate!: DateTime | undefined;
+    onHoldTillDate!: DateTime | undefined;
+    revokeComments!: string | undefined;
+    comments!: string | undefined;
 
     constructor(data?: IEmployeeSeparationDto) {
         if (data) {
@@ -220375,6 +221773,10 @@ export class EmployeeSeparationDto implements IEmployeeSeparationDto {
             this.separationReasonId = _data["separationReasonId"];
             this.separationReasonName = _data["separationReasonName"];
             this.revokeDate = _data["revokeDate"] ? DateTime.fromISO(_data["revokeDate"].toString()) : undefined as any;
+            this.onHoldFromDate = _data["onHoldFromDate"] ? DateTime.fromISO(_data["onHoldFromDate"].toString()) : undefined as any;
+            this.onHoldTillDate = _data["onHoldTillDate"] ? DateTime.fromISO(_data["onHoldTillDate"].toString()) : undefined as any;
+            this.revokeComments = _data["revokeComments"];
+            this.comments = _data["comments"];
         }
     }
 
@@ -220399,6 +221801,10 @@ export class EmployeeSeparationDto implements IEmployeeSeparationDto {
         data["separationReasonId"] = this.separationReasonId;
         data["separationReasonName"] = this.separationReasonName;
         data["revokeDate"] = this.revokeDate ? this.revokeDate.toString() : undefined as any;
+        data["onHoldFromDate"] = this.onHoldFromDate ? this.onHoldFromDate.toString() : undefined as any;
+        data["onHoldTillDate"] = this.onHoldTillDate ? this.onHoldTillDate.toString() : undefined as any;
+        data["revokeComments"] = this.revokeComments;
+        data["comments"] = this.comments;
         return data;
     }
 }
@@ -220416,6 +221822,10 @@ export interface IEmployeeSeparationDto {
     separationReasonId: number;
     separationReasonName: string | undefined;
     revokeDate: DateTime | undefined;
+    onHoldFromDate: DateTime | undefined;
+    onHoldTillDate: DateTime | undefined;
+    revokeComments: string | undefined;
+    comments: string | undefined;
 }
 
 export class EmployeeSeparationReportRowDto implements IEmployeeSeparationReportRowDto {
@@ -232557,50 +233967,6 @@ export interface IGetAllDisciplinaryTypesInput {
     filter: string | undefined;
 }
 
-export class GetAllDocumentPrintFormsInput implements IGetAllDocumentPrintFormsInput {
-    maxResultCount!: number;
-    skipCount!: number;
-    sorting!: string | undefined;
-
-    constructor(data?: IGetAllDocumentPrintFormsInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.maxResultCount = _data["maxResultCount"];
-            this.skipCount = _data["skipCount"];
-            this.sorting = _data["sorting"];
-        }
-    }
-
-    static fromJS(data: any): GetAllDocumentPrintFormsInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetAllDocumentPrintFormsInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["maxResultCount"] = this.maxResultCount;
-        data["skipCount"] = this.skipCount;
-        data["sorting"] = this.sorting;
-        return data;
-    }
-}
-
-export interface IGetAllDocumentPrintFormsInput {
-    maxResultCount: number;
-    skipCount: number;
-    sorting: string | undefined;
-}
-
 export class GetAllDocumentTypesInput implements IGetAllDocumentTypesInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -240301,6 +241667,70 @@ export interface IGetAllLeaveAccrualSummariesInput {
     employeeId: number | undefined;
 }
 
+export class GetAllLeavePlansInput implements IGetAllLeavePlansInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    employeeId!: number | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    includePending!: boolean;
+
+    constructor(data?: IGetAllLeavePlansInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.employeeId = _data["employeeId"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.includePending = _data["includePending"];
+        }
+    }
+
+    static fromJS(data: any): GetAllLeavePlansInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllLeavePlansInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["employeeId"] = this.employeeId;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["includePending"] = this.includePending;
+        return data;
+    }
+}
+
+export interface IGetAllLeavePlansInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    employeeId: number | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    includePending: boolean;
+}
+
 export class GetAllLoanInstallmentsInput implements IGetAllLoanInstallmentsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -241703,6 +243133,66 @@ export interface IGetAllOrganizationUnitTypesInput {
     skipCount: number;
     sorting: string | undefined;
     filter: string | undefined;
+}
+
+export class GetAllOvertimeBatchesInput implements IGetAllOvertimeBatchesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    organizationUnitId!: number | undefined;
+    workflowStatus!: RequestStatus;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+
+    constructor(data?: IGetAllOvertimeBatchesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetAllOvertimeBatchesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllOvertimeBatchesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["workflowStatus"] = this.workflowStatus;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetAllOvertimeBatchesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    organizationUnitId: number | undefined;
+    workflowStatus: RequestStatus;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
 }
 
 export class GetAllOvertimeTypeDetailsInput implements IGetAllOvertimeTypeDetailsInput {
@@ -247374,6 +248864,7 @@ export class GetAllTravelFeedbacksInput implements IGetAllTravelFeedbacksInput {
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    applicantId!: number | undefined;
 
     constructor(data?: IGetAllTravelFeedbacksInput) {
         if (data) {
@@ -247390,6 +248881,7 @@ export class GetAllTravelFeedbacksInput implements IGetAllTravelFeedbacksInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.applicantId = _data["applicantId"];
         }
     }
 
@@ -247406,6 +248898,7 @@ export class GetAllTravelFeedbacksInput implements IGetAllTravelFeedbacksInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["applicantId"] = this.applicantId;
         return data;
     }
 }
@@ -247415,6 +248908,7 @@ export interface IGetAllTravelFeedbacksInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    applicantId: number | undefined;
 }
 
 export class GetAllTravelPerDiemsInput implements IGetAllTravelPerDiemsInput {
@@ -247522,6 +249016,7 @@ export class GetAllTravelsInput implements IGetAllTravelsInput {
     skipCount!: number;
     sorting!: string | undefined;
     employeeId!: number | undefined;
+    applicantId!: number | undefined;
     filter!: string | undefined;
 
     constructor(data?: IGetAllTravelsInput) {
@@ -247539,6 +249034,7 @@ export class GetAllTravelsInput implements IGetAllTravelsInput {
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.employeeId = _data["employeeId"];
+            this.applicantId = _data["applicantId"];
             this.filter = _data["filter"];
         }
     }
@@ -247556,6 +249052,7 @@ export class GetAllTravelsInput implements IGetAllTravelsInput {
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["employeeId"] = this.employeeId;
+        data["applicantId"] = this.applicantId;
         data["filter"] = this.filter;
         return data;
     }
@@ -247566,6 +249063,7 @@ export interface IGetAllTravelsInput {
     skipCount: number;
     sorting: string | undefined;
     employeeId: number | undefined;
+    applicantId: number | undefined;
     filter: string | undefined;
 }
 
@@ -250737,6 +252235,58 @@ export interface IGetCostRegisterForEditOutput {
     costRegister: CreateOrEditCostRegisterDto;
 }
 
+export class GetCredentialResetUsersInput implements IGetCredentialResetUsersInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    roleId!: number | undefined;
+
+    constructor(data?: IGetCredentialResetUsersInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.roleId = _data["roleId"];
+        }
+    }
+
+    static fromJS(data: any): GetCredentialResetUsersInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetCredentialResetUsersInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["roleId"] = this.roleId;
+        return data;
+    }
+}
+
+export interface IGetCredentialResetUsersInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    roleId: number | undefined;
+}
+
 export class GetCurrencyConvertorForEditOutput implements IGetCurrencyConvertorForEditOutput {
     currencyConvertor!: CreateOrEditCurrencyConvertorDto;
 
@@ -251543,42 +253093,6 @@ export class GetDisciplinaryTypeForEditOutput implements IGetDisciplinaryTypeFor
 
 export interface IGetDisciplinaryTypeForEditOutput {
     disciplinaryType: CreateOrEditDisciplinaryTypeDto;
-}
-
-export class GetDocumentPrintFormForEditOutput implements IGetDocumentPrintFormForEditOutput {
-    documentPrintForm!: CreateOrEditDocumentPrintFormDto;
-
-    constructor(data?: IGetDocumentPrintFormForEditOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.documentPrintForm = _data["documentPrintForm"] ? CreateOrEditDocumentPrintFormDto.fromJS(_data["documentPrintForm"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): GetDocumentPrintFormForEditOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetDocumentPrintFormForEditOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["documentPrintForm"] = this.documentPrintForm ? this.documentPrintForm.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IGetDocumentPrintFormForEditOutput {
-    documentPrintForm: CreateOrEditDocumentPrintFormDto;
 }
 
 export class GetDocumentTypeForEditOutput implements IGetDocumentTypeForEditOutput {
@@ -261893,6 +263407,66 @@ export interface IGetLeaveDashboardLeavesInput {
     maxResultCount: number;
 }
 
+export class GetLeavePlannerInput implements IGetLeavePlannerInput {
+    month!: DateTime | undefined;
+    organizationUnitId!: number | undefined;
+    filter!: string | undefined;
+    includePlanned!: boolean;
+    includePlannedPending!: boolean;
+    includeLeave!: boolean;
+    includeLeavePending!: boolean;
+
+    constructor(data?: IGetLeavePlannerInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.month = _data["month"] ? DateTime.fromISO(_data["month"].toString()) : undefined as any;
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.filter = _data["filter"];
+            this.includePlanned = _data["includePlanned"];
+            this.includePlannedPending = _data["includePlannedPending"];
+            this.includeLeave = _data["includeLeave"];
+            this.includeLeavePending = _data["includeLeavePending"];
+        }
+    }
+
+    static fromJS(data: any): GetLeavePlannerInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLeavePlannerInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["month"] = this.month ? this.month.toString() : undefined as any;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["filter"] = this.filter;
+        data["includePlanned"] = this.includePlanned;
+        data["includePlannedPending"] = this.includePlannedPending;
+        data["includeLeave"] = this.includeLeave;
+        data["includeLeavePending"] = this.includeLeavePending;
+        return data;
+    }
+}
+
+export interface IGetLeavePlannerInput {
+    month: DateTime | undefined;
+    organizationUnitId: number | undefined;
+    filter: string | undefined;
+    includePlanned: boolean;
+    includePlannedPending: boolean;
+    includeLeave: boolean;
+    includeLeavePending: boolean;
+}
+
 export class GetLeaveProvisionReportInput implements IGetLeaveProvisionReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -264047,6 +265621,126 @@ export class GetOrganizationUnitTypeForEditOutput implements IGetOrganizationUni
 
 export interface IGetOrganizationUnitTypeForEditOutput {
     organizationUnitType: CreateOrEditOrganizationUnitTypeDto;
+}
+
+export class GetOvertimeBatchCandidatesInput implements IGetOvertimeBatchCandidatesInput {
+    organizationUnitId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    onlyOvertimeDays!: boolean;
+    excludeOvertimeBatchId!: number | undefined;
+
+    constructor(data?: IGetOvertimeBatchCandidatesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.onlyOvertimeDays = _data["onlyOvertimeDays"];
+            this.excludeOvertimeBatchId = _data["excludeOvertimeBatchId"];
+        }
+    }
+
+    static fromJS(data: any): GetOvertimeBatchCandidatesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetOvertimeBatchCandidatesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["onlyOvertimeDays"] = this.onlyOvertimeDays;
+        data["excludeOvertimeBatchId"] = this.excludeOvertimeBatchId;
+        return data;
+    }
+}
+
+export interface IGetOvertimeBatchCandidatesInput {
+    organizationUnitId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    onlyOvertimeDays: boolean;
+    excludeOvertimeBatchId: number | undefined;
+}
+
+export class GetOvertimeBatchForEditOutput implements IGetOvertimeBatchForEditOutput {
+    overtimeBatch!: CreateOrEditOvertimeBatchDto;
+    details!: OvertimeBatchLineDto[] | undefined;
+    organizationUnitName!: string | undefined;
+    workflowStatus!: RequestStatus;
+    requestNumber!: string | undefined;
+    isEditable!: boolean;
+    canResubmit!: boolean;
+
+    constructor(data?: IGetOvertimeBatchForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.overtimeBatch = _data["overtimeBatch"] ? CreateOrEditOvertimeBatchDto.fromJS(_data["overtimeBatch"]) : undefined as any;
+            if (Array.isArray(_data["details"])) {
+                this.details = [] as any;
+                for (let item of _data["details"])
+                    this.details!.push(OvertimeBatchLineDto.fromJS(item));
+            }
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.requestNumber = _data["requestNumber"];
+            this.isEditable = _data["isEditable"];
+            this.canResubmit = _data["canResubmit"];
+        }
+    }
+
+    static fromJS(data: any): GetOvertimeBatchForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetOvertimeBatchForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["overtimeBatch"] = this.overtimeBatch ? this.overtimeBatch.toJSON() : undefined as any;
+        if (Array.isArray(this.details)) {
+            data["details"] = [];
+            for (let item of this.details)
+                data["details"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["workflowStatus"] = this.workflowStatus;
+        data["requestNumber"] = this.requestNumber;
+        data["isEditable"] = this.isEditable;
+        data["canResubmit"] = this.canResubmit;
+        return data;
+    }
+}
+
+export interface IGetOvertimeBatchForEditOutput {
+    overtimeBatch: CreateOrEditOvertimeBatchDto;
+    details: OvertimeBatchLineDto[] | undefined;
+    organizationUnitName: string | undefined;
+    workflowStatus: RequestStatus;
+    requestNumber: string | undefined;
+    isEditable: boolean;
+    canResubmit: boolean;
 }
 
 export class GetOvertimeEntriesInput implements IGetOvertimeEntriesInput {
@@ -284382,6 +286076,413 @@ export enum LeavePaymentType {
     PayFullWithPayroll = 3,
 }
 
+export class LeavePlanDto implements ILeavePlanDto {
+    id!: number;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    employeeFullNameAr!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    plannedDays!: number;
+    projectedLeaveBalance!: number | undefined;
+    comments!: string | undefined;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    requestNumber!: string | undefined;
+    creationTime!: DateTime;
+
+    constructor(data?: ILeavePlanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.employeeFullNameAr = _data["employeeFullNameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.plannedDays = _data["plannedDays"];
+            this.projectedLeaveBalance = _data["projectedLeaveBalance"];
+            this.comments = _data["comments"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.requestNumber = _data["requestNumber"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): LeavePlanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeavePlanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["employeeFullNameAr"] = this.employeeFullNameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["plannedDays"] = this.plannedDays;
+        data["projectedLeaveBalance"] = this.projectedLeaveBalance;
+        data["comments"] = this.comments;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["requestNumber"] = this.requestNumber;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface ILeavePlanDto {
+    id: number;
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    employeeFullNameAr: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    plannedDays: number;
+    projectedLeaveBalance: number | undefined;
+    comments: string | undefined;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    requestNumber: string | undefined;
+    creationTime: DateTime;
+}
+
+export class LeavePlanPreviewDto implements ILeavePlanPreviewDto {
+    plannedDays!: number;
+    projectedLeaveBalance!: number | undefined;
+    leaveDays!: number | undefined;
+
+    constructor(data?: ILeavePlanPreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.plannedDays = _data["plannedDays"];
+            this.projectedLeaveBalance = _data["projectedLeaveBalance"];
+            this.leaveDays = _data["leaveDays"];
+        }
+    }
+
+    static fromJS(data: any): LeavePlanPreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeavePlanPreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["plannedDays"] = this.plannedDays;
+        data["projectedLeaveBalance"] = this.projectedLeaveBalance;
+        data["leaveDays"] = this.leaveDays;
+        return data;
+    }
+}
+
+export interface ILeavePlanPreviewDto {
+    plannedDays: number;
+    projectedLeaveBalance: number | undefined;
+    leaveDays: number | undefined;
+}
+
+export enum LeavePlannerDayFlags {
+    None = 0,
+    PlannedApproved = 1,
+    PlannedPending = 2,
+    LeaveApproved = 4,
+    LeavePending = 8,
+}
+
+export class LeavePlannerDto implements ILeavePlannerDto {
+    fromDate!: DateTime;
+    toDate!: DateTime;
+    groups!: LeavePlannerGroupDto[] | undefined;
+    scope!: DashboardScopeDto;
+    orgUnitOptions!: DashboardOrgUnitOptionDto[] | undefined;
+
+    constructor(data?: ILeavePlannerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            if (Array.isArray(_data["groups"])) {
+                this.groups = [] as any;
+                for (let item of _data["groups"])
+                    this.groups!.push(LeavePlannerGroupDto.fromJS(item));
+            }
+            this.scope = _data["scope"] ? DashboardScopeDto.fromJS(_data["scope"]) : undefined as any;
+            if (Array.isArray(_data["orgUnitOptions"])) {
+                this.orgUnitOptions = [] as any;
+                for (let item of _data["orgUnitOptions"])
+                    this.orgUnitOptions!.push(DashboardOrgUnitOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LeavePlannerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeavePlannerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        if (Array.isArray(this.groups)) {
+            data["groups"] = [];
+            for (let item of this.groups)
+                data["groups"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["scope"] = this.scope ? this.scope.toJSON() : undefined as any;
+        if (Array.isArray(this.orgUnitOptions)) {
+            data["orgUnitOptions"] = [];
+            for (let item of this.orgUnitOptions)
+                data["orgUnitOptions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ILeavePlannerDto {
+    fromDate: DateTime;
+    toDate: DateTime;
+    groups: LeavePlannerGroupDto[] | undefined;
+    scope: DashboardScopeDto;
+    orgUnitOptions: DashboardOrgUnitOptionDto[] | undefined;
+}
+
+export class LeavePlannerEntryDto implements ILeavePlannerEntryDto {
+    kind!: LeavePlannerEntryKind;
+    id!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    leaveTypeNameEn!: string | undefined;
+    leaveTypeNameAr!: string | undefined;
+
+    constructor(data?: ILeavePlannerEntryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.kind = _data["kind"];
+            this.id = _data["id"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.leaveTypeNameEn = _data["leaveTypeNameEn"];
+            this.leaveTypeNameAr = _data["leaveTypeNameAr"];
+        }
+    }
+
+    static fromJS(data: any): LeavePlannerEntryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeavePlannerEntryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["kind"] = this.kind;
+        data["id"] = this.id;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["leaveTypeNameEn"] = this.leaveTypeNameEn;
+        data["leaveTypeNameAr"] = this.leaveTypeNameAr;
+        return data;
+    }
+}
+
+export interface ILeavePlannerEntryDto {
+    kind: LeavePlannerEntryKind;
+    id: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    leaveTypeNameEn: string | undefined;
+    leaveTypeNameAr: string | undefined;
+}
+
+export enum LeavePlannerEntryKind {
+    PlannedApproved = 0,
+    PlannedPending = 1,
+    LeaveApproved = 2,
+    LeavePending = 3,
+}
+
+export class LeavePlannerGroupDto implements ILeavePlannerGroupDto {
+    organizationUnitId!: number | undefined;
+    organizationUnitName!: string | undefined;
+    awayCountByDay!: number[] | undefined;
+    rows!: LeavePlannerRowDto[] | undefined;
+
+    constructor(data?: ILeavePlannerGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            if (Array.isArray(_data["awayCountByDay"])) {
+                this.awayCountByDay = [] as any;
+                for (let item of _data["awayCountByDay"])
+                    this.awayCountByDay!.push(item);
+            }
+            if (Array.isArray(_data["rows"])) {
+                this.rows = [] as any;
+                for (let item of _data["rows"])
+                    this.rows!.push(LeavePlannerRowDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LeavePlannerGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeavePlannerGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["organizationUnitName"] = this.organizationUnitName;
+        if (Array.isArray(this.awayCountByDay)) {
+            data["awayCountByDay"] = [];
+            for (let item of this.awayCountByDay)
+                data["awayCountByDay"].push(item);
+        }
+        if (Array.isArray(this.rows)) {
+            data["rows"] = [];
+            for (let item of this.rows)
+                data["rows"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ILeavePlannerGroupDto {
+    organizationUnitId: number | undefined;
+    organizationUnitName: string | undefined;
+    awayCountByDay: number[] | undefined;
+    rows: LeavePlannerRowDto[] | undefined;
+}
+
+export class LeavePlannerRowDto implements ILeavePlannerRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    employeeFullNameAr!: string | undefined;
+    days!: LeavePlannerDayFlags[] | undefined;
+    entries!: LeavePlannerEntryDto[] | undefined;
+
+    constructor(data?: ILeavePlannerRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.employeeFullNameAr = _data["employeeFullNameAr"];
+            if (Array.isArray(_data["days"])) {
+                this.days = [] as any;
+                for (let item of _data["days"])
+                    this.days!.push(item);
+            }
+            if (Array.isArray(_data["entries"])) {
+                this.entries = [] as any;
+                for (let item of _data["entries"])
+                    this.entries!.push(LeavePlannerEntryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LeavePlannerRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeavePlannerRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["employeeFullNameAr"] = this.employeeFullNameAr;
+        if (Array.isArray(this.days)) {
+            data["days"] = [];
+            for (let item of this.days)
+                data["days"].push(item);
+        }
+        if (Array.isArray(this.entries)) {
+            data["entries"] = [];
+            for (let item of this.entries)
+                data["entries"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ILeavePlannerRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    employeeFullNameAr: string | undefined;
+    days: LeavePlannerDayFlags[] | undefined;
+    entries: LeavePlannerEntryDto[] | undefined;
+}
+
 export class LeaveProvisionReportRowDto implements ILeaveProvisionReportRowDto {
     id!: number;
     employeeCode!: string | undefined;
@@ -285340,6 +287441,50 @@ export class ListResultDtoOfCostElementSlotDto implements IListResultDtoOfCostEl
 
 export interface IListResultDtoOfCostElementSlotDto {
     items: CostElementSlotDto[] | undefined;
+}
+
+export class ListResultDtoOfCredentialResetRoleDto implements IListResultDtoOfCredentialResetRoleDto {
+    items!: CredentialResetRoleDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfCredentialResetRoleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(CredentialResetRoleDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfCredentialResetRoleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfCredentialResetRoleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfCredentialResetRoleDto {
+    items: CredentialResetRoleDto[] | undefined;
 }
 
 export class ListResultDtoOfDynamicEntityPropertyDto implements IListResultDtoOfDynamicEntityPropertyDto {
@@ -286528,6 +288673,50 @@ export class ListResultDtoOfSubscribableEditionComboboxItemDto implements IListR
 
 export interface IListResultDtoOfSubscribableEditionComboboxItemDto {
     items: SubscribableEditionComboboxItemDto[] | undefined;
+}
+
+export class ListResultDtoOfTravelApplicantLookupDto implements IListResultDtoOfTravelApplicantLookupDto {
+    items!: TravelApplicantLookupDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfTravelApplicantLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(TravelApplicantLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfTravelApplicantLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfTravelApplicantLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfTravelApplicantLookupDto {
+    items: TravelApplicantLookupDto[] | undefined;
 }
 
 export class ListResultDtoOfUserSessionDto implements IListResultDtoOfUserSessionDto {
@@ -290544,6 +292733,94 @@ export enum MyLeaveHistoryOutcome {
     SentBack = 3,
     Withdrawn = 4,
     Draft = 5,
+}
+
+export class MyLeavePlanDto implements IMyLeavePlanDto {
+    id!: number;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    canCancel!: boolean;
+    isDraft!: boolean;
+    canEdit!: boolean;
+    requestNumber!: string | undefined;
+    isSentBack!: boolean;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    plannedDays!: number;
+    projectedLeaveBalance!: number | undefined;
+    comments!: string | undefined;
+    creationTime!: DateTime;
+
+    constructor(data?: IMyLeavePlanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.canCancel = _data["canCancel"];
+            this.isDraft = _data["isDraft"];
+            this.canEdit = _data["canEdit"];
+            this.requestNumber = _data["requestNumber"];
+            this.isSentBack = _data["isSentBack"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.plannedDays = _data["plannedDays"];
+            this.projectedLeaveBalance = _data["projectedLeaveBalance"];
+            this.comments = _data["comments"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): MyLeavePlanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyLeavePlanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["canCancel"] = this.canCancel;
+        data["isDraft"] = this.isDraft;
+        data["canEdit"] = this.canEdit;
+        data["requestNumber"] = this.requestNumber;
+        data["isSentBack"] = this.isSentBack;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["plannedDays"] = this.plannedDays;
+        data["projectedLeaveBalance"] = this.projectedLeaveBalance;
+        data["comments"] = this.comments;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IMyLeavePlanDto {
+    id: number;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    canCancel: boolean;
+    isDraft: boolean;
+    canEdit: boolean;
+    requestNumber: string | undefined;
+    isSentBack: boolean;
+    startDate: DateTime;
+    endDate: DateTime;
+    plannedDays: number;
+    projectedLeaveBalance: number | undefined;
+    comments: string | undefined;
+    creationTime: DateTime;
 }
 
 export enum MyLeaveRequestStatus {
@@ -295067,6 +297344,298 @@ export class OtherSettingsEditDto implements IOtherSettingsEditDto {
 
 export interface IOtherSettingsEditDto {
     isQuickThemeSelectEnabled: boolean;
+}
+
+export class OvertimeBatchLineDto implements IOvertimeBatchLineDto {
+    id!: number | undefined;
+    timeRegisterId!: number | undefined;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeNameEn!: string | undefined;
+    employeeNameAr!: string | undefined;
+    date!: DateTime;
+    shiftStart!: DateTime | undefined;
+    shiftEnd!: DateTime | undefined;
+    signIn!: DateTime | undefined;
+    signOut!: DateTime | undefined;
+    plannedHours!: number;
+    totalHours!: number;
+    lateIn!: number;
+    earlyOut!: number;
+    approvedHours!: number;
+    overtimeTypeId!: number | undefined;
+    overtimeTypeNameEn!: string | undefined;
+    overtimeTypeNameAr!: string | undefined;
+    comments!: string | undefined;
+    hasExistingOvertime!: boolean;
+    employeeOvertimeId!: number | undefined;
+
+    constructor(data?: IOvertimeBatchLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.timeRegisterId = _data["timeRegisterId"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeNameEn = _data["employeeNameEn"];
+            this.employeeNameAr = _data["employeeNameAr"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.shiftStart = _data["shiftStart"] ? DateTime.fromISO(_data["shiftStart"].toString()) : undefined as any;
+            this.shiftEnd = _data["shiftEnd"] ? DateTime.fromISO(_data["shiftEnd"].toString()) : undefined as any;
+            this.signIn = _data["signIn"] ? DateTime.fromISO(_data["signIn"].toString()) : undefined as any;
+            this.signOut = _data["signOut"] ? DateTime.fromISO(_data["signOut"].toString()) : undefined as any;
+            this.plannedHours = _data["plannedHours"];
+            this.totalHours = _data["totalHours"];
+            this.lateIn = _data["lateIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.approvedHours = _data["approvedHours"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+            this.overtimeTypeNameEn = _data["overtimeTypeNameEn"];
+            this.overtimeTypeNameAr = _data["overtimeTypeNameAr"];
+            this.comments = _data["comments"];
+            this.hasExistingOvertime = _data["hasExistingOvertime"];
+            this.employeeOvertimeId = _data["employeeOvertimeId"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeBatchLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeBatchLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["timeRegisterId"] = this.timeRegisterId;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeNameEn"] = this.employeeNameEn;
+        data["employeeNameAr"] = this.employeeNameAr;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["shiftStart"] = this.shiftStart ? this.shiftStart.toString() : undefined as any;
+        data["shiftEnd"] = this.shiftEnd ? this.shiftEnd.toString() : undefined as any;
+        data["signIn"] = this.signIn ? this.signIn.toString() : undefined as any;
+        data["signOut"] = this.signOut ? this.signOut.toString() : undefined as any;
+        data["plannedHours"] = this.plannedHours;
+        data["totalHours"] = this.totalHours;
+        data["lateIn"] = this.lateIn;
+        data["earlyOut"] = this.earlyOut;
+        data["approvedHours"] = this.approvedHours;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        data["overtimeTypeNameEn"] = this.overtimeTypeNameEn;
+        data["overtimeTypeNameAr"] = this.overtimeTypeNameAr;
+        data["comments"] = this.comments;
+        data["hasExistingOvertime"] = this.hasExistingOvertime;
+        data["employeeOvertimeId"] = this.employeeOvertimeId;
+        return data;
+    }
+}
+
+export interface IOvertimeBatchLineDto {
+    id: number | undefined;
+    timeRegisterId: number | undefined;
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeNameEn: string | undefined;
+    employeeNameAr: string | undefined;
+    date: DateTime;
+    shiftStart: DateTime | undefined;
+    shiftEnd: DateTime | undefined;
+    signIn: DateTime | undefined;
+    signOut: DateTime | undefined;
+    plannedHours: number;
+    totalHours: number;
+    lateIn: number;
+    earlyOut: number;
+    approvedHours: number;
+    overtimeTypeId: number | undefined;
+    overtimeTypeNameEn: string | undefined;
+    overtimeTypeNameAr: string | undefined;
+    comments: string | undefined;
+    hasExistingOvertime: boolean;
+    employeeOvertimeId: number | undefined;
+}
+
+export class OvertimeBatchListDto implements IOvertimeBatchListDto {
+    id!: number;
+    organizationUnitId!: number;
+    organizationUnitName!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+    lineCount!: number;
+    totalApprovedHours!: number;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    requestNumber!: string | undefined;
+    isPosted!: boolean;
+
+    constructor(data?: IOvertimeBatchListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+            this.lineCount = _data["lineCount"];
+            this.totalApprovedHours = _data["totalApprovedHours"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.requestNumber = _data["requestNumber"];
+            this.isPosted = _data["isPosted"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeBatchListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeBatchListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        data["lineCount"] = this.lineCount;
+        data["totalApprovedHours"] = this.totalApprovedHours;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["requestNumber"] = this.requestNumber;
+        data["isPosted"] = this.isPosted;
+        return data;
+    }
+}
+
+export interface IOvertimeBatchListDto {
+    id: number;
+    organizationUnitId: number;
+    organizationUnitName: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+    lineCount: number;
+    totalApprovedHours: number;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    requestNumber: string | undefined;
+    isPosted: boolean;
+}
+
+export class OvertimeBatchOrganizationUnitDto implements IOvertimeBatchOrganizationUnitDto {
+    id!: number;
+    code!: string | undefined;
+    displayName!: string | undefined;
+
+    constructor(data?: IOvertimeBatchOrganizationUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeBatchOrganizationUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeBatchOrganizationUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["displayName"] = this.displayName;
+        return data;
+    }
+}
+
+export interface IOvertimeBatchOrganizationUnitDto {
+    id: number;
+    code: string | undefined;
+    displayName: string | undefined;
+}
+
+export class OvertimeBatchOvertimeTypeDto implements IOvertimeBatchOvertimeTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IOvertimeBatchOvertimeTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): OvertimeBatchOvertimeTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OvertimeBatchOvertimeTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IOvertimeBatchOvertimeTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
 }
 
 export class OvertimeDashboardDto implements IOvertimeDashboardDto {
@@ -300705,6 +303274,54 @@ export interface IPagedResultDtoOfCostRegisterDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfCredentialResetUserDto implements IPagedResultDtoOfCredentialResetUserDto {
+    items!: CredentialResetUserDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfCredentialResetUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(CredentialResetUserDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfCredentialResetUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfCredentialResetUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfCredentialResetUserDto {
+    items: CredentialResetUserDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfCurrencyConvertorDto implements IPagedResultDtoOfCurrencyConvertorDto {
     items!: CurrencyConvertorDto[] | undefined;
     totalCount!: number;
@@ -301278,54 +303895,6 @@ export class PagedResultDtoOfDisciplinaryTypeDto implements IPagedResultDtoOfDis
 
 export interface IPagedResultDtoOfDisciplinaryTypeDto {
     items: DisciplinaryTypeDto[] | undefined;
-    totalCount: number;
-}
-
-export class PagedResultDtoOfDocumentPrintFormDto implements IPagedResultDtoOfDocumentPrintFormDto {
-    items!: DocumentPrintFormDto[] | undefined;
-    totalCount!: number;
-
-    constructor(data?: IPagedResultDtoOfDocumentPrintFormDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(DocumentPrintFormDto.fromJS(item));
-            }
-            this.totalCount = _data["totalCount"];
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfDocumentPrintFormDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfDocumentPrintFormDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["totalCount"] = this.totalCount;
-        return data;
-    }
-}
-
-export interface IPagedResultDtoOfDocumentPrintFormDto {
-    items: DocumentPrintFormDto[] | undefined;
     totalCount: number;
 }
 
@@ -312081,6 +314650,54 @@ export interface IPagedResultDtoOfLeaveDashboardLeaveRowDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfLeavePlanDto implements IPagedResultDtoOfLeavePlanDto {
+    items!: LeavePlanDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLeavePlanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LeavePlanDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLeavePlanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLeavePlanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLeavePlanDto {
+    items: LeavePlanDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfLeaveProvisionReportRowDto implements IPagedResultDtoOfLeaveProvisionReportRowDto {
     items!: LeaveProvisionReportRowDto[] | undefined;
     totalCount!: number;
@@ -313614,6 +316231,54 @@ export class PagedResultDtoOfMyLeaveDto implements IPagedResultDtoOfMyLeaveDto {
 
 export interface IPagedResultDtoOfMyLeaveDto {
     items: MyLeaveDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMyLeavePlanDto implements IPagedResultDtoOfMyLeavePlanDto {
+    items!: MyLeavePlanDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyLeavePlanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyLeavePlanDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyLeavePlanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyLeavePlanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyLeavePlanDto {
+    items: MyLeavePlanDto[] | undefined;
     totalCount: number;
 }
 
@@ -315486,6 +318151,54 @@ export class PagedResultDtoOfOrganizationUnitUserListDto implements IPagedResult
 
 export interface IPagedResultDtoOfOrganizationUnitUserListDto {
     items: OrganizationUnitUserListDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfOvertimeBatchListDto implements IPagedResultDtoOfOvertimeBatchListDto {
+    items!: OvertimeBatchListDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfOvertimeBatchListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(OvertimeBatchListDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfOvertimeBatchListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfOvertimeBatchListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfOvertimeBatchListDto {
+    items: OvertimeBatchListDto[] | undefined;
     totalCount: number;
 }
 
@@ -332698,6 +335411,46 @@ export interface IPreviewLeaveBalanceInput {
     employeeAbsenceId: number | undefined;
 }
 
+export class PreviewLeavePlanInput implements IPreviewLeavePlanInput {
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+
+    constructor(data?: IPreviewLeavePlanInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): PreviewLeavePlanInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PreviewLeavePlanInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IPreviewLeavePlanInput {
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+}
+
 export class PrintReportDto implements IPrintReportDto {
     id!: number;
     code!: string | undefined;
@@ -337503,6 +340256,50 @@ export interface IRequestLeaveCancellationInput {
     reason: string | undefined;
 }
 
+export class RequestLeavePlanInput implements IRequestLeavePlanInput {
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+
+    constructor(data?: IRequestLeavePlanInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): RequestLeavePlanInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestLeavePlanInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IRequestLeavePlanInput {
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+}
+
 export class RequestLetterInput implements IRequestLetterInput {
     documentTypeId!: number;
     effectiveDate!: DateTime;
@@ -338590,6 +341387,106 @@ export class ResetPasswordOutput implements IResetPasswordOutput {
 export interface IResetPasswordOutput {
     canLogin: boolean;
     userName: string | undefined;
+}
+
+export class ResetUserCredentialsInput implements IResetUserCredentialsInput {
+    userIds!: number[] | undefined;
+    roleId!: number | undefined;
+
+    constructor(data?: IResetUserCredentialsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["userIds"])) {
+                this.userIds = [] as any;
+                for (let item of _data["userIds"])
+                    this.userIds!.push(item);
+            }
+            this.roleId = _data["roleId"];
+        }
+    }
+
+    static fromJS(data: any): ResetUserCredentialsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResetUserCredentialsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.userIds)) {
+            data["userIds"] = [];
+            for (let item of this.userIds)
+                data["userIds"].push(item);
+        }
+        data["roleId"] = this.roleId;
+        return data;
+    }
+}
+
+export interface IResetUserCredentialsInput {
+    userIds: number[] | undefined;
+    roleId: number | undefined;
+}
+
+export class ResetUserCredentialsResultDto implements IResetUserCredentialsResultDto {
+    passwordsResetCount!: number;
+    emailsSentCount!: number;
+    users!: CredentialResetOutcomeDto[] | undefined;
+
+    constructor(data?: IResetUserCredentialsResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.passwordsResetCount = _data["passwordsResetCount"];
+            this.emailsSentCount = _data["emailsSentCount"];
+            if (Array.isArray(_data["users"])) {
+                this.users = [] as any;
+                for (let item of _data["users"])
+                    this.users!.push(CredentialResetOutcomeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ResetUserCredentialsResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResetUserCredentialsResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["passwordsResetCount"] = this.passwordsResetCount;
+        data["emailsSentCount"] = this.emailsSentCount;
+        if (Array.isArray(this.users)) {
+            data["users"] = [];
+            for (let item of this.users)
+                data["users"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IResetUserCredentialsResultDto {
+    passwordsResetCount: number;
+    emailsSentCount: number;
+    users: CredentialResetOutcomeDto[] | undefined;
 }
 
 export enum ResidencyType {
@@ -342841,6 +345738,54 @@ export class SaveIntegrationSettingsInput implements ISaveIntegrationSettingsInp
 export interface ISaveIntegrationSettingsInput {
     key: string;
     values: { [key: string]: string; } | undefined;
+}
+
+export class SaveLeavePlanDraftInput implements ISaveLeavePlanDraftInput {
+    id!: number | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    comments!: string | undefined;
+
+    constructor(data?: ISaveLeavePlanDraftInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): SaveLeavePlanDraftInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveLeavePlanDraftInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ISaveLeavePlanDraftInput {
+    id: number | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    comments: string | undefined;
 }
 
 export class SaveLetterDraftInput implements ISaveLetterDraftInput {
@@ -353243,6 +356188,54 @@ export interface ITransferApprovalsInput {
     requestingEmployeeId: number | undefined;
 }
 
+export class TravelApplicantLookupDto implements ITravelApplicantLookupDto {
+    id!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+
+    constructor(data?: ITravelApplicantLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+        }
+    }
+
+    static fromJS(data: any): TravelApplicantLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TravelApplicantLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        return data;
+    }
+}
+
+export interface ITravelApplicantLookupDto {
+    id: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+}
+
 export class TravelDetailCostDto implements ITravelDetailCostDto {
     id!: number;
     travelDetailId!: number;
@@ -353438,9 +356431,12 @@ export interface ITravelDetailDto {
 export class TravelDto implements ITravelDto {
     id!: number;
     code!: string | undefined;
-    employeeId!: number;
+    employeeId!: number | undefined;
     employeeCode!: string | undefined;
     employeeFullNameEn!: string | undefined;
+    applicantId!: number | undefined;
+    applicantCode!: string | undefined;
+    applicantFullNameEn!: string | undefined;
     travelTypeId!: number;
     travelTypeNameEn!: string | undefined;
     startDate!: DateTime;
@@ -353467,6 +356463,9 @@ export class TravelDto implements ITravelDto {
             this.employeeId = _data["employeeId"];
             this.employeeCode = _data["employeeCode"];
             this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.applicantId = _data["applicantId"];
+            this.applicantCode = _data["applicantCode"];
+            this.applicantFullNameEn = _data["applicantFullNameEn"];
             this.travelTypeId = _data["travelTypeId"];
             this.travelTypeNameEn = _data["travelTypeNameEn"];
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
@@ -353493,6 +356492,9 @@ export class TravelDto implements ITravelDto {
         data["employeeId"] = this.employeeId;
         data["employeeCode"] = this.employeeCode;
         data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["applicantId"] = this.applicantId;
+        data["applicantCode"] = this.applicantCode;
+        data["applicantFullNameEn"] = this.applicantFullNameEn;
         data["travelTypeId"] = this.travelTypeId;
         data["travelTypeNameEn"] = this.travelTypeNameEn;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
@@ -353509,9 +356511,12 @@ export class TravelDto implements ITravelDto {
 export interface ITravelDto {
     id: number;
     code: string | undefined;
-    employeeId: number;
+    employeeId: number | undefined;
     employeeCode: string | undefined;
     employeeFullNameEn: string | undefined;
+    applicantId: number | undefined;
+    applicantCode: string | undefined;
+    applicantFullNameEn: string | undefined;
     travelTypeId: number;
     travelTypeNameEn: string | undefined;
     startDate: DateTime;
@@ -353525,9 +356530,12 @@ export interface ITravelDto {
 
 export class TravelFeedbackDto implements ITravelFeedbackDto {
     id!: number;
-    employeeId!: number;
+    employeeId!: number | undefined;
     employeeCode!: string | undefined;
     employeeFullNameEn!: string | undefined;
+    applicantId!: number | undefined;
+    applicantCode!: string | undefined;
+    applicantFullNameEn!: string | undefined;
     travelId!: number | undefined;
     travelCode!: string | undefined;
     claimDate!: DateTime;
@@ -353549,6 +356557,9 @@ export class TravelFeedbackDto implements ITravelFeedbackDto {
             this.employeeId = _data["employeeId"];
             this.employeeCode = _data["employeeCode"];
             this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.applicantId = _data["applicantId"];
+            this.applicantCode = _data["applicantCode"];
+            this.applicantFullNameEn = _data["applicantFullNameEn"];
             this.travelId = _data["travelId"];
             this.travelCode = _data["travelCode"];
             this.claimDate = _data["claimDate"] ? DateTime.fromISO(_data["claimDate"].toString()) : undefined as any;
@@ -353570,6 +356581,9 @@ export class TravelFeedbackDto implements ITravelFeedbackDto {
         data["employeeId"] = this.employeeId;
         data["employeeCode"] = this.employeeCode;
         data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["applicantId"] = this.applicantId;
+        data["applicantCode"] = this.applicantCode;
+        data["applicantFullNameEn"] = this.applicantFullNameEn;
         data["travelId"] = this.travelId;
         data["travelCode"] = this.travelCode;
         data["claimDate"] = this.claimDate ? this.claimDate.toString() : undefined as any;
@@ -353581,9 +356595,12 @@ export class TravelFeedbackDto implements ITravelFeedbackDto {
 
 export interface ITravelFeedbackDto {
     id: number;
-    employeeId: number;
+    employeeId: number | undefined;
     employeeCode: string | undefined;
     employeeFullNameEn: string | undefined;
+    applicantId: number | undefined;
+    applicantCode: string | undefined;
+    applicantFullNameEn: string | undefined;
     travelId: number | undefined;
     travelCode: string | undefined;
     claimDate: DateTime;

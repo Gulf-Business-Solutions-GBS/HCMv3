@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Abp.UI;
 using HCMv3.TravelManagement;
 using HCMv3.TravelManagement.Dto;
 using Shouldly;
@@ -83,5 +84,60 @@ public class TravelFeedbacksAppService_Tests : TravelManagementAppServiceTestBas
         var result = await service.GetAll(new GetAllTravelFeedbacksInput { EmployeeId = employee1 });
         result.TotalCount.ShouldBe(1);
         result.Items[0].EmployeeId.ShouldBe(employee1);
+    }
+
+    // ---- Employee or applicant (legacy TravelFeedback.Applicant, item 117) ----
+
+    [Fact]
+    public async Task Should_Create_A_Claim_For_An_Applicant_Against_Their_Trip()
+    {
+        var applicantId = CreateApplicant("Lina");
+        var travelTypeId = CreateTravelType();
+        var travelId = CreateApplicantTravel(applicantId, travelTypeId);
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditTravelFeedbackDto
+        {
+            ApplicantId = applicantId,
+            TravelId = travelId,
+            ClaimDate = new DateTime(2024, 3, 10),
+            ClaimAmount = 75
+        });
+
+        var result = await service.GetAll(new GetAllTravelFeedbacksInput { ApplicantId = applicantId });
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].EmployeeId.ShouldBeNull();
+        result.Items[0].ApplicantFullNameEn.ShouldBe("Lina Applicant");
+        result.Items[0].TravelId.ShouldBe(travelId);
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Claim_With_Neither_Employee_Nor_Applicant()
+    {
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(() =>
+            service.CreateOrEdit(new CreateOrEditTravelFeedbackDto
+            {
+                ClaimDate = new DateTime(2024, 3, 10),
+                ClaimAmount = 75
+            }));
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Claim_With_Both_Employee_And_Applicant()
+    {
+        var employeeId = CreateEmployee();
+        var applicantId = CreateApplicant();
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(() =>
+            service.CreateOrEdit(new CreateOrEditTravelFeedbackDto
+            {
+                EmployeeId = employeeId,
+                ApplicantId = applicantId,
+                ClaimDate = new DateTime(2024, 3, 10),
+                ClaimAmount = 75
+            }));
     }
 }

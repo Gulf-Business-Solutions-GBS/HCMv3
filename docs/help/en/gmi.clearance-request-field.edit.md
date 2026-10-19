@@ -13,6 +13,8 @@ permissions: [Pages.GeneralMasterInfo.ClearanceRequestFields.Create]
 
 The lines of the exit clearance checklist -- "laptop returned", "access badge handed in" -- that departments confirm before an employee leaves.
 
+Details on a line in the list opens that line's own page: its fields at the top, with Edit, and below them the departments (workflow roles) it is assigned to, which can be added, changed and removed there.
+
 ## ClearanceRequestType {#ClearanceRequestField.ClearanceRequestTypeId}
 <!-- alias: loc:ClearanceRequestType, dom:ClearanceRequestField_ClearanceRequestTypeId -->
 

@@ -15,6 +15,8 @@ A candidate's application to a vacancy with one of their CVs, and how far it has
 
 Setting it to *Joined* creates the employee record from the applicant (see the applicant page); the applicant's joining and probation end dates must be filled in first. Once an application moves past *Applied*, the candidate can no longer change or delete that CV on the careers site.
 
+Details on an application in the list opens its own page: the vacancy and status at the top, with Edit, then three tabs -- Applicant summary (the candidate's details and the CV used), Interview Details (the application's interviews, which can be added and changed there) and Status history (every change of the status, newest first, with who made it and when). Status changes made before history was switched on for applications are not listed.
+
 ## Vacancy {#ApplicationStatus.VacancyId}
 <!-- alias: loc:Vacancy, dom:ApplicationStatus_VacancyId -->
 
@@ -40,7 +42,7 @@ Setting it to *Joined* creates the employee record from the applicant (see the a
 
 **Why it matters.** *Joined* creates the employee. The vacancy status report can filter by it.
 
-**Rules.** Required. One of: Applied, Shortlisted, Interviewed, JobOffer, Hired, Rejected, Joined.
+**Rules.** Required. One of: Applied, Shortlisted, Interviewed, Job offer, Hired, Rejected, Joined.
 
 :::admin
 The employee created on *Joined* gets the next employee code, and its full names are built from all the name parts, the same as saving on the employee screen. No employee is created if one already has the same English names and birth date. The status change is refused, and no employee is created, if the applicant has no nationality, if the joining date is not after the birth date, or if an active employee already has the same civil ID. Fix the applicant and set *Joined* again.

@@ -67,7 +67,9 @@ public class MyTravelAppService : MyTransactionAppServiceBase<Travel>, IMyTravel
 
             // "Not history" means the trip has not happened yet or is still being decided. A trip that ended
             // last year is archive; a request still in an approver's inbox never is, whatever its dates say.
-            var query = MyRowsQuery(employeeId)
+            // Queried on the concrete column, not through MyRowsQuery: EmployeeId is nullable here (an applicant's
+            // rows have none), and the shared helper binds to the non-nullable interface member.
+            var query = Repository.GetAll().Where(t => t.EmployeeId == employeeId)
                 .WhereIf(!input.IncludeHistory,
                     t => t.EndDate >= today
                          || t.WorkflowStatus == RequestStatus.Draft

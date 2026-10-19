@@ -37,7 +37,7 @@ Maintained under Payroll Management → Attendance Types.
 
 **Example.** Hours
 
-**Why it matters.** Recorded only; no calculation reads it at present.
+**Why it matters.** Decides how Total Attend Days is worked out when the record is saved.
 
 **Rules.** Required. One of: Period, Day, Hours.
 
@@ -71,3 +71,18 @@ Maintained under Payroll Management → Attendance Types.
 **Example.** 12:00
 
 **Rules.** Optional. Date value.
+
+## TotalAttendDays {#EmployeeAttendance.TotalAttendDays}
+<!-- alias: loc:TotalAttendDays, dom:EmployeeAttendance_TotalAttendDays -->
+
+**What it is.** The number of days the attendance counts for, worked out when the record is saved. It is empty until the record has been saved once.
+
+**Example.** 0.5
+
+**Why it matters.** For Period with a start and end time, the hours between the two times (which replace the hours entered) are divided by the employee's planned duty hours that day, or the payroll default working hours when the duty has none, and the result is kept between 0 and 1. For Period without times it is the calendar days from start date to end date. For Hours it is the hours entered divided the same way, with no upper limit. For Day it is not calculated. When the attendance type has Have Quota Accrual ticked, these days are added to the accrued quota of its linked leave type, and taken off again when the record is changed or deleted. The leave provision report also reads them.
+
+**Rules.** Optional. Number.
+
+:::admin
+Saving fails when no duty is found for the employee on the start date. The quota row used is the one covering the employee's joining date, as in the old system; if there is none, one is created.
+:::

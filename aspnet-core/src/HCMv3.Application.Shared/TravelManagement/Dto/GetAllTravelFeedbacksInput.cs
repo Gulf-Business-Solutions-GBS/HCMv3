@@ -11,6 +11,9 @@ public class GetAllTravelFeedbacksInput : PagedAndSortedResultRequestDto, IShoul
 {
     public int? EmployeeId { get; set; }
 
+    /// <summary>Only rows for this job applicant.</summary>
+    public int? ApplicantId { get; set; }
+
     public void Normalize()
     {
         if (Sorting.IsNullOrWhiteSpace())

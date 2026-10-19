@@ -28,7 +28,8 @@ public class TravelCostRollupService_Tests : TravelManagementAppServiceTestBase
         CreateService(() => new TravelsAppService(
             FakeRepository.For<Travel>(Context),
             new HCMv3.Tests.PerformanceManagement.FakeAdminTransactionSubmitter(),
-            TravelCostRollupTestFactory.Create(Context, decimals)));
+            TravelCostRollupTestFactory.Create(Context, decimals),
+            FakeRepository.For<HCMv3.Recruitment.Applicant>(Context)));
 
     private TravelDetailsAppService CreateDetailsService() =>
         CreateService(() => new TravelDetailsAppService(

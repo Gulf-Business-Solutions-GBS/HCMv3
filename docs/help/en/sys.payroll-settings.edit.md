@@ -389,9 +389,9 @@ There is one settings record per company; it cannot be deleted.
 ## EnableEffectiveDateInRecPayment {#ManagePayrollSettings.EnableEffectiveDateInRecPayment}
 <!-- alias: loc:EnableEffectiveDateInRecPayment, dom:PayrollSettings_EnableEffectiveDateInRecPayment -->
 
-**What it is.** Whether recurring payments use an effective date.
+**What it is.** Whether a new open-ended recurring payment takes over from the current one instead of being refused as an overlap.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** When on, saving an employee recurring payment with end date 31/12/9999 closes the employee's open-ended payment of the same wage type the day before the new one starts. The current payment must itself be open-ended and start earlier, and only one may overlap; otherwise the save is refused. When off, any overlap is refused.
 
 **Rules.** Yes or no.
 

@@ -15,6 +15,8 @@ A repayment against one of the employee's loans. Payroll records its own instalm
 
 A recovery cannot be dated before the loan's recovery start date, and recoveries cannot add up to more than the loan's due amount. Saving a recovery on this form does not update the loan's balance due; payroll updates the balance when it recovers.
 
+Opened from a loan's Recoveries & Exemptions dialog, the loan is already filled in and cannot be changed, and the method starts as Recovery External.
+
 ## EmployeeLoanId {#EmployeeLoanRecovery.EmployeeLoanId}
 <!-- alias: loc:EmployeeLoanId, dom:EmployeeLoanRecovery_EmployeeLoanId -->
 

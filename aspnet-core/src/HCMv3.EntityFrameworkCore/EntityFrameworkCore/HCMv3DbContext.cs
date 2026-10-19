@@ -198,7 +198,6 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<DocumentType> DocumentTypes { get; set; }
 
-    public virtual DbSet<DocumentPrintForm> DocumentPrintForms { get; set; }
 
     public virtual DbSet<LoanType> LoanTypes { get; set; }
 
@@ -681,6 +680,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     /// remove.
     /// </summary>
     public virtual DbSet<EmployeePaymentBatch> EmployeePaymentBatches { get; set; }
+
+    public virtual DbSet<LeavePlan> LeavePlans { get; set; }
+
+    public virtual DbSet<OvertimeBatch> OvertimeBatches { get; set; }
+
+    public virtual DbSet<OvertimeBatchDetail> OvertimeBatchDetails { get; set; }
 
     public virtual DbSet<EmployeePaymentBatchDetail> EmployeePaymentBatchDetails { get; set; }
 
@@ -2413,6 +2418,22 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // the same pass -- and it is this row's status alone that decides whether the trip's legs and
             // cost lines are reachable, since neither of those carries a status of its own.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+
+            // A trip is for an employee or for a job applicant, never both and never neither.
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Cascade);
+            b.HasOne(e => e.Applicant).WithMany().HasForeignKey(e => e.ApplicantId).OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(e => new { e.TenantId, e.ApplicantId });
+            b.ToTable(t => t.HasCheckConstraint("CK_Travels_EmployeeOrApplicant",
+                "([EmployeeId] IS NOT NULL AND [ApplicantId] IS NULL) OR ([EmployeeId] IS NULL AND [ApplicantId] IS NOT NULL)"));
+        });
+
+        modelBuilder.Entity<TravelFeedback>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Cascade);
+            b.HasOne(e => e.Applicant).WithMany().HasForeignKey(e => e.ApplicantId).OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(e => new { e.TenantId, e.ApplicantId });
+            b.ToTable(t => t.HasCheckConstraint("CK_TravelFeedbacks_EmployeeOrApplicant",
+                "([EmployeeId] IS NOT NULL AND [ApplicantId] IS NULL) OR ([EmployeeId] IS NULL AND [ApplicantId] IS NOT NULL)"));
         });
 
         modelBuilder.Entity<TravelDetail>(b =>
@@ -2707,6 +2728,29 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         modelBuilder.Entity<PersonalActionReason>(b =>
         {
             b.HasOne(e => e.NotificationConfig).WithMany().HasForeignKey(e => e.NotificationConfigId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<LeavePlan>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            b.Property(e => e.Comments).HasMaxLength(LeavePlan.MaxCommentsLength);
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+            b.HasIndex(e => new { e.TenantId, e.StartDate, e.EndDate });
+        });
+
+        modelBuilder.Entity<OvertimeBatch>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.WorkflowStatus });
+            b.HasOne(e => e.OrganizationUnit).WithMany().HasForeignKey(e => e.OrganizationUnitId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<OvertimeBatchDetail>(b =>
+        {
+            b.HasOne(e => e.OvertimeBatch).WithMany(e => e.Details).HasForeignKey(e => e.OvertimeBatchId).OnDelete(DeleteBehavior.Cascade);
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.OvertimeType).WithMany().HasForeignKey(e => e.OvertimeTypeId).OnDelete(DeleteBehavior.Restrict);
+            b.HasIndex(e => new { e.TenantId, e.OvertimeBatchId });
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.Date });
         });
 
         modelBuilder.Entity<JobTitleDetail>(b =>

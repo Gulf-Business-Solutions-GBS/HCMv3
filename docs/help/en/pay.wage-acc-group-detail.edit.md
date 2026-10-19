@@ -79,48 +79,52 @@ Not read at present: the cost engine and the journal voucher take their accounts
 ## CostElement1Id {#WageAccGroupDetail.CostElement1Id}
 <!-- alias: loc:CostElement1Id, dom:WageAccGroupDetail_costElement1Id -->
 
-**What it is.** Cost element 1 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 1 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement1, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
+
+:::admin
+The slot captions come from Organization Management → Cost Element Types: give a type the code CostElement1 to CostElement7 to switch that slot on. A saved value whose cost element has since moved to another type is still shown, by its number, so opening the row does not clear it.
+:::
 
 ## CostElement2Id {#WageAccGroupDetail.CostElement2Id}
 <!-- alias: loc:CostElement2Id, dom:WageAccGroupDetail_costElement2Id -->
 
-**What it is.** Cost element 2 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 2 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement2, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement3Id {#WageAccGroupDetail.CostElement3Id}
 <!-- alias: loc:CostElement3Id, dom:WageAccGroupDetail_costElement3Id -->
 
-**What it is.** Cost element 3 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 3 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement3, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement4Id {#WageAccGroupDetail.CostElement4Id}
 <!-- alias: loc:CostElement4Id, dom:WageAccGroupDetail_costElement4Id -->
 
-**What it is.** Cost element 4 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 4 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement4, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement5Id {#WageAccGroupDetail.CostElement5Id}
 <!-- alias: loc:CostElement5Id, dom:WageAccGroupDetail_costElement5Id -->
 
-**What it is.** Cost element 5 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 5 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement5, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement6Id {#WageAccGroupDetail.CostElement6Id}
 <!-- alias: loc:CostElement6Id, dom:WageAccGroupDetail_costElement6Id -->
 
-**What it is.** Cost element 6 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 6 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement6, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.
 
 ## CostElement7Id {#WageAccGroupDetail.CostElement7Id}
 <!-- alias: loc:CostElement7Id, dom:WageAccGroupDetail_costElement7Id -->
 
-**What it is.** Cost element 7 -- one of up to seven accounting dimensions.
+**What it is.** Cost element 7 -- one of up to seven accounting dimensions. Captioned with the name of the cost element type whose code is CostElement7, and lists only cost elements of that type; not shown at all when no such type exists.
 
 **Rules.** Optional. Chosen from Cost Element master data.

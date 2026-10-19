@@ -175,6 +175,12 @@ export const appRoutes: Routes = [
                         data: { permission: 'Ess.MyLeave' },
                     },
                     {
+                        path: 'ess/leave-plan',
+                        loadComponent: () =>
+                            import('./main/ess/my-leave-plan/my-leave-plan.component').then((m) => m.MyLeavePlanComponent),
+                        data: { permission: 'Ess.MyLeavePlans' },
+                    },
+                    {
                         path: 'ess/inbox',
                         loadComponent: () =>
                             import('./main/ess/inbox/ess-inbox.component').then((m) => m.EssInboxComponent),
@@ -511,14 +517,6 @@ export const appRoutes: Routes = [
                                 (m) => m.DocumentTypesComponent
                             ),
                         data: { permission: 'Pages.GeneralMasterInfo.DocumentTypes' },
-                    },
-                    {
-                        path: 'document-print-forms',
-                        loadComponent: () =>
-                            import('./admin/general-master-info/document-print-forms/document-print-forms.component').then(
-                                (m) => m.DocumentPrintFormsComponent
-                            ),
-                        data: { permission: 'Pages.GeneralMasterInfo.DocumentPrintForms' },
                     },
                     {
                         path: 'loan-types',
@@ -2976,6 +2974,30 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.EmployeeLetterRequests' },
                     },
                     {
+                        path: 'leave-plans',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/leave-plans/leave-plans.component').then(
+                                (m) => m.LeavePlansComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.LeavePlans' },
+                    },
+                    {
+                        path: 'leave-planner',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/leave-planner/leave-planner.component').then(
+                                (m) => m.LeavePlannerComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.LeavePlanner' },
+                    },
+                    {
+                        path: 'overtime-batches',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/overtime-batches/overtime-batches.component').then(
+                                (m) => m.OvertimeBatchesComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.OvertimeBatches' },
+                    },
+                    {
                         path: 'loan-installments',
                         loadComponent: () =>
                             import('./admin/personnel-administration/loan-installments/loan-installments.component').then(
@@ -3804,6 +3826,14 @@ export const appRoutes: Routes = [
                                 (m) => m.BulkPasswordResetComponent
                             ),
                         data: { permission: 'Pages.Administration.Tools.BulkPasswordReset' },
+                    },
+                    {
+                        path: 'user-credential-reset',
+                        loadComponent: () =>
+                            import('./admin/administration/user-credential-reset/user-credential-reset.component').then(
+                                (m) => m.UserCredentialResetComponent
+                            ),
+                        data: { permission: 'Pages.Administration.Tools.ResetUserCredentials' },
                     },
                     {
                         path: 'tenant-version-check',

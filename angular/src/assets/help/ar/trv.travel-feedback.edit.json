@@ -3,10 +3,12 @@
   "lang": "ar",
   "title": "تقييمات السفر — إنشاء / تحرير",
   "entity": "HCMv3.TravelManagement.TravelFeedback",
-  "overviewHtml": "<p>مطالبة بمصروفات سفر. المطالبات التي يقدمها الموظف في الخدمة الذاتية تذهب إلى الموافقة: يجب أن يكون المبلغ أكبر من 0، ولا يجوز أن تكون للموظف مطالبة أخرى للرحلة نفسها، إلا إذا رُفضت أو أُعيدت. أما المطالبة المُدخلة هنا فتُحفظ مباشرة. ولا تُدفع المطالبات عبر الرواتب.</p>",
+  "overviewHtml": "<p>مطالبة بمصروفات سفر. المطالبات التي يقدمها الموظف في الخدمة الذاتية تذهب إلى الموافقة: يجب أن يكون المبلغ أكبر من 0، ولا يجوز أن تكون للموظف مطالبة أخرى للرحلة نفسها، إلا إذا رُفضت أو أُعيدت. ولا تُدفع المطالبات عبر الرواتب.</p><p>يحدد خيار <strong>موظف أو متقدم لوظيفة</strong> في أعلى النموذج صاحب المطالبة: موظف أو متقدم لوظيفة. والمطالبة تخص أحدهما فقط، ولا تُعرض في حقل <strong>السفر</strong> إلا رحلات هذا الشخص، وعند التبديل يُمسح الشخص الآخر والرحلة.</p><p>مطالبة الموظف المُدخلة هنا تذهب إلى الموافقة إذا كانت مطالبات السفر مُعدّة للاعتماد، وتُحفظ مباشرة إذا لم تكن كذلك. أما مطالبة المتقدم لوظيفة فتُحفظ مباشرة دائماً، لأن مسار الموافقة يُحدَّد بالموظف الذي يخصه الطلب، والمتقدم لا مدير له ولا وحدة يُوجَّه الطلب من خلالها. والمطالبة التي أُرسلت للاعتماد لا يمكن نقلها لاحقاً من الموظف إلى متقدم لوظيفة.</p>",
   "aliasIndex": {
     "loc:Employee": "TravelFeedback.EmployeeId",
     "dom:TravelFeedback_EmployeeId": "TravelFeedback.EmployeeId",
+    "loc:Applicant": "TravelFeedback.ApplicantId",
+    "dom:TravelFeedback_ApplicantId": "TravelFeedback.ApplicantId",
     "loc:Travel": "TravelFeedback.TravelId",
     "dom:TravelFeedback_TravelId": "TravelFeedback.TravelId",
     "loc:ClaimDate": "TravelFeedback.ClaimDate",
@@ -28,6 +30,20 @@
       "rules": "إلزامي. يُختار من قائمة الموظفين.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الموظف المطالِب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TravelFeedback.ApplicantId",
+      "label": "Applicant",
+      "section": "TravelFeedbacks",
+      "aliases": [
+        "loc:Applicant",
+        "dom:TravelFeedback_ApplicantId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المتقدمون.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المتقدم لوظيفة صاحب المطالبة. يظهر بدلاً من حقل الموظف عند اختيار <strong>المتقدم</strong> في الأعلى.</p><p><strong>مثال.</strong> APP-0042 - سارة أحمد</p><p><strong>لماذا يهم.</strong> اختيار المتقدم يقصر قائمة <strong>السفر</strong> على رحلاته. وتُحفظ المطالبة فوراً دون موافقة.</p>",
       "adminHtml": "",
       "stub": false
     },

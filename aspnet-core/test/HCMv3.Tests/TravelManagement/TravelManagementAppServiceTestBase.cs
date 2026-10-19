@@ -155,6 +155,41 @@ public abstract class TravelManagementAppServiceTestBase : AppTestBase
         return entity.Id;
     }
 
+    /// <summary>A minimal job applicant -- the other party a trip or a claim can belong to.</summary>
+    protected int CreateApplicant(string firstNameEn = "Candidate")
+    {
+        var entity = new HCMv3.Recruitment.Applicant
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+            FirstNameEn = firstNameEn,
+            LastNameEn = "Applicant",
+            FirstNameAr = "م",
+            LastNameAr = "م",
+            BirthDate = new DateTime(1995, 1, 1)
+        };
+        Context.Set<HCMv3.Recruitment.Applicant>().Add(entity);
+        Context.SaveChanges();
+        return entity.Id;
+    }
+
+    /// <summary>An applicant's trip, written straight to the context (no employee).</summary>
+    protected int CreateApplicantTravel(int applicantId, int travelTypeId)
+    {
+        var entity = new HCMv3.TravelManagement.Travel
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+            ApplicantId = applicantId,
+            TravelTypeId = travelTypeId,
+            StartDate = new DateTime(2024, 1, 1),
+            EndDate = new DateTime(2024, 1, 5)
+        };
+        Context.Travels.Add(entity);
+        Context.SaveChanges();
+        return entity.Id;
+    }
+
     protected int CreateTravel(int employeeId, int travelTypeId)
     {
         var entity = new HCMv3.TravelManagement.Travel

@@ -118,6 +118,83 @@
                                 [ngModel]="record().revokeDate?.toISODate()"
                                 (ngModelChange)="updateRevokeDate($event)" />
                         </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeSeparation_RevokeComments">{{ 'RevokeComments' | localize }}</label>
+                            <textarea
+                                id="EmployeeSeparation_RevokeComments"
+                                class="form-control"
+                                rows="2"
+                                maxlength="500"
+                                name="RevokeComments"
+                                [ngModel]="record().revokeComments"
+                                (ngModelChange)="updateField('revokeComments', $event)"></textarea>
+                        </div>
+
+                        <!-- Legacy "OnHold Information". Saving with a from-date and a ticked flag writes the On Hold record payroll reads. -->
+                        <h5 class="mb-4">{{ 'OnHoldInformation' | localize }}</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeSeparation_OnHoldFromDate">{{ 'OnHoldFromDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSeparation_OnHoldFromDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="OnHoldFromDate"
+                                    [ngModel]="record().onHoldFromDate?.toISODate()"
+                                    (ngModelChange)="updateOnHoldFromDate($event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeSeparation_OnHoldTillDate">{{ 'OnHoldTillDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSeparation_OnHoldTillDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="OnHoldTillDate"
+                                    [ngModel]="record().onHoldTillDate?.toISODate()"
+                                    (ngModelChange)="updateOnHoldTillDate($event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeSeparation_BankTransfer">{{ 'BankTransfer' | localize }}</label>
+                                <select
+                                    id="EmployeeSeparation_BankTransfer"
+                                    class="form-select"
+                                    name="BankTransfer"
+                                    [ngModel]="record().bankTransfer"
+                                    (ngModelChange)="updateField('bankTransfer', $event)">
+                                    @for (option of bankTransferOptions; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @for (flag of holdFlags; track flag.field) {
+                                <div class="col-md-3 mb-5 d-flex align-items-end">
+                                    <div class="form-check">
+                                        <input
+                                            [id]="'EmployeeSeparation_' + flag.field"
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            [name]="flag.field"
+                                            [ngModel]="flagValue(flag.field)"
+                                            (ngModelChange)="updateField(flag.field, $event)" />
+                                        <label class="form-check-label" [attr.for]="'EmployeeSeparation_' + flag.field">{{ flag.label | localize }}</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeSeparation_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeSeparation_Comments"
+                                class="form-control"
+                                rows="3"
+                                maxlength="500"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
                         @if (record().id) {
                             <div class="mb-5">
                                 <app-attachments entityType="EmployeeSeparation" [entityId]="record().id" />

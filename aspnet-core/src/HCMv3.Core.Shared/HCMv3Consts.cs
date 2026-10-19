@@ -18,7 +18,7 @@ public class HCMv3Consts
     /// </summary>
     public const bool PreventNotExistingTenantSubdomains = false;
 
-    public const bool AllowTenantsToChangeEmailSettings = false;
+    public const bool AllowTenantsToChangeEmailSettings = true;
 
     public const string Currency = "USD";
 

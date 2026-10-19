@@ -443,6 +443,20 @@ function componentsBySelector() {
 }
 
 /**
+ * `<costElementSlotFields idPrefix="X_">` builds its seven inputs at run time (ids `X_costElement1Id`..`7Id`) and
+ * captions each with a Cost Element Type's name, so its template has nothing to read. Stand in the static labels
+ * it would render, keyed as the fields themselves are (`CostElement1Id`..`7Id`), so those fields keep their topics.
+ */
+function expandCostElementSlots(html) {
+    return html.replace(/<costElementSlotFields\b[^>]*?(?:\/>|>[\s\S]*?<\/costElementSlotFields>)/g, (tag) => {
+        const prefix = tag.match(/\bidPrefix="([^"]+)"/)?.[1] ?? 'CostElement_';
+        return [1, 2, 3, 4, 5, 6, 7]
+            .map((n) => `<label for="${prefix}costElement${n}Id">{{ 'CostElement${n}Id' | localize }}</label>`)
+            .join('\n');
+    });
+}
+
+/**
  * A form's template with the templates of the child components it uses inlined where they sit.
  *
  * Forms get refactored: Wage Type and Employee Basic Pay moved their fields into a
@@ -451,7 +465,7 @@ function componentsBySelector() {
  * children means the registry can keep naming the dialog, which is what the user opens.
  */
 function expandTemplate(rel, depth = 0, seen = new Set([rel])) {
-    let html = read(rel);
+    let html = expandCostElementSlots(read(rel));
     const tsFile = rel.replace(/\.html$/, '.ts');
     let ts = exists(tsFile) ? read(tsFile) : '';
     if (depth > 3) return { html, ts };

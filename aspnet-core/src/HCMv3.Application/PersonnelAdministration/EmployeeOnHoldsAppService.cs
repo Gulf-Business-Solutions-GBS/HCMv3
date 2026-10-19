@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,10 +25,12 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeeOnHoldsAppService : HCMv3AppServiceBase, IEmployeeOnHoldsAppService
 {
     private readonly IRepository<EmployeeOnHold> _repository;
+    private readonly IEmployeeOnHoldService _onHoldService;
 
-    public EmployeeOnHoldsAppService(IRepository<EmployeeOnHold> repository)
+    public EmployeeOnHoldsAppService(IRepository<EmployeeOnHold> repository, IEmployeeOnHoldService onHoldService)
     {
         _repository = repository;
+        _onHoldService = onHoldService;
     }
 
     [HttpPost]
@@ -114,23 +117,11 @@ public class EmployeeOnHoldsAppService : HCMv3AppServiceBase, IEmployeeOnHoldsAp
         await _repository.DeleteAsync(input.Id);
     }
 
-    private async Task ValidateAsync(EmployeeOnHold entity)
-    {
-        if (entity.EndDate < entity.StartDate)
-        {
-            throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
-        }
-
-        var overlaps = await _repository.GetAll()
-            .AnyAsync(o => o.Id != entity.Id
-                           && o.EmployeeId == entity.EmployeeId
-                           && o.StartDate.Date <= entity.EndDate.Date
-                           && o.EndDate.Date >= entity.StartDate.Date);
-        if (overlaps)
-        {
-            throw new UserFriendlyException(L("OverlapConflictFound"));
-        }
-    }
+    /// <summary>
+    /// Shared with the separation screen, which writes holds too (legacy: both paths ended in
+    /// <c>EmployeeOnHold.OnSaving</c>). See <see cref="IEmployeeOnHoldService"/>.
+    /// </summary>
+    private Task ValidateAsync(EmployeeOnHold entity) => _onHoldService.ValidateAsync(entity);
 
     private static EmployeeOnHold MapToEntity(CreateOrEditEmployeeOnHoldDto input, EmployeeOnHold entity)
     {

@@ -389,9 +389,9 @@ permissions: [Pages.SystemSettings.ManagePayrollSettings]
 ## EnableEffectiveDateInRecPayment {#ManagePayrollSettings.EnableEffectiveDateInRecPayment}
 <!-- alias: loc:EnableEffectiveDateInRecPayment, dom:PayrollSettings_EnableEffectiveDateInRecPayment -->
 
-**ما هو.** ما إذا كانت الدفعات المتكررة تستخدم تاريخ سريان.
+**ما هو.** هل تحل الدفعة المتكررة الجديدة المفتوحة محل الدفعة الحالية بدلاً من رفضها بسبب التداخل.
 
-**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
+**لماذا يهم.** عند تفعيله، يؤدي حفظ دفعة متكررة للموظف بتاريخ نهاية 31/12/9999 إلى إغلاق دفعته المفتوحة من نوع الأجر نفسه في اليوم السابق لبداية الدفعة الجديدة. ويجب أن تكون الدفعة الحالية مفتوحة هي الأخرى وتبدأ قبلها، وألا يتداخل معها إلا دفعة واحدة، وإلا رُفض الحفظ. وعند تعطيله يُرفض أي تداخل.
 
 **القواعد.** نعم أو لا.
 

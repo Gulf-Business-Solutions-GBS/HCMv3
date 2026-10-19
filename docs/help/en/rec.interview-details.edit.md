@@ -16,7 +16,7 @@ An interview for an application: when, where, who interviewed and what they said
 ## ApplicationStatuses {#InterviewDetails.ApplicationStatusId}
 <!-- alias: loc:ApplicationStatuses, dom:InterviewDetails_ApplicationStatusId -->
 
-**What it is.** The application.
+**What it is.** The application. Not shown when the dialog is opened from the Interview Details tab of an application's own page: that application is filled in for you.
 
 **Rules.** Required. Chosen from Application Status master data.
 

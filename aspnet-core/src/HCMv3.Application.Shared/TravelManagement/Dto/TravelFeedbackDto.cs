@@ -8,11 +8,19 @@ namespace HCMv3.TravelManagement.Dto;
 /// </summary>
 public class TravelFeedbackDto : EntityDto<int>
 {
-    public int EmployeeId { get; set; }
+    /// <summary>Null for an applicant's row.</summary>
+    public int? EmployeeId { get; set; }
 
     public string EmployeeCode { get; set; }
 
     public string EmployeeFullNameEn { get; set; }
+
+    /// <summary>Set instead of the employee fields when the row belongs to a job applicant.</summary>
+    public int? ApplicantId { get; set; }
+
+    public string ApplicantCode { get; set; }
+
+    public string ApplicantFullNameEn { get; set; }
 
     public int? TravelId { get; set; }
 

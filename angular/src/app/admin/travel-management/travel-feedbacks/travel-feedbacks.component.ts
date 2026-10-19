@@ -64,6 +64,7 @@ export class TravelFeedbacksComponent extends AppComponentBase implements OnInit
             .getAll(
                 new GetAllTravelFeedbacksInput({
                     employeeId: undefined,
+                    applicantId: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
@@ -115,7 +116,7 @@ export class TravelFeedbacksComponent extends AppComponentBase implements OnInit
 
     deleteTravelFeedback(record: TravelFeedbackDto): void {
         this.message.confirm(
-            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode),
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode ?? record.applicantCode),
             this.l('AreYouSure'),
             (isConfirmed) => {
                 if (isConfirmed) {

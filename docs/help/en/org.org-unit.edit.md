@@ -40,6 +40,15 @@ A unit of the organisation tree -- company, division, department and so on -- wi
 
 **Rules.** Optional. Maximum 500 characters.
 
+## OrgUnitLogo {#OrgUnitProfile.LogoPath}
+<!-- alias: loc:OrgUnitLogo, dom:OrgUnit_Logo -->
+
+**What it is.** The unit's logo, for printing on letters, payslips and bank reports. PNG, JPEG or GIF, up to 1 MB; Remove clears it.
+
+**Why it matters.** Kept as a file in the tenant's file store, not in the database. No printed report shows it yet; reports pick it up as each one is updated to read it.
+
+**Rules.** Optional.
+
 ## PayrollAreaId {#OrgUnitProfile.PayrollAreaId}
 <!-- alias: loc:PayrollAreaId, dom:OrgUnit_PayrollAreaId -->
 

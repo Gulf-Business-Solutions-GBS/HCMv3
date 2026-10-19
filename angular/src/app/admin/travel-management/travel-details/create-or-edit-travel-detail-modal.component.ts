@@ -79,7 +79,7 @@ export class CreateOrEditTravelDetailModalComponent extends AppComponentBase {
         this.calcEmployeeSubGroupId.set(undefined);
 
         this._travelsService
-            .getAll(new GetAllTravelsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined, filter: undefined }))
+            .getAll(new GetAllTravelsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined, applicantId: undefined, filter: undefined }))
             .subscribe((result) => this.travels.set(result.items));
 
         this._travelDestinationsService
