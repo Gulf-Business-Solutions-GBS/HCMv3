@@ -207,7 +207,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether simulation payroll runs are allowed.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "html": "<p><strong>What it is.</strong> Whether simulation payroll runs are allowed.</p><p><strong>Why it matters.</strong> When on, the Payroll Engine screen offers <strong>Simulation</strong>, a test run that writes only to <strong>Simulation Salary Registers</strong> and never to live payroll data. When off, the box is hidden and a simulation run is refused.</p>",
       "adminHtml": "",
       "stub": false
     },

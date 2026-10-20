@@ -41,6 +41,7 @@ import { EngineRunProgressComponent } from '@app/shared/common/engine-run-progre
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { PayrollRunEmployeePickerModalComponent } from './payroll-run-employee-picker-modal.component';
 import { PayrollRetroReviewModalComponent } from './payroll-retro-review-modal.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
  * Port of the legacy Payroll Engine run screen
@@ -62,6 +63,7 @@ import { PayrollRetroReviewModalComponent } from './payroll-retro-review-modal.c
     templateUrl: './payroll-engine.component.html',
     animations: [appModuleAnimation()],
     imports: [
+        HelpPageDirective,
         DateInputDirective,
         SubHeaderComponent,
         EngineRunProgressComponent,
