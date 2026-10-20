@@ -49,14 +49,13 @@ public class MyLoanExemptionAppService_Tests : AppTestBase
     private int TenantId => AbpSession.TenantId ?? 1;
 
     // A twelve-instalment loan with figures chosen so the schedule can be stated in full rather than
-    // recomputed by the test:
-    //   installments = ceil(1200 / 100)                 = 12
-    //   baseEnd      = 31 Jan 2026 + 12 months          = 31 Jan 2027
-    // which is exactly the end date the loan is created with. One exemption inside that window therefore
-    // has to move it to 28 Feb 2027, and that figure is written out literally below.
+    // recomputed by the test. Legacy's month-by-month walk (EmployeeLoan.CalculateRecoveryDate) recovers 100
+    // a month from January 2026, so December clears the 1200: 31 Dec 2026, the end date the loan is created
+    // with. One exempted month recovers nothing, so January 2027 clears it instead: 31 Jan 2027, written out
+    // literally below.
     private static readonly DateTime RecoveryStart = new DateTime(2026, 1, 10);
-    private static readonly DateTime ScheduledEnd = new DateTime(2027, 1, 31);
-    private static readonly DateTime EndAfterOneSkip = new DateTime(2027, 2, 28);
+    private static readonly DateTime ScheduledEnd = new DateTime(2026, 12, 31);
+    private static readonly DateTime EndAfterOneSkip = new DateTime(2027, 1, 31);
 
     private static readonly DateTime SkipMonth = new DateTime(2026, 6, 15);
     private static readonly DateTime SkipMonthSameMonthOtherDay = new DateTime(2026, 6, 25);

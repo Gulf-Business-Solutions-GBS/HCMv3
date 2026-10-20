@@ -45,11 +45,6 @@ namespace HCMv3.PersonnelAdministration.Services;
 /// <item><description><b>A missing annual leave type ("1") skips the leave part</b>; legacy threw a null reference
 /// and refused the whole save. A missing Time Transfer Type "1" when leave IS carried forward refuses the save
 /// with a message, because the transfer cannot be stored without it (legacy stored it typeless).</description></item>
-/// <item><description><b>Loan installment schedules are not carried forward.</b> Legacy's
-/// <c>EmployeeLoanInstallment</c> (added 16/09/2026) has no HCMv3 counterpart; the merged loan recovers the summed
-/// <see cref="EmployeeLoan.FixedAmount"/>, which is what legacy's <c>GetInstallmentAmount</c> falls back to for
-/// a loan without installments. Legacy's <c>CalculateRecoveryDate</c> is not ported either (as on the loan
-/// screen), so the end date stays joining + 2 years as the rejoin code sets it.</description></item>
 /// <item><description><b>Loan balances are refreshed after each recovery</b> written or undone, as
 /// <c>FullAndFinalExitService</c> does, because HCMv3 stores <see cref="EmployeeLoan.BalanceDueAmount"/> where
 /// legacy computed it.</description></item>
@@ -74,6 +69,9 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
 
     /// <summary>Legacy's comment on the loan zeroing recoveries -- also how their undo finds them.</summary>
     public const string NilLoanComment = "Employee Rejoined with Nill Loan Balance";
+
+    /// <summary>Legacy's remark on the instalment rows carried onto a merged loan.</summary>
+    public const string CarriedForwardInstallmentRemark = "Carried forward on employee rejoin";
 
     /// <summary>Annual leave absence type, own ticket type and Time Transfer Type: legacy's hard-coded code "1".</summary>
     public const string CodeOne = "1";
@@ -104,6 +102,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
     private readonly IRepository<EmployeeLoan> _loanRepository;
     private readonly IRepository<EmployeeLoanRecovery> _loanRecoveryRepository;
     private readonly IRepository<LoanType> _loanTypeRepository;
+    private readonly IRepository<EmployeeLoanInstallment> _loanInstallmentRepository;
+    private readonly IEmployeeLoanInstallmentService _loanInstallmentService;
     private readonly ISysSettingsAccessor _settings;
     private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
     private readonly IEmployeeValidator _employeeValidator;
@@ -129,6 +129,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
         IRepository<EmployeeLoan> loanRepository,
         IRepository<EmployeeLoanRecovery> loanRecoveryRepository,
         IRepository<LoanType> loanTypeRepository,
+        IRepository<EmployeeLoanInstallment> loanInstallmentRepository,
+        IEmployeeLoanInstallmentService loanInstallmentService,
         ISysSettingsAccessor settings,
         IEmployeeCodeGenerator employeeCodeGenerator,
         IEmployeeValidator employeeValidator,
@@ -153,6 +155,8 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
         _loanRepository = loanRepository;
         _loanRecoveryRepository = loanRecoveryRepository;
         _loanTypeRepository = loanTypeRepository;
+        _loanInstallmentRepository = loanInstallmentRepository;
+        _loanInstallmentService = loanInstallmentService;
         _settings = settings;
         _employeeCodeGenerator = employeeCodeGenerator;
         _employeeValidator = employeeValidator;
@@ -655,7 +659,7 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
 
                 var balanceDue = ofType.Sum(r => r.BalanceDueAmount);
 
-                await _loanRepository.InsertAsync(new EmployeeLoan
+                var newLoan = new EmployeeLoan
                 {
                     TenantId = employee.TenantId,
                     EmployeeId = employee.Id,
@@ -669,9 +673,52 @@ public class EmployeeRejoinService : HCMv3DomainServiceBase, IEmployeeRejoinServ
                     BalanceDueAmount = balanceDue,
                     // Legacy EmployeeLoan.AfterConstruction default.
                     IncludeInLoanPay = true
-                });
+                };
+                await _loanRepository.InsertAndGetIdAsync(newLoan);
+
+                await CarryForwardInstallmentsAsync(newLoan, ofType);
             }
         }
+    }
+
+    /// <summary>
+    /// Legacy 724-753: carries the active instalment and each later effective-date change onto the merged loan. Each
+    /// row's amount is the sum, across the old loans of the type, of what each would recover in that month -- its
+    /// own schedule, or its fixed amount when it has none -- because loans of one type become one loan. A month that
+    /// comes to nothing gets no row. The rows are system-generated: they set no payroll retro date of their own.
+    /// </summary>
+    private async Task CarryForwardInstallmentsAsync(EmployeeLoan newLoan, List<EmployeeLoan> oldLoans)
+    {
+        var oldLoanIds = oldLoans.Select(l => l.Id).ToList();
+        var oldInstallments = _loanInstallmentRepository.GetAll()
+            .Where(r => oldLoanIds.Contains(r.EmployeeLoanId))
+            .ToList();
+
+        foreach (var effectiveDate in LoanInstallmentSchedule.CarryForwardEffectiveDates(newLoan.RecoveryStartDate, oldInstallments))
+        {
+            var installmentAmount = oldLoans.Sum(loan => LoanInstallmentSchedule.GetInstallmentAmount(
+                loan.FixedAmount,
+                oldInstallments.Where(r => r.EmployeeLoanId == loan.Id),
+                effectiveDate));
+
+            if (installmentAmount <= 0)
+            {
+                continue;
+            }
+
+            await _loanInstallmentService.CreateAsync(
+                new EmployeeLoanInstallment
+                {
+                    EmployeeLoanId = newLoan.Id,
+                    StartDate = effectiveDate,
+                    Amount = installmentAmount,
+                    Remark = CarriedForwardInstallmentRemark
+                },
+                isSystemGenerated: true);
+        }
+
+        // Legacy's loan save recalculated the recovery end date even when no row was carried.
+        await _loanInstallmentService.RecalculateRecoveryEndDateAsync(newLoan.Id);
     }
 
     /// <summary>

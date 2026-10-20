@@ -106,6 +106,7 @@ public class GoLiveCompanyClearer : AbpServiceBase, ITransientDependency
 
         var loanIds = await IdsAsync<EmployeeLoan>(l => ids.Contains(l.EmployeeId));
         Other(await RemoveAsync<EmployeeLoanRecovery>(r => loanIds.Contains(r.EmployeeLoanId), delete));
+        Other(await RemoveAsync<EmployeeLoanInstallment>(r => loanIds.Contains(r.EmployeeLoanId), delete));
         Other(await RemoveAsync<EmployeeLoan>(l => ids.Contains(l.EmployeeId), delete));
 
         var fundIds = await IdsAsync<EmployeeFund>(f => ids.Contains(f.EmployeeId));

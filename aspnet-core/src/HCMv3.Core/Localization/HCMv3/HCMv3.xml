@@ -7993,5 +7993,14 @@
     <text name="YouCannotSubmitThisReview">You cannot submit this review.</text>
     <text name="YouCannotViewThisAppraisal">You cannot view this appraisal.</text>
     <text name="YouCanOnlyRateYourOwnLines">You can only rate your own lines.</text>
+    <text name="LoanInstallmentEffectiveDateIsRequired">Effective Date cannot be blank.</text>
+    <text name="LoanInstallmentAmountMustBeGreaterThanZero">Installment Amount should be greater than zero.</text>
+    <text name="LoanInstallmentEffectiveDateMustBeFirstOfMonth">Effective Date should be the first day of the month.</text>
+    <text name="LoanInstallmentEffectiveDateBeforeRecoveryStart">Effective Date cannot be earlier than Loan Recovery Start Date.</text>
+    <text name="LoanInstallmentAlreadyExistsForMonth">Loan Installment already exists for {0}.</text>
+    <text name="TheLoanForThisInstallmentWasNotFound">The loan for this installment was not found.</text>
+    <text name="LoanInstallmentsRecoveriesAndExemptions">Installments, Recoveries &amp; Exemptions</text>
+    <text name="LoanInstallmentFixedAmountHint">The fixed amount becomes the first installment. To change the installment from a month onward, add a row under Loan Installments.</text>
+    <text name="LoanInstallmentEffectiveDateHint">The first day of the month from which this amount is recovered.</text>
   </texts>
 </localizationDictionary>

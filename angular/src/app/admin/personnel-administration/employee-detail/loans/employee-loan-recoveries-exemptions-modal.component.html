@@ -12,7 +12,7 @@
             @if (active() && loan(); as loan) {
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        {{ 'LoanRecoveriesAndExemptions' | localize }}
+                        {{ 'LoanInstallmentsRecoveriesAndExemptions' | localize }}
                         <small class="text-muted ms-2">
                             {{ loan.loanTypeName }} ({{ loan.startDate | luxonFormat: 'yyyy-MM-dd' }})
                         </small>
@@ -35,6 +35,60 @@
                         </div>
                     </div>
 
+                    <!-- Installments -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">{{ 'LoanInstallments' | localize }}</h5>
+                        @if ('Pages.PersonnelAdministration.EmployeeLoans.Edit' | permission) {
+                            <button type="button" class="btn btn-primary btn-sm" (click)="createInstallment()">
+                                <i class="fa fa-plus"></i>
+                                {{ 'CreateNew' | localize }}
+                            </button>
+                        }
+                    </div>
+                    <div class="primeng-datatable-container mb-8" [busyIf]="loadingInstallments()">
+                        <p-table [value]="installments()" [paginator]="installments().length > 10" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 100px">{{ 'Actions' | localize }}</th>
+                                    <th>{{ 'EffectiveDate' | localize }}</th>
+                                    <th>{{ 'EndDate' | localize }}</th>
+                                    <th>{{ 'InstallmentAmount' | localize }}</th>
+                                    <th>{{ 'Remark' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td class="text-nowrap">
+                                        @if ('Pages.PersonnelAdministration.EmployeeLoans.Edit' | permission) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-icon btn-sm btn-light-primary me-1"
+                                                [title]="'Edit' | localize"
+                                                (click)="editInstallment(record)">
+                                                <i class="fa fa-pen"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-icon btn-sm btn-light-danger"
+                                                [title]="'Delete' | localize"
+                                                (click)="deleteInstallment(record)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                    <td>{{ record.startDate | luxonFormat: 'MMM yyyy' }}</td>
+                                    <td>{{ isOpenEnded(record) ? '' : (record.endDate | luxonFormat: 'yyyy-MM-dd') }}</td>
+                                    <td>{{ record.amount }}</td>
+                                    <td>{{ record.remark }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (!loadingInstallments() && installments().length === 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                    </div>
+
+                    @if ('Pages.PersonnelAdministration.EmployeeLoanRecoveries' | permission) {
                     <!-- Recoveries -->
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">{{ 'EmployeeLoanRecoveries' | localize }}</h5>
@@ -97,6 +151,9 @@
                         }
                     </div>
 
+                    }
+
+                    @if ('Pages.PersonnelAdministration.EmployeeLoanExemptions' | permission) {
                     <!-- Exemptions -->
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">{{ 'EmployeeLoanExemptions' | localize }}</h5>
@@ -149,6 +206,7 @@
                             <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
                         }
                     </div>
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
@@ -160,5 +218,6 @@
     </div>
 </div>
 
+<createOrEditEmployeeLoanInstallmentModal #installmentModal (modalSave)="onInstallmentSaved()" />
 <createOrEditEmployeeLoanRecoveryModal #recoveryModal (modalSave)="onRecoverySaved()" />
 <createOrEditEmployeeLoanExemptionModal #exemptionModal (modalSave)="onExemptionSaved()" />

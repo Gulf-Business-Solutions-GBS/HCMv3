@@ -22621,6 +22621,63 @@ namespace HCMv3.Migrations
                     b.ToTable("EmployeeLoanExemptions");
                 });
 
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoanInstallment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeLoanId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeLoanId");
+
+                    b.HasIndex("TenantId", "EmployeeLoanId");
+
+                    b.ToTable("EmployeeLoanInstallments");
+                });
+
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoanRecovery", b =>
                 {
                     b.Property<int>("Id")
@@ -40375,6 +40432,17 @@ namespace HCMv3.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
+
+                    b.Navigation("EmployeeLoan");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoanInstallment", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeLoan", "EmployeeLoan")
+                        .WithMany()
+                        .HasForeignKey("EmployeeLoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("EmployeeLoan");
                 });

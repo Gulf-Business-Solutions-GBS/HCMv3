@@ -4,6 +4,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -33,15 +34,18 @@ public class LoanWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Emp
 
     private readonly IRepository<LoanType> _loanTypeRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IEmployeeLoanInstallmentService _installmentService;
 
     public LoanWorkflowTransactionHandler(
         IRepository<EmployeeLoan> repository,
         IRepository<LoanType> loanTypeRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IEmployeeLoanInstallmentService installmentService)
         : base(repository, unitOfWorkManager)
     {
         _loanTypeRepository = loanTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
+        _installmentService = installmentService;
     }
 
     public override string RequestType => LoanRequestType;
@@ -85,6 +89,26 @@ public class LoanWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Emp
             {
                 throw new UserFriendlyException(L("AnOutstandingLoanOfThisTypeAlreadyExists"));
             }
+        }
+    }
+
+    /// <summary>
+    /// Legacy <c>LoanRequest</c> approval (lines 197-212): the approved loan gets its first instalment row, the
+    /// fixed amount from the first of the recovery start month, and its recovery end date recalculated.
+    /// </summary>
+    public override async Task OnApprovedAsync(WorkflowTransactionContext context)
+    {
+        await base.OnApprovedAsync(context);
+
+        if (context.IsAmendment)
+        {
+            return;
+        }
+
+        var loan = await GetTargetAsync(context);
+        if (loan != null)
+        {
+            await _installmentService.EnsureInitialInstallmentAsync(loan);
         }
     }
 

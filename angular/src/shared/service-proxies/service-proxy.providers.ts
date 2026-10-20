@@ -507,6 +507,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.EmployeeLoansServiceProxy,
     ApiServiceProxies.EmployeeLoanExemptionsServiceProxy,
     ApiServiceProxies.EmployeeLoanRecoveriesServiceProxy,
+    ApiServiceProxies.EmployeeLoanInstallmentsServiceProxy,
     ApiServiceProxies.LoanInstallmentsServiceProxy,
     ApiServiceProxies.EmployeeFundsServiceProxy,
     ApiServiceProxies.EmployeeFundDetailsServiceProxy,

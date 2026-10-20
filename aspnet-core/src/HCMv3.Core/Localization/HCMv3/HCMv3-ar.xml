@@ -7828,5 +7828,14 @@
     <text name="YouCannotSubmitThisReview">لا يمكنك تقديم هذا التقييم.</text>
     <text name="YouCannotViewThisAppraisal">لا يمكنك الاطلاع على هذا التقييم.</text>
     <text name="YouCanOnlyRateYourOwnLines">يمكنك تقدير البنود الخاصة بك فقط.</text>
+    <text name="LoanInstallmentEffectiveDateIsRequired">لا يجوز ترك تاريخ السريان فارغاً.</text>
+    <text name="LoanInstallmentAmountMustBeGreaterThanZero">يجب أن يكون مبلغ القسط أكبر من صفر.</text>
+    <text name="LoanInstallmentEffectiveDateMustBeFirstOfMonth">يجب أن يكون تاريخ السريان هو اليوم الأول من الشهر.</text>
+    <text name="LoanInstallmentEffectiveDateBeforeRecoveryStart">لا يجوز أن يسبق تاريخ السريان تاريخ بدء استرداد القرض.</text>
+    <text name="LoanInstallmentAlreadyExistsForMonth">يوجد قسط قرض مسجل مسبقاً لشهر {0}.</text>
+    <text name="TheLoanForThisInstallmentWasNotFound">تعذّر العثور على القرض الخاص بهذا القسط.</text>
+    <text name="LoanInstallmentsRecoveriesAndExemptions">الأقساط والاستردادات والإعفاءات</text>
+    <text name="LoanInstallmentFixedAmountHint">يُعتمد المبلغ الثابت قسطاً أول. ولتعديل القسط اعتباراً من شهر معيّن، أضف سطراً ضمن أقساط القرض.</text>
+    <text name="LoanInstallmentEffectiveDateHint">اليوم الأول من الشهر الذي يبدأ منه استرداد هذا المبلغ.</text>
   </texts>
 </localizationDictionary>

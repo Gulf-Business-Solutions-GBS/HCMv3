@@ -1,0 +1,87 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeLoanInstallment_StartDate">{{ 'EffectiveDate' | localize }}</label>
+                                <input
+                                    id="EmployeeLoanInstallment_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="month"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="month()"
+                                    (ngModelChange)="updateMonth($event)"
+                                    required />
+                                <div class="form-text">{{ 'LoanInstallmentEffectiveDateHint' | localize }}</div>
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeLoanInstallment_Amount">{{ 'InstallmentAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeLoanInstallment_Amount"
+                                    #amountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.001"
+                                    min="0.001"
+                                    name="Amount"
+                                    [ngModel]="record().amount"
+                                    (ngModelChange)="updateField('amount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="amountInput" />
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeLoanInstallment_Remark">{{ 'Remark' | localize }}</label>
+                            <textarea
+                                id="EmployeeLoanInstallment_Remark"
+                                class="form-control"
+                                rows="3"
+                                maxlength="500"
+                                name="Remark"
+                                [ngModel]="record().remark"
+                                (ngModelChange)="updateField('remark', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

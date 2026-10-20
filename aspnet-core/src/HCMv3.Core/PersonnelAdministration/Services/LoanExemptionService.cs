@@ -5,7 +5,6 @@ using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
-using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
 
 namespace HCMv3.PersonnelAdministration.Services;
@@ -14,21 +13,12 @@ namespace HCMv3.PersonnelAdministration.Services;
 ///
 /// <remarks>
 /// <para>
-/// <b>The arithmetic is legacy's, unchanged.</b> From
-/// <c>HCM10.Module.BusinessObjects.PersonnelAdministration.EmployeeLoanExemption.UpdateRecoveryEndDate</c>:
-/// </para>
-/// <code>
-/// installments = ceil(DueAmount / FixedAmount)
-/// baseEnd      = lastDayOfMonth(RecoveryStartDate).AddMonths(installments)
-/// skips        = exemptions with RecoveryStartDate &lt;= ExemptionDate &lt;= baseEnd
-/// EndDate      = lastDayOfMonth(baseEnd.AddMonths(skips))
-/// </code>
-/// <para>
-/// Two details look like bugs and are not, so they are stated rather than tidied. The skip window is bounded
-/// by <c>baseEnd</c> -- the schedule BEFORE any skips are added -- not by the extended end date, so
-/// exemptions cannot chain into each other's newly added months. And the last-day-of-month normalisation is
-/// applied twice, once building <c>baseEnd</c> and once at the end, which is what keeps the result on a month
-/// boundary after <c>AddMonths</c> has walked it off one (31 Jan + 1 month = 28 Feb).
+/// <b>The arithmetic is legacy's current one,</b> <c>EmployeeLoan.RecalculateRecoveryEndDate</c> (called from
+/// <c>EmployeeLoanExemption</c> since the instalment schedule of 16/09/2026): walk the months from the recovery
+/// start, skip exempted months, recover each month's instalment from the due amount, and end on the last day of
+/// the month that clears it. It lives in <see cref="IEmployeeLoanInstallmentService"/> because instalment changes
+/// run it too. It replaced legacy's older <c>ceil(DueAmount / FixedAmount)</c> formula, which ended one month
+/// later for the same loan and knew nothing of instalment changes.
 /// </para>
 ///
 /// <para>
@@ -49,18 +39,18 @@ public class LoanExemptionService : HCMv3DomainServiceBase, ILoanExemptionServic
 {
     private readonly IRepository<EmployeeLoan> _loanRepository;
     private readonly IRepository<EmployeeLoanExemption> _exemptionRepository;
-    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IEmployeeLoanInstallmentService _installmentService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public LoanExemptionService(
         IRepository<EmployeeLoan> loanRepository,
         IRepository<EmployeeLoanExemption> exemptionRepository,
-        ISysSettingsAccessor sysSettingsAccessor,
+        IEmployeeLoanInstallmentService installmentService,
         IUnitOfWorkManager unitOfWorkManager)
     {
         _loanRepository = loanRepository;
         _exemptionRepository = exemptionRepository;
-        _sysSettingsAccessor = sysSettingsAccessor;
+        _installmentService = installmentService;
         _unitOfWorkManager = unitOfWorkManager;
     }
 
@@ -116,79 +106,19 @@ public class LoanExemptionService : HCMv3DomainServiceBase, ILoanExemptionServic
         return Task.CompletedTask;
     }
 
-    public async Task<DateTime?> RecomputeRecoveryEndDateAsync(int employeeLoanId, int? excludeExemptionId = null)
+    public Task<DateTime?> RecomputeRecoveryEndDateAsync(int employeeLoanId, int? excludeExemptionId = null)
     {
-        var settings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
-
-        // Off (or never configured) means the recovery end date is whatever an operator typed, and this
-        // service must not touch it. Legacy makes the same call and the same decision.
-        if (settings == null || !settings.AutoUpdateLoanRecoveryEndDate)
-        {
-            return null;
-        }
-
-        // Flushed first: this runs immediately after the handler has stamped the exemption Approved, and the
-        // count below is a database query. Without the flush the row it is being run FOR would still read as
-        // Open, the loan would not move, and the failure would be silent -- an instalment forgiven instead of
-        // deferred.
-        if (_unitOfWorkManager.Current != null)
-        {
-            await _unitOfWorkManager.Current.SaveChangesAsync();
-        }
-
-        using (DisableApprovedOnly())
-        {
-            var loan = _loanRepository.GetAll().FirstOrDefault(l => l.Id == employeeLoanId);
-
-            if (loan == null)
-            {
-                return null;
-            }
-
-            // Legacy's guard: with no instalment, no balance or no recovery start there is no schedule to
-            // recompute -- and dividing by a zero fixed amount would produce an infinity.
-            if (loan.FixedAmount == 0 || loan.DueAmount == 0 || loan.RecoveryStartDate == default)
-            {
-                return null;
-            }
-
-            var installments = (int)Math.Ceiling(loan.DueAmount / loan.FixedAmount);
-
-            var baseEnd = LastDayOfMonth(loan.RecoveryStartDate).AddMonths(installments);
-
-            var recoveryStart = loan.RecoveryStartDate.Date;
-
-            var skipCount = _exemptionRepository.GetAll()
-                .Count(e => e.EmployeeLoanId == employeeLoanId
-                            && (!excludeExemptionId.HasValue || e.Id != excludeExemptionId.Value)
-                            && (e.WorkflowStatus == null
-                                || e.WorkflowStatus == RequestStatus.Approved
-                                || e.WorkflowStatus == RequestStatus.Closed)
-                            && e.ExemptionDate >= recoveryStart
-                            && e.ExemptionDate <= baseEnd);
-
-            var newEndDate = LastDayOfMonth(baseEnd.AddMonths(skipCount));
-
-            if (loan.EndDate.Date == newEndDate.Date)
-            {
-                return loan.EndDate;
-            }
-
-            loan.EndDate = newEndDate;
-            await _loanRepository.UpdateAsync(loan);
-
-            return newEndDate;
-        }
+        // Not flagged as an effective-dated child change, unlike legacy. Legacy's exemption sets its own retro
+        // date (SetRetroForExemptionChange) and so can stop the loan's; that is not ported, so the loan's own save
+        // keeps raising the retro date, as it did here before.
+        return _installmentService.RecalculateRecoveryEndDateAsync(
+            employeeLoanId,
+            excludeExemptionId: excludeExemptionId);
     }
 
     private IDisposable DisableApprovedOnly()
     {
         return _unitOfWorkManager.Current?.DisableFilter(HCMv3DataFilters.ApprovedOnly) ?? NullDisposable.Instance;
-    }
-
-    private static DateTime LastDayOfMonth(DateTime date)
-    {
-        return new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
     }
 
     private sealed class NullDisposable : IDisposable

@@ -611,6 +611,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<LoanInstallment> LoanInstallments { get; set; }
 
+    public virtual DbSet<EmployeeLoanInstallment> EmployeeLoanInstallments { get; set; }
+
     public virtual DbSet<EmployeeFund> EmployeeFunds { get; set; }
 
     public virtual DbSet<EmployeeFundDetail> EmployeeFundDetails { get; set; }
@@ -2153,6 +2155,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeLoanInstallment>(b =>
+        {
+            // Payroll reads a loan's schedule by loan, every run.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeLoanId });
         });
 
         modelBuilder.Entity<EmployeeAssignedTask>(b =>

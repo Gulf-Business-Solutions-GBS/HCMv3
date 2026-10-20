@@ -2092,6 +2092,27 @@
       "defaultSection": "EmployeeLoanExemptions"
     },
     {
+      "helpId": "pa.employee-loan-installment.edit",
+      "title": "Employee Loan Installments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeLoans.Edit"
+      ],
+      "entity": {
+        "name": "EmployeeLoanInstallment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeLoanInstallment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeLoanInstallment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/loans/create-or-edit-employee-loan-installment-modal.component.html"
+        }
+      },
+      "defaultSection": "LoanInstallments"
+    },
+    {
       "helpId": "pa.employee-loan-recovery.edit",
       "title": "Employee Loan Recoveries — Create / Edit",
       "audience": [

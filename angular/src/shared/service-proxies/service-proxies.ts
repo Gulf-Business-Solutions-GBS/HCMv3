@@ -44286,6 +44286,234 @@ export class EmployeeLoanExemptionsServiceProxy {
 }
 
 @Injectable()
+export class EmployeeLoanInstallmentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllEmployeeLoanInstallmentsInput | undefined): Observable<PagedResultDtoOfEmployeeLoanInstallmentDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeLoanInstallments/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfEmployeeLoanInstallmentDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfEmployeeLoanInstallmentDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfEmployeeLoanInstallmentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfEmployeeLoanInstallmentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getEmployeeLoanInstallmentForEdit(id?: number | undefined): Observable<GetEmployeeLoanInstallmentForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeLoanInstallments/GetEmployeeLoanInstallmentForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeLoanInstallmentForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeLoanInstallmentForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetEmployeeLoanInstallmentForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetEmployeeLoanInstallmentForEditOutput>;
+        }));
+    }
+
+    protected processGetEmployeeLoanInstallmentForEdit(response: HttpResponseBase): Observable<GetEmployeeLoanInstallmentForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetEmployeeLoanInstallmentForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEdit(body?: CreateOrEditEmployeeLoanInstallmentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeLoanInstallments/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeLoanInstallments/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeLoanRecoveriesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -190903,6 +191131,58 @@ export interface ICreateOrEditEmployeeLoanExemptionDto {
     comments: string | undefined;
 }
 
+export class CreateOrEditEmployeeLoanInstallmentDto implements ICreateOrEditEmployeeLoanInstallmentDto {
+    id!: number | undefined;
+    employeeLoanId!: number;
+    startDate!: DateTime;
+    amount!: number;
+    remark!: string | undefined;
+
+    constructor(data?: ICreateOrEditEmployeeLoanInstallmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeLoanId = _data["employeeLoanId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.amount = _data["amount"];
+            this.remark = _data["remark"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditEmployeeLoanInstallmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditEmployeeLoanInstallmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeLoanId"] = this.employeeLoanId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["amount"] = this.amount;
+        data["remark"] = this.remark;
+        return data;
+    }
+}
+
+export interface ICreateOrEditEmployeeLoanInstallmentDto {
+    id: number | undefined;
+    employeeLoanId: number;
+    startDate: DateTime;
+    amount: number;
+    remark: string | undefined;
+}
+
 export class CreateOrEditEmployeeLoanRecoveryDto implements ICreateOrEditEmployeeLoanRecoveryDto {
     id!: number | undefined;
     employeeLoanId!: number;
@@ -219884,6 +220164,62 @@ export interface IEmployeeLoanExemptionDto {
     workflowRequestId: number | undefined;
 }
 
+export class EmployeeLoanInstallmentDto implements IEmployeeLoanInstallmentDto {
+    id!: number;
+    employeeLoanId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    amount!: number;
+    remark!: string | undefined;
+
+    constructor(data?: IEmployeeLoanInstallmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeLoanId = _data["employeeLoanId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.amount = _data["amount"];
+            this.remark = _data["remark"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeLoanInstallmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeLoanInstallmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeLoanId"] = this.employeeLoanId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["amount"] = this.amount;
+        data["remark"] = this.remark;
+        return data;
+    }
+}
+
+export interface IEmployeeLoanInstallmentDto {
+    id: number;
+    employeeLoanId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    amount: number;
+    remark: string | undefined;
+}
+
 export class EmployeeLoanRecoveryDto implements IEmployeeLoanRecoveryDto {
     id!: number;
     employeeLoanId!: number;
@@ -238505,6 +238841,54 @@ export class GetAllEmployeeLoanExemptionsInput implements IGetAllEmployeeLoanExe
 }
 
 export interface IGetAllEmployeeLoanExemptionsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    employeeLoanId: number | undefined;
+}
+
+export class GetAllEmployeeLoanInstallmentsInput implements IGetAllEmployeeLoanInstallmentsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    employeeLoanId!: number | undefined;
+
+    constructor(data?: IGetAllEmployeeLoanInstallmentsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.employeeLoanId = _data["employeeLoanId"];
+        }
+    }
+
+    static fromJS(data: any): GetAllEmployeeLoanInstallmentsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllEmployeeLoanInstallmentsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["employeeLoanId"] = this.employeeLoanId;
+        return data;
+    }
+}
+
+export interface IGetAllEmployeeLoanInstallmentsInput {
     maxResultCount: number;
     skipCount: number;
     sorting: string | undefined;
@@ -258709,6 +259093,42 @@ export class GetEmployeeLoanForEditOutput implements IGetEmployeeLoanForEditOutp
 
 export interface IGetEmployeeLoanForEditOutput {
     employeeLoan: CreateOrEditEmployeeLoanDto;
+}
+
+export class GetEmployeeLoanInstallmentForEditOutput implements IGetEmployeeLoanInstallmentForEditOutput {
+    employeeLoanInstallment!: CreateOrEditEmployeeLoanInstallmentDto;
+
+    constructor(data?: IGetEmployeeLoanInstallmentForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeLoanInstallment = _data["employeeLoanInstallment"] ? CreateOrEditEmployeeLoanInstallmentDto.fromJS(_data["employeeLoanInstallment"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeLoanInstallmentForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeLoanInstallmentForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeLoanInstallment"] = this.employeeLoanInstallment ? this.employeeLoanInstallment.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetEmployeeLoanInstallmentForEditOutput {
+    employeeLoanInstallment: CreateOrEditEmployeeLoanInstallmentDto;
 }
 
 export class GetEmployeeLoanRecoveryForEditOutput implements IGetEmployeeLoanRecoveryForEditOutput {
@@ -311227,6 +311647,54 @@ export class PagedResultDtoOfEmployeeLoanExemptionDto implements IPagedResultDto
 
 export interface IPagedResultDtoOfEmployeeLoanExemptionDto {
     items: EmployeeLoanExemptionDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfEmployeeLoanInstallmentDto implements IPagedResultDtoOfEmployeeLoanInstallmentDto {
+    items!: EmployeeLoanInstallmentDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfEmployeeLoanInstallmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmployeeLoanInstallmentDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfEmployeeLoanInstallmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfEmployeeLoanInstallmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfEmployeeLoanInstallmentDto {
+    items: EmployeeLoanInstallmentDto[] | undefined;
     totalCount: number;
 }
 

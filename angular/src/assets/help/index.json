@@ -2076,6 +2076,15 @@
     "EmployeeLoanExemption_Comments": [
       "pa.employee-loan-exemption.edit"
     ],
+    "EmployeeLoanInstallment_StartDate": [
+      "pa.employee-loan-installment.edit"
+    ],
+    "EmployeeLoanInstallment_Amount": [
+      "pa.employee-loan-installment.edit"
+    ],
+    "EmployeeLoanInstallment_Remark": [
+      "pa.employee-loan-installment.edit"
+    ],
     "EmployeeLoanRecovery_EmployeeLoanId": [
       "pa.employee-loan-recovery.edit"
     ],
@@ -8238,6 +8247,7 @@
     "createoreditemployeefunddetailmodal": "pa.employee-fund-detail.edit",
     "createoreditemployeefundexemptionmodal": "pa.employee-fund-exemption.edit",
     "createoreditemployeeloanexemptionmodal": "pa.employee-loan-exemption.edit",
+    "createoreditemployeeloaninstallmentmodal": "pa.employee-loan-installment.edit",
     "createoreditemployeeloanrecoverymodal": "pa.employee-loan-recovery.edit",
     "createoreditloaninstallmentmodal": "pa.loan-installment.edit",
     "createoreditannouncementmodal": "pa.news.edit",

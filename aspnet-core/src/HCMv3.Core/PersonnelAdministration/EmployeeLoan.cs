@@ -18,12 +18,14 @@ namespace HCMv3.PersonnelAdministration;
 /// ported anywhere in this codebase (same simplification as Wave 1's <c>EmployeeAbsence</c>).</description></item>
 /// <item><description>The legacy <c>prevXxx</c> change-tracking fields are <c>[NonPersistent]</c> and not
 /// ported as entity columns.</description></item>
-/// <item><description>The legacy computed getters for <see cref="EndDate"/> (auto-recalculated recovery end
-/// date from FixedAmount/DueAmount/exemption count) and <see cref="BalanceDueAmount"/> (DueAmount minus sum
-/// of recoveries) are ported as persisted columns but are NOT auto-recomputed by the AppService -- the
-/// cross-entity cascade from <c>EmployeeLoanRecovery</c>/<c>EmployeeLoanExemption</c> saves is deliberately
-/// not ported (same cross-entity-cascade omission approach as Wave 1's
-/// <c>EmployeeAbsAdjustment</c>).</description></item>
+/// <item><description><see cref="EndDate"/> and <see cref="BalanceDueAmount"/> are persisted columns.
+/// <see cref="EndDate"/> is recalculated, when the payroll setting <c>AutoUpdateLoanRecoveryEndDate</c> is on,
+/// on every loan, instalment and exemption save (legacy <c>CalculateRecoveryDate</c>; see
+/// <c>IEmployeeLoanInstallmentService</c>). <see cref="BalanceDueAmount"/> is refreshed by payroll and by the
+/// services that write recoveries.</description></item>
+/// <item><description><see cref="FixedAmount"/> is kept for loans recorded before the instalment schedule
+/// (<see cref="EmployeeLoanInstallment"/>) existed and as the first instalment of a new loan; payroll reads the
+/// schedule first and falls back to it.</description></item>
 /// </list>
 /// </summary>
 public class EmployeeLoan : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity

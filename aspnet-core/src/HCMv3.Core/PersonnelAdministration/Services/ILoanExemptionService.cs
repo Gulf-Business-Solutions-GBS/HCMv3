@@ -38,7 +38,7 @@ public interface ILoanExemptionService
     /// exemptions currently in force against it.
     ///
     /// <para>
-    /// This is the port of legacy <c>EmployeeLoanExemption.UpdateRecoveryEndDate</c>, and it is the whole
+    /// This is the port of legacy <c>EmployeeLoan.RecalculateRecoveryEndDate</c> as an exemption calls it, and it is the whole
     /// point of an exemption. Skipping a month's instalment without pushing the end date out does not DEFER
     /// the money, it FORGIVES it: the employee pays one instalment fewer and the loan is never fully
     /// recovered. An exemption without this recompute is cosmetic.
@@ -60,6 +60,6 @@ public interface ILoanExemptionService
     /// An exemption to leave out of the count -- the one being deleted. Legacy passes the Oid being deleted
     /// for the same reason: at <c>OnDeleting</c> the row is still in the collection.
     /// </param>
-    /// <returns>The end date after the recompute, or null when nothing was changed.</returns>
+    /// <returns>The end date after the recompute, or null when the setting is off or the loan was not found.</returns>
     Task<DateTime?> RecomputeRecoveryEndDateAsync(int employeeLoanId, int? excludeExemptionId = null);
 }

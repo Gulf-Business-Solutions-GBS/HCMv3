@@ -115,7 +115,11 @@
                                     step="0.01"
                                     name="FixedAmount"
                                     [ngModel]="record().fixedAmount"
+                                    [disabled]="!!record().id"
                                     (ngModelChange)="updateNumberField('fixedAmount', $event)" />
+                                <!-- Legacy keeps Fixed Amount read-only once the loan exists: changes go in as
+                                     effective-dated rows under Installments, Recoveries & Exemptions. -->
+                                <div class="form-text">{{ 'LoanInstallmentFixedAmountHint' | localize }}</div>
                             </div>
                             <div class="col-md-4 mb-5 d-flex align-items-end">
                                 <div class="form-check">

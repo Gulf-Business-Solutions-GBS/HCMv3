@@ -27,10 +27,14 @@ public class MyLoanAppService : MyTransactionAppServiceBase<EmployeeLoan>, IMyLo
         IRepository<WorkflowRequest> requestRepository,
         IEmployeeScopeProvider employeeScopeProvider,
         IRequestMasterResolver requestMasterResolver,
-        IWorkflowApprovalService workflowApprovalService)
+        IWorkflowApprovalService workflowApprovalService,
+        IEmployeeLoanInstallmentService installmentService)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
+        _installmentService = installmentService;
     }
+
+    private readonly IEmployeeLoanInstallmentService _installmentService;
 
     protected override string RequestType => LoanWorkflowTransactionHandler.LoanRequestType;
 
@@ -60,7 +64,7 @@ public class MyLoanAppService : MyTransactionAppServiceBase<EmployeeLoan>, IMyLo
         }
     }
 
-    public Task<MyRequestSubmissionDto> RequestLoan(RequestLoanInput input)
+    public async Task<MyRequestSubmissionDto> RequestLoan(RequestLoanInput input)
     {
         // Refused early rather than by a rollback from the handler, which reads like a system fault to the
         // person filling the form in.
@@ -69,8 +73,10 @@ public class MyLoanAppService : MyTransactionAppServiceBase<EmployeeLoan>, IMyLo
             throw new UserFriendlyException(L("LoanAmountMustBeGreaterThanZero"));
         }
 
-        return CreateAndSubmitAsync(
-            employeeId => new EmployeeLoan
+        EmployeeLoan loan = null;
+
+        var result = await CreateAndSubmitAsync(
+            employeeId => loan = new EmployeeLoan
             {
                 TenantId = AbpSession.TenantId ?? 0,
                 EmployeeId = employeeId,
@@ -90,6 +96,15 @@ public class MyLoanAppService : MyTransactionAppServiceBase<EmployeeLoan>, IMyLo
                 IncludeInLoanPay = true
             },
             input.LoanTypeId);
+
+        // With workflow off for loans the loan is in force at once, so it gets its first instalment row now; a
+        // routed one gets it on approval (LoanWorkflowTransactionHandler).
+        if (loan != null && loan.WorkflowStatus is null or RequestStatus.Approved or RequestStatus.Closed)
+        {
+            await _installmentService.EnsureInitialInstallmentAsync(loan);
+        }
+
+        return result;
     }
 
     public Task CancelMyLoan(EntityDto input) => CancelAsync(input.Id);

@@ -394,6 +394,59 @@ public class EmployeeRejoinService_Tests : FullAndFinalTestBase
         b.FixedAmount.ShouldBe(3);
     }
 
+    /// <summary>
+    /// Legacy 724-753: the merged loan gets one system row per effective date -- the recovery start month (Mar 2024)
+    /// and every later change (Jun 2024) -- each the sum of what the old loans recover that month. Loan 1 has a
+    /// schedule (12, then 18 from June); loan 2 has none and contributes its fixed 5. So March = 12 + 5 = 17 and
+    /// June = 18 + 5 = 23, and March closes the day before June.
+    /// </summary>
+    [Fact]
+    public async Task Should_Carry_The_Installment_Schedule_Onto_The_Merged_Loan()
+    {
+        var oldId = SeedFormerEmployee();
+        var typeA = SeedLoanType("A");
+        var withSchedule = SeedLoan(oldId, typeA, balance: 100, fixedAmount: 10, endDate: new DateTime(2025, 1, 31));
+        SeedLoan(oldId, typeA, balance: 50, fixedAmount: 5, endDate: new DateTime(2024, 12, 31));
+        SeedInstallment(withSchedule, new DateTime(2022, 1, 1), new DateTime(2024, 5, 31), 12);
+        SeedInstallment(withSchedule, new DateTime(2024, 6, 1), OpenEnded, 18);
+
+        await _appService.CreateOrEdit(Rejoin(oldId, newCode: true, loan: true));
+
+        var newId = NewEmployeesOf(oldId).ShouldHaveSingleItem().Id;
+        var newLoanId = UsingDbContext(c => c.Set<EmployeeLoan>().Single(l => l.EmployeeId == newId && !l.IsDeleted).Id);
+        var rows = UsingDbContext(c => c.Set<EmployeeLoanInstallment>()
+            .Where(r => r.EmployeeLoanId == newLoanId && !r.IsDeleted)
+            .OrderBy(r => r.StartDate)
+            .ToList());
+
+        rows.Count.ShouldBe(2);
+        rows[0].StartDate.ShouldBe(new DateTime(2024, 3, 1));
+        rows[0].EndDate.ShouldBe(new DateTime(2024, 5, 31));
+        rows[0].Amount.ShouldBe(17);
+        rows[0].Remark.ShouldBe(EmployeeRejoinService.CarriedForwardInstallmentRemark);
+        rows[1].StartDate.ShouldBe(new DateTime(2024, 6, 1));
+        rows[1].EndDate.ShouldBe(OpenEnded);
+        rows[1].Amount.ShouldBe(23);
+    }
+
+    /// <summary>Without schedules, legacy's GetInstallmentAmount falls back to each loan's fixed amount: one row of 15.</summary>
+    [Fact]
+    public async Task Should_Carry_The_Summed_Fixed_Amount_As_One_Row_When_No_Loan_Has_A_Schedule()
+    {
+        var oldId = SeedFormerEmployee();
+        var typeA = SeedLoanType("A");
+        SeedLoan(oldId, typeA, balance: 100, fixedAmount: 10, endDate: new DateTime(2025, 1, 31));
+        SeedLoan(oldId, typeA, balance: 50, fixedAmount: 5, endDate: new DateTime(2024, 12, 31));
+
+        await _appService.CreateOrEdit(Rejoin(oldId, newCode: true, loan: true));
+
+        var newId = NewEmployeesOf(oldId).ShouldHaveSingleItem().Id;
+        var row = UsingDbContext(c => c.Set<EmployeeLoanInstallment>()
+            .Single(r => r.EmployeeLoan.EmployeeId == newId && !r.IsDeleted));
+        row.StartDate.ShouldBe(new DateTime(2024, 3, 1));
+        row.Amount.ShouldBe(15);
+    }
+
     [Fact]
     public async Task Should_Not_Bring_Over_Balances_That_Are_Not_Ticked()
     {
@@ -661,6 +714,17 @@ public class EmployeeRejoinService_Tests : FullAndFinalTestBase
             }).Entity;
             context.SaveChanges();
             return loan.Id;
+        });
+    }
+
+    private void SeedInstallment(int loanId, DateTime start, DateTime end, double amount)
+    {
+        UsingDbContext(context =>
+        {
+            context.Set<EmployeeLoanInstallment>().Add(new EmployeeLoanInstallment
+            {
+                TenantId = TenantId, EmployeeLoanId = loanId, StartDate = start, EndDate = end, Amount = amount
+            });
         });
     }
 

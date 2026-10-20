@@ -106,17 +106,13 @@ export class EmployeeLoansComponent extends AppComponentBase {
             });
         }
 
-        // Legacy showed a loan's recoveries and exemptions inside the loan; this keeps them one click away.
-        if (
-            this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoanRecoveries') ||
-            this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoanExemptions')
-        ) {
-            items.push({
-                label: this.l('LoanRecoveriesAndExemptions'),
-                icon: 'pi pi-list',
-                command: () => this.recoveriesExemptionsModal()?.show(record),
-            });
-        }
+        // Legacy showed a loan's instalments, recoveries and exemptions inside the loan; this keeps them one
+        // click away. The instalment schedule is part of the loan, so anyone who sees the loan sees it.
+        items.push({
+            label: this.l('LoanInstallmentsRecoveriesAndExemptions'),
+            icon: 'pi pi-list',
+            command: () => this.recoveriesExemptionsModal()?.show(record),
+        });
 
         if (this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoans.Delete')) {
             items.push({

@@ -15,7 +15,9 @@ A loan to the employee and how it is recovered. Payroll recovers it from the rec
 
 The actual amount cannot be less than the amount due, and neither the recovery start date nor the end date can be before the start date.
 
-**Recoveries & Exemptions**, in a loan's row menu on the employee's Loans section, opens the loan's repayments and skipped months in one dialog, under the loan's actual amount, due amount and balance due. Recoveries and exemptions are added and changed there with the same dialogs, and the same rules, as the Loan Recoveries and Loan Exemptions screens, with the loan already filled in. Recoveries written by the payroll run (Recovery Through Payroll) are shown but cannot be edited or deleted there: the next run of that period deletes and rewrites them.
+**Installments, Recoveries & Exemptions**, in a loan's row menu on the employee's Loans section, opens the loan's installment schedule, repayments and skipped months in one dialog, under the loan's actual amount, due amount and balance due. The installment schedule is where the monthly installment is changed from a given month; see the Loan Installments help. Recoveries and exemptions are added and changed there with the same dialogs, and the same rules, as the Loan Recoveries and Loan Exemptions screens, with the loan already filled in, and each list shows only to users who may see that screen. Recoveries written by the payroll run (Recovery Through Payroll) are shown but cannot be edited or deleted there: the next run of that period deletes and rewrites them.
+
+When **Auto Update Loan Recovery End Date** is on in Payroll Settings, saving the loan replaces the recovery end date with the calculated one: month by month from the recovery start, using the installment schedule and skipping exempted months, until the due amount is recovered.
 
 ## LoanTypeId {#EmployeeLoan.LoanTypeId}
 <!-- alias: loc:LoanTypeId, dom:EmployeeLoan_LoanTypeId -->
@@ -68,11 +70,11 @@ Maintained under General Master Info → Loan Types. A loan type set to Variable
 ## FixedAmount {#EmployeeLoan.FixedAmount}
 <!-- alias: loc:FixedAmount, dom:EmployeeLoan_FixedAmount -->
 
-**What it is.** The instalment payroll deducts each month.
+**What it is.** The loan's first monthly installment.
 
 **Example.** 100.000
 
-**Why it matters.** Payroll never deducts more than the balance still due, so the last instalment can be smaller.
+**Why it matters.** When the loan comes into force it becomes the first row of the installment schedule, from the month recovery starts. After that it cannot be changed here: change the installment by adding a row to the schedule. Payroll uses it directly only for a loan with no schedule. Payroll never deducts more than the balance still due, so the last installment can be smaller.
 
 **Rules.** Optional. Number.
 

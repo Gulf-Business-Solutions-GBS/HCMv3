@@ -294,6 +294,8 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
 
         public MutableRepo<LoanTypeDetail> Details { get; }
 
+        public MutableRepo<EmployeeLoanInstallment> Installments { get; }
+
         public LoanRecoveryDeductionWageTypeCalculator Calculator { get; }
 
         public Harness(
@@ -301,13 +303,15 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
             IEnumerable<EmployeeLoan> loans,
             IEnumerable<EmployeeLoanRecovery> recoveries,
             IEnumerable<EmployeeLoanExemption> exemptions = null,
-            IEnumerable<LoanTypeDetail> details = null)
+            IEnumerable<LoanTypeDetail> details = null,
+            IEnumerable<EmployeeLoanInstallment> installments = null)
         {
             LoanTypes = new MutableRepo<LoanType>(loanTypes);
             Loans = new MutableRepo<EmployeeLoan>(loans);
             Recoveries = new MutableRepo<EmployeeLoanRecovery>(recoveries);
             Exemptions = new MutableRepo<EmployeeLoanExemption>(exemptions);
             Details = new MutableRepo<LoanTypeDetail>(details);
+            Installments = new MutableRepo<EmployeeLoanInstallment>(installments);
 
             Calculator = new LoanRecoveryDeductionWageTypeCalculator(
                 Store,
@@ -317,7 +321,8 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
                 Loans.Repository,
                 Recoveries.Repository,
                 Exemptions.Repository,
-                Details.Repository);
+                Details.Repository,
+                Installments.Repository);
         }
 
         public double? PostedAmount =>
@@ -401,6 +406,79 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
             new[] { ResidenceExpensesLoanType() },
             new[] { loan },
             SixteenCompletedInstallments().Take(4).ToList());
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(25.00);
+    }
+
+    private static EmployeeLoanInstallment Installment(int id, DateTime start, DateTime end, double amount) =>
+        new EmployeeLoanInstallment { Id = id, EmployeeLoanId = 2, StartDate = start, EndDate = end, Amount = amount };
+
+    /// <summary>
+    /// Legacy lines 1626-1632: the instalment row in force on the pay date wins over <c>FixedAmount</c> -- here
+    /// the June 2024 change from 25 to 40.
+    /// </summary>
+    [Fact]
+    public async Task Installment_Row_In_Force_On_The_Pay_Date_Should_Replace_The_Fixed_Amount()
+    {
+        var loan = Loan3400();
+        loan.BalanceDueAmount = 320;
+        loan.EndDate = new DateTime(2025, 6, 30);
+
+        var harness = new Harness(
+            new[] { ResidenceExpensesLoanType() },
+            new[] { loan },
+            SixteenCompletedInstallments().Take(4).ToList(),
+            installments: new[]
+            {
+                Installment(1, new DateTime(2023, 2, 1), new DateTime(2024, 5, 31), 25),
+                Installment(2, new DateTime(2024, 6, 1), new DateTime(9999, 12, 31), 40)
+            });
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(40.00);
+    }
+
+    /// <summary>
+    /// Legacy keeps <c>FixedAmount</c> as the fallback whenever no row covers the pay date -- also for a loan
+    /// whose only row starts later. Pinned as legacy has it.
+    /// </summary>
+    [Fact]
+    public async Task No_Installment_Row_Covering_The_Pay_Date_Should_Fall_Back_To_The_Fixed_Amount()
+    {
+        var loan = Loan3400();
+        loan.BalanceDueAmount = 320;
+        loan.EndDate = new DateTime(2025, 6, 30);
+
+        var harness = new Harness(
+            new[] { ResidenceExpensesLoanType() },
+            new[] { loan },
+            SixteenCompletedInstallments().Take(4).ToList(),
+            installments: new[] { Installment(1, new DateTime(2024, 7, 1), new DateTime(9999, 12, 31), 40) });
+
+        await harness.Calculator.CalculateAsync(Context());
+
+        harness.PostedAmount.ShouldBe(25.00);
+    }
+
+    /// <summary>Another loan's schedule is never read.</summary>
+    [Fact]
+    public async Task Installment_Rows_Of_Another_Loan_Should_Be_Ignored()
+    {
+        var loan = Loan3400();
+        loan.BalanceDueAmount = 320;
+        loan.EndDate = new DateTime(2025, 6, 30);
+
+        var other = Installment(1, new DateTime(2024, 6, 1), new DateTime(9999, 12, 31), 40);
+        other.EmployeeLoanId = 77;
+
+        var harness = new Harness(
+            new[] { ResidenceExpensesLoanType() },
+            new[] { loan },
+            SixteenCompletedInstallments().Take(4).ToList(),
+            installments: new[] { other });
 
         await harness.Calculator.CalculateAsync(Context());
 

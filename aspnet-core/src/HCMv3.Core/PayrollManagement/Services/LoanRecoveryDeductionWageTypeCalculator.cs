@@ -7,6 +7,7 @@ using Abp.Domain.Repositories;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GeneralMasterInfo.Services;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 
 namespace HCMv3.PayrollManagement.Services;
 
@@ -58,6 +59,7 @@ public class LoanRecoveryDeductionWageTypeCalculator
     private readonly IRepository<EmployeeLoanRecovery> _employeeLoanRecoveryRepository;
     private readonly IRepository<EmployeeLoanExemption> _employeeLoanExemptionRepository;
     private readonly IRepository<LoanTypeDetail> _loanTypeDetailRepository;
+    private readonly IRepository<EmployeeLoanInstallment> _employeeLoanInstallmentRepository;
 
     public LoanRecoveryDeductionWageTypeCalculator(
         IPayrollRegisterStore registerStore,
@@ -67,7 +69,8 @@ public class LoanRecoveryDeductionWageTypeCalculator
         IRepository<EmployeeLoan> employeeLoanRepository,
         IRepository<EmployeeLoanRecovery> employeeLoanRecoveryRepository,
         IRepository<EmployeeLoanExemption> employeeLoanExemptionRepository,
-        IRepository<LoanTypeDetail> loanTypeDetailRepository)
+        IRepository<LoanTypeDetail> loanTypeDetailRepository,
+        IRepository<EmployeeLoanInstallment> employeeLoanInstallmentRepository)
     {
         _registerStore = registerStore;
         _advancePaymentService = advancePaymentService;
@@ -77,6 +80,7 @@ public class LoanRecoveryDeductionWageTypeCalculator
         _employeeLoanRecoveryRepository = employeeLoanRecoveryRepository;
         _employeeLoanExemptionRepository = employeeLoanExemptionRepository;
         _loanTypeDetailRepository = loanTypeDetailRepository;
+        _employeeLoanInstallmentRepository = employeeLoanInstallmentRepository;
     }
 
     /// <summary>
@@ -250,8 +254,14 @@ public class LoanRecoveryDeductionWageTypeCalculator
             // ---- Legacy lines 1623-1648: the installment amount.
             if (loanType.LoanDeductionType == LoanDeductionType.Fixed)
             {
-                // Legacy line 1626.
-                recoveryAmount = employeeLoan.FixedAmount;
+                // Legacy lines 1626-1632: the instalment row in force on the pay date, latest start first; a loan
+                // without an instalment schedule continues to use FixedAmount.
+                var installments = _employeeLoanInstallmentRepository.GetAll()
+                    .Where(r => r.EmployeeLoanId == employeeLoan.Id)
+                    .ToList();
+
+                recoveryAmount = LoanInstallmentSchedule.GetPayrollInstallmentAmount(
+                    employeeLoan.FixedAmount, installments, context.PayDate);
             }
             else if (loanType.LoanDeductionType == LoanDeductionType.Variable)
             {

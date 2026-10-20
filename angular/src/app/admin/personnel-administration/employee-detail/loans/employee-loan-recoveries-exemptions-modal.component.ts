@@ -4,9 +4,12 @@ import {
     EmployeeLoanDto,
     EmployeeLoanExemptionDto,
     EmployeeLoanExemptionsServiceProxy,
+    EmployeeLoanInstallmentDto,
+    EmployeeLoanInstallmentsServiceProxy,
     EmployeeLoanRecoveriesServiceProxy,
     EmployeeLoanRecoveryDto,
     GetAllEmployeeLoanExemptionsInput,
+    GetAllEmployeeLoanInstallmentsInput,
     GetAllEmployeeLoanRecoveriesInput,
     LoanRecoveryMethod,
     RequestStatus,
@@ -22,11 +25,14 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeLoanRecoveryModalComponent } from '../../employee-loan-recoveries/create-or-edit-employee-loan-recovery-modal.component';
 import { CreateOrEditEmployeeLoanExemptionModalComponent } from '../../employee-loan-exemptions/create-or-edit-employee-loan-exemption-modal.component';
+import { CreateOrEditEmployeeLoanInstallmentModalComponent } from './create-or-edit-employee-loan-installment-modal.component';
 
 /**
- * A loan's recoveries and exemptions, seen from inside the loan -- the way legacy showed them as nested
- * lists on the loan form. It reuses the stand-alone Loan Recoveries / Loan Exemptions dialogs (opened with
- * the loan fixed), so the rules are exactly those of the separate pages.
+ * A loan's instalment schedule, recoveries and exemptions, seen from inside the loan -- the way legacy showed
+ * them as nested lists on the loan form. Recoveries and exemptions reuse the stand-alone Loan Recoveries / Loan
+ * Exemptions dialogs (opened with the loan fixed), so the rules are exactly those of the separate pages; each
+ * list shows only to a user who may see that page. The instalment schedule has no page of its own -- it is part
+ * of the loan, edited with the loan's Edit permission.
  *
  * Recoveries written by the payroll run (Recovery Through Payroll) are shown but not editable here: the
  * next run of that period deletes and rewrites them, so a hand edit would be silently lost.
@@ -44,13 +50,16 @@ import { CreateOrEditEmployeeLoanExemptionModalComponent } from '../../employee-
         LuxonFormatPipe,
         CreateOrEditEmployeeLoanRecoveryModalComponent,
         CreateOrEditEmployeeLoanExemptionModalComponent,
+        CreateOrEditEmployeeLoanInstallmentModalComponent,
     ],
 })
 export class EmployeeLoanRecoveriesExemptionsModalComponent extends AppComponentBase {
     private _recoveriesService = inject(EmployeeLoanRecoveriesServiceProxy);
     private _exemptionsService = inject(EmployeeLoanExemptionsServiceProxy);
+    private _installmentsService = inject(EmployeeLoanInstallmentsServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('detailsModal');
+    readonly installmentModal = viewChild<CreateOrEditEmployeeLoanInstallmentModalComponent>('installmentModal');
     readonly recoveryModal = viewChild<CreateOrEditEmployeeLoanRecoveryModalComponent>('recoveryModal');
     readonly exemptionModal = viewChild<CreateOrEditEmployeeLoanExemptionModalComponent>('exemptionModal');
 
@@ -61,12 +70,15 @@ export class EmployeeLoanRecoveriesExemptionsModalComponent extends AppComponent
     readonly loan = signal<EmployeeLoanDto | undefined>(undefined);
     readonly recoveries = signal<EmployeeLoanRecoveryDto[]>([]);
     readonly exemptions = signal<EmployeeLoanExemptionDto[]>([]);
+    readonly installments = signal<EmployeeLoanInstallmentDto[]>([]);
+    readonly loadingInstallments = signal<boolean>(false);
     readonly loadingRecoveries = signal<boolean>(false);
     readonly loadingExemptions = signal<boolean>(false);
 
     show(loan: EmployeeLoanDto): void {
         this.loan.set(loan);
         this.active.set(true);
+        this.loadInstallments();
         this.loadRecoveries();
         this.loadExemptions();
         this.modal().show();
@@ -77,11 +89,62 @@ export class EmployeeLoanRecoveriesExemptionsModalComponent extends AppComponent
         this.modal().hide();
     }
 
+    // ------------------------------------------------------------------ installments
+
+    loadInstallments(): void {
+        const loan = this.loan();
+        if (!loan) {
+            return;
+        }
+
+        this.loadingInstallments.set(true);
+        this._installmentsService
+            .getAll(
+                new GetAllEmployeeLoanInstallmentsInput({
+                    employeeLoanId: loan.id,
+                    sorting: 'StartDate DESC',
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                })
+            )
+            .pipe(finalize(() => this.loadingInstallments.set(false)))
+            .subscribe((result) => this.installments.set(result.items));
+    }
+
+    /** The last row runs on with no end (31/12/9999); shown blank rather than as a date nobody means. */
+    isOpenEnded(record: EmployeeLoanInstallmentDto): boolean {
+        return !record.endDate || record.endDate.year >= 9999;
+    }
+
+    createInstallment(): void {
+        this.installmentModal()?.show(this.loan().id);
+    }
+
+    editInstallment(record: EmployeeLoanInstallmentDto): void {
+        this.installmentModal()?.show(this.loan().id, record.id);
+    }
+
+    deleteInstallment(record: EmployeeLoanInstallmentDto): void {
+        this.message.confirm(this.l('AreYouSure'), this.l('AreYouSure'), (isConfirmed) => {
+            if (isConfirmed) {
+                this._installmentsService.delete(record.id).subscribe(() => {
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                    this.onInstallmentSaved();
+                });
+            }
+        });
+    }
+
+    onInstallmentSaved(): void {
+        this.loadInstallments();
+        this.changed.emit();
+    }
+
     // ------------------------------------------------------------------ recoveries
 
     loadRecoveries(): void {
         const loan = this.loan();
-        if (!loan) {
+        if (!loan || !this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoanRecoveries')) {
             return;
         }
 
@@ -145,7 +208,7 @@ export class EmployeeLoanRecoveriesExemptionsModalComponent extends AppComponent
 
     loadExemptions(): void {
         const loan = this.loan();
-        if (!loan) {
+        if (!loan || !this.permission.isGranted('Pages.PersonnelAdministration.EmployeeLoanExemptions')) {
             return;
         }
 
