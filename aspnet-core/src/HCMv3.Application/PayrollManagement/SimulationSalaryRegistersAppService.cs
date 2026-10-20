@@ -114,7 +114,8 @@ public class SimulationSalaryRegistersAppService : HCMv3AppServiceBase, ISimulat
         entity.InPeriod = input.InPeriod;
         entity.PayrollRunType = input.PayrollRunType;
         entity.PayrollResultType = input.PayrollResultType;
-        entity.PayrollReasonTypeId = input.PayrollReasonTypeId;
+        // The column is optional (a regular run has no reason); the DTO still carries 0 for "none".
+        entity.PayrollReasonTypeId = input.PayrollReasonTypeId == 0 ? null : input.PayrollReasonTypeId;
 
         return entity;
     }
@@ -130,7 +131,7 @@ public class SimulationSalaryRegistersAppService : HCMv3AppServiceBase, ISimulat
             InPeriod = entity.InPeriod,
             PayrollRunType = entity.PayrollRunType,
             PayrollResultType = entity.PayrollResultType,
-            PayrollReasonTypeId = entity.PayrollReasonTypeId,
+            PayrollReasonTypeId = entity.PayrollReasonTypeId ?? 0,
             PayrollReasonTypeName = entity.PayrollReasonType?.NameEn
         };
     }
@@ -145,7 +146,7 @@ public class SimulationSalaryRegistersAppService : HCMv3AppServiceBase, ISimulat
             InPeriod = entity.InPeriod,
             PayrollRunType = entity.PayrollRunType,
             PayrollResultType = entity.PayrollResultType,
-            PayrollReasonTypeId = entity.PayrollReasonTypeId
+            PayrollReasonTypeId = entity.PayrollReasonTypeId ?? 0
         };
     }
 }

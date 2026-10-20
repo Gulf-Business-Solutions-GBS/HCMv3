@@ -210,9 +210,17 @@ public abstract class InsuranceRecoveryDeductionCalculatorBase : HCMv3DomainServ
                 .Select(d => d.Id)
                 .ToList();
 
-            foreach (var staleId in staleIds)
+            // SIMULATION RUN: the insurance and its installment rows are read but never written (legacy
+            // GetCompanyInsuranceRecoveryDed_Simu / GetEmployeeInsuranceRecoveryDed_Simu have the delete, the
+            // balance save and the new installment commented out). The same arithmetic runs in memory.
+            var isSimulation = PayrollSimulationScope.IsActive;
+
+            if (!isSimulation)
             {
-                await DeleteDetailAsync(staleId);
+                foreach (var staleId in staleIds)
+                {
+                    await DeleteDetailAsync(staleId);
+                }
             }
 
             // Legacy lines 3329-3338 / 3506-3515.
@@ -220,9 +228,14 @@ public abstract class InsuranceRecoveryDeductionCalculatorBase : HCMv3DomainServ
                 .Where(d => d.EmployeeInsuranceId == insurance.Id)
                 .Sum(d => d.InstallmentAmount);
 
-            SetBalance(insurance, await _currencyService.RoundAsync(
-                context.EmployeeId, GetContribution(insurance) - totalPaid));
-            await EmployeeInsuranceRepository.UpdateAsync(insurance);
+            var balance = await _currencyService.RoundAsync(
+                context.EmployeeId, GetContribution(insurance) - totalPaid);
+
+            if (!isSimulation)
+            {
+                SetBalance(insurance, balance);
+                await EmployeeInsuranceRepository.UpdateAsync(insurance);
+            }
 
             // Legacy lines 3345-3359 / 3522-3536. The Fixed/Variable switch is commented out in legacy;
             // only the fixed installment amount survives.
@@ -242,23 +255,27 @@ public abstract class InsuranceRecoveryDeductionCalculatorBase : HCMv3DomainServ
             // Legacy lines 3373-3414 / 3550-3590.
             if (recoveryAmount > 0)
             {
-                if (GetBalance(insurance) < recoveryAmount)
+                if (balance < recoveryAmount)
                 {
-                    recoveryAmount = await _currencyService.RoundAsync(context.EmployeeId, GetBalance(insurance));
+                    recoveryAmount = await _currencyService.RoundAsync(context.EmployeeId, balance);
                 }
 
                 if (recoveryAmount > 0)
                 {
-                    // Legacy uses payDate (not payEndDate) for the new row; identical here.
-                    await InsertDetailAsync(insurance, payDate, recoveryAmount);
+                    // A simulation takes the deduction without recording the installment.
+                    if (!isSimulation)
+                    {
+                        // Legacy uses payDate (not payEndDate) for the new row; identical here.
+                        await InsertDetailAsync(insurance, payDate, recoveryAmount);
 
-                    var totPaid = QueryDetails()
-                        .Where(d => d.EmployeeInsuranceId == insurance.Id)
-                        .Sum(d => d.InstallmentAmount);
+                        var totPaid = QueryDetails()
+                            .Where(d => d.EmployeeInsuranceId == insurance.Id)
+                            .Sum(d => d.InstallmentAmount);
 
-                    SetBalance(insurance, await _currencyService.RoundAsync(
-                        context.EmployeeId, GetContribution(insurance) - totPaid));
-                    await EmployeeInsuranceRepository.UpdateAsync(insurance);
+                        SetBalance(insurance, await _currencyService.RoundAsync(
+                            context.EmployeeId, GetContribution(insurance) - totPaid));
+                        await EmployeeInsuranceRepository.UpdateAsync(insurance);
+                    }
                 }
                 else
                 {

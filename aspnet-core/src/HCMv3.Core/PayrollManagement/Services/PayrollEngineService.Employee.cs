@@ -127,9 +127,14 @@ public partial class PayrollEngineService
                 "Payroll Control Record not found for PayrollArea {0}", employeePayrollArea.Code));
         }
 
-        // Legacy lines 840-849, extracted verbatim into the pure guard helper.
-        PayrollControlRecordGuard.EnsureEmployeeControlRecordMatches(
-            employeeControlRecord, employeePayrollArea, input.PayrollRunType, payInDate);
+        // Legacy lines 840-849, extracted verbatim into the pure guard helper. COMMENTED OUT in legacy's
+        // simulation clone (SimulationPayrollHelper lines 730-739), so a test run is not refused for an
+        // employee whose area's control record sits on another month.
+        if (!IsSimulationRun(input))
+        {
+            PayrollControlRecordGuard.EnsureEmployeeControlRecordMatches(
+                employeeControlRecord, employeePayrollArea, input.PayrollRunType, payInDate);
+        }
 
         #endregion
 
@@ -166,7 +171,26 @@ public partial class PayrollEngineService
                                    && notReturnAbsence != null
                                    && notReturnAbsence.EndDate < payInDate;
 
-        var registers = _salaryRegisterRepository.GetAll().Where(r => r.EmployeeId == employee.Id);
+        if (IsSimulationRun(input))
+        {
+            // Legacy SimulationPayrollHelper.CreateSimulationSalaryRegister lines 838-1105: the simulation's
+            // own two arms, writing SimulationSalaryRegister. It never resets AccountedTo /
+            // EarliestMasterDataChange either (lines 1117-1128 are commented out), so it returns here.
+            if (input.PayrollRunType == PayrollRunType.Regular)
+            {
+                await ProcessRegularSimulationEmployeeAsync(
+                    input, employee, payInDate, settings, onHold, isNotReturnFromLeave,
+                    payrollStatus, employeePayrollArea, orgAssignments, employeeResult);
+            }
+            else
+            {
+                await ProcessOffCycleSimulationEmployeeAsync(
+                    input, employee, payInDate, settings, isNotReturnFromLeave,
+                    payrollStatus, employeePayrollArea, orgAssignments, employeeResult);
+            }
+
+            return true;
+        }
 
         if (input.PayrollRunType == PayrollRunType.Regular)
         {
@@ -344,6 +368,10 @@ public partial class PayrollEngineService
     /// <c>payInDate</c> itself via its <c>Contains</c> guards). That would calculate the same register twice.
     /// This port de-duplicates. <b>Documented deviation</b>; the second calculation would be idempotent (the
     /// register is cleared and recalculated) but doubles the work and the audit rows.</para>
+    ///
+    /// <para><paramref name="clampToJoiningDate"/> is false for a SIMULATION run: the "not before JoiningDate"
+    /// clamp on both seeds (legacy <c>Program.cs</c> lines 986-988 and 1018-1020, added 2023.05.03) was never
+    /// copied into <c>SimulationPayrollHelper</c> (lines 838-899), which still seeds from the raw dates.</para>
     /// </summary>
     private List<DateTime> CollectPayrollPeriods(
         Employee employee,
@@ -351,7 +379,8 @@ public partial class PayrollEngineService
         DateTime payInDate,
         PayrollEngineSettings settings,
         bool includeMasterDataChangeSeed,
-        bool throwWhenBeforeEarliestRetroAccountingDate)
+        bool throwWhenBeforeEarliestRetroAccountingDate,
+        bool clampToJoiningDate = true)
     {
         var periods = new List<DateTime>();
 
@@ -380,7 +409,9 @@ public partial class PayrollEngineService
                 mdChangeDate = settings.EarliestEvaluationDate;
             }
 
-            if (mdChangeDate != default(DateTime) && employee.JoiningDate != default(DateTime) && mdChangeDate < employee.JoiningDate)
+            // Legacy 2023 "not before JoiningDate" clamp. Never added to the simulation clone -- see
+            // clampToJoiningDate.
+            if (clampToJoiningDate && mdChangeDate != default(DateTime) && employee.JoiningDate != default(DateTime) && mdChangeDate < employee.JoiningDate)
             {
                 mdChangeDate = employee.JoiningDate;
             }
@@ -395,7 +426,7 @@ public partial class PayrollEngineService
             accountedTo = settings.EarliestEvaluationDate;
         }
 
-        if (accountedTo != default(DateTime) && employee.JoiningDate != default(DateTime) && accountedTo < employee.JoiningDate)
+        if (clampToJoiningDate && accountedTo != default(DateTime) && employee.JoiningDate != default(DateTime) && accountedTo < employee.JoiningDate)
         {
             accountedTo = employee.JoiningDate;
         }

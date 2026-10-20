@@ -1,0 +1,54 @@
+{
+  "helpId": "pay.payroll-run-employee-picker",
+  "lang": "en",
+  "title": "Payroll Engine — Select Employees",
+  "entity": null,
+  "overviewHtml": "<p>Opened with the button beside <strong>Employee Code</strong> on the Payroll Engine. It lists the employees the chosen run would process, so you can tick the ones to run instead of typing their codes. The top shows the payroll area, its payroll status and how many are selected.</p><p>Who is listed depends on the run. For a <strong>regular</strong> run: the active employees whose org assignment on the period's last day is in this payroll area and who had joined by then. For an <strong>off-cycle</strong> run it depends on the reason: <em>Advance Leave</em> lists active employees with leave paid in advance or a leave encashment in the off-cycle month, <em>Leave Encashment</em> those with an encashment, and <em>End Of Service</em> inactive employees with a Full and Final payment in that month and a separation that was not revoked. For a simulation on another period, the list is worked out for that period.</p><p>The list only guides you: the engine still applies its own checks to the codes it is sent.</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "pay.payroll-run-employee-picker.status",
+      "label": "PayrollStatus",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether each employee has already been run: <strong>Processed</strong> when a salary register already exists for this run (for a regular run, a regular register for this period; for an off-cycle run, one for the same reason in the off-cycle month), otherwise <strong>Pending</strong>. The tabs <strong>All</strong>, <strong>Processed</strong>, <strong>Pending</strong> and <strong>Selected</strong> show each group, with a count.</p><p><strong>Example.</strong> \"Pending (12)\": twelve employees still to run this month.</p><p><strong>Why it matters.</strong> The counts are always for the whole list, whatever you have searched.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-run-employee-picker.search",
+      "label": "Search",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Finds employees by code or name within the tab you are on.</p><p><strong>Example.</strong> <code>Al-Ali</code></p><p><strong>Why it matters.</strong> Press Enter or the search button to apply it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-run-employee-picker.select-all",
+      "label": "SelectAll",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>Select all</strong> ticks, and <strong>Unselect all</strong> clears, every employee that the current tab and search show, on every page, not only the page in view.</p><p><strong>Example.</strong> Open <strong>Pending</strong>, press <strong>Select all</strong>: every employee not yet run is ticked.</p><p><strong>Why it matters.</strong> Ticks are kept while you page, search and change tabs.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.payroll-run-employee-picker.ok",
+      "label": "Ok",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Puts the codes of the ticked employees into <strong>Employee Code</strong>, separated by commas, and closes the dialog. <strong>Cancel</strong> closes it and leaves the codes as they were.</p><p><strong>Example.</strong> Three ticked employees give <code>1001,1002,1045</code>.</p><p><strong>Why it matters.</strong> Codes you had typed that are not on the list are dropped when you press <strong>Ok</strong>; ticking nobody empties the box, which runs every eligible employee of a regular run.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

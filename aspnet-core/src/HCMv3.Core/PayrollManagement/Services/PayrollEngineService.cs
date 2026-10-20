@@ -240,6 +240,19 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
             throw new ArgumentNullException(nameof(input));
         }
 
+        // A SIMULATION run (legacy SimulationPayrollHelper.Main) is the same calculation written to the
+        // simulation registers. The scope tells the services that take a bare register id, or write data that
+        // is not a register line, that this run must leave all of that alone -- see PayrollSimulationScope.
+        using (IsSimulationRun(input) ? PayrollSimulationScope.Begin() : null)
+        {
+            return await RunCoreAsync(input);
+        }
+    }
+
+    private async Task<PayrollEngineRunResult> RunCoreAsync(PayrollEngineRunInput input)
+    {
+        var isSimulation = IsSimulationRun(input);
+
         var payInDate = input.PayInDate;
 
         // Legacy lines 218-224.
@@ -252,6 +265,13 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         if (input.PayrollRunType == PayrollRunType.OffCycle && string.IsNullOrWhiteSpace(input.OffCycleReason))
         {
             throw new UserFriendlyException("Offcycle reason can not be blank.");
+        }
+
+        // Legacy shows the Simulation check box only when ManagePayrollSettings.AllowSimulationRun is on
+        // (uscPayrollEngine.ascx.cs line 88). The screen is not the only way in, so the engine refuses too.
+        if (isSimulation)
+        {
+            await EnsureSimulationAllowedAsync();
         }
 
         // Legacy lines 239-246.
@@ -270,13 +290,29 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
             throw new UserFriendlyException("Payroll Calender does not have record for Payroll month you are running.");
         }
 
+        // Legacy SimulationPayrollHelper.Main lines 254-256: a simulation first throws away every earlier
+        // simulation register of the employees it is about to run -- before the settings are read and before
+        // the control-record checks, so even a simulation the checks then refuse has already cleared them.
+        if (isSimulation)
+        {
+            // Not legacy: refuse BEFORE clearing, so a simulation started while this area is already running
+            // cannot wipe the simulation registers that run is writing. CreateSalaryRegisterAsync checks again.
+            await EnsureNoRunInProgressAsync(input);
+            await DeletePreviousSimulationRegistersAsync(input, payInDate);
+        }
+
         // Legacy line 259: GetInitialVariables.
         var settings = await LoadSettingsAsync();
 
         // Legacy lines 262-350, extracted verbatim into PayrollControlRecordGuard (see that class).
         if (input.PayrollRunType == PayrollRunType.Regular)
         {
-            PayrollControlRecordGuard.EnsureRegularRunAllowed(controlRecord, payInDate);
+            // Legacy SimulationPayrollHelper.Main lines 263-273: the "locked and current" check is COMMENTED
+            // OUT for a simulation, so a test run can be made for a month that is open or not yet current.
+            if (!isSimulation)
+            {
+                PayrollControlRecordGuard.EnsureRegularRunAllowed(controlRecord, payInDate);
+            }
         }
         else
         {
@@ -322,15 +358,7 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         // ==================================================================================================
         var runKey = BuildRunKey(input.PayrollAreaName);
 
-        var alreadyRunning = await ProgressWriter.GetActiveRunAsync(EngineType.PayrollEngine, runKey);
-        if (alreadyRunning != null)
-        {
-            throw new UserFriendlyException(string.Format(
-                "Payroll is already running for payroll area '{0}' (started by {1} at {2}). Wait for it to finish, or stop it, before running this area again.",
-                input.PayrollAreaName,
-                string.IsNullOrWhiteSpace(alreadyRunning.StartedByUserName) ? "another user" : alreadyRunning.StartedByUserName,
-                alreadyRunning.StartedAt.ToString("dd/MM/yyyy HH:mm")));
-        }
+        await EnsureNoRunInProgressAsync(input);
 
         var engineRunId = await ProgressWriter.BeginRunAsync(new EngineRunStartInfo
         {
@@ -349,129 +377,35 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
 
         try
         {
-            var employees = await GetEmployeeListAsync(input, payInDate, settings);
+            // Legacy SimulationPayrollHelper.CreateSimulationSalaryRegister line 440: a simulation always picks
+            // its employees with the plain GetEmployeeList -- the clone never got the autorun selection branches.
+            var employees = IsSimulationRun(input)
+                ? await GetEmployeeListLegacyAsync(input.PayrollAreaName, input.EmployeeCodes, payInDate)
+                : await GetEmployeeListAsync(input, payInDate, settings);
 
             // Legacy line 547: payInDate is normalised to its month end before the loop.
             payInDate = PayrollControlRecordGuard.MonthEnd(payInDate);
             result.PayInDate = payInDate;
 
-            var employeeCount = employees.Count;
-
-            await ProgressWriter.SetTotalEmployeesAsync(engineRunId, employeeCount);
-
-            var sequenceNo = 0;
-
-            foreach (var employee in employees)
+            var loop = new EmployeeLoopState
             {
-                // Legacy lines 776-777: a PayrollLog row with StopFlag aborts the run -- but SCOPED to this
-                // run's own rows, which legacy achieved by truncating the whole table before every run. Left
-                // unscoped it reads every StopFlag ever set, so stopping one payroll area would abort a
-                // concurrent run of another. The real per-run Stop is ProgressWriter.IsStopRequestedAsync
-                // immediately below; this check is legacy's older mechanism, kept and now correctly scoped.
-                if (_payrollLogRepository.GetAll().Any(x => x.StopFlag && x.RunTimeStamp >= runStartedAt))
-                {
-                    result.Aborted = true;
-                    break;
-                }
+                EngineRunId = engineRunId,
+                RunStartedAt = runStartedAt,
+                PayInDate = payInDate,
+                Settings = settings,
+                EmployeeCount = employees.Count
+            };
 
-                // The API-initiated Stop, read on the progress writer's own connection. The legacy check
-                // above cannot see a flag set after this run's transaction opened, and setting that flag
-                // from outside would contend with the locks this transaction holds on PayrollLog.
-                if (await ProgressWriter.IsStopRequestedAsync(engineRunId))
-                {
-                    result.Aborted = true;
-                    break;
-                }
+            await ProgressWriter.SetTotalEmployeesAsync(engineRunId, loop.EmployeeCount);
 
-                var employeeResult = new PayrollEmployeeRunResult
-                {
-                    EmployeeId = employee.Id,
-                    EmployeeCode = employee.Code
-                };
-
-                sequenceNo = sequenceNo + 1;
-
-                // Measured, not estimated: the ETA is only as honest as this stopwatch.
-                var employeeStartedAt = Clock.Now;
-                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-
-                try
-                {
-                    SkipWithoutDecrement = false;
-
-                    // ==============================================================================
-                    // TIME ENGINE AUTORUN -- legacy lines 554-753, and it belongs INSIDE this try.
-                    // Legacy wraps it in its own try/catch whose body is "write a failed PayrollLog row,
-                    // continue" (lines 725-751) -- which is precisely what the catch below already does. So a
-                    // time-engine failure fails THIS employee and leaves the rest of the run alone, exactly as
-                    // legacy, without a second error path to keep in step.
-                    //
-                    // The employee's input is cloned because legacy REASSIGNS its offCyclePaymentDate from the
-                    // leave / full-and-final / encashment record the autorun found, and every later rule reads
-                    // that value. Cloning keeps one employee's date out of the next one's run.
-                    // ==============================================================================
-                    var employeeInput = input;
-
-                    if (settings.EnableTimeEngineAutorun)
-                    {
-                        var resolvedOffCyclePaymentDate =
-                            await RunTimeEngineAutorunAsync(input, employee, payInDate, settings);
-
-                        if (resolvedOffCyclePaymentDate != input.OffCyclePaymentDate)
-                        {
-                            employeeInput = CloneForEmployee(input, resolvedOffCyclePaymentDate);
-                        }
-                    }
-
-                    var processed = await ProcessEmployeeAsync(employeeInput, employee, payInDate, settings, employeeResult);
-
-                    stopwatch.Stop();
-
-                    if (!processed)
-                    {
-                        // Legacy "noofEmp = noofEmp - 1; continue;" (lines 794-795): the employee is skipped
-                        // entirely and gets NO PayrollLog row at all. The two contract skips (lines 810, 822)
-                        // are a bare "continue" and do NOT decrement -- see ProcessEmployeeAsync's remarks.
-                        if (!SkipWithoutDecrement)
-                        {
-                            employeeCount = employeeCount - 1;
-                        }
-
-                        // No grid row -- the employee was never processed -- but the remaining count must
-                        // shrink or the ETA would never reach zero.
-                        await ProgressWriter.RecordSkippedEmployeeAsync(engineRunId);
-                        continue;
-                    }
-
-                    // Legacy lines 1419-1428.
-                    employeeResult.Succeeded = true;
-                    employeeResult.Message = "Successfull";
-                    await AddPayrollLogAsync(employee.Id, payInDate, "Successfull", 0, employeeCount);
-
-                    await RecordEmployeeProgressAsync(
-                        engineRunId, sequenceNo, employee, true, "Successfull", employeeStartedAt, stopwatch);
-                }
-                catch (Exception ex)
-                {
-                    stopwatch.Stop();
-
-                    // ==============================================================================
-                    // PER-EMPLOYEE ERROR ISOLATION -- legacy lines 1438-1460.
-                    // One bad employee (including one bad wage type inside one bad employee, wrapped by
-                    // RunPayrollCalculationAsync as "Error in calculating WageType '{code} : {name}'")
-                    // must NEVER abort the run. Log it against the employee and carry on.
-                    // ==============================================================================
-                    var message = TruncateMessage(ex.Message);
-
-                    employeeResult.Succeeded = false;
-                    employeeResult.Message = message;
-                    await AddPayrollLogAsync(employee.Id, payInDate, message, 1, employeeCount);
-
-                    await RecordEmployeeProgressAsync(
-                        engineRunId, sequenceNo, employee, false, message, employeeStartedAt, stopwatch);
-                }
-
-                result.EmployeeResults.Add(employeeResult);
+            if (input.CommitBatchSize <= 0)
+            {
+                // The whole run in the caller's unit of work, exactly as before.
+                await ProcessEmployeesAsync(input, employees, loop, result);
+            }
+            else
+            {
+                await ProcessEmployeesInBatchesAsync(input, employees, loop, result);
             }
         }
         catch (Exception ex)
@@ -480,6 +414,10 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
             // per-employee isolation above. Recorded so the screen shows WHY the run stopped instead of a
             // run that silently freezes at 40%, then rethrown -- swallowing it here would change behaviour.
             runFailureMessage = TruncateMessage(ex.Message);
+
+            // Tells the caller this failure is already on the run's progress row (the finally below), so it
+            // must not record a second one -- see PayrollEngineBackgroundJob.
+            ex.Data[RunFailureRecordedKey] = true;
             throw;
         }
         finally
@@ -497,6 +435,236 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Set in <see cref="Exception.Data"/> on a run-level failure the engine has ALREADY written onto its
+    /// <see cref="EngineRun"/> as Failed. A failure without it happened before the run began (a refused pay
+    /// date, control record or calendar, a disallowed simulation, ...) and has no progress row yet.
+    /// </summary>
+    public const string RunFailureRecordedKey = "HCMv3.PayrollEngine.RunFailureRecorded";
+
+    /// <summary>
+    /// The run's parameters in the execution log's words (legacy <c>CreateSalaryRegister</c> lines 385-416), for a
+    /// caller that has to describe a run the engine refused before it began.
+    /// </summary>
+    public static string DescribeRun(PayrollEngineRunInput input)
+    {
+        return BuildExecutionLogParameters(input, input.PayInDate);
+    }
+
+    /// <summary>The counters and fixed values the per-employee loop shares across employees and batches.</summary>
+    private sealed class EmployeeLoopState
+    {
+        public long EngineRunId { get; set; }
+
+        public DateTime RunStartedAt { get; set; }
+
+        public DateTime PayInDate { get; set; }
+
+        public PayrollEngineSettings Settings { get; set; }
+
+        /// <summary>Legacy <c>noofEmp</c>: shrinks for the JoiningDate skip and is written on every PayrollLog row.</summary>
+        public int EmployeeCount { get; set; }
+
+        public int SequenceNo { get; set; }
+    }
+
+    /// <summary>
+    /// SAVE IN BATCHES. The employees of the run, <see cref="PayrollEngineRunInput.CommitBatchSize"/> at a time,
+    /// each batch in its own <c>RequiresNew</c> unit of work that is completed -- saved and committed -- before
+    /// the next starts. Same approach as Go-Live Setup's payroll run (<c>GoLiveEngineBatches</c>, IT11), with one
+    /// difference that matters to the screen: Go-Live calls the engine once per batch and so makes one progress
+    /// row per batch, while here the batches are INSIDE one run, so the operator follows one
+    /// <see cref="EngineRun"/> from start to finish and Stop is still honoured between employees.
+    ///
+    /// <para>Each employee is re-read inside its batch, so nothing a batch tracks outlives it. The figures are the
+    /// same as a single-unit-of-work run: no employee's calculation reads anything another employee's wrote.</para>
+    /// </summary>
+    private async Task ProcessEmployeesInBatchesAsync(
+        PayrollEngineRunInput input,
+        List<Employee> employees,
+        EmployeeLoopState loop,
+        PayrollEngineRunResult result)
+    {
+        var tenantId = UnitOfWorkManager.Current?.GetTenantId();
+
+        foreach (var batch in employees.Select(e => e.Id).Chunk(input.CommitBatchSize))
+        {
+            if (result.Aborted)
+            {
+                break;
+            }
+
+            using (var uow = UnitOfWorkManager.Begin(System.Transactions.TransactionScopeOption.RequiresNew))
+            using (tenantId.HasValue ? UnitOfWorkManager.Current.SetTenantId(tenantId) : null)
+            {
+                PayrollLockGuard?.ExemptCurrentUnitOfWork();
+
+                var loaded = _employeeRepository.GetAll().Where(e => batch.Contains(e.Id)).ToList();
+                var batchEmployees = batch
+                    .Select(id => loaded.FirstOrDefault(e => e.Id == id))
+                    .Where(e => e != null)
+                    .ToList();
+
+                await ProcessEmployeesAsync(input, batchEmployees, loop, result);
+
+                // MUST stay inside the SetTenantId scope -- see PayrollEngineBackgroundJob for what happens when
+                // a unit of work saves IMustHaveTenant rows after the scope has gone.
+                await uow.CompleteAsync();
+            }
+        }
+    }
+
+    /// <summary>
+    /// The per-employee loop of legacy <c>CreateSalaryRegister</c> (lines 756-1469), for the employees given.
+    /// Sets <see cref="PayrollEngineRunResult.Aborted"/> and returns when a Stop is found.
+    /// </summary>
+    private async Task ProcessEmployeesAsync(
+        PayrollEngineRunInput input,
+        List<Employee> employees,
+        EmployeeLoopState loop,
+        PayrollEngineRunResult result)
+    {
+        var payInDate = loop.PayInDate;
+        var settings = loop.Settings;
+        var engineRunId = loop.EngineRunId;
+        var runStartedAt = loop.RunStartedAt;
+
+        foreach (var employee in employees)
+        {
+            // Legacy lines 776-777: a PayrollLog row with StopFlag aborts the run -- but SCOPED to this
+            // run's own rows, which legacy achieved by truncating the whole table before every run. Left
+            // unscoped it reads every StopFlag ever set, so stopping one payroll area would abort a
+            // concurrent run of another. The real per-run Stop is ProgressWriter.IsStopRequestedAsync
+            // immediately below; this check is legacy's older mechanism, kept and now correctly scoped.
+            if (_payrollLogRepository.GetAll().Any(x => x.StopFlag && x.RunTimeStamp >= runStartedAt))
+            {
+                result.Aborted = true;
+                return;
+            }
+
+            // The API-initiated Stop, read on the progress writer's own connection. The legacy check
+            // above cannot see a flag set after this run's transaction opened, and setting that flag
+            // from outside would contend with the locks this transaction holds on PayrollLog.
+            if (await ProgressWriter.IsStopRequestedAsync(engineRunId))
+            {
+                result.Aborted = true;
+                return;
+            }
+
+            var employeeResult = new PayrollEmployeeRunResult
+            {
+                EmployeeId = employee.Id,
+                EmployeeCode = employee.Code
+            };
+
+            loop.SequenceNo = loop.SequenceNo + 1;
+            var sequenceNo = loop.SequenceNo;
+
+            // Measured, not estimated: the ETA is only as honest as this stopwatch.
+            var employeeStartedAt = Clock.Now;
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+            try
+            {
+                SkipWithoutDecrement = false;
+
+                // ==============================================================================
+                // TIME ENGINE AUTORUN -- legacy lines 554-753, and it belongs INSIDE this try.
+                // Legacy wraps it in its own try/catch whose body is "write a failed PayrollLog row,
+                // continue" (lines 725-751) -- which is precisely what the catch below already does. So a
+                // time-engine failure fails THIS employee and leaves the rest of the run alone, exactly as
+                // legacy, without a second error path to keep in step.
+                //
+                // The employee's input is cloned because legacy REASSIGNS its offCyclePaymentDate from the
+                // leave / full-and-final / encashment record the autorun found, and every later rule reads
+                // that value. Cloning keeps one employee's date out of the next one's run.
+                //
+                // A simulation runs it too, and for real (SimulationPayrollHelper lines 459-650): legacy's
+                // test run evaluates the employee's time exactly as a live run does.
+                // ==============================================================================
+                var employeeInput = input;
+
+                if (settings.EnableTimeEngineAutorun)
+                {
+                    var resolvedOffCyclePaymentDate =
+                        await RunTimeEngineAutorunAsync(input, employee, payInDate, settings);
+
+                    if (resolvedOffCyclePaymentDate != input.OffCyclePaymentDate)
+                    {
+                        employeeInput = CloneForEmployee(input, resolvedOffCyclePaymentDate);
+                    }
+                }
+
+                var processed = await ProcessEmployeeAsync(employeeInput, employee, payInDate, settings, employeeResult);
+
+                stopwatch.Stop();
+
+                if (!processed)
+                {
+                    // Legacy "noofEmp = noofEmp - 1; continue;" (lines 794-795): the employee is skipped
+                    // entirely and gets NO PayrollLog row at all. The two contract skips (lines 810, 822)
+                    // are a bare "continue" and do NOT decrement -- see ProcessEmployeeAsync's remarks.
+                    if (!SkipWithoutDecrement)
+                    {
+                        loop.EmployeeCount = loop.EmployeeCount - 1;
+                    }
+
+                    // No grid row -- the employee was never processed -- but the remaining count must
+                    // shrink or the ETA would never reach zero.
+                    await ProgressWriter.RecordSkippedEmployeeAsync(engineRunId);
+                    continue;
+                }
+
+                // Legacy lines 1419-1428.
+                employeeResult.Succeeded = true;
+                employeeResult.Message = "Successfull";
+                await AddPayrollLogAsync(employee.Id, payInDate, "Successfull", 0, loop.EmployeeCount);
+
+                await RecordEmployeeProgressAsync(
+                    engineRunId, sequenceNo, employee, true, "Successfull", employeeStartedAt, stopwatch);
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+
+                // ==============================================================================
+                // PER-EMPLOYEE ERROR ISOLATION -- legacy lines 1438-1460.
+                // One bad employee (including one bad wage type inside one bad employee, wrapped by
+                // RunPayrollCalculationAsync as "Error in calculating WageType '{code} : {name}'")
+                // must NEVER abort the run. Log it against the employee and carry on.
+                // ==============================================================================
+                var message = TruncateMessage(ex.Message);
+
+                employeeResult.Succeeded = false;
+                employeeResult.Message = message;
+                await AddPayrollLogAsync(employee.Id, payInDate, message, 1, loop.EmployeeCount);
+
+                await RecordEmployeeProgressAsync(
+                    engineRunId, sequenceNo, employee, false, message, employeeStartedAt, stopwatch);
+            }
+
+            result.EmployeeResults.Add(employeeResult);
+        }
+    }
+
+    /// <summary>
+    /// ONE PAYROLL RUN PER PAYROLL AREA -- the check, shared by live and simulation runs (a simulation of an area
+    /// reads and partly rewrites the same employees' data a live run of it does, so the two do not overlap
+    /// either). See <see cref="CreateSalaryRegisterAsync"/> for why it exists.
+    /// </summary>
+    private async Task EnsureNoRunInProgressAsync(PayrollEngineRunInput input)
+    {
+        var alreadyRunning = await ProgressWriter.GetActiveRunAsync(EngineType.PayrollEngine, BuildRunKey(input.PayrollAreaName));
+        if (alreadyRunning != null)
+        {
+            throw new UserFriendlyException(string.Format(
+                "Payroll is already running for payroll area '{0}' (started by {1} at {2}). Wait for it to finish, or stop it, before running this area again.",
+                input.PayrollAreaName,
+                string.IsNullOrWhiteSpace(alreadyRunning.StartedByUserName) ? "another user" : alreadyRunning.StartedByUserName,
+                alreadyRunning.StartedAt.ToString("dd/MM/yyyy HH:mm")));
+        }
     }
 
     /// <summary>Maps the run's outcome onto the operator-facing <see cref="EngineRunStatus"/>.</summary>
@@ -651,6 +819,13 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
     private static string BuildExecutionLogParameters(PayrollEngineRunInput input, DateTime payInDate)
     {
         var parts = new List<string>();
+
+        // Legacy SimulationPayrollHelper.CreateSimulationSalaryRegister line 409: a simulation's log row leads
+        // with this, so it can be told apart from a real run in the execution log.
+        if (IsSimulationRun(input))
+        {
+            parts.Add("Simulation Process Ran");
+        }
 
         if (!string.IsNullOrEmpty(input.PayrollAreaName))
         {

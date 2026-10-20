@@ -408,28 +408,71 @@ public class PayrollRoundingService_Tests
 
     #endregion
 
-    #region << Simulation target is refused, not silently redirected >>
+    #region << Simulation target: rounds the simulation register, never the live one >>
 
+    /// <summary>
+    /// Wave P7: legacy <c>SimulationPayrollHelper.SetRoundoff</c> rounds the simulation register with the same
+    /// digits. The live register with the same id must come out untouched.
+    /// </summary>
     [Fact]
-    public async Task ApplyRounding_Should_Throw_For_The_Simulation_Target_Rather_Than_Round_The_Live_Register()
+    public async Task ApplyRounding_Should_Round_The_Simulation_Register_And_Leave_The_Live_One_Alone()
     {
-        // Wave P7 deferral. The guard sits INSIDE legacy's catch-everything block, so the implementation
-        // re-throws NotImplementedException explicitly -- a silently un-rounded simulation would be worse
-        // than a loud unsupported-target error. This test is what stops that re-throw being "simplified" away.
         var forPeriod = new DateTime(2025, 3, 31);
         var wageType = Wage(1, "1000");
-        var detail = Detail(1, wageType.Id, 1.23456789);
+        var liveDetail = Detail(1, wageType.Id, 1.23456789);
+
+        var simulation = new SimulationRegisterTestRepositories();
+        simulation.Headers.Add(new SimulationSalaryRegister
+        {
+            Id = RegisterId, TenantId = 1, EmployeeId = EmployeeId, ForPeriod = forPeriod, InPeriod = forPeriod
+        });
+        simulation.Details.Add(new SimulationSalaryRegisterDetail
+        {
+            Id = 9, TenantId = 1, SimulationSalaryRegisterId = RegisterId, WageTypeId = wageType.Id,
+            Rate = 9.87654321, Number = 9.87654321, Amount = 9.87654321
+        });
+        simulation.DayDetails.Add(new SimulationSalaryRegisterDaysDetail
+        {
+            Id = 3, TenantId = 1, SimulationSalaryRegisterDetailId = 9, Period = forPeriod, Amount = 9.87654321
+        });
 
         var service = BuildService(
             registers: new[] { Register(forPeriod) },
-            details: new[] { detail },
+            details: new[] { liveDetail },
+            wageTypes: new[] { wageType });
+        service.SimulationRows = simulation.BuildRows();
+
+        await service.ApplyRoundingAsync(
+            Ref(forPeriod, PayrollRegisterTarget.Simulation),
+            new PayrollEngineSettings { DecimalInSalaryRegister = 2 });
+
+        simulation.Details.Single().Amount.ShouldBe(9.88);
+        simulation.Details.Single().Rate.ShouldBe(9.88);
+        simulation.DayDetails.Single().Amount.ShouldBe(9.88);
+        liveDetail.Amount.ShouldBe(1.23456789, "the live register must not have been touched");
+    }
+
+    /// <summary>
+    /// Without the simulation tables the service refuses loudly -- legacy's catch-everything block must not
+    /// swallow it into a silently un-rounded simulation, and the live register is never rounded instead.
+    /// </summary>
+    [Fact]
+    public async Task ApplyRounding_Should_Refuse_A_Simulation_Register_Without_The_Simulation_Tables()
+    {
+        var forPeriod = new DateTime(2025, 3, 31);
+        var wageType = Wage(1, "1000");
+        var liveDetail = Detail(1, wageType.Id, 1.23456789);
+
+        var service = BuildService(
+            registers: new[] { Register(forPeriod) },
+            details: new[] { liveDetail },
             wageTypes: new[] { wageType });
 
-        await Should.ThrowAsync<NotImplementedException>(() => service.ApplyRoundingAsync(
+        await Should.ThrowAsync<PayrollRoundingService.SimulationTablesMissingException>(() => service.ApplyRoundingAsync(
             Ref(forPeriod, PayrollRegisterTarget.Simulation),
             new PayrollEngineSettings { DecimalInSalaryRegister = 2 }));
 
-        detail.Amount.ShouldBe(1.23456789, "the live register must not have been touched");
+        liveDetail.Amount.ShouldBe(1.23456789, "the live register must not have been touched");
     }
 
     [Fact]

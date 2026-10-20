@@ -136,6 +136,11 @@ public class FundDeductionWageTypeCalculator : HCMv3DomainServiceBase, IWageType
             .ToList();
 
         // Legacy lines 3653-3716.
+        // SIMULATION RUN: the employee's fund is read but never written -- no fund created, no opening or
+        // deduction row deleted or added, no total changed (legacy GetFundDed_Simu has every one of those writes
+        // commented out). The deduction itself is worked out from the same bands, so the test run shows it.
+        var isSimulation = PayrollSimulationScope.IsActive;
+
         EmployeeFund empFund = null;
         if (subGroupFundList.Count > 0)
         {
@@ -158,58 +163,65 @@ public class FundDeductionWageTypeCalculator : HCMv3DomainServiceBase, IWageType
                 };
 
                 // InsertAndGetIdAsync (not InsertAsync): the identity is read immediately below for the
-                // EmployeeFundDetail FKs.
-                empFund.Id = await _employeeFundRepository.InsertAndGetIdAsync(empFund);
-            }
-
-            // Legacy lines 3675-3684: drop this month's system-generated Opening rows.
-            var staleOpeningIds = _employeeFundDetailRepository.GetAll()
-                .Where(r => r.EmployeeFundId == empFund.Id
-                            && r.TransactionDate >= payStartDate
-                            && r.TransactionDate <= payEndDate
-                            && r.FundPayType == FundPayType.Opening)
-                .Select(r => r.Id)
-                .ToList();
-
-            foreach (var id in staleOpeningIds)
-            {
-                await _employeeFundDetailRepository.DeleteAsync(id);
-            }
-
-            // Legacy lines 3686-3690: Program.empTimeTransferList, TransferType code "6".
-            var transferTypeIds = _timeTransferTypeRepository.GetAll()
-                .Where(t => t.Code == "6")
-                .Select(t => t.Id)
-                .ToList();
-
-            var openingFundAmount = _timeTransferRepository.GetAll()
-                .Where(r => r.EmployeeId == context.EmployeeId
-                            && transferTypeIds.Contains(r.TransferTypeId)
-                            && r.TransferDate >= payStartDate
-                            && r.TransferDate <= payEndDate)
-                .Sum(r => r.TransferCount);
-
-            if (openingFundAmount > 0)
-            {
-                await _employeeFundDetailRepository.InsertAsync(new EmployeeFundDetail
+                // EmployeeFundDetail FKs. A simulation keeps the new fund in memory only.
+                if (!isSimulation)
                 {
-                    TenantId = empFund.TenantId,
-                    EmployeeFundId = empFund.Id,
-                    TransactionDate = payStartDate,
-                    Amount = openingFundAmount,
-                    FundPayType = FundPayType.Opening
-                });
+                    empFund.Id = await _employeeFundRepository.InsertAndGetIdAsync(empFund);
+                }
+            }
 
-                // Legacy lines 3708-3712. NOTE this first re-total deliberately EXCLUDES ExternalDeduction
-                // and applies no Math.Round -- unlike the two later re-totals (lines 3743-3748, 3816-3822),
-                // which include it and round to 2. Legacy inconsistency, preserved.
-                var details = DetailsOf(empFund.Id);
-                empFund.Amount = details
-                    .Where(r => r.FundPayType == FundPayType.Opening || r.FundPayType == FundPayType.Deduction)
-                    .Sum(r => r.Amount);
-                empFund.PaidAmount = details.Where(r => r.FundPayType == FundPayType.Payment).Sum(r => r.Amount);
-                empFund.BalanceAmount = empFund.Amount - empFund.PaidAmount;
-                await _employeeFundRepository.UpdateAsync(empFund);
+            // A simulation leaves the fund rows alone (see above): no Opening row is dropped or re-added.
+            if (!isSimulation)
+            {
+                // Legacy lines 3675-3684: drop this month's system-generated Opening rows.
+                var staleOpeningIds = _employeeFundDetailRepository.GetAll()
+                    .Where(r => r.EmployeeFundId == empFund.Id
+                                && r.TransactionDate >= payStartDate
+                                && r.TransactionDate <= payEndDate
+                                && r.FundPayType == FundPayType.Opening)
+                    .Select(r => r.Id)
+                    .ToList();
+
+                foreach (var id in staleOpeningIds)
+                {
+                    await _employeeFundDetailRepository.DeleteAsync(id);
+                }
+
+                // Legacy lines 3686-3690: Program.empTimeTransferList, TransferType code "6".
+                var transferTypeIds = _timeTransferTypeRepository.GetAll()
+                    .Where(t => t.Code == "6")
+                    .Select(t => t.Id)
+                    .ToList();
+
+                var openingFundAmount = _timeTransferRepository.GetAll()
+                    .Where(r => r.EmployeeId == context.EmployeeId
+                                && transferTypeIds.Contains(r.TransferTypeId)
+                                && r.TransferDate >= payStartDate
+                                && r.TransferDate <= payEndDate)
+                    .Sum(r => r.TransferCount);
+
+                if (openingFundAmount > 0)
+                {
+                    await _employeeFundDetailRepository.InsertAsync(new EmployeeFundDetail
+                    {
+                        TenantId = empFund.TenantId,
+                        EmployeeFundId = empFund.Id,
+                        TransactionDate = payStartDate,
+                        Amount = openingFundAmount,
+                        FundPayType = FundPayType.Opening
+                    });
+
+                    // Legacy lines 3708-3712. NOTE this first re-total deliberately EXCLUDES ExternalDeduction
+                    // and applies no Math.Round -- unlike the two later re-totals (lines 3743-3748, 3816-3822),
+                    // which include it and round to 2. Legacy inconsistency, preserved.
+                    var details = DetailsOf(empFund.Id);
+                    empFund.Amount = details
+                        .Where(r => r.FundPayType == FundPayType.Opening || r.FundPayType == FundPayType.Deduction)
+                        .Sum(r => r.Amount);
+                    empFund.PaidAmount = details.Where(r => r.FundPayType == FundPayType.Payment).Sum(r => r.Amount);
+                    empFund.BalanceAmount = empFund.Amount - empFund.PaidAmount;
+                    await _employeeFundRepository.UpdateAsync(empFund);
+                }
             }
         }
 
@@ -234,13 +246,16 @@ public class FundDeductionWageTypeCalculator : HCMv3DomainServiceBase, IWageType
             .Select(r => r.Id)
             .ToList();
 
-        foreach (var id in staleDeductionIds)
+        if (!isSimulation)
         {
-            await _employeeFundDetailRepository.DeleteAsync(id);
-        }
+            foreach (var id in staleDeductionIds)
+            {
+                await _employeeFundDetailRepository.DeleteAsync(id);
+            }
 
-        RetotalFund(empFund);
-        await _employeeFundRepository.UpdateAsync(empFund);
+            RetotalFund(empFund);
+            await _employeeFundRepository.UpdateAsync(empFund);
+        }
 
         // Legacy lines 3753-3760.
         var skipFundDeduction = _employeeFundExemptionRepository.GetAll()
@@ -294,7 +309,7 @@ public class FundDeductionWageTypeCalculator : HCMv3DomainServiceBase, IWageType
         }
 
         // Legacy lines 3797-3832.
-        if (fundDedAmount > 0)
+        if (fundDedAmount > 0 && !isSimulation)
         {
             await _employeeFundDetailRepository.InsertAsync(new EmployeeFundDetail
             {

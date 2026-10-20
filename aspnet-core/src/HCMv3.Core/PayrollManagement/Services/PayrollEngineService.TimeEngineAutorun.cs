@@ -352,7 +352,8 @@ public partial class PayrollEngineService
             PayrollAreaName = input.PayrollAreaName,
             OffCyclePaymentDate = offCyclePaymentDate,
             OffCycleReason = input.OffCycleReason,
-            RegisterTarget = input.RegisterTarget
+            RegisterTarget = input.RegisterTarget,
+            CommitBatchSize = input.CommitBatchSize
         };
     }
 }

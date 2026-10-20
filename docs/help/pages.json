@@ -3552,8 +3552,92 @@
       "service": "PayrollEngineAppService",
       "propertyMap": {
         "RunType": "PayrollRunType",
-        "PayrollArea": "PayrollAreaName"
-      }
+        "PayrollArea": "PayrollAreaName",
+        "SimulationOther": "SimulationOtherPeriod"
+      },
+      "ignoreInputs": [
+        "PayrollEngine_SimulationCurrent"
+      ]
+    },
+    {
+      "helpId": "pay.payroll-run-employee-picker",
+      "title": "Payroll Engine — Select Employees",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollEngine"
+      ],
+      "surfaces": {
+        "read": {
+          "template": "angular/src/app/admin/payroll-management/payroll-engine/payroll-run-employee-picker-modal.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "pay.payroll-run-employee-picker.status",
+          "label": "PayrollStatus"
+        },
+        {
+          "id": "pay.payroll-run-employee-picker.search",
+          "label": "Search"
+        },
+        {
+          "id": "pay.payroll-run-employee-picker.select-all",
+          "label": "SelectAll"
+        },
+        {
+          "id": "pay.payroll-run-employee-picker.ok",
+          "label": "Ok"
+        }
+      ]
+    },
+    {
+      "helpId": "pay.payroll-retro-review",
+      "title": "Payroll Retro Dates",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollEngine"
+      ],
+      "surfaces": {
+        "read": {
+          "template": "angular/src/app/admin/payroll-management/payroll-engine/payroll-retro-review-modal.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "pay.payroll-retro-review.tabs",
+          "label": "Status"
+        },
+        {
+          "id": "pay.payroll-retro-review.from-date",
+          "label": "PayrollRetroFromDate"
+        },
+        {
+          "id": "pay.payroll-retro-review.months",
+          "label": "PayrollRetroMonths"
+        },
+        {
+          "id": "pay.payroll-retro-review.update-selected",
+          "label": "PayrollRetroUpdateSelected"
+        },
+        {
+          "id": "pay.payroll-retro-review.retro-date",
+          "label": "RetroDate",
+          "dom": "RetroEditorDate"
+        },
+        {
+          "id": "pay.payroll-retro-review.reason",
+          "label": "Reason",
+          "dom": "RetroEditorReason"
+        },
+        {
+          "id": "pay.payroll-retro-review.save",
+          "label": "Save"
+        }
+      ]
     },
     {
       "helpId": "tm.break-shift.edit",

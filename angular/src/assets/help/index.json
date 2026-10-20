@@ -3591,6 +3591,24 @@
     "PayrollEngine_OffCyclePaymentDate": [
       "pay.payroll-engine.run"
     ],
+    "PayrollEngine_IsSimulation": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_SimulationOther": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_SimulationMonth": [
+      "pay.payroll-engine.run"
+    ],
+    "PayrollEngine_SimulationYear": [
+      "pay.payroll-engine.run"
+    ],
+    "RetroEditorDate": [
+      "pay.payroll-retro-review"
+    ],
+    "RetroEditorReason": [
+      "pay.payroll-retro-review"
+    ],
     "BreakShift_Code": [
       "tm.break-shift.edit"
     ],

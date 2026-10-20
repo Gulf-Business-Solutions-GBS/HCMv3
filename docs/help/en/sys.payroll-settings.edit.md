@@ -91,7 +91,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether simulation payroll runs are allowed.
 
-**Why it matters.** Not read at present -- changing it has no effect.
+**Why it matters.** When on, the Payroll Engine screen offers **Simulation**, a test run that writes only to **Simulation Salary Registers** and never to live payroll data. When off, the box is hidden and a simulation run is refused.
 
 **Rules.** Yes or no.
 

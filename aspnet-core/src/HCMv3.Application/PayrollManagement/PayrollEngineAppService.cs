@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.BackgroundJobs;
+using Abp.Domain.Repositories;
 using Abp.Runtime.Session;
 using Abp.UI;
 using HCMv3.Authorization;
@@ -10,7 +11,9 @@ using HCMv3.EngineRuns;
 using HCMv3.EngineRuns.Dto;
 using HCMv3.PayrollManagement.Dto;
 using HCMv3.PayrollManagement.Services;
+using HCMv3.SystemSettings.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.PayrollManagement;
 
@@ -28,15 +31,24 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
     private readonly IBackgroundJobManager _backgroundJobManager;
     private readonly EngineRunProgressReader _progressReader;
     private readonly HCMv3.EngineRuns.Services.IEngineRunProgressWriter _progressWriter;
+    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IRepository<PayrollArea> _payrollAreaRepository;
+    private readonly IRepository<PayrollControlRecord> _payrollControlRecordRepository;
 
     public PayrollEngineAppService(
         IBackgroundJobManager backgroundJobManager,
         EngineRunProgressReader progressReader,
-        HCMv3.EngineRuns.Services.IEngineRunProgressWriter progressWriter)
+        HCMv3.EngineRuns.Services.IEngineRunProgressWriter progressWriter,
+        ISysSettingsAccessor sysSettingsAccessor,
+        IRepository<PayrollArea> payrollAreaRepository,
+        IRepository<PayrollControlRecord> payrollControlRecordRepository)
     {
         _backgroundJobManager = backgroundJobManager;
         _progressReader = progressReader;
         _progressWriter = progressWriter;
+        _sysSettingsAccessor = sysSettingsAccessor;
+        _payrollAreaRepository = payrollAreaRepository;
+        _payrollControlRecordRepository = payrollControlRecordRepository;
     }
 
     /// <summary>
@@ -56,8 +68,10 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run)]
     public async Task<RunPayrollEngineOutput> RunPayrollEngine(RunPayrollEngineInput input)
     {
-        // Legacy Program.cs lines 218-224.
-        if (input.PayInDate == default(DateTime))
+        var isOtherPeriodSimulation = input.IsSimulation && input.SimulationOtherPeriod;
+
+        // Legacy Program.cs lines 218-224. (A simulation of another period gets its date worked out below.)
+        if (!isOtherPeriodSimulation && input.PayInDate == default(DateTime))
         {
             throw new UserFriendlyException(L("PayrollEnginePayInDateRequired"));
         }
@@ -66,6 +80,29 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
         if (string.IsNullOrWhiteSpace(input.PayrollAreaName))
         {
             throw new UserFriendlyException(L("PayrollEnginePayrollAreaRequired"));
+        }
+
+        var payInDate = input.PayInDate;
+
+        if (input.IsSimulation)
+        {
+            // Legacy shows the Simulation box only when the setting is on (uscPayrollEngine.ascx.cs line 88).
+            var payrollSettings = await _sysSettingsAccessor.GetPayrollSettingsAsync();
+            if (payrollSettings == null || !payrollSettings.AllowSimulationRun)
+            {
+                throw new UserFriendlyException(L("PayrollEngineSimulationNotAllowed"));
+            }
+
+            if (input.SimulationOtherPeriod)
+            {
+                payInDate = await ResolveSimulationOtherPeriodPayInDateAsync(input);
+            }
+        }
+
+        // The other period's date, when legacy would have had none.
+        if (payInDate == default(DateTime))
+        {
+            throw new UserFriendlyException(L("PayrollEnginePayInDateRequired"));
         }
 
         // Legacy lines 234-237.
@@ -97,17 +134,59 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
             new PayrollEngineJobArgs
             {
                 TenantId = AbpSession.GetTenantId(),
+                UserId = AbpSession.UserId,
                 PayrollRunType = input.PayrollRunType,
                 EmployeeCodes = input.EmployeeCodes,
-                PayInDate = input.PayInDate.Date,
+                PayInDate = payInDate.Date,
                 PayrollAreaName = input.PayrollAreaName,
                 OffCyclePaymentDate = input.OffCyclePaymentDate?.Date ?? default(DateTime),
                 OffCycleReason = input.OffCycleReason,
-                // Legacy args[3]. Simulation runs are wave P7's to expose; every run started here is live.
-                RegisterTarget = PayrollRegisterTarget.Live
+                // Legacy args[3]: the screen called SimulationPayrollHelper.Main instead of Program.Main.
+                RegisterTarget = input.IsSimulation ? PayrollRegisterTarget.Simulation : PayrollRegisterTarget.Live
             });
 
         return new RunPayrollEngineOutput { Queued = true };
+    }
+
+    /// <summary>
+    /// The simulation's "Other" period (legacy <c>uscPayrollEngine.SetDates</c>, lines 323-331): the pay date is
+    /// the calendar month end that payroll month/year maps to under the payroll area's payroll year
+    /// (<c>PayrollControlRecord.GetStartEndDateFromPayrollPeriod</c>, ported as
+    /// <see cref="PayrollPeriodShiftCalculator"/>). Legacy works it out only for an area that has a control
+    /// record, and gives no date otherwise -- which the engine then refused as "no pay date"; the same refusal is
+    /// given here.
+    /// </summary>
+    private async Task<DateTime> ResolveSimulationOtherPeriodPayInDateAsync(RunPayrollEngineInput input)
+    {
+        if (input.SimulationMonth == null || input.SimulationYear == null)
+        {
+            throw new UserFriendlyException(L("PayrollEngineSimulationPeriodRequired"));
+        }
+
+        var area = await _payrollAreaRepository.GetAll()
+            .Include(a => a.PayrollPeriod)
+            .FirstOrDefaultAsync(a => a.Name == input.PayrollAreaName);
+
+        if (area == null || !await _payrollControlRecordRepository.GetAll().AnyAsync(r => r.PayrollAreaId == area.Id))
+        {
+            return default(DateTime);
+        }
+
+        if (area.PayrollPeriod == null)
+        {
+            throw new UserFriendlyException(L("IncorrectPayrollPeriod"));
+        }
+
+        try
+        {
+            return PayrollPeriodShiftCalculator
+                .GetCalendarMonthRange(area.PayrollPeriod.Code, input.SimulationMonth.Value, input.SimulationYear.Value)
+                .CalendarMonthEnd;
+        }
+        catch (ArgumentException)
+        {
+            throw new UserFriendlyException(L("IncorrectPayrollPeriod"));
+        }
     }
 
     /// <summary>

@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Payroll Engine — Run",
   "entity": "HCMv3.PayrollManagement.Dto.RunPayrollEngineInput",
-  "overviewHtml": "<p>Runs payroll for a payroll area, or for named employees, and shows the history of runs.</p><p>A run is refused unless the payroll area has a control record and there is a payroll calendar row for the month and year of the pay date. A <strong>regular</strong> run also needs the period released for payroll, with its month end on the pay date. An <strong>off-cycle</strong> run needs the period closed and at least one employee code.</p><p>The run works in the background; its progress and result appear in the run history below.</p>",
+  "overviewHtml": "<p>Runs payroll for a payroll area, or for chosen employees of it, and shows each run's progress and history.</p><p><strong>Choose the payroll area first.</strong> The screen then reads the area's payroll control record and fills in the rest: the <strong>Payroll Status</strong> strip shows the period (month, year, start and end dates) and what it is open for, the run type is set to match, and the pay-in date is filled and locked. A period that is <strong>locked</strong> is open for the <strong>Regular</strong> run (shown in green); a period that is <strong>closed</strong> (exit payroll done) is open for an <strong>Off Cycle</strong> run, booked into the following month (shown in yellow). A period that is neither reads <strong>Data Correction</strong>. With no control record the strip says \"Payroll control record is empty\" and nothing can be run.</p><p><strong>Run Payroll Engine</strong> checks the entries, then asks you to confirm, naming the area, the period, the run type and how many employees will be run (\"all N eligible employees of the area\" when no codes are given). The run then works in the background: its progress, counters and per-employee results appear below, and the run is added to <strong>Payroll Engine Run History</strong>. Only one run can be in progress per payroll area at a time; different areas can run together.</p><ul><li><strong>Show Retro (n)</strong> opens the retro dates of the area's employees; n is how many have a retro date before the current period. See the Payroll Retro Dates help.</li><li><strong>Export to excel</strong> downloads the per-employee results of the run shown below, with the same search and \"only failed\" filter you applied there.</li><li><strong>Refresh</strong> reloads the history.</li></ul><p>A run is refused unless there is a payroll calendar row for the month and year of the pay-in date. A <strong>regular</strong> run needs the period locked and not closed. An <strong>off-cycle</strong> run needs the period closed and at least one employee code.</p>",
   "aliasIndex": {
     "loc:PayrollAreaId": "RunPayrollEngineInput.PayrollAreaName",
     "dom:PayrollEngine_PayrollArea": "RunPayrollEngineInput.PayrollAreaName",
@@ -16,7 +16,15 @@
     "loc:OffCycleReason": "RunPayrollEngineInput.OffCycleReason",
     "dom:PayrollEngine_OffCycleReason": "RunPayrollEngineInput.OffCycleReason",
     "loc:OffCyclePaymentDate": "RunPayrollEngineInput.OffCyclePaymentDate",
-    "dom:PayrollEngine_OffCyclePaymentDate": "RunPayrollEngineInput.OffCyclePaymentDate"
+    "dom:PayrollEngine_OffCyclePaymentDate": "RunPayrollEngineInput.OffCyclePaymentDate",
+    "loc:PayrollRunSimulation": "RunPayrollEngineInput.IsSimulation",
+    "dom:PayrollEngine_IsSimulation": "RunPayrollEngineInput.IsSimulation",
+    "loc:PayrollRunOtherPeriod": "RunPayrollEngineInput.SimulationOtherPeriod",
+    "dom:PayrollEngine_SimulationOther": "RunPayrollEngineInput.SimulationOtherPeriod",
+    "loc:Month": "RunPayrollEngineInput.SimulationMonth",
+    "dom:PayrollEngine_SimulationMonth": "RunPayrollEngineInput.SimulationMonth",
+    "loc:Year": "RunPayrollEngineInput.SimulationYear",
+    "dom:PayrollEngine_SimulationYear": "RunPayrollEngineInput.SimulationYear"
   },
   "fields": [
     {
@@ -29,7 +37,7 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The payroll area to run.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> With no payroll area, nobody is processed.</p>",
+      "html": "<p><strong>What it is.</strong> The payroll area to run.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> Choosing an area fills the period, run type and pay-in date from its control record, clears the employee codes and switches <strong>Simulation</strong> off. With no payroll area, nothing can be run.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -43,7 +51,7 @@
       ],
       "rules": "Required. One of: Regular, Off Cycle.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> A regular monthly run, or an off-cycle run for particular employees.</p><p><strong>Example.</strong> Regular</p><p><strong>Why it matters.</strong> Regular needs the period released for payroll; off-cycle needs it closed.</p>",
+      "html": "<p><strong>What it is.</strong> A regular monthly run, or an off-cycle run for particular employees.</p><p><strong>Example.</strong> Regular</p><p><strong>Why it matters.</strong> It is set for you from the period status: Regular when the period is locked, Off Cycle when it is closed. You can change it, but the run is refused if the period is not in the matching state. Changing it clears the employee codes, because the employees on offer differ.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -57,7 +65,7 @@
       ],
       "rules": "Optional. Maximum 4000 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The codes of the employees to run, separated by commas. Blank runs everyone active in the payroll area.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Required for an off-cycle run.</p>",
+      "html": "<p><strong>What it is.</strong> The codes of the employees to run, separated by commas. Blank runs every eligible employee of the payroll area. The button beside it opens <strong>Select Employees</strong>, which lists the eligible employees and whether each has already been processed.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Required for an off-cycle run. The picker is available once an area is chosen, and for an off-cycle run once a reason is chosen.</p>",
       "adminHtml": "<p>Unless the time setting <em>Enable Time Engine Autorun</em> is on, named employees are run even if they have left or are in another payroll area; each is still checked against their own area's control record.</p>",
       "stub": false
     },
@@ -71,7 +79,7 @@
       ],
       "rules": "Required. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The date the pay is for — the last day of the payroll month.</p><p><strong>Example.</strong> <code>2026-04-30</code></p><p><strong>Why it matters.</strong> For a regular run it must be the month end of the period on the control record.</p>",
+      "html": "<p><strong>What it is.</strong> The date the pay is for: the last day of the payroll month.</p><p><strong>Example.</strong> <code>2026-04-30</code></p><p><strong>Why it matters.</strong> Filled in and read-only once the area has a control record: the period's end for a regular run, the following period's end for an off-cycle run, and the chosen month's end for a simulation on another period. It can be typed only when the area has no control record, and the run is then refused anyway.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -85,7 +93,7 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Why the off-cycle run is made: end of service, advance leave or leave encashment.</p><p><strong>Example.</strong> Advance Leave</p><p><strong>Why it matters.</strong> <em>Advance Leave</em> picks up paid leave set to <em>Pay In Advance</em> with a payment date in the month.</p>",
+      "html": "<p><strong>What it is.</strong> Why the off-cycle run is made. The list comes from <strong>Payroll Reason Types</strong>; until that list has entries, End Of Service, Advance Leave and Leave Encashment are offered. The first reason is chosen for you when the run turns off-cycle.</p><p><strong>Example.</strong> Advance Leave</p><p><strong>Why it matters.</strong> The reason decides who can be run. <em>Advance Leave</em> offers active employees with paid leave set to <em>Pay In Advance</em>, or a leave encashment, paid in the off-cycle month; <em>Leave Encashment</em> offers only those with an encashment; <em>End Of Service</em> offers inactive employees with a Full and Final payment in that month and a separation that was not revoked. Changing the reason clears the employee codes.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -99,8 +107,64 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The date the off-cycle payment is made.</p><p><strong>Example.</strong> <code>2026-05-05</code></p><p><strong>Why it matters.</strong> Required for an off-cycle run, and must fall after the closed period. The run is then booked to the month end of this date — 5 May books to 31 May.</p>",
-      "adminHtml": "<p>When the time setting <em>Enable Time Engine Autorun</em> is on, this date is ignored and the run is booked to the month after the closed period.</p>",
+      "html": "<p><strong>What it is.</strong> The date the off-cycle payment is made.</p><p><strong>Example.</strong> <code>2026-05-05</code></p><p><strong>Why it matters.</strong> It must fall inside the month after the closed period, and the date picker only offers those days. It starts on today when today is in that month and the payroll setting <em>Pick Offcycle Payment</em> is <em>Current Date</em>, otherwise on that month's end. Not shown when the time setting <em>Enable Time Engine Autorun</em> is on, because the engine then ignores it and books the run to the month after the closed period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RunPayrollEngineInput.IsSimulation",
+      "label": "PayrollRunSimulation",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:PayrollRunSimulation",
+        "dom:PayrollEngine_IsSimulation"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A test run: the same calculation as a real run, so you can check the results before paying. Offered only when the payroll setting <strong>Allow Simulation Run</strong> is on, and only once a payroll area is chosen.</p><p><strong>Example.</strong> Tick it, run the April payroll for three employees, and compare the results on <strong>Simulation Salary Registers</strong> before the real run.</p><p><strong>Why it matters.</strong> A simulation writes only to <strong>Simulation Salary Registers</strong> (SPY038). It never touches live data: no salary register, loan recovery, fund, insurance, indemnity quota, carry-forward payment or leave mark is written. Before it runs, every earlier simulation of the same employees, for any period, is deleted, so that screen always shows each employee's latest test run. The period checks of a real run are not applied: a regular simulation runs even when the period is not locked.</p>",
+      "adminHtml": "<p>The run still appears in the run history and the payroll log. When <em>Enable Time Engine Autorun</em> is on, the time engine runs for real as part of the simulation, as in the old system. The wage rules are the live ones, so a test shows what the real run would pay.</p>",
+      "stub": false
+    },
+    {
+      "id": "RunPayrollEngineInput.SimulationOtherPeriod",
+      "label": "PayrollRunOtherPeriod",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:PayrollRunOtherPeriod",
+        "dom:PayrollEngine_SimulationOther"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which period the simulation is for: <strong>Current</strong> (the control record's period, the default) or <strong>Other</strong>, a month and year you type.</p><p><strong>Example.</strong> Other, to test how March would have paid.</p><p><strong>Why it matters.</strong> With <strong>Other</strong>, the month and year start on the current period, the screen shows that month's start and end dates from the area's payroll period, and the pay-in date becomes that month's end.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RunPayrollEngineInput.SimulationMonth",
+      "label": "Month",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:Month",
+        "dom:PayrollEngine_SimulationMonth"
+      ],
+      "rules": "Required. Between 1 and 12. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll month to simulate, when <strong>Other</strong> is chosen.</p><p><strong>Example.</strong> 3</p><p><strong>Why it matters.</strong> The month number of the area's payroll year, as on the control record, not necessarily the calendar month. A month the area's payroll period does not define is refused as an incorrect payroll period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RunPayrollEngineInput.SimulationYear",
+      "label": "Year",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:Year",
+        "dom:PayrollEngine_SimulationYear"
+      ],
+      "rules": "Required. Between 1900 and 9999. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll year to simulate, when <strong>Other</strong> is chosen.</p><p><strong>Example.</strong> 2026</p><p><strong>Why it matters.</strong> Together with the month, it decides the period dates and the pay-in date of the test run.</p>",
+      "adminHtml": "",
       "stub": false
     }
   ]

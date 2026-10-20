@@ -343,6 +343,31 @@ public class PayrollEngineRunInput
     /// <c>Program</c> and <c>SimulationPayrollHelper</c>. See <see cref="PayrollRegisterTarget"/>.
     /// </summary>
     public PayrollRegisterTarget RegisterTarget { get; set; } = PayrollRegisterTarget.Live;
+
+    /// <summary>
+    /// Save the run this many employees at a time, each batch in its own unit of work
+    /// (<see cref="PayrollEngineBatches"/>). 0 (the default) keeps the whole run in the caller's unit of work, as
+    /// before -- which is what Go-Live Setup and the autorun worker rely on, since they batch themselves or
+    /// expect one call to be one transaction. The everyday Payroll Engine job passes
+    /// <see cref="PayrollEngineBatches.Size"/>.
+    ///
+    /// <para>Not a legacy argument. Legacy committed per employee (an object space per employee, legacy
+    /// <c>Program.cs</c> lines 756/1462); a batch of ten is the Go-Live wizard's proven compromise between that
+    /// and one transaction for the whole run.</para>
+    /// </summary>
+    public int CommitBatchSize { get; set; }
+}
+
+/// <summary>
+/// How many employees an everyday payroll run saves at a time. The same number and the same reason as
+/// <c>GoLiveEngineBatches.Size</c> (Go-Live Setup, IT11): the engine keeps everything it writes for one unit of
+/// work in memory until the unit of work ends, so one unit of work for a whole payroll area gets slower with
+/// every employee (186 employees went from 3.5 to 9 seconds each) and a failure late in the run threw away all
+/// of it. Ten at a time keeps every employee as quick as the first, and a failure costs its batch only.
+/// </summary>
+public static class PayrollEngineBatches
+{
+    public const int Size = 10;
 }
 
 /// <summary>

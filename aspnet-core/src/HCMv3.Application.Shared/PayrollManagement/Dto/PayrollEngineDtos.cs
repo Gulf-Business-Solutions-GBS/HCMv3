@@ -42,6 +42,29 @@ public class RunPayrollEngineInput
     /// </summary>
     [StringLength(256)]
     public string OffCycleReason { get; set; }
+
+    /// <summary>
+    /// Legacy <c>args[3]</c> / the screen's Simulation check box (<c>chkSimulation</c>): a test run, written to
+    /// the Simulation Salary Registers and leaving every live register and balance alone. Refused unless the
+    /// tenant's payroll settings have Allow Simulation Run on.
+    /// </summary>
+    public bool IsSimulation { get; set; }
+
+    /// <summary>
+    /// Legacy <c>rdOtherPeriod</c> (simulation only). False = "Current": the run uses <see cref="PayInDate"/>, as
+    /// a live run does. True = "Other": the period is <see cref="SimulationMonth"/>/<see cref="SimulationYear"/>
+    /// of the payroll area's payroll year, and the server works out its pay date (legacy
+    /// <c>uscPayrollEngine.SetDates</c> -> <c>PayrollControlRecord.GetStartEndDateFromPayrollPeriod</c>).
+    /// </summary>
+    public bool SimulationOtherPeriod { get; set; }
+
+    /// <summary>Legacy <c>txtMonth</c>: the payroll month (1-12) of the other period. Required when <see cref="SimulationOtherPeriod"/> is set.</summary>
+    [Range(1, 12)]
+    public int? SimulationMonth { get; set; }
+
+    /// <summary>Legacy <c>txtyear</c>: the payroll year of the other period. Required when <see cref="SimulationOtherPeriod"/> is set.</summary>
+    [Range(1900, 9999)]
+    public int? SimulationYear { get; set; }
 }
 
 /// <summary>

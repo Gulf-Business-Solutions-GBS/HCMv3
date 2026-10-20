@@ -16105,7 +16105,7 @@ namespace HCMv3.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("PayrollReasonTypeId")
+                    b.Property<int?>("PayrollReasonTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("PayrollResultType")
@@ -38534,9 +38534,7 @@ namespace HCMv3.Migrations
 
                     b.HasOne("HCMv3.PayrollManagement.PayrollReasonType", "PayrollReasonType")
                         .WithMany()
-                        .HasForeignKey("PayrollReasonTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PayrollReasonTypeId");
 
                     b.Navigation("Employee");
 

@@ -9,19 +9,22 @@ namespace HCMv3.PayrollManagement.Services;
 
 /// <inheritdoc cref="IPayrollRegisterStore"/>
 /// <remarks>
-/// Wave P1 implements <see cref="PayrollRegisterTarget.Live"/> only. Every method throws a loud
-/// <see cref="NotImplementedException"/> for <see cref="PayrollRegisterTarget.Simulation"/> naming the exact
-/// legacy file that must be folded in (wave P7) -- deliberately NOT falling back to the live tables, which
-/// would silently corrupt real payroll data during a simulation run.
+/// <para><b>Two targets.</b> <see cref="PayrollRegisterTarget.Live"/> reads and writes
+/// <c>SalaryRegisterDetail</c>/<c>SalaryRegisterDaysDetail</c>. <see cref="PayrollRegisterTarget.Simulation"/>
+/// (wave P7, legacy <c>HCM10.PayrollEngine/SimulationPayrollHelper.cs</c>) reads and writes
+/// <c>SimulationSalaryRegisterDetail</c>/<c>SimulationSalaryRegisterDaysDetail</c> through
+/// <see cref="ISimulationRegisterRows"/> -- and NEVER falls back to the live tables: a simulation must not touch
+/// real payroll results. If the simulation rows service is not available the store refuses loudly rather than
+/// write anywhere.</para>
 ///
 /// <para>NOTE: <c>HCMv3.Core</c> has no reference to EntityFrameworkCore (per architecture rules), so queries
 /// use the plain synchronous <c>IQueryable</c> from <c>IRepository&lt;T&gt;.GetAll()</c>, exactly like
 /// <c>AccrualService</c> and <c>CurrencyService</c>. Inserts/updates/deletes DO use the repositories' genuine
 /// async methods.</para>
 ///
-/// <para>TenantId on new child rows is copied from the owning <c>SalaryRegister</c> (the same approach
+/// <para>TenantId on new child rows is copied from the owning register (the same approach
 /// <c>AccrualService</c> uses for <c>EmployeeAbsQuotaForfeit</c>), not read from <c>AbpSession</c> -- a payroll
-/// run may legitimately execute under a background-job identity in a later wave.</para>
+/// run executes under a background-job identity.</para>
 /// </remarks>
 [UnitOfWork]
 public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStore
@@ -43,11 +46,17 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
         _wageTypeRepository = wageTypeRepository;
     }
 
+    /// <summary>
+    /// The simulation tables. Property-injected (ABP/Castle) so the existing hand-built test stores keep
+    /// compiling; a simulation call without it is refused (see <see cref="Simulation"/>).
+    /// </summary>
+    public ISimulationRegisterRows SimulationRows { get; set; }
+
     public Task<List<PayrollRegisterLine>> GetLinesAsync(PayrollRegisterRef register)
     {
         GuardTarget(register);
 
-        var lines = QueryLines(register.RegisterId).ToList();
+        var lines = (IsSimulation(register) ? QuerySimulationLines(register.RegisterId) : QueryLines(register.RegisterId)).ToList();
         return Task.FromResult(lines);
     }
 
@@ -55,7 +64,8 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
     {
         GuardTarget(register);
 
-        var line = QueryLines(register.RegisterId).FirstOrDefault(l => l.WageCode == wageCode);
+        var query = IsSimulation(register) ? QuerySimulationLines(register.RegisterId) : QueryLines(register.RegisterId);
+        var line = query.FirstOrDefault(l => l.WageCode == wageCode);
         return Task.FromResult(line);
     }
 
@@ -63,7 +73,8 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
     {
         GuardTarget(register);
 
-        var line = QueryLines(register.RegisterId).FirstOrDefault(l => l.WageTypeId == wageTypeId);
+        var query = IsSimulation(register) ? QuerySimulationLines(register.RegisterId) : QueryLines(register.RegisterId);
+        var line = query.FirstOrDefault(l => l.WageTypeId == wageTypeId);
         return Task.FromResult(line);
     }
 
@@ -74,6 +85,11 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
         if (line == null)
         {
             throw new ArgumentNullException(nameof(line));
+        }
+
+        if (IsSimulation(register))
+        {
+            return await SaveSimulationLineAsync(register, line, deleteWhenAmountIsZero);
         }
 
         var wageTypeId = ResolveWageTypeId(line);
@@ -129,6 +145,22 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
     {
         GuardTarget(register);
 
+        if (IsSimulation(register))
+        {
+            var simulationLineId = Simulation.Details
+                .Where(d => d.SimulationSalaryRegisterId == register.RegisterId && d.WageTypeId == wageTypeId)
+                .Select(d => (int?)d.Id)
+                .FirstOrDefault();
+
+            if (simulationLineId != null)
+            {
+                await Simulation.DeleteDetailWithDaysAsync(simulationLineId.Value);
+                await FlushAsync();
+            }
+
+            return;
+        }
+
         var existing = _salaryRegisterDetailRepository.GetAll()
             .FirstOrDefault(d => d.SalaryRegisterId == register.RegisterId && d.WageTypeId == wageTypeId);
 
@@ -141,6 +173,23 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
     public async Task ClearLinesAsync(PayrollRegisterRef register)
     {
         GuardTarget(register);
+
+        if (IsSimulation(register))
+        {
+            // Legacy SimulationPayrollHelper lines 920-929 / 1069-1077: day rows first, then the lines.
+            var simulationLineIds = Simulation.Details
+                .Where(d => d.SimulationSalaryRegisterId == register.RegisterId)
+                .Select(d => d.Id)
+                .ToList();
+
+            foreach (var simulationLineId in simulationLineIds)
+            {
+                await Simulation.DeleteDetailWithDaysAsync(simulationLineId);
+                await FlushAsync();
+            }
+
+            return;
+        }
 
         var detailIds = _salaryRegisterDetailRepository.GetAll()
             .Where(d => d.SalaryRegisterId == register.RegisterId)
@@ -156,6 +205,12 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
     public async Task SaveDayDetailsAsync(PayrollRegisterRef register, int lineId, IEnumerable<SalaryRegisterDayCount> days)
     {
         GuardTarget(register);
+
+        if (IsSimulation(register))
+        {
+            await SaveSimulationDayDetailsAsync(lineId, days);
+            return;
+        }
 
         var detail = _salaryRegisterDetailRepository.GetAll().FirstOrDefault(d => d.Id == lineId);
         if (detail == null)
@@ -193,6 +248,134 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
 
         await FlushAsync();
     }
+
+    #region << Simulation target (wave P7) >>
+
+    /// <summary>The simulation tables, or a loud refusal when they are not wired.</summary>
+    private ISimulationRegisterRows Simulation =>
+        SimulationRows ?? throw new InvalidOperationException(
+            "A simulation payroll run needs the simulation register tables (ISimulationRegisterRows), which are "
+            + "not available. Nothing was written: a simulation must never fall back to the live registers.");
+
+    private static bool IsSimulation(PayrollRegisterRef register) => register.Target == PayrollRegisterTarget.Simulation;
+
+    /// <summary>Simulation twin of <see cref="QueryLines"/>. <c>IsSystemGenerated</c> has no column there; every simulation line is engine-written.</summary>
+    private IQueryable<PayrollRegisterLine> QuerySimulationLines(int registerId)
+    {
+        return from detail in Simulation.Details
+               join wageType in _wageTypeRepository.GetAll() on detail.WageTypeId equals wageType.Id
+               where detail.SimulationSalaryRegisterId == registerId
+               select new PayrollRegisterLine
+               {
+                   Id = detail.Id,
+                   WageTypeId = detail.WageTypeId,
+                   WageCode = wageType.Code,
+                   Rate = detail.Rate,
+                   Number = detail.Number,
+                   Amount = detail.Amount,
+                   IsSystemGenerated = true
+               };
+    }
+
+    /// <summary>Simulation twin of the live <see cref="SaveLineAsync"/> body -- same "zero means delete" rule.</summary>
+    private async Task<PayrollRegisterLine> SaveSimulationLineAsync(PayrollRegisterRef register, PayrollRegisterLine line, bool deleteWhenAmountIsZero)
+    {
+        var wageTypeId = ResolveWageTypeId(line);
+
+        var existingId = Simulation.Details
+            .Where(d => d.SimulationSalaryRegisterId == register.RegisterId && d.WageTypeId == wageTypeId)
+            .Select(d => (int?)d.Id)
+            .FirstOrDefault();
+
+        if (deleteWhenAmountIsZero && line.Amount == 0)
+        {
+            if (existingId != null)
+            {
+                await Simulation.DeleteDetailWithDaysAsync(existingId.Value);
+                await FlushAsync();
+            }
+
+            return null;
+        }
+
+        int savedId;
+
+        if (existingId == null)
+        {
+            var header = Simulation.GetHeaderCopy(register.RegisterId);
+            if (header == null)
+            {
+                throw new InvalidOperationException($"SimulationSalaryRegister {register.RegisterId} not found.");
+            }
+
+            savedId = await Simulation.InsertDetailAsync(new SalaryRegisterDetail
+            {
+                TenantId = header.TenantId,
+                SalaryRegisterId = register.RegisterId,
+                WageTypeId = wageTypeId,
+                Rate = line.Rate,
+                Number = line.Number,
+                Amount = line.Amount
+            });
+        }
+        else
+        {
+            savedId = existingId.Value;
+            await Simulation.UpdateDetailAsync(new SalaryRegisterDetail
+            {
+                Id = savedId,
+                SalaryRegisterId = register.RegisterId,
+                WageTypeId = wageTypeId,
+                Rate = line.Rate,
+                Number = line.Number,
+                Amount = line.Amount
+            });
+        }
+
+        await FlushAsync();
+
+        line.Id = savedId;
+        line.WageTypeId = wageTypeId;
+        line.IsSystemGenerated = true;
+        return line;
+    }
+
+    /// <summary>
+    /// Simulation twin of the live <see cref="SaveDayDetailsAsync"/> body. Legacy
+    /// <c>SimulationPayrollHelper.AddSalaryRegisterDaysDetail_Simu</c> (line 4602).
+    /// </summary>
+    private async Task SaveSimulationDayDetailsAsync(int lineId, IEnumerable<SalaryRegisterDayCount> days)
+    {
+        var detail = Simulation.GetDetailCopy(lineId);
+        if (detail == null)
+        {
+            throw new InvalidOperationException($"SimulationSalaryRegisterDetail {lineId} not found.");
+        }
+
+        await Simulation.DeleteDayDetailsOfAsync(lineId);
+
+        if (days == null)
+        {
+            return;
+        }
+
+        foreach (var day in days)
+        {
+            await Simulation.InsertDayDetailAsync(new SalaryRegisterDaysDetail
+            {
+                TenantId = detail.TenantId,
+                SalaryRegisterDetailId = lineId,
+                Period = day.Period,
+                Rate = day.Rate,
+                Number = day.Number,
+                Amount = day.Amount
+            });
+        }
+
+        await FlushAsync();
+    }
+
+    #endregion
 
     private IQueryable<PayrollRegisterLine> QueryLines(int registerId)
     {
@@ -271,14 +454,9 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
             throw new ArgumentNullException(nameof(register));
         }
 
-        if (register.Target != PayrollRegisterTarget.Live)
+        if (register.Target != PayrollRegisterTarget.Live && register.Target != PayrollRegisterTarget.Simulation)
         {
-            throw new NotImplementedException(
-                "PayrollRegisterTarget.Simulation is not implemented in wave P1. Wave P7 folds legacy "
-                + "HCM10.PayrollEngine/SimulationPayrollHelper.cs into this store by adding a branch here that "
-                + "writes SimulationSalaryRegisterDetail/SimulationSalaryRegisterDaysDetail instead of "
-                + "SalaryRegisterDetail/SalaryRegisterDaysDetail. Falling back to the live tables is NOT an "
-                + "option -- a simulation run must never touch real payroll results.");
+            throw new NotSupportedException($"Unknown PayrollRegisterTarget {register.Target}.");
         }
     }
 }
