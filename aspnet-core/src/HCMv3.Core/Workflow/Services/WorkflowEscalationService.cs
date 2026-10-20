@@ -45,6 +45,7 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
     private readonly IWorkflowApproverResolver _approverResolver;
     private readonly IWorkflowStepSequence _stepSequence;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
 
     public WorkflowEscalationService(
         IRepository<WorkflowRequest> workflowRequestRepository,
@@ -54,8 +55,10 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApproverResolver approverResolver,
         IWorkflowStepSequence stepSequence,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IWorkflowTransactionHandlerResolver handlerResolver)
     {
+        _handlerResolver = handlerResolver;
         _stepSequence = stepSequence;
         _workflowRequestRepository = workflowRequestRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
@@ -164,6 +167,8 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
         request.WorkflowStep = nextStep;
         await _workflowRequestRepository.UpdateAsync(request);
 
+        await NotifyApproversAssignedAsync(request, nextStep, newApprovers);
+
         await AddEscalationLogAsync(request, newApprovers.First(), currentStep);
 
         return new WorkflowEscalationResult
@@ -211,6 +216,8 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
         await ReplaceApproversAsync(request, newApprovers);
 
         await _workflowRequestRepository.UpdateAsync(request);
+
+        await NotifyApproversAssignedAsync(request, currentStep, newApprovers);
 
         await AddEscalationLogAsync(request, newApprovers.First(), currentStep);
 
@@ -360,6 +367,26 @@ public class WorkflowEscalationService : HCMv3DomainServiceBase, IWorkflowEscala
         }
 
         request.ApproverId = approverEmployeeIds.First();
+    }
+
+    /// <summary>
+    /// Tells the request's transaction handler who now approves, as an approval does. Only a handler that acts on
+    /// assignment does anything: the appraisal adds the step's reviewers, as legacy <c>AutoEscalate</c> did on both
+    /// kinds of escalation (next level through <c>OperateApproverInfo</c>, sideways inline). It approves nothing,
+    /// so it does not break the rule that escalation never applies a decision.
+    /// </summary>
+    private async Task NotifyApproversAssignedAsync(WorkflowRequest request, int step, List<int> approverEmployeeIds)
+    {
+        var handler = _handlerResolver.Resolve(request.RequestType);
+        if (handler == null)
+        {
+            return;
+        }
+
+        await handler.OnApproversAssignedAsync(
+            new WorkflowTransactionContext(request, approverEmployeeIds.First()),
+            step,
+            approverEmployeeIds);
     }
 
     /// <summary>

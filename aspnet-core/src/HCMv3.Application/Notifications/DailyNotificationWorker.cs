@@ -37,9 +37,9 @@ namespace HCMv3.Notifications;
 public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     /// <summary>
-    /// Every four hours, not daily. All five runs ask "is today the day", so a run can only fire once per
-    /// day per recipient anyway; polling more often than the question changes simply means a host restarted
-    /// at an awkward hour still catches the day, instead of silently skipping it until tomorrow.
+    /// Polls every four hours, but each tenant is run once per calendar day (<see cref="IDailyNotificationRunGate"/>),
+    /// as legacy's once-a-day job (Hangfire <c>Cron.DayInterval(1)</c>). Polling more often than the day changes
+    /// simply means a host restarted at an awkward hour still catches the day, instead of skipping it until tomorrow.
     /// </summary>
     private const int CheckPeriodAsMilliseconds = 4 * 60 * 60 * 1000;
 
@@ -50,6 +50,7 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
     private readonly IDocumentOverdueReminderService _documentOverdueReminderService;
     private readonly IFixedDailyNotificationService _fixedDailyNotificationService;
     private readonly INotificationRuleRunner _notificationRuleRunner;
+    private readonly IDailyNotificationRunGate _dailyRunGate;
 
     public DailyNotificationWorker(
         AbpTimer timer,
@@ -59,9 +60,11 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
         IAbsenceViolationService absenceViolationService,
         IDocumentOverdueReminderService documentOverdueReminderService,
         IFixedDailyNotificationService fixedDailyNotificationService,
-        INotificationRuleRunner notificationRuleRunner)
+        INotificationRuleRunner notificationRuleRunner,
+        IDailyNotificationRunGate dailyRunGate)
         : base(timer)
     {
+        _dailyRunGate = dailyRunGate;
         _fixedDailyNotificationService = fixedDailyNotificationService;
         _notificationRuleRunner = notificationRuleRunner;
         _documentOverdueReminderService = documentOverdueReminderService;
@@ -84,9 +87,19 @@ public class DailyNotificationWorker : RecordedPeriodicBackgroundWorkerBase, ISi
         var tenantIds = _unitOfWorkManager.WithUnitOfWork(() =>
             _tenantRepository.GetAll().Where(t => t.IsActive).Select(t => t.Id).ToList());
 
+        var today = Clock.Now.Date;
         foreach (var tenantId in tenantIds)
         {
+            // Once per tenant per day, as legacy: without this, birthday, anniversary and the other "is today the
+            // day" notices went out on every four-hourly poll.
+            if (_unitOfWorkManager.WithUnitOfWork(() => AsyncHelper.RunSync(() => _dailyRunGate.HasRunAsync(tenantId, today))))
+            {
+                continue;
+            }
+
             RunForTenant(tenantId);
+
+            _unitOfWorkManager.WithUnitOfWork(() => AsyncHelper.RunSync(() => _dailyRunGate.MarkRunAsync(tenantId, today)));
         }
     }
 

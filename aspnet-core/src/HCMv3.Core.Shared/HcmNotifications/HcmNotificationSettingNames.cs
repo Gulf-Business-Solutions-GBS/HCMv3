@@ -17,4 +17,11 @@ public static class HcmNotificationSettingNames
     /// </para>
     /// </summary>
     public const string SubscribedDefinitions = "App.HcmNotifications.SubscribedDefinitions";
+
+    /// <summary>
+    /// Tenant setting: the day (yyyy-MM-dd) the daily notification run last completed for this tenant. Legacy ran
+    /// SendRealTimeNotification once a day (Hangfire <c>Cron.DayInterval(1)</c>); HCMv3 polls every four hours so a
+    /// restart cannot skip a day, and this marker keeps it to one run per day, as legacy.
+    /// </summary>
+    public const string DailyRunCompletedOn = "App.HcmNotifications.DailyRunCompletedOn";
 }

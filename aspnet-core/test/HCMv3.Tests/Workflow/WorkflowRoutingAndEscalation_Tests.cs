@@ -6,12 +6,14 @@ using Abp.Domain.Uow;
 using Abp.Organizations;
 using Abp.Threading;
 using Abp.UI;
+using Castle.MicroKernel.Registration;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.OrganizationManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSettings;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -952,6 +954,82 @@ public class WorkflowRoutingAndEscalation_Tests : AppTestBase
 
         var approverRow = LiveApprovers(requestId).Single();
         approverRow.ApproverId.ShouldBe(escalationTargetId);
+    }
+
+    /// <summary>
+    /// Swaps in a handler for the request type so a test can see what escalation tells it. Registered per test:
+    /// each test has its own container, and the escalation service is transient, so it is resolved again here.
+    /// </summary>
+    private (IWorkflowEscalationService Escalation, IWorkflowTransactionHandler Handler) WithObservedHandler()
+    {
+        var handler = Substitute.For<IWorkflowTransactionHandler>();
+        var resolver = Substitute.For<IWorkflowTransactionHandlerResolver>();
+        resolver.Resolve("EmployeeAbsence").Returns(handler);
+        LocalIocManager.IocContainer.Register(Component.For<IWorkflowTransactionHandlerResolver>().Instance(resolver).IsDefault());
+        return (Resolve<IWorkflowEscalationService>(), handler);
+    }
+
+    [Fact]
+    public async Task Escalating_To_The_Next_Level_Should_Tell_The_Handler_Who_Now_Approves()
+    {
+        // Legacy AutoEscalate added the appraisal's reviewers on escalation too (OperateApproverInfo), so the
+        // handler hears about the new approvers exactly as it does on an approval.
+        var requesterId = CreateEmployee("RT705REQ");
+        var slowApproverId = CreateEmployee("RT705SLOW");
+        var nextLevelId = CreateEmployee("RT705NEXT");
+
+        var step1Role = CreateWorkflowRole("Step1");
+        var step2Role = CreateWorkflowRole("Step2");
+        GiveRole(slowApproverId, step1Role);
+        GiveRole(nextLevelId, step2Role);
+
+        var masterId = CreateMaster(steps: 2);
+        AddStep(masterId, 1, roleId: step1Role, shouldEscalate: true, escalateAfterDays: 3, escalateNextLevel: true);
+        AddStep(masterId, 2, roleId: step2Role);
+        EnableCatalog(masterId);
+
+        var requestId = CreateOpenRequest(requesterId);
+        SetApprover(requestId, slowApproverId);
+        SetLastActionDaysAgo(requestId, requesterId, days: 5);
+
+        var (escalation, handler) = WithObservedHandler();
+        await WithUnitOfWorkAsync(() => escalation.EscalateStalledRequestsAsync());
+
+        await handler.Received(1).OnApproversAssignedAsync(
+            Arg.Is<WorkflowTransactionContext>(c => c.Request.Id == requestId),
+            2,
+            Arg.Is<IReadOnlyList<int>>(ids => ids.SequenceEqual(new[] { nextLevelId })));
+    }
+
+    [Fact]
+    public async Task Escalating_Sideways_Should_Tell_The_Handler_Who_Now_Approves()
+    {
+        var requesterId = CreateEmployee("RT715REQ");
+        var slowApproverId = CreateEmployee("RT715SLOW");
+        var escalationTargetId = CreateEmployee("RT715TARGET");
+
+        var stepRole = CreateWorkflowRole("Step");
+        var escalateRole = CreateWorkflowRole("Escalate");
+        GiveRole(slowApproverId, stepRole);
+        GiveRole(escalationTargetId, escalateRole);
+
+        var masterId = CreateMaster(steps: 2);
+        AddStep(masterId, 1, roleId: stepRole, shouldEscalate: true, escalateAfterDays: 2,
+            escalateNextLevel: false, escalateRoleId: escalateRole);
+        AddStep(masterId, 2, roleId: stepRole);
+        EnableCatalog(masterId);
+
+        var requestId = CreateOpenRequest(requesterId);
+        SetApprover(requestId, slowApproverId);
+        SetLastActionDaysAgo(requestId, requesterId, days: 4);
+
+        var (escalation, handler) = WithObservedHandler();
+        await WithUnitOfWorkAsync(() => escalation.EscalateStalledRequestsAsync());
+
+        await handler.Received(1).OnApproversAssignedAsync(
+            Arg.Is<WorkflowTransactionContext>(c => c.Request.Id == requestId),
+            1,
+            Arg.Is<IReadOnlyList<int>>(ids => ids.SequenceEqual(new[] { escalationTargetId })));
     }
 
     [Fact]

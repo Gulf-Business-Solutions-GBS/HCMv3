@@ -18,6 +18,11 @@ public class HcmNotificationSettingProvider : SettingProvider
                 HcmNotificationSettingNames.SubscribedDefinitions,
                 string.Empty,
                 scopes: SettingScopes.Tenant,
+                isVisibleToClients: false),
+            new SettingDefinition(
+                HcmNotificationSettingNames.DailyRunCompletedOn,
+                string.Empty,
+                scopes: SettingScopes.Tenant,
                 isVisibleToClients: false)
         };
     }
