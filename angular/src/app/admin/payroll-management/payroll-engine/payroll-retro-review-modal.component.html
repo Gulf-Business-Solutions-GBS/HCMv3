@@ -1,0 +1,280 @@
+<div
+    appBsModal
+    #modal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modal"
+    (onShown)="shown()"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: false }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">{{ 'PayrollRetroTitle' | localize }}</h5>
+                    <div class="text-muted fs-7">{{ 'PayrollRetroSubtitle' | localize }}</div>
+                </div>
+                <button
+                    type="button"
+                    class="btn-close"
+                    (click)="close()"
+                    [attr.aria-label]="l('Close')"
+                    [disabled]="saving()"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex flex-wrap gap-5 mb-4">
+                    <div>
+                        <span class="text-muted">{{ 'PayrollArea' | localize }}:</span>
+                        <span class="fw-bold ms-1">{{ payrollAreaName() }}</span>
+                    </div>
+                    @if (periodStart() && periodEnd()) {
+                        <div>
+                            <span class="text-muted">{{ 'Period' | localize }}:</span>
+                            <span class="fw-bold ms-1">{{ formatDate(periodStart()) }} - {{ formatDate(periodEnd()) }}</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Legacy radio tabs: All / Retro / No Retro / Changed, each with its count. -->
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+                    <div class="btn-group" role="group">
+                        <button
+                            type="button"
+                            class="btn btn-sm"
+                            [class.btn-primary]="tab() === 'All'"
+                            [class.btn-light]="tab() !== 'All'"
+                            (click)="setTab('All')">
+                            {{ 'PayrollRetroFilterAll' | localize: allCount() }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-sm"
+                            [class.btn-primary]="tab() === 'Retro'"
+                            [class.btn-light]="tab() !== 'Retro'"
+                            (click)="setTab('Retro')">
+                            {{ 'PayrollRetroFilterRetro' | localize: retroCount() }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-sm"
+                            [class.btn-primary]="tab() === 'NoRetro'"
+                            [class.btn-light]="tab() !== 'NoRetro'"
+                            (click)="setTab('NoRetro')">
+                            {{ 'PayrollRetroFilterNoRetro' | localize: noRetroCount() }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-sm"
+                            [class.btn-primary]="tab() === 'Changed'"
+                            [class.btn-light]="tab() !== 'Changed'"
+                            (click)="setTab('Changed')">
+                            {{ 'PayrollRetroFilterChanged' | localize: changedCount() }}
+                        </button>
+                    </div>
+
+                    @if (canSave) {
+                        <div class="d-flex gap-2">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-light-primary"
+                                [disabled]="selected().length === 0 || saving()"
+                                (click)="editSelected()">
+                                <i class="fa fa-pen"></i>
+                                {{ 'PayrollRetroUpdateSelected' | localize }}
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-primary"
+                                [disabled]="saving()"
+                                [buttonBusy]="saving()"
+                                [busyText]="l('SavingWithThreeDot')"
+                                (click)="save()">
+                                <i class="fa fa-save"></i>
+                                {{ 'Save' | localize }}
+                            </button>
+                        </div>
+                    }
+                </div>
+
+                <!-- Legacy popupRetroUpdate, inline. -->
+                @if (editorOpen()) {
+                    <div class="card card-bordered mb-4">
+                        <div class="card-body py-4">
+                            <div class="fw-bold">{{ editorTitle() }}</div>
+                            <div class="text-muted mb-3">{{ editorSubtitle() }}</div>
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label" for="RetroEditorDate">{{ 'RetroDate' | localize }}</label>
+                                    <input
+                                        id="RetroEditorDate"
+                                        name="retroEditorDate"
+                                        type="date"
+                                        class="form-control"
+                                        [ngModel]="editorDate()"
+                                        (ngModelChange)="editorDate.set($event ?? '')" />
+                                    <div class="form-text">{{ 'PayrollRetroRemoveDateNote' | localize }}</div>
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="form-label required" for="RetroEditorReason">
+                                        {{ 'Reason' | localize }}
+                                    </label>
+                                    <textarea
+                                        id="RetroEditorReason"
+                                        name="retroEditorReason"
+                                        class="form-control"
+                                        rows="3"
+                                        maxlength="500"
+                                        [placeholder]="l('Reason')"
+                                        [ngModel]="editorReason()"
+                                        (ngModelChange)="editorReason.set($event)"></textarea>
+                                </div>
+                            </div>
+
+                            @if (editorError()) {
+                                <div class="text-danger mt-2">{{ editorError() }}</div>
+                            }
+
+                            <div class="d-flex justify-content-end gap-2 mt-3">
+                                <button type="button" class="btn btn-sm btn-light" (click)="closeEditor()">
+                                    {{ 'Cancel' | localize }}
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary" (click)="applyEditor()">
+                                    {{ (editorRow() ? 'Apply' : 'PayrollRetroApplyToSelected') | localize }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <form novalidate (ngSubmit)="refresh()" autocomplete="off">
+                    <div class="input-group mb-3">
+                        <input
+                            [ngModel]="filterText()"
+                            (ngModelChange)="filterText.set($event)"
+                            name="filterText"
+                            class="form-control"
+                            [disabled]="tab() === 'Changed'"
+                            placeholder="{{ 'SearchWithThreeDot' | localize }}"
+                            type="text" />
+                        <button class="btn btn-primary" type="submit" [disabled]="tab() === 'Changed'">
+                            <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                    <p-table
+                        #dataTable
+                        dataKey="employeeId"
+                        (onLazyLoad)="getRecordsIfNeeds($event)"
+                        [value]="primengTableHelper.records()"
+                        rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                        [paginator]="false"
+                        [lazy]="true"
+                        [scrollable]="true"
+                        scrollHeight="400px"
+                        [tableStyle]="{ 'min-width': '60rem' }"
+                        [selection]="selected()"
+                        (selectionChange)="selected.set($event)">
+                        <ng-template #header>
+                            <tr>
+                                @if (canSave) {
+                                    <th style="width: 90px">
+                                        <p-tableHeaderCheckbox />
+                                    </th>
+                                }
+                                <th style="width: 130px" pSortableColumn="employeeCode">
+                                    {{ 'EmployeeCode' | localize }}
+                                    <p-sortIcon field="employeeCode" />
+                                </th>
+                                <th pSortableColumn="employeeName">
+                                    {{ 'EmployeeName' | localize }}
+                                    <p-sortIcon field="employeeName" />
+                                </th>
+                                <th style="width: 140px" pSortableColumn="retroFromDate">
+                                    {{ 'PayrollRetroFromDate' | localize }}
+                                    <p-sortIcon field="retroFromDate" />
+                                </th>
+                                <th style="width: 120px" pSortableColumn="retroMonths">
+                                    {{ 'PayrollRetroMonths' | localize }}
+                                    <p-sortIcon field="retroMonths" />
+                                </th>
+                                <th>{{ 'Reason' | localize }}</th>
+                                <th style="width: 110px">{{ 'Status' | localize }}</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-record="$implicit">
+                            <tr [class.table-warning]="isPending(record)">
+                                @if (canSave) {
+                                    <td style="width: 90px">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <p-tableCheckbox [value]="record" />
+                                            <button
+                                                type="button"
+                                                class="btn btn-icon btn-sm btn-light-primary"
+                                                [title]="l('Edit')"
+                                                [attr.aria-label]="l('Edit')"
+                                                (click)="editOne(record)">
+                                                <i class="fa fa-pen"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                }
+                                <td>{{ record.employeeCode }}</td>
+                                <td>{{ record.employeeName }}</td>
+                                <td>{{ formatDate(record.retroFromDate) }}</td>
+                                <td>{{ record.retroMonths }}</td>
+                                <td class="text-break">{{ record.reason }}</td>
+                                <td>
+                                    @if (record.hasRetro) {
+                                        <span class="badge badge-light-success">
+                                            {{ 'PayrollRetroStatusRetro' | localize }}
+                                        </span>
+                                    } @else {
+                                        <span class="badge badge-light-warning">
+                                            {{ 'PayrollRetroStatusNoRetro' | localize }}
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    @if (primengTableHelper.totalRecordsCount() == 0) {
+                        <div class="primeng-no-data">
+                            {{ 'NoData' | localize }}
+                        </div>
+                    }
+                    <!-- Kept in the DOM on the Changed tab (that tab is not paged) so paging state survives. -->
+                    <div class="primeng-paging-container" [hidden]="tab() === 'Changed'">
+                        <p-paginator
+                            [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                            #paginator
+                            (onPageChange)="getRecordsIfNeeds($event)"
+                            [totalRecords]="primengTableHelper.totalRecordsCount()"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                            [showCurrentPageReport]="true"
+                            [currentPageReportTemplate]="
+                                'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                            " />
+                    </div>
+                </div>
+
+                @if (canSave) {
+                    <div class="mt-3">
+                        {{ 'PayrollRetroTotalSelected' | localize }}
+                        <span class="fw-bold text-success ms-1">{{ selected().length }}</span>
+                    </div>
+                }
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                    {{ 'Close' | localize }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

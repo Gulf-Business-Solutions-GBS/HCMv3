@@ -30,8 +30,8 @@ namespace HCMv3.PayrollManagement.Services;
 /// <see cref="PayrollEngineRunInput.RegisterTarget"/> is threaded through into every
 /// <see cref="PayrollRegisterRef.Target"/> the engine builds, so P7 only has to teach
 /// <see cref="IPayrollRegisterStore"/> (and the register-header creation branch here) about
-/// <see cref="PayrollRegisterTarget.Simulation"/>. The store deliberately throws for Simulation today; that
-/// is correct and pinned by tests.</para>
+/// <see cref="PayrollRegisterTarget.Simulation"/>. Wave P7 did exactly that -- see
+/// <c>PayrollEngineService.Simulation.cs</c> and <see cref="PayrollSimulationScope"/>.</para>
 /// </summary>
 public interface IPayrollEngineService : IDomainService
 {

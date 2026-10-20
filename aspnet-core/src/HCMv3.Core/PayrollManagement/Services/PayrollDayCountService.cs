@@ -125,6 +125,18 @@ public class PayrollDayCountService : HCMv3DomainServiceBase, IPayrollDayCountSe
         _rosterService = rosterService;
     }
 
+    /// <summary>
+    /// The simulation register tables, read instead of the live ones while a simulation run is calculating
+    /// (<see cref="PayrollSimulationScope"/>). Property-injected so the hand-built test services keep compiling.
+    /// </summary>
+    public ISimulationRegisterRows SimulationRows { get; set; }
+
+    private ISimulationRegisterRows SimulationRowsOrThrow()
+    {
+        return SimulationRows ?? throw new InvalidOperationException(
+            "PayrollDayCountService needs ISimulationRegisterRows to read a simulation register.");
+    }
+
     // NOTE: HCMv3.Core has no reference to EntityFrameworkCore (architecture rule), so the EF async
     // IQueryable extensions are unavailable. All queries use the plain synchronous IQueryable from
     // IRepository<T>.GetAll(); public methods are still Task-returning for interface consistency.
@@ -152,7 +164,11 @@ public class PayrollDayCountService : HCMv3DomainServiceBase, IPayrollDayCountSe
             return result;
         }
 
-        var salaryRegister = _salaryRegisterRepository.GetAll().FirstOrDefault(r => r.Id == salaryRegisterId);
+        // A simulation run's register id is a SimulationSalaryRegister id (see PayrollSimulationScope); only its
+        // InPeriod/ForPeriod are read below.
+        var salaryRegister = PayrollSimulationScope.IsActive
+            ? SimulationRowsOrThrow().GetHeaderCopy(salaryRegisterId)
+            : _salaryRegisterRepository.GetAll().FirstOrDefault(r => r.Id == salaryRegisterId);
         if (salaryRegister == null)
         {
             throw new InvalidOperationException($"SalaryRegister '{salaryRegisterId}' not found.");
@@ -1023,10 +1039,16 @@ public class PayrollDayCountService : HCMv3DomainServiceBase, IPayrollDayCountSe
 
     public Task<double> GetPaidDaysAsync(int salaryRegisterId)
     {
-        var details = _salaryRegisterDetailRepository.GetAll()
-            .Where(r => r.SalaryRegisterId == salaryRegisterId)
-            .Select(r => new { Code = r.WageType.Code, r.Number })
-            .ToList();
+        // Legacy SimulationPayrollHelper.GetPaidDays (line 4418) reads the simulation register's lines.
+        var details = PayrollSimulationScope.IsActive
+            ? SimulationRowsOrThrow().Details
+                .Where(r => r.SimulationSalaryRegisterId == salaryRegisterId)
+                .Select(r => new { Code = r.WageType.Code, r.Number })
+                .ToList()
+            : _salaryRegisterDetailRepository.GetAll()
+                .Where(r => r.SalaryRegisterId == salaryRegisterId)
+                .Select(r => new { Code = r.WageType.Code, r.Number })
+                .ToList();
 
         // Legacy uses .Select(...).FirstOrDefault() per code, i.e. a missing detail contributes 0 and a
         // duplicated wage type contributes only its first row. Preserved exactly.

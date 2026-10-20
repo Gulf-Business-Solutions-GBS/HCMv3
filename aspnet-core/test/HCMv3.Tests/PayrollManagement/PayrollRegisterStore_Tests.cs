@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Services;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 using static HCMv3.Tests.PayrollManagement.PayrollEngineFakes;
@@ -14,13 +17,11 @@ namespace HCMv3.Tests.PayrollManagement;
 /// Wave P1 -- <see cref="PayrollRegisterStore"/>, the single concrete-entity boundary between the ~34
 /// wage-type rules of waves P4-P6 and the register tables.
 ///
-/// <para><b>The most important assertions in this file are the Simulation ones.</b> Wave P1 implements
-/// <see cref="PayrollRegisterTarget.Live"/> only and every entry point throws
-/// <see cref="NotImplementedException"/> for <see cref="PayrollRegisterTarget.Simulation"/> instead of
-/// falling back to the live tables. That refusal is deliberate: a simulation run that silently wrote into
-/// <c>SalaryRegisterDetail</c> would corrupt real payroll results with no visible symptom. Wave P7 replaces
-/// the throw with a genuine <c>SimulationSalaryRegisterDetail</c> branch -- it must NEVER be replaced with a
-/// fall-through.</para>
+/// <para><b>The most important assertions in this file are the Simulation ones.</b> Wave P7 gave
+/// <see cref="PayrollRegisterTarget.Simulation"/> its own branch over the simulation tables. Every test there
+/// also proves the live line and day tables saw nothing but reads, and that without the simulation tables the
+/// store refuses instead of falling back to the live ones: a simulation run that silently wrote into
+/// <c>SalaryRegisterDetail</c> would corrupt real payroll results with no visible symptom.</para>
 ///
 /// <para>Read paths are covered against in-memory repositories. Write paths that go through
 /// <c>InsertOrUpdateAndGetIdAsync</c>/<c>DeleteAsync</c> are exercised only for their target guard here; their
@@ -98,80 +99,192 @@ public class PayrollRegisterStore_Tests
 
     #endregion
 
-    #region << Simulation target must throw, never fall through to the live tables >>
+    #region << Simulation target (wave P7): the simulation tables, never the live ones >>
 
-    [Fact]
-    public async Task GetLines_Should_Throw_For_The_Simulation_Target()
+    /// <summary>A simulation register 500 with a 1000 line, beside the live register of the same employee.</summary>
+    private sealed class SimulationFixture
     {
-        await Should.ThrowAsync<NotImplementedException>(
-            () => BuildPopulatedStore().GetLinesAsync(Ref(PayrollRegisterTarget.Simulation)));
-    }
+        public const int SimulationRegisterId = 500;
 
-    [Fact]
-    public async Task GetLine_Should_Throw_For_The_Simulation_Target()
-    {
-        await Should.ThrowAsync<NotImplementedException>(
-            () => BuildPopulatedStore().GetLineAsync(Ref(PayrollRegisterTarget.Simulation), "1000"));
-    }
+        public readonly WageType BasicPay = Wage(1, "1000");
+        public readonly WageType NetPay = Wage(2, "9000");
+        public readonly SimulationRegisterTestRepositories Simulation = new SimulationRegisterTestRepositories();
+        public readonly SalaryRegisterDetail LiveLine;
+        public readonly IRepository<SalaryRegisterDetail> LiveDetails;
+        public readonly IRepository<SalaryRegisterDaysDetail> LiveDays;
 
-    [Fact]
-    public async Task GetLineByWageTypeId_Should_Throw_For_The_Simulation_Target()
-    {
-        await Should.ThrowAsync<NotImplementedException>(
-            () => BuildPopulatedStore().GetLineByWageTypeIdAsync(Ref(PayrollRegisterTarget.Simulation), 1));
-    }
-
-    [Fact]
-    public async Task SaveLine_Should_Throw_For_The_Simulation_Target_Without_Writing_To_The_Live_Register()
-    {
-        var basicPay = Wage(1, "1000");
-        var live = new SalaryRegisterDetail
+        public SimulationFixture()
         {
-            Id = 1, TenantId = 1, SalaryRegisterId = RegisterId, WageTypeId = basicPay.Id, Amount = 300
-        };
+            LiveLine = new SalaryRegisterDetail { Id = 1, TenantId = 1, SalaryRegisterId = RegisterId, WageTypeId = BasicPay.Id, Rate = 1, Number = 30, Amount = 300 };
+            LiveDetails = Repo(LiveLine);
+            LiveDays = Repo<SalaryRegisterDaysDetail>();
 
-        var store = BuildStore(
-            registers: new[] { new SalaryRegister { Id = RegisterId, TenantId = 1, EmployeeId = 7 } },
-            details: new[] { live },
-            wageTypes: new[] { basicPay });
+            Simulation.Headers.Add(new SimulationSalaryRegister
+            {
+                Id = SimulationRegisterId, TenantId = 1, EmployeeId = 7,
+                ForPeriod = new DateTime(2025, 3, 31), InPeriod = new DateTime(2025, 3, 31)
+            });
+            Simulation.Details.Add(new SimulationSalaryRegisterDetail
+            {
+                Id = 41, TenantId = 1, SimulationSalaryRegisterId = SimulationRegisterId, WageTypeId = BasicPay.Id, Rate = 2, Number = 30, Amount = 600
+            });
+            Simulation.DayDetails.Add(new SimulationSalaryRegisterDaysDetail
+            {
+                Id = 71, TenantId = 1, SimulationSalaryRegisterDetailId = 41, Period = new DateTime(2025, 3, 31), Amount = 600
+            });
+        }
 
-        await Should.ThrowAsync<NotImplementedException>(() => store.SaveLineAsync(
-            Ref(PayrollRegisterTarget.Simulation),
-            new PayrollRegisterLine { WageCode = "1000", Amount = 12345 }));
+        public PayrollRegisterStore Build(bool withSimulationRows = true)
+        {
+            var store = new PayrollRegisterStore(
+                Repo(new SalaryRegister { Id = RegisterId, TenantId = 1, EmployeeId = 7 }),
+                LiveDetails,
+                LiveDays,
+                Repo(BasicPay, NetPay));
 
-        live.Amount.ShouldBe(300, "a simulation run must never mutate a live SalaryRegisterDetail");
+            // Built by hand, so the unit-of-work manager ABP would inject is set here (its Current saves nothing).
+            store.UnitOfWorkManager = Substitute.For<IUnitOfWorkManager>();
+
+            if (withSimulationRows)
+            {
+                store.SimulationRows = Simulation.BuildRows();
+            }
+
+            return store;
+        }
+
+        /// <summary>Nothing but reads ever reached the live line and day tables.</summary>
+        public void LiveShouldBeUntouched()
+        {
+            LiveLine.Amount.ShouldBe(300, "a simulation run must never change a live SalaryRegisterDetail");
+            LiveDetails.ReceivedCalls().ShouldAllBe(c => c.GetMethodInfo().Name == "GetAll");
+            LiveDays.ReceivedCalls().ShouldAllBe(c => c.GetMethodInfo().Name == "GetAll");
+        }
+    }
+
+    private static PayrollRegisterRef SimulationRef() =>
+        Ref(PayrollRegisterTarget.Simulation, SimulationFixture.SimulationRegisterId);
+
+    [Fact]
+    public async Task GetLines_Should_Read_The_Simulation_Register_For_The_Simulation_Target()
+    {
+        var fixture = new SimulationFixture();
+
+        var lines = await fixture.Build().GetLinesAsync(SimulationRef());
+
+        var line = lines.ShouldHaveSingleItem();
+        line.Id.ShouldBe(41);
+        line.WageCode.ShouldBe("1000");
+        line.Amount.ShouldBe(600);
+        fixture.LiveShouldBeUntouched();
     }
 
     [Fact]
-    public async Task DeleteLine_Should_Throw_For_The_Simulation_Target_Without_Deleting_The_Live_Line()
+    public async Task GetLine_And_GetLineByWageTypeId_Should_Read_The_Simulation_Register()
     {
-        await Should.ThrowAsync<NotImplementedException>(
-            () => BuildPopulatedStore().DeleteLineAsync(Ref(PayrollRegisterTarget.Simulation), 1));
+        var store = new SimulationFixture().Build();
+
+        (await store.GetLineAsync(SimulationRef(), "1000")).Amount.ShouldBe(600);
+        (await store.GetLineByWageTypeIdAsync(SimulationRef(), 1)).Amount.ShouldBe(600);
+        (await store.GetLineAsync(SimulationRef(), "9000")).ShouldBeNull();
     }
 
     [Fact]
-    public async Task ClearLines_Should_Throw_For_The_Simulation_Target()
+    public async Task SaveLine_Should_Update_The_Simulation_Line_And_Leave_The_Live_Line_Alone()
     {
-        await Should.ThrowAsync<NotImplementedException>(
-            () => BuildPopulatedStore().ClearLinesAsync(Ref(PayrollRegisterTarget.Simulation)));
+        var fixture = new SimulationFixture();
+
+        var saved = await fixture.Build().SaveLineAsync(SimulationRef(), new PayrollRegisterLine { WageCode = "1000", Rate = 3, Number = 30, Amount = 900 });
+
+        saved.Id.ShouldBe(41);
+        var simulationLine = fixture.Simulation.Details.ShouldHaveSingleItem();
+        simulationLine.Rate.ShouldBe(3);
+        simulationLine.Amount.ShouldBe(900);
+        fixture.LiveShouldBeUntouched();
     }
 
     [Fact]
-    public async Task SaveDayDetails_Should_Throw_For_The_Simulation_Target()
+    public async Task SaveLine_Should_Add_A_Simulation_Line_Carrying_The_Simulation_Registers_Tenant()
     {
-        await Should.ThrowAsync<NotImplementedException>(() => BuildPopulatedStore().SaveDayDetailsAsync(
-            Ref(PayrollRegisterTarget.Simulation), 1, new List<SalaryRegisterDayCount>()));
+        var fixture = new SimulationFixture();
+
+        await fixture.Build().SaveLineAsync(SimulationRef(), new PayrollRegisterLine { WageCode = "9000", Amount = 550 }, deleteWhenAmountIsZero: false);
+
+        var added = fixture.Simulation.Details.Single(d => d.WageTypeId == fixture.NetPay.Id);
+        added.SimulationSalaryRegisterId.ShouldBe(SimulationFixture.SimulationRegisterId);
+        added.TenantId.ShouldBe(1);
+        added.Amount.ShouldBe(550);
+        fixture.LiveShouldBeUntouched();
     }
 
     [Fact]
-    public async Task The_Simulation_Guard_Should_Name_Wave_P7_And_The_Legacy_File_To_Fold_In()
+    public async Task SaveLine_Should_Delete_A_Zero_Simulation_Line_With_Its_Days_As_Legacy()
     {
-        // The message is the only breadcrumb a wave-P7 developer gets; keep it informative.
-        var ex = await Should.ThrowAsync<NotImplementedException>(
-            () => BuildPopulatedStore().GetLinesAsync(Ref(PayrollRegisterTarget.Simulation)));
+        var fixture = new SimulationFixture();
 
-        ex.Message.ShouldContain("Simulation");
-        ex.Message.ShouldContain("SimulationPayrollHelper");
+        var result = await fixture.Build().SaveLineAsync(SimulationRef(), new PayrollRegisterLine { WageCode = "1000", Amount = 0 });
+
+        result.ShouldBeNull();
+        fixture.Simulation.Details.ShouldBeEmpty();
+        fixture.Simulation.DayDetails.ShouldBeEmpty();
+        fixture.LiveShouldBeUntouched();
+    }
+
+    [Fact]
+    public async Task ClearLines_Should_Empty_Only_The_Simulation_Register()
+    {
+        var fixture = new SimulationFixture();
+
+        await fixture.Build().ClearLinesAsync(SimulationRef());
+
+        fixture.Simulation.Details.ShouldBeEmpty();
+        fixture.Simulation.DayDetails.ShouldBeEmpty();
+        fixture.Simulation.Headers.ShouldHaveSingleItem("the register itself stays; only its lines go");
+        fixture.LiveShouldBeUntouched();
+    }
+
+    [Fact]
+    public async Task DeleteLine_Should_Delete_Only_The_Simulation_Line()
+    {
+        var fixture = new SimulationFixture();
+
+        await fixture.Build().DeleteLineAsync(SimulationRef(), 1);
+
+        fixture.Simulation.Details.ShouldBeEmpty();
+        fixture.LiveShouldBeUntouched();
+    }
+
+    [Fact]
+    public async Task SaveDayDetails_Should_Replace_The_Simulation_Lines_Days()
+    {
+        var fixture = new SimulationFixture();
+
+        await fixture.Build().SaveDayDetailsAsync(SimulationRef(), 41, new List<SalaryRegisterDayCount>
+        {
+            new SalaryRegisterDayCount { Period = new DateTime(2025, 2, 28), Rate = 1, Number = 2, Amount = 3 },
+            new SalaryRegisterDayCount { Period = new DateTime(2025, 3, 31), Rate = 4, Number = 5, Amount = 6 }
+        });
+
+        fixture.Simulation.DayDetails.Count.ShouldBe(2);
+        fixture.Simulation.DayDetails.ShouldAllBe(d => d.SimulationSalaryRegisterDetailId == 41 && d.TenantId == 1);
+        fixture.Simulation.DayDetails.ShouldNotContain(d => d.Id == 71, "the old day row is replaced");
+        fixture.LiveShouldBeUntouched();
+    }
+
+    /// <summary>
+    /// The one rule that must never be "simplified" away: without the simulation tables the store refuses -- it
+    /// does NOT fall back to the live registers.
+    /// </summary>
+    [Fact]
+    public async Task A_Simulation_Write_Should_Be_Refused_Rather_Than_Fall_Back_To_The_Live_Register()
+    {
+        var fixture = new SimulationFixture();
+
+        var ex = await Should.ThrowAsync<InvalidOperationException>(() => fixture.Build(withSimulationRows: false)
+            .SaveLineAsync(SimulationRef(), new PayrollRegisterLine { WageCode = "1000", Amount = 12345 }));
+
+        ex.Message.ShouldContain("simulation");
+        fixture.LiveShouldBeUntouched();
     }
 
     [Fact]

@@ -109,8 +109,10 @@ public class NetPayWageTypeCalculator : HCMv3DomainServiceBase, IWageTypeCalcula
             },
             deleteWhenAmountIsZero: false);
 
-        // Legacy lines 1095-1147.
-        if (context.Register.InPeriod == context.Register.ForPeriod)
+        // Legacy lines 1095-1147. A SIMULATION run never carries a negative net pay into next month's
+        // payments: the whole 2011 block is commented out in its copy (EmployeeCalculatedPayService.cs lines
+        // 5181-5207). Its net pay is still floored at 0 above, as there.
+        if (context.Register.InPeriod == context.Register.ForPeriod && !PayrollSimulationScope.IsActive)
         {
             await PostLastMonthRecoveryAsync(context, advSalaryRecovery);
         }

@@ -37,7 +37,13 @@ public class SimulationSalaryRegister : FullAuditedEntity, IMustHaveTenant
 
     public virtual PayrollResultType PayrollResultType { get; set; }
 
-    public virtual int PayrollReasonTypeId { get; set; }
+    /// <summary>
+    /// NULLABLE, for the same reason as <see cref="SalaryRegister.PayrollReasonTypeId"/>: a REGULAR run never
+    /// has a reason -- legacy <c>SimulationPayrollHelper</c> sets <c>PayrollReasonType</c> on its off-cycle arm
+    /// only (lines 1064-1080) -- so a required FK made it impossible to save a regular simulation register at
+    /// all. Needs migration <c>Made_SimulationSalaryRegister_PayrollReasonType_Optional</c>.
+    /// </summary>
+    public virtual int? PayrollReasonTypeId { get; set; }
 
     public virtual PayrollReasonType PayrollReasonType { get; set; }
 }

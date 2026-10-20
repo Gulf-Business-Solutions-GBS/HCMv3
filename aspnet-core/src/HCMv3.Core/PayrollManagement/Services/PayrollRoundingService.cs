@@ -88,11 +88,12 @@ public class PayrollRoundingService : HCMv3DomainServiceBase, IPayrollRoundingSe
                 return;
             }
 
-            if (register.Target != PayrollRegisterTarget.Live)
+            if (register.Target == PayrollRegisterTarget.Simulation)
             {
-                throw new NotImplementedException(
-                    "PayrollRoundingService supports PayrollRegisterTarget.Live only in wave P1; wave P7 adds "
-                    + "the SimulationSalaryRegister branch (legacy HCM10.PayrollEngine/SimulationPayrollHelper.cs).");
+                // Legacy SimulationPayrollHelper.SetRoundoff (lines 2469-2570): the same rounding, on the
+                // simulation register. Never redirected to the live one.
+                await ApplySimulationRoundingAsync(register, settings);
+                return;
             }
 
             var salaryRegister = _salaryRegisterRepository.GetAll().FirstOrDefault(r => r.Id == register.RegisterId);
@@ -152,15 +153,79 @@ public class PayrollRoundingService : HCMv3DomainServiceBase, IPayrollRoundingSe
                 }
             }
         }
-        catch (NotImplementedException)
+        catch (SimulationTablesMissingException)
         {
-            // The Simulation guard above must NOT be swallowed -- a silently un-rounded simulation is worse
-            // than a loud unsupported-target error.
+            // A simulation without its tables must NOT be swallowed -- a silently un-rounded simulation is worse
+            // than a loud error.
             throw;
         }
         catch (Exception)
         {
             // Legacy Program.cs lines 3097-3100: "//exception while rounding .. skip".
+        }
+    }
+
+    /// <summary>The simulation tables. Property-injected so the hand-built test services keep compiling.</summary>
+    public ISimulationRegisterRows SimulationRows { get; set; }
+
+    /// <summary>Thrown when a simulation register is to be rounded but the simulation tables are not wired.</summary>
+    public sealed class SimulationTablesMissingException : InvalidOperationException
+    {
+        public SimulationTablesMissingException()
+            : base("PayrollRoundingService was asked to round a simulation register but has no ISimulationRegisterRows; "
+                   + "nothing was rounded, and the live register was not touched.")
+        {
+        }
+    }
+
+    /// <summary>
+    /// Simulation twin of the live body above: same digits, same exceptions, applied to
+    /// <see cref="SimulationSalaryRegisterDetail"/>/<see cref="SimulationSalaryRegisterDaysDetail"/>.
+    /// </summary>
+    private async Task ApplySimulationRoundingAsync(PayrollRegisterRef register, PayrollEngineSettings settings)
+    {
+        var simulation = SimulationRows ?? throw new SimulationTablesMissingException();
+
+        var header = simulation.GetHeaderCopy(register.RegisterId);
+        if (header == null)
+        {
+            return;
+        }
+
+        var effectiveSettings = settings ?? new PayrollEngineSettings();
+
+        var useOldCurrencyDecimalMode =
+            effectiveSettings.Decimal6RoundingFrom != default(DateTime)
+            && header.ForPeriod < effectiveSettings.Decimal6RoundingFrom;
+
+        var currencyDecimals = useOldCurrencyDecimalMode
+            ? await GetCurrencyDecimalRoundingAsync(header.EmployeeId)
+            : 0;
+
+        var lines = (from detail in simulation.Details
+                     join wageType in _wageTypeRepository.GetAll() on detail.WageTypeId equals wageType.Id
+                     where detail.SimulationSalaryRegisterId == register.RegisterId
+                     select new { detail.Id, wageType.Code }).ToList();
+
+        foreach (var row in lines)
+        {
+            var digits = !useOldCurrencyDecimalMode
+                ? effectiveSettings.DecimalInSalaryRegister
+                : AccrualWageCodesAlwaysRoundedTo6.Contains(row.Code) ? AccrualWageCodeDecimals : currencyDecimals;
+
+            var detail = simulation.GetDetailCopy(row.Id);
+            detail.Rate = Math.Round(detail.Rate, digits);
+            detail.Number = Math.Round(detail.Number, digits);
+            detail.Amount = Math.Round(detail.Amount, digits);
+            await simulation.UpdateDetailAsync(detail);
+
+            foreach (var dayRow in simulation.GetDayDetailCopies(row.Id))
+            {
+                dayRow.Rate = Math.Round(dayRow.Rate, digits);
+                dayRow.Number = Math.Round(dayRow.Number, digits);
+                dayRow.Amount = Math.Round(dayRow.Amount, digits);
+                await simulation.UpdateDayDetailAsync(dayRow);
+            }
         }
     }
 

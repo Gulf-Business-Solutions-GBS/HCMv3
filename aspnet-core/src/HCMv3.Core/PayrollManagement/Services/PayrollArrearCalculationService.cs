@@ -171,8 +171,11 @@ public class PayrollArrearCalculationService : HCMv3DomainServiceBase, IPayrollA
             }
 
             // Legacy lines 106-111. A missing line adds 0 rather than skipping the register (legacy line 108).
+            // The run's own retro registers -- simulation ones during a simulation run (legacy
+            // PayrollArrearService.GetArrear_Simu reads currentSalReg.SimulationSalaryRegisterDetail). The
+            // earlier register (lastSalReg) is a live one in both, as in legacy.
             var currentLine = await _registerStore.GetLineByWageTypeIdAsync(
-                ToRegisterRef(currentSalReg), arrearSourceWageType.Id);
+                ToRegisterRef(currentSalReg, context.Register?.Target ?? PayrollRegisterTarget.Live), arrearSourceWageType.Id);
 
             if (currentLine != null)
             {
@@ -221,15 +224,15 @@ public class PayrollArrearCalculationService : HCMv3DomainServiceBase, IPayrollA
 
     /// <summary>
     /// Same helper shape <see cref="ITimeTypeCumulationService"/> uses: the registers reached through
-    /// <see cref="PayrollCalculationContext.CurrentSalaryRegisters"/> and the prior-register query are live
-    /// <see cref="SalaryRegister"/> rows, i.e. always <see cref="PayrollRegisterTarget.Live"/>.
+    /// <see cref="PayrollCalculationContext.CurrentSalaryRegisters"/> are the run's own registers (simulation ones
+    /// during a simulation run, so pass <paramref name="target"/>); the prior-register query is always live.
     /// </summary>
-    private static PayrollRegisterRef ToRegisterRef(SalaryRegister salaryRegister)
+    private static PayrollRegisterRef ToRegisterRef(SalaryRegister salaryRegister, PayrollRegisterTarget target = PayrollRegisterTarget.Live)
     {
         return new PayrollRegisterRef
         {
             RegisterId = salaryRegister.Id,
-            Target = PayrollRegisterTarget.Live,
+            Target = target,
             ForPeriod = salaryRegister.ForPeriod,
             InPeriod = salaryRegister.InPeriod,
             PayrollRunType = salaryRegister.PayrollRunType

@@ -124,6 +124,37 @@ public class PayrollAdvancePaymentService_Clearing_Tests
 
     #endregion
 
+    #region << Simulation run (wave P7): no EmployeePayment is written or cleared >>
+
+    /// <summary>
+    /// Legacy <c>SimulationPayrollHelper.AdvancePaymentDed</c> and its 2005/2011 clearing blocks are commented
+    /// out: a test run neither raises nor clears a recovery payment.
+    /// </summary>
+    [Fact]
+    public async Task A_Simulation_Should_Neither_Clear_Nor_Raise_Any_Recovery_Payment()
+    {
+        var advance = Advance(October, OffCyclePaymentDate, 260);
+        var lastMonth = Payment(LastMonthRecoveryWageTypeId, November, null, 75);
+        var service = Build();
+
+        using (PayrollSimulationScope.Begin())
+        {
+            (await service.DeleteAdvancePaymentDedAsync(EmployeeId, OffCyclePaymentDate)).ShouldBe(0);
+            (await service.ZeroFutureAdvanceRecoveryAsync(EmployeeId, new DateTime(2026, 9, 30), false)).ShouldBe(0);
+            (await service.ZeroAdvanceRecoveryInWindowAsync(EmployeeId, new DateTime(2026, 10, 1), new DateTime(2026, 10, 31))).ShouldBe(0);
+            (await service.ZeroLastMonthRecoveryAsync(EmployeeId, new DateTime(2026, 10, 31))).ShouldBe(0);
+            await service.AdvancePaymentDedAsync(
+                EmployeeId, November, OffCyclePaymentDate, 100, PayrollRunType.OffCycle, PayrollOffCycleReasons.AdvanceLeave,
+                string.Empty, new PayrollEngineSettings());
+        }
+
+        _payments.Count.ShouldBe(2);
+        advance.Amount.ShouldBe(260);
+        lastMonth.Amount.ShouldBe(75);
+    }
+
+    #endregion
+
     #region << DeleteAdvancePaymentDed (legacy lines 2988-3000) >>
 
     /// <summary>

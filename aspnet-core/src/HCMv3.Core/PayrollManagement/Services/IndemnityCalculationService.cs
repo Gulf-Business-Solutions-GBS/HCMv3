@@ -156,7 +156,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
         var payStartDate = new DateTime(payDate.Year, payDate.Month, 1);
         var payEndDate = payDate;
 
-        var currentDetails = GetRegisterDetailSnapshots(salaryRegisterId);
+        var currentDetails = GetCurrentRegisterDetailSnapshots(salaryRegisterId);
 
         // Legacy: daysCount = "4025".Number + "5025".Number (both FirstOrDefault, i.e. 0 when absent).
         double daysCount = NumberOf(currentDetails, WageCodeIndemnityAccrualClosing)
@@ -241,6 +241,13 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
     {
         var result = new EmployeeIndemnityQuotaUpdateResult();
 
+        // Legacy SimulationPayrollHelper.UpdateEmployeeIndemnityQuota (lines 2280-2295) is entirely commented
+        // out: a test run never moves the employee's indemnity quota.
+        if (IsSimulation)
+        {
+            return result;
+        }
+
         // Legacy: emp.IndemnityQuota.FirstOrDefault() -- no ordering, no date filter, silent return if none.
         var quota = _employeeGratuityQuotaRepository.GetAll()
             .Where(r => r.EmployeeId == employeeId)
@@ -251,7 +258,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             return result;
         }
 
-        var details = GetRegisterDetailSnapshots(salaryRegisterId);
+        var details = GetCurrentRegisterDetailSnapshots(salaryRegisterId);
 
         // Legacy rounding: Math.Round(x, 3) on both fields -- digit count reproduced exactly.
         quota.QuotaAccrued = Math.Round(NumberOf(details, WageCodeIndemnityAccrualClosing), 3);
@@ -279,7 +286,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
         var result = new IndemnityPayResult { IndemnitySlabs = indemnitySlabs };
 
         var salaryRegister = GetSalaryRegisterOrThrow(salaryRegisterId);
-        var details = GetRegisterDetailSnapshots(salaryRegisterId);
+        var details = GetCurrentRegisterDetailSnapshots(salaryRegisterId);
 
         var wtIndemnityPaidDays = NumberOf(details, WageCodeIndemnityPaidDays);
         if (wtIndemnityPaidDays == 0)
@@ -337,11 +344,11 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
 
         if (existingId.HasValue)
         {
-            var detail = _salaryRegisterDetailRepository.GetAll().First(r => r.Id == existingId.Value);
+            var detail = LoadDetail(existingId.Value);
             detail.Rate = rate;
             detail.Number = number;
             detail.Amount = amount;
-            await _salaryRegisterDetailRepository.UpdateAsync(detail);
+            await SaveDetailAsync(detail);
 
             result.SalaryRegisterDetailUpdated = true;
             result.SalaryRegisterDetailId = detail.Id;
@@ -362,7 +369,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
 
             // InsertAndGetIdAsync (not InsertAsync): the identity Id is only assigned when the insert is
             // flushed, and IndemnityPayResult.SalaryRegisterDetailId is documented to carry the real id.
-            result.SalaryRegisterDetailId = await _salaryRegisterDetailRepository.InsertAndGetIdAsync(detail);
+            result.SalaryRegisterDetailId = await InsertDetailAsync(detail);
             result.SalaryRegisterDetailCreated = true;
         }
 
@@ -409,7 +416,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
     {
         var result = new IndemnityProvisionResult { IndemnitySlabs = indemnitySlabs };
 
-        var detail = _salaryRegisterDetailRepository.GetAll().FirstOrDefault(r => r.Id == salaryRegisterDetailId);
+        var detail = LoadDetail(salaryRegisterDetailId);
         if (detail == null)
         {
             throw new AbpException($"SalaryRegisterDetail {salaryRegisterDetailId} not found");
@@ -420,7 +427,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             .Select(r => r.FixedDays)
             .FirstOrDefault();
 
-        var details = GetRegisterDetailSnapshots(detail.SalaryRegisterId);
+        var details = GetCurrentRegisterDetailSnapshots(detail.SalaryRegisterId);
 
         var sourceLine = details.FirstOrDefault(r => r.Code == sourceWageCode);
 
@@ -428,7 +435,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
         {
             // Legacy else-branch: Amount = 0 (Rate/Number untouched), return 0.
             detail.Amount = 0;
-            await _salaryRegisterDetailRepository.UpdateAsync(detail);
+            await SaveDetailAsync(detail);
 
             result.Rate = detail.Rate;
             result.Number = detail.Number;
@@ -454,7 +461,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
 
         detail.Amount = bifurcated.Amount;
 
-        await _salaryRegisterDetailRepository.UpdateAsync(detail);
+        await SaveDetailAsync(detail);
 
         result.Rate = detail.Rate;
         result.Number = detail.Number;
@@ -592,27 +599,35 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
         var payStartDate = new DateTime(payDate.Year, payDate.Month, 1);
         var payEndDate = payDate;
 
-        var details = GetRegisterDetailSnapshots(salaryRegisterId);
+        var details = GetCurrentRegisterDetailSnapshots(salaryRegisterId);
         var provisionLine = details.FirstOrDefault(r => r.Code == WageCodeMonthlyIndemnityProvision);
 
         SalaryRegisterDetail detail = null;
 
         if (provisionLine != null)
         {
-            detail = _salaryRegisterDetailRepository.GetAll().First(r => r.Id == provisionLine.Id);
+            detail = LoadDetail(provisionLine.Id);
 
             // Legacy: delete all existing day-wise entries for this wage type before recomputing.
-            var existingDayIds = _salaryRegisterDaysDetailRepository.GetAll()
-                .Where(r => r.SalaryRegisterDetailId == detail.Id)
-                .Select(r => r.Id)
-                .ToList();
-
-            foreach (var dayId in existingDayIds)
+            if (IsSimulation)
             {
-                await _salaryRegisterDaysDetailRepository.DeleteAsync(dayId);
+                result.DeletedDaysDetailCount = await SimulationRowsOrThrow().DeleteDayDetailsOfAsync(detail.Id);
+            }
+            else
+            {
+                var existingDayIds = _salaryRegisterDaysDetailRepository.GetAll()
+                    .Where(r => r.SalaryRegisterDetailId == detail.Id)
+                    .Select(r => r.Id)
+                    .ToList();
+
+                foreach (var dayId in existingDayIds)
+                {
+                    await _salaryRegisterDaysDetailRepository.DeleteAsync(dayId);
+                }
+
+                result.DeletedDaysDetailCount = existingDayIds.Count;
             }
 
-            result.DeletedDaysDetailCount = existingDayIds.Count;
             result.SalaryRegisterDetailId = detail.Id;
         }
 
@@ -670,7 +685,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
 
             // InsertAndGetIdAsync: see the note at the GetIndemnityPayAsync insert -- the day-wise rows below
             // need the real detail id as their FK, so the insert must be flushed here.
-            result.SalaryRegisterDetailId = await _salaryRegisterDetailRepository.InsertAndGetIdAsync(detail);
+            result.SalaryRegisterDetailId = await InsertDetailAsync(detail);
         }
         else
         {
@@ -713,7 +728,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             detail.Number = provDays;
             detail.Amount = provAmount;
 
-            await _salaryRegisterDetailRepository.UpdateAsync(detail);
+            await SaveDetailAsync(detail);
 
             foreach (var day in salaryRegisterDays.OrderBy(r => r.Period))
             {
@@ -746,7 +761,7 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             return false;
         }
 
-        await _salaryRegisterDaysDetailRepository.InsertAsync(new SalaryRegisterDaysDetail
+        var row = new SalaryRegisterDaysDetail
         {
             TenantId = tenantId,
             SalaryRegisterDetailId = salaryRegisterDetailId,
@@ -754,10 +769,99 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             Rate = rate,
             Number = number,
             Amount = amount
-        });
+        };
+
+        if (IsSimulation)
+        {
+            // Legacy SimulationPayrollHelper.AddSalaryRegisterDaysDetail_Simu (line 4602).
+            await SimulationRowsOrThrow().InsertDayDetailAsync(row);
+        }
+        else
+        {
+            await _salaryRegisterDaysDetailRepository.InsertAsync(row);
+        }
 
         return true;
     }
+
+    #region << Simulation run (wave P7) >>
+
+    /// <summary>
+    /// The simulation register tables, used instead of the live ones while a simulation run is calculating
+    /// (<see cref="PayrollSimulationScope"/>): the register ids this service is handed are then
+    /// <see cref="SimulationSalaryRegister"/> ids. Property-injected so the hand-built test services keep
+    /// compiling.
+    /// </summary>
+    public ISimulationRegisterRows SimulationRows { get; set; }
+
+    private static bool IsSimulation => PayrollSimulationScope.IsActive;
+
+    private ISimulationRegisterRows SimulationRowsOrThrow()
+    {
+        return SimulationRows ?? throw new InvalidOperationException(
+            "IndemnityCalculationService needs ISimulationRegisterRows to work on a simulation register.");
+    }
+
+    /// <summary>
+    /// The register line to change. A simulation line comes back as an untracked live-shaped copy; hand it to
+    /// <see cref="SaveDetailAsync"/> to write it.
+    /// </summary>
+    private SalaryRegisterDetail LoadDetail(int detailId)
+    {
+        return IsSimulation
+            ? SimulationRowsOrThrow().GetDetailCopy(detailId)
+            : _salaryRegisterDetailRepository.GetAll().FirstOrDefault(r => r.Id == detailId);
+    }
+
+    private async Task SaveDetailAsync(SalaryRegisterDetail detail)
+    {
+        if (IsSimulation)
+        {
+            await SimulationRowsOrThrow().UpdateDetailAsync(detail);
+            return;
+        }
+
+        await _salaryRegisterDetailRepository.UpdateAsync(detail);
+    }
+
+    private async Task<int> InsertDetailAsync(SalaryRegisterDetail detail)
+    {
+        if (IsSimulation)
+        {
+            return await SimulationRowsOrThrow().InsertDetailAsync(detail);
+        }
+
+        return await _salaryRegisterDetailRepository.InsertAndGetIdAsync(detail);
+    }
+
+    /// <summary>
+    /// The lines of the register BEING CALCULATED -- a simulation register during a simulation run. Use
+    /// <see cref="GetRegisterDetailSnapshots"/> for an earlier register, which is always a live one (legacy's
+    /// simulation reads the previous month from the live registers too, SimulationPayrollHelper line 1441).
+    /// </summary>
+    private List<RegisterDetailSnapshot> GetCurrentRegisterDetailSnapshots(int salaryRegisterId)
+    {
+        if (!IsSimulation)
+        {
+            return GetRegisterDetailSnapshots(salaryRegisterId);
+        }
+
+        return SimulationRowsOrThrow().Details
+            .Where(r => r.SimulationSalaryRegisterId == salaryRegisterId)
+            .Select(r => new RegisterDetailSnapshot
+            {
+                Id = r.Id,
+                WageTypeId = r.WageTypeId,
+                Code = r.WageType.Code,
+                IncludeInIndemnity = r.WageType.IncludeInIndemnity,
+                Rate = r.Rate,
+                Number = r.Number,
+                Amount = r.Amount
+            })
+            .ToList();
+    }
+
+    #endregion
 
     /// <summary>
     /// Ported from the legacy nested helper class <c>Program.SalaryRegisterDays</c> (Program.cs line 5538):
@@ -1086,7 +1190,10 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
 
     private SalaryRegister GetSalaryRegisterOrThrow(int salaryRegisterId)
     {
-        var salaryRegister = _salaryRegisterRepository.GetAll().FirstOrDefault(r => r.Id == salaryRegisterId);
+        // The register being calculated: a simulation one (as a read-only copy) during a simulation run.
+        var salaryRegister = IsSimulation
+            ? SimulationRowsOrThrow().GetHeaderCopy(salaryRegisterId)
+            : _salaryRegisterRepository.GetAll().FirstOrDefault(r => r.Id == salaryRegisterId);
         if (salaryRegister == null)
         {
             throw new AbpException($"SalaryRegister {salaryRegisterId} not found");

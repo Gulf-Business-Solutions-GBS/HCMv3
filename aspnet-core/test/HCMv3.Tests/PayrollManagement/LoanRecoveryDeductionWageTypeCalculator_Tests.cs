@@ -386,6 +386,64 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
     }
 
     /// <summary>
+    /// SIMULATION (wave P7): the test run deducts what the real run would -- 20.000 -- and leaves the loan as it
+    /// was: no recovery row written, the balance not moved (legacy GetLoanRecoveryDed_Simu has both writes
+    /// commented out).
+    /// </summary>
+    [Fact]
+    public async Task A_Simulation_Should_Deduct_The_Same_And_Leave_The_Loan_Untouched()
+    {
+        var loan = Loan3400();
+        loan.BalanceDueAmount = 20;
+
+        var harness = new Harness(
+            new[] { ResidenceExpensesLoanType() },
+            new[] { loan },
+            SixteenCompletedInstallments());
+
+        using (PayrollSimulationScope.Begin())
+        {
+            await harness.Calculator.CalculateAsync(Context());
+        }
+
+        harness.PostedAmount.ShouldBe(20.00);
+        harness.Recoveries.Items.ShouldNotContain(r => r.RecoveryDate == PayDate);
+        harness.Recoveries.Items.Count.ShouldBe(16);
+        loan.BalanceDueAmount.ShouldBe(20);
+    }
+
+    /// <summary>
+    /// SIMULATION after the real run of the same month: this month's recovery row is NOT deleted (the real run's
+    /// figures stay), yet the deduction is still worked out without it, as the re-run would -- 20.000.
+    /// </summary>
+    [Fact]
+    public async Task A_Simulation_After_The_Live_Run_Should_Keep_The_Live_Recovery_Row()
+    {
+        var recoveries = SixteenCompletedInstallments();
+        recoveries.Add(new EmployeeLoanRecovery
+        {
+            Id = 99,
+            EmployeeLoanId = 2,
+            RecoveryDate = PayDate,
+            RecoveryAmount = 20,
+            LoanRecoveryMethod = LoanRecoveryMethod.RecoveryThroughPayroll
+        });
+
+        var loan = Loan3400();
+        var harness = new Harness(new[] { ResidenceExpensesLoanType() }, new[] { loan }, recoveries);
+
+        using (PayrollSimulationScope.Begin())
+        {
+            await harness.Calculator.CalculateAsync(Context());
+        }
+
+        harness.PostedAmount.ShouldBe(20.00);
+        harness.Recoveries.Items.ShouldContain(r => r.Id == 99);
+        harness.Recoveries.Items.Count.ShouldBe(17);
+        loan.BalanceDueAmount.ShouldBe(0, "the stored balance is the live run's and is not touched");
+    }
+
+    /// <summary>
     /// Mid-schedule, with plenty owing, the FULL <see cref="EmployeeLoan.FixedAmount"/> is taken (legacy line
     /// 1626). Without this the previous two tests could pass for the wrong reason -- e.g. a rule that always
     /// returned the balance.

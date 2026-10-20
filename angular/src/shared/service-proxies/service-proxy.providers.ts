@@ -267,6 +267,8 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.CostingFileServiceProxy,
     ApiServiceProxies.PostJvServiceProxy,
     ApiServiceProxies.PayrollEngineServiceProxy,
+    ApiServiceProxies.PayrollRunSetupServiceProxy,
+    ApiServiceProxies.PayrollRetroReviewServiceProxy,
     ApiServiceProxies.RosterScheduleViewerServiceProxy,
     ApiServiceProxies.BenefitTypesServiceProxy,
     ApiServiceProxies.ContractTypesServiceProxy,

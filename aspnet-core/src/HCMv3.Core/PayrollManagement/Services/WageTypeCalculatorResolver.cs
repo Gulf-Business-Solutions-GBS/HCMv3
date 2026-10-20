@@ -214,6 +214,19 @@ public class WageTypeCalculatorResolver : HCMv3DomainServiceBase, IWageTypeCalcu
             return true;
         }
 
+        if (context.Register.Target == PayrollRegisterTarget.Simulation)
+        {
+            // Legacy SimulationPayrollHelper.Allow_CalcWageType (line 2258): the same test on the simulation
+            // register's lines.
+            var simulation = SimulationRows ?? throw new InvalidOperationException(
+                "WageTypeCalculatorResolver needs ISimulationRegisterRows to read a simulation register.");
+
+            return !simulation.Details
+                .Any(d => d.SimulationSalaryRegisterId == context.Register.RegisterId
+                          && exceptWageTypeIds.Contains(d.WageTypeId)
+                          && (d.Rate != 0 || d.Number != 0 || d.Amount != 0));
+        }
+
         var blocked = _salaryRegisterDetailRepository.GetAll()
             .Any(d => d.SalaryRegisterId == context.Register.RegisterId
                       && exceptWageTypeIds.Contains(d.WageTypeId)
@@ -221,6 +234,9 @@ public class WageTypeCalculatorResolver : HCMv3DomainServiceBase, IWageTypeCalcu
 
         return !blocked;
     }
+
+    /// <summary>The simulation tables. Property-injected so the hand-built test resolvers keep compiling.</summary>
+    public ISimulationRegisterRows SimulationRows { get; set; }
 
     /// <summary>
     /// Legacy <c>EmployeeCalculatedPayService.AllowToCalculate</c> (legacy lines 1164-1197).

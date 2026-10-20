@@ -211,15 +211,24 @@ public class LoanRecoveryDeductionWageTypeCalculator
 
             // ---- Legacy lines 1588-1611: remove this period's previous payroll-generated recovery rows and
             // recompute the balance without them, so a re-run is not cumulative.
+            // SIMULATION RUN: nothing below is written -- not the delete, not the balance, not the new recovery
+            // row (legacy GetLoanRecoveryDed_Simu, EmployeeCalculatedPayService.cs lines 5851-5868 and
+            // 5939-5956, all commented out). The figures are worked out the same way, in memory, so the test run
+            // deducts what the real run would, and the loan is left exactly as it was.
+            var isSimulation = PayrollSimulationScope.IsActive;
+
             var previousRows = _employeeLoanRecoveryRepository.GetAll()
                 .Where(r => r.EmployeeLoanId == employeeLoan.Id
                             && r.RecoveryDate == payEndDate
                             && r.LoanRecoveryMethod == LoanRecoveryMethod.RecoveryThroughPayroll)
                 .ToList();
 
-            foreach (var previousRow in previousRows)
+            if (!isSimulation)
             {
-                await _employeeLoanRecoveryRepository.DeleteAsync(previousRow);
+                foreach (var previousRow in previousRows)
+                {
+                    await _employeeLoanRecoveryRepository.DeleteAsync(previousRow);
+                }
             }
 
             var removedIds = previousRows.Select(r => r.Id).ToList();
@@ -232,9 +241,14 @@ public class LoanRecoveryDeductionWageTypeCalculator
                 .Sum();
 
             // Legacy line 1601: CurrencyService.Rounding(emp, DueAmount - totalPaid).
-            employeeLoan.BalanceDueAmount =
+            var balanceDueAmount =
                 await _currencyService.RoundAsync(context.EmployeeId, employeeLoan.DueAmount - totalPaid);
-            await _employeeLoanRepository.UpdateAsync(employeeLoan);
+
+            if (!isSimulation)
+            {
+                employeeLoan.BalanceDueAmount = balanceDueAmount;
+                await _employeeLoanRepository.UpdateAsync(employeeLoan);
+            }
 
             // ---- Legacy lines 1615-1621: a loan exemption for this month skips the deduction entirely.
             var exempt = _employeeLoanExemptionRepository.GetAll()
@@ -264,9 +278,9 @@ public class LoanRecoveryDeductionWageTypeCalculator
 
             // Legacy lines 1644-1647: never recover more than what is left owing. This is the arm that
             // produces the final short installment.
-            if (employeeLoan.BalanceDueAmount < recoveryAmount)
+            if (balanceDueAmount < recoveryAmount)
             {
-                recoveryAmount = await _currencyService.RoundAsync(context.EmployeeId, employeeLoan.BalanceDueAmount);
+                recoveryAmount = await _currencyService.RoundAsync(context.EmployeeId, balanceDueAmount);
             }
 
             if (recoveryAmount > 0)
@@ -281,7 +295,7 @@ public class LoanRecoveryDeductionWageTypeCalculator
                 if (employeeLoan.RecoverFracInLastTrans && !hasLaterRecovery)
                 {
                     var fracRecoveryAmount = await _currencyService.RoundAsync(
-                        context.EmployeeId, employeeLoan.BalanceDueAmount - recoveryAmount);
+                        context.EmployeeId, balanceDueAmount - recoveryAmount);
 
                     if (fracRecoveryAmount > 0 && fracRecoveryAmount < recoveryAmount)
                     {
@@ -295,6 +309,12 @@ public class LoanRecoveryDeductionWageTypeCalculator
             {
                 var roundedRecoveryAmount =
                     await _currencyService.RoundAsync(context.EmployeeId, recoveryAmount);
+
+                if (isSimulation)
+                {
+                    totalLoanRecoveryDed += recoveryAmount;
+                    continue;
+                }
 
                 await _employeeLoanRecoveryRepository.InsertAsync(new EmployeeLoanRecovery
                 {

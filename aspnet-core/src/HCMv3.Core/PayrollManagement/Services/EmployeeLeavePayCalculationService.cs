@@ -291,10 +291,11 @@ public class EmployeeLeavePayCalculationService : HCMv3DomainServiceBase, IEmplo
                         }
                     }
 
-                    // Legacy lines 219-243: flag them as advance-paid.
+                    // Legacy lines 219-243: flag them as advance-paid. Not on a SIMULATION run, which leaves the
+                    // leave as it was (no write in legacy's simulation leave pay either).
                     foreach (var empAdvanceLeave in advanceAbsences)
                     {
-                        if (!empAdvanceLeave.AdvanceLeavePaid)
+                        if (!empAdvanceLeave.AdvanceLeavePaid && !PayrollSimulationScope.IsActive)
                         {
                             empAdvanceLeave.AdvanceLeavePaid = true;
                             await _employeeAbsenceRepository.UpdateAsync(empAdvanceLeave);

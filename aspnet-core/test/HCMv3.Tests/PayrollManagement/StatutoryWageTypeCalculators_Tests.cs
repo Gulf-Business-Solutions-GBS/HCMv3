@@ -758,6 +758,38 @@ public class StatutoryWageTypeCalculators_Tests
         inserted.PaymentDate.ShouldBe(new DateTime(2025, 4, 1));  // 1st of the FOLLOWING month
     }
 
+    /// <summary>
+    /// SIMULATION (wave P7): the negative net is still floored at 0 on the register, but nothing is carried into
+    /// next month's payments -- legacy's simulation net pay has the whole 2011 block commented out.
+    /// </summary>
+    [Fact]
+    public async Task NetPay_Should_Not_Carry_A_Negative_Net_Forward_On_A_Simulation_Run()
+    {
+        var store = new FakeRegisterStore();
+        var netPayWageType = Wage(9000, "9000", BillingType.Earning);
+
+        var wageTypes = new[]
+        {
+            netPayWageType,
+            new WageType { Id = 200, TenantId = 1, Code = "2000", NameEn = "Ded", BillingType = BillingType.Deduction },
+            new WageType { Id = 211, TenantId = 1, Code = "2011", NameEn = "Last Month Recovery" }
+        };
+
+        store.Lines.Add(new PayrollRegisterLine { Id = 2, WageTypeId = 200, WageCode = "2000", Amount = 123.456 });
+
+        var paymentRepo = Repo(new List<EmployeePayment>());
+
+        using (PayrollSimulationScope.Begin())
+        {
+            await BuildNetPay(store, Rounding(), wageTypes, null, paymentRepo)
+                .CalculateAsync(Context(netPayWageType));
+        }
+
+        store.Lines.Single(l => l.WageTypeId == 9000).Amount.ShouldBe(0);
+        await paymentRepo.DidNotReceiveWithAnyArgs().InsertOrUpdateAsync(default);
+        await paymentRepo.DidNotReceiveWithAnyArgs().UpdateAsync(default(EmployeePayment));
+    }
+
     [Fact]
     public async Task NetPay_Should_Not_Carry_A_Negative_Net_Forward_On_An_OffCycle_Run()
     {

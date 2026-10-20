@@ -568,7 +568,10 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
 
         foreach (var currentSalReg in context.CurrentSalaryRegisters)
         {
-            var currentLine = await _registerStore.GetLineByWageTypeIdAsync(ToRegisterRef(currentSalReg), wageType.Id);
+            // The run's own retro registers: simulation ones during a simulation run (SimulationPayrollHelper
+            // GetArrear, line 4452). The earlier register below stays live.
+            var currentLine = await _registerStore.GetLineByWageTypeIdAsync(
+                ToRegisterRef(currentSalReg, context.Register?.Target ?? PayrollRegisterTarget.Live), wageType.Id);
             if (currentLine != null)
             {
                 arrear = arrear + (isTimeType ? currentLine.Number : currentLine.Amount);
@@ -1650,15 +1653,16 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
     /// <summary>
     /// Wraps a concrete <see cref="SalaryRegister"/> as a <see cref="PayrollRegisterRef"/> so that OTHER
     /// registers (previous month, retro siblings) are also read through <see cref="IPayrollRegisterStore"/>
-    /// -- keeping wave P7 a single-file change. Always <see cref="PayrollRegisterTarget.Live"/>: the lists it
-    /// is built from (<c>PreviousSalaryRegisters</c>/<c>CurrentSalaryRegisters</c>) are live entities.
+    /// -- keeping wave P7 a single-file change. <see cref="PayrollRegisterTarget.Live"/> unless told otherwise:
+    /// <c>PreviousSalaryRegisters</c> are always live, while <c>CurrentSalaryRegisters</c> are the simulation's
+    /// own registers during a simulation run.
     /// </summary>
-    private static PayrollRegisterRef ToRegisterRef(SalaryRegister salaryRegister)
+    private static PayrollRegisterRef ToRegisterRef(SalaryRegister salaryRegister, PayrollRegisterTarget target = PayrollRegisterTarget.Live)
     {
         return new PayrollRegisterRef
         {
             RegisterId = salaryRegister.Id,
-            Target = PayrollRegisterTarget.Live,
+            Target = target,
             ForPeriod = salaryRegister.ForPeriod,
             InPeriod = salaryRegister.InPeriod,
             PayrollRunType = salaryRegister.PayrollRunType

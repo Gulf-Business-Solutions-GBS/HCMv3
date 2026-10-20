@@ -47,6 +47,13 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
         string advancePayComment,
         PayrollEngineSettings settings)
     {
+        // A SIMULATION run writes no EmployeePayment rows at all: legacy SimulationPayrollHelper.AdvancePaymentDed
+        // (line 2446) is commented out, and so are its 2005/2011 clearing blocks (lines 1353-1396).
+        if (PayrollSimulationScope.IsActive)
+        {
+            return;
+        }
+
         // Legacy line 2942: no-op on a zero amount.
         if (amount == 0)
         {
@@ -132,6 +139,13 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
     /// <inheritdoc/>
     public async Task<int> DeleteAdvancePaymentDedAsync(int employeeId, DateTime offCyclePaymentDate)
     {
+        // A SIMULATION run writes no EmployeePayment rows at all: legacy SimulationPayrollHelper.AdvancePaymentDed
+        // (line 2446) is commented out, and so are its 2005/2011 clearing blocks (lines 1353-1396).
+        if (PayrollSimulationScope.IsActive)
+        {
+            return 0;
+        }
+
         // Legacy's sentinel for "no off-cycle" is default(DateTime); the column stores NULL. A run without a
         // payment date has nothing keyed to it, so there is nothing to delete.
         if (offCyclePaymentDate.Date == default(DateTime))
@@ -154,6 +168,13 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
     /// <inheritdoc/>
     public async Task<int> ZeroFutureAdvanceRecoveryAsync(int employeeId, DateTime payDate, bool hasAdvancePaidLeaveOnPayDate)
     {
+        // A SIMULATION run writes no EmployeePayment rows at all: legacy SimulationPayrollHelper.AdvancePaymentDed
+        // (line 2446) is commented out, and so are its 2005/2011 clearing blocks (lines 1353-1396).
+        if (PayrollSimulationScope.IsActive)
+        {
+            return 0;
+        }
+
         // Legacy lines 1623-1630: the leave is still there, so its recovery must continue.
         if (hasAdvancePaidLeaveOnPayDate)
         {
@@ -176,6 +197,13 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
     /// <inheritdoc/>
     public async Task<int> ZeroAdvanceRecoveryInWindowAsync(int employeeId, DateTime payStartDate, DateTime offCycleEndDate)
     {
+        // A SIMULATION run writes no EmployeePayment rows at all: legacy SimulationPayrollHelper.AdvancePaymentDed
+        // (line 2446) is commented out, and so are its 2005/2011 clearing blocks (lines 1353-1396).
+        if (PayrollSimulationScope.IsActive)
+        {
+            return 0;
+        }
+
         var start = payStartDate.Date;
         var end = offCycleEndDate.Date;
 
@@ -194,6 +222,13 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
     /// <inheritdoc/>
     public async Task<int> ZeroLastMonthRecoveryAsync(int employeeId, DateTime payDate)
     {
+        // A SIMULATION run writes no EmployeePayment rows at all: legacy SimulationPayrollHelper.AdvancePaymentDed
+        // (line 2446) is commented out, and so are its 2005/2011 clearing blocks (lines 1353-1396).
+        if (PayrollSimulationScope.IsActive)
+        {
+            return 0;
+        }
+
         // Legacy lines 1833-1834.
         var nextMonth = payDate.Date.AddMonths(1);
         var nextMonthPayDay = new DateTime(nextMonth.Year, nextMonth.Month, 1, 0, 0, 0);

@@ -56,6 +56,11 @@ public partial class PayrollEngineService
             var offCycleEndDate = payInDate.Date;
             var advancePayComment = string.Empty;
 
+            // Legacy SimulationPayrollHelper.RunPayrollCalculation (lines 1219-1396) does NOT clear the 2005/2011
+            // EmployeePayment rows (those blocks are commented out -- they are live data) and has no
+            // time-register approval check. It does zero its own register's 2005/2011 lines.
+            var isSimulation = IsSimulationRun(input);
+
             List<TimeRegister> timeRegisterList;
 
             if (input.PayrollRunType == PayrollRunType.Regular)
@@ -70,18 +75,24 @@ public partial class PayrollEngineService
                 // The advance-paid leave this recovery came from may have been cancelled, or its payment date
                 // moved, after the off-cycle ran. If it is gone, stop collecting the FUTURE months (legacy
                 // leaves the current month alone -- that advance really was paid out).
-                var hasAdvancePaidLeaveOnPayDate = _employeeAbsenceRepository.GetAll()
-                    .Any(r => r.EmployeeId == employee.Id
-                              && r.AbsenceType.IsPaid
-                              && r.LeavePaymentType == LeavePaymentType.PayInAdvance
-                              && r.PaymentDate == payDate);
+                if (!isSimulation)
+                {
+                    var hasAdvancePaidLeaveOnPayDate = _employeeAbsenceRepository.GetAll()
+                        .Any(r => r.EmployeeId == employee.Id
+                                  && r.AbsenceType.IsPaid
+                                  && r.LeavePaymentType == LeavePaymentType.PayInAdvance
+                                  && r.PaymentDate == payDate);
 
-                await _advancePaymentService.ZeroFutureAdvanceRecoveryAsync(
-                    employee.Id, payDate, hasAdvancePaidLeaveOnPayDate);
+                    await _advancePaymentService.ZeroFutureAdvanceRecoveryAsync(
+                        employee.Id, payDate, hasAdvancePaidLeaveOnPayDate);
+                }
 
                 #endregion
 
-                EnsureTimeRegisterApproved(settings, employee, payStartDate, payInDate);
+                if (!isSimulation)
+                {
+                    EnsureTimeRegisterApproved(settings, employee, payStartDate, payInDate);
+                }
             }
             else
             {
@@ -91,7 +102,10 @@ public partial class PayrollEngineService
                 // null-check it exactly where legacy did -- preserved.
                 timeRegisterList = null;
 
-                EnsureTimeRegisterApproved(settings, employee, payStartDate, offCycleEndDate);
+                if (!isSimulation)
+                {
+                    EnsureTimeRegisterApproved(settings, employee, payStartDate, offCycleEndDate);
+                }
 
                 #region << Clear 2005 / 2011 before recalculating -- legacy lines 1787-1851 >>
 
@@ -104,7 +118,7 @@ public partial class PayrollEngineService
 
                 // Legacy lines 1796-1819: the 2005 EmployeePayment rows inside this run's window. Skipped for
                 // End-Of-Service, which never raises a recovery.
-                if (input.OffCycleReason != PayrollOffCycleReasons.EndOfService)
+                if (input.OffCycleReason != PayrollOffCycleReasons.EndOfService && !isSimulation)
                 {
                     await _advancePaymentService.ZeroAdvanceRecoveryInWindowAsync(
                         employee.Id, payStartDate, offCycleEndDate);
@@ -114,7 +128,10 @@ public partial class PayrollEngineService
                 await ZeroRegisterLineAsync(register, PayrollEngineWageCodes.LastMonthRecoveryDeduction);
 
                 // Legacy lines 1832-1850: the 2011 carry-forward row NetPay wrote into the following month.
-                await _advancePaymentService.ZeroLastMonthRecoveryAsync(employee.Id, payDate);
+                if (!isSimulation)
+                {
+                    await _advancePaymentService.ZeroLastMonthRecoveryAsync(employee.Id, payDate);
+                }
 
                 #endregion
             }
@@ -134,15 +151,19 @@ public partial class PayrollEngineService
                             && r.PayrollRunType == input.PayrollRunType)
                 .ToList();
 
-            // Legacy lines 1907-1912.
-            var currentRegisters = _salaryRegisterRepository.GetAll()
-                .Where(r => r.EmployeeId == employee.Id
-                            && r.ForPeriod != payInDate
-                            && r.InPeriod == payInDate
-                            && r.PayrollResultType == PayrollResultType.Current
-                            && r.PayrollRunType == input.PayrollRunType)
-                .OrderBy(r => r.ForPeriod)
-                .ToList();
+            // Legacy lines 1907-1912. A simulation's are its OWN registers of this run (SimulationPayrollHelper
+            // lines 1445-1448 read them from SimulationSalaryRegister); the previous month above stays live there
+            // too (line 1441).
+            var currentRegisters = isSimulation
+                ? GetCurrentSimulationRegisters(employee.Id, payInDate)
+                : _salaryRegisterRepository.GetAll()
+                    .Where(r => r.EmployeeId == employee.Id
+                                && r.ForPeriod != payInDate
+                                && r.InPeriod == payInDate
+                                && r.PayrollResultType == PayrollResultType.Current
+                                && r.PayrollRunType == input.PayrollRunType)
+                    .OrderBy(r => r.ForPeriod)
+                    .ToList();
 
             var context = new PayrollCalculationContext
             {
