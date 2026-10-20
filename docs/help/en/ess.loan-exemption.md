@@ -17,7 +17,7 @@ An exemption does not reduce what you owe. The month is skipped and the loan run
 ## Loan {#ess.loan-exemption.loan}
 <!-- alias: loc:Loan -->
 
-**What it is.** Which of your loans to skip a month on. The list holds only loans still under recovery, with their type, balance, instalment and end date shown so you can tell them apart.
+**What it is.** Which of your loans to skip a month on. The list holds only loans still under recovery, with their type, balance, this month's instalment and end date shown so you can tell them apart.
 
 **Example.** Salary Advance — 750.000 outstanding, 125.000 a month, ending July 2027.
 

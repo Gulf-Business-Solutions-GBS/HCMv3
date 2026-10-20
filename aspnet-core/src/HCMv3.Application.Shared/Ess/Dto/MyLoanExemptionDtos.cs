@@ -53,7 +53,8 @@ public class MyLoanForExemptionDto
 
     public string LoanTypeNameAr { get; set; }
 
-    /// <summary>The monthly instalment -- the amount a single exemption defers.</summary>
+    /// <summary>The instalment in force this month (from the loan's instalment schedule, else its fixed amount) --
+    /// the amount a single exemption defers.</summary>
     public double FixedAmount { get; set; }
 
     /// <summary>What is still owed on the loan.</summary>

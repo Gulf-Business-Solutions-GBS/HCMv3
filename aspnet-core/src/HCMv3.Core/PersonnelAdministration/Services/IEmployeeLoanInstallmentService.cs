@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Services;
 
@@ -39,6 +41,12 @@ public interface IEmployeeLoanInstallmentService : IDomainService
     /// start month. Then the recovery end date is recalculated, as legacy's loan save did. Safe to call twice.
     /// </summary>
     Task EnsureInitialInstallmentAsync(EmployeeLoan loan);
+
+    /// <summary>
+    /// The stored schedules of the given loans, keyed by loan id, for working out the instalment in force with
+    /// <see cref="LoanInstallmentSchedule.GetInstallmentAmount"/> -- one read for a whole list of loans.
+    /// </summary>
+    ILookup<int, EmployeeLoanInstallment> GetSchedules(IEnumerable<int> employeeLoanIds);
 
     /// <summary>
     /// Legacy <c>EmployeeLoan.CalculateRecoveryDate</c> for <paramref name="loan"/> as it stands in memory, read

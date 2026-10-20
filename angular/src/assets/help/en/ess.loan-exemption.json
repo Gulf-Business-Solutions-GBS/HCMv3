@@ -25,7 +25,7 @@
       ],
       "rules": null,
       "when": null,
-      "html": "<p><strong>What it is.</strong> Which of your loans to skip a month on. The list holds only loans still under recovery, with their type, balance, instalment and end date shown so you can tell them apart.</p><p><strong>Example.</strong> Salary Advance — 750.000 outstanding, 125.000 a month, ending July 2027.</p><p><strong>Why it matters.</strong> If you are repaying more than one loan, exempting the wrong one leaves the deduction you were trying to avoid still coming out. An empty list means nothing of yours is currently being recovered.</p>",
+      "html": "<p><strong>What it is.</strong> Which of your loans to skip a month on. The list holds only loans still under recovery, with their type, balance, this month's instalment and end date shown so you can tell them apart.</p><p><strong>Example.</strong> Salary Advance — 750.000 outstanding, 125.000 a month, ending July 2027.</p><p><strong>Why it matters.</strong> If you are repaying more than one loan, exempting the wrong one leaves the deduction you were trying to avoid still coming out. An empty list means nothing of yours is currently being recovered.</p>",
       "adminHtml": "",
       "stub": false
     },

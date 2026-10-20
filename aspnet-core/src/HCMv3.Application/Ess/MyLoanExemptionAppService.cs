@@ -40,6 +40,7 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
 {
     private readonly IRepository<EmployeeLoan> _loanRepository;
     private readonly ILoanExemptionService _loanExemptionService;
+    private readonly IEmployeeLoanInstallmentService _installmentService;
 
     public MyLoanExemptionAppService(
         IRepository<EmployeeLoanExemption> repository,
@@ -48,11 +49,13 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApprovalService workflowApprovalService,
         IRepository<EmployeeLoan> loanRepository,
-        ILoanExemptionService loanExemptionService)
+        ILoanExemptionService loanExemptionService,
+        IEmployeeLoanInstallmentService installmentService)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
         _loanRepository = loanRepository;
         _loanExemptionService = loanExemptionService;
+        _installmentService = installmentService;
     }
 
     protected override string RequestType => LoanExemptionWorkflowTransactionHandler.LoanExemptionRequestType;
@@ -83,7 +86,9 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
 
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
 
-            return new PagedResultDto<MyLoanExemptionDto>(totalCount, items.Select(ToDto).ToList());
+            var schedules = _installmentService.GetSchedules(items.Select(e => e.EmployeeLoanId));
+
+            return new PagedResultDto<MyLoanExemptionDto>(totalCount, items.Select(e => ToDto(e, schedules)).ToList());
         }
     }
 
@@ -108,13 +113,16 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
             .OrderBy(l => l.EndDate)
             .ToListAsync();
 
+        var schedules = _installmentService.GetSchedules(loans.Select(l => l.Id));
+
         return loans.Select(l => new MyLoanForExemptionDto
         {
             EmployeeLoanId = l.Id,
             LoanTypeId = l.LoanTypeId,
             LoanTypeNameEn = l.LoanType?.NameEn,
             LoanTypeNameAr = l.LoanType?.NameAr,
-            FixedAmount = l.FixedAmount,
+            // The instalment in force this month -- what one exemption would defer -- not the loan's first one.
+            FixedAmount = LoanInstallmentSchedule.GetInstallmentAmount(l.FixedAmount, schedules[l.Id], today),
             BalanceDueAmount = l.BalanceDueAmount,
             RecoveryStartDate = l.RecoveryStartDate,
             EndDate = l.EndDate
@@ -143,8 +151,10 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
         // workflow is switched off and the handler never runs.
         await _loanExemptionService.EnsureExemptionIsAllowedAsync(loan.Id, input.ExemptionDate.Date);
 
-        return await CreateAndSubmitAsync(
-            meId => new EmployeeLoanExemption
+        EmployeeLoanExemption exemption = null;
+
+        var result = await CreateAndSubmitAsync(
+            meId => exemption = new EmployeeLoanExemption
             {
                 TenantId = AbpSession.TenantId ?? 0,
                 EmployeeId = meId,
@@ -155,11 +165,20 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
             // Routed by loan type, as the loan itself is: deferring a month of a housing loan need not follow
             // the same chain as deferring a month of a small advance.
             loan.LoanTypeId);
+
+        // With workflow off for exemptions it is in force at once: the loan's end date and the payroll retro date
+        // move now. A routed one does this on approval, in the handler.
+        if (exemption != null)
+        {
+            await _loanExemptionService.ApplyExemptionInForceAsync(exemption);
+        }
+
+        return result;
     }
 
     public Task CancelMyLoanExemption(EntityDto input) => CancelAsync(input.Id);
 
-    private static MyLoanExemptionDto ToDto(EmployeeLoanExemption entity)
+    private static MyLoanExemptionDto ToDto(EmployeeLoanExemption entity, ILookup<int, EmployeeLoanInstallment> schedules)
     {
         return new MyLoanExemptionDto
         {
@@ -169,7 +188,11 @@ public class MyLoanExemptionAppService : MyTransactionAppServiceBase<EmployeeLoa
             LoanTypeNameEn = entity.EmployeeLoan?.LoanType?.NameEn,
             LoanTypeNameAr = entity.EmployeeLoan?.LoanType?.NameAr,
             ExemptionDate = entity.ExemptionDate,
-            InstalmentAmount = entity.EmployeeLoan?.FixedAmount ?? 0,
+            // The instalment in force in the exemption month: the sum this exemption defers.
+            InstalmentAmount = entity.EmployeeLoan == null
+                ? 0
+                : LoanInstallmentSchedule.GetInstallmentAmount(
+                    entity.EmployeeLoan.FixedAmount, schedules[entity.EmployeeLoanId], entity.ExemptionDate),
             LoanEndDate = entity.EmployeeLoan?.EndDate ?? default,
             Comments = entity.Comments,
             WorkflowStatus = entity.WorkflowStatus,

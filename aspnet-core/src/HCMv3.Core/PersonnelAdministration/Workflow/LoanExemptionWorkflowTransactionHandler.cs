@@ -45,19 +45,22 @@ public class LoanExemptionWorkflowTransactionHandler : WorkflowTransactionHandle
     private readonly IRepository<LoanType> _loanTypeRepository;
     private readonly ILoanExemptionService _loanExemptionService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IEmployeeLoanInstallmentService _installmentService;
 
     public LoanExemptionWorkflowTransactionHandler(
         IRepository<EmployeeLoanExemption> repository,
         IRepository<EmployeeLoan> loanRepository,
         IRepository<LoanType> loanTypeRepository,
         ILoanExemptionService loanExemptionService,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IEmployeeLoanInstallmentService installmentService)
         : base(repository, unitOfWorkManager)
     {
         _loanRepository = loanRepository;
         _loanTypeRepository = loanTypeRepository;
         _loanExemptionService = loanExemptionService;
         _unitOfWorkManager = unitOfWorkManager;
+        _installmentService = installmentService;
     }
 
     public override string RequestType => LoanExemptionRequestType;
@@ -106,7 +109,8 @@ public class LoanExemptionWorkflowTransactionHandler : WorkflowTransactionHandle
             return;
         }
 
-        await _loanExemptionService.RecomputeRecoveryEndDateAsync(exemption.EmployeeLoanId);
+        // The end date moves out, and payroll is told to recalculate from the exemption month.
+        await _loanExemptionService.ApplyExemptionInForceAsync(exemption);
     }
 
     /// <summary>
@@ -138,7 +142,12 @@ public class LoanExemptionWorkflowTransactionHandler : WorkflowTransactionHandle
             : _loanTypeRepository.GetAll().FirstOrDefault(t => t.Id == loan.LoanTypeId);
 
         var month = exemption.ExemptionDate.ToString("MMMM yyyy");
-        var instalment = (loan?.FixedAmount ?? 0).ToString("0.###");
+        // The instalment in force in the exemption month (schedule first, fixed amount for a loan without one).
+        var instalmentAmount = loan == null
+            ? 0
+            : LoanInstallmentSchedule.GetInstallmentAmount(
+                loan.FixedAmount, _installmentService.GetSchedules(new[] { loan.Id })[loan.Id], exemption.ExemptionDate);
+        var instalment = instalmentAmount.ToString("0.###");
 
         return new WorkflowSummary(
             $"{loanType?.NameEn ?? "Loan"}, skip {month}, {instalment} deferred",

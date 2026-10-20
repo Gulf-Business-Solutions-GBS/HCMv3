@@ -503,7 +503,46 @@ public class MyLoanExemptionAppService_Tests : AppTestBase
         var row = UsingDbContext(c => c.Set<EmployeeLoanExemption>().IgnoreQueryFilters()
             .Single(e => e.Id == result.TransactionId));
         row.WorkflowStatus.ShouldBeNull();
+
+        // In force at once, so the instalment is deferred at once: no approval will ever run to do it later.
+        LoanEndDate(loanId).ShouldBe(EndAfterOneSkip);
     }
+
+    /// <summary>
+    /// The amount shown is what the exemption actually defers: the instalment in force in the exemption month
+    /// (150 from June), not the loan's original fixed amount of 100.
+    /// </summary>
+    [Fact]
+    public async Task The_Instalment_Shown_Should_Be_The_One_In_Force_In_The_Exemption_Month()
+    {
+        var meId = CreateCurrentUserEmployee("LEX450");
+        var loanId = CreateLoan(meId);
+        SeedInstallment(loanId, new DateTime(2026, 1, 1), new DateTime(2026, 5, 31), 100);
+        SeedInstallment(loanId, new DateTime(2026, 6, 1), new DateTime(9999, 12, 31), 150);
+
+        await _exemptions.RequestLoanExemption(ExemptionFor(loanId, SkipMonth));
+
+        var list = await _exemptions.GetMyLoanExemptions(ListInput());
+        list.Items.ShouldHaveSingleItem().InstalmentAmount.ShouldBe(150);
+    }
+
+    [Fact]
+    public async Task The_Loan_Picker_Should_Show_The_Instalment_In_Force_Now()
+    {
+        var meId = CreateCurrentUserEmployee("LEX460");
+        var loanId = CreateLoan(meId);
+        SeedInstallment(loanId, new DateTime(2026, 1, 1), new DateTime(9999, 12, 31), 175);
+
+        var loans = await _exemptions.GetMyLoansForExemption();
+
+        loans.ShouldHaveSingleItem().FixedAmount.ShouldBe(175);
+    }
+
+    private void SeedInstallment(int loanId, DateTime start, DateTime end, double amount) =>
+        UsingDbContext(c => c.Set<EmployeeLoanInstallment>().Add(new EmployeeLoanInstallment
+        {
+            TenantId = TenantId, EmployeeLoanId = loanId, StartDate = start, EndDate = end, Amount = amount
+        }));
 
     [Fact]
     public async Task Should_Not_List_Somebody_Elses_Exemptions()

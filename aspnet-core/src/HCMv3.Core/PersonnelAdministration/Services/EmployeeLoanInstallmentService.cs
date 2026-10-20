@@ -144,6 +144,16 @@ public class EmployeeLoanInstallmentService : HCMv3DomainServiceBase, IEmployeeL
         await RecalculateRecoveryEndDateAsync(loan.Id);
     }
 
+    public ILookup<int, EmployeeLoanInstallment> GetSchedules(IEnumerable<int> employeeLoanIds)
+    {
+        var ids = employeeLoanIds.Distinct().ToList();
+
+        return _installmentRepository.GetAll()
+            .Where(r => ids.Contains(r.EmployeeLoanId))
+            .ToList()
+            .ToLookup(r => r.EmployeeLoanId);
+    }
+
     public async Task<DateTime?> CalculateRecoveryEndDateAsync(
         EmployeeLoan loan,
         int? excludeInstallmentId = null,

@@ -5,6 +5,7 @@ using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
+using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.Workflow;
 
 namespace HCMv3.PersonnelAdministration.Services;
@@ -41,17 +42,20 @@ public class LoanExemptionService : HCMv3DomainServiceBase, ILoanExemptionServic
     private readonly IRepository<EmployeeLoanExemption> _exemptionRepository;
     private readonly IEmployeeLoanInstallmentService _installmentService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IPayrollRetroTrigger _retroTrigger;
 
     public LoanExemptionService(
         IRepository<EmployeeLoan> loanRepository,
         IRepository<EmployeeLoanExemption> exemptionRepository,
         IEmployeeLoanInstallmentService installmentService,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IPayrollRetroTrigger retroTrigger)
     {
         _loanRepository = loanRepository;
         _exemptionRepository = exemptionRepository;
         _installmentService = installmentService;
         _unitOfWorkManager = unitOfWorkManager;
+        _retroTrigger = retroTrigger;
     }
 
     public Task EnsureExemptionIsAllowedAsync(int employeeLoanId, DateTime exemptionDate, int? excludeExemptionId = null)
@@ -108,12 +112,81 @@ public class LoanExemptionService : HCMv3DomainServiceBase, ILoanExemptionServic
 
     public Task<DateTime?> RecomputeRecoveryEndDateAsync(int employeeLoanId, int? excludeExemptionId = null)
     {
-        // Not flagged as an effective-dated child change, unlike legacy. Legacy's exemption sets its own retro
-        // date (SetRetroForExemptionChange) and so can stop the loan's; that is not ported, so the loan's own save
-        // keeps raising the retro date, as it did here before.
+        // An effective-dated child change, as legacy passes it: the exemption sets the retro date from its own
+        // month (below), so the loan's save must not add one from the loan's start date.
         return _installmentService.RecalculateRecoveryEndDateAsync(
             employeeLoanId,
-            excludeExemptionId: excludeExemptionId);
+            excludeExemptionId: excludeExemptionId,
+            isEffectiveDatedChildChange: true);
+    }
+
+    public async Task ApplyExemptionInForceAsync(EmployeeLoanExemption exemption)
+    {
+        if (!IsInForce(exemption))
+        {
+            return;
+        }
+
+        await RecomputeRecoveryEndDateAsync(exemption.EmployeeLoanId);
+
+        // Legacy SetRetroForExemptionChange, new row: retro from the first of the exemption month.
+        _retroTrigger.SetRetroDate(typeof(EmployeeLoan), exemption.EmployeeId, PayrollMonth(exemption.ExemptionDate));
+    }
+
+    public async Task ApplyExemptionChangedAsync(
+        EmployeeLoanExemption exemption,
+        DateTime previousExemptionDate,
+        int previousEmployeeLoanId)
+    {
+        if (!IsInForce(exemption))
+        {
+            return;
+        }
+
+        await RecomputeRecoveryEndDateAsync(exemption.EmployeeLoanId);
+
+        var loanChanged = previousEmployeeLoanId != exemption.EmployeeLoanId;
+        var dateChanged = previousExemptionDate.Date != exemption.ExemptionDate.Date;
+
+        if (!loanChanged && !dateChanged)
+        {
+            return;
+        }
+
+        var retroFromDate = PayrollMonth(exemption.ExemptionDate);
+        if (previousExemptionDate != default && PayrollMonth(previousExemptionDate) < retroFromDate)
+        {
+            retroFromDate = PayrollMonth(previousExemptionDate);
+        }
+
+        _retroTrigger.SetRetroDate(typeof(EmployeeLoan), exemption.EmployeeId, retroFromDate);
+    }
+
+    public async Task ApplyExemptionRemovedAsync(EmployeeLoanExemption exemption)
+    {
+        if (!IsInForce(exemption))
+        {
+            return;
+        }
+
+        // Recalculate as though this exemption month no longer exists.
+        await RecomputeRecoveryEndDateAsync(exemption.EmployeeLoanId, excludeExemptionId: exemption.Id);
+
+        _retroTrigger.SetRetroDate(typeof(EmployeeLoan), exemption.EmployeeId, PayrollMonth(exemption.ExemptionDate));
+    }
+
+    /// <summary>
+    /// No status (recorded directly), Approved or Closed. A Draft, Open or Rejected exemption has deferred
+    /// nothing, so it moves neither the loan nor payroll -- legacy had no such rows in this table at all.
+    /// </summary>
+    private static bool IsInForce(EmployeeLoanExemption exemption)
+    {
+        return exemption.WorkflowStatus is null or RequestStatus.Approved or RequestStatus.Closed;
+    }
+
+    private static DateTime PayrollMonth(DateTime date)
+    {
+        return new DateTime(date.Year, date.Month, 1);
     }
 
     private IDisposable DisableApprovedOnly()

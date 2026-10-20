@@ -62,4 +62,25 @@ public interface ILoanExemptionService
     /// </param>
     /// <returns>The end date after the recompute, or null when the setting is off or the loan was not found.</returns>
     Task<DateTime?> RecomputeRecoveryEndDateAsync(int employeeLoanId, int? excludeExemptionId = null);
+
+    /// <summary>
+    /// An exemption has come into force -- approved, or recorded with no approval needed: recomputes the loan's
+    /// recovery end date and moves the employee's payroll retro date back to the first of the exemption month
+    /// (legacy <c>EmployeeLoanExemption.OnSaving</c> / <c>SetRetroForExemptionChange</c> for a new row). Does
+    /// nothing for an exemption that is not in force.
+    /// </summary>
+    Task ApplyExemptionInForceAsync(EmployeeLoanExemption exemption);
+
+    /// <summary>
+    /// An exemption in force was edited. Recomputes the end date, and when its month or loan changed, sets the
+    /// retro date from the earlier of the old and new months (legacy <c>SetRetroForExemptionChange</c>). Nothing
+    /// for an exemption that is not in force.
+    /// </summary>
+    Task ApplyExemptionChangedAsync(EmployeeLoanExemption exemption, DateTime previousExemptionDate, int previousEmployeeLoanId);
+
+    /// <summary>
+    /// An exemption is being deleted (call before the delete). When it was in force, recomputes the end date
+    /// without it and sets the retro date from its month (legacy <c>OnDeleting</c>).
+    /// </summary>
+    Task ApplyExemptionRemovedAsync(EmployeeLoanExemption exemption);
 }

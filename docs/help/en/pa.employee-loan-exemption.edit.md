@@ -15,6 +15,8 @@ Skips one month's instalment on one of the employee's loans. Payroll does not re
 
 The exemption date must fall within the loan's recovery period, and a loan can have only one exemption per month. Exemptions can be requested through self-service and routed for approval.
 
+Once the exemption is in force -- recorded with no approval needed, or approved -- it takes effect at once: with **Auto Update Loan Recovery End Date** on in Payroll Settings the loan's recovery end date moves out, and the next payroll run recalculates the employee from the first of the exemption month. Moving an exemption to another month recalculates from the earlier of the two months; deleting one walks the end date back and recalculates from its month. A request still awaiting approval changes neither.
+
 Opened from a loan's Installments, Recoveries & Exemptions dialog, the loan is already filled in and cannot be changed.
 
 ## EmployeeLoanId {#EmployeeLoanExemption.EmployeeLoanId}

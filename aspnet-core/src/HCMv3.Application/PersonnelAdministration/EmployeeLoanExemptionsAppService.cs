@@ -130,6 +130,10 @@ public class EmployeeLoanExemptionsAppService : HCMv3AppServiceBase, IEmployeeLo
             "LEX",
             // Routed by loan type, as the loan itself is.
             loan.LoanTypeId);
+
+        // Recorded with no approval needed: in force now, so the loan's end date and the payroll retro date move
+        // at once. A routed one does this on approval, in the handler.
+        await _loanExemptionService.ApplyExemptionInForceAsync(entity);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanExemptions_Edit)]
@@ -138,6 +142,8 @@ public class EmployeeLoanExemptionsAppService : HCMv3AppServiceBase, IEmployeeLo
         using var _ = CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly);
 
         var entity = await _repository.GetAsync(input.Id.Value);
+        var previousExemptionDate = entity.ExemptionDate;
+        var previousEmployeeLoanId = entity.EmployeeLoanId;
         MapToEntity(input, entity);
 
         var loan = await GetLoanAsync(entity.EmployeeLoanId);
@@ -151,8 +157,9 @@ public class EmployeeLoanExemptionsAppService : HCMv3AppServiceBase, IEmployeeLo
         await _repository.UpdateAsync(entity);
 
         // The month may have moved, or the exemption may have been pointed at a different loan. Both change
-        // how many instalments are skipped, so the schedule is recomputed rather than left stale.
-        await _loanExemptionService.RecomputeRecoveryEndDateAsync(entity.EmployeeLoanId);
+        // how many instalments are skipped, so the schedule is recomputed rather than left stale, and payroll
+        // recalculates from the earlier of the two months.
+        await _loanExemptionService.ApplyExemptionChangedAsync(entity, previousExemptionDate, previousEmployeeLoanId);
     }
 
     /// <summary>
@@ -176,11 +183,9 @@ public class EmployeeLoanExemptionsAppService : HCMv3AppServiceBase, IEmployeeLo
             return;
         }
 
-        var loanId = entity.EmployeeLoanId;
+        await _loanExemptionService.ApplyExemptionRemovedAsync(entity);
 
         await _repository.DeleteAsync(entity);
-
-        await _loanExemptionService.RecomputeRecoveryEndDateAsync(loanId, excludeExemptionId: input.Id);
     }
 
     private async Task<EmployeeLoan> GetLoanAsync(int employeeLoanId)
