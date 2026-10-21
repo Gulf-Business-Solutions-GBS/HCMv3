@@ -63,8 +63,8 @@ namespace HCMv3.Migrations
                    AND TenantId IS NULL
                    AND UserId IS NULL;
 
-                INSERT INTO AbpSettings (TenantId, UserId, Name, Value)
-                SELECT NULL, NULL, 'Abp.Localization.DefaultLanguageName', 'en'
+                INSERT INTO AbpSettings (TenantId, UserId, Name, Value, CreationTime)
+                SELECT NULL, NULL, 'Abp.Localization.DefaultLanguageName', 'en', GETDATE()
                  WHERE NOT EXISTS (
                        SELECT 1 FROM AbpSettings
                         WHERE Name = 'Abp.Localization.DefaultLanguageName'

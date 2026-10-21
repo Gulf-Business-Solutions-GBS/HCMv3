@@ -21,7 +21,7 @@ real form at full width with the conversation beside it, an approver can ask a
 colleague without handing over the decision, people are named consistently as
 name and code, payroll lock, delegation of approvals, and Go-Live Setup V2 only.
 
-**123 migrations in total.** The database step must run; the `PeriodState`
+**141 migrations in total.** The database step must run; the `PeriodState`
 migration now survives the half-finished state left by the failed attempt.
 
 **Target server:** `vps2656276.fastwebserver.de` (81.30.156.82)
@@ -41,7 +41,7 @@ SQL Server Express. Single C: volume.
 | `api\` | Backend, 703 files, framework-dependent |
 | `web\` | Angular website, ~9,120 files |
 | `sql\01-create-database.sql` | Creates `HCMv3Db` and the `hcm_app` login |
-| `sql\02-schema-all-migrations.sql` | All 123 migrations, idempotent |
+| `sql\02-schema-all-migrations.sql` | All 141 migrations, idempotent |
 | `sql\03-demo-data.sql` | Optional: two demo employees |
 | `Deploy-OnServer.ps1` | Does the whole deployment |
 | `Enable-Https.ps1` | Certificate setup - not needed on a redeploy |
@@ -142,7 +142,7 @@ application needs.
 
 ```sql
 USE HCMv3Db;
-SELECT COUNT(*) AS Migrations FROM __EFMigrationsHistory;   -- expect 123
+SELECT COUNT(*) AS Migrations FROM __EFMigrationsHistory;   -- expect 141
 ```
 
 ---

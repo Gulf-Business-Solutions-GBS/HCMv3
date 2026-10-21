@@ -34,7 +34,9 @@ namespace HCMv3.Migrations
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.Sql("UPDATE DocumentTypes SET AllowDateOverlap = 1;");
+            // Through EXEC so it is compiled only when it runs: in the single idempotent deploy script a
+            // plain UPDATE naming the new column is compiled before the column exists.
+            migrationBuilder.Sql("EXEC(N'UPDATE DocumentTypes SET AllowDateOverlap = 1;');");
         }
 
         /// <inheritdoc />

@@ -67,13 +67,17 @@ namespace HCMv3.Migrations
             // dangling id cannot fail the foreign key.
             foreach (var (column, action) in new[] { ("AmendmentRequestMasterId", 1), ("CancellationRequestMasterId", 2), ("ReturnRequestMasterId", 3) })
             {
+                // Through EXEC so it is compiled only when it runs. In the idempotent deploy script this
+                // block is still compiled on a later run, when the migration is skipped and the columns
+                // below have already been dropped -- "Invalid column name" on every server update.
                 migrationBuilder.Sql($@"
+EXEC(N'
 INSERT INTO WorkflowTransactionTypeRules
     (TenantId, WorkflowTransactionTypeId, RequestSubTypeId, RequestAction, RequestMasterId, CreationTime, IsDeleted)
 SELECT t.TenantId, t.Id, NULL, {action}, t.{column}, GETDATE(), 0
 FROM WorkflowTransactionTypes t
 JOIN RequestMasters m ON m.Id = t.{column} AND m.IsDeleted = 0
-WHERE t.{column} IS NOT NULL AND t.IsDeleted = 0;");
+WHERE t.{column} IS NOT NULL AND t.IsDeleted = 0;');");
             }
 
             migrationBuilder.DropColumn(

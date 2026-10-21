@@ -42,19 +42,25 @@ namespace HCMv3.Migrations
                 nullable: false,
                 defaultValue: false);
 
+            // Run through EXEC so SQL Server compiles it only when it runs. In the single idempotent deploy
+            // script every migration sits in one IF block, and a plain UPDATE naming IsWithdrawable is
+            // compiled before the ALTER above has added the column -- "Invalid column name" on a fresh
+            // database, as happened on the first server install.
             migrationBuilder.Sql(@"
+EXEC(N'
 UPDATE t
 SET t.IsWithdrawable = 1
 FROM DocumentTypes t
 OUTER APPLY (
-    SELECT TOP 1 NULLIF(LTRIM(RTRIM(sc.KeyValue)), '') AS Code
+    SELECT TOP 1 NULLIF(LTRIM(RTRIM(sc.KeyValue)), '''') AS Code
     FROM SysTenantConfigs sc
     WHERE sc.TenantId = t.TenantId
-      AND sc.[Key] = 'PassportWithdrawalDocumentTypeCode'
+      AND sc.[Key] = ''PassportWithdrawalDocumentTypeCode''
       AND sc.IsDeleted = 0
 ) c
 WHERE t.IsDeleted = 0
-  AND t.Code = ISNULL(c.Code, '2');
+  AND t.Code = ISNULL(c.Code, ''2'');
+');
 ");
         }
 

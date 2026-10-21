@@ -97,13 +97,13 @@ if ($SkipDatabase) {
         if ($LASTEXITCODE -ne 0) { Die 'Script 01 failed. Check the message above.' }
         Ok 'Database and login created'
 
-        Write-Host '    Applying 123 migrations, this takes several minutes...'
+        Write-Host '    Applying 141 migrations, this takes several minutes...'
         & sqlcmd.exe -S $SqlInstance -E -C -I -b -d HCMv3Db -i (Join-Path $PackageRoot 'sql\02-schema-all-migrations.sql')
         if ($LASTEXITCODE -ne 0) { Die 'Script 02 failed. Check the message above.' }
 
         $count = & sqlcmd.exe -S $SqlInstance -E -C -I -d HCMv3Db -h -1 -W `
                    -Q "SET NOCOUNT ON; SELECT COUNT(*) FROM __EFMigrationsHistory"
-        Ok "Migrations applied: $($count.Trim())  (expected 123)"
+        Ok "Migrations applied: $($count.Trim())  (expected 141)"
     }
 }
 
