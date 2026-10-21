@@ -6,7 +6,7 @@ namespace HCMv3.PayrollManagement.Dto;
 
 /// <summary>
 /// Input for the bank salary-transfer file generator. Mirrors the legacy screen's filter panel
-/// (<c>HCM10.Web/UserControls/PayrollManagement/uscBankFile2.ascx</c>) one-for-one.
+/// (the live <c>HCM10.Web/UserControls/PayrollManagement/uscBankFile.ascx</c>) one-for-one.
 /// </summary>
 public class GenerateBankFileInput
 {
@@ -32,7 +32,10 @@ public class GenerateBankFileInput
     /// <summary>Optional Organization Unit filter (legacy <c>cmbOrganizationUnit</c>).</summary>
     public long? OrganizationUnitId { get; set; }
 
-    /// <summary>Optional Payment Type filter: null = any, otherwise BANK/CASH (legacy <c>cmbPaymentType</c>).</summary>
+    /// <summary>
+    /// Payment Type radio (legacy <c>rdPaymentAll</c>/<c>rdPaymentBank</c>/<c>rdPaymentCash</c>): null (or NA) = ALL,
+    /// which still needs an employee-bank record in force on the end date; Bank / Cash also need that payment type.
+    /// </summary>
     public PersonnelAdministration.PaymentType? PaymentType { get; set; }
 
     /// <summary>Optional Employee Bank filter (legacy <c>cmbEmpBank</c>).</summary>
@@ -55,6 +58,15 @@ public class GenerateBankFileInput
 
     [Range(1, 12)]
     public int Month { get; set; }
+
+    /// <summary>
+    /// Current / Other (legacy <c>rdCurrent</c>/<c>rdOtherPeriod</c>). When set -- the Bank File screen always sets
+    /// it -- the server works the dates out itself from the payroll area's control record (Current) or from
+    /// <see cref="Month"/>/<see cref="Year"/> through the payroll period (Other), and <see cref="StartDate"/>/
+    /// <see cref="EndDate"/> are IGNORED: a date sent from a browser can arrive a day early on a server running on
+    /// UTC. When null (server-side callers such as Go-Live Setup), the dates below are used as given.
+    /// </summary>
+    public BankFilePeriodType? PeriodType { get; set; }
 
     /// <summary>Period start (legacy <c>txtStartDate</c>). Retained for parity; the layouts key off EndDate.</summary>
     public DateTime StartDate { get; set; }
@@ -87,6 +99,21 @@ public class BankFileOutput
 
     /// <summary>Sum of the transferred net amounts across all produced files.</summary>
     public double TotalAmount { get; set; }
+
+    /// <summary>The run's row in the bank-file log (View Log), which also holds a stored copy of the file.</summary>
+    public int? ExecutionLogId { get; set; }
+
+    /// <summary>
+    /// Salary registers locked by this run because "Lock salary register on payroll exit" is on (legacy
+    /// <c>LockSalaryRegisters</c>). Registers that were already locked are not counted.
+    /// </summary>
+    public int RegistersLocked { get; set; }
+
+    /// <summary>The period the file was made for, dd/MM/yyyy.</summary>
+    public string StartDateText { get; set; }
+
+    /// <summary>The period the file was made for, dd/MM/yyyy.</summary>
+    public string EndDateText { get; set; }
 }
 
 /// <summary>Simple id/text pair for the screen's filter combos.</summary>
@@ -104,6 +131,9 @@ public class BankFileLookupItemDto
 public class BankFileSponsorBankDto : BankFileLookupItemDto
 {
     public string AccountNumber { get; set; }
+
+    /// <summary>The sponsor the account belongs to; the screen lists only the chosen sponsor's accounts.</summary>
+    public int SponsorId { get; set; }
 }
 
 /// <summary>A row of the <c>BankFile</c> lookup table (the seeded format catalogue).</summary>
@@ -135,6 +165,9 @@ public class BankFileLookupsOutput
     public List<BankFileLookupItemDto> PaymentBanks { get; set; } = new();
 
     public List<BankFileLookupItemDto> EmployeeBanks { get; set; } = new();
+
+    /// <summary>Distinct sponsor MOSAL IDs (legacy <c>BindMosalId</c>).</summary>
+    public List<long> MosalIds { get; set; } = new();
 
     public List<BankFileFormatDto> Formats { get; set; } = new();
 }

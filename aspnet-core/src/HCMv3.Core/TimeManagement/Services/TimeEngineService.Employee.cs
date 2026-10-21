@@ -189,6 +189,9 @@ public partial class TimeEngineService
             {
                 // Legacy logs the FAILED day against timeStartDate.AddDays(1).AddDays(-1), i.e. the day itself.
                 await AddTimeLogAsync(employee.Id, dayDate, ex.Message, 1, employeeCount);
+
+                // Remembered so the employee is reported failed once its days are done (see ProcessEmployeesAsync).
+                _currentEmployeeDayFailures?.Add(dayDate, ex.Message);
             }
 
             dayDate = dayDate.AddDays(1);

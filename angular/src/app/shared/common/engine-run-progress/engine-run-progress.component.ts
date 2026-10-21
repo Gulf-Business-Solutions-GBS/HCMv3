@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, computed, inject, input, signal, viewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, input, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -10,12 +10,15 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import {
+    EngineRunEmployeeDto,
     EngineRunStatus,
     EngineRunStatusDto,
     EngineType,
     GetEngineRunEmployeesInput,
+    GetTimeEngineRunEmployeesInput,
     PagedResultDtoOfEngineRunEmployeeDto,
     PayrollEngineServiceProxy,
+    ProjectCostEngineServiceProxy,
     TimeEngineServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
@@ -58,9 +61,23 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 export class EngineRunProgressComponent extends AppComponentBase implements OnInit, OnDestroy {
     private _timeEngineService = inject(TimeEngineServiceProxy);
     private _payrollEngineService = inject(PayrollEngineServiceProxy);
+    private _projectCostEngineService = inject(ProjectCostEngineServiceProxy);
 
     /** Which engine's runs this panel shows. Drives both the endpoints and the permission names. */
     readonly engine = input.required<EngineType>();
+
+    /**
+     * Time Engine only: follow the latest run of this payroll area (blank = of any area) -- status, grid and Stop.
+     * The Time Engine runs one run per area at a time, so the screen follows the area it has selected. Ignored for
+     * the other engines, whose endpoints take no area.
+     */
+    readonly payrollAreaName = input<string | undefined>(undefined);
+
+    /** Show a "Days" button on each employee row; pressing it emits employeeDaysRequested. Off by default. */
+    readonly showEmployeeDays = input<boolean>(false);
+
+    /** The employee row whose day-level log the host screen should show. */
+    readonly employeeDaysRequested = output<EngineRunEmployeeDto>();
 
     readonly dataTable = viewChild<Table>('employeeTable');
     readonly paginator = viewChild<Paginator>('employeePaginator');
@@ -80,7 +97,9 @@ export class EngineRunProgressComponent extends AppComponentBase implements OnIn
     readonly runPermission = computed(() =>
         this.engine() === EngineType.TimeEngine
             ? 'Pages.TimeManagement.TimeEngine.Run'
-            : 'Pages.PayrollManagement.PayrollEngine.Run'
+            : this.engine() === EngineType.ProjectCostEngine
+              ? 'Pages.ProjectManagement.ProjectCostEngine.Run'
+              : 'Pages.PayrollManagement.PayrollEngine.Run'
     );
 
     private _pollHandle: any;
@@ -102,16 +121,50 @@ export class EngineRunProgressComponent extends AppComponentBase implements OnIn
         return this.engine() === EngineType.TimeEngine;
     }
 
+    private isProjectCostEngine(): boolean {
+        return this.engine() === EngineType.ProjectCostEngine;
+    }
+
+    /** The Time Engine area scope, or undefined for "any area". */
+    private scopeAreaName(): string | undefined {
+        const area = this.payrollAreaName();
+        return area ? area : undefined;
+    }
+
     private fetchStatus(): Observable<EngineRunStatusDto> {
+        if (this.isProjectCostEngine()) {
+            return this._projectCostEngineService.getProjectCostEngineStatus();
+        }
         return this.isTimeEngine()
-            ? this._timeEngineService.getTimeEngineStatus()
+            ? this._timeEngineService.getTimeEngineStatus(this.scopeAreaName())
             : this._payrollEngineService.getPayrollEngineStatus();
     }
 
     private fetchEmployees(input: GetEngineRunEmployeesInput): Observable<PagedResultDtoOfEngineRunEmployeeDto> {
-        return this.isTimeEngine()
-            ? this._timeEngineService.getTimeEngineRunEmployees(input)
-            : this._payrollEngineService.getPayrollEngineRunEmployees(input);
+        if (this.isProjectCostEngine()) {
+            return this._projectCostEngineService.getProjectCostEngineRunEmployees(input);
+        }
+        if (!this.isTimeEngine()) {
+            return this._payrollEngineService.getPayrollEngineRunEmployees(input);
+        }
+
+        return this._timeEngineService.getTimeEngineRunEmployees(
+            new GetTimeEngineRunEmployeesInput({
+                runId: input.runId,
+                filter: input.filter,
+                onlyFailed: input.onlyFailed,
+                sorting: input.sorting,
+                maxResultCount: input.maxResultCount,
+                skipCount: input.skipCount,
+                payrollAreaName: this.scopeAreaName(),
+            })
+        );
+    }
+
+    /** Called by the host screen when what the panel follows changed (e.g. another payroll area was selected). */
+    reload(): void {
+        this.refreshStatus();
+        this.reloadEmployees();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -170,9 +223,11 @@ export class EngineRunProgressComponent extends AppComponentBase implements OnIn
             }
 
             this.working.set(true);
-            const call = this.isTimeEngine()
-                ? this._timeEngineService.stopTimeEngine()
-                : this._payrollEngineService.stopPayrollEngine();
+            const call = this.isProjectCostEngine()
+                ? this._projectCostEngineService.stopProjectCostEngine()
+                : this.isTimeEngine()
+                  ? this._timeEngineService.stopTimeEngine(this.scopeAreaName())
+                  : this._payrollEngineService.stopPayrollEngine();
 
             call.pipe(finalize(() => this.working.set(false))).subscribe(() => {
                 this.notify.info(this.l('EngineRunStopRequested'));
@@ -188,9 +243,11 @@ export class EngineRunProgressComponent extends AppComponentBase implements OnIn
             }
 
             this.working.set(true);
-            const call = this.isTimeEngine()
-                ? this._timeEngineService.clearTimeEngineProgress()
-                : this._payrollEngineService.clearPayrollEngineProgress();
+            const call = this.isProjectCostEngine()
+                ? this._projectCostEngineService.clearProjectCostEngineProgress()
+                : this.isTimeEngine()
+                  ? this._timeEngineService.clearTimeEngineProgress()
+                  : this._payrollEngineService.clearPayrollEngineProgress();
 
             call.pipe(finalize(() => this.working.set(false))).subscribe(() => {
                 this.notify.info(this.l('EngineRunProgressCleared'));
@@ -209,9 +266,11 @@ export class EngineRunProgressComponent extends AppComponentBase implements OnIn
             }
 
             this.working.set(true);
-            const call = this.isTimeEngine()
-                ? this._timeEngineService.abandonStaleTimeEngineRuns()
-                : this._payrollEngineService.abandonStalePayrollEngineRuns();
+            const call = this.isProjectCostEngine()
+                ? this._projectCostEngineService.abandonStaleProjectCostEngineRuns()
+                : this.isTimeEngine()
+                  ? this._timeEngineService.abandonStaleTimeEngineRuns()
+                  : this._payrollEngineService.abandonStalePayrollEngineRuns();
 
             call.pipe(finalize(() => this.working.set(false))).subscribe((count) => {
                 this.notify.info(this.l('EngineRunStaleRunsAbandoned', count));

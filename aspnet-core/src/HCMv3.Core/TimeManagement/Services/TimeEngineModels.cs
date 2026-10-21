@@ -47,6 +47,30 @@ public class TimeEngineRunInput
     /// from this map behave exactly like legacy's "Employee Sub Group not found for Employee." error path.
     /// </summary>
     public Dictionary<int, int> EmployeeSubGroupIds { get; set; } = new Dictionary<int, int>();
+
+    /// <summary>
+    /// Save the run this many employees at a time, each batch in its own <c>RequiresNew</c> unit of work
+    /// (<see cref="TimeEngineBatches"/>). 0 (the default) keeps the whole run in the caller's unit of work, as
+    /// before -- which is what Go-Live Setup (it batches itself) and the payroll engine's per-employee time-engine
+    /// autorun (it runs inside the payroll engine's own unit of work) rely on. The Time Engine job passes
+    /// <see cref="TimeEngineBatches.Size"/>.
+    ///
+    /// <para>Not a legacy argument. Legacy committed per employee and every 500 changed objects (an object space
+    /// per employee, legacy <c>HCM10.TimeEngine/Program.cs</c> lines 1599-1602 and 1705-1711); a batch of ten is
+    /// the same compromise the Payroll Engine and Go-Live Setup use.</para>
+    /// </summary>
+    public int CommitBatchSize { get; set; }
+}
+
+/// <summary>
+/// How many employees an everyday Time Engine run saves at a time. Same number and same reason as
+/// <c>PayrollEngineBatches.Size</c>: one unit of work for a whole payroll area keeps everything it writes in memory
+/// until the end, so it slows down with every employee, and a failure late in the run threw all of it away. A
+/// batch of ten keeps every employee as quick as the first, and the work already saved stays saved.
+/// </summary>
+public static class TimeEngineBatches
+{
+    public const int Size = 10;
 }
 
 /// <summary>

@@ -1,158 +1,89 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
-using Abp.Domain.Repositories;
-using Abp.Runtime.Session;
+using Abp.BackgroundJobs;
 using Abp.Timing;
-using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PayrollManagement.Costing;
 using HCMv3.PayrollManagement.Dto;
-using HCMv3.ProjectManagement;
 using HCMv3.Reports.Dto;
-using HCMv3.SystemSecurity;
 using MiniExcelLibs;
 
 namespace HCMv3.PayrollManagement;
 
 /// <inheritdoc cref="ICostingFileAppService"/>
 /// <remarks>
-/// <para><b>DELIBERATE DEVIATION -- no background thread.</b> Legacy ran the cost engine on a
-/// <c>System.Threading.Thread</c> kicked off from an <c>ASPxCallbackPanel</c>, with the page polling
-/// <c>ProjectLog</c> row counts for progress (<c>uscCostingFile.ascx.cs</c> <c>ExecuteLongOperation</c>
-/// line 239 and <c>CalculateProcessStatus</c> line 1574). That pattern relied on WebForms static state
-/// (<c>LongOperationStatus</c>, line 37) which has no equivalent -- and no correct equivalent -- in a
-/// stateless multi-tenant API host. <see cref="GenerateCostingFile"/> therefore runs INLINE and returns the
-/// full per-employee log in one response. <see cref="GetProcessStatus"/> is retained so the screen can still
-/// show the <c>ProjectLog</c>-derived counters, and <see cref="RequestStop"/> still raises the
-/// <c>StopFlag</c> the engine loop polls, but for a very large payroll area this call will be long-running.
-/// Promoting it to a Hangfire background job is the correct follow-up and is NOT attempted here.</para>
+/// <para><b>Background run, as legacy.</b> Legacy ran the cost engine on a pool thread with the page polling
+/// <c>ProjectLog</c> for progress (<c>uscCostingFile.ascx.cs</c> lines 2204-2212, 2117-2184). Here
+/// <see cref="GenerateCostingFile"/> queues <see cref="CostingFileBackgroundJob"/> and returns; the job writes
+/// one <c>ProjectLog</c> row per employee as it goes, so <see cref="GetProcessStatus"/> and
+/// <see cref="GetProcessLog"/> show live progress and the per-employee grid, and <see cref="RequestStop"/>
+/// takes effect before the next employee.</para>
 ///
 /// <para><b>Legacy behaviour intentionally dropped:</b> the audit-trail toggling around each employee's
 /// object space (<c>ManageSecuritySettings.EnableAuditLogInCostEngine</c>,
-/// <c>uscCostingFile.ascx.cs</c> lines 453-463, 706-721) is XPO <c>AuditTrailService</c> plumbing with no
+/// <c>uscCostingFile.ascx.cs</c> lines 441-451) is XPO <c>AuditTrailService</c> plumbing with no
 /// ABP counterpart; ABP's own entity-change auditing already covers the written entities.</para>
 /// </remarks>
 [AbpAuthorize(AppPermissions.Pages_PayrollManagement_CostingFile)]
 public class CostingFileAppService : HCMv3AppServiceBase, ICostingFileAppService
 {
-    private readonly ICostEngineService _costEngineService;
     private readonly IJournalVoucherBuilder _journalVoucherBuilder;
-    private readonly IRepository<PayrollArea> _payrollAreaRepository;
-    private readonly IRepository<ProjectLog> _projectLogRepository;
-    private readonly IRepository<ExecutionLog> _executionLogRepository;
+    private readonly CostingScreenService _screen;
+    private readonly IFinanceRunLog _runLog;
+    private readonly IBackgroundJobManager _backgroundJobManager;
 
     public CostingFileAppService(
-        ICostEngineService costEngineService,
         IJournalVoucherBuilder journalVoucherBuilder,
-        IRepository<PayrollArea> payrollAreaRepository,
-        IRepository<ProjectLog> projectLogRepository,
-        IRepository<ExecutionLog> executionLogRepository)
+        CostingScreenService screen,
+        IFinanceRunLog runLog,
+        IBackgroundJobManager backgroundJobManager)
     {
-        _costEngineService = costEngineService;
         _journalVoucherBuilder = journalVoucherBuilder;
-        _payrollAreaRepository = payrollAreaRepository;
-        _projectLogRepository = projectLogRepository;
-        _executionLogRepository = executionLogRepository;
+        _screen = screen;
+        _runLog = runLog;
+        _backgroundJobManager = backgroundJobManager;
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_CostingFile_Run)]
-    public async Task<CostingRunResultDto> GenerateCostingFile(CostingRunInputDto input)
+    public async Task<FinanceRunStartedDto> GenerateCostingFile(CostingRunInputDto input)
     {
-        ValidateInput(input);
+        _screen.ValidateInput(input);
 
-        // Legacy lines 403-435: an ExecutionLog row is opened INPROCESS before the loop and finalised
-        // with the aggregate counts afterwards.
-        var executionLogId = await OpenExecutionLogAsync(input);
-
-        CostingRunResult result;
-        try
-        {
-            result = await _costEngineService.RunAsync(CostingMapper.ToDomain(input));
-        }
-        catch
-        {
-            await CloseExecutionLogAsync(executionLogId, ExecutionLogStatus.FAILED, 0, 0, 0);
-            throw;
-        }
-
-        // Legacy lines 685-688: ABORTED wins, then all-success -> SUCCESS, all-failed -> FAILED,
-        // otherwise PARTIAL.
-        var status = result.Aborted
-            ? ExecutionLogStatus.ABORTED
-            : result.TotalEmployees == result.SuccessCount
-                ? ExecutionLogStatus.SUCCESS
-                : result.TotalEmployees == result.FailedCount
-                    ? ExecutionLogStatus.FAILED
-                    : ExecutionLogStatus.PARTIAL;
-
-        await CloseExecutionLogAsync(executionLogId, status, result.TotalEmployees,
-                                     result.SuccessCount, result.FailedCount);
-
-        await PersistProjectLogAsync(result, input.PayInDate);
-
-        return CostingMapper.ToDto(result);
+        return await _screen.StartRunAsync(
+            FinanceRunProcess.CostEngine,
+            CostingMapper.ToDomain(input),
+            await GetCurrentUserNameOrIdAsync(),
+            null,
+            args => _backgroundJobManager.EnqueueAsync<CostingFileBackgroundJob, FinanceRunJobArgs>(args));
     }
 
     // [HttpPost] required: ABP maps Get* to HTTP GET, so NSwag would flatten CostingRunInputDto into
     // query-string params and never generate the DTO class, breaking the Angular client.
     [HttpPost]
-    public async Task<JournalVoucherPreviewDto> GetJournalVoucherLines(CostingRunInputDto input)
+    public Task<JournalVoucherPreviewDto> GetJournalVoucherLines(CostingRunInputDto input)
     {
-        ValidateInput(input);
-
-        var result = await _journalVoucherBuilder.BuildAsync(CostingMapper.ToDomain(input));
-        return CostingMapper.ToDto(result);
+        return _screen.PreviewAsync(input);
     }
 
-    public async Task<JournalVoucherValidationResultDto> ValidateJournalVoucher(CostingRunInputDto input)
+    public Task<JournalVoucherValidationResultDto> ValidateJournalVoucher(CostingRunInputDto input)
     {
-        ValidateInput(input);
-
-        var result = await _journalVoucherBuilder.BuildAsync(CostingMapper.ToDomain(input));
-        return BuildValidationResult(result);
-    }
-
-    /// <summary>
-    /// Legacy validation block of <c>ExportGrid(onlyValidate: true)</c>
-    /// (<c>uscCostingFile.ascx.cs</c> lines 1710-1728). Shared with <c>PostJvAppService</c> so both
-    /// screens report identically.
-    /// </summary>
-    internal JournalVoucherValidationResultDto BuildValidationResult(JournalVoucherResult result)
-    {
-        var messages = new List<string>();
-
-        if (!result.Lines.Any())
-        {
-            messages.Add(L("NoDataFoundToPostJV"));
-        }
-        else if (!result.IsBalanced)
-        {
-            messages.Add(L("DebitCreditNotMatched"));
-        }
-
-        return new JournalVoucherValidationResultDto
-        {
-            IsValid = !messages.Any(),
-            Message = messages.Any() ? string.Join(Environment.NewLine, messages) : L("JVValidatedSuccessfully"),
-            TotalDebit = result.TotalDebit,
-            TotalCredit = result.TotalCredit,
-            LineCount = result.Lines.Count
-        };
+        return _screen.ValidateAsync(input);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_CostingFile_Export)]
     public async Task<ReportPdfOutput> ExportCostingFile(CostingRunInputDto input)
     {
-        ValidateInput(input);
+        _screen.ValidateInput(input);
 
         var result = await _journalVoucherBuilder.BuildAsync(CostingMapper.ToDomain(input));
 
-        // Legacy lines 1742-1745 strip BillingType and IsMerged before binding the export grid;
+        // Legacy lines 1650-1653 strip BillingType and IsMerged before binding the export grid;
         // JournalVoucherColumns.ExportOrder encodes exactly that column set and order.
         var rows = result.Lines.Select(l => new Dictionary<string, object>
         {
@@ -187,193 +118,81 @@ public class CostingFileAppService : HCMv3AppServiceBase, ICostingFileAppService
         using var stream = new MemoryStream();
         MiniExcel.SaveAs(stream, rows, printHeader: true, excelType: ExcelType.XLSX);
 
-        // Legacy file name pattern, lines 1750-1752.
-        var fileName = $"CostFile_{input.PayrollAreaName}_{input.PayInDate:MMMM-yyyy}_" +
-                       $"{Clock.Now:dd-MM-yyyy HHmm}.xlsx";
+        // Legacy file name pattern, lines 1657-1659.
+        var fileName = $"CostFile_{input.PayrollAreaName}_" +
+                       input.PayInDate.ToString("MMMM-yyyy", CultureInfo.InvariantCulture) + "_" +
+                       Clock.Now.ToString("dd-MM-yyyy HHmm", CultureInfo.InvariantCulture) + ".xlsx";
 
         return new ReportPdfOutput(fileName, Convert.ToBase64String(stream.ToArray()));
     }
 
     public Task<List<PayrollAreaLookupDto>> GetPayrollAreasForLookup()
     {
-        var payrollAreas = _payrollAreaRepository.GetAll()
-            .OrderBy(a => a.Name)
-            .Select(a => new PayrollAreaLookupDto
-            {
-                Id = a.Id,
-                Code = a.Code,
-                Name = a.Name,
-                IsFiConfigured = a.FICompanyId != null && a.FIBankId != null
-            })
-            .ToList();
+        return Task.FromResult(_screen.GetPayrollAreasForLookup());
+    }
 
-        return Task.FromResult(payrollAreas);
+    public Task<CostingPeriodContextDto> GetCostingPeriodContext(string payrollAreaName)
+    {
+        return Task.FromResult(_screen.GetPeriodContext(payrollAreaName));
+    }
+
+    public Task<CostingPeriodDatesDto> GetCostingPeriodDates(string payrollAreaName, int payrollMonth, int payrollYear)
+    {
+        return Task.FromResult(_screen.GetPeriodDates(payrollAreaName, payrollMonth, payrollYear));
+    }
+
+    [HttpPost]
+    public Task<PayrollRunCandidatesOutput> GetCostingFileCandidates(GetCostingFileCandidatesInput input)
+    {
+        return _screen.GetCandidatesAsync(input);
+    }
+
+    [HttpPost]
+    public Task<List<string>> GetCostingFileCandidateCodes(GetCostingFileCandidatesInput input)
+    {
+        return _screen.GetCandidateCodesAsync(input);
     }
 
     public Task<CostingProcessStatusDto> GetProcessStatus()
     {
-        return Task.FromResult(BuildProcessStatus(_projectLogRepository));
+        return _runLog.GetStatusAsync(FinanceRunProcess.CostEngine);
     }
 
-    /// <summary>Legacy <c>CalculateProcessStatus</c>, shared by both screens.</summary>
-    internal static CostingProcessStatusDto BuildProcessStatus(IRepository<ProjectLog> projectLogRepository)
+    [HttpPost]
+    public Task<FinanceRunLogOutput> GetProcessLog(GetFinanceRunLogInput input)
     {
-        var logs = projectLogRepository.GetAll()
-            .Select(l => new { l.Status, l.StopFlag })
-            .ToList();
+        return _runLog.GetLogAsync(input);
+    }
 
-        var total = logs.Count;
-        var success = logs.Count(l => l.Status == 0);
-
-        return new CostingProcessStatusDto
-        {
-            TotalRecords = total,
-            SuccessRecords = success,
-
-            // Legacy line 681 clamps the failed count at zero rather than counting Status != 0.
-            FailedRecords = total - success > 0 ? total - success : 0,
-            StopRequested = logs.Any(l => l.StopFlag)
-        };
+    [HttpPost]
+    public Task<ReportPdfOutput> ExportProcessLog(GetFinanceRunLogInput input)
+    {
+        return _screen.ExportLogAsync(input);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_CostingFile_Run)]
-    public async Task ClearProcessStatus()
+    public Task ClearProcessStatus()
     {
-        await ClearProjectLogAsync(_projectLogRepository);
-    }
-
-    /// <summary>Legacy <c>TruncateLog</c>, shared by both screens.</summary>
-    internal static async Task ClearProjectLogAsync(IRepository<ProjectLog> projectLogRepository)
-    {
-        var ids = projectLogRepository.GetAll().Select(l => l.Id).ToList();
-        foreach (var id in ids)
-        {
-            await projectLogRepository.DeleteAsync(id);
-        }
+        return _runLog.ClearAsync();
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_CostingFile_Run)]
-    public async Task RequestStop()
+    public Task RequestStop()
     {
-        // Legacy stop button (uscCostingFile.ascx.cs lines 2287-2293) sets StopFlag on the FIRST EXISTING
-        // ProjectLog row -- it does NOT insert a marker row. Reproduced exactly (an employee-less marker
-        // row would now be insertable, but inserting one is NOT what legacy does).
-        // The engine loop polls for ANY row with StopFlag set (legacy line 469), so flagging one suffices.
-        var first = _projectLogRepository.GetAll().OrderBy(l => l.Id).FirstOrDefault();
-        if (first == null)
-        {
-            // Nothing has been logged yet, so no run is in progress to stop -- legacy no-ops here too
-            // (its `if (t1 != null)` guard).
-            return;
-        }
-
-        first.StopFlag = true;
-        await _projectLogRepository.UpdateAsync(first);
+        return _runLog.RequestStopAsync();
     }
 
-    /// <summary>
-    /// Legacy input guards from <c>ExecuteLongOperation</c> lines 243-247 and <c>ExportGrid</c> lines
-    /// 1648-1689.
-    /// </summary>
-    private void ValidateInput(CostingRunInputDto input)
+    /// <summary>Legacy wrote the user NAME on the run record; falls back to the id when the user cannot be read.</summary>
+    private async Task<string> GetCurrentUserNameOrIdAsync()
     {
-        if (string.IsNullOrWhiteSpace(input.PayrollAreaName) && string.IsNullOrWhiteSpace(input.EmployeeCode))
+        try
         {
-            throw new UserFriendlyException(L("NoPayrollAreaOrEmployeeCodeEntered"));
+            var user = await GetCurrentUserAsync();
+            return user.UserName;
         }
-
-        if (input.PayInDate == default)
+        catch (Exception)
         {
-            throw new UserFriendlyException(L("NoPayDateDefinedForJvPost"));
-        }
-
-        if (input.PostingDate == default)
-        {
-            throw new UserFriendlyException(L("PostingDateNotProperFormat"));
-        }
-    }
-
-    /// <summary>Legacy execution-log parameter string, lines 404-423 (same separator and label order).</summary>
-    private async Task<int> OpenExecutionLogAsync(CostingRunInputDto input)
-    {
-        var parts = new List<string>();
-
-        if (!string.IsNullOrWhiteSpace(input.PayrollAreaName))
-        {
-            parts.Add("Payroll Area : " + input.PayrollAreaName);
-        }
-
-        parts.Add("Payroll RunType : " + input.PayrollRunType);
-        parts.Add("Period : " + input.PayInDate.ToString("dd/MM/yyyy"));
-
-        if (input.PostingDate != default)
-        {
-            parts.Add("Posting Date : " + input.PostingDate.ToString("dd/MM/yyyy"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(input.EmployeeCode))
-        {
-            parts.Add("Employee Code : " + input.EmployeeCode);
-        }
-
-        return await _executionLogRepository.InsertAndGetIdAsync(new ExecutionLog
-        {
-            TenantId = AbpSession.GetTenantId(),
-            UserName = AbpSession.UserId?.ToString(),
-            ActionDateTime = Clock.Now,
-            Action = ExecutionLogAction.RUN,
-            Module = ExecutionLogModule.CostEngine,
-            ScreenName = nameof(CostingFileAppService),
-            ScreenCaption = L("CostingFile"),
-            Parameters = string.Join(" | ", parts),
-            ExecutionStatus = ExecutionLogStatus.INPRECESS,
-            TotalRecords = 0,
-            Successfull = 0,
-            Failed = 0
-        });
-    }
-
-    private async Task CloseExecutionLogAsync(int executionLogId, ExecutionLogStatus status,
-                                              int total, int success, int failed)
-    {
-        var log = await _executionLogRepository.FirstOrDefaultAsync(executionLogId);
-        if (log == null)
-        {
-            return;
-        }
-
-        log.ExecutionStatus = status;
-        log.TotalRecords = total;
-        log.Successfull = success;
-        log.Failed = failed;
-
-        await _executionLogRepository.UpdateAsync(log);
-    }
-
-    /// <summary>
-    /// Legacy wrote one <c>ProjectLog</c> row per employee inside the loop (lines 614-628 / 632-653).
-    /// This port writes them after the run so the engine stays free of persistence concerns it doesn't own.
-    /// </summary>
-    private async Task PersistProjectLogAsync(CostingRunResult result, DateTime payInDate)
-    {
-        var tenantId = AbpSession.GetTenantId();
-
-        foreach (var entry in result.Entries)
-        {
-            // Employee-less entries are now persisted verbatim (legacy uscCostingFile.ascx.cs line 1366
-            // `pl1.Employee = null`): wave P8 made ProjectLog.EmployeeId nullable. Previously they were
-            // silently dropped.
-            await _projectLogRepository.InsertAsync(new ProjectLog
-            {
-                TenantId = tenantId,
-                EmployeeId = entry.EmployeeId,
-                InPeriod = payInDate,
-                Message = entry.Message,
-                Status = entry.Status,
-                RunTimeStamp = Clock.Now,
-                NoOfEmployee = result.TotalEmployees,
-                StopFlag = false
-            });
+            return AbpSession.UserId?.ToString();
         }
     }
 }

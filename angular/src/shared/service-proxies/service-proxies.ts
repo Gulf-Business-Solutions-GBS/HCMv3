@@ -9324,6 +9324,125 @@ export class BankFilesServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getBankFileSponsorBanks(id?: number | undefined): Observable<BankFileSponsorBankDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/BankFiles/GetBankFileSponsorBanks?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankFileSponsorBanks(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankFileSponsorBanks(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BankFileSponsorBankDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BankFileSponsorBankDto[]>;
+        }));
+    }
+
+    protected processGetBankFileSponsorBanks(response: HttpResponseBase): Observable<BankFileSponsorBankDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(BankFileSponsorBankDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getBankFilePeriod(body?: GetBankFilePeriodInput | undefined): Observable<BankFilePeriodDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankFiles/GetBankFilePeriod";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankFilePeriod(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankFilePeriod(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BankFilePeriodDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BankFilePeriodDto>;
+        }));
+    }
+
+    protected processGetBankFilePeriod(response: HttpResponseBase): Observable<BankFilePeriodDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BankFilePeriodDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -9417,6 +9536,174 @@ export class BankFilesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getBankFileLogs(body?: GetBankFileLogsInput | undefined): Observable<BankFileLogsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/BankFiles/GetBankFileLogs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankFileLogs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankFileLogs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BankFileLogsOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BankFileLogsOutput>;
+        }));
+    }
+
+    protected processGetBankFileLogs(response: HttpResponseBase): Observable<BankFileLogsOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BankFileLogsOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportBankFileLogs(body?: GetBankFileLogsInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankFiles/ExportBankFileLogs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportBankFileLogs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportBankFileLogs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportBankFileLogs(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getBankFileLogDownload(id?: number | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankFiles/GetBankFileLogDownload?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankFileLogDownload(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankFileLogDownload(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetBankFileLogDownload(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -19719,7 +20006,7 @@ export class CostingFileServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    generateCostingFile(body?: CostingRunInputDto | undefined): Observable<CostingRunResultDto> {
+    generateCostingFile(body?: CostingRunInputDto | undefined): Observable<FinanceRunStartedDto> {
         let url_ = this.baseUrl + "/api/services/app/CostingFile/GenerateCostingFile";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -19742,14 +20029,14 @@ export class CostingFileServiceProxy {
                 try {
                     return this.processGenerateCostingFile(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<CostingRunResultDto>;
+                    return _observableThrow(e) as any as Observable<FinanceRunStartedDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<CostingRunResultDto>;
+                return _observableThrow(response_) as any as Observable<FinanceRunStartedDto>;
         }));
     }
 
-    protected processGenerateCostingFile(response: HttpResponseBase): Observable<CostingRunResultDto> {
+    protected processGenerateCostingFile(response: HttpResponseBase): Observable<FinanceRunStartedDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -19760,7 +20047,7 @@ export class CostingFileServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CostingRunResultDto.fromJS(resultData200);
+            result200 = FinanceRunStartedDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -19998,6 +20285,243 @@ export class CostingFileServiceProxy {
     }
 
     /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    getCostingPeriodContext(payrollAreaName?: string | null | undefined): Observable<CostingPeriodContextDto> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetCostingPeriodContext?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingPeriodContext(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingPeriodContext(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CostingPeriodContextDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CostingPeriodContextDto>;
+        }));
+    }
+
+    protected processGetCostingPeriodContext(response: HttpResponseBase): Observable<CostingPeriodContextDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CostingPeriodContextDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @param payrollMonth (optional) 
+     * @param payrollYear (optional) 
+     * @return OK
+     */
+    getCostingPeriodDates(payrollAreaName?: string | null | undefined, payrollMonth?: number | undefined, payrollYear?: number | undefined): Observable<CostingPeriodDatesDto> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetCostingPeriodDates?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        if (payrollMonth === null)
+            throw new globalThis.Error("The parameter 'payrollMonth' cannot be null.");
+        else if (payrollMonth !== undefined)
+            url_ += "payrollMonth=" + encodeURIComponent("" + payrollMonth) + "&";
+        if (payrollYear === null)
+            throw new globalThis.Error("The parameter 'payrollYear' cannot be null.");
+        else if (payrollYear !== undefined)
+            url_ += "payrollYear=" + encodeURIComponent("" + payrollYear) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingPeriodDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingPeriodDates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CostingPeriodDatesDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CostingPeriodDatesDto>;
+        }));
+    }
+
+    protected processGetCostingPeriodDates(response: HttpResponseBase): Observable<CostingPeriodDatesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CostingPeriodDatesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getCostingFileCandidates(body?: GetCostingFileCandidatesInput | undefined): Observable<PayrollRunCandidatesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetCostingFileCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingFileCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingFileCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollRunCandidatesOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollRunCandidatesOutput>;
+        }));
+    }
+
+    protected processGetCostingFileCandidates(response: HttpResponseBase): Observable<PayrollRunCandidatesOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollRunCandidatesOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getCostingFileCandidateCodes(body?: GetCostingFileCandidatesInput | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetCostingFileCandidateCodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingFileCandidateCodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingFileCandidateCodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetCostingFileCandidateCodes(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getProcessStatus(): Observable<CostingProcessStatusDto> {
@@ -20038,6 +20562,118 @@ export class CostingFileServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = CostingProcessStatusDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProcessLog(body?: GetFinanceRunLogInput | undefined): Observable<FinanceRunLogOutput> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetProcessLog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProcessLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProcessLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FinanceRunLogOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FinanceRunLogOutput>;
+        }));
+    }
+
+    protected processGetProcessLog(response: HttpResponseBase): Observable<FinanceRunLogOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FinanceRunLogOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportProcessLog(body?: GetFinanceRunLogInput | undefined): Observable<ReportPdfOutput> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/ExportProcessLog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportProcessLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportProcessLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
+        }));
+    }
+
+    protected processExportProcessLog(response: HttpResponseBase): Observable<ReportPdfOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReportPdfOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -22241,78 +22877,6 @@ export class CVWorkExpsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
-export class D365FinancePostingClientServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @param journalHeaderName (optional) 
-     * @param body (optional) 
-     * @return OK
-     */
-    postJournal(journalHeaderName?: string | null | undefined, body?: PayrollArea | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/D365FinancePostingClient/PostJournal?";
-        if (journalHeaderName !== undefined && journalHeaderName !== null)
-            url_ += "journalHeaderName=" + encodeURIComponent("" + journalHeaderName) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPostJournal(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processPostJournal(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<string>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<string>;
-        }));
-    }
-
-    protected processPostJournal(response: HttpResponseBase): Observable<string> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : null as any;
-    
-            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -123433,7 +123997,7 @@ export class PostJvServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    postJournalVoucher(body?: CostingRunInputDto | undefined): Observable<PostJvResultDto> {
+    postJournalVoucher(body?: CostingRunInputDto | undefined): Observable<FinanceRunStartedDto> {
         let url_ = this.baseUrl + "/api/services/app/PostJv/PostJournalVoucher";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -123456,14 +124020,14 @@ export class PostJvServiceProxy {
                 try {
                     return this.processPostJournalVoucher(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PostJvResultDto>;
+                    return _observableThrow(e) as any as Observable<FinanceRunStartedDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<PostJvResultDto>;
+                return _observableThrow(response_) as any as Observable<FinanceRunStartedDto>;
         }));
     }
 
-    protected processPostJournalVoucher(response: HttpResponseBase): Observable<PostJvResultDto> {
+    protected processPostJournalVoucher(response: HttpResponseBase): Observable<FinanceRunStartedDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -123474,7 +124038,7 @@ export class PostJvServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PostJvResultDto.fromJS(resultData200);
+            result200 = FinanceRunStartedDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -123600,6 +124164,301 @@ export class PostJvServiceProxy {
     /**
      * @return OK
      */
+    getPayrollAreasForLookup(): Observable<PayrollAreaLookupDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetPayrollAreasForLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollAreasForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollAreasForLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollAreaLookupDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollAreaLookupDto[]>;
+        }));
+    }
+
+    protected processGetPayrollAreasForLookup(response: HttpResponseBase): Observable<PayrollAreaLookupDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PayrollAreaLookupDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    getCostingPeriodContext(payrollAreaName?: string | null | undefined): Observable<CostingPeriodContextDto> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetCostingPeriodContext?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingPeriodContext(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingPeriodContext(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CostingPeriodContextDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CostingPeriodContextDto>;
+        }));
+    }
+
+    protected processGetCostingPeriodContext(response: HttpResponseBase): Observable<CostingPeriodContextDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CostingPeriodContextDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @param payrollMonth (optional) 
+     * @param payrollYear (optional) 
+     * @return OK
+     */
+    getCostingPeriodDates(payrollAreaName?: string | null | undefined, payrollMonth?: number | undefined, payrollYear?: number | undefined): Observable<CostingPeriodDatesDto> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetCostingPeriodDates?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        if (payrollMonth === null)
+            throw new globalThis.Error("The parameter 'payrollMonth' cannot be null.");
+        else if (payrollMonth !== undefined)
+            url_ += "payrollMonth=" + encodeURIComponent("" + payrollMonth) + "&";
+        if (payrollYear === null)
+            throw new globalThis.Error("The parameter 'payrollYear' cannot be null.");
+        else if (payrollYear !== undefined)
+            url_ += "payrollYear=" + encodeURIComponent("" + payrollYear) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingPeriodDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingPeriodDates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CostingPeriodDatesDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CostingPeriodDatesDto>;
+        }));
+    }
+
+    protected processGetCostingPeriodDates(response: HttpResponseBase): Observable<CostingPeriodDatesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CostingPeriodDatesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getCostingFileCandidates(body?: GetCostingFileCandidatesInput | undefined): Observable<PayrollRunCandidatesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetCostingFileCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingFileCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingFileCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollRunCandidatesOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollRunCandidatesOutput>;
+        }));
+    }
+
+    protected processGetCostingFileCandidates(response: HttpResponseBase): Observable<PayrollRunCandidatesOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollRunCandidatesOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getCostingFileCandidateCodes(body?: GetCostingFileCandidatesInput | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetCostingFileCandidateCodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCostingFileCandidateCodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCostingFileCandidateCodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetCostingFileCandidateCodes(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     getProcessStatus(): Observable<CostingProcessStatusDto> {
         let url_ = this.baseUrl + "/api/services/app/PostJv/GetProcessStatus";
         url_ = url_.replace(/[?&]$/, "");
@@ -123649,6 +124508,118 @@ export class PostJvServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProcessLog(body?: GetFinanceRunLogInput | undefined): Observable<FinanceRunLogOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetProcessLog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProcessLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProcessLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FinanceRunLogOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FinanceRunLogOutput>;
+        }));
+    }
+
+    protected processGetProcessLog(response: HttpResponseBase): Observable<FinanceRunLogOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FinanceRunLogOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportProcessLog(body?: GetFinanceRunLogInput | undefined): Observable<ReportPdfOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/ExportProcessLog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportProcessLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportProcessLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
+        }));
+    }
+
+    protected processExportProcessLog(response: HttpResponseBase): Observable<ReportPdfOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReportPdfOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     clearProcessStatus(): Observable<void> {
@@ -123677,6 +124648,53 @@ export class PostJvServiceProxy {
     }
 
     protected processClearProcessStatus(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    requestStop(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/RequestStop";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestStop(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestStop(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRequestStop(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -125656,8 +126674,8 @@ export class ProjectCostEngineServiceProxy {
     /**
      * @return OK
      */
-    clearProjectCostEngineLog(): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/ClearProjectCostEngineLog";
+    clearProjectCostEngineProgress(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/ClearProjectCostEngineProgress";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -125668,11 +126686,11 @@ export class ProjectCostEngineServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processClearProjectCostEngineLog(response_);
+            return this.processClearProjectCostEngineProgress(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processClearProjectCostEngineLog(response_ as any);
+                    return this.processClearProjectCostEngineProgress(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -125681,7 +126699,7 @@ export class ProjectCostEngineServiceProxy {
         }));
     }
 
-    protected processClearProjectCostEngineLog(response: HttpResponseBase): Observable<void> {
+    protected processClearProjectCostEngineProgress(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -125703,7 +126721,59 @@ export class ProjectCostEngineServiceProxy {
     /**
      * @return OK
      */
-    getProjectCostEngineStatus(): Observable<ProjectCostEngineStatusDto> {
+    abandonStaleProjectCostEngineRuns(): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/AbandonStaleProjectCostEngineRuns";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAbandonStaleProjectCostEngineRuns(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAbandonStaleProjectCostEngineRuns(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processAbandonStaleProjectCostEngineRuns(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getProjectCostEngineStatus(): Observable<EngineRunStatusDto> {
         let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineStatus";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -125722,14 +126792,14 @@ export class ProjectCostEngineServiceProxy {
                 try {
                     return this.processGetProjectCostEngineStatus(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ProjectCostEngineStatusDto>;
+                    return _observableThrow(e) as any as Observable<EngineRunStatusDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ProjectCostEngineStatusDto>;
+                return _observableThrow(response_) as any as Observable<EngineRunStatusDto>;
         }));
     }
 
-    protected processGetProjectCostEngineStatus(response: HttpResponseBase): Observable<ProjectCostEngineStatusDto> {
+    protected processGetProjectCostEngineStatus(response: HttpResponseBase): Observable<EngineRunStatusDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -125740,7 +126810,412 @@ export class ProjectCostEngineServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProjectCostEngineStatusDto.fromJS(resultData200);
+            result200 = EngineRunStatusDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProjectCostEngineRunEmployees(body?: GetEngineRunEmployeesInput | undefined): Observable<PagedResultDtoOfEngineRunEmployeeDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineRunEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEngineRunEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEngineRunEmployees(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfEngineRunEmployeeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfEngineRunEmployeeDto>;
+        }));
+    }
+
+    protected processGetProjectCostEngineRunEmployees(response: HttpResponseBase): Observable<PagedResultDtoOfEngineRunEmployeeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfEngineRunEmployeeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    getProjectCostEngineContext(payrollAreaName?: string | null | undefined): Observable<ProjectCostEnginePeriodDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineContext?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEngineContext(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEngineContext(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProjectCostEnginePeriodDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProjectCostEnginePeriodDto>;
+        }));
+    }
+
+    protected processGetProjectCostEngineContext(response: HttpResponseBase): Observable<ProjectCostEnginePeriodDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProjectCostEnginePeriodDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @param payrollMonth (optional) 
+     * @param payrollYear (optional) 
+     * @return OK
+     */
+    getProjectCostEnginePeriodDates(payrollAreaName?: string | null | undefined, payrollMonth?: number | undefined, payrollYear?: number | undefined): Observable<ProjectCostEnginePeriodDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEnginePeriodDates?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        if (payrollMonth === null)
+            throw new globalThis.Error("The parameter 'payrollMonth' cannot be null.");
+        else if (payrollMonth !== undefined)
+            url_ += "payrollMonth=" + encodeURIComponent("" + payrollMonth) + "&";
+        if (payrollYear === null)
+            throw new globalThis.Error("The parameter 'payrollYear' cannot be null.");
+        else if (payrollYear !== undefined)
+            url_ += "payrollYear=" + encodeURIComponent("" + payrollYear) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEnginePeriodDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEnginePeriodDates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProjectCostEnginePeriodDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProjectCostEnginePeriodDto>;
+        }));
+    }
+
+    protected processGetProjectCostEnginePeriodDates(response: HttpResponseBase): Observable<ProjectCostEnginePeriodDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProjectCostEnginePeriodDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProjectCostEngineCandidates(body?: GetProjectCostEngineCandidatesInput | undefined): Observable<PayrollRunCandidatesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEngineCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEngineCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollRunCandidatesOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollRunCandidatesOutput>;
+        }));
+    }
+
+    protected processGetProjectCostEngineCandidates(response: HttpResponseBase): Observable<PayrollRunCandidatesOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollRunCandidatesOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProjectCostEngineCandidateCodes(body?: GetProjectCostEngineCandidatesInput | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineCandidateCodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEngineCandidateCodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEngineCandidateCodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetProjectCostEngineCandidateCodes(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProjectCostEngineLogs(body?: GetProjectCostEngineLogsInput | undefined): Observable<ProjectCostEngineLogsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineLogs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEngineLogs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEngineLogs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProjectCostEngineLogsOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProjectCostEngineLogsOutput>;
+        }));
+    }
+
+    protected processGetProjectCostEngineLogs(response: HttpResponseBase): Observable<ProjectCostEngineLogsOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProjectCostEngineLogsOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getProjectCostEngineLogsToExcel(body?: GetProjectCostEngineLogsToExcelInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProjectCostEngine/GetProjectCostEngineLogsToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectCostEngineLogsToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectCostEngineLogsToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetProjectCostEngineLogsToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -152963,10 +154438,13 @@ export class TimeEngineServiceProxy {
     }
 
     /**
+     * @param payrollAreaName (optional) 
      * @return OK
      */
-    getTimeEngineStatus(): Observable<EngineRunStatusDto> {
-        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineStatus";
+    getTimeEngineStatus(payrollAreaName?: string | null | undefined): Observable<EngineRunStatusDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineStatus?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -153017,7 +154495,7 @@ export class TimeEngineServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getTimeEngineRunEmployees(body?: GetEngineRunEmployeesInput | undefined): Observable<PagedResultDtoOfEngineRunEmployeeDto> {
+    getTimeEngineRunEmployees(body?: GetTimeEngineRunEmployeesInput | undefined): Observable<PagedResultDtoOfEngineRunEmployeeDto> {
         let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineRunEmployees";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -153070,10 +154548,132 @@ export class TimeEngineServiceProxy {
     }
 
     /**
+     * @param body (optional) 
      * @return OK
      */
-    stopTimeEngine(): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/TimeEngine/StopTimeEngine";
+    getTimeEngineRunDays(body?: GetTimeEngineRunDaysInput | undefined): Observable<TimeEngineRunDayDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineRunDays";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeEngineRunDays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeEngineRunDays(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TimeEngineRunDayDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TimeEngineRunDayDto[]>;
+        }));
+    }
+
+    protected processGetTimeEngineRunDays(response: HttpResponseBase): Observable<TimeEngineRunDayDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TimeEngineRunDayDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeEngineRunLogToExcel(body?: GetTimeEngineRunLogToExcelInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineRunLogToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeEngineRunLogToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeEngineRunLogToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetTimeEngineRunLogToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    stopTimeEngine(payrollAreaName?: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/StopTimeEngine?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -153205,6 +154805,181 @@ export class TimeEngineServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : null as any;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeEngineRunCandidates(body?: GetTimeEngineRunCandidatesInput | undefined): Observable<TimeEngineRunCandidatesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineRunCandidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeEngineRunCandidates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeEngineRunCandidates(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TimeEngineRunCandidatesOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TimeEngineRunCandidatesOutput>;
+        }));
+    }
+
+    protected processGetTimeEngineRunCandidates(response: HttpResponseBase): Observable<TimeEngineRunCandidatesOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TimeEngineRunCandidatesOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeEngineRunCandidateCodes(body?: GetTimeEngineRunCandidatesInput | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineRunCandidateCodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeEngineRunCandidateCodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeEngineRunCandidateCodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetTimeEngineRunCandidateCodes(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeEngineRunHistory(body?: GetTimeEngineRunHistoryInput | undefined): Observable<PagedResultDtoOfExecutionLogDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeEngine/GetTimeEngineRunHistory";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeEngineRunHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeEngineRunHistory(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfExecutionLogDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfExecutionLogDto>;
+        }));
+    }
+
+    protected processGetTimeEngineRunHistory(response: HttpResponseBase): Observable<PagedResultDtoOfExecutionLogDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfExecutionLogDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -172403,94 +174178,6 @@ export interface IAccommodationTypeDto {
     comments: string | undefined;
 }
 
-export class AccountInfo implements IAccountInfo {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-    accountTypeId!: number;
-    accountType!: AccountType;
-
-    constructor(data?: IAccountInfo) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.accountTypeId = _data["accountTypeId"];
-            this.accountType = _data["accountType"] ? AccountType.fromJS(_data["accountType"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): AccountInfo {
-        data = typeof data === 'object' ? data : {};
-        let result = new AccountInfo();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["accountTypeId"] = this.accountTypeId;
-        data["accountType"] = this.accountType ? this.accountType.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IAccountInfo {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-    accountTypeId: number;
-    accountType: AccountType;
-}
-
 export class AccountInfoDto implements IAccountInfoDto {
     id!: number;
     code!: string | undefined;
@@ -172545,86 +174232,6 @@ export interface IAccountInfoDto {
     nameAr: string | undefined;
     accountTypeId: number;
     accountTypeName: string | undefined;
-}
-
-export class AccountType implements IAccountType {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-
-    constructor(data?: IAccountType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-        }
-    }
-
-    static fromJS(data: any): AccountType {
-        data = typeof data === 'object' ? data : {};
-        let result = new AccountType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        return data;
-    }
-}
-
-export interface IAccountType {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
 }
 
 export enum AccrualPeriod {
@@ -177647,6 +179254,152 @@ export interface IBankFileFormatDto {
     isSeeded: boolean;
 }
 
+export class BankFileLogDto implements IBankFileLogDto {
+    id!: number;
+    userName!: string | undefined;
+    actionDateTime!: DateTime;
+    executionStatus!: ExecutionLogStatus;
+    succeeded!: boolean;
+    parameters!: string | undefined;
+    totalRecords!: number;
+    successfull!: number;
+    failed!: number;
+    attachmentId!: number | undefined;
+    fileName!: string | undefined;
+    hasFile!: boolean;
+
+    constructor(data?: IBankFileLogDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.actionDateTime = _data["actionDateTime"] ? DateTime.fromISO(_data["actionDateTime"].toString()) : undefined as any;
+            this.executionStatus = _data["executionStatus"];
+            this.succeeded = _data["succeeded"];
+            this.parameters = _data["parameters"];
+            this.totalRecords = _data["totalRecords"];
+            this.successfull = _data["successfull"];
+            this.failed = _data["failed"];
+            this.attachmentId = _data["attachmentId"];
+            this.fileName = _data["fileName"];
+            this.hasFile = _data["hasFile"];
+        }
+    }
+
+    static fromJS(data: any): BankFileLogDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BankFileLogDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["actionDateTime"] = this.actionDateTime ? this.actionDateTime.toString() : undefined as any;
+        data["executionStatus"] = this.executionStatus;
+        data["succeeded"] = this.succeeded;
+        data["parameters"] = this.parameters;
+        data["totalRecords"] = this.totalRecords;
+        data["successfull"] = this.successfull;
+        data["failed"] = this.failed;
+        data["attachmentId"] = this.attachmentId;
+        data["fileName"] = this.fileName;
+        data["hasFile"] = this.hasFile;
+        return data;
+    }
+}
+
+export interface IBankFileLogDto {
+    id: number;
+    userName: string | undefined;
+    actionDateTime: DateTime;
+    executionStatus: ExecutionLogStatus;
+    succeeded: boolean;
+    parameters: string | undefined;
+    totalRecords: number;
+    successfull: number;
+    failed: number;
+    attachmentId: number | undefined;
+    fileName: string | undefined;
+    hasFile: boolean;
+}
+
+export enum BankFileLogFilter {
+    All = 0,
+    Successful = 1,
+    Failed = 2,
+}
+
+export class BankFileLogsOutput implements IBankFileLogsOutput {
+    items!: BankFileLogDto[] | undefined;
+    totalCount!: number;
+    allCount!: number;
+    successfulCount!: number;
+    failedCount!: number;
+
+    constructor(data?: IBankFileLogsOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BankFileLogDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            this.allCount = _data["allCount"];
+            this.successfulCount = _data["successfulCount"];
+            this.failedCount = _data["failedCount"];
+        }
+    }
+
+    static fromJS(data: any): BankFileLogsOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new BankFileLogsOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        data["allCount"] = this.allCount;
+        data["successfulCount"] = this.successfulCount;
+        data["failedCount"] = this.failedCount;
+        return data;
+    }
+}
+
+export interface IBankFileLogsOutput {
+    items: BankFileLogDto[] | undefined;
+    totalCount: number;
+    allCount: number;
+    successfulCount: number;
+    failedCount: number;
+}
+
 export class BankFileLookupItemDto implements IBankFileLookupItemDto {
     id!: number;
     displayText!: string | undefined;
@@ -177697,6 +179450,7 @@ export class BankFileLookupsOutput implements IBankFileLookupsOutput {
     sponsorBanks!: BankFileSponsorBankDto[] | undefined;
     paymentBanks!: BankFileLookupItemDto[] | undefined;
     employeeBanks!: BankFileLookupItemDto[] | undefined;
+    mosalIds!: number[] | undefined;
     formats!: BankFileFormatDto[] | undefined;
 
     constructor(data?: IBankFileLookupsOutput) {
@@ -177734,6 +179488,11 @@ export class BankFileLookupsOutput implements IBankFileLookupsOutput {
                 this.employeeBanks = [] as any;
                 for (let item of _data["employeeBanks"])
                     this.employeeBanks!.push(BankFileLookupItemDto.fromJS(item));
+            }
+            if (Array.isArray(_data["mosalIds"])) {
+                this.mosalIds = [] as any;
+                for (let item of _data["mosalIds"])
+                    this.mosalIds!.push(item);
             }
             if (Array.isArray(_data["formats"])) {
                 this.formats = [] as any;
@@ -177777,6 +179536,11 @@ export class BankFileLookupsOutput implements IBankFileLookupsOutput {
             for (let item of this.employeeBanks)
                 data["employeeBanks"].push(item ? item.toJSON() : undefined as any);
         }
+        if (Array.isArray(this.mosalIds)) {
+            data["mosalIds"] = [];
+            for (let item of this.mosalIds)
+                data["mosalIds"].push(item);
+        }
         if (Array.isArray(this.formats)) {
             data["formats"] = [];
             for (let item of this.formats)
@@ -177792,6 +179556,7 @@ export interface IBankFileLookupsOutput {
     sponsorBanks: BankFileSponsorBankDto[] | undefined;
     paymentBanks: BankFileLookupItemDto[] | undefined;
     employeeBanks: BankFileLookupItemDto[] | undefined;
+    mosalIds: number[] | undefined;
     formats: BankFileFormatDto[] | undefined;
 }
 
@@ -177802,6 +179567,10 @@ export class BankFileOutput implements IBankFileOutput {
     formatCode!: string | undefined;
     recordCount!: number;
     totalAmount!: number;
+    executionLogId!: number | undefined;
+    registersLocked!: number;
+    startDateText!: string | undefined;
+    endDateText!: string | undefined;
 
     constructor(data?: IBankFileOutput) {
         if (data) {
@@ -177820,6 +179589,10 @@ export class BankFileOutput implements IBankFileOutput {
             this.formatCode = _data["formatCode"];
             this.recordCount = _data["recordCount"];
             this.totalAmount = _data["totalAmount"];
+            this.executionLogId = _data["executionLogId"];
+            this.registersLocked = _data["registersLocked"];
+            this.startDateText = _data["startDateText"];
+            this.endDateText = _data["endDateText"];
         }
     }
 
@@ -177838,6 +179611,10 @@ export class BankFileOutput implements IBankFileOutput {
         data["formatCode"] = this.formatCode;
         data["recordCount"] = this.recordCount;
         data["totalAmount"] = this.totalAmount;
+        data["executionLogId"] = this.executionLogId;
+        data["registersLocked"] = this.registersLocked;
+        data["startDateText"] = this.startDateText;
+        data["endDateText"] = this.endDateText;
         return data;
     }
 }
@@ -177849,6 +179626,83 @@ export interface IBankFileOutput {
     formatCode: string | undefined;
     recordCount: number;
     totalAmount: number;
+    executionLogId: number | undefined;
+    registersLocked: number;
+    startDateText: string | undefined;
+    endDateText: string | undefined;
+}
+
+export class BankFilePeriodDto implements IBankFilePeriodDto {
+    hasPeriod!: boolean;
+    message!: string | undefined;
+    periodType!: BankFilePeriodType;
+    payrollMonth!: number | undefined;
+    payrollYear!: number | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    startDateText!: string | undefined;
+    endDateText!: string | undefined;
+
+    constructor(data?: IBankFilePeriodDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.hasPeriod = _data["hasPeriod"];
+            this.message = _data["message"];
+            this.periodType = _data["periodType"];
+            this.payrollMonth = _data["payrollMonth"];
+            this.payrollYear = _data["payrollYear"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.startDateText = _data["startDateText"];
+            this.endDateText = _data["endDateText"];
+        }
+    }
+
+    static fromJS(data: any): BankFilePeriodDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BankFilePeriodDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["hasPeriod"] = this.hasPeriod;
+        data["message"] = this.message;
+        data["periodType"] = this.periodType;
+        data["payrollMonth"] = this.payrollMonth;
+        data["payrollYear"] = this.payrollYear;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["startDateText"] = this.startDateText;
+        data["endDateText"] = this.endDateText;
+        return data;
+    }
+}
+
+export interface IBankFilePeriodDto {
+    hasPeriod: boolean;
+    message: string | undefined;
+    periodType: BankFilePeriodType;
+    payrollMonth: number | undefined;
+    payrollYear: number | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    startDateText: string | undefined;
+    endDateText: string | undefined;
+}
+
+export enum BankFilePeriodType {
+    Current = 0,
+    Other = 1,
 }
 
 export class BankFileSponsorBankDto implements IBankFileSponsorBankDto {
@@ -177856,6 +179710,7 @@ export class BankFileSponsorBankDto implements IBankFileSponsorBankDto {
     displayText!: string | undefined;
     code!: string | undefined;
     accountNumber!: string | undefined;
+    sponsorId!: number;
 
     constructor(data?: IBankFileSponsorBankDto) {
         if (data) {
@@ -177872,6 +179727,7 @@ export class BankFileSponsorBankDto implements IBankFileSponsorBankDto {
             this.displayText = _data["displayText"];
             this.code = _data["code"];
             this.accountNumber = _data["accountNumber"];
+            this.sponsorId = _data["sponsorId"];
         }
     }
 
@@ -177888,6 +179744,7 @@ export class BankFileSponsorBankDto implements IBankFileSponsorBankDto {
         data["displayText"] = this.displayText;
         data["code"] = this.code;
         data["accountNumber"] = this.accountNumber;
+        data["sponsorId"] = this.sponsorId;
         return data;
     }
 }
@@ -177897,6 +179754,7 @@ export interface IBankFileSponsorBankDto {
     displayText: string | undefined;
     code: string | undefined;
     accountNumber: string | undefined;
+    sponsorId: number;
 }
 
 export class BasicSalaryRegisterReportRowDto implements IBasicSalaryRegisterReportRowDto {
@@ -182390,94 +184248,6 @@ export interface ICostCenterDto {
     costCenterGroupName: string | undefined;
 }
 
-export class CostElement implements ICostElement {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-    costElementTypeId!: number | undefined;
-    costElementType!: CostElementType;
-
-    constructor(data?: ICostElement) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.costElementTypeId = _data["costElementTypeId"];
-            this.costElementType = _data["costElementType"] ? CostElementType.fromJS(_data["costElementType"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): CostElement {
-        data = typeof data === 'object' ? data : {};
-        let result = new CostElement();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["costElementTypeId"] = this.costElementTypeId;
-        data["costElementType"] = this.costElementType ? this.costElementType.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface ICostElement {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-    costElementTypeId: number | undefined;
-    costElementType: CostElementType;
-}
-
 export class CostElementDto implements ICostElementDto {
     id!: number;
     code!: string | undefined;
@@ -182646,86 +184416,6 @@ export interface ICostElementSlotOptionDto {
     nameAr: string | undefined;
 }
 
-export class CostElementType implements ICostElementType {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-
-    constructor(data?: ICostElementType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-        }
-    }
-
-    static fromJS(data: any): CostElementType {
-        data = typeof data === 'object' ? data : {};
-        let result = new CostElementType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        return data;
-    }
-}
-
-export interface ICostElementType {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-}
-
 export class CostRegisterDetailDto implements ICostRegisterDetailDto {
     id!: number;
     costRegisterId!: number;
@@ -182870,11 +184560,134 @@ export interface ICostRegisterDto {
     payrollRunType: PayrollRunType;
 }
 
+export class CostingPeriodContextDto implements ICostingPeriodContextDto {
+    payrollAreaName!: string | undefined;
+    hasControlRecord!: boolean;
+    message!: string | undefined;
+    payrollMonth!: number | undefined;
+    payrollYear!: number | undefined;
+    calendarMonthStart!: DateTime | undefined;
+    calendarMonthEnd!: DateTime | undefined;
+    defaultPostingDate!: DateTime | undefined;
+
+    constructor(data?: ICostingPeriodContextDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.hasControlRecord = _data["hasControlRecord"];
+            this.message = _data["message"];
+            this.payrollMonth = _data["payrollMonth"];
+            this.payrollYear = _data["payrollYear"];
+            this.calendarMonthStart = _data["calendarMonthStart"] ? DateTime.fromISO(_data["calendarMonthStart"].toString()) : undefined as any;
+            this.calendarMonthEnd = _data["calendarMonthEnd"] ? DateTime.fromISO(_data["calendarMonthEnd"].toString()) : undefined as any;
+            this.defaultPostingDate = _data["defaultPostingDate"] ? DateTime.fromISO(_data["defaultPostingDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): CostingPeriodContextDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CostingPeriodContextDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["hasControlRecord"] = this.hasControlRecord;
+        data["message"] = this.message;
+        data["payrollMonth"] = this.payrollMonth;
+        data["payrollYear"] = this.payrollYear;
+        data["calendarMonthStart"] = this.calendarMonthStart ? this.calendarMonthStart.toString() : undefined as any;
+        data["calendarMonthEnd"] = this.calendarMonthEnd ? this.calendarMonthEnd.toString() : undefined as any;
+        data["defaultPostingDate"] = this.defaultPostingDate ? this.defaultPostingDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface ICostingPeriodContextDto {
+    payrollAreaName: string | undefined;
+    hasControlRecord: boolean;
+    message: string | undefined;
+    payrollMonth: number | undefined;
+    payrollYear: number | undefined;
+    calendarMonthStart: DateTime | undefined;
+    calendarMonthEnd: DateTime | undefined;
+    defaultPostingDate: DateTime | undefined;
+}
+
+export class CostingPeriodDatesDto implements ICostingPeriodDatesDto {
+    payrollMonth!: number;
+    payrollYear!: number;
+    calendarMonthStart!: DateTime;
+    calendarMonthEnd!: DateTime;
+
+    constructor(data?: ICostingPeriodDatesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payrollMonth = _data["payrollMonth"];
+            this.payrollYear = _data["payrollYear"];
+            this.calendarMonthStart = _data["calendarMonthStart"] ? DateTime.fromISO(_data["calendarMonthStart"].toString()) : undefined as any;
+            this.calendarMonthEnd = _data["calendarMonthEnd"] ? DateTime.fromISO(_data["calendarMonthEnd"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): CostingPeriodDatesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CostingPeriodDatesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollMonth"] = this.payrollMonth;
+        data["payrollYear"] = this.payrollYear;
+        data["calendarMonthStart"] = this.calendarMonthStart ? this.calendarMonthStart.toString() : undefined as any;
+        data["calendarMonthEnd"] = this.calendarMonthEnd ? this.calendarMonthEnd.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface ICostingPeriodDatesDto {
+    payrollMonth: number;
+    payrollYear: number;
+    calendarMonthStart: DateTime;
+    calendarMonthEnd: DateTime;
+}
+
 export class CostingProcessStatusDto implements ICostingProcessStatusDto {
     totalRecords!: number;
     successRecords!: number;
     failedRecords!: number;
     stopRequested!: boolean;
+    runStatus!: FinanceRunStatus;
+    isRunning!: boolean;
+    executionLogId!: number | undefined;
+    startedAt!: DateTime | undefined;
+    startedBy!: string | undefined;
+    noOfEmployee!: number;
+    progressPercent!: number;
+    currentEmployee!: string | undefined;
+    speedPerMinute!: number;
+    remainingMinutes!: number | undefined;
+    estimatedCompletion!: DateTime | undefined;
 
     constructor(data?: ICostingProcessStatusDto) {
         if (data) {
@@ -182891,6 +184704,17 @@ export class CostingProcessStatusDto implements ICostingProcessStatusDto {
             this.successRecords = _data["successRecords"];
             this.failedRecords = _data["failedRecords"];
             this.stopRequested = _data["stopRequested"];
+            this.runStatus = _data["runStatus"];
+            this.isRunning = _data["isRunning"];
+            this.executionLogId = _data["executionLogId"];
+            this.startedAt = _data["startedAt"] ? DateTime.fromISO(_data["startedAt"].toString()) : undefined as any;
+            this.startedBy = _data["startedBy"];
+            this.noOfEmployee = _data["noOfEmployee"];
+            this.progressPercent = _data["progressPercent"];
+            this.currentEmployee = _data["currentEmployee"];
+            this.speedPerMinute = _data["speedPerMinute"];
+            this.remainingMinutes = _data["remainingMinutes"];
+            this.estimatedCompletion = _data["estimatedCompletion"] ? DateTime.fromISO(_data["estimatedCompletion"].toString()) : undefined as any;
         }
     }
 
@@ -182907,6 +184731,17 @@ export class CostingProcessStatusDto implements ICostingProcessStatusDto {
         data["successRecords"] = this.successRecords;
         data["failedRecords"] = this.failedRecords;
         data["stopRequested"] = this.stopRequested;
+        data["runStatus"] = this.runStatus;
+        data["isRunning"] = this.isRunning;
+        data["executionLogId"] = this.executionLogId;
+        data["startedAt"] = this.startedAt ? this.startedAt.toString() : undefined as any;
+        data["startedBy"] = this.startedBy;
+        data["noOfEmployee"] = this.noOfEmployee;
+        data["progressPercent"] = this.progressPercent;
+        data["currentEmployee"] = this.currentEmployee;
+        data["speedPerMinute"] = this.speedPerMinute;
+        data["remainingMinutes"] = this.remainingMinutes;
+        data["estimatedCompletion"] = this.estimatedCompletion ? this.estimatedCompletion.toString() : undefined as any;
         return data;
     }
 }
@@ -182916,6 +184751,17 @@ export interface ICostingProcessStatusDto {
     successRecords: number;
     failedRecords: number;
     stopRequested: boolean;
+    runStatus: FinanceRunStatus;
+    isRunning: boolean;
+    executionLogId: number | undefined;
+    startedAt: DateTime | undefined;
+    startedBy: string | undefined;
+    noOfEmployee: number;
+    progressPercent: number;
+    currentEmployee: string | undefined;
+    speedPerMinute: number;
+    remainingMinutes: number | undefined;
+    estimatedCompletion: DateTime | undefined;
 }
 
 export class CostingRunInputDto implements ICostingRunInputDto {
@@ -182924,6 +184770,7 @@ export class CostingRunInputDto implements ICostingRunInputDto {
     payInDate!: DateTime;
     postingDate!: DateTime;
     payrollRunType!: PayrollRunType;
+    previewFingerprint!: string | undefined;
 
     constructor(data?: ICostingRunInputDto) {
         if (data) {
@@ -182941,6 +184788,7 @@ export class CostingRunInputDto implements ICostingRunInputDto {
             this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
             this.postingDate = _data["postingDate"] ? DateTime.fromISO(_data["postingDate"].toString()) : undefined as any;
             this.payrollRunType = _data["payrollRunType"];
+            this.previewFingerprint = _data["previewFingerprint"];
         }
     }
 
@@ -182958,6 +184806,7 @@ export class CostingRunInputDto implements ICostingRunInputDto {
         data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
         data["postingDate"] = this.postingDate ? this.postingDate.toString() : undefined as any;
         data["payrollRunType"] = this.payrollRunType;
+        data["previewFingerprint"] = this.previewFingerprint;
         return data;
     }
 }
@@ -182968,194 +184817,7 @@ export interface ICostingRunInputDto {
     payInDate: DateTime;
     postingDate: DateTime;
     payrollRunType: PayrollRunType;
-}
-
-export class CostingRunLogEntryDto implements ICostingRunLogEntryDto {
-    employeeId!: number | undefined;
-    employeeCode!: string | undefined;
-    status!: number;
-    message!: string | undefined;
-
-    constructor(data?: ICostingRunLogEntryDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.employeeId = _data["employeeId"];
-            this.employeeCode = _data["employeeCode"];
-            this.status = _data["status"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): CostingRunLogEntryDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CostingRunLogEntryDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["employeeId"] = this.employeeId;
-        data["employeeCode"] = this.employeeCode;
-        data["status"] = this.status;
-        data["message"] = this.message;
-        return data;
-    }
-}
-
-export interface ICostingRunLogEntryDto {
-    employeeId: number | undefined;
-    employeeCode: string | undefined;
-    status: number;
-    message: string | undefined;
-}
-
-export class CostingRunResultDto implements ICostingRunResultDto {
-    totalEmployees!: number;
-    successCount!: number;
-    failedCount!: number;
-    aborted!: boolean;
-    entries!: CostingRunLogEntryDto[] | undefined;
-
-    constructor(data?: ICostingRunResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalEmployees = _data["totalEmployees"];
-            this.successCount = _data["successCount"];
-            this.failedCount = _data["failedCount"];
-            this.aborted = _data["aborted"];
-            if (Array.isArray(_data["entries"])) {
-                this.entries = [] as any;
-                for (let item of _data["entries"])
-                    this.entries!.push(CostingRunLogEntryDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): CostingRunResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CostingRunResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalEmployees"] = this.totalEmployees;
-        data["successCount"] = this.successCount;
-        data["failedCount"] = this.failedCount;
-        data["aborted"] = this.aborted;
-        if (Array.isArray(this.entries)) {
-            data["entries"] = [];
-            for (let item of this.entries)
-                data["entries"].push(item ? item.toJSON() : undefined as any);
-        }
-        return data;
-    }
-}
-
-export interface ICostingRunResultDto {
-    totalEmployees: number;
-    successCount: number;
-    failedCount: number;
-    aborted: boolean;
-    entries: CostingRunLogEntryDto[] | undefined;
-}
-
-export class Country implements ICountry {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-
-    constructor(data?: ICountry) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-        }
-    }
-
-    static fromJS(data: any): Country {
-        data = typeof data === 'object' ? data : {};
-        let result = new Country();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        return data;
-    }
-}
-
-export interface ICountry {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
+    previewFingerprint: string | undefined;
 }
 
 export class CreateCareersCvInput implements ICreateCareersCvInput {
@@ -209401,106 +211063,6 @@ export interface ICredentialResetUserDto {
     hasEmailAddress: boolean;
 }
 
-export class Currency implements ICurrency {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-    decimalCount!: number;
-    currencyShortFormEn!: string | undefined;
-    currencyDenominationFormEn!: string | undefined;
-    currencyShortFormAr!: string | undefined;
-    currencyDenominationFormAr!: string | undefined;
-
-    constructor(data?: ICurrency) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.decimalCount = _data["decimalCount"];
-            this.currencyShortFormEn = _data["currencyShortFormEn"];
-            this.currencyDenominationFormEn = _data["currencyDenominationFormEn"];
-            this.currencyShortFormAr = _data["currencyShortFormAr"];
-            this.currencyDenominationFormAr = _data["currencyDenominationFormAr"];
-        }
-    }
-
-    static fromJS(data: any): Currency {
-        data = typeof data === 'object' ? data : {};
-        let result = new Currency();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["decimalCount"] = this.decimalCount;
-        data["currencyShortFormEn"] = this.currencyShortFormEn;
-        data["currencyDenominationFormEn"] = this.currencyDenominationFormEn;
-        data["currencyShortFormAr"] = this.currencyShortFormAr;
-        data["currencyDenominationFormAr"] = this.currencyDenominationFormAr;
-        return data;
-    }
-}
-
-export interface ICurrency {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-    decimalCount: number;
-    currencyShortFormEn: string | undefined;
-    currencyDenominationFormEn: string | undefined;
-    currencyShortFormAr: string | undefined;
-    currencyDenominationFormAr: string | undefined;
-}
-
 export class CurrencyConvertorDto implements ICurrencyConvertorDto {
     id!: number;
     calendarDate!: DateTime;
@@ -212481,102 +214043,6 @@ export interface IEmailSettingsEditDto {
     smtpDomain: string | undefined;
     smtpEnableSsl: boolean;
     smtpUseAuthentication: boolean;
-}
-
-export class EmailTemplate implements IEmailTemplate {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-    smtpProfile!: string | undefined;
-    subject!: string | undefined;
-    emailBodyHtml!: string | undefined;
-    emailBodyText!: string | undefined;
-
-    constructor(data?: IEmailTemplate) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.smtpProfile = _data["smtpProfile"];
-            this.subject = _data["subject"];
-            this.emailBodyHtml = _data["emailBodyHtml"];
-            this.emailBodyText = _data["emailBodyText"];
-        }
-    }
-
-    static fromJS(data: any): EmailTemplate {
-        data = typeof data === 'object' ? data : {};
-        let result = new EmailTemplate();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["smtpProfile"] = this.smtpProfile;
-        data["subject"] = this.subject;
-        data["emailBodyHtml"] = this.emailBodyHtml;
-        data["emailBodyText"] = this.emailBodyText;
-        return data;
-    }
-}
-
-export interface IEmailTemplate {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-    smtpProfile: string | undefined;
-    subject: string | undefined;
-    emailBodyHtml: string | undefined;
-    emailBodyText: string | undefined;
 }
 
 export class EmailTemplateDto implements IEmailTemplateDto {
@@ -231206,6 +232672,181 @@ export interface IFileStorageRootDto {
     isDefault: boolean;
 }
 
+export class FinanceRunLogDto implements IFinanceRunLogDto {
+    id!: number;
+    empCode!: string | undefined;
+    employee!: string | undefined;
+    runTimeStamp!: DateTime;
+    status!: number;
+    message!: string | undefined;
+    inPeriod!: DateTime;
+
+    constructor(data?: IFinanceRunLogDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.empCode = _data["empCode"];
+            this.employee = _data["employee"];
+            this.runTimeStamp = _data["runTimeStamp"] ? DateTime.fromISO(_data["runTimeStamp"].toString()) : undefined as any;
+            this.status = _data["status"];
+            this.message = _data["message"];
+            this.inPeriod = _data["inPeriod"] ? DateTime.fromISO(_data["inPeriod"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): FinanceRunLogDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FinanceRunLogDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["empCode"] = this.empCode;
+        data["employee"] = this.employee;
+        data["runTimeStamp"] = this.runTimeStamp ? this.runTimeStamp.toString() : undefined as any;
+        data["status"] = this.status;
+        data["message"] = this.message;
+        data["inPeriod"] = this.inPeriod ? this.inPeriod.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IFinanceRunLogDto {
+    id: number;
+    empCode: string | undefined;
+    employee: string | undefined;
+    runTimeStamp: DateTime;
+    status: number;
+    message: string | undefined;
+    inPeriod: DateTime;
+}
+
+export enum FinanceRunLogFilter {
+    All = 0,
+    Successful = 1,
+    Failed = 2,
+}
+
+export class FinanceRunLogOutput implements IFinanceRunLogOutput {
+    items!: FinanceRunLogDto[] | undefined;
+    totalCount!: number;
+    allCount!: number;
+    successCount!: number;
+    failedCount!: number;
+
+    constructor(data?: IFinanceRunLogOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(FinanceRunLogDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            this.allCount = _data["allCount"];
+            this.successCount = _data["successCount"];
+            this.failedCount = _data["failedCount"];
+        }
+    }
+
+    static fromJS(data: any): FinanceRunLogOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new FinanceRunLogOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        data["allCount"] = this.allCount;
+        data["successCount"] = this.successCount;
+        data["failedCount"] = this.failedCount;
+        return data;
+    }
+}
+
+export interface IFinanceRunLogOutput {
+    items: FinanceRunLogDto[] | undefined;
+    totalCount: number;
+    allCount: number;
+    successCount: number;
+    failedCount: number;
+}
+
+export class FinanceRunStartedDto implements IFinanceRunStartedDto {
+    executionLogId!: number;
+    message!: string | undefined;
+
+    constructor(data?: IFinanceRunStartedDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.executionLogId = _data["executionLogId"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): FinanceRunStartedDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FinanceRunStartedDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["executionLogId"] = this.executionLogId;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IFinanceRunStartedDto {
+    executionLogId: number;
+    message: string | undefined;
+}
+
+export enum FinanceRunStatus {
+    NotStarted = 0,
+    Running = 1,
+    Completed = 2,
+    CompletedWithErrors = 3,
+    Stopped = 4,
+    Interrupted = 5,
+}
+
 export class FindOrganizationUnitRolesInput implements IFindOrganizationUnitRolesInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -232649,6 +234290,7 @@ export class GenerateBankFileInput implements IGenerateBankFileInput {
     payrollRunType!: string;
     year!: number;
     month!: number;
+    periodType!: BankFilePeriodType;
     startDate!: DateTime;
     endDate!: DateTime;
     splitBankFiles!: boolean;
@@ -232676,6 +234318,7 @@ export class GenerateBankFileInput implements IGenerateBankFileInput {
             this.payrollRunType = _data["payrollRunType"];
             this.year = _data["year"];
             this.month = _data["month"];
+            this.periodType = _data["periodType"];
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
             this.splitBankFiles = _data["splitBankFiles"];
@@ -232703,6 +234346,7 @@ export class GenerateBankFileInput implements IGenerateBankFileInput {
         data["payrollRunType"] = this.payrollRunType;
         data["year"] = this.year;
         data["month"] = this.month;
+        data["periodType"] = this.periodType;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
         data["splitBankFiles"] = this.splitBankFiles;
@@ -232723,6 +234367,7 @@ export interface IGenerateBankFileInput {
     payrollRunType: string;
     year: number;
     month: number;
+    periodType: BankFilePeriodType;
     startDate: DateTime;
     endDate: DateTime;
     splitBankFiles: boolean;
@@ -253378,6 +255023,102 @@ export interface IGetAuditReportInput {
     entityObjectName: string | undefined;
 }
 
+export class GetBankFileLogsInput implements IGetBankFileLogsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    statusFilter!: BankFileLogFilter;
+
+    constructor(data?: IGetBankFileLogsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.statusFilter = _data["statusFilter"];
+        }
+    }
+
+    static fromJS(data: any): GetBankFileLogsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBankFileLogsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["statusFilter"] = this.statusFilter;
+        return data;
+    }
+}
+
+export interface IGetBankFileLogsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    statusFilter: BankFileLogFilter;
+}
+
+export class GetBankFilePeriodInput implements IGetBankFilePeriodInput {
+    payrollAreaId!: number | undefined;
+    periodType!: BankFilePeriodType;
+    payrollMonth!: number | undefined;
+    payrollYear!: number | undefined;
+
+    constructor(data?: IGetBankFilePeriodInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.periodType = _data["periodType"];
+            this.payrollMonth = _data["payrollMonth"];
+            this.payrollYear = _data["payrollYear"];
+        }
+    }
+
+    static fromJS(data: any): GetBankFilePeriodInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBankFilePeriodInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["periodType"] = this.periodType;
+        data["payrollMonth"] = this.payrollMonth;
+        data["payrollYear"] = this.payrollYear;
+        return data;
+    }
+}
+
+export interface IGetBankFilePeriodInput {
+    payrollAreaId: number | undefined;
+    periodType: BankFilePeriodType;
+    payrollMonth: number | undefined;
+    payrollYear: number | undefined;
+}
+
 export class GetBankForEditOutput implements IGetBankForEditOutput {
     bank!: CreateOrEditBankDto;
 
@@ -254720,6 +256461,74 @@ export class GetCostRegisterForEditOutput implements IGetCostRegisterForEditOutp
 
 export interface IGetCostRegisterForEditOutput {
     costRegister: CreateOrEditCostRegisterDto;
+}
+
+export class GetCostingFileCandidatesInput implements IGetCostingFileCandidatesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    payrollAreaName!: string;
+    payrollRunType!: PayrollRunType;
+    payInDate!: DateTime;
+    statusFilter!: PayrollRunCandidateFilter;
+    filter!: string | undefined;
+    selectedEmployeeCodes!: string | undefined;
+
+    constructor(data?: IGetCostingFileCandidatesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
+            this.statusFilter = _data["statusFilter"];
+            this.filter = _data["filter"];
+            this.selectedEmployeeCodes = _data["selectedEmployeeCodes"];
+        }
+    }
+
+    static fromJS(data: any): GetCostingFileCandidatesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetCostingFileCandidatesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["payrollRunType"] = this.payrollRunType;
+        data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
+        data["statusFilter"] = this.statusFilter;
+        data["filter"] = this.filter;
+        data["selectedEmployeeCodes"] = this.selectedEmployeeCodes;
+        return data;
+    }
+}
+
+export interface IGetCostingFileCandidatesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    payrollAreaName: string;
+    payrollRunType: PayrollRunType;
+    payInDate: DateTime;
+    statusFilter: PayrollRunCandidateFilter;
+    filter: string | undefined;
+    selectedEmployeeCodes: string | undefined;
 }
 
 export class GetCredentialResetUsersInput implements IGetCredentialResetUsersInput {
@@ -263548,6 +265357,58 @@ export class GetFeedbackCandidatesInput implements IGetFeedbackCandidatesInput {
 
 export interface IGetFeedbackCandidatesInput {
     workflowRequestId: number;
+}
+
+export class GetFinanceRunLogInput implements IGetFinanceRunLogInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    statusFilter!: FinanceRunLogFilter;
+    filter!: string | undefined;
+
+    constructor(data?: IGetFinanceRunLogInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.statusFilter = _data["statusFilter"];
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetFinanceRunLogInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetFinanceRunLogInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["statusFilter"] = this.statusFilter;
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetFinanceRunLogInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    statusFilter: FinanceRunLogFilter;
+    filter: string | undefined;
 }
 
 export class GetFirstAidBoxDetailForEditOutput implements IGetFirstAidBoxDetailForEditOutput {
@@ -272962,6 +274823,154 @@ export interface IGetProfitShareOutput {
     profitShares: number[] | undefined;
 }
 
+export class GetProjectCostEngineCandidatesInput implements IGetProjectCostEngineCandidatesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    payrollAreaName!: string;
+    payrollDate!: DateTime;
+    statusFilter!: PayrollRunCandidateFilter;
+    filter!: string | undefined;
+    selectedEmployeeCodes!: string | undefined;
+
+    constructor(data?: IGetProjectCostEngineCandidatesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.payrollDate = _data["payrollDate"] ? DateTime.fromISO(_data["payrollDate"].toString()) : undefined as any;
+            this.statusFilter = _data["statusFilter"];
+            this.filter = _data["filter"];
+            this.selectedEmployeeCodes = _data["selectedEmployeeCodes"];
+        }
+    }
+
+    static fromJS(data: any): GetProjectCostEngineCandidatesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetProjectCostEngineCandidatesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["payrollDate"] = this.payrollDate ? this.payrollDate.toString() : undefined as any;
+        data["statusFilter"] = this.statusFilter;
+        data["filter"] = this.filter;
+        data["selectedEmployeeCodes"] = this.selectedEmployeeCodes;
+        return data;
+    }
+}
+
+export interface IGetProjectCostEngineCandidatesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    payrollAreaName: string;
+    payrollDate: DateTime;
+    statusFilter: PayrollRunCandidateFilter;
+    filter: string | undefined;
+    selectedEmployeeCodes: string | undefined;
+}
+
+export class GetProjectCostEngineLogsInput implements IGetProjectCostEngineLogsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    onlyFailed!: boolean | undefined;
+
+    constructor(data?: IGetProjectCostEngineLogsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.onlyFailed = _data["onlyFailed"];
+        }
+    }
+
+    static fromJS(data: any): GetProjectCostEngineLogsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetProjectCostEngineLogsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["onlyFailed"] = this.onlyFailed;
+        return data;
+    }
+}
+
+export interface IGetProjectCostEngineLogsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    onlyFailed: boolean | undefined;
+}
+
+export class GetProjectCostEngineLogsToExcelInput implements IGetProjectCostEngineLogsToExcelInput {
+    onlyFailed!: boolean | undefined;
+
+    constructor(data?: IGetProjectCostEngineLogsToExcelInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.onlyFailed = _data["onlyFailed"];
+        }
+    }
+
+    static fromJS(data: any): GetProjectCostEngineLogsToExcelInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetProjectCostEngineLogsToExcelInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["onlyFailed"] = this.onlyFailed;
+        return data;
+    }
+}
+
+export interface IGetProjectCostEngineLogsToExcelInput {
+    onlyFailed: boolean | undefined;
+}
+
 export class GetProjectCostingCustom052ReportInput implements IGetProjectCostingCustom052ReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -277520,6 +279529,270 @@ export class GetTimeAttAPIForEditOutput implements IGetTimeAttAPIForEditOutput {
 export interface IGetTimeAttAPIForEditOutput {
     timeAttAPI: CreateOrEditTimeAttAPIDto;
     isPasswordSet: boolean;
+}
+
+export class GetTimeEngineRunCandidatesInput implements IGetTimeEngineRunCandidatesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    payrollAreaName!: string;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    statusFilter!: PayrollRunCandidateFilter;
+    filter!: string | undefined;
+    selectedEmployeeCodes!: string | undefined;
+
+    constructor(data?: IGetTimeEngineRunCandidatesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.statusFilter = _data["statusFilter"];
+            this.filter = _data["filter"];
+            this.selectedEmployeeCodes = _data["selectedEmployeeCodes"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeEngineRunCandidatesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeEngineRunCandidatesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["statusFilter"] = this.statusFilter;
+        data["filter"] = this.filter;
+        data["selectedEmployeeCodes"] = this.selectedEmployeeCodes;
+        return data;
+    }
+}
+
+export interface IGetTimeEngineRunCandidatesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    payrollAreaName: string;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    statusFilter: PayrollRunCandidateFilter;
+    filter: string | undefined;
+    selectedEmployeeCodes: string | undefined;
+}
+
+export class GetTimeEngineRunDaysInput implements IGetTimeEngineRunDaysInput {
+    runId!: number;
+    employeeId!: number;
+    onlyFailed!: boolean | undefined;
+
+    constructor(data?: IGetTimeEngineRunDaysInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.runId = _data["runId"];
+            this.employeeId = _data["employeeId"];
+            this.onlyFailed = _data["onlyFailed"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeEngineRunDaysInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeEngineRunDaysInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["runId"] = this.runId;
+        data["employeeId"] = this.employeeId;
+        data["onlyFailed"] = this.onlyFailed;
+        return data;
+    }
+}
+
+export interface IGetTimeEngineRunDaysInput {
+    runId: number;
+    employeeId: number;
+    onlyFailed: boolean | undefined;
+}
+
+export class GetTimeEngineRunEmployeesInput implements IGetTimeEngineRunEmployeesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    runId!: number | undefined;
+    filter!: string | undefined;
+    onlyFailed!: boolean | undefined;
+    payrollAreaName!: string | undefined;
+
+    constructor(data?: IGetTimeEngineRunEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.runId = _data["runId"];
+            this.filter = _data["filter"];
+            this.onlyFailed = _data["onlyFailed"];
+            this.payrollAreaName = _data["payrollAreaName"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeEngineRunEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeEngineRunEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["runId"] = this.runId;
+        data["filter"] = this.filter;
+        data["onlyFailed"] = this.onlyFailed;
+        data["payrollAreaName"] = this.payrollAreaName;
+        return data;
+    }
+}
+
+export interface IGetTimeEngineRunEmployeesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    runId: number | undefined;
+    filter: string | undefined;
+    onlyFailed: boolean | undefined;
+    payrollAreaName: string | undefined;
+}
+
+export class GetTimeEngineRunHistoryInput implements IGetTimeEngineRunHistoryInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+
+    constructor(data?: IGetTimeEngineRunHistoryInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeEngineRunHistoryInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeEngineRunHistoryInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        return data;
+    }
+}
+
+export interface IGetTimeEngineRunHistoryInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+}
+
+export class GetTimeEngineRunLogToExcelInput implements IGetTimeEngineRunLogToExcelInput {
+    runId!: number | undefined;
+    payrollAreaName!: string | undefined;
+    filter!: string | undefined;
+    onlyFailed!: boolean | undefined;
+
+    constructor(data?: IGetTimeEngineRunLogToExcelInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.runId = _data["runId"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.filter = _data["filter"];
+            this.onlyFailed = _data["onlyFailed"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeEngineRunLogToExcelInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeEngineRunLogToExcelInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["runId"] = this.runId;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["filter"] = this.filter;
+        data["onlyFailed"] = this.onlyFailed;
+        return data;
+    }
+}
+
+export interface IGetTimeEngineRunLogToExcelInput {
+    runId: number | undefined;
+    payrollAreaName: string | undefined;
+    filter: string | undefined;
+    onlyFailed: boolean | undefined;
 }
 
 export class GetTimeEventForEditOutput implements IGetTimeEventForEditOutput {
@@ -286187,6 +288460,7 @@ export class JournalVoucherPreviewDto implements IJournalVoucherPreviewDto {
     totalDebit!: number;
     totalCredit!: number;
     isBalanced!: boolean;
+    previewFingerprint!: string | undefined;
 
     constructor(data?: IJournalVoucherPreviewDto) {
         if (data) {
@@ -286207,6 +288481,7 @@ export class JournalVoucherPreviewDto implements IJournalVoucherPreviewDto {
             this.totalDebit = _data["totalDebit"];
             this.totalCredit = _data["totalCredit"];
             this.isBalanced = _data["isBalanced"];
+            this.previewFingerprint = _data["previewFingerprint"];
         }
     }
 
@@ -286227,6 +288502,7 @@ export class JournalVoucherPreviewDto implements IJournalVoucherPreviewDto {
         data["totalDebit"] = this.totalDebit;
         data["totalCredit"] = this.totalCredit;
         data["isBalanced"] = this.isBalanced;
+        data["previewFingerprint"] = this.previewFingerprint;
         return data;
     }
 }
@@ -286236,6 +288512,7 @@ export interface IJournalVoucherPreviewDto {
     totalDebit: number;
     totalCredit: number;
     isBalanced: boolean;
+    previewFingerprint: string | undefined;
 }
 
 export class JournalVoucherValidationResultDto implements IJournalVoucherValidationResultDto {
@@ -286244,6 +288521,7 @@ export class JournalVoucherValidationResultDto implements IJournalVoucherValidat
     totalDebit!: number;
     totalCredit!: number;
     lineCount!: number;
+    previewFingerprint!: string | undefined;
 
     constructor(data?: IJournalVoucherValidationResultDto) {
         if (data) {
@@ -286261,6 +288539,7 @@ export class JournalVoucherValidationResultDto implements IJournalVoucherValidat
             this.totalDebit = _data["totalDebit"];
             this.totalCredit = _data["totalCredit"];
             this.lineCount = _data["lineCount"];
+            this.previewFingerprint = _data["previewFingerprint"];
         }
     }
 
@@ -286278,6 +288557,7 @@ export class JournalVoucherValidationResultDto implements IJournalVoucherValidat
         data["totalDebit"] = this.totalDebit;
         data["totalCredit"] = this.totalCredit;
         data["lineCount"] = this.lineCount;
+        data["previewFingerprint"] = this.previewFingerprint;
         return data;
     }
 }
@@ -286288,6 +288568,7 @@ export interface IJournalVoucherValidationResultDto {
     totalDebit: number;
     totalCredit: number;
     lineCount: number;
+    previewFingerprint: string | undefined;
 }
 
 export class JsonClaimMapDto implements IJsonClaimMapDto {
@@ -298927,130 +301208,6 @@ export interface INineBoxMappingDto {
     nineBoxRatingNameEn: string | undefined;
 }
 
-export class NotificationConfig implements INotificationConfig {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    name!: string;
-    sendNotification!: boolean;
-    sendEmail!: boolean;
-    toEmployee!: boolean;
-    toRequestCreator!: boolean;
-    toManager!: boolean;
-    sendToAll!: boolean;
-    sendToAllApproved!: boolean;
-    sendToApprover!: boolean;
-    emailTemplateId!: number | undefined;
-    emailTemplate!: EmailTemplate;
-    notificationGroups!: NotificationGroup[] | undefined;
-
-    constructor(data?: INotificationConfig) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.name = _data["name"];
-            this.sendNotification = _data["sendNotification"];
-            this.sendEmail = _data["sendEmail"];
-            this.toEmployee = _data["toEmployee"];
-            this.toRequestCreator = _data["toRequestCreator"];
-            this.toManager = _data["toManager"];
-            this.sendToAll = _data["sendToAll"];
-            this.sendToAllApproved = _data["sendToAllApproved"];
-            this.sendToApprover = _data["sendToApprover"];
-            this.emailTemplateId = _data["emailTemplateId"];
-            this.emailTemplate = _data["emailTemplate"] ? EmailTemplate.fromJS(_data["emailTemplate"]) : undefined as any;
-            if (Array.isArray(_data["notificationGroups"])) {
-                this.notificationGroups = [] as any;
-                for (let item of _data["notificationGroups"])
-                    this.notificationGroups!.push(NotificationGroup.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): NotificationConfig {
-        data = typeof data === 'object' ? data : {};
-        let result = new NotificationConfig();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["name"] = this.name;
-        data["sendNotification"] = this.sendNotification;
-        data["sendEmail"] = this.sendEmail;
-        data["toEmployee"] = this.toEmployee;
-        data["toRequestCreator"] = this.toRequestCreator;
-        data["toManager"] = this.toManager;
-        data["sendToAll"] = this.sendToAll;
-        data["sendToAllApproved"] = this.sendToAllApproved;
-        data["sendToApprover"] = this.sendToApprover;
-        data["emailTemplateId"] = this.emailTemplateId;
-        data["emailTemplate"] = this.emailTemplate ? this.emailTemplate.toJSON() : undefined as any;
-        if (Array.isArray(this.notificationGroups)) {
-            data["notificationGroups"] = [];
-            for (let item of this.notificationGroups)
-                data["notificationGroups"].push(item ? item.toJSON() : undefined as any);
-        }
-        return data;
-    }
-}
-
-export interface INotificationConfig {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    name: string;
-    sendNotification: boolean;
-    sendEmail: boolean;
-    toEmployee: boolean;
-    toRequestCreator: boolean;
-    toManager: boolean;
-    sendToAll: boolean;
-    sendToAllApproved: boolean;
-    sendToApprover: boolean;
-    emailTemplateId: number | undefined;
-    emailTemplate: EmailTemplate;
-    notificationGroups: NotificationGroup[] | undefined;
-}
-
 export class NotificationConfigDto implements INotificationConfigDto {
     id!: number;
     name!: string | undefined;
@@ -299276,102 +301433,6 @@ export enum NotificationFrequency {
     Daily = 1,
     Weekly = 2,
     Monthly = 3,
-}
-
-export class NotificationGroup implements INotificationGroup {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    notificationConfigId!: number | undefined;
-    notificationConfig!: NotificationConfig;
-    workflowRoleId!: number | undefined;
-    workflowRole!: WorkflowRole;
-    workflowRoleGroup!: WorkflowRoleGroup;
-    workflowRoleOrgId!: number | undefined;
-    workflowRoleOrg!: OrganizationUnitType;
-
-    constructor(data?: INotificationGroup) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.notificationConfigId = _data["notificationConfigId"];
-            this.notificationConfig = _data["notificationConfig"] ? NotificationConfig.fromJS(_data["notificationConfig"]) : undefined as any;
-            this.workflowRoleId = _data["workflowRoleId"];
-            this.workflowRole = _data["workflowRole"] ? WorkflowRole.fromJS(_data["workflowRole"]) : undefined as any;
-            this.workflowRoleGroup = _data["workflowRoleGroup"];
-            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
-            this.workflowRoleOrg = _data["workflowRoleOrg"] ? OrganizationUnitType.fromJS(_data["workflowRoleOrg"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): NotificationGroup {
-        data = typeof data === 'object' ? data : {};
-        let result = new NotificationGroup();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["notificationConfigId"] = this.notificationConfigId;
-        data["notificationConfig"] = this.notificationConfig ? this.notificationConfig.toJSON() : undefined as any;
-        data["workflowRoleId"] = this.workflowRoleId;
-        data["workflowRole"] = this.workflowRole ? this.workflowRole.toJSON() : undefined as any;
-        data["workflowRoleGroup"] = this.workflowRoleGroup;
-        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
-        data["workflowRoleOrg"] = this.workflowRoleOrg ? this.workflowRoleOrg.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface INotificationGroup {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    notificationConfigId: number | undefined;
-    notificationConfig: NotificationConfig;
-    workflowRoleId: number | undefined;
-    workflowRole: WorkflowRole;
-    workflowRoleGroup: WorkflowRoleGroup;
-    workflowRoleOrgId: number | undefined;
-    workflowRoleOrg: OrganizationUnitType;
 }
 
 export class NotificationGroupDto implements INotificationGroupDto {
@@ -301447,94 +303508,6 @@ export interface IOrganizationUnitRoleListDto {
     displayName: string | undefined;
     name: string | undefined;
     addedTime: DateTime;
-}
-
-export class OrganizationUnitType implements IOrganizationUnitType {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-    allowLeaveConflict!: boolean;
-    assignPayrollArea!: boolean;
-
-    constructor(data?: IOrganizationUnitType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.allowLeaveConflict = _data["allowLeaveConflict"];
-            this.assignPayrollArea = _data["assignPayrollArea"];
-        }
-    }
-
-    static fromJS(data: any): OrganizationUnitType {
-        data = typeof data === 'object' ? data : {};
-        let result = new OrganizationUnitType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["allowLeaveConflict"] = this.allowLeaveConflict;
-        data["assignPayrollArea"] = this.assignPayrollArea;
-        return data;
-    }
-}
-
-export interface IOrganizationUnitType {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-    allowLeaveConflict: boolean;
-    assignPayrollArea: boolean;
 }
 
 export class OrganizationUnitTypeDto implements IOrganizationUnitTypeDto {
@@ -333247,150 +335220,6 @@ export interface IPayrollAnalysisReportRowDto {
     totalAmount: number;
 }
 
-export class PayrollArea implements IPayrollArea {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    name!: string;
-    payrollPeriodId!: number;
-    payrollPeriod!: PayrollPeriod;
-    currencyId!: number;
-    currency!: Currency;
-    cutOffDay!: number;
-    fiCompanyId!: number | undefined;
-    fiCompany!: CostElement;
-    fiBankId!: number | undefined;
-    fiBank!: AccountInfo;
-    countryId!: number | undefined;
-    country!: Country;
-    paReleaseNotificationId!: number | undefined;
-    paReleaseNotification!: NotificationConfig;
-    paExitNotificationId!: number | undefined;
-    paExitNotification!: NotificationConfig;
-    paCorrectionNotificationId!: number | undefined;
-    paCorrectionNotification!: NotificationConfig;
-
-    constructor(data?: IPayrollArea) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.name = _data["name"];
-            this.payrollPeriodId = _data["payrollPeriodId"];
-            this.payrollPeriod = _data["payrollPeriod"] ? PayrollPeriod.fromJS(_data["payrollPeriod"]) : undefined as any;
-            this.currencyId = _data["currencyId"];
-            this.currency = _data["currency"] ? Currency.fromJS(_data["currency"]) : undefined as any;
-            this.cutOffDay = _data["cutOffDay"];
-            this.fiCompanyId = _data["fiCompanyId"];
-            this.fiCompany = _data["fiCompany"] ? CostElement.fromJS(_data["fiCompany"]) : undefined as any;
-            this.fiBankId = _data["fiBankId"];
-            this.fiBank = _data["fiBank"] ? AccountInfo.fromJS(_data["fiBank"]) : undefined as any;
-            this.countryId = _data["countryId"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : undefined as any;
-            this.paReleaseNotificationId = _data["paReleaseNotificationId"];
-            this.paReleaseNotification = _data["paReleaseNotification"] ? NotificationConfig.fromJS(_data["paReleaseNotification"]) : undefined as any;
-            this.paExitNotificationId = _data["paExitNotificationId"];
-            this.paExitNotification = _data["paExitNotification"] ? NotificationConfig.fromJS(_data["paExitNotification"]) : undefined as any;
-            this.paCorrectionNotificationId = _data["paCorrectionNotificationId"];
-            this.paCorrectionNotification = _data["paCorrectionNotification"] ? NotificationConfig.fromJS(_data["paCorrectionNotification"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): PayrollArea {
-        data = typeof data === 'object' ? data : {};
-        let result = new PayrollArea();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["name"] = this.name;
-        data["payrollPeriodId"] = this.payrollPeriodId;
-        data["payrollPeriod"] = this.payrollPeriod ? this.payrollPeriod.toJSON() : undefined as any;
-        data["currencyId"] = this.currencyId;
-        data["currency"] = this.currency ? this.currency.toJSON() : undefined as any;
-        data["cutOffDay"] = this.cutOffDay;
-        data["fiCompanyId"] = this.fiCompanyId;
-        data["fiCompany"] = this.fiCompany ? this.fiCompany.toJSON() : undefined as any;
-        data["fiBankId"] = this.fiBankId;
-        data["fiBank"] = this.fiBank ? this.fiBank.toJSON() : undefined as any;
-        data["countryId"] = this.countryId;
-        data["country"] = this.country ? this.country.toJSON() : undefined as any;
-        data["paReleaseNotificationId"] = this.paReleaseNotificationId;
-        data["paReleaseNotification"] = this.paReleaseNotification ? this.paReleaseNotification.toJSON() : undefined as any;
-        data["paExitNotificationId"] = this.paExitNotificationId;
-        data["paExitNotification"] = this.paExitNotification ? this.paExitNotification.toJSON() : undefined as any;
-        data["paCorrectionNotificationId"] = this.paCorrectionNotificationId;
-        data["paCorrectionNotification"] = this.paCorrectionNotification ? this.paCorrectionNotification.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IPayrollArea {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    name: string;
-    payrollPeriodId: number;
-    payrollPeriod: PayrollPeriod;
-    currencyId: number;
-    currency: Currency;
-    cutOffDay: number;
-    fiCompanyId: number | undefined;
-    fiCompany: CostElement;
-    fiBankId: number | undefined;
-    fiBank: AccountInfo;
-    countryId: number | undefined;
-    country: Country;
-    paReleaseNotificationId: number | undefined;
-    paReleaseNotification: NotificationConfig;
-    paExitNotificationId: number | undefined;
-    paExitNotification: NotificationConfig;
-    paCorrectionNotificationId: number | undefined;
-    paCorrectionNotification: NotificationConfig;
-}
-
 export class PayrollAreaDto implements IPayrollAreaDto {
     id!: number;
     code!: string | undefined;
@@ -337062,86 +338891,6 @@ export interface IPayrollPaymentMethodBucketDto {
     net: number;
 }
 
-export class PayrollPeriod implements IPayrollPeriod {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-
-    constructor(data?: IPayrollPeriod) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-        }
-    }
-
-    static fromJS(data: any): PayrollPeriod {
-        data = typeof data === 'object' ? data : {};
-        let result = new PayrollPeriod();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        return data;
-    }
-}
-
-export interface IPayrollPeriod {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-}
-
 export enum PayrollPeriodState {
     Open = 0,
     ReleasedForPayroll = 1,
@@ -340280,66 +342029,6 @@ export interface IPositionRelationshipDto {
     endDate: DateTime;
 }
 
-export class PostJvResultDto implements IPostJvResultDto {
-    success!: boolean;
-    message!: string | undefined;
-    journalBatchNumbers!: string[] | undefined;
-    salaryLineCount!: number;
-    provisionLineCount!: number;
-
-    constructor(data?: IPostJvResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["success"];
-            this.message = _data["message"];
-            if (Array.isArray(_data["journalBatchNumbers"])) {
-                this.journalBatchNumbers = [] as any;
-                for (let item of _data["journalBatchNumbers"])
-                    this.journalBatchNumbers!.push(item);
-            }
-            this.salaryLineCount = _data["salaryLineCount"];
-            this.provisionLineCount = _data["provisionLineCount"];
-        }
-    }
-
-    static fromJS(data: any): PostJvResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PostJvResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["success"] = this.success;
-        data["message"] = this.message;
-        if (Array.isArray(this.journalBatchNumbers)) {
-            data["journalBatchNumbers"] = [];
-            for (let item of this.journalBatchNumbers)
-                data["journalBatchNumbers"].push(item);
-        }
-        data["salaryLineCount"] = this.salaryLineCount;
-        data["provisionLineCount"] = this.provisionLineCount;
-        return data;
-    }
-}
-
-export interface IPostJvResultDto {
-    success: boolean;
-    message: string | undefined;
-    journalBatchNumbers: string[] | undefined;
-    salaryLineCount: number;
-    provisionLineCount: number;
-}
-
 export class PrePayrollReportRowDto implements IPrePayrollReportRowDto {
     id!: number;
     employeeCode!: string | undefined;
@@ -340887,18 +342576,16 @@ export interface IProfilePhotoFileDto {
     fileBase64: string;
 }
 
-export class ProjectCostEngineStatusDto implements IProjectCostEngineStatusDto {
-    totalRecords!: number;
-    successRecords!: number;
-    failedRecords!: number;
-    noOfEmployee!: number;
-    totalEmployeesProcessed!: number;
-    speedPerMinute!: number;
-    remainingMinutes!: number;
-    stopRequested!: boolean;
-    currentEmployee!: string | undefined;
+export class ProjectCostEngineLogDto implements IProjectCostEngineLogDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    runTimeStamp!: DateTime;
+    status!: number;
+    message!: string | undefined;
+    inPeriod!: DateTime;
 
-    constructor(data?: IProjectCostEngineStatusDto) {
+    constructor(data?: IProjectCostEngineLogDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -340909,50 +342596,176 @@ export class ProjectCostEngineStatusDto implements IProjectCostEngineStatusDto {
 
     init(_data?: any) {
         if (_data) {
-            this.totalRecords = _data["totalRecords"];
-            this.successRecords = _data["successRecords"];
-            this.failedRecords = _data["failedRecords"];
-            this.noOfEmployee = _data["noOfEmployee"];
-            this.totalEmployeesProcessed = _data["totalEmployeesProcessed"];
-            this.speedPerMinute = _data["speedPerMinute"];
-            this.remainingMinutes = _data["remainingMinutes"];
-            this.stopRequested = _data["stopRequested"];
-            this.currentEmployee = _data["currentEmployee"];
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.runTimeStamp = _data["runTimeStamp"] ? DateTime.fromISO(_data["runTimeStamp"].toString()) : undefined as any;
+            this.status = _data["status"];
+            this.message = _data["message"];
+            this.inPeriod = _data["inPeriod"] ? DateTime.fromISO(_data["inPeriod"].toString()) : undefined as any;
         }
     }
 
-    static fromJS(data: any): ProjectCostEngineStatusDto {
+    static fromJS(data: any): ProjectCostEngineLogDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ProjectCostEngineStatusDto();
+        let result = new ProjectCostEngineLogDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["totalRecords"] = this.totalRecords;
-        data["successRecords"] = this.successRecords;
-        data["failedRecords"] = this.failedRecords;
-        data["noOfEmployee"] = this.noOfEmployee;
-        data["totalEmployeesProcessed"] = this.totalEmployeesProcessed;
-        data["speedPerMinute"] = this.speedPerMinute;
-        data["remainingMinutes"] = this.remainingMinutes;
-        data["stopRequested"] = this.stopRequested;
-        data["currentEmployee"] = this.currentEmployee;
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["runTimeStamp"] = this.runTimeStamp ? this.runTimeStamp.toString() : undefined as any;
+        data["status"] = this.status;
+        data["message"] = this.message;
+        data["inPeriod"] = this.inPeriod ? this.inPeriod.toString() : undefined as any;
         return data;
     }
 }
 
-export interface IProjectCostEngineStatusDto {
-    totalRecords: number;
-    successRecords: number;
-    failedRecords: number;
-    noOfEmployee: number;
-    totalEmployeesProcessed: number;
-    speedPerMinute: number;
-    remainingMinutes: number;
-    stopRequested: boolean;
-    currentEmployee: string | undefined;
+export interface IProjectCostEngineLogDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    runTimeStamp: DateTime;
+    status: number;
+    message: string | undefined;
+    inPeriod: DateTime;
+}
+
+export class ProjectCostEngineLogsOutput implements IProjectCostEngineLogsOutput {
+    items!: ProjectCostEngineLogDto[] | undefined;
+    totalCount!: number;
+    allCount!: number;
+    successCount!: number;
+    failedCount!: number;
+
+    constructor(data?: IProjectCostEngineLogsOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProjectCostEngineLogDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            this.allCount = _data["allCount"];
+            this.successCount = _data["successCount"];
+            this.failedCount = _data["failedCount"];
+        }
+    }
+
+    static fromJS(data: any): ProjectCostEngineLogsOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectCostEngineLogsOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        data["allCount"] = this.allCount;
+        data["successCount"] = this.successCount;
+        data["failedCount"] = this.failedCount;
+        return data;
+    }
+}
+
+export interface IProjectCostEngineLogsOutput {
+    items: ProjectCostEngineLogDto[] | undefined;
+    totalCount: number;
+    allCount: number;
+    successCount: number;
+    failedCount: number;
+}
+
+export class ProjectCostEnginePeriodDto implements IProjectCostEnginePeriodDto {
+    payrollAreaName!: string | undefined;
+    hasControlRecord!: boolean;
+    payrollMonth!: number | undefined;
+    payrollYear!: number | undefined;
+    calendarMonthStart!: DateTime | undefined;
+    calendarMonthEnd!: DateTime | undefined;
+    periodLocked!: boolean;
+    periodClosed!: boolean;
+    runAllowed!: boolean;
+    message!: string | undefined;
+
+    constructor(data?: IProjectCostEnginePeriodDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.hasControlRecord = _data["hasControlRecord"];
+            this.payrollMonth = _data["payrollMonth"];
+            this.payrollYear = _data["payrollYear"];
+            this.calendarMonthStart = _data["calendarMonthStart"] ? DateTime.fromISO(_data["calendarMonthStart"].toString()) : undefined as any;
+            this.calendarMonthEnd = _data["calendarMonthEnd"] ? DateTime.fromISO(_data["calendarMonthEnd"].toString()) : undefined as any;
+            this.periodLocked = _data["periodLocked"];
+            this.periodClosed = _data["periodClosed"];
+            this.runAllowed = _data["runAllowed"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ProjectCostEnginePeriodDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectCostEnginePeriodDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["hasControlRecord"] = this.hasControlRecord;
+        data["payrollMonth"] = this.payrollMonth;
+        data["payrollYear"] = this.payrollYear;
+        data["calendarMonthStart"] = this.calendarMonthStart ? this.calendarMonthStart.toString() : undefined as any;
+        data["calendarMonthEnd"] = this.calendarMonthEnd ? this.calendarMonthEnd.toString() : undefined as any;
+        data["periodLocked"] = this.periodLocked;
+        data["periodClosed"] = this.periodClosed;
+        data["runAllowed"] = this.runAllowed;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IProjectCostEnginePeriodDto {
+    payrollAreaName: string | undefined;
+    hasControlRecord: boolean;
+    payrollMonth: number | undefined;
+    payrollYear: number | undefined;
+    calendarMonthStart: DateTime | undefined;
+    calendarMonthEnd: DateTime | undefined;
+    periodLocked: boolean;
+    periodClosed: boolean;
+    runAllowed: boolean;
+    message: string | undefined;
 }
 
 export class ProjectCostingCustom052ReportRowDto implements IProjectCostingCustom052ReportRowDto {
@@ -359414,6 +361227,134 @@ export interface ITimeAttAPIDto {
     company: string | undefined;
 }
 
+export class TimeEngineRunCandidatesOutput implements ITimeEngineRunCandidatesOutput {
+    items!: PayrollRunCandidateDto[] | undefined;
+    totalCount!: number;
+    allCount!: number;
+    processedCount!: number;
+    pendingCount!: number;
+    selectedCount!: number;
+    periodText!: string | undefined;
+
+    constructor(data?: ITimeEngineRunCandidatesOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollRunCandidateDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            this.allCount = _data["allCount"];
+            this.processedCount = _data["processedCount"];
+            this.pendingCount = _data["pendingCount"];
+            this.selectedCount = _data["selectedCount"];
+            this.periodText = _data["periodText"];
+        }
+    }
+
+    static fromJS(data: any): TimeEngineRunCandidatesOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeEngineRunCandidatesOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        data["allCount"] = this.allCount;
+        data["processedCount"] = this.processedCount;
+        data["pendingCount"] = this.pendingCount;
+        data["selectedCount"] = this.selectedCount;
+        data["periodText"] = this.periodText;
+        return data;
+    }
+}
+
+export interface ITimeEngineRunCandidatesOutput {
+    items: PayrollRunCandidateDto[] | undefined;
+    totalCount: number;
+    allCount: number;
+    processedCount: number;
+    pendingCount: number;
+    selectedCount: number;
+    periodText: string | undefined;
+}
+
+export class TimeEngineRunDayDto implements ITimeEngineRunDayDto {
+    employeeId!: number | undefined;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    dayDate!: DateTime;
+    succeeded!: boolean;
+    message!: string | undefined;
+    runTimeStamp!: DateTime;
+
+    constructor(data?: ITimeEngineRunDayDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.succeeded = _data["succeeded"];
+            this.message = _data["message"];
+            this.runTimeStamp = _data["runTimeStamp"] ? DateTime.fromISO(_data["runTimeStamp"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): TimeEngineRunDayDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeEngineRunDayDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["succeeded"] = this.succeeded;
+        data["message"] = this.message;
+        data["runTimeStamp"] = this.runTimeStamp ? this.runTimeStamp.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface ITimeEngineRunDayDto {
+    employeeId: number | undefined;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    dayDate: DateTime;
+    succeeded: boolean;
+    message: string | undefined;
+    runTimeStamp: DateTime;
+}
+
 export class TimeEventDto implements ITimeEventDto {
     id!: number;
     employeeId!: number;
@@ -367528,98 +369469,6 @@ export interface IWorkflowRequestTypeOptionDto {
     code: string | undefined;
     nameEn: string | undefined;
     nameAr: string | undefined;
-}
-
-export class WorkflowRole implements IWorkflowRole {
-    id!: number;
-    creationTime!: DateTime;
-    creatorUserId!: number | undefined;
-    lastModificationTime!: DateTime | undefined;
-    lastModifierUserId!: number | undefined;
-    isDeleted!: boolean;
-    deleterUserId!: number | undefined;
-    deletionTime!: DateTime | undefined;
-    tenantId!: number;
-    code!: string | undefined;
-    nameEn!: string;
-    nameAr!: string;
-    workflowRoleGroup!: WorkflowRoleGroup;
-    workflowRoleOrgId!: number | undefined;
-    workflowRoleOrg!: OrganizationUnitType;
-
-    constructor(data?: IWorkflowRole) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
-            this.creatorUserId = _data["creatorUserId"];
-            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : undefined as any;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : undefined as any;
-            this.tenantId = _data["tenantId"];
-            this.code = _data["code"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.workflowRoleGroup = _data["workflowRoleGroup"];
-            this.workflowRoleOrgId = _data["workflowRoleOrgId"];
-            this.workflowRoleOrg = _data["workflowRoleOrg"] ? OrganizationUnitType.fromJS(_data["workflowRoleOrg"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): WorkflowRole {
-        data = typeof data === 'object' ? data : {};
-        let result = new WorkflowRole();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
-        data["creatorUserId"] = this.creatorUserId;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : undefined as any;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : undefined as any;
-        data["tenantId"] = this.tenantId;
-        data["code"] = this.code;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["workflowRoleGroup"] = this.workflowRoleGroup;
-        data["workflowRoleOrgId"] = this.workflowRoleOrgId;
-        data["workflowRoleOrg"] = this.workflowRoleOrg ? this.workflowRoleOrg.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IWorkflowRole {
-    id: number;
-    creationTime: DateTime;
-    creatorUserId: number | undefined;
-    lastModificationTime: DateTime | undefined;
-    lastModifierUserId: number | undefined;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: DateTime | undefined;
-    tenantId: number;
-    code: string | undefined;
-    nameEn: string;
-    nameAr: string;
-    workflowRoleGroup: WorkflowRoleGroup;
-    workflowRoleOrgId: number | undefined;
-    workflowRoleOrg: OrganizationUnitType;
 }
 
 export class WorkflowRoleDto implements IWorkflowRoleDto {

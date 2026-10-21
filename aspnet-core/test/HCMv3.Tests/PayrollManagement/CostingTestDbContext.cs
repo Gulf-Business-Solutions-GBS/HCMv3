@@ -47,6 +47,9 @@ public class CostingTestDbContext : DbContext
     public DbSet<ProjectLog> ProjectLogs { get; set; }
     public DbSet<ExecutionLog> ExecutionLogs { get; set; }
 
+    /// <summary>For the finance screens' "Current" period (legacy SetCurrentDates).</summary>
+    public DbSet<PayrollControlRecord> PayrollControlRecords { get; set; }
+
     public CostingTestDbContext(DbContextOptions<CostingTestDbContext> options) : base(options)
     {
     }

@@ -46,6 +46,14 @@
     <PackageReference Include="Abp.ZeroCore.OpenIddict" Version="11.1.0" />
     <PackageReference Include="Twilio" Version="7.14.3" />
   </ItemGroup>
+  <!-- Security pins: lift vulnerable transitive packages to patched versions (NU1902/NU1903).
+       Drop each line once the package that brings it in (Abp.MailKit, ClosedXML, DevExpress) ships the fix. -->
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.16.0" />
+    <PackageReference Include="MimeKit" Version="4.16.0" />
+    <PackageReference Include="System.IO.Packaging" Version="8.0.1" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HCMv3.Core.Shared\HCMv3.Core.Shared.csproj" />
   </ItemGroup>

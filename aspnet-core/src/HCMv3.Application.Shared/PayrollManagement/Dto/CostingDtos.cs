@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 
 namespace HCMv3.PayrollManagement.Dto;
 
@@ -38,6 +39,14 @@ public class CostingRunInputDto
 
     /// <summary>Legacy <c>args[0]</c>: Regular or OffCycle.</summary>
     public PayrollRunType PayrollRunType { get; set; }
+
+    /// <summary>
+    /// Posting only: the <see cref="JournalVoucherPreviewDto.PreviewFingerprint"/> of the preview the
+    /// operator checked. Post JV refuses when the JV rebuilt at posting time no longer has this fingerprint.
+    /// Ignored everywhere else.
+    /// </summary>
+    [StringLength(128)]
+    public string PreviewFingerprint { get; set; }
 }
 
 /// <summary>One JV line as shown in the preview grid. Mirrors <c>HCMv3.PayrollManagement.Costing.JournalVoucherLine</c>.</summary>
@@ -104,6 +113,12 @@ public class JournalVoucherPreviewDto
 
     /// <summary>Legacy line 1722: <c>debitamt != creditamt</c> after whole-unit rounding.</summary>
     public bool IsBalanced { get; set; }
+
+    /// <summary>
+    /// Fingerprint of exactly this preview (its inputs and every posted value of every line). Send it back
+    /// as <see cref="CostingRunInputDto.PreviewFingerprint"/> when posting.
+    /// </summary>
+    public string PreviewFingerprint { get; set; }
 }
 
 /// <summary>Outcome of the "Validate JV" button (legacy <c>btnValidateJV_Click</c> -> <c>ExportGrid(true)</c>).</summary>
@@ -119,51 +134,206 @@ public class JournalVoucherValidationResultDto
     public double TotalCredit { get; set; }
 
     public int LineCount { get; set; }
+
+    /// <summary>Same as <see cref="JournalVoucherPreviewDto.PreviewFingerprint"/> for the JV that was validated.</summary>
+    public string PreviewFingerprint { get; set; }
 }
 
-/// <summary>Per-employee log row of a cost-engine run (legacy <c>ProjectLog</c>).</summary>
-public class CostingRunLogEntryDto
+/// <summary>
+/// Where a cost-engine or Post-JV run stands, as legacy's status label put it
+/// (<c>uscCostingFile.ascx.cs</c> <c>ASPxCallbackPanel_Callback</c>, lines 2117-2184).
+/// </summary>
+public enum FinanceRunStatus
 {
-    public int? EmployeeId { get; set; }
+    /// <summary>Nothing has been run on this screen yet (legacy "NotStarted").</summary>
+    NotStarted = 0,
 
-    public string EmployeeCode { get; set; }
+    /// <summary>Queued or in progress (legacy "Process Started" / "Running").</summary>
+    Running = 1,
 
-    /// <summary>0 = success, 1 = failed (legacy <c>ProjectLog.Status</c>).</summary>
-    public int Status { get; set; }
+    /// <summary>Legacy "... ran successfully": finished with no failed row.</summary>
+    Completed = 2,
+
+    /// <summary>Legacy "... completed with some errors": finished with at least one failed row.</summary>
+    CompletedWithErrors = 3,
+
+    /// <summary>Legacy "... stopped successfully": the Stop button ended it.</summary>
+    Stopped = 4,
+
+    /// <summary>
+    /// Still marked as running, but nothing has been heard from it for a long time: the server restarted or
+    /// the job died. Not in legacy, whose status was a static variable that a restart simply reset.
+    /// </summary>
+    Interrupted = 5
+}
+
+/// <summary>
+/// The status panel. Legacy <c>CalculateProcessStatus</c> (<c>uscCostingFile.ascx.cs</c> lines 2484-2585):
+/// the All / Successful / Failed counters, the progress ring, the employee being processed, the speed and
+/// the estimated finish, all worked out from the <c>ProjectLog</c> rows.
+/// </summary>
+public class CostingProcessStatusDto
+{
+    /// <summary>Legacy <c>SummaryAll</c>: every <c>ProjectLog</c> row.</summary>
+    public int TotalRecords { get; set; }
+
+    /// <summary>Legacy <c>SummarySuccess</c>: rows with status 0.</summary>
+    public int SuccessRecords { get; set; }
+
+    /// <summary>Legacy <c>SummaryFailed</c>: all minus successful, never below zero.</summary>
+    public int FailedRecords { get; set; }
+
+    /// <summary>True when a stop has been requested (legacy <c>ProjectLog.StopFlag</c>, or the run's own stop request).</summary>
+    public bool StopRequested { get; set; }
+
+    public FinanceRunStatus RunStatus { get; set; }
+
+    /// <summary>True while a run is queued or in progress; the screen polls while this is set.</summary>
+    public bool IsRunning { get; set; }
+
+    /// <summary>The <c>ExecutionLog</c> row of the latest run on this screen, if any.</summary>
+    public int? ExecutionLogId { get; set; }
+
+    public DateTime? StartedAt { get; set; }
+
+    public string StartedBy { get; set; }
+
+    /// <summary>Legacy <c>NoOfEmployee</c> of the newest log row: the total the progress ring counts towards.</summary>
+    public int NoOfEmployee { get; set; }
+
+    /// <summary>Legacy <c>progressPercent</c>, 0-100.</summary>
+    public int ProgressPercent { get; set; }
+
+    /// <summary>Legacy <c>lblProgressCurrentEmp</c>: code and name of the newest row's employee, cut at 30 characters.</summary>
+    public string CurrentEmployee { get; set; }
+
+    /// <summary>Legacy <c>lblProgressSpeed</c>: rows per minute over the last minute of activity.</summary>
+    public double SpeedPerMinute { get; set; }
+
+    /// <summary>Legacy <c>remainingMin</c>; <c>null</c> when the speed is not known yet.</summary>
+    public double? RemainingMinutes { get; set; }
+
+    /// <summary>Legacy <c>DateTime.Now.AddMinutes(remainingMin)</c>.</summary>
+    public DateTime? EstimatedCompletion { get; set; }
+}
+
+/// <summary>Returned when a cost-engine or Post-JV run has been queued.</summary>
+public class FinanceRunStartedDto
+{
+    public int ExecutionLogId { get; set; }
 
     public string Message { get; set; }
 }
 
-/// <summary>Aggregate outcome of a cost-engine run.</summary>
-public class CostingRunResultDto
+/// <summary>Legacy <c>rdLogAll</c> / <c>rdLogSuccess</c> / <c>rdLogFailed</c> on the execution-log popup.</summary>
+public enum FinanceRunLogFilter
 {
-    public int TotalEmployees { get; set; }
+    All = 0,
+    Successful = 1,
+    Failed = 2
+}
+
+/// <summary>The "Show details" grid (legacy <c>popupPayrollLog</c> / <c>grid_Payroll</c>).</summary>
+public class GetFinanceRunLogInput : PagedAndSortedResultRequestDto
+{
+    public FinanceRunLogFilter StatusFilter { get; set; }
+
+    /// <summary>Optional text matched against the employee code, the employee name and the message.</summary>
+    [StringLength(256)]
+    public string Filter { get; set; }
+}
+
+/// <summary>One row of the "Show details" grid (legacy <c>LogPopupModel</c>).</summary>
+public class FinanceRunLogDto
+{
+    public int Id { get; set; }
+
+    public string EmpCode { get; set; }
+
+    /// <summary>Employee name in the user's language (legacy picked Arabic for ar-KW).</summary>
+    public string Employee { get; set; }
+
+    public DateTime RunTimeStamp { get; set; }
+
+    /// <summary>0 = successful, 1 = failed.</summary>
+    public int Status { get; set; }
+
+    /// <summary>The full message: for a failed D365 batch, the request, D365's whole reply and the lines sent.</summary>
+    public string Message { get; set; }
+
+    public DateTime InPeriod { get; set; }
+}
+
+/// <summary>A page of the grid plus the three filter counts (legacy <c>RefreshPayrollLogCounts</c>).</summary>
+public class FinanceRunLogOutput : PagedResultDto<FinanceRunLogDto>
+{
+    public int AllCount { get; set; }
 
     public int SuccessCount { get; set; }
 
     public int FailedCount { get; set; }
-
-    /// <summary>True when a <c>ProjectLog.StopFlag</c> row aborted the run mid-loop.</summary>
-    public bool Aborted { get; set; }
-
-    public List<CostingRunLogEntryDto> Entries { get; set; } = new List<CostingRunLogEntryDto>();
 }
 
 /// <summary>
-/// Live progress counters for the screen's status panel. Legacy computed these in
-/// <c>CalculateProcessStatus</c> (<c>uscCostingFile.ascx.cs</c> lines 1574-1636) by counting
-/// <c>ProjectLog</c> rows.
+/// Legacy <c>SetCurrentDates</c> (<c>uscCostingFile.ascx.cs</c> lines 1510-1525): the payroll area's control
+/// record fills the period, and the posting date defaults to the period end.
 /// </summary>
-public class CostingProcessStatusDto
+public class CostingPeriodContextDto
 {
-    public int TotalRecords { get; set; }
+    public string PayrollAreaName { get; set; }
 
-    public int SuccessRecords { get; set; }
+    public bool HasControlRecord { get; set; }
 
-    public int FailedRecords { get; set; }
+    /// <summary>Why nothing could be filled in (no area chosen, no control record); otherwise null.</summary>
+    public string Message { get; set; }
 
-    /// <summary>True when a stop has been requested (legacy <c>ProjectLog.StopFlag</c>).</summary>
-    public bool StopRequested { get; set; }
+    public int? PayrollMonth { get; set; }
+
+    public int? PayrollYear { get; set; }
+
+    public DateTime? CalendarMonthStart { get; set; }
+
+    /// <summary>The period end: what legacy put in its read-only End Date box and sent as the pay-in date.</summary>
+    public DateTime? CalendarMonthEnd { get; set; }
+
+    /// <summary>Legacy: <c>txtPostingDate = CalendarMonthEnd</c> when the posting date box is empty.</summary>
+    public DateTime? DefaultPostingDate { get; set; }
+}
+
+/// <summary>Legacy <c>SetDates</c> for the "Other" period (lines 1499-1508).</summary>
+public class CostingPeriodDatesDto
+{
+    public int PayrollMonth { get; set; }
+
+    public int PayrollYear { get; set; }
+
+    public DateTime CalendarMonthStart { get; set; }
+
+    public DateTime CalendarMonthEnd { get; set; }
+}
+
+/// <summary>
+/// The employee popup (legacy <c>BuildEmployeePopupList</c>, <c>uscCostingFile.ascx.cs</c> lines 2632-2775).
+/// The result rows reuse the Payroll Engine picker's <see cref="PayrollRunCandidateDto"/> shape.
+/// </summary>
+public class GetCostingFileCandidatesInput : PagedAndSortedResultRequestDto
+{
+    [Required]
+    [StringLength(256)]
+    public string PayrollAreaName { get; set; }
+
+    public PayrollRunType PayrollRunType { get; set; }
+
+    /// <summary>The period end date (legacy <c>txtEndDate</c>).</summary>
+    public DateTime PayInDate { get; set; }
+
+    public PayrollRunCandidateFilter StatusFilter { get; set; }
+
+    [StringLength(256)]
+    public string Filter { get; set; }
+
+    /// <summary>Comma-separated codes currently ticked, so the Selected filter and count work.</summary>
+    public string SelectedEmployeeCodes { get; set; }
 }
 
 /// <summary>Payroll-area combo entry (legacy <c>BindPayrollArea</c>).</summary>
@@ -177,20 +347,4 @@ public class PayrollAreaLookupDto
 
     /// <summary>False when <c>FICompanyId</c> or <c>FIBankId</c> is missing -- both are hard preconditions.</summary>
     public bool IsFiConfigured { get; set; }
-}
-
-/// <summary>Result of posting the JV to the external finance system.</summary>
-public class PostJvResultDto
-{
-    public bool Success { get; set; }
-
-    /// <summary>Accumulated per-JV message, matching legacy's <c>message</c> string built at lines 837-857.</summary>
-    public string Message { get; set; }
-
-    /// <summary>Journal batch numbers returned by the finance system, one per posted journal header.</summary>
-    public List<string> JournalBatchNumbers { get; set; } = new List<string>();
-
-    public int SalaryLineCount { get; set; }
-
-    public int ProvisionLineCount { get; set; }
 }

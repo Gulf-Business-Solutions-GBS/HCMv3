@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Timing;
+using Abp.UI;
 using HCMv3.EngineRuns;
 using HCMv3.EngineRuns.Services;
 using HCMv3.PayrollManagement;
@@ -37,9 +38,12 @@ namespace HCMv3.TimeManagement.Services;
 /// already documented on <c>AccrualService</c>.</description></item>
 /// <item><description><b><c>IsSystemGenerated</c> NOT ported</b> -- no ported entity in this solution carries
 /// that legacy flag.</description></item>
-/// <item><description><b>ObjectSpace lifecycle NOT ported</b> -- legacy created/committed/disposed an
-/// <c>IObjectSpace</c> per employee and force-committed every 500 modified objects. ABP's unit of work owns
-/// this; the <c>[UnitOfWork]</c> attribute below matches <c>AccrualService</c>/<c>SysSettingsAccessor</c>.</description></item>
+/// <item><description><b>ObjectSpace lifecycle replaced by batches</b> -- legacy created/committed/disposed an
+/// <c>IObjectSpace</c> per employee and force-committed every 500 modified objects. Here the run is saved
+/// <see cref="TimeEngineRunInput.CommitBatchSize"/> employees at a time, each batch in its own <c>RequiresNew</c>
+/// unit of work (the Time Engine job uses <see cref="TimeEngineBatches.Size"/>); with 0 the whole run stays in the
+/// caller's unit of work, as Go-Live Setup and the payroll engine's autorun expect. The <c>[UnitOfWork]</c>
+/// attribute below matches <c>AccrualService</c>/<c>SysSettingsAccessor</c>.</description></item>
 /// <item><description><b>RetroReasonLog NOT ported</b> (legacy lines ~1549-1577, <c>SysService.AddRetroReasonLog</c>).
 /// No <c>RetroReasonLog</c> entity exists in this solution. The <c>EarliestMasterDataChange</c> update it
 /// accompanied IS ported.</description></item>
@@ -153,16 +157,17 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     private readonly IAccrualService _accrualService;
     private readonly ITimeRegisterFieldCalculator _fieldCalculator;
     private readonly IPunchResolutionStrategyResolver _punchStrategyResolver;
+    private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
 
     /// <summary>
     /// Live progress publisher. OPTIONAL property injection (Windsor fills it when the implementation is
     /// registered), defaulting to a no-op -- see <see cref="NullEngineRunProgressWriter"/> for why this is
     /// not a constructor dependency.
     ///
-    /// <para>Every call on it commits in its OWN unit of work. That is essential and not incidental: this
-    /// whole service runs inside one <c>[UnitOfWork]</c> that completes only when the last employee is done,
-    /// so anything written through the engine's own repositories -- <c>TimeLog</c> rows included -- stays
-    /// invisible to other connections until the run ends.</para>
+    /// <para>Every call on it commits in its OWN unit of work. That is essential and not incidental: unless the
+    /// run is saved in batches, this whole service runs inside one <c>[UnitOfWork]</c> that completes only when
+    /// the last employee is done, so anything written through the engine's own repositories -- <c>TimeLog</c>
+    /// rows included -- stays invisible to other connections until the run ends.</para>
     /// </summary>
     public IEngineRunProgressWriter ProgressWriter { get; set; } = NullEngineRunProgressWriter.Instance;
 
@@ -220,7 +225,8 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         IRosterService rosterService,
         IAccrualService accrualService,
         ITimeRegisterFieldCalculator fieldCalculator,
-        IPunchResolutionStrategyResolver punchStrategyResolver)
+        IPunchResolutionStrategyResolver punchStrategyResolver,
+        IEmployeePayrollAreaResolver payrollAreaResolver)
     {
         _employeeRepository = employeeRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
@@ -269,6 +275,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         _accrualService = accrualService;
         _fieldCalculator = fieldCalculator;
         _punchStrategyResolver = punchStrategyResolver;
+        _payrollAreaResolver = payrollAreaResolver;
     }
 
     // NOTE: HCMv3.Core has no EF Core reference, so ToListAsync()/FirstOrDefaultAsync() are unavailable.
@@ -283,6 +290,13 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
 
     #region << Entry point >>
 
+    /// <summary>
+    /// Set in <see cref="Exception.Data"/> on a run-level failure the engine has ALREADY written onto its
+    /// <see cref="EngineRun"/> as Failed. A failure without it happened before the run began (a missing end date,
+    /// another run of the same area going) and has no progress row yet -- see <c>TimeEngineBackgroundJob</c>.
+    /// </summary>
+    public const string RunFailureRecordedKey = "HCMv3.TimeEngine.RunFailureRecorded";
+
     public async Task<TimeEngineRunResult> CreateTimeRegisterAsync(TimeEngineRunInput input)
     {
         // It creates tickets for employees whose payroll area may be locked. See PayrollLockGuard.
@@ -294,74 +308,267 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
             throw new ArgumentException("No End Date defined for Time Calculation or Check Date format.");
         }
 
+        // ==================================================================================================
+        // ONE TIME ENGINE RUN PER PAYROLL AREA. Two runs of the same area rewrite the same employees' time
+        // registers, quotas and payroll status at the same time. NOT a port -- legacy had no guard at all (see
+        // TimeEngineRunKeys). The app service checks this too, so the operator is told at once; this catches the
+        // race between two queued jobs. Runs made by a payroll run (or Go-Live Setup) are never refused: they run
+        // inside that caller's own work, which must not fail because someone pressed Run on this screen.
+        // ==================================================================================================
+        var runPayrollAreaName = await ResolveRunPayrollAreaNameAsync(input);
+        var runKey = TimeEngineRunKeys.ForRun(input, runPayrollAreaName);
+
+        if (!input.IsRanFromPayrollEngine)
+        {
+            await EnsureNoRunInProgressAsync(runKey, runPayrollAreaName);
+        }
+
         // Opened FIRST, before any of the (slow) settings/master-data loading, so the screen shows "Running"
         // the moment the job starts rather than minutes later. It is written on its own connection, so it is
         // visible immediately -- unlike the ExecutionLog row created a few lines below.
         var engineRunId = await ProgressWriter.BeginRunAsync(new EngineRunStartInfo
         {
             EngineType = EngineType.TimeEngine,
+            RunKey = runKey,
             StartedByUserName = input.CurrentUserName,
             Parameters = BuildExecutionLogParameters(input)
         });
 
         _currentEngineRunId = engineRunId;
 
-        var settings = await LoadSettingsAsync();
-        var masterData = LoadMasterData(settings);
+        int? executionLogId = null;
+        var loop = new EmployeeLoopState { EngineRunId = engineRunId };
+        TimeEngineRunResult result;
 
-        var executionLogId = await AddExecutionLogAsync(input);
+        try
+        {
+            var settings = await LoadSettingsAsync();
+            var masterData = LoadMasterData(settings);
 
-        // Stamped BEFORE the first day is evaluated, so the run summary can be scoped to the rows this run
-        // wrote. See FinalizeExecutionLogAsync for why that matters.
-        var runStartedAt = Clock.Now;
+            executionLogId = await AddExecutionLogAsync(input);
 
-        // Legacy: f_timeStartDate defaults to the 1st of the current month when no start date was passed.
-        var runStartDate = input.StartDate == null || input.StartDate.Value == default(DateTime)
-            ? new DateTime(Clock.Now.Year, Clock.Now.Month, 1, 0, 0, 0)
-            : input.StartDate.Value.Date;
-        var runEndDate = input.EndDate.Value.Date;
+            // Stamped BEFORE the first day is evaluated, so the run summary can be scoped to the rows this run
+            // wrote. See FinalizeExecutionLogAsync for why that matters.
+            loop.RunStartedAt = Clock.Now;
 
-        var employees = GetEmployeeList(input.PayrollAreaName, input.EmployeeCodes, runEndDate);
+            // Legacy: f_timeStartDate defaults to the 1st of the current month when no start date was passed.
+            loop.RunStartDate = input.StartDate == null || input.StartDate.Value == default(DateTime)
+                ? new DateTime(Clock.Now.Year, Clock.Now.Month, 1, 0, 0, 0)
+                : input.StartDate.Value.Date;
+            loop.RunEndDate = input.EndDate.Value.Date;
+            loop.Settings = settings;
+            loop.MasterData = masterData;
 
-        // Legacy hoists cutoffDate/OldPayrollArea OUTSIDE the employee loop and only recomputes when the
-        // payroll area changes, so consecutive employees in the same area reuse the previous value. Preserved.
-        var cursor = new RunCursor { CutoffDate = Clock.Now.AddDays(-1).Date, OldPayrollAreaId = 0 };
+            var employees = await GetEmployeeListAsync(input.PayrollAreaName, input.EmployeeCodes, loop.RunEndDate);
 
-        var employeeCount = employees.Count;
-        var aborted = false;
+            // Legacy hoists cutoffDate/OldPayrollArea OUTSIDE the employee loop and only recomputes when the
+            // payroll area changes, so consecutive employees in the same area reuse the previous value. Preserved
+            // -- across batches too, since the cursor lives on the loop state, not in a batch.
+            loop.Cursor = new RunCursor { CutoffDate = Clock.Now.AddDays(-1).Date, OldPayrollAreaId = 0 };
+            loop.EmployeeCount = employees.Count;
 
-        await ProgressWriter.SetTotalEmployeesAsync(engineRunId, employeeCount);
+            await ProgressWriter.SetTotalEmployeesAsync(engineRunId, loop.EmployeeCount);
 
-        var sequenceNo = 0;
+            if (input.CommitBatchSize <= 0)
+            {
+                // The whole run in the caller's unit of work, exactly as before.
+                await ProcessEmployeesAsync(input, employees, loop);
+            }
+            else
+            {
+                await ProcessEmployeesInBatchesAsync(input, employees, loop);
+            }
 
+            result = await FinalizeExecutionLogAsync(executionLogId.Value, loop.Aborted, loop.RunStartedAt);
+
+            // The run is marked finished only once everything it wrote is saved: the batches already are, and the
+            // execution log update above is saved here. (In one unit of work the caller saves it, as before.)
+            await SaveOuterUnitOfWorkWhenBatchedAsync(input);
+        }
+        catch (Exception ex)
+        {
+            // Run-level failure (settings, master data, employee selection, a batch that would not save) as
+            // opposed to the per-employee isolation in the loop. Recorded so the screen shows WHY the run stopped
+            // instead of a run left "Running" until its heartbeat ages out, then rethrown -- the caller decides
+            // what a failure means (the job records it and never retries; Go-Live reports it; the payroll engine
+            // fails that one employee). Legacy's outer catch (Program.cs lines 1716-1729) logged it and its
+            // finally still finalised the execution log; the same is done here.
+            await FinalizeAfterFailureAsync(input, executionLogId, loop, ex);
+
+            ex.Data[RunFailureRecordedKey] = true;
+
+            await ProgressWriter.CompleteRunAsync(engineRunId, EngineRunStatus.Failed, executionLogId, FailureReason(ex));
+            throw;
+        }
+
+        await ProgressWriter.CompleteRunAsync(
+            engineRunId,
+            ResolveEngineRunStatus(result.Aborted, Math.Max(result.Failed, loop.FailedEmployees)),
+            executionLogId,
+            null);
+
+        return result;
+    }
+
+    /// <summary>
+    /// The counters and fixed values the per-employee loop shares across employees and batches. Legacy kept them
+    /// as locals of <c>CreateTimeRegister</c>; they live here so a batch can pick up where the previous one ended.
+    /// </summary>
+    private sealed class EmployeeLoopState
+    {
+        public long EngineRunId { get; set; }
+
+        public DateTime RunStartedAt { get; set; }
+
+        public DateTime RunStartDate { get; set; }
+
+        public DateTime RunEndDate { get; set; }
+
+        public TimeEngineSettings Settings { get; set; }
+
+        public TimeEngineMasterData MasterData { get; set; }
+
+        public RunCursor Cursor { get; set; }
+
+        /// <summary>Legacy <c>NoofEmp</c>: shrinks for the skip and is written on every TimeLog row.</summary>
+        public int EmployeeCount { get; set; }
+
+        public int SequenceNo { get; set; }
+
+        public bool Aborted { get; set; }
+
+        /// <summary>Employees counted as failed -- an employee-level error, or any failed day.</summary>
+        public int FailedEmployees { get; set; }
+
+        /// <summary>
+        /// Progress rows held back until their batch is saved (null = written at once, as in one unit of work). A
+        /// batch that fails to save would otherwise leave its employees on the screen as successful when nothing
+        /// of theirs was kept.
+        /// </summary>
+        public List<EngineRunEmployeeProgress> PendingProgress { get; set; }
+
+        public int PendingSkips { get; set; }
+    }
+
+    /// <summary>
+    /// SAVE IN BATCHES. The employees of the run, <see cref="TimeEngineRunInput.CommitBatchSize"/> at a time, each
+    /// batch in its own <c>RequiresNew</c> unit of work that is completed -- saved and committed -- before the next
+    /// starts. Same approach as <c>PayrollEngineService.ProcessEmployeesInBatchesAsync</c>: one
+    /// <see cref="EngineRun"/> from start to finish, Stop still honoured between employees.
+    ///
+    /// <para>Each batch re-reads its employees and the run's master data inside its own unit of work, so nothing a
+    /// batch tracks outlives it (a master-data row read in another unit of work and attached to a new row -- the
+    /// extra-working attendance type is one -- would otherwise be inserted a second time). The figures are the
+    /// same as in one unit of work: no employee's calculation reads anything another employee's wrote.</para>
+    ///
+    /// <para>Legacy committed per employee and every 500 changes (Program.cs lines 1599-1602, 1705-1711). A commit
+    /// that failed escaped its employee's <c>finally</c> and ended the run through the outer catch; a batch that
+    /// will not save does the same here, its employees reported as not saved.</para>
+    /// </summary>
+    private async Task ProcessEmployeesInBatchesAsync(
+        TimeEngineRunInput input,
+        List<Employee> employees,
+        EmployeeLoopState loop)
+    {
+        var tenantId = UnitOfWorkManager.Current?.GetTenantId();
+
+        foreach (var batch in employees.Select(e => e.Id).Chunk(input.CommitBatchSize))
+        {
+            if (loop.Aborted)
+            {
+                break;
+            }
+
+            loop.PendingProgress = new List<EngineRunEmployeeProgress>();
+            loop.PendingSkips = 0;
+
+            try
+            {
+                using (var uow = UnitOfWorkManager.Begin(System.Transactions.TransactionScopeOption.RequiresNew))
+                using (tenantId.HasValue ? UnitOfWorkManager.Current.SetTenantId(tenantId) : null)
+                {
+                    PayrollLockGuard?.ExemptCurrentUnitOfWork();
+
+                    loop.MasterData = LoadMasterData(loop.Settings);
+
+                    var loaded = _employeeRepository.GetAll().Where(e => batch.Contains(e.Id)).ToList();
+                    var batchEmployees = batch
+                        .Select(id => loaded.FirstOrDefault(e => e.Id == id))
+                        .Where(e => e != null)
+                        .ToList();
+
+                    await ProcessEmployeesAsync(input, batchEmployees, loop);
+
+                    // MUST stay inside the SetTenantId scope -- see TimeEngineBackgroundJob for what happens when a
+                    // unit of work saves IMustHaveTenant rows after the scope has gone.
+                    await uow.CompleteAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                var message = "Not saved: " + FailureReason(ex);
+                foreach (var pending in loop.PendingProgress)
+                {
+                    if (pending.Succeeded)
+                    {
+                        pending.Succeeded = false;
+                        loop.FailedEmployees = loop.FailedEmployees + 1;
+                    }
+
+                    pending.Message = message;
+                }
+
+                await FlushPendingProgressAsync(loop);
+                loop.PendingProgress = null;
+                throw;
+            }
+
+            await FlushPendingProgressAsync(loop);
+        }
+
+        loop.PendingProgress = null;
+    }
+
+    /// <summary>
+    /// The per-employee loop of legacy <c>CreateTimeRegister</c> (Program.cs lines 263-1712), for the employees
+    /// given. Sets <see cref="EmployeeLoopState.Aborted"/> and returns when a Stop is found.
+    /// </summary>
+    private async Task ProcessEmployeesAsync(TimeEngineRunInput input, List<Employee> employees, EmployeeLoopState loop)
+    {
         foreach (var employee in employees)
         {
-            // Legacy "Check TE Stopped Or Not": a TimeLog row with StopFlag aborts the whole run. Preserved.
-            if (_timeLogRepository.GetAll().Any(x => x.StopFlag))
+            // Legacy "Check TE Stopped Or Not": a TimeLog row with StopFlag aborts the whole run -- SCOPED to this
+            // run's rows, which legacy achieved by truncating the table before every run. Left unscoped, one flag
+            // ever set would abort every later run of every area. (Same correction as the payroll engine's.)
+            if (_timeLogRepository.GetAll().Any(x => x.StopFlag && x.RunTimeStamp >= loop.RunStartedAt))
             {
-                aborted = true;
-                break;
+                loop.Aborted = true;
+                return;
             }
 
             // The API-initiated Stop. Read through the progress writer's OWN connection: the legacy check
             // above cannot see a StopFlag set after this run's transaction opened, and writing that flag
             // from outside would contend with the locks this transaction holds on TimeLog.
-            if (await ProgressWriter.IsStopRequestedAsync(engineRunId))
+            if (await ProgressWriter.IsStopRequestedAsync(loop.EngineRunId))
             {
-                aborted = true;
-                break;
+                loop.Aborted = true;
+                return;
             }
 
-            sequenceNo = sequenceNo + 1;
+            loop.SequenceNo = loop.SequenceNo + 1;
+            var sequenceNo = loop.SequenceNo;
 
             // Measured, not estimated: the ETA is only as honest as this stopwatch.
             var employeeStartedAt = Clock.Now;
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
+            _currentEmployeeDayFailures = new DayFailures();
+
             try
             {
                 var processed = await ProcessEmployeeAsync(
-                    input, employee, runStartDate, runEndDate, settings, masterData, cursor, employeeCount);
+                    input, employee, loop.RunStartDate, loop.RunEndDate, loop.Settings, loop.MasterData, loop.Cursor,
+                    loop.EmployeeCount);
 
                 stopwatch.Stop();
 
@@ -370,35 +577,90 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
                     // Legacy "NoofEmp = NoofEmp - 1; continue;" -- employee skipped, not counted. It gets no
                     // grid row (it was never processed) but must shrink the remaining count or the ETA would
                     // never reach zero.
-                    employeeCount = employeeCount - 1;
-                    await ProgressWriter.RecordSkippedEmployeeAsync(engineRunId);
+                    loop.EmployeeCount = loop.EmployeeCount - 1;
+                    await RecordSkippedEmployeeAsync(loop);
                     continue;
                 }
 
-                await RecordEmployeeProgressAsync(
-                    engineRunId, sequenceNo, employee, true, "Successfull", employeeStartedAt, stopwatch);
+                // Legacy logged per employee PER DAY (TimeLog Status 1 for each failed day, Program.cs lines
+                // 1607-1626) and its screen counted those rows. One failed day is a failure the operator must see,
+                // so an employee with any failed day is a failed employee here, the first failed day's message
+                // leading -- not "Successfull" with the failure buried in a log.
+                if (_currentEmployeeDayFailures.Count > 0)
+                {
+                    loop.FailedEmployees = loop.FailedEmployees + 1;
+                    await RecordEmployeeProgressAsync(
+                        loop, sequenceNo, employee, false, _currentEmployeeDayFailures.Describe(), employeeStartedAt, stopwatch);
+                }
+                else
+                {
+                    await RecordEmployeeProgressAsync(
+                        loop, sequenceNo, employee, true, "Successfull", employeeStartedAt, stopwatch);
+                }
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
 
                 // Legacy per-employee catch: log and carry on, never rethrow.
-                await AddTimeLogAsync(employee.Id, runStartDate, ex.Message, 1, employeeCount);
+                await AddTimeLogAsync(employee.Id, loop.RunStartDate, ex.Message, 1, loop.EmployeeCount);
 
+                loop.FailedEmployees = loop.FailedEmployees + 1;
                 await RecordEmployeeProgressAsync(
-                    engineRunId, sequenceNo, employee, false, ex.Message, employeeStartedAt, stopwatch);
+                    loop, sequenceNo, employee, false, ex.Message, employeeStartedAt, stopwatch);
+            }
+            finally
+            {
+                _currentEmployeeDayFailures = null;
             }
         }
+    }
 
-        var result = await FinalizeExecutionLogAsync(executionLogId, aborted, runStartedAt);
+    /// <summary>
+    /// The failed days of the employee in hand, so the employee can be reported failed once its day loop is done.
+    /// Null outside an employee.
+    /// </summary>
+    private DayFailures _currentEmployeeDayFailures;
 
-        await ProgressWriter.CompleteRunAsync(
-            engineRunId,
-            ResolveEngineRunStatus(result.Aborted, result.Failed),
-            executionLogId,
-            null);
+    /// <summary>Count of an employee's failed days and the first one, for the employee's progress message.</summary>
+    private sealed class DayFailures
+    {
+        public int Count { get; private set; }
 
-        return result;
+        public DateTime FirstDay { get; private set; }
+
+        public string FirstMessage { get; private set; }
+
+        public void Add(DateTime dayDate, string message)
+        {
+            if (Count == 0)
+            {
+                FirstDay = dayDate;
+                FirstMessage = message;
+            }
+
+            Count = Count + 1;
+        }
+
+        public string Describe()
+        {
+            var first = FirstDay.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) + " : " + FirstMessage;
+            return Count == 1
+                ? first
+                : string.Format(CultureInfo.InvariantCulture, "{0} days failed. First {1}", Count, first);
+        }
+    }
+
+    /// <summary>
+    /// The reason to show for a run-level failure. A save failure's own message is EF's "see the inner exception";
+    /// the reason is in the innermost one, so that is added when it differs.
+    /// </summary>
+    private static string FailureReason(Exception ex)
+    {
+        var innermost = ex.GetBaseException();
+        return innermost == null || ReferenceEquals(innermost, ex) || innermost.Message == ex.Message
+            ? ex.Message
+            : ex.Message + " " + innermost.Message;
     }
 
     /// <summary>Maps the run's outcome onto the operator-facing <see cref="EngineRunStatus"/>.</summary>
@@ -413,7 +675,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     }
 
     private async Task RecordEmployeeProgressAsync(
-        long engineRunId,
+        EmployeeLoopState loop,
         int sequenceNo,
         Employee employee,
         bool succeeded,
@@ -421,9 +683,9 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         DateTime startedAt,
         System.Diagnostics.Stopwatch stopwatch)
     {
-        await ProgressWriter.RecordEmployeeAsync(new EngineRunEmployeeProgress
+        var progress = new EngineRunEmployeeProgress
         {
-            EngineRunId = engineRunId,
+            EngineRunId = loop.EngineRunId,
             SequenceNo = sequenceNo,
             EmployeeId = employee.Id,
             EmployeeCode = employee.Code,
@@ -433,7 +695,154 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
             StartedAt = startedAt,
             CompletedAt = Clock.Now,
             ElapsedMilliseconds = (int)Math.Min(stopwatch.ElapsedMilliseconds, int.MaxValue)
-        });
+        };
+
+        if (loop.PendingProgress != null)
+        {
+            loop.PendingProgress.Add(progress);
+            return;
+        }
+
+        await ProgressWriter.RecordEmployeeAsync(progress);
+    }
+
+    private async Task RecordSkippedEmployeeAsync(EmployeeLoopState loop)
+    {
+        if (loop.PendingProgress != null)
+        {
+            loop.PendingSkips = loop.PendingSkips + 1;
+            return;
+        }
+
+        await ProgressWriter.RecordSkippedEmployeeAsync(loop.EngineRunId);
+    }
+
+    private async Task FlushPendingProgressAsync(EmployeeLoopState loop)
+    {
+        if (loop.PendingProgress == null)
+        {
+            return;
+        }
+
+        foreach (var progress in loop.PendingProgress)
+        {
+            await ProgressWriter.RecordEmployeeAsync(progress);
+        }
+
+        for (var i = 0; i < loop.PendingSkips; i++)
+        {
+            await ProgressWriter.RecordSkippedEmployeeAsync(loop.EngineRunId);
+        }
+
+        loop.PendingProgress.Clear();
+        loop.PendingSkips = 0;
+    }
+
+    /// <summary>
+    /// In batches the caller's unit of work only holds the execution log (the batches saved everything else), so it
+    /// is saved before the run is marked finished. In one unit of work it is the caller's to save, as before.
+    /// </summary>
+    private async Task SaveOuterUnitOfWorkWhenBatchedAsync(TimeEngineRunInput input)
+    {
+        if (input.CommitBatchSize > 0 && UnitOfWorkManager?.Current != null)
+        {
+            await UnitOfWorkManager.Current.SaveChangesAsync();
+        }
+    }
+
+    /// <summary>
+    /// Legacy's outer <c>catch</c> and <c>finally</c> (Program.cs lines 1716-1762, and Main's own catch at 185-199):
+    /// a failed <c>TimeLog</c> row with no employee carrying the reason, then the execution log finalised -- so it
+    /// reads FAILED or PARTIAL rather than staying "in process".
+    /// </summary>
+    private async Task FinalizeAfterFailureAsync(
+        TimeEngineRunInput input, int? executionLogId, EmployeeLoopState loop, Exception failure)
+    {
+        try
+        {
+            var dayDate = loop.RunStartDate != default(DateTime) ? loop.RunStartDate : (input.StartDate ?? default(DateTime));
+            await AddTimeLogAsync(null, dayDate, failure.Message, 1, loop.EmployeeCount);
+
+            if (executionLogId.HasValue)
+            {
+                await FinalizeExecutionLogAsync(executionLogId.Value, loop.Aborted, loop.RunStartedAt);
+            }
+
+            await SaveOuterUnitOfWorkWhenBatchedAsync(input);
+        }
+        catch (Exception finalizeFailure)
+        {
+            // Legacy swallowed this too ("catch (Exception ex) { }"); the run's own failure is what matters.
+            Logger.Warn("TimeEngine: could not finalise the execution log of a failed run.", finalizeFailure);
+        }
+    }
+
+    /// <summary>
+    /// The payroll area the run is filed under: the one selected, or -- for a run of named employees only -- the
+    /// area of the first code's current org assignment, the same lookup the screen's checks make (legacy
+    /// <c>uscTimeEngine.ascx.cs</c> lines 211-216). Null when there is none; such a run gets a key of its own and no
+    /// guard. Never throws: it only files the run, and must not be able to stop one.
+    /// </summary>
+    private async Task<string> ResolveRunPayrollAreaNameAsync(TimeEngineRunInput input)
+    {
+        if (!string.IsNullOrWhiteSpace(input.PayrollAreaName))
+        {
+            return input.PayrollAreaName.Trim();
+        }
+
+        // The payroll engine's per-employee calls always carry their area; no lookups added to every payroll employee.
+        if (TimeEngineRunKeys.IsPayrollEngineAutorun(input) || string.IsNullOrWhiteSpace(input.EmployeeCodes))
+        {
+            return null;
+        }
+
+        try
+        {
+            var firstCode = input.EmployeeCodes.Split(',')
+                .Select(c => c.Trim())
+                .FirstOrDefault(c => c.Length > 0);
+            if (firstCode == null)
+            {
+                return null;
+            }
+
+            var employeeId = _employeeRepository.GetAll()
+                .Where(e => e.Code == firstCode)
+                .Select(e => (int?)e.Id)
+                .FirstOrDefault();
+            if (employeeId == null)
+            {
+                return null;
+            }
+
+            var area = await _payrollAreaResolver.GetEmployeePayrollAreaAsync(employeeId.Value, Clock.Now.Date);
+            return area?.Name;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn("TimeEngine: could not resolve the payroll area of a codes-only run; it runs unguarded.", ex);
+            return null;
+        }
+    }
+
+    /// <summary>ONE RUN PER PAYROLL AREA -- the check. See <see cref="CreateTimeRegisterAsync"/>.</summary>
+    private async Task EnsureNoRunInProgressAsync(string runKey, string payrollAreaName)
+    {
+        if (string.IsNullOrWhiteSpace(runKey))
+        {
+            return;
+        }
+
+        var alreadyRunning = await ProgressWriter.GetActiveRunAsync(EngineType.TimeEngine, runKey);
+        if (alreadyRunning != null)
+        {
+            throw new UserFriendlyException(string.Format(
+                CultureInfo.InvariantCulture,
+                "The Time Engine is already running for payroll area '{0}' (started by {1} at {2}). Wait for it to finish, or stop it, before running this area again.",
+                payrollAreaName,
+                string.IsNullOrWhiteSpace(alreadyRunning.StartedByUserName) ? "another user" : alreadyRunning.StartedByUserName,
+                alreadyRunning.StartedAt.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)));
+        }
     }
 
     #endregion
@@ -517,7 +926,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     /// Active filter ONLY in the "no filter" branch -- the code-list branch deliberately includes inactive
     /// employees (so a named exited employee can still be processed). Preserved exactly.
     /// </summary>
-    private List<Employee> GetEmployeeList(string payrollAreaName, string employeeCodes, DateTime dayDate)
+    private async Task<List<Employee>> GetEmployeeListAsync(string payrollAreaName, string employeeCodes, DateTime dayDate)
     {
         var query = _employeeRepository.GetAll();
 
@@ -530,23 +939,20 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
 
         if (!string.IsNullOrEmpty(payrollAreaName))
         {
-            // Legacy navigates r.OrgAssignment (a bidirectional XPO collection this port does not have) and
-            // filters on rd.PayrollArea.Name. EmployeeOrgAssignment here has no PayrollArea FK either, so the
-            // area is resolved through PayrollArea.Name -> PayrollControlRecord is NOT usable; instead the
-            // org-assignment date window is applied and the payroll area matched by name via PayrollArea.
-            var payrollAreaIds = _payrollAreaRepository.GetAll()
-                .Where(r => r.Name == payrollAreaName).Select(r => r.Id).ToList();
+            // Legacy (Program.cs lines 2548-2553): active employees with an org assignment covering the end date
+            // IN THIS PAYROLL AREA (rd.PayrollArea.Name == PayrollArea). The area is matched through
+            // IEmployeePayrollAreaResolver -- the assignment's own PayrollAreaId, falling back to its org unit's
+            // profile for rows that predate that column -- exactly as the payroll engine selects its employees.
+            //
+            // BUG FIXED HERE: the area used to be looked up and then never applied -- every active employee with
+            // any assignment covering the date was run, whatever payroll area the operator picked.
+            var employeeIds = await _payrollAreaResolver.GetEmployeeIdsInPayrollAreaAsync(payrollAreaName, dayDate)
+                              ?? new List<int>();
 
-            if (!payrollAreaIds.Any())
+            if (!employeeIds.Any())
             {
                 return new List<Employee>();
             }
-
-            var employeeIds = _employeeOrgAssignmentRepository.GetAll()
-                .Where(r => r.StartDate <= dayDate && r.EndDate >= dayDate)
-                .Select(r => r.EmployeeId)
-                .Distinct()
-                .ToList();
 
             return query
                 .Where(r => employeeIds.Contains(r.Id) && r.Status == EmployeeStatus.Active)
@@ -586,6 +992,15 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     /// <c>ExecutionLog</c> row -- the operator screen shows one, reports show the other, and they must
     /// agree.
     /// </summary>
+    /// <summary>
+    /// The run's parameters in the execution log's words, for a caller that has to describe a run the engine
+    /// refused before it began (see <c>TimeEngineBackgroundJob</c>).
+    /// </summary>
+    public static string DescribeRun(TimeEngineRunInput input)
+    {
+        return BuildExecutionLogParameters(input);
+    }
+
     private static string BuildExecutionLogParameters(TimeEngineRunInput input)
     {
         var parts = new List<string>();
@@ -596,7 +1011,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         }
 
         parts.Add("Start Date : " + (input.StartDate ?? default(DateTime)).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
-        parts.Add("End Date : " + input.EndDate.Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
+        parts.Add("End Date : " + (input.EndDate ?? default(DateTime)).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
 
         if (!string.IsNullOrEmpty(input.EmployeeCodes))
         {

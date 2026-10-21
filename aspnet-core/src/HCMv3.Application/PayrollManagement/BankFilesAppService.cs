@@ -4,55 +4,81 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
+using Abp.Linq.Extensions;
 using Abp.Runtime.Session;
 using Abp.Timing;
 using Abp.UI;
 using ClosedXML.Excel;
 using HCMv3.Authorization;
+using HCMv3.Dto;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GovtRelationsManagement;
+using HCMv3.GridReports.Employees;
 using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement.BankFiles;
 using HCMv3.PayrollManagement.Dto;
+using HCMv3.PayrollManagement.Exporting;
+using HCMv3.PayrollManagement.Services;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Storage;
+using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.PayrollManagement;
 
 /// <summary>
-/// Bank salary-transfer file generation. Ported from legacy
-/// <c>HCM10.Web/UserControls/PayrollManagement/uscBankFile2.ascx.cs</c> (<c>btnGenerate_Click</c>,
-/// lines 104-2511, plus the helper region 2515-3315).
+/// Bank salary-transfer file generation. Ported from the LIVE legacy screen
+/// <c>HCM10.Web/UserControls/PayrollManagement/uscBankFile.ascx.cs</c> (<c>btnGenerate_Click</c>, lines
+/// 110-2511, plus the helper region 2513-3460). The 28 format branches are line-for-line those of
+/// <c>uscBankFile2.ascx.cs</c>, which they were first ported from; only the screen around them differs.
 ///
 /// LAYERING: this service does the DATA GATHERING only -- it resolves every employee's bank, sponsor,
 /// on-hold state and net pay into flat <see cref="BankFilePayeeRow"/> instances, then hands them to the pure
 /// <see cref="BankFileGenerator"/> domain service in <c>HCMv3.Core</c>. All 28 layouts live in Core and are
 /// unit-testable without a database.
 ///
-/// DELIBERATE DEVIATIONS FROM LEGACY (each also listed in the wave report):
-/// 1. NO SERVER-SIDE FILES. Legacy wrote to <c>~/Contents/BankFile</c> and streamed with
-///    <c>Response.WriteFile</c>; we return base64 in the DTO, per the <c>ReportPdfOutput</c> convention.
-/// 2. SPREADSHEETS ARE .xlsx, NOT .xls. Legacy used DevExpress <c>ASPxGridViewExporter.WriteXls</c> (BIFF8);
-///    we use ClosedXML (OpenXML). Cell VALUES and column order are identical; only the container differs.
-/// 3. NO EXECUTION LOG ROW. Legacy called <c>SysService.AddExecutionLog(..., Module.BankFile, ...)</c> with
-///    the zipped payload attached. HCMv3's execution-log equivalent is owned by another wave; NOT written
-///    here. REPORTED, not silently dropped.
-/// 4. NO SALARY-REGISTER LOCKING. Legacy's <c>LockSalaryRegisters()</c> (<c>:2515-2529</c>) flips
-///    <c>SalaryRegister.Locked</c> when <c>ManagePayrollSettings.LockSalaryRegisterOnPayrollExit</c> is on.
-///    That is a WRITE performed as a side effect of a download, and it belongs with the payroll-exit flow a
-///    sibling agent owns in <c>Core/PayrollManagement/Services/</c> (which this wave must not touch).
-///    NOT ported here -- see <see cref="BankFileNotPortedNotes"/>.
-/// 5. CULTURE PINNED TO INVARIANT for every numeric field (see <c>BankFileFieldFormat</c>).
+/// WHAT THE LIVE SCREEN DOES, AND WHERE IT IS HERE:
+/// <list type="bullet">
+/// <item>Period Current / Other (<c>:2528-2564</c>) -- <see cref="IBankFilePeriodResolver"/>, worked out on the
+/// server so a browser's time zone cannot move the end date a day.</item>
+/// <item>Payment Type ALL / BANK / CASH (<c>:219-238</c>) -- <see cref="BankFilePaymentTypeFilter"/>.</item>
+/// <item>Sponsor (A/C) listed for the chosen sponsor only (<c>BindSponsorBank :2608</c>) --
+/// <see cref="GetBankFileSponsorBanks"/>.</item>
+/// <item>Run history with a zipped copy of every file (<c>SysService.AddExecutionLog</c>, the "View Log"
+/// popup <c>:3367-3460</c>) -- <see cref="BankFileExecutionLogWriter"/>, <see cref="GetBankFileLogs"/>.</item>
+/// <item>Salary registers locked when the file is made (<c>LockSalaryRegisters :2513</c>) --
+/// <see cref="LockRegistersAsync"/>.</item>
+/// </list>
+///
+/// DELIBERATE DEVIATIONS FROM LEGACY:
+/// 1. The file is returned base64 in the DTO rather than streamed with <c>Response.WriteFile</c>, and the copy
+///    legacy wrote to <c>~/Contents/BankFile</c> goes to the tenant's file store instead.
+/// 2. SPREADSHEETS ARE .xlsx, NOT .xls (ClosedXML, not DevExpress <c>WriteXls</c>). Cell VALUES and column
+///    order are identical; only the container differs.
+/// 3. CULTURE PINNED TO INVARIANT for every numeric field (see <c>BankFileFieldFormat</c>).
+/// 4. Failed runs are logged (legacy logged successes only) -- see <see cref="BankFileExecutionLogWriter"/>.
+/// 5. With "separate file per employee bank", every selected register is locked; legacy locked only those of
+///    the LAST bank its loop visited (its <c>allSalRegList</c> is reassigned per bank, <c>:409</c>), and that
+///    order is whatever the database returned -- not something that can be reproduced.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PayrollManagement_BankFiles)]
 public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
 {
     private const string WageTypeNetPayCode = "9000";
+
+    /// <summary>Legacy <c>OrgService.OrgUT_Company</c>: the org-unit TYPE NAME that marks a company.</summary>
+    private const string CompanyOrgUnitTypeName = "Company";
+
+    private const string DateFormat = "dd/MM/yyyy";
 
     private readonly IRepository<SalaryRegister> _salaryRegisterRepository;
     private readonly IRepository<SalaryRegisterDetail> _salaryRegisterDetailRepository;
@@ -70,7 +96,17 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
     private readonly IRepository<PayrollControlRecord> _payrollControlRecordRepository;
     private readonly IRepository<OrganizationBankInfo> _organizationBankInfoRepository;
     private readonly IRepository<OrgUnitProfile> _orgUnitProfileRepository;
+    private readonly IRepository<OrganizationUnitType> _organizationUnitTypeRepository;
+    private readonly IRepository<ExecutionLog> _executionLogRepository;
+    private readonly IRepository<AppAttachment> _attachmentRepository;
     private readonly ISysSettingsAccessor _sysSettings;
+    private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
+    private readonly IBankFilePeriodResolver _periodResolver;
+    private readonly BankFileExecutionLogWriter _logWriter;
+    private readonly IAttachmentManager _attachmentManager;
+    private readonly ITempFileCacheManager _tempFileCacheManager;
+    private readonly IBankFileLogExcelExporter _logExcelExporter;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
     private readonly BankFileGenerator _generator = new();
 
     public BankFilesAppService(
@@ -90,7 +126,17 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         IRepository<PayrollControlRecord> payrollControlRecordRepository,
         IRepository<OrganizationBankInfo> organizationBankInfoRepository,
         IRepository<OrgUnitProfile> orgUnitProfileRepository,
-        ISysSettingsAccessor sysSettings)
+        IRepository<OrganizationUnitType> organizationUnitTypeRepository,
+        IRepository<ExecutionLog> executionLogRepository,
+        IRepository<AppAttachment> attachmentRepository,
+        ISysSettingsAccessor sysSettings,
+        IEmployeePayrollAreaResolver payrollAreaResolver,
+        IBankFilePeriodResolver periodResolver,
+        BankFileExecutionLogWriter logWriter,
+        IAttachmentManager attachmentManager,
+        ITempFileCacheManager tempFileCacheManager,
+        IBankFileLogExcelExporter logExcelExporter,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _salaryRegisterRepository = salaryRegisterRepository;
         _salaryRegisterDetailRepository = salaryRegisterDetailRepository;
@@ -108,8 +154,20 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         _payrollControlRecordRepository = payrollControlRecordRepository;
         _organizationBankInfoRepository = organizationBankInfoRepository;
         _orgUnitProfileRepository = orgUnitProfileRepository;
+        _organizationUnitTypeRepository = organizationUnitTypeRepository;
+        _executionLogRepository = executionLogRepository;
+        _attachmentRepository = attachmentRepository;
         _sysSettings = sysSettings;
+        _payrollAreaResolver = payrollAreaResolver;
+        _periodResolver = periodResolver;
+        _logWriter = logWriter;
+        _attachmentManager = attachmentManager;
+        _tempFileCacheManager = tempFileCacheManager;
+        _logExcelExporter = logExcelExporter;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
+
+    #region Lookups and period
 
     public async Task<BankFileLookupsOutput> GetBankFileLookups()
     {
@@ -125,19 +183,18 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             .Select(r => new BankFileLookupItemDto { Id = r.Id, Code = r.Code, DisplayText = r.NameEn })
             .ToListAsync();
 
-        output.SponsorBanks = await _sponsorBankRepository.GetAll()
-            .Include(r => r.PaymentBank)
-            .Where(r => r.PaymentBank != null)
-            .OrderBy(r => r.PaymentBank.Code)
-            .Select(r => new BankFileSponsorBankDto
-            {
-                Id = r.Id,
-                Code = r.PaymentBank.Code,
-                AccountNumber = r.AccountNumber,
-                // Legacy renders "NBK (1234567890)" and then re-parses that string (:171-191).
-                DisplayText = r.PaymentBank.Code + " (" + r.AccountNumber + ")"
-            })
-            .ToListAsync();
+        output.SponsorBanks = (await _sponsorBankRepository.GetAll()
+                .Where(r => r.PaymentBank != null)
+                .OrderBy(r => r.PaymentBank.Code)
+                .Select(r => new { r.Id, r.SponsorId, r.PaymentBank.Code, r.AccountNumber })
+                .ToListAsync())
+            .Select(r => SponsorBankDto(r.Id, r.SponsorId, r.Code, r.AccountNumber))
+            .ToList();
+
+        // Legacy BindMosalId: Sponsor.Select(r => r.MOSALID).Distinct().
+        output.MosalIds = (await _sponsorRepository.GetAll().Select(r => r.MOSALID).Distinct().ToListAsync())
+            .OrderBy(m => m)
+            .ToList();
 
         var banks = await _bankRepository.GetAll()
             .OrderBy(r => r.Code)
@@ -167,8 +224,84 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         return output;
     }
 
+    /// <summary>
+    /// Legacy <c>BindSponsorBank</c> (<c>:2608-2627</c>): every account of the chosen sponsor, as
+    /// "PaymentBank.Code (AccountNumber)". No date filter -- legacy had none.
+    /// </summary>
+    public async Task<List<BankFileSponsorBankDto>> GetBankFileSponsorBanks(EntityDto input)
+    {
+        return (await _sponsorBankRepository.GetAll()
+                .Where(r => r.SponsorId == input.Id)
+                .OrderBy(r => r.Id)
+                .Select(r => new
+                {
+                    r.Id,
+                    r.SponsorId,
+                    Code = r.PaymentBank != null ? r.PaymentBank.Code : null,
+                    r.AccountNumber
+                })
+                .ToListAsync())
+            .Select(r => SponsorBankDto(r.Id, r.SponsorId, r.Code, r.AccountNumber))
+            .ToList();
+    }
+
+    [HttpPost]
+    public async Task<BankFilePeriodDto> GetBankFilePeriod(GetBankFilePeriodInput input)
+    {
+        try
+        {
+            var period = await _periodResolver.ResolveAsync(
+                input.PeriodType, input.PayrollAreaId, input.PayrollMonth, input.PayrollYear);
+
+            return new BankFilePeriodDto
+            {
+                HasPeriod = true,
+                PeriodType = period.PeriodType,
+                PayrollMonth = period.PayrollMonth,
+                PayrollYear = period.PayrollYear,
+                StartDate = period.StartDate,
+                EndDate = period.EndDate,
+                StartDateText = period.StartDate.ToString(DateFormat, CultureInfo.InvariantCulture),
+                EndDateText = period.EndDate.ToString(DateFormat, CultureInfo.InvariantCulture)
+            };
+        }
+        catch (UserFriendlyException ex)
+        {
+            // Legacy's period callback swallowed the error and left the boxes as they were.
+            return new BankFilePeriodDto
+            {
+                HasPeriod = false,
+                PeriodType = input.PeriodType,
+                PayrollMonth = input.PayrollMonth,
+                PayrollYear = input.PayrollYear,
+                Message = ex.Message
+            };
+        }
+    }
+
+    #endregion
+
+    #region Generate
+
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_BankFiles_Generate)]
     public async Task<BankFileOutput> GenerateBankFile(GenerateBankFileInput input)
+    {
+        var userName = await CurrentUserNameAsync();
+        var parameters = await BuildRunParametersAsync(input);
+
+        try
+        {
+            return await GenerateCoreAsync(input, userName, parameters);
+        }
+        catch (Exception ex)
+        {
+            await _logWriter.WriteFailedAsync(userName, parameters.ToLegacyString(), ex.Message);
+            throw;
+        }
+    }
+
+    private async Task<BankFileOutput> GenerateCoreAsync(
+        GenerateBankFileInput input, string userName, BankFileRunParameters parameters)
     {
         ValidateInput(input);
 
@@ -181,22 +314,24 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             throw new UserFriendlyException(L("BankFilePaymentBankNotSelected"));
         }
 
-        await ValidatePayrollControlRecordAsync(input);
+        var period = await ResolveRunPeriodAsync(input);
+        var endDate = period.EndDate;
+        parameters.PeriodEndText = endDate.ToString(DateFormat, CultureInfo.InvariantCulture);
 
-        var endDate = input.EndDate.Date;
+        await ValidatePayrollControlRecordAsync(input, endDate);
 
-        // ---- 1. Employee filter chain (legacy :117-290) -------------------------------------------------
+        // ---- 1. Employee filter chain (legacy :112-327) -------------------------------------------------
         var employeeIds = await ResolveEmployeeIdsAsync(input, endDate, payerBank);
         if (employeeIds.Count == 0)
         {
             throw new UserFriendlyException(L("BankFileNoEmployeesMatchedFilters"));
         }
 
-        // ---- 2. Salary registers + net pay (legacy :327-376) --------------------------------------------
+        // ---- 2. Salary registers + net pay (legacy :329-375) --------------------------------------------
         var payrollSettings = await _sysSettings.GetPayrollSettingsAsync();
         var minAmount = payrollSettings?.BankFileMinAmount ?? 0d;
 
-        var registers = await QueryRegistersAsync(input, endDate, employeeIds);
+        var registers = await QueryRegistersAsync(input, period, employeeIds);
         if (registers.Count == 0)
         {
             throw new UserFriendlyException(L("BankFileNoSalaryRegistersFound"));
@@ -259,7 +394,7 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             Rows = rows
         };
 
-        // ---- 4. Split per payee bank (legacy :381-416) --------------------------------------------------
+        // ---- 4. Split per payee bank (legacy :378-416) --------------------------------------------------
         var payeeBankIdsPresent = rows
             .Where(r => r.EmployeeBankId.HasValue)
             .Select(r => r.EmployeeBankId.Value)
@@ -268,12 +403,11 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
 
         var splitBankFiles = input.SplitBankFiles && payeeBankIdsPresent.Count > 1;
 
-        var produced = new List<(string FileName, byte[] Content, string ContentType, string FormatCode, int Rows, double Total)>();
+        var produced = new List<RenderedFile>();
 
         if (!splitBankFiles)
         {
-            var assigned = payerBank.BankFile?.NameEn;
-            var doc = _generator.Generate(context, assigned);
+            var doc = Generate(context, payerBank.BankFile?.NameEn);
             if (doc != null)
             {
                 produced.Add(Render(doc, payerBank.Code, endDate, context.GeneratedOn, null));
@@ -299,7 +433,7 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
                 var assigned = payeeFormatByBankId.FirstOrDefault(f => f.PayeeBankId == payeeBankId)?.FormatName
                                ?? payerBank.BankFile?.NameEn;
 
-                var doc = _generator.Generate(subContext, assigned);
+                var doc = Generate(subContext, assigned);
                 if (doc == null)
                 {
                     continue;
@@ -316,10 +450,14 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             throw new UserFriendlyException(L("BankFileFormatNotAssignedForBank", payerBank.Code));
         }
 
+        BankFileOutput output;
+        string storedName;
+        byte[] storedZip;
+
         if (produced.Count == 1)
         {
             var single = produced[0];
-            return new BankFileOutput
+            output = new BankFileOutput
             {
                 FileName = single.FileName,
                 Base64Content = Convert.ToBase64String(single.Content),
@@ -328,20 +466,43 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
                 RecordCount = single.Rows,
                 TotalAmount = single.Total
             };
+
+            // Legacy :2899-2920 -- the single file is zipped for the log, named after the file.
+            storedName = Path.GetFileNameWithoutExtension(single.FileName) + ".zip";
+            storedZip = Zip(new List<(string, byte[])> { (single.FileName, single.Content) });
+        }
+        else
+        {
+            var zipName = "BankFile_" + payerBank.Code + "_" + endDate.ToString("MMyyyy") + "_" +
+                          context.GeneratedOn.ToString("ddMMyyyy_HHmmssff") + ".zip";
+            var zip = Zip(produced.Select(p => (p.FileName, p.Content)).ToList());
+
+            output = new BankFileOutput
+            {
+                FileName = zipName,
+                Base64Content = Convert.ToBase64String(zip),
+                ContentType = "application/zip",
+                FormatCode = string.Join(",", produced.Select(p => p.FormatCode).Distinct()),
+                RecordCount = produced.Sum(p => p.Rows),
+                TotalAmount = produced.Sum(p => p.Total)
+            };
+
+            storedName = zipName;
+            storedZip = zip;
         }
 
-        var zipName = "BankFile_" + payerBank.Code + "_" + endDate.ToString("MMyyyy") + "_" +
-                      context.GeneratedOn.ToString("ddMMyyyy_HHmmssff") + ".zip";
+        // ---- 5. Lock + log, committed together with the run (legacy :2513-2526, SysService.cs:1048) -----
+        output.RegistersLocked = await LockRegistersAsync(
+            registerIds, payrollSettings?.LockSalaryRegisterOnPayrollExit == true);
 
-        return new BankFileOutput
-        {
-            FileName = zipName,
-            Base64Content = Convert.ToBase64String(Zip(produced.Select(p => (p.FileName, p.Content)).ToList())),
-            ContentType = "application/zip",
-            FormatCode = string.Join(",", produced.Select(p => p.FormatCode).Distinct()),
-            RecordCount = produced.Sum(p => p.Rows),
-            TotalAmount = produced.Sum(p => p.Total)
-        };
+        var (logId, _) = await _logWriter.WriteSuccessAsync(
+            userName, parameters.ToLegacyString(), output.RecordCount, storedName, storedZip);
+
+        output.ExecutionLogId = logId;
+        output.StartDateText = period.StartDate.ToString(DateFormat, CultureInfo.InvariantCulture);
+        output.EndDateText = parameters.PeriodEndText;
+
+        return output;
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_BankFiles_Generate)]
@@ -362,11 +523,281 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         }
     }
 
+    /// <summary>Legacy's "File Format not found for Bank Code" (:2496-2499) as a message, not a crash.</summary>
+    private BankFileDocument Generate(BankFileContext context, string assignedFormatCode)
+    {
+        try
+        {
+            return _generator.Generate(context, assignedFormatCode);
+        }
+        catch (BankFileFormatNotFoundException ex)
+        {
+            throw new UserFriendlyException(L("BankFileFormatNotAssignedForBank", ex.PayerBankCode));
+        }
+    }
+
+    /// <summary>
+    /// Legacy <c>LockSalaryRegisters</c> (<c>uscBankFile.ascx.cs:2513-2526</c>): when
+    /// <c>LockSalaryRegisterOnPayrollExit</c> is on, every selected register still unlocked is locked -- regular
+    /// AND off-cycle, whatever the run type picked, and including those the file then leaves out (on hold,
+    /// below the minimum amount, no account): legacy passed its whole <c>allSalRegList</c>.
+    ///
+    /// <para>Exiting payroll (<c>PayrollControlRecordsAppService.LockRegistersForStateAsync</c>) locks with the
+    /// same rule -- only unlocked rows, only to <c>true</c> -- so whichever runs first, the other finds nothing
+    /// left to do: no double lock, no conflict, and neither ever unlocks.</para>
+    /// </summary>
+    /// <returns>How many registers this run locked.</returns>
+    private async Task<int> LockRegistersAsync(List<int> registerIds, bool lockOnPayrollExit)
+    {
+        if (!lockOnPayrollExit || registerIds.Count == 0)
+        {
+            return 0;
+        }
+
+        var unlocked = await _salaryRegisterRepository.GetAll()
+            .Where(r => registerIds.Contains(r.Id) && !r.Locked)
+            .ToListAsync();
+
+        foreach (var register in unlocked)
+        {
+            register.Locked = true;
+            await _salaryRegisterRepository.UpdateAsync(register);
+        }
+
+        return unlocked.Count;
+    }
+
+    private async Task<BankFilePeriod> ResolveRunPeriodAsync(GenerateBankFileInput input)
+    {
+        if (input.PeriodType.HasValue)
+        {
+            return await _periodResolver.ResolveAsync(input.PeriodType.Value, input.PayrollAreaId, input.Month, input.Year);
+        }
+
+        // A server-side caller (Go-Live Setup) passes its dates directly; they never crossed a time zone.
+        return new BankFilePeriod
+        {
+            PeriodType = BankFilePeriodType.Other,
+            PayrollMonth = input.Month,
+            PayrollYear = input.Year,
+            StartDate = input.StartDate.Date,
+            EndDate = input.EndDate.Date
+        };
+    }
+
+    private async Task<string> CurrentUserNameAsync()
+    {
+        if (!AbpSession.UserId.HasValue)
+        {
+            return null;
+        }
+
+        var user = await UserManager.FindByIdAsync(AbpSession.UserId.Value.ToString());
+        return user?.UserName;
+    }
+
+    /// <summary>The display texts legacy put in the log's parameter string (<c>GetParameterString :2813</c>).</summary>
+    private async Task<BankFileRunParameters> BuildRunParametersAsync(GenerateBankFileInput input)
+    {
+        var parameters = new BankFileRunParameters
+        {
+            PayrollRunTypeText = string.IsNullOrWhiteSpace(input.PayrollRunType)
+                ? null
+                : BankFileRunParameters.RunTypeText(input.PayrollRunType),
+            PaymentTypeText = BankFileRunParameters.PaymentTypeTextOf(input.PaymentType),
+            PeriodTypeText = BankFileRunParameters.PeriodTypeTextOf(input.PeriodType),
+            MosalIdText = input.MosalId?.ToString(CultureInfo.InvariantCulture),
+            EmployeeCodes = input.EmployeeCodes,
+            SplitBankFiles = input.SplitBankFiles,
+            PeriodEndText = !input.PeriodType.HasValue && input.EndDate != default
+                ? input.EndDate.ToString(DateFormat, CultureInfo.InvariantCulture)
+                : null
+        };
+
+        if (input.PayrollAreaId.HasValue)
+        {
+            parameters.PayrollAreaName = await _payrollAreaRepository.GetAll()
+                .Where(r => r.Id == input.PayrollAreaId.Value)
+                .Select(r => r.Name)
+                .FirstOrDefaultAsync();
+        }
+
+        var payerBank = await _bankRepository.GetAll()
+            .Where(r => r.Id == input.PaymentBankId)
+            .Select(r => new { r.Code, r.NameEn })
+            .FirstOrDefaultAsync();
+        if (payerBank != null)
+        {
+            parameters.PaymentBankText = payerBank.Code + "-" + payerBank.NameEn;
+        }
+
+        if (input.EmployeeBankId.HasValue)
+        {
+            var employeeBank = await _bankRepository.GetAll()
+                .Where(r => r.Id == input.EmployeeBankId.Value)
+                .Select(r => new { r.Code, r.NameEn })
+                .FirstOrDefaultAsync();
+            if (employeeBank != null)
+            {
+                parameters.EmployeeBankText = employeeBank.Code + "-" + employeeBank.NameEn;
+            }
+        }
+
+        if (input.SponsorId.HasValue)
+        {
+            parameters.SponsorText = await _sponsorRepository.GetAll()
+                .Where(r => r.Id == input.SponsorId.Value)
+                .Select(r => r.NameEn)
+                .FirstOrDefaultAsync();
+        }
+
+        if (input.SponsorBankId.HasValue)
+        {
+            var sponsorBank = await _sponsorBankRepository.GetAll()
+                .Where(r => r.Id == input.SponsorBankId.Value)
+                .Select(r => new { Code = r.PaymentBank != null ? r.PaymentBank.Code : null, r.AccountNumber })
+                .FirstOrDefaultAsync();
+            if (sponsorBank != null)
+            {
+                parameters.SponsorBankText = SponsorBankText(sponsorBank.Code, sponsorBank.AccountNumber);
+            }
+        }
+
+        return parameters;
+    }
+
+    #endregion
+
+    #region Run log
+
+    [HttpPost]
+    public async Task<BankFileLogsOutput> GetBankFileLogs(GetBankFileLogsInput input)
+    {
+        var all = BankFileLogs();
+
+        var allCount = await all.CountAsync();
+        var successfulCount = await all.CountAsync(r => r.ExecutionStatus == ExecutionLogStatus.SUCCESS);
+
+        var query = FilterLogs(all, input.StatusFilter);
+        var totalCount = await query.CountAsync();
+
+        var rows = await SortLogs(query, input.Sorting)
+            .PageBy(input)
+            .ToListAsync();
+
+        return new BankFileLogsOutput
+        {
+            TotalCount = totalCount,
+            Items = await ToLogDtosAsync(rows),
+            AllCount = allCount,
+            SuccessfulCount = successfulCount,
+            FailedCount = allCount - successfulCount
+        };
+    }
+
+    [HttpPost]
+    public async Task<FileDto> ExportBankFileLogs(GetBankFileLogsInput input)
+    {
+        var rows = await SortLogs(FilterLogs(BankFileLogs(), input.StatusFilter), input.Sorting).ToListAsync();
+
+        return await _logExcelExporter.ExportToFile(await ToLogDtosAsync(rows));
+    }
+
+    /// <summary>Downloading the copy shows salaries, so it needs the right to make the file in the first place.</summary>
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_BankFiles_Generate)]
+    public async Task<FileDto> GetBankFileLogDownload(EntityDto input)
+    {
+        var log = await BankFileLogs().FirstOrDefaultAsync(r => r.Id == input.Id);
+        if (log == null)
+        {
+            throw new UserFriendlyException(L("BankFileLogHasNoFile"));
+        }
+
+        var attachment = (await _attachmentManager.GetListAsync(
+                BankFileExecutionLogWriter.AttachmentEntityType, log.Id.ToString()))
+            .FirstOrDefault();
+
+        if (attachment == null)
+        {
+            throw new UserFriendlyException(L("BankFileLogHasNoFile"));
+        }
+
+        var content = await _attachmentManager.ReadContentAsync(attachment);
+        if (content == null)
+        {
+            throw new UserFriendlyException(L("AttachmentFileMissing"));
+        }
+
+        var file = new FileDto(attachment.FileName, attachment.ContentType);
+        _tempFileCacheManager.SetFile(file.FileToken, content);
+
+        return file;
+    }
+
+    private IQueryable<ExecutionLog> BankFileLogs() =>
+        _executionLogRepository.GetAll().Where(r => r.Module == ExecutionLogModule.BankFile);
+
+    /// <summary>Legacy <c>SetLogGridDataSource</c> (<c>:3419-3445</c>): Failed is everything not SUCCESS.</summary>
+    private static IQueryable<ExecutionLog> FilterLogs(IQueryable<ExecutionLog> query, BankFileLogFilter filter) =>
+        filter switch
+        {
+            BankFileLogFilter.Successful => query.Where(r => r.ExecutionStatus == ExecutionLogStatus.SUCCESS),
+            BankFileLogFilter.Failed => query.Where(r => r.ExecutionStatus != ExecutionLogStatus.SUCCESS),
+            _ => query
+        };
+
+    /// <summary>Newest first, as legacy (<c>OrderByDescending(r => r.ActionDateTime)</c>), unless the grid asks otherwise.</summary>
+    private static IQueryable<ExecutionLog> SortLogs(IQueryable<ExecutionLog> query, string sorting)
+    {
+        if (sorting.IsNullOrWhiteSpace())
+        {
+            return query.OrderByDescending(r => r.ActionDateTime).ThenByDescending(r => r.Id);
+        }
+
+        // The grid sorts by DTO field names; "succeeded" is a projection of the entity's status.
+        return query.OrderBy(sorting.Replace("succeeded", "executionStatus", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private async Task<List<BankFileLogDto>> ToLogDtosAsync(List<ExecutionLog> rows)
+    {
+        var ids = rows.Select(r => r.Id.ToString()).ToList();
+
+        var files = (await _attachmentRepository.GetAll()
+                .Where(a => a.EntityType == BankFileExecutionLogWriter.AttachmentEntityType && ids.Contains(a.EntityId))
+                .OrderBy(a => a.Id)
+                .Select(a => new { a.Id, a.EntityId, a.FileName })
+                .ToListAsync())
+            .GroupBy(a => a.EntityId)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        return rows.Select(r =>
+        {
+            files.TryGetValue(r.Id.ToString(), out var file);
+            return new BankFileLogDto
+            {
+                Id = r.Id,
+                UserName = r.UserName,
+                ActionDateTime = r.ActionDateTime,
+                ExecutionStatus = r.ExecutionStatus,
+                Succeeded = r.ExecutionStatus == ExecutionLogStatus.SUCCESS,
+                Parameters = r.Parameters,
+                TotalRecords = r.TotalRecords,
+                Successfull = r.Successfull,
+                Failed = r.Failed,
+                AttachmentId = file?.Id,
+                FileName = file?.FileName,
+                HasFile = file != null
+            };
+        }).ToList();
+    }
+
+    #endregion
+
     #region Filtering
 
     private void ValidateInput(GenerateBankFileInput input)
     {
-        // Legacy PerformValidation() :2745-2755
+        // Legacy PerformValidation() :2738-2747
         if (!input.PayrollAreaId.HasValue && !input.SponsorId.HasValue && !input.MosalId.HasValue &&
             string.IsNullOrWhiteSpace(input.EmployeeCodes))
         {
@@ -379,8 +810,8 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         }
     }
 
-    /// <summary>Legacy <c>PerformValidation()</c> :2756-2785 -- block export past a closed control record.</summary>
-    private async Task ValidatePayrollControlRecordAsync(GenerateBankFileInput input)
+    /// <summary>Legacy <c>PerformValidation()</c> :2749-2777 -- block export past a closed control record.</summary>
+    private async Task ValidatePayrollControlRecordAsync(GenerateBankFileInput input, DateTime endDate)
     {
         if (!input.PayrollAreaId.HasValue)
         {
@@ -411,16 +842,16 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             maxDate = record.CalendarMonthEnd;
         }
 
-        if (maxDate < input.EndDate.Date)
+        if (maxDate < endDate)
         {
             throw new UserFriendlyException(
-                L("BankFilePayrollControlRecordClosed", maxDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)));
+                L("BankFilePayrollControlRecordClosed", maxDate.ToString(DateFormat, CultureInfo.InvariantCulture)));
         }
     }
 
     private async Task<List<int>> ResolveEmployeeIdsAsync(GenerateBankFileInput input, DateTime endDate, Bank payerBank)
     {
-        // Legacy :118-124 -- optional comma-separated employee code list.
+        // Legacy :120-126 -- optional comma-separated employee code list.
         IQueryable<int> employeeIds;
         if (!string.IsNullOrWhiteSpace(input.EmployeeCodes))
         {
@@ -434,32 +865,24 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
 
         var ids = await employeeIds.ToListAsync();
 
-        // Legacy :127-142 -- Payroll Area via EmployeeOrgAssignment effective on EndDate.
-        //
-        // DEVIATION (forced): HCMv3's EmployeeOrgAssignment carries NO PayrollArea FK -- a known, documented
-        // porting gap (see TimeEngineService.Employee.cs:268-282 remarks, which hit the same wall). We route
-        // through the ORG UNIT instead: assignment effective on EndDate -> OrgUnitProfile.PayrollAreaId,
-        // which is the same workaround CurrencyService.RoundAsync uses (CurrencyService.cs:59-71).
-        // Behaviour matches legacy whenever payroll area is org-unit-derived, which is the normal setup.
+        // Legacy :129-143 -- EmployeeOrgAssignment.PayrollArea == the chosen area, on EndDate. Read through
+        // IEmployeePayrollAreaResolver, as the payroll engine does: the assignment's own PayrollAreaId first,
+        // and -- for assignments made before that column existed -- the org unit's payroll area.
         if (input.PayrollAreaId.HasValue)
         {
-            var orgUnitIdsForArea = await _orgUnitProfileRepository.GetAll()
-                .Where(p => p.PayrollAreaId == input.PayrollAreaId.Value)
-                .Select(p => p.OrganizationUnitId)
-                .Distinct()
-                .ToListAsync();
+            var areaName = await _payrollAreaRepository.GetAll()
+                .Where(r => r.Id == input.PayrollAreaId.Value)
+                .Select(r => r.Name)
+                .FirstOrDefaultAsync();
 
-            ids = await _employeeOrgAssignmentRepository.GetAll()
-                .Where(r => ids.Contains(r.EmployeeId)
-                            && r.StartDate <= endDate && r.EndDate >= endDate
-                            && r.OrganizationUnitId != null
-                            && orgUnitIdsForArea.Contains(r.OrganizationUnitId.Value))
-                .Select(r => r.EmployeeId)
-                .Distinct()
-                .ToListAsync();
+            var inArea = areaName == null
+                ? new HashSet<int>()
+                : new HashSet<int>(await _payrollAreaResolver.GetEmployeeIdsInPayrollAreaAsync(areaName, endDate));
+
+            ids = ids.Where(inArea.Contains).ToList();
         }
 
-        // Legacy :145-159 -- Sponsor.
+        // Legacy :146-161 -- Sponsor.
         if (input.SponsorId.HasValue)
         {
             ids = await _employeeSponsorRepository.GetAll()
@@ -471,7 +894,7 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
                 .ToListAsync();
         }
 
-        // Legacy :199-210 -- MOSAL ID.
+        // Legacy :205-216 -- MOSAL ID.
         if (input.MosalId.HasValue)
         {
             ids = await _employeeSponsorRepository.GetAll()
@@ -483,19 +906,20 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
                 .ToListAsync();
         }
 
-        // Legacy :213-240 -- Payment Type. NOTE: even with no payment type chosen, legacy still narrows to
-        // employees who HAVE an effective EmployeeBank row, which is what makes this filter mandatory.
+        // Legacy :219-238 -- Payment Type radio. ALL still narrows to employees who HAVE an employee-bank row
+        // in force on EndDate; BANK / CASH also need its payment type.
         var bankQuery = _employeeBankRepository.GetAll()
             .Where(r => ids.Contains(r.EmployeeId) && r.StartDate <= endDate && r.EndDate >= endDate);
 
-        if (input.PaymentType.HasValue)
+        var paymentType = BankFilePaymentTypeFilter.FilterOf(input.PaymentType);
+        if (paymentType.HasValue)
         {
-            bankQuery = bankQuery.Where(r => r.PaymentType == input.PaymentType.Value);
+            bankQuery = bankQuery.Where(r => r.PaymentType == paymentType.Value);
         }
 
         ids = await bankQuery.Select(r => r.EmployeeId).Distinct().ToListAsync();
 
-        // Legacy :243-256 -- Employee Bank.
+        // Legacy :241-254 -- Employee Bank.
         if (input.EmployeeBankId.HasValue)
         {
             ids = await _employeeBankRepository.GetAll()
@@ -507,7 +931,7 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
                 .ToListAsync();
         }
 
-        // Legacy :259-289 -- PayerBank. When ANY EmployeeBank row in the period names this payer bank,
+        // Legacy :257-287 -- PayerBank. When ANY EmployeeBank row in the period names this payer bank,
         // restrict to those employees; otherwise restrict to employees with NO payer bank set.
         var payerBankAssigned = await _employeeBankRepository.GetAll()
             .AnyAsync(r => r.PayerBankId == payerBank.Id && r.StartDate <= endDate && r.EndDate >= endDate);
@@ -520,10 +944,8 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             .Distinct()
             .ToListAsync();
 
-        // Legacy :292-325 -- Organization Unit filter.
-        // NOT PORTED: legacy walks Employee.OrgLevel1..OrgLevel7 computed properties, which are Wave B in
-        // HCMv3 (Employee.cs remarks: "CurrentCompany/CurrentDepartment/etc. computed properties are Wave B").
-        // Rejected loudly rather than silently ignored -- see BankFileNotPortedNotes.
+        // Legacy :290-326 -- Organization Unit filter. Its combo is Visible="false" and BindOrganizationUnit is
+        // commented out of Setup on the live screen, so legacy never applied it. Refused rather than ignored.
         if (input.OrganizationUnitId.HasValue)
         {
             throw new UserFriendlyException(L("BankFileOrganizationUnitFilterNotSupported"));
@@ -533,8 +955,9 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
     }
 
     private async Task<List<SalaryRegister>> QueryRegistersAsync(
-        GenerateBankFileInput input, DateTime endDate, List<int> employeeIds)
+        GenerateBankFileInput input, BankFilePeriod period, List<int> employeeIds)
     {
+        var endDate = period.EndDate;
         var query = _salaryRegisterRepository.GetAll()
             .Where(r => employeeIds.Contains(r.EmployeeId)
                         && r.ForPeriod == endDate
@@ -547,14 +970,14 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         }
         else
         {
-            // Legacy :344-353 + GetCutoffDate() :2787-2803.
-            var cutoff = await GetCutoffDateAsync(input);
+            // Legacy :345-357 + GetCutoffDate() :2780-2796.
+            var cutoff = await GetCutoffDateAsync(period);
             query = query.Where(r => r.PayrollRunType == PayrollRunType.Regular
                                      || (r.PayrollRunType == PayrollRunType.OffCycle
                                          && r.OffCyclePaymentDate >= cutoff));
         }
 
-        // Legacy :338-340 -- the register must have details, and must NOT have a zero-amount 9000 line.
+        // Legacy :340-342 -- the register must have details, and must NOT have a zero-amount 9000 line.
         var registers = await query.Select(r => new { r.Id, r.EmployeeId }).ToListAsync();
         var candidateIds = registers.Select(r => r.Id).ToList();
 
@@ -580,16 +1003,21 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             .ToList();
     }
 
-    private async Task<DateTime> GetCutoffDateAsync(GenerateBankFileInput input)
+    /// <summary>
+    /// Legacy <c>GetCutoffDate()</c> (<c>:2780-2796</c>): the cutoff day in the PAYROLL month and year
+    /// (<c>txtMonth</c>/<c>txtyear</c>), as if they were calendar ones -- even for a fiscal payroll period where
+    /// payroll month 1 is not January. Reproduced as-is.
+    /// </summary>
+    private async Task<DateTime> GetCutoffDateAsync(BankFilePeriod period)
     {
         var settings = await _sysSettings.GetPayrollSettingsAsync();
         var cutoffDay = settings?.OffcycleBankFileCutoff ?? 0;
         cutoffDay = cutoffDay == 0 ? 1 : cutoffDay;
 
-        var daysInMonth = DateTime.DaysInMonth(input.Year, input.Month);
+        var daysInMonth = DateTime.DaysInMonth(period.PayrollYear, period.PayrollMonth);
         cutoffDay = daysInMonth < cutoffDay ? daysInMonth : cutoffDay;
 
-        return new DateTime(input.Year, input.Month, cutoffDay);
+        return new DateTime(period.PayrollYear, period.PayrollMonth, cutoffDay);
     }
 
     #endregion
@@ -644,12 +1072,18 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
             .GroupBy(r => r.PayeeBankId)
             .ToDictionary(g => g.Key, g => g.First());
 
+        // Only GBK-T1 prints the company (legacy :1340), and only the GB/GBK branch can choose GBK-T1.
+        var companyNames = payerBank.Code == "GB" || payerBank.Code == "GBK"
+            ? await ResolveCurrentCompanyNamesAsync(employeeIds)
+            : new Dictionary<int, string>();
+
         var rows = new List<BankFilePayeeRow>();
 
         foreach (var emp in employees)
         {
             bankByEmployee.TryGetValue(emp.Id, out var empBank);
             sponsorByEmployee.TryGetValue(emp.Id, out var empSponsor);
+            companyNames.TryGetValue(emp.Id, out var companyName);
 
             var row = new BankFilePayeeRow
             {
@@ -664,9 +1098,7 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
                 HasSponsor = empSponsor != null,
                 SponsorNameEn = empSponsor?.Sponsor?.NameEn,
                 SponsorMosalId = empSponsor?.Sponsor?.MOSALID ?? 0,
-                // NOT PORTED: legacy GBK-T1 uses Employee.CurrentCompany.NameEn (:1342), a Wave B computed
-                // property on the HCMv3 Employee entity. Emitted blank; see BankFileNotPortedNotes.
-                CurrentCompanyNameEn = null
+                CurrentCompanyNameEn = companyName
             };
 
             if (empBank != null)
@@ -698,6 +1130,60 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         }
 
         return rows;
+    }
+
+    /// <summary>
+    /// Legacy <c>Employee.CurrentCompany.NameEn</c> (HCM10.Module Employee.cs:1404): the org-unit TYPE named
+    /// "Company" gives a level code (OrgLevel1..7); the employee's org assignment in force TODAY -- legacy's
+    /// <c>CurrentOrgAssignment</c> uses <c>DateTime.Now.Date</c>, not the period end -- gives the unit at that
+    /// level (<c>OrgService.GetCurrentOrgUnit</c>). In HCMv3 that unit is the ancestor-or-self of the assignment's
+    /// unit classified at the level, read through the same <see cref="EmployeeOrgLevelNameResolver"/> the grid
+    /// reports use for OrgLevel1..7. No "Company" type, or one at Level0/8/9, gives no name -- as legacy.
+    /// </summary>
+    private async Task<Dictionary<int, string>> ResolveCurrentCompanyNamesAsync(List<int> employeeIds)
+    {
+        var result = new Dictionary<int, string>();
+
+        var companyLevelCode = await _organizationUnitTypeRepository.GetAll()
+            .Where(t => t.NameEn == CompanyOrgUnitTypeName)
+            .OrderBy(t => t.Id)
+            .Select(t => t.Code)
+            .FirstOrDefaultAsync();
+
+        var levelIndex = Array.IndexOf(EmployeeOrgLevelNameResolver.LevelCodes, companyLevelCode);
+        if (levelIndex < 0)
+        {
+            return result;
+        }
+
+        var today = Clock.Now.Date;
+        var units = (await _employeeOrgAssignmentRepository.GetAll()
+                .Where(a => employeeIds.Contains(a.EmployeeId)
+                            && a.StartDate <= today && a.EndDate >= today
+                            && a.OrganizationUnitId != null)
+                .OrderBy(a => a.Id)
+                .Select(a => new { a.EmployeeId, a.OrganizationUnitId })
+                .ToListAsync())
+            .GroupBy(a => a.EmployeeId)
+            .ToDictionary(g => g.Key, g => g.First().OrganizationUnitId);
+
+        if (units.Count == 0)
+        {
+            return result;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(useArabicNames: false);
+
+        foreach (var (employeeId, unitId) in units)
+        {
+            var name = lookup.GetLevelNames(unitId)[levelIndex];
+            if (!string.IsNullOrEmpty(name))
+            {
+                result[employeeId] = name;
+            }
+        }
+
+        return result;
     }
 
     private static BankFileContext CloneContextForPayeeBank(BankFileContext source, int payeeBankId)
@@ -734,11 +1220,10 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
     }
 
     /// <summary>
-    /// Legacy (<c>:896-899</c>) picks the first <c>OrganizationBankInfo</c> whose org unit's TYPE NAME equals
+    /// Legacy (<c>:894-899</c>) picks the first <c>OrganizationBankInfo</c> whose org unit's TYPE NAME equals
     /// <c>OrgService.OrgUT_Company</c> and whose AccountNo is non-empty -- and notably does NOT filter by the
-    /// payer bank. HCMv3's org-unit types are coded Level0..Level9 rather than named, so we approximate
-    /// "company level" as the TOP level (Code "Level0"), falling back to any non-empty AccountNo.
-    /// DEVIATION -- reported.
+    /// payer bank. This port approximates "company level" as the TOP level (Code "Level0"), falling back to any
+    /// non-empty AccountNo. DEVIATION -- kept as it was (Go-Live Setup relies on the fallback); reported.
     /// </summary>
     private async Task<string> ResolveOrganizationBankAccountNoAsync(int payerBankId)
     {
@@ -780,12 +1265,33 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         return sponsor?.MOSALID;
     }
 
+    private static BankFileSponsorBankDto SponsorBankDto(int id, int sponsorId, string bankCode, string accountNumber) =>
+        new()
+        {
+            Id = id,
+            SponsorId = sponsorId,
+            Code = bankCode,
+            AccountNumber = accountNumber,
+            // Legacy renders "NBK (1234567890)" (:2617) and then re-parses that string (:171-191).
+            DisplayText = SponsorBankText(bankCode, accountNumber)
+        };
+
+    private static string SponsorBankText(string bankCode, string accountNumber) =>
+        (bankCode ?? string.Empty) + " (" + (accountNumber ?? string.Empty) + ")";
+
     #endregion
 
     #region Rendering
 
-    private static (string FileName, byte[] Content, string ContentType, string FormatCode, int Rows, double Total)
-        Render(BankFileDocument doc, string payerBankCode, DateTime endDate, DateTime generatedOn, string payeeBankCode)
+    private sealed record RenderedFile(
+        string FileName, byte[] Content, string ContentType, string FormatCode, int Rows, double Total);
+
+    /// <summary>
+    /// Bytes + the figures shown after a run. Count and total are the format's own when it states them -- for a
+    /// text file, exactly what its trailer says -- otherwise the grid's rows and the sum of its amount column.
+    /// </summary>
+    private static RenderedFile Render(
+        BankFileDocument doc, string payerBankCode, DateTime endDate, DateTime generatedOn, string payeeBankCode)
     {
         var stem = "BankFile_" + payerBankCode + "_" + endDate.ToString("MMyyyy") + "_" +
                    generatedOn.ToString("ddMMyyyy_HHmmssff") +
@@ -793,14 +1299,26 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
 
         if (doc.Kind == BankFileDocumentKind.Text)
         {
-            return (stem + ".txt",
-                    Encoding.UTF8.GetBytes(doc.TextContent ?? string.Empty),
-                    "text/plain",
-                    doc.FormatCode,
-                    CountTextDetailLines(doc.TextContent),
-                    0d);
+            return new RenderedFile(
+                stem + ".txt",
+                Encoding.UTF8.GetBytes(doc.TextContent ?? string.Empty),
+                "text/plain",
+                doc.FormatCode,
+                doc.RecordCount ?? CountTextDetailLines(doc.TextContent),
+                doc.TotalAmount ?? 0d);
         }
 
+        return new RenderedFile(
+            stem + ".xlsx",
+            RenderXlsx(doc),
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            doc.FormatCode,
+            doc.RecordCount ?? doc.Rows.Count,
+            doc.TotalAmount ?? SumAmountColumn(doc));
+    }
+
+    private static double SumAmountColumn(BankFileDocument doc)
+    {
         var amountColumn = doc.Columns.FindIndex(c =>
             c.IndexOf("amount", StringComparison.OrdinalIgnoreCase) >= 0);
 
@@ -809,19 +1327,14 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
         {
             foreach (var row in doc.Rows)
             {
-                if (row[amountColumn] is double d)
+                if (row.Count > amountColumn && row[amountColumn] is double d)
                 {
                     total += d;
                 }
             }
         }
 
-        return (stem + ".xlsx",
-                RenderXlsx(doc),
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                doc.FormatCode,
-                doc.Rows.Count,
-                total);
+        return total;
     }
 
     /// <summary>Detail lines only -- the header and trailer are excluded.</summary>
@@ -911,31 +1424,17 @@ public class BankFilesAppService : HCMv3AppServiceBase, IBankFilesAppService
 public static class BankFileNotPortedNotes
 {
     /// <summary>
-    /// <c>uscBankFile2.ascx.cs:2515-2529 LockSalaryRegisters()</c> -- sets <c>SalaryRegister.Locked</c> on
-    /// every exported register when <c>ManagePayrollSettings.LockSalaryRegisterOnPayrollExit</c> is true.
-    /// Owned by the payroll-exit flow in <c>Core/PayrollManagement/Services/</c>, which this wave must not
-    /// modify. Needs to be wired in by whoever owns that file.
+    /// <c>uscBankFile.ascx.cs:290-326</c> -- Organization Unit filter walking <c>Employee.OrgLevel1..OrgLevel7</c>.
+    /// On the LIVE screen its combo is <c>Visible="false"</c> and <c>BindOrganizationUnit()</c> is commented out of
+    /// <c>Setup</c>, so legacy never applied it either; the input is refused with a message instead of ignored.
     /// </summary>
-    public const string SalaryRegisterLocking = "uscBankFile2.ascx.cs:2515-2529";
+    public const string OrganizationUnitFilter = "uscBankFile.ascx.cs:290-326";
 
     /// <summary>
-    /// <c>uscBankFile2.ascx.cs:2934-2951 / 3040-3056 SysService.AddExecutionLog(..., Module.BankFile, ...)</c>
-    /// -- writes an execution-log row carrying the zipped payload and the parameter string built by
-    /// <c>GetParameterString()</c> (<c>:2820-2862</c>). HCMv3's execution-log equivalent is another wave's.
+    /// <c>uscBankFile.ascx.cs:894-899</c> (and the other CBK text branches) -- the company account is the
+    /// <c>OrganizationBankInfo</c> of an org unit whose TYPE NAME is "Company". This port still picks the Level0
+    /// unit's account, falling back to any account, because Go-Live Setup saves the company account on the unit
+    /// most of the area's employees sit in, whatever its type.
     /// </summary>
-    public const string ExecutionLog = "uscBankFile2.ascx.cs:2934-2951, 3040-3056, 2820-2862";
-
-    /// <summary>
-    /// <c>uscBankFile2.ascx.cs:292-325</c> -- Organization Unit filter walking
-    /// <c>Employee.OrgLevel1..OrgLevel7</c>. Those computed properties are Wave B on HCMv3's Employee
-    /// entity, so the filter throws a localized "not supported" error instead of silently ignoring it.
-    /// </summary>
-    public const string OrganizationUnitFilter = "uscBankFile2.ascx.cs:292-325";
-
-    /// <summary>
-    /// <c>uscBankFile2.ascx.cs:1342</c> -- GBK-T1's trailing company name reads
-    /// <c>Employee.CurrentCompany.NameEn</c>, also a Wave B computed property. Emitted blank for now; the
-    /// field sits at the END of the detail line, so its absence does not shift any other field.
-    /// </summary>
-    public const string GbkT1CompanyName = "uscBankFile2.ascx.cs:1342";
+    public const string CompanyBankAccount = "uscBankFile.ascx.cs:894-899";
 }

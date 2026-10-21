@@ -1,22 +1,21 @@
-<div [@routerTransition]>
-    <sub-header
-        [title]="'ProjectCostEngine' | localize"
-        [description]="'ProjectManagement' | localize"></sub-header>
+<div [@routerTransition] [helpPage]="'prj.project-cost-engine'">
+    <sub-header [title]="'ProjectCostEngine' | localize" [description]="'ProjectManagement' | localize"></sub-header>
 
     <div [class]="containerClass">
         <div class="card card-custom">
-            <div class="card-body">
+            <div class="card-body" [busyIf]="periodLoading()">
                 <div class="row">
-                    <div class="col-md-3 mb-5">
-                        <label class="form-label required" for="ProjectCostEngine_PayrollArea">{{
-                            'PayrollAreaId' | localize
-                        }}</label>
+                    <!-- Legacy cmbPayrollArea. -->
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label required" for="ProjectCostEngine_PayrollArea">
+                            {{ 'PayrollAreaId' | localize }}
+                        </label>
                         <select
                             id="ProjectCostEngine_PayrollArea"
                             class="form-select"
                             name="PayrollAreaName"
                             [ngModel]="payrollAreaName()"
-                            (ngModelChange)="payrollAreaName.set($event)">
+                            (ngModelChange)="onPayrollAreaChange($event)">
                             <option [ngValue]="''"></option>
                             @for (item of payrollAreas(); track item.id) {
                                 <option [ngValue]="item.name">{{ item.name }}</option>
@@ -24,84 +23,127 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3 mb-5">
-                        <label class="form-label required" for="ProjectCostEngine_RunType">{{
-                            'PayrollRunType' | localize
-                        }}</label>
-                        <select
-                            id="ProjectCostEngine_RunType"
-                            class="form-select"
-                            name="PayrollRunType"
-                            [ngModel]="payrollRunType()"
-                            (ngModelChange)="onPayrollRunTypeChange($event)">
-                            <option [ngValue]="PayrollRunType.Regular">{{ 'Regular' | localize }}</option>
-                            <option [ngValue]="PayrollRunType.OffCycle">{{ 'OffCycle' | localize }}</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mb-5">
-                        <label class="form-label" for="ProjectCostEngine_EmployeeCodes">{{
-                            'EmployeeCode' | localize
-                        }}</label>
-                        <input
-                            id="ProjectCostEngine_EmployeeCodes"
-                            type="text"
-                            class="form-control"
-                            name="EmployeeCodes"
-                            maxlength="2000"
-                            [ngModel]="employeeCodes()"
-                            (ngModelChange)="employeeCodes.set($event)" />
-                    </div>
-
-                    <div class="col-md-3 mb-5">
-                        <label class="form-label required" for="ProjectCostEngine_PayInDate">{{
-                            'EndDate' | localize
-                        }}</label>
-                        <input
-                            id="ProjectCostEngine_PayInDate"
-                            type="date"
-                            class="form-control"
-                            name="PayInDate"
-                            [ngModel]="payInDate()"
-                            (ngModelChange)="payInDate.set($event)" />
+                    <!-- Legacy txtEmpCode + the employee popup button. -->
+                    <div class="col-md-8 mb-5">
+                        <label class="form-label" for="ProjectCostEngine_EmployeeCodes">
+                            {{ 'EmployeeCode' | localize }}
+                        </label>
+                        <div class="input-group">
+                            <input
+                                id="ProjectCostEngine_EmployeeCodes"
+                                type="text"
+                                class="form-control"
+                                name="EmployeeCodes"
+                                maxlength="4000"
+                                [ngModel]="employeeCodes()"
+                                (ngModelChange)="employeeCodes.set($event)" />
+                            <button
+                                type="button"
+                                class="btn btn-light-primary"
+                                [title]="l('PayrollRunSelectEmployees')"
+                                [attr.aria-label]="l('PayrollRunSelectEmployees')"
+                                [disabled]="!canPickEmployees()"
+                                (click)="openEmployeePicker()">
+                                <i class="fa fa-users"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                @if (isOffCycle()) {
-                    <div class="row">
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label" for="ProjectCostEngine_OffCycleReason">{{
-                                'OffCycleReason' | localize
-                            }}</label>
-                            <select
-                                id="ProjectCostEngine_OffCycleReason"
-                                class="form-select"
-                                name="OffCycleReason"
-                                [ngModel]="offCycleReason()"
-                                (ngModelChange)="offCycleReason.set($event)">
-                                <option [ngValue]="''"></option>
-                                @for (reason of offCycleReasons; track reason.value) {
-                                    <option [ngValue]="reason.value">{{ reason.localizationKey | localize }}</option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="col-md-3 mb-5">
-                            <label class="form-label required" for="ProjectCostEngine_OffCyclePaymentDate">{{
-                                'OffCyclePaymentDate' | localize
-                            }}</label>
-                            <input
-                                id="ProjectCostEngine_OffCyclePaymentDate"
-                                type="date"
-                                class="form-control"
-                                name="OffCyclePaymentDate"
-                                [ngModel]="offCyclePaymentDate()"
-                                (ngModelChange)="offCyclePaymentDate.set($event)" />
+                <!-- Legacy rdCurrent / rdOtherPeriod, txtMonth / txtyear and the read-only start / end dates. -->
+                <div class="row align-items-end">
+                    <div class="col-md-3 mb-5">
+                        <div class="d-flex gap-5">
+                            <div class="form-check">
+                                <input
+                                    id="ProjectCostEngine_PeriodCurrent"
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="ProjectCostEnginePeriod"
+                                    [checked]="!otherPeriod()"
+                                    (change)="onPeriodModeChange(false)" />
+                                <label class="form-check-label" for="ProjectCostEngine_PeriodCurrent">
+                                    {{ 'Current' | localize }}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    id="ProjectCostEngine_PeriodOther"
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="ProjectCostEnginePeriod"
+                                    [checked]="otherPeriod()"
+                                    (change)="onPeriodModeChange(true)" />
+                                <label class="form-check-label" for="ProjectCostEngine_PeriodOther">
+                                    {{ 'PayrollRunOtherPeriod' | localize }}
+                                </label>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col-md-2 mb-5">
+                        <label class="form-label" for="ProjectCostEngine_Month">{{ 'Month' | localize }}</label>
+                        <input
+                            id="ProjectCostEngine_Month"
+                            type="number"
+                            class="form-control"
+                            name="Month"
+                            min="1"
+                            max="12"
+                            [readonly]="!otherPeriod()"
+                            [class.bg-light]="!otherPeriod()"
+                            [ngModel]="month()"
+                            (ngModelChange)="onMonthChange($event)" />
+                    </div>
+
+                    <div class="col-md-2 mb-5">
+                        <label class="form-label" for="ProjectCostEngine_Year">{{ 'Year' | localize }}</label>
+                        <input
+                            id="ProjectCostEngine_Year"
+                            type="number"
+                            class="form-control"
+                            name="Year"
+                            min="1900"
+                            max="9999"
+                            [readonly]="!otherPeriod()"
+                            [class.bg-light]="!otherPeriod()"
+                            [ngModel]="year()"
+                            (ngModelChange)="onYearChange($event)" />
+                    </div>
+
+                    <div class="col-md-5 mb-5">
+                        <label class="form-label required" for="ProjectCostEngine_StartDate">
+                            {{ 'StartDate' | localize }} - {{ 'EndDate' | localize }}
+                        </label>
+                        <div class="input-group">
+                            <input
+                                id="ProjectCostEngine_StartDate"
+                                type="text"
+                                class="form-control bg-light"
+                                name="StartDate"
+                                readonly
+                                [value]="period()?.calendarMonthStart | luxonFormat: 'dd/MM/yyyy'" />
+                            <input
+                                id="ProjectCostEngine_EndDate"
+                                type="text"
+                                class="form-control bg-light"
+                                name="EndDate"
+                                readonly
+                                [attr.aria-label]="l('EndDate')"
+                                [value]="period()?.calendarMonthEnd | luxonFormat: 'dd/MM/yyyy'" />
+                        </div>
+                    </div>
+                </div>
+
+                @if (period()?.message) {
+                    <div class="text-muted fs-7 mb-5">{{ period().message }}</div>
+                }
+                @if (periodNotRunnable() && !period()?.periodLocked) {
+                    <div class="alert alert-warning py-3 mb-5">{{ 'PayrollRunRegularNeedsLockedPeriod' | localize }}</div>
                 }
 
-                <div class="d-flex gap-3">
+                <!-- Legacy btnCalculateProjectCosting / btnStopProjectCosting / btnClearStatus. -->
+                <div class="d-flex flex-wrap gap-3">
                     @if ('Pages.ProjectManagement.ProjectCostEngine.Run' | permission) {
                         <button
                             type="button"
@@ -120,63 +162,68 @@
 
                         <button type="button" class="btn btn-warning fw-bold" (click)="clearStatus()">
                             <i class="fa fa-eraser"></i>
-                            <span>{{ 'Clear' | localize }}</span>
+                            <span>{{ 'ClearStatus' | localize }}</span>
                         </button>
                     }
 
-                    <button type="button" class="btn btn-secondary fw-bold" (click)="refreshStatus(); reloadPage()">
+                    <button type="button" class="btn btn-secondary fw-bold" (click)="refresh()">
                         <i class="fa fa-sync"></i>
                         <span>{{ 'Refresh' | localize }}</span>
                     </button>
                 </div>
-
-                @if (status(); as s) {
-                    <div class="row mt-5">
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'TotalRecords' | localize }}</label>
-                            <div class="fw-bold">{{ s.totalRecords }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'Successfull' | localize }}</label>
-                            <div class="fw-bold text-success">{{ s.successRecords }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'Failed' | localize }}</label>
-                            <div class="fw-bold text-danger">{{ s.failedRecords }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'EmployeesProcessed' | localize }}</label>
-                            <div class="fw-bold">{{ s.totalEmployeesProcessed }} / {{ s.noOfEmployee }}</div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'ProcessSpeedPerMinute' | localize }}</label>
-                            <div class="fw-bold">{{ s.speedPerMinute }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'EstimatedTimeToComplete' | localize }}</label>
-                            <div class="fw-bold">{{ s.remainingMinutes }}</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ 'Employee' | localize }}</label>
-                            <div class="fw-bold">{{ s.currentEmployee }}</div>
-                        </div>
-                    </div>
-
-                    @if (s.stopRequested) {
-                        <div class="alert alert-warning mt-3 mb-0">
-                            {{ 'ProjectCostEngineStopped' | localize }}
-                        </div>
-                    }
-                }
             </div>
         </div>
 
+        <!-- Live per-run progress: gauge, counters, timings, stale detection, Abandon and the per-employee grid --
+             the same shared panel the Time and Payroll Engine screens use. -->
+        <engine-run-progress #engineProgress [engine]="EngineType.ProjectCostEngine"></engine-run-progress>
+
+        <!-- Legacy log popup (grid_Payroll over ProjectLog): the current run's log, with its export. -->
         <div class="card card-custom mt-5">
             <div class="card-body">
-                <h5 class="mb-5">{{ 'ProjectCostEngineRunHistory' | localize }}</h5>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-5">
+                    <h5 class="mb-0">{{ 'ProjectLogs' | localize }}</h5>
+
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="btn-group" role="group">
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                [class.btn-primary]="logOnlyFailed() === undefined"
+                                [class.btn-light]="logOnlyFailed() !== undefined"
+                                (click)="setLogFilter(undefined)">
+                                {{ 'All' | localize }} ({{ logAllCount() }})
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                [class.btn-primary]="logOnlyFailed() === false"
+                                [class.btn-light]="logOnlyFailed() !== false"
+                                (click)="setLogFilter(false)">
+                                {{ 'Successfull' | localize }} ({{ logSuccessCount() }})
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                [class.btn-primary]="logOnlyFailed() === true"
+                                [class.btn-light]="logOnlyFailed() !== true"
+                                (click)="setLogFilter(true)">
+                                {{ 'Failed' | localize }} ({{ logFailedCount() }})
+                            </button>
+                        </div>
+
+                        <!-- Legacy btnExportPayrollLog: the log as filtered here. -->
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-light-success fw-bold"
+                            [disabled]="exporting() || primengTableHelper.totalRecordsCount() == 0"
+                            [busyIf]="exporting()"
+                            (click)="exportLogsToExcel()">
+                            <i class="far fa-file-excel"></i>
+                            <span>{{ 'ExportToExcel' | localize }}</span>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
@@ -184,7 +231,7 @@
                         <p-table
                             #dataTable
                             sortMode="multiple"
-                            (onLazyLoad)="getProjectLogs($event)"
+                            (onLazyLoad)="getLogs($event)"
                             [value]="primengTableHelper.records()"
                             rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                             [paginator]="false"
@@ -195,8 +242,15 @@
                             [resizableColumns]="primengTableHelper.resizableColumns">
                             <ng-template #header>
                                 <tr>
-                                    <th style="min-width: 200px">{{ 'Employee' | localize }}</th>
-                                    <th style="min-width: 150px" pSortableColumn="runTimeStamp">
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'EmployeeCode' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="employeeName">
+                                        {{ 'EmployeeName' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="runTimeStamp">
                                         {{ 'RunTimeStamp' | localize }}
                                         <p-sortIcon field="runTimeStamp" />
                                     </th>
@@ -204,22 +258,29 @@
                                         {{ 'Status' | localize }}
                                         <p-sortIcon field="status" />
                                     </th>
-                                    <th style="min-width: 130px" pSortableColumn="inPeriod">
+                                    <th style="min-width: 320px">{{ 'Message' | localize }}</th>
+                                    <th style="min-width: 120px" pSortableColumn="inPeriod">
                                         {{ 'InPeriod' | localize }}
                                         <p-sortIcon field="inPeriod" />
                                     </th>
-                                    <th style="min-width: 320px">{{ 'Message' | localize }}</th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
                                 <tr>
+                                    <td style="min-width: 120px">{{ record.employeeCode }}</td>
                                     <td style="min-width: 200px">{{ record.employeeName }}</td>
-                                    <td style="min-width: 150px">
-                                        {{ record.runTimeStamp | luxonFormat: 'yyyy-MM-dd HH:mm' }}
+                                    <td style="min-width: 170px">
+                                        {{ record.runTimeStamp | luxonFormat: 'dd/MM/yyyy HH:mm:ss' }}
                                     </td>
-                                    <td style="min-width: 120px">{{ statusText(record.status) }}</td>
-                                    <td style="min-width: 130px">{{ record.inPeriod | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 120px">
+                                        @if (record.status === 0) {
+                                            <span class="badge bg-success">{{ logStatusText(record.status) }}</span>
+                                        } @else {
+                                            <span class="badge bg-danger">{{ logStatusText(record.status) }}</span>
+                                        }
+                                    </td>
                                     <td style="min-width: 320px">{{ record.message }}</td>
+                                    <td style="min-width: 120px">{{ record.inPeriod | luxonFormat: 'dd/MM/yyyy' }}</td>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -232,7 +293,7 @@
                             <p-paginator
                                 [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                 #paginator
-                                (onPageChange)="getProjectLogs($event)"
+                                (onPageChange)="getLogs($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount()"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                 [showCurrentPageReport]="true"
@@ -246,4 +307,8 @@
             </div>
         </div>
     </div>
+
+    <projectCostEngineEmployeePickerModal
+        #employeePicker
+        (codesSelected)="onEmployeesPicked($event)"></projectCostEngineEmployeePickerModal>
 </div>

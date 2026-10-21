@@ -13,8 +13,8 @@ public enum EngineType
     PayrollEngine = 2,
 
     /// <summary>
-    /// Reserved. The Project Cost Engine still reports progress through its own legacy
-    /// <c>ProjectLog</c>-derived <c>ProjectCostEngineStatusDto</c> and is NOT instrumented here.
+    /// The Project Cost Engine (<c>ProjectCostEngineService</c>), one run at a time per tenant
+    /// (run key <c>ProjectCostEngineService.RunKey</c>).
     /// </summary>
     ProjectCostEngine = 3
 }

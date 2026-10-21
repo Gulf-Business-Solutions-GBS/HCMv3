@@ -31,7 +31,7 @@
     <PackageReference Include="Abp.HangFire.AspNetCore" Version="11.1.0" />
     <PackageReference Include="Abp.RedisCache" Version="11.1.0" />
     <PackageReference Include="Abp.HtmlSanitizer" Version="11.1.0" />
-    <PackageReference Include="HtmlSanitizer" Version="9.0.892" />
+    <PackageReference Include="HtmlSanitizer" Version="9.2.1039" />
     <PackageReference Include="Abp.AspNetCore.OpenIddict" Version="11.1.0" />
   </ItemGroup>
   <ItemGroup>
@@ -40,5 +40,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.16.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.16.0" />
+  </ItemGroup>
+  <!-- Security pin: Swashbuckle 10.1.4 brings Microsoft.OpenApi 2.4.1 (NU1903). Drop once Swashbuckle ships it. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
   </ItemGroup>
 </Project>

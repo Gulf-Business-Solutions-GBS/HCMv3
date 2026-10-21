@@ -1,0 +1,198 @@
+<div
+    appBsModal
+    #pickerModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="pickerModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !working() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ 'PayrollRunSelectEmployees' | localize }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        [attr.aria-label]="l('Close')"
+                        [disabled]="working()"></button>
+                </div>
+
+                <div class="modal-body" [busyIf]="working()">
+                    <!-- Legacy lblPopupPayrollArea / lblPopupPayrollStatus. -->
+                    <div class="d-flex flex-wrap gap-5 mb-5">
+                        <div>
+                            <span class="text-muted me-2">{{ 'PayrollArea' | localize }}:</span>
+                            <span class="fw-bold">{{ args()?.payrollAreaName }}</span>
+                        </div>
+                        @if (args()?.payInDate) {
+                            <div>
+                                <span class="text-muted me-2">{{ 'EndDate' | localize }}:</span>
+                                <span class="fw-bold">{{ args()?.payInDate | luxonFormat: 'dd/MM/yyyy' }}</span>
+                            </div>
+                        }
+                        <div class="ms-auto">
+                            <span class="badge badge-light-primary fs-7">
+                                {{ 'SelectedCount' | localize: selectedCount() }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-7 mb-3">
+                            <div class="btn-group" role="group">
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === PayrollRunCandidateFilter.All"
+                                    [class.btn-light]="statusFilter() !== PayrollRunCandidateFilter.All"
+                                    (click)="setStatusFilter(PayrollRunCandidateFilter.All)">
+                                    {{ 'PayrollRunFilterAll' | localize: allCount() }}
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === PayrollRunCandidateFilter.Processed"
+                                    [class.btn-light]="statusFilter() !== PayrollRunCandidateFilter.Processed"
+                                    (click)="setStatusFilter(PayrollRunCandidateFilter.Processed)">
+                                    {{ 'PayrollRunFilterProcessed' | localize: processedCount() }}
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === PayrollRunCandidateFilter.Pending"
+                                    [class.btn-light]="statusFilter() !== PayrollRunCandidateFilter.Pending"
+                                    (click)="setStatusFilter(PayrollRunCandidateFilter.Pending)">
+                                    {{ 'PayrollRunFilterPending' | localize: pendingCount() }}
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === PayrollRunCandidateFilter.Selected"
+                                    [class.btn-light]="statusFilter() !== PayrollRunCandidateFilter.Selected"
+                                    (click)="setStatusFilter(PayrollRunCandidateFilter.Selected)">
+                                    {{ 'PayrollRunFilterSelected' | localize: selectedCount() }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <form class="input-group" (ngSubmit)="applySearch()" autocomplete="off">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="PickerFilter"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)" />
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="flaticon-search-1"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <button type="button" class="btn btn-sm btn-light-primary" [disabled]="working()" (click)="selectAll(true)">
+                            <i class="fa fa-check-square"></i>
+                            {{ 'SelectAll' | localize }}
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light" [disabled]="working()" (click)="selectAll(false)">
+                            <i class="fa fa-square"></i>
+                            {{ 'UnselectAll' | localize }}
+                        </button>
+                    </div>
+
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getCandidates($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollHeight="400px"
+                            [tableStyle]="{ 'min-width': '40rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 60px"></th>
+                                    <th style="min-width: 130px" pSortableColumn="employeeCode">
+                                        {{ 'EmployeeCode' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 250px" pSortableColumn="employeeName">
+                                        {{ 'EmployeeName' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="payrollStatus">
+                                        {{ 'PayrollStatus' | localize }}
+                                        <p-sortIcon field="payrollStatus" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 60px">
+                                        <div class="form-check form-check-sm form-check-custom">
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                [attr.aria-label]="record.employeeCode"
+                                                [checked]="isSelected(record)"
+                                                (change)="toggle(record, $any($event.target).checked)" />
+                                        </div>
+                                    </td>
+                                    <td style="min-width: 130px">{{ record.employeeCode }}</td>
+                                    <td style="min-width: 250px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 130px">
+                                        <span [class]="statusBadgeClass(record)">
+                                            @if (record.payrollStatus === PayrollRunCandidateStatus.Processed) {
+                                                {{ 'PayrollRunProcessed' | localize }}
+                                            } @else {
+                                                {{ 'Pending' | localize }}
+                                            }
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getCandidates($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" [disabled]="working()" (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    <button type="button" class="btn btn-primary fw-bold" [disabled]="working()" (click)="ok()">
+                        <i class="fa fa-check"></i>
+                        <span>{{ 'Ok' | localize }}</span>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

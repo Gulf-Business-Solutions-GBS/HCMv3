@@ -39,4 +39,11 @@ public interface ICostEngineService : IDomainService
     /// (legacy lines 486-507).
     /// </summary>
     Task<CostingRunResult> RunAsync(CostingRunInput input);
+
+    /// <summary>
+    /// The same run, reporting each finished employee to <paramref name="observer"/> as it happens and
+    /// asking it before each employee whether to stop. A <c>null</c> observer behaves exactly like
+    /// <see cref="RunAsync(CostingRunInput)"/>.
+    /// </summary>
+    Task<CostingRunResult> RunAsync(CostingRunInput input, ICostingRunObserver observer);
 }

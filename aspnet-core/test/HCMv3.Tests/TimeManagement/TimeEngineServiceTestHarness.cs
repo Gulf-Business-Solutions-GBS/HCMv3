@@ -56,12 +56,23 @@ public sealed class TimeEngineServiceTestHarness
     /// </summary>
     public ISysSettingsAccessor SysSettingsAccessor { get; } = Substitute.For<ISysSettingsAccessor>();
 
+    /// <summary>
+    /// Exposed (and pre-stubbed with "nobody in any area") because the engine selects a payroll area's employees
+    /// through it -- tests of the area filter say who is in which area here.
+    /// </summary>
+    public IEmployeePayrollAreaResolver PayrollAreaResolver { get; } = Substitute.For<IEmployeePayrollAreaResolver>();
+
     public TimeEngineServiceTestHarness()
     {
         SysSettingsAccessor.GetTimeSettingsAsync().Returns(new ManageTimeSettings());
         SysSettingsAccessor.GetPayrollSettingsAsync().Returns(new ManagePayrollSettings());
         SysSettingsAccessor.GetPersonnelSettingsAsync().Returns(new ManagePersonnelSettings());
         SysSettingsAccessor.GetSecuritySettingsAsync().Returns(new ManageSecuritySettings());
+
+        PayrollAreaResolver.GetEmployeeIdsInPayrollAreaAsync(Arg.Any<string>(), Arg.Any<DateTime>())
+            .Returns(Task.FromResult(new List<int>()));
+        PayrollAreaResolver.GetEmployeePayrollAreaAsync(Arg.Any<int>(), Arg.Any<DateTime>())
+            .Returns(Task.FromResult<HCMv3.PayrollManagement.PayrollArea>(null));
 
         var constructor = typeof(TimeEngineService).GetConstructors().Single();
         var arguments = constructor.GetParameters().Select(p => Resolve(p.ParameterType)).ToArray();
@@ -121,6 +132,11 @@ public sealed class TimeEngineServiceTestHarness
         if (parameterType == typeof(ISysSettingsAccessor))
         {
             return SysSettingsAccessor;
+        }
+
+        if (parameterType == typeof(IEmployeePayrollAreaResolver))
+        {
+            return PayrollAreaResolver;
         }
 
         if (parameterType.IsGenericType

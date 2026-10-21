@@ -20,6 +20,13 @@ public class TimeEngineJobArgs
     /// <summary>Tenant the run belongs to. No legacy equivalent -- legacy was single-tenant.</summary>
     public int TenantId { get; set; }
 
+    /// <summary>
+    /// Who started the run (null for the nightly autorun). The job runs as this user, because the batches' units
+    /// of work and the progress writer read the tenant from the session, and a job has none of its own -- the same
+    /// as <c>PayrollEngineJobArgs.UserId</c>. No legacy equivalent.
+    /// </summary>
+    public long? UserId { get; set; }
+
     /// <summary>Legacy <c>args[0]</c>: comma-separated employee codes; empty = all.</summary>
     public string EmployeeCodes { get; set; }
 

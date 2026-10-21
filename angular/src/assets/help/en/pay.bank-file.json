@@ -1,0 +1,164 @@
+{
+  "helpId": "pay.bank-file",
+  "lang": "en",
+  "title": "Bank Files",
+  "entity": null,
+  "overviewHtml": "<p>Makes the salary transfer file to send to the bank, in the layout the paying bank expects, from the salary registers of a period.</p><p>Choose who is paid (a payroll area, a sponsor, a MOSAL ID or employee codes: at least one is needed), the period, the run type and the <strong>Payment Bank</strong>, then press <strong>Generate Bank File</strong>. The file downloads at once; with <strong>Generate a separate file per employee bank</strong> it is a zip holding one file per employee bank. A summary then shows the format, the period, the number of payees and the total amount.</p><p>Only salary registers that have lines are paid, and a register whose net pay (wage type 9000) is zero is left out. Each filter narrows the list further, in this order: payroll area, sponsor, MOSAL ID, payment type, employee bank, payment bank. Every bank, sponsor and org assignment record is read as in force on the period's end date.</p><p>When the payroll setting <strong>Lock Salary Register On Payroll Exit</strong> is on, making the file locks every selected salary register that is still unlocked, regular and off-cycle alike, including those the file leaves out (on hold, no account), so they can no longer be changed. The summary says how many were locked.</p><p>Every run, successful or not, is logged with its parameters and a zipped copy of the file: see <strong>View Log</strong>.</p><p>:::admin When the FI posting setting <em>FIPostingAfterPayrollExit</em> is on and a payroll area is chosen, a file whose end date is after the area's last closed period is refused; the message names the last date allowed. The parameter text on the log is kept in the old system's English wording, because existing reports read it. :::</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "pay.bank-file.payroll-area",
+      "label": "PayrollArea",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Pays the employees whose org assignment on the period end is in this payroll area.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> It also supplies the period when <strong>Current</strong> is chosen, from its payroll control record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.sponsor",
+      "label": "Sponsor",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Pays only the employees under this sponsor on the period end.</p><p><strong>Example.</strong> Al-Sabah Trading Co.</p><p><strong>Why it matters.</strong> Choosing a sponsor fills the <strong>Sponsor Bank</strong> list with that sponsor's accounts and clears any earlier choice.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.sponsor-bank",
+      "label": "BankFileSponsorBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One of the chosen sponsor's bank accounts, shown as bank code and account number. Available only once a sponsor is chosen.</p><p><strong>Example.</strong> NBK (2001234567)</p><p><strong>Why it matters.</strong> Used by the layouts that print the company's account, for example in the file header; other layouts ignore it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.mosal",
+      "label": "MOSALID",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Pays only the employees whose sponsor on the period end has this MOSAL ID. The list holds the MOSAL IDs of your sponsors.</p><p><strong>Example.</strong> 123456</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.employee-codes",
+      "label": "BankFileEmployeeCodes",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Pays only these employees.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Useful to remake the file for a few people. The other filters still apply.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.employee-bank",
+      "label": "BankFileEmployeeBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Pays only the employees whose own bank (where their salary goes) is this bank.</p><p><strong>Example.</strong> Kuwait Finance House</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.run-type",
+      "label": "PayrollRunType",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which salary registers to pay: <strong>Regular</strong>, <strong>Off Cycle</strong>, or <strong>Regular + Off Cycle</strong>.</p><p><strong>Example.</strong> Regular + Off Cycle</p><p><strong>Why it matters.</strong> With <strong>Regular + Off Cycle</strong>, off-cycle registers are taken only when their payment date is on or after the cutoff day of the payroll month (payroll setting <em>Offcycle Bank File Cutoff</em>; 0 means the 1st).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.split",
+      "label": "BankFileSplitPerBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Makes one file per employee bank instead of a single file, and downloads them together as a zip.</p><p><strong>Example.</strong> Ticked: one file for NBK payees, one for KFH payees.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>Current</strong> takes the payroll month, year, start and end dates from the payroll area's control record. <strong>Other</strong> lets you type a payroll month and year; the dates are then worked out from the area's payroll period (with no area, that calendar month). The start and end dates are read-only.</p><p><strong>Example.</strong> Other, month 3, year 2026.</p><p><strong>Why it matters.</strong> The dates are worked out on the server, so the file always covers the period exactly. Current needs a payroll area with a control record; otherwise the screen says why and the file cannot be made.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.payment-type",
+      "label": "PaymentType",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>All</strong>, <strong>Bank</strong> or <strong>Cash</strong>: the payment type on the employee's bank record in force on the period end.</p><p><strong>Example.</strong> Bank</p><p><strong>Why it matters.</strong> Even <strong>All</strong> leaves out employees with no bank record in force on that date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.payment-bank",
+      "label": "BankFilePaymentBank",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bank the company pays salaries from. Its file format decides the layout. Required.</p><p><strong>Example.</strong> NBK</p><p><strong>Why it matters.</strong> Employees whose payer bank is this bank are paid; if nobody in the period has a payer bank set, employees with no payer bank are paid. A bank with no file format assigned is refused with a message naming the bank.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.format",
+      "label": "BankFileFormat",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The file formats known for the chosen payment bank, with their code and type: <strong>Text</strong> or <strong>Grid</strong> (a spreadsheet).</p><p><strong>Example.</strong> A bank with one text layout and one spreadsheet layout shows two rows.</p><p><strong>Why it matters.</strong> Grid formats download as .xlsx. For text formats the record count is the number of detail lines in the file.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.generate",
+      "label": "BankFileGenerate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Makes and downloads the file. Available once a payment bank and a period are set and at least one of payroll area, sponsor, MOSAL ID or employee codes is given.</p><p><strong>Example.</strong> \"Total: 245 / 112,450.500\"</p><p><strong>Why it matters.</strong> Refused when no employee matches the filters or no salary register is found for them. Needs the right to generate bank files.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.bank-file.view-log",
+      "label": "BankFileViewLog",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Opens the <strong>Bank File Generation Log</strong>: every run with its date and time, user, status, the parameters used and the file. <strong>All</strong>, <strong>Successful</strong> and <strong>Failed</strong> filter it, with counts.</p><p><strong>Example.</strong> Download last month's NBK file again to check what was sent.</p><p><strong>Why it matters.</strong> <strong>Export Log</strong> downloads the list as shown. <strong>Download</strong> gives back the zipped copy of a run's file; because it shows salaries, it needs the right to generate bank files.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

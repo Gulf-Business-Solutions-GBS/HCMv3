@@ -1,79 +1,172 @@
-<div [@routerTransition]>
+<div [@routerTransition] [helpPage]="'pay.costing-file'">
     <sub-header [title]="'CostingFile' | localize" [description]="'PayrollManagement' | localize"></sub-header>
 
     <div [class]="containerClass">
         <div class="card card-custom" [busyIf]="busy()">
             <div class="card-body">
-                <!-- Parameter block: legacy uscCostingFile.ascx filter panel -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
-                        <p-select
-                            [options]="payrollAreas()"
-                            optionLabel="name"
-                            optionValue="name"
-                            [ngModel]="selectedPayrollAreaName()"
-                            (ngModelChange)="selectedPayrollAreaName.set($event)"
-                            [filter]="true"
-                            filterBy="name"
-                            [showClear]="true"
-                            styleClass="w-100"
-                            placeholder="{{ 'PayrollArea' | localize }}" />
-                        @if (selectedPayrollAreaName() && !selectedAreaIsFiConfigured()) {
+                <!-- Parameter block: legacy uscCostingFile.ascx filter panel. -->
+                <div class="row mb-2">
+                    <div class="col-md-3 mb-4">
+                        <label class="form-label required" for="CostingFile_PayrollArea">{{ 'PayrollArea' | localize }}</label>
+                        <select
+                            id="CostingFile_PayrollArea"
+                            class="form-select"
+                            name="PayrollArea"
+                            [disabled]="isRunning()"
+                            [ngModel]="payrollAreaName()"
+                            (ngModelChange)="onPayrollAreaChange($event)">
+                            <option [ngValue]="undefined"></option>
+                            @for (area of payrollAreas(); track area.id) {
+                                <option [ngValue]="area.name">{{ area.name }}</option>
+                            }
+                        </select>
+                        @if (payrollAreaName() && !selectedAreaIsFiConfigured()) {
                             <small class="text-danger">
                                 {{ 'PayrollFICompanyNull' | localize }} / {{ 'PayrollFIBankNull' | localize }}
                             </small>
                         }
                     </div>
 
-                    <div class="col-md-2">
-                        <label class="form-label">{{ 'PayrollRunType' | localize }}</label>
-                        <p-select
-                            [options]="runTypeOptions"
-                            optionLabel="label"
-                            optionValue="value"
+                    <div class="col-md-3 mb-4">
+                        <label class="form-label" for="CostingFile_EmployeeCode">{{ 'EmployeeCode' | localize }}</label>
+                        <div class="input-group">
+                            <input
+                                id="CostingFile_EmployeeCode"
+                                type="text"
+                                class="form-control"
+                                name="EmployeeCode"
+                                maxlength="4000"
+                                [ngModel]="employeeCode()"
+                                (ngModelChange)="onEmployeeCodeChange($event)" />
+                            <button
+                                type="button"
+                                class="btn btn-light-primary"
+                                [title]="l('PayrollRunSelectEmployees')"
+                                [attr.aria-label]="l('PayrollRunSelectEmployees')"
+                                [disabled]="!canPickEmployees()"
+                                (click)="openEmployeePicker()">
+                                <i class="fa fa-users"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 mb-4">
+                        <label class="form-label required" for="CostingFile_RunType">{{ 'PayrollRunType' | localize }}</label>
+                        <select
+                            id="CostingFile_RunType"
+                            class="form-select"
+                            name="PayrollRunType"
                             [ngModel]="payrollRunType()"
-                            (ngModelChange)="payrollRunType.set($event)"
-                            styleClass="w-100" />
+                            (ngModelChange)="onPayrollRunTypeChange($event)">
+                            <option [ngValue]="PayrollRunType.Regular">{{ 'Regular' | localize }}</option>
+                            <option [ngValue]="PayrollRunType.OffCycle">{{ 'OffCycle' | localize }}</option>
+                        </select>
                     </div>
 
-                    <div class="col-md-2">
-                        <label class="form-label">{{ 'PayInDate' | localize }}</label>
-                        <p-datepicker
-                            [ngModel]="payInDate()"
-                            (ngModelChange)="payInDate.set($event)"
-                            dateFormat="dd/mm/yy"
-                            [showIcon]="true"
-                            styleClass="w-100" />
-                    </div>
-
-                    <div class="col-md-2">
-                        <label class="form-label">{{ 'PostingDate' | localize }}</label>
-                        <p-datepicker
-                            [ngModel]="postingDate()"
-                            (ngModelChange)="postingDate.set($event)"
-                            dateFormat="dd/mm/yy"
-                            [showIcon]="true"
-                            styleClass="w-100" />
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">{{ 'EmployeeCode' | localize }}</label>
+                    <div class="col-md-2 mb-4">
+                        <label class="form-label required" for="CostingFile_PostingDate">{{ 'PostingDate' | localize }}</label>
                         <input
-                            type="text"
+                            id="CostingFile_PostingDate"
+                            type="date"
                             class="form-control"
-                            [ngModel]="employeeCode()"
-                            (ngModelChange)="employeeCode.set($event)"
-                            placeholder="E100,E101" />
+                            name="PostingDate"
+                            [ngModel]="postingDate()"
+                            (ngModelChange)="onPostingDateChange($event)" />
                     </div>
+                </div>
+
+                <!-- Legacy rdCurrent / rdOtherPeriod with the read-only Start / End Date boxes. -->
+                <div class="row align-items-end mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex gap-5">
+                            <div class="form-check">
+                                <input
+                                    id="CostingFile_PeriodCurrent"
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="CostingFile_Period"
+                                    [checked]="!otherPeriod()"
+                                    (change)="onPeriodModeChange(false)" />
+                                <label class="form-check-label" for="CostingFile_PeriodCurrent">{{ 'Current' | localize }}</label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    id="CostingFile_PeriodOther"
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="CostingFile_Period"
+                                    [checked]="otherPeriod()"
+                                    (change)="onPeriodModeChange(true)" />
+                                <label class="form-check-label" for="CostingFile_PeriodOther">{{ 'PayrollRunOtherPeriod' | localize }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label" for="CostingFile_Month">{{ 'Month' | localize }}</label>
+                        <input
+                            id="CostingFile_Month"
+                            type="number"
+                            class="form-control"
+                            name="Month"
+                            min="1"
+                            max="12"
+                            [readonly]="!otherPeriod()"
+                            [class.bg-light]="!otherPeriod()"
+                            [ngModel]="payrollMonth()"
+                            (ngModelChange)="onMonthChange($event)" />
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label" for="CostingFile_Year">{{ 'Year' | localize }}</label>
+                        <input
+                            id="CostingFile_Year"
+                            type="number"
+                            class="form-control"
+                            name="Year"
+                            min="1900"
+                            max="9999"
+                            [readonly]="!otherPeriod()"
+                            [class.bg-light]="!otherPeriod()"
+                            [ngModel]="payrollYear()"
+                            (ngModelChange)="onYearChange($event)" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">{{ 'StartDate' | localize }} - {{ 'EndDate' | localize }}</label>
+                        <div class="form-control bg-light">
+                            @if (periodEnd()) {
+                                {{ periodStart() | luxonFormat: 'dd/MM/yyyy' }} - {{ periodEnd() | luxonFormat: 'dd/MM/yyyy' }}
+                            } @else {
+                                &nbsp;
+                            }
+                        </div>
+                    </div>
+                    @if (periodMessage()) {
+                        <div class="col-12">
+                            <small class="text-danger">{{ periodMessage() }}</small>
+                        </div>
+                    }
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-12 d-flex flex-wrap gap-2">
                         @if ('Pages.PayrollManagement.CostingFile.Run' | permission) {
-                            <button type="button" class="btn btn-primary" [disabled]="!canSubmit()" (click)="generateCostingFile()">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="!canSubmit() || isRunning()"
+                                (click)="generateCostingFile()">
                                 <i class="fa fa-cogs btn-md-icon"></i>
                                 <span>{{ 'GenerateCostingFile' | localize }}</span>
+                            </button>
+
+                            <button type="button" class="btn btn-warning" [disabled]="!isRunning()" (click)="requestStop()">
+                                <i class="fa fa-stop btn-md-icon"></i>
+                                <span>{{ 'StopProcess' | localize }}</span>
+                            </button>
+
+                            <button type="button" class="btn btn-light" [disabled]="isRunning()" (click)="clearStatus()">
+                                <i class="fa fa-eraser btn-md-icon"></i>
+                                <span>{{ 'ClearStatus' | localize }}</span>
                             </button>
                         }
 
@@ -93,66 +186,11 @@
                                 <span>{{ 'ExportCostingFile' | localize }}</span>
                             </button>
                         }
-
-                        @if ('Pages.PayrollManagement.CostingFile.Run' | permission) {
-                            <button type="button" class="btn btn-warning" (click)="requestStop()">
-                                <i class="fa fa-stop btn-md-icon"></i>
-                                <span>{{ 'StopProcess' | localize }}</span>
-                            </button>
-
-                            <button type="button" class="btn btn-light" (click)="clearStatus()">
-                                <i class="fa fa-eraser btn-md-icon"></i>
-                                <span>{{ 'ClearStatus' | localize }}</span>
-                            </button>
-                        }
                     </div>
                 </div>
 
-                <!-- Run summary: legacy's Successful/Failed/All counters -->
-                @if (runResult(); as result) {
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <div class="alert alert-success mb-0">
-                                {{ 'SuccessfulRecords' | localize }}: <strong>{{ result.successCount }}</strong>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="alert alert-danger mb-0">
-                                {{ 'FailedRecords' | localize }}: <strong>{{ result.failedCount }}</strong>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="alert alert-info mb-0">
-                                {{ 'AllRecords' | localize }}: <strong>{{ result.totalEmployees }}</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    @if (result.entries?.length) {
-                        <p-table [value]="result.entries" [scrollable]="true" scrollHeight="240px" styleClass="mb-4">
-                            <ng-template #header>
-                                <tr>
-                                    <th>{{ 'EmployeeCode' | localize }}</th>
-                                    <th>{{ 'Status' | localize }}</th>
-                                    <th>{{ 'Message' | localize }}</th>
-                                </tr>
-                            </ng-template>
-                            <ng-template #body let-entry>
-                                <tr>
-                                    <td>{{ entry.employeeCode }}</td>
-                                    <td>
-                                        @if (entry.status === 0) {
-                                            <span class="badge bg-success">{{ 'SuccessfulRecords' | localize }}</span>
-                                        } @else {
-                                            <span class="badge bg-danger">{{ 'FailedRecords' | localize }}</span>
-                                        }
-                                    </td>
-                                    <td>{{ entry.message }}</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    }
-                }
+                <!-- Legacy status panel: status, progress, counters, Show details. -->
+                <financeRunStatus [status]="status()" (showDetails)="showDetails()"></financeRunStatus>
 
                 <!-- JV preview -->
                 @if (lines().length) {
@@ -233,4 +271,7 @@
             </div>
         </div>
     </div>
+
+    <financeRunLogModal #logModal></financeRunLogModal>
+    <costingEmployeePickerModal #pickerModal (codesSelected)="onCodesSelected($event)"></costingEmployeePickerModal>
 </div>

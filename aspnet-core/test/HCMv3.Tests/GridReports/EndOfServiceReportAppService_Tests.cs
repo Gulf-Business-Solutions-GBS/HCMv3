@@ -83,7 +83,8 @@ public class EndOfServiceReportAppService_Tests : AppTestBase
 
     private void CreateSalaryRegisterLine(Employee employee, DateTime period, string wageTypeCode, double amount)
     {
-        var wageType = CreateWageType(wageTypeCode + "-" + Guid.NewGuid().ToString("N").Substring(0, 4));
+        // The exact code: the report reads its columns by wage type code ("3003" = total indemnity).
+        var wageType = CreateWageType(wageTypeCode);
         UsingDbContext(context =>
         {
             var register = context.Set<SalaryRegister>().Add(new SalaryRegister

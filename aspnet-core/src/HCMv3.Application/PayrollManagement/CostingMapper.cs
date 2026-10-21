@@ -70,22 +70,4 @@ internal static class CostingMapper
             IsBalanced = result.IsBalanced
         };
     }
-
-    public static CostingRunResultDto ToDto(CostingRunResult result)
-    {
-        return new CostingRunResultDto
-        {
-            TotalEmployees = result.TotalEmployees,
-            SuccessCount = result.SuccessCount,
-            FailedCount = result.FailedCount,
-            Aborted = result.Aborted,
-            Entries = result.Entries.Select(e => new CostingRunLogEntryDto
-            {
-                EmployeeId = e.EmployeeId,
-                EmployeeCode = e.EmployeeCode,
-                Status = e.Status,
-                Message = e.Message
-            }).ToList()
-        };
-    }
 }

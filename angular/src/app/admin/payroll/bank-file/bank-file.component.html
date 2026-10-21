@@ -1,3 +1,4 @@
+<div [helpPage]="'pay.bank-file'">
 <sub-header [title]="'BankFiles' | localize" [description]="'BankFileGenerate' | localize"></sub-header>
 
 <div [class]="containerClass">
@@ -5,19 +6,12 @@
         <div class="card-body" [busyIf]="loading() || generating()">
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label" for="paymentBank">{{ 'BankFilePaymentBank' | localize }} *</label>
-                    <select id="paymentBank" class="form-select" [ngModel]="paymentBankId()" (ngModelChange)="paymentBankId.set($event)">
-                        <option [ngValue]="undefined">-</option>
-                        @for (bank of lookups()?.paymentBanks ?? []; track bank.id) {
-                            <option [ngValue]="bank.id">{{ bank.code }} - {{ bank.displayText }}</option>
-                        }
-                    </select>
-                    <span class="form-text text-muted">{{ 'BankFilePaymentBankHint' | localize }}</span>
-                </div>
-
-                <div class="col-md-4 mb-3">
                     <label class="form-label" for="payrollArea">{{ 'PayrollArea' | localize }}</label>
-                    <select id="payrollArea" class="form-select" [ngModel]="payrollAreaId()" (ngModelChange)="payrollAreaId.set($event)">
+                    <select
+                        id="payrollArea"
+                        class="form-select"
+                        [ngModel]="payrollAreaId()"
+                        (ngModelChange)="onPayrollAreaChange($event)">
                         <option [ngValue]="undefined">-</option>
                         @for (area of lookups()?.payrollAreas ?? []; track area.id) {
                             <option [ngValue]="area.id">{{ area.displayText }}</option>
@@ -26,19 +20,8 @@
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label" for="payrollRunType">{{ 'PayrollRunType' | localize }} *</label>
-                    <select id="payrollRunType" class="form-select" [ngModel]="payrollRunType()" (ngModelChange)="payrollRunType.set($event)">
-                        <option value="R">Regular</option>
-                        <option value="O">Off Cycle</option>
-                        <option value="A">Regular + Off Cycle</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
                     <label class="form-label" for="sponsor">{{ 'Sponsor' | localize }}</label>
-                    <select id="sponsor" class="form-select" [ngModel]="sponsorId()" (ngModelChange)="sponsorId.set($event)">
+                    <select id="sponsor" class="form-select" [ngModel]="sponsorId()" (ngModelChange)="onSponsorChange($event)">
                         <option [ngValue]="undefined">-</option>
                         @for (sponsor of lookups()?.sponsors ?? []; track sponsor.id) {
                             <option [ngValue]="sponsor.id">{{ sponsor.displayText }}</option>
@@ -48,17 +31,49 @@
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label" for="sponsorBank">{{ 'BankFileSponsorBank' | localize }}</label>
-                    <select id="sponsorBank" class="form-select" [ngModel]="sponsorBankId()" (ngModelChange)="sponsorBankId.set($event)">
+                    <!-- Legacy BindSponsorBank: only the chosen sponsor's accounts, emptied when the sponsor changes. -->
+                    <select
+                        id="sponsorBank"
+                        class="form-select"
+                        [disabled]="!sponsorId()"
+                        [ngModel]="sponsorBankId()"
+                        (ngModelChange)="sponsorBankId.set($event)">
                         <option [ngValue]="undefined">-</option>
-                        @for (sb of lookups()?.sponsorBanks ?? []; track sb.id) {
+                        @for (sb of sponsorBanks(); track sb.id) {
                             <option [ngValue]="sb.id">{{ sb.displayText }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="mosalId">{{ 'MOSALID' | localize }}</label>
+                    <select id="mosalId" class="form-select" [ngModel]="mosalId()" (ngModelChange)="mosalId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (m of lookups()?.mosalIds ?? []; track m) {
+                            <option [ngValue]="m">{{ m }}</option>
                         }
                     </select>
                 </div>
 
                 <div class="col-md-4 mb-3">
+                    <label class="form-label" for="employeeCodes">{{ 'BankFileEmployeeCodes' | localize }}</label>
+                    <input
+                        id="employeeCodes"
+                        type="text"
+                        class="form-control"
+                        [ngModel]="employeeCodes()"
+                        (ngModelChange)="employeeCodes.set($event)" />
+                </div>
+
+                <div class="col-md-4 mb-3">
                     <label class="form-label" for="employeeBank">{{ 'BankFileEmployeeBank' | localize }}</label>
-                    <select id="employeeBank" class="form-select" [ngModel]="employeeBankId()" (ngModelChange)="employeeBankId.set($event)">
+                    <select
+                        id="employeeBank"
+                        class="form-select"
+                        [ngModel]="employeeBankId()"
+                        (ngModelChange)="employeeBankId.set($event)">
                         <option [ngValue]="undefined">-</option>
                         @for (bank of lookups()?.employeeBanks ?? []; track bank.id) {
                             <option [ngValue]="bank.id">{{ bank.code }} - {{ bank.displayText }}</option>
@@ -68,51 +83,165 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label class="form-label" for="year">{{ 'Year' | localize }}</label>
-                    <select id="year" class="form-select" [ngModel]="year()" (ngModelChange)="year.set($event)">
-                        @for (y of years; track y) {
-                            <option [ngValue]="y">{{ y }}</option>
-                        }
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="payrollRunType">{{ 'PayrollRunType' | localize }} *</label>
+                    <select
+                        id="payrollRunType"
+                        class="form-select"
+                        [ngModel]="payrollRunType()"
+                        (ngModelChange)="payrollRunType.set($event)">
+                        <option value="R">{{ 'Regular' | localize }}</option>
+                        <option value="O">{{ 'OffCycle' | localize }}</option>
+                        <option value="A">{{ 'BankFileRegularAndOffCycle' | localize }}</option>
                     </select>
                 </div>
 
-                <div class="col-md-3 mb-3">
-                    <label class="form-label" for="month">{{ 'Month' | localize }}</label>
-                    <select id="month" class="form-select" [ngModel]="month()" (ngModelChange)="month.set($event)">
-                        @for (m of months; track m) {
-                            <option [ngValue]="m">{{ m }}</option>
-                        }
-                    </select>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <label class="form-label" for="mosalId">{{ 'MOSALID' | localize }}</label>
-                    <input id="mosalId" type="number" class="form-control" [ngModel]="mosalId()" (ngModelChange)="mosalId.set($event)" />
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <label class="form-label" for="employeeCodes">{{ 'BankFileEmployeeCodes' | localize }}</label>
-                    <input id="employeeCodes" type="text" class="form-control" [ngModel]="employeeCodes()" (ngModelChange)="employeeCodes.set($event)" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-8 mb-3 d-flex align-items-end">
                     <p-checkbox
                         inputId="splitBankFiles"
                         [binary]="true"
                         [ngModel]="splitBankFiles()"
-                        (ngModelChange)="splitBankFiles.set($event)"
-                    ></p-checkbox>
-                    <label class="form-label ms-2" for="splitBankFiles">{{ 'BankFileSplitPerBank' | localize }}</label>
+                        (ngModelChange)="splitBankFiles.set($event)"></p-checkbox>
+                    <label class="form-label ms-2 mb-0" for="splitBankFiles">{{ 'BankFileSplitPerBank' | localize }}</label>
+                </div>
+            </div>
+
+            <!-- Period: legacy rdCurrent / rdOtherPeriod, txtMonth / txtyear, read-only txtStartDate / txtEndDate. -->
+            <div class="row align-items-end" [busyIf]="loadingPeriod()">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label d-block">{{ 'Period' | localize }}</label>
+                    <div class="form-check form-check-inline form-check-custom">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            id="periodCurrent"
+                            name="periodType"
+                            [checked]="periodType() === BankFilePeriodType.Current"
+                            (change)="onPeriodTypeChange(BankFilePeriodType.Current)" />
+                        <label class="form-check-label" for="periodCurrent">{{ 'Current' | localize }}</label>
+                    </div>
+                    <div class="form-check form-check-inline form-check-custom">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            id="periodOther"
+                            name="periodType"
+                            [checked]="periodType() === BankFilePeriodType.Other"
+                            (change)="onPeriodTypeChange(BankFilePeriodType.Other)" />
+                        <label class="form-check-label" for="periodOther">{{ 'PayrollRunOtherPeriod' | localize }}</label>
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <label class="form-label" for="month">{{ 'Month' | localize }}</label>
+                    <input
+                        id="month"
+                        type="number"
+                        min="1"
+                        max="12"
+                        class="form-control"
+                        [readonly]="periodType() === BankFilePeriodType.Current"
+                        [ngModel]="month()"
+                        [ngModelOptions]="{ updateOn: 'blur' }"
+                        (ngModelChange)="onMonthChange($event)" />
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <label class="form-label" for="year">{{ 'Year' | localize }}</label>
+                    <input
+                        id="year"
+                        type="number"
+                        min="1900"
+                        max="2999"
+                        class="form-control"
+                        [readonly]="periodType() === BankFilePeriodType.Current"
+                        [ngModel]="year()"
+                        [ngModelOptions]="{ updateOn: 'blur' }"
+                        (ngModelChange)="onYearChange($event)" />
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <label class="form-label" for="startDate">{{ 'StartDate' | localize }}</label>
+                    <input id="startDate" type="text" class="form-control" readonly [value]="period()?.startDateText ?? ''" />
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <label class="form-label" for="endDate">{{ 'EndDate' | localize }}</label>
+                    <input id="endDate" type="text" class="form-control" readonly [value]="period()?.endDateText ?? ''" />
+                </div>
+
+                @if (period() && !period()!.hasPeriod && period()!.message) {
+                    <div class="col-12 mb-3">
+                        <span class="form-text text-muted">{{ period()!.message }}</span>
+                    </div>
+                }
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label d-block">{{ 'PaymentType' | localize }}</label>
+                    <div class="form-check form-check-inline form-check-custom">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            id="paymentAll"
+                            name="paymentType"
+                            [checked]="paymentType() === 'ALL'"
+                            (change)="paymentType.set('ALL')" />
+                        <label class="form-check-label" for="paymentAll">{{ 'All' | localize }}</label>
+                    </div>
+                    <div class="form-check form-check-inline form-check-custom">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            id="paymentBank"
+                            name="paymentType"
+                            [checked]="paymentType() === 'BANK'"
+                            (change)="paymentType.set('BANK')" />
+                        <label class="form-check-label" for="paymentBank">{{ 'Bank' | localize }}</label>
+                    </div>
+                    <div class="form-check form-check-inline form-check-custom">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            id="paymentCash"
+                            name="paymentType"
+                            [checked]="paymentType() === 'CASH'"
+                            (change)="paymentType.set('CASH')" />
+                        <label class="form-check-label" for="paymentCash">{{ 'Cash' | localize }}</label>
+                    </div>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                    <label class="form-label" for="paymentBankSelect">{{ 'BankFilePaymentBank' | localize }} *</label>
+                    <select
+                        id="paymentBankSelect"
+                        class="form-select"
+                        [ngModel]="paymentBankId()"
+                        (ngModelChange)="paymentBankId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (bank of lookups()?.paymentBanks ?? []; track bank.id) {
+                            <option [ngValue]="bank.id">{{ bank.code }} - {{ bank.displayText }}</option>
+                        }
+                    </select>
+                    <span class="form-text text-muted">{{ 'BankFilePaymentBankHint' | localize }}</span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12">
-                    <button type="button" class="btn btn-primary" [disabled]="!canGenerate() || generating()" (click)="generate()">
-                        {{ 'BankFileGenerate' | localize }}
+                <div class="col-12 d-flex gap-3">
+                    @if ('Pages.PayrollManagement.BankFiles.Generate' | permission) {
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            [disabled]="!canGenerate() || generating()"
+                            (click)="generate()">
+                            {{ 'BankFileGenerate' | localize }}
+                        </button>
+                    }
+                    <button type="button" class="btn btn-light-primary" (click)="viewLog()">
+                        <i class="fa fa-list"></i>
+                        {{ 'BankFileViewLog' | localize }}
                     </button>
                 </div>
             </div>
@@ -147,8 +276,15 @@
                 <h5>{{ 'BankFileGeneratedSuccessfully' | localize }}</h5>
                 <div>{{ result.fileName }}</div>
                 <div>{{ 'BankFileFormat' | localize }}: {{ result.formatCode }}</div>
-                <div>{{ 'Total' | localize }}: {{ result.recordCount }} / {{ result.totalAmount }}</div>
+                <div>{{ 'Period' | localize }}: {{ result.startDateText }} - {{ result.endDateText }}</div>
+                <div>{{ 'Total' | localize }}: {{ result.recordCount }} / {{ result.totalAmount | number: '1.3-3' }}</div>
+                @if (result.registersLocked > 0) {
+                    <div>{{ 'BankFileRegistersLocked' | localize: result.registersLocked }}</div>
+                }
             </div>
         </div>
     }
+</div>
+
+<bankFileLogModal #logModal></bankFileLogModal>
 </div>

@@ -8057,5 +8057,29 @@
     <text name="PayrollRunOffCyclePaymentDateOutOfPeriod">The off-cycle payment date must fall between {0} and {1}.</text>
     <text name="PayrollEngineSimulationNotAllowed">Simulation run is not allowed. Turn on Allow Simulation Run in the payroll settings to use it.</text>
     <text name="PayrollEngineSimulationPeriodRequired">Enter the payroll month and year of the period to simulate.</text>
+    <text name="ProjectCostEngineOffCycleNotSupported">The Project Cost Engine runs Regular payroll only; an off-cycle run is not supported.</text>
+    <text name="ProjectCostEngineAlreadyRunning">The Project Cost Engine is already running (started by {0} at {1}). Wait for it to finish, or stop it, before running it again.</text>
+    <text name="BankFileViewLog">View Log</text>
+    <text name="BankFileLogTitle">Bank File Generation Log</text>
+    <text name="BankFileLogFilterSuccessful">Successful ({0})</text>
+    <text name="BankFileLogFilterFailed">Failed ({0})</text>
+    <text name="BankFileExportLog">Export Log</text>
+    <text name="BankFileRegularAndOffCycle">Regular + Off Cycle</text>
+    <text name="BankFileRegistersLocked">{0} salary registers were locked.</text>
+    <text name="BankFileLogHasNoFile">No copy of the bank file was stored for this run.</text>
+    <text name="TimeEnginePayrollAreaOrEmployeeCodeRequired">Cannot have Payroll Area unselected if the Employee Code is blank.</text>
+    <text name="TimeEnginePayrollControlRecordNotFound">Payroll Control Record not found.</text>
+    <text name="TimeEngineEmployeePayrollAreaNotFound">Employee payroll area not found.</text>
+    <text name="TimeEngineEmployeeControlRecordNotFound">Payroll control record not found for selected employee payroll area.</text>
+    <text name="TimeEngineEarliestEvaluationDateNotConfigured">Configuration for TIME_EVAL_EARLIEST_DATE not done. Set the Earliest Evaluation Date in Time Settings.</text>
+    <text name="TimeEngineAlreadyRunningForPayrollArea">The Time Engine is already running for payroll area '{0}' (started by {1} at {2}). Wait for it to finish, or stop it, before running this area again.</text>
+    <text name="D365FinancePostingSwitchedOff">Posting to Dynamics 365 Finance is switched off in the Integration Center. Switch it on before posting.</text>
+    <text name="JournalVoucherPreviewRequired">Preview the journal voucher before posting it.</text>
+    <text name="JournalVoucherPreviewChanged">The journal voucher has changed since it was previewed. Preview it again before posting.</text>
+    <text name="FinanceRunAlreadyRunning">{0} is already running (started by {1} at {2}). Wait for it to finish, or stop it, before starting another run.</text>
+    <text name="FinanceRunInterrupted">The run was interrupted before it finished. Check the log, then run it again if needed.</text>
+    <text name="FinanceJournalsAlreadyPosted">These journals had already been posted to Dynamics 365 before the failure:</text>
+    <text name="CostingFileRunQueued">The costing file run has started. Its progress is shown below.</text>
+    <text name="PostJvRunQueued">Posting the journal voucher has started. Its progress is shown below.</text>
   </texts>
 </localizationDictionary>

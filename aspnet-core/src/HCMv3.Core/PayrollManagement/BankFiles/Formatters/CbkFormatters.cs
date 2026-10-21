@@ -72,6 +72,11 @@ public class CbkG1Formatter : IBankFileFormatter
             });
         }
 
+        // Said explicitly because CBK-G2's grand-total row below is not a payment: counting it, or adding its
+        // amount to the others, would report the file as paying twice what it does.
+        doc.RecordCount = doc.Rows.Count;
+        doc.TotalAmount = context.Rows.Sum(r => r.Amount);
+
         if (AppendGrandTotalRow && context.Rows.Count > 0)
         {
             // Legacy :767-783 -- every cell except Amount is left DBNull, and the amount is the
@@ -120,13 +125,19 @@ public abstract class CbkTextFormatterBase : IBankFileFormatter
 
     public abstract BankFileDocument Build(BankFileContext context);
 
-    protected static BankFileDocument Text(string formatCode, StringBuilder sb)
+    /// <param name="formatCode">The format being produced.</param>
+    /// <param name="sb">The file's lines.</param>
+    /// <param name="recordCount">The detail-line count the trailer states.</param>
+    /// <param name="totalAmount">The total the trailer states.</param>
+    protected static BankFileDocument Text(string formatCode, StringBuilder sb, int recordCount, double totalAmount)
     {
         return new BankFileDocument
         {
             Kind = BankFileDocumentKind.Text,
             FormatCode = formatCode,
-            TextContent = sb.ToString()
+            TextContent = sb.ToString(),
+            RecordCount = recordCount,
+            TotalAmount = totalAmount
         };
     }
 }
@@ -174,7 +185,7 @@ public class CbkT1Formatter : CbkTextFormatterBase
         sb.AppendLine("TRLINT" + " " + Code + " " + seqCount.ToString().PadLeft(CountPadding, '0') + "        " +
                       Amount3(totalAmount, 12));
 
-        return Text(FormatCode, sb);
+        return Text(FormatCode, sb, seqCount, totalAmount);
     }
 }
 
@@ -219,7 +230,7 @@ public class CbkT2Formatter : CbkTextFormatterBase
         sb.AppendLine("TRLABG" + " " + Code + " " + seqCount.ToString().PadLeft(CountPadding, '0') + "  " +
                       Amount3(totalAmount, 12));
 
-        return Text(FormatCode, sb);
+        return Text(FormatCode, sb, seqCount, totalAmount);
     }
 }
 
@@ -274,7 +285,7 @@ public class CbkT3Formatter : CbkTextFormatterBase
         sb.AppendLine("TRLSMS" + " " + Code + " " + seqCount.ToString().PadLeft(CountPadding, '0') + "  " +
                       Amount3(totalAmount, 12));
 
-        return Text(FormatCode, sb);
+        return Text(FormatCode, sb, seqCount, totalAmount);
     }
 }
 
@@ -335,7 +346,7 @@ public class CbkT6Formatter : CbkTextFormatterBase
         sb.AppendLine("TRLSMS" + " " + Code + " " + seqCount.ToString().PadLeft(CountPadding, '0') + "  " +
                       Amount3(totalAmount, 12));
 
-        return Text(FormatCode, sb);
+        return Text(FormatCode, sb, seqCount, totalAmount);
     }
 }
 
@@ -377,7 +388,7 @@ public class CbkT4Formatter : CbkTextFormatterBase
         sb.AppendLine("TRLABC" + " " + Code + " " + seqCount.ToString().PadLeft(CountPadding, '0') + "        " +
                       Amount3(totalAmount, 12));
 
-        return Text(FormatCode, sb);
+        return Text(FormatCode, sb, seqCount, totalAmount);
     }
 }
 
@@ -426,6 +437,6 @@ public class CbkT7Formatter : CbkTextFormatterBase
         sb.AppendLine("TRLABC" + " " + Code + " " + seqCount.ToString().PadLeft(CountPadding, '0') + " " +
                       Amount3(totalAmount, 12));
 
-        return Text(FormatCode, sb);
+        return Text(FormatCode, sb, seqCount, totalAmount);
     }
 }

@@ -1,0 +1,150 @@
+<div
+    appBsModal
+    #logModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="logModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ 'ShowDetails' | localize }}</h4>
+                    <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-7 mb-3">
+                            <div class="btn-group" role="group">
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === FinanceRunLogFilter.All"
+                                    [class.btn-light]="statusFilter() !== FinanceRunLogFilter.All"
+                                    (click)="setStatusFilter(FinanceRunLogFilter.All)">
+                                    {{ 'EngineRunFilterAll' | localize }} ({{ allCount() }})
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === FinanceRunLogFilter.Successful"
+                                    [class.btn-light]="statusFilter() !== FinanceRunLogFilter.Successful"
+                                    (click)="setStatusFilter(FinanceRunLogFilter.Successful)">
+                                    {{ 'EngineRunFilterSucceeded' | localize }} ({{ successCount() }})
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    [class.btn-primary]="statusFilter() === FinanceRunLogFilter.Failed"
+                                    [class.btn-light]="statusFilter() !== FinanceRunLogFilter.Failed"
+                                    (click)="setStatusFilter(FinanceRunLogFilter.Failed)">
+                                    {{ 'EngineRunFilterFailed' | localize }} ({{ failedCount() }})
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-3 d-flex gap-2">
+                            <form class="input-group" (ngSubmit)="applySearch()" autocomplete="off">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="LogFilter"
+                                    [placeholder]="l('EngineRunEmployeeFilterPlaceholder')"
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)" />
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="flaticon-search-1"></i>
+                                </button>
+                            </form>
+                            <button
+                                type="button"
+                                class="btn btn-success text-nowrap"
+                                [busyIf]="exporting()"
+                                [disabled]="exporting()"
+                                (click)="exportLog()">
+                                <i class="fa fa-file-excel"></i>
+                                {{ 'ExportToExcel' | localize }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRows($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollHeight="450px"
+                            [tableStyle]="{ 'min-width': '60rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 110px" pSortableColumn="empCode">
+                                        {{ 'EmployeeCode' | localize }}
+                                        <p-sortIcon field="empCode" />
+                                    </th>
+                                    <th style="width: 180px" pSortableColumn="employee">
+                                        {{ 'EmployeeName' | localize }}
+                                        <p-sortIcon field="employee" />
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="runTimeStamp">
+                                        {{ 'RunTimeStamp' | localize }}
+                                        <p-sortIcon field="runTimeStamp" />
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="status">
+                                        {{ 'Status' | localize }}
+                                        <p-sortIcon field="status" />
+                                    </th>
+                                    <th style="min-width: 360px">{{ 'Message' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>{{ record.empCode }}</td>
+                                    <td>{{ record.employee }}</td>
+                                    <td>{{ record.runTimeStamp | luxonFormat: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                                    <td>
+                                        @if (record.status === 0) {
+                                            <span class="badge badge-light-success">{{ 'Success' | localize }}</span>
+                                        } @else {
+                                            <span class="badge badge-light-danger">{{ 'Failed' | localize }}</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="font-monospace fs-8" style="white-space: pre-wrap; max-height: 220px; overflow: auto">{{ record.message }}</div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRows($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

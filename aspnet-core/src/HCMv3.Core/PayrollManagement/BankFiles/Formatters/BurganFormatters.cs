@@ -70,7 +70,9 @@ public class BurT1Formatter : IBankFileFormatter
         {
             Kind = BankFileDocumentKind.Text,
             FormatCode = FormatCode,
-            TextContent = sb.ToString()
+            TextContent = sb.ToString(),
+            RecordCount = seqCount - 1,
+            TotalAmount = totalAmount
         };
     }
 }
@@ -320,7 +322,9 @@ public class BurBdT1Formatter : IBankFileFormatter
         {
             Kind = BankFileDocumentKind.Text,
             FormatCode = FormatCode,
-            TextContent = sb.ToString()
+            TextContent = sb.ToString(),
+            RecordCount = seqCount - 1,
+            TotalAmount = totalNetPay
         };
     }
 

@@ -235,7 +235,7 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Whether payslips are locked when a period moves on.</p><p><strong>Why it matters.</strong> Ticked, closing a period locks that month's regular payslips and releasing it for payroll locks its off-cycle ones, so they can no longer be changed or deleted.</p>",
+      "html": "<p><strong>What it is.</strong> Whether payslips are locked when a period moves on.</p><p><strong>Why it matters.</strong> Ticked, closing a period locks that month's regular payslips and releasing it for payroll locks its off-cycle ones, so they can no longer be changed or deleted. Making a bank file also locks every salary register it selects.</p>",
       "adminHtml": "",
       "stub": false
     },

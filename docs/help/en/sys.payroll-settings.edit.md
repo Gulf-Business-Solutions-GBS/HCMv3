@@ -109,7 +109,7 @@ There is one settings record per company; it cannot be deleted.
 
 **What it is.** Whether payslips are locked when a period moves on.
 
-**Why it matters.** Ticked, closing a period locks that month's regular payslips and releasing it for payroll locks its off-cycle ones, so they can no longer be changed or deleted.
+**Why it matters.** Ticked, closing a period locks that month's regular payslips and releasing it for payroll locks its off-cycle ones, so they can no longer be changed or deleted. Making a bank file also locks every salary register it selects.
 
 **Rules.** Yes or no.
 

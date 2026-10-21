@@ -1,147 +1,51 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Abp.BackgroundJobs;
+using Abp.Localization;
+using Abp.Timing;
 using Abp.UI;
-using Castle.MicroKernel.Registration;
-using HCMv3.GeneralMasterInfo;
-using HCMv3.PayrollManagement;
-using HCMv3.SystemSettings;
 using HCMv3.TimeManagement;
-using HCMv3.TimeManagement.Services;
 using HCMv3.TimeManagement.Dto;
-using NSubstitute;
 using Shouldly;
 using Xunit;
 
 namespace HCMv3.Tests.TimeManagement;
 
 /// <summary>
-/// Legacy <c>uscTimeEngine.ascx.cs</c> lines 275-335: the two checks the Time Engine screen made before
-/// queueing a run, now made by <c>TimeEngineAppService.RunTimeEngine</c>. The end date may not run more
-/// than <c>ManageTimeSettings.FutureEvaluationInDays</c> past the payroll control record's month end, and
-/// the start date may not precede <c>ManageTimeSettings.EarliestEvaluationDate</c>.
+/// Legacy <c>uscTimeEngine.ascx.cs</c> lines 183-207 / 224-250: the two time-setting limits the Time Engine screen
+/// checked before queueing a run, now checked by <c>TimeEngineAppService.RunTimeEngine</c>. The end date may not run
+/// more than <c>ManageTimeSettings.FutureEvaluationInDays</c> past the payroll control record's month end, the start
+/// date may not precede <c>ManageTimeSettings.EarliestEvaluationDate</c>, and that date must be configured.
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public class TimeEngineAppService_TimeSettingsLimits_Tests : AppTestBase
+public class TimeEngineAppService_TimeSettingsLimits_Tests : TimeEngineAppServiceTestBase
 {
-    private readonly ITimeEngineAppService _timeEngineAppService;
-    private readonly IBackgroundJobManager _backgroundJobManager = Substitute.For<IBackgroundJobManager>();
-    private readonly ITimeEngineService _timeEngineService = Substitute.For<ITimeEngineService>();
-
-    public TimeEngineAppService_TimeSettingsLimits_Tests()
-    {
-        LoginAsDefaultTenantAdmin();
-
-        _backgroundJobManager
-            .EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(
-                Arg.Any<TimeEngineJobArgs>(), Arg.Any<BackgroundJobPriority>(), Arg.Any<TimeSpan?>())
-            .Returns(Task.FromResult("job-1"));
-
-        LocalIocManager.IocContainer.Register(
-            Component.For<IBackgroundJobManager>().Instance(_backgroundJobManager).IsDefault());
-        LocalIocManager.IocContainer.Register(
-            Component.For<ITimeEngineService>().Instance(_timeEngineService).IsDefault());
-
-        _timeEngineAppService = Resolve<ITimeEngineAppService>();
-    }
-
-    private int TenantId => AbpSession.TenantId ?? 1;
-
-    private void SetTimeSettings(int futureEvaluationInDays, DateTime earliestEvaluationDate)
-    {
-        UsingDbContext(context =>
-        {
-            var settings = context.Set<ManageTimeSettings>().FirstOrDefault(s => s.TenantId == TenantId);
-            if (settings == null)
-            {
-                settings = context.Set<ManageTimeSettings>().Add(new ManageTimeSettings { TenantId = TenantId }).Entity;
-            }
-
-            settings.FutureEvaluationInDays = futureEvaluationInDays;
-            settings.EarliestEvaluationDate = earliestEvaluationDate;
-        });
-    }
-
-    /// <summary>A payroll area whose latest control record ends on <paramref name="calendarMonthEnd"/>.</summary>
-    private string CreatePayrollAreaWithControlRecord(string name, DateTime calendarMonthEnd)
-    {
-        UsingDbContext(context =>
-        {
-            var currency = context.Set<Currency>().Add(new Currency
-            {
-                TenantId = TenantId,
-                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
-                NameEn = "Dinar",
-                NameAr = "Dinar",
-                DecimalCount = 3,
-                CurrencyShortFormEn = "KWD",
-                CurrencyShortFormAr = "KWD",
-                CurrencyDenominationFormEn = "Fils",
-                CurrencyDenominationFormAr = "Fils"
-            }).Entity;
-            var period = context.Set<PayrollPeriod>().Add(new PayrollPeriod
-            {
-                TenantId = TenantId,
-                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
-                NameEn = "Monthly",
-                NameAr = "Monthly"
-            }).Entity;
-            context.SaveChanges();
-
-            var area = context.Set<PayrollArea>().Add(new PayrollArea
-            {
-                TenantId = TenantId,
-                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
-                Name = name,
-                CurrencyId = currency.Id,
-                PayrollPeriodId = period.Id,
-                CutOffDay = 25
-            }).Entity;
-            context.SaveChanges();
-
-            context.Set<PayrollControlRecord>().Add(new PayrollControlRecord
-            {
-                TenantId = TenantId,
-                PayrollAreaId = area.Id,
-                PayrollMonth = calendarMonthEnd.Month,
-                PayrollYear = calendarMonthEnd.Year,
-                CalendarMonthStart = new DateTime(calendarMonthEnd.Year, calendarMonthEnd.Month, 1),
-                CalendarMonthEnd = calendarMonthEnd
-            });
-        });
-
-        return name;
-    }
-
     [Fact]
     public async Task Should_Refuse_An_End_Date_Beyond_The_Future_Evaluation_Limit()
     {
         SetTimeSettings(futureEvaluationInDays: 30, earliestEvaluationDate: new DateTime(2020, 1, 1));
-        var area = CreatePayrollAreaWithControlRecord("TE-Limit-1", new DateTime(2024, 6, 30));
+        CreatePayrollArea("TE-Limit-1", new DateTime(2024, 6, 30));
 
-        var exception = await Should.ThrowAsync<UserFriendlyException>(() => _timeEngineAppService.RunTimeEngine(
+        var exception = await Should.ThrowAsync<UserFriendlyException>(() => TimeEngineAppService.RunTimeEngine(
             new RunTimeEngineInput
             {
-                PayrollAreaName = area,
+                PayrollAreaName = "TE-Limit-1",
                 StartDate = new DateTime(2024, 7, 1),
                 EndDate = new DateTime(2024, 7, 31)
             }));
 
         exception.Message.ShouldContain("30/07/2024");
-        await _backgroundJobManager.DidNotReceiveWithAnyArgs()
-            .EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(null);
+        EnqueuedArgs.ShouldBeNull();
     }
 
     [Fact]
     public async Task Should_Queue_A_Run_That_Ends_Exactly_On_The_Future_Evaluation_Limit()
     {
         SetTimeSettings(futureEvaluationInDays: 30, earliestEvaluationDate: new DateTime(2020, 1, 1));
-        var area = CreatePayrollAreaWithControlRecord("TE-Limit-2", new DateTime(2024, 6, 30));
+        CreatePayrollArea("TE-Limit-2", new DateTime(2024, 6, 30));
 
-        var output = await _timeEngineAppService.RunTimeEngine(new RunTimeEngineInput
+        var output = await TimeEngineAppService.RunTimeEngine(new RunTimeEngineInput
         {
-            PayrollAreaName = area,
+            PayrollAreaName = "TE-Limit-2",
             StartDate = new DateTime(2024, 7, 1),
             EndDate = new DateTime(2024, 7, 30)
         });
@@ -153,11 +57,12 @@ public class TimeEngineAppService_TimeSettingsLimits_Tests : AppTestBase
     public async Task Should_Refuse_A_Start_Date_Before_The_Earliest_Evaluation_Date()
     {
         SetTimeSettings(futureEvaluationInDays: 300, earliestEvaluationDate: new DateTime(2021, 4, 1));
+        CreatePayrollArea("TE-Limit-3", new DateTime(2021, 4, 30));
 
-        var exception = await Should.ThrowAsync<UserFriendlyException>(() => _timeEngineAppService.RunTimeEngine(
+        var exception = await Should.ThrowAsync<UserFriendlyException>(() => TimeEngineAppService.RunTimeEngine(
             new RunTimeEngineInput
             {
-                EmployeeCodes = "E-NONE",
+                PayrollAreaName = "TE-Limit-3",
                 StartDate = new DateTime(2021, 3, 31),
                 EndDate = new DateTime(2021, 4, 30)
             }));
@@ -165,19 +70,65 @@ public class TimeEngineAppService_TimeSettingsLimits_Tests : AppTestBase
         exception.Message.ShouldContain("01/04/2021");
     }
 
-    /// <summary>Legacy checked the end date only when it could find a control record; an unknown area has none.</summary>
+    /// <summary>The same limits on the codes-only path, against the first employee's area's control record.</summary>
     [Fact]
-    public async Task Should_Not_Apply_The_Future_Limit_When_No_Control_Record_Exists()
+    public async Task Should_Apply_The_Limits_To_A_Codes_Only_Run_Through_The_Employees_Area()
     {
-        SetTimeSettings(futureEvaluationInDays: 1, earliestEvaluationDate: new DateTime(2020, 1, 1));
+        SetTimeSettings(futureEvaluationInDays: 30, earliestEvaluationDate: new DateTime(2020, 1, 1));
+        var area = CreatePayrollArea("TE-Limit-4", new DateTime(2024, 6, 30));
+        CreateEmployee("LIM1", area.Id);
 
-        var output = await _timeEngineAppService.RunTimeEngine(new RunTimeEngineInput
-        {
-            PayrollAreaName = "No such area",
-            StartDate = new DateTime(2024, 1, 1),
-            EndDate = new DateTime(2030, 12, 31)
-        });
+        var exception = await Should.ThrowAsync<UserFriendlyException>(() => TimeEngineAppService.RunTimeEngine(
+            new RunTimeEngineInput
+            {
+                EmployeeCodes = "LIM1",
+                StartDate = new DateTime(2024, 7, 1),
+                EndDate = new DateTime(2024, 7, 31)
+            }));
 
-        output.Queued.ShouldBeTrue();
+        exception.Message.ShouldContain("30/07/2024");
+    }
+
+    /// <summary>
+    /// Legacy refused the codes path with "Configuration for TIME_EVAL_EARLIEST_DATE not done." and silently ran
+    /// nothing on the area path. Both refuse here, with that reason: a run that does not happen must say why.
+    /// </summary>
+    [Fact]
+    public async Task Should_Refuse_When_No_Earliest_Evaluation_Date_Is_Configured()
+    {
+        SetTimeSettings(futureEvaluationInDays: 300, earliestEvaluationDate: default(DateTime));
+        CreatePayrollArea("TE-Limit-5", new DateTime(2024, 6, 30));
+
+        var exception = await Should.ThrowAsync<UserFriendlyException>(() => TimeEngineAppService.RunTimeEngine(
+            new RunTimeEngineInput
+            {
+                PayrollAreaName = "TE-Limit-5",
+                StartDate = new DateTime(2024, 6, 1),
+                EndDate = new DateTime(2024, 6, 30)
+            }));
+
+        exception.Message.ShouldBe(Resolve<Abp.Localization.ILocalizationManager>().GetString(HCMv3Consts.LocalizationSourceName,
+            "TimeEngineEarliestEvaluationDateNotConfigured"));
+        EnqueuedArgs.ShouldBeNull();
+    }
+
+    /// <summary>
+    /// A blank Start Date runs from the 1st of the current month (legacy's own default), so that is the date the
+    /// earliest-date limit is held against.
+    /// </summary>
+    [Fact]
+    public async Task Should_Hold_A_Blank_Start_Date_As_The_First_Of_This_Month_Against_The_Earliest_Date()
+    {
+        var firstOfThisMonth = new DateTime(Clock.Now.Year, Clock.Now.Month, 1);
+        SetTimeSettings(futureEvaluationInDays: 3650, earliestEvaluationDate: firstOfThisMonth.AddMonths(1));
+        CreatePayrollArea("TE-Limit-6", firstOfThisMonth.AddMonths(1).AddDays(-1));
+
+        await Should.ThrowAsync<UserFriendlyException>(() => TimeEngineAppService.RunTimeEngine(
+            new RunTimeEngineInput
+            {
+                PayrollAreaName = "TE-Limit-6",
+                StartDate = null,
+                EndDate = firstOfThisMonth.AddMonths(1)
+            }));
     }
 }

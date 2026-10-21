@@ -1,151 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
-using Abp.Domain.Repositories;
-using Abp.Runtime.Session;
-using Abp.Timing;
-using Abp.UI;
+using Abp.BackgroundJobs;
 using HCMv3.Authorization;
-using HCMv3.PayrollManagement.Costing;
 using HCMv3.PayrollManagement.Dto;
-using HCMv3.ProjectManagement;
-using HCMv3.SystemSettings.Services;
+using HCMv3.Reports.Dto;
 
 namespace HCMv3.PayrollManagement;
 
 /// <inheritdoc cref="IPostJvAppService"/>
+/// <remarks>
+/// <para>Everything that decides whether a JV may go -- FI links, the Integration Center switch, empty JV,
+/// balance, preview fingerprint -- is checked HERE, on the server, before the run is queued, and again by
+/// <see cref="PostJvRunner"/> just before the first journal. The screen's disabled button is only a
+/// convenience.</para>
+///
+/// <para>Finance posting otherwise stays as legacy, by the user's decision: no double-post block, no
+/// posting history, no reversal or re-post.</para>
+/// </remarks>
 [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PostJv)]
 public class PostJvAppService : HCMv3AppServiceBase, IPostJvAppService
 {
-    private readonly IJournalVoucherBuilder _journalVoucherBuilder;
-    private readonly IFinancePostingClient _financePostingClient;
-    private readonly ISysSettingsAccessor _sysSettingsAccessor;
-    private readonly IRepository<PayrollArea> _payrollAreaRepository;
-    private readonly IRepository<ProjectLog> _projectLogRepository;
-    private readonly ICostingFileAppService _costingFileAppService;
+    private readonly PostJvPreconditions _preconditions;
+    private readonly CostingScreenService _screen;
+    private readonly IFinanceRunLog _runLog;
+    private readonly IBackgroundJobManager _backgroundJobManager;
 
     public PostJvAppService(
-        IJournalVoucherBuilder journalVoucherBuilder,
-        IFinancePostingClient financePostingClient,
-        ISysSettingsAccessor sysSettingsAccessor,
-        IRepository<PayrollArea> payrollAreaRepository,
-        IRepository<ProjectLog> projectLogRepository,
-        ICostingFileAppService costingFileAppService)
+        PostJvPreconditions preconditions,
+        CostingScreenService screen,
+        IFinanceRunLog runLog,
+        IBackgroundJobManager backgroundJobManager)
     {
-        _journalVoucherBuilder = journalVoucherBuilder;
-        _financePostingClient = financePostingClient;
-        _sysSettingsAccessor = sysSettingsAccessor;
-        _payrollAreaRepository = payrollAreaRepository;
-        _projectLogRepository = projectLogRepository;
-        _costingFileAppService = costingFileAppService;
+        _preconditions = preconditions;
+        _screen = screen;
+        _runLog = runLog;
+        _backgroundJobManager = backgroundJobManager;
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PostJv_Post)]
-    public async Task<PostJvResultDto> PostJournalVoucher(CostingRunInputDto input)
+    public async Task<FinanceRunStartedDto> PostJournalVoucher(CostingRunInputDto input)
     {
-        var payrollArea = _payrollAreaRepository.GetAll()
-            .FirstOrDefault(a => a.Name == input.PayrollAreaName);
+        _screen.ValidateInput(input);
 
-        // Legacy lines 784-788: both FI links are hard preconditions checked BEFORE anything is built.
-        if (payrollArea == null)
-        {
-            throw new UserFriendlyException(L("PayrollAreaNotFound"));
-        }
+        // Legacy lines 784-788 first, then what legacy did not check at all.
+        await _preconditions.RequirePostableAreaAsync(input.PayrollAreaName);
+        await _preconditions.EnsurePostingSwitchedOnAsync();
 
-        if (payrollArea.FICompanyId == null)
-        {
-            throw new UserFriendlyException(L("PayrollFICompanyNull"));
-        }
+        var domainInput = CostingMapper.ToDomain(input);
+        await _preconditions.BuildPostableAsync(domainInput, input.PreviewFingerprint);
 
-        if (payrollArea.FIBankId == null)
-        {
-            throw new UserFriendlyException(L("PayrollFIBankNull"));
-        }
-
-        var result = await _journalVoucherBuilder.BuildAsync(CostingMapper.ToDomain(input));
-
-        var response = new PostJvResultDto();
-        var messages = new List<string>();
-
-        // Legacy lines 818-827: when SeparateProvisionPosting is on the line set is split into two
-        // journals by the BillingType column; otherwise everything goes into the single salary journal.
-        // A missing settings row (fresh tenant) means the feature is off -- ISysSettingsAccessor returns
-        // null in that case by design.
-        var fiSettings = await _sysSettingsAccessor.GetFIPostingSettingsAsync();
-        var separateProvisionPosting = fiSettings?.SeparateProvisionPosting ?? false;
-
-        List<JournalVoucherLine> salaryLines;
-        List<JournalVoucherLine> provisionLines = null;
-
-        if (separateProvisionPosting)
-        {
-            salaryLines = result.Lines
-                .Where(l => l.BillingType != JournalVoucherBuilder.ProvisionBillingTypeLabel)
-                .ToList();
-            provisionLines = result.Lines
-                .Where(l => l.BillingType == JournalVoucherBuilder.ProvisionBillingTypeLabel)
-                .ToList();
-        }
-        else
-        {
-            salaryLines = result.Lines.ToList();
-        }
-
-        response.SalaryLineCount = salaryLines.Count;
-        response.ProvisionLineCount = provisionLines?.Count ?? 0;
-
-        // Legacy lines 831-844.
-        if (salaryLines.Any())
-        {
-            var header = $"Employee Payroll/Salary For {input.PayInDate:MMM-yyyy}";
-            var batchNumber = await _financePostingClient.PostJournalAsync(payrollArea, salaryLines, header);
-            response.JournalBatchNumbers.Add(batchNumber);
-            messages.Add(L("PayrollSalaryJvPostedSuccessfully"));
-        }
-        else
-        {
-            messages.Add(L("NoDataFoundToPostPayrollSalaryJv"));
-        }
-
-        // Legacy lines 846-858.
-        if (provisionLines != null)
-        {
-            if (provisionLines.Any())
-            {
-                var header = $"Employee Provision For {input.PayInDate:MMM-yyyy}";
-                var batchNumber = await _financePostingClient.PostJournalAsync(payrollArea, provisionLines, header);
-                response.JournalBatchNumbers.Add(batchNumber);
-                messages.Add(L("ProvisionJvPostedSuccessfully"));
-            }
-            else
-            {
-                messages.Add(L("NoDataFoundToPostProvisionJv"));
-            }
-        }
-
-        response.Success = response.JournalBatchNumbers.Any();
-        response.Message = string.Join(Environment.NewLine, messages);
-
-        // Legacy lines 860-869: the post-JV outcome is persisted as an EMPLOYEE-LESS ProjectLog row
-        // (`pl1.Employee` is never assigned, so it stays null; Status is 0 even when nothing was posted,
-        // because legacy only reaches this point without an exception). Wave P8 made
-        // ProjectLog.EmployeeId nullable, so this row is now written instead of only being returned in
-        // PostJvResultDto.Message.
-        await _projectLogRepository.InsertAsync(new ProjectLog
-        {
-            TenantId = AbpSession.GetTenantId(),
-            EmployeeId = null,
-            InPeriod = input.PayInDate,
-            Message = response.Message,
-            Status = 0,
-            RunTimeStamp = Clock.Now,
-            NoOfEmployee = 0
-        });
-
-        return response;
+        return await _screen.StartRunAsync(
+            FinanceRunProcess.PostJv,
+            domainInput,
+            await GetCurrentUserNameOrIdAsync(),
+            input.PreviewFingerprint,
+            args => _backgroundJobManager.EnqueueAsync<PostJvBackgroundJob, FinanceRunJobArgs>(args));
     }
 
     // [HttpPost] required: ABP maps Get* to HTTP GET, so NSwag would flatten CostingRunInputDto into
@@ -153,22 +65,80 @@ public class PostJvAppService : HCMv3AppServiceBase, IPostJvAppService
     [HttpPost]
     public Task<JournalVoucherPreviewDto> GetJournalVoucherLines(CostingRunInputDto input)
     {
-        return _costingFileAppService.GetJournalVoucherLines(input);
+        return _screen.PreviewAsync(input);
     }
 
     public Task<JournalVoucherValidationResultDto> ValidateJournalVoucher(CostingRunInputDto input)
     {
-        return _costingFileAppService.ValidateJournalVoucher(input);
+        return _screen.ValidateAsync(input);
+    }
+
+    public Task<List<PayrollAreaLookupDto>> GetPayrollAreasForLookup()
+    {
+        return Task.FromResult(_screen.GetPayrollAreasForLookup());
+    }
+
+    public Task<CostingPeriodContextDto> GetCostingPeriodContext(string payrollAreaName)
+    {
+        return Task.FromResult(_screen.GetPeriodContext(payrollAreaName));
+    }
+
+    public Task<CostingPeriodDatesDto> GetCostingPeriodDates(string payrollAreaName, int payrollMonth, int payrollYear)
+    {
+        return Task.FromResult(_screen.GetPeriodDates(payrollAreaName, payrollMonth, payrollYear));
+    }
+
+    [HttpPost]
+    public Task<PayrollRunCandidatesOutput> GetCostingFileCandidates(GetCostingFileCandidatesInput input)
+    {
+        return _screen.GetCandidatesAsync(input);
+    }
+
+    [HttpPost]
+    public Task<List<string>> GetCostingFileCandidateCodes(GetCostingFileCandidatesInput input)
+    {
+        return _screen.GetCandidateCodesAsync(input);
     }
 
     public Task<CostingProcessStatusDto> GetProcessStatus()
     {
-        return Task.FromResult(CostingFileAppService.BuildProcessStatus(_projectLogRepository));
+        return _runLog.GetStatusAsync(FinanceRunProcess.PostJv);
+    }
+
+    [HttpPost]
+    public Task<FinanceRunLogOutput> GetProcessLog(GetFinanceRunLogInput input)
+    {
+        return _runLog.GetLogAsync(input);
+    }
+
+    [HttpPost]
+    public Task<ReportPdfOutput> ExportProcessLog(GetFinanceRunLogInput input)
+    {
+        return _screen.ExportLogAsync(input);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PostJv_Post)]
     public Task ClearProcessStatus()
     {
-        return CostingFileAppService.ClearProjectLogAsync(_projectLogRepository);
+        return _runLog.ClearAsync();
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PostJv_Post)]
+    public Task RequestStop()
+    {
+        return _runLog.RequestStopAsync();
+    }
+
+    private async Task<string> GetCurrentUserNameOrIdAsync()
+    {
+        try
+        {
+            var user = await GetCurrentUserAsync();
+            return user.UserName;
+        }
+        catch (Exception)
+        {
+            return AbpSession.UserId?.ToString();
+        }
     }
 }

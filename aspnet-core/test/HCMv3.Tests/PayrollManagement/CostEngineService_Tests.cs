@@ -358,6 +358,84 @@ public class CostEngineService_Tests : CostingTestBase
         Context.CostRegisters.ShouldBeEmpty();
     }
 
+    /// <summary>
+    /// Legacy wrote each employee's ProjectLog row inside the loop (lines 604-654); the observer is where the
+    /// background job now does that, so it must hear about every employee, success and failure alike.
+    /// </summary>
+    [Fact]
+    public async Task Should_Report_Each_Employee_To_The_Observer_As_It_Finishes()
+    {
+        Seed();
+        var wageTypeId = AddWageType("1001", "Basic Salary", BillingType.Earning);
+        AddSalaryRegister((wageTypeId, 500));
+        AddWageAccount(wageTypeId, 100, "CE2");
+
+        var observer = new RecordingObserver();
+
+        var result = await CreateCostEngine(ResolverFor(AreaName, _employeeId)).RunAsync(Input(), observer);
+
+        result.SuccessCount.ShouldBe(1);
+        observer.Completed.Count.ShouldBe(1);
+        observer.Completed[0].Entry.EmployeeId.ShouldBe(_employeeId);
+        observer.Completed[0].Entry.Status.ShouldBe(0);
+        observer.Completed[0].Entry.Message.ShouldBe(CostEngineService.SuccessMessage);
+        observer.Completed[0].Total.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Should_Report_A_Failed_Employee_To_The_Observer_Too()
+    {
+        Seed();
+        var wageTypeId = AddWageType("1001", "Basic Salary", BillingType.Earning);
+        AddSalaryRegister((wageTypeId, 500));
+
+        // No wage account: legacy line 604 fails the employee.
+        var observer = new RecordingObserver();
+
+        var result = await CreateCostEngine(ResolverFor(AreaName, _employeeId)).RunAsync(Input(), observer);
+
+        result.FailedCount.ShouldBe(1);
+        observer.Completed.Count.ShouldBe(1);
+        observer.Completed[0].Entry.Status.ShouldBe(1);
+    }
+
+    /// <summary>
+    /// A Stop pressed before any ProjectLog row exists: legacy's button had nothing to flag and the run went
+    /// on. The observer's stop request ends the run before the first employee.
+    /// </summary>
+    [Fact]
+    public async Task Should_Stop_When_The_Observer_Asks_Even_With_No_Log_Row_To_Flag()
+    {
+        Seed();
+        var wageTypeId = AddWageType("1001", "Basic Salary", BillingType.Earning);
+        AddSalaryRegister((wageTypeId, 500));
+        AddWageAccount(wageTypeId, 100, "CE2");
+
+        var observer = new RecordingObserver { StopRequested = true };
+
+        var result = await CreateCostEngine(ResolverFor(AreaName, _employeeId)).RunAsync(Input(), observer);
+
+        result.Aborted.ShouldBeTrue();
+        result.SuccessCount.ShouldBe(0);
+        observer.Completed.ShouldBeEmpty();
+        Context.CostRegisters.ShouldBeEmpty();
+    }
+
+    private class RecordingObserver : ICostingRunObserver
+    {
+        public bool StopRequested { get; set; }
+
+        public System.Collections.Generic.List<(CostingRunLogEntry Entry, int Total)> Completed { get; } = new();
+
+        public Task<bool> IsStopRequestedAsync() => Task.FromResult(StopRequested);
+
+        public Task OnEmployeeCompletedAsync(CostingRunLogEntry entry, int totalEmployees)
+        {
+            Completed.Add((entry, totalEmployees));
+            return Task.CompletedTask;
+        }
+    }
+
     [Fact]
     public void Should_Normalize_Period_To_End_Of_Month()
     {

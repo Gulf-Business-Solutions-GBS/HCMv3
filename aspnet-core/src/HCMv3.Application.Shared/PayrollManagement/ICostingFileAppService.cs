@@ -17,31 +17,30 @@ namespace HCMv3.PayrollManagement;
 public interface ICostingFileAppService : IApplicationService
 {
     /// <summary>
-    /// Runs the cost engine. Legacy "Generate Costing File" button ->
-    /// <c>ExecuteLongOperation</c> -> <c>Main</c> -> <c>CreateCostRegister</c>
-    /// (<c>uscCostingFile.ascx.cs</c> lines 239-279, 397-703).
-    ///
-    /// <para>Legacy ran this on a background thread with a polling status panel; this port runs it
-    /// synchronously within the request. See the implementation's remarks.</para>
+    /// Legacy "Generate Costing File" button -> <c>ExecuteLongOperation</c> -> <c>Main</c> ->
+    /// <c>CreateCostRegister</c> (<c>uscCostingFile.ascx.cs</c> lines 239-279, 385-691). Empties the log and
+    /// QUEUES the run as a background job, as legacy queued it on a pool thread; poll
+    /// <see cref="GetProcessStatus"/> for progress and <see cref="GetProcessLog"/> for the per-employee grid.
+    /// Refused while another cost-engine or Post JV run is going.
     /// </summary>
-    Task<CostingRunResultDto> GenerateCostingFile(CostingRunInputDto input);
+    Task<FinanceRunStartedDto> GenerateCostingFile(CostingRunInputDto input);
 
     /// <summary>
     /// Builds the JV preview grid without posting anything. Legacy <c>ExportTable(...)</c> feeding the
-    /// on-screen grid.
+    /// on-screen grid. Carries the fingerprint Post JV checks against.
     /// </summary>
     Task<JournalVoucherPreviewDto> GetJournalVoucherLines(CostingRunInputDto input);
 
     /// <summary>
     /// Legacy "Validate JV" button -> <c>btnValidateJV_Click</c> -> <c>ExportGrid(onlyValidate: true)</c>
-    /// (<c>uscCostingFile.ascx.cs</c> lines 232-235, 1710-1728). Checks that rows exist and that
+    /// (<c>uscCostingFile.ascx.cs</c> lines 232-235, 1618-1634). Checks that rows exist and that
     /// debits equal credits after whole-unit rounding.
     /// </summary>
     Task<JournalVoucherValidationResultDto> ValidateJournalVoucher(CostingRunInputDto input);
 
     /// <summary>
     /// Legacy "Export" button -> <c>btnExportCostingFile_Click</c> -> <c>ExportGrid(onlyValidate: false)</c>
-    /// -> <c>gridExport.WriteXlsToResponse()</c> (<c>uscCostingFile.ascx.cs</c> lines 228-231, 1741-1755).
+    /// -> <c>gridExport.WriteXlsToResponse()</c> (<c>uscCostingFile.ascx.cs</c> lines 228-231, 1648-1662).
     /// Returns the spreadsheet as base64 rather than writing to the response stream or to disk.
     /// </summary>
     Task<ReportPdfOutput> ExportCostingFile(CostingRunInputDto input);
@@ -49,12 +48,30 @@ public interface ICostingFileAppService : IApplicationService
     /// <summary>Legacy <c>BindPayrollArea</c> combo source.</summary>
     Task<List<PayrollAreaLookupDto>> GetPayrollAreasForLookup();
 
-    /// <summary>Legacy <c>CalculateProcessStatus</c> status panel (lines 1574-1636).</summary>
+    /// <summary>Legacy "Current" period: <c>SetCurrentDates</c> from the area's payroll control record.</summary>
+    Task<CostingPeriodContextDto> GetCostingPeriodContext(string payrollAreaName);
+
+    /// <summary>Legacy "Other" period: <c>SetDates</c> for a typed month and year.</summary>
+    Task<CostingPeriodDatesDto> GetCostingPeriodDates(string payrollAreaName, int payrollMonth, int payrollYear);
+
+    /// <summary>Legacy employee popup (the "..." button beside Employee Code): one page.</summary>
+    Task<PayrollRunCandidatesOutput> GetCostingFileCandidates(GetCostingFileCandidatesInput input);
+
+    /// <summary>Every code the popup's filter shows, for Select All and OK.</summary>
+    Task<List<string>> GetCostingFileCandidateCodes(GetCostingFileCandidatesInput input);
+
+    /// <summary>Legacy <c>CalculateProcessStatus</c> status panel (lines 2484-2585) and status label.</summary>
     Task<CostingProcessStatusDto> GetProcessStatus();
 
-    /// <summary>Legacy "Clear Status" button -> <c>TruncateLog</c> (line 1637).</summary>
+    /// <summary>Legacy "Show details" grid (Cost Execution Log popup), one page.</summary>
+    Task<FinanceRunLogOutput> GetProcessLog(GetFinanceRunLogInput input);
+
+    /// <summary>Legacy Export Log button on that popup.</summary>
+    Task<ReportPdfOutput> ExportProcessLog(GetFinanceRunLogInput input);
+
+    /// <summary>Legacy "Clear Status" button -> <c>TruncateLog</c>.</summary>
     Task ClearProcessStatus();
 
-    /// <summary>Legacy "Stop Costing File" button: raises the <c>ProjectLog.StopFlag</c> the run loop polls.</summary>
+    /// <summary>Legacy "Stop Costing File" button: stops the run before its next employee.</summary>
     Task RequestStop();
 }

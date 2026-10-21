@@ -26,8 +26,32 @@ public class ProjectCostEngineRunInput
     /// <summary>Legacy args[5].</summary>
     public DateTime OffCyclePaymentDate { get; set; }
 
-    /// <summary>Legacy args[6] -- only "End Of Service" is ever meaningful (legacy line 152).</summary>
+    /// <summary>Legacy args[6] -- only "End Of Service" is ever meaningful (legacy line 140).</summary>
     public string OffCycleReason { get; set; }
+
+    /// <summary>
+    /// Legacy <c>currentUserName</c> (line 94). Shown on the run's progress row and in the "already running"
+    /// refusal; <c>null</c> is allowed.
+    /// </summary>
+    public string CurrentUserName { get; set; }
+
+    /// <summary>
+    /// SAVE IN BATCHES. When above zero the employees are processed this many at a time, each batch in its own
+    /// <c>RequiresNew</c> unit of work that is saved and committed before the next starts (Go-Live Setup's IT11
+    /// fix, as <c>PayrollEngineRunInput.CommitBatchSize</c>). <c>0</c> keeps the whole run in the caller's unit of
+    /// work. The background job always passes <see cref="ProjectCostEngineBatches.Size"/>.
+    /// </summary>
+    public int CommitBatchSize { get; set; }
+}
+
+/// <summary>
+/// How many employees one batch of a Project Cost Engine run saves together. Legacy committed per employee
+/// (one XAF object space each, <c>uscProjectCosting.ascx.cs</c> lines 357-613); ten is the size the Payroll
+/// Engine and Go-Live Setup use, so all three engines behave alike.
+/// </summary>
+public static class ProjectCostEngineBatches
+{
+    public const int Size = 10;
 }
 
 /// <summary>Per-employee outcome, mirroring the <c>ProjectLog</c> row legacy writes for each employee.</summary>
@@ -68,9 +92,11 @@ public class ProjectCostEngineSettings
 
     /// <summary>
     /// Legacy <c>ManageSecuritySettings.EnableAuditLogInProjectCostEngine</c>. Carried for parity but
-    /// UNUSED: the XAF <c>AuditTrailService</c> plumbing it gated (legacy lines 371-381, 1291-1304) is not
+    /// UNUSED: the XAF <c>AuditTrailService</c> plumbing it gated (legacy lines 359-369, 1273-1288) is not
     /// ported -- ABP's <c>FullAuditedEntity</c> auditing is always on. Same decision as
-    /// <c>PayrollEngineService</c>.
+    /// <c>PayrollEngineService</c>. ABP entity history cannot be switched on per run: which types it records is
+    /// a start-up selector (<c>HCMv3EntityFrameworkCoreModule</c>, <c>HcmEntityHistoryTypes</c>), not a
+    /// per-unit-of-work option.
     /// </summary>
     public bool EnableAuditLogInProjectCostEngine { get; set; }
 

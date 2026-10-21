@@ -62,7 +62,7 @@ public class EngineProgressAppServices_Tests : AppTestBase
         var payrollRunId = await SeedRunAsync(EngineType.PayrollEngine, total: 1);
         await SeedEmployeeAsync(payrollRunId, 1, "P001", succeeded: false, message: "Payroll Control Record is locked.");
 
-        var timeRows = await _timeEngine.GetTimeEngineRunEmployees(new GetEngineRunEmployeesInput());
+        var timeRows = await _timeEngine.GetTimeEngineRunEmployees(new HCMv3.TimeManagement.Dto.GetTimeEngineRunEmployeesInput());
         timeRows.TotalCount.ShouldBe(2);
         timeRows.Items.Select(i => i.EmployeeCode).ShouldBe(new[] { "T001", "T002" });
         timeRows.Items[1].Message.ShouldBe("Employee Sub Group not found for Employee.");
@@ -147,7 +147,8 @@ public class EngineProgressAppServices_Tests : AppTestBase
 
     /// <summary>
     /// The status poll must stay a GET (no custom input DTO), matching <c>GetProjectCostEngineStatus</c> --
-    /// the idiom the existing Angular polling component is already built around.
+    /// the idiom the existing Angular polling component is already built around. The Time Engine's takes the
+    /// selected payroll area as a plain optional string, which keeps it a GET (a query-string argument).
     /// </summary>
     [Theory]
     [InlineData(typeof(TimeEngineAppService), nameof(ITimeEngineAppService.GetTimeEngineStatus))]
@@ -156,7 +157,7 @@ public class EngineProgressAppServices_Tests : AppTestBase
     {
         var method = serviceType.GetMethod(methodName);
 
-        method.GetParameters().ShouldBeEmpty();
+        method.GetParameters().ShouldAllBe(p => p.ParameterType == typeof(string) && p.IsOptional);
         method.GetCustomAttribute<HttpPostAttribute>().ShouldBeNull();
     }
 

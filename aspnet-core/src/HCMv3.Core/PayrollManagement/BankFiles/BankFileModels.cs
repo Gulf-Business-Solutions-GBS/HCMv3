@@ -184,4 +184,16 @@ public class BankFileDocument
     /// <c>DBNull</c>). Numerics are boxed <c>double</c>/<c>int</c> so the spreadsheet keeps them numeric.
     /// </summary>
     public List<List<object>> Rows { get; set; } = new();
+
+    /// <summary>
+    /// Number of payment lines the file carries, as the format itself counted them -- for a text file the
+    /// figure its trailer states. <c>null</c> when the format does not say, and the caller counts grid rows.
+    /// </summary>
+    public int? RecordCount { get; set; }
+
+    /// <summary>
+    /// Sum of the amounts the file pays, as the format itself added them up -- for a text file the trailer
+    /// total. <c>null</c> when the format does not say, and the caller sums the grid's amount column.
+    /// </summary>
+    public double? TotalAmount { get; set; }
 }

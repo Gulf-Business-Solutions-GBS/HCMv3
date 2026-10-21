@@ -60,7 +60,9 @@ public class GbkT1Formatter : IBankFileFormatter
         {
             Kind = BankFileDocumentKind.Text,
             FormatCode = FormatCode,
-            TextContent = sb.ToString()
+            TextContent = sb.ToString(),
+            RecordCount = count,
+            TotalAmount = totalAmount
         };
     }
 }

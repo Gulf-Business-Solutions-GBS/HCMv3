@@ -1,45 +1,72 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, viewChild } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
-import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
 import {
     BankFileFormatDto,
     BankFileLookupsOutput,
     BankFileOutput,
+    BankFilePeriodDto,
+    BankFilePeriodType,
+    BankFileSponsorBankDto,
     BankFilesServiceProxy,
     GenerateBankFileInput,
+    GetBankFilePeriodInput,
+    PaymentType,
 } from '@shared/service-proxies/service-proxies';
+import { BankFileLogModalComponent } from './bank-file-log-modal.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+
+/** Legacy Payment Type radios rdPaymentAll / rdPaymentBank / rdPaymentCash. */
+type PaymentTypeChoice = 'ALL' | 'BANK' | 'CASH';
 
 /**
  * Bank salary-transfer file generation.
  *
- * Ported legacy screen: HCM10.Web/UserControls/PayrollManagement/uscBankFile2.ascx(.cs).
+ * Ported from the LIVE legacy screen HCM10.Web/UserControls/PayrollManagement/uscBankFile.ascx(.cs). Its 28 file
+ * layouts are those of uscBankFile2 line for line; what only the live screen has, and this one now has too:
+ *  - the Current / Other period choice, with read-only start and end dates (SetCurrentDates / SetDates);
+ *  - the ALL / BANK / CASH payment type radios;
+ *  - the Sponsor (A/C) list re-filled for the chosen sponsor (BindSponsorBank);
+ *  - "View Log": every run with who, when, status and filters, and the stored copy of the file.
  *
- * SUPERSESSION NOTE: legacy shipped TWO code-behinds, uscBankFile.ascx.cs (5,856 lines) and
- * uscBankFile2.ascx.cs (3,357 lines). Their .ascx MARKUP is identical apart from the CodeBehind/Inherits
- * attributes, and the code-behinds are identical after CR normalisation except that uscBankFile.ascx.cs
- * carries a 2,499-line, fully commented-out duplicate of the generator (lines 2512-5010; verified to
- * contain zero non-blank, non-comment lines). Both declare the SAME 28 format codes and contain the SAME
- * 28 live format branches -- including CBK-T6, CBK-T7, BUR-G2 and BURBD-G1. So this ONE screen covers both.
- *
+ * Dates are never sent from here: the server works them out from the payroll area, the period type and the
+ * month / year, so a browser in Kuwait and a server on UTC cannot disagree about which day the period ends.
  */
 @Component({
     templateUrl: './bank-file.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, TableModule, CheckboxModule],
+    imports: [
+        HelpPageDirective,
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        LocalizePipe,
+        PermissionPipe,
+        TableModule,
+        CheckboxModule,
+        DecimalPipe,
+        BankFileLogModalComponent,
+    ],
 })
 export class BankFileComponent extends AppComponentBase implements OnInit {
     private _bankFileService = inject(BankFilesServiceProxy);
 
+    readonly logModal = viewChild<BankFileLogModalComponent>('logModal');
+
+    readonly BankFilePeriodType = BankFilePeriodType;
+
     readonly loading = signal<boolean>(false);
     readonly generating = signal<boolean>(false);
+    readonly loadingPeriod = signal<boolean>(false);
 
     readonly lookups = signal<BankFileLookupsOutput | undefined>(undefined);
     readonly lastResult = signal<BankFileOutput | undefined>(undefined);
@@ -48,25 +75,21 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
     readonly payrollAreaId = signal<number | undefined>(undefined);
     readonly sponsorId = signal<number | undefined>(undefined);
     readonly sponsorBankId = signal<number | undefined>(undefined);
+    readonly sponsorBanks = signal<BankFileSponsorBankDto[]>([]);
     readonly mosalId = signal<number | undefined>(undefined);
     readonly employeeCodes = signal<string>('');
     readonly employeeBankId = signal<number | undefined>(undefined);
     readonly paymentBankId = signal<number | undefined>(undefined);
-    /** "R" = Regular, "O" = OffCycle, "A" = both (legacy's cutoff-day branch). */
+    readonly paymentType = signal<PaymentTypeChoice>('ALL');
+    /** "R" = Regular, "O" = OffCycle, "A" = both (legacy "RO", the cutoff-day branch). */
     readonly payrollRunType = signal<string>('R');
     readonly splitBankFiles = signal<boolean>(false);
 
-    readonly month = signal<number>(new Date().getMonth() === 0 ? 12 : new Date().getMonth());
-    readonly year = signal<number>(
-        new Date().getMonth() === 0 ? new Date().getFullYear() - 1 : new Date().getFullYear()
-    );
-
-    readonly years: number[] = Array.from({ length: 8 }, (_, i) => new Date().getFullYear() - 5 + i);
-    readonly months: number[] = Array.from({ length: 12 }, (_, i) => i + 1);
-
-    /** Period start/end derived from year+month, as the legacy screen did on payroll-area selection. */
-    readonly startDate = computed(() => new Date(this.year(), this.month() - 1, 1));
-    readonly endDate = computed(() => new Date(this.year(), this.month(), 0));
+    // --- period (legacy rdCurrent is checked by default) ---
+    readonly periodType = signal<BankFilePeriodType>(BankFilePeriodType.Current);
+    readonly month = signal<number | undefined>(undefined);
+    readonly year = signal<number | undefined>(undefined);
+    readonly period = signal<BankFilePeriodDto | undefined>(undefined);
 
     /** Formats belonging to the currently selected payment bank -- purely informational. */
     readonly formatsForSelectedBank = computed<BankFileFormatDto[]>(() => {
@@ -76,7 +99,7 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
             return [];
         }
 
-        // "GB" and "GBK" share the GBK-* format family (legacy switch fall-through at :1303-1304).
+        // "GB" and "GBK" share the GBK-* format family (legacy switch fall-through).
         const key = bank.code === 'GB' ? 'GBK' : bank.code;
         return all.filter((f) => f.payerBankCode === key);
     });
@@ -84,11 +107,13 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
     readonly canGenerate = computed(
         () =>
             !!this.paymentBankId() &&
+            !!this.period()?.hasPeriod &&
             (!!this.payrollAreaId() || !!this.sponsorId() || !!this.mosalId() || !!this.employeeCodes().trim())
     );
 
     ngOnInit(): void {
         this.loadLookups();
+        this.loadPeriod();
     }
 
     loadLookups(): void {
@@ -99,15 +124,86 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
             .subscribe((result) => this.lookups.set(result));
     }
 
+    // Legacy cmbPayrollArea SelectedIndexChanged -> CallbackPanelPeriod.PerformCallback().
+    onPayrollAreaChange(id: number | undefined): void {
+        this.payrollAreaId.set(id);
+        this.loadPeriod();
+    }
+
+    // Legacy cmbSponsor SelectedIndexChanged -> CallbackPanelSponsor (BindSponsorBank) re-fills Sponsor (A/C).
+    onSponsorChange(id: number | undefined): void {
+        this.sponsorId.set(id);
+        this.sponsorBankId.set(undefined);
+        this.sponsorBanks.set([]);
+
+        if (!id) {
+            return;
+        }
+
+        this._bankFileService.getBankFileSponsorBanks(id).subscribe((banks) => this.sponsorBanks.set(banks ?? []));
+    }
+
+    onPeriodTypeChange(type: BankFilePeriodType): void {
+        this.periodType.set(type);
+        this.loadPeriod();
+    }
+
+    onMonthChange(value: number | undefined): void {
+        this.month.set(value ? Number(value) : undefined);
+        this.loadPeriod();
+    }
+
+    onYearChange(value: number | undefined): void {
+        this.year.set(value ? Number(value) : undefined);
+        this.loadPeriod();
+    }
+
+    /** Legacy ASPxCallbackPanelPeriod_Callback: Current -> SetCurrentDates, Other -> SetDates. */
+    loadPeriod(): void {
+        const input = new GetBankFilePeriodInput();
+        input.payrollAreaId = this.payrollAreaId();
+        input.periodType = this.periodType();
+        if (this.periodType() === BankFilePeriodType.Other) {
+            input.payrollMonth = this.month();
+            input.payrollYear = this.year();
+        }
+
+        this.loadingPeriod.set(true);
+        this._bankFileService
+            .getBankFilePeriod(input)
+            .pipe(finalize(() => this.loadingPeriod.set(false)))
+            .subscribe((result) => {
+                this.period.set(result);
+
+                // Current fills the month / year boxes from the control record, as legacy did; Other keeps what
+                // was typed, filling a blank box with what the server used (today's month / year).
+                if (result.payrollMonth) {
+                    this.month.set(result.payrollMonth);
+                }
+                if (result.payrollYear) {
+                    this.year.set(result.payrollYear);
+                }
+            });
+    }
+
     generate(): void {
-        if (!this.canGenerate()) {
+        if (!this.payrollAreaId() && !this.sponsorId() && !this.mosalId() && !this.employeeCodes().trim()) {
             this.message.warn(this.l('BankFileNoPayrollAreaSponsorMosalIdOrEmpCode'));
             return;
         }
 
-        // Built by assignment rather than through the constructor's `IGenerateBankFileInput` literal: that
-        // interface marks `paymentType` as required, while the server DTO has it as `PaymentType?` where null
-        // means "any payment type" -- which is what this screen always wants (legacy left cmbPaymentType blank).
+        if (!this.paymentBankId()) {
+            this.message.warn(this.l('BankFilePaymentBankNotSelected'));
+            return;
+        }
+
+        const period = this.period();
+        if (!period?.hasPeriod) {
+            this.message.warn(period?.message || this.l('PayrollRunPleaseSelectPayrollArea'));
+            return;
+        }
+
+        // Built by assignment: the server DTO's optional members (paymentType, the dates) must stay unset.
         const input = new GenerateBankFileInput();
         input.payrollAreaId = this.payrollAreaId();
         input.sponsorId = this.sponsorId();
@@ -116,11 +212,11 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
         input.employeeCodes = this.employeeCodes();
         input.employeeBankId = this.employeeBankId();
         input.paymentBankId = this.paymentBankId()!;
+        input.paymentType = this.toPaymentType(this.paymentType());
         input.payrollRunType = this.payrollRunType();
-        input.year = this.year();
-        input.month = this.month();
-        input.startDate = DateTime.fromJSDate(this.startDate());
-        input.endDate = DateTime.fromJSDate(this.endDate());
+        input.periodType = this.periodType();
+        input.year = period.payrollYear;
+        input.month = period.payrollMonth;
         input.splitBankFiles = this.splitBankFiles();
 
         this.generating.set(true);
@@ -132,6 +228,21 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
                 this.download(result);
                 this.notify.success(this.l('BankFileGeneratedSuccessfully'));
             });
+    }
+
+    viewLog(): void {
+        this.logModal()?.show();
+    }
+
+    private toPaymentType(choice: PaymentTypeChoice): PaymentType | undefined {
+        switch (choice) {
+            case 'BANK':
+                return PaymentType.Bank;
+            case 'CASH':
+                return PaymentType.Cash;
+            default:
+                return undefined;
+        }
     }
 
     /** The backend returns the file inline as base64 (same pattern as the PDF reports). */

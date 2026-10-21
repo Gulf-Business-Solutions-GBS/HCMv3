@@ -326,6 +326,9 @@
                                 {{ 'EngineRunDuration' | localize }}
                                 <p-sortIcon field="elapsedMilliseconds" />
                             </th>
+                            @if (showEmployeeDays()) {
+                                <th style="min-width: 100px">{{ 'Days' | localize }}</th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-record="$implicit">
@@ -350,6 +353,19 @@
                                 {{ record.completedAt | luxonFormat: 'yyyy-MM-dd HH:mm:ss' }}
                             </td>
                             <td style="min-width: 120px">{{ formatDuration(record.elapsedSeconds) }}</td>
+                            @if (showEmployeeDays()) {
+                                <td style="min-width: 100px">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-light-primary"
+                                        [class.btn-light-danger]="!record.succeeded"
+                                        [attr.aria-label]="l('Days') + ' ' + record.employeeCode"
+                                        (click)="employeeDaysRequested.emit(record)">
+                                        <i class="fa fa-calendar-day"></i>
+                                        <span>{{ 'Days' | localize }}</span>
+                                    </button>
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                 </p-table>

@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Abp.BackgroundJobs;
 using Abp.Dependency;
 using Abp.Domain.Uow;
+using Abp.Runtime.Session;
+using HCMv3.EngineRuns;
+using HCMv3.EngineRuns.Services;
 using HCMv3.TimeManagement.Services;
 
 namespace HCMv3.TimeManagement;
@@ -19,59 +22,124 @@ namespace HCMv3.TimeManagement;
 /// (<c>HCM10.TimeEngine/Program.cs</c> lines ~130-210, and <c>TimeAttendanceService.RunTimeEngine</c>
 /// line 59, which shelled into the same <c>Main</c>).</para>
 ///
-/// <para><b>Deviations from legacy's Main:</b>
-/// (1) the <c>dd/MM/yyyy</c> string parsing of <c>args[]</c> is gone -- the arguments arrive typed;
-/// (2) the connection-string / XAF type-registration plumbing is gone -- ABP owns it;
-/// (3) legacy's outermost <c>catch</c> wrote a failed <c>TimeLog</c> row with no employee and swallowed the
-/// exception. Reproduced in spirit but NOT verbatim: this job lets the exception surface so ABP's background
-/// job manager records and (per its own policy) retries it, since the engine already writes a
-/// <c>TimeLog</c> row for every per-employee and per-day failure itself and the outer catch could only ever
-/// fire for a whole-run failure -- which a silently-swallowed log row would hide.</para>
+/// <para><b>Saved in batches.</b> The run is handed <see cref="TimeEngineBatches.Size"/>, so the engine saves and
+/// commits ten employees at a time, each batch on its own -- legacy committed per employee and every 500 changes
+/// (Program.cs lines 1599-1602, 1705-1711). The unit of work this job opens around the run is therefore NOT
+/// transactional: the little the run writes outside the batches (the execution log, a missing settings row) is
+/// saved as it happens, so no batch ever waits on a lock this job is holding. Same arrangement as
+/// <c>PayrollEngineBackgroundJob</c>.</para>
+///
+/// <para><b>It never throws.</b> A background job that throws is retried by ABP's job manager, and a retried run is
+/// a second run of the same area nobody asked for. A failure is logged and written onto the run's progress row as
+/// Failed with its reason, where the Time Engine screen shows it. Legacy's <c>Main</c> did the same in its own
+/// way: its outermost <c>catch</c> (lines 185-199) wrote a failed <c>TimeLog</c> row and swallowed the
+/// exception.</para>
+///
+/// <para><b>It runs as the person who started it</b> (their tenant and user, from the job arguments).</para>
 /// </summary>
 public class TimeEngineBackgroundJob : AsyncBackgroundJob<TimeEngineJobArgs>, ITransientDependency
 {
     private readonly ITimeEngineService _timeEngineService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IAbpSession _session;
+    private readonly IEngineRunProgressWriter _progressWriter;
 
     public TimeEngineBackgroundJob(
         ITimeEngineService timeEngineService,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IAbpSession session,
+        IEngineRunProgressWriter progressWriter)
     {
         _timeEngineService = timeEngineService;
         _unitOfWorkManager = unitOfWorkManager;
+        _session = session;
+        _progressWriter = progressWriter;
     }
 
     public override async Task ExecuteAsync(TimeEngineJobArgs args)
     {
-        // Background jobs start with no tenant scope; every Time Engine entity is IMustHaveTenant, so the
-        // scope has to be re-established explicitly or the run would see (and write) nothing.
-        using (var uow = _unitOfWorkManager.Begin())
+        var input = new TimeEngineRunInput
         {
-            using (_unitOfWorkManager.Current.SetTenantId(args.TenantId))
+            EmployeeCodes = args.EmployeeCodes,
+            StartDate = args.StartDate,
+            EndDate = args.EndDate,
+            PayrollAreaName = args.PayrollAreaName,
+            CurrentUserName = args.CurrentUserName,
+            IsRanFromPayrollEngine = args.IsRanFromPayrollEngine,
+            EmployeeSubGroupIds = args.EmployeeSubGroupIds ?? new Dictionary<int, int>(),
+            CommitBatchSize = TimeEngineBatches.Size
+        };
+
+        using (_session.Use(args.TenantId, args.UserId))
+        {
+            try
             {
-                var result = await _timeEngineService.CreateTimeRegisterAsync(new TimeEngineRunInput
+                // Background jobs start with no tenant scope; every Time Engine entity is IMustHaveTenant, so the
+                // scope is also set on the unit of work explicitly.
+                using (var uow = _unitOfWorkManager.Begin(new UnitOfWorkOptions { IsTransactional = false }))
+                using (_unitOfWorkManager.Current.SetTenantId(args.TenantId))
                 {
-                    EmployeeCodes = args.EmployeeCodes,
-                    StartDate = args.StartDate,
-                    EndDate = args.EndDate,
-                    PayrollAreaName = args.PayrollAreaName,
-                    CurrentUserName = args.CurrentUserName,
-                    IsRanFromPayrollEngine = args.IsRanFromPayrollEngine,
-                    EmployeeSubGroupIds = args.EmployeeSubGroupIds ?? new Dictionary<int, int>()
-                });
+                    var result = await _timeEngineService.CreateTimeRegisterAsync(input);
 
-                Logger.Info(string.Format(
-                    "TimeEngine run finished. ExecutionLogId={0} Status={1} Total={2} Success={3} Failed={4} Aborted={5}",
-                    result.ExecutionLogId, result.ExecutionStatus, result.TotalRecords,
-                    result.Successfull, result.Failed, result.Aborted));
+                    Logger.Info(string.Format(
+                        "TimeEngine run finished. ExecutionLogId={0} Status={1} Total={2} Success={3} Failed={4} Aborted={5}",
+                        result.ExecutionLogId, result.ExecutionStatus, result.TotalRecords,
+                        result.Successfull, result.Failed, result.Aborted));
 
-                // CompleteAsync MUST stay INSIDE the SetTenantId scope. SaveChanges happens here, not during
-                // the run, so if the scope is already disposed every IMustHaveTenant entity the run tracked is
-                // flushed with TenantId 0 and ABP throws "Can not set TenantId to 0 for IMustHaveTenant
-                // entities!", rolling back the whole run. That made every engine run queued from the UI fail
-                // after doing all its work: nothing was written and the progress panel stayed empty.
-                await uow.CompleteAsync();
+                    // CompleteAsync MUST stay INSIDE the SetTenantId scope: if the scope is already disposed,
+                    // every IMustHaveTenant entity still pending is flushed with TenantId 0 and ABP throws
+                    // "Can not set TenantId to 0 for IMustHaveTenant entities!".
+                    await uow.CompleteAsync();
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.Error(string.Format(
+                    "TimeEngine run failed and will NOT be retried (a retry would be a second run). Area={0} Codes={1} Start={2:dd/MM/yyyy} End={3:dd/MM/yyyy}",
+                    args.PayrollAreaName, args.EmployeeCodes, args.StartDate, args.EndDate), ex);
+
+                await RecordFailureAsync(input, ex);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Puts the failure on a progress row the screen can show. A failure during the run is already there (the
+    /// engine closes its own row as Failed); one raised before the run began -- a missing end date, another run of
+    /// the same area going -- gets a row of its own, opened and closed as Failed with the reason. Not when another
+    /// run of the area is going: a row for the refusal would become that area's "latest run" and hide the run's
+    /// progress.
+    /// </summary>
+    private async Task RecordFailureAsync(TimeEngineRunInput input, Exception ex)
+    {
+        try
+        {
+            if (ex.Data.Contains(TimeEngineService.RunFailureRecordedKey))
+            {
+                return;
+            }
+
+            var runKey = TimeEngineRunKeys.ForRun(input, input.PayrollAreaName);
+
+            if (runKey != null && await _progressWriter.GetActiveRunAsync(EngineType.TimeEngine, runKey) != null)
+            {
+                return;
+            }
+
+            var engineRunId = await _progressWriter.BeginRunAsync(new EngineRunStartInfo
+            {
+                EngineType = EngineType.TimeEngine,
+                RunKey = runKey,
+                StartedByUserName = input.CurrentUserName,
+                Parameters = TimeEngineService.DescribeRun(input)
+            });
+
+            await _progressWriter.CompleteRunAsync(engineRunId, EngineRunStatus.Failed, null, ex.Message);
+        }
+        catch (Exception recordFailure)
+        {
+            // Nothing more can be done; the original failure is already in the log.
+            Logger.Warn("TimeEngine: could not record the run failure on a progress row.", recordFailure);
         }
     }
 }

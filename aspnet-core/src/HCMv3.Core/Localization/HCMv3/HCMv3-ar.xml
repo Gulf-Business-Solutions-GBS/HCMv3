@@ -7892,5 +7892,29 @@
     <text name="PayrollRunOffCyclePaymentDateOutOfPeriod">يجب أن يقع تاريخ الدفع خارج الدورة بين {0} و{1}.</text>
     <text name="PayrollEngineSimulationNotAllowed">التشغيل التجريبي غير مسموح به. فعّل خيار السماح بالتشغيل التجريبي في إعدادات الرواتب لاستخدامه.</text>
     <text name="PayrollEngineSimulationPeriodRequired">أدخل شهر الرواتب وسنته للفترة المراد تشغيلها تجريبيًا.</text>
+    <text name="ProjectCostEngineOffCycleNotSupported">يعمل محرك تكلفة المشاريع على الرواتب المنتظمة فقط؛ ولا يدعم التشغيل خارج الدورة.</text>
+    <text name="ProjectCostEngineAlreadyRunning">محرك تكلفة المشاريع قيد التشغيل حالياً (بدأه {0} في {1}). انتظر حتى ينتهي أو أوقفه قبل تشغيله مرة أخرى.</text>
+    <text name="BankFileViewLog">عرض السجل</text>
+    <text name="BankFileLogTitle">سجل إنشاء ملفات البنك</text>
+    <text name="BankFileLogFilterSuccessful">ناجح ({0})</text>
+    <text name="BankFileLogFilterFailed">فشل ({0})</text>
+    <text name="BankFileExportLog">تصدير السجل</text>
+    <text name="BankFileRegularAndOffCycle">اعتيادي + خارج الدورة</text>
+    <text name="BankFileRegistersLocked">تم إقفال {0} من سجلات الرواتب.</text>
+    <text name="BankFileLogHasNoFile">لم يتم حفظ نسخة من ملف البنك لهذه العملية.</text>
+    <text name="TimeEnginePayrollAreaOrEmployeeCodeRequired">لا يمكن ترك منطقة الرواتب دون تحديد إذا كان رمز الموظف فارغاً.</text>
+    <text name="TimeEnginePayrollControlRecordNotFound">لم يتم العثور على سجل التحكم في الرواتب.</text>
+    <text name="TimeEngineEmployeePayrollAreaNotFound">لم يتم العثور على منطقة الرواتب الخاصة بالموظف.</text>
+    <text name="TimeEngineEmployeeControlRecordNotFound">لم يتم العثور على سجل التحكم في الرواتب لمنطقة رواتب الموظف المحدد.</text>
+    <text name="TimeEngineEarliestEvaluationDateNotConfigured">لم يتم ضبط إعداد TIME_EVAL_EARLIEST_DATE. يرجى تحديد أقرب تاريخ للتقييم في إعدادات الوقت.</text>
+    <text name="TimeEngineAlreadyRunningForPayrollArea">محرك الوقت قيد التشغيل حالياً لمنطقة الرواتب '{0}' (بدأه {1} في {2}). يرجى الانتظار حتى ينتهي أو إيقافه قبل تشغيل هذه المنطقة مرة أخرى.</text>
+    <text name="D365FinancePostingSwitchedOff">الترحيل إلى Dynamics 365 Finance متوقف في مركز التكامل. يرجى تفعيله قبل الترحيل.</text>
+    <text name="JournalVoucherPreviewRequired">يرجى معاينة قيد اليومية قبل ترحيله.</text>
+    <text name="JournalVoucherPreviewChanged">تغيّر قيد اليومية منذ معاينته. يرجى معاينته مرة أخرى قبل الترحيل.</text>
+    <text name="FinanceRunAlreadyRunning">{0} قيد التشغيل حالياً (بدأه {1} في {2}). يرجى الانتظار حتى ينتهي أو إيقافه قبل بدء تشغيل آخر.</text>
+    <text name="FinanceRunInterrupted">توقف التشغيل قبل اكتماله. يرجى مراجعة السجل ثم إعادة التشغيل عند الحاجة.</text>
+    <text name="FinanceJournalsAlreadyPosted">تم ترحيل هذه القيود إلى Dynamics 365 قبل حدوث الخطأ:</text>
+    <text name="CostingFileRunQueued">بدأ تشغيل ملف التكاليف، ويظهر تقدّمه أدناه.</text>
+    <text name="PostJvRunQueued">بدأ ترحيل قيد اليومية، ويظهر تقدّمه أدناه.</text>
   </texts>
 </localizationDictionary>

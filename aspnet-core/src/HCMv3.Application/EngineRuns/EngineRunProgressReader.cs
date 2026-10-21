@@ -45,10 +45,19 @@ public class EngineRunProgressReader : ITransientDependency
 
     /// <summary>Latest run of the given engine for the current tenant, projected into the polling DTO.</summary>
     [UnitOfWork]
-    public virtual async Task<EngineRunStatusDto> GetStatusAsync(EngineType engineType)
+    public virtual Task<EngineRunStatusDto> GetStatusAsync(EngineType engineType)
     {
-        var run = await _engineRunRepository.GetAll()
-            .Where(r => r.EngineType == engineType)
+        return GetStatusAsync(engineType, null);
+    }
+
+    /// <summary>
+    /// Latest run of the given engine within <paramref name="scope"/> (null = every run of the engine), projected
+    /// into the polling DTO.
+    /// </summary>
+    [UnitOfWork]
+    public virtual async Task<EngineRunStatusDto> GetStatusAsync(EngineType engineType, EngineRunScope scope)
+    {
+        var run = await InScope(_engineRunRepository.GetAll().Where(r => r.EngineType == engineType), scope)
             .OrderByDescending(r => r.Id)
             .FirstOrDefaultAsync();
 
@@ -150,15 +159,25 @@ public class EngineRunProgressReader : ITransientDependency
     /// which is what a live screen needs (it polls before it knows the run id).
     /// </summary>
     [UnitOfWork]
-    public virtual async Task<PagedResultDto<EngineRunEmployeeDto>> GetEmployeesAsync(
+    public virtual Task<PagedResultDto<EngineRunEmployeeDto>> GetEmployeesAsync(
         EngineType engineType, GetEngineRunEmployeesInput input)
+    {
+        return GetEmployeesAsync(engineType, input, null);
+    }
+
+    /// <summary>
+    /// The per-employee grid for one run. <c>input.RunId == null</c> follows the latest run of the engine within
+    /// <paramref name="scope"/>; an explicit run id is honoured as long as it is this engine's.
+    /// </summary>
+    [UnitOfWork]
+    public virtual async Task<PagedResultDto<EngineRunEmployeeDto>> GetEmployeesAsync(
+        EngineType engineType, GetEngineRunEmployeesInput input, EngineRunScope scope)
     {
         var runId = input.RunId;
 
         if (runId == null)
         {
-            runId = await _engineRunRepository.GetAll()
-                .Where(r => r.EngineType == engineType)
+            runId = await InScope(_engineRunRepository.GetAll().Where(r => r.EngineType == engineType), scope)
                 .OrderByDescending(r => r.Id)
                 .Select(r => (long?)r.Id)
                 .FirstOrDefaultAsync();
@@ -224,10 +243,22 @@ public class EngineRunProgressReader : ITransientDependency
     /// </summary>
     /// <returns><c>true</c> if a running run was flagged.</returns>
     [UnitOfWork]
-    public virtual async Task<bool> RequestStopAsync(EngineType engineType)
+    public virtual Task<bool> RequestStopAsync(EngineType engineType)
     {
-        var run = await _engineRunRepository.GetAll()
-            .Where(r => r.EngineType == engineType && r.Status == EngineRunStatus.Running)
+        return RequestStopAsync(engineType, null);
+    }
+
+    /// <summary>
+    /// Stops the latest running run of the engine within <paramref name="scope"/> -- so stopping one payroll
+    /// area's Time Engine run leaves another area's alone.
+    /// </summary>
+    /// <returns><c>true</c> if a running run was flagged.</returns>
+    [UnitOfWork]
+    public virtual async Task<bool> RequestStopAsync(EngineType engineType, EngineRunScope scope)
+    {
+        var run = await InScope(
+                _engineRunRepository.GetAll().Where(r => r.EngineType == engineType && r.Status == EngineRunStatus.Running),
+                scope)
             .OrderByDescending(r => r.Id)
             .FirstOrDefaultAsync();
 
@@ -288,5 +319,20 @@ public class EngineRunProgressReader : ITransientDependency
         }
 
         return stale.Count;
+    }
+
+    private static IQueryable<EngineRun> InScope(IQueryable<EngineRun> query, EngineRunScope scope)
+    {
+        if (scope == null)
+        {
+            return query;
+        }
+
+        var runKey = scope.RunKey;
+        var excludedPrefix = scope.ExcludedRunKeyPrefix;
+
+        return query
+            .WhereIf(!runKey.IsNullOrWhiteSpace(), r => r.RunKey == runKey)
+            .WhereIf(!excludedPrefix.IsNullOrWhiteSpace(), r => r.RunKey == null || !r.RunKey.StartsWith(excludedPrefix));
     }
 }

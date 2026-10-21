@@ -1,141 +1,82 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { AppComponentBase } from '@shared/common/app-component-base';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
-import { DatePicker } from 'primeng/datepicker';
-import { Select } from 'primeng/select';
 import { finalize } from 'rxjs/operators';
-import { DateTime } from 'luxon';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
+import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
-// PROXY REGENERATION REQUIRED -- see the same note in costing-file.component.ts.
-// PostJvServiceProxy and CostingFileServiceProxy (used here only for the payroll-area lookup, which the
-// costing-file service already exposes) are generated from the backend added in this same change.
-import {
-    CostingFileServiceProxy,
-    CostingRunInputDto,
-    JournalVoucherLineDto,
-    PayrollAreaLookupDto,
-    PayrollRunType,
-    PostJvServiceProxy,
-} from '@shared/service-proxies/service-proxies';
+// PROXY REGENERATION REQUIRED: PostJvServiceProxy's period context, employee popup, process log, RequestStop and
+// FinanceRunStartedDto come from the backend changed in the same piece of work.
+import { PostJvServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FinanceScreenBase } from '../costing-file/finance-screen-base';
+import { FinanceRunStatusComponent } from '../costing-file/finance-run-status.component';
+import { FinanceRunLogModalComponent } from '../costing-file/finance-run-log-modal.component';
+import { CostingEmployeePickerModalComponent } from '../costing-file/costing-employee-picker-modal.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
 
 /**
- * Journal voucher posting screen. Ported from legacy
- * HCM10.Web/UserControls/PayrollManagement/uscPostJV.ascx.
+ * Post JV to Dynamics 365. Ported from the Post JV half of legacy uscCostingFile.ascx (CreatePostJV ->
+ * PostTablewiseJV_D360); the old AX screen uscPostJV.ascx is hidden in legacy.
  *
- * The JV line set shown here comes from the SAME backend builder that feeds the costing-file screen
- * (HCMv3.PayrollManagement.Costing.IJournalVoucherBuilder). Legacy duplicated that logic as a private
- * ExportTable(...) in each screen; this port keeps one copy.
+ * Posting needs a preview that is still current: any change to the inputs clears it, and the server refuses a
+ * JV whose fingerprint no longer matches the preview, one that does not balance, and any posting while Dynamics
+ * 365 Finance is switched off in the Integration Center. The posting then runs in the background and the status
+ * panel follows it; "Show details" lists every journal header and line batch with D365's full reply.
+ *
+ * As in legacy, a Regular run posts the area as one journal (two with Separate Provision Posting) and an OffCycle
+ * run posts one journal per employee.
  */
 @Component({
     templateUrl: './post-jv.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, Tooltip, DatePicker, Select, LocalizePipe, PermissionPipe],
+    imports: [
+        HelpPageDirective,
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        Tooltip,
+        LocalizePipe,
+        PermissionPipe,
+        LuxonFormatPipe,
+        DateInputDirective,
+        FinanceRunStatusComponent,
+        FinanceRunLogModalComponent,
+        CostingEmployeePickerModalComponent,
+    ],
 })
-export class PostJvComponent extends AppComponentBase implements OnInit {
-    private _postJvService = inject(PostJvServiceProxy);
-    private _costingFileService = inject(CostingFileServiceProxy);
+export class PostJvComponent extends FinanceScreenBase {
+    protected readonly api = inject(PostJvServiceProxy);
 
-    readonly payrollAreas = signal<PayrollAreaLookupDto[]>([]);
-    readonly selectedPayrollAreaName = signal<string | undefined>(undefined);
-    readonly employeeCode = signal<string>('');
-    readonly payInDate = signal<Date | undefined>(undefined);
-    readonly postingDate = signal<Date | undefined>(undefined);
-    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType.Regular);
-
-    readonly lines = signal<JournalVoucherLineDto[]>([]);
-    readonly totalDebit = signal<number>(0);
-    readonly totalCredit = signal<number>(0);
-    readonly isBalanced = signal<boolean>(true);
-
-    readonly postMessage = signal<string>('');
-    readonly journalBatchNumbers = signal<string[]>([]);
-    readonly busy = signal<boolean>(false);
-
-    readonly runTypeOptions = [
-        { label: 'Regular', value: PayrollRunType.Regular },
-        { label: 'OffCycle', value: PayrollRunType.OffCycle },
-    ];
-
-    readonly selectedAreaIsFiConfigured = computed(() => {
-        const name = this.selectedPayrollAreaName();
-        const area = this.payrollAreas().find((a) => a.name === name);
-        return !!area && area.isFiConfigured;
-    });
-
-    readonly canSubmit = computed(
-        () => !this.busy() && !!this.selectedPayrollAreaName() && !!this.payInDate() && !!this.postingDate()
+    readonly canPost = computed(
+        () =>
+            this.canSubmit() &&
+            !this.isRunning() &&
+            this.selectedAreaIsFiConfigured() &&
+            this.lines().length > 0 &&
+            this.isBalanced() &&
+            !!this.previewFingerprint()
     );
 
-    /**
-     * Posting is irreversible in the external finance system, so it additionally requires the JV to have
-     * been previewed AND to balance. Legacy left this to operator discipline (its Validate button was
-     * advisory); this port makes it a hard gate on the button.
-     */
-    readonly canPost = computed(() => this.canSubmit() && this.lines().length > 0 && this.isBalanced());
-
-    ngOnInit(): void {
-        this._costingFileService.getPayrollAreasForLookup().subscribe((result) => {
-            this.payrollAreas.set(result);
-        });
-    }
-
-    private buildInput(): CostingRunInputDto {
-        return new CostingRunInputDto({
-            payrollAreaName: this.selectedPayrollAreaName(),
-            employeeCode: this.employeeCode(),
-            payInDate: DateTime.fromJSDate(this.payInDate()),
-            postingDate: DateTime.fromJSDate(this.postingDate()),
-            payrollRunType: this.payrollRunType(),
-        });
-    }
-
-    previewJournalVoucher(): void {
-        if (!this.canSubmit()) {
-            return;
+    readonly postBlockedReason = computed(() => {
+        if (this.canPost() || !this.canSubmit()) {
+            return '';
         }
 
-        this.busy.set(true);
-        this._postJvService
-            .getJournalVoucherLines(this.buildInput())
-            .pipe(finalize(() => this.busy.set(false)))
-            .subscribe((result) => {
-                this.lines.set(result.lines ?? []);
-                this.totalDebit.set(result.totalDebit);
-                this.totalCredit.set(result.totalCredit);
-                this.isBalanced.set(result.isBalanced);
-            });
-    }
-
-    validateJournalVoucher(): void {
-        if (!this.canSubmit()) {
-            return;
+        if (!this.previewFingerprint() || !this.lines().length) {
+            return this.l('JournalVoucherPreviewRequired');
         }
 
-        this.busy.set(true);
-        this._postJvService
-            .validateJournalVoucher(this.buildInput())
-            .pipe(finalize(() => this.busy.set(false)))
-            .subscribe((result) => {
-                this.totalDebit.set(result.totalDebit);
-                this.totalCredit.set(result.totalCredit);
-                this.isBalanced.set(result.isValid);
+        return this.isBalanced() ? '' : this.l('DebitCreditNotMatched');
+    });
 
-                if (result.isValid) {
-                    this.notify.success(result.message);
-                } else {
-                    this.message.error(result.message);
-                }
-            });
-    }
-
-    /** Legacy "Post JV" button -> CreatePostJV -> PostTablewiseJV_D360. */
+    /** Legacy "Post JV" button. */
     postJournalVoucher(): void {
         if (!this.canPost()) {
             return;
@@ -146,32 +87,14 @@ export class PostJvComponent extends AppComponentBase implements OnInit {
                 return;
             }
 
+            const input = this.buildInput();
+            input.previewFingerprint = this.previewFingerprint();
+
             this.busy.set(true);
-            this._postJvService
-                .postJournalVoucher(this.buildInput())
+            this.api
+                .postJournalVoucher(input)
                 .pipe(finalize(() => this.busy.set(false)))
-                .subscribe((result) => {
-                    this.postMessage.set(result.message);
-                    this.journalBatchNumbers.set(result.journalBatchNumbers ?? []);
-
-                    if (result.success) {
-                        this.notify.success(result.message);
-                    } else {
-                        this.message.warn(result.message);
-                    }
-                });
+                .subscribe((started) => this.onRunQueued(started.message));
         });
-    }
-
-    clearStatus(): void {
-        this.busy.set(true);
-        this._postJvService
-            .clearProcessStatus()
-            .pipe(finalize(() => this.busy.set(false)))
-            .subscribe(() => {
-                this.postMessage.set('');
-                this.journalBatchNumbers.set([]);
-                this.notify.success(this.l('SuccessfullyDeleted'));
-            });
     }
 }

@@ -1,0 +1,120 @@
+{
+  "helpId": "prj.project-cost-engine",
+  "lang": "en",
+  "title": "Project Cost Engine",
+  "entity": null,
+  "overviewHtml": "<p>Spreads the employees' payroll cost over the projects they worked on, for a payroll period, and writes the result as project registers. It runs regular payroll only; an off-cycle run is not supported.</p><p>Choose a payroll area (and optionally employees), check the period, then press <strong>Run Project Cost Engine</strong>. You are asked to confirm, with the area, the period end and how many employees will be run. The run works in the background; its progress appears in the panel below and its per-employee results in <strong>Project Logs</strong>.</p><p>The engine refuses a period that is not the area's current, locked payroll period (\"Payroll Control Record not locked or is not current.\"), and needs a payroll calendar row for the month. Only one Project Cost Engine run can be in progress at a time for your company, whatever the area.</p><p><strong>The log is shared.</strong> Every run starts by emptying <strong>Project Logs</strong>, as in the old system, and the Cost Engine (costing file) and Post JV screens write their progress to the same log. Starting any of these runs clears what the others left there; export a log you need to keep first.</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "prj.project-cost-engine.payroll-area",
+      "label": "PayrollAreaId",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll area to cost. Required, even when employee codes are typed.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> It supplies the period from its payroll control record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.employee-codes",
+      "label": "EmployeeCode",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The codes of the employees to cost, separated by commas. Blank costs the payroll area's employees.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Typing codes makes the checks stricter. For each employee the engine checks that they had joined by the period end, that their first contract had started by then and that their last contract had not ended before the period began. When you run the whole area, an employee who fails one of these is skipped quietly. When you typed their code, the same case is an error in the log, because you asked for that employee by name.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.select-employees",
+      "label": "PayrollRunSelectEmployees",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The button beside <strong>Employee Code</strong>. It lists the active employees whose org assignment on the period end is in the payroll area, each <strong>Processed</strong> (a project register already exists for the period) or <strong>Pending</strong>.</p><p><strong>Example.</strong> Open <strong>Pending</strong>, press <strong>Select all</strong>, then <strong>Ok</strong>.</p><p><strong>Why it matters.</strong> The tabs count the whole list; search finds by code or name; <strong>Select all</strong> and <strong>Unselect all</strong> apply to every row the tab and search show. Available once an area is chosen and the period has an end date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>Current</strong> takes the month, year, start and end dates from the payroll area's control record. <strong>Other</strong> lets you type a payroll month and year, and works out the dates from the area's payroll period. The dates are read-only.</p><p><strong>Example.</strong> Current: month 4, year 2026, 01/04/2026 - 30/04/2026.</p><p><strong>Why it matters.</strong> The period end is the pay date the run uses. A period that is not locked shows a warning; the run needs the current, locked period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.run",
+      "label": "RunProjectCostEngine",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Checks the entries, asks you to confirm and queues the run.</p><p><strong>Example.</strong> \"Project Cost Engine run has been queued. Progress appears in the run history below.\"</p><p><strong>Why it matters.</strong> Refused while another run is in progress, naming who started it and when. Needs the right to run the Project Cost Engine.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.stop",
+      "label": "StopProjectCostEngine",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Asks the running engine to stop, after you confirm.</p><p><strong>Why it matters.</strong> The employee in progress is finished first, then the run stops.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.clear",
+      "label": "ClearStatus",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Clears this engine's progress history and empties <strong>Project Logs</strong>, after you confirm.</p><p><strong>Why it matters.</strong> Not allowed while a run is in progress. Because the log is shared, it also clears what the Cost Engine and Post JV screens left there.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "common.engine-run-progress",
+      "label": "EngineRunProgress",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The live panel for the latest run: a progress gauge, the counts of employees (total, processed, failed, skipped), the time taken so far and an estimate of the time left, and a grid of the employees with their result and message. The grid has a search box and <strong>All</strong>, <strong>Succeeded Only</strong> and <strong>Failed Only</strong>.</p><p><strong>Example.</strong> \"120 of 400 employees processed\", about 6 minutes remaining (an estimate only).</p><p><strong>Why it matters.</strong> <strong>Stop Run</strong> asks the run to stop; it ends after the employee in progress. <strong>Clear Progress</strong> clears the progress of finished runs. When a run stops responding, for example after a server restart, the panel says so and <strong>Abandon Interrupted Runs</strong> marks it as abandoned so it no longer blocks a new run. These actions need the right to run the engine.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.logs",
+      "label": "ProjectLogs",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> One line per employee of the last run: code, name, time, status, message and period. <strong>All</strong>, <strong>Successfull</strong> and <strong>Failed</strong> filter it, with counts.</p><p><strong>Example.</strong> Failed: \"Contract EndDate on '31/03/2026'. Can't run Payroll for Date : '30/04/2026'\"</p><p><strong>Why it matters.</strong> The messages are the engine's own, in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.export",
+      "label": "ExportToExcel",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Downloads <strong>Project Logs</strong> with the filter you chose, every page.</p><p><strong>Example.</strong> Choose <strong>Failed</strong> first to send the list of problems to HR.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

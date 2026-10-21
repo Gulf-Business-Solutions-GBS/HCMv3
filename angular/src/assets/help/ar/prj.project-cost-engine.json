@@ -1,0 +1,120 @@
+{
+  "helpId": "prj.project-cost-engine",
+  "lang": "ar",
+  "title": "محرك تكلفة المشاريع",
+  "entity": null,
+  "overviewHtml": "<p>يوزّع تكلفة رواتب الموظفين على المشاريع التي عملوا فيها خلال فترة رواتب، ويكتب النتيجة في سجلات المشاريع. ولا يعمل إلا على الرواتب الاعتيادية؛ فالتشغيل خارج الدورة غير مدعوم.</p><p>اختر منطقة رواتب (ويمكنك تحديد موظفين)، وتحقق من الفترة، ثم اضغط <strong>تشغيل محرك تكلفة المشاريع</strong>. ويُطلب منك التأكيد مع ذكر المنطقة ونهاية الفترة وعدد الموظفين الذين سيُشغَّلون. ويعمل التشغيل في الخلفية، ويظهر تقدمه في اللوحة أدناه ونتائج كل موظف في <strong>سجلات تشغيل المشاريع</strong>.</p><p>يرفض المحرك الفترة التي ليست فترة الرواتب الحالية المقفلة للمنطقة (\"Payroll Control Record not locked or is not current.\")، ويحتاج إلى سطر في تقويم الرواتب للشهر. ولا يمكن أن يجري أكثر من تشغيل واحد لمحرك تكلفة المشاريع في الوقت نفسه لشركتكم، أياً كانت المنطقة.</p><p><strong>السجل مشترك.</strong> يبدأ كل تشغيل بتفريغ <strong>سجلات تشغيل المشاريع</strong>، كما في النظام السابق، وتكتب شاشتا محرك التكلفة (ملف التكلفة) وترحيل قيد اليومية تقدمهما في السجل نفسه. فبدء أي من هذه التشغيلات يمسح ما تركته الأخرى فيه؛ فصدّر السجل الذي تحتاج إلى الاحتفاظ به أولاً.</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "prj.project-cost-engine.payroll-area",
+      "label": "PayrollAreaId",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب المراد احتساب تكلفتها. وهي إلزامية حتى عند كتابة أرقام موظفين.</p><p><strong>مثال.</strong> Kuwait Monthly</p><p><strong>لماذا يهم.</strong> تحدد الفترة من سجل ضبط الرواتب الخاص بها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.employee-codes",
+      "label": "EmployeeCode",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أرقام الموظفين المراد احتساب تكلفتهم، مفصولة بفواصل. وتركها فارغة يحتسب موظفي منطقة الرواتب.</p><p><strong>مثال.</strong> <code>1001, 1002</code></p><p><strong>لماذا يهم.</strong> كتابة الأرقام تجعل الفحوص أشد. فلكل موظف يتحقق المحرك من أنه التحق بحلول نهاية الفترة، وأن أول عقد له بدأ بحلولها، وأن آخر عقد له لم ينتهِ قبل بداية الفترة. وعند تشغيل المنطقة كلها يُتجاوز الموظف الذي لا يستوفي أحدها دون رسالة. أما إذا كتبت رقمه فالحالة نفسها تُسجَّل خطأً، لأنك طلبت ذلك الموظف بعينه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.select-employees",
+      "label": "PayrollRunSelectEmployees",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزر المجاور لحقل <strong>رقم الموظف</strong>. ويعرض الموظفين النشطين الذين يقع تعيينهم التنظيمي في نهاية الفترة ضمن منطقة الرواتب، وكلٌّ منهم <strong>تمت المعالجة</strong> (يوجد له سجل مشروع للفترة) أو <strong>قيد الانتظار</strong>.</p><p><strong>مثال.</strong> افتح <strong>قيد الانتظار</strong>، واضغط <strong>تحديد الكل</strong>، ثم <strong>موافق</strong>.</p><p><strong>لماذا يهم.</strong> تعدّ علامات التبويب القائمة كلها؛ ويجد البحث بالرقم أو الاسم؛ ويسري <strong>تحديد الكل</strong> و<strong>إلغاء تحديد الكل</strong> على كل الأسطر التي تعرضها علامة التبويب والبحث. ويتاح بعد اختيار المنطقة ووجود تاريخ نهاية للفترة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> <strong>الحالي</strong> يأخذ الشهر والسنة وتاريخي البدء والانتهاء من سجل ضبط منطقة الرواتب. و<strong>فترة أخرى</strong> تتيح لك كتابة شهر وسنة رواتب وتحسب التواريخ من فترة رواتب المنطقة. والتواريخ للقراءة فقط.</p><p><strong>مثال.</strong> الحالي: الشهر 4، السنة 2026، 01/04/2026 - 30/04/2026.</p><p><strong>لماذا يهم.</strong> نهاية الفترة هي تاريخ الدفع الذي يستخدمه التشغيل. والفترة غير المقفلة تظهر معها رسالة تنبيه؛ فالتشغيل يحتاج إلى الفترة الحالية المقفلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.run",
+      "label": "RunProjectCostEngine",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يتحقق من المدخلات، ويطلب التأكيد، ويدرج التشغيل في قائمة الانتظار.</p><p><strong>مثال.</strong> \"تم إدراج تشغيل محرك تكلفة المشاريع في قائمة الانتظار. يظهر التقدم في سجل التشغيل أدناه.\"</p><p><strong>لماذا يهم.</strong> يُرفض ما دام تشغيل آخر جارياً، مع ذكر من بدأه ومتى. ويحتاج صلاحية تشغيل محرك تكلفة المشاريع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.stop",
+      "label": "StopProjectCostEngine",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يطلب من المحرك الجاري التوقف، بعد تأكيدك.</p><p><strong>لماذا يهم.</strong> يُكمل الموظف الجاري معالجته أولاً، ثم يتوقف التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.clear",
+      "label": "ClearStatus",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يمسح سجل تقدم هذا المحرك ويفرّغ <strong>سجلات تشغيل المشاريع</strong>، بعد تأكيدك.</p><p><strong>لماذا يهم.</strong> غير مسموح ما دام تشغيل جارياً. ولأن السجل مشترك، فإنه يمسح أيضاً ما تركته فيه شاشتا محرك التكلفة وترحيل قيد اليومية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "common.engine-run-progress",
+      "label": "EngineRunProgress",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اللوحة الحية لآخر تشغيل: مؤشر تقدم، وأعداد الموظفين (الإجمالي، والمعالَج، والفاشل، والمتجاوَز)، والوقت المستغرق حتى الآن وتقدير للوقت المتبقي، وجدول بالموظفين مع نتيجة كل منهم ورسالته. وفي الجدول حقل بحث وخيارات <strong>الكل</strong> و<strong>الناجحة فقط</strong> و<strong>الفاشلة فقط</strong>.</p><p><strong>مثال.</strong> \"تمت معالجة 120 من 400 موظف\"، والمتبقي نحو 6 دقائق (تقدير فقط).</p><p><strong>لماذا يهم.</strong> <strong>إيقاف التشغيل</strong> يطلب إيقاف التشغيل، فينتهي بعد الموظف الجاري معالجته. و<strong>مسح سجل التقدم</strong> يمسح تقدم عمليات التشغيل المنتهية. وإذا توقف تشغيل عن الاستجابة، بعد إعادة تشغيل الخادم مثلاً، تبيّن اللوحة ذلك، ويجعله <strong>إلغاء عمليات التشغيل المتوقفة</strong> ملغى فلا يمنع تشغيلاً جديداً. وتحتاج هذه الإجراءات صلاحية تشغيل المحرك.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.logs",
+      "label": "ProjectLogs",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سطر لكل موظف في آخر تشغيل: الرقم والاسم والوقت والحالة والرسالة والفترة. ويمكن تصفيته بـ <strong>الجميع</strong> و<strong>ناجح</strong> و<strong>فشل</strong> مع أعدادها.</p><p><strong>مثال.</strong> فشل: \"Contract EndDate on '31/03/2026'. Can't run Payroll for Date : '30/04/2026'\"</p><p><strong>لماذا يهم.</strong> الرسائل رسائل المحرك نفسه، باللغة الإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "prj.project-cost-engine.export",
+      "label": "ExportToExcel",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ينزّل <strong>سجلات تشغيل المشاريع</strong> بالتصفية التي اخترتها، بكل صفحاتها.</p><p><strong>مثال.</strong> اختر <strong>فشل</strong> أولاً لإرسال قائمة المشكلات إلى الموارد البشرية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+@if (status(); as s) {
+    <div class="rounded border border-dashed p-4 mb-4">
+        <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
+            @if (statusKey()) {
+                <span [class]="statusClass()">{{ statusKey() | localize }}</span>
+            }
+            @if (s.startedAt) {
+                <span class="text-muted">
+                    {{ 'EngineRunStartedAt' | localize }}: {{ s.startedAt | luxonFormat: 'dd/MM/yyyy HH:mm' }}
+                    @if (s.startedBy) {
+                        &middot; {{ 'EngineRunStartedBy' | localize }}: {{ s.startedBy }}
+                    }
+                </span>
+            }
+            <button type="button" class="btn btn-sm btn-light-primary ms-auto" (click)="showDetails.emit()">
+                <i class="fa fa-list"></i>
+                {{ 'ShowDetails' | localize }}
+            </button>
+        </div>
+
+        @if (s.stopRequested && s.isRunning) {
+            <div class="alert alert-warning py-2 mb-3">{{ 'EngineRunStopRequestedNotice' | localize }}</div>
+        }
+
+        @if (s.isRunning) {
+            <div class="progress mb-2" style="height: 18px">
+                <div
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    [style.width.%]="progress()"
+                    [attr.aria-valuenow]="progress()"
+                    aria-valuemin="0"
+                    aria-valuemax="100">
+                    {{ progress() }}%
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-5 mb-3 text-muted">
+                @if (s.noOfEmployee) {
+                    <span>{{ 'EngineRunProcessedOfTotal' | localize: s.totalRecords : s.noOfEmployee }}</span>
+                }
+                @if (s.currentEmployee) {
+                    <span>{{ 'EngineRunCurrentEmployee' | localize }}: <strong>{{ s.currentEmployee }}</strong></span>
+                }
+                @if (s.speedPerMinute) {
+                    <span>{{ s.speedPerMinute }} / min</span>
+                }
+                @if (remainingText()) {
+                    <span>
+                        {{ 'EngineRunEstimatedRemaining' | localize }}: {{ remainingText() }}
+                        @if (s.estimatedCompletion) {
+                            ({{ s.estimatedCompletion | luxonFormat: 'dd/MM/yyyy HH:mm' }})
+                        }
+                    </span>
+                }
+            </div>
+        }
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="alert alert-info mb-0 py-2">
+                    {{ 'AllRecords' | localize }}: <strong>{{ s.totalRecords }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-success mb-0 py-2">
+                    {{ 'SuccessfulRecords' | localize }}: <strong>{{ s.successRecords }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-danger mb-0 py-2">
+                    {{ 'FailedRecords' | localize }}: <strong>{{ s.failedRecords }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+}

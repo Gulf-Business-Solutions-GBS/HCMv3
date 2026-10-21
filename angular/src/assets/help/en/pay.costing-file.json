@@ -1,0 +1,153 @@
+{
+  "helpId": "pay.costing-file",
+  "lang": "en",
+  "title": "Cost Engine",
+  "entity": null,
+  "overviewHtml": "<p>Turns a period's salary registers into cost registers, split by the employees' accounts and cost elements, and shows the journal voucher (JV) that results, ready to be posted to Dynamics 365 Finance on <strong>Post JV</strong>.</p><p>The usual order is: choose the payroll area, run type and period, press <strong>Generate Costing File</strong> and wait for the run to finish, then press <strong>Journal Voucher</strong> to see the JV lines and <strong>Validate JV</strong> to check that debit equals credit. <strong>Export costing file</strong> downloads the same lines as a file.</p><p><strong>Generate Costing File</strong> runs in the background: the status panel shows its progress, and <strong>Show details</strong> lists each employee's result. Only one finance run (Cost Engine or Post JV) can be in progress at a time; a run that has given no sign of life for 20 minutes no longer blocks a new one.</p><p>:::admin The run's log is the same table the Project Cost Engine and Post JV use, and every run starts by emptying it, as in the old system. Starting any of them clears what the others left there. :::</p>",
+  "aliasIndex": {},
+  "fields": [
+    {
+      "id": "pay.finance.payroll-area",
+      "label": "PayrollArea",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The payroll area to cost or post. Required on the screen.</p><p><strong>Example.</strong> Kuwait Monthly</p><p><strong>Why it matters.</strong> It supplies the period from its payroll control record. An area without an FI company and an FI bank is marked in red: the costing file can still be generated, but its JV cannot be posted. The list cannot be changed while a run is in progress.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.employee-code",
+      "label": "EmployeeCode",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The codes of the employees to include, separated by commas. Blank takes the payroll area. The button beside it lists the area's employees to tick.</p><p><strong>Example.</strong> <code>1001, 1002</code></p><p><strong>Why it matters.</strong> Codes win over the area. In the list, a <strong>Regular</strong> run shows the active employees of the area on the period end, each <strong>Processed</strong> (a cost register already exists for the period and run type) or <strong>Pending</strong>. For an <strong>Off Cycle</strong> run the list is empty, as in the old system; type the codes instead. Changing the codes clears the JV shown.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.run-type",
+      "label": "PayrollRunType",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>Regular</strong> or <strong>Off Cycle</strong>: which salary registers are costed or posted.</p><p><strong>Example.</strong> Regular</p><p><strong>Why it matters.</strong> On Post JV, a regular run posts the area as one journal (two, salary and provision, when <em>Separate Provision Posting</em> is on); an off-cycle run posts one journal per employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.posting-date",
+      "label": "PostingDate",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The accounting date of the journal.</p><p><strong>Example.</strong> <code>2026-04-30</code></p><p><strong>Why it matters.</strong> Filled with the period end when the box is empty. Required. Changing it clears the JV shown.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.period",
+      "label": "Period",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> <strong>Current</strong> takes the month, year, start and end dates from the payroll area's control record. <strong>Other</strong> lets you type a payroll month and year and works out the dates from the area's payroll period. The dates are read-only; the end date is the pay date used.</p><p><strong>Example.</strong> Other, month 3, year 2026.</p><p><strong>Why it matters.</strong> Changing the period clears the JV shown.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.costing-file.generate",
+      "label": "GenerateCostingFile",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Starts the cost run for the area or employees, in the background, writing their cost registers for the period.</p><p><strong>Example.</strong> Generate, wait for \"Completed\", then press <strong>Journal Voucher</strong>.</p><p><strong>Why it matters.</strong> Refused while another finance run is in progress, naming who started it and when. Needs the right to run the Cost Engine.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.stop",
+      "label": "StopProcess",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Asks the run in progress to stop.</p><p><strong>Why it matters.</strong> The cost run stops before the next employee. A posting run stops before its next journal (or next employee for an off-cycle run), never in the middle of a journal.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.clear",
+      "label": "ClearStatus",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Empties the run log and status, after you confirm. Not available while a run is in progress.</p><p><strong>Why it matters.</strong> The log is shared with the Project Cost Engine and the other finance screen, so it is cleared for them too.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.journal-voucher",
+      "label": "JournalVoucher",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Shows the JV built from the period's cost registers: one line per account and cost element, with company, account type, main account, description, cost elements 2 to 7, currency, debit, credit, offset account and billing type, and the total debit and total credit above.</p><p><strong>Example.</strong> Total Debit 112,450.500, Total Credit 112,450.500: \"JV validated successfully.\"</p><p><strong>Why it matters.</strong> Line amounts are rounded to 3 decimals. On Post JV the preview is required: what is posted must be exactly what you previewed, so any change to the area, codes, run type, period or posting date clears it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.validate-jv",
+      "label": "ValidateJV",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Builds the JV and checks it: there must be lines, and debit must equal credit.</p><p><strong>Example.</strong> \"Debit and Credit amount not matched. Please check JV.\"</p><p><strong>Why it matters.</strong> As in the old system, both totals are rounded to whole units before they are compared, so a difference of a few fils does not count as a mismatch. Post JV applies the same check on the server before posting.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.costing-file.export",
+      "label": "ExportCostingFile",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Downloads the JV lines as a spreadsheet, in the old system's column order (without billing type).</p><p><strong>Example.</strong> Send it to finance to import by hand.</p><p><strong>Why it matters.</strong> Needs the right to export the costing file.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.run-status",
+      "label": "EngineRunProgress",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The status panel of the latest finance run: its status (Running, Completed, Completed With Errors, Stopped By Operator or Interrupted), when and by whom it started, how many employees are done of the total, the current employee, an estimate of the time left, and the counts of all, successful and failed records.</p><p><strong>Example.</strong> \"120 of 400 employees processed\"</p><p><strong>Why it matters.</strong> It refreshes itself while a run is in progress.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "pay.finance.show-details",
+      "label": "ShowDetails",
+      "section": null,
+      "aliases": [],
+      "rules": null,
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Opens the run log: one line per employee (and, for posting, per journal header and line batch), with time, status and message. <strong>All</strong>, <strong>Succeeded Only</strong> and <strong>Failed Only</strong> filter it.</p><p><strong>Example.</strong> A posting failure line naming the journals that had already reached Dynamics 365.</p><p><strong>Why it matters.</strong> <strong>Export to excel</strong> downloads the log as filtered, every page.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -38,20 +38,29 @@ namespace HCMv3.ProjectManagement.Services;
 /// is committed, legacy line 575). Legacy swallowed every exception here; so does this port.</description></item>
 /// <item><description><b>Legacy's run-level failure <c>ProjectLog</c> row IS written</b> (legacy 280-293)
 /// since wave P8 made <c>ProjectLog.EmployeeId</c> nullable, matching the sibling <c>PayrollLog</c>. One
-/// deviation remains: legacy SWALLOWED the exception after logging; this port logs the row and then
-/// RE-THROWS, so the background job / app service still see the failure. The log write itself is
-/// swallowed so it can never mask the original error.</description></item>
+/// deviation remains: legacy SWALLOWED the exception after logging; this port logs the row (in its own unit of
+/// work) and then RE-THROWS to its caller. The background job, the only caller, swallows it and records it on
+/// the run's progress row, so end to end nothing is retried. The log write itself is swallowed so it can never
+/// mask the original error.</description></item>
 /// <item><description><b>No EF Core in <c>HCMv3.Core</c></b> -- every query is synchronous LINQ over
 /// <c>IRepository&lt;T&gt;.GetAll()</c>; async signatures kept for interface consistency.</description></item>
 /// <item><description><b><c>ProjectCostingMethod.ActualHours</c> does nothing</b> -- legacy's branch
 /// (lines 1276-1279) is an empty block. Preserved as an empty branch, not an exception.</description></item>
+/// <item><description><b>Saved in batches of ten, not per employee</b> (legacy committed one object space per
+/// employee). See <see cref="ProjectCostEngineRunInput.CommitBatchSize"/>.</description></item>
+/// <item><description><b>Off-cycle is refused</b> with an error instead of legacy's silent empty run; legacy's
+/// screen never sent one (the run type was hidden, always Regular).</description></item>
+/// <item><description><b>One run at a time per tenant</b> (<see cref="ProjectCostEngineService.RunKey"/>), a guard
+/// legacy lacked. Progress is published through the shared <c>IEngineRunProgressWriter</c>
+/// (<c>EngineType.ProjectCostEngine</c>), and Stop is read from that run's progress row.</description></item>
 /// </list>
 /// </summary>
 public interface IProjectCostEngineService : IDomainService
 {
     /// <summary>
-    /// Runs the engine. Legacy <c>Main</c> + <c>CreateProjectRegister</c>. Per-employee failures are
-    /// isolated into failed <c>ProjectLog</c> rows exactly as legacy does; only pre-flight failures throw.
+    /// Runs the engine. Legacy <c>Main</c> + <c>CreateProjectRegister</c>. Clears the <c>ProjectLog</c> first (legacy's
+    /// Run button did). Per-employee failures are isolated into failed <c>ProjectLog</c> rows exactly as legacy does;
+    /// run-level failures throw after their failure row is written.
     /// </summary>
     Task<ProjectCostEngineRunResult> RunAsync(ProjectCostEngineRunInput input);
 }

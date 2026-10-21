@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.UI;
+using HCMv3.EngineRuns;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Services;
@@ -12,8 +16,10 @@ using HCMv3.ProjectManagement.Services;
 using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
+using HCMv3.Tests.EngineRuns;
 using HCMv3.TimeManagement;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Shouldly;
 using Xunit;
 
@@ -103,26 +109,30 @@ public class ProjectCostEngineService_Tests
     }
 
     /// <summary>
-    /// Legacy has NO off-cycle arm at all (lines 244-262): an off-cycle run validates and then does
-    /// nothing. Guarding this so a future refactor cannot quietly "fix" it.
+    /// Legacy has NO off-cycle arm (lines 232-250) and its screen hid the run type, always sending Regular. An
+    /// off-cycle run is REFUSED where legacy would have returned an empty run -- nothing is costed, and the reason
+    /// is on the log as the run-level failure row.
     /// </summary>
     [Fact]
-    public async Task OffCycle_Run_Should_Do_Nothing()
+    public async Task OffCycle_Run_Should_Be_Refused_And_Cost_Nothing()
     {
         var harness = new Harness();
         var service = harness.Build();
 
-        var result = await service.RunAsync(new ProjectCostEngineRunInput
+        var ex = await Assert.ThrowsAsync<UserFriendlyException>(() => service.RunAsync(new ProjectCostEngineRunInput
         {
             PayrollRunType = PayrollRunType.OffCycle,
             PayInDate = PeriodEnd,
             PayrollAreaName = "PA",
             OffCyclePaymentDate = PeriodEnd
-        });
+        }));
 
-        result.EmployeeResults.ShouldBeEmpty();
+        ex.Message.ShouldBe(ProjectCostEngineService.OffCycleNotSupportedMessage);
         harness.ProjectRegisters.ShouldBeEmpty();
-        harness.ProjectLogs.ShouldBeEmpty();
+        harness.ProjectLogs.Count.ShouldBe(1);
+        harness.ProjectLogs[0].EmployeeId.ShouldBeNull();
+        harness.ProjectLogs[0].Message.ShouldBe(ProjectCostEngineService.OffCycleNotSupportedMessage);
+        harness.Progress.StartedRuns.ShouldBeEmpty();
     }
 
     #endregion
@@ -380,9 +390,33 @@ public class ProjectCostEngineService_Tests
         harness.ProjectLogs[0].Status.ShouldBe(1);
     }
 
-    /// <summary>Legacy lines 397-400: any ProjectLog row carrying StopFlag aborts the whole loop.</summary>
+    /// <summary>
+    /// Legacy lines 374-379: a ProjectLog row carrying StopFlag aborts the whole loop -- here one raised while the
+    /// run is going (after the log was cleared), as a Stop pressed mid-run would.
+    /// </summary>
     [Fact]
-    public async Task Should_Abort_When_A_ProjectLog_Row_Has_StopFlag()
+    public async Task Should_Abort_When_A_ProjectLog_Row_Gets_StopFlag_During_The_Run()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.Progress = new StopFlagRaisingProgressWriter(harness.ProjectLogs);
+
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.Aborted.ShouldBeTrue();
+        harness.ProjectRegisters.ShouldBeEmpty();
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.Aborted);
+        harness.ExecutionLogs[0].ExecutionStatus.ShouldBe(ExecutionLogStatus.ABORTED);
+    }
+
+    /// <summary>
+    /// A StopFlag left over from an EARLIER run does not stop this one: legacy's Run button truncated the log
+    /// before starting (lines 1519-1521), so an old flag never survived into a new run.
+    /// </summary>
+    [Fact]
+    public async Task Should_Not_Abort_On_A_StopFlag_Left_From_An_Earlier_Run()
     {
         var harness = new Harness();
         harness.AddTimeRegisterWorkingDays(10);
@@ -399,12 +433,49 @@ public class ProjectCostEngineService_Tests
 
         var result = await service.RunAsync(RegularInput());
 
+        result.Aborted.ShouldBeFalse();
+        result.EmployeeResults.Single().Succeeded.ShouldBeTrue();
+        harness.ProjectLogs.ShouldNotContain(l => l.StopFlag);
+    }
+
+    /// <summary>The screen's Stop is set on the RUN (its progress row), not on a ProjectLog row.</summary>
+    [Fact]
+    public async Task Should_Abort_When_Stop_Is_Requested_On_The_Run()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.Progress.StopRequested = true;
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
         result.Aborted.ShouldBeTrue();
+        result.EmployeeResults.ShouldBeEmpty();
         harness.ProjectRegisters.ShouldBeEmpty();
+        harness.ProjectLogs.ShouldBeEmpty();
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.Aborted);
     }
 
     /// <summary>
-    /// Legacy lines 394-395: an employee whose contract ended before the period starts is skipped silently
+    /// Legacy lines 374-379 come FIRST for each employee: a stopped run does not go on to report the next
+    /// employee's missing joining date.
+    /// </summary>
+    [Fact]
+    public async Task Should_Check_The_Stop_Before_The_Employee_Validations()
+    {
+        var harness = new Harness();
+        harness.Employees[0].JoiningDate = default(DateTime);
+        harness.Progress.StopRequested = true;
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.Aborted.ShouldBeTrue();
+        harness.ProjectLogs.ShouldBeEmpty();
+    }
+
+    /// <summary>
+    /// Legacy lines 416-425: an employee whose contract ended before the period starts is skipped silently
     /// -- no ProjectLog row at all -- unless the run is an End Of Service off-cycle.
     /// </summary>
     [Fact]
@@ -419,6 +490,383 @@ public class ProjectCostEngineService_Tests
         result.EmployeeResults.ShouldBeEmpty();
         harness.ProjectLogs.ShouldBeEmpty();
         harness.ProjectRegisters.ShouldBeEmpty();
+        harness.Progress.SkippedCount.ShouldBe(1);
+        harness.Progress.Employees.ShouldBeEmpty();
+    }
+
+    #endregion
+
+    #region << Joining date and contract checks (legacy 27 July 2026, lines 381-426) >>
+
+    /// <summary>Legacy lines 382-383: no joining date is an error for the employee, codes typed or not.</summary>
+    [Fact]
+    public async Task Should_Fail_The_Employee_With_No_Joining_Date()
+    {
+        var harness = new Harness();
+        harness.Employees[0].JoiningDate = default(DateTime);
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.EmployeeResults.Single().Succeeded.ShouldBeFalse();
+        result.EmployeeResults.Single().Message.ShouldBe("JoiningDate not found.");
+        harness.ProjectLogs.Single().Status.ShouldBe(1);
+    }
+
+    /// <summary>
+    /// Legacy lines 384-390: joined after the period end and NO codes typed -- skipped (no log row), and the
+    /// run's employee count (NoOfEmployee) drops by one on the rows written after it.
+    /// </summary>
+    [Fact]
+    public async Task Should_Skip_An_Employee_Who_Joined_After_The_Period_When_No_Codes_Are_Typed()
+    {
+        var harness = new Harness();
+        harness.Employees[0].JoiningDate = new DateTime(2024, 2, 1);
+        harness.AddEmployee(2, "E2");
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.EmployeeResults.Select(r => r.EmployeeCode).ShouldBe(new[] { "E2" });
+        harness.ProjectLogs.Count.ShouldBe(1);
+        harness.ProjectLogs[0].EmployeeId.ShouldBe(2);
+        harness.ProjectLogs[0].NoOfEmployee.ShouldBe(1);
+        harness.Progress.SkippedCount.ShouldBe(1);
+        harness.Progress.TotalsPublished.ShouldBe(new[] { 2 });
+    }
+
+    /// <summary>Legacy lines 391-392: the same employee asked for by code is an ERROR, with legacy's message.</summary>
+    [Fact]
+    public async Task Should_Fail_An_Employee_Who_Joined_After_The_Period_When_Asked_For_By_Code()
+    {
+        var harness = new Harness();
+        harness.Employees[0].JoiningDate = new DateTime(2024, 2, 1);
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.EmployeeCodes = "E1";
+        var result = await service.RunAsync(input);
+
+        result.EmployeeResults.Single().Succeeded.ShouldBeFalse();
+        result.EmployeeResults.Single().Message.ShouldBe("JoiningDate : '01/02/2024' > PayInDate : 31/01/2024.");
+        harness.ProjectLogs.Single().Status.ShouldBe(1);
+        harness.Progress.SkippedCount.ShouldBe(0);
+    }
+
+    /// <summary>
+    /// Legacy lines 398-400: no contract at all is an error. (The first contract is looked up before the
+    /// last, so the message is the first lookup's.)
+    /// </summary>
+    [Fact]
+    public async Task Should_Fail_The_Employee_With_No_Contract()
+    {
+        var harness = new Harness();
+        harness.EmployeeContracts.Clear();
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.EmployeeResults.Single().Message.ShouldBe("Employee Contract not found for Employee E1");
+    }
+
+    /// <summary>Legacy lines 401-407: the FIRST contract starts after the period end, no codes -- skipped.</summary>
+    [Fact]
+    public async Task Should_Skip_An_Employee_Whose_First_Contract_Starts_After_The_Period_When_No_Codes_Are_Typed()
+    {
+        var harness = new Harness();
+        harness.EmployeeContracts[0].StartDate = new DateTime(2024, 2, 1);
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.EmployeeResults.ShouldBeEmpty();
+        harness.ProjectLogs.ShouldBeEmpty();
+        harness.Progress.SkippedCount.ShouldBe(1);
+    }
+
+    /// <summary>
+    /// Legacy line 398 orders by START date: an earlier contract makes the employee eligible even when the
+    /// latest one starts after the period.
+    /// </summary>
+    [Fact]
+    public async Task Should_Use_The_Earliest_Contract_For_The_Start_Check()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.EmployeeContracts[0].EndDate = new DateTime(2024, 12, 31);
+        harness.EmployeeContracts.Add(new EmployeeContract
+        {
+            Id = 2,
+            TenantId = TenantId,
+            EmployeeId = Harness.EmployeeId,
+            StartDate = new DateTime(2025, 1, 1),
+            EndDate = new DateTime(2030, 12, 31)
+        });
+        var service = harness.Build();
+
+        var result = await service.RunAsync(RegularInput());
+
+        result.EmployeeResults.Single().Succeeded.ShouldBeTrue();
+    }
+
+    /// <summary>Legacy lines 408-409: the same, asked for by code, is an error with legacy's message.</summary>
+    [Fact]
+    public async Task Should_Fail_An_Employee_Whose_First_Contract_Starts_After_The_Period_When_Asked_For_By_Code()
+    {
+        var harness = new Harness();
+        harness.EmployeeContracts[0].StartDate = new DateTime(2024, 2, 1);
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.EmployeeCodes = "E1";
+        var result = await service.RunAsync(input);
+
+        result.EmployeeResults.Single().Message
+            .ShouldBe("Contract Started on '01/02/2024'. Can't run Payroll for Date : '31/01/2024'");
+    }
+
+    /// <summary>Legacy lines 423-424: a contract that ended before the period, asked for by code, is an error.</summary>
+    [Fact]
+    public async Task Should_Fail_An_Employee_Whose_Contract_Ended_Before_The_Period_When_Asked_For_By_Code()
+    {
+        var harness = new Harness();
+        harness.EmployeeContracts[0].EndDate = new DateTime(2023, 6, 30);
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.EmployeeCodes = " E1 ";
+        var result = await service.RunAsync(input);
+
+        result.EmployeeResults.Single().Message
+            .ShouldBe("Contract EndDate on '30/06/2023'. Can't run Payroll for Date : '31/01/2024'");
+        harness.ProjectRegisters.ShouldBeEmpty();
+    }
+
+    /// <summary>
+    /// Blank-only codes count as "no codes": the engine then selects by payroll area AND skips quietly, so the
+    /// selection and the skip-or-error decision never disagree.
+    /// </summary>
+    [Fact]
+    public async Task Should_Treat_Blank_Employee_Codes_As_No_Codes()
+    {
+        var harness = new Harness();
+        harness.EmployeeContracts[0].EndDate = new DateTime(2023, 6, 30);
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.EmployeeCodes = "   ";
+        var result = await service.RunAsync(input);
+
+        result.EmployeeResults.ShouldBeEmpty();
+        harness.Progress.SkippedCount.ShouldBe(1);
+    }
+
+    #endregion
+
+    #region << Clean log, one run at a time, progress, batches >>
+
+    /// <summary>Legacy's Run button truncated ProjectLog before the run (lines 1519, 1706-1710).</summary>
+    [Fact]
+    public async Task Should_Start_Every_Run_With_An_Empty_Log()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.ProjectLogs.Add(new ProjectLog { Id = 50, TenantId = TenantId, EmployeeId = 99, Message = "old run", Status = 1 });
+        harness.ProjectLogs.Add(new ProjectLog { Id = 51, TenantId = TenantId, Message = "old run-level failure", Status = 1 });
+        var service = harness.Build();
+
+        await service.RunAsync(RegularInput());
+
+        harness.ProjectLogs.Count.ShouldBe(1);
+        harness.ProjectLogs[0].Message.ShouldBe("Successfull");
+        // ...so the execution log counts this run only.
+        harness.ExecutionLogs[0].TotalRecords.ShouldBe(1);
+        harness.ExecutionLogs[0].ExecutionStatus.ShouldBe(ExecutionLogStatus.SUCCESS);
+    }
+
+    /// <summary>The log is cleared in its own unit of work, committed before the run goes on.</summary>
+    [Fact]
+    public async Task Should_Clear_The_Log_In_Its_Own_Unit_Of_Work()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        var service = harness.Build();
+
+        await service.RunAsync(RegularInput());
+
+        // One for clearing the log; the run itself is not batched here (CommitBatchSize 0).
+        harness.UnitOfWorkManager.Received(1).Begin(TransactionScopeOption.RequiresNew);
+    }
+
+    /// <summary>
+    /// ONE RUN AT A TIME. A refusal neither clears the running run's log nor adds a failed row to it (that row
+    /// would be counted as a failed employee of the running run).
+    /// </summary>
+    [Fact]
+    public async Task Should_Refuse_A_Second_Run_Without_Touching_The_Running_Runs_Log()
+    {
+        var harness = new Harness();
+        harness.Progress.ActiveRunKey = ProjectCostEngineService.RunKey;
+        harness.Progress.StartedByUserName = "admin";
+        harness.ProjectLogs.Add(new ProjectLog { Id = 7, TenantId = TenantId, EmployeeId = 99, Message = "Successfull", Status = 0 });
+        var service = harness.Build();
+
+        var ex = await Assert.ThrowsAsync<UserFriendlyException>(() => service.RunAsync(RegularInput()));
+
+        ex.Message.ShouldStartWith("The Project Cost Engine is already running (started by admin at ");
+        harness.ProjectLogs.Count.ShouldBe(1);
+        harness.ProjectLogs[0].Id.ShouldBe(7);
+        harness.ExecutionLogs.ShouldBeEmpty();
+        harness.Progress.StartedRuns.ShouldBeEmpty();
+    }
+
+    /// <summary>The shared progress contract: begin, total, one row per employee with its duration, closed.</summary>
+    [Fact]
+    public async Task Should_Publish_Progress_Through_The_Shared_Engine_Run_Writer()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.AddEmployee(2, "E2");
+        harness.SalaryRegisters.RemoveAll(r => r.EmployeeId == 2);
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.CurrentUserName = "payroll.officer";
+        await service.RunAsync(input);
+
+        var started = harness.Progress.StartedRuns.Single();
+        started.EngineType.ShouldBe(EngineType.ProjectCostEngine);
+        started.RunKey.ShouldBe(ProjectCostEngineService.RunKey);
+        started.StartedByUserName.ShouldBe("payroll.officer");
+        started.Parameters.ShouldContain("Payroll Area : PA");
+        started.Parameters.ShouldContain("Period : 31/01/2024");
+
+        harness.Progress.TotalsPublished.ShouldBe(new[] { 2 });
+        harness.Progress.Employees.Select(e => e.EmployeeCode).ShouldBe(new[] { "E1", "E2" });
+        harness.Progress.Employees.Select(e => e.SequenceNo).ShouldBe(new[] { 1, 2 });
+        harness.Progress.Employees[0].Succeeded.ShouldBeTrue();
+        harness.Progress.Employees[0].Message.ShouldBe("Successfull");
+        harness.Progress.Employees[1].Succeeded.ShouldBeFalse();
+        harness.Progress.Employees[1].Message.ShouldContain("Salary Register not found");
+        harness.Progress.Employees.ShouldAllBe(e => e.EngineRunId == RecordingEngineRunProgressWriter.TestRunId);
+
+        harness.Progress.Completed.ShouldBeTrue();
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.CompletedWithErrors);
+        harness.Progress.CompletedExecutionLogId.ShouldBe(harness.ExecutionLogs[0].Id);
+        harness.Progress.CompletedFailureMessage.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Close_A_Clean_Run_As_Completed()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        var service = harness.Build();
+
+        await service.RunAsync(RegularInput());
+
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.Completed);
+    }
+
+    /// <summary>
+    /// SAVE IN BATCHES: each batch in its own RequiresNew unit of work. Two employees in batches of one = two
+    /// batch units of work, plus the one that cleared the log. The figures are the same as unbatched.
+    /// </summary>
+    [Fact]
+    public async Task Should_Save_Each_Batch_In_Its_Own_Unit_Of_Work()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.AddEmployee(2, "E2");
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.CommitBatchSize = 1;
+        var result = await service.RunAsync(input);
+
+        result.EmployeeResults.ShouldAllBe(r => r.Succeeded);
+        result.EmployeeResults.Count.ShouldBe(2);
+        harness.UnitOfWorkManager.Received(3).Begin(TransactionScopeOption.RequiresNew);
+        harness.ProjectRegisterDetails.Single(d => harness.ProjectRegisters.Single(r => r.EmployeeId == Harness.EmployeeId).Id == d.ProjectRegisterId)
+            .Amount.ShouldBe(100);
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.Completed);
+    }
+
+    /// <summary>A stop between batches ends the run: the next batch is not opened.</summary>
+    [Fact]
+    public async Task Should_Not_Open_Another_Batch_Once_Stopped()
+    {
+        var harness = new Harness();
+        harness.AddTimeRegisterWorkingDays(10);
+        harness.AddEmployee(2, "E2");
+        harness.Progress.StopRequested = true;
+        var service = harness.Build();
+
+        var input = RegularInput();
+        input.CommitBatchSize = 1;
+        var result = await service.RunAsync(input);
+
+        result.Aborted.ShouldBeTrue();
+        // The log clear + the first batch, which found the stop.
+        harness.UnitOfWorkManager.Received(2).Begin(TransactionScopeOption.RequiresNew);
+    }
+
+    /// <summary>
+    /// A run-level failure AFTER the run began: the progress row is closed as Failed with the reason, the failure
+    /// is marked as recorded (so the job writes no second row), and the legacy failure row is on the log, written
+    /// in its own unit of work so it is not rolled back with the run.
+    /// </summary>
+    [Fact]
+    public async Task Should_Record_A_Run_Level_Failure_On_The_Run_And_On_The_Log()
+    {
+        var harness = new Harness();
+        harness.EmployeeRepositoryFailure = new InvalidOperationException("the database went away");
+        var service = harness.Build();
+
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => service.RunAsync(RegularInput()));
+
+        ex.Data.Contains(ProjectCostEngineService.RunFailureRecordedKey).ShouldBeTrue();
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.Failed);
+        harness.Progress.CompletedFailureMessage.ShouldBe("the database went away");
+        harness.ProjectLogs.Single().EmployeeId.ShouldBeNull();
+        harness.ProjectLogs.Single().Message.ShouldBe("the database went away");
+        // The log clear + the failure row.
+        harness.UnitOfWorkManager.Received(2).Begin(TransactionScopeOption.RequiresNew);
+    }
+
+    /// <summary>
+    /// LEGACY QUIRK, pinned rather than fixed: CreateProjectRegister's finally finalises the execution log
+    /// (lines 621-653) BEFORE Main's catch writes the failure row (lines 266-282). So a run that dies on
+    /// employee selection is logged as SUCCESS with 0 records -- legacy's own result. The run's progress row
+    /// is the one that says Failed.
+    /// </summary>
+    [Fact]
+    public async Task Should_Finalise_The_Execution_Log_Before_The_Failure_Row_As_Legacy()
+    {
+        var harness = new Harness();
+        harness.EmployeeRepositoryFailure = new InvalidOperationException("the database went away");
+        var service = harness.Build();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.RunAsync(RegularInput()));
+
+        var log = harness.ExecutionLogs.Single();
+        log.ExecutionStatus.ShouldBe(ExecutionLogStatus.SUCCESS);
+        log.TotalRecords.ShouldBe(0);
+        harness.Progress.CompletedStatus.ShouldBe(EngineRunStatus.Failed);
+    }
+
+    /// <summary>A refusal BEFORE the run began is not marked as recorded: the job opens a Failed row for it.</summary>
+    [Fact]
+    public async Task Should_Not_Mark_A_Preflight_Refusal_As_Recorded()
+    {
+        var harness = new Harness();
+        harness.PayrollCalendars.Clear();
+        var service = harness.Build();
+
+        var ex = await Assert.ThrowsAsync<UserFriendlyException>(() => service.RunAsync(RegularInput()));
+
+        ex.Data.Contains(ProjectCostEngineService.RunFailureRecordedKey).ShouldBeFalse();
+        harness.Progress.StartedRuns.ShouldBeEmpty();
     }
 
     #endregion
@@ -521,7 +969,9 @@ public class ProjectCostEngineService_Tests
                 Code = "E1",
                 FirstNameEn = "E",
                 LastNameEn = "One",
-                FullNameEn = "E One"
+                FullNameEn = "E One",
+                // Legacy 27 July 2026 (lines 382-383): an employee with no joining date fails.
+                JoiningDate = new DateTime(2020, 1, 1)
             });
 
             EmployeeContracts.Add(new EmployeeContract
@@ -676,6 +1126,93 @@ public class ProjectCostEngineService_Tests
             });
         }
 
+        /// <summary>Records what the engine publishes; replace it before <see cref="Build"/> to change behaviour.</summary>
+        public RecordingEngineRunProgressWriter Progress = new RecordingEngineRunProgressWriter();
+
+        /// <summary>The unit-of-work manager the built service uses, for asserting RequiresNew units of work.</summary>
+        public IUnitOfWorkManager UnitOfWorkManager { get; private set; }
+
+        /// <summary>When set, the employee repository throws this -- a run-level failure on employee selection.</summary>
+        public Exception EmployeeRepositoryFailure;
+
+        /// <summary>
+        /// A second employee on the same project with every guard satisfied, a salary register for the period and no
+        /// register lines (so it succeeds with nothing to cost).
+        /// </summary>
+        public void AddEmployee(int id, string code)
+        {
+            var payrollArea = PayrollAreas[0];
+
+            Employees.Add(new Employee
+            {
+                Id = id,
+                TenantId = TenantId,
+                Code = code,
+                FullNameEn = code + " Name",
+                JoiningDate = new DateTime(2020, 1, 1)
+            });
+
+            EmployeeContracts.Add(new EmployeeContract
+            {
+                Id = 100 + id,
+                TenantId = TenantId,
+                EmployeeId = id,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            EmployeeOrgAssignments.Add(new EmployeeOrgAssignment
+            {
+                Id = 100 + id,
+                TenantId = TenantId,
+                EmployeeId = id,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2030, 12, 31),
+                PayrollAreaId = payrollArea.Id,
+                PayrollArea = payrollArea
+            });
+
+            EmployeePayrollStatuses.Add(new EmployeePayrollStatus
+            {
+                Id = 100 + id,
+                TenantId = TenantId,
+                EmployeeId = id,
+                DoNoAccountAfter = new DateTime(1, 1, 1),
+                NextTimeEvaluationFrom = new DateTime(1, 1, 1)
+            });
+
+            SalaryRegisters.Add(new SalaryRegister
+            {
+                Id = 100 + id,
+                TenantId = TenantId,
+                EmployeeId = id,
+                ForPeriod = PeriodEnd,
+                InPeriod = PeriodEnd,
+                PayrollRunType = PayrollRunType.Regular
+            });
+
+            EmployeeProjects.Add(new EmployeeProject
+            {
+                Id = 100 + id,
+                TenantId = TenantId,
+                EmployeeId = id,
+                StartDate = new DateTime(2024, 1, 1),
+                EndDate = PeriodEnd,
+                CostingMethod = ProjectCostingMethod.ActualDays
+            });
+
+            EmployeeProjectDetails.Add(new EmployeeProjectDetail
+            {
+                Id = 100 + id,
+                TenantId = TenantId,
+                EmployeeProjectId = 100 + id,
+                ProjectId = ProjectId,
+                StartDate = new DateTime(2024, 1, 1),
+                EndDate = PeriodEnd,
+                Percentage = 100
+            });
+        }
+
         public void AddTimeRegisterWorkingDays(int days)
         {
             for (var i = 0; i < days; i++)
@@ -701,8 +1238,15 @@ public class ProjectCostEngineService_Tests
             var rounding = Substitute.For<IPayrollRoundingService>();
             rounding.GetCurrencyDecimalRoundingAsync(Arg.Any<int>()).Returns(Task.FromResult(3));
 
+            var employeeRepository = ProjectCostEngineFakes.RepoOver(Employees);
+            if (EmployeeRepositoryFailure != null)
+            {
+                employeeRepository = Substitute.For<IRepository<Employee>>();
+                employeeRepository.GetAll().Throws(EmployeeRepositoryFailure);
+            }
+
             var service = new ProjectCostEngineService(
-                ProjectCostEngineFakes.RepoOver(Employees),
+                employeeRepository,
                 ProjectCostEngineFakes.RepoOver(EmployeeContracts),
                 ProjectCostEngineFakes.RepoOver(EmployeeOrgAssignments),
                 ProjectCostEngineFakes.RepoOver(EmployeePayrollStatuses),
@@ -727,9 +1271,30 @@ public class ProjectCostEngineService_Tests
                 rounding,
                 new ProjectCostOvertimeWageTypeResolver(ProjectCostEngineFakes.RepoOver(OvertimeTypes)));
 
-            service.UnitOfWorkManager = ProjectCostEngineFakes.UnitOfWorkManager();
+            UnitOfWorkManager = ProjectCostEngineFakes.UnitOfWorkManager();
+            service.UnitOfWorkManager = UnitOfWorkManager;
+            service.ProgressWriter = Progress;
 
             return service;
+        }
+    }
+
+    /// <summary>
+    /// Raises a legacy <c>ProjectLog.StopFlag</c> the moment the run opens its progress row -- i.e. after the log was
+    /// cleared and before the first employee, as a Stop pressed mid-run would land.
+    /// </summary>
+    private sealed class StopFlagRaisingProgressWriter : RecordingEngineRunProgressWriter
+    {
+        private readonly List<ProjectLog> _projectLogs;
+
+        public StopFlagRaisingProgressWriter(List<ProjectLog> projectLogs)
+        {
+            _projectLogs = projectLogs;
+        }
+
+        protected override void OnBegin()
+        {
+            _projectLogs.Add(new ProjectLog { Id = 900, TenantId = TenantId, StopFlag = true, RunTimeStamp = DateTime.Now });
         }
     }
 }

@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.BackgroundJobs;
 using Abp.UI;
-using Castle.MicroKernel.Registration;
 using HCMv3.Authorization;
 using HCMv3.TimeManagement;
 using HCMv3.TimeManagement.Dto;
-using HCMv3.TimeManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Shouldly;
@@ -23,35 +21,21 @@ namespace HCMv3.Tests.TimeManagement;
 ///
 /// <para>The service is resolved from the container (not constructed directly) so ABP's authorization
 /// interceptor is actually in the call path -- otherwise the <c>[AbpAuthorize]</c> assertions below would be
-/// vacuous. <see cref="IBackgroundJobManager"/> and <see cref="ITimeEngineService"/> are replaced with
-/// substitutes before resolution, which is what lets the "enqueues rather than running synchronously"
-/// assertion be made positively rather than by absence.</para>
+/// vacuous. The job manager and the engine are replaced with substitutes before resolution, which is what lets the
+/// "enqueues rather than running synchronously" assertion be made positively rather than by absence.</para>
+///
+/// <para>Every run here is for a payroll area with a control record and configured time settings, because the
+/// screen's legacy checks (<see cref="TimeEngineAppService_LegacyChecks_Tests"/>) refuse anything else.</para>
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public class TimeEngineAppService_Tests : AppTestBase
+public class TimeEngineAppService_Tests : TimeEngineAppServiceTestBase
 {
-    private readonly ITimeEngineAppService _timeEngineAppService;
-
-    private readonly IBackgroundJobManager _backgroundJobManager = Substitute.For<IBackgroundJobManager>();
-    private readonly ITimeEngineService _timeEngineService = Substitute.For<ITimeEngineService>();
-
-    private TimeEngineJobArgs _enqueuedArgs;
+    private const string Area = "Monthly";
 
     public TimeEngineAppService_Tests()
     {
-        _backgroundJobManager
-            .EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(
-                Arg.Do<TimeEngineJobArgs>(args => _enqueuedArgs = args),
-                Arg.Any<BackgroundJobPriority>(),
-                Arg.Any<TimeSpan?>())
-            .Returns(Task.FromResult("job-1"));
-
-        LocalIocManager.IocContainer.Register(
-            Component.For<IBackgroundJobManager>().Instance(_backgroundJobManager).IsDefault());
-        LocalIocManager.IocContainer.Register(
-            Component.For<ITimeEngineService>().Instance(_timeEngineService).IsDefault());
-
-        _timeEngineAppService = Resolve<ITimeEngineAppService>();
+        SetTimeSettings(futureEvaluationInDays: 3650, earliestEvaluationDate: new DateTime(2020, 1, 1));
+        CreatePayrollArea(Area, new DateTime(2024, 6, 30));
     }
 
     private static RunTimeEngineInput ValidInput()
@@ -61,7 +45,7 @@ public class TimeEngineAppService_Tests : AppTestBase
             EmployeeCodes = "E001,E002",
             StartDate = new DateTime(2024, 6, 1),
             EndDate = new DateTime(2024, 6, 30),
-            PayrollAreaName = "Monthly"
+            PayrollAreaName = Area
         };
     }
 
@@ -99,10 +83,27 @@ public class TimeEngineAppService_Tests : AppTestBase
         AbpSession.UserId = null;
 
         await Assert.ThrowsAsync<AbpAuthorizationException>(
-            () => _timeEngineAppService.RunTimeEngine(ValidInput()));
+            () => TimeEngineAppService.RunTimeEngine(ValidInput()));
 
-        await _backgroundJobManager.DidNotReceiveWithAnyArgs()
+        await BackgroundJobManager.DidNotReceiveWithAnyArgs()
             .EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(null);
+    }
+
+    /// <summary>Watching is the view permission; stopping is the run permission.</summary>
+    [Theory]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineStatus), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunEmployees), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunDays), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunLogToExcel), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunCandidates), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunCandidateCodes), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunHistory), AppPermissions.Pages_TimeManagement_TimeEngine)]
+    [InlineData(nameof(TimeEngineAppService.StopTimeEngine), AppPermissions.Pages_TimeManagement_TimeEngine_Run)]
+    public void Should_Gate_Each_Endpoint_On_The_Time_Engine_Permissions(string methodName, string permission)
+    {
+        typeof(TimeEngineAppService).GetMethod(methodName)
+            .GetCustomAttribute<AbpAuthorizeAttribute>()
+            .Permissions.ShouldContain(permission);
     }
 
     #endregion
@@ -112,16 +113,16 @@ public class TimeEngineAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Enqueue_A_Background_Job_Instead_Of_Running_The_Engine_Synchronously()
     {
-        var output = await _timeEngineAppService.RunTimeEngine(ValidInput());
+        var output = await TimeEngineAppService.RunTimeEngine(ValidInput());
 
         output.Queued.ShouldBeTrue();
 
-        await _backgroundJobManager.Received(1).EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(
+        await BackgroundJobManager.Received(1).EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(
             Arg.Any<TimeEngineJobArgs>(), Arg.Any<BackgroundJobPriority>(), Arg.Any<TimeSpan?>());
 
         // The whole point of the queue: a run spans thousands of employee-days and must never execute inside
         // the HTTP request.
-        await _timeEngineService.DidNotReceiveWithAnyArgs().CreateTimeRegisterAsync(null);
+        await TimeEngineService.DidNotReceiveWithAnyArgs().CreateTimeRegisterAsync(null);
     }
 
     [Fact]
@@ -129,46 +130,51 @@ public class TimeEngineAppService_Tests : AppTestBase
     {
         var input = ValidInput();
 
-        await _timeEngineAppService.RunTimeEngine(input);
+        await TimeEngineAppService.RunTimeEngine(input);
 
-        _enqueuedArgs.ShouldNotBeNull();
-        _enqueuedArgs.EmployeeCodes.ShouldBe("E001,E002");
-        _enqueuedArgs.StartDate.ShouldBe(input.StartDate.Value.Date);
-        _enqueuedArgs.EndDate.ShouldBe(input.EndDate.Date);
-        _enqueuedArgs.PayrollAreaName.ShouldBe("Monthly");
-        _enqueuedArgs.TenantId.ShouldBe(AbpSession.TenantId.Value);
+        EnqueuedArgs.ShouldNotBeNull();
+        EnqueuedArgs.EmployeeCodes.ShouldBe("E001,E002");
+        EnqueuedArgs.StartDate.ShouldBe(input.StartDate.Value.Date);
+        EnqueuedArgs.EndDate.ShouldBe(input.EndDate.Date);
+        EnqueuedArgs.PayrollAreaName.ShouldBe(Area);
+        EnqueuedArgs.TenantId.ShouldBe(AbpSession.TenantId.Value);
+
+        // The job runs as the person who started it.
+        EnqueuedArgs.UserId.ShouldBe(AbpSession.UserId);
 
         // Runs arriving through the API are never payroll-engine-initiated (legacy args[5] = "0").
-        _enqueuedArgs.IsRanFromPayrollEngine.ShouldBeFalse();
+        EnqueuedArgs.IsRanFromPayrollEngine.ShouldBeFalse();
 
         // Legacy args[4] was supplied by the caller; here it is the authenticated user.
-        _enqueuedArgs.CurrentUserName.ShouldNotBeNullOrWhiteSpace();
+        EnqueuedArgs.CurrentUserName.ShouldNotBeNullOrWhiteSpace();
     }
 
     [Fact]
     public async Task Should_Truncate_The_Time_Component_Of_The_Run_Window()
     {
-        await _timeEngineAppService.RunTimeEngine(new RunTimeEngineInput
+        await TimeEngineAppService.RunTimeEngine(new RunTimeEngineInput
         {
+            PayrollAreaName = Area,
             StartDate = new DateTime(2024, 6, 1, 13, 45, 12),
             EndDate = new DateTime(2024, 6, 30, 23, 59, 59)
         });
 
-        _enqueuedArgs.StartDate.ShouldBe(new DateTime(2024, 6, 1));
-        _enqueuedArgs.EndDate.ShouldBe(new DateTime(2024, 6, 30));
+        EnqueuedArgs.StartDate.ShouldBe(new DateTime(2024, 6, 1));
+        EnqueuedArgs.EndDate.ShouldBe(new DateTime(2024, 6, 30));
     }
 
     [Fact]
     public async Task Should_Allow_A_Null_Start_Date()
     {
         // Legacy's DBDtNull sentinel: the engine falls back to the 1st of the current month.
-        await _timeEngineAppService.RunTimeEngine(new RunTimeEngineInput
+        await TimeEngineAppService.RunTimeEngine(new RunTimeEngineInput
         {
+            PayrollAreaName = Area,
             StartDate = null,
             EndDate = new DateTime(2024, 6, 30)
         });
 
-        _enqueuedArgs.StartDate.ShouldBeNull();
+        EnqueuedArgs.StartDate.ShouldBeNull();
     }
 
     #endregion
@@ -179,11 +185,11 @@ public class TimeEngineAppService_Tests : AppTestBase
     public async Task Should_Reject_A_Missing_End_Date()
     {
         var exception = await Assert.ThrowsAsync<UserFriendlyException>(
-            () => _timeEngineAppService.RunTimeEngine(new RunTimeEngineInput { EndDate = default(DateTime) }));
+            () => TimeEngineAppService.RunTimeEngine(new RunTimeEngineInput { PayrollAreaName = Area, EndDate = default(DateTime) }));
 
         exception.Message.ShouldNotBeNullOrWhiteSpace();
 
-        await _backgroundJobManager.DidNotReceiveWithAnyArgs()
+        await BackgroundJobManager.DidNotReceiveWithAnyArgs()
             .EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(null);
     }
 
@@ -191,13 +197,14 @@ public class TimeEngineAppService_Tests : AppTestBase
     public async Task Should_Reject_A_Start_Date_After_The_End_Date()
     {
         await Assert.ThrowsAsync<UserFriendlyException>(
-            () => _timeEngineAppService.RunTimeEngine(new RunTimeEngineInput
+            () => TimeEngineAppService.RunTimeEngine(new RunTimeEngineInput
             {
+                PayrollAreaName = Area,
                 StartDate = new DateTime(2024, 7, 1),
                 EndDate = new DateTime(2024, 6, 30)
             }));
 
-        await _backgroundJobManager.DidNotReceiveWithAnyArgs()
+        await BackgroundJobManager.DidNotReceiveWithAnyArgs()
             .EnqueueAsync<TimeEngineBackgroundJob, TimeEngineJobArgs>(null);
     }
 
@@ -206,11 +213,11 @@ public class TimeEngineAppService_Tests : AppTestBase
     {
         var day = new DateTime(2024, 6, 30);
 
-        await _timeEngineAppService.RunTimeEngine(
-            new RunTimeEngineInput { StartDate = day, EndDate = day });
+        await TimeEngineAppService.RunTimeEngine(
+            new RunTimeEngineInput { PayrollAreaName = Area, StartDate = day, EndDate = day });
 
-        _enqueuedArgs.StartDate.ShouldBe(day);
-        _enqueuedArgs.EndDate.ShouldBe(day);
+        EnqueuedArgs.StartDate.ShouldBe(day);
+        EnqueuedArgs.EndDate.ShouldBe(day);
     }
 
     #endregion
@@ -226,6 +233,19 @@ public class TimeEngineAppService_Tests : AppTestBase
         var method = typeof(TimeEngineAppService).GetMethod(nameof(TimeEngineAppService.RunTimeEngine));
 
         method.GetCustomAttributes<HttpPostAttribute>().Any().ShouldBeTrue();
+    }
+
+    /// <summary>The same rule for every new Get* method that takes a custom input DTO.</summary>
+    [Theory]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunDays))]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunLogToExcel))]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunCandidates))]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunCandidateCodes))]
+    [InlineData(nameof(TimeEngineAppService.GetTimeEngineRunHistory))]
+    public void Get_Methods_With_An_Input_Dto_Should_Be_HttpPost(string methodName)
+    {
+        typeof(TimeEngineAppService).GetMethod(methodName)
+            .GetCustomAttributes<HttpPostAttribute>().Any().ShouldBeTrue();
     }
 
     #endregion

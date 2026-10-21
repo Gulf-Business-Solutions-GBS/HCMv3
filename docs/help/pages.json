@@ -10754,6 +10754,327 @@
           "label": "HcmFeatureMaxActiveEmployees"
         }
       ]
+    },
+    {
+      "helpId": "tm.time-engine",
+      "title": "Time Engine",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimeEngine"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-engine/time-engine.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "tm.time-engine.payroll-area",
+          "label": "PayrollArea"
+        },
+        {
+          "id": "tm.time-engine.employee-codes",
+          "label": "EmployeeCode"
+        },
+        {
+          "id": "tm.time-engine.select-employees",
+          "label": "PayrollRunSelectEmployees"
+        },
+        {
+          "id": "tm.time-engine.start-date",
+          "label": "StartDate"
+        },
+        {
+          "id": "tm.time-engine.end-date",
+          "label": "EndDate"
+        },
+        {
+          "id": "tm.time-engine.run",
+          "label": "RunTimeEngine"
+        },
+        {
+          "id": "common.engine-run-progress",
+          "label": "EngineRunProgress"
+        },
+        {
+          "id": "tm.time-engine.days",
+          "label": "Days"
+        },
+        {
+          "id": "tm.time-engine.export",
+          "label": "ExportToExcel"
+        },
+        {
+          "id": "tm.time-engine.history",
+          "label": "TimeEngineRunHistory"
+        }
+      ]
+    },
+    {
+      "helpId": "pay.bank-file",
+      "title": "Bank Files",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.BankFiles"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll/bank-file/bank-file.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "pay.bank-file.payroll-area",
+          "label": "PayrollArea"
+        },
+        {
+          "id": "pay.bank-file.sponsor",
+          "label": "Sponsor"
+        },
+        {
+          "id": "pay.bank-file.sponsor-bank",
+          "label": "BankFileSponsorBank"
+        },
+        {
+          "id": "pay.bank-file.mosal",
+          "label": "MOSALID"
+        },
+        {
+          "id": "pay.bank-file.employee-codes",
+          "label": "BankFileEmployeeCodes"
+        },
+        {
+          "id": "pay.bank-file.employee-bank",
+          "label": "BankFileEmployeeBank"
+        },
+        {
+          "id": "pay.bank-file.run-type",
+          "label": "PayrollRunType"
+        },
+        {
+          "id": "pay.bank-file.split",
+          "label": "BankFileSplitPerBank"
+        },
+        {
+          "id": "pay.bank-file.period",
+          "label": "Period"
+        },
+        {
+          "id": "pay.bank-file.payment-type",
+          "label": "PaymentType"
+        },
+        {
+          "id": "pay.bank-file.payment-bank",
+          "label": "BankFilePaymentBank"
+        },
+        {
+          "id": "pay.bank-file.format",
+          "label": "BankFileFormat"
+        },
+        {
+          "id": "pay.bank-file.generate",
+          "label": "BankFileGenerate"
+        },
+        {
+          "id": "pay.bank-file.view-log",
+          "label": "BankFileViewLog"
+        }
+      ]
+    },
+    {
+      "helpId": "prj.project-cost-engine",
+      "title": "Project Cost Engine",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ProjectManagement.ProjectCostEngine"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/project-management/project-cost-engine/project-cost-engine.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "prj.project-cost-engine.payroll-area",
+          "label": "PayrollAreaId"
+        },
+        {
+          "id": "prj.project-cost-engine.employee-codes",
+          "label": "EmployeeCode"
+        },
+        {
+          "id": "prj.project-cost-engine.select-employees",
+          "label": "PayrollRunSelectEmployees"
+        },
+        {
+          "id": "prj.project-cost-engine.period",
+          "label": "Period"
+        },
+        {
+          "id": "prj.project-cost-engine.run",
+          "label": "RunProjectCostEngine"
+        },
+        {
+          "id": "prj.project-cost-engine.stop",
+          "label": "StopProjectCostEngine"
+        },
+        {
+          "id": "prj.project-cost-engine.clear",
+          "label": "ClearStatus"
+        },
+        {
+          "id": "common.engine-run-progress",
+          "label": "EngineRunProgress"
+        },
+        {
+          "id": "prj.project-cost-engine.logs",
+          "label": "ProjectLogs"
+        },
+        {
+          "id": "prj.project-cost-engine.export",
+          "label": "ExportToExcel"
+        }
+      ]
+    },
+    {
+      "helpId": "pay.costing-file",
+      "title": "Cost Engine",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.CostingFile"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/costing-file/costing-file.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "pay.finance.payroll-area",
+          "label": "PayrollArea"
+        },
+        {
+          "id": "pay.finance.employee-code",
+          "label": "EmployeeCode"
+        },
+        {
+          "id": "pay.finance.run-type",
+          "label": "PayrollRunType"
+        },
+        {
+          "id": "pay.finance.posting-date",
+          "label": "PostingDate"
+        },
+        {
+          "id": "pay.finance.period",
+          "label": "Period"
+        },
+        {
+          "id": "pay.costing-file.generate",
+          "label": "GenerateCostingFile"
+        },
+        {
+          "id": "pay.finance.stop",
+          "label": "StopProcess"
+        },
+        {
+          "id": "pay.finance.clear",
+          "label": "ClearStatus"
+        },
+        {
+          "id": "pay.finance.journal-voucher",
+          "label": "JournalVoucher"
+        },
+        {
+          "id": "pay.finance.validate-jv",
+          "label": "ValidateJV"
+        },
+        {
+          "id": "pay.costing-file.export",
+          "label": "ExportCostingFile"
+        },
+        {
+          "id": "pay.finance.run-status",
+          "label": "EngineRunProgress"
+        },
+        {
+          "id": "pay.finance.show-details",
+          "label": "ShowDetails"
+        }
+      ]
+    },
+    {
+      "helpId": "pay.post-jv",
+      "title": "Post JV",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PostJv"
+      ],
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/post-jv/post-jv.component.html"
+        }
+      },
+      "topics": [
+        {
+          "id": "pay.finance.payroll-area",
+          "label": "PayrollArea"
+        },
+        {
+          "id": "pay.finance.employee-code",
+          "label": "EmployeeCode"
+        },
+        {
+          "id": "pay.finance.run-type",
+          "label": "PayrollRunType"
+        },
+        {
+          "id": "pay.finance.posting-date",
+          "label": "PostingDate"
+        },
+        {
+          "id": "pay.finance.period",
+          "label": "Period"
+        },
+        {
+          "id": "pay.finance.journal-voucher",
+          "label": "JournalVoucher"
+        },
+        {
+          "id": "pay.finance.validate-jv",
+          "label": "ValidateJV"
+        },
+        {
+          "id": "pay.post-jv.post",
+          "label": "PostJv"
+        },
+        {
+          "id": "pay.finance.stop",
+          "label": "StopProcess"
+        },
+        {
+          "id": "pay.finance.clear",
+          "label": "ClearStatus"
+        },
+        {
+          "id": "pay.finance.run-status",
+          "label": "EngineRunProgress"
+        },
+        {
+          "id": "pay.finance.show-details",
+          "label": "ShowDetails"
+        }
+      ]
     }
   ]
 }

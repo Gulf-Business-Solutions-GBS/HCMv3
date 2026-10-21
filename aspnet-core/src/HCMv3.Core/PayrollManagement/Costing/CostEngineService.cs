@@ -53,7 +53,12 @@ public class CostEngineService : HCMv3DomainServiceBase, ICostEngineService
         _payrollAreaResolver = payrollAreaResolver;
     }
 
-    public async Task<CostingRunResult> RunAsync(CostingRunInput input)
+    public Task<CostingRunResult> RunAsync(CostingRunInput input)
+    {
+        return RunAsync(input, null);
+    }
+
+    public async Task<CostingRunResult> RunAsync(CostingRunInput input, ICostingRunObserver observer)
     {
         var result = new CostingRunResult();
 
@@ -91,8 +96,11 @@ public class CostEngineService : HCMv3DomainServiceBase, ICostEngineService
 
         foreach (var employeeId in employeeIds)
         {
-            // Legacy lines 468-473: a ProjectLog row with StopFlag aborts the whole run mid-loop.
-            if (_projectLogRepository.GetAll().Any(l => l.StopFlag))
+            // Legacy lines 468-473: a ProjectLog row with StopFlag aborts the whole run mid-loop. The
+            // observer's own stop request is asked as well, so a Stop pressed before the first ProjectLog row
+            // exists (legacy's button then had nothing to flag and did nothing) still stops the run.
+            if (_projectLogRepository.GetAll().Any(l => l.StopFlag)
+                || (observer != null && await observer.IsStopRequestedAsync()))
             {
                 result.Aborted = true;
                 break;
@@ -100,18 +108,19 @@ public class CostEngineService : HCMv3DomainServiceBase, ICostEngineService
 
             var employeeCode = employeeCodes.TryGetValue(employeeId, out var code) ? code : null;
 
+            CostingRunLogEntry entry;
             try
             {
                 await ProcessEmployeeAsync(employeeId, payForPeriod, input.PayrollRunType, wageTypes);
 
                 result.SuccessCount++;
-                result.Entries.Add(new CostingRunLogEntry
+                entry = new CostingRunLogEntry
                 {
                     EmployeeId = employeeId,
                     EmployeeCode = employeeCode,
                     Status = 0,
                     Message = SuccessMessage
-                });
+                };
             }
             catch (Exception ex)
             {
@@ -119,7 +128,7 @@ public class CostEngineService : HCMv3DomainServiceBase, ICostEngineService
                 // aborts the run. Message is truncated to 1000 chars (legacy line 639).
                 result.FailedCount++;
                 var message = ex.Message ?? "";
-                result.Entries.Add(new CostingRunLogEntry
+                entry = new CostingRunLogEntry
                 {
                     EmployeeId = employeeId,
                     EmployeeCode = employeeCode,
@@ -127,7 +136,17 @@ public class CostEngineService : HCMv3DomainServiceBase, ICostEngineService
                     Message = message.Length > MaxLogMessageLength
                         ? message.Substring(0, MaxLogMessageLength)
                         : message
-                });
+                };
+            }
+
+            result.Entries.Add(entry);
+
+            // Legacy committed each employee and its ProjectLog row before moving on (lines 614-628, and the
+            // finally at 656-661 that commits a FAILED employee's partial changes too). The observer is where
+            // that commit and row now happen.
+            if (observer != null)
+            {
+                await observer.OnEmployeeCompletedAsync(entry, result.TotalEmployees);
             }
         }
 
