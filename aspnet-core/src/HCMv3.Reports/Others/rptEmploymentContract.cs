@@ -31,8 +31,8 @@ namespace HCMv3.Reports.Others
     /// BeforePrint handler and no XPO query, so nothing had to move into the data source beyond the
     /// schema rewrites. Everything on the page is either static text or an expression binding.
     ///
-    /// KNOWN GAP: <c>Companylogo</c> is projected as NULL -- AbpOrganizationUnits has no Logo column
-    /// (OthersHrFormsSql rewrite note R2). Any picture box bound to it renders empty.
+    /// COMPANY LOGO: <c>Companylogo</c> is a NULL placeholder; the SQL returns the employee unit as
+    /// <c>CompanylogoOrgUnitId</c> and the company logo is loaded from the file store by HcmReportBase (CompanyLogoLoader / ICompanyLogoResolver).
     ///
     /// MULTI-TENANCY: both queries carry <c>@TenantId</c>. Call
     /// <see cref="HcmReportBase.ApplyTenant"/> before <c>CreateDocument()</c>.

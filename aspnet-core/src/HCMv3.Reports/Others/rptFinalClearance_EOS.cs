@@ -21,8 +21,8 @@ namespace HCMv3.Reports.Others
     /// | <c>rptFinalClearance_EOS(object[] args)</c> ctor              | dropped. Its body was a commented-out cast of <c>args[0]</c> to <c>HCM10.Module.BusinessObjects.Workflow.LeaveRequest</c> (a type that does not exist in HCMv3) followed by the same <c>PrmFormDate</c> assignment as the default ctor. The typed overload below replaces it. |
     ///
     /// KNOWN LEGACY DEFECTS CARRIED OVER (see the porting notes):
-    ///   * <c>xrPictureBox1</c> binds <c>[Companylogo]</c>, which HCMv3 can only supply as NULL --
-    ///     AbpOrganizationUnits has no Logo column. The box renders empty.
+    ///   * <c>xrPictureBox1</c> binds <c>[Companylogo]</c>; the SQL returns the employee unit as
+    ///     <c>CompanylogoOrgUnitId</c> and the company logo is loaded from the file store by HcmReportBase (CompanyLogoLoader / ICompanyLogoResolver).
     ///   * The <c>CalcTotalDays</c> calculated field is dead: its DataMember is "LeaveFormQuery"
     ///     (a query this report does not have) and its expression reads <c>[Parameters].[PrmStartDate]</c>
     ///     and <c>[Parameters].[PrmEndDate]</c> (parameters this report does not declare). Nothing

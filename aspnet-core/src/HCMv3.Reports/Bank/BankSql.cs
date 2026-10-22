@@ -54,9 +54,12 @@
 //   and fell back to the employee's own unit. It IS expressible via OrgUnitProfiles; that port is
 //   worth revisiting.
 //
-// *** FEATURE LOST: CompanyLogo ***
-//   Legacy sourced OrganizationUnit.logo. AbpOrganizationUnits has no Logo column and OrgUnitProfiles
-//   does not carry one either. Returned as NULL. Same conclusion the payslip port reached.
+// *** CompanyLogo ***
+//   Legacy sourced OrganizationUnit.logo (an image column) from the employee's Company_n unit. HCMv3 keeps
+//   the logo in the file store, so Companylogo stays a NULL placeholder and the query returns the
+//   employee's org unit as CompanylogoOrgUnitId; HcmReportBase hands it to ICompanyLogoResolver, which
+//   applies the legacy Company_1..7 rule. rptBankAndCashTransferBySponsor deliberately does NOT return
+//   it: legacy commented out B.Companylogo there, so that report never printed a logo.
 //
 // *** DROPPED UNUSED JOINS ***
 //   Every legacy query in this folder LEFT JOINs JobTitle, PayrollArea and EmployeeBasicPay and then
@@ -159,6 +162,7 @@ SELECT A.Year
      , A.PayrollRunType
      , A.CompanyEn
      , A.Companylogo
+     , A.CompanylogoOrgUnitId
      , OrgBank.Code   AS OrgBankCode
      , OrgBank.NameEn AS OrgBankNameEn
      , A.Code
@@ -184,7 +188,8 @@ FROM (
          , empBank.IBAN                             AS EmpBankIBAN
          , empBank.BankBranch                       AS EmpBankBranch
          , company.DisplayName                      AS CompanyEn      -- see 'Company org level' note
-         , CAST(NULL AS VARBINARY(MAX))             AS Companylogo    -- see 'FEATURE LOST' note
+         , CAST(NULL AS VARBINARY(MAX))             AS Companylogo    -- see 'CompanyLogo' note
+         , orgAsg.OrganizationUnitId                AS CompanylogoOrgUnitId
          , ISNULL(srdNet.Amount, 0)                 AS NetPay
     FROM Employees emp
 
@@ -278,6 +283,7 @@ SELECT A.Year
      , A.PayrollRunType
      , A.CompanyEn
      , A.Companylogo
+     , A.CompanylogoOrgUnitId
      , OrgBank.Code   AS OrgBankCode
      , OrgBank.NameEn AS OrgBankNameEn
      , A.Code
@@ -306,6 +312,7 @@ FROM (
          , empBank.BankBranch                       AS EmpBankBranch
          , company.DisplayName                      AS CompanyEn
          , CAST(NULL AS VARBINARY(MAX))             AS Companylogo
+         , orgAsg.OrganizationUnitId                AS CompanylogoOrgUnitId
          , sponsor.NameEn                           AS SponsorEn
          , sponsor.NameAr                           AS SponsorAr
          , ISNULL(srdNet.Amount, 0)                 AS NetPay
@@ -399,6 +406,8 @@ SELECT B.Year
      , B.PaymentBreakup
      , B.CompanyEn
      , B.Companylogo
+     -- Any employee of the group gives the same company logo; MIN keeps the grouping (and the totals) as is.
+     , MIN(B.CompanylogoOrgUnitId) AS CompanylogoOrgUnitId
      , B.BreakupDetail
      , B.OrgBankCode
      , B.OrgBankNameEn
@@ -424,6 +433,7 @@ FROM (
          , A.EmpBankNameEn
          , A.CompanyEn
          , A.Companylogo
+         , A.CompanylogoOrgUnitId
          , A.DivisionEn
          , OrgBank.Code   AS OrgBankCode
          , OrgBank.NameEn AS OrgBankNameEn
@@ -443,6 +453,7 @@ FROM (
              , bank.NameEn                          AS EmpBankNameEn
              , company.DisplayName                  AS CompanyEn
              , CAST(NULL AS VARBINARY(MAX))         AS Companylogo
+             , orgAsg.OrganizationUnitId            AS CompanylogoOrgUnitId
              , division.DisplayName                 AS DivisionEn
              , ISNULL(srdNet.Amount, 0)             AS NetPay
         FROM Employees emp

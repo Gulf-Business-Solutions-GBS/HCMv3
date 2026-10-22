@@ -21,9 +21,10 @@ namespace HCMv3.Reports.EmployeeInfo
         ///      report would still render. Rewritten as WageTypes.Code = '1000', exactly as
         ///      PayslipSql documents.
         ///   2. Seven Company OrgLevel joins -> one ancestor walk (EmployeeInfoSqlFragments).
-        ///   3. <c>Company_n.logo</c> has no HCMv3 counterpart -- neither AbpOrganizationUnits nor
-        ///      OrgUnitProfiles carries a logo. <c>Companylogo</c> returns NULL.
-        ///      *** FEATURE LOST, same finding as the payslip port. ***
+        ///   3. <c>Company_n.logo</c> was an image column; HCMv3 keeps logos in the file store.
+        ///      <c>Companylogo</c> stays a NULL placeholder and the employee's org unit is returned as
+        ///      <c>CompanylogoOrgUnitId</c>, which HcmReportBase hands to ICompanyLogoResolver (legacy
+        ///      Company_1..7 rule).
         ///   4. <c>Employee.PassportNum</c> does not exist on HCMv3 Employees. The passport number
         ///      now comes from EmployeeDocuments (document type PASSPORT, latest expiry), which is
         ///      where HCMv3 models it.
@@ -70,6 +71,7 @@ FROM (
         , currency.NameEn               AS CurrencyName
         , COALESCE(company.NameEn, ownOrgUnit.DisplayName)  AS CompanyEn
         , CAST(NULL AS VARBINARY(MAX))  AS Companylogo      -- see rewrite note 3
+        , orgAssign.OrganizationUnitId  AS CompanylogoOrgUnitId
 
     FROM Employees emp
 

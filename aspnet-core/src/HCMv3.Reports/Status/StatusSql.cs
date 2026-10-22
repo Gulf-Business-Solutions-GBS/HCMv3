@@ -6,7 +6,9 @@
 // SHARED REWRITES: table pluralisation, OID -> Id, <Entity> -> <Entity>Id, "AND TenantId = @TenantId
 // AND IsDeleted = 0" on every join; the OrgLevel1..7 'Company' joins collapsed into one ancestor walk
 // over AbpOrganizationUnits with the unit type read from OrgUnitProfiles (full note in BankSql.cs);
-// CompanyLogo returned as NULL (FEATURE LOST -- no logo column exists in HCMv3); the Arabic company
+// CompanyLogo kept as a NULL placeholder: HCMv3 keeps logos in the file store, and HireQuery (the only
+// query whose layout prints the logo; the departure subreport has no logo box, in legacy too) returns
+// the employee unit as CompanylogoOrgUnitId, resolved through ICompanyLogoResolver; the Arabic company
 // name taken from OrgUnitProfiles.NameAr because AbpOrganizationUnits carries only DisplayName.
 //
 // PERIOD ARITHMETIC: legacy wrote the last day of the month as
@@ -55,7 +57,8 @@ SELECT ROW_NUMBER() OVER (ORDER BY emp.Code) AS SrNo
      , country.NameAr                   AS CountryAr
      , company.DisplayName              AS CompanyEn
      , companyProfile.NameAr            AS CompanyAr
-     , CAST(NULL AS VARBINARY(MAX))     AS Companylogo     -- FEATURE LOST, see header
+     , CAST(NULL AS VARBINARY(MAX))     AS Companylogo     -- placeholder, see header
+     , orgAsg.OrganizationUnitId        AS CompanylogoOrgUnitId
 FROM Employees emp
 
 LEFT JOIN Nationalities nationality

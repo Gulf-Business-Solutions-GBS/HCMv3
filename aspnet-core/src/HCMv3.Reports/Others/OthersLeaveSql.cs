@@ -43,11 +43,12 @@ namespace HCMv3.Reports.Others
         //      whose type is Company" is not expressible. The employee's own unit is used instead.
         //      *** SEMANTIC DEVIATION -- the same one PayslipSql.PayslipOrgV2Query and
         //      SalaryCertificateSql carry; needs the same product decision. ***
-        //   2. Companylogo. AbpOrganizationUnits has no Logo column and HCMv3 has no Company entity
-        //      carrying one, so every Companylogo column is projected as a typed NULL. The layouts
-        //      keep their XRPictureBox and its ExpressionBinding("BeforePrint","Image",
-        //      "[Companylogo]"); it renders empty. *** FEATURE LOST -- same gap PayslipSql records
-        //      for CompanyLogo. ***
+        //   2. Companylogo. Legacy read OrganizationUnit.logo, an image column; HCMv3 keeps logos in
+        //      the file store. Companylogo stays a typed NULL placeholder and each query returns the
+        //      employee's org unit as CompanylogoOrgUnitId. HcmReportBase rewires the layouts'
+        //      "[Companylogo]" picture box to ICompanyLogoResolver, which applies the legacy
+        //      Company_1..7 rule (top-most 'Company' unit on the employee's path) -- so the logo
+        //      follows legacy even though CompanyEn here still uses the employee's own unit (note 1).
         //      CompanyAr is likewise projected from the same DisplayName as CompanyEn:
         //      AbpOrganizationUnits has one name column, not a NameEn/NameAr pair.
         //   3. EMPLOYEE FILTER. Three of these reports pulled EVERY employee in the database and
@@ -99,7 +100,8 @@ SELECT
     , A.Comments
     , orgUnit.DisplayName                AS CompanyEn      -- see rewrite note 1
     , orgUnit.DisplayName                AS CompanyAr      -- see rewrite note 2
-    , CAST(NULL AS VARBINARY(MAX))       AS Companylogo    -- FEATURE LOST, see rewrite note 2
+    , CAST(NULL AS VARBINARY(MAX))       AS Companylogo    -- placeholder, see rewrite note 2
+    , orgAssignment.OrganizationUnitId   AS CompanylogoOrgUnitId
 FROM (
 
     -- ---------------------------------------------------------------- OPENING BALANCE
@@ -454,7 +456,8 @@ SELECT DISTINCT
     , emp.ProbationEndDate
     , emp.CivilID
     , orgUnit.DisplayName          AS CompanyEn       -- see rewrite note 1
-    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo     -- FEATURE LOST, see rewrite note 2
+    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo     -- placeholder, see rewrite note 2
+    , eoa.OrganizationUnitId       AS CompanylogoOrgUnitId
 FROM Employees emp
 
 LEFT JOIN EmployeeOrgAssignments eoa
@@ -492,6 +495,7 @@ SELECT
     , A.CompanyEn
     , A.CompanyAr
     , A.Companylogo
+    , A.CompanylogoOrgUnitId
     , A.Employee
     , A.Code
     , A.Year
@@ -512,7 +516,8 @@ FROM (
           payrollArea.Name             AS PayrollArea
         , orgUnit.DisplayName          AS CompanyEn      -- see rewrite note 1
         , orgUnit.DisplayName          AS CompanyAr      -- see rewrite note 2
-        , CAST(NULL AS VARBINARY(MAX)) AS Companylogo    -- FEATURE LOST, see rewrite note 2
+        , CAST(NULL AS VARBINARY(MAX)) AS Companylogo    -- placeholder, see rewrite note 2
+        , eoa.OrganizationUnitId       AS CompanylogoOrgUnitId
         , emp.FullNameEn               AS Employee
         , emp.Code
         , YEAR(salaryRegister.ForPeriod)  AS Year
@@ -617,6 +622,7 @@ SELECT
     , A.CompanyEn
     , A.CompanyAr
     , A.Companylogo
+    , A.CompanylogoOrgUnitId
     , A.Employee
     , A.Code
     , A.Year
@@ -632,7 +638,8 @@ FROM (
           payrollArea.Name             AS PayrollArea
         , orgUnit.DisplayName          AS CompanyEn      -- see rewrite note 1
         , orgUnit.DisplayName          AS CompanyAr      -- see rewrite note 2
-        , CAST(NULL AS VARBINARY(MAX)) AS Companylogo    -- FEATURE LOST, see rewrite note 2
+        , CAST(NULL AS VARBINARY(MAX)) AS Companylogo    -- placeholder, see rewrite note 2
+        , eoa.OrganizationUnitId       AS CompanylogoOrgUnitId
         , emp.FullNameEn               AS Employee
         , emp.Code
         , YEAR(salaryRegister.ForPeriod)  AS Year

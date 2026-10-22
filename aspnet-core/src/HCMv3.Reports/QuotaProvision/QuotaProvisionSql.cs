@@ -47,7 +47,9 @@
 //   * *** SEMANTIC DEVIATION: OrgLevel1..7 'Company' / 'Department'. *** Collapsed into an ancestor
 //     walk over AbpOrganizationUnits using OrgUnitProfiles.OrganizationUnitTypeId. Full note in
 //     BankSql.cs. Arabic org names come from OrgUnitProfiles.NameAr.
-//   * *** FEATURE LOST: Companylogo. *** No logo column in HCMv3. Returned as NULL.
+//   * Companylogo: legacy read OrganizationUnit.logo, an image column; HCMv3 keeps logos in the file
+//     store. Companylogo stays a NULL placeholder; CompanyLogoOrgUnitId (named after the layouts'
+//     [CompanyLogo] binding) carries the employee unit, resolved through ICompanyLogoResolver.
 //   * WageTypes.Code / AbsenceTypes.Code are nvarchar -- every code literal stays QUOTED.
 //     Every code used here ('4004','4001','4029','4025','4010','3004','4021','4022','4030','4000'
 //     and their 5xxx/6xxx arrear twins, AbsenceTypes '1','2','15') is a BUSINESS CODE in the legacy
@@ -104,7 +106,8 @@ SELECT emp.Code
      , empGroup.NameEn                                   AS EmployeeGroup
      , empSubGroup.NameEn                                AS EmployeeSubGroup
      , basicPay.Amount                                   AS BasicSalary
-     , CAST(NULL AS VARBINARY(MAX))                      AS Companylogo    -- FEATURE LOST
+     , CAST(NULL AS VARBINARY(MAX))                      AS Companylogo    -- placeholder, see header
+     , orgAsg.OrganizationUnitId                         AS CompanyLogoOrgUnitId   -- see header, Companylogo
      , company.DisplayName                               AS CompanyEn
      , companyProfile.NameAr                             AS CompanyAr
      , department.DisplayName                            AS DepartmentEn
@@ -838,6 +841,7 @@ SELECT C.OID
      , C.CompanyEn
      , C.CompanyAr
      , C.Companylogo
+     , C.CompanyLogoOrgUnitId
      -- Period of service as ""y years m months d days"", borrow-corrected on the day-of-month
      , CAST((DATEDIFF(MONTH, C.JoiningDate, C.LastDayInService)
              - CASE WHEN DAY(C.LastDayInService) < DAY(C.JoiningDate) THEN 1 ELSE 0 END) / 12 AS VARCHAR)
@@ -935,6 +939,7 @@ FROM (
          , B.CompanyEn
          , B.CompanyAr
          , B.Companylogo
+         , B.CompanyLogoOrgUnitId
          , B.IsReset
          , B.StartDate
          , B.EndDate
@@ -965,6 +970,7 @@ FROM (
              , A.CompanyEn
              , A.CompanyAr
              , A.Companylogo
+             , A.CompanyLogoOrgUnitId
              , A.Code
              , A.IsReset
              , A.StartDate
@@ -994,7 +1000,8 @@ FROM (
                  , emp.JoiningDate
                  , company.DisplayName              AS CompanyEn
                  , companyProfile.NameAr            AS CompanyAr
-                 , CAST(NULL AS VARBINARY(MAX))     AS Companylogo    -- FEATURE LOST
+                 , CAST(NULL AS VARBINARY(MAX))     AS Companylogo    -- placeholder, see header
+                 , orgAsg.OrganizationUnitId        AS CompanyLogoOrgUnitId
                  , startTbl.IsReset
                  , startTbl.StartDate
                  , startTbl.EndDate

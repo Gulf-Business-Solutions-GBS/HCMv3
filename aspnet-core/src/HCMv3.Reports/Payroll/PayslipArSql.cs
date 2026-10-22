@@ -278,14 +278,10 @@ ORDER BY emp.Code;";
         /// <summary>
         /// Feeds the company-logo picture box (<c>[PayslipLogoQuery].[logo]</c>).
         ///
-        /// FEATURE LOST: the legacy query read <c>OrganizationUnit.logo</c> for the unit whose
-        /// OrganizationUnitType was 'Company'. AbpOrganizationUnits has no Logo column and HCMv3 has
-        /// no Company entity carrying one, so NULL is returned and the picture box prints empty --
-        /// the same gap PayslipSql records for the English payslip's CompanyLogo column.
-        ///
-        /// The query still selects FROM the org-unit table, tenant-filtered, rather than being a
-        /// bare "SELECT NULL": that keeps the shape (and the @TenantId predicate) in place for
-        /// whoever restores the logo column.
+        /// The legacy query read <c>OrganizationUnit.logo</c> for the unit whose OrganizationUnitType
+        /// was 'Company' (first row). HCMv3 keeps logos in the file store, so this query only keeps the
+        /// layout's shape: HcmReportBase rewires the picture box to ICompanyLogoResolver with
+        /// CompanyLogoSource.FirstCompanyUnit, and this NULL column is no longer read.
         /// </summary>
         public const string PayslipLogoQuery = @"-- rptPayslipAr :: PayslipLogoQuery
 SELECT TOP 1 CAST(NULL AS VARBINARY(MAX)) AS logo   -- FEATURE LOST: no Logo column in AbpOrganizationUnits

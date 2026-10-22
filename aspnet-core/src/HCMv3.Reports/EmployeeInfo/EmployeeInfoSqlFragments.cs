@@ -63,9 +63,10 @@ namespace HCMv3.Reports.EmployeeInfo
     /// <c>DisplayName</c>, so English comes from <c>DisplayName</c> and Arabic from
     /// <c>OrgUnitProfiles.NameAr</c>.
     ///
-    /// LOGO: legacy <c>OrganizationUnit.logo</c> has no HCMv3 counterpart -- neither
-    /// AbpOrganizationUnits nor OrgUnitProfiles carries one. Queries that projected it return
-    /// NULL. *** FEATURE LOST, same finding as the payslip port. ***
+    /// LOGO: legacy <c>OrganizationUnit.logo</c> was an image column; HCMv3 keeps it in the file store
+    /// (<c>OrgUnitProfiles.LogoPath</c>). Queries keep the old logo column as a NULL placeholder and
+    /// return the employee's org unit as <c>{logo column}OrgUnitId</c>; HcmReportBase resolves the
+    /// company logo from it through ICompanyLogoResolver.
     ///
     /// KNOWN DATA GAP ON THE CURRENT DATABASE: tenant 1 holds exactly ONE organisation unit
     /// ("Head Office", type "Test Type Level0"), and the org assignment of the verification

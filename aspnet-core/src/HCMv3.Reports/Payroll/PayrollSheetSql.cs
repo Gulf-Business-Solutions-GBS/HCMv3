@@ -291,8 +291,14 @@ namespace HCMv3.Reports.Payroll
         // AbpOrganizationUnits has only DisplayName (no NameEn/NameAr), so the Ar columns repeat the
         // English value -- there is no Arabic org-unit name anywhere in HCMv3.
         //
-        // CompanyLogo: AbpOrganizationUnits has no Logo column and neither does OrgUnitProfiles, so
-        // it is NULL. *** FEATURE LOST *** (same gap Bank/BankSql.cs records.)
+        // CompanyLogo: legacy read OrganizationUnit.Logo, an image column; HCMv3 keeps logos in the
+        // file store. Companylogo stays a NULL placeholder and DimensionColumns also returns the
+        // employee's unit (eoa.OrganizationUnitId) as CompanylogoOrgUnitId; HcmReportBase resolves the
+        // logo from it through ICompanyLogoResolver (legacy Company_1..7 rule). rptPayrollSheet's own
+        // header logo is NOT this column -- it binds the separate CompanyLogoQuery, see there.
+        // rptPayrollSheetBySponsor: legacy also grouped by the logo IMAGE, so employees of companies
+        // with different logos fell into separate rows. That is not reproduced (the grouping and the
+        // totals stay as already ported); a row spanning companies shows MIN(unit)'s company logo.
         //
         // The period anchor is the reporting month end, matching the legacy
         // ""EOMONTH(STR(@PrmYear)+'-'+STR(@PrmMonth)+'-01')"" expression, written as the equivalent
@@ -388,7 +394,8 @@ LEFT JOIN EmployeeBasicPays empBasicPay
         , department.DisplayName                            AS DepartmentAr
         , division.DisplayName                              AS DivisionEn
         , section.DisplayName                               AS SectionsEn
-        , CAST(NULL AS VARBINARY(MAX))                      AS Companylogo    -- FEATURE LOST
+        , CAST(NULL AS VARBINARY(MAX))                      AS Companylogo    -- placeholder, see EmployeeDimensions
+        , eoa.OrganizationUnitId                            AS CompanylogoOrgUnitId   -- see EmployeeDimensions
         , CASE WHEN empBank.PaymentType = 0 OR empBank.PaymentType IS NULL THEN 'BANK' ELSE 'CASH' END AS PaymentType
         , CASE WHEN ISNULL(empBasicPay.PayInterval, 0) = 0 THEN 'MONTHLY' ELSE 'DAILY' END            AS PayInterval";
 
@@ -731,6 +738,7 @@ WHERE ((ISNULL(@PrmPayrollArea, '') <> '' AND B.PayrollArea  = @PrmPayrollArea) 
     , B.CompanyEn
     , B.CompanyAr
     , B.Companylogo
+    , B.CompanylogoOrgUnitId
     , B.DepartmentEn
     , B.DepartmentAr
     , B.Number";
@@ -817,6 +825,8 @@ SELECT
     , B.DepartmentEn
     , B.DepartmentAr
     , B.Companylogo
+    -- one logo per row without changing the grouping (and so the totals): any employee of the row
+    , MIN(B.CompanylogoOrgUnitId)  AS CompanylogoOrgUnitId
     , COUNT(*)                     AS Number
     , SUM(ISNULL(B.NetPay, 0))     AS Amount
 FROM (
@@ -972,9 +982,12 @@ WHERE bg.TenantId = @TenantId
 ORDER BY bg.Code;";
 
         /// <summary>
-        /// rptPayrollSheet's standalone ""Query"" data source, bound to the header picture box as
-        /// [Query].[logo]. AbpOrganizationUnits has no Logo column (FEATURE LOST), so the column is
-        /// present and always NULL -- the picture box then simply prints nothing.
+        /// rptPayrollSheet's standalone ""Query"" data source, bound in the layout to the header picture
+        /// box as [Query].[logo]. Kept for the layout's shape only: HcmReportBase rewires that box to
+        /// ICompanyLogoResolver with CompanyLogoSource.FirstLevel1Unit (legacy: ""SELECT logo FROM
+        /// OrganizationUnit ... WHERE OrganizationUnitType.Code LIKE '%OrgLevel1%'"" -- note the legacy
+        /// designer filtered on the level-1 TYPE CODE, not on the 'Company' name used below), loading
+        /// the logo from the file store. This query's NULL column is no longer read.
         /// </summary>
         public const string CompanyLogoQuery = @"-- rptPayrollSheet :: Query (header logo)
 -- FEATURE LOST: legacy read OrganizationUnit.Logo for the unit of type 'Company'. The unit TYPE is

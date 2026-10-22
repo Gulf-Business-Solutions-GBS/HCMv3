@@ -15,6 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\HCMv3.Test.Base\HCMv3.Test.Base.csproj" />
     <ProjectReference Include="..\..\src\HCMv3.Application.Client\HCMv3.Application.Client.csproj" />
+    <!-- Company-logo wiring tests instantiate the printed reports (Reports/CompanyLogoReports_Tests.cs). -->
+    <ProjectReference Include="..\..\src\HCMv3.Reports\HCMv3.Reports.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />

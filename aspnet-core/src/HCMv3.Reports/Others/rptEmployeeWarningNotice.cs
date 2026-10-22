@@ -25,7 +25,7 @@ namespace HCMv3.Reports.Others
     /// SEMANTIC DEVIATION (see OthersHrFormsSql rewrite note R1): the legacy query resolved
     /// <c>CompanyEn</c> from whichever of OrgLevel1..7 was typed 'Company' and <c>DepartmentEn</c>
     /// from whichever was typed 'Department'. HCMv3 org units carry no type and the employee has one
-    /// unit, so both labels now print the SAME unit name. <c>Companylogo</c> is NULL (rewrite note
+    /// unit, so both labels now print the SAME unit name. The company logo comes from <c>CompanylogoOrgUnitId</c> (rewrite note
     /// R2). Flagged in the porting notes.
     ///
     /// MULTI-TENANCY: the query carries <c>@TenantId</c>. Call

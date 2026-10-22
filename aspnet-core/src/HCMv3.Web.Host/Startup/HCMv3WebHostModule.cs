@@ -95,6 +95,7 @@ public class HCMv3WebHostModule : AbpModule
             using var imageStore = IocManager.ResolveAsDisposable<IEntityImageStore>();
             return Abp.Threading.AsyncHelper.RunSync(() => imageStore.Object.ReadOrNullAsync(tenantId, path));
         };
+        HCMv3.Web.Reporting.HcmReportCompanyLogoHook.Install(IocManager);
 
         using (var scope = IocManager.CreateScope())
         {

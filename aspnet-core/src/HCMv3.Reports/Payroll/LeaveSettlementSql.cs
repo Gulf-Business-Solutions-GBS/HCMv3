@@ -44,9 +44,9 @@ ORDER BY Name;";
         //      joins). HCMv3 has a SINGLE OrganizationUnitId into AbpOrganizationUnits, an ABP
         //      materialised-path tree with no unit-type concept, so "which ancestor is the Department"
         //      is not expressible; the employee's own unit is used.  *** SEMANTIC DEVIATION ***
-        //   2. CompanyLogo. Legacy sourced OrganizationUnit.logo. AbpOrganizationUnits has no Logo
-        //      column and HCMv3 has no Company entity carrying one, so it is returned as NULL.
-        //      *** FEATURE LOST *** (the xrPictureBox binding stays so the layout is unchanged.)
+        //   2. CompanyLogo. Legacy sourced OrganizationUnit.logo, an image column; HCMv3 keeps logos
+        //      in the file store. CompanyLogo stays a NULL placeholder and the employee unit is returned
+        //      as CompanyLogoOrgUnitId; HcmReportBase resolves it through ICompanyLogoResolver.
         //   3. PayrollArea join. Legacy joined on a STRING (PayrollArea.Code = EOA.PayrollArea);
         //      HCMv3 models it as EmployeeOrgAssignments.PayrollAreaId -> PayrollAreas.Id. The
         //      @PrmPayrollArea parameter still filters on PayrollAreas.Name for operator parity.
@@ -79,6 +79,7 @@ SELECT
     , A.PayrollRunType
     , A.Currency
     , A.CompanyLogo
+    , A.CompanyLogoOrgUnitId
 
     -- Paid leave days, plus any fractional adjustment landing in the same month as the leave end.
     , A.PaidLeaveDays + ISNULL((
@@ -209,6 +210,7 @@ FROM (
         , sr.PayrollRunType
         , basicPayCurrency.CurrencyShortFormEn  AS Currency
         , CAST(NULL AS VARBINARY(MAX))          AS CompanyLogo       -- see rewrite note 2
+        , eoa.OrganizationUnitId                AS CompanyLogoOrgUnitId
         , ISNULL(PaidLeave.TotalLeaveDays,   0) + ISNULL(AdjustedPaidLeave.QuotaAdjusted,   0) AS PaidLeaveDays
         , ISNULL(UnpaidLeave.TotalLeaveDays, 0) + ISNULL(AdjustedUnpaidLeave.QuotaAdjusted, 0) AS UnpaidLeaveDays
         , ISNULL(srdPHday.Number,    0)         AS PHday
@@ -366,6 +368,7 @@ SELECT
     , A.PayrollRunType
     , A.Currency
     , A.CompanyLogo
+    , A.CompanyLogoOrgUnitId
 
     , A.PaidLeaveDays + ISNULL((
           SELECT SUM(eaa.QuotaAdjusted)
@@ -493,6 +496,7 @@ FROM (
         , sr.PayrollRunType
         , basicPayCurrency.CurrencyShortFormAr  AS Currency
         , CAST(NULL AS VARBINARY(MAX))          AS CompanyLogo       -- see LeaveSettlementMasterEn note 2
+        , eoa.OrganizationUnitId                AS CompanyLogoOrgUnitId
         , ISNULL(PaidLeave.TotalLeaveDays,   0) + ISNULL(AdjustedPaidLeave.QuotaAdjusted,   0) AS PaidLeaveDays
         , ISNULL(UnpaidLeave.TotalLeaveDays, 0) + ISNULL(AdjustedUnpaidLeave.QuotaAdjusted, 0) AS UnpaidLeaveDays
         , ISNULL(srdPHday.Number,    0)         AS PHday
@@ -816,7 +820,8 @@ WHERE sr.TenantId = @TenantId AND sr.IsDeleted = 0
         //      OrganizationUnitType (21 aliased joins). HCMv3 has one OrganizationUnitId into the ABP
         //      unit tree with no type concept, so Department gets the employee's own unit and
         //      Division / Section are returned as NULL.  *** SEMANTIC DEVIATION ***
-        //   2. CompanyLogo -> NULL (AbpOrganizationUnits has no Logo column).  *** FEATURE LOST ***
+        //   2. CompanyLogo -> NULL placeholder; the logo comes from CompanylogoOrgUnitId (named after the
+        //      layout binding [Companylogo]) through ICompanyLogoResolver.
         //   3. EmployeeBasicPayDetail.WageType IN (SELECT OID ... Code = '1000') was already a code
         //      look-up here and carries over as Code = '1000'.
         //   4. EmployeeAbsAdjustment.AbsenceType = 1 in the encashment-date sub-select is a RAW
@@ -911,6 +916,7 @@ FROM (
         , A.PayrollArea
         , A.Currency
         , A.CompanyLogo
+        , MIN(A.CompanylogoOrgUnitId) AS CompanylogoOrgUnitId   -- one employee; MIN leaves the grouping alone
         , A.BankEn
         , A.AccountNum
         , A.IBAN
@@ -945,6 +951,7 @@ FROM (
             , payrollArea.Name                  AS PayrollArea
             , cur.Code                          AS Currency
             , CAST(NULL AS VARBINARY(MAX))      AS CompanyLogo      -- see rewrite note 2
+            , eoa.OrganizationUnitId            AS CompanylogoOrgUnitId
             , bank.NameEn                       AS BankEn
             , empBank.AccountNum
             , empBank.IBAN

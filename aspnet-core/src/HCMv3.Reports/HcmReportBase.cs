@@ -115,8 +115,7 @@ namespace HCMv3.Reports
             {
                 byte[] bytes = null;
 
-                // A report whose SQL does not return the path column yet (the logo reports, until each query is
-                // wired) must print without a picture, not fail.
+                // A report whose SQL does not return the path column must print without a picture, not fail.
                 object pathValue;
                 try
                 {
@@ -141,10 +140,18 @@ namespace HCMv3.Reports
         }
 
         /// <summary>
-        /// Suffix of the column that carries a logo's file-store path: a picture box bound to
-        /// <c>[Companylogo]</c> reads its picture from the path in column <c>CompanylogoPath</c>.
+        /// Loads a company logo from the tenant file store: tenant id, which logo, and (for
+        /// <see cref="CompanyLogoSource.EmployeeCompany"/>) the employee's org unit id in; image bytes out, null
+        /// when there is none. Set once at start-up by the web host, which maps it to
+        /// <c>ICompanyLogoResolver</c>; this project cannot reach the database or the file store itself.
         /// </summary>
-        public const string StoredLogoPathSuffix = "Path";
+        public static Func<int, CompanyLogoSource, long?, byte[]> CompanyLogoLoader { get; set; }
+
+        /// <summary>
+        /// Suffix of the column that carries the employee's org unit id for a logo: a picture box bound to
+        /// <c>[Companylogo]</c> shows the company logo of the unit in column <c>CompanylogoOrgUnitId</c>.
+        /// </summary>
+        public const string LogoOrgUnitIdSuffix = "OrgUnitId";
 
         /// <summary>
         /// Matches the legacy logo bindings: <c>[Companylogo]</c>, <c>[CompanyLogo]</c>, <c>[logo]</c>, and the
@@ -155,50 +162,173 @@ namespace HCMv3.Reports
             System.Text.RegularExpressions.RegexOptions.IgnoreCase |
             System.Text.RegularExpressions.RegexOptions.CultureInvariant);
 
+        private readonly List<CompanyLogoBinding> _companyLogoBindings = new();
+
+        private readonly Dictionary<string, byte[]> _companyLogoCache = new(StringComparer.Ordinal);
+
+        /// <summary>The company-logo picture boxes this report rewired, for checks and diagnostics.</summary>
+        public IReadOnlyList<CompanyLogoBinding> CompanyLogoBindings => _companyLogoBindings;
+
+        /// <summary>
+        /// Where a picture box bound to ANOTHER query of the report (<c>[Query].[logo]</c>,
+        /// <c>QueryLogo.logo</c>) takes its one report-wide logo from. Legacy rptPayslipAr and the two
+        /// subordinate payslips used the first 'Company' unit; rptPayrollSheet overrides this.
+        /// </summary>
+        protected virtual CompanyLogoSource StandaloneLogoSource => CompanyLogoSource.FirstCompanyUnit;
+
         /// <summary>
         /// Legacy printed the company logo from <c>OrganizationUnit.logo</c>, an image column. HCMv3 keeps
-        /// the logo on disk (<c>OrgUnitProfile.LogoPath</c>), so the report SQL can only return WHERE the
-        /// logo is. This rewires every picture box whose image is bound to a legacy logo column (see
-        /// <see cref="LogoBindingPattern"/>) to load the file named in the sibling
-        /// <c>{column}</c>+<see cref="StoredLogoPathSuffix"/> column instead, through
-        /// <see cref="BindStoredImage"/>.
-        ///
-        /// Called from <see cref="EnsureHcmParameters"/>, so every report gets it with no edit of its own;
-        /// wiring one report's logo is then a SQL-only change: also return
-        /// <c>OrgUnitProfiles.LogoPath AS CompanylogoPath</c> next to the old column. Until a report's SQL
-        /// does that, its column value is null and the picture box stays empty -- exactly what it printed
-        /// before, because every logo column is currently projected as NULL.
-        ///
-        /// Picture boxes bound to ANOTHER query (<c>[PayslipLogoQuery].[logo]</c> when the report's
-        /// DataMember is a different query) are left alone: their path cannot be read from the report's
-        /// current row. Idempotent: a rewired box has no logo binding left to match.
+        /// the logo on disk (<c>OrgUnitProfile.LogoPath</c>) and never in the database, so this rewires every
+        /// picture box whose image is bound to a legacy logo column (see <see cref="LogoBindingPattern"/>) to
+        /// load it through <see cref="CompanyLogoLoader"/> instead:
+        /// <list type="bullet">
+        ///   <item>bound to the report's own query (<c>[Companylogo]</c>): the company of the employee on the
+        ///   current row, whose org unit id the SQL returns as <c>{column}</c>+<see cref="LogoOrgUnitIdSuffix"/>
+        ///   (e.g. <c>CompanylogoOrgUnitId</c>) -- <see cref="CompanyLogoSource.EmployeeCompany"/>;</item>
+        ///   <item>bound to another query (<c>[PayslipLogoQuery].[logo]</c>, or the old-style data binding
+        ///   <c>QueryLogo.logo</c>): one logo for the report, <see cref="StandaloneLogoSource"/>.</item>
+        /// </list>
+        /// Called from <see cref="EnsureHcmParameters"/>, so every report gets it with no edit of its own.
+        /// A missing column, unit, logo or loader leaves the box empty; it never fails the report.
+        /// Idempotent: a rewired box has no logo binding left to match.
         /// </summary>
         protected void BindStoredLogos()
         {
             foreach (var pictureBox in AllControls(this).OfType<XRPictureBox>().ToList())
             {
-                var binding = pictureBox.ExpressionBindings
+                var expressionBinding = pictureBox.ExpressionBindings
                     .Cast<ExpressionBinding>()
-                    .FirstOrDefault(b => string.Equals(b.PropertyName, "Image", StringComparison.Ordinal)
+                    .FirstOrDefault(b => IsImageProperty(b.PropertyName)
                                          && !string.IsNullOrWhiteSpace(b.Expression));
-                if (binding == null)
+                if (expressionBinding != null)
+                {
+                    var match = LogoBindingPattern.Match(expressionBinding.Expression.Trim());
+                    if (!match.Success)
+                    {
+                        continue;
+                    }
+
+                    var member = match.Groups["member"];
+                    if (member.Success && !string.Equals(member.Value, DataMember, StringComparison.OrdinalIgnoreCase))
+                    {
+                        BindCompanyLogo(pictureBox, StandaloneLogoSource, null);
+                    }
+                    else
+                    {
+                        BindCompanyLogo(pictureBox, CompanyLogoSource.EmployeeCompany,
+                            match.Groups["column"].Value + LogoOrgUnitIdSuffix);
+                    }
+
+                    continue;
+                }
+
+                // Old-style XRBinding("Image", null, "QueryLogo.logo") kept from legacy on the subordinate payslips.
+                var dataBinding = pictureBox.DataBindings
+                    .Cast<XRBinding>()
+                    .FirstOrDefault(b => IsImageProperty(b.PropertyName)
+                                         && b.DataMember != null
+                                         && b.DataMember.EndsWith("logo", StringComparison.OrdinalIgnoreCase));
+                if (dataBinding == null)
                 {
                     continue;
                 }
 
-                var match = LogoBindingPattern.Match(binding.Expression.Trim());
-                if (!match.Success)
+                var lastDot = dataBinding.DataMember.LastIndexOf('.');
+                var bindingMember = lastDot > 0 ? dataBinding.DataMember.Substring(0, lastDot) : null;
+                pictureBox.DataBindings.Remove(dataBinding);
+
+                if (bindingMember != null && !string.Equals(bindingMember, DataMember, StringComparison.OrdinalIgnoreCase))
                 {
-                    continue;
+                    BindCompanyLogo(pictureBox, StandaloneLogoSource, null);
+                }
+                else
+                {
+                    BindCompanyLogo(pictureBox, CompanyLogoSource.EmployeeCompany,
+                        dataBinding.DataMember.Substring(lastDot + 1) + LogoOrgUnitIdSuffix);
+                }
+            }
+        }
+
+        /// <summary>
+        /// A picture box's image binding is named <c>Image</c> in the designer files, but DevExpress renames it to
+        /// <c>ImageSource</c> when it upgrades a layout saved by an older version (the EmployeeInfo reports still
+        /// carry <c>Version = "17.2"</c>). Both mean the picture.
+        /// </summary>
+        private static bool IsImageProperty(string propertyName) =>
+            string.Equals(propertyName, "Image", StringComparison.Ordinal)
+            || string.Equals(propertyName, "ImageSource", StringComparison.Ordinal);
+
+        private void BindCompanyLogo(XRPictureBox pictureBox, CompanyLogoSource source, string orgUnitIdColumn)
+        {
+            pictureBox.ExpressionBindings.Clear();
+            _companyLogoBindings.Add(new CompanyLogoBinding(pictureBox.Name, source, orgUnitIdColumn));
+            pictureBox.BeforePrint += (_, _) => pictureBox.Image = LoadCompanyLogoImage(source, orgUnitIdColumn);
+        }
+
+        /// <summary>
+        /// The logo for the current row (or the report), or null. Every failure -- no loader, no tenant, the
+        /// SQL not returning the column, no unit, no logo file, an undecodable file -- yields null, so the box
+        /// prints empty instead of failing the whole report. One load per distinct unit per report run.
+        /// </summary>
+        protected System.Drawing.Image LoadCompanyLogoImage(CompanyLogoSource source, string orgUnitIdColumn)
+        {
+            var loader = CompanyLogoLoader;
+            if (loader == null
+                || !int.TryParse(Convert.ToString(Parameters[TenantParameterName]?.Value), out var tenantId)
+                || tenantId <= 0)
+            {
+                return null;
+            }
+
+            long? orgUnitId = null;
+            if (source == CompanyLogoSource.EmployeeCompany)
+            {
+                object value;
+                try
+                {
+                    value = GetCurrentColumnValue(orgUnitIdColumn);
+                }
+                catch (Exception)
+                {
+                    value = null;
                 }
 
-                var member = match.Groups["member"];
-                if (member.Success && !string.Equals(member.Value, DataMember, StringComparison.OrdinalIgnoreCase))
+                if (value == null || value is DBNull
+                    || !long.TryParse(Convert.ToString(value, System.Globalization.CultureInfo.InvariantCulture), out var parsed))
                 {
-                    continue;
+                    return null;
                 }
 
-                BindStoredImage(pictureBox, match.Groups["column"].Value + StoredLogoPathSuffix);
+                orgUnitId = parsed;
+            }
+
+            var key = tenantId + "|" + (int)source + "|" + orgUnitId;
+            if (!_companyLogoCache.TryGetValue(key, out var bytes))
+            {
+                try
+                {
+                    bytes = loader(tenantId, source, orgUnitId);
+                }
+                catch (Exception)
+                {
+                    bytes = null;
+                }
+
+                _companyLogoCache[key] = bytes;
+            }
+
+            if (bytes == null || bytes.Length == 0)
+            {
+                return null;
+            }
+
+            try
+            {
+                return System.Drawing.Image.FromStream(new System.IO.MemoryStream(bytes), false, false);
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 

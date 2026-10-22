@@ -21,8 +21,9 @@
 //     The 14 aliased joins collapse to two ancestor walks: among the employee's own unit and its
 //     ancestors (ancestor <=> the employee unit's Code starts with the ancestor's Code), take the
 //     shallowest whose profile type is 'Company' (resp. 'Department'). See BankSql.cs for the full note.
-//   * *** FEATURE LOST: CompanyLogo. *** Legacy read OrganizationUnit.logo; neither
-//     AbpOrganizationUnits nor OrgUnitProfiles has a logo column. Returned as NULL.
+//   * CompanyLogo: legacy read OrganizationUnit.logo, an image column; HCMv3 keeps logos in the file
+//     store. The column stays a NULL placeholder; CompanylogoOrgUnitId (named after the layouts'
+//     [Companylogo] binding) carries the employee unit, resolved through ICompanyLogoResolver.
 //   * DevExpress CustomSqlQuery rejects anything that is not purely SELECT ("A custom SQL query
 //     should contain only SELECT statements"), so legacy DECLARE locals are inlined at their use sites.
 //
@@ -52,7 +53,8 @@ SELECT emp.Code
      , basicPayDetail.Amount                AS BasicPay
      , payrollArea.Name                     AS PayrollArea
      , currency.Code                        AS Currency
-     , CAST(NULL AS VARBINARY(MAX))         AS CompanyLogo    -- FEATURE LOST, see header
+     , CAST(NULL AS VARBINARY(MAX))         AS CompanyLogo    -- placeholder, see header
+     , orgAsg.OrganizationUnitId            AS CompanylogoOrgUnitId
      , department.DisplayName               AS DepartmentEn   -- SEMANTIC DEVIATION, see header
      , bank.NameEn                          AS BankEn
      , empBank.AccountNum
@@ -170,6 +172,7 @@ SELECT emp.Code
      , company.DisplayName                  AS CompanyEn
      , companyAr.NameAr                     AS CompanyAr
      , CAST(NULL AS VARBINARY(MAX))         AS Companylogo
+     , orgAsg.OrganizationUnitId            AS CompanylogoOrgUnitId
 FROM (
     SELECT 'RECURRING PAYMENT'  AS TransactionType
          , rp.EmployeeId
@@ -320,6 +323,7 @@ SELECT B.Code
      , B.CompanyEn
      , B.CompanyAr
      , B.Companylogo
+     , B.CompanylogoOrgUnitId
 FROM (
     SELECT emp.Code
          , emp.FullNameEn
@@ -329,7 +333,8 @@ FROM (
          , A.TotalLeaveDays
          , company.DisplayName          AS CompanyEn     -- SEMANTIC DEVIATION, see header
          , companyAr.NameAr             AS CompanyAr
-         , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- FEATURE LOST, see header
+         , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- placeholder, see header
+         , orgAsg.OrganizationUnitId    AS CompanylogoOrgUnitId
          , payrollArea.Name             AS PayrollArea
          , costCenter.NameEn            AS CostCenterEn
          , costCenter.NameAr            AS CostCenterAr

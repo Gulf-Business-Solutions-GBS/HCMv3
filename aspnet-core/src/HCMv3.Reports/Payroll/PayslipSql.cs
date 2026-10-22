@@ -47,8 +47,9 @@ ORDER BY Name;";
 --      so the 14 aliased joins collapse to an ancestor walk (see the OUTER APPLY below).
 --      RESOLVED -- an earlier revision of this note claimed ""which ancestor is the Department is
 --      not expressible"" and substituted the employee's own unit. That was wrong and is fixed.
---   2. CompanyLogo. Sourced from OrganizationUnit.logo. AbpOrganizationUnits has no Logo column and
---      HCMv3 has no Company entity carrying one. Returned as NULL.  *** FEATURE LOST. ***
+--   2. CompanyLogo. Legacy read OrganizationUnit.logo (an image column) of the Company_n unit. HCMv3
+--      keeps logos in the file store: CompanyLogo stays a NULL placeholder and CompanyLogoOrgUnitId
+--      carries the employee unit, which HcmReportBase resolves through ICompanyLogoResolver.
 --   3. PayrollArea join. Legacy joined on a STRING: PayrollArea.Code = EmployeeOrgAssignment.PayrollArea.
 --      HCMv3 models it properly as EmployeeOrgAssignments.PayrollAreaId -> PayrollAreas.Id.
 --      The @PrmPayrollArea parameter still filters on PayrollAreas.Name for operator parity.
@@ -89,7 +90,8 @@ SELECT
     , payrollArea.Name                          AS [Payroll Area]
     , payrollArea.Code                          AS [Payroll Area Code]
     , basicPayCurrency.CurrencyShortFormEn      AS Currency
-    , CAST(NULL AS VARBINARY(MAX))              AS CompanyLogo      -- see rewrite note 2
+    , CAST(NULL AS VARBINARY(MAX))              AS CompanyLogo      -- placeholder, see rewrite note 2
+    , eoa.OrganizationUnitId                    AS CompanyLogoOrgUnitId -- see rewrite note 2
     , UPPER(CASE
         WHEN sr.PayrollRunType = 0 THEN
             CASE WHEN @PrmEncashment = 1

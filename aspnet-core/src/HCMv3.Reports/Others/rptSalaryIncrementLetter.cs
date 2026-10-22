@@ -31,7 +31,7 @@ namespace HCMv3.Reports.Others
     /// DevExpress <c>Expression</c> result type as <c>short</c> while the report parameters are
     /// <c>int</c>. Corrected to <c>int</c> on both sides -- a mismatch there fails at run time.
     ///
-    /// COMPANY LOGO: <c>xrPictureBox1</c> binds <c>Companylogo</c>, which the SQL returns as NULL.
+    /// COMPANY LOGO: <c>xrPictureBox1</c> binds <c>Companylogo</c>; the company logo is loaded from the file store by HcmReportBase (CompanyLogoLoader / ICompanyLogoResolver), from <c>CompanylogoOrgUnitId</c>.
     ///
     /// MULTI-TENANCY: both queries carry <c>@TenantId</c>, and so do the subreports'. Call
     /// <see cref="HcmReportBase.ApplyTenant"/> before <c>CreateDocument()</c> -- it walks nested

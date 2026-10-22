@@ -19,9 +19,8 @@ namespace HCMv3.Reports.Others
     /// the query parameter binds <c>[Parameters.PrmEmpCpde]</c>. Renaming it would break any saved
     /// layout or catalog entry that already refers to it, so the misspelling is carried over verbatim.
     ///
-    /// COMPANY LOGO: <c>xrPictureBox1</c> binds the <c>Companylogo</c> column, which the SQL returns
-    /// as NULL -- HCMv3 has no org-unit logo. The box prints empty. See OthersCertificatesSql's
-    /// FEATURE LOST note.
+    /// COMPANY LOGO: <c>xrPictureBox1</c> binds <c>Companylogo</c>; the SQL returns the employee unit as
+    /// <c>CompanylogoOrgUnitId</c> and the company logo is loaded from the file store by HcmReportBase (CompanyLogoLoader / ICompanyLogoResolver).
     ///
     /// MULTI-TENANCY: the query carries <c>@TenantId</c>. Call <see cref="HcmReportBase.ApplyTenant"/>
     /// before <c>CreateDocument()</c> or the report returns nothing.

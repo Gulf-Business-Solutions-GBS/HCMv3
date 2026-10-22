@@ -60,9 +60,11 @@ namespace HCMv3.Reports.EmployeeInfo
         ///      (<c>PayrollArea.Code = EmployeeOrgAssignment.PayrollArea</c>); HCMv3 models it as
         ///      <c>EmployeeOrgAssignments.PayrollAreaId -> PayrollAreas.Id</c>. Same correction the
         ///      payslip port made.
-        ///   2. Seven Company OrgLevel joins existed ONLY to fetch <c>Company_n.logo</c>. HCMv3 has
-        ///      no logo column anywhere, so all seven joins are DROPPED outright and CompanyLogo
-        ///      returns NULL. *** FEATURE LOST, same finding as the payslip port. ***
+        ///   2. Seven Company OrgLevel joins existed ONLY to fetch <c>Company_n.logo</c>. HCMv3 keeps
+        ///      logos in the file store, not the database, so the seven joins are DROPPED, CompanyLogo
+        ///      stays a NULL placeholder, and the employee's org unit is returned as
+        ///      <c>CompanylogoOrgUnitId</c>: HcmReportBase hands it to ICompanyLogoResolver, which applies
+        ///      the same Company_1..7 rule.
         ///   3. Legacy <c>WageType.Code NOT IN (9000)</c> -- an UNQUOTED numeric literal against
         ///      what is nvarchar in HCMv3. Left as-is it makes SQL Server convert the whole Code
         ///      column to int and throw on the first non-numeric wage-type code. Quoted here.
@@ -109,6 +111,7 @@ SELECT
     , A.PayrollArea
     , A.Currency
     , A.CompanyLogo
+    , MIN(A.CompanylogoOrgUnitId) AS CompanylogoOrgUnitId   -- one employee; MIN leaves the grouping alone
     , A.BankEn
     , A.AccountNum
     , A.IBAN
@@ -142,6 +145,7 @@ SELECT
     , CASE WHEN wageType.BillingType = 1 THEN (-1) * srd.Amount ELSE srd.Amount END AS Amount
     , payrollArea.Name          AS PayrollArea
     , CAST(NULL AS VARBINARY(MAX)) AS CompanyLogo   -- see rewrite note 2
+    , orgAssign.OrganizationUnitId AS CompanylogoOrgUnitId
     , empBank.AccountNum
     , empBank.IBAN
     , empBank.BankBranch

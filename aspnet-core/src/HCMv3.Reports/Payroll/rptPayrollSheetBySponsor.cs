@@ -20,8 +20,8 @@ namespace HCMv3.Reports.Payroll
     /// <c>rptPayrollSheetBySponsor_BeforePrint</c> -- the class was renamed at some point and the
     /// handler was not. Kept as-is so the layout keeps binding.
     ///
-    /// KNOWN GAP: the header picture box binds to <c>[Companylogo]</c>, which is always NULL in
-    /// HCMv3 (AbpOrganizationUnits has no Logo column). The box simply prints nothing.
+    /// COMPANY LOGO: the header picture box binds <c>[Companylogo]</c>; the SQL returns the employee unit as
+    /// <c>CompanylogoOrgUnitId</c> and the company logo is loaded from the file store by HcmReportBase (CompanyLogoLoader / ICompanyLogoResolver).
     ///
     /// MULTI-TENANCY: every query carries <c>@TenantId</c>. Call
     /// <see cref="HcmReportBase.ApplyTenant"/> before <c>CreateDocument()</c>.

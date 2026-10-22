@@ -11,7 +11,9 @@
 //   * *** SEMANTIC DEVIATION: OrgLevel1..7 'Company' / 'Department'. *** Seven flat FK columns +
 //     OrganizationUnitType become ONE ancestor walk over the AbpOrganizationUnits materialised path,
 //     with the unit type read from OrgUnitProfiles.OrganizationUnitTypeId. Full note in BankSql.cs.
-//   * *** FEATURE LOST: Companylogo. *** No logo column exists in HCMv3. Returned as NULL.
+//   * Companylogo: legacy read OrganizationUnit.logo, an image column; HCMv3 keeps logos in the file
+//     store. Companylogo stays a NULL placeholder; CompanylogoOrgUnitId carries the employee unit,
+//     resolved by HcmReportBase through ICompanyLogoResolver (legacy Company_1..7 rule).
 //     The Arabic company / department name comes from OrgUnitProfiles.NameAr, since
 //     AbpOrganizationUnits carries only DisplayName.
 //   * WageTypes.Code is nvarchar -- code literals stay quoted.
@@ -49,6 +51,7 @@ namespace HCMv3.Reports.Time
 SELECT A.Code
      , A.FullNameEn
      , A.Companylogo
+     , A.CompanylogoOrgUnitId
      , A.CompanyEn
      , A.CompanyAr
      , A.DepartmentEn
@@ -88,7 +91,8 @@ SELECT A.Code
 FROM (
     SELECT emp.Code
          , emp.FullNameEn
-         , CAST(NULL AS VARBINARY(MAX))     AS Companylogo    -- FEATURE LOST, see header
+         , CAST(NULL AS VARBINARY(MAX))     AS Companylogo    -- placeholder, see header
+         , orgAsg.OrganizationUnitId        AS CompanylogoOrgUnitId
          , company.DisplayName              AS CompanyEn
          , companyProfile.NameAr            AS CompanyAr
          , department.DisplayName           AS DepartmentEn
@@ -227,6 +231,7 @@ WHERE ou.TenantId = @TenantId
 SELECT A.Code
      , A.FullNameEn
      , A.Companylogo
+     , A.CompanylogoOrgUnitId
      , A.CompanyEn
      , A.CompanyAr
      , A.DepartmentEn
@@ -256,7 +261,8 @@ SELECT A.Code
 FROM (
     SELECT emp.Code
          , emp.FullNameEn
-         , CAST(NULL AS VARBINARY(MAX))     AS Companylogo    -- FEATURE LOST, see header
+         , CAST(NULL AS VARBINARY(MAX))     AS Companylogo    -- placeholder, see header
+         , orgAsg.OrganizationUnitId        AS CompanylogoOrgUnitId
          , company.DisplayName              AS CompanyEn
          , companyProfile.NameAr            AS CompanyAr
          , department.DisplayName           AS DepartmentEn

@@ -34,10 +34,10 @@ namespace HCMv3.Reports.Payroll
         /// <summary>
         /// Company logo. Legacy: <c>select logo from OrganizationUnit where OrgUnitType = 1</c>.
         ///
-        /// *** FEATURE LOST *** AbpOrganizationUnits has no Logo column and HCMv3 has no Company
-        /// entity carrying one, so the column is returned as NULL -- the same conclusion PayslipSql
-        /// and BankSql reached. The query still selects FROM the tenant-filtered org-unit table so
-        /// that the shape (and the @TenantId predicate) survive for whoever restores the column.
+        /// (Legacy enum OrgUnitType 1 = Company.) HCMv3 keeps logos in the file store, so this query only
+        /// keeps the layout's shape: HcmReportBase removes the picture box's <c>QueryLogo.logo</c> binding
+        /// and loads the logo through ICompanyLogoResolver with CompanyLogoSource.FirstCompanyUnit; this
+        /// NULL column is no longer read.
         /// </summary>
         public const string LogoQuery = @"-- payslip variants :: QueryLogo
 SELECT TOP 1 CAST(NULL AS VARBINARY(MAX)) AS logo   -- FEATURE LOST: no Logo column in AbpOrganizationUnits

@@ -26,9 +26,9 @@ namespace HCMv3.Reports.Others
     /// | <c>rptSickLeaveMedicalForm(object[] args, bool isUnifiedLeaveRequest)</c> with a commented-out <c>WorkflowRequest</c>/<c>LeaveRequest</c> body | <see cref="rptSickLeaveMedicalForm(string, DateTime)"/>. |
     /// | <c>xrPictureBox2.Image</c> / <c>xrPictureBox3.Image</c> from the report .resx | embedded PNG / JPEG attached in the constructor; see the loader below. |
     ///
-    /// <c>xrPictureBox1</c> is NOT one of those: it is data-bound to <c>[Companylogo]</c>, which
-    /// HCMv3 cannot supply (OthersLeaveSql rewrite note 2 -- AbpOrganizationUnits has no Logo
-    /// column). It renders empty.
+    /// <c>xrPictureBox1</c> is NOT one of those: it is data-bound to <c>[Companylogo]</c>, the employee's
+    /// company logo, which HcmReportBase loads from the file store from <c>CompanylogoOrgUnitId</c>
+    /// (OthersLeaveSql rewrite note 2).
     ///
     /// MULTI-TENANCY: the query carries <c>@TenantId</c>. Call <see cref="HcmReportBase.ApplyTenant"/>
     /// before <c>CreateDocument()</c> or the report returns nothing.

@@ -42,10 +42,13 @@
 //   was "not expressible" and fell back to the employee's own unit -- those ports are worth
 //   revisiting.)
 //
-// *** FEATURE LOST: Companylogo ***
-//   Legacy sourced OrganizationUnit.logo. AbpOrganizationUnits has no Logo column and OrgUnitProfiles
-//   does not carry one either, so every Companylogo column is returned as NULL VARBINARY(MAX). The
-//   XRPictureBox bound to it prints empty. Same conclusion PayslipSql and BankSql reached.
+// *** Companylogo ***
+//   Legacy sourced OrganizationUnit.logo, an image column; HCMv3 keeps logos in the file store.
+//   Companylogo stays a NULL VARBINARY(MAX) placeholder, and the queries whose layout prints the logo
+//   (continuous certificate En, confirmation letter, increment letter) also return the employee's org
+//   unit as CompanylogoOrgUnitId; HcmReportBase resolves the logo through ICompanyLogoResolver with the
+//   legacy Company_1..7 rule. The Arabic continuous certificate's legacy layout has no logo box, so it
+//   is not given the column.
 //
 // *** EMPLOYEE FILTER ***
 //   Several legacy reports pulled EVERY employee and narrowed to one with a client-side report
@@ -224,7 +227,8 @@ SELECT DISTINCT
     , cur.NameEn                   AS CurrencyName
     , cur.Code                     AS CurrencyCode
     , company.DisplayName          AS CompanyEn
-    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- FEATURE LOST: no Logo column in HCMv3
+    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- placeholder; logo comes from CompanylogoOrgUnitId
+    , orgAsg.OrganizationUnitId    AS CompanylogoOrgUnitId
 FROM Employees emp
 
 LEFT JOIN EmployeeOrgAssignments orgAsg
@@ -534,7 +538,7 @@ WHERE emp.TenantId  = @TenantId
         ///
         /// Probation-confirmation letter. The lightest query in the batch: identity, probation end,
         /// designation and the company letterhead line. The seven Company_1..7 joins collapse to the
-        /// ancestor walk (see header); Companylogo is NULL (FEATURE LOST).
+        /// ancestor walk (see header); the logo comes from CompanylogoOrgUnitId (see header).
         /// </summary>
         public const string EmployeeConfirmationLetterQuery = @"-- rptEmployeeConfirmationLetter :: Query
 SELECT
@@ -543,7 +547,8 @@ SELECT
     , emp.ProbationEndDate
     , jobTitle.NameEn              AS Jobtitle
     , company.DisplayName          AS CompanyEn
-    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- FEATURE LOST: no Logo column in HCMv3
+    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- placeholder; logo comes from CompanylogoOrgUnitId
+    , orgAsg.OrganizationUnitId    AS CompanylogoOrgUnitId
 FROM Employees emp
 
 LEFT JOIN EmployeeOrgAssignments orgAsg
@@ -594,7 +599,7 @@ WHERE emp.TenantId  = @TenantId
         ///   * @DtTemp is substituted with EOMONTH(DATEFROMPARTS(@PrmYear, @PrmMonth, 1)) -- see the
         ///     v23.2 CustomSqlQuery note in the file header. Same value, no DECLARE.
         ///   * The PayrollArea join projected nothing and is dropped (same call BankSql made).
-        ///   * The seven Company_1..7 joins collapse to the ancestor walk; Companylogo is NULL.
+        ///   * The seven Company_1..7 joins collapse to the ancestor walk; the logo comes from CompanylogoOrgUnitId.
         ///
         /// LEGACY BEHAVIOUR KEPT DELIBERATELY:
         ///   * <c>Employee.Code = CASE WHEN @PrmEmpCode = '' THEN Employee.Code ELSE @PrmEmpCode END</c>
@@ -629,7 +634,8 @@ SELECT DISTINCT
     , prevBasicPay.StartDate       AS Prev_BasicPayEffectivedate
     , ISNULL(currency.Code,   'KWD')          AS CurrencyCode
     , ISNULL(currency.NameEn, 'Kuwaiti Dinar') AS CurrencyName
-    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- FEATURE LOST: no Logo column in HCMv3
+    , CAST(NULL AS VARBINARY(MAX)) AS Companylogo   -- placeholder; logo comes from CompanylogoOrgUnitId
+    , currOrgAsg.OrganizationUnitId AS CompanylogoOrgUnitId
 FROM Employees emp
 
 -- ============================== Job Title ==============================

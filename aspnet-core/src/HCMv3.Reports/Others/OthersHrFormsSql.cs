@@ -59,9 +59,11 @@
 //      NameAr, so the *Ar aliases below take OrgUnitProfiles.NameAr of the matched ancestor. No
 //      feature is lost.
 //
-//  R2. COMPANY LOGO. AbpOrganizationUnits has no Logo column and OrgUnitProfiles does not carry one
-//      either, so every "Companylogo" alias is projected as NULL VARBINARY(MAX).
-//      *** FEATURE LOST -- the same gap PayslipSql and BankSql both record. ***
+//  R2. COMPANY LOGO. Legacy read OrganizationUnit.logo, an image column; HCMv3 keeps logos in the
+//      file store. "Companylogo" stays a NULL VARBINARY(MAX) placeholder; the queries whose layout
+//      prints it also return the employee unit as CompanylogoOrgUnitId, resolved by HcmReportBase
+//      through ICompanyLogoResolver with the legacy Company_1..7 rule. (Ar023 is a customer variant
+//      with no logo box in HCMv3 and is left as is.)
 //
 //  R3. PASSPORT NUMBER. Employees has no PassportNum column in HCMv3. It comes from
 //      EmployeeDocuments joined to the DocumentTypes row named 'Passport' -- exactly the
@@ -185,7 +187,8 @@ SELECT DISTINCT
     , emp.CivilID
     , nationality.NameEn            AS Nationality
     , company.DisplayName           AS CompanyEn                  -- see rewrite note R1
-    , CAST(NULL AS VARBINARY(MAX))  AS Companylogo                -- see rewrite note R2: FEATURE LOST
+    , CAST(NULL AS VARBINARY(MAX))  AS Companylogo                -- see rewrite note R2: placeholder
+    , orgAsg.OrganizationUnitId     AS CompanylogoOrgUnitId       -- see rewrite note R2
 
 FROM Employees emp
 
@@ -329,7 +332,7 @@ WHERE disc.TenantId  = @TenantId
         /// from the 'Department'-typed one -- fourteen LEFT JOINs onto OrganizationUnit in all. They
         /// become TWO ancestor walks over the same tree, one per type; see rewrite note R1.
         /// CompanyEn and DepartmentEn therefore still resolve independently, as they did in the
-        /// legacy print. Companylogo is NULL (rewrite note R2).
+        /// legacy print. The logo comes from CompanylogoOrgUnitId (rewrite note R2).
         ///
         /// The manager chain (EmployeeManager -> Employee AS EmpManager) is a straight rename.
         /// </summary>
@@ -340,7 +343,8 @@ SELECT
     , empManager.FullNameEn         AS EmployeeManager
     , jobTitle.NameEn               AS Jobtitle
     , company.DisplayName           AS CompanyEn                 -- see rewrite note R1
-    , CAST(NULL AS VARBINARY(MAX))  AS Companylogo               -- see rewrite note R2: FEATURE LOST
+    , CAST(NULL AS VARBINARY(MAX))  AS Companylogo               -- see rewrite note R2: placeholder
+    , orgAsg.OrganizationUnitId     AS CompanylogoOrgUnitId       -- see rewrite note R2
     , department.DisplayName        AS DepartmentEn              -- see rewrite note R1
 
 FROM Employees emp
@@ -712,7 +716,8 @@ SELECT DISTINCT
     , nationality.NameEn            AS Nationality
     , nationality.NameAr            AS NationalityAr
     , company.DisplayName           AS CompanyEn                 -- see rewrite note R1
-    , CAST(NULL AS VARBINARY(MAX))  AS Companylogo               -- see rewrite note R2: FEATURE LOST
+    , CAST(NULL AS VARBINARY(MAX))  AS Companylogo               -- see rewrite note R2: placeholder
+    , orgAsg.OrganizationUnitId     AS CompanylogoOrgUnitId       -- see rewrite note R2
 
 FROM Employees emp
 

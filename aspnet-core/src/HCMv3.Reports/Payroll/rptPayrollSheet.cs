@@ -42,6 +42,13 @@ namespace HCMv3.Reports.Payroll
         }
 
         /// <summary>
+        /// The header logo is bound to the separate "Query" data member, not to the employee row. Legacy filled it
+        /// with <c>SELECT logo FROM OrganizationUnit ... WHERE OrganizationUnitType.Code LIKE '%OrgLevel1%'</c>,
+        /// i.e. the first level-1 unit, not the employee's company.
+        /// </summary>
+        protected override CompanyLogoSource StandaloneLogoSource => CompanyLogoSource.FirstLevel1Unit;
+
+        /// <summary>
         /// Convenience overload mirroring how the payroll run invoked the legacy report.
         /// </summary>
         public rptPayrollSheet(int month, int year, int payrollRunType, string payrollArea, string reportType)
