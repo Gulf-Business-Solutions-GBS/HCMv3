@@ -215,7 +215,8 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             .Select(p => (double?)p.Amount)
             .FirstOrDefaultAsync() ?? 0;
 
-        var amount = System.Math.Round(detail.TotalNights * rate, 3);
+        // Same arithmetic the payroll rule uses (TravelPerDiemPayWageTypeCalculator), so the two cannot drift.
+        var amount = TravelPerDiemFormula.PerDiemAmount(hasEmployee: true, detail.TotalNights, rate);
 
         return new CalculateExpectedPerDiemOutput
         {
@@ -224,7 +225,7 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             PerDiemPayPercentage = detail.PerDiemPayPercentage,
 
             // Legacy payroll GetTravelPerDiemPay: (PerDiemAmount * PerDiemPayPercentage) / 100, not rounded again.
-            PerDiemPayAmount = (amount * detail.PerDiemPayPercentage) / 100
+            PerDiemPayAmount = TravelPerDiemFormula.PerDiemPayAmount(amount, detail.PerDiemPayPercentage)
         };
     }
 
