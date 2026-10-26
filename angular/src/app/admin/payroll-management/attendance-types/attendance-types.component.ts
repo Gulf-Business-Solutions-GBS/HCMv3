@@ -116,13 +116,17 @@ export class AttendanceTypesComponent extends AppComponentBase implements OnInit
     }
 
     deleteAttendanceType(record: AttendanceTypeDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._attendanceTypesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._attendanceTypesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

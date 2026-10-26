@@ -59,7 +59,14 @@ export class EmployeeBasicPayFormComponent extends AppComponentBase {
             }
 
             this._employeeActionsService
-                .getAll(new GetAllEmployeeActionsInput({ employeeId, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+                .getAll(
+                    new GetAllEmployeeActionsInput({
+                        employeeId,
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                    })
+                )
                 .subscribe((result) => this.employeeActions.set(result.items));
         });
     }

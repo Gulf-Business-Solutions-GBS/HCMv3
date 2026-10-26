@@ -147,7 +147,9 @@ export class RuleFormulaInputComponent extends AppComponentBase {
                     }
 
                     const name = text.substring(start, i);
-                    const descriptor = this.functions().find((f) => (f.name ?? '').toLowerCase() === name.toLowerCase());
+                    const descriptor = this.functions().find(
+                        (f) => (f.name ?? '').toLowerCase() === name.toLowerCase()
+                    );
 
                     return descriptor ? this.signatureOf(descriptor) : '';
                 }
@@ -324,7 +326,19 @@ export class RuleFormulaInputComponent extends AppComponentBase {
             });
         }
 
-        for (const keyword of ['AND', 'OR', 'NOT', 'IN', 'IS EMPTY', 'IS NOT EMPTY', 'CONTAINS', 'STARTS WITH', 'ENDS WITH', 'true', 'false']) {
+        for (const keyword of [
+            'AND',
+            'OR',
+            'NOT',
+            'IN',
+            'IS EMPTY',
+            'IS NOT EMPTY',
+            'CONTAINS',
+            'STARTS WITH',
+            'ENDS WITH',
+            'true',
+            'false',
+        ]) {
             suggestions.push({
                 label: keyword,
                 insert: keyword,
@@ -421,14 +435,11 @@ export class RuleFormulaInputComponent extends AppComponentBase {
      * generated DTOs, hence the coalescing.
      */
     private matches(name: string | undefined, displayName: string | undefined, lower: string): boolean {
-        return (name ?? '').toLowerCase().indexOf(lower) >= 0
-            || (displayName ?? '').toLowerCase().indexOf(lower) >= 0;
+        return (name ?? '').toLowerCase().indexOf(lower) >= 0 || (displayName ?? '').toLowerCase().indexOf(lower) >= 0;
     }
 
     private signatureOf(fn: RuleFunctionMetadataDto): string {
-        const args = (fn.parameters ?? [])
-            .map((p) => (p.isOptional ? `[${p.name ?? ''}]` : (p.name ?? '')))
-            .join(', ');
+        const args = (fn.parameters ?? []).map((p) => (p.isOptional ? `[${p.name ?? ''}]` : (p.name ?? ''))).join(', ');
 
         return `${fn.name ?? ''}(${args})`;
     }

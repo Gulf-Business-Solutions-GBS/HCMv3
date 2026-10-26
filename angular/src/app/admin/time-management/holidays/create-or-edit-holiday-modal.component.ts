@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditHolidayModal',
     templateUrl: './create-or-edit-holiday-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditHolidayModalComponent extends AppComponentBase {
     private _holidaysService = inject(HolidaysServiceProxy);
@@ -47,13 +41,27 @@ export class CreateOrEditHolidayModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._holidayCalendarsService
-            .getAll(new GetAllHolidayCalendarsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllHolidayCalendarsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.holidayCalendars.set(result.items);
             });
 
         this._overtimeTypesService
-            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOvertimeTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.overtimeTypes.set(result.items);
             });

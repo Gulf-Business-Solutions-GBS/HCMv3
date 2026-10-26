@@ -31,7 +31,9 @@ export class CreateOrEditEmployeeSubGroupBenefitDetailModalComponent extends App
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditEmployeeSubGroupBenefitDetailDto>(new CreateOrEditEmployeeSubGroupBenefitDetailDto());
+    readonly record = signal<CreateOrEditEmployeeSubGroupBenefitDetailDto>(
+        new CreateOrEditEmployeeSubGroupBenefitDetailDto()
+    );
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
     readonly isNew = signal<boolean>(false);
@@ -43,7 +45,10 @@ export class CreateOrEditEmployeeSubGroupBenefitDetailModalComponent extends App
             recordType: 'EmployeeSubGroupBenefitDetail',
             record: this.record,
             isNew: this.isNew,
-            keys: () => ({ EmployeeSubGroupBenefitId: this.record().employeeSubGroupBenefitId, DependantTypeId: this.record().dependantTypeId }),
+            keys: () => ({
+                EmployeeSubGroupBenefitId: this.record().employeeSubGroupBenefitId,
+                DependantTypeId: this.record().dependantTypeId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -54,7 +59,14 @@ export class CreateOrEditEmployeeSubGroupBenefitDetailModalComponent extends App
         this.active.set(true);
 
         this._dependantTypesService
-            .getAll(new GetAllDependantTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDependantTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.dependantTypes.set(result.items));
 
         if (!id) {

@@ -52,7 +52,12 @@ export class MyTicketComponent extends MyRequestComponentBase<MyTicketRequestDto
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyTicketRequestDto>(this.rows, () => [
         { key: 'ticketType', label: 'TicketType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'ticketDate', label: 'TicketDate', text: (row) => this.detailDate(row.ticketDate), sort: (row) => row.ticketDate?.toMillis() },
+        {
+            key: 'ticketDate',
+            label: 'TicketDate',
+            text: (row) => this.detailDate(row.ticketDate),
+            sort: (row) => row.ticketDate?.toMillis(),
+        },
         { key: 'amount', label: 'Amount', text: (row) => row.amount },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);

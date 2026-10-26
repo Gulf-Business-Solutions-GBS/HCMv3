@@ -46,15 +46,21 @@ export class CreateOrEditPAEmployeeModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._paCyclesService
-            .getAll(new GetAllPACyclesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPACyclesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.paCycles.set(result.items));
 
         this._formTypesService
-            .getAll(new GetAllFormTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllFormTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.formTypes.set(result.items));
 
         if (!id) {

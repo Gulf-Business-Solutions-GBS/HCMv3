@@ -55,7 +55,10 @@ export class CreateOrEditRosterGroupDetailModalComponent extends AppComponentBas
             recordType: 'RosterGroupDetail',
             record: this.rosterGroupDetail,
             isNew: this.isNew,
-            keys: () => ({ RosterGroupId: this.rosterGroupDetail().rosterGroupId, EmployeeId: this.rosterGroupDetail().employeeId }),
+            keys: () => ({
+                RosterGroupId: this.rosterGroupDetail().rosterGroupId,
+                EmployeeId: this.rosterGroupDetail().employeeId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -67,13 +70,22 @@ export class CreateOrEditRosterGroupDetailModalComponent extends AppComponentBas
         this.active.set(true);
 
         this._rosterGroupsService
-            .getAll(new GetAllRosterGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRosterGroupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.rosterGroups.set(result.items);
             });
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => {
                 this.employees.set(result.items);
             });

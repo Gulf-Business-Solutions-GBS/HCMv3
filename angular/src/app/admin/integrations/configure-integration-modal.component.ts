@@ -27,7 +27,15 @@ import { RouterLink } from '@angular/router';
 @Component({
     selector: 'configureIntegrationModal',
     templateUrl: './configure-integration-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe, PermissionPipe, RouterLink],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        ButtonBusyDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+        PermissionPipe,
+        RouterLink,
+    ],
 })
 export class ConfigureIntegrationModalComponent extends AppComponentBase {
     private _service = inject(IntegrationCenterServiceProxy);

@@ -79,7 +79,14 @@ export class CreateOrEditEmployeeTimePolicyModalComponent extends AppComponentBa
 
     private loadLookups(): void {
         this._timePoliciesService
-            .getAll(new GetAllTimePoliciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTimePoliciesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.timePolicies.set(result.items));
     }
 

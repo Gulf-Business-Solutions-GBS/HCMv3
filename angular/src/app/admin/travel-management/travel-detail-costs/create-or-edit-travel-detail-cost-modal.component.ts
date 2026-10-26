@@ -41,11 +41,25 @@ export class CreateOrEditTravelDetailCostModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._travelDetailsService
-            .getAll(new GetAllTravelDetailsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, travelId: undefined }))
+            .getAll(
+                new GetAllTravelDetailsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    travelId: undefined,
+                })
+            )
             .subscribe((result) => this.travelDetails.set(result.items));
 
         this._expenseTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.expenseTypes.set(result.items));
 
         if (!id) {

@@ -37,7 +37,6 @@ import { CountUpDirective } from '../shared/count-up.directive';
 import { DashboardExportMenuComponent } from '../shared/dashboard-export-menu.component';
 import { PERIOD_PRESETS, PeriodPreset, periodOf, presetLabelKey, scopeLabel } from '../shared/dashboard-shared';
 
-
 /** Which list the detail panel is showing. */
 type DetailKind = 'onLeaveToday' | 'notReturned' | 'startingSoon' | 'returningSoon' | 'pending' | 'period' | 'day';
 
@@ -137,8 +136,16 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
 
     /** Stable colour per leave type, shared by the stacked bars and the donut. */
     private readonly palette = [
-        '#3b82f6', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6',
-        '#06b6d4', '#f97316', '#84cc16', '#ec4899', '#64748b',
+        '#3b82f6',
+        '#f59e0b',
+        '#10b981',
+        '#ef4444',
+        '#8b5cf6',
+        '#06b6d4',
+        '#f97316',
+        '#84cc16',
+        '#ec4899',
+        '#64748b',
     ];
 
     readonly typeColors = computed(() =>
@@ -270,7 +277,7 @@ export class LeaveDashboardComponent extends AppComponentBase implements OnInit 
         input.toDate = filters.toDate;
         input.organizationUnitId = filters.organizationUnitId;
         input.absenceTypeId = filters.absenceTypeId;
-        input.day =this.detailKind() === 'day' ? this.detailDay() : undefined;
+        input.day = this.detailKind() === 'day' ? this.detailDay() : undefined;
         input.skipCount = first;
         input.maxResultCount = rows;
 

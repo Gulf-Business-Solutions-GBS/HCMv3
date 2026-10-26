@@ -147,13 +147,17 @@ export class WageTypeLeavesTabComponent extends AppComponentBase implements OnIn
     }
 
     deleteRecord(record: WageTypeLeaveDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.absenceTypeName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._wageTypeLeavesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.absenceTypeName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._wageTypeLeavesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

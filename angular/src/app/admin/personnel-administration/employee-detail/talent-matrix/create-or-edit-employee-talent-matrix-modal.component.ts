@@ -46,7 +46,14 @@ export class CreateOrEditEmployeeTalentMatrixModalComponent extends AppComponent
         this.active.set(true);
 
         this._nineBoxRatingsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.nineBoxRatings.set(result.items));
 
         if (!id) {

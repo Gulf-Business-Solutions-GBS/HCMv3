@@ -41,7 +41,8 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 export class SimulationSalaryRegisterDetailsComponent extends AppComponentBase implements OnInit {
     private _simulationSalaryRegisterDetailsService = inject(SimulationSalaryRegisterDetailsServiceProxy);
 
-    readonly createOrEditModal = viewChild<CreateOrEditSimulationSalaryRegisterDetailModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditSimulationSalaryRegisterDetailModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -113,13 +114,17 @@ export class SimulationSalaryRegisterDetailsComponent extends AppComponentBase i
     }
 
     deleteSimulationSalaryRegisterDetail(record: SimulationSalaryRegisterDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.wageTypeName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._simulationSalaryRegisterDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.wageTypeName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._simulationSalaryRegisterDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

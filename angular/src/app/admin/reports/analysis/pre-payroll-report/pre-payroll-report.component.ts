@@ -11,7 +11,11 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
-import { GetPrePayrollReportInput, PayrollRunType, PrePayrollReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetPrePayrollReportInput,
+    PayrollRunType,
+    PrePayrollReportServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 
 /**
@@ -22,7 +26,16 @@ import { GridReportFilterComponent } from '../shared/grid-report-filter.componen
 @Component({
     templateUrl: './pre-payroll-report.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, GridReportFilterComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        GridReportFilterComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class PrePayrollReportComponent extends AppComponentBase {
     private readonly _reportService = inject(PrePayrollReportServiceProxy);

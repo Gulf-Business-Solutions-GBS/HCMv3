@@ -1,6 +1,9 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditSalaryRegisterDaysDetailDto, SalaryRegisterDaysDetailsServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditSalaryRegisterDaysDetailDto,
+    SalaryRegisterDaysDetailsServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -31,7 +34,9 @@ export class CreateOrEditSalaryRegisterDaysDetailModalComponent extends AppCompo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly salaryRegisterDaysDetail = signal<CreateOrEditSalaryRegisterDaysDetailDto>(new CreateOrEditSalaryRegisterDaysDetailDto());
+    readonly salaryRegisterDaysDetail = signal<CreateOrEditSalaryRegisterDaysDetailDto>(
+        new CreateOrEditSalaryRegisterDaysDetailDto()
+    );
 
     show(salaryRegisterDaysDetailId?: number): void {
         this.active.set(true);
@@ -40,10 +45,12 @@ export class CreateOrEditSalaryRegisterDaysDetailModalComponent extends AppCompo
             this.salaryRegisterDaysDetail.set(new CreateOrEditSalaryRegisterDaysDetailDto());
             this.modal().show();
         } else {
-            this._salaryRegisterDaysDetailsService.getSalaryRegisterDaysDetailForEdit(salaryRegisterDaysDetailId).subscribe((result) => {
-                this.salaryRegisterDaysDetail.set(result.salaryRegisterDaysDetail);
-                this.modal().show();
-            });
+            this._salaryRegisterDaysDetailsService
+                .getSalaryRegisterDaysDetailForEdit(salaryRegisterDaysDetailId)
+                .subscribe((result) => {
+                    this.salaryRegisterDaysDetail.set(result.salaryRegisterDaysDetail);
+                    this.modal().show();
+                });
         }
     }
 

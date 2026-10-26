@@ -53,7 +53,9 @@ export class TenantVersionCheckComponent extends AppComponentBase implements OnI
 
     readonly needAttention = computed(() => (this.comparison()?.setupItems ?? []).filter((i) => this.needsSomebody(i)));
 
-    readonly visibleItems = computed(() => (this.showAll() ? (this.comparison()?.setupItems ?? []) : this.needAttention()));
+    readonly visibleItems = computed(() =>
+        this.showAll() ? (this.comparison()?.setupItems ?? []) : this.needAttention()
+    );
 
     ngOnInit(): void {
         this.loading.set(true);

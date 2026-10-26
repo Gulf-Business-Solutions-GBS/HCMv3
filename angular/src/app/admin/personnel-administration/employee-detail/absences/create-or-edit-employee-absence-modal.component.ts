@@ -100,7 +100,7 @@ export class CreateOrEditEmployeeAbsenceModalComponent extends AppComponentBase 
             .pipe(
                 debounceTime(300),
                 switchMap((record) => this.fetchPreview(record)),
-                takeUntilDestroyed(this._destroyRef),
+                takeUntilDestroyed(this._destroyRef)
             )
             .subscribe((preview) => this.preview.set(preview));
     }
@@ -110,7 +110,14 @@ export class CreateOrEditEmployeeAbsenceModalComponent extends AppComponentBase 
         this.preview.set(undefined);
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!id) {

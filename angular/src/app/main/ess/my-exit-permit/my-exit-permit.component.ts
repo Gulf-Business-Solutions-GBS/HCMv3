@@ -55,9 +55,24 @@ export class MyExitPermitComponent extends MyRequestComponentBase<MyExitPermitDt
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyExitPermitDto>(this.rows, () => [
         { key: 'number', label: 'ExitPermitNumber', text: (row) => row.externalRequestNumber },
-        { key: 'travelReason', label: 'TravelReason', text: (row) => this.travelReasonLabel(row.travelReason), filter: 'select' },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'exitDate', label: 'ExitDate', text: (row) => this.detailDate(row.exitDate), sort: (row) => row.exitDate?.toMillis() },
+        {
+            key: 'travelReason',
+            label: 'TravelReason',
+            text: (row) => this.travelReasonLabel(row.travelReason),
+            filter: 'select',
+        },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'exitDate',
+            label: 'ExitDate',
+            text: (row) => this.detailDate(row.exitDate),
+            sort: (row) => row.exitDate?.toMillis(),
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 

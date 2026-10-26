@@ -33,7 +33,9 @@ export class CreateOrEditPrintReportPermissionDetailModalComponent extends AppCo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditPrintReportPermissionDetailDto>(new CreateOrEditPrintReportPermissionDetailDto());
+    readonly record = signal<CreateOrEditPrintReportPermissionDetailDto>(
+        new CreateOrEditPrintReportPermissionDetailDto()
+    );
     readonly printReportPermissions = signal<PrintReportPermissionDto[]>([]);
     readonly printReports = signal<PrintReportDto[]>([]);
 
@@ -45,7 +47,14 @@ export class CreateOrEditPrintReportPermissionDetailModalComponent extends AppCo
             .subscribe((result) => this.printReportPermissions.set(result.items));
 
         this._printReportsService
-            .getAll(new GetAllPrintReportsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPrintReportsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.printReports.set(result.items));
 
         if (!id) {

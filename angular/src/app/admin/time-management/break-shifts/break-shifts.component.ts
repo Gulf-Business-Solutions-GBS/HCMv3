@@ -118,13 +118,17 @@ export class BreakShiftsComponent extends AppComponentBase implements OnInit {
     }
 
     deleteBreakShift(record: BreakShiftDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._breakShiftsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._breakShiftsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

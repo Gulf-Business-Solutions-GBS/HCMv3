@@ -60,8 +60,18 @@ export class MyAppraisalComponent extends AppComponentBase implements OnInit {
     readonly list = new EssList<MyAppraisalListDto>(this.rows, () => [
         { key: 'number', label: 'RequestNumber', text: (row) => row.requestNumber },
         { key: 'employee', label: 'Employee', text: (row) => this.employeeLabel(row) },
-        { key: 'period', label: 'Period', text: (row) => this.pick(row.paCycleNameEn, row.paCycleNameAr), filter: 'select' },
-        { key: 'formType', label: 'FormType', text: (row) => this.pick(row.formTypeNameEn, row.formTypeNameAr), filter: 'select' },
+        {
+            key: 'period',
+            label: 'Period',
+            text: (row) => this.pick(row.paCycleNameEn, row.paCycleNameAr),
+            filter: 'select',
+        },
+        {
+            key: 'formType',
+            label: 'FormType',
+            text: (row) => this.pick(row.formTypeNameEn, row.formTypeNameAr),
+            filter: 'select',
+        },
         {
             key: 'createdOn',
             label: 'CreatedOn',
@@ -97,7 +107,9 @@ export class MyAppraisalComponent extends AppComponentBase implements OnInit {
         this.loading.set(true);
 
         this._service
-            .getMyAppraisals(new GetMyAppraisalsInput({ scope: this.scope(), maxResultCount: 200, skipCount: 0, sorting: undefined }))
+            .getMyAppraisals(
+                new GetMyAppraisalsInput({ scope: this.scope(), maxResultCount: 200, skipCount: 0, sorting: undefined })
+            )
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
                 next: (result) => this.rows.set(result.items ?? []),
@@ -107,11 +119,16 @@ export class MyAppraisalComponent extends AppComponentBase implements OnInit {
     }
 
     openDetail(row: MyAppraisalListDto): void {
-        this.review()?.show({ paEmployeeId: row.id, employeeDisplay: this.employeeLabel(row) }, this.l('EssMyAppraisals'));
+        this.review()?.show(
+            { paEmployeeId: row.id, employeeDisplay: this.employeeLabel(row) },
+            this.l('EssMyAppraisals')
+        );
     }
 
     employeeLabel(row: MyAppraisalListDto): string {
-        return [row.employeeCode, this.pick(row.employeeFullNameEn, row.employeeFullNameAr)].filter((p) => !!p).join(' - ');
+        return [row.employeeCode, this.pick(row.employeeFullNameEn, row.employeeFullNameAr)]
+            .filter((p) => !!p)
+            .join(' - ');
     }
 
     statusLabel(row: MyAppraisalListDto): string {

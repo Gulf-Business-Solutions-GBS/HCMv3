@@ -46,7 +46,14 @@ export class CreateOrEditEmployeeGrievanceModalComponent extends AppComponentBas
         this.active.set(true);
 
         this._grievanceTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.grievanceTypes.set(result.items));
 
         if (!id) {

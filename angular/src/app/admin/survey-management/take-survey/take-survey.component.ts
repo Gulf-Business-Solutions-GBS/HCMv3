@@ -64,7 +64,9 @@ export class TakeSurveyComponent extends AppComponentBase implements OnInit {
 
         this.loading.set(true);
         this._service
-            .getEmployeeSurveyQuestionnaire(new GetEmployeeSurveyQuestionnaireInput({ surveyId, employeeId: undefined }))
+            .getEmployeeSurveyQuestionnaire(
+                new GetEmployeeSurveyQuestionnaireInput({ surveyId, employeeId: undefined })
+            )
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe((result) => {
                 this._answers.clear();

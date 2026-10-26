@@ -23,7 +23,11 @@ interface AbsenceTypeDetailTab {
 
 const ABSENCE_TYPE_DETAIL_TABS: AbsenceTypeDetailTab[] = [
     { id: 'wage-types', labelKey: 'WageTypes', permission: 'Pages.PayrollManagement.WageTypeLeaves' },
-    { id: 'exceptions', labelKey: 'AbsenceTypeExceptions', permission: 'Pages.PayrollManagement.AbsenceTypeExceptions' },
+    {
+        id: 'exceptions',
+        labelKey: 'AbsenceTypeExceptions',
+        permission: 'Pages.PayrollManagement.AbsenceTypeExceptions',
+    },
     { id: 'payments', labelKey: 'AbsencePayments', permission: 'Pages.PayrollManagement.AbsencePayments' },
 ];
 
@@ -73,9 +77,7 @@ export class AbsenceTypeDetailComponent extends AppComponentBase implements OnIn
 
     // Code is optional on absence types (auto-generated if empty), so fall back to the name alone.
     readonly title = computed(() =>
-        this.savedCode()
-            ? `${this.savedCode()} - ${this.savedName()}`
-            : this.savedName() || this.l('AbsenceTypes')
+        this.savedCode() ? `${this.savedCode()} - ${this.savedName()}` : this.savedName() || this.l('AbsenceTypes')
     );
 
     readonly canEdit = this.permission.isGranted('Pages.PayrollManagement.AbsenceTypes.Edit');

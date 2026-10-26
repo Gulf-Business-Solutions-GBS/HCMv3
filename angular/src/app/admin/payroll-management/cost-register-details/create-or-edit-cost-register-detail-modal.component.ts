@@ -25,7 +25,14 @@ import { CostElementSlotFieldsComponent } from '@app/shared/common/cost-element-
 @Component({
     selector: 'createOrEditCostRegisterDetailModal',
     templateUrl: './create-or-edit-cost-register-detail-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, CostElementSlotFieldsComponent],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        CostElementSlotFieldsComponent,
+    ],
 })
 export class CreateOrEditCostRegisterDetailModalComponent extends AppComponentBase {
     private _costRegisterDetailsService = inject(CostRegisterDetailsServiceProxy);
@@ -68,20 +75,35 @@ export class CreateOrEditCostRegisterDetailModalComponent extends AppComponentBa
 
     private loadLookups(): void {
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         this._accountInfosService
-            .getAll(new GetAllAccountInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAccountInfosInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.accountInfos.set(result.items));
 
         this._currenciesService
-            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.currencies.set(result.items));
     }
 
     onShown(): void {
-        document.getElementById(this.fixedCostRegisterId() ? 'CostRegisterDetail_WageTypeId' : 'CostRegisterDetail_CostRegisterId')?.focus();
+        document
+            .getElementById(
+                this.fixedCostRegisterId() ? 'CostRegisterDetail_WageTypeId' : 'CostRegisterDetail_CostRegisterId'
+            )
+            ?.focus();
     }
 
     save(): void {

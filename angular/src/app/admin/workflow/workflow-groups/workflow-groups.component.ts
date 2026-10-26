@@ -3,7 +3,11 @@ import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { WorkflowGroupDto, WorkflowGroupsServiceProxy, GetAllWorkflowGroupsInput } from '@shared/service-proxies/service-proxies';
+import {
+    WorkflowGroupDto,
+    WorkflowGroupsServiceProxy,
+    GetAllWorkflowGroupsInput,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
@@ -121,13 +125,17 @@ export class WorkflowGroupsComponent extends AppComponentBase implements OnInit 
     }
 
     deleteRecord(record: WorkflowGroupDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

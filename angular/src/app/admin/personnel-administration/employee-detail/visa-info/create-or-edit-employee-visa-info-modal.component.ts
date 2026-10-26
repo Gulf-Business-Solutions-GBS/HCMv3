@@ -56,7 +56,14 @@ export class CreateOrEditEmployeeVisaInfoModalComponent extends AppComponentBase
 
     private loadLookups(): void {
         this._passportTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.passportTypes.set(result.items));
     }
 

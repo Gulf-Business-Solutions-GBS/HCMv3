@@ -18,13 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditNationalityModal',
     templateUrl: './create-or-edit-nationality-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditNationalityModalComponent extends AppComponentBase {
     private _nationalitiesService = inject(NationalitiesServiceProxy);
@@ -42,7 +36,14 @@ export class CreateOrEditNationalityModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._nationalityGroupsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.nationalityGroups.set(result.items);
             });

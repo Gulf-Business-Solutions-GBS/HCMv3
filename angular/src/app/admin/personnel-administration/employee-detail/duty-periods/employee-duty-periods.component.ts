@@ -1,6 +1,10 @@
 import { Component, effect, inject, input, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { EmployeeDutyPeriodDto, EmployeeDutyPeriodsServiceProxy, GetAllEmployeeDutyPeriodsInput } from '@shared/service-proxies/service-proxies';
+import {
+    EmployeeDutyPeriodDto,
+    EmployeeDutyPeriodsServiceProxy,
+    GetAllEmployeeDutyPeriodsInput,
+} from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
@@ -78,7 +82,9 @@ export class EmployeeDutyPeriodsComponent extends AppComponentBase {
     }
 
     reloadPage(): void {
-        const rows = this.paginator() ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        const rows = this.paginator()
+            ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage
+            : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (this.paginator() ? this.paginator().getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 

@@ -2,7 +2,11 @@ import { Component, DestroyRef, OnInit, effect, inject, input, signal, untracked
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { EmployeeBasicPayDto, EmployeeBasicPaysServiceProxy, GetAllEmployeeBasicPaysInput } from '@shared/service-proxies/service-proxies';
+import {
+    EmployeeBasicPayDto,
+    EmployeeBasicPaysServiceProxy,
+    GetAllEmployeeBasicPaysInput,
+} from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
@@ -104,7 +108,9 @@ export class EmployeeBasicPaysComponent extends AppComponentBase implements OnIn
 
     reloadPage(): void {
         const paginator = this.paginator();
-        const rows = paginator ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        const rows = paginator
+            ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage
+            : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (paginator ? paginator.getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 

@@ -180,33 +180,29 @@ export class EssGetFeedbackModalComponent extends AppComponentBase {
             return;
         }
 
-        this.message.confirm(
-            this.l('AreYouSure'),
-            this.l('WithdrawFeedbackRequest'),
-            (confirmed: boolean) => {
-                if (!confirmed) {
-                    return;
-                }
-
-                this.withdrawing.set(candidate.employeeId);
-
-                const input = new CancelFeedbackInput();
-                input.workflowRequestId = this.workflowRequestId;
-                input.employeeId = candidate.employeeId!;
-
-                this._inboxService
-                    .cancelFeedbackRequest(input)
-                    .pipe(finalize(() => this.withdrawing.set(undefined)))
-                    .subscribe(() => {
-                        this.notify.success(this.l('FeedbackRequestWithdrawn'));
-
-                        // Re-read rather than patching the list in place: the server is what decides who
-                        // counts as asked, and a local edit would be a second opinion about that.
-                        this.load();
-                        this.requested.emit();
-                    });
+        this.message.confirm(this.l('AreYouSure'), this.l('WithdrawFeedbackRequest'), (confirmed: boolean) => {
+            if (!confirmed) {
+                return;
             }
-        );
+
+            this.withdrawing.set(candidate.employeeId);
+
+            const input = new CancelFeedbackInput();
+            input.workflowRequestId = this.workflowRequestId;
+            input.employeeId = candidate.employeeId!;
+
+            this._inboxService
+                .cancelFeedbackRequest(input)
+                .pipe(finalize(() => this.withdrawing.set(undefined)))
+                .subscribe(() => {
+                    this.notify.success(this.l('FeedbackRequestWithdrawn'));
+
+                    // Re-read rather than patching the list in place: the server is what decides who
+                    // counts as asked, and a local edit would be a second opinion about that.
+                    this.load();
+                    this.requested.emit();
+                });
+        });
     }
 
     /** Removes one chip from the pending selection. The same path as unticking, so the two cannot drift. */

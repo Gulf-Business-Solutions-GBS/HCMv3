@@ -36,7 +36,14 @@ export class CreateOrEditReportInfoDetailModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._reportInfosService
-            .getAll(new GetAllReportInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllReportInfosInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.reportInfos.set(result.items));
 
         if (!id) {

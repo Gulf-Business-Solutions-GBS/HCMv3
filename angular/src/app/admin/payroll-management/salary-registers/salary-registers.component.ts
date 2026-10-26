@@ -58,7 +58,14 @@ export class SalaryRegistersComponent extends AppComponentBase implements OnInit
     ngOnInit(): void {
         // The PrimeNG table's (onLazyLoad) triggers the first getSalaryRegisters(); only the filter list loads here.
         this._payrollAreasService
-            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPayrollAreasInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.payrollAreas.set(result.items));
     }
 
@@ -125,13 +132,17 @@ export class SalaryRegistersComponent extends AppComponentBase implements OnInit
     }
 
     deleteSalaryRegister(record: SalaryRegisterDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.employeeCode), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._salaryRegistersService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._salaryRegistersService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

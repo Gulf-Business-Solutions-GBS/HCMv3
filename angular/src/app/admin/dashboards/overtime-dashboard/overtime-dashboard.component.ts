@@ -118,13 +118,21 @@ export class OvertimeDashboardComponent extends AppComponentBase implements OnIn
 
     private readonly palette = ['#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#10b981', '#06b6d4', '#f97316', '#84cc16'];
 
-    readonly singleColour: Color = { name: 'otSingle', selectable: true, group: ScaleType.Ordinal, domain: ['#3b82f6'] };
+    readonly singleColour: Color = {
+        name: 'otSingle',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#3b82f6'],
+    };
     readonly costColour: Color = { name: 'otCost', selectable: true, group: ScaleType.Ordinal, domain: ['#10b981'] };
     readonly topColour: Color = { name: 'otTop', selectable: true, group: ScaleType.Ordinal, domain: ['#f59e0b'] };
 
     /** Stable colour per overtime type, shared by the stacked bars and the donut. */
     readonly typeColours = computed(() =>
-        (this.dashboard()?.types ?? []).map((t, i) => ({ name: this.pick(t.nameEn, t.nameAr), value: this.palette[i % this.palette.length] }))
+        (this.dashboard()?.types ?? []).map((t, i) => ({
+            name: this.pick(t.nameEn, t.nameAr),
+            value: this.palette[i % this.palette.length],
+        }))
     );
 
     readonly trendResults = computed(() =>

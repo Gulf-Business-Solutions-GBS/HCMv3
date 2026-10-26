@@ -125,17 +125,32 @@ export class AttendanceDashboardComponent extends AppComponentBase implements On
 
     // ------------------------------------------------------------ chart data
 
-    readonly singleColour: Color = { name: 'taSingle', selectable: true, group: ScaleType.Ordinal, domain: ['#10b981'] };
+    readonly singleColour: Color = {
+        name: 'taSingle',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#10b981'],
+    };
     readonly redColour: Color = { name: 'taRed', selectable: true, group: ScaleType.Ordinal, domain: ['#ef4444'] };
     readonly amberColour: Color = { name: 'taAmber', selectable: true, group: ScaleType.Ordinal, domain: ['#f59e0b'] };
-    readonly violetColour: Color = { name: 'taViolet', selectable: true, group: ScaleType.Ordinal, domain: ['#8b5cf6'] };
+    readonly violetColour: Color = {
+        name: 'taViolet',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#8b5cf6'],
+    };
     readonly trendColour: Color = {
         name: 'taTrend',
         selectable: true,
         group: ScaleType.Ordinal,
         domain: ['#ef4444', '#f59e0b', '#8b5cf6'],
     };
-    readonly weekdayColour: Color = { name: 'taWeekday', selectable: true, group: ScaleType.Ordinal, domain: ['#f59e0b', '#ef4444'] };
+    readonly weekdayColour: Color = {
+        name: 'taWeekday',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#f59e0b', '#ef4444'],
+    };
 
     readonly trendIsDaily = computed(() => this.dashboard()?.granularity === AttendanceDashboardGranularity.Day);
 
@@ -158,7 +173,10 @@ export class AttendanceDashboardComponent extends AppComponentBase implements On
     readonly hasData = computed(() => (this.dashboard()?.kpis.workingDays ?? 0) > 0);
 
     readonly orgUnitResults = computed<ChartItem[]>(() =>
-        (this.dashboard()?.byOrgUnit ?? []).map((b) => ({ name: this.orgUnitLabel(b), value: b.attendanceRatePercent ?? 0 }))
+        (this.dashboard()?.byOrgUnit ?? []).map((b) => ({
+            name: this.orgUnitLabel(b),
+            value: b.attendanceRatePercent ?? 0,
+        }))
     );
 
     readonly weekdayResults = computed(() =>
@@ -456,7 +474,9 @@ export class AttendanceDashboardComponent extends AppComponentBase implements On
 
     exportList(): void {
         this.exportToExcel(
-            this.detailIsPunches() ? AttendanceDashboardExportPart.PunchRequests : AttendanceDashboardExportPart.Exceptions
+            this.detailIsPunches()
+                ? AttendanceDashboardExportPart.PunchRequests
+                : AttendanceDashboardExportPart.Exceptions
         );
     }
 

@@ -28,14 +28,18 @@ export class CreateOrEditEmployeeSubGroupAssetAllowanceModalComponent extends Ap
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditEmployeeSubGroupAssetAllowanceDto>(new CreateOrEditEmployeeSubGroupAssetAllowanceDto());
+    readonly record = signal<CreateOrEditEmployeeSubGroupAssetAllowanceDto>(
+        new CreateOrEditEmployeeSubGroupAssetAllowanceDto()
+    );
     readonly wageTypes = signal<WageTypeDto[]>([]);
 
     show(employeeSubGroupId: number, id?: number): void {
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!id) {

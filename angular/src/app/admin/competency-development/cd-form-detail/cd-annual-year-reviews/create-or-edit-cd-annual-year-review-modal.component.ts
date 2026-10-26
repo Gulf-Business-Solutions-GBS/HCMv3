@@ -41,11 +41,21 @@ export class CreateOrEditCDAnnualYearReviewModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._competenciesService
-            .getAll(new GetAllCompetenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, competencyTypeId: undefined }))
+            .getAll(
+                new GetAllCompetenciesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    competencyTypeId: undefined,
+                })
+            )
             .subscribe((result) => this.competencies.set(result.items));
 
         this._cdRatingsService
-            .getAll(new GetAllCDRatingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCDRatingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.cdRatings.set(result.items));
 
         if (!id) {

@@ -107,7 +107,11 @@ export class EmployeeSocialSecurityReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeSocialSecurityReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetEmployeeSocialSecurityReportInput {
         return new GetEmployeeSocialSecurityReportInput({
             fromDate: undefined,
             toDate: undefined,

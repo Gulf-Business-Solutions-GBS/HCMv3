@@ -18,7 +18,11 @@ import { EssList } from '../shared/ess-list';
 import { EssListHeadComponent } from '../shared/ess-list-head.component';
 import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
-import { LetterRequestFormComponent, LetterRequestFormValue, emptyLetterRequestForm } from './letter-request-form.component';
+import {
+    LetterRequestFormComponent,
+    LetterRequestFormValue,
+    emptyLetterRequestForm,
+} from './letter-request-form.component';
 
 /**
  * Self-service letter requests -- salary certificates, to-whom-it-may-concern letters, and the rest.
@@ -59,10 +63,20 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
 
             // As a number where it is one, so 9 sorts before 10. A draft has no number yet and sorts as the
             // newest; a letter HR recorded was never requested and sorts below everything that was.
-            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : row.isDraft ? Number.MAX_SAFE_INTEGER : 0),
+            sort: (row) =>
+                row.requestNumber
+                    ? Number(row.requestNumber) || row.requestNumber
+                    : row.isDraft
+                      ? Number.MAX_SAFE_INTEGER
+                      : 0,
         },
         { key: 'type', label: 'DocumentType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'effectiveDate', label: 'EffectiveDate', text: (row) => this.detailDate(row.effectiveDate), sort: (row) => row.effectiveDate?.toMillis() },
+        {
+            key: 'effectiveDate',
+            label: 'EffectiveDate',
+            text: (row) => this.detailDate(row.effectiveDate),
+            sort: (row) => row.effectiveDate?.toMillis(),
+        },
         { key: 'addressedTo', label: 'AddressedTo', text: (row) => this.addressee(row) },
         {
             key: 'status',

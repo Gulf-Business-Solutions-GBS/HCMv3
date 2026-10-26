@@ -144,13 +144,17 @@ export class ExecutionLogsComponent extends AppComponentBase implements OnInit {
     }
 
     deleteRecord(record: ExecutionLogDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.screenName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.screenName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

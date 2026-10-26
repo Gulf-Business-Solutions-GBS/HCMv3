@@ -67,7 +67,14 @@ export class InterviewDetailsComponent extends AppComponentBase implements OnIni
             return;
         }
         this._applicationStatusesService
-            .getAll(new GetAllApplicationStatusesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, vacancyId: undefined }))
+            .getAll(
+                new GetAllApplicationStatusesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    vacancyId: undefined,
+                })
+            )
             .subscribe((result) => this.applicationStatuses.set(result.items));
     }
 

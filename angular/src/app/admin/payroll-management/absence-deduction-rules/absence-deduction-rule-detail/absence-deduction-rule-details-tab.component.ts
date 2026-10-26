@@ -146,13 +146,17 @@ export class AbsenceDeductionRuleDetailsTabComponent extends AppComponentBase im
     deleteRecord(record: AbsenceDedRuleDetailDto): void {
         // Lines have no name of their own; the period identifies one within its rule.
         const period = `${record.startDate?.toISODate() ?? ''} - ${record.endDate?.toISODate() ?? ''}`;
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', period), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._absenceDedRuleDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', period),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._absenceDedRuleDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

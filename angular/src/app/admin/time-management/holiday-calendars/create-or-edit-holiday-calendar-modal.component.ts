@@ -1,9 +1,6 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import {
-    CreateOrEditHolidayCalendarDto,
-    HolidayCalendarsServiceProxy,
-} from '@shared/service-proxies/service-proxies';
+import { CreateOrEditHolidayCalendarDto, HolidayCalendarsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -15,13 +12,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditHolidayCalendarModal',
     templateUrl: './create-or-edit-holiday-calendar-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditHolidayCalendarModalComponent extends AppComponentBase {
     private _holidayCalendarsService = inject(HolidayCalendarsServiceProxy);

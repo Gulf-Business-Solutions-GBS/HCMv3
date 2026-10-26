@@ -40,7 +40,9 @@ export class CreateOrEditEmployeeDependantExceptionModalComponent extends AppCom
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditEmployeeDependantExceptionDto>(new CreateOrEditEmployeeDependantExceptionDto());
+    readonly record = signal<CreateOrEditEmployeeDependantExceptionDto>(
+        new CreateOrEditEmployeeDependantExceptionDto()
+    );
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
     readonly isNew = signal<boolean>(false);
@@ -52,7 +54,10 @@ export class CreateOrEditEmployeeDependantExceptionModalComponent extends AppCom
             recordType: 'EmployeeDependantException',
             record: this.record,
             isNew: this.isNew,
-            keys: () => ({ EmployeeDependantId: this.record().employeeDependantId, ExceptionBenefitType: this.record().exceptionBenefitType }),
+            keys: () => ({
+                EmployeeDependantId: this.record().employeeDependantId,
+                ExceptionBenefitType: this.record().exceptionBenefitType,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -69,7 +74,14 @@ export class CreateOrEditEmployeeDependantExceptionModalComponent extends AppCom
         this.active.set(true);
 
         this._employeeDependantsService
-            .getAll(new GetAllEmployeeDependantsInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeDependantsInput({
+                    employeeId: undefined,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeDependants.set(result.items));
 
         if (!id) {

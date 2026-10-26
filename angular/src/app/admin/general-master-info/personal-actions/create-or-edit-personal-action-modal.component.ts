@@ -1,9 +1,6 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import {
-    CreateOrEditPersonalActionDto,
-    PersonalActionsServiceProxy,
-} from '@shared/service-proxies/service-proxies';
+import { CreateOrEditPersonalActionDto, PersonalActionsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -15,13 +12,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditPersonalActionModal',
     templateUrl: './create-or-edit-personal-action-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditPersonalActionModalComponent extends AppComponentBase {
     private _personalActionsService = inject(PersonalActionsServiceProxy);

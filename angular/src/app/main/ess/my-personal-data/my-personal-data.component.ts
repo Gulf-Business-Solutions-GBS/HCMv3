@@ -103,7 +103,8 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
             text: (row) => row.requestNumber,
 
             // As a number where it is one, so 9 sorts before 10. A draft has no number yet and sorts as the newest.
-            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : Number.MAX_SAFE_INTEGER),
+            sort: (row) =>
+                row.requestNumber ? Number(row.requestNumber) || row.requestNumber : Number.MAX_SAFE_INTEGER,
         },
         {
             key: 'changes',
@@ -200,7 +201,11 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
      * rather than left out, so the menu always looks the same.
      */
     private menuItems(row: MyPersonalDataChangeDto): MenuItem[] {
-        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({ label: this.l(key), disabled: !enabled, command });
+        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({
+            label: this.l(key),
+            disabled: !enabled,
+            command,
+        });
 
         return [
             item('Attachments', true, () => this.toggleAttachments(row)),
@@ -248,7 +253,9 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
                 // While it is still the employee's own draft, so the approver finds the proof already there.
                 await this.personalDataForm()?.attachPending(draftId);
 
-                const result = await firstValueFrom(this._service.submitMyPersonalDataChangeDraft(new EntityDto({ id: draftId })));
+                const result = await firstValueFrom(
+                    this._service.submitMyPersonalDataChangeDraft(new EntityDto({ id: draftId }))
+                );
 
                 this.notifySubmitted(result.submittedForApproval);
             });
@@ -415,7 +422,14 @@ export class MyPersonalDataComponent extends MyRequestComponentBase<MyPersonalDa
                 continue;
             }
 
-            if (!isPersonalDataFieldChanged(field, { employeeDisplay: '', values: shaped, original: onFile, comments: '' })) {
+            if (
+                !isPersonalDataFieldChanged(field, {
+                    employeeDisplay: '',
+                    values: shaped,
+                    original: onFile,
+                    comments: '',
+                })
+            ) {
                 continue;
             }
 

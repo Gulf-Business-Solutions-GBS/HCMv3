@@ -50,13 +50,27 @@ export class CreateOrEditRosterDutyScheduleModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._dutyPeriodsService
-            .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.dutyPeriods.set(result.items);
             });
 
         this._holidayCalendarsService
-            .getAll(new GetAllHolidayCalendarsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllHolidayCalendarsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.holidayCalendars.set(result.items);
             });

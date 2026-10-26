@@ -90,15 +90,36 @@ export class CreateOrEditEmployeeInsuranceModalComponent extends AppComponentBas
         this.balanceEmployeeContribution.set(balances?.balanceEmployeeContribution);
 
         this._insurancePlansService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.insurancePlans.set(result.items));
 
         this._insuranceProvidersService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.insuranceProviders.set(result.items));
 
         this._employeeDependantsService
-            .getAll(new GetAllEmployeeDependantsInput({ employeeId, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeDependantsInput({
+                    employeeId,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeDependants.set(result.items));
 
         if (!id) {

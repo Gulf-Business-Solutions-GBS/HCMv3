@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditDisciplinaryTypeDetailModal',
     templateUrl: './create-or-edit-disciplinary-type-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditDisciplinaryTypeDetailModalComponent extends AppComponentBase {
     private _disciplinaryTypeDetailService = inject(DisciplinaryTypeDetailsServiceProxy);
@@ -39,7 +33,9 @@ export class CreateOrEditDisciplinaryTypeDetailModalComponent extends AppCompone
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly disciplinaryTypeDetail = signal<CreateOrEditDisciplinaryTypeDetailDto>(new CreateOrEditDisciplinaryTypeDetailDto());
+    readonly disciplinaryTypeDetail = signal<CreateOrEditDisciplinaryTypeDetailDto>(
+        new CreateOrEditDisciplinaryTypeDetailDto()
+    );
     readonly disciplinaryTypes = signal<DisciplinaryTypeDto[]>([]);
     readonly disciplinaryDeductionTypes = signal<DisciplinaryDeductionTypeDto[]>([]);
 
@@ -47,13 +43,27 @@ export class CreateOrEditDisciplinaryTypeDetailModalComponent extends AppCompone
         this.active.set(true);
 
         this._disciplinaryTypesService
-            .getAll(new GetAllDisciplinaryTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDisciplinaryTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.disciplinaryTypes.set(result.items);
             });
 
         this._disciplinaryDeductionTypesService
-            .getAll(new GetAllDisciplinaryDeductionTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDisciplinaryDeductionTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.disciplinaryDeductionTypes.set(result.items);
             });
@@ -62,10 +72,12 @@ export class CreateOrEditDisciplinaryTypeDetailModalComponent extends AppCompone
             this.disciplinaryTypeDetail.set(new CreateOrEditDisciplinaryTypeDetailDto());
             this.modal().show();
         } else {
-            this._disciplinaryTypeDetailService.getDisciplinaryTypeDetailForEdit(disciplinaryTypeDetailId).subscribe((result) => {
-                this.disciplinaryTypeDetail.set(result.disciplinaryTypeDetail);
-                this.modal().show();
-            });
+            this._disciplinaryTypeDetailService
+                .getDisciplinaryTypeDetailForEdit(disciplinaryTypeDetailId)
+                .subscribe((result) => {
+                    this.disciplinaryTypeDetail.set(result.disciplinaryTypeDetail);
+                    this.modal().show();
+                });
         }
     }
 

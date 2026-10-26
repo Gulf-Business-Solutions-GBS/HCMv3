@@ -66,20 +66,31 @@ export class CreateOrEditOrgUnitWageAccGroupModalComponent extends AppComponentB
         this.isNew.set(!orgUnitWageAccGroupId);
         this.active.set(true);
 
-        this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));
+        this._organizationUnitService
+            .getOrganizationUnits()
+            .subscribe((result) => this.organizationUnits.set(result.items ?? []));
 
         this._wageAccGroupsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.wageAccGroups.set(result.items));
 
         if (!orgUnitWageAccGroupId) {
             this.orgUnitWageAccGroup.set(new CreateOrEditOrgUnitWageAccGroupDto());
             this.modal().show();
         } else {
-            this._orgUnitWageAccGroupsService.getOrgUnitWageAccGroupForEdit(orgUnitWageAccGroupId).subscribe((result) => {
-                this.orgUnitWageAccGroup.set(result.orgUnitWageAccGroup);
-                this.modal().show();
-            });
+            this._orgUnitWageAccGroupsService
+                .getOrgUnitWageAccGroupForEdit(orgUnitWageAccGroupId)
+                .subscribe((result) => {
+                    this.orgUnitWageAccGroup.set(result.orgUnitWageAccGroup);
+                    this.modal().show();
+                });
         }
     }
 

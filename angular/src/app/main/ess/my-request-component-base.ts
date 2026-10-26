@@ -33,7 +33,9 @@ import { EssRequestDetailField, EssRequestDetailModalComponent } from './shared/
     template: '',
     standalone: false,
 })
-export abstract class MyRequestComponentBase<TDto extends { id: number; workflowStatus?: RequestStatus }> extends AppComponentBase {
+export abstract class MyRequestComponentBase<
+    TDto extends { id: number; workflowStatus?: RequestStatus },
+> extends AppComponentBase {
     readonly loading = signal(false);
     readonly saving = signal(false);
     readonly notLinked = signal(false);
@@ -59,7 +61,8 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
      * waiting for the list to arrive so it can be opened. Used once: reloading the list after a withdrawal
      * must not pop the same dialog open again.
      */
-    private requestToOpen: number | undefined = Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
+    private requestToOpen: number | undefined =
+        Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
 
     /**
      * Declared here rather than on each screen so every list opens the same dialog. The query resolves
@@ -198,7 +201,9 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
     reload(): void {
         this.loading.set(true);
 
-        this.fetch(new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined }))
+        this.fetch(
+            new GetMyRequestsInput({ includeHistory: false, maxResultCount: 200, skipCount: 0, sorting: undefined })
+        )
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
                 next: (result) => {
@@ -228,7 +233,9 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
 
         this.requestToOpen = undefined;
 
-        const row = this.rows().find((item) => (item as TDto & { workflowRequestId?: number }).workflowRequestId === requestId);
+        const row = this.rows().find(
+            (item) => (item as TDto & { workflowRequestId?: number }).workflowRequestId === requestId
+        );
 
         if (row) {
             this.openDetail(row);
@@ -249,7 +256,9 @@ export abstract class MyRequestComponentBase<TDto extends { id: number; workflow
      * a screen hosting several lists can try the next one.
      */
     openRequest(requestId: number): boolean {
-        const row = this.rows().find((item) => (item as TDto & { workflowRequestId?: number }).workflowRequestId === requestId);
+        const row = this.rows().find(
+            (item) => (item as TDto & { workflowRequestId?: number }).workflowRequestId === requestId
+        );
 
         if (!row) {
             return false;

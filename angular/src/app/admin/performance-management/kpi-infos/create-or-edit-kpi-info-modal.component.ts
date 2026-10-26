@@ -41,11 +41,26 @@ export class CreateOrEditKpiInfoModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._kpiCategoriesService
-            .getAll(new GetAllKpiCategoriesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllKpiCategoriesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.kpiCategories.set(result.items));
 
         this._competenciesService
-            .getAll(new GetAllCompetenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, competencyTypeId: undefined }))
+            .getAll(
+                new GetAllCompetenciesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    competencyTypeId: undefined,
+                })
+            )
             .subscribe((result) => this.competencies.set(result.items));
 
         if (!id) {

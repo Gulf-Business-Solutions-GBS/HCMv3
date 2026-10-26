@@ -30,7 +30,9 @@ export class CreateOrEditIndemnityPayRuleDetailModalComponent extends AppCompone
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly indemnityPayRuleDetail = signal<CreateOrEditIndemnityPayRuleDetailDto>(new CreateOrEditIndemnityPayRuleDetailDto());
+    readonly indemnityPayRuleDetail = signal<CreateOrEditIndemnityPayRuleDetailDto>(
+        new CreateOrEditIndemnityPayRuleDetailDto()
+    );
     readonly indemnityPayRules = signal<IndemnityPayRuleDto[]>([]);
 
     readonly units = [
@@ -49,10 +51,12 @@ export class CreateOrEditIndemnityPayRuleDetailModalComponent extends AppCompone
             this.indemnityPayRuleDetail.set(new CreateOrEditIndemnityPayRuleDetailDto());
             this.modal().show();
         } else {
-            this._indemnityPayRuleDetailsService.getIndemnityPayRuleDetailForEdit(indemnityPayRuleDetailId).subscribe((result) => {
-                this.indemnityPayRuleDetail.set(result.indemnityPayRuleDetail);
-                this.modal().show();
-            });
+            this._indemnityPayRuleDetailsService
+                .getIndemnityPayRuleDetailForEdit(indemnityPayRuleDetailId)
+                .subscribe((result) => {
+                    this.indemnityPayRuleDetail.set(result.indemnityPayRuleDetail);
+                    this.modal().show();
+                });
         }
     }
 

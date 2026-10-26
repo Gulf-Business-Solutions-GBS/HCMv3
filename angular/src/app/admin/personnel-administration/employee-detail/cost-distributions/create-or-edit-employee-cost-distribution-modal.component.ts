@@ -61,7 +61,9 @@ export class CreateOrEditEmployeeCostDistributionModalComponent extends AppCompo
         this.isNew.set(!id);
         this.active.set(true);
 
-        this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));
+        this._organizationUnitService
+            .getOrganizationUnits()
+            .subscribe((result) => this.organizationUnits.set(result.items ?? []));
 
         if (!id) {
             const record = new CreateOrEditEmployeeCostDistributionDto();

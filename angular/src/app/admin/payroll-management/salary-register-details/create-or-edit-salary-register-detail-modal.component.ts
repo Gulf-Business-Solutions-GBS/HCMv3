@@ -29,7 +29,9 @@ export class CreateOrEditSalaryRegisterDetailModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly salaryRegisterDetail = signal<CreateOrEditSalaryRegisterDetailDto>(new CreateOrEditSalaryRegisterDetailDto());
+    readonly salaryRegisterDetail = signal<CreateOrEditSalaryRegisterDetailDto>(
+        new CreateOrEditSalaryRegisterDetailDto()
+    );
 
     readonly wageTypes = signal<WageTypeDto[]>([]);
 
@@ -37,17 +39,21 @@ export class CreateOrEditSalaryRegisterDetailModalComponent extends AppComponent
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!salaryRegisterDetailId) {
             this.salaryRegisterDetail.set(new CreateOrEditSalaryRegisterDetailDto());
             this.modal().show();
         } else {
-            this._salaryRegisterDetailsService.getSalaryRegisterDetailForEdit(salaryRegisterDetailId).subscribe((result) => {
-                this.salaryRegisterDetail.set(result.salaryRegisterDetail);
-                this.modal().show();
-            });
+            this._salaryRegisterDetailsService
+                .getSalaryRegisterDetailForEdit(salaryRegisterDetailId)
+                .subscribe((result) => {
+                    this.salaryRegisterDetail.set(result.salaryRegisterDetail);
+                    this.modal().show();
+                });
         }
     }
 

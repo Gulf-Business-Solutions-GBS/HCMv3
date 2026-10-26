@@ -71,7 +71,9 @@ export class EmployeeLoanReportComponent extends AppComponentBase implements OnI
 
     ngOnInit(): void {
         this._loanTypeService
-            .getAll(new GetAllLoanTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllLoanTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => {
                 this.loanTypeOptions.set(
                     result.items.map((item) => ({ label: item.nameEn ?? item.code ?? '', value: item.code ?? '' }))

@@ -62,7 +62,15 @@ export class CreateOrEditBuildingContractModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._buildingsService
-            .getAll(new GetAllBuildingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, locationId: undefined }))
+            .getAll(
+                new GetAllBuildingsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    locationId: undefined,
+                })
+            )
             .subscribe((result) => this.buildings.set(result.items));
 
         if (!id) {

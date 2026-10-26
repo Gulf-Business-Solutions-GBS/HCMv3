@@ -46,15 +46,31 @@ export class CreateOrEditPAEmployeeRatingModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._paEmployeeReviewersService
-            .getAll(new GetAllPAEmployeeReviewersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, paEmployeeId }))
+            .getAll(
+                new GetAllPAEmployeeReviewersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    paEmployeeId,
+                })
+            )
             .subscribe((result) => this.paEmployeeReviewers.set(result.items));
 
         this._paEmployeeDetailsService
-            .getAll(new GetAllPAEmployeeDetailsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, paEmployeeId }))
+            .getAll(
+                new GetAllPAEmployeeDetailsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    paEmployeeId,
+                })
+            )
             .subscribe((result) => this.paEmployeeDetails.set(result.items));
 
         this._paRatingsService
-            .getAll(new GetAllPARatingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPARatingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.paRatings.set(result.items));
 
         if (!id) {

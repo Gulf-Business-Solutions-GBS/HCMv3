@@ -113,13 +113,17 @@ export class IndemnityPayRuleDetailsComponent extends AppComponentBase implement
     }
 
     deleteIndemnityPayRuleDetail(record: IndemnityPayRuleDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.id), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._indemnityPayRuleDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.id),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._indemnityPayRuleDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

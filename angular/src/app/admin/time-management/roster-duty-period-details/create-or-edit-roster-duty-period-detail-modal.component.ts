@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditRosterDutyPeriodDetailModal',
     templateUrl: './create-or-edit-roster-duty-period-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditRosterDutyPeriodDetailModalComponent extends AppComponentBase {
     private _rosterDutyPeriodDetailsService = inject(RosterDutyPeriodDetailsServiceProxy);
@@ -39,7 +33,9 @@ export class CreateOrEditRosterDutyPeriodDetailModalComponent extends AppCompone
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly rosterDutyPeriodDetail = signal<CreateOrEditRosterDutyPeriodDetailDto>(new CreateOrEditRosterDutyPeriodDetailDto());
+    readonly rosterDutyPeriodDetail = signal<CreateOrEditRosterDutyPeriodDetailDto>(
+        new CreateOrEditRosterDutyPeriodDetailDto()
+    );
     readonly rosterDutyPeriods = signal<RosterDutyPeriodDto[]>([]);
     readonly dailyDuties = signal<DailyDutyDto[]>([]);
 
@@ -47,13 +43,27 @@ export class CreateOrEditRosterDutyPeriodDetailModalComponent extends AppCompone
         this.active.set(true);
 
         this._rosterDutyPeriodsService
-            .getAll(new GetAllRosterDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRosterDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.rosterDutyPeriods.set(result.items);
             });
 
         this._dailyDutiesService
-            .getAll(new GetAllDailyDutiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDailyDutiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.dailyDuties.set(result.items);
             });
@@ -62,10 +72,12 @@ export class CreateOrEditRosterDutyPeriodDetailModalComponent extends AppCompone
             this.rosterDutyPeriodDetail.set(new CreateOrEditRosterDutyPeriodDetailDto());
             this.modal().show();
         } else {
-            this._rosterDutyPeriodDetailsService.getRosterDutyPeriodDetailForEdit(rosterDutyPeriodDetailId).subscribe((result) => {
-                this.rosterDutyPeriodDetail.set(result.rosterDutyPeriodDetail);
-                this.modal().show();
-            });
+            this._rosterDutyPeriodDetailsService
+                .getRosterDutyPeriodDetailForEdit(rosterDutyPeriodDetailId)
+                .subscribe((result) => {
+                    this.rosterDutyPeriodDetail.set(result.rosterDutyPeriodDetail);
+                    this.modal().show();
+                });
         }
     }
 

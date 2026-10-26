@@ -43,7 +43,9 @@ export class CreateOrEditSurveyDetailModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._surveysService
-            .getAll(new GetAllSurveysInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSurveysInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.surveys.set(result.items));
 
         if (!surveyDetailId) {

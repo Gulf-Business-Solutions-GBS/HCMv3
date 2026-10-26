@@ -115,13 +115,17 @@ export class DocumentTypesComponent extends AppComponentBase implements OnInit {
     }
 
     deleteDocumentType(record: DocumentTypeDto): void {
-        this.message.confirm(this.l('DocumentTypeDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._documentTypesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('DocumentTypeDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._documentTypesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

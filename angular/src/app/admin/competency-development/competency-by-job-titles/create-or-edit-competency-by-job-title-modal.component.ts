@@ -39,7 +39,9 @@ export class CreateOrEditCompetencyByJobTitleModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly competencyByJobTitle = signal<CreateOrEditCompetencyByJobTitleDto>(new CreateOrEditCompetencyByJobTitleDto());
+    readonly competencyByJobTitle = signal<CreateOrEditCompetencyByJobTitleDto>(
+        new CreateOrEditCompetencyByJobTitleDto()
+    );
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
     readonly isNew = signal<boolean>(false);
@@ -62,7 +64,14 @@ export class CreateOrEditCompetencyByJobTitleModalComponent extends AppComponent
         this.active.set(true);
 
         this._jobTitlesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.jobTitles.set(result.items));
 
         if (!id) {

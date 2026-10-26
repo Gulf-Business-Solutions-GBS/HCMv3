@@ -113,13 +113,17 @@ export class GratuityAccrualSummariesComponent extends AppComponentBase implemen
     }
 
     deleteGratuityAccrualSummary(record: GratuityAccrualSummaryDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.employeeCode), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._gratuityAccrualSummariesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._gratuityAccrualSummariesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

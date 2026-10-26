@@ -51,13 +51,24 @@ export class CreateOrEditSysUserOrgUnitDataModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
-        this._roleService.getRoles(new GetRolesInput({ permissions: undefined })).subscribe((result) => this.roles.set(result.items));
+        this._roleService
+            .getRoles(new GetRolesInput({ permissions: undefined }))
+            .subscribe((result) => this.roles.set(result.items));
 
         this._organizationUnitTypesService
-            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOrganizationUnitTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.orgLevels.set(result.items));
 
         this._organizationUnitService.getAll().subscribe((result) => this.organizationUnits.set(result));

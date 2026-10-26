@@ -60,7 +60,9 @@ export class CreateOrEditKpiByOrgUnitModalComponent extends AppComponentBase {
         this.isNew.set(!id);
         this.active.set(true);
 
-        this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));
+        this._organizationUnitService
+            .getOrganizationUnits()
+            .subscribe((result) => this.organizationUnits.set(result.items ?? []));
 
         if (!id) {
             this.kpiByOrgUnit.set(new CreateOrEditKpiByOrgUnitDto());

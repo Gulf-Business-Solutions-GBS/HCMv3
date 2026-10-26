@@ -63,13 +63,22 @@ export class CreateOrEditTravelModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._service.getApplicantsForLookup().subscribe((result) => this.applicants.set(result.items));
 
         this._travelTypesService
-            .getAll(new GetAllTravelTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTravelTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.travelTypes.set(result.items));
 
         if (!id) {

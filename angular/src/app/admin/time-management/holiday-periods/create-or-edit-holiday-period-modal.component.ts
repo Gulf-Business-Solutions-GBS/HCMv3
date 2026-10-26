@@ -45,7 +45,15 @@ export class CreateOrEditHolidayPeriodModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._holidaysService
-            .getAll(new GetAllHolidaysInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, holidayCalendarId: undefined }))
+            .getAll(
+                new GetAllHolidaysInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    holidayCalendarId: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.holidays.set(result.items);
             });

@@ -79,23 +79,60 @@ export class CreateOrEditTravelDetailModalComponent extends AppComponentBase {
         this.calcEmployeeSubGroupId.set(undefined);
 
         this._travelsService
-            .getAll(new GetAllTravelsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined, applicantId: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTravelsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                    applicantId: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.travels.set(result.items));
 
         this._travelDestinationsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.destinations.set(result.items));
 
         this._hotelsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.hotels.set(result.items));
 
         this._travelAirlinesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.travelAirlines.set(result.items));
 
         this._employeeGroupsService
-            .getAll(new GetAllEmployeeGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeeGroupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.employeeGroups.set(result.items));
 
         this._employeeSubGroupsService
@@ -186,13 +223,20 @@ export class CreateOrEditTravelDetailModalComponent extends AppComponentBase {
         this.record.set(next);
     }
 
-    updateTimeField(field: keyof CreateOrEditTravelDetailDto, dateField: keyof CreateOrEditTravelDetailDto, value: string): void {
+    updateTimeField(
+        field: keyof CreateOrEditTravelDetailDto,
+        dateField: keyof CreateOrEditTravelDetailDto,
+        value: string
+    ): void {
         const current = this.record();
         if (!value) {
             (current as any)[field] = undefined;
         } else {
             const base = (current as any)[dateField] ?? DateTime.now();
-            (current as any)[field] = DateTime.fromFormat(`${base.toFormat('yyyy-MM-dd')} ${value}`, 'yyyy-MM-dd HH:mm');
+            (current as any)[field] = DateTime.fromFormat(
+                `${base.toFormat('yyyy-MM-dd')} ${value}`,
+                'yyyy-MM-dd HH:mm'
+            );
         }
         const next = new CreateOrEditTravelDetailDto();
         Object.assign(next, current);

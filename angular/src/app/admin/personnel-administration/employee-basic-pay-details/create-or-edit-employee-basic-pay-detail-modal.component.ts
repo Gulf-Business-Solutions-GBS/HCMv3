@@ -26,7 +26,14 @@ import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 @Component({
     selector: 'createOrEditEmployeeBasicPayDetailModal',
     templateUrl: './create-or-edit-employee-basic-pay-detail-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppComponentBase {
     private _service = inject(EmployeeBasicPayDetailsServiceProxy);
@@ -58,16 +65,27 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
 
         if (!this.presetEmployeeBasicPayId()) {
             this._employeeBasicPaysService
-                .getAll(new GetAllEmployeeBasicPaysInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+                .getAll(
+                    new GetAllEmployeeBasicPaysInput({
+                        employeeId: undefined,
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                    })
+                )
                 .subscribe((result) => this.employeeBasicPays.set(result.items));
         }
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         this._currenciesService
-            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.currencies.set(result.items));
 
         if (!id) {
@@ -87,7 +105,9 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
     }
 
     onShown(): void {
-        const firstFieldId = this.presetEmployeeBasicPayId() ? 'EmployeeBasicPayDetail_WageTypeId' : 'EmployeeBasicPayDetail_EmployeeBasicPayId';
+        const firstFieldId = this.presetEmployeeBasicPayId()
+            ? 'EmployeeBasicPayDetail_WageTypeId'
+            : 'EmployeeBasicPayDetail_EmployeeBasicPayId';
         document.getElementById(firstFieldId)?.focus();
     }
 

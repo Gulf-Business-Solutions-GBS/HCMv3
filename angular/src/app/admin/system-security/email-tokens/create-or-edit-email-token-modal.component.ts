@@ -36,7 +36,14 @@ export class CreateOrEditEmailTokenModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._emailTemplatesService
-            .getAll(new GetAllEmailTemplatesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmailTemplatesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.emailTemplates.set(result.items));
 
         if (!id) {

@@ -225,11 +225,7 @@ export class EmployeeIncentiveReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetEmployeeIncentiveReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeIncentiveReportInput {
         return new GetEmployeeIncentiveReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

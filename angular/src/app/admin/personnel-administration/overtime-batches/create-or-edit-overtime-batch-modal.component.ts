@@ -31,7 +31,15 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditOvertimeBatchModal',
     templateUrl: './create-or-edit-overtime-batch-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, Tooltip, ButtonBusyDirective, BusyIfDirective, DecimalPipe, LocalizePipe],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        Tooltip,
+        ButtonBusyDirective,
+        BusyIfDirective,
+        DecimalPipe,
+        LocalizePipe,
+    ],
 })
 export class CreateOrEditOvertimeBatchModalComponent extends AppComponentBase {
     private _service = inject(OvertimeBatchesServiceProxy);
@@ -98,7 +106,9 @@ export class CreateOrEditOvertimeBatchModalComponent extends AppComponentBase {
             this.endDate.set(result.overtimeBatch.endDate);
             this.comments.set(result.overtimeBatch.comments);
             this.lines.set(result.details ?? []);
-            this.isEditable.set(result.isEditable && this.permission.isGranted('Pages.PersonnelAdministration.OvertimeBatches.Edit'));
+            this.isEditable.set(
+                result.isEditable && this.permission.isGranted('Pages.PersonnelAdministration.OvertimeBatches.Edit')
+            );
             this.workflowStatus.set(result.workflowStatus);
             this.requestNumber.set(result.requestNumber);
             this.canResubmit.set(result.canResubmit);

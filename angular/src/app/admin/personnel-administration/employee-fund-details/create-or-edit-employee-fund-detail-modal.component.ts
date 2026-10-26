@@ -56,7 +56,14 @@ export class CreateOrEditEmployeeFundDetailModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._employeeFundsService
-            .getAll(new GetAllEmployeeFundsInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeFundsInput({
+                    employeeId: undefined,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeFunds.set(result.items));
 
         if (!id) {

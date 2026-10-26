@@ -1,7 +1,11 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { PunchNotificationLogDto, PunchNotificationLogsServiceProxy, GetAllPunchNotificationLogsInput } from '@shared/service-proxies/service-proxies';
+import {
+    PunchNotificationLogDto,
+    PunchNotificationLogsServiceProxy,
+    GetAllPunchNotificationLogsInput,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -111,13 +115,17 @@ export class PunchNotificationLogsComponent extends AppComponentBase implements 
     }
 
     deleteRecord(record: PunchNotificationLogDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.type), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.type),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

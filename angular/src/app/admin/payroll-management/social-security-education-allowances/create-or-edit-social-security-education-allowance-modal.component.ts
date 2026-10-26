@@ -46,15 +46,36 @@ export class CreateOrEditSocialSecurityEducationAllowanceModalComponent extends 
         this.active.set(true);
 
         this._socialSecuritiesService
-            .getAll(new GetAllSocialSecuritiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, nationalityId: undefined }))
+            .getAll(
+                new GetAllSocialSecuritiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    nationalityId: undefined,
+                })
+            )
             .subscribe((result) => this.socialSecurities.set(result.items));
 
         this._educationBranchesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.educationBranches.set(result.items));
 
         this._educationsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.educations.set(result.items));
 
         if (!socialSecurityEducationAllowanceId) {

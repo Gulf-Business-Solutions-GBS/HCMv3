@@ -86,7 +86,14 @@ export class CreateOrEditNotificationMasterModalComponent extends AppComponentBa
         this.formulaValid.set(true);
 
         this._notificationConfigsService
-            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNotificationConfigsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.notificationConfigs.set(result.items));
 
         if (!this.metadataLoaded) {

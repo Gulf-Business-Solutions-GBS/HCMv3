@@ -116,10 +116,26 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
         // The untitled first column holds the button that opens the row's legs: nothing to filter or sort by.
         { key: 'expand', label: '', text: () => '', filter: 'none' },
         { key: 'travelType', label: 'TravelType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.detailDate(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
         { key: 'purpose', label: 'TravelPurpose', text: (row) => row.travelPurpose },
-        { key: 'totalCost', label: 'TotalTravelCost', text: (row) => this.amount(row.totalTravelCost), sort: (row) => row.totalTravelCost, align: 'end' },
+        {
+            key: 'totalCost',
+            label: 'TotalTravelCost',
+            text: (row) => this.amount(row.totalTravelCost),
+            sort: (row) => row.totalTravelCost,
+            align: 'end',
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 

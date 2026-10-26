@@ -115,13 +115,17 @@ export class BudgetingGroupRateDetailsComponent extends AppComponentBase impleme
     }
 
     deleteBudgetingGroupRateDetail(record: BudgetingGroupRateDetailDto): void {
-        this.message.confirm(this.l('BudgetingGroupRateDetailDeleteWarningMessage'), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._budgetingGroupRateDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('BudgetingGroupRateDetailDeleteWarningMessage'),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._budgetingGroupRateDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

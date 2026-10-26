@@ -120,7 +120,11 @@ export class AppraisalReviewFormComponent extends AppComponentBase implements On
                 const edits: Record<number, LineEdit> = {};
                 for (const line of review.ratingLines ?? []) {
                     if (line.isOwn) {
-                        edits[line.id] = { ratingId: line.ratingId ?? undefined, marks: line.marks ?? 0, comments: line.comments ?? '' };
+                        edits[line.id] = {
+                            ratingId: line.ratingId ?? undefined,
+                            marks: line.marks ?? 0,
+                            comments: line.comments ?? '',
+                        };
                     }
                 }
 
@@ -135,7 +139,13 @@ export class AppraisalReviewFormComponent extends AppComponentBase implements On
     }
 
     edit(line: MyAppraisalRatingLineDto): LineEdit {
-        return this.edits()[line.id] ?? { ratingId: line.ratingId ?? undefined, marks: line.marks ?? 0, comments: line.comments ?? '' };
+        return (
+            this.edits()[line.id] ?? {
+                ratingId: line.ratingId ?? undefined,
+                marks: line.marks ?? 0,
+                comments: line.comments ?? '',
+            }
+        );
     }
 
     setRating(line: MyAppraisalRatingLineDto, ratingId: number | undefined): void {
@@ -197,7 +207,9 @@ export class AppraisalReviewFormComponent extends AppComponentBase implements On
                 .submitReview(this.reviewInput())
                 .pipe(finalize(() => this.saving.set(false)))
                 .subscribe((result) => {
-                    this.notify.success(this.l(result.stepApproved ? 'ReviewSubmittedAndStepApproved' : 'ReviewSubmittedSuccessfully'));
+                    this.notify.success(
+                        this.l(result.stepApproved ? 'ReviewSubmittedAndStepApproved' : 'ReviewSubmittedSuccessfully')
+                    );
                     this.load();
                     this.changed.emit();
                 });
@@ -251,11 +263,20 @@ export class AppraisalReviewFormComponent extends AppComponentBase implements On
 
         switch (this.kpiFrom) {
             case KpiFrom.JobTitle:
-                return (sources.jobTitles ?? []).map((s) => ({ id: s.id, label: dated(this.pick(s.nameEn, s.nameAr), s.startDate, s.endDate) }));
+                return (sources.jobTitles ?? []).map((s) => ({
+                    id: s.id,
+                    label: dated(this.pick(s.nameEn, s.nameAr), s.startDate, s.endDate),
+                }));
             case KpiFrom.OrganizationUnit:
-                return (sources.organizationUnits ?? []).map((s) => ({ id: s.id, label: dated(this.pick(s.nameEn, s.nameAr), s.startDate, s.endDate) }));
+                return (sources.organizationUnits ?? []).map((s) => ({
+                    id: s.id,
+                    label: dated(this.pick(s.nameEn, s.nameAr), s.startDate, s.endDate),
+                }));
             default:
-                return (sources.employees ?? []).map((p) => ({ id: p.id, label: `${p.code} - ${this.pick(p.fullNameEn, p.fullNameAr)}` }));
+                return (sources.employees ?? []).map((p) => ({
+                    id: p.id,
+                    label: `${p.code} - ${this.pick(p.fullNameEn, p.fullNameAr)}`,
+                }));
         }
     }
 
@@ -331,7 +352,9 @@ export class AppraisalReviewFormComponent extends AppComponentBase implements On
 
     statusLabel(): string {
         const status = this.review()?.workflowStatus;
-        return status === undefined || status === null ? this.l('Recorded') : this.l('WorkflowRequestStatus_' + RequestStatus[status]);
+        return status === undefined || status === null
+            ? this.l('Recorded')
+            : this.l('WorkflowRequestStatus_' + RequestStatus[status]);
     }
 
     score(value: number | undefined): string {

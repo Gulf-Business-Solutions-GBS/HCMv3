@@ -58,7 +58,12 @@ export class MyPunchComponent extends MyRequestComponentBase<MyPunchRequestDto> 
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyPunchRequestDto>(this.rows, () => [
         { key: 'punchType', label: 'PunchType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'punchDate', label: 'PunchDate', text: (row) => this.detailDate(row.transDate), sort: (row) => row.transDate?.toMillis() },
+        {
+            key: 'punchDate',
+            label: 'PunchDate',
+            text: (row) => this.detailDate(row.transDate),
+            sort: (row) => row.transDate?.toMillis(),
+        },
         {
             key: 'punchTime',
             label: 'PunchTime',

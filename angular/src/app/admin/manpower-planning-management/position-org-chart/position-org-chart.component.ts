@@ -127,9 +127,7 @@ export class PositionOrgChartComponent extends AppComponentBase implements OnIni
         input.filter = filter;
         input.maxResultCount = 50;
 
-        this._positionOrgChartService
-            .searchNodes(input)
-            .subscribe((results) => this.searchResults.set(results ?? []));
+        this._positionOrgChartService.searchNodes(input).subscribe((results) => this.searchResults.set(results ?? []));
     }
 
     onSearchFilter(event: { filter: string }): void {
@@ -216,9 +214,7 @@ export class PositionOrgChartComponent extends AppComponentBase implements OnIni
     }
 
     private toCard(node: PositionOrgChartNodeDto, navigable: boolean): OrgChartCard {
-        const holderName = this.isRtl
-            ? node.holderFullNameAr || node.holderFullNameEn
-            : node.holderFullNameEn;
+        const holderName = this.isRtl ? node.holderFullNameAr || node.holderFullNameEn : node.holderFullNameEn;
 
         return {
             id: node.id,
@@ -230,9 +226,8 @@ export class PositionOrgChartComponent extends AppComponentBase implements OnIni
             name: node.isVacant ? this.l('Vacant') : (holderName ?? this.l('Vacant')),
             accentKey: null,
             avatar: {
-                imageUrl: node.holderHasPhoto && node.holderEmployeeId
-                    ? this.buildPhotoUrl(node.holderEmployeeId)
-                    : null,
+                imageUrl:
+                    node.holderHasPhoto && node.holderEmployeeId ? this.buildPhotoUrl(node.holderEmployeeId) : null,
                 // A vacant post gets the neutral figure: there is no gender to represent, and showing one
                 // would imply somebody is in the role.
                 fallback: node.isVacant

@@ -36,7 +36,15 @@ export class CreateOrEditFlatModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._floorsService
-            .getAll(new GetAllFloorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, buildingId: undefined }))
+            .getAll(
+                new GetAllFloorsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    buildingId: undefined,
+                })
+            )
             .subscribe((result) => this.floors.set(result.items));
 
         if (!id) {

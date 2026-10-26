@@ -133,13 +133,17 @@ export class AbsenceDeductionRulesComponent extends AppComponentBase implements 
     }
 
     deleteAbsenceDeductionRule(record: AbsenceDeductionRuleDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.ruleName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._absenceDeductionRulesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.ruleName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._absenceDeductionRulesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

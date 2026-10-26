@@ -33,7 +33,9 @@ export class CreateOrEditEmployeeSurveyDetailModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly employeeSurveyDetail = signal<CreateOrEditEmployeeSurveyDetailDto>(new CreateOrEditEmployeeSurveyDetailDto());
+    readonly employeeSurveyDetail = signal<CreateOrEditEmployeeSurveyDetailDto>(
+        new CreateOrEditEmployeeSurveyDetailDto()
+    );
     readonly employeeSurveys = signal<EmployeeSurveyDto[]>([]);
     readonly questions = signal<SurveyDetailDto[]>([]);
 
@@ -53,17 +55,26 @@ export class CreateOrEditEmployeeSurveyDetailModalComponent extends AppComponent
             .subscribe((result) => this.employeeSurveys.set(result.items));
 
         this._surveyDetailsService
-            .getAll(new GetAllSurveyDetailsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, surveyId: undefined }))
+            .getAll(
+                new GetAllSurveyDetailsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    surveyId: undefined,
+                })
+            )
             .subscribe((result) => this.questions.set(result.items));
 
         if (!employeeSurveyDetailId) {
             this.employeeSurveyDetail.set(new CreateOrEditEmployeeSurveyDetailDto());
             this.modal().show();
         } else {
-            this._employeeSurveyDetailsService.getEmployeeSurveyDetailForEdit(employeeSurveyDetailId).subscribe((result) => {
-                this.employeeSurveyDetail.set(result.employeeSurveyDetail);
-                this.modal().show();
-            });
+            this._employeeSurveyDetailsService
+                .getEmployeeSurveyDetailForEdit(employeeSurveyDetailId)
+                .subscribe((result) => {
+                    this.employeeSurveyDetail.set(result.employeeSurveyDetail);
+                    this.modal().show();
+                });
         }
     }
 

@@ -35,6 +35,7 @@
                         </th>
                         <th>{{ 'StartDate' | localize }}</th>
                         <th>{{ 'EndDate' | localize }}</th>
+                        <th>{{ 'Position' | localize }}</th>
                         <th>{{ 'JobTitle' | localize }}</th>
                         <th>{{ 'CostCenter' | localize }}</th>
                         <th>{{ 'WorkLocation' | localize }}</th>
@@ -62,6 +63,7 @@
                         </td>
                         <td>{{ record.startDate | luxonFormat: 'DD' }}</td>
                         <td>{{ record.endDate | luxonFormat: 'DD' }}</td>
+                        <td>{{ record.positionName }}</td>
                         <td>{{ record.jobTitleName }}</td>
                         <td>{{ record.costCenterName }}</td>
                         <td>{{ record.workLocationName }}</td>

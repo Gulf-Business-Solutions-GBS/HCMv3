@@ -2,7 +2,11 @@ import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { PayrollLogDto, PayrollLogsServiceProxy, GetAllPayrollLogsInput } from '@shared/service-proxies/service-proxies';
+import {
+    PayrollLogDto,
+    PayrollLogsServiceProxy,
+    GetAllPayrollLogsInput,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';

@@ -55,10 +55,19 @@ export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeReques
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyOvertimeRequestDto>(this.rows, () => [
         { key: 'overtimeType', label: 'OvertimeType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'effectiveDate', label: 'EffectiveDate', text: (row) => this.detailDate(row.effectiveDate), sort: (row) => row.effectiveDate?.toMillis() },
+        {
+            key: 'effectiveDate',
+            label: 'EffectiveDate',
+            text: (row) => this.detailDate(row.effectiveDate),
+            sort: (row) => row.effectiveDate?.toMillis(),
+        },
         { key: 'hours', label: 'Hours', text: (row) => row.overtimeHours },
         // Blank until decided, as the cell is: the dash it shows there is not something to filter or sort by.
-        { key: 'approvedHours', label: 'ApprovedHours', text: (row) => (this.showsApprovedHours(row) ? row.approvedOvertimeHours : undefined) },
+        {
+            key: 'approvedHours',
+            label: 'ApprovedHours',
+            text: (row) => (this.showsApprovedHours(row) ? row.approvedOvertimeHours : undefined),
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 

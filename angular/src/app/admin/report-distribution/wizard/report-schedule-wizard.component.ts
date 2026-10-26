@@ -74,9 +74,7 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
      * banner on the Destination step -- this is the one setting in the module that can hand somebody
      * data they are not otherwise entitled to, so it should never be quietly checked.
      */
-    readonly hasScopeBypass = computed(() =>
-        (this.schedule.recipients ?? []).some((r) => r.bypassRecipientScope)
-    );
+    readonly hasScopeBypass = computed(() => (this.schedule.recipients ?? []).some((r) => r.bypassRecipientScope));
 
     /** Every report that can be scheduled, discovered on the server. */
     readonly availableReports = signal<SchedulableReportDto[]>([]);

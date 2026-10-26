@@ -1,7 +1,11 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GetAllWorkflowRemarksInput, WorkflowRemarkDto, WorkflowRemarksServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetAllWorkflowRemarksInput,
+    WorkflowRemarkDto,
+    WorkflowRemarksServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';

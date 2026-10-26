@@ -51,11 +51,15 @@ export class CreateOrEditEmployeePoolCarModalComponent extends AppComponentBase 
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._poolCarsService
-            .getAll(new GetAllPoolCarsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPoolCarsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.poolCars.set(result.items));
 
         if (!id) {
@@ -112,7 +116,10 @@ export class CreateOrEditEmployeePoolCarModalComponent extends AppComponentBase 
             (current as any)[field] = undefined;
         } else {
             const base = (current as any)[dateField] ?? DateTime.now();
-            (current as any)[field] = DateTime.fromFormat(`${base.toFormat('yyyy-MM-dd')} ${value}`, 'yyyy-MM-dd HH:mm');
+            (current as any)[field] = DateTime.fromFormat(
+                `${base.toFormat('yyyy-MM-dd')} ${value}`,
+                'yyyy-MM-dd HH:mm'
+            );
         }
         const next = new CreateOrEditEmployeePoolCarDto();
         Object.assign(next, current);

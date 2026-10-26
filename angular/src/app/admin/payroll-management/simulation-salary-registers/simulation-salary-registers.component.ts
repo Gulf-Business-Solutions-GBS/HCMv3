@@ -124,13 +124,17 @@ export class SimulationSalaryRegistersComponent extends AppComponentBase impleme
     }
 
     deleteSimulationSalaryRegister(record: SimulationSalaryRegisterDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.employeeCode), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._simulationSalaryRegistersService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._simulationSalaryRegistersService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

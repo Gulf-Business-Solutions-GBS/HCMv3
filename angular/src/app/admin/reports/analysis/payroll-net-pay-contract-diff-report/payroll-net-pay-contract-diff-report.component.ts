@@ -26,7 +26,16 @@ import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 @Component({
     templateUrl: './payroll-net-pay-contract-diff-report.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, GridReportFilterComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        GridReportFilterComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class PayrollNetPayContractDiffReportComponent extends AppComponentBase {
     /** OrgLevel1..7 headers use the tenant's Organization Unit Type names; undefined levels are hidden. */
@@ -96,7 +105,11 @@ export class PayrollNetPayContractDiffReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollNetPayContractDiffReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollNetPayContractDiffReportInput {
         return new GetPayrollNetPayContractDiffReportInput({
             fromDate: undefined,
             toDate: undefined,

@@ -100,7 +100,7 @@ export class PayrollRetroReviewModalComponent extends AppComponentBase {
     readonly editorError = signal<string>('');
 
     readonly editorTitle = computed(() =>
-        this.editorRow() ? this.l('PayrollRetroUpdateTitle') : this.l('PayrollRetroUpdateSelected'),
+        this.editorRow() ? this.l('PayrollRetroUpdateTitle') : this.l('PayrollRetroUpdateSelected')
     );
 
     readonly editorSubtitle = computed(() => {
@@ -192,7 +192,7 @@ export class PayrollRetroReviewModalComponent extends AppComponentBase {
                 const pending = this.pending();
                 this.primengTableHelper.totalRecordsCount.set(result.totalCount);
                 this.primengTableHelper.records.set(
-                    (result.items ?? []).map((dto) => pending.get(dto.employeeId) ?? this.toRow(dto)),
+                    (result.items ?? []).map((dto) => pending.get(dto.employeeId) ?? this.toRow(dto))
                 );
             });
     }
@@ -312,7 +312,7 @@ export class PayrollRetroReviewModalComponent extends AppComponentBase {
                         this.refresh();
                         this.modalSave.emit();
                     });
-            },
+            }
         );
     }
 
@@ -329,7 +329,7 @@ export class PayrollRetroReviewModalComponent extends AppComponentBase {
 
     private showChanged(): void {
         const rows = Array.from(this.pending().values()).sort((a, b) =>
-            (a.employeeCode ?? '').localeCompare(b.employeeCode ?? ''),
+            (a.employeeCode ?? '').localeCompare(b.employeeCode ?? '')
         );
         this.primengTableHelper.records.set(rows);
         this.primengTableHelper.totalRecordsCount.set(rows.length);
@@ -344,9 +344,7 @@ export class PayrollRetroReviewModalComponent extends AppComponentBase {
 
         const pending = this.pending();
         this.primengTableHelper.records.set(
-            this.primengTableHelper
-                .records()
-                .map((r: RetroRow) => pending.get(r.employeeId) ?? this.restore(r)),
+            this.primengTableHelper.records().map((r: RetroRow) => pending.get(r.employeeId) ?? this.restore(r))
         );
         this.selected.set(this.selected().map((s) => pending.get(s.employeeId) ?? this.restore(s)));
     }

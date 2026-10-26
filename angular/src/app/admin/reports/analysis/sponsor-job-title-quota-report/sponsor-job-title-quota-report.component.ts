@@ -94,11 +94,7 @@ export class SponsorJobTitleQuotaReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetSponsorJobTitleQuotaReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetSponsorJobTitleQuotaReportInput {
         return new GetSponsorJobTitleQuotaReportInput({
             sponsorCode: this.sponsorCode(),
             fromDate: undefined,

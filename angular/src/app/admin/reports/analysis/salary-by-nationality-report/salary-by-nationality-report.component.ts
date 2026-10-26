@@ -113,11 +113,7 @@ export class SalaryByNationalityReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetSalaryByNationalityReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetSalaryByNationalityReportInput {
         // fromDate/toDate/employeeCode are deliberately omitted: this report has no such filters.
         return new GetSalaryByNationalityReportInput({
             // Legacy has no date or employee-code inputs on this screen; NSwag still requires the keys.

@@ -1,7 +1,11 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { BulkUploadLogDto, BulkUploadLogsServiceProxy, GetAllBulkUploadLogsInput } from '@shared/service-proxies/service-proxies';
+import {
+    BulkUploadLogDto,
+    BulkUploadLogsServiceProxy,
+    GetAllBulkUploadLogsInput,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -111,13 +115,17 @@ export class BulkUploadLogsComponent extends AppComponentBase implements OnInit 
     }
 
     deleteRecord(record: BulkUploadLogDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.employeeFullName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeFullName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

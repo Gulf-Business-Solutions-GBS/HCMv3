@@ -36,7 +36,15 @@ export class CreateOrEditBedModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._roomsService
-            .getAll(new GetAllRoomsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, flatId: undefined }))
+            .getAll(
+                new GetAllRoomsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    flatId: undefined,
+                })
+            )
             .subscribe((result) => this.rooms.set(result.items));
 
         if (!id) {

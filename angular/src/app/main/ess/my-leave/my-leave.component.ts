@@ -84,7 +84,8 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
      * A request named in the address -- the Requests screen's "open on its own screen" link puts it there --
      * waiting for the list to arrive so it can be opened. Used once.
      */
-    private requestToOpen: number | undefined = Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
+    private requestToOpen: number | undefined =
+        Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
 
     readonly detail = viewChild<EssRequestDetailModalComponent>('detail');
     private readonly leaveForm = viewChild<LeaveRequestFormComponent>('leaveForm');
@@ -111,12 +112,27 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             // Two kinds of leave have no number. A draft not yet sent sorts as the newest, so it stays at the
             // top of the default order, where the thing still waiting on the employee belongs. A leave HR
             // entered was never requested; it sorts below everything that was.
-            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : row.isDraft ? Number.MAX_SAFE_INTEGER : 0),
+            sort: (row) =>
+                row.requestNumber
+                    ? Number(row.requestNumber) || row.requestNumber
+                    : row.isDraft
+                      ? Number.MAX_SAFE_INTEGER
+                      : 0,
         },
         { key: 'leaveType', label: 'LeaveType', text: (row) => this.leaveTypeName(row), filter: 'select' },
         { key: 'requestType', label: 'RequestType', text: (row) => this.requestTypeLabel(row), filter: 'select' },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.fmt(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.fmt(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.fmt(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.fmt(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
         { key: 'days', label: 'LeaveDays', text: (row) => row.totalLeaveDays },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
@@ -159,7 +175,15 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         this.loading.set(true);
 
         this._myLeaveService
-            .getMyLeaves(new GetMyLeavesInput({ includeHistory: true, includeWithdrawn: true, maxResultCount: 200, skipCount: 0, sorting: undefined }))
+            .getMyLeaves(
+                new GetMyLeavesInput({
+                    includeHistory: true,
+                    includeWithdrawn: true,
+                    maxResultCount: 200,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe({
                 next: (result) => {
@@ -186,7 +210,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         this.requestToOpen = undefined;
 
         const row = this.rows().find(
-            (leave) => leave.workflowRequestId === requestId || (leave.requests ?? []).some((item) => item.workflowRequestId === requestId)
+            (leave) =>
+                leave.workflowRequestId === requestId ||
+                (leave.requests ?? []).some((item) => item.workflowRequestId === requestId)
         );
 
         if (!row) {
@@ -202,7 +228,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             return;
         }
 
-        const number =(row.requests ?? []).find((item) => item.workflowRequestId === requestId)?.requestNumber ?? row.requestNumber;
+        const number =
+            (row.requests ?? []).find((item) => item.workflowRequestId === requestId)?.requestNumber ??
+            row.requestNumber;
         this.list.setFilter('number', number ?? '');
 
         if (!this.isExpanded(row)) {
@@ -226,15 +254,16 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         // Raw id, not an EntityDto: NSwag flattens EntityDto on GET.
         this._myLeaveService.getMyLeaveForEdit(row.id).subscribe((leave) => {
             const form = emptyLeaveForm(WorkflowRequestAction.New, this.employeeDisplay());
-            const person = (id: number | undefined, name: string | undefined) => (id ? { id, label: name ?? '' } : null);
+            const person = (id: number | undefined, name: string | undefined) =>
+                id ? { id, label: name ?? '' } : null;
 
             form.leaveId = leave.id;
             form.absenceTypeId = leave.absenceTypeId;
             form.startDate = this.toInputDate(leave.startDate);
             form.endDate = this.toInputDate(leave.endDate);
             form.halfdayType = leave.halfdayType ?? HalfdayType.None;
-            form.startTime = form.halfdayType === HalfdayType.None ? leave.startTime ?? '' : '';
-            form.endTime = form.halfdayType === HalfdayType.None ? leave.endTime ?? '' : '';
+            form.startTime = form.halfdayType === HalfdayType.None ? (leave.startTime ?? '') : '';
+            form.endTime = form.halfdayType === HalfdayType.None ? (leave.endTime ?? '') : '';
             form.leavePaymentType = leave.leavePaymentType || LeavePaymentType.PayWithPayroll;
             form.paymentDate = this.toInputDate(leave.paymentDate);
             form.isTravelling = !!leave.isTravelling;
@@ -288,7 +317,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         this.showForm.set(true);
 
         // The form sits above the list; without this a button far down the page appears to do nothing.
-        setTimeout(() => document.getElementById('leaveFormAnchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+        setTimeout(() =>
+            document.getElementById('leaveFormAnchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        );
     }
 
     closeForm(): void {
@@ -325,12 +356,16 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
             return;
         }
 
-        void this.withAttachments((tokens) => {
-            const input = this.leaveInput(new SaveMyLeaveDraftInput(), tokens);
-            input.id = this.form.leaveId;
+        void this.withAttachments(
+            (tokens) => {
+                const input = this.leaveInput(new SaveMyLeaveDraftInput(), tokens);
+                input.id = this.form.leaveId;
 
-            return this._myLeaveService.saveMyLeaveDraft(input);
-        }, 'RequestSavedAsDraft', true);
+                return this._myLeaveService.saveMyLeaveDraft(input);
+            },
+            'RequestSavedAsDraft',
+            true
+        );
     }
 
     /**
@@ -374,25 +409,29 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
         const row = this.editing();
 
-        void this.withAttachments((tokens) => {
-            if (row?.isDraft) {
-                const draft = this.leaveInput(new SaveMyLeaveDraftInput(), tokens);
-                draft.id = row.id;
+        void this.withAttachments(
+            (tokens) => {
+                if (row?.isDraft) {
+                    const draft = this.leaveInput(new SaveMyLeaveDraftInput(), tokens);
+                    draft.id = row.id;
 
-                return this._myLeaveService
-                    .saveMyLeaveDraft(draft)
-                    .pipe(switchMap(() => this._myLeaveService.submitMyLeaveDraft(new EntityDto({ id: row.id }))));
-            }
+                    return this._myLeaveService
+                        .saveMyLeaveDraft(draft)
+                        .pipe(switchMap(() => this._myLeaveService.submitMyLeaveDraft(new EntityDto({ id: row.id }))));
+                }
 
-            if (row?.isSentBack) {
-                const resend = this.leaveInput(new ResubmitMyLeaveInput(), tokens);
-                resend.employeeAbsenceId = row.id;
+                if (row?.isSentBack) {
+                    const resend = this.leaveInput(new ResubmitMyLeaveInput(), tokens);
+                    resend.employeeAbsenceId = row.id;
 
-                return this._myLeaveService.resubmitMyLeave(resend);
-            }
+                    return this._myLeaveService.resubmitMyLeave(resend);
+                }
 
-            return this._myLeaveService.applyForLeave(this.leaveInput(new ApplyForLeaveInput(), tokens));
-        }, 'RequestSubmittedForApproval', false);
+                return this._myLeaveService.applyForLeave(this.leaveInput(new ApplyForLeaveInput(), tokens));
+            },
+            'RequestSubmittedForApproval',
+            false
+        );
     }
 
     private submitChange(): void {
@@ -467,7 +506,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
         this.saving.set(true);
 
-        call.pipe(finalize(() => this.saving.set(false))).subscribe(() => this.done('RequestSubmittedForApproval', false));
+        call.pipe(finalize(() => this.saving.set(false))).subscribe(() =>
+            this.done('RequestSubmittedForApproval', false)
+        );
     }
 
     /** The form's fields as the server takes them for a new leave. */
@@ -482,7 +523,8 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         input.leavePaymentType = f.leavePaymentType;
 
         // Sent only for an advance: left empty, the server fills in the day legacy would choose.
-        input.paymentDate = f.leavePaymentType === LeavePaymentType.PayInAdvance ? this.toDate(f.paymentDate) : undefined;
+        input.paymentDate =
+            f.leavePaymentType === LeavePaymentType.PayInAdvance ? this.toDate(f.paymentDate) : undefined;
         input.halfdayType = f.halfdayType;
         input.startTime = timesApply ? f.startTime || undefined : undefined;
         input.endTime = timesApply ? f.endTime || undefined : undefined;
@@ -531,7 +573,11 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
      * Uploads the files chosen on the form, then makes the call with their tokens. They go WITH the leave: a
      * type that requires a document is refused at submit without one, so it cannot be attached afterwards.
      */
-    private async withAttachments(call: (tokens: string[]) => Observable<unknown>, successKey: string, asInfo: boolean): Promise<void> {
+    private async withAttachments(
+        call: (tokens: string[]) => Observable<unknown>,
+        successKey: string,
+        asInfo: boolean
+    ): Promise<void> {
         this.saving.set(true);
 
         try {
@@ -566,14 +612,22 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     private menuItems(row: MyLeaveDto): MenuItem[] {
         const pendingWithMe = !!row.hasPendingAmendment && (!!row.pendingIsDraft || !!row.pendingIsSentBack);
         const leaveWithMe = !!row.isDraft || !!row.isSentBack;
-        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({ label: this.l(key), disabled: !enabled, command });
+        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({
+            label: this.l(key),
+            disabled: !enabled,
+            command,
+        });
 
         return [
             item('ContinueDraft', leaveWithMe || pendingWithMe, () =>
-                leaveWithMe ? this.continueLeave(row) : this.openChange(row, row.pendingAction ?? WorkflowRequestAction.Amendment)
+                leaveWithMe
+                    ? this.continueLeave(row)
+                    : this.openChange(row, row.pendingAction ?? WorkflowRequestAction.Amendment)
             ),
             item('AmendLeave', !!row.canAmend, () => this.openChange(row, WorkflowRequestAction.Amendment)),
-            item('CancelLeave', !!row.canRequestCancellation, () => this.openChange(row, WorkflowRequestAction.Cancellation)),
+            item('CancelLeave', !!row.canRequestCancellation, () =>
+                this.openChange(row, WorkflowRequestAction.Cancellation)
+            ),
             item('ReturnFromLeave', !!row.canReturn, () => this.openChange(row, WorkflowRequestAction.Return)),
             item('Withdraw', !!row.hasPendingAmendment || !!row.canCancel, () =>
                 row.hasPendingAmendment ? this.withdrawChange(row) : this.withdrawLeave(row)
@@ -716,7 +770,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         }
 
         if (item.action === WorkflowRequestAction.Return) {
-            return [this.l('BackOn', this.fmt(item.returnDate)), this.paidUnpaid(item)].filter((part) => !!part).join(' · ');
+            return [this.l('BackOn', this.fmt(item.returnDate)), this.paidUnpaid(item)]
+                .filter((part) => !!part)
+                .join(' · ');
         }
 
         const days = item.days === undefined || item.days === null ? '' : `${item.days} ${this.l('LeaveDays')}`;
@@ -732,7 +788,11 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
         const range = (from?: DateTime, to?: DateTime) => (from && to ? `${this.fmt(from)} – ${this.fmt(to)}` : '–');
 
-        return this.l('LeaveHistory_PaidUnpaid', range(item.paidStartDate, item.paidEndDate), range(item.unpaidStartDate, item.unpaidEndDate));
+        return this.l(
+            'LeaveHistory_PaidUnpaid',
+            range(item.paidStartDate, item.paidEndDate),
+            range(item.unpaidStartDate, item.unpaidEndDate)
+        );
     }
 
     outcomeLabel(item: MyLeaveHistoryItemDto): string {
@@ -771,7 +831,9 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
         const input = new ExportMyLeavesInput();
         input.leaveIds = this.list.filtered().map((row) => row.id);
 
-        this._myLeaveService.getMyLeavesToExcel(input).subscribe((file) => this._fileDownloadService.downloadTempFile(file));
+        this._myLeaveService
+            .getMyLeavesToExcel(input)
+            .subscribe((file) => this._fileDownloadService.downloadTempFile(file));
     }
 
     // ------------------------------------------------------------------ small helpers

@@ -50,7 +50,6 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
     readonly nameEn = signal('');
     readonly nameAr = signal('');
 
-
     private _orgLevelsService = inject(OrganizationUnitTypesServiceProxy);
 
     /** The same scoping the Workflow Roles screen offers, so a role created here is not a lesser one. */
@@ -98,11 +97,20 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
         this.orgUnitId.set(undefined);
 
         this._orgLevelsService
-            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOrganizationUnitTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.orgLevels.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this.modal().show();
@@ -125,7 +133,9 @@ export class CreateWorkflowRoleModalComponent extends AppComponentBase {
     }
 
     employeeLabel(employee: EmployeeDto): string {
-        const name = this.isRtl ? employee.fullNameAr || employee.fullNameEn : employee.fullNameEn || employee.fullNameAr;
+        const name = this.isRtl
+            ? employee.fullNameAr || employee.fullNameEn
+            : employee.fullNameEn || employee.fullNameAr;
 
         return employee.code ? `${employee.code} — ${name}` : name;
     }

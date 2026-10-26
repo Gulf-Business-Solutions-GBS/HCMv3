@@ -55,7 +55,14 @@ export class AccommodationServicesComponent extends AppComponentBase implements 
 
     ngOnInit(): void {
         this._employeeAccommodationsService
-            .getAll(new GetAllEmployeeAccommodationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllEmployeeAccommodationsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.employeeAccommodations.set(result.items));
         // Intentionally not calling getAccommodationServices() here: the PrimeNG table's
         // (onLazyLoad) triggers the first load.

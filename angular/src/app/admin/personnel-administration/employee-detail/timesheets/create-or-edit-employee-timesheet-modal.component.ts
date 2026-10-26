@@ -1,6 +1,9 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditEmployeeTimesheetDto, EmployeeTimesheetsServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditEmployeeTimesheetDto,
+    EmployeeTimesheetsServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
@@ -85,6 +88,9 @@ export class CreateOrEditEmployeeTimesheetModalComponent extends AppComponentBas
     }
 
     updateNumberField(field: keyof CreateOrEditEmployeeTimesheetDto, value: string): void {
-        this.updateField(field, value !== null && value !== undefined && value !== '' ? Number(value) : (undefined as any));
+        this.updateField(
+            field,
+            value !== null && value !== undefined && value !== '' ? Number(value) : (undefined as any)
+        );
     }
 }

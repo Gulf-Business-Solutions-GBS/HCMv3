@@ -33,7 +33,9 @@ export class CreateOrEditCompetencyByJobTitleDetailModalComponent extends AppCom
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditCompetencyByJobTitleDetailDto>(new CreateOrEditCompetencyByJobTitleDetailDto());
+    readonly record = signal<CreateOrEditCompetencyByJobTitleDetailDto>(
+        new CreateOrEditCompetencyByJobTitleDetailDto()
+    );
     readonly competencyByJobTitles = signal<CompetencyByJobTitleDto[]>([]);
     readonly competencies = signal<CompetencyDto[]>([]);
 
@@ -41,11 +43,26 @@ export class CreateOrEditCompetencyByJobTitleDetailModalComponent extends AppCom
         this.active.set(true);
 
         this._competencyByJobTitlesService
-            .getAll(new GetAllCompetencyByJobTitlesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, jobTitleId: undefined }))
+            .getAll(
+                new GetAllCompetencyByJobTitlesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    jobTitleId: undefined,
+                })
+            )
             .subscribe((result) => this.competencyByJobTitles.set(result.items));
 
         this._competenciesService
-            .getAll(new GetAllCompetenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, competencyTypeId: undefined }))
+            .getAll(
+                new GetAllCompetenciesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    competencyTypeId: undefined,
+                })
+            )
             .subscribe((result) => this.competencies.set(result.items));
 
         if (!id) {

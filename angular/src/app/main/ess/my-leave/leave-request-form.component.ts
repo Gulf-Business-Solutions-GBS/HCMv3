@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, effect, inject, input, output, signal, viewChild } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    OnInit,
+    computed,
+    effect,
+    inject,
+    input,
+    output,
+    signal,
+    viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -272,7 +283,9 @@ export class LeaveRequestFormComponent extends AppComponentBase implements OnIni
     }
 
     showPaymentDate(): boolean {
-        return this.readOnly() ? !!this.value().paymentDate : this.value().leavePaymentType === LeavePaymentType.PayInAdvance;
+        return this.readOnly()
+            ? !!this.value().paymentDate
+            : this.value().leavePaymentType === LeavePaymentType.PayInAdvance;
     }
 
     showApproverDelegation(): boolean {
@@ -298,12 +311,16 @@ export class LeaveRequestFormComponent extends AppComponentBase implements OnIni
     }
 
     requestCommentLabel(): string {
-        return this.l(this.isCancellation() ? 'ReasonForCancellation' : this.isNew() ? 'RequestComment' : 'ReasonForTheChange');
+        return this.l(
+            this.isCancellation() ? 'ReasonForCancellation' : this.isNew() ? 'RequestComment' : 'ReasonForTheChange'
+        );
     }
 
     // ------------------------------------------------------------------ Leave Info (the right-hand panel)
 
-    info(): { calendarDays: string; leaveDays: string; current: string; bookable: string; updated: string } | undefined {
+    info():
+        | { calendarDays: string; leaveDays: string; current: string; bookable: string; updated: string }
+        | undefined {
         const v = this.value();
 
         if (this.readOnly()) {
@@ -332,7 +349,9 @@ export class LeaveRequestFormComponent extends AppComponentBase implements OnIni
             calendarDays: calendar,
             // The server answers with what the request would CHARGE; for an amendment that is the difference,
             // so the days already approved are added back to show the leave's new length.
-            leaveDays: preview ? round((preview.daysRequested ?? 0) + (this.isAmendment() ? v.currentLeaveDays ?? 0 : 0)) : '',
+            leaveDays: preview
+                ? round((preview.daysRequested ?? 0) + (this.isAmendment() ? (v.currentLeaveDays ?? 0) : 0))
+                : '',
             current: preview?.hasQuota ? round(preview.currentBalance) : '',
             bookable: preview?.hasQuota ? round(preview.bookable) : '',
             updated: preview?.hasQuota ? round(preview.balanceAfter) : '',

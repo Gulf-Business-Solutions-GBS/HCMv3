@@ -15,13 +15,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditOrganizationUnitTypeModal',
     templateUrl: './create-or-edit-organization-unit-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditOrganizationUnitTypeModalComponent extends AppComponentBase {
     private _organizationUnitTypesService = inject(OrganizationUnitTypesServiceProxy);
@@ -31,7 +25,9 @@ export class CreateOrEditOrganizationUnitTypeModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly organizationUnitType = signal<CreateOrEditOrganizationUnitTypeDto>(new CreateOrEditOrganizationUnitTypeDto());
+    readonly organizationUnitType = signal<CreateOrEditOrganizationUnitTypeDto>(
+        new CreateOrEditOrganizationUnitTypeDto()
+    );
 
     show(organizationUnitTypeId?: number): void {
         this.active.set(true);
@@ -40,10 +36,12 @@ export class CreateOrEditOrganizationUnitTypeModalComponent extends AppComponent
             this.organizationUnitType.set(new CreateOrEditOrganizationUnitTypeDto());
             this.modal().show();
         } else {
-            this._organizationUnitTypesService.getOrganizationUnitTypeForEdit(organizationUnitTypeId).subscribe((result) => {
-                this.organizationUnitType.set(result.organizationUnitType);
-                this.modal().show();
-            });
+            this._organizationUnitTypesService
+                .getOrganizationUnitTypeForEdit(organizationUnitTypeId)
+                .subscribe((result) => {
+                    this.organizationUnitType.set(result.organizationUnitType);
+                    this.modal().show();
+                });
         }
     }
 

@@ -167,11 +167,15 @@ export class UserCredentialResetComponent extends AppComponentBase implements On
             .join('\n');
         const listing = selection.length > 20 ? `${preview}\n...` : preview;
 
-        this.message.confirm(this.l('CredentialResetConfirm', selection.length, listing), this.l('AreYouSure'), (ok) => {
-            if (ok) {
-                this.run(new ResetUserCredentialsInput({ userIds: selection.map((u) => u.id), roleId: undefined }));
+        this.message.confirm(
+            this.l('CredentialResetConfirm', selection.length, listing),
+            this.l('AreYouSure'),
+            (ok) => {
+                if (ok) {
+                    this.run(new ResetUserCredentialsInput({ userIds: selection.map((u) => u.id), roleId: undefined }));
+                }
             }
-        });
+        );
     }
 
     resetRole(): void {
@@ -180,11 +184,15 @@ export class UserCredentialResetComponent extends AppComponentBase implements On
             return;
         }
 
-        this.message.confirm(this.l('CredentialResetRoleConfirm', this.selectedRoleName()), this.l('AreYouSure'), (ok) => {
-            if (ok) {
-                this.run(new ResetUserCredentialsInput({ userIds: [], roleId }));
+        this.message.confirm(
+            this.l('CredentialResetRoleConfirm', this.selectedRoleName()),
+            this.l('AreYouSure'),
+            (ok) => {
+                if (ok) {
+                    this.run(new ResetUserCredentialsInput({ userIds: [], roleId }));
+                }
             }
-        });
+        );
     }
 
     private run(input: ResetUserCredentialsInput): void {
@@ -197,7 +205,9 @@ export class UserCredentialResetComponent extends AppComponentBase implements On
             .subscribe((r) => {
                 this.result.set(r);
                 this.clearSelection();
-                this.notify.success(this.l('BulkResetPasswordsResultSummary', r.passwordsResetCount, r.emailsSentCount));
+                this.notify.success(
+                    this.l('BulkResetPasswordsResultSummary', r.passwordsResetCount, r.emailsSentCount)
+                );
             });
     }
 }

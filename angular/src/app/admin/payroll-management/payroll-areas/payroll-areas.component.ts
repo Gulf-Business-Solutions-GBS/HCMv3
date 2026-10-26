@@ -114,13 +114,17 @@ export class PayrollAreasComponent extends AppComponentBase implements OnInit {
     }
 
     deletePayrollArea(record: PayrollAreaDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.name), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._payrollAreasService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.name),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._payrollAreasService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

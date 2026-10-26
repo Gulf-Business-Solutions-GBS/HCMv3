@@ -54,8 +54,18 @@ export class MyLoanComponent extends MyRequestComponentBase<MyLoanRequestDto> im
         { key: 'loanType', label: 'LoanType', text: (row) => this.typeName(row), filter: 'select' },
         { key: 'amount', label: 'LoanAmount', text: (row) => row.actualAmount },
         { key: 'instalment', label: 'Instalment', text: (row) => row.fixedAmount },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.detailDate(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 

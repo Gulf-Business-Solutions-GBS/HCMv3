@@ -31,7 +31,15 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 @Component({
     templateUrl: './licence-assignment.component.html',
     animations: [appModuleAnimation()],
-    imports: [HelpPageDirective, SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, LocalizePipe],
+    imports: [
+        HelpPageDirective,
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        LocalizePipe,
+    ],
 })
 export class LicenceAssignmentComponent extends AppComponentBase implements OnInit {
     private _service = inject(LicenceAssignmentServiceProxy);

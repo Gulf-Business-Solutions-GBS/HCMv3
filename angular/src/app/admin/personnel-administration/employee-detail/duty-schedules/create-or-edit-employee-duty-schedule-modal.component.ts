@@ -78,7 +78,14 @@ export class CreateOrEditEmployeeDutyScheduleModalComponent extends AppComponent
 
         if (this.pickEmployee()) {
             this._employeesService
-                .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+                .getAll(
+                    new GetAllEmployeesInput({
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                        filter: undefined,
+                    })
+                )
                 .subscribe((result) => this.employees.set(result.items));
         }
 
@@ -97,7 +104,14 @@ export class CreateOrEditEmployeeDutyScheduleModalComponent extends AppComponent
 
     private loadLookups(): void {
         this._rosterDutySchedulesService
-            .getAll(new GetAllRosterDutySchedulesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRosterDutySchedulesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.rosterDutySchedules.set(result.items));
     }
 

@@ -1,6 +1,10 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { NumberSeriesServiceProxy, CreateOrEditNumberSeriesDto, EmploymentType } from '@shared/service-proxies/service-proxies';
+import {
+    NumberSeriesServiceProxy,
+    CreateOrEditNumberSeriesDto,
+    EmploymentType,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -12,13 +16,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditNumberSeriesModal',
     templateUrl: './create-or-edit-number-series-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditNumberSeriesModalComponent extends AppComponentBase {
     private _numberSeriesService = inject(NumberSeriesServiceProxy);

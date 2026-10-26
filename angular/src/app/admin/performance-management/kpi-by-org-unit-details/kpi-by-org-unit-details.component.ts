@@ -112,13 +112,17 @@ export class KpiByOrgUnitDetailsComponent extends AppComponentBase implements On
     }
 
     deleteKpiByOrgUnitDetail(record: KpiByOrgUnitDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.kpiInfoName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.kpiInfoName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

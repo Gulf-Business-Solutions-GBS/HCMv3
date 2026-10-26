@@ -322,8 +322,6 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
         return this.needsRole(step) && !!step.workflowRoleId && step.currentHolderCount === 0;
     }
 
-
-
     /** A step in one readable phrase, for the collapsed default-chain summary and the read-only cells. */
     describeStep(step: WorkflowSetupStepDto): string {
         const option = this.approverOptions.find((o) => o.value === step.approverPerson);
@@ -366,7 +364,6 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
     toggleDefaultPanel(): void {
         this.defaultPanelOpen.set(!this.defaultPanelOpen());
     }
-
 
     setDefaultNotifyByEmail(value: boolean): void {
         this.defaultNotifyByEmail.set(value);
@@ -462,7 +459,6 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
     }
     // ------------------------------------------------------------------ roles
 
-
     /**
      * Same as the row version, but for the default route's own cells. A code of undefined is what tells
      * the handler the new role belongs to the default rather than to a transaction.
@@ -503,7 +499,6 @@ export class WorkflowSetupComponent extends AppComponentBase implements OnInit {
         row.steps[target.index].approverPerson = WorkflowApproverPersonType.Person;
         this.setRole(row, target.index, role.id);
     }
-
 
     // ------------------------------------------------------------------ saving
 

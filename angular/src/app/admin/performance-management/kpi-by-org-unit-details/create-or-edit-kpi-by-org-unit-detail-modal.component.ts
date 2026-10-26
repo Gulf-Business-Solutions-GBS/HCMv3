@@ -41,11 +41,26 @@ export class CreateOrEditKpiByOrgUnitDetailModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._kpiByOrgUnitsService
-            .getAll(new GetAllKpiByOrgUnitsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, organizationUnitId: undefined }))
+            .getAll(
+                new GetAllKpiByOrgUnitsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    organizationUnitId: undefined,
+                })
+            )
             .subscribe((result) => this.kpiByOrgUnits.set(result.items));
 
         this._kpiInfosService
-            .getAll(new GetAllKpiInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, kpiCategoryId: undefined }))
+            .getAll(
+                new GetAllKpiInfosInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    kpiCategoryId: undefined,
+                })
+            )
             .subscribe((result) => this.kpiInfos.set(result.items));
 
         if (!id) {

@@ -42,7 +42,8 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 export class JobDescriptionAcknowledgementsComponent extends AppComponentBase implements OnInit {
     private _service = inject(JobDescriptionAcknowledgementsServiceProxy);
 
-    readonly createOrEditModal = viewChild<CreateOrEditJobDescriptionAcknowledgementModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditJobDescriptionAcknowledgementModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 

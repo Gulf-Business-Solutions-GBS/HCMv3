@@ -68,11 +68,20 @@ export class CreateOrEditApplicationStatusModalComponent extends AppComponentBas
 
     private loadLookups(): void {
         this._vacanciesService
-            .getAll(new GetAllVacanciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllVacanciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.vacancies.set(result.items));
 
         this._applicantCVsService
-            .getAll(new GetAllApplicantCVsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, applicantId: undefined }))
+            .getAll(
+                new GetAllApplicantCVsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    applicantId: undefined,
+                })
+            )
             .subscribe((result) => this.applicantCVs.set(result.items));
     }
 

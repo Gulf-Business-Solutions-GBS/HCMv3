@@ -112,13 +112,17 @@ export class AbsenceViolationActionRecordsComponent extends AppComponentBase imp
     }
 
     deleteAbsenceViolationActionRecord(record: AbsenceViolationActionRecordDto): void {
-        this.message.confirm(this.l('AbsenceViolationActionRecordDeleteWarningMessage'), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._absenceViolationActionRecordsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('AbsenceViolationActionRecordDeleteWarningMessage'),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._absenceViolationActionRecordsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

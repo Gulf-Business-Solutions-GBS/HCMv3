@@ -42,7 +42,9 @@ export class CreateOrEditSimulationTimeRegisterModalComponent extends AppCompone
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly simulationTimeRegister = signal<CreateOrEditSimulationTimeRegisterDto>(new CreateOrEditSimulationTimeRegisterDto());
+    readonly simulationTimeRegister = signal<CreateOrEditSimulationTimeRegisterDto>(
+        new CreateOrEditSimulationTimeRegisterDto()
+    );
     readonly employees = signal<EmployeeDto[]>([]);
     readonly dutyPeriods = signal<DutyPeriodDto[]>([]);
 
@@ -50,21 +52,32 @@ export class CreateOrEditSimulationTimeRegisterModalComponent extends AppCompone
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._dutyPeriodsService
-            .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.dutyPeriods.set(result.items));
 
         if (!simulationTimeRegisterId) {
             this.simulationTimeRegister.set(new CreateOrEditSimulationTimeRegisterDto());
             this.modal().show();
         } else {
-            this._simulationTimeRegistersService.getSimulationTimeRegisterForEdit(simulationTimeRegisterId).subscribe((result) => {
-                this.simulationTimeRegister.set(result.simulationTimeRegister);
-                this.modal().show();
-            });
+            this._simulationTimeRegistersService
+                .getSimulationTimeRegisterForEdit(simulationTimeRegisterId)
+                .subscribe((result) => {
+                    this.simulationTimeRegister.set(result.simulationTimeRegister);
+                    this.modal().show();
+                });
         }
     }
 

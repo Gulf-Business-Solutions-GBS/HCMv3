@@ -65,9 +65,25 @@ export class MyLoanExemptionComponent extends MyRequestComponentBase<MyLoanExemp
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyLoanExemptionDto>(this.rows, () => [
         { key: 'loanType', label: 'LoanType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'month', label: 'ExemptionMonth', text: (row) => row.exemptionDate?.toFormat('yyyy-MM') ?? '', sort: (row) => row.exemptionDate?.toMillis() },
-        { key: 'instalment', label: 'InstallmentAmount', text: (row) => this.amount(row.instalmentAmount), sort: (row) => row.instalmentAmount, align: 'end' },
-        { key: 'loanEndDate', label: 'LoanEndDate', text: (row) => this.detailDate(row.loanEndDate), sort: (row) => row.loanEndDate?.toMillis() },
+        {
+            key: 'month',
+            label: 'ExemptionMonth',
+            text: (row) => row.exemptionDate?.toFormat('yyyy-MM') ?? '',
+            sort: (row) => row.exemptionDate?.toMillis(),
+        },
+        {
+            key: 'instalment',
+            label: 'InstallmentAmount',
+            text: (row) => this.amount(row.instalmentAmount),
+            sort: (row) => row.instalmentAmount,
+            align: 'end',
+        },
+        {
+            key: 'loanEndDate',
+            label: 'LoanEndDate',
+            text: (row) => this.detailDate(row.loanEndDate),
+            sort: (row) => row.loanEndDate?.toMillis(),
+        },
         { key: 'comments', label: 'Comments', text: (row) => row.comments },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);

@@ -43,7 +43,8 @@ import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
 export class AbsenceViolationRuleExceptionsComponent extends AppComponentBase implements OnInit {
     private _absenceViolationRuleExceptionsService = inject(AbsenceViolationRuleExceptionsServiceProxy);
 
-    readonly createOrEditModal = viewChild<CreateOrEditAbsenceViolationRuleExceptionModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditAbsenceViolationRuleExceptionModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 

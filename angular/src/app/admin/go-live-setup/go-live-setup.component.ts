@@ -48,12 +48,7 @@ import { LegacyCompareComponent } from './legacy-compare/legacy-compare.componen
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { PasteGridComponent } from './shared/paste-grid/paste-grid.component';
-import {
-    PasteGridColumn,
-    PasteGridIssue,
-    PasteGridRow,
-    isRowEmpty,
-} from './shared/paste-grid/paste-grid.types';
+import { PasteGridColumn, PasteGridIssue, PasteGridRow, isRowEmpty } from './shared/paste-grid/paste-grid.types';
 import { FormsModule } from '@angular/forms';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 
@@ -279,7 +274,9 @@ export class GoLiveSetupComponent extends AppComponentBase implements OnInit, On
 
     openClear(): void {
         this.clearTyped.set('');
-        this.proxy.getClearPreview(this.payrollAreaName().trim()).subscribe((preview) => this.clearPreview.set(preview));
+        this.proxy
+            .getClearPreview(this.payrollAreaName().trim())
+            .subscribe((preview) => this.clearPreview.set(preview));
     }
 
     closeClear(): void {
@@ -1087,7 +1084,6 @@ export class GoLiveSetupComponent extends AppComponentBase implements OnInit, On
         })[field].set(value);
     }
 
-
     layoutLabel(layout: GoLiveBankFileLayoutDto): string {
         return this.l(layout.isText ? 'GoLiveLayoutText' : 'GoLiveLayoutExcel', layout.formatCode);
     }
@@ -1258,7 +1254,9 @@ export class GoLiveSetupComponent extends AppComponentBase implements OnInit, On
         input.skipCount = 0;
         input.maxResultCount = 100000;
 
-        this.payrollSheetProxy.getPayrollSheetReportToExcel(input).subscribe((file) => this.fileDownload.downloadTempFile(file));
+        this.payrollSheetProxy
+            .getPayrollSheetReportToExcel(input)
+            .subscribe((file) => this.fileDownload.downloadTempFile(file));
     }
 
     /** Every register line of the month, one row per employee and wage type. */
@@ -1412,7 +1410,14 @@ export class GoLiveSetupComponent extends AppComponentBase implements OnInit, On
     }
 
     private isEmptyRow(dto: GoLiveEmployeeRowDto): boolean {
-        return !dto.code && !dto.fullName && !dto.civilId && !dto.joiningDate && dto.basicSalary === undefined && dto.annualLeaveOpeningBalance === undefined;
+        return (
+            !dto.code &&
+            !dto.fullName &&
+            !dto.civilId &&
+            !dto.joiningDate &&
+            dto.basicSalary === undefined &&
+            dto.annualLeaveOpeningBalance === undefined
+        );
     }
 
     private elapsedMs(p: LoadProgress): number {
@@ -1494,7 +1499,11 @@ export class GoLiveSetupComponent extends AppComponentBase implements OnInit, On
         this.endRunWatch();
 
         const result = progress.result;
-        if (progress.status === GoLiveRunStatus.None || !result || (!onScreen && !wasRunning && !this.isUnseen(progress))) {
+        if (
+            progress.status === GoLiveRunStatus.None ||
+            !result ||
+            (!onScreen && !wasRunning && !this.isUnseen(progress))
+        ) {
             this.runProgress.set(null);
             return;
         }

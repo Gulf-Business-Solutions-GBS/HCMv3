@@ -4,7 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import { Gender, PersonalDataChangeValuesDto, PersonalDataLookupsDto, SimpleLookupDto } from '@shared/service-proxies/service-proxies';
+import {
+    Gender,
+    PersonalDataChangeValuesDto,
+    PersonalDataLookupsDto,
+    SimpleLookupDto,
+} from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
 
@@ -93,8 +98,20 @@ export const PERSONAL_DATA_SECTIONS: PersonalDataSectionDef[] = [
             { key: 'mobile', label: 'Mobile', kind: 'number' },
             { key: 'email', label: 'Email', kind: 'text', maxlength: 256 },
             { key: 'alternateEmail', label: 'AlternateEmail', kind: 'text', maxlength: 256 },
-            { key: 'currentAddress', label: 'CurrentAddress', kind: 'textarea', maxlength: 1000, col: 'col-12 col-lg-6' },
-            { key: 'permanentAddress', label: 'PermanentAddress', kind: 'textarea', maxlength: 1000, col: 'col-12 col-lg-6' },
+            {
+                key: 'currentAddress',
+                label: 'CurrentAddress',
+                kind: 'textarea',
+                maxlength: 1000,
+                col: 'col-12 col-lg-6',
+            },
+            {
+                key: 'permanentAddress',
+                label: 'PermanentAddress',
+                kind: 'textarea',
+                maxlength: 1000,
+                col: 'col-12 col-lg-6',
+            },
         ],
     },
     {
@@ -110,7 +127,13 @@ export const PERSONAL_DATA_SECTIONS: PersonalDataSectionDef[] = [
     {
         label: 'EmergencyContactInformation',
         fields: [
-            { key: 'emergencyContact', label: 'EmergencyContact', kind: 'text', maxlength: 256, col: 'col-12 col-lg-6' },
+            {
+                key: 'emergencyContact',
+                label: 'EmergencyContact',
+                kind: 'text',
+                maxlength: 256,
+                col: 'col-12 col-lg-6',
+            },
             { key: 'emergencyNumber', label: 'EmergencyNumber', kind: 'text', maxlength: 64 },
             { key: 'emergencyRelation', label: 'EmergencyRelation', kind: 'text', maxlength: 128 },
         ],
@@ -150,7 +173,8 @@ export function toPersonalDataFormValues(source: PersonalDataChangeValuesDto | u
         switch (field.kind) {
             case 'date':
                 // The year 1 is a date that was never set, not a date.
-                values[field.key] = value && (value as DateTime).year > 1 ? (value as DateTime).toFormat('yyyy-MM-dd') : '';
+                values[field.key] =
+                    value && (value as DateTime).year > 1 ? (value as DateTime).toFormat('yyyy-MM-dd') : '';
                 break;
             case 'lookup':
             case 'gender':

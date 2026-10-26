@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditPersonalActionReasonModal',
     templateUrl: './create-or-edit-personal-action-reason-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditPersonalActionReasonModalComponent extends AppComponentBase {
     private _personalActionReasonsService = inject(PersonalActionReasonsServiceProxy);
@@ -49,13 +43,27 @@ export class CreateOrEditPersonalActionReasonModalComponent extends AppComponent
         this.active.set(true);
 
         this._personalActionsService
-            .getAll(new GetAllPersonalActionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPersonalActionsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.personalActions.set(result.items);
             });
 
         this._notificationConfigsService
-            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNotificationConfigsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.notificationConfigs.set(result.items));
 
         if (!personalActionReasonId) {

@@ -31,7 +31,9 @@ export class CreateOrEditEmployeeSubGroupHealthReimburseModalComponent extends A
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditEmployeeSubGroupHealthReimburseDto>(new CreateOrEditEmployeeSubGroupHealthReimburseDto());
+    readonly record = signal<CreateOrEditEmployeeSubGroupHealthReimburseDto>(
+        new CreateOrEditEmployeeSubGroupHealthReimburseDto()
+    );
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
     readonly isNew = signal<boolean>(false);
@@ -43,7 +45,10 @@ export class CreateOrEditEmployeeSubGroupHealthReimburseModalComponent extends A
             recordType: 'EmployeeSubGroupHealthReimburse',
             record: this.record,
             isNew: this.isNew,
-            keys: () => ({ EmployeeSubGroupId: this.record().employeeSubGroupId, DependantTypeId: this.record().dependantTypeId }),
+            keys: () => ({
+                EmployeeSubGroupId: this.record().employeeSubGroupId,
+                DependantTypeId: this.record().dependantTypeId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -54,7 +59,14 @@ export class CreateOrEditEmployeeSubGroupHealthReimburseModalComponent extends A
         this.active.set(true);
 
         this._dependantTypesService
-            .getAll(new GetAllDependantTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDependantTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.dependantTypes.set(result.items));
 
         if (!id) {

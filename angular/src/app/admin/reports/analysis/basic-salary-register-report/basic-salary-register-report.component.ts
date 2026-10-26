@@ -121,11 +121,7 @@ export class BasicSalaryRegisterReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetBasicSalaryRegisterReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetBasicSalaryRegisterReportInput {
         return new GetBasicSalaryRegisterReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

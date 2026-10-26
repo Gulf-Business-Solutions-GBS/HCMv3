@@ -58,7 +58,12 @@ export class CreateOrEditSocialSecurityRuleModalComponent extends AppComponentBa
             recordType: 'SocialSecurityRule',
             record: this.socialSecurityRule,
             isNew: this.isNew,
-            keys: () => ({ SocialSecurityId: this.socialSecurityRule().socialSecurityId, QualificationId: this.socialSecurityRule().qualificationId, Gender: this.socialSecurityRule().gender, MaritalStatusId: this.socialSecurityRule().maritalStatusId }),
+            keys: () => ({
+                SocialSecurityId: this.socialSecurityRule().socialSecurityId,
+                QualificationId: this.socialSecurityRule().qualificationId,
+                Gender: this.socialSecurityRule().gender,
+                MaritalStatusId: this.socialSecurityRule().maritalStatusId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -76,15 +81,36 @@ export class CreateOrEditSocialSecurityRuleModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._socialSecuritiesService
-            .getAll(new GetAllSocialSecuritiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, nationalityId: undefined }))
+            .getAll(
+                new GetAllSocialSecuritiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    nationalityId: undefined,
+                })
+            )
             .subscribe((result) => this.socialSecurities.set(result.items));
 
         this._qualificationsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.qualifications.set(result.items));
 
         this._maritalStatusesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.maritalStatuses.set(result.items));
 
         if (!socialSecurityRuleId) {

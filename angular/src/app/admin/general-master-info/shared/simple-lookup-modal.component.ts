@@ -13,13 +13,7 @@ import { ISimpleLookupServiceProxy } from './simple-lookup.types';
 @Component({
     selector: 'simpleLookupModal',
     templateUrl: './simple-lookup-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class SimpleLookupModalComponent extends AppComponentBase {
     readonly service = input.required<ISimpleLookupServiceProxy>();

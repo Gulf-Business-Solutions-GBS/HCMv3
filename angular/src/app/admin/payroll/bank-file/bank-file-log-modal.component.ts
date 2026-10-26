@@ -28,7 +28,15 @@ import {
 @Component({
     selector: 'bankFileLogModal',
     templateUrl: './bank-file-log-modal.component.html',
-    imports: [AppBsModalDirective, TableModule, PaginatorModule, LocalizePipe, PermissionPipe, BusyIfDirective, LuxonFormatPipe],
+    imports: [
+        AppBsModalDirective,
+        TableModule,
+        PaginatorModule,
+        LocalizePipe,
+        PermissionPipe,
+        BusyIfDirective,
+        LuxonFormatPipe,
+    ],
 })
 export class BankFileLogModalComponent extends AppComponentBase {
     private _bankFileService = inject(BankFilesServiceProxy);
@@ -89,7 +97,10 @@ export class BankFileLogModalComponent extends AppComponentBase {
 
     setStatusFilter(filter: BankFileLogFilter): void {
         this.statusFilter.set(filter);
-        this.getLogs({ first: 0, rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage } as LazyLoadEvent);
+        this.getLogs({
+            first: 0,
+            rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage,
+        } as LazyLoadEvent);
     }
 
     /** Legacy btnExportTimeLog_Click: the rows the current filter shows. */

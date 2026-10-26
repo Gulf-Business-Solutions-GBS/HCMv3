@@ -46,7 +46,14 @@ export class CreateOrEditEmployeeTaskModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._taskTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.taskTypes.set(result.items));
 
         if (!id) {

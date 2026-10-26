@@ -46,7 +46,12 @@ export class MyTravelClaimComponent extends MyRequestComponentBase<MyTravelClaim
 
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyTravelClaimDto>(this.rows, () => [
-        { key: 'claimDate', label: 'ClaimDate', text: (row) => this.detailDate(row.claimDate), sort: (row) => row.claimDate?.toMillis() },
+        {
+            key: 'claimDate',
+            label: 'ClaimDate',
+            text: (row) => this.detailDate(row.claimDate),
+            sort: (row) => row.claimDate?.toMillis(),
+        },
         { key: 'amount', label: 'ClaimAmount', text: (row) => row.claimAmount },
         { key: 'comments', label: 'Comments', text: (row) => row.comments },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },

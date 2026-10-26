@@ -129,35 +129,86 @@ export class CreateOrEditEmployeeAccommodationModalComponent extends AppComponen
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._accommodationTypesService
-            .getAll(new GetAllAccommodationTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAccommodationTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.accommodationTypes.set(result.items));
 
         this._locationsService
-            .getAll(new GetAllLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.allLocations.set(result.items));
 
         this._buildingsService
-            .getAll(new GetAllBuildingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, locationId: undefined }))
+            .getAll(
+                new GetAllBuildingsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    locationId: undefined,
+                })
+            )
             .subscribe((result) => this.allBuildings.set(result.items));
 
         this._floorsService
-            .getAll(new GetAllFloorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, buildingId: undefined }))
+            .getAll(
+                new GetAllFloorsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    buildingId: undefined,
+                })
+            )
             .subscribe((result) => this.allFloors.set(result.items));
 
         this._flatsService
-            .getAll(new GetAllFlatsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, floorId: undefined }))
+            .getAll(
+                new GetAllFlatsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    floorId: undefined,
+                })
+            )
             .subscribe((result) => this.allFlats.set(result.items));
 
         this._roomsService
-            .getAll(new GetAllRoomsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, flatId: undefined }))
+            .getAll(
+                new GetAllRoomsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    flatId: undefined,
+                })
+            )
             .subscribe((result) => this.allRooms.set(result.items));
 
         this._bedsService
-            .getAll(new GetAllBedsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, roomId: undefined }))
+            .getAll(
+                new GetAllBedsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    roomId: undefined,
+                })
+            )
             .subscribe((result) => this.allBeds.set(result.items));
 
         if (!id) {

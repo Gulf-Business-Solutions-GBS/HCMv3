@@ -17,11 +17,13 @@ import {
     GetAllSimpleLookupsInput,
     GetAllWorkflowGroupsInput,
     GetAllWorkLocationsInput,
+    GetPositionsForOrgAssignmentInput,
     JobTitlesServiceProxy,
     OrganizationUnitDto,
     OrganizationUnitServiceProxy,
     PayrollAreaDto,
     PayrollAreasServiceProxy,
+    PositionForOrgAssignmentDto,
     PostingGroupsServiceProxy,
     SimpleLookupDto,
     WorkflowGroupDto,
@@ -98,6 +100,9 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
     readonly payrollAreas = signal<PayrollAreaDto[]>([]);
     readonly workflowGroups = signal<WorkflowGroupDto[]>([]);
 
+    /** Legacy EmpPosition: active, vacant positions, plus the one this assignment already holds. */
+    readonly positions = signal<PositionForOrgAssignmentDto[]>([]);
+
     /** Only the chosen group's sub groups; the server rejects a sub group from another group. */
     readonly filteredEmployeeSubGroups = computed(() => {
         const groupId = this.record().employeeGroupId;
@@ -115,40 +120,118 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
             const record = new CreateOrEditEmployeeOrgAssignmentDto();
             record.employeeId = employeeId;
             this.record.set(record);
+            this.loadPositions(undefined);
             this.modal().show();
         } else {
             this._service.getEmployeeOrgAssignmentForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeOrgAssignment);
+                this.loadPositions(result.employeeOrgAssignment.positionId);
                 this.modal().show();
             });
         }
     }
 
+    private loadPositions(currentPositionId: number | undefined): void {
+        this._service
+            .getPositionsForOrgAssignment(new GetPositionsForOrgAssignmentInput({ currentPositionId }))
+            .subscribe((result) => this.positions.set(result.items));
+    }
+
+    /**
+     * Legacy OnChanged("Position"): choosing a position fills the job title, groups, payroll area, work location,
+     * cost centre and org unit from it. Only values the position has are copied; the server applies the same rule.
+     */
+    updatePosition(positionId: number | undefined): void {
+        const next = new CreateOrEditEmployeeOrgAssignmentDto();
+        Object.assign(next, this.record());
+        next.positionId = positionId;
+
+        const position = this.positions().find((p) => p.id === positionId);
+        if (position) {
+            if (position.employeeGroupId && position.employeeGroupId !== next.employeeGroupId && !position.employeeSubGroupId) {
+                next.employeeSubGroupId = undefined;
+            }
+            next.jobTitleId = position.jobTitleId ?? next.jobTitleId;
+            next.employeeGroupId = position.employeeGroupId ?? next.employeeGroupId;
+            next.employeeSubGroupId = position.employeeSubGroupId ?? next.employeeSubGroupId;
+            next.payrollAreaId = position.payrollAreaId ?? next.payrollAreaId;
+            next.workLocationId = position.workLocationId ?? next.workLocationId;
+            next.costCenterId = position.costCenterId ?? next.costCenterId;
+            next.organizationUnitId = position.organizationUnitId ?? next.organizationUnitId;
+        }
+
+        this.record.set(next);
+    }
+
     private loadLookups(): void {
         this._jobTitlesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.jobTitles.set(result.items));
 
         this._costCentersService
-            .getAll(new GetAllCostCentersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCostCentersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.costCenters.set(result.items));
 
         this._workLocationsService
-            .getAll(new GetAllWorkLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkLocationsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workLocations.set(result.items));
 
         this._postingGroupsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.postingGroups.set(result.items));
 
         this._budgetingGroupsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.budgetingGroups.set(result.items));
 
-        this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));
+        this._organizationUnitService
+            .getOrganizationUnits()
+            .subscribe((result) => this.organizationUnits.set(result.items ?? []));
 
         this._employeeGroupsService
-            .getAll(new GetAllEmployeeGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeeGroupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.employeeGroups.set(result.items));
 
         this._employeeSubGroupsService
@@ -159,16 +242,30 @@ export class CreateOrEditEmployeeOrgAssignmentModalComponent extends AppComponen
                     sorting: undefined,
                     employeeGroupId: undefined,
                     filter: undefined,
-                }),
+                })
             )
             .subscribe((result) => this.employeeSubGroups.set(result.items));
 
         this._payrollAreasService
-            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPayrollAreasInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.payrollAreas.set(result.items));
 
         this._workflowGroupsService
-            .getAll(new GetAllWorkflowGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkflowGroupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workflowGroups.set(result.items));
     }
 

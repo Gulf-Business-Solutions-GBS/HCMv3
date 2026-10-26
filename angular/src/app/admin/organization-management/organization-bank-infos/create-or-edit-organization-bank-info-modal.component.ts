@@ -20,13 +20,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditOrganizationBankInfoModal',
     templateUrl: './create-or-edit-organization-bank-info-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditOrganizationBankInfoModalComponent extends AppComponentBase {
     private _organizationBankInfosService = inject(OrganizationBankInfosServiceProxy);
@@ -38,7 +32,9 @@ export class CreateOrEditOrganizationBankInfoModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly organizationBankInfo = signal<CreateOrEditOrganizationBankInfoDto>(new CreateOrEditOrganizationBankInfoDto());
+    readonly organizationBankInfo = signal<CreateOrEditOrganizationBankInfoDto>(
+        new CreateOrEditOrganizationBankInfoDto()
+    );
     readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
     readonly banks = signal<SimpleLookupDto[]>([]);
 
@@ -50,7 +46,14 @@ export class CreateOrEditOrganizationBankInfoModalComponent extends AppComponent
         });
 
         this._banksService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.banks.set(result.items);
             });
@@ -59,10 +62,12 @@ export class CreateOrEditOrganizationBankInfoModalComponent extends AppComponent
             this.organizationBankInfo.set(new CreateOrEditOrganizationBankInfoDto());
             this.modal().show();
         } else {
-            this._organizationBankInfosService.getOrganizationBankInfoForEdit(organizationBankInfoId).subscribe((result) => {
-                this.organizationBankInfo.set(result.organizationBankInfo);
-                this.modal().show();
-            });
+            this._organizationBankInfosService
+                .getOrganizationBankInfoForEdit(organizationBankInfoId)
+                .subscribe((result) => {
+                    this.organizationBankInfo.set(result.organizationBankInfo);
+                    this.modal().show();
+                });
         }
     }
 

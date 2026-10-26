@@ -22,13 +22,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditAttendanceTypeModal',
     templateUrl: './create-or-edit-attendance-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditAttendanceTypeModalComponent extends AppComponentBase {
     private _attendanceTypesService = inject(AttendanceTypesServiceProxy);
@@ -58,11 +52,20 @@ export class CreateOrEditAttendanceTypeModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!attendanceTypeId) {

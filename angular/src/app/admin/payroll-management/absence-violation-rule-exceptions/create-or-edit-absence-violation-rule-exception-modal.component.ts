@@ -57,7 +57,10 @@ export class CreateOrEditAbsenceViolationRuleExceptionModalComponent extends App
             recordType: 'AbsenceViolationRuleException',
             record: this.absenceViolationRuleException,
             isNew: this.isNew,
-            keys: () => ({ AbsenceViolationRuleId: this.absenceViolationRuleException().absenceViolationRuleId, EmployeeId: this.absenceViolationRuleException().employeeId }),
+            keys: () => ({
+                AbsenceViolationRuleId: this.absenceViolationRuleException().absenceViolationRuleId,
+                EmployeeId: this.absenceViolationRuleException().employeeId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -69,11 +72,20 @@ export class CreateOrEditAbsenceViolationRuleExceptionModalComponent extends App
         this.active.set(true);
 
         this._absenceViolationRulesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceViolationRules.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         if (!absenceViolationRuleExceptionId) {

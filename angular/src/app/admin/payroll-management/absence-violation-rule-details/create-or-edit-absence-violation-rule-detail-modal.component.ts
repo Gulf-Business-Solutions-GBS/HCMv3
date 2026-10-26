@@ -22,13 +22,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditAbsenceViolationRuleDetailModal',
     templateUrl: './create-or-edit-absence-violation-rule-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditAbsenceViolationRuleDetailModalComponent extends AppComponentBase {
     private _absenceViolationRuleDetailsService = inject(AbsenceViolationRuleDetailsServiceProxy);
@@ -58,21 +52,37 @@ export class CreateOrEditAbsenceViolationRuleDetailModalComponent extends AppCom
         this.active.set(true);
 
         this._absenceViolationRulesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceViolationRules.set(result.items));
 
         this._notificationConfigsService
-            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNotificationConfigsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.notificationConfigs.set(result.items));
 
         if (!absenceViolationRuleDetailId) {
             this.absenceViolationRuleDetail.set(new CreateOrEditAbsenceViolationRuleDetailDto());
             this.modal().show();
         } else {
-            this._absenceViolationRuleDetailsService.getAbsenceViolationRuleDetailForEdit(absenceViolationRuleDetailId).subscribe((result) => {
-                this.absenceViolationRuleDetail.set(result.absenceViolationRuleDetail);
-                this.modal().show();
-            });
+            this._absenceViolationRuleDetailsService
+                .getAbsenceViolationRuleDetailForEdit(absenceViolationRuleDetailId)
+                .subscribe((result) => {
+                    this.absenceViolationRuleDetail.set(result.absenceViolationRuleDetail);
+                    this.modal().show();
+                });
         }
     }
 

@@ -41,10 +41,20 @@ export class CreateOrEditWorkflowRemarkModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._workflowRequestsService
-            .getAll(new GetAllWorkflowRequestsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllWorkflowRequestsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRequests.set(result.items));
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         if (!id) {

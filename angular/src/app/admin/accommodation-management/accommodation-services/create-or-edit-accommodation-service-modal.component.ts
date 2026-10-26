@@ -50,11 +50,25 @@ export class CreateOrEditAccommodationServiceModalComponent extends AppComponent
         this.active.set(true);
 
         this._employeeAccommodationsService
-            .getAll(new GetAllEmployeeAccommodationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllEmployeeAccommodationsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.employeeAccommodations.set(result.items));
 
         this._accommodationServiceTypesService
-            .getAll(new GetAllAccommodationServiceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAccommodationServiceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.accommodationServiceTypes.set(result.items));
 
         if (!id) {

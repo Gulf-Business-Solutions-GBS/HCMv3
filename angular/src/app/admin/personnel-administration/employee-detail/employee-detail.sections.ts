@@ -143,7 +143,8 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
             {
                 id: 'contracts',
                 labelKey: 'EmpSection_Contracts',
-                load: () => import('./contracts/employee-contracts.component').then((m) => m.EmployeeContractsComponent),
+                load: () =>
+                    import('./contracts/employee-contracts.component').then((m) => m.EmployeeContractsComponent),
             },
             {
                 id: 'actions',
@@ -261,7 +262,8 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
             {
                 id: 'overtimes',
                 labelKey: 'EmpSection_Overtimes',
-                load: () => import('./overtimes/employee-overtimes.component').then((m) => m.EmployeeOvertimesComponent),
+                load: () =>
+                    import('./overtimes/employee-overtimes.component').then((m) => m.EmployeeOvertimesComponent),
             },
             {
                 id: 'absences',
@@ -491,7 +493,9 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
                 id: 'fnf-payments',
                 labelKey: 'EmpSection_FinalSettlement',
                 load: () =>
-                    import('./fnf-payments/employee-fnf-payments.component').then((m) => m.EmployeeFnFPaymentsComponent),
+                    import('./fnf-payments/employee-fnf-payments.component').then(
+                        (m) => m.EmployeeFnFPaymentsComponent
+                    ),
             },
         ],
     },
@@ -528,7 +532,9 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
                 id: 'talent-flags',
                 labelKey: 'EmpSection_TalentFlags',
                 load: () =>
-                    import('./talent-flags/employee-talent-flags.component').then((m) => m.EmployeeTalentFlagsComponent),
+                    import('./talent-flags/employee-talent-flags.component').then(
+                        (m) => m.EmployeeTalentFlagsComponent
+                    ),
             },
             {
                 id: 'rewards',

@@ -113,13 +113,17 @@ export class LeaveAccrualSummariesComponent extends AppComponentBase implements 
     }
 
     deleteLeaveAccrualSummary(record: LeaveAccrualSummaryDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.employeeCode), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._leaveAccrualSummariesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._leaveAccrualSummariesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

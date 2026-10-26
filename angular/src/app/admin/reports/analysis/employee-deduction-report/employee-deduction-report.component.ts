@@ -188,11 +188,7 @@ export class EmployeeDeductionReportComponent extends AppComponentBase implement
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetEmployeeDeductionReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeDeductionReportInput {
         return new GetEmployeeDeductionReportInput({
             // The four inherited base filters have no UI on this screen -- legacy has none either.
             fromDate: undefined,

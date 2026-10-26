@@ -69,15 +69,33 @@ export class CreateOrEditIncidentClaimModalComponent extends AppComponentBase {
 
     private loadLookups(): void {
         this._incidentRegistersService
-            .getAll(new GetAllIncidentRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, incidentTypeId: undefined, statusId: undefined }))
+            .getAll(
+                new GetAllIncidentRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    incidentTypeId: undefined,
+                    statusId: undefined,
+                })
+            )
             .subscribe((result) => this.incidentRegisters.set(result.items));
 
         this._currenciesService
-            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.currencies.set(result.items));
 
         this._incidentClaimStatusesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.claimStatuses.set(result.items));
     }
 

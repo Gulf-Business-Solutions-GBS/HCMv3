@@ -46,25 +46,48 @@ export class CreateOrEditSocialSecurityMaritalAllowanceModalComponent extends Ap
         this.active.set(true);
 
         this._socialSecuritiesService
-            .getAll(new GetAllSocialSecuritiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, nationalityId: undefined }))
+            .getAll(
+                new GetAllSocialSecuritiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    nationalityId: undefined,
+                })
+            )
             .subscribe((result) => this.socialSecurities.set(result.items));
 
         this._educationBranchesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.educationBranches.set(result.items));
 
         this._maritalStatusesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.maritalStatuses.set(result.items));
 
         if (!socialSecurityMaritalAllowanceId) {
             this.socialSecurityMaritalAllowance.set(new CreateOrEditSocialSecurityMaritalAllowanceDto());
             this.modal().show();
         } else {
-            this._socialSecurityMaritalAllowancesService.getSocialSecurityMaritalAllowanceForEdit(socialSecurityMaritalAllowanceId).subscribe((result) => {
-                this.socialSecurityMaritalAllowance.set(result.socialSecurityMaritalAllowance);
-                this.modal().show();
-            });
+            this._socialSecurityMaritalAllowancesService
+                .getSocialSecurityMaritalAllowanceForEdit(socialSecurityMaritalAllowanceId)
+                .subscribe((result) => {
+                    this.socialSecurityMaritalAllowance.set(result.socialSecurityMaritalAllowance);
+                    this.modal().show();
+                });
         }
     }
 

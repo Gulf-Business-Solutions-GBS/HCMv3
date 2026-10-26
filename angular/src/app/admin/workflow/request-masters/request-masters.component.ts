@@ -154,28 +154,39 @@ export class RequestMastersComponent extends AppComponentBase implements OnInit 
      * which arrives with "-COPY" / "(Copy)" names to be renamed.
      */
     copyRecord(record: RequestMasterDto): void {
-        this.message.confirm(this.l('CopyRequestMasterConfirmation', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (!isConfirmed) {
-                return;
+        this.message.confirm(
+            this.l('CopyRequestMasterConfirmation', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (!isConfirmed) {
+                    return;
+                }
+
+                this._service.copy(new EntityDto({ id: record.id })).subscribe((created) => {
+                    this.notify.success(this.l('RequestMasterCopied'));
+
+                    const canEdit = this.permission.isGranted('Pages.Workflow.RequestMasters.Edit');
+                    this._router.navigate(
+                        ['/app/admin/request-masters', created.id],
+                        canEdit ? { queryParams: { edit: true } } : {}
+                    );
+                });
             }
-
-            this._service.copy(new EntityDto({ id: record.id })).subscribe((created) => {
-                this.notify.success(this.l('RequestMasterCopied'));
-
-                const canEdit = this.permission.isGranted('Pages.Workflow.RequestMasters.Edit');
-                this._router.navigate(['/app/admin/request-masters', created.id], canEdit ? { queryParams: { edit: true } } : {});
-            });
-        });
+        );
     }
 
     deleteRecord(record: RequestMasterDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

@@ -116,7 +116,11 @@ export class PayrollJVCustom042LieuDayLeaveProvisionReportComponent extends AppC
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042LieuDayLeaveProvisionReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042LieuDayLeaveProvisionReportInput {
         return new GetPayrollJVCustom042LieuDayLeaveProvisionReportInput({
             fromDate: undefined,
             toDate: undefined,

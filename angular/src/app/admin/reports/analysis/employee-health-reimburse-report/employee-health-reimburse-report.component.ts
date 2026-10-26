@@ -107,7 +107,11 @@ export class EmployeeHealthReimburseReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeHealthReimburseReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetEmployeeHealthReimburseReportInput {
         return new GetEmployeeHealthReimburseReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

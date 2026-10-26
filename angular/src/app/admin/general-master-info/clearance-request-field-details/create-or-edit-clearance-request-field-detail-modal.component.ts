@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditClearanceRequestFieldDetailModal',
     templateUrl: './create-or-edit-clearance-request-field-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppComponentBase {
     private _clearanceRequestFieldDetailService = inject(ClearanceRequestFieldDetailsServiceProxy);
@@ -39,7 +33,9 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly clearanceRequestFieldDetail = signal<CreateOrEditClearanceRequestFieldDetailDto>(new CreateOrEditClearanceRequestFieldDetailDto());
+    readonly clearanceRequestFieldDetail = signal<CreateOrEditClearanceRequestFieldDetailDto>(
+        new CreateOrEditClearanceRequestFieldDetailDto()
+    );
     readonly clearanceRequestFields = signal<ClearanceRequestFieldDto[]>([]);
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
 
@@ -51,14 +47,28 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
         this.active.set(true);
 
         this._clearanceRequestFieldsService
-            .getAll(new GetAllClearanceRequestFieldsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllClearanceRequestFieldsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.clearanceRequestFields.set(result.items);
             });
 
         // The role that has to answer this checklist line; the server requires it.
         this._workflowRolesService
-            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkflowRolesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRoles.set(result.items));
 
         if (!clearanceRequestFieldDetailId) {
@@ -67,17 +77,21 @@ export class CreateOrEditClearanceRequestFieldDetailModalComponent extends AppCo
             this.clearanceRequestFieldDetail.set(record);
             this.modal().show();
         } else {
-            this._clearanceRequestFieldDetailService.getClearanceRequestFieldDetailForEdit(clearanceRequestFieldDetailId).subscribe((result) => {
-                this.clearanceRequestFieldDetail.set(result.clearanceRequestFieldDetail);
-                this.modal().show();
-            });
+            this._clearanceRequestFieldDetailService
+                .getClearanceRequestFieldDetailForEdit(clearanceRequestFieldDetailId)
+                .subscribe((result) => {
+                    this.clearanceRequestFieldDetail.set(result.clearanceRequestFieldDetail);
+                    this.modal().show();
+                });
         }
     }
 
     onShown(): void {
         document
             .getElementById(
-                this.fixedClearanceRequestFieldId() ? 'ClearanceRequestFieldDetail_WorkflowRoleId' : 'ClearanceRequestFieldDetail_ClearanceRequestFieldId'
+                this.fixedClearanceRequestFieldId()
+                    ? 'ClearanceRequestFieldDetail_WorkflowRoleId'
+                    : 'ClearanceRequestFieldDetail_ClearanceRequestFieldId'
             )
             ?.focus();
     }

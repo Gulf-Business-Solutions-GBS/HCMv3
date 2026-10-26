@@ -65,13 +65,17 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._assetTypesService
-            .getAll(new GetAllAssetTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAssetTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => {
                 this.assetTypes.set(result.items);
             });
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!assetId) {

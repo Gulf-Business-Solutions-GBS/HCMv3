@@ -76,23 +76,48 @@ export class CreateOrEditGatePassModalComponent extends AppComponentBase {
 
     private loadLookups(): void {
         this._gatePassTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.gatePassTypes.set(result.items));
 
         this._gatePassMovementsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.gatePassMovements.set(result.items));
 
         this._gatePassStatusesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.gatePassStatuses.set(result.items));
 
         this._locationsService
-            .getAll(new GetAllLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.locations.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
     }
 
@@ -139,7 +164,10 @@ export class CreateOrEditGatePassModalComponent extends AppComponentBase {
             (current as any)[field] = undefined;
         } else {
             const base = (current as any)[dateField] ?? DateTime.now();
-            (current as any)[field] = DateTime.fromFormat(`${base.toFormat('yyyy-MM-dd')} ${value}`, 'yyyy-MM-dd HH:mm');
+            (current as any)[field] = DateTime.fromFormat(
+                `${base.toFormat('yyyy-MM-dd')} ${value}`,
+                'yyyy-MM-dd HH:mm'
+            );
         }
         const next = new CreateOrEditGatePassDto();
         Object.assign(next, current);

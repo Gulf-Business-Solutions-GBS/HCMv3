@@ -1,11 +1,7 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import {
-    LoanTypeDto,
-    LoanTypesServiceProxy,
-    GetAllLoanTypesInput,
-} from '@shared/service-proxies/service-proxies';
+import { LoanTypeDto, LoanTypesServiceProxy, GetAllLoanTypesInput } from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -114,13 +110,17 @@ export class LoanTypesComponent extends AppComponentBase implements OnInit {
     }
 
     deleteLoanType(record: LoanTypeDto): void {
-        this.message.confirm(this.l('LoanTypeDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._loanTypesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('LoanTypeDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._loanTypesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

@@ -50,7 +50,12 @@ export class MyAttendanceComponent extends MyRequestComponentBase<MyAttendanceRe
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyAttendanceRequestDto>(this.rows, () => [
         { key: 'type', label: 'AttendanceType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'date', label: 'Date', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
+        {
+            key: 'date',
+            label: 'Date',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
         { key: 'hours', label: 'Hours', text: (row) => row.attendanceHours },
         { key: 'comments', label: 'Comments', text: (row) => row.comments },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },

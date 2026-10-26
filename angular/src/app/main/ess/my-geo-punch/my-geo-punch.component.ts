@@ -105,7 +105,10 @@ export class MyGeoPunchComponent extends AppComponentBase implements OnInit, OnD
     });
 
     ngOnInit(): void {
-        this._clockTimer = setInterval(() => this.now.set(DateTime.local().plus({ milliseconds: this._clockOffsetMs })), 1000);
+        this._clockTimer = setInterval(
+            () => this.now.set(DateTime.local().plus({ milliseconds: this._clockOffsetMs })),
+            1000
+        );
         this.load(true);
     }
 

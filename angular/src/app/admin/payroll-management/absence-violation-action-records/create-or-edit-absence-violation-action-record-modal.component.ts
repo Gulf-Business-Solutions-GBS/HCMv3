@@ -17,13 +17,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditAbsenceViolationActionRecordModal',
     templateUrl: './create-or-edit-absence-violation-action-record-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditAbsenceViolationActionRecordModalComponent extends AppComponentBase {
     private _absenceViolationActionRecordsService = inject(AbsenceViolationActionRecordsServiceProxy);

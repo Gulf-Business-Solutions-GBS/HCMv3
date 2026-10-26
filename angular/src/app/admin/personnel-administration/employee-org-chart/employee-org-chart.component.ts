@@ -152,9 +152,7 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
         input.filter = filter;
         input.maxResultCount = 50;
 
-        this._employeeOrgChartService
-            .searchNodes(input)
-            .subscribe((results) => this.searchResults.set(results ?? []));
+        this._employeeOrgChartService.searchNodes(input).subscribe((results) => this.searchResults.set(results ?? []));
     }
 
     onSearchFilter(event: { filter: string }): void {
@@ -241,12 +239,7 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
                 imageUrl: node.hasPhoto ? this.buildPhotoUrl(node.id) : null,
                 // Gender is a required enum on Employee, so there is always a silhouette to fall back to.
                 // Anything outside the two known values lands on the neutral figure rather than guessing.
-                fallback:
-                    node.gender === Gender.Female
-                        ? 'female'
-                        : node.gender === Gender.Male
-                          ? 'male'
-                          : 'neutral',
+                fallback: node.gender === Gender.Female ? 'female' : node.gender === Gender.Male ? 'male' : 'neutral',
             },
             // Hidden entirely for anyone who cannot open employee records, rather than shown and then
             // failing on the route guard.

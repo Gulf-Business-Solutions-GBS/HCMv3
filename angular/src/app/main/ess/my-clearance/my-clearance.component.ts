@@ -60,8 +60,18 @@ export class MyClearanceComponent extends MyRequestComponentBase<MyClearanceDto>
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyClearanceDto>(this.rows, () => [
         { key: 'type', label: 'ClearanceType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.detailDate(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
         { key: 'comments', label: 'Comments', text: (row) => row.comments },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);

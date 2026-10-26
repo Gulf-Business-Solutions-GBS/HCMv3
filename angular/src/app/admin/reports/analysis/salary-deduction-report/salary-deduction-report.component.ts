@@ -10,7 +10,10 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
-import { GetSalaryDeductionReportInput, SalaryDeductionReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetSalaryDeductionReportInput,
+    SalaryDeductionReportServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 
 /**
@@ -24,7 +27,15 @@ import { GridReportFilterComponent } from '../shared/grid-report-filter.componen
 @Component({
     templateUrl: './salary-deduction-report.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, GridReportFilterComponent, LocalizePipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        GridReportFilterComponent,
+        LocalizePipe,
+    ],
 })
 export class SalaryDeductionReportComponent extends AppComponentBase {
     private readonly _reportService = inject(SalaryDeductionReportServiceProxy);

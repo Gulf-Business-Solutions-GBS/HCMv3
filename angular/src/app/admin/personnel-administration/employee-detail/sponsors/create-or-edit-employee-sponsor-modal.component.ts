@@ -84,19 +84,38 @@ export class CreateOrEditEmployeeSponsorModalComponent extends AppComponentBase 
         this.active.set(true);
 
         this._sponsorsService
-            .getAll(new GetAllSponsorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSponsorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.sponsors.set(result.items));
 
         this._govtJobTitlesService
-            .getAll(new GetAllGovtJobTitlesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, govtJobCategoryId: undefined, filter: undefined }))
+            .getAll(
+                new GetAllGovtJobTitlesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    govtJobCategoryId: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.govtJobTitles.set(result.items));
 
         this._currenciesService
-            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.currencies.set(result.items));
 
         this._workVisaTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workVisaTypes.set(result.items));
 
         if (!id) {

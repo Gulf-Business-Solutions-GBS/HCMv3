@@ -28,7 +28,14 @@ import { AttachmentsComponent } from '@app/shared/common/attachments/attachments
 @Component({
     selector: 'createOrEditEmployeeTrainingModal',
     templateUrl: './create-or-edit-employee-training-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, AttachmentsComponent],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        AttachmentsComponent,
+    ],
 })
 export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase {
     private _service = inject(EmployeeTrainingsServiceProxy);
@@ -53,7 +60,9 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
     // Cascading: filter the schedule dropdown to the currently selected training course.
     readonly trainingSchedules = computed(() => {
         const courseId = this.record().trainingCourseId;
-        return courseId ? this.allTrainingSchedules().filter((s) => s.trainingCourseId === courseId) : this.allTrainingSchedules();
+        return courseId
+            ? this.allTrainingSchedules().filter((s) => s.trainingCourseId === courseId)
+            : this.allTrainingSchedules();
     });
 
     readonly completionStatuses = [
@@ -65,15 +74,32 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._trainingCoursesService
-            .getAll(new GetAllTrainingCoursesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTrainingCoursesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.trainingCourses.set(result.items));
 
         this._trainingSchedulesService
-            .getAll(new GetAllTrainingSchedulesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, trainingCourseId: undefined }))
+            .getAll(
+                new GetAllTrainingSchedulesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    trainingCourseId: undefined,
+                })
+            )
             .subscribe((result) => this.allTrainingSchedules.set(result.items));
 
         this.certifications.set([]);
@@ -87,7 +113,10 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
         } else {
             this._service.getEmployeeTrainingForEdit(id).subscribe((result) => {
                 this.record.set(result.employeeTraining);
-                this.loadCertifications(result.employeeTraining.employeeId, result.employeeTraining.employeeCertificationId);
+                this.loadCertifications(
+                    result.employeeTraining.employeeId,
+                    result.employeeTraining.employeeCertificationId
+                );
                 this.modal().show();
             });
         }
@@ -110,7 +139,10 @@ export class CreateOrEditEmployeeTrainingModalComponent extends AppComponentBase
 
         this._service
             .getTrainingCertifications(
-                new GetEmployeeTrainingCertificationsInput({ employeeId: employeeId, currentCertificationId: currentCertificationId }),
+                new GetEmployeeTrainingCertificationsInput({
+                    employeeId: employeeId,
+                    currentCertificationId: currentCertificationId,
+                })
             )
             .subscribe((result) => this.certifications.set(result.items));
     }

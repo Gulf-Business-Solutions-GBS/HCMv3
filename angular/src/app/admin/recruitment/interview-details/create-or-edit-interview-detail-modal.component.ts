@@ -51,7 +51,14 @@ export class CreateOrEditInterviewDetailModalComponent extends AppComponentBase 
 
         if (!applicationStatusId) {
             this._applicationStatusesService
-                .getAll(new GetAllApplicationStatusesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, vacancyId: undefined }))
+                .getAll(
+                    new GetAllApplicationStatusesInput({
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                        vacancyId: undefined,
+                    })
+                )
                 .subscribe((result) => this.applicationStatuses.set(result.items));
         }
 
@@ -69,7 +76,13 @@ export class CreateOrEditInterviewDetailModalComponent extends AppComponentBase 
     }
 
     onShown(): void {
-        document.getElementById(this.fixedApplicationStatusId() ? 'InterviewDetails_InterviewDate' : 'InterviewDetails_ApplicationStatusId')?.focus();
+        document
+            .getElementById(
+                this.fixedApplicationStatusId()
+                    ? 'InterviewDetails_InterviewDate'
+                    : 'InterviewDetails_ApplicationStatusId'
+            )
+            ?.focus();
     }
 
     save(): void {

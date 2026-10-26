@@ -46,7 +46,14 @@ export class CreateOrEditEmployeeAbsQuotaForfeitModalComponent extends AppCompon
         this.active.set(true);
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!id) {

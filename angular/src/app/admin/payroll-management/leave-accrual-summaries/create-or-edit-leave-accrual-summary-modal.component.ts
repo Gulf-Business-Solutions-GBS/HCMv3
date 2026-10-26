@@ -37,17 +37,26 @@ export class CreateOrEditLeaveAccrualSummaryModalComponent extends AppComponentB
         this.active.set(true);
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!leaveAccrualSummaryId) {
             this.leaveAccrualSummary.set(new CreateOrEditLeaveAccrualSummaryDto());
             this.modal().show();
         } else {
-            this._leaveAccrualSummariesService.getLeaveAccrualSummaryForEdit(leaveAccrualSummaryId).subscribe((result) => {
-                this.leaveAccrualSummary.set(result.leaveAccrualSummary);
-                this.modal().show();
-            });
+            this._leaveAccrualSummariesService
+                .getLeaveAccrualSummaryForEdit(leaveAccrualSummaryId)
+                .subscribe((result) => {
+                    this.leaveAccrualSummary.set(result.leaveAccrualSummary);
+                    this.modal().show();
+                });
         }
     }
 

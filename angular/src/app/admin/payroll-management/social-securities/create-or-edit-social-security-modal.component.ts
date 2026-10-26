@@ -62,7 +62,14 @@ export class CreateOrEditSocialSecurityModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._nationalitiesService
-            .getAll(new GetAllNationalitiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNationalitiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.nationalities.set(result.items));
 
         if (!socialSecurityId) {

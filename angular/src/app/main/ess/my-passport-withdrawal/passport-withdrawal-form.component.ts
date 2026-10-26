@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    OnInit,
+    computed,
+    effect,
+    inject,
+    input,
+    output,
+    signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -53,7 +63,10 @@ export interface PassportWithdrawalFormValue {
 }
 
 /** An empty form for the given action. */
-export function emptyPassportWithdrawalForm(action = WorkflowRequestAction.New, employeeDisplay = ''): PassportWithdrawalFormValue {
+export function emptyPassportWithdrawalForm(
+    action = WorkflowRequestAction.New,
+    employeeDisplay = ''
+): PassportWithdrawalFormValue {
     return {
         action,
         employeeDisplay,
@@ -126,7 +139,12 @@ export class PassportWithdrawalFormComponent extends AppComponentBase implements
             const value = this.value();
             const documents = this.documents();
 
-            if (!this.readOnly() && value.action === WorkflowRequestAction.New && documents.length === 1 && !value.employeeDocumentId) {
+            if (
+                !this.readOnly() &&
+                value.action === WorkflowRequestAction.New &&
+                documents.length === 1 &&
+                !value.employeeDocumentId
+            ) {
                 value.employeeDocumentId = documents[0].id;
                 this.revision.update((n) => n + 1);
             }
@@ -191,18 +209,27 @@ export class PassportWithdrawalFormComponent extends AppComponentBase implements
     }
 
     issueDate(): string {
-        return this.documentDetail((document) => this.formDate(document.issueDate), this.asDayMonthYear(this.value().issueDate));
+        return this.documentDetail(
+            (document) => this.formDate(document.issueDate),
+            this.asDayMonthYear(this.value().issueDate)
+        );
     }
 
     expiryDate(): string {
-        return this.documentDetail((document) => this.formDate(document.expiryDate), this.asDayMonthYear(this.value().expiryDate));
+        return this.documentDetail(
+            (document) => this.formDate(document.expiryDate),
+            this.asDayMonthYear(this.value().expiryDate)
+        );
     }
 
     /**
      * A detail of the chosen document: from the picker's own list while one is being chosen, otherwise what
      * came with the request.
      */
-    private documentDetail(fromList: (document: EssWithdrawableDocumentDto) => string, fromValue: string | undefined): string {
+    private documentDetail(
+        fromList: (document: EssWithdrawableDocumentDto) => string,
+        fromValue: string | undefined
+    ): string {
         if (!this.editable()) {
             return fromValue ?? '';
         }
@@ -213,7 +240,7 @@ export class PassportWithdrawalFormComponent extends AppComponentBase implements
 
         const chosen = this.selectedDocument();
 
-        return chosen ? fromList(chosen) : fromValue ?? '';
+        return chosen ? fromList(chosen) : (fromValue ?? '');
     }
 
     /**
@@ -230,7 +257,9 @@ export class PassportWithdrawalFormComponent extends AppComponentBase implements
     unlistedGuarantorLabel(): string {
         const id = this.value().guarantorId;
 
-        return id && !this.guarantorCandidates().some((colleague) => colleague.id === id) ? this.value().guarantorLabel || '' : '';
+        return id && !this.guarantorCandidates().some((colleague) => colleague.id === id)
+            ? this.value().guarantorLabel || ''
+            : '';
     }
 
     documentLabel(document: EssWithdrawableDocumentDto): string {

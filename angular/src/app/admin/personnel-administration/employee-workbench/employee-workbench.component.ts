@@ -99,7 +99,7 @@ export class EmployeeWorkbenchComponent extends AppComponentBase implements OnIn
         WORKBENCH_TILES.map((tile) => ({
             ...tile,
             subViews: tile.subViews.filter((view) => this.permission.isGranted(view.permission)),
-        })).filter((tile) => tile.subViews.length > 0),
+        })).filter((tile) => tile.subViews.length > 0)
     );
 
     readonly openTile = computed(() => this.tiles().find((t) => t.id === this.openTileId()) ?? null);

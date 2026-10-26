@@ -18,13 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditClearanceRequestFieldModal',
     templateUrl: './create-or-edit-clearance-request-field-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditClearanceRequestFieldModalComponent extends AppComponentBase {
     private _clearanceRequestFieldService = inject(ClearanceRequestFieldsServiceProxy);
@@ -35,14 +29,23 @@ export class CreateOrEditClearanceRequestFieldModalComponent extends AppComponen
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly clearanceRequestField = signal<CreateOrEditClearanceRequestFieldDto>(new CreateOrEditClearanceRequestFieldDto());
+    readonly clearanceRequestField = signal<CreateOrEditClearanceRequestFieldDto>(
+        new CreateOrEditClearanceRequestFieldDto()
+    );
     readonly clearanceRequestTypes = signal<SimpleLookupDto[]>([]);
 
     show(clearanceRequestFieldId?: number): void {
         this.active.set(true);
 
         this._clearanceRequestTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.clearanceRequestTypes.set(result.items);
             });
@@ -51,10 +54,12 @@ export class CreateOrEditClearanceRequestFieldModalComponent extends AppComponen
             this.clearanceRequestField.set(new CreateOrEditClearanceRequestFieldDto());
             this.modal().show();
         } else {
-            this._clearanceRequestFieldService.getClearanceRequestFieldForEdit(clearanceRequestFieldId).subscribe((result) => {
-                this.clearanceRequestField.set(result.clearanceRequestField);
-                this.modal().show();
-            });
+            this._clearanceRequestFieldService
+                .getClearanceRequestFieldForEdit(clearanceRequestFieldId)
+                .subscribe((result) => {
+                    this.clearanceRequestField.set(result.clearanceRequestField);
+                    this.modal().show();
+                });
         }
     }
 

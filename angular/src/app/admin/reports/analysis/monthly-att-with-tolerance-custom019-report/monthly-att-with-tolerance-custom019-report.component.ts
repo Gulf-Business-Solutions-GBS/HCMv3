@@ -95,9 +95,7 @@ export class MonthlyAttWithToleranceCustom019ReportComponent extends AppComponen
     readonly sectionCode = signal<string | undefined>(undefined);
 
     /** Legacy cmbVarient, whose two items are Detail (default) and Summary. */
-    readonly variant = signal<MonthlyAttWithToleranceCustom019Variant>(
-        MonthlyAttWithToleranceCustom019Variant.Detail
-    );
+    readonly variant = signal<MonthlyAttWithToleranceCustom019Variant>(MonthlyAttWithToleranceCustom019Variant.Detail);
 
     readonly variantOptions = [
         { label: this.l('Detail'), value: MonthlyAttWithToleranceCustom019Variant.Detail },

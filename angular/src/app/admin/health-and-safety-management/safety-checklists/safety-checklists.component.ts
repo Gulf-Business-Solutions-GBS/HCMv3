@@ -2,7 +2,11 @@ import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GetAllSafetyChecklistsInput, SafetyChecklistDto, SafetyChecklistsServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetAllSafetyChecklistsInput,
+    SafetyChecklistDto,
+    SafetyChecklistsServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
@@ -110,13 +114,17 @@ export class SafetyChecklistsComponent extends AppComponentBase implements OnIni
     }
 
     deleteRecord(record: SafetyChecklistDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.code), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.code),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

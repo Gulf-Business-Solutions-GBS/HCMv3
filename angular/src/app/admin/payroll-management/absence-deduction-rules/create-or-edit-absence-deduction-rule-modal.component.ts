@@ -15,13 +15,7 @@ import { AbsenceDeductionRuleFormComponent } from './absence-deduction-rule-form
 @Component({
     selector: 'createOrEditAbsenceDeductionRuleModal',
     templateUrl: './create-or-edit-absence-deduction-rule-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ButtonBusyDirective,
-        LocalizePipe,
-        AbsenceDeductionRuleFormComponent,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe, AbsenceDeductionRuleFormComponent],
 })
 export class CreateOrEditAbsenceDeductionRuleModalComponent extends AppComponentBase {
     private _absenceDeductionRulesService = inject(AbsenceDeductionRulesServiceProxy);
@@ -31,7 +25,9 @@ export class CreateOrEditAbsenceDeductionRuleModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly absenceDeductionRule = signal<CreateOrEditAbsenceDeductionRuleDto>(new CreateOrEditAbsenceDeductionRuleDto());
+    readonly absenceDeductionRule = signal<CreateOrEditAbsenceDeductionRuleDto>(
+        new CreateOrEditAbsenceDeductionRuleDto()
+    );
 
     show(absenceDeductionRuleId?: number): void {
         this.active.set(true);
@@ -40,10 +36,12 @@ export class CreateOrEditAbsenceDeductionRuleModalComponent extends AppComponent
             this.absenceDeductionRule.set(new CreateOrEditAbsenceDeductionRuleDto());
             this.modal().show();
         } else {
-            this._absenceDeductionRulesService.getAbsenceDeductionRuleForEdit(absenceDeductionRuleId).subscribe((result) => {
-                this.absenceDeductionRule.set(result.absenceDeductionRule);
-                this.modal().show();
-            });
+            this._absenceDeductionRulesService
+                .getAbsenceDeductionRuleForEdit(absenceDeductionRuleId)
+                .subscribe((result) => {
+                    this.absenceDeductionRule.set(result.absenceDeductionRule);
+                    this.modal().show();
+                });
         }
     }
 

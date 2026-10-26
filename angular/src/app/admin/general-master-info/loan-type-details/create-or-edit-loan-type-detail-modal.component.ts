@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditLoanTypeDetailModal',
     templateUrl: './create-or-edit-loan-type-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditLoanTypeDetailModalComponent extends AppComponentBase {
     private _loanTypeDetailService = inject(LoanTypeDetailsServiceProxy);
@@ -47,14 +41,18 @@ export class CreateOrEditLoanTypeDetailModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._loanTypesService
-            .getAll(new GetAllLoanTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllLoanTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => {
                 this.loanTypes.set(result.items);
             });
 
         // The register line the percentage is taken of; legacy offered every wage type here.
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!loanTypeDetailId) {

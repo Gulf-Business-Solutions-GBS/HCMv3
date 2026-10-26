@@ -36,7 +36,15 @@ export class CreateOrEditRoomModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._flatsService
-            .getAll(new GetAllFlatsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, floorId: undefined }))
+            .getAll(
+                new GetAllFlatsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    floorId: undefined,
+                })
+            )
             .subscribe((result) => this.flats.set(result.items));
 
         if (!id) {

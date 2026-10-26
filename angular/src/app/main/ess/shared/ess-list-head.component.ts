@@ -171,7 +171,10 @@ export class EssListHeadComponent {
         input.title = this.exportTitle() || document.title;
         input.columns = columns.map((column, index) => {
             const dto = new EssListExportColumnDto();
-            dto.header = this._localization.localize(column.label, AppConsts.localization.defaultLocalizationSourceName);
+            dto.header = this._localization.localize(
+                column.label,
+                AppConsts.localization.defaultLocalizationSourceName
+            );
             dto.type = types[index];
 
             return dto;
@@ -210,7 +213,7 @@ export class EssListHeadComponent {
             }
 
             // "1,234.500" sorted by 1234.5 is an amount; "09:30" sorted by minutes is not.
-            return /^-?[\d,]+(\.\d+)?$/.test(shown) ?EssListExportColumnType.Number : EssListExportColumnType.Text;
+            return /^-?[\d,]+(\.\d+)?$/.test(shown) ? EssListExportColumnType.Number : EssListExportColumnType.Text;
         }
 
         return typeof shown === 'number' ? EssListExportColumnType.Number : EssListExportColumnType.Text;

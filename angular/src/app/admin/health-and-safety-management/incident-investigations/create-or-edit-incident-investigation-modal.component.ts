@@ -64,11 +64,27 @@ export class CreateOrEditIncidentInvestigationModalComponent extends AppComponen
 
     private loadLookups(): void {
         this._incidentRegistersService
-            .getAll(new GetAllIncidentRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, incidentTypeId: undefined, statusId: undefined }))
+            .getAll(
+                new GetAllIncidentRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    incidentTypeId: undefined,
+                    statusId: undefined,
+                })
+            )
             .subscribe((result) => this.incidentRegisters.set(result.items));
 
         this._rootCausesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.rootCauses.set(result.items));
     }
 

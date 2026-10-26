@@ -16,13 +16,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditDisciplinaryTypeModal',
     templateUrl: './create-or-edit-disciplinary-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditDisciplinaryTypeModalComponent extends AppComponentBase {
     private _disciplinaryTypeService = inject(DisciplinaryTypesServiceProxy);

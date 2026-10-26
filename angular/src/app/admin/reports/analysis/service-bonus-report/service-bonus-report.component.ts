@@ -12,7 +12,11 @@ import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { DateTime } from 'luxon';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
-import { EmployeeStatus, GetServiceBonusReportInput, ServiceBonusReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    EmployeeStatus,
+    GetServiceBonusReportInput,
+    ServiceBonusReportServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
@@ -24,7 +28,16 @@ import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 @Component({
     templateUrl: './service-bonus-report.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, GridReportFilterComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        GridReportFilterComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class ServiceBonusReportComponent extends AppComponentBase {
     /** OrgLevel1..7 headers use the tenant's Organization Unit Type names; undefined levels are hidden. */

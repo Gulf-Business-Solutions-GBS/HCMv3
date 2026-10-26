@@ -37,17 +37,26 @@ export class CreateOrEditTempEmployeeBenefitModalComponent extends AppComponentB
         this.active.set(true);
 
         this._tempBenefitTypesService
-            .getAll(new GetAllTempBenefitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTempBenefitTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.tempBenefitTypes.set(result.items));
 
         if (!tempEmployeeBenefitId) {
             this.tempEmployeeBenefit.set(new CreateOrEditTempEmployeeBenefitDto());
             this.modal().show();
         } else {
-            this._tempEmployeeBenefitsService.getTempEmployeeBenefitForEdit(tempEmployeeBenefitId).subscribe((result) => {
-                this.tempEmployeeBenefit.set(result.tempEmployeeBenefit);
-                this.modal().show();
-            });
+            this._tempEmployeeBenefitsService
+                .getTempEmployeeBenefitForEdit(tempEmployeeBenefitId)
+                .subscribe((result) => {
+                    this.tempEmployeeBenefit.set(result.tempEmployeeBenefit);
+                    this.modal().show();
+                });
         }
     }
 

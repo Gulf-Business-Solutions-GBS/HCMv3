@@ -2,7 +2,14 @@ import { Component, ElementRef, OnInit, computed, inject, signal, viewChild } fr
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BarChartModule, Color, LegendPosition, LineChartModule, PieChartModule, ScaleType } from '@swimlane/ngx-charts';
+import {
+    BarChartModule,
+    Color,
+    LegendPosition,
+    LineChartModule,
+    PieChartModule,
+    ScaleType,
+} from '@swimlane/ngx-charts';
 import { DateTime } from 'luxon';
 import { LazyLoadEvent } from 'primeng/api';
 import { DatePicker } from 'primeng/datepicker';
@@ -151,12 +158,31 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
 
     // ------------------------------------------------------------ chart data
 
-
-    readonly singleColour: Color = { name: 'wfSingle', selectable: true, group: ScaleType.Ordinal, domain: ['#3b82f6'] };
+    readonly singleColour: Color = {
+        name: 'wfSingle',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#3b82f6'],
+    };
     readonly ageColour: Color = { name: 'wfAge', selectable: true, group: ScaleType.Ordinal, domain: ['#8b5cf6'] };
-    readonly serviceColour: Color = { name: 'wfService', selectable: true, group: ScaleType.Ordinal, domain: ['#10b981'] };
-    readonly joinLeaveColour: Color = { name: 'wfJoinLeave', selectable: true, group: ScaleType.Ordinal, domain: ['#10b981', '#ef4444'] };
-    readonly turnoverColour: Color = { name: 'wfTurnover', selectable: true, group: ScaleType.Ordinal, domain: ['#f59e0b'] };
+    readonly serviceColour: Color = {
+        name: 'wfService',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#10b981'],
+    };
+    readonly joinLeaveColour: Color = {
+        name: 'wfJoinLeave',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#10b981', '#ef4444'],
+    };
+    readonly turnoverColour: Color = {
+        name: 'wfTurnover',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#f59e0b'],
+    };
     readonly genderColours = computed(() => [
         { name: this.l('Male'), value: '#3b82f6' },
         { name: this.l('Female'), value: '#ec4899' },
@@ -176,7 +202,10 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
     readonly turnoverResults = computed(() => [
         {
             name: this.l('WorkforceDashboard_Turnover'),
-            series: (this.dashboard()?.trend ?? []).map((p) => ({ name: p.monthStart.toFormat('MMM yyyy'), value: p.turnoverPercent ?? 0 })),
+            series: (this.dashboard()?.trend ?? []).map((p) => ({
+                name: p.monthStart.toFormat('MMM yyyy'),
+                value: p.turnoverPercent ?? 0,
+            })),
         },
     ]);
 
@@ -554,7 +583,11 @@ export class WorkforceDashboardComponent extends AppComponentBase implements OnI
     }
 
     exportActivity(): void {
-        this.exportToExcel(this.activity()?.type === 'document' ? WorkforceDashboardExportPart.Documents : WorkforceDashboardExportPart.Movements);
+        this.exportToExcel(
+            this.activity()?.type === 'document'
+                ? WorkforceDashboardExportPart.Documents
+                : WorkforceDashboardExportPart.Movements
+        );
     }
 
     exportToExcel(part: WorkforceDashboardExportPart): void {

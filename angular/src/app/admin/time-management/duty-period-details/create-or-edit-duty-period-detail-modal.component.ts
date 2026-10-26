@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditDutyPeriodDetailModal',
     templateUrl: './create-or-edit-duty-period-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditDutyPeriodDetailModalComponent extends AppComponentBase {
     private _dutyPeriodDetailsService = inject(DutyPeriodDetailsServiceProxy);
@@ -47,7 +41,14 @@ export class CreateOrEditDutyPeriodDetailModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._dutyPeriodsService
-            .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.dutyPeriods.set(result.items);
             });
@@ -85,7 +86,7 @@ export class CreateOrEditDutyPeriodDetailModalComponent extends AppComponentBase
                     filter: undefined,
                     isActive: true,
                     includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
-                }),
+                })
             )
             .subscribe((result) => {
                 this.duties.set(result.items);

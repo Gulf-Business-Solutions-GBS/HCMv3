@@ -46,7 +46,14 @@ export class CreateOrEditTrainingScheduleModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._trainingCoursesService
-            .getAll(new GetAllTrainingCoursesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTrainingCoursesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.trainingCourses.set(result.items));
 
         if (!id) {

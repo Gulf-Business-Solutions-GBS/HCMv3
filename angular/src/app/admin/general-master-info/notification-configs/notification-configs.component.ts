@@ -114,13 +114,17 @@ export class NotificationConfigsComponent extends AppComponentBase implements On
     }
 
     deleteNotificationConfig(record: NotificationConfigDto): void {
-        this.message.confirm(this.l('NotificationConfigDeleteWarningMessage', record.name), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._notificationConfigsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('NotificationConfigDeleteWarningMessage', record.name),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._notificationConfigsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

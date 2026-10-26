@@ -12,7 +12,14 @@ import { SiteAuditDetailsComponent } from './details/site-audit-details.componen
 @Component({
     templateUrl: './site-audit-detail.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, TabsetComponent, TabDirective, LocalizePipe, LuxonFormatPipe, SiteAuditDetailsComponent],
+    imports: [
+        SubHeaderComponent,
+        TabsetComponent,
+        TabDirective,
+        LocalizePipe,
+        LuxonFormatPipe,
+        SiteAuditDetailsComponent,
+    ],
 })
 export class SiteAuditDetailComponent extends AppComponentBase implements OnInit {
     private _route = inject(ActivatedRoute);

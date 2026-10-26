@@ -22,13 +22,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditNotificationGroupModal',
     templateUrl: './create-or-edit-notification-group-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditNotificationGroupModalComponent extends AppComponentBase {
     private _notificationGroupService = inject(NotificationGroupsServiceProxy);
@@ -45,28 +39,44 @@ export class CreateOrEditNotificationGroupModalComponent extends AppComponentBas
     readonly workflowRoles = signal<WorkflowRoleDto[]>([]);
 
     readonly workflowRoleGroups = [
-        { value: WorkflowRoleGroup.None, key: "WorkflowRoleGroupNone" },
-        { value: WorkflowRoleGroup.Company, key: "WorkflowRoleGroupCompany" },
-        { value: WorkflowRoleGroup.Department, key: "WorkflowRoleGroupDepartment" },
-        { value: WorkflowRoleGroup.Branch, key: "WorkflowRoleGroupBranch" },
-        { value: WorkflowRoleGroup.CostCenter, key: "WorkflowRoleGroupCostCenter" },
+        { value: WorkflowRoleGroup.None, key: 'WorkflowRoleGroupNone' },
+        { value: WorkflowRoleGroup.Company, key: 'WorkflowRoleGroupCompany' },
+        { value: WorkflowRoleGroup.Department, key: 'WorkflowRoleGroupDepartment' },
+        { value: WorkflowRoleGroup.Branch, key: 'WorkflowRoleGroupBranch' },
+        { value: WorkflowRoleGroup.CostCenter, key: 'WorkflowRoleGroupCostCenter' },
     ];
 
     show(notificationGroupId?: number): void {
         this.active.set(true);
 
         this._notificationConfigsService
-            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNotificationConfigsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.notificationConfigs.set(result.items);
             });
 
         this._workflowRolesService
-            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkflowRolesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRoles.set(result.items));
 
         if (!notificationGroupId) {
-            this.notificationGroup.set(new CreateOrEditNotificationGroupDto({ workflowRoleGroup: WorkflowRoleGroup.None } as any));
+            this.notificationGroup.set(
+                new CreateOrEditNotificationGroupDto({ workflowRoleGroup: WorkflowRoleGroup.None } as any)
+            );
             this.modal().show();
         } else {
             this._notificationGroupService.getNotificationGroupForEdit(notificationGroupId).subscribe((result) => {

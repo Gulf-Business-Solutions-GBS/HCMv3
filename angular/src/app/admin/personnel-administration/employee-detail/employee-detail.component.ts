@@ -6,10 +6,7 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateOrEditEmployeeDto, EmployeesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
-import {
-    RecordBreadcrumbComponent,
-    BreadcrumbStep,
-} from '@app/shared/common/breadcrumb/record-breadcrumb.component';
+import { RecordBreadcrumbComponent, BreadcrumbStep } from '@app/shared/common/breadcrumb/record-breadcrumb.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
     DEFAULT_EMPLOYEE_SECTION_ID,
@@ -101,9 +98,7 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
         return steps;
     });
 
-    readonly activeSection = computed(() =>
-        EMPLOYEE_SECTIONS.find((s) => s.id === this.activeSectionId())
-    );
+    readonly activeSection = computed(() => EMPLOYEE_SECTIONS.find((s) => s.id === this.activeSectionId()));
 
     /**
      * Categories with their sections filtered by the search box and sorted A-Z, empty categories
@@ -222,9 +217,7 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
         // The rail's sections do not exist in the DOM until the expanded state has rendered, so the
         // scroll has to wait a turn for them.
         setTimeout(() => {
-            document
-                .getElementById('emp-cat-' + category.id)
-                ?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            document.getElementById('emp-cat-' + category.id)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
         });
     }
 

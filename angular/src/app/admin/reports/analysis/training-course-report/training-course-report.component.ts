@@ -10,7 +10,10 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
-import { GetTrainingCourseReportInput, TrainingCourseReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetTrainingCourseReportInput,
+    TrainingCourseReportServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 
 /**

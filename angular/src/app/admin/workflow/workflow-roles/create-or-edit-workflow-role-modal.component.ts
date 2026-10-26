@@ -45,7 +45,14 @@ export class CreateOrEditWorkflowRoleModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._orgLevelsService
-            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOrganizationUnitTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.orgLevels.set(result.items));
 
         if (!id) {

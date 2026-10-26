@@ -50,7 +50,9 @@ export class AbsenceDeductionRuleDetailComponent extends AppComponentBase implem
     private _absenceDeductionRulesService = inject(AbsenceDeductionRulesServiceProxy);
 
     readonly absenceDeductionRuleId = signal<number | undefined>(undefined);
-    readonly absenceDeductionRule = signal<CreateOrEditAbsenceDeductionRuleDto>(new CreateOrEditAbsenceDeductionRuleDto());
+    readonly absenceDeductionRule = signal<CreateOrEditAbsenceDeductionRuleDto>(
+        new CreateOrEditAbsenceDeductionRuleDto()
+    );
     readonly loaded = signal<boolean>(false);
     readonly loading = signal<boolean>(false);
     readonly saving = signal<boolean>(false);

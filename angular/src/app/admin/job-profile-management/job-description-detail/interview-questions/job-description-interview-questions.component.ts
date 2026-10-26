@@ -35,7 +35,8 @@ export class JobDescriptionInterviewQuestionsComponent extends AppComponentBase 
 
     readonly jobDescriptionId = input<number>();
 
-    readonly createOrEditModal = viewChild<CreateOrEditJobDescriptionInterviewQuestionModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditJobDescriptionInterviewQuestionModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -80,7 +81,9 @@ export class JobDescriptionInterviewQuestionsComponent extends AppComponentBase 
     }
 
     reloadPage(): void {
-        const rows = this.paginator() ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        const rows = this.paginator()
+            ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage
+            : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (this.paginator() ? this.paginator().getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 

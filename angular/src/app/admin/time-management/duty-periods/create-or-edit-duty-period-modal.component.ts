@@ -50,7 +50,14 @@ export class CreateOrEditDutyPeriodModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._holidayCalendarsService
-            .getAll(new GetAllHolidayCalendarsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllHolidayCalendarsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.holidayCalendars.set(result.items);
             });
@@ -88,7 +95,7 @@ export class CreateOrEditDutyPeriodModalComponent extends AppComponentBase {
                     filter: undefined,
                     isActive: true,
                     includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
-                }),
+                })
             )
             .subscribe((result) => {
                 this.duties.set(result.items);

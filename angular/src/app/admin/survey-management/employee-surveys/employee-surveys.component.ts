@@ -1,7 +1,11 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { EmployeeSurveyDto, EmployeeSurveysServiceProxy, GetAllEmployeeSurveysInput } from '@shared/service-proxies/service-proxies';
+import {
+    EmployeeSurveyDto,
+    EmployeeSurveysServiceProxy,
+    GetAllEmployeeSurveysInput,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -110,13 +114,17 @@ export class EmployeeSurveysComponent extends AppComponentBase implements OnInit
     }
 
     deleteEmployeeSurvey(record: EmployeeSurveyDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.employeeCode), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._employeeSurveysService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.employeeCode),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._employeeSurveysService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

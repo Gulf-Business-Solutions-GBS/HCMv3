@@ -74,19 +74,46 @@ export class CreateOrEditActionRegisterModalComponent extends AppComponentBase {
 
     private loadLookups(): void {
         this._incidentRegistersService
-            .getAll(new GetAllIncidentRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, incidentTypeId: undefined, statusId: undefined }))
+            .getAll(
+                new GetAllIncidentRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    incidentTypeId: undefined,
+                    statusId: undefined,
+                })
+            )
             .subscribe((result) => this.incidentRegisters.set(result.items));
 
         this._riskRegistersService
-            .getAll(new GetAllRiskRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, riskTypeId: undefined, statusId: undefined }))
+            .getAll(
+                new GetAllRiskRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    riskTypeId: undefined,
+                    statusId: undefined,
+                })
+            )
             .subscribe((result) => this.riskRegisters.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._actionStatusesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.actionStatuses.set(result.items));
     }
 

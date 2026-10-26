@@ -39,7 +39,9 @@ export class CreateOrEditBudgetingGroupRateDetailModalComponent extends AppCompo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly budgetingGroupRateDetail = signal<CreateOrEditBudgetingGroupRateDetailDto>(new CreateOrEditBudgetingGroupRateDetailDto());
+    readonly budgetingGroupRateDetail = signal<CreateOrEditBudgetingGroupRateDetailDto>(
+        new CreateOrEditBudgetingGroupRateDetailDto()
+    );
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
     readonly isNew = signal<boolean>(false);
@@ -62,7 +64,14 @@ export class CreateOrEditBudgetingGroupRateDetailModalComponent extends AppCompo
         this.active.set(true);
 
         this._budgetingGroupsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.budgetingGroups.set(result.items);
             });
@@ -71,10 +80,12 @@ export class CreateOrEditBudgetingGroupRateDetailModalComponent extends AppCompo
             this.budgetingGroupRateDetail.set(new CreateOrEditBudgetingGroupRateDetailDto());
             this.modal().show();
         } else {
-            this._budgetingGroupRateDetailService.getBudgetingGroupRateDetailForEdit(budgetingGroupRateDetailId).subscribe((result) => {
-                this.budgetingGroupRateDetail.set(result.budgetingGroupRateDetail);
-                this.modal().show();
-            });
+            this._budgetingGroupRateDetailService
+                .getBudgetingGroupRateDetailForEdit(budgetingGroupRateDetailId)
+                .subscribe((result) => {
+                    this.budgetingGroupRateDetail.set(result.budgetingGroupRateDetail);
+                    this.modal().show();
+                });
         }
     }
 

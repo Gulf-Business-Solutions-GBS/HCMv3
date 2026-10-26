@@ -41,7 +41,8 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 export class SocialSecurityMaritalAllowancesComponent extends AppComponentBase implements OnInit {
     private _socialSecurityMaritalAllowancesService = inject(SocialSecurityMaritalAllowancesServiceProxy);
 
-    readonly createOrEditModal = viewChild<CreateOrEditSocialSecurityMaritalAllowanceModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditSocialSecurityMaritalAllowanceModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -113,13 +114,17 @@ export class SocialSecurityMaritalAllowancesComponent extends AppComponentBase i
     }
 
     deleteSocialSecurityMaritalAllowance(record: SocialSecurityMaritalAllowanceDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.id), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._socialSecurityMaritalAllowancesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.id),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._socialSecurityMaritalAllowancesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

@@ -36,7 +36,14 @@ export class CreateOrEditCompetencyModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._competencyTypesService
-            .getAll(new GetAllCompetencyTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCompetencyTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.competencyTypes.set(result.items));
 
         if (!id) {

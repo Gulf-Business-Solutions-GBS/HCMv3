@@ -23,7 +23,15 @@ import { FinanceScreenApi, downloadBase64File } from './finance-screen-api';
 @Component({
     selector: 'financeRunLogModal',
     templateUrl: './finance-run-log-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, TableModule, PaginatorModule, LocalizePipe, BusyIfDirective, LuxonFormatPipe],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        LocalizePipe,
+        BusyIfDirective,
+        LuxonFormatPipe,
+    ],
 })
 export class FinanceRunLogModalComponent extends AppComponentBase {
     readonly modal = viewChild<ModalDirective>('logModal');
@@ -112,7 +120,10 @@ export class FinanceRunLogModalComponent extends AppComponentBase {
     }
 
     private reloadFromFirstPage(): void {
-        this.getRows({ first: 0, rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage } as LazyLoadEvent);
+        this.getRows({
+            first: 0,
+            rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage,
+        } as LazyLoadEvent);
     }
 
     private buildInput(): GetFinanceRunLogInput {

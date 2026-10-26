@@ -47,7 +47,10 @@ export class CreateOrEditEmployeeSubGroupAbsenceModalComponent extends AppCompon
             recordType: 'EmployeeSubGroupAbsence',
             record: this.record,
             isNew: this.isNew,
-            keys: () => ({ EmployeeSubGroupId: this.record().employeeSubGroupId, AbsenceTypeId: this.record().absenceTypeId }),
+            keys: () => ({
+                EmployeeSubGroupId: this.record().employeeSubGroupId,
+                AbsenceTypeId: this.record().absenceTypeId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -59,11 +62,25 @@ export class CreateOrEditEmployeeSubGroupAbsenceModalComponent extends AppCompon
         this.active.set(true);
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         this._absenceDeductionRulesService
-            .getAll(new GetAllAbsenceDeductionRulesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceDeductionRulesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceDeductionRules.set(result.items));
 
         if (!id) {

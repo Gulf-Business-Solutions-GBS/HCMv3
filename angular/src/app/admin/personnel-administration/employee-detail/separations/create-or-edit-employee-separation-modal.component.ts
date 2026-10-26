@@ -72,7 +72,14 @@ export class CreateOrEditEmployeeSeparationModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._separationReasonsService
-            .getAll(new GetAllSeparationReasonsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSeparationReasonsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.separationReasons.set(result.items));
 
         if (!id) {

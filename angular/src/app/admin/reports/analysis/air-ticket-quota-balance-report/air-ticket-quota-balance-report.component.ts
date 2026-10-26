@@ -145,7 +145,11 @@ export class AirTicketQuotaBalanceReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetAirTicketQuotaBalanceReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetAirTicketQuotaBalanceReportInput {
         return new GetAirTicketQuotaBalanceReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             // Deliberately not sent: legacy has no dtTo on this screen and the backend ignores it.

@@ -59,7 +59,14 @@ export class CreateOrEditSalaryRegisterModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._payrollReasonTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.payrollReasonTypes.set(result.items));
 
         if (!salaryRegisterId) {

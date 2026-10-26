@@ -35,7 +35,14 @@ export class CreateOrEditJobDescriptionSkillModalComponent extends AppComponentB
         this.active.set(true);
 
         this._skillsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.skills.set(result.items));
 
         if (!id) {

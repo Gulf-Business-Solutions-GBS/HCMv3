@@ -1,6 +1,9 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditGratuityAccrualSummaryDto, GratuityAccrualSummariesServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditGratuityAccrualSummaryDto,
+    GratuityAccrualSummariesServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -22,7 +25,9 @@ export class CreateOrEditGratuityAccrualSummaryModalComponent extends AppCompone
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly gratuityAccrualSummary = signal<CreateOrEditGratuityAccrualSummaryDto>(new CreateOrEditGratuityAccrualSummaryDto());
+    readonly gratuityAccrualSummary = signal<CreateOrEditGratuityAccrualSummaryDto>(
+        new CreateOrEditGratuityAccrualSummaryDto()
+    );
 
     show(gratuityAccrualSummaryId?: number): void {
         this.active.set(true);
@@ -31,10 +36,12 @@ export class CreateOrEditGratuityAccrualSummaryModalComponent extends AppCompone
             this.gratuityAccrualSummary.set(new CreateOrEditGratuityAccrualSummaryDto());
             this.modal().show();
         } else {
-            this._gratuityAccrualSummariesService.getGratuityAccrualSummaryForEdit(gratuityAccrualSummaryId).subscribe((result) => {
-                this.gratuityAccrualSummary.set(result.gratuityAccrualSummary);
-                this.modal().show();
-            });
+            this._gratuityAccrualSummariesService
+                .getGratuityAccrualSummaryForEdit(gratuityAccrualSummaryId)
+                .subscribe((result) => {
+                    this.gratuityAccrualSummary.set(result.gratuityAccrualSummary);
+                    this.modal().show();
+                });
         }
     }
 

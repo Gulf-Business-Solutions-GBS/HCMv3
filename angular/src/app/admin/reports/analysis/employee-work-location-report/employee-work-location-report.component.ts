@@ -120,11 +120,7 @@ export class EmployeeWorkLocationReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetEmployeeWorkLocationReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeWorkLocationReportInput {
         return new GetEmployeeWorkLocationReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

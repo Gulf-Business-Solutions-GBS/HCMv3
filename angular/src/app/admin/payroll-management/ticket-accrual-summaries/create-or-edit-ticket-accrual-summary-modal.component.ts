@@ -1,6 +1,9 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditTicketAccrualSummaryDto, TicketAccrualSummariesServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditTicketAccrualSummaryDto,
+    TicketAccrualSummariesServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
@@ -22,7 +25,9 @@ export class CreateOrEditTicketAccrualSummaryModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly ticketAccrualSummary = signal<CreateOrEditTicketAccrualSummaryDto>(new CreateOrEditTicketAccrualSummaryDto());
+    readonly ticketAccrualSummary = signal<CreateOrEditTicketAccrualSummaryDto>(
+        new CreateOrEditTicketAccrualSummaryDto()
+    );
 
     show(ticketAccrualSummaryId?: number): void {
         this.active.set(true);
@@ -31,10 +36,12 @@ export class CreateOrEditTicketAccrualSummaryModalComponent extends AppComponent
             this.ticketAccrualSummary.set(new CreateOrEditTicketAccrualSummaryDto());
             this.modal().show();
         } else {
-            this._ticketAccrualSummariesService.getTicketAccrualSummaryForEdit(ticketAccrualSummaryId).subscribe((result) => {
-                this.ticketAccrualSummary.set(result.ticketAccrualSummary);
-                this.modal().show();
-            });
+            this._ticketAccrualSummariesService
+                .getTicketAccrualSummaryForEdit(ticketAccrualSummaryId)
+                .subscribe((result) => {
+                    this.ticketAccrualSummary.set(result.ticketAccrualSummary);
+                    this.modal().show();
+                });
         }
     }
 

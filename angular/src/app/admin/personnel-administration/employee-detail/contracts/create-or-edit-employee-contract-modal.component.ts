@@ -62,7 +62,14 @@ export class CreateOrEditEmployeeContractModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._contractTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.contractTypes.set(result.items));
 
         if (!id) {

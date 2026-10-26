@@ -18,13 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditCostElementModal',
     templateUrl: './create-or-edit-cost-element-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditCostElementModalComponent extends AppComponentBase {
     private _costElementsService = inject(CostElementsServiceProxy);
@@ -42,7 +36,14 @@ export class CreateOrEditCostElementModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._costElementTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.costElementTypes.set(result.items);
             });

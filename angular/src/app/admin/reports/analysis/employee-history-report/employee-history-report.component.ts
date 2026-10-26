@@ -146,11 +146,7 @@ export class EmployeeHistoryReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetEmployeeHistoryReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeHistoryReportInput {
         return new GetEmployeeHistoryReportInput({
             // fromDate/toDate are deliberately not sent: legacy hides both pickers on this screen.
             fromDate: undefined,

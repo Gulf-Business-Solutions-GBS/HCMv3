@@ -15,13 +15,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditSeparationReasonModal',
     templateUrl: './create-or-edit-separation-reason-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditSeparationReasonModalComponent extends AppComponentBase {
     private _separationReasonsService = inject(SeparationReasonsServiceProxy);

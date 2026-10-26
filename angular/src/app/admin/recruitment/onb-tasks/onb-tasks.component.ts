@@ -53,7 +53,14 @@ export class OnbTasksComponent extends AppComponentBase implements OnInit {
 
     ngOnInit(): void {
         this._onbTemplatesService
-            .getAll(new GetAllOnbTemplatesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOnbTemplatesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.onbTemplates.set(result.items));
     }
 
@@ -120,13 +127,17 @@ export class OnbTasksComponent extends AppComponentBase implements OnInit {
     }
 
     deleteRecord(record: OnbTaskDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.taskNameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.taskNameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditYearlyTimeRegisterDetailModal',
     templateUrl: './create-or-edit-yearly-time-register-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditYearlyTimeRegisterDetailModalComponent extends AppComponentBase {
     private _yearlyTimeRegisterDetailsService = inject(YearlyTimeRegisterDetailsServiceProxy);
@@ -39,7 +33,9 @@ export class CreateOrEditYearlyTimeRegisterDetailModalComponent extends AppCompo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly yearlyTimeRegisterDetail = signal<CreateOrEditYearlyTimeRegisterDetailDto>(new CreateOrEditYearlyTimeRegisterDetailDto());
+    readonly yearlyTimeRegisterDetail = signal<CreateOrEditYearlyTimeRegisterDetailDto>(
+        new CreateOrEditYearlyTimeRegisterDetailDto()
+    );
     readonly yearlyTimeRegisters = signal<YearlyTimeRegisterDto[]>([]);
     readonly timeTypes = signal<SimpleLookupDto[]>([]);
 
@@ -47,21 +43,37 @@ export class CreateOrEditYearlyTimeRegisterDetailModalComponent extends AppCompo
         this.active.set(true);
 
         this._yearlyTimeRegistersService
-            .getAll(new GetAllYearlyTimeRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllYearlyTimeRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.yearlyTimeRegisters.set(result.items));
 
         this._timeTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.timeTypes.set(result.items));
 
         if (!yearlyTimeRegisterDetailId) {
             this.yearlyTimeRegisterDetail.set(new CreateOrEditYearlyTimeRegisterDetailDto());
             this.modal().show();
         } else {
-            this._yearlyTimeRegisterDetailsService.getYearlyTimeRegisterDetailForEdit(yearlyTimeRegisterDetailId).subscribe((result) => {
-                this.yearlyTimeRegisterDetail.set(result.yearlyTimeRegisterDetail);
-                this.modal().show();
-            });
+            this._yearlyTimeRegisterDetailsService
+                .getYearlyTimeRegisterDetailForEdit(yearlyTimeRegisterDetailId)
+                .subscribe((result) => {
+                    this.yearlyTimeRegisterDetail.set(result.yearlyTimeRegisterDetail);
+                    this.modal().show();
+                });
         }
     }
 

@@ -16,13 +16,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditDependantTypeModal',
     templateUrl: './create-or-edit-dependant-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditDependantTypeModalComponent extends AppComponentBase {
     private _dependantTypesService = inject(DependantTypesServiceProxy);

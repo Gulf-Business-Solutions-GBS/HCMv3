@@ -50,11 +50,25 @@ export class CreateOrEditEmployeeActionModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._personalActionsService
-            .getAll(new GetAllPersonalActionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPersonalActionsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.personalActions.set(result.items));
 
         this._personalActionReasonsService
-            .getAll(new GetAllPersonalActionReasonsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPersonalActionReasonsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.personalActionReasons.set(result.items));
 
         if (!id) {

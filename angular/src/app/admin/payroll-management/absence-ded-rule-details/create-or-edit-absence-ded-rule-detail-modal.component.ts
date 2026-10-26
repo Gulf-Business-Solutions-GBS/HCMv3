@@ -40,7 +40,9 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly absenceDedRuleDetail = signal<CreateOrEditAbsenceDedRuleDetailDto>(new CreateOrEditAbsenceDedRuleDetailDto());
+    readonly absenceDedRuleDetail = signal<CreateOrEditAbsenceDedRuleDetailDto>(
+        new CreateOrEditAbsenceDedRuleDetailDto()
+    );
 
     /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
     readonly isNew = signal<boolean>(false);
@@ -72,7 +74,14 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
         this.active.set(true);
 
         this._absenceDeductionRulesService
-            .getAll(new GetAllAbsenceDeductionRulesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceDeductionRulesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceDeductionRules.set(result.items));
 
         if (!absenceDedRuleDetailId) {
@@ -83,10 +92,12 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
             this.absenceDedRuleDetail.set(dto);
             this.modal().show();
         } else {
-            this._absenceDedRuleDetailsService.getAbsenceDedRuleDetailForEdit(absenceDedRuleDetailId).subscribe((result) => {
-                this.absenceDedRuleDetail.set(result.absenceDedRuleDetail);
-                this.modal().show();
-            });
+            this._absenceDedRuleDetailsService
+                .getAbsenceDedRuleDetailForEdit(absenceDedRuleDetailId)
+                .subscribe((result) => {
+                    this.absenceDedRuleDetail.set(result.absenceDedRuleDetail);
+                    this.modal().show();
+                });
         }
     }
 

@@ -18,13 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditWageTypeExceptionModal',
     templateUrl: './create-or-edit-wage-type-exception-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditWageTypeExceptionModalComponent extends AppComponentBase {
     private _wageTypeExceptionsService = inject(WageTypeExceptionsServiceProxy);
@@ -46,7 +40,9 @@ export class CreateOrEditWageTypeExceptionModalComponent extends AppComponentBas
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!wageTypeExceptionId) {
@@ -65,7 +61,9 @@ export class CreateOrEditWageTypeExceptionModalComponent extends AppComponentBas
     }
 
     onShown(): void {
-        const firstFieldId = this.presetWageTypeId() ? 'WageTypeException_ExceptWageTypeId' : 'WageTypeException_WageTypeId';
+        const firstFieldId = this.presetWageTypeId()
+            ? 'WageTypeException_ExceptWageTypeId'
+            : 'WageTypeException_WageTypeId';
         document.getElementById(firstFieldId)?.focus();
     }
 

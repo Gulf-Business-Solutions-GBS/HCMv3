@@ -114,13 +114,17 @@ export class OrganizationBankInfosComponent extends AppComponentBase implements 
     }
 
     deleteOrganizationBankInfo(record: OrganizationBankInfoDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.accountNo), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._organizationBankInfosService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.accountNo),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._organizationBankInfosService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

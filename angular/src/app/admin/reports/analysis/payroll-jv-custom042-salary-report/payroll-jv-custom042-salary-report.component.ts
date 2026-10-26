@@ -116,7 +116,11 @@ export class PayrollJVCustom042SalaryReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042SalaryReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042SalaryReportInput {
         return new GetPayrollJVCustom042SalaryReportInput({
             fromDate: undefined,
             toDate: undefined,

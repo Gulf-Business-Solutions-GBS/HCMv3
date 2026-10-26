@@ -232,7 +232,11 @@ export class PayrollSheetCustom023ReportComponent extends AppComponentBase {
         return flat;
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollSheetCustom023ReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollSheetCustom023ReportInput {
         return new GetPayrollSheetCustom023ReportInput({
             // Present-but-undefined on purpose: NSwag types these as `T | undefined`, not optional, so
             // they must still be listed even though this screen has no date range and no status combo.

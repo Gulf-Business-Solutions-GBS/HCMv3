@@ -56,10 +56,24 @@ export class RequestDetailParallelsComponent extends AppComponentBase implements
 
     ngOnInit(): void {
         this._requestMastersService
-            .getAll(new GetAllRequestMastersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRequestMastersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.requestMasters.set(result.items));
         this._requestDetailsService
-            .getAll(new GetAllRequestDetailsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, requestMasterId: undefined }))
+            .getAll(
+                new GetAllRequestDetailsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    requestMasterId: undefined,
+                })
+            )
             .subscribe((result) => this.requestDetails.set(result.items));
         // Intentionally not calling getRecords() here: the PrimeNG table's (onLazyLoad) triggers the first load.
     }

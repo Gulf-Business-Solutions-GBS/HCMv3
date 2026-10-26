@@ -52,7 +52,14 @@ export class WorkflowRequestRemarkModalComponent extends AppComponentBase {
         this.newApproverEmployeeId.set(undefined);
         if (action === 'Reassign' && !this.employees().length) {
             this._employeesService
-                .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+                .getAll(
+                    new GetAllEmployeesInput({
+                        maxResultCount: 1000,
+                        skipCount: 0,
+                        sorting: undefined,
+                        filter: undefined,
+                    })
+                )
                 .subscribe((result) => this.employees.set(result.items));
         }
         this.active.set(true);

@@ -63,7 +63,10 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
         const b = this.balances();
         const saved = (this.record() as any)[`dependant${n}TicketCompensateCount`] ?? 0;
         if (!b || saved) return true;
-        return ((b as any)[`dependant${n}TicketCount`] ?? 0) > 0 || ((b as any)[`dependant${n}TicketRemainingCount`] ?? 0) > 0;
+        return (
+            ((b as any)[`dependant${n}TicketCount`] ?? 0) > 0 ||
+            ((b as any)[`dependant${n}TicketRemainingCount`] ?? 0) > 0
+        );
     }
 
     show(employeeId: number, id?: number): void {
@@ -71,14 +74,24 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
         this.balances.set(undefined);
 
         this._employeeActionsService
-            .getAll(new GetAllEmployeeActionsInput({ employeeId, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeActionsInput({ employeeId, maxResultCount: 1000, skipCount: 0, sorting: undefined })
+            )
             .subscribe((result) => this.employeeActions.set(result.items));
 
         // EmployeeBasicPayDetail is scoped by EmployeeBasicPayId (not directly by EmployeeId); no employee-scoped
         // filter is exposed by the backend, so the full lookup list is fetched here, consistent with the
         // EmployeeFundExemptions modal precedent (Wave 3 deferred bucket) for cross-parent dropdowns.
         this._employeeBasicPayDetailsService
-            .getAll(new GetAllEmployeeBasicPayDetailsInput({ employeeBasicPayId: undefined, filter: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeBasicPayDetailsInput({
+                    employeeBasicPayId: undefined,
+                    filter: undefined,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeBasicPayDetails.set(result.items));
 
         if (!id) {

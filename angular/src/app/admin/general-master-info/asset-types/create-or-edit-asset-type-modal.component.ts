@@ -36,7 +36,9 @@ export class CreateOrEditAssetTypeModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!assetTypeId) {

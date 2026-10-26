@@ -112,7 +112,11 @@ export class EmployeeAccommodationReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeAccommodationReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetEmployeeAccommodationReportInput {
         return new GetEmployeeAccommodationReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

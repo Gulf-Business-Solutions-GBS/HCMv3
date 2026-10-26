@@ -244,7 +244,9 @@ export class AiAssistantComponent extends AppComponentBase implements OnInit, On
                 error: () => {
                     // The server has already shown why. Keep the question on screen, marked, so it can be retried
                     // without retyping.
-                    this.lines.update((lines) => lines.map((line) => (line === pending ? { ...line, failed: true } : line)));
+                    this.lines.update((lines) =>
+                        lines.map((line) => (line === pending ? { ...line, failed: true } : line))
+                    );
                     this.loadConversations();
                 },
             });
@@ -302,7 +304,10 @@ export class AiAssistantComponent extends AppComponentBase implements OnInit, On
         }
     }
 
-    private runAction(action: AiPendingActionDto, call: (body: EntityDto) => ReturnType<AiAgentServiceProxy['confirmAction']>): void {
+    private runAction(
+        action: AiPendingActionDto,
+        call: (body: EntityDto) => ReturnType<AiAgentServiceProxy['confirmAction']>
+    ): void {
         if (this.isInFlight(action)) {
             return;
         }

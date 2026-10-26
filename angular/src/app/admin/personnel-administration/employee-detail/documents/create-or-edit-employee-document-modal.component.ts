@@ -54,11 +54,26 @@ export class CreateOrEditEmployeeDocumentModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._documentTypesService
-            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, onlyLetterTypes: false }))
+            .getAll(
+                new GetAllDocumentTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    onlyLetterTypes: false,
+                })
+            )
             .subscribe((result) => this.documentTypes.set(result.items));
 
         this._documentPlacesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.documentPlaces.set(result.items));
 
         if (!id) {

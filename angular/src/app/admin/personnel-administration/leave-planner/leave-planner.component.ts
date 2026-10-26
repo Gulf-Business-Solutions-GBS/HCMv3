@@ -33,7 +33,12 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
     animations: [appModuleAnimation()],
     imports: [
         HelpPageDirective,
-        SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, LeavePlannerGridComponent],
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        LocalizePipe,
+        LeavePlannerGridComponent,
+    ],
 })
 export class LeavePlannerComponent extends AppComponentBase implements OnInit {
     private readonly _service = inject(LeavePlannerServiceProxy);

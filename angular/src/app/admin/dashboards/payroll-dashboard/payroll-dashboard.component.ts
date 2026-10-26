@@ -134,17 +134,37 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
 
     // ------------------------------------------------------------ chart data
 
-    readonly singleColour: Color = { name: 'paySingle', selectable: true, group: ScaleType.Ordinal, domain: ['#3b82f6'] };
+    readonly singleColour: Color = {
+        name: 'paySingle',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#3b82f6'],
+    };
     readonly bandColour: Color = { name: 'payBand', selectable: true, group: ScaleType.Ordinal, domain: ['#8b5cf6'] };
-    readonly earningColour: Color = { name: 'payEarn', selectable: true, group: ScaleType.Ordinal, domain: ['#10b981'] };
-    readonly deductionColour: Color = { name: 'payDed', selectable: true, group: ScaleType.Ordinal, domain: ['#ef4444'] };
+    readonly earningColour: Color = {
+        name: 'payEarn',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#10b981'],
+    };
+    readonly deductionColour: Color = {
+        name: 'payDed',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#ef4444'],
+    };
     readonly mixColour: Color = {
         name: 'payMix',
         selectable: true,
         group: ScaleType.Ordinal,
         domain: ['#3b82f6', '#06b6d4', '#f59e0b', '#8b5cf6', '#10b981', '#f97316'],
     };
-    readonly pieColour: Color = { name: 'payPie', selectable: true, group: ScaleType.Ordinal, domain: ['#3b82f6', '#f59e0b', '#94a3b8'] };
+    readonly pieColour: Color = {
+        name: 'payPie',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#3b82f6', '#f59e0b', '#94a3b8'],
+    };
 
     /** Net, deductions and employer cost stack up to cost to company. */
     readonly trendColours = computed(() => [
@@ -178,14 +198,19 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
         (this.dashboard()?.basicBands ?? []).map((b) => ({ name: this.bandLabel(b), value: b.employees }))
     );
 
-    readonly earningResults = computed<ChartItem[]>(() => (this.dashboard()?.earnings ?? []).map((w) => ({ name: this.wageLabel(w), value: w.amount })));
+    readonly earningResults = computed<ChartItem[]>(() =>
+        (this.dashboard()?.earnings ?? []).map((w) => ({ name: this.wageLabel(w), value: w.amount }))
+    );
 
     readonly deductionResults = computed<ChartItem[]>(() =>
         (this.dashboard()?.deductions ?? []).map((w) => ({ name: this.wageLabel(w), value: w.amount }))
     );
 
     readonly paymentResults = computed<ChartItem[]>(() =>
-        (this.dashboard()?.paymentMethods ?? []).map((b) => ({ name: this.paymentLabel(b.paymentType), value: b.employees }))
+        (this.dashboard()?.paymentMethods ?? []).map((b) => ({
+            name: this.paymentLabel(b.paymentType),
+            value: b.employees,
+        }))
     );
 
     readonly runTypeResults = computed<ChartItem[]>(() =>
@@ -220,9 +245,15 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
             case PayrollDashboardListKind.PaymentMethod:
                 return this.l('PayrollDashboard_PayslipsByMethod', this.paymentLabel(list.paymentType), month);
             case PayrollDashboardListKind.RunType:
-                return this.l('PayrollDashboard_PayslipsByRunType', this.runTypeLabel(list.runType ?? PayrollRunType.Regular));
+                return this.l(
+                    'PayrollDashboard_PayslipsByRunType',
+                    this.runTypeLabel(list.runType ?? PayrollRunType.Regular)
+                );
             default:
-                return this.l('PayrollDashboard_PayslipsInMonth', list.month ? list.month.toFormat('MMMM yyyy') : month);
+                return this.l(
+                    'PayrollDashboard_PayslipsInMonth',
+                    list.month ? list.month.toFormat('MMMM yyyy') : month
+                );
         }
     });
 
@@ -349,7 +380,9 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
     }
 
     onPaymentSelect(event: { name?: string }): void {
-        const bucket = (this.dashboard()?.paymentMethods ?? []).find((b) => this.paymentLabel(b.paymentType) === event.name);
+        const bucket = (this.dashboard()?.paymentMethods ?? []).find(
+            (b) => this.paymentLabel(b.paymentType) === event.name
+        );
         if (bucket) {
             this.showList({ kind: PayrollDashboardListKind.PaymentMethod, paymentType: bucket.paymentType });
         }
@@ -431,7 +464,9 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
             .pipe(finalize(() => this.cardLoading.set(false)))
             .subscribe((card) => {
                 this.card.set(card);
-                setTimeout(() => this.cardPanel()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+                setTimeout(() =>
+                    this.cardPanel()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                );
             });
     }
 
@@ -476,7 +511,9 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
 
     bandLabel(band: PayrollBasicBandDto): string {
         const f = (n: number) => n.toLocaleString('en-US');
-        return band.to != null ? this.l('PayrollDashboard_BandRange', f(band.from), f(band.to)) : this.l('PayrollDashboard_BandFrom', f(band.from));
+        return band.to != null
+            ? this.l('PayrollDashboard_BandRange', f(band.from), f(band.to))
+            : this.l('PayrollDashboard_BandFrom', f(band.from));
     }
 
     wageLabel(w: PayrollWageTypeAmountDto): string {
@@ -495,7 +532,9 @@ export class PayrollDashboardComponent extends AppComponentBase implements OnIni
     }
 
     runTypeLabel(type: PayrollRunType): string {
-        return type === PayrollRunType.OffCycle ? this.l('PayrollDashboard_OffCycle') : this.l('PayrollDashboard_Regular');
+        return type === PayrollRunType.OffCycle
+            ? this.l('PayrollDashboard_OffCycle')
+            : this.l('PayrollDashboard_Regular');
     }
 
     orgUnitLabel(bucket: PayrollOrgUnitBucketDto): string {

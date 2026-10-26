@@ -188,7 +188,10 @@ export class PayrollRunEmployeePickerModalComponent extends AppComponentBase {
     }
 
     private reloadFromFirstPage(): void {
-        this.getCandidates({ first: 0, rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage } as LazyLoadEvent);
+        this.getCandidates({
+            first: 0,
+            rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage,
+        } as LazyLoadEvent);
     }
 
     private buildInput(): GetPayrollRunCandidatesInput {

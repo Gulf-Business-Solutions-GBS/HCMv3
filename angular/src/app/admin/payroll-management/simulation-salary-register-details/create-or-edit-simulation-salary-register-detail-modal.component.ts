@@ -43,7 +43,9 @@ export class CreateOrEditSimulationSalaryRegisterDetailModalComponent extends Ap
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!simulationSalaryRegisterDetailId) {
@@ -64,7 +66,9 @@ export class CreateOrEditSimulationSalaryRegisterDetailModalComponent extends Ap
     onShown(): void {
         document
             .getElementById(
-                this.fixedSimulationSalaryRegisterId() ? 'SimulationSalaryRegisterDetail_WageTypeId' : 'SimulationSalaryRegisterDetail_SimulationSalaryRegisterId'
+                this.fixedSimulationSalaryRegisterId()
+                    ? 'SimulationSalaryRegisterDetail_WageTypeId'
+                    : 'SimulationSalaryRegisterDetail_SimulationSalaryRegisterId'
             )
             ?.focus();
     }

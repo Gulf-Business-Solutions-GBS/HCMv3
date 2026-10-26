@@ -41,7 +41,15 @@ export interface CostingEmployeePickerArgs {
 @Component({
     selector: 'costingEmployeePickerModal',
     templateUrl: './costing-employee-picker-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, TableModule, PaginatorModule, LocalizePipe, BusyIfDirective, LuxonFormatPipe],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        LocalizePipe,
+        BusyIfDirective,
+        LuxonFormatPipe,
+    ],
 })
 export class CostingEmployeePickerModalComponent extends AppComponentBase {
     readonly modal = viewChild<ModalDirective>('pickerModal');
@@ -189,7 +197,10 @@ export class CostingEmployeePickerModalComponent extends AppComponentBase {
     }
 
     private reloadFromFirstPage(): void {
-        this.getCandidates({ first: 0, rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage } as LazyLoadEvent);
+        this.getCandidates({
+            first: 0,
+            rows: this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage,
+        } as LazyLoadEvent);
     }
 
     private buildInput(): GetCostingFileCandidatesInput {

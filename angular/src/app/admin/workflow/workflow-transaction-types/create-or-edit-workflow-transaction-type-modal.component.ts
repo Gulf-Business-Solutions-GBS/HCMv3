@@ -67,7 +67,9 @@ export class CreateOrEditWorkflowTransactionTypeModalComponent extends AppCompon
             { value: WorkflowRequestAction.Return, key: 'WorkflowRequestActionReturn' },
         ];
 
-        return all.filter((o) => o.value === WorkflowRequestAction.New || this.supportedChangeActions().includes(o.value));
+        return all.filter(
+            (o) => o.value === WorkflowRequestAction.New || this.supportedChangeActions().includes(o.value)
+        );
     });
 
     /** "AbsenceType" -> "Absence Type", for the source dropdown. */

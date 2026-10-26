@@ -2,7 +2,10 @@ import { Component, OnInit, computed, inject, signal, viewChild } from '@angular
 import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SimulationSalaryRegisterDto, SimulationSalaryRegistersServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    SimulationSalaryRegisterDto,
+    SimulationSalaryRegistersServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
@@ -19,7 +22,11 @@ interface RecordTab {
 }
 
 const SIMULATION_SALARY_REGISTER_TABS: RecordTab[] = [
-    { id: 'details', labelKey: 'SimulationSalaryRegisterDetails', permission: 'Pages.PayrollManagement.SimulationSalaryRegisterDetails' },
+    {
+        id: 'details',
+        labelKey: 'SimulationSalaryRegisterDetails',
+        permission: 'Pages.PayrollManagement.SimulationSalaryRegisterDetails',
+    },
 ];
 
 /**
@@ -52,7 +59,9 @@ export class SimulationSalaryRegisterDetailComponent extends AppComponentBase im
 
     readonly title = computed(() => {
         const register = this.register();
-        return register?.employeeCode ? `${this.l('SimulationSalaryRegisters')} - ${register.employeeCode}` : this.l('SimulationSalaryRegisters');
+        return register?.employeeCode
+            ? `${this.l('SimulationSalaryRegisters')} - ${register.employeeCode}`
+            : this.l('SimulationSalaryRegisters');
     });
 
     readonly canEdit = this.permission.isGranted('Pages.PayrollManagement.SimulationSalaryRegisters.Edit');

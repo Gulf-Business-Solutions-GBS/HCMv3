@@ -35,7 +35,8 @@ export class EmployeeSubGroupAssetAllowancesComponent extends AppComponentBase {
 
     readonly employeeSubGroupId = input<number>();
 
-    readonly createOrEditModal = viewChild<CreateOrEditEmployeeSubGroupAssetAllowanceModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditEmployeeSubGroupAssetAllowanceModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -80,7 +81,9 @@ export class EmployeeSubGroupAssetAllowancesComponent extends AppComponentBase {
     }
 
     reloadPage(): void {
-        const rows = this.paginator() ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        const rows = this.paginator()
+            ? this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage
+            : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (this.paginator() ? this.paginator().getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 

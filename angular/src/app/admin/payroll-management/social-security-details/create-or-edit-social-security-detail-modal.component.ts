@@ -29,24 +29,35 @@ export class CreateOrEditSocialSecurityDetailModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly socialSecurityDetail = signal<CreateOrEditSocialSecurityDetailDto>(new CreateOrEditSocialSecurityDetailDto());
+    readonly socialSecurityDetail = signal<CreateOrEditSocialSecurityDetailDto>(
+        new CreateOrEditSocialSecurityDetailDto()
+    );
     readonly socialSecurities = signal<SocialSecurityDto[]>([]);
 
     show(socialSecurityDetailId?: number): void {
         this.active.set(true);
 
         this._socialSecuritiesService
-            .getAll(new GetAllSocialSecuritiesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, nationalityId: undefined }))
+            .getAll(
+                new GetAllSocialSecuritiesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    nationalityId: undefined,
+                })
+            )
             .subscribe((result) => this.socialSecurities.set(result.items));
 
         if (!socialSecurityDetailId) {
             this.socialSecurityDetail.set(new CreateOrEditSocialSecurityDetailDto());
             this.modal().show();
         } else {
-            this._socialSecurityDetailsService.getSocialSecurityDetailForEdit(socialSecurityDetailId).subscribe((result) => {
-                this.socialSecurityDetail.set(result.socialSecurityDetail);
-                this.modal().show();
-            });
+            this._socialSecurityDetailsService
+                .getSocialSecurityDetailForEdit(socialSecurityDetailId)
+                .subscribe((result) => {
+                    this.socialSecurityDetail.set(result.socialSecurityDetail);
+                    this.modal().show();
+                });
         }
     }
 

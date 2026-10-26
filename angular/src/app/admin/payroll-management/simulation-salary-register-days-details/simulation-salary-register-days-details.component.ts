@@ -43,7 +43,8 @@ import { LuxonFormatPipe } from '../../../../shared/utils/luxon-format.pipe';
 export class SimulationSalaryRegisterDaysDetailsComponent extends AppComponentBase implements OnInit {
     private _simulationSalaryRegisterDaysDetailsService = inject(SimulationSalaryRegisterDaysDetailsServiceProxy);
 
-    readonly createOrEditModal = viewChild<CreateOrEditSimulationSalaryRegisterDaysDetailModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditSimulationSalaryRegisterDaysDetailModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -80,7 +81,10 @@ export class SimulationSalaryRegisterDaysDetailsComponent extends AppComponentBa
 
     reloadPage(): void {
         const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
-        this.getSimulationSalaryRegisterDaysDetails({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
+        this.getSimulationSalaryRegisterDaysDetails({
+            first: this.paginator().getPage() * rows,
+            rows,
+        } as LazyLoadEvent);
     }
 
     createSimulationSalaryRegisterDaysDetail(): void {
@@ -115,13 +119,17 @@ export class SimulationSalaryRegisterDaysDetailsComponent extends AppComponentBa
     }
 
     deleteSimulationSalaryRegisterDaysDetail(record: SimulationSalaryRegisterDaysDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.id), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._simulationSalaryRegisterDaysDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.id),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._simulationSalaryRegisterDaysDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

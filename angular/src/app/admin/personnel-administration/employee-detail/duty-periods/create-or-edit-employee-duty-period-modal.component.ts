@@ -79,7 +79,14 @@ export class CreateOrEditEmployeeDutyPeriodModalComponent extends AppComponentBa
 
     private loadLookups(): void {
         this._dutyPeriodsService
-            .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.dutyPeriods.set(result.items));
     }
 

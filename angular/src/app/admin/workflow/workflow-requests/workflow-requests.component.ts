@@ -15,7 +15,10 @@ import { TieredMenu } from 'primeng/tieredmenu';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditWorkflowRequestModalComponent } from './create-or-edit-workflow-request-modal.component';
-import { WorkflowRequestRemarkModalComponent, WorkflowRequestActionType } from './workflow-request-remark-modal.component';
+import {
+    WorkflowRequestRemarkModalComponent,
+    WorkflowRequestActionType,
+} from './workflow-request-remark-modal.component';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -109,7 +112,10 @@ export class WorkflowRequestsComponent extends AppComponentBase implements OnIni
             });
         }
 
-        if (record.requestStatus === RequestStatus.Draft && this.permission.isGranted('Pages.Workflow.WorkflowRequests.Submit')) {
+        if (
+            record.requestStatus === RequestStatus.Draft &&
+            this.permission.isGranted('Pages.Workflow.WorkflowRequests.Submit')
+        ) {
             items.push({
                 label: this.l('Submit'),
                 icon: 'pi pi-send',

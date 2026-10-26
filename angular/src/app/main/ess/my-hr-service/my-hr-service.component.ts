@@ -55,7 +55,12 @@ export class MyHRServiceComponent extends MyRequestComponentBase<MyHRServiceRequ
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyHRServiceRequestDto>(this.rows, () => [
         { key: 'type', label: 'HRServiceType', text: (row) => this.typeName(row), filter: 'select' },
-        { key: 'serviceDate', label: 'ServiceDate', text: (row) => this.detailDate(row.serviceDate), sort: (row) => row.serviceDate?.toMillis() },
+        {
+            key: 'serviceDate',
+            label: 'ServiceDate',
+            text: (row) => this.detailDate(row.serviceDate),
+            sort: (row) => row.serviceDate?.toMillis(),
+        },
         { key: 'amount', label: 'Amount', text: (row) => row.amount },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);

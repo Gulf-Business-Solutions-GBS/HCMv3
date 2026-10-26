@@ -11,7 +11,11 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
-import { GetStaffNotinPayrollReportInput, PayrollRunType, StaffNotinPayrollReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetStaffNotinPayrollReportInput,
+    PayrollRunType,
+    StaffNotinPayrollReportServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 
@@ -23,7 +27,16 @@ import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 @Component({
     templateUrl: './staff-notin-payroll-report.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, GridReportFilterComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        GridReportFilterComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class StaffNotinPayrollReportComponent extends AppComponentBase {
     /** OrgLevel1..7 headers use the tenant's Organization Unit Type names; undefined levels are hidden. */

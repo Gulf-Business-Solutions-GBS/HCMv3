@@ -60,9 +60,24 @@ export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDt
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyDelegationDto>(this.rows, () => [
         { key: 'delegateTo', label: 'DelegateTo', text: (row) => this.delegateName(row), filter: 'select' },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
-        { key: 'active', label: 'CurrentlyActive', text: (row) => (row.isCurrentlyActive ? this.l('Active') : '-'), filter: 'select' },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.detailDate(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
+        {
+            key: 'active',
+            label: 'CurrentlyActive',
+            text: (row) => (row.isCurrentlyActive ? this.l('Active') : '-'),
+            filter: 'select',
+        },
         { key: 'comments', label: 'Comments', text: (row) => row.comments },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);

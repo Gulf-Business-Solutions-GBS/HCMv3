@@ -115,13 +115,17 @@ export class AbsenceViolationActionLogsComponent extends AppComponentBase implem
     }
 
     deleteAbsenceViolationActionLog(record: AbsenceViolationActionLogDto): void {
-        this.message.confirm(this.l('AbsenceViolationActionLogDeleteWarningMessage'), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._absenceViolationActionLogsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('AbsenceViolationActionLogDeleteWarningMessage'),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._absenceViolationActionLogsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

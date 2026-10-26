@@ -18,16 +18,71 @@ export class DashboardSnapshotService {
      * text-anchor...) are what ngx-charts styles through CSS, without which the bars and labels come out black.
      */
     private static readonly CopiedStyleProperties = [
-        'box-sizing', 'display', 'position', 'top', 'left', 'right', 'bottom',
-        'flex', 'flex-direction', 'flex-wrap', 'flex-grow', 'flex-shrink', 'flex-basis', 'align-items', 'align-self',
-        'justify-content', 'gap', 'row-gap', 'column-gap', 'grid-template-columns', 'grid-column',
-        'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height',
-        'margin', 'padding', 'border', 'border-top', 'border-bottom', 'border-left', 'border-right', 'border-radius',
-        'background', 'background-color', 'box-shadow', 'color', 'opacity', 'visibility', 'overflow',
-        'font-family', 'font-size', 'font-weight', 'font-style', 'line-height', 'letter-spacing', 'text-align',
-        'text-transform', 'text-overflow', 'white-space', 'vertical-align', 'table-layout', 'border-collapse',
-        'fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-dasharray', 'text-anchor',
-        'dominant-baseline', 'alignment-baseline', 'shape-rendering',
+        'box-sizing',
+        'display',
+        'position',
+        'top',
+        'left',
+        'right',
+        'bottom',
+        'flex',
+        'flex-direction',
+        'flex-wrap',
+        'flex-grow',
+        'flex-shrink',
+        'flex-basis',
+        'align-items',
+        'align-self',
+        'justify-content',
+        'gap',
+        'row-gap',
+        'column-gap',
+        'grid-template-columns',
+        'grid-column',
+        'width',
+        'height',
+        'min-width',
+        'min-height',
+        'max-width',
+        'max-height',
+        'margin',
+        'padding',
+        'border',
+        'border-top',
+        'border-bottom',
+        'border-left',
+        'border-right',
+        'border-radius',
+        'background',
+        'background-color',
+        'box-shadow',
+        'color',
+        'opacity',
+        'visibility',
+        'overflow',
+        'font-family',
+        'font-size',
+        'font-weight',
+        'font-style',
+        'line-height',
+        'letter-spacing',
+        'text-align',
+        'text-transform',
+        'text-overflow',
+        'white-space',
+        'vertical-align',
+        'table-layout',
+        'border-collapse',
+        'fill',
+        'fill-opacity',
+        'stroke',
+        'stroke-width',
+        'stroke-opacity',
+        'stroke-dasharray',
+        'text-anchor',
+        'dominant-baseline',
+        'alignment-baseline',
+        'shape-rendering',
     ];
 
     async saveAsJpeg(element: HTMLElement, fileName: string): Promise<void> {
@@ -56,7 +111,11 @@ export class DashboardSnapshotService {
         const scale = 2;
         const canvas = await this.rasterise(markup, width, height, scale, background);
         const blob = await new Promise<Blob>((resolve, reject) =>
-            canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('The picture could not be created.'))), 'image/jpeg', 0.92)
+            canvas.toBlob(
+                (b) => (b ? resolve(b) : reject(new Error('The picture could not be created.'))),
+                'image/jpeg',
+                0.92
+            )
         );
 
         return {
@@ -125,7 +184,13 @@ export class DashboardSnapshotService {
         }
     }
 
-    private rasterise(markup: string, width: number, height: number, scale: number, background: string): Promise<HTMLCanvasElement> {
+    private rasterise(
+        markup: string,
+        width: number,
+        height: number,
+        scale: number,
+        background: string
+    ): Promise<HTMLCanvasElement> {
         return new Promise((resolve, reject) => {
             const image = new Image();
 

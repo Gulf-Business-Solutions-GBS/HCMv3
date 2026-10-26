@@ -52,7 +52,9 @@ export class OnbGroupDetailsComponent extends AppComponentBase implements OnInit
 
     ngOnInit(): void {
         this._onbGroupsService
-            .getAll(new GetAllOnbGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOnbGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.onbGroups.set(result.items));
     }
 

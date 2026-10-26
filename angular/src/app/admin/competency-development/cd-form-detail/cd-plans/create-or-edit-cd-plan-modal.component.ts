@@ -36,7 +36,15 @@ export class CreateOrEditCDPlanModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._competenciesService
-            .getAll(new GetAllCompetenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, competencyTypeId: undefined }))
+            .getAll(
+                new GetAllCompetenciesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    competencyTypeId: undefined,
+                })
+            )
             .subscribe((result) => this.competencies.set(result.items));
 
         if (!id) {

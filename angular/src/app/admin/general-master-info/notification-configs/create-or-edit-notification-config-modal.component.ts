@@ -26,13 +26,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditNotificationConfigModal',
     templateUrl: './create-or-edit-notification-config-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditNotificationConfigModalComponent extends AppComponentBase {
     private _notificationConfigService = inject(NotificationConfigsServiceProxy);
@@ -64,7 +58,9 @@ export class CreateOrEditNotificationConfigModalComponent extends AppComponentBa
      */
     readonly sendToAllConflict = computed(() => {
         const c = this.notificationConfig();
-        return !!c.sendToAll && (!!c.toEmployee || !!c.toRequestCreator || !!c.toManager || (c.groups ?? []).length > 0);
+        return (
+            !!c.sendToAll && (!!c.toEmployee || !!c.toRequestCreator || !!c.toManager || (c.groups ?? []).length > 0)
+        );
     });
 
     /** Every group line must name the role whose holders it tells. */
@@ -74,13 +70,34 @@ export class CreateOrEditNotificationConfigModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._emailTemplatesService
-            .getAll(new GetAllEmailTemplatesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmailTemplatesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.emailTemplates.set(result.items));
         this._workflowRolesService
-            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkflowRolesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRoles.set(result.items));
         this._orgUnitTypesService
-            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOrganizationUnitTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.orgUnitTypes.set(result.items));
 
         if (!notificationConfigId) {

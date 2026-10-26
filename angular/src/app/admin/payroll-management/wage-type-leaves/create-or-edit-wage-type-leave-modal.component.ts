@@ -50,11 +50,20 @@ export class CreateOrEditWageTypeLeaveModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!wageTypeLeaveId) {
@@ -77,7 +86,9 @@ export class CreateOrEditWageTypeLeaveModalComponent extends AppComponentBase {
 
     onShown(): void {
         const firstFieldId =
-            this.presetWageTypeId() && !this.presetAbsenceTypeId() ? 'WageTypeLeave_AbsenceTypeId' : 'WageTypeLeave_WageTypeId';
+            this.presetWageTypeId() && !this.presetAbsenceTypeId()
+                ? 'WageTypeLeave_AbsenceTypeId'
+                : 'WageTypeLeave_WageTypeId';
         document.getElementById(firstFieldId)?.focus();
     }
 

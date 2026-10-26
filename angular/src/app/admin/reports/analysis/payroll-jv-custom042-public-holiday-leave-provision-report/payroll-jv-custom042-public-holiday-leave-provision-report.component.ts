@@ -116,7 +116,11 @@ export class PayrollJVCustom042PublicHolidayLeaveProvisionReportComponent extend
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042PublicHolidayLeaveProvisionReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042PublicHolidayLeaveProvisionReportInput {
         return new GetPayrollJVCustom042PublicHolidayLeaveProvisionReportInput({
             fromDate: undefined,
             toDate: undefined,

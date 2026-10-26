@@ -16,13 +16,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditDisciplinaryDeductionTypeModal',
     templateUrl: './create-or-edit-disciplinary-deduction-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditDisciplinaryDeductionTypeModalComponent extends AppComponentBase {
     private _disciplinaryDeductionTypesService = inject(DisciplinaryDeductionTypesServiceProxy);

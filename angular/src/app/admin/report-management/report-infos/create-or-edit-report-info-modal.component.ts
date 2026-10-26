@@ -41,11 +41,25 @@ export class CreateOrEditReportInfoModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._reportTypesService
-            .getAll(new GetAllReportTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllReportTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.reportTypes.set(result.items));
 
         this._domainTypesService
-            .getAll(new GetAllDomainTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDomainTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.domainTypes.set(result.items));
 
         if (!id) {

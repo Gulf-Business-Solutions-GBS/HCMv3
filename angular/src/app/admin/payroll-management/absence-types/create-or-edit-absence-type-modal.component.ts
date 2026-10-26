@@ -12,13 +12,7 @@ import { AbsenceTypeFormComponent } from './absence-type-form.component';
 @Component({
     selector: 'createOrEditAbsenceTypeModal',
     templateUrl: './create-or-edit-absence-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ButtonBusyDirective,
-        LocalizePipe,
-        AbsenceTypeFormComponent,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ButtonBusyDirective, LocalizePipe, AbsenceTypeFormComponent],
 })
 export class CreateOrEditAbsenceTypeModalComponent extends AppComponentBase {
     private _absenceTypesService = inject(AbsenceTypesServiceProxy);

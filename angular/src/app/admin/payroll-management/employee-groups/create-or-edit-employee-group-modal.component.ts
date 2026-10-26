@@ -1,6 +1,10 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditEmployeeGroupDto, EmployeeGroupsServiceProxy, Unit } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditEmployeeGroupDto,
+    EmployeeGroupsServiceProxy,
+    Unit,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';

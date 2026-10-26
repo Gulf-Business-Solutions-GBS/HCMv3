@@ -259,9 +259,7 @@ export class PayrollEngineComponent extends AppComponentBase implements OnInit, 
             return;
         }
 
-        this.payInDate.set(
-            this.toDateInput(this.isOffCycle() ? context.offCyclePayInDate : context.regularPayInDate)
-        );
+        this.payInDate.set(this.toDateInput(this.isOffCycle() ? context.offCyclePayInDate : context.regularPayInDate));
     }
 
     /** Filled from the control record; typed by hand only when the area has none (the engine will refuse anyway). */
@@ -363,15 +361,17 @@ export class PayrollEngineComponent extends AppComponentBase implements OnInit, 
             return;
         }
 
-        this._payrollRunSetupService.getPayrollRunPeriodDates(this.payrollAreaName(), month, year).subscribe((dates) => {
-            if (this.simulationMonth() !== month || this.simulationYear() !== year) {
-                return;
-            }
+        this._payrollRunSetupService
+            .getPayrollRunPeriodDates(this.payrollAreaName(), month, year)
+            .subscribe((dates) => {
+                if (this.simulationMonth() !== month || this.simulationYear() !== year) {
+                    return;
+                }
 
-            this.simulationStart.set(dates.calendarMonthStart);
-            this.simulationEnd.set(dates.calendarMonthEnd);
-            this.applyPayInDate();
-        });
+                this.simulationStart.set(dates.calendarMonthStart);
+                this.simulationEnd.set(dates.calendarMonthEnd);
+                this.applyPayInDate();
+            });
     }
 
     private resetSimulationPeriod(): void {
@@ -598,7 +598,10 @@ export class PayrollEngineComponent extends AppComponentBase implements OnInit, 
         }
 
         const date = this.offCyclePaymentDate();
-        return date >= this.toDateInput(context.offCyclePaymentDateFrom) && date <= this.toDateInput(context.offCyclePaymentDateTo);
+        return (
+            date >= this.toDateInput(context.offCyclePaymentDateFrom) &&
+            date <= this.toDateInput(context.offCyclePaymentDateTo)
+        );
     }
 
     private selectedReasonName(): string {

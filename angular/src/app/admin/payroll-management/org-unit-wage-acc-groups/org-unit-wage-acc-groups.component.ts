@@ -115,13 +115,17 @@ export class OrgUnitWageAccGroupsComponent extends AppComponentBase implements O
     }
 
     deleteOrgUnitWageAccGroup(record: OrgUnitWageAccGroupDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.organizationUnitName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._orgUnitWageAccGroupsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.organizationUnitName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._orgUnitWageAccGroupsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

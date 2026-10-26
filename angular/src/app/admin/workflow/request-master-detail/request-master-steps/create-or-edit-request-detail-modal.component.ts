@@ -157,10 +157,18 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         { field: 'submitNotificationConfigId', domId: 'RequestDetail_SubmitNotificationConfigId', key: 'OnSubmit' },
         { field: 'notificationConfigId', domId: 'RequestDetail_NotificationConfigId', key: 'OnApprove' },
         { field: 'rejectNotificationConfigId', domId: 'RequestDetail_RejectNotificationConfigId', key: 'OnReject' },
-        { field: 'sendBackNotificationConfigId', domId: 'RequestDetail_SendBackNotificationConfigId', key: 'OnSendBack' },
+        {
+            field: 'sendBackNotificationConfigId',
+            domId: 'RequestDetail_SendBackNotificationConfigId',
+            key: 'OnSendBack',
+        },
         { field: 'remarksNotificationConfigId', domId: 'RequestDetail_RemarksNotificationConfigId', key: 'OnRemark' },
         { field: 'assignNotificationConfigId', domId: 'RequestDetail_AssignNotificationConfigId', key: 'OnReassign' },
-        { field: 'reminderNotificationConfigId', domId: 'RequestDetail_ReminderNotificationConfigId', key: 'OnReminder' },
+        {
+            field: 'reminderNotificationConfigId',
+            domId: 'RequestDetail_ReminderNotificationConfigId',
+            key: 'OnReminder',
+        },
     ];
 
     /**
@@ -174,7 +182,14 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
         this.copiedCreatorStep.set(false);
 
         this._requestMastersService
-            .getAll(new GetAllRequestMastersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRequestMastersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.requestMasters.set(result.items);
                 this.requestMasterName.set(result.items.find((m) => m.id === requestMasterId)?.nameEn ?? '');
@@ -198,13 +213,34 @@ export class CreateOrEditRequestDetailModalComponent extends AppComponentBase {
                 );
             });
         this._workflowRolesService
-            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkflowRolesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRoles.set(result.items));
         this._orgLevelsService
-            .getAll(new GetAllOrganizationUnitTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOrganizationUnitTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.orgLevels.set(result.items));
         this._notificationConfigsService
-            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNotificationConfigsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.notificationConfigs.set(result.items);
                 this.openNotificationsIfCustomised();

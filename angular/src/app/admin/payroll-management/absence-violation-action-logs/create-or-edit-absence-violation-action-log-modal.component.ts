@@ -54,17 +54,21 @@ export class CreateOrEditAbsenceViolationActionLogModalComponent extends AppComp
         this.active.set(true);
 
         this._absenceViolationActionRecordsService
-            .getAll(new GetAllAbsenceViolationActionRecordsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllAbsenceViolationActionRecordsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined })
+            )
             .subscribe((result) => this.absenceViolationActionRecords.set(result.items));
 
         if (!absenceViolationActionLogId) {
             this.absenceViolationActionLog.set(new CreateOrEditAbsenceViolationActionLogDto());
             this.modal().show();
         } else {
-            this._absenceViolationActionLogsService.getAbsenceViolationActionLogForEdit(absenceViolationActionLogId).subscribe((result) => {
-                this.absenceViolationActionLog.set(result.absenceViolationActionLog);
-                this.modal().show();
-            });
+            this._absenceViolationActionLogsService
+                .getAbsenceViolationActionLogForEdit(absenceViolationActionLogId)
+                .subscribe((result) => {
+                    this.absenceViolationActionLog.set(result.absenceViolationActionLog);
+                    this.modal().show();
+                });
         }
     }
 

@@ -36,6 +36,20 @@
                             <validation-messages [formCtrl]="startDateInput" />
                         </div>
                         <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_PositionId">{{ 'Position' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_PositionId"
+                                class="form-select"
+                                name="PositionId"
+                                [ngModel]="record().positionId"
+                                (ngModelChange)="updatePosition($event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of positions(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.code }} - {{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
                             <label class="form-label" for="EmployeeOrgAssignment_JobTitleId">{{ 'JobTitle' | localize }}</label>
                             <select
                                 id="EmployeeOrgAssignment_JobTitleId"

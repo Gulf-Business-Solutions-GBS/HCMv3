@@ -1,6 +1,10 @@
 import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateOrEditEmployeeBenefitExceptionDto, EmployeeBenefitExceptionsServiceProxy, ExceptionBenefitType } from '@shared/service-proxies/service-proxies';
+import {
+    CreateOrEditEmployeeBenefitExceptionDto,
+    EmployeeBenefitExceptionsServiceProxy,
+    ExceptionBenefitType,
+} from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
@@ -44,7 +48,10 @@ export class CreateOrEditEmployeeBenefitExceptionModalComponent extends AppCompo
             recordType: 'EmployeeBenefitException',
             record: this.record,
             isNew: this.isNew,
-            keys: () => ({ EmployeeId: this.record().employeeId, ExceptionBenefitType: this.record().exceptionBenefitType }),
+            keys: () => ({
+                EmployeeId: this.record().employeeId,
+                ExceptionBenefitType: this.record().exceptionBenefitType,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }

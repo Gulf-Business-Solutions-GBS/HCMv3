@@ -119,9 +119,7 @@ export class BulkImportExportComponent extends AppComponentBase implements OnIni
     readonly isImportAction = computed(() => this.action() === 'validate' || this.action() === 'upload');
     readonly showImportType = computed(() => this.action() === 'upload');
 
-    readonly selectedEntity = computed(() =>
-        this.entities().find((e) => e.fullName === this.selectedEntityFullName())
-    );
+    readonly selectedEntity = computed(() => this.entities().find((e) => e.fullName === this.selectedEntityFullName()));
 
     readonly canRunImport = computed(
         () => !this.busy() && !!this.selectedEntityFullName() && !!this.selectedFileBase64

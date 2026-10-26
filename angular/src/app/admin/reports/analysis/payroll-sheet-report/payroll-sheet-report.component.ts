@@ -197,11 +197,7 @@ export class PayrollSheetReportComponent extends AppComponentBase {
      * Working Days, then per wage type its " Days" column (leave wage types only, BEFORE the amount --
      * legacy line 2841) and its amount column, and finally Difference.
      */
-    private buildColumns(
-        basicPay: string[],
-        earningDeduction: string[],
-        leaveDays: string[]
-    ): PayrollSheetColumn[] {
+    private buildColumns(basicPay: string[], earningDeduction: string[], leaveDays: string[]): PayrollSheetColumn[] {
         const columns: PayrollSheetColumn[] = [...PayrollSheetReportComponent.FIXED_COLUMNS];
 
         for (const name of basicPay) {

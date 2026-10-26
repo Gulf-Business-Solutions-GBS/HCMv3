@@ -92,9 +92,7 @@ export class EmployeeBonusReportComponent extends AppComponentBase {
                 this.columns.set(this.buildColumns(years));
 
                 this.primengTableHelper.totalRecordsCount.set(result.totalCount);
-                this.primengTableHelper.records.set(
-                    (result.items || []).map((item) => this.flatten(item, years))
-                );
+                this.primengTableHelper.records.set((result.items || []).map((item) => this.flatten(item, years)));
                 this.primengTableHelper.hideLoadingIndicator();
             });
     }

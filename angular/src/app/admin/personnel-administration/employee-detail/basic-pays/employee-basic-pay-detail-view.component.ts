@@ -60,7 +60,9 @@ export class EmployeeBasicPayDetailViewComponent extends AppComponentBase {
     /** Period as last loaded or saved, so the title does not change while the dates are being edited. */
     readonly savedPeriod = signal<string>('');
 
-    readonly title = computed(() => (this.savedPeriod() ? `${this.l('BasicPay')}: ${this.savedPeriod()}` : this.l('BasicPay')));
+    readonly title = computed(() =>
+        this.savedPeriod() ? `${this.l('BasicPay')}: ${this.savedPeriod()}` : this.l('BasicPay')
+    );
 
     readonly canEdit = this.permission.isGranted('Pages.PersonnelAdministration.EmployeeBasicPays.Edit');
 

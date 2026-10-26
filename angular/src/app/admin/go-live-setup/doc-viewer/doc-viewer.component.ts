@@ -55,9 +55,7 @@ export class DocViewerComponent extends AppComponentBase {
     readonly rows = computed<string[][]>(() => {
         const all = this.doc().rows ?? [];
         const needle = this.find().trim().toLowerCase();
-        return needle
-            ? all.filter((row) => row.some((cell) => (cell ?? '').toLowerCase().includes(needle)))
-            : all;
+        return needle ? all.filter((row) => row.some((cell) => (cell ?? '').toLowerCase().includes(needle))) : all;
     });
 
     readonly textLines = computed<string[]>(() => {
@@ -66,9 +64,7 @@ export class DocViewerComponent extends AppComponentBase {
         return needle ? lines.filter((line) => line.toLowerCase().includes(needle)) : lines;
     });
 
-    readonly rowCount = computed(() =>
-        this.doc().kind === 'text' ? this.textLines().length : this.rows().length
-    );
+    readonly rowCount = computed(() => (this.doc().kind === 'text' ? this.textLines().length : this.rows().length));
 
     onFind(event: Event): void {
         this.find.set((event.target as HTMLInputElement).value);

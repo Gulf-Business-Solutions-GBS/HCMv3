@@ -54,7 +54,12 @@ export class MyHealthReimburseComponent extends MyRequestComponentBase<MyHealthR
 
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyHealthReimburseDto>(this.rows, () => [
-        { key: 'paymentDate', label: 'PaymentDate', text: (row) => this.detailDate(row.paymentDate), sort: (row) => row.paymentDate?.toMillis() },
+        {
+            key: 'paymentDate',
+            label: 'PaymentDate',
+            text: (row) => this.detailDate(row.paymentDate),
+            sort: (row) => row.paymentDate?.toMillis(),
+        },
         { key: 'amount', label: 'Amount', text: (row) => row.amount },
         { key: 'comments', label: 'Comments', text: (row) => row.comments },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },

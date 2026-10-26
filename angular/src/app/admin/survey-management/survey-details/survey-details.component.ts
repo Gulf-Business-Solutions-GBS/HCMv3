@@ -1,7 +1,12 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SurveyDetailDto, SurveyDetailsServiceProxy, GetAllSurveyDetailsInput, QuestionType } from '@shared/service-proxies/service-proxies';
+import {
+    SurveyDetailDto,
+    SurveyDetailsServiceProxy,
+    GetAllSurveyDetailsInput,
+    QuestionType,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -122,13 +127,17 @@ export class SurveyDetailsComponent extends AppComponentBase implements OnInit {
     }
 
     deleteSurveyDetail(record: SurveyDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.question), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._surveyDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.question),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._surveyDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

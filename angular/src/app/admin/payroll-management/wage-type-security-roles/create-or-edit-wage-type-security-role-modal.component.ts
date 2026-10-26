@@ -33,7 +33,9 @@ export class CreateOrEditWageTypeSecurityRoleModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly wageTypeSecurityRole = signal<CreateOrEditWageTypeSecurityRoleDto>(new CreateOrEditWageTypeSecurityRoleDto());
+    readonly wageTypeSecurityRole = signal<CreateOrEditWageTypeSecurityRoleDto>(
+        new CreateOrEditWageTypeSecurityRoleDto()
+    );
 
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly roles = signal<RoleListDto[]>([]);
@@ -46,10 +48,14 @@ export class CreateOrEditWageTypeSecurityRoleModalComponent extends AppComponent
         this.active.set(true);
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
-        this._roleService.getRoles(new GetRolesInput({ permissions: undefined })).subscribe((result) => this.roles.set(result.items));
+        this._roleService
+            .getRoles(new GetRolesInput({ permissions: undefined }))
+            .subscribe((result) => this.roles.set(result.items));
 
         if (!wageTypeSecurityRoleId) {
             const dto = new CreateOrEditWageTypeSecurityRoleDto();
@@ -59,15 +65,19 @@ export class CreateOrEditWageTypeSecurityRoleModalComponent extends AppComponent
             this.wageTypeSecurityRole.set(dto);
             this.modal().show();
         } else {
-            this._wageTypeSecurityRolesService.getWageTypeSecurityRoleForEdit(wageTypeSecurityRoleId).subscribe((result) => {
-                this.wageTypeSecurityRole.set(result.wageTypeSecurityRole);
-                this.modal().show();
-            });
+            this._wageTypeSecurityRolesService
+                .getWageTypeSecurityRoleForEdit(wageTypeSecurityRoleId)
+                .subscribe((result) => {
+                    this.wageTypeSecurityRole.set(result.wageTypeSecurityRole);
+                    this.modal().show();
+                });
         }
     }
 
     onShown(): void {
-        const firstFieldId = this.presetWageTypeId() ? 'WageTypeSecurityRole_RoleId' : 'WageTypeSecurityRole_WageTypeId';
+        const firstFieldId = this.presetWageTypeId()
+            ? 'WageTypeSecurityRole_RoleId'
+            : 'WageTypeSecurityRole_WageTypeId';
         document.getElementById(firstFieldId)?.focus();
     }
 

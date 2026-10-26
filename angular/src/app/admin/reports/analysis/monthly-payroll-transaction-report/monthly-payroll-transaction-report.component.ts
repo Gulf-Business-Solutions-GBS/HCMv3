@@ -105,7 +105,11 @@ export class MonthlyPayrollTransactionReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetMonthlyPayrollTransactionReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetMonthlyPayrollTransactionReportInput {
         return new GetMonthlyPayrollTransactionReportInput({
             fromDate: undefined,
             toDate: undefined,

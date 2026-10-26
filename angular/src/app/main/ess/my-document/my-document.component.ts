@@ -21,7 +21,11 @@ import { EssListHeadComponent } from '../shared/ess-list-head.component';
 import { EssListPagerComponent } from '../shared/ess-list-pager.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
 import { AttachmentsComponent } from '../../../shared/common/attachments/attachments.component';
-import { DocumentRequestFormComponent, DocumentRequestFormValue, emptyDocumentRequestForm } from './document-request-form.component';
+import {
+    DocumentRequestFormComponent,
+    DocumentRequestFormValue,
+    emptyDocumentRequestForm,
+} from './document-request-form.component';
 
 /**
  * Self-service document requests, with the scan attached (legacy DocumentRequest.DocAttachment).
@@ -77,12 +81,27 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
 
             // As a number where it is one, so 9 sorts before 10. A draft has no number yet and sorts as the
             // newest; a document HR recorded was never requested and sorts below everything that was.
-            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : row.isDraft ? Number.MAX_SAFE_INTEGER : 0),
+            sort: (row) =>
+                row.requestNumber
+                    ? Number(row.requestNumber) || row.requestNumber
+                    : row.isDraft
+                      ? Number.MAX_SAFE_INTEGER
+                      : 0,
         },
         { key: 'type', label: 'DocumentType', text: (row) => this.typeName(row), filter: 'select' },
         { key: 'number', label: 'DocumentNumber', text: (row) => row.documentNum },
-        { key: 'issueDate', label: 'IssueDate', text: (row) => this.detailDate(row.issueDate), sort: (row) => row.issueDate?.toMillis() },
-        { key: 'expiryDate', label: 'ExpiryDate', text: (row) => this.detailDate(row.expiryDate), sort: (row) => row.expiryDate?.toMillis() },
+        {
+            key: 'issueDate',
+            label: 'IssueDate',
+            text: (row) => this.detailDate(row.issueDate),
+            sort: (row) => row.issueDate?.toMillis(),
+        },
+        {
+            key: 'expiryDate',
+            label: 'ExpiryDate',
+            text: (row) => this.detailDate(row.expiryDate),
+            sort: (row) => row.expiryDate?.toMillis(),
+        },
         { key: 'status', label: 'Status', text: (row) => this.rowStatusLabel(row), filter: 'select' },
     ]);
 
@@ -174,10 +193,16 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
      * rather than left out, so the menu always looks the same.
      */
     private menuItems(row: MyDocumentRequestDto): MenuItem[] {
-        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({ label: this.l(key), disabled: !enabled, command });
+        const item = (key: string, enabled: boolean, command: () => void): MenuItem => ({
+            label: this.l(key),
+            disabled: !enabled,
+            command,
+        });
 
         return [
-            item('WithdrawDocument', !!row.canWithdraw && this.canRaiseWithdrawals(), () => this.withdrawRequested.emit(row)),
+            item('WithdrawDocument', !!row.canWithdraw && this.canRaiseWithdrawals(), () =>
+                this.withdrawRequested.emit(row)
+            ),
             item('RenewDocument', !!row.canRenew, () => this.openFormForType(row.documentTypeId, this.typeName(row))),
             item('Attachments', true, () => this.toggleAttachments(row)),
 
@@ -251,7 +276,9 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
                 // While it is still the employee's own draft, so the approver finds the scan already there.
                 await this.documentForm()?.attachPending(draftId);
 
-                const result = await firstValueFrom(this._service.submitMyDocumentDraft(new EntityDto({ id: draftId })));
+                const result = await firstValueFrom(
+                    this._service.submitMyDocumentDraft(new EntityDto({ id: draftId }))
+                );
 
                 this.notifySubmitted(result.submittedForApproval);
             });

@@ -55,7 +55,14 @@ export class CreateOrEditEmployeeAttendanceModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._attendanceTypesService
-            .getAll(new GetAllAttendanceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAttendanceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.attendanceTypes.set(result.items));
 
         if (!id) {

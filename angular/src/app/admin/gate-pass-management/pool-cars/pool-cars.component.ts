@@ -111,13 +111,17 @@ export class PoolCarsComponent extends AppComponentBase implements OnInit {
     }
 
     deletePoolCar(record: PoolCarDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.vehiclePlateNumber), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.vehiclePlateNumber),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

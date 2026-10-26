@@ -87,7 +87,9 @@ export class EmployeeAssetInvoicesComponent extends AppComponentBase {
 
     reloadPage(): void {
         const paginator = this.paginator();
-        const rows = paginator ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        const rows = paginator
+            ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage
+            : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (paginator ? paginator.getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 

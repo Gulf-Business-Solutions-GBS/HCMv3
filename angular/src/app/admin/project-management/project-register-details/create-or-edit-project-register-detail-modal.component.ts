@@ -46,15 +46,26 @@ export class CreateOrEditProjectRegisterDetailModalComponent extends AppComponen
         this.active.set(true);
 
         this._projectRegistersService
-            .getAll(new GetAllProjectRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllProjectRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.projectRegisters.set(result.items));
 
         this._projectsService
-            .getAll(new GetAllProjectsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllProjectsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.projects.set(result.items));
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!id) {

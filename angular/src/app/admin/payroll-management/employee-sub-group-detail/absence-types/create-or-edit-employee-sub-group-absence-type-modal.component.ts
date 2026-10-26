@@ -28,14 +28,23 @@ export class CreateOrEditEmployeeSubGroupAbsenceTypeModalComponent extends AppCo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditEmployeeSubGroupAbsenceTypeDto>(new CreateOrEditEmployeeSubGroupAbsenceTypeDto());
+    readonly record = signal<CreateOrEditEmployeeSubGroupAbsenceTypeDto>(
+        new CreateOrEditEmployeeSubGroupAbsenceTypeDto()
+    );
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
 
     show(employeeSubGroupId: number, id?: number): void {
         this.active.set(true);
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!id) {

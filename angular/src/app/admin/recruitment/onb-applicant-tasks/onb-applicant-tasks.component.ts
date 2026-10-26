@@ -54,7 +54,9 @@ export class OnbApplicantTasksComponent extends AppComponentBase implements OnIn
 
     ngOnInit(): void {
         this._applicantsService
-            .getAll(new GetAllApplicantsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllApplicantsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.applicants.set(result.items));
     }
 

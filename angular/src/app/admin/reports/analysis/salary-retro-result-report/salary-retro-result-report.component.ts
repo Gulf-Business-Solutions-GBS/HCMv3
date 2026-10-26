@@ -25,7 +25,15 @@ import { GridReportFilterComponent } from '../shared/grid-report-filter.componen
 @Component({
     templateUrl: './salary-retro-result-report.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, PaginatorModule, GridReportFilterComponent, LocalizePipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        GridReportFilterComponent,
+        LocalizePipe,
+    ],
 })
 export class SalaryRetroResultReportComponent extends AppComponentBase {
     private readonly _reportService = inject(SalaryRetroResultReportServiceProxy);

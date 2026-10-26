@@ -80,7 +80,14 @@ export class EmployeeBankReportComponent extends AppComponentBase implements OnI
      */
     ngOnInit(): void {
         this._payrollAreaService
-            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPayrollAreasInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.payrollAreaOptions.set(
                     result.items.map((item) => ({ label: item.name ?? item.code ?? '', value: item.code ?? '' }))

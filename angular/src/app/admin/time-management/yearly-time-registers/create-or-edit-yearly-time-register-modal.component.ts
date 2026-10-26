@@ -19,13 +19,7 @@ import { DateTime } from 'luxon';
 @Component({
     selector: 'createOrEditYearlyTimeRegisterModal',
     templateUrl: './create-or-edit-yearly-time-register-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditYearlyTimeRegisterModalComponent extends AppComponentBase {
     private _yearlyTimeRegistersService = inject(YearlyTimeRegistersServiceProxy);
@@ -43,7 +37,9 @@ export class CreateOrEditYearlyTimeRegisterModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         if (!yearlyTimeRegisterId) {

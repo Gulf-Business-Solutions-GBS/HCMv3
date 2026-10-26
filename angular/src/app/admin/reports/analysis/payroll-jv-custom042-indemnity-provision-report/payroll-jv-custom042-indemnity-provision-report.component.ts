@@ -116,7 +116,11 @@ export class PayrollJVCustom042IndemnityProvisionReportComponent extends AppComp
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042IndemnityProvisionReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042IndemnityProvisionReportInput {
         return new GetPayrollJVCustom042IndemnityProvisionReportInput({
             fromDate: undefined,
             toDate: undefined,

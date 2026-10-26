@@ -143,8 +143,8 @@ describe('CompanyStructureChartComponent', () => {
         fixture.detectChanges();
 
         const focus = fixture.nativeElement.querySelector('.org-chart-card--focused');
-        const metrics = Array.from(focus.querySelectorAll('.org-chart-card__metric-value')).map(
-            (element) => (element as HTMLElement).textContent.trim()
+        const metrics = Array.from(focus.querySelectorAll('.org-chart-card__metric-value')).map((element) =>
+            (element as HTMLElement).textContent.trim()
         );
 
         expect(metrics).toEqual(['2443', '2945']);
@@ -172,9 +172,7 @@ describe('CompanyStructureChartComponent', () => {
         (service.getNode as jasmine.Spy).calls.reset();
 
         const consumerGoods = cards().find(
-            (card) =>
-                !card.classList.contains('org-chart-card--focused') &&
-                card.textContent.includes('Consumer Goods')
+            (card) => !card.classList.contains('org-chart-card--focused') && card.textContent.includes('Consumer Goods')
         );
         consumerGoods.click();
 
@@ -188,9 +186,7 @@ describe('CompanyStructureChartComponent', () => {
         fixture.detectChanges();
 
         const focus = fixture.nativeElement.querySelector('.org-chart-card--focused') as HTMLElement;
-        const child = cards().find(
-            (card) => !card.classList.contains('org-chart-card--focused')
-        ) as HTMLElement;
+        const child = cards().find((card) => !card.classList.contains('org-chart-card--focused')) as HTMLElement;
 
         // Level1 and Level2 are different accents, which is what makes the levels readable at a glance.
         expect(focus.style.getPropertyValue('--org-chart-accent')).toBe('#7239ea');

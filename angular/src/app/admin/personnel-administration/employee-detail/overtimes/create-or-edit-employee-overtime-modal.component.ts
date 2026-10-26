@@ -53,7 +53,14 @@ export class CreateOrEditEmployeeOvertimeModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._overtimeTypesService
-            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOvertimeTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.overtimeTypes.set(result.items));
 
         if (!id) {

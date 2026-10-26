@@ -4,9 +4,6 @@ import {
     LoanTypesServiceProxy,
     CreateOrEditLoanTypeDto,
     LoanDeductionWageTypeDto,
-
-
-
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -19,13 +16,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditLoanTypeModal',
     templateUrl: './create-or-edit-loan-type-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditLoanTypeModalComponent extends AppComponentBase {
     private _loanTypeService = inject(LoanTypesServiceProxy);

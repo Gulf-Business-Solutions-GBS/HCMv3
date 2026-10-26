@@ -45,7 +45,14 @@ export class CreateOrEditPayrollCalendarModalComponent extends AppComponentBase 
         this.active.set(true);
 
         this._payrollAreasService
-            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPayrollAreasInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.payrollAreas.set(result.items));
 
         if (!payrollCalendarId) {

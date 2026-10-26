@@ -63,7 +63,14 @@ export class CreateOrEditEmployeeExtdWorkLocationModalComponent extends AppCompo
         this.active.set(true);
 
         this._workLocationsService
-            .getAll(new GetAllWorkLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkLocationsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workLocations.set(result.items));
 
         if (!id) {

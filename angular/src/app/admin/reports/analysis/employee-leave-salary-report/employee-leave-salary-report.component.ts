@@ -68,7 +68,14 @@ export class EmployeeLeaveSalaryReportComponent extends AppComponentBase impleme
 
     ngOnInit(): void {
         this._absenceTypeService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.leaveTypeOptions.set(
                     result.items.map((item) => ({ label: item.nameEn ?? item.code ?? '', value: item.code ?? '' }))

@@ -73,11 +73,20 @@ export class CreateOrEditEmployeeProjectDetailModalComponent extends AppComponen
         this.calendarDays.set(undefined);
 
         this._employeeProjectsService
-            .getAll(new GetAllEmployeeProjectsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllEmployeeProjectsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.employeeProjects.set(result.items));
 
         this._projectsService
-            .getAll(new GetAllProjectsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllProjectsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.projects.set(result.items));
 
         if (!id) {

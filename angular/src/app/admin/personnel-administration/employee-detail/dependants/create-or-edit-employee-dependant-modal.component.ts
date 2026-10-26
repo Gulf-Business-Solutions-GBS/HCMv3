@@ -51,11 +51,25 @@ export class CreateOrEditEmployeeDependantModalComponent extends AppComponentBas
         this.active.set(true);
 
         this._dependantTypesService
-            .getAll(new GetAllDependantTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDependantTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.dependantTypes.set(result.items));
 
         this._ticketTypesService
-            .getAll(new GetAllTicketTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTicketTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.ticketTypes.set(result.items));
 
         if (!id) {

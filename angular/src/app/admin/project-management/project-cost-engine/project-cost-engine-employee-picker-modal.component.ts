@@ -42,7 +42,15 @@ export interface ProjectCostEngineEmployeePickerArgs {
 @Component({
     selector: 'projectCostEngineEmployeePickerModal',
     templateUrl: './project-cost-engine-employee-picker-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, TableModule, PaginatorModule, LocalizePipe, BusyIfDirective, LuxonFormatPipe],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        LocalizePipe,
+        BusyIfDirective,
+        LuxonFormatPipe,
+    ],
 })
 export class ProjectCostEngineEmployeePickerModalComponent extends AppComponentBase {
     private _projectCostEngineService = inject(ProjectCostEngineServiceProxy);

@@ -15,13 +15,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditRosterDutyPeriodModal',
     templateUrl: './create-or-edit-roster-duty-period-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditRosterDutyPeriodModalComponent extends AppComponentBase {
     private _rosterDutyPeriodsService = inject(RosterDutyPeriodsServiceProxy);

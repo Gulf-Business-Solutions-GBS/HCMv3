@@ -35,7 +35,14 @@ export class CreateOrEditJobDescriptionCertificateModalComponent extends AppComp
         this.active.set(true);
 
         this._educationCertificatesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.educationCertificates.set(result.items));
 
         if (!id) {

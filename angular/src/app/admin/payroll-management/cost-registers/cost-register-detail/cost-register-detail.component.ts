@@ -30,7 +30,14 @@ const COST_REGISTER_TABS: RecordTab[] = [
     templateUrl: './cost-register-detail.component.html',
     styleUrl: '../../../../shared/common/detail-tabs/detail-tabs.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, CreateOrEditCostRegisterModalComponent, CostRegisterDetailsTabComponent, LocalizePipe, LuxonFormatPipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        CreateOrEditCostRegisterModalComponent,
+        CostRegisterDetailsTabComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
 })
 export class CostRegisterDetailComponent extends AppComponentBase implements OnInit {
     private _route = inject(ActivatedRoute);
@@ -45,7 +52,9 @@ export class CostRegisterDetailComponent extends AppComponentBase implements OnI
 
     readonly title = computed(() => {
         const register = this.register();
-        return register?.employeeCode ? `${this.l('CostRegisters')} - ${register.employeeCode}` : this.l('CostRegisters');
+        return register?.employeeCode
+            ? `${this.l('CostRegisters')} - ${register.employeeCode}`
+            : this.l('CostRegisters');
     });
 
     readonly canEdit = this.permission.isGranted('Pages.PayrollManagement.CostRegisters.Edit');

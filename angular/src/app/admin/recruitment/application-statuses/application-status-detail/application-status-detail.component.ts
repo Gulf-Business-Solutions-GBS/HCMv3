@@ -2,7 +2,11 @@ import { Component, OnInit, computed, inject, signal, viewChild } from '@angular
 import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { ApplicationStatusSummaryDto, ApplicationStatusesServiceProxy, Gender } from '@shared/service-proxies/service-proxies';
+import {
+    ApplicationStatusSummaryDto,
+    ApplicationStatusesServiceProxy,
+    Gender,
+} from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';

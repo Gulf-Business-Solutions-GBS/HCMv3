@@ -68,7 +68,9 @@ export class EmployeeNonPayrollReportComponent extends AppComponentBase implemen
 
     ngOnInit(): void {
         this._wageTypeService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => {
                 this.wageTypeOptions.set(
                     result.items.map((item) => ({ label: item.nameEn ?? item.code ?? '', value: item.code ?? '' }))

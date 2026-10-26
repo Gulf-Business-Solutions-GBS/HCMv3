@@ -57,7 +57,11 @@ export class CreateOrEditTicketFareModalComponent extends AppComponentBase {
             recordType: 'TicketFare',
             record: this.ticketFare,
             isNew: this.isNew,
-            keys: () => ({ TicketRouteId: this.ticketFare().ticketRouteId, TicketPaxTypeId: this.ticketFare().ticketPaxTypeId, TicketClassId: this.ticketFare().ticketClassId }),
+            keys: () => ({
+                TicketRouteId: this.ticketFare().ticketRouteId,
+                TicketPaxTypeId: this.ticketFare().ticketPaxTypeId,
+                TicketClassId: this.ticketFare().ticketClassId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -71,15 +75,36 @@ export class CreateOrEditTicketFareModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._ticketRoutesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.ticketRoutes.set(result.items));
 
         this._ticketPaxTypesService
-            .getAll(new GetAllTicketPaxTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTicketPaxTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.ticketPaxTypes.set(result.items));
 
         this._ticketClassesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.ticketClasses.set(result.items));
 
         if (!ticketFareId) {

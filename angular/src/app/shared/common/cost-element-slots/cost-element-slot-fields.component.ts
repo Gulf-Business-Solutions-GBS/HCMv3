@@ -25,7 +25,9 @@ export interface CostElementSlotChange {
             <div class="row">
                 @for (slot of slotsService.slots(); track slot.slot) {
                     <div class="col-md-3 mb-5">
-                        <label class="form-label" [for]="idPrefix() + fieldOf(slot)">{{ slotsService.label(slot) }}</label>
+                        <label class="form-label" [for]="idPrefix() + fieldOf(slot)">
+                            {{ slotsService.label(slot) }}
+                        </label>
                         <select
                             [id]="idPrefix() + fieldOf(slot)"
                             class="form-select"
@@ -35,7 +37,9 @@ export interface CostElementSlotChange {
                             (ngModelChange)="fieldChange.emit({ field: fieldOf(slot), value: $event })">
                             <option [ngValue]="undefined"></option>
                             @for (option of slot.options ?? []; track option.id) {
-                                <option [ngValue]="option.id">{{ optionLabel(option.code, option.nameEn, option.nameAr) }}</option>
+                                <option [ngValue]="option.id">
+                                    {{ optionLabel(option.code, option.nameEn, option.nameAr) }}
+                                </option>
                             }
                             @if (isOrphan(slot)) {
                                 <option [ngValue]="valueOf(slot)">#{{ valueOf(slot) }}</option>

@@ -41,11 +41,21 @@ export class CreateOrEditPAMidYearReviewModalComponent extends AppComponentBase 
         this.active.set(true);
 
         this._kpiInfosService
-            .getAll(new GetAllKpiInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, kpiCategoryId: undefined }))
+            .getAll(
+                new GetAllKpiInfosInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    kpiCategoryId: undefined,
+                })
+            )
             .subscribe((result) => this.kpiInfos.set(result.items));
 
         this._paRatingsService
-            .getAll(new GetAllPARatingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPARatingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.paRatings.set(result.items));
 
         if (!id) {

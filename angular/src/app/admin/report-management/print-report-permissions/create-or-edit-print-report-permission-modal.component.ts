@@ -35,7 +35,9 @@ export class CreateOrEditPrintReportPermissionModalComponent extends AppComponen
     show(id?: number): void {
         this.active.set(true);
 
-        this._roleService.getRoles(new GetRolesInput({ permissions: undefined })).subscribe((result) => this.roles.set(result.items));
+        this._roleService
+            .getRoles(new GetRolesInput({ permissions: undefined }))
+            .subscribe((result) => this.roles.set(result.items));
 
         if (!id) {
             this.record.set(new CreateOrEditPrintReportPermissionDto());

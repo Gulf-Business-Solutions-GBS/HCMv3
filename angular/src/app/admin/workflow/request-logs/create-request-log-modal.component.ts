@@ -63,13 +63,25 @@ export class CreateRequestLogModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._workflowRequestsService
-            .getAll(new GetAllWorkflowRequestsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllWorkflowRequestsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRequests.set(result.items));
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
-        this.record.set(new CreateRequestLogDto({ actionType: RequestActionType.Created, platform: WorkflowPlatform.Core } as any));
+        this.record.set(
+            new CreateRequestLogDto({ actionType: RequestActionType.Created, platform: WorkflowPlatform.Core } as any)
+        );
         this.modal().show();
     }
 

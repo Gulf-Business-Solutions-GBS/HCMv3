@@ -116,7 +116,11 @@ export class PayrollJVCustom042RamadanTimeBackLeaveProvisionReportComponent exte
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042RamadanTimeBackLeaveProvisionReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042RamadanTimeBackLeaveProvisionReportInput {
         return new GetPayrollJVCustom042RamadanTimeBackLeaveProvisionReportInput({
             fromDate: undefined,
             toDate: undefined,

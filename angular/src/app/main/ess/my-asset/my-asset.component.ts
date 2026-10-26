@@ -51,8 +51,18 @@ export class MyAssetComponent extends MyRequestComponentBase<MyAssetRequestDto> 
     /** The list's columns, for the shared heading (sorting), filter row and pager. */
     readonly list = new EssList<MyAssetRequestDto>(this.rows, () => [
         { key: 'asset', label: 'Asset', text: (row) => this.assetName(row), filter: 'select' },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.detailDate(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 

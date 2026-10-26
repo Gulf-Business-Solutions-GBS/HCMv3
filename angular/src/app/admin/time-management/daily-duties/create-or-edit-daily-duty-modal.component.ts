@@ -45,7 +45,14 @@ export class CreateOrEditDailyDutyModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._breakShiftsService
-            .getAll(new GetAllBreakShiftsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllBreakShiftsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.breakShifts.set(result.items);
             });

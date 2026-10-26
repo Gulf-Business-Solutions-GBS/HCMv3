@@ -12,7 +12,10 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
-import { GetTrainingScheduleReportInput, TrainingScheduleReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import {
+    GetTrainingScheduleReportInput,
+    TrainingScheduleReportServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 
 /**

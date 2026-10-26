@@ -70,23 +70,39 @@ export class MyPassportWithdrawalComponent extends MyRequestComponentBase<MyPass
 
             // As a number where it is one, so 9 sorts before 10. A draft has no number yet and sorts as the
             // newest; a movement HR recorded was never requested and sorts below everything that was.
-            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : row.isDraft ? Number.MAX_SAFE_INTEGER : 0),
+            sort: (row) =>
+                row.requestNumber
+                    ? Number(row.requestNumber) || row.requestNumber
+                    : row.isDraft
+                      ? Number.MAX_SAFE_INTEGER
+                      : 0,
         },
         { key: 'documentType', label: 'DocumentType', text: (row) => this.typeName(row), filter: 'select' },
         { key: 'documentNumber', label: 'DocumentNumber', text: (row) => row.documentNum },
-        { key: 'withdrawDate', label: 'WithdrawDate', text: (row) => this.listDate(row.withdrawDate), sort: (row) => row.withdrawDate?.toMillis() },
+        {
+            key: 'withdrawDate',
+            label: 'WithdrawDate',
+            text: (row) => this.listDate(row.withdrawDate),
+            sort: (row) => row.withdrawDate?.toMillis(),
+        },
         {
             key: 'actualWithdrawDate',
             label: 'HandedOverOn',
             text: (row) => this.listDate(row.actualWithdrawDate),
             sort: (row) => row.actualWithdrawDate?.toMillis(),
         },
-        { key: 'returnDate', label: 'ReturnDate', text: (row) => this.listDate(row.returnDate), sort: (row) => row.returnDate?.toMillis() },
+        {
+            key: 'returnDate',
+            label: 'ReturnDate',
+            text: (row) => this.listDate(row.returnDate),
+            sort: (row) => row.returnDate?.toMillis(),
+        },
         {
             key: 'actualReturnDate',
             label: 'ActualReturnDate',
             text: (row) =>
-                this.listDate(row.actualReturnDate) || (this.isOut(row) ? this.l(row.isOverdue ? 'Overdue' : 'StillOut') : ''),
+                this.listDate(row.actualReturnDate) ||
+                (this.isOut(row) ? this.l(row.isOverdue ? 'Overdue' : 'StillOut') : ''),
             sort: (row) => row.actualReturnDate?.toMillis(),
         },
         { key: 'guarantor', label: 'Guarantor', text: (row) => this.guarantorName(row) },

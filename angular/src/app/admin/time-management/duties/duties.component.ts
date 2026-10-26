@@ -2,11 +2,7 @@ import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import {
-    DutyDto,
-    DutiesServiceProxy,
-    GetAllDutiesInput,
-} from '@shared/service-proxies/service-proxies';
+import { DutyDto, DutiesServiceProxy, GetAllDutiesInput } from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
@@ -121,13 +117,17 @@ export class DutiesComponent extends AppComponentBase implements OnInit {
     }
 
     deleteDuty(record: DutyDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.nameEn), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._dutiesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.nameEn),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._dutiesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

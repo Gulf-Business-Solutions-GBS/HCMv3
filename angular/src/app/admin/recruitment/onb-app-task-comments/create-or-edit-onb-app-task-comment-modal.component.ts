@@ -37,7 +37,14 @@ export class CreateOrEditOnbAppTaskCommentModalComponent extends AppComponentBas
         this.active.set(true);
 
         this._onbApplicantTasksService
-            .getAll(new GetAllOnbApplicantTasksInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, applicantId: undefined }))
+            .getAll(
+                new GetAllOnbApplicantTasksInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    applicantId: undefined,
+                })
+            )
             .subscribe((result) => this.onbApplicantTasks.set(result.items));
 
         if (!id) {

@@ -71,7 +71,14 @@ export class EmpOvertimeByDayReportComponent extends AppComponentBase implements
 
     ngOnInit(): void {
         this._overtimeTypeService
-            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOvertimeTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.overtimeTypeOptions.set(
                     result.items.map((item) => ({ label: item.nameEn ?? item.code ?? '', value: item.code ?? '' }))

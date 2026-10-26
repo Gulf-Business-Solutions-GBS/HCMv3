@@ -36,7 +36,9 @@ export class CreateOrEditBuildingModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._locationsService
-            .getAll(new GetAllLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllLocationsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.locations.set(result.items));
 
         if (!id) {

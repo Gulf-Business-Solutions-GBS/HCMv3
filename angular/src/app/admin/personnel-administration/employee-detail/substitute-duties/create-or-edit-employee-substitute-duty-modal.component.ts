@@ -72,7 +72,7 @@ export class CreateOrEditEmployeeSubstituteDutyModalComponent extends AppCompone
                     filter: undefined,
                     isActive: true,
                     includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
-                }),
+                })
             )
             .subscribe((result) => this.duties.set(result.items));
     }

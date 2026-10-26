@@ -1,10 +1,24 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, untracked } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    inject,
+    input,
+    output,
+    signal,
+    untracked,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import { LeavePlanPreviewDto, MyLeavePlanServiceProxy, PreviewLeavePlanInput } from '@shared/service-proxies/service-proxies';
+import {
+    LeavePlanPreviewDto,
+    MyLeavePlanServiceProxy,
+    PreviewLeavePlanInput,
+} from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { EssRequestFormMode } from '../my-exit-permit/exit-permit-form.component';
 
@@ -80,7 +94,8 @@ export class LeavePlanFormComponent extends AppComponentBase {
 
     /** Leave Info, whichever mode: the live preview while filling in, the request's own figures once sent. */
     readonly info = computed(() => {
-        const round = (n: number | undefined | null) => (n === undefined || n === null ? '' : `${Math.round(n * 1000) / 1000}`);
+        const round = (n: number | undefined | null) =>
+            n === undefined || n === null ? '' : `${Math.round(n * 1000) / 1000}`;
 
         if (this.readOnly()) {
             return {

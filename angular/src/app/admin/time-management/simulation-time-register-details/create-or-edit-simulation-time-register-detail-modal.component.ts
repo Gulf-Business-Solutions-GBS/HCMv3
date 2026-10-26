@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditSimulationTimeRegisterDetailModal',
     templateUrl: './create-or-edit-simulation-time-register-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditSimulationTimeRegisterDetailModalComponent extends AppComponentBase {
     private _simulationTimeRegisterDetailsService = inject(SimulationTimeRegisterDetailsServiceProxy);
@@ -39,7 +33,9 @@ export class CreateOrEditSimulationTimeRegisterDetailModalComponent extends AppC
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly simulationTimeRegisterDetail = signal<CreateOrEditSimulationTimeRegisterDetailDto>(new CreateOrEditSimulationTimeRegisterDetailDto());
+    readonly simulationTimeRegisterDetail = signal<CreateOrEditSimulationTimeRegisterDetailDto>(
+        new CreateOrEditSimulationTimeRegisterDetailDto()
+    );
     readonly simulationTimeRegisters = signal<SimulationTimeRegisterDto[]>([]);
     readonly timeTypes = signal<SimpleLookupDto[]>([]);
 
@@ -47,21 +43,37 @@ export class CreateOrEditSimulationTimeRegisterDetailModalComponent extends AppC
         this.active.set(true);
 
         this._simulationTimeRegistersService
-            .getAll(new GetAllSimulationTimeRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllSimulationTimeRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.simulationTimeRegisters.set(result.items));
 
         this._timeTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.timeTypes.set(result.items));
 
         if (!simulationTimeRegisterDetailId) {
             this.simulationTimeRegisterDetail.set(new CreateOrEditSimulationTimeRegisterDetailDto());
             this.modal().show();
         } else {
-            this._simulationTimeRegisterDetailsService.getSimulationTimeRegisterDetailForEdit(simulationTimeRegisterDetailId).subscribe((result) => {
-                this.simulationTimeRegisterDetail.set(result.simulationTimeRegisterDetail);
-                this.modal().show();
-            });
+            this._simulationTimeRegisterDetailsService
+                .getSimulationTimeRegisterDetailForEdit(simulationTimeRegisterDetailId)
+                .subscribe((result) => {
+                    this.simulationTimeRegisterDetail.set(result.simulationTimeRegisterDetail);
+                    this.modal().show();
+                });
         }
     }
 

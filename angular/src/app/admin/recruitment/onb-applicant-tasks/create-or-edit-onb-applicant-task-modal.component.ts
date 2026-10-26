@@ -64,11 +64,21 @@ export class CreateOrEditOnbApplicantTaskModalComponent extends AppComponentBase
 
     private loadLookups(): void {
         this._applicantsService
-            .getAll(new GetAllApplicantsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllApplicantsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.applicants.set(result.items));
 
         this._onbTasksService
-            .getAll(new GetAllOnbTasksInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, onbTemplateId: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOnbTasksInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    onbTemplateId: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.onbTasks.set(result.items));
     }
 

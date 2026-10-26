@@ -36,7 +36,14 @@ export class CreateOrEditSystemNotificationModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._notificationConfigsService
-            .getAll(new GetAllNotificationConfigsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllNotificationConfigsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.notificationConfigs.set(result.items));
 
         if (!id) {

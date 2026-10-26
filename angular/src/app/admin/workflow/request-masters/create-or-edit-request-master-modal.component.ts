@@ -36,11 +36,13 @@ export class CreateOrEditRequestMasterModalComponent extends AppComponentBase {
         this.active.set(true);
 
         if (!id) {
-            this.record.set(new CreateOrEditRequestMasterDto({
+            this.record.set(
+                new CreateOrEditRequestMasterDto({
                     securityLevel: WorkflowSecurityLevel.EmployeeOnly,
                     autoCloseInDays: 0,
                     dueInDays: 0,
-                } as any));
+                } as any)
+            );
             this.modal().show();
         } else {
             this._service.getRequestMasterForEdit(id).subscribe((result) => {

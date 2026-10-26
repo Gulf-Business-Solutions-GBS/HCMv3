@@ -36,7 +36,15 @@ export class CreateOrEditPAEmployeeDetailModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._kpiInfosService
-            .getAll(new GetAllKpiInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, kpiCategoryId: undefined }))
+            .getAll(
+                new GetAllKpiInfosInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    kpiCategoryId: undefined,
+                })
+            )
             .subscribe((result) => this.kpiInfos.set(result.items));
 
         if (!id) {

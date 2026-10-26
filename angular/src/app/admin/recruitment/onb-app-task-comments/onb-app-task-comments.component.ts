@@ -52,7 +52,14 @@ export class OnbAppTaskCommentsComponent extends AppComponentBase implements OnI
 
     ngOnInit(): void {
         this._onbApplicantTasksService
-            .getAll(new GetAllOnbApplicantTasksInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, applicantId: undefined }))
+            .getAll(
+                new GetAllOnbApplicantTasksInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    applicantId: undefined,
+                })
+            )
             .subscribe((result) => this.onbApplicantTasks.set(result.items));
     }
 

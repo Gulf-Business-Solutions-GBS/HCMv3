@@ -54,7 +54,14 @@ export class CreateOrEditLoanInstallmentModalComponent extends AppComponentBase 
         this.active.set(true);
 
         this._employeeLoansService
-            .getAll(new GetAllEmployeeLoansInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(
+                new GetAllEmployeeLoansInput({
+                    employeeId: undefined,
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                })
+            )
             .subscribe((result) => this.employeeLoans.set(result.items));
 
         if (!id) {

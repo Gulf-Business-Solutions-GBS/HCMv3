@@ -104,7 +104,11 @@ export class EmployeeDocumentCustom033ReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeDocumentCustom033ReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetEmployeeDocumentCustom033ReportInput {
         return new GetEmployeeDocumentCustom033ReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

@@ -135,7 +135,12 @@ export class WorkflowDashboardComponent extends AppComponentBase implements OnIn
 
     // ------------------------------------------------------------ chart data
 
-    readonly singleColour: Color = { name: 'wfSingle', selectable: true, group: ScaleType.Ordinal, domain: ['#3b82f6'] };
+    readonly singleColour: Color = {
+        name: 'wfSingle',
+        selectable: true,
+        group: ScaleType.Ordinal,
+        domain: ['#3b82f6'],
+    };
     readonly waitColour: Color = { name: 'wfWait', selectable: true, group: ScaleType.Ordinal, domain: ['#f59e0b'] };
     readonly bandColour: Color = {
         name: 'wfBand',
@@ -144,7 +149,9 @@ export class WorkflowDashboardComponent extends AppComponentBase implements OnIn
         domain: ['#10b981', '#84cc16', '#f59e0b', '#f97316', '#ef4444'],
     };
 
-    readonly statusColours = computed(() => STATUSES.map((s) => ({ name: this.statusLabel(s.status), value: s.colour })));
+    readonly statusColours = computed(() =>
+        STATUSES.map((s) => ({ name: this.statusLabel(s.status), value: s.colour }))
+    );
 
     readonly trendResults = computed(() =>
         (this.dashboard()?.trend ?? []).map((p) => ({
@@ -193,7 +200,10 @@ export class WorkflowDashboardComponent extends AppComponentBase implements OnIn
             case undefined:
                 return '';
             case WorkflowRequestListKind.Status:
-                return this.l('WorkflowDashboard_RequestsWithStatus', this.statusLabel(list.status ?? RequestStatus.Open));
+                return this.l(
+                    'WorkflowDashboard_RequestsWithStatus',
+                    this.statusLabel(list.status ?? RequestStatus.Open)
+                );
             case WorkflowRequestListKind.Month:
                 return this.l('WorkflowDashboard_RequestsInMonth', list.month?.toFormat('MMMM yyyy') ?? '');
             case WorkflowRequestListKind.Overdue:

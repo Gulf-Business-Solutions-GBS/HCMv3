@@ -52,7 +52,14 @@ export class OnbTemplateDetailsComponent extends AppComponentBase implements OnI
 
     ngOnInit(): void {
         this._onbTemplatesService
-            .getAll(new GetAllOnbTemplatesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOnbTemplatesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.onbTemplates.set(result.items));
     }
 

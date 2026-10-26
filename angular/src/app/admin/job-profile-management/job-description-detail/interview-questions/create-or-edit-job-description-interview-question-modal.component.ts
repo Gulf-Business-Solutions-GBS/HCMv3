@@ -28,14 +28,23 @@ export class CreateOrEditJobDescriptionInterviewQuestionModalComponent extends A
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditJobDescriptionInterviewQuestionDto>(new CreateOrEditJobDescriptionInterviewQuestionDto());
+    readonly record = signal<CreateOrEditJobDescriptionInterviewQuestionDto>(
+        new CreateOrEditJobDescriptionInterviewQuestionDto()
+    );
     readonly interviewQuestions = signal<SimpleLookupDto[]>([]);
 
     show(jobDescriptionId: number, id?: number): void {
         this.active.set(true);
 
         this._interviewQuestionsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.interviewQuestions.set(result.items));
 
         if (!id) {

@@ -115,13 +115,17 @@ export class PayrollCalendarsComponent extends AppComponentBase implements OnIni
     }
 
     deletePayrollCalendar(record: PayrollCalendarDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.payrollAreaName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._payrollCalendarsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.payrollAreaName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._payrollCalendarsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

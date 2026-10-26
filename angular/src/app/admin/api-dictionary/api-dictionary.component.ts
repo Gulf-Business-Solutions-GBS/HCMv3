@@ -49,7 +49,9 @@ export class ApiDictionaryComponent extends AppComponentBase {
     readonly onlyWritable = signal<boolean>(false);
 
     /** Always the placeholder host: the page is for handing to people outside the company. */
-    readonly signInUrl = computed(() => (this.entity()?.baseUrl ?? 'https://servername') + '/api/TokenAuth/Authenticate');
+    readonly signInUrl = computed(
+        () => (this.entity()?.baseUrl ?? 'https://servername') + '/api/TokenAuth/Authenticate'
+    );
 
     /** One row per operation, in a fixed order; null where the record type does not support it. */
     readonly operationRows = computed(() => {

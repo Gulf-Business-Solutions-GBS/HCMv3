@@ -53,7 +53,8 @@ export class MyDocumentCenterComponent extends AppComponentBase implements OnIni
     private readonly _essSessionService = inject(EssSessionServiceProxy);
 
     /** A request named in the address, waiting for the lists to arrive so it can be opened. Used once. */
-    private requestToOpen: number | undefined = Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
+    private requestToOpen: number | undefined =
+        Number(inject(ActivatedRoute).snapshot.queryParamMap.get('requestId')) || undefined;
 
     readonly context = signal<EssContextDto | undefined>(undefined);
     readonly contextLoaded = signal(false);
@@ -126,7 +127,9 @@ export class MyDocumentCenterComponent extends AppComponentBase implements OnIni
                 this.showLetters() ? this.letters() : undefined,
             ];
 
-            const expected = [this.showDocuments(), this.showWithdrawals(), this.showLetters()].filter((shown) => shown).length;
+            const expected = [this.showDocuments(), this.showWithdrawals(), this.showLetters()].filter(
+                (shown) => shown
+            ).length;
             const present = sections.filter((section) => !!section);
 
             if (present.length < expected || present.some((section) => !section!.loaded() && !section!.notLinked())) {

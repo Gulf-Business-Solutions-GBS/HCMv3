@@ -72,20 +72,42 @@ export class CreateOrEditTimeRegisterModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._dutyPeriodsService
-            .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.dutyPeriods.set(result.items));
 
-
         this._timePoliciesService
-            .getAll(new GetAllTimePoliciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTimePoliciesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.timePolicies.set(result.items));
 
         this._overtimeTypesService
-            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOvertimeTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.overtimeTypes.set(result.items));
 
         if (!timeRegisterId) {
@@ -112,7 +134,7 @@ export class CreateOrEditTimeRegisterModalComponent extends AppComponentBase {
                     filter: undefined,
                     isActive: true,
                     includeIds: currentDutyIds.filter((dutyId): dutyId is number => !!dutyId),
-                }),
+                })
             )
             .subscribe((result) => this.duties.set(result.items));
     }

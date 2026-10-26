@@ -29,24 +29,35 @@ export class CreateOrEditPayrollControlRecordModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly payrollControlRecord = signal<CreateOrEditPayrollControlRecordDto>(new CreateOrEditPayrollControlRecordDto());
+    readonly payrollControlRecord = signal<CreateOrEditPayrollControlRecordDto>(
+        new CreateOrEditPayrollControlRecordDto()
+    );
     readonly payrollAreas = signal<PayrollAreaDto[]>([]);
 
     show(payrollControlRecordId?: number): void {
         this.active.set(true);
 
         this._payrollAreasService
-            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPayrollAreasInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.payrollAreas.set(result.items));
 
         if (!payrollControlRecordId) {
             this.payrollControlRecord.set(new CreateOrEditPayrollControlRecordDto());
             this.modal().show();
         } else {
-            this._payrollControlRecordsService.getPayrollControlRecordForEdit(payrollControlRecordId).subscribe((result) => {
-                this.payrollControlRecord.set(result.payrollControlRecord);
-                this.modal().show();
-            });
+            this._payrollControlRecordsService
+                .getPayrollControlRecordForEdit(payrollControlRecordId)
+                .subscribe((result) => {
+                    this.payrollControlRecord.set(result.payrollControlRecord);
+                    this.modal().show();
+                });
         }
     }
 

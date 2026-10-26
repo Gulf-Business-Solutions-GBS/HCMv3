@@ -166,7 +166,12 @@ export class EmployeeDocumentMovementsModalComponent extends AppComponentBase {
 
         const status = record.workflowStatus;
 
-        return status === undefined || status === null || status === RequestStatus.Approved || status === RequestStatus.Closed;
+        return (
+            status === undefined ||
+            status === null ||
+            status === RequestStatus.Approved ||
+            status === RequestStatus.Closed
+        );
     }
 
     /** Today as the date fields hold it: neither a hand-over nor a return can be dated in the future. */

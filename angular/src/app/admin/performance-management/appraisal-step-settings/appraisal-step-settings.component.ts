@@ -126,14 +126,18 @@ export class AppraisalStepSettingsComponent extends AppComponentBase implements 
     }
 
     delete(record: AppraisalStepSettingDto): void {
-        this.message.confirm(this.l('AppraisalStepSettingDeleteWarningMessage', this.masterName(record), record.step), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('AppraisalStepSettingDeleteWarningMessage', this.masterName(record), record.step),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 
     private get isRtl(): boolean {

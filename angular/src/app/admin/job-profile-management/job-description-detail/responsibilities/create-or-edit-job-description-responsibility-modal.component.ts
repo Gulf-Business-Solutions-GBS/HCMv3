@@ -28,14 +28,23 @@ export class CreateOrEditJobDescriptionResponsibilityModalComponent extends AppC
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditJobDescriptionResponsibilityDto>(new CreateOrEditJobDescriptionResponsibilityDto());
+    readonly record = signal<CreateOrEditJobDescriptionResponsibilityDto>(
+        new CreateOrEditJobDescriptionResponsibilityDto()
+    );
     readonly jobResponsibilities = signal<SimpleLookupDto[]>([]);
 
     show(jobDescriptionId: number, id?: number): void {
         this.active.set(true);
 
         this._jobResponsibilitiesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.jobResponsibilities.set(result.items));
 
         if (!id) {

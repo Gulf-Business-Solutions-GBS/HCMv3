@@ -116,7 +116,11 @@ export class PayrollJVCustom042AnnualLeaveProvisionReportComponent extends AppCo
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042AnnualLeaveProvisionReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042AnnualLeaveProvisionReportInput {
         return new GetPayrollJVCustom042AnnualLeaveProvisionReportInput({
             fromDate: undefined,
             toDate: undefined,

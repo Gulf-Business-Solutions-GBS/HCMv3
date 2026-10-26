@@ -73,11 +73,21 @@ export class CreateOrEditPositionRelationshipModalComponent extends AppComponent
         this.active.set(true);
 
         this._positionsService
-            .getAll(new GetAllPositionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, vacant: undefined }))
+            .getAll(
+                new GetAllPositionsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    vacant: undefined,
+                })
+            )
             .subscribe((result) => this.positions.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         if (!id) {

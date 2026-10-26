@@ -31,7 +31,9 @@ export class ApplicantDetailComponent extends AppComponentBase implements OnInit
 
     ngOnInit(): void {
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._route.paramMap.subscribe((params) => {

@@ -88,7 +88,9 @@ export class StaffHeadcountReportComponent extends AppComponentBase {
             ? (this._reportService.getStaffHeadcountEmployeeReport(
                   this.buildEmployeeInput(sorting, maxResultCount, skipCount)
               ) as unknown as Observable<{ totalCount: number; items: unknown[] }>)
-            : (this._reportService.getStaffHeadcountReport(this.buildInput(sorting, maxResultCount, skipCount)) as unknown as Observable<{ totalCount: number; items: unknown[] }>);
+            : (this._reportService.getStaffHeadcountReport(
+                  this.buildInput(sorting, maxResultCount, skipCount)
+              ) as unknown as Observable<{ totalCount: number; items: unknown[] }>);
 
         request
             .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))

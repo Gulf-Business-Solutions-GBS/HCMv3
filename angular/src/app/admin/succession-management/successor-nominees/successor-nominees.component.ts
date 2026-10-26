@@ -1,7 +1,11 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SuccessorNomineeDto, SuccessorNomineesServiceProxy, GetAllSuccessorNomineesInput } from '@shared/service-proxies/service-proxies';
+import {
+    SuccessorNomineeDto,
+    SuccessorNomineesServiceProxy,
+    GetAllSuccessorNomineesInput,
+} from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
@@ -71,7 +75,9 @@ export class SuccessorNomineesComponent extends AppComponentBase implements OnIn
 
     reloadPage(): void {
         const paginator = this.paginator();
-        const rows = paginator ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage : this.primengTableHelper.defaultRecordsCountPerPage;
+        const rows = paginator
+            ? paginator.rows || this.primengTableHelper.defaultRecordsCountPerPage
+            : this.primengTableHelper.defaultRecordsCountPerPage;
         this.getRecords({ first: (paginator ? paginator.getPage() : 0) * rows, rows } as LazyLoadEvent);
     }
 

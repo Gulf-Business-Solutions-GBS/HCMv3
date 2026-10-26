@@ -26,7 +26,14 @@ import { CostElementSlotFieldsComponent } from '@app/shared/common/cost-element-
 @Component({
     selector: 'createOrEditWageAccGroupDetailModal',
     templateUrl: './create-or-edit-wage-acc-group-detail-modal.component.html',
-    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe, CostElementSlotFieldsComponent],
+    imports: [
+        AppBsModalDirective,
+        FormsModule,
+        ValidationMessagesComponent,
+        ButtonBusyDirective,
+        LocalizePipe,
+        CostElementSlotFieldsComponent,
+    ],
 })
 export class CreateOrEditWageAccGroupDetailModalComponent extends AppComponentBase {
     private _wageAccGroupDetailsService = inject(WageAccGroupDetailsServiceProxy);
@@ -68,15 +75,31 @@ export class CreateOrEditWageAccGroupDetailModalComponent extends AppComponentBa
 
     private loadLookups(): void {
         this._wageAccGroupsService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.wageAccGroups.set(result.items));
 
         this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.wageTypes.set(result.items));
 
         this._accountInfosService
-            .getAll(new GetAllAccountInfosInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAccountInfosInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.accountInfos.set(result.items));
     }
 

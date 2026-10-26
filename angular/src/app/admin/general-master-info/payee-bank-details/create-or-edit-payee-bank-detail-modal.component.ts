@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditPayeeBankDetailModal',
     templateUrl: './create-or-edit-payee-bank-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditPayeeBankDetailModalComponent extends AppComponentBase {
     private _payeeBankDetailService = inject(PayeeBankDetailsServiceProxy);
@@ -53,7 +47,14 @@ export class CreateOrEditPayeeBankDetailModalComponent extends AppComponentBase 
             });
 
         this._bankFilesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.bankFiles.set(result.items);
             });

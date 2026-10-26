@@ -113,13 +113,17 @@ export class DisciplinaryTypeDetailsComponent extends AppComponentBase implement
     }
 
     deleteDisciplinaryTypeDetail(record: DisciplinaryTypeDetailDto): void {
-        this.message.confirm(this.l('DisciplinaryTypeDetailDeleteWarningMessage'), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._disciplinaryTypeDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('DisciplinaryTypeDetailDeleteWarningMessage'),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._disciplinaryTypeDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

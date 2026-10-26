@@ -75,7 +75,8 @@ export class CreateOrEditIncidentRegisterModalComponent extends AppComponentBase
     }
 
     private loadLookups(): void {
-        const lookupInput = () => new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined });
+        const lookupInput = () =>
+            new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined });
 
         this._incidentTypesService.getAll(lookupInput()).subscribe((result) => this.incidentTypes.set(result.items));
         this._incidentNaturesService.getAll(lookupInput()).subscribe((result) => this.natures.set(result.items));
@@ -84,7 +85,9 @@ export class CreateOrEditIncidentRegisterModalComponent extends AppComponentBase
         this._safetyAreaAssetsService.getAll(lookupInput()).subscribe((result) => this.locations.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
     }
 

@@ -138,8 +138,6 @@ export class ReportScheduleRunsComponent extends AppComponentBase implements OnI
             return '';
         }
 
-        return slice.wasRecipientScoped
-            ? this.l('SkippedEmptyScopedHint')
-            : this.l('SkippedEmptyHint');
+        return slice.wasRecipientScoped ? this.l('SkippedEmptyScopedHint') : this.l('SkippedEmptyHint');
     }
 }

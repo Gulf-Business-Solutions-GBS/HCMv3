@@ -21,13 +21,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditMonthlyTimeRegisterDetailModal',
     templateUrl: './create-or-edit-monthly-time-register-detail-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditMonthlyTimeRegisterDetailModalComponent extends AppComponentBase {
     private _monthlyTimeRegisterDetailsService = inject(MonthlyTimeRegisterDetailsServiceProxy);
@@ -39,7 +33,9 @@ export class CreateOrEditMonthlyTimeRegisterDetailModalComponent extends AppComp
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly monthlyTimeRegisterDetail = signal<CreateOrEditMonthlyTimeRegisterDetailDto>(new CreateOrEditMonthlyTimeRegisterDetailDto());
+    readonly monthlyTimeRegisterDetail = signal<CreateOrEditMonthlyTimeRegisterDetailDto>(
+        new CreateOrEditMonthlyTimeRegisterDetailDto()
+    );
     readonly monthlyTimeRegisters = signal<MonthlyTimeRegisterDto[]>([]);
     readonly timeTypes = signal<SimpleLookupDto[]>([]);
 
@@ -47,21 +43,37 @@ export class CreateOrEditMonthlyTimeRegisterDetailModalComponent extends AppComp
         this.active.set(true);
 
         this._monthlyTimeRegistersService
-            .getAll(new GetAllMonthlyTimeRegistersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllMonthlyTimeRegistersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.monthlyTimeRegisters.set(result.items));
 
         this._timeTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.timeTypes.set(result.items));
 
         if (!monthlyTimeRegisterDetailId) {
             this.monthlyTimeRegisterDetail.set(new CreateOrEditMonthlyTimeRegisterDetailDto());
             this.modal().show();
         } else {
-            this._monthlyTimeRegisterDetailsService.getMonthlyTimeRegisterDetailForEdit(monthlyTimeRegisterDetailId).subscribe((result) => {
-                this.monthlyTimeRegisterDetail.set(result.monthlyTimeRegisterDetail);
-                this.modal().show();
-            });
+            this._monthlyTimeRegisterDetailsService
+                .getMonthlyTimeRegisterDetailForEdit(monthlyTimeRegisterDetailId)
+                .subscribe((result) => {
+                    this.monthlyTimeRegisterDetail.set(result.monthlyTimeRegisterDetail);
+                    this.modal().show();
+                });
         }
     }
 

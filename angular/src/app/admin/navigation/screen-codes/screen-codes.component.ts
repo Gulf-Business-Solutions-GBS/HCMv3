@@ -7,7 +7,12 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { Paginator } from 'primeng/paginator';
-import { ScreensServiceProxy, ScreenDto, GetAllScreensInput, UpdateScreenCodeInput } from '@shared/service-proxies/service-proxies';
+import {
+    ScreensServiceProxy,
+    ScreenDto,
+    GetAllScreensInput,
+    UpdateScreenCodeInput,
+} from '@shared/service-proxies/service-proxies';
 
 /**
  * Re-map Screen Codes.

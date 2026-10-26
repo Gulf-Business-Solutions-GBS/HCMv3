@@ -124,7 +124,8 @@ export class OvertimeBatchesComponent extends AppComponentBase implements OnInit
             {
                 label: this.l('Delete'),
                 icon: 'pi pi-trash',
-                disabled: !editable || !this.permission.isGranted('Pages.PersonnelAdministration.OvertimeBatches.Delete'),
+                disabled:
+                    !editable || !this.permission.isGranted('Pages.PersonnelAdministration.OvertimeBatches.Delete'),
                 command: () => this.deleteBatch(record),
             },
         ];
@@ -160,7 +161,9 @@ export class OvertimeBatchesComponent extends AppComponentBase implements OnInit
     isEditable(record: OvertimeBatchListDto): boolean {
         return (
             !record.isPosted &&
-            (record.workflowStatus === undefined || record.workflowStatus === null || record.workflowStatus === RequestStatus.Draft)
+            (record.workflowStatus === undefined ||
+                record.workflowStatus === null ||
+                record.workflowStatus === RequestStatus.Draft)
         );
     }
 

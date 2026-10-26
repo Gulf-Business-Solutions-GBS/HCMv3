@@ -37,7 +37,9 @@ export class CreateOrEditJobDescriptionAcknowledgementModalComponent extends App
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly record = signal<CreateOrEditJobDescriptionAcknowledgementDto>(new CreateOrEditJobDescriptionAcknowledgementDto());
+    readonly record = signal<CreateOrEditJobDescriptionAcknowledgementDto>(
+        new CreateOrEditJobDescriptionAcknowledgementDto()
+    );
     readonly employees = signal<EmployeeDto[]>([]);
     readonly jobTitles = signal<SimpleLookupDto[]>([]);
     readonly jobDescriptions = signal<JobDescriptionDto[]>([]);
@@ -46,15 +48,31 @@ export class CreateOrEditJobDescriptionAcknowledgementModalComponent extends App
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
 
         this._jobTitlesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.jobTitles.set(result.items));
 
         this._jobDescriptionsService
-            .getAll(new GetAllJobDescriptionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllJobDescriptionsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.jobDescriptions.set(result.items));
 
         if (!id) {

@@ -12,12 +12,18 @@ import {
     WorkflowDetailFieldKind,
     WorkflowRequestAction,
 } from '@shared/service-proxies/service-proxies';
-import { PersonalDataChangesComponent, PersonalDataChangesValue } from '../my-personal-data/personal-data-changes.component';
+import {
+    PersonalDataChangesComponent,
+    PersonalDataChangesValue,
+} from '../my-personal-data/personal-data-changes.component';
 import { LeaveFormValue, LeaveRequestFormComponent } from '../my-leave/leave-request-form.component';
 import { DocumentRequestFormComponent, DocumentRequestFormValue } from '../my-document/document-request-form.component';
 import { LetterRequestFormComponent, LetterRequestFormValue } from '../my-letter/letter-request-form.component';
 import { LeavePlanFormComponent, LeavePlanFormValue } from '../my-leave-plan/leave-plan-form.component';
-import { AppraisalReviewFormComponent, AppraisalReviewFormValue } from '../my-appraisal/appraisal-review-form.component';
+import {
+    AppraisalReviewFormComponent,
+    AppraisalReviewFormValue,
+} from '../my-appraisal/appraisal-review-form.component';
 import {
     PassportWithdrawalFormComponent,
     PassportWithdrawalFormValue,
@@ -111,7 +117,8 @@ export const ESS_REQUEST_FORMS: Record<string, EssRequestFormRegistration> = {
 
             // What is being asked for: the leave itself, or an amendment, cancellation or return against it.
             const action =
-                WorkflowRequestAction[(v['RequestAction'] ?? 'New') as keyof typeof WorkflowRequestAction] ?? WorkflowRequestAction.New;
+                WorkflowRequestAction[(v['RequestAction'] ?? 'New') as keyof typeof WorkflowRequestAction] ??
+                WorkflowRequestAction.New;
 
             return {
                 action,

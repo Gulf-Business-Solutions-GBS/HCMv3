@@ -4,7 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import { GetAllLeavePlansInput, LeavePlanDto, LeavePlansServiceProxy, RequestStatus } from '@shared/service-proxies/service-proxies';
+import {
+    GetAllLeavePlansInput,
+    LeavePlanDto,
+    LeavePlansServiceProxy,
+    RequestStatus,
+} from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
@@ -26,7 +31,17 @@ import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
     selector: 'leave-plans',
     templateUrl: './leave-plans.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, NgTemplateOutlet, FormsModule, TableModule, PaginatorModule, TieredMenu, Tooltip, LocalizePipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        NgTemplateOutlet,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        TieredMenu,
+        Tooltip,
+        LocalizePipe,
+    ],
 })
 export class LeavePlansComponent extends AppComponentBase {
     private readonly _service = inject(LeavePlansServiceProxy);

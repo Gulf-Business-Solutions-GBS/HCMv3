@@ -35,7 +35,14 @@ export class CreateOrEditSponsorSignatoryModalComponent extends AppComponentBase
         this.active.set(true);
 
         this._signatoriesService
-            .getAll(new GetAllSignatoriesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSignatoriesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.signatories.set(result.items));
 
         if (!id) {

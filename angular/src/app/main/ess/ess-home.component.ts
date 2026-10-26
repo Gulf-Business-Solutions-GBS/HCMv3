@@ -34,7 +34,15 @@ import { HelpPageDirective } from '@app/shared/help/help-page.directive';
     templateUrl: './ess-home.component.html',
     styleUrls: ['./ess-home.component.less'],
     animations: [appModuleAnimation()],
-    imports: [CommonModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, RouterModule, EssRequestDetailModalComponent, HelpPageDirective],
+    imports: [
+        CommonModule,
+        SubHeaderComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+        RouterModule,
+        EssRequestDetailModalComponent,
+        HelpPageDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssHomeComponent extends AppComponentBase implements OnInit {
@@ -84,7 +92,9 @@ export class EssHomeComponent extends AppComponentBase implements OnInit {
         // "No approval needed" only when none of the three goes to an approver.
         merged.isWorkflowEnabled = documents.some((type) => type.isWorkflowEnabled);
 
-        return types.filter((type) => type === documents[0] || !documents.includes(type)).map((type) => (type === documents[0] ? merged : type));
+        return types
+            .filter((type) => type === documents[0] || !documents.includes(type))
+            .map((type) => (type === documents[0] ? merged : type));
     });
     readonly recent = computed(() => this.context()?.recentRequests ?? []);
 

@@ -36,7 +36,15 @@ export class CreateWFReadLogModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._workflowRequestsService
-            .getAll(new GetAllWorkflowRequestsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, employeeId: undefined }))
+            .getAll(
+                new GetAllWorkflowRequestsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    employeeId: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRequests.set(result.items));
 
         this.record.set(new CreateWFReadLogDto());

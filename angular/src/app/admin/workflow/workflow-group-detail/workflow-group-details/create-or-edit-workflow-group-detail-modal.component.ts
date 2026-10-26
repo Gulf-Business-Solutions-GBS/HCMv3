@@ -45,7 +45,14 @@ export class CreateOrEditWorkflowGroupDetailModalComponent extends AppComponentB
         this.active.set(true);
 
         this._requestMastersService
-            .getAll(new GetAllRequestMastersInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRequestMastersInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.requestMasters.set(result.items));
 
         if (!id) {

@@ -78,7 +78,14 @@ export class EmployeeActionReportComponent extends AppComponentBase implements O
      */
     ngOnInit(): void {
         this._personalActionService
-            .getAll(new GetAllPersonalActionsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllPersonalActionsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.personalActionOptions.set(
                     result.items.map((item) => ({ label: item.nameEn ?? item.code ?? '', value: item.code ?? '' }))

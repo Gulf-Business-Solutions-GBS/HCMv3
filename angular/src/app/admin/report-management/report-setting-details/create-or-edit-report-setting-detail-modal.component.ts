@@ -52,7 +52,14 @@ export class CreateOrEditReportSettingDetailModalComponent extends AppComponentB
         this.active.set(true);
 
         this._reportSettingsService
-            .getAll(new GetAllReportSettingsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllReportSettingsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.reportSettings.set(result.items));
 
         if (!id) {

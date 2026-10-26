@@ -51,7 +51,10 @@ export class CreateOrEditOvertimeTypeDetailModalComponent extends AppComponentBa
             recordType: 'OvertimeTypeDetail',
             record: this.overtimeTypeDetail,
             isNew: this.isNew,
-            keys: () => ({ OvertimeTypeId: this.overtimeTypeDetail().overtimeTypeId, OvertimeRateType: this.overtimeTypeDetail().overtimeRateType }),
+            keys: () => ({
+                OvertimeTypeId: this.overtimeTypeDetail().overtimeTypeId,
+                OvertimeRateType: this.overtimeTypeDetail().overtimeRateType,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -62,7 +65,14 @@ export class CreateOrEditOvertimeTypeDetailModalComponent extends AppComponentBa
         this.active.set(true);
 
         this._overtimeTypesService
-            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOvertimeTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.overtimeTypes.set(result.items);
             });

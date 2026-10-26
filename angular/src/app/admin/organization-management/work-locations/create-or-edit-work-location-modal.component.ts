@@ -18,13 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditWorkLocationModal',
     templateUrl: './create-or-edit-work-location-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditWorkLocationModalComponent extends AppComponentBase {
     private _workLocationsService = inject(WorkLocationsServiceProxy);
@@ -42,7 +36,9 @@ export class CreateOrEditWorkLocationModalComponent extends AppComponentBase {
         this.active.set(true);
 
         this._sponsorsService
-            .getAll(new GetAllSponsorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSponsorsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.sponsors.set(result.items));
 
         if (!workLocationId) {

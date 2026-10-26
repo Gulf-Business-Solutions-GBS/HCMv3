@@ -423,7 +423,9 @@ export class ProjectCostEngineComponent extends AppComponentBase implements OnIn
     exportLogsToExcel(): void {
         this.exporting.set(true);
         this._projectCostEngineService
-            .getProjectCostEngineLogsToExcel(new GetProjectCostEngineLogsToExcelInput({ onlyFailed: this.logOnlyFailed() }))
+            .getProjectCostEngineLogsToExcel(
+                new GetProjectCostEngineLogsToExcelInput({ onlyFailed: this.logOnlyFailed() })
+            )
             .pipe(finalize(() => this.exporting.set(false)))
             .subscribe((file) => this._fileDownloadService.downloadTempFile(file));
     }

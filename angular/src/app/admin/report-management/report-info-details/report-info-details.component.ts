@@ -110,13 +110,17 @@ export class ReportInfoDetailsComponent extends AppComponentBase implements OnIn
     }
 
     deleteReportInfoDetail(record: ReportInfoDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.propertyName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.propertyName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

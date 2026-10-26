@@ -116,7 +116,11 @@ export class PayrollJVCustom042EmployeeWiseBreakDownReportComponent extends AppC
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042EmployeeWiseBreakDownReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042EmployeeWiseBreakDownReportInput {
         return new GetPayrollJVCustom042EmployeeWiseBreakDownReportInput({
             fromDate: undefined,
             toDate: undefined,

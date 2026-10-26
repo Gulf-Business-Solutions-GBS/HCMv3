@@ -70,9 +70,7 @@ export class EmployeePersonalInfoComponent extends AppComponentBase implements O
 
     readonly genderText = computed(() => this.enumText(Gender, this.profile()?.gender));
     readonly statusText = computed(() => this.enumText(EmployeeStatus, this.profile()?.status));
-    readonly employmentTypeText = computed(() =>
-        this.enumText(EmploymentType, this.profile()?.employmentType)
-    );
+    readonly employmentTypeText = computed(() => this.enumText(EmploymentType, this.profile()?.employmentType));
 
     ngOnInit(): void {
         this.load();

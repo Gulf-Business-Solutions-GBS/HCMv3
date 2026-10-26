@@ -32,7 +32,16 @@ import {
 @Component({
     templateUrl: './report-distribution.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, TableModule, Tooltip, LocalizePipe, PermissionPipe, DatePipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        Tooltip,
+        LocalizePipe,
+        PermissionPipe,
+        DatePipe,
+    ],
 })
 export class ReportDistributionComponent extends AppComponentBase {
     private _service = inject(ReportSchedulesServiceProxy);
@@ -84,31 +93,25 @@ export class ReportDistributionComponent extends AppComponentBase {
      * match nobody -- otherwise looks exactly like a successful run.
      */
     runNow(record: ReportScheduleListDto): void {
-        this.message.confirm(
-            this.l('RunScheduleNowConfirmation', record.name),
-            this.l('AreYouSure'),
-            (isConfirmed) => {
-                if (!isConfirmed) {
-                    return;
-                }
-
-                this.isLoading.set(true);
-                this._service
-                    .runNow(new EntityDto({ id: record.id }))
-                    .pipe(finalize(() => this.isLoading.set(false)))
-                    .subscribe((result) => {
-                        if (result.sliceCount === 0) {
-                            this.notify.warn(result.message ?? this.l('ScheduleResolvedNoRecipients'));
-                        } else {
-                            this.notify.success(
-                                this.l('ScheduleRunQueued', result.sliceCount, result.recipientCount)
-                            );
-                        }
-
-                        this.getRecords();
-                    });
+        this.message.confirm(this.l('RunScheduleNowConfirmation', record.name), this.l('AreYouSure'), (isConfirmed) => {
+            if (!isConfirmed) {
+                return;
             }
-        );
+
+            this.isLoading.set(true);
+            this._service
+                .runNow(new EntityDto({ id: record.id }))
+                .pipe(finalize(() => this.isLoading.set(false)))
+                .subscribe((result) => {
+                    if (result.sliceCount === 0) {
+                        this.notify.warn(result.message ?? this.l('ScheduleResolvedNoRecipients'));
+                    } else {
+                        this.notify.success(this.l('ScheduleRunQueued', result.sliceCount, result.recipientCount));
+                    }
+
+                    this.getRecords();
+                });
+        });
     }
 
     toggleActive(record: ReportScheduleListDto): void {

@@ -63,7 +63,9 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
         this.active.set(true);
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => {
                 this.employees.set(result.items);
 
@@ -72,7 +74,14 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
             });
 
         this._workflowRolesService
-            .getAll(new GetAllWorkflowRolesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllWorkflowRolesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.workflowRoles.set(result.items));
 
         if (!id) {
@@ -148,8 +157,6 @@ export class CreateOrEditEmployeeWorkflowRoleModalComponent extends AppComponent
 
         const today = DateTime.now().startOf('day');
 
-        this.isNotActiveToday.set(
-            record.startDate.startOf('day') > today || record.endDate.startOf('day') < today
-        );
+        this.isNotActiveToday.set(record.startDate.startOf('day') > today || record.endDate.startOf('day') < today);
     }
 }

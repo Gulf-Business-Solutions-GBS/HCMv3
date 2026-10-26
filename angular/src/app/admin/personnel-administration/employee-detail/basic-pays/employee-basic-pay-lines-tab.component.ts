@@ -139,13 +139,17 @@ export class EmployeeBasicPayLinesTabComponent extends AppComponentBase implemen
     }
 
     deleteRecord(record: EmployeeBasicPayDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.wageTypeName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.delete(record.id).subscribe(() => {
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                    this.onLineChanged();
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.wageTypeName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._service.delete(record.id).subscribe(() => {
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                        this.onLineChanged();
+                    });
+                }
             }
-        });
+        );
     }
 }

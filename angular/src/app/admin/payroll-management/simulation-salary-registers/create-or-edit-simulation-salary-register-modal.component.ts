@@ -40,7 +40,9 @@ export class CreateOrEditSimulationSalaryRegisterModalComponent extends AppCompo
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly simulationSalaryRegister = signal<CreateOrEditSimulationSalaryRegisterDto>(new CreateOrEditSimulationSalaryRegisterDto());
+    readonly simulationSalaryRegister = signal<CreateOrEditSimulationSalaryRegisterDto>(
+        new CreateOrEditSimulationSalaryRegisterDto()
+    );
 
     readonly payrollReasonTypes = signal<SimpleLookupDto[]>([]);
 
@@ -59,17 +61,26 @@ export class CreateOrEditSimulationSalaryRegisterModalComponent extends AppCompo
         this.active.set(true);
 
         this._payrollReasonTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.payrollReasonTypes.set(result.items));
 
         if (!simulationSalaryRegisterId) {
             this.simulationSalaryRegister.set(new CreateOrEditSimulationSalaryRegisterDto());
             this.modal().show();
         } else {
-            this._simulationSalaryRegistersService.getSimulationSalaryRegisterForEdit(simulationSalaryRegisterId).subscribe((result) => {
-                this.simulationSalaryRegister.set(result.simulationSalaryRegister);
-                this.modal().show();
-            });
+            this._simulationSalaryRegistersService
+                .getSimulationSalaryRegisterForEdit(simulationSalaryRegisterId)
+                .subscribe((result) => {
+                    this.simulationSalaryRegister.set(result.simulationSalaryRegister);
+                    this.modal().show();
+                });
         }
     }
 

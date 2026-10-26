@@ -18,7 +18,11 @@ interface RecordTab {
 }
 
 const CLEARANCE_REQUEST_FIELD_TABS: RecordTab[] = [
-    { id: 'details', labelKey: 'ClearanceRequestFieldDetails', permission: 'Pages.GeneralMasterInfo.ClearanceRequestFieldDetails' },
+    {
+        id: 'details',
+        labelKey: 'ClearanceRequestFieldDetails',
+        permission: 'Pages.GeneralMasterInfo.ClearanceRequestFieldDetails',
+    },
 ];
 
 /**
@@ -29,7 +33,13 @@ const CLEARANCE_REQUEST_FIELD_TABS: RecordTab[] = [
     templateUrl: './clearance-request-field-detail.component.html',
     styleUrl: '../../../../shared/common/detail-tabs/detail-tabs.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, CreateOrEditClearanceRequestFieldModalComponent, ClearanceRequestFieldDetailsTabComponent, LocalizePipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        CreateOrEditClearanceRequestFieldModalComponent,
+        ClearanceRequestFieldDetailsTabComponent,
+        LocalizePipe,
+    ],
 })
 export class ClearanceRequestFieldDetailComponent extends AppComponentBase implements OnInit {
     private _route = inject(ActivatedRoute);

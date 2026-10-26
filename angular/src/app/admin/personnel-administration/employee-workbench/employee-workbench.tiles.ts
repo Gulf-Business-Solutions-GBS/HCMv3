@@ -156,7 +156,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/org-assignments/create-or-edit-employee-org-assignment-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeOrgAssignmentModalComponent,
+                        (m) => m.CreateOrEditEmployeeOrgAssignmentModalComponent
                     ),
             },
             {
@@ -178,7 +178,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/basic-pays/create-or-edit-employee-basic-pay-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeBasicPayModalComponent,
+                        (m) => m.CreateOrEditEmployeeBasicPayModalComponent
                     ),
             },
             {
@@ -196,11 +196,14 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 columns: [
                     { labelKey: 'StartDate', field: 'startDate', type: 'date' },
                     { labelKey: 'EndDate', field: 'endDate', type: 'date' },
-                    { labelKey: 'Manager', value: (row) => [row.managerCode, row.managerFullNameEn].filter((x) => !!x).join(' - ') },
+                    {
+                        labelKey: 'Manager',
+                        value: (row) => [row.managerCode, row.managerFullNameEn].filter((x) => !!x).join(' - '),
+                    },
                 ],
                 form: () =>
                     import('../employee-detail/managers/create-or-edit-employee-manager-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeManagerModalComponent,
+                        (m) => m.CreateOrEditEmployeeManagerModalComponent
                     ),
             },
         ],
@@ -232,7 +235,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/absence-quotas/create-or-edit-employee-absence-quota-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeAbsenceQuotaModalComponent,
+                        (m) => m.CreateOrEditEmployeeAbsenceQuotaModalComponent
                     ),
             },
             {
@@ -256,7 +259,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/absences/create-or-edit-employee-absence-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeAbsenceModalComponent,
+                        (m) => m.CreateOrEditEmployeeAbsenceModalComponent
                     ),
             },
             {
@@ -274,14 +277,17 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                         .getNotReturnedLeaves(employeeId)
                         .pipe(map((r) => r.items)),
                 columns: [
-                    { labelKey: 'AbsenceType', value: (row, c) => byLanguage(c, row.absenceTypeNameEn, row.absenceTypeNameAr) },
+                    {
+                        labelKey: 'AbsenceType',
+                        value: (row, c) => byLanguage(c, row.absenceTypeNameEn, row.absenceTypeNameAr),
+                    },
                     { labelKey: 'StartDate', field: 'startDate', type: 'date' },
                     { labelKey: 'EndDate', field: 'endDate', type: 'date' },
                     { labelKey: 'DaysOverdue', field: 'daysOverdue', type: 'number' },
                 ],
                 form: () =>
                     import('../employee-detail/absences/create-or-edit-employee-absence-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeAbsenceModalComponent,
+                        (m) => m.CreateOrEditEmployeeAbsenceModalComponent
                     ),
                 tone: () => 'danger',
             },
@@ -374,7 +380,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/payments/create-or-edit-employee-payment-modal.component').then(
-                        (m) => m.CreateOrEditEmployeePaymentModalComponent,
+                        (m) => m.CreateOrEditEmployeePaymentModalComponent
                     ),
             },
             {
@@ -397,7 +403,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/loans/create-or-edit-employee-loan-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeLoanModalComponent,
+                        (m) => m.CreateOrEditEmployeeLoanModalComponent
                     ),
             },
         ],
@@ -443,7 +449,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/gratuities/create-or-edit-employee-gratuity-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeGratuityModalComponent,
+                        (m) => m.CreateOrEditEmployeeGratuityModalComponent
                     ),
             },
             {
@@ -466,7 +472,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/separations/create-or-edit-employee-separation-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeSeparationModalComponent,
+                        (m) => m.CreateOrEditEmployeeSeparationModalComponent
                     ),
             },
             {
@@ -490,7 +496,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 ],
                 form: () =>
                     import('../employee-detail/fnf-payments/create-or-edit-employee-fnf-payment-modal.component').then(
-                        (m) => m.CreateOrEditEmployeeFnFPaymentModalComponent,
+                        (m) => m.CreateOrEditEmployeeFnFPaymentModalComponent
                     ),
             },
         ],
@@ -511,7 +517,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 detailSectionId: 'documents',
                 load: (injector, employeeId) =>
                     loadDocuments(injector, employeeId, 'ExpiryDate ASC').pipe(
-                        map((rows) => rows.filter((d) => d.daysLeft >= 0).slice(0, WORKBENCH_ROW_COUNT)),
+                        map((rows) => rows.filter((d) => d.daysLeft >= 0).slice(0, WORKBENCH_ROW_COUNT))
                     ),
                 columns: documentColumns(),
                 form: documentForm,
@@ -525,7 +531,7 @@ export const WORKBENCH_TILES: WorkbenchTile[] = [
                 detailSectionId: 'documents',
                 load: (injector, employeeId) =>
                     loadDocuments(injector, employeeId, 'ExpiryDate DESC').pipe(
-                        map((rows) => rows.filter((d) => d.daysLeft < 0).slice(0, WORKBENCH_ROW_COUNT)),
+                        map((rows) => rows.filter((d) => d.daysLeft < 0).slice(0, WORKBENCH_ROW_COUNT))
                     ),
                 columns: documentColumns(),
                 form: documentForm,
@@ -556,7 +562,9 @@ const DOCUMENT_SCAN_COUNT = 50;
 function loadDocuments(injector: Injector, employeeId: number, sorting: string): Observable<any[]> {
     return injector
         .get(EmployeeDocumentsServiceProxy)
-        .getAll(new GetAllEmployeeDocumentsInput({ employeeId, sorting, maxResultCount: DOCUMENT_SCAN_COUNT, skipCount: 0 }))
+        .getAll(
+            new GetAllEmployeeDocumentsInput({ employeeId, sorting, maxResultCount: DOCUMENT_SCAN_COUNT, skipCount: 0 })
+        )
         .pipe(map((r) => r.items));
 }
 
@@ -571,7 +579,7 @@ function documentColumns(): WorkbenchColumn[] {
 
 function documentForm(): Promise<Type<WorkbenchForm>> {
     return import('../employee-detail/documents/create-or-edit-employee-document-modal.component').then(
-        (m) => m.CreateOrEditEmployeeDocumentModalComponent,
+        (m) => m.CreateOrEditEmployeeDocumentModalComponent
     );
 }
 

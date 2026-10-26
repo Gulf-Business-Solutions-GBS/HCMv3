@@ -18,13 +18,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     selector: 'createOrEditAbsenceTypeExceptionModal',
     templateUrl: './create-or-edit-absence-type-exception-modal.component.html',
-    imports: [
-        AppBsModalDirective,
-        FormsModule,
-        ValidationMessagesComponent,
-        ButtonBusyDirective,
-        LocalizePipe,
-    ],
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponentBase {
     private _absenceTypeExceptionsService = inject(AbsenceTypeExceptionsServiceProxy);
@@ -35,7 +29,9 @@ export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponent
 
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
-    readonly absenceTypeException = signal<CreateOrEditAbsenceTypeExceptionDto>(new CreateOrEditAbsenceTypeExceptionDto());
+    readonly absenceTypeException = signal<CreateOrEditAbsenceTypeExceptionDto>(
+        new CreateOrEditAbsenceTypeExceptionDto()
+    );
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
 
     /** Set when opened from an absence type's detail page: the absence type is fixed. */
@@ -46,7 +42,14 @@ export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponent
         this.active.set(true);
 
         this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAbsenceTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!absenceTypeExceptionId) {
@@ -57,10 +60,12 @@ export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponent
             this.absenceTypeException.set(dto);
             this.modal().show();
         } else {
-            this._absenceTypeExceptionsService.getAbsenceTypeExceptionForEdit(absenceTypeExceptionId).subscribe((result) => {
-                this.absenceTypeException.set(result.absenceTypeException);
-                this.modal().show();
-            });
+            this._absenceTypeExceptionsService
+                .getAbsenceTypeExceptionForEdit(absenceTypeExceptionId)
+                .subscribe((result) => {
+                    this.absenceTypeException.set(result.absenceTypeException);
+                    this.modal().show();
+                });
         }
     }
 

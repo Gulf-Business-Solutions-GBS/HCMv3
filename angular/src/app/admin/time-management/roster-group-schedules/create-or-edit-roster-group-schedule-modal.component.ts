@@ -55,7 +55,10 @@ export class CreateOrEditRosterGroupScheduleModalComponent extends AppComponentB
             recordType: 'RosterGroupSchedule',
             record: this.rosterGroupSchedule,
             isNew: this.isNew,
-            keys: () => ({ RosterGroupId: this.rosterGroupSchedule().rosterGroupId, DutyPeriodId: this.rosterGroupSchedule().dutyPeriodId }),
+            keys: () => ({
+                RosterGroupId: this.rosterGroupSchedule().rosterGroupId,
+                DutyPeriodId: this.rosterGroupSchedule().dutyPeriodId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -67,13 +70,27 @@ export class CreateOrEditRosterGroupScheduleModalComponent extends AppComponentB
         this.active.set(true);
 
         this._rosterGroupsService
-            .getAll(new GetAllRosterGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllRosterGroupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.rosterGroups.set(result.items);
             });
 
         this._dutyPeriodsService
-            .getAll(new GetAllDutyPeriodsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllDutyPeriodsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => {
                 this.dutyPeriods.set(result.items);
             });
@@ -82,10 +99,12 @@ export class CreateOrEditRosterGroupScheduleModalComponent extends AppComponentB
             this.rosterGroupSchedule.set(new CreateOrEditRosterGroupScheduleDto());
             this.modal().show();
         } else {
-            this._rosterGroupSchedulesService.getRosterGroupScheduleForEdit(rosterGroupScheduleId).subscribe((result) => {
-                this.rosterGroupSchedule.set(result.rosterGroupSchedule);
-                this.modal().show();
-            });
+            this._rosterGroupSchedulesService
+                .getRosterGroupScheduleForEdit(rosterGroupScheduleId)
+                .subscribe((result) => {
+                    this.rosterGroupSchedule.set(result.rosterGroupSchedule);
+                    this.modal().show();
+                });
         }
     }
 

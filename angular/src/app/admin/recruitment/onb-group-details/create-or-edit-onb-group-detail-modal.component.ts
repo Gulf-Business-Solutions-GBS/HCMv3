@@ -60,15 +60,32 @@ export class CreateOrEditOnbGroupDetailModalComponent extends AppComponentBase {
 
     private loadLookups(): void {
         this._onbGroupsService
-            .getAll(new GetAllOnbGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOnbGroupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.onbGroups.set(result.items));
 
         this._onbTasksService
-            .getAll(new GetAllOnbTasksInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, onbTemplateId: undefined, filter: undefined }))
+            .getAll(
+                new GetAllOnbTasksInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    onbTemplateId: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.onbTasks.set(result.items));
 
         this._jobTitlesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllSimpleLookupsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.jobTitles.set(result.items));
     }
 

@@ -36,7 +36,8 @@ export class SimulationSalaryRegisterDetailsTabComponent extends AppComponentBas
 
     readonly simulationSalaryRegisterId = input.required<number>();
 
-    readonly createOrEditModal = viewChild<CreateOrEditSimulationSalaryRegisterDetailModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditSimulationSalaryRegisterDetailModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -106,13 +107,17 @@ export class SimulationSalaryRegisterDetailsTabComponent extends AppComponentBas
     }
 
     deleteRecord(record: SimulationSalaryRegisterDetailDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.wageTypeName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._detailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.wageTypeName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._detailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

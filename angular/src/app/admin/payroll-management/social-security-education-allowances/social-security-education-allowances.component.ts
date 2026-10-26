@@ -41,7 +41,8 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 export class SocialSecurityEducationAllowancesComponent extends AppComponentBase implements OnInit {
     private _socialSecurityEducationAllowancesService = inject(SocialSecurityEducationAllowancesServiceProxy);
 
-    readonly createOrEditModal = viewChild<CreateOrEditSocialSecurityEducationAllowanceModalComponent>('createOrEditModal');
+    readonly createOrEditModal =
+        viewChild<CreateOrEditSocialSecurityEducationAllowanceModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -113,13 +114,17 @@ export class SocialSecurityEducationAllowancesComponent extends AppComponentBase
     }
 
     deleteSocialSecurityEducationAllowance(record: SocialSecurityEducationAllowanceDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.id), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._socialSecurityEducationAllowancesService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.id),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._socialSecurityEducationAllowancesService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

@@ -10,7 +10,11 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
-import { GetPayrollCTCReportInput, PayrollCTCReportServiceProxy, PayrollRunType } from '@shared/service-proxies/service-proxies';
+import {
+    GetPayrollCTCReportInput,
+    PayrollCTCReportServiceProxy,
+    PayrollRunType,
+} from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
 import { injectOrgLevelCaptions } from '../shared/org-level-captions';
 

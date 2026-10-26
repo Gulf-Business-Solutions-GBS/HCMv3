@@ -45,7 +45,10 @@ export class CreateOrEditEmployeeSubGroupTicketModalComponent extends AppCompone
             recordType: 'EmployeeSubGroupTicket',
             record: this.record,
             isNew: this.isNew,
-            keys: () => ({ EmployeeSubGroupId: this.record().employeeSubGroupId, TicketTypeId: this.record().ticketTypeId }),
+            keys: () => ({
+                EmployeeSubGroupId: this.record().employeeSubGroupId,
+                TicketTypeId: this.record().ticketTypeId,
+            }),
             onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
         });
     }
@@ -71,7 +74,14 @@ export class CreateOrEditEmployeeSubGroupTicketModalComponent extends AppCompone
         this.active.set(true);
 
         this._ticketTypesService
-            .getAll(new GetAllTicketTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllTicketTypesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                })
+            )
             .subscribe((result) => this.ticketTypes.set(result.items));
 
         if (!id) {

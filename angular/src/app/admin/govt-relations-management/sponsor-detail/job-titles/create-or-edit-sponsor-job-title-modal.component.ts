@@ -62,7 +62,15 @@ export class CreateOrEditSponsorJobTitleModalComponent extends AppComponentBase 
         this.active.set(true);
 
         this._govtJobTitlesService
-            .getAll(new GetAllGovtJobTitlesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, govtJobCategoryId: undefined }))
+            .getAll(
+                new GetAllGovtJobTitlesInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    govtJobCategoryId: undefined,
+                })
+            )
             .subscribe((result) => this.govtJobTitles.set(result.items));
 
         if (!id) {

@@ -27,7 +27,16 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     templateUrl: './employee-letter-requests.component.html',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, TableModule, PaginatorModule, TieredMenu, Tooltip, AttachmentsComponent, LocalizePipe],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        TableModule,
+        PaginatorModule,
+        TieredMenu,
+        Tooltip,
+        AttachmentsComponent,
+        LocalizePipe,
+    ],
 })
 export class EmployeeLetterRequestsComponent extends AppComponentBase implements OnInit {
     private _letterRequestsService = inject(EmployeeLetterRequestsServiceProxy);

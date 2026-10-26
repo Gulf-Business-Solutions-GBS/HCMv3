@@ -157,9 +157,7 @@ export class IntegrationCenterComponent extends AppComponentBase implements OnIn
         const name = this.l(tile.nameKey);
 
         const question =
-            tile.key === 'Smtp'
-                ? this.l('IntegrationConfirmDisableSmtp')
-                : this.l('IntegrationConfirmDisable', name);
+            tile.key === 'Smtp' ? this.l('IntegrationConfirmDisableSmtp') : this.l('IntegrationConfirmDisable', name);
 
         this.message.confirm(question, this.l('AreYouSure'), (confirmed) => {
             if (confirmed) {

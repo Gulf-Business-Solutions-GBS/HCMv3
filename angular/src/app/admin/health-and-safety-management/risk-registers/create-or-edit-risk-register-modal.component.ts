@@ -78,17 +78,22 @@ export class CreateOrEditRiskRegisterModalComponent extends AppComponentBase {
     }
 
     private loadLookups(): void {
-        const lookupInput = () => new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined });
+        const lookupInput = () =>
+            new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined });
 
         this._riskTypesService.getAll(lookupInput()).subscribe((result) => this.riskTypes.set(result.items));
         this._riskImpactsService.getAll(lookupInput()).subscribe((result) => this.impacts.set(result.items));
-        this._riskPossibilitiesService.getAll(lookupInput()).subscribe((result) => this.possibilities.set(result.items));
+        this._riskPossibilitiesService
+            .getAll(lookupInput())
+            .subscribe((result) => this.possibilities.set(result.items));
         this._riskStatusesService.getAll(lookupInput()).subscribe((result) => this.statuses.set(result.items));
         this._riskActionsService.getAll(lookupInput()).subscribe((result) => this.riskActions.set(result.items));
         this._safetyAreaAssetsService.getAll(lookupInput()).subscribe((result) => this.locations.set(result.items));
 
         this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.employees.set(result.items));
     }
 

@@ -114,13 +114,17 @@ export class ClearanceRequestFieldDetailsComponent extends AppComponentBase impl
     }
 
     deleteClearanceRequestFieldDetail(record: ClearanceRequestFieldDetailDto): void {
-        this.message.confirm(this.l('ClearanceRequestFieldDetailDeleteWarningMessage'), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._clearanceRequestFieldDetailsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('ClearanceRequestFieldDetailDeleteWarningMessage'),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._clearanceRequestFieldDetailsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

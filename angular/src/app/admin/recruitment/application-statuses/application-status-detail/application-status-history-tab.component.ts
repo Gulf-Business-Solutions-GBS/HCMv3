@@ -49,11 +49,15 @@ interface StatusHistoryRow {
                                     <td>{{ row.userName }}</td>
                                     <td>
                                         @if (row.fromKey) {
-                                            <span class="text-muted text-decoration-line-through">{{ row.fromKey | localize }}</span>
+                                            <span class="text-muted text-decoration-line-through">
+                                                {{ row.fromKey | localize }}
+                                            </span>
                                         }
                                     </td>
                                     <td>
-                                        <span class="badge badge-light-success fw-bold">{{ row.toKey | localize }}</span>
+                                        <span class="badge badge-light-success fw-bold">
+                                            {{ row.toKey | localize }}
+                                        </span>
                                     </td>
                                 </tr>
                             }

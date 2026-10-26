@@ -109,11 +109,7 @@ export class EmployeeWorkflowRoleReportComponent extends AppComponentBase {
             });
     }
 
-    private buildInput(
-        sorting: string,
-        maxResultCount: number,
-        skipCount: number
-    ): GetEmployeeWorkflowRoleReportInput {
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmployeeWorkflowRoleReportInput {
         return new GetEmployeeWorkflowRoleReportInput({
             fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
             toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,

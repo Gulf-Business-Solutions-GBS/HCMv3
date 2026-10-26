@@ -48,7 +48,9 @@ export class CreateOrEditEmployeeAssetInvoiceModalComponent extends AppComponent
         this.active.set(true);
 
         this._assetsService
-            .getAll(new GetAllAssetsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllAssetsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.assets.set(result.items));
 
         if (!id) {

@@ -116,7 +116,11 @@ export class PayrollJVCustom042OvertimeReportComponent extends AppComponentBase 
             });
     }
 
-    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetPayrollJVCustom042OvertimeReportInput {
+    private buildInput(
+        sorting: string,
+        maxResultCount: number,
+        skipCount: number
+    ): GetPayrollJVCustom042OvertimeReportInput {
         return new GetPayrollJVCustom042OvertimeReportInput({
             fromDate: undefined,
             toDate: undefined,

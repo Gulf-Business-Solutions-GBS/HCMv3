@@ -217,13 +217,17 @@ export class PayrollControlRecordsComponent extends AppComponentBase implements 
     }
 
     deletePayrollControlRecord(record: PayrollControlRecordDto): void {
-        this.message.confirm(this.l('SimpleLookupDeleteWarningMessage', record.payrollAreaName), this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._payrollControlRecordsService.delete(record.id).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
+        this.message.confirm(
+            this.l('SimpleLookupDeleteWarningMessage', record.payrollAreaName),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._payrollControlRecordsService.delete(record.id).subscribe(() => {
+                        this.reloadPage();
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+                }
             }
-        });
+        );
     }
 }

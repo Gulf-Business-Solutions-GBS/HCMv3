@@ -58,7 +58,12 @@ export class MyBankComponent extends MyRequestComponentBase<MyBankRequestDto> im
         { key: 'bank', label: 'Bank', text: (row) => this.bankName(row), filter: 'select' },
         { key: 'accountNumber', label: 'AccountNumber', text: (row) => row.accountNumMasked },
         { key: 'iban', label: 'Iban', text: (row) => row.ibanMasked },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 

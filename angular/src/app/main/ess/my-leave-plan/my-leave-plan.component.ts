@@ -63,12 +63,38 @@ export class MyLeavePlanComponent extends MyRequestComponentBase<MyLeavePlanDto>
             key: 'requestNumber',
             label: 'RequestNumber',
             text: (row) => row.requestNumber,
-            sort: (row) => (row.requestNumber ? Number(row.requestNumber) || row.requestNumber : row.isDraft ? Number.MAX_SAFE_INTEGER : 0),
+            sort: (row) =>
+                row.requestNumber
+                    ? Number(row.requestNumber) || row.requestNumber
+                    : row.isDraft
+                      ? Number.MAX_SAFE_INTEGER
+                      : 0,
         },
-        { key: 'startDate', label: 'StartDate', text: (row) => this.detailDate(row.startDate), sort: (row) => row.startDate?.toMillis() },
-        { key: 'endDate', label: 'EndDate', text: (row) => this.detailDate(row.endDate), sort: (row) => row.endDate?.toMillis() },
-        { key: 'plannedDays', label: 'PlannedDays', text: (row) => (row.plannedDays > 0 ? row.plannedDays : ''), sort: (row) => row.plannedDays, align: 'end' },
-        { key: 'createdDate', label: 'CreatedDate', text: (row) => this.detailDate(row.creationTime), sort: (row) => row.creationTime?.toMillis() },
+        {
+            key: 'startDate',
+            label: 'StartDate',
+            text: (row) => this.detailDate(row.startDate),
+            sort: (row) => row.startDate?.toMillis(),
+        },
+        {
+            key: 'endDate',
+            label: 'EndDate',
+            text: (row) => this.detailDate(row.endDate),
+            sort: (row) => row.endDate?.toMillis(),
+        },
+        {
+            key: 'plannedDays',
+            label: 'PlannedDays',
+            text: (row) => (row.plannedDays > 0 ? row.plannedDays : ''),
+            sort: (row) => row.plannedDays,
+            align: 'end',
+        },
+        {
+            key: 'createdDate',
+            label: 'CreatedDate',
+            text: (row) => this.detailDate(row.creationTime),
+            sort: (row) => row.creationTime?.toMillis(),
+        },
         { key: 'status', label: 'Status', text: (row) => this.statusLabel(row), filter: 'select' },
     ]);
 
@@ -128,7 +154,10 @@ export class MyLeavePlanComponent extends MyRequestComponentBase<MyLeavePlanDto>
             { label: this.l('PlannedDays'), value: row.plannedDays > 0 ? `${row.plannedDays}` : '' },
             {
                 label: this.l('ProjectedLeaveBalance'),
-                value: row.projectedLeaveBalance === undefined || row.projectedLeaveBalance === null ? '' : `${row.projectedLeaveBalance}`,
+                value:
+                    row.projectedLeaveBalance === undefined || row.projectedLeaveBalance === null
+                        ? ''
+                        : `${row.projectedLeaveBalance}`,
             },
         ];
     }
@@ -144,7 +173,11 @@ export class MyLeavePlanComponent extends MyRequestComponentBase<MyLeavePlanDto>
             { label: this.l('Edit'), disabled: !row.canEdit, command: () => this.continueDraft(row) },
             { label: this.l('Details'), disabled: row.isDraft, command: () => this.openDetail(row) },
             // A draft was never sent to anybody, so it is discarded rather than withdrawn.
-            { label: this.l(row.isDraft ? 'DiscardDraft' : 'WithdrawRequest'), disabled: !row.canCancel, command: () => this.cancel(row) },
+            {
+                label: this.l(row.isDraft ? 'DiscardDraft' : 'WithdrawRequest'),
+                disabled: !row.canCancel,
+                command: () => this.cancel(row),
+            },
         ];
     }
 
@@ -192,7 +225,9 @@ export class MyLeavePlanComponent extends MyRequestComponentBase<MyLeavePlanDto>
         void this.run(async () => {
             if (draftId !== undefined) {
                 await firstValueFrom(this._service.saveMyLeavePlanDraft(this.draftInput()));
-                const result = await firstValueFrom(this._service.submitMyLeavePlanDraft(new EntityDto({ id: draftId })));
+                const result = await firstValueFrom(
+                    this._service.submitMyLeavePlanDraft(new EntityDto({ id: draftId }))
+                );
                 this.notifySubmitted(result.submittedForApproval);
                 return;
             }

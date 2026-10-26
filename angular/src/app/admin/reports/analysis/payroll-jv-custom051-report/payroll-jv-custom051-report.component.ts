@@ -123,11 +123,16 @@ export class PayrollJVCustom051ReportComponent extends AppComponentBase {
     }
 
     /** Flattens the row's two dictionaries onto the column names the server declared. */
-    private flatten(row: PayrollJVCustom051ReportRowDto, columns: PayrollJVCustom051ReportColumnDto[]): Record<string, unknown> {
+    private flatten(
+        row: PayrollJVCustom051ReportRowDto,
+        columns: PayrollJVCustom051ReportColumnDto[]
+    ): Record<string, unknown> {
         const flat: Record<string, unknown> = { oid: row.id, sortOrder: row.sortOrder };
 
         for (const column of columns) {
-            flat[column.name] = column.isNumeric ? (row.amounts?.[column.name] ?? 0) : (row.values?.[column.name] ?? '');
+            flat[column.name] = column.isNumeric
+                ? (row.amounts?.[column.name] ?? 0)
+                : (row.values?.[column.name] ?? '');
         }
 
         return flat;
