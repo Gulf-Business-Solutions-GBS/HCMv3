@@ -7916,5 +7916,6 @@
     <text name="FinanceJournalsAlreadyPosted">تم ترحيل هذه القيود إلى Dynamics 365 قبل حدوث الخطأ:</text>
     <text name="CostingFileRunQueued">بدأ تشغيل ملف التكاليف، ويظهر تقدّمه أدناه.</text>
     <text name="PostJvRunQueued">بدأ ترحيل قيد اليومية، ويظهر تقدّمه أدناه.</text>
+    <text name="NonPayrollWageTypeNotAllowed">لا يمكن استخدام نوع الأجر هذا في معاملة خارج الرواتب.</text>
   </texts>
 </localizationDictionary>

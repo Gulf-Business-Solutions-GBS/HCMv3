@@ -67,7 +67,11 @@ public class EmployeeNonPayrollTransAppService_Tests : AppTestBase
                 Code = code,
                 NameEn = code,
                 NameAr = code,
-                PayrollOrder = 1
+                PayrollOrder = 1,
+                // A wage type a non-payroll transaction may use (legacy NonPayrollWageType).
+                Status = true,
+                BillingType = BillingType.Earning,
+                IncludeInCalculatedPay = true
             }).Entity;
         });
         return wageType;

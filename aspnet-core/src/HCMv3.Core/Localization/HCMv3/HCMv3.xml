@@ -8081,5 +8081,6 @@
     <text name="FinanceJournalsAlreadyPosted">These journals had already been posted to Dynamics 365 before the failure:</text>
     <text name="CostingFileRunQueued">The costing file run has started. Its progress is shown below.</text>
     <text name="PostJvRunQueued">Posting the journal voucher has started. Its progress is shown below.</text>
+    <text name="NonPayrollWageTypeNotAllowed">This wage type cannot be used on a non-payroll transaction.</text>
   </texts>
 </localizationDictionary>

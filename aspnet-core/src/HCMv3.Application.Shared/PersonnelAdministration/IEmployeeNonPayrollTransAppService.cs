@@ -14,4 +14,6 @@ public interface IEmployeeNonPayrollTransAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditEmployeeNonPayrollTransDto input);
 
     Task Delete(EntityDto input);
+
+    Task<ListResultDto<NonPayrollWageTypeDto>> GetNonPayrollWageTypes();
 }

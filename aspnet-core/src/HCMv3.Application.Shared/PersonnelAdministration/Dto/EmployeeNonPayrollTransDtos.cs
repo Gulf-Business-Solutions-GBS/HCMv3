@@ -72,3 +72,13 @@ public class GetAllEmployeeNonPayrollTransInput : PagedAndSortedResultRequestDto
         }
     }
 }
+
+/// <summary>A wage type a non-payroll transaction may use (legacy <c>NonPayrollWageType</c>).</summary>
+public class NonPayrollWageTypeDto : EntityDto
+{
+    public string Code { get; set; }
+
+    public string NameEn { get; set; }
+
+    public string NameAr { get; set; }
+}

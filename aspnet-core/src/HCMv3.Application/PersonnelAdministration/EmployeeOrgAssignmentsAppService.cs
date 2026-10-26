@@ -324,6 +324,11 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
         await SyncPositionHoldersAsync(employeeId);
     }
 
+    /// <summary>
+    /// Legacy <c>EmpPosition</c>: active, vacant positions, plus the one the edited assignment holds.
+    /// <c>[HttpPost]</c>: a <c>Get*</c> method with a custom input DTO (repo NSwag rule).
+    /// </summary>
+    [HttpPost]
     public async Task<ListResultDto<PositionForOrgAssignmentDto>> GetPositionsForOrgAssignment(GetPositionsForOrgAssignmentInput input)
     {
         var positions = await PositionRepository.GetAll()

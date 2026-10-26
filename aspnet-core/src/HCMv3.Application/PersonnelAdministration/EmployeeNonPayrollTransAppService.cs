@@ -1,12 +1,16 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,18 +18,36 @@ namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
 /// Application service for <see cref="EmployeeNonPayrollTrans"/> (ported from legacy XAF
-/// EmployeeNonPayrollTrans business object, Wave 4 deferred bucket). Ports the essential required-field
-/// validation only. The legacy <c>NonPayrollWageType</c> data-source filter (restricting selectable
-/// WageTypes) is NOT enforced at this layer -- see class remarks on <see cref="EmployeeNonPayrollTrans"/>.
+/// EmployeeNonPayrollTrans business object). The wage types offered and accepted follow legacy's
+/// <c>NonPayrollWageType</c> data-source filter, through <see cref="INonPayrollWageTypeSelector"/>.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeNonPayrollTrans)]
 public class EmployeeNonPayrollTransAppService : HCMv3AppServiceBase, IEmployeeNonPayrollTransAppService
 {
     private readonly IRepository<EmployeeNonPayrollTrans> _repository;
+    private readonly INonPayrollWageTypeSelector _wageTypeSelector;
+    private readonly IRepository<UserRole, long> _userRoleRepository;
 
-    public EmployeeNonPayrollTransAppService(IRepository<EmployeeNonPayrollTrans> repository)
+    public EmployeeNonPayrollTransAppService(
+        IRepository<EmployeeNonPayrollTrans> repository,
+        INonPayrollWageTypeSelector wageTypeSelector,
+        IRepository<UserRole, long> userRoleRepository)
     {
         _repository = repository;
+        _wageTypeSelector = wageTypeSelector;
+        _userRoleRepository = userRoleRepository;
+    }
+
+    /// <summary>The wage types the signed-in user may choose on a non-payroll transaction (legacy NonPayrollWageType).</summary>
+    public async Task<ListResultDto<NonPayrollWageTypeDto>> GetNonPayrollWageTypes()
+    {
+        var roleIds = await GetCurrentUserRoleIdsAsync();
+        var items = await _wageTypeSelector.Query(roleIds)
+            .OrderBy(w => w.Code)
+            .Select(w => new NonPayrollWageTypeDto { Id = w.Id, Code = w.Code, NameEn = w.NameEn, NameAr = w.NameAr })
+            .ToListAsync();
+
+        return new ListResultDto<NonPayrollWageTypeDto>(items);
     }
 
     [HttpPost]
@@ -87,6 +109,8 @@ public class EmployeeNonPayrollTransAppService : HCMv3AppServiceBase, IEmployeeN
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeNonPayrollTrans_Create)]
     protected virtual async Task CreateAsync(CreateOrEditEmployeeNonPayrollTransDto input)
     {
+        await EnsureWageTypeAllowedAsync(input.WageTypeId);
+
         var entity = MapToEntity(input, new EmployeeNonPayrollTrans());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
@@ -97,6 +121,14 @@ public class EmployeeNonPayrollTransAppService : HCMv3AppServiceBase, IEmployeeN
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeNonPayrollTransDto input)
     {
         var entity = await _repository.GetAsync(input.Id.Value);
+
+        // Only a changed wage type is checked: legacy filtered the dropdown but never refused a save, so a record
+        // already holding a wage type that no longer qualifies can still be edited.
+        if (entity.WageTypeId != input.WageTypeId)
+        {
+            await EnsureWageTypeAllowedAsync(input.WageTypeId);
+        }
+
         MapToEntity(input, entity);
 
         await _repository.UpdateAsync(entity);
@@ -106,6 +138,26 @@ public class EmployeeNonPayrollTransAppService : HCMv3AppServiceBase, IEmployeeN
     public async Task Delete(EntityDto input)
     {
         await _repository.DeleteAsync(input.Id);
+    }
+
+    private async Task EnsureWageTypeAllowedAsync(int wageTypeId)
+    {
+        var roleIds = await GetCurrentUserRoleIdsAsync();
+        if (!await _wageTypeSelector.Query(roleIds).AnyAsync(w => w.Id == wageTypeId))
+        {
+            throw new UserFriendlyException(L("NonPayrollWageTypeNotAllowed"));
+        }
+    }
+
+    private async Task<List<int>> GetCurrentUserRoleIdsAsync()
+    {
+        var userId = AbpSession.UserId;
+        if (!userId.HasValue)
+        {
+            return new List<int>();
+        }
+
+        return await _userRoleRepository.GetAll().Where(r => r.UserId == userId.Value).Select(r => r.RoleId).ToListAsync();
     }
 
     private static EmployeeNonPayrollTrans MapToEntity(CreateOrEditEmployeeNonPayrollTransDto input, EmployeeNonPayrollTrans entity)

@@ -46269,6 +46269,57 @@ export class EmployeeNonPayrollTransServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getNonPayrollWageTypes(): Observable<ListResultDtoOfNonPayrollWageTypeDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeNonPayrollTrans/GetNonPayrollWageTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNonPayrollWageTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNonPayrollWageTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfNonPayrollWageTypeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfNonPayrollWageTypeDto>;
+        }));
+    }
+
+    protected processGetNonPayrollWageTypes(response: HttpResponseBase): Observable<ListResultDtoOfNonPayrollWageTypeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfNonPayrollWageTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -47065,24 +47116,26 @@ export class EmployeeOrgAssignmentsServiceProxy {
     }
 
     /**
-     * @param currentPositionId (optional) 
+     * @param body (optional) 
      * @return OK
      */
-    getPositionsForOrgAssignment(currentPositionId?: number | null | undefined): Observable<ListResultDtoOfPositionForOrgAssignmentDto> {
-        let url_ = this.baseUrl + "/api/services/app/EmployeeOrgAssignments/GetPositionsForOrgAssignment?";
-        if (currentPositionId !== undefined && currentPositionId !== null)
-            url_ += "CurrentPositionId=" + encodeURIComponent("" + currentPositionId) + "&";
+    getPositionsForOrgAssignment(body?: GetPositionsForOrgAssignmentInput | undefined): Observable<ListResultDtoOfPositionForOrgAssignmentDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeOrgAssignments/GetPositionsForOrgAssignment";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetPositionsForOrgAssignment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -274559,6 +274612,42 @@ export interface IGetPositionRelationshipForEditOutput {
     positionRelationship: CreateOrEditPositionRelationshipDto;
 }
 
+export class GetPositionsForOrgAssignmentInput implements IGetPositionsForOrgAssignmentInput {
+    currentPositionId!: number | undefined;
+
+    constructor(data?: IGetPositionsForOrgAssignmentInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.currentPositionId = _data["currentPositionId"];
+        }
+    }
+
+    static fromJS(data: any): GetPositionsForOrgAssignmentInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPositionsForOrgAssignmentInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["currentPositionId"] = this.currentPositionId;
+        return data;
+    }
+}
+
+export interface IGetPositionsForOrgAssignmentInput {
+    currentPositionId: number | undefined;
+}
+
 export class GetPrePayrollReportInput implements IGetPrePayrollReportInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -293721,6 +293810,50 @@ export interface IListResultDtoOfNameValueDto {
     items: NameValueDto[] | undefined;
 }
 
+export class ListResultDtoOfNonPayrollWageTypeDto implements IListResultDtoOfNonPayrollWageTypeDto {
+    items!: NonPayrollWageTypeDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfNonPayrollWageTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(NonPayrollWageTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfNonPayrollWageTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfNonPayrollWageTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfNonPayrollWageTypeDto {
+    items: NonPayrollWageTypeDto[] | undefined;
+}
+
 export class ListResultDtoOfOrgLevelCaptionDto implements IListResultDtoOfOrgLevelCaptionDto {
     items!: OrgLevelCaptionDto[] | undefined;
 
@@ -301206,6 +301339,54 @@ export interface INineBoxMappingDto {
     ratingNameEn: string | undefined;
     nineBoxRatingId: number;
     nineBoxRatingNameEn: string | undefined;
+}
+
+export class NonPayrollWageTypeDto implements INonPayrollWageTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: INonPayrollWageTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): NonPayrollWageTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NonPayrollWageTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface INonPayrollWageTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
 }
 
 export class NotificationConfigDto implements INotificationConfigDto {

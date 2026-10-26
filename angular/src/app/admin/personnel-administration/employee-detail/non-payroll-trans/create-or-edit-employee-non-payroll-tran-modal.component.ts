@@ -6,9 +6,7 @@ import {
     CurrencyDto,
     EmployeeNonPayrollTransServiceProxy,
     GetAllCurrenciesInput,
-    GetAllWageTypesInput,
-    WageTypeDto,
-    WageTypesServiceProxy,
+    NonPayrollWageTypeDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -34,7 +32,6 @@ import { DateInputDirective } from '@shared/common/dates/date-input.directive';
 })
 export class CreateOrEditEmployeeNonPayrollTranModalComponent extends AppComponentBase {
     private _service = inject(EmployeeNonPayrollTransServiceProxy);
-    private _wageTypesService = inject(WageTypesServiceProxy);
     private _currenciesService = inject(CurrenciesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
@@ -44,7 +41,8 @@ export class CreateOrEditEmployeeNonPayrollTranModalComponent extends AppCompone
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeNonPayrollTransDto>(new CreateOrEditEmployeeNonPayrollTransDto());
 
-    readonly wageTypes = signal<WageTypeDto[]>([]);
+    /** Only the wage types legacy offered on a non-payroll transaction (server-filtered). */
+    readonly wageTypes = signal<NonPayrollWageTypeDto[]>([]);
     readonly currencies = signal<CurrencyDto[]>([]);
 
     show(employeeId: number, id?: number): void {
@@ -69,12 +67,12 @@ export class CreateOrEditEmployeeNonPayrollTranModalComponent extends AppCompone
     }
 
     private loadLookups(): void {
-        this._wageTypesService
-            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.wageTypes.set(result.items));
+        this._service.getNonPayrollWageTypes().subscribe((result) => this.wageTypes.set(result.items));
 
         this._currenciesService
-            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(
+                new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined })
+            )
             .subscribe((result) => this.currencies.set(result.items));
     }
 
